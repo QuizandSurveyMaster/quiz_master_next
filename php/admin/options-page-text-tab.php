@@ -73,8 +73,10 @@ function mlw_options_text_tab_content() {
                     </div>
                     <div id="postbox-container-1" class="postbox-container">
                         <div class="qsm-text-header">
-                            <h5><?php esc_html_e('Allowed Variables', 'quiz-master-next'); ?></h5>
-                            <span class="description"><?php esc_html_e('click to insert the variable', 'quiz-master-next'); ?></span>
+                            <h5>
+								<?php esc_html_e('Allowed Variables', 'quiz-master-next'); ?>
+								<span class="description"><?php esc_html_e('click to insert the variable', 'quiz-master-next'); ?></span>
+							</h5>
                         </div>
                         <div class="qsm-text-conent qsm-text-allowed-variables">
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
@@ -96,9 +98,6 @@ function mlw_options_text_tab_content() {
                                     }
                                 }
                                 ?>
-                            </div>
-                            <div style="display: none;" class="qsm-all-variable-wrap">
-                                <a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Show all Variables', 'quiz-master-next' ); ?></a>
                             </div>
                         </div>
                     </div>

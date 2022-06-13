@@ -55,16 +55,16 @@ function qsm_options_contact_tab_content() {
 				</div>
 				<div class="inside">
 					<div class="inside-row">
-						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php _e('Show contact form after the quiz', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php esc_html_e('Show contact form after the quiz', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<label><input type="checkbox" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], 0, true )?>><span><?php _e('Show contact form to logged in users', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], 0, true )?>><span><?php esc_html_e('Show contact form to logged in users', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<label><input type="checkbox" name="disable_first_page" value="1" <?php checked( $quiz_options['disable_first_page'], '1', true )?>><span><?php _e('Disable first page of quiz', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="disable_first_page" value="1" <?php checked( $quiz_options['disable_first_page'], '1', true )?>><span><?php esc_html_e('Disable first page of quiz', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php _e('Disable autofill entries', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php esc_html_e('Disable autofill entries', 'quiz-master-next');?></span></label>
 					</div>
 				</div>
 			</div>
@@ -121,7 +121,7 @@ function qsm_show_disabled_contact_fields() {
 	global $wpdb, $mlwQuizMasterNext;
 	$user_id = get_current_user_id();
 	if ( isset( $_POST['show'] ) ) {
-		update_user_meta($user_id, 'qsm_show_disabled_contact_fields', sanitize_text_field( $_POST['show'] ));
+		update_user_meta( $user_id, 'qsm_show_disabled_contact_fields', sanitize_text_field( wp_unslash( $_POST['show'] ) ) );
 	}
 	// Sends posted form data to Contact Manager to sanitize and save.
 	echo '1';
@@ -135,53 +135,53 @@ function qsm_options_contact_tab_template() {
 		<div class="contact-form-field new">
 			<div class="field-required-flag">*</div>
 			<div class="contact-form-group sortable-handle">
-				<a href="javascript:void(0)" class="move-field" title="<?php _e('Move', 'quiz-master-next');?>"><span class="dashicons dashicons-move"></span></a>
+				<a href="javascript:void(0)" class="move-field" title="<?php esc_html_e('Move', 'quiz-master-next');?>"><span class="dashicons dashicons-move"></span></a>
 			</div>
 			<div class="contact-form-group contact-form-inputs">
-				<label class="contact-form-label"><?php _e('Type', 'quiz-master-next');?></label>
+				<label class="contact-form-label"><?php esc_html_e('Type', 'quiz-master-next');?></label>
 				<select class="contact-form-control type-control" <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>>
-					<option value="none" <# if (data.type == '') { #>selected<# } #> ><?php _e('Select a type...', 'quiz-master-next');?></option>
-					<option value="text" <# if (data.type == 'text') { #>selected<# } #> ><?php _e('Text', 'quiz-master-next');?></option>
-					<option value="email" <# if (data.type == 'email') { #>selected<# } #> ><?php _e('Email', 'quiz-master-next');?></option>
-					<option value="url" <# if (data.type == 'url') { #>selected<# } #> ><?php _e('URL', 'quiz-master-next');?></option>
-					<option value="number" <# if (data.type == 'number') { #>selected<# } #> ><?php _e('Number', 'quiz-master-next');?></option>
-					<option value="date" <# if (data.type == 'date') { #>selected<# } #> ><?php _e('Date', 'quiz-master-next');?></option>
-					<option value="checkbox" <# if (data.type == 'checkbox') { #>selected<# } #> ><?php _e('Checkbox', 'quiz-master-next');?></option>
+					<option value="none" <# if (data.type == '') { #>selected<# } #> ><?php esc_html_e('Select a type...', 'quiz-master-next');?></option>
+					<option value="text" <# if (data.type == 'text') { #>selected<# } #> ><?php esc_html_e('Text', 'quiz-master-next');?></option>
+					<option value="email" <# if (data.type == 'email') { #>selected<# } #> ><?php esc_html_e('Email', 'quiz-master-next');?></option>
+					<option value="url" <# if (data.type == 'url') { #>selected<# } #> ><?php esc_html_e('URL', 'quiz-master-next');?></option>
+					<option value="number" <# if (data.type == 'number') { #>selected<# } #> ><?php esc_html_e('Number', 'quiz-master-next');?></option>
+					<option value="date" <# if (data.type == 'date') { #>selected<# } #> ><?php esc_html_e('Date', 'quiz-master-next');?></option>
+					<option value="checkbox" <# if (data.type == 'checkbox') { #>selected<# } #> ><?php esc_html_e('Checkbox', 'quiz-master-next');?></option>
 				</select>
 			</div>
 			<div class="contact-form-group contact-form-inputs">
-				<label class="contact-form-label"><?php _e('Label', 'quiz-master-next');?></label>
+				<label class="contact-form-label"><?php esc_html_e('Label', 'quiz-master-next');?></label>
 				<input type="text" class="contact-form-control label-control" value="{{data.label}}">
 				<input type="hidden" class="use-control" value="{{data.use}}">
 			</div>
 			<div class="contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
-					<a href="javascript:void(0)" class="settings-field" title="<?php _e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
-					<a href="javascript:void(0)" class="copy-field" title="<?php _e('Duplicate', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-page"></span></a>
-					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php _e('Delete', 'quiz-master-next');?>"><span class="dashicons dashicons-trash"></span></a>
+					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
+					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-page"></span></a>
+					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><span class="dashicons dashicons-trash"></span></a>
 				</div>
 			</div>
 			<div class="contact-form-group contact-form-switch">
-				<label class="qsm-switch" title="<?php _e('Enable / Disable Field', 'quiz-master-next');?>"><input type="checkbox" class="enable-control" <# if ( "true" == data.enable || true == data.enable ) { #>checked<# } #> ><span class="switch-slider"></span></label>
+				<label class="qsm-switch" title="<?php esc_html_e('Enable / Disable Field', 'quiz-master-next');?>"><input type="checkbox" class="enable-control" <# if ( "true" == data.enable || true == data.enable ) { #>checked<# } #> ><span class="switch-slider"></span></label>
 			</div>
 			<div class="contact-form-field-settings arrow-left" style="display:none;">
-				<h3><?php _e('Settings', 'quiz-master-next');?></h3>
+				<h3><?php esc_html_e('Settings', 'quiz-master-next');?></h3>
 				<div class="contact-form-group required-option">
-					<label class="contact-form-label"><input type="checkbox" name="required" class="required-control" <# if ( "true" == data.required || true == data.required ) { #>checked<# } #> ><span><?php _e('Required?', 'quiz-master-next');?></span></label>
+					<label class="contact-form-label"><input type="checkbox" name="required" class="required-control" <# if ( "true" == data.required || true == data.required ) { #>checked<# } #> ><span><?php esc_html_e('Required?', 'quiz-master-next');?></span></label>
 				</div>
 				<div class="contact-form-group min-max-option">
-					<label class="contact-form-label"><?php _e('Min Length', 'quiz-master-next');?></label>
+					<label class="contact-form-label"><?php esc_html_e('Min Length', 'quiz-master-next');?></label>
 					<input type="number" class="contact-form-control" name="minlength" value="{{data.minlength}}">
 				</div>
 				<div class="contact-form-group min-max-option">
-					<label class="contact-form-label"><?php _e('Max Length', 'quiz-master-next');?></label>
+					<label class="contact-form-label"><?php esc_html_e('Max Length', 'quiz-master-next');?></label>
 					<input type="number" class="contact-form-control" name="maxlength" value="{{data.maxlength}}">
 				</div>
 				<div class="contact-form-group email-option">
-					<label class="contact-form-label"><?php _e('Allow Domains', 'quiz-master-next');?></label>
+					<label class="contact-form-label"><?php esc_html_e('Allow Domains', 'quiz-master-next');?></label>
 					<textarea class="contact-form-control" name="allowdomains">{{data.allowdomains}}</textarea>
-					<em><?php _e('Leave blank to allow all domains. ', 'quiz-master-next');?></em><br/>
-					<em><?php _e('Comma separated list of domains. (i.e. example.com,abc.com)', 'quiz-master-next');?></em>
+					<em><?php esc_html_e('Leave blank to allow all domains. ', 'quiz-master-next');?></em><br/>
+					<em><?php esc_html_e('Comma separated list of domains. (i.e. example.com,abc.com)', 'quiz-master-next');?></em>
 				</div>
 			</div>
 		</div>

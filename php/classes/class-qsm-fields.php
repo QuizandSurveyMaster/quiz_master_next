@@ -23,7 +23,7 @@ class QSM_Fields {
 		$settings_array_before_update = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 
 		// If nonce is correct, save settings
-		if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) {
+		if ( ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) || ( isset( $_POST["save_global_default_ettings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_global_default_ettings_nonce'] ) ), 'set_global_default_settings' ) ) ) {
 			// Cycle through fields to retrieve all posted values
 			$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 			foreach ( $fields as $field ) {
@@ -176,7 +176,7 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php echo __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -255,7 +255,7 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php echo __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -270,9 +270,9 @@ class QSM_Fields {
 				</div>
 			<?php endif;
 			if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
-				<button class="button" name="global_setting" type="submit"><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></button>
+				<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></a> |
 			<?php } ?>
-			<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+			<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 		</form>
 		<?php
   	}

@@ -274,7 +274,9 @@ class MLWQuizMasterNext {
 		global $mlwQuizMasterNext;
 		// admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
-		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+		if ( is_rtl() ) {
+			wp_enqueue_style( 'qsm_admin_style_rtl', plugins_url( 'css/qsm-admin-rtl.css', __FILE__ ), array(), $this->version );
+		}
 		// dashboard and quiz list pages
 		if ( 'toplevel_page_qsm_dashboard' === $hook || ('edit.php' == $hook && isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
@@ -321,11 +323,11 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
-				case 'contact':
-					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL . '/qsm-admin-contact.css', array(), $this->version );
-					break;
-				case 'emails':
-				case 'results-pages':
+				case 'questions':
+					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
+					if ( is_rtl() ) {
+						wp_enqueue_style( 'qsm_admin_question_css_rtl', plugins_url( 'css/qsm-admin-question-rtl.css', __FILE__ ), array(), $this->version );
+					}
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
@@ -350,8 +352,6 @@ class MLWQuizMasterNext {
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					break;
 				default:
-					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
-					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
@@ -479,14 +479,14 @@ class MLWQuizMasterNext {
 		foreach ( $GLOBALS['menu'] as $key => $menu ) {
 			$menus_positions[] = floatval( $key );
 		}
-		if ( ! in_array( $start, $menus_positions ) ) {
+		if ( ! in_array( $start, $menus_positions, true ) ) {
 			$start = strval( $start );
 			return $start;
 		} else {
 			$start += $increment;
 		}
 		/* the position is already reserved find the closet one */
-		while ( in_array( $start, $menus_positions ) ) {
+		while ( in_array( $start, $menus_positions, true ) ) {
 			$start += $increment;
 		}
 		$start = strval( $start );

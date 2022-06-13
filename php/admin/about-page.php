@@ -82,8 +82,7 @@ function qsm_generate_about_page() {
                 } elseif ( 'about' === $active_tab ) {
 					?>
 			<div class="qsm-tab-content tab-3">
-				<h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors
-				</h2>
+				<h2 class="text-left" style="font-weight: 500;">GitHub Contributors</h2>
 				<?php
 					$contributors = get_transient( 'qmn_contributors' );
 					if ( false === $contributors ) {

@@ -1,7 +1,7 @@
 <?php
 $themes_data = array();
 global $pro_themes;
-$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-fragrance', 'qsm-theme-sigma', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma' );
+$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma' );
 
 /**
  * @since 6.4.5
@@ -747,14 +747,14 @@ function qsm_create_new_quiz_wizard() {
 										<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
 									<?php } ?>
 								</ul>
+								<div class="theme-wrap" id="browse_themes" style="display: none;">
+									<?php qsm_get_market_themes(); ?>
+								</div>
 								<div class="theme-wrap" id="downloaded_theme">
 									<?php
 										qsm_get_installed_theme( 0, 'wizard_theme_list' );
 										qsm_get_default_wizard_themes();
 									?>
-								</div>
-								<div class="theme-wrap" id="browse_themes" style="display: none;">
-									<?php qsm_get_market_themes(); ?>
 								</div>
 							</div>
 						</div>
@@ -997,7 +997,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>"
 						<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
-					<?php if( in_array( $theme_name, $pro_themes ) ){ ?>
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
@@ -1038,7 +1038,7 @@ function qsm_get_default_wizard_themes() {
 	global $themes_data;
 	global $pro_themes;
 	$installed_themes    = $mlwQuizMasterNext->theme_settings->get_installed_themes();
-	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion' , 'Serene' );
+	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma' );
 	$default_themes_data = array();
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {
@@ -1080,7 +1080,7 @@ function qsm_get_default_wizard_themes() {
 			?>
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
-					<?php if( in_array( $theme_name, $pro_themes ) ){ ?>
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
@@ -1089,7 +1089,7 @@ function qsm_get_default_wizard_themes() {
 							href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
 						<a class="button" target="_blank" rel="noopener"
 							href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard">
-							<?php echo in_array( $theme_name, $pro_themes ) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
+							<?php echo in_array( $theme_name, $pro_themes , true) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
 						</a>
 					</div>
 				</div>
@@ -1114,14 +1114,14 @@ function qsm_get_market_themes() {
 			?>
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
-					<?php if( in_array( $theme_name, $pro_themes ) ){ ?>
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
 						<a class="button button-primary" target="_blank" rel="noopener"	href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
 						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard">
-							<?php echo in_array( $theme_name, $pro_themes ) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
+							<?php echo in_array( $theme_name, $pro_themes , true) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
 						</a>
 					</div>
 				</div>

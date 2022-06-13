@@ -21,22 +21,10 @@ function qsm_generate_quiz_tools() {
 	add_meta_box( 'qsm_restore_box', 'Restore Quiz', 'qsm_restore_function', 'quiz_wpss' );
 	add_meta_box( 'qsm_audit_box', 'Audit Trail', 'qsm_audit_box', 'quiz_wpss' );
 	?>
-		<style type="text/css">
-			#qsm_restore_box .hndle,
-			#qsm_audit_box .hndle{
-				padding-left: 15px;
-				padding-bottom: 0;
-			}
-			.qsm-tools-page .handle-order-higher,
-			.qsm-tools-page .handle-order-lower,
-			.qsm-tools-page .handle-actions{
-				display: none;
-			}
-		</style>
 	<div class="wrap qsm-tools-page">
 	<h2><?php esc_html_e( 'Tools', 'quiz-master-next' ); ?></h2>
 
-	<div style="float:left; width:100%;" class="inner-sidebar1">
+	<div style="width:100%;" class="inner-sidebar1">
 		<?php do_meta_boxes( 'quiz_wpss', 'advanced', null ); ?>
 	</div>
 

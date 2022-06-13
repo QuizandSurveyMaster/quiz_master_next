@@ -555,7 +555,6 @@ ul.popuar-addon-ul::after {
 #model-wizard .qsm_popular_addons div.popuar-addon-ul>div>a {
 	display: block;
 	width: 100%;
-	height: 100%;
 }
 
 #model-wizard .qsm_popular_addons a:active,
