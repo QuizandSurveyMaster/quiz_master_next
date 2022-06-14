@@ -60,6 +60,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 
 = Other Useful Features =
 
+* Compatible with [WPML](https://wpml.org/) and its extensions
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only a set number of questions per page
 * Require user to be logged in
