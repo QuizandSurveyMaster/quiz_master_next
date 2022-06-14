@@ -74,6 +74,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Keep track how long a user takes on the quiz or survey
 * Able to set up time limits on the quiz or survey
 * Create and display math formulas
+* Compatible with [WPML](https://wpml.org/) and its extensions
 * And **Much** More...
 
 = QSM Addons =
