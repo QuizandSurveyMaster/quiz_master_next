@@ -60,7 +60,6 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 
 = Other Useful Features =
 
-* Compatible with [WPML](https://wpml.org/) and its extensions
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only a set number of questions per page
 * Require user to be logged in
@@ -75,6 +74,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Keep track how long a user takes on the quiz or survey
 * Able to set up time limits on the quiz or survey
 * Create and display math formulas
+* Compatible with [WPML](https://wpml.org/) and its extensions
 * And **Much** More...
 
 = QSM Addons =
