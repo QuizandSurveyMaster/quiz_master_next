@@ -50,6 +50,11 @@ var QSMAdmin;
         QSMAdmin.selectTab($(this));
     });
 
+    //show set global default potion popup
+    $(document).on('click', '#qsm-blobal-settings', function () {
+        MicroModal.show('qsm-global-default-popup');
+    });
+
     $('#qmn_check_all').change(function () {
         $('.qmn_delete_checkbox').prop('checked', jQuery('#qmn_check_all').prop('checked'));
     });
@@ -165,19 +170,6 @@ var QSMAdmin;
                 });
             }
         );
-    });
-
-    //Hide/Show legacy option
-    jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
-    jQuery(document).on('click', '#legacy_options', function (e) {
-        e.preventDefault();
-        if (jQuery('#legacy_options').parents('tr').next('tr').is(':visible')) {
-            jQuery(this).text('').text('Show Legacy options');
-            jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
-        } else {
-            jQuery(this).text('').text('Hide Legacy options');
-            jQuery('#legacy_options').parents('tr').nextAll('tr').show();
-        }
     });
 
     //Dismiss the welcome panel
@@ -478,6 +470,32 @@ var QSMAdmin;
         jQuery('.qsm_setting__data').html('<p>'+JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2)+'</p>');
     });
 
+	jQuery( document ).on( 'click', '.qsm-toggle-box-handle', function ( e ) {
+		e.preventDefault();
+		var parent = jQuery(this).parent('.qsm-toggle-box');
+		var content = parent.find('.qsm-toggle-box-content');
+		if (content.is(":visible")) {
+			content.hide();
+			parent.removeClass('opened');
+		} else {
+			content.show();
+			parent.addClass('opened');
+		}
+	} );
+
+	jQuery( document ).on( 'click', '.qsm-help-tab-handle', function ( e ) {
+		e.preventDefault();
+		jQuery('.qsm-help-tab-dropdown-list').toggleClass('opened');
+	} );
+	
+	$( document ).mouseup( function ( e ){
+		var link = $( ".qsm-help-tab-handle" );
+		var container = $( ".qsm-help-tab-dropdown-list" );
+		if ( !link.is( e.target ) && !container.is( e.target ) && container.has( e.target ).length === 0 ) {
+			container.removeClass('opened');
+		}
+	} );
+
 }(jQuery));
 
 // result page
@@ -507,6 +525,14 @@ function deleteResults(id, quizName) {
 }
 
 //quiz options style tab
+jQuery('.quiz_style_tab').click(function(e) {
+    e.preventDefault();
+    var current_id = jQuery(this).attr('data-id');
+    jQuery('.quiz_style_tab').removeClass('current');
+    jQuery(this).addClass('current');
+    jQuery('.quiz_style_tab_content').hide();
+    jQuery('#' + current_id).show();
+});
 
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
     if (window.location.href.indexOf('tab=style')> 0 ){
@@ -515,17 +541,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
             jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
         }
-
-        jQuery(document).ready(function() {
-        jQuery('.quiz_style_tab').click(function(e) {
-            e.preventDefault();
-            var current_id = jQuery(this).attr('data-id');
-            jQuery('.quiz_style_tab').removeClass('current');
-            jQuery(this).addClass('current');
-            jQuery('.quiz_style_tab_content').hide();
-            jQuery('#' + current_id).show();
-        });
-        });
 
         jQuery(document).ready(function() {
         jQuery(document).on('click', '.qsm-activate-theme', function() {
@@ -951,201 +966,217 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         if (window.location.href.indexOf('tab=contact') > 0 ){
 
             QSMContact = {
-                load : function() {
-                    if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){
-                        $.each( qsmContactObject.contactForm, function( i, val ) {
-                          QSMContact.addField( val );
-                        });
-                    }
-                },
-                addField : function( fieldArray ) {
-                  var new_label =  fieldArray.label.replace(/"/g, "'");
-                  var contactField = $( '<div class="contact-form-field new"><span class="dashicons dashicons-move"></span>' +
-                      '<div class="contact-form-group">' +
-                          '<label class="contact-form-label">Field Type</label>' +
-                        '<select class="contact-form-control wide type-control">' +
-                          '<option value="none">Select a type...</option>' +
-                          '<option value="text">Small Open Answer</option>' +
-                          '<option value="email">Email</option>' +
-                          '<option value="checkbox">Checkbox</option>' +
-                          '<option value="date">Date</option>' +
-                        '</select>' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Label</label>' +
-                        '<input type="text" class="contact-form-control label-control" value="' + new_label + '">' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Used For</label>' +
-                        '<select class="contact-form-control use-control">' +
-                          '<option value="none"></option>' +
-                          '<option value="name">Name</option>' +
-                          '<option value="email">Email</option>' +
-                          '<option value="comp">Business</option>' +
-                          '<option value="phone">Phone</option>' +
-                        '</select>' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Required?</label>' +
-                        '<input type="checkbox" class="required-control">' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<a href="javascript:void(0)" class="delete-field">Delete</a> | ' +
-                        '<a href="javascript:void(0)" class="copy-field">Duplicate</a>' +
-                      '</div>' +
-                    '</div>'
-                  );
-                  if ( true === fieldArray.required || "true" === fieldArray.required ) {
-                    contactField.find( '.required-control' ).prop( 'checked', true );
-                  }
-                  switch ( fieldArray.type ) {
-                    case 'text':
-                      contactField.find( '.type-control option[value="text"]').prop( 'selected', true );
-                      break;
-                    case 'email':
-                      contactField.find( '.type-control option[value="email"]').prop( 'selected', true );
-                      break;
-                    case 'checkbox':
-                      contactField.find( '.type-control option[value="checkbox"]').prop( 'selected', true );
-                      break;
-                    case 'date':
-                      contactField.find( '.type-control option[value="date"]').prop( 'selected', true );
-                      break;
-                    default:
+                load: function () {
+					if ( $.isArray( qsmContactObject.contactForm ) && qsmContactObject.contactForm.length > 0 ) {
+						$.each( qsmContactObject.contactForm, function ( i, val ) {
+							QSMContact.addField( val );
+						} );
+					}
+				},
+				addField: function ( fieldArray ) {
+					var template = wp.template( 'contact-form-field' );
 
-                  }
-                  switch ( fieldArray.use ) {
-                    case 'name':
-                      contactField.find( '.use-control option[value="name"]').prop( 'selected', true );
-                      break;
-                    case 'email':
-                      contactField.find( '.use-control option[value="email"]').prop( 'selected', true );
-                      break;
-                    case 'comp':
-                      contactField.find( '.use-control option[value="comp"]').prop( 'selected', true );
-                      break;
-                    case 'phone':
-                      contactField.find( '.use-control option[value="phone"]').prop( 'selected', true );
-                      break;
-                    default:
+					$( '.contact-form' ).append( template( fieldArray ) );
 
-                  }
-                  $( '.contact-form' ).append( contactField );
-                  setTimeout( QSMContact.removeNew, 250 );
-                },
-                removeNew: function() {
-                  $( '.contact-form-field' ).removeClass( 'new' );
-                },
-                duplicateField: function( linkClicked ) {
-                  var field = linkClicked.parents( '.contact-form-field' );
-                  var fieldArray = {
-                    label: field.find( '.label-control' ).val(),
-                    type: field.find( '.type-control' ).val(),
-                    required: field.find( '.required-control' ).prop( 'checked' ),
-                    use: field.find( '.use-control' ).val()
-                  };
-                  QSMContact.addField( fieldArray );
-                },
-                deleteField: function( field ) {
-                  var parent = field.parents( '.contact-form-field' );
-                  parent.addClass( 'deleting' );
-                  setTimeout( function() {
-                    parent.remove();
-                  }, 250 );
-                },
-                newField : function() {
-                  var fieldArray = {
-                    label : '',
-                    type : 'text',
-                    answers : [],
-                    required : false,
-                    use: ''
-                  };
-                  QSMContact.addField( fieldArray );
-                },
-                save : function() {
-                    QSMContact.displayAlert( 'Saving contact fields...', 'info' );
-                    var contactFields = $( '.contact-form-field' );
-                    var contactForm = [];
-                    var contactEach;
-                    $.each( contactFields, function( i, val ) {
-                        contactEach = {
-                        label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
-                        type: $( this ).find( '.type-control' ).val(),
-                        required: $( this ).find( '.required-control' ).prop( 'checked' ),
-                        use: $( this ).find( '.use-control' ).val()
-                        };
-                        contactForm.push( contactEach );
-                    });
-                    var data = {
-                        action: 'qsm_save_contact',
-                        contact_form: contactForm,
-                        quiz_id : qsmContactObject.quizID,
-                        nonce : qsmContactObject.saveNonce,
-                    };
+					$( '.contact-form-field' ).each( function () {
+						QSMContact.hideShowSettings( $( this ) );
+					} );
+					setTimeout( QSMContact.removeNew, 250 );
+				},
+                removeNew: function () {
+					$( '.contact-form-field' ).removeClass( 'new' );
+				},
+				duplicateField: function ( linkClicked ) {
+					var fieldArray = QSMContact.prepareFieldData( linkClicked.parents( '.contact-form-field' ) );
+					QSMContact.addField( fieldArray );
+				},
+				deleteField: function ( field ) {
+					var parent = field.parents( '.contact-form-field' );
+					parent.addClass( 'deleting' );
+					setTimeout( function () {
+						parent.remove();
+					}, 250 );
+				},
+                newField: function () {
+					var fieldArray = {
+						label: '',
+						type: 'text',
+						answers: [],
+						required: false,
+						use: '',
+						enable: true,
+						is_default: false
+					};
+					jQuery( document ).trigger( 'qsm_add_contact_field', [fieldArray] );
+					QSMContact.addField( fieldArray );
+				},
+				prepareFieldData: function ( field ) {
+					var fieldArray = {
+						label: field.find( '.label-control' ).val(),
+						type: field.find( '.type-control' ).val(),
+						required: field.find( '.required-control' ).prop( 'checked' ),
+						use: field.find( '.use-control' ).val(),
+						enable: field.find( '.enable-control' ).prop( 'checked' ),
+					};
+					/**
+					 * Store Other settings
+					 */
+					field.find( '.contact-form-field-settings :input' ).each( function () {
+						var inputName = $( this ).attr( 'name' );
+						var inputVal = $( this ).val();
+						if ( 'checkbox' == $( this ).attr( 'type' ) ) {
+							inputVal = $( this ).prop( 'checked' );
+						}
+						fieldArray[inputName] = inputVal;
+					} );
+					return fieldArray;
+				},
+                save: function () {
+					QSMContact.displayAlert( 'Saving contact fields...', 'info' );
+					var contactFields = $( '.contact-form-field' );
+					var contactForm = [];
+					var contactEach;
+					$.each( contactFields, function ( i, val ) {
+						contactEach = QSMContact.prepareFieldData( $( this ) );
+						contactForm.push( contactEach );
+					} );
 
-                    jQuery.post( ajaxurl, data, function( response ) {
-                        QSMContact.saved( JSON.parse( response ) );
-                    });
-                },
-                saved : function( response ) {
-                  if ( response.status ) {
-                    QSMContact.displayAlert( '<strong>Success</strong> Your contact fields have been saved!', 'success' );
-                  } else {
-                    QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your contact fields. Please try again.', 'error' );
-                  }
-                },
-                displayAlert: function( message, type ) {
-                  QSMContact.clearAlerts();
-                  $( '.contact-message' ).addClass( 'notice' );
-                  switch ( type ) {
-                    case 'info':
-                      $( '.contact-message' ).addClass( 'notice-info' );
-                      break;
-                    case 'error':
-                      $( '.contact-message' ).addClass( 'notice-error' );
-                      break;
-                    case 'success':
-                      $( '.contact-message' ).addClass( 'notice-success' );
-                      break;
-                    default:
-                  }
-                  $( '.contact-message' ).append( '<p>' + message + '</p>' );
-                },
-                clearAlerts: function() {
-                  $( '.contact-message' ).empty().removeClass().addClass( 'contact-message' );
-                }
+					var settings = {};
+					$('#contactformsettings input').each(function (){
+						if ('checkbox' == $(this).attr('type')) {
+							settings[$(this).attr('name')] = ($(this).prop( 'checked' ) ? '1' : '0');
+						} else {
+							settings[$(this).attr('name')] = $(this).val();
+						}
+					});
+
+					var data = {
+						action: 'qsm_save_contact',
+						contact_form: contactForm,
+						settings: settings,
+						quiz_id: qsmContactObject.quizID,
+						nonce: qsmContactObject.saveNonce,
+					};
+
+					jQuery.post( ajaxurl, data, function ( response ) {
+						QSMContact.saved( JSON.parse( response ) );
+					} );
+				},
+				saved: function ( response ) {
+					if ( response.status ) {
+						QSMContact.displayAlert( '<strong>Success</strong> Your contact fields have been saved!', 'success' );
+					} else {
+						QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your contact fields. Please try again.', 'error' );
+					}
+				},
+				displayAlert: function ( message, type ) {
+					QSMContact.clearAlerts();
+					$( '.contact-message' ).addClass( 'notice' );
+					switch ( type ) {
+						case 'info':
+							$( '.contact-message' ).addClass( 'notice-info' );
+							break;
+						case 'error':
+							$( '.contact-message' ).addClass( 'notice-error' );
+							break;
+						case 'success':
+							$( '.contact-message' ).addClass( 'notice-success' );
+							break;
+						default:
+					}
+					$( '.contact-message' ).append( '<p>' + message + '</p>' );
+				},
+				clearAlerts: function () {
+					$( '.contact-message' ).empty().removeClass().addClass( 'contact-message' );
+				},
+				hideShowSettings: function ( field ) {
+					var type = field.find( '.type-control' ).val();
+					if ( field.find( '.required-control' ).prop( 'checked' ) ) {
+						field.find( '.field-required-flag' ).show();
+					}
+					if ( !field.find( '.enable-control' ).prop( 'checked' ) ) {
+						field.addClass( 'disabled-field' );
+						if ( !$( '.show-disabled-fields' ).prop( 'checked' ) ) {
+							field.addClass( 'hidden-field' );
+						}
+					}
+					field.find( '.contact-form-field-settings .contact-form-group:not(.required-option)' ).hide();
+					if ( 'text' == type || 'number' == type ) {
+						field.find( '.contact-form-field-settings .min-max-option' ).show();
+					}
+					if ( 'email' == type ) {
+						field.find( '.contact-form-field-settings .email-option' ).show();
+					}
+					jQuery( document ).trigger( 'qsm_contact_field_hide_show_settings', [field, type] );
+				}
             };
             $(function() {
-
                 QSMContact.load();
-                if( $('.contact-form > .contact-form-field').length === 0 ){
-                    $('.save-contact').hide();
-                }
-                $( '.add-contact-field' ).on( 'click', function() {
-                QSMContact.newField();
-                    if( $('.contact-form > .contact-form-field').length === 0 ){
-                        $('.save-contact').hide();
-                    }else{
-                        $('.save-contact').show();
-                    }
-                });
-                $( '.save-contact' ).on( 'click', function() {
-                    QSMContact.save();
-                });
-                $( '.contact-form' ).on( 'click', '.delete-field', function( event ) {
-                    event.preventDefault();
-                    QSMContact.deleteField( $( this ) );
-                });
-                $( '.contact-form' ).on( 'click', '.copy-field', function( event ) {
-                    event.preventDefault();
-                    QSMContact.duplicateField( $( this ) );
-                });
-                $( '.contact-form' ).sortable({
-                    opacity: 70,
-                    cursor: 'grabbing',
-                    handle: 'span.dashicons-move'
-                });
+				if ( $( '.contact-form > .contact-form-field' ).length === 0 ) {
+					$( '.save-contact' ).hide();
+				}
+				$( '.add-contact-field' ).on( 'click', function () {
+					QSMContact.newField();
+					if ( $( '.contact-form > .contact-form-field' ).length === 0 ) {
+						$( '.save-contact' ).hide();
+					} else {
+						$( '.save-contact' ).show();
+					}
+				} );
+				$( '.save-contact' ).on( 'click', function () {
+					QSMContact.save();
+				} );
+				$( '.contact-form' ).on( 'click', '.delete-field', function ( event ) {
+					event.preventDefault();
+					if ( !$( this ).hasClass( 'disabled' ) ) {
+						QSMContact.deleteField( $( this ) );
+					}
+					return false;
+				} );
+				$( '.contact-form' ).on( 'click', '.copy-field', function ( event ) {
+					event.preventDefault();
+					QSMContact.duplicateField( $( this ) );
+				} );
+				$( '.contact-form' ).on( 'click', '.settings-field', function ( event ) {
+					event.preventDefault();
+					var target = $( this ).parents( '.contact-form-field' ).find( '.contact-form-field-settings' );
+					$( '.contact-form-field-settings' ).not( target ).hide();
+					target.toggle();
+				} );
+				$( '.contact-form' ).on( 'change', '.type-control', function ( event ) {
+					event.preventDefault();
+					QSMContact.hideShowSettings( $( this ).parents( '.contact-form-field' ) );
+				} );
+				$( '.contact-form' ).on( 'change', '.required-control', function ( event ) {
+					event.preventDefault();
+					$( this ).parents( '.contact-form-field' ).find( '.field-required-flag' ).hide();
+					if ( $( this ).is( ':checked' ) ) {
+						$( this ).parents( '.contact-form-field' ).find( '.field-required-flag' ).show();
+					}
+				} );
+				$( '.contact-form' ).on( 'change', '.enable-control', function ( event ) {
+					event.preventDefault();
+					$( this ).parents( '.contact-form-field' ).addClass( 'disabled-field' );
+					if ( $( this ).is( ':checked' ) ) {
+						$( this ).parents( '.contact-form-field' ).removeClass( 'disabled-field' );
+					}
+					QSMContact.hideShowSettings( $( this ).parents( '.contact-form-field' ) );
+				} );
+				$( document ).on( 'change', '.show-disabled-fields', function ( event ) {
+					event.preventDefault();
+					var is_show = $( this ).prop( 'checked' );
+					jQuery.post( ajaxurl, { action: 'qsm_show_disabled_contact_fields', show: is_show } );
+					if ( is_show ) {
+						$( '.contact-form-field' ).removeClass( 'hidden-field' );
+					} else {
+						$( '.contact-form-field.disabled-field' ).addClass( 'hidden-field' );
+					}
+				} );
+				$( '.contact-form' ).sortable( {
+					opacity: 70,
+					cursor: 'grabbing',
+					handle: 'span.dashicons-move'
+				} );
             });
         }
     }
@@ -1416,32 +1447,25 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (pagination.total_pages > pagination.current_page) {
                     var pagination_html = '<div class="qb-load-more-wrapper" style="text-align: center;margin: 20px 0 10px 0;"><input type="hidden" id="question_back_page_number" value="' + pagination.current_page + '"/>';
                     pagination_html += '<input type="hidden" id="question_back_total_pages" value="' + pagination.total_pages + '"/>';
-                    pagination_html += '<a href="javascript:void(0)" class="button button-primary qb-load-more-question">Load More Questions</a></div>';
+                    pagination_html += '<a href="javascript:void(0)" class="qb-load-more-question">Load More Questions</a></div>';
                     $('#question-bank').append(pagination_html);
                 }
                 if (pagination.current_page == 1) {
-                    if ($('#question-bank-search-form').length == 0) {
-                        $('.qsm-question-bank-search').append('<form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="' + response.search + '" id="question-bank-search-input" placeholder="Search questions"></form>');
-                        if ( qsmQuestionSettings.categories.length > 0) {
-                            var category_arr = qsmQuestionSettings.categories;
-                            $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
-                            $cat_html += '<option value="">All Categories</option>';
-                            $.each(category_arr, function (index, value) {
-                                if (value.category !== '') {
-                                    if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
-                                        $cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
-                                    } else {
-                                        $cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
-                                    }
-                                }
-                            });
-                            $cat_html += '</select>';
-                            $('.qsm-question-bank-search').append($cat_html);
-                            $('#question-bank-cat').val(pagination.category);
-                        }
-                        $('.qsm-question-bank-search').append('<button class="button button-primary" id="qsm-import-selected-question">Add Selected Questions</button>');
-                    }
-                    $('#question-bank').prepend('<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question">Delete Selected Items from Question Bank</a>');
+					if ( qsmQuestionSettings.categories.length > 0) {
+						var category_arr = qsmQuestionSettings.categories;
+						$cat_html = '<option value="">All Categories</option>';
+						$.each(category_arr, function (index, value) {
+							if (value.category !== '') {
+								if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
+									$cat_html += '<option value="' + value.cat_id + '">' + value.category + '</option>';
+								} else {
+									$cat_html += '<option value="' + value.category + '">' + value.category + '</option>';
+								}
+							}
+						});
+						$('#question-bank-cat').html($cat_html);
+						$('#question-bank-cat').val(pagination.category);
+					}
                 }
             },
             addQuestionToQuestionBank: function (question) {
@@ -1658,6 +1682,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         count++;
                     }
                 }
+                $('.save-page-button').trigger('click');
             },
             addQuestionToPage: function (model) {
                 var page = model.get('page') + 1;
@@ -1680,10 +1705,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 } else {
                     questionName = new_question_title;
                 }
-
-                if (questionName == '')
-                    questionName = 'Your new question!';
-
+                if (questionName == '') {
+					questionName = 'Your new question!';
+				}
                 $('.page:nth-child(' + page + ')').append(template({
                     id: model.id,
                     category: model.get('category'),
@@ -1851,10 +1875,20 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (new_question_title !== '') {
                     questionName = $.QSMSanitize(new_question_title);
                 }
+				var category = [];
+				var multicategories = model.get('multicategories');
+                if (multicategories === null || typeof multicategories === "undefined") {
+                    //No Action Require
+                } else {
+                    $.each(multicategories, function (i, val) {
+                        category.push($(".qsm-popup__content #qsm_category-" + val + " label:first-child")[0].textContent);
+                    });
+					category = category.filter(item => item);
+                }
                 $('.question[data-question-id=' + model.id + ']').replaceWith(template({
                     id: model.id,
                     type: model.get('type'),
-                    category: model.get('category'),
+                    category: category.join(', '),
                     question: questionName
                 }));
                 setTimeout(function () {
@@ -1931,11 +1965,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         CurrentElement.parents('.question').next('.questionElements').slideUp('slow');
                         $('.questions').sortable('enable');
                         $('.page').sortable('enable');
+                        CurrentElement.parents('.question').removeClass('opened');
                     } else {
+                        CurrentElement.parents('.question').addClass('opened');
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     }
                     return;
                 } else {
+                    CurrentElement.parents('.question').addClass('opened');
                     $('.questions .questionElements').slideDown('slow');
                     $('.questions .questionElements').remove();
                 }
@@ -2173,12 +2210,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 
             $('.questions').on('click', '.new-question-button', function (event) {
                 event.preventDefault();
+				if (jQuery('.questionElements').is(':visible')) {
+					$('#save-popup-button').trigger('click');
+				}
                 QSMQuestion.createQuestion($(this).parents('.page').index());
-                $('.save-page-button').trigger('click');
             });
 
             $('.questions').on('click', '.add-question-bank-button', function (event) {
                 event.preventDefault();
+				if (jQuery('.questionElements').is(':visible')) {
+					$('#save-popup-button').trigger('click');
+				}
                 QSMQuestion.openQuestionBank($(this).parents('.page').index());
             });
 
@@ -2213,7 +2255,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $(document).on('click', '.questions .duplicate-question-button', function (event) {
                 event.preventDefault();
                 QSMQuestion.duplicateQuestion($(this).parents('.question').data('question-id'));
-                $('.save-page-button').trigger('click');
             });
             $('.questions').on('click', '.delete-question-button', function (event) {
                 event.preventDefault();
@@ -2255,12 +2296,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 MicroModal.close('modal-7');
             });
 
-            $('.questions').on('click', '.delete-page-button', function (event) {
+            $(document).on('click', '.delete-page-button', function (event) {
                 event.preventDefault();
                 if (confirm('Are you sure?')) {
-                    $(this).parents('.page').remove();
+					var pageID = $(this).parent().siblings('main').children('#edit_page_id').val();
+                    $('.page[data-page-id='+pageID+']').remove();
                     $('.save-page-button').trigger('click');
                     QSMQuestion.countTotal();
+					MicroModal.close('modal-page-1');
                 }
             });
             $(document).on('click', '#answers .delete-answer-button', function (event) {
@@ -2328,6 +2371,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 import_button = $(this);
                 $('.import-button').addClass('disable_import');
                 QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
+				MicroModal.close('modal-2');
             });
 
             //Click on selected question button.
@@ -2346,6 +2390,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     });
                     $('.import-button').addClass('disable_import');
                     $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked', false);
+					MicroModal.close('modal-2');
                 }
             });
             //Delete question from question bank
@@ -2384,8 +2429,22 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             });
 
             //Select all button.
+            $(document).on('change', '.qsm-question-checkbox', function (event) {
+                event.preventDefault();
+				if ($('.qsm-question-checkbox:checked').length > 0) {
+					$('.qsm-question-bank-footer').addClass('opened');
+				} else {
+					$('.qsm-question-bank-footer').removeClass('opened');
+				}
+            });
             $(document).on('change', '#qsm_select_all_question', function (event) {
+                event.preventDefault();
                 $('.qsm-question-checkbox').prop('checked', jQuery('#qsm_select_all_question').prop('checked'));
+				if ($('.qsm-question-checkbox:checked').length > 0) {
+					$('.qsm-question-bank-footer').addClass('opened');
+				} else {
+					$('.qsm-question-bank-footer').removeClass('opened');
+				}
             });
 
             $('.save-page-button').on('click', function (event) {
@@ -2521,23 +2580,22 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             //Hide/show quesion description
             $(document).on('click', '.qsm-show-question-desc-box', function (e) {
                 e.preventDefault();
-                if ($(this).next('.qsm-row').is(':visible')) {
-                    $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_desc_text);
-                    $(this).next('.qsm-row').slideUp();
-                } else {
-                    $(this).hide();
-                    questionElements = $(this).parents('.questionElements');
-                    var question_description = wp.editor.getContent('question-text');
-                    if (question_description == '' || question_description == null) {
-                        console.log(questionElements.find('#question_type').val());
-                        if (6 == questionElements.find('#question_type').val()) {
-                            tinyMCE.get('question-text').setContent('');
-                        } else {
-                            tinyMCE.get('question-text').setContent('Add description here!');
-                        }
-                    }
-                    $(this).next('.qsm-row').slideDown();
-                }
+				$(this).hide();
+				var question_description = wp.editor.getContent('question-text');
+				if (question_description == '' || question_description == null) {
+					var questionElements = $(this).parents('.questionElements');
+					if (6 == questionElements.find('#question_type').val()) {
+						tinyMCE.get('question-text').setContent('');
+					} else {
+						tinyMCE.get('question-text').setContent('Add description here!');
+					}
+				}
+				$(this).next('.qsm-row').show();
+            });
+            $(document).on('click', '.qsm-hide-question-desc-box', function (e) {
+                e.preventDefault();
+				$(this).parents('.qsm-row.qsm-editor-wrap').hide();
+				$('.qsm-show-question-desc-box').show();
             });
 
             //Open file upload on feature image
@@ -2572,17 +2630,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 button.hide().prev().html('Upload image');
             });
 
-            //Hide/show correct answer info
-            $(document).on('click', '.qsm-show-correct-info-box', function (e) {
-                e.preventDefault();
-                if ($(this).next('.qsm-row').is(':visible')) {
-                    $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_correct_info_text);
-                    $(this).next('.qsm-row').slideUp();
-                } else {
-                    $(this).hide();
-                    $(this).next('.qsm-row').slideDown();
-                }
-            });
         });
         var decodeEntities = (function () {
             //create a new html document (doesn't execute script tags in child elements)
@@ -2689,6 +2736,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         $(document).on('click', '.add-multiple-category', function (e) {
             e.preventDefault();
             MicroModal.show('modal-9', {
+                onShow: function () {
+                    $('#new-category-name').val($('.qsm-category-filter').val());
+					$('.qsm-category-filter').val('').trigger('keyup');
+				},
                 onClose: function () {
                     $('#modal-9-content .info').html('');
                     $('#new-category-name').val('');
@@ -2738,7 +2789,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                                     }
                                     $('.qsm_category_checklist li#qsm_category-' + result.term_id).children('label').children('input').prop('checked', true);
                                     $('.qsm_category_checklist li#qsm_category-' + result.term_id).parents('li').each(function () {
-                                        console.log($(this).children('label').children('input'));
                                         $(this).children('label').children('input').prop('checked', true);
                                     });
                                 }

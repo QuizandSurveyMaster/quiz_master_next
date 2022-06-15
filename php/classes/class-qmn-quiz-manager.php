@@ -787,10 +787,13 @@ class QMNQuizManager {
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
-			'email'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->email_error_text, "quiz_email_error_text-{$options->quiz_id}" ),
-			'number'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->number_error_text, "quiz_number_error_text-{$options->quiz_id}" ),
-			'incorrect' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->incorrect_error_text, "quiz_incorrect_error_text-{$options->quiz_id}" ),
-			'empty'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->empty_error_text, "quiz_empty_error_text-{$options->quiz_id}" ),
+			'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->email_error_text, "quiz_email_error_text-{$options->quiz_id}" ),
+			'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->number_error_text, "quiz_number_error_text-{$options->quiz_id}" ),
+			'incorrect_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->incorrect_error_text, "quiz_incorrect_error_text-{$options->quiz_id}" ),
+			'empty_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->empty_error_text, "quiz_empty_error_text-{$options->quiz_id}" ),
+			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->url_error_text, "quiz_url_error_text-{$options->quiz_id}" ),
+			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->minlength_error_text, "quiz_minlength_error_text-{$options->quiz_id}" ),
+			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->maxlength_error_text, "quiz_maxlength_error_text-{$options->quiz_id}" ),
 		);
 
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );

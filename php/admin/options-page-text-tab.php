@@ -27,7 +27,6 @@ function mlw_options_text_tab_content() {
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
-            <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div class="qsm-question-text-tab" id="post-body-content" style="position: relative;">
@@ -74,8 +73,10 @@ function mlw_options_text_tab_content() {
                     </div>
                     <div id="postbox-container-1" class="postbox-container">
                         <div class="qsm-text-header">
-                            <h5><?php esc_html_e('Allowed Variables', 'quiz-master-next'); ?></h5>
-                            <span class="description"><?php esc_html_e('click to insert the variable', 'quiz-master-next'); ?></span>
+                            <h5>
+								<?php esc_html_e('Allowed Variables', 'quiz-master-next'); ?>
+								<span class="description"><?php esc_html_e('click to insert the variable', 'quiz-master-next'); ?></span>
+							</h5>
                         </div>
                         <div class="qsm-text-conent qsm-text-allowed-variables">
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
@@ -98,9 +99,6 @@ function mlw_options_text_tab_content() {
                                 }
                                 ?>
                             </div>
-                            <div style="display: none;" class="qsm-all-variable-wrap">
-                                <a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Show all Variables', 'quiz-master-next' ); ?></a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,6 +108,7 @@ function mlw_options_text_tab_content() {
         <div class="qsm-text-label-wrapper">
             <h2><?php esc_html_e("Customize Labels", 'quiz-master-next'); ?></h2>
             <?php
+
             $mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
             ?>
         </div>

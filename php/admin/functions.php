@@ -1,5 +1,8 @@
 <?php
 $themes_data = array();
+global $pro_themes;
+$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma' );
+
 /**
  * @since 6.4.5
  * @param
@@ -289,7 +292,7 @@ function qsm_display_question_option( $key, $single_option ) {
 	}
 	if ( isset( $single_option['documentation_link'] ) && '' !== $single_option['documentation_link'] ) {
 		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-		$document_text .= '<span class="dashicons dashicons-media-document"></span>';
+		$document_text .= '<span class="dashicons dashicons-editor-help"></span>';
 		$document_text .= '</a>';
 	}
 	switch ( $type ) {
@@ -347,9 +350,9 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row <?php echo esc_attr( $show_class ); ?>">
 	<label>
-			<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
-			<?php echo wp_kses_post( $tooltip ); ?>
-			<?php echo wp_kses_post( $document_text ); ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>"><?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?></textarea>
 </div>
@@ -380,31 +383,29 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'multi_category':
 			?>
-<div id="multi_category_area" class="qsm-row <?php echo esc_attr( $show_class ); ?>">
+<div id="multi_category_area" class="qsm-row multi_category_area <?php echo esc_attr( $show_class ); ?>">
 	<label>
 			<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 			<?php echo wp_kses_post( $tooltip ); ?>
 			<?php echo wp_kses_post( $document_text ); ?>
 	</label>
-	<div id="multi_categories_wrapper" class="categorydiv">
-		<input type='text' class='qsm-category-filter' placeholder=' <?php esc_html_e( ' Search', 'quiz-master-next' ); ?> '>
+	<input type='text' class='qsm-category-filter' placeholder=' <?php esc_html_e( ' Search', 'quiz-master-next' ); ?> '>
+	<div id="multi_categories_wrapper" class="categorydiv qsm_categories_list">
 		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
 			<?php
-						wp_terms_checklist(
-							0,
-							array(
-								'taxonomy'             => 'qsm_category',
-								'descendants_and_self' => 0,
-								'selected_cats'        => false,
-								'echo'                 => true,
-							)
-						);
+			wp_terms_checklist(
+				0,
+				array(
+					'taxonomy'             => 'qsm_category',
+					'descendants_and_self' => 0,
+					'selected_cats'        => false,
+					'echo'                 => true,
+				)
+			);
 			?>
 		</ul>
-		<a href='#' class='button button-primary add-multiple-category'>
-			<?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?>
-		</a>
 	</div>
+	<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
 </div>
 			<?php
 			break;
@@ -460,6 +461,128 @@ function qsm_display_question_option( $key, $single_option ) {
 			// Do nothing
 	}
 
+}
+
+/**
+ * Generate Question Options
+ * @since  8.0
+ * @param arr $single_option
+ */
+function qsm_generate_question_option( $key, $single_option ) {
+	$type       = isset( $single_option['type'] ) ? $single_option['type'] : 'text';
+	$show       = isset( $single_option['show'] ) ? explode( ',', $single_option['show'] ) : array();
+	$show_class = '';
+	if ( $show ) {
+		foreach ( $show as $show_value ) {
+			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) . ' ';
+		}
+		$show_class .= ' qsm_hide_for_other';
+	}
+	$tooltip       = '';
+	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
+		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
+		$tooltip .= '</span>';
+	}
+	?>
+	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-toggle-box <?php echo esc_attr( $show_class ); ?>">
+		<label class="qsm-toggle-box-handle">
+			<?php echo isset( $single_option['heading'] ) ? wp_kses_post( $single_option['heading'] ) : ''; ?>
+			<?php echo wp_kses_post( $tooltip ); ?>
+			<span class="toggle-indicator" aria-hidden="true"></span>
+		</label>
+		<div class="qsm-toggle-box-content qsm-editor-wrap">
+			<?php
+			switch ( $type ) {
+				case 'text':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<input type="text" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
+					<?php
+					break;
+
+				case 'number':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<input type="number" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
+					<?php
+					break;
+
+				case 'select':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<select name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>">
+						<?php
+						$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
+						if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+							foreach ( $single_option['options'] as $okey => $value ) {
+								?>
+								<option value="<?php echo esc_attr( $okey ); ?>" <?php echo ( $okey === $default ) ? 'selected="selected"' : ''; ?>><?php echo esc_attr( $value ); ?></option>
+								<?php
+							}
+						}
+						?>
+					</select>
+					<?php
+					break;
+
+				case 'textarea':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>"><?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?></textarea>
+					<?php
+					break;
+
+				case 'multi_checkbox':
+					$parent_key = $key;
+					$default    = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						foreach ( $single_option['options'] as $key => $value ) {
+							?>
+							<label>
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<?php echo esc_attr( $value ); ?>
+							</label>
+							<br />
+							<?php
+						}
+					}
+					break;
+
+				case 'single_checkbox':
+					$parent_key  = $key;
+					$default     = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						?>
+						<label>
+							<?php
+							foreach ( $single_option['options'] as $key => $value ) {
+								?>
+								<input name="<?php echo esc_attr( $parent_key ); ?>" id="<?php echo esc_attr( $parent_key ); ?>" type="checkbox"value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<?php
+							}
+							echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : '';
+							?>
+						</label>
+						<?php
+					}
+					break;
+
+				default:
+					// Do nothing
+			}
+			?>
+		</div>
+	</div>
+	<?php
 }
 
 /**
@@ -624,14 +747,14 @@ function qsm_create_new_quiz_wizard() {
 										<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
 									<?php } ?>
 								</ul>
+								<div class="theme-wrap" id="browse_themes" style="display: none;">
+									<?php qsm_get_market_themes(); ?>
+								</div>
 								<div class="theme-wrap" id="downloaded_theme">
 									<?php
 										qsm_get_installed_theme( 0, 'wizard_theme_list' );
 										qsm_get_default_wizard_themes();
 									?>
-								</div>
-								<div class="theme-wrap" id="browse_themes" style="display: none;">
-									<?php qsm_get_market_themes(); ?>
 								</div>
 							</div>
 						</div>
@@ -831,6 +954,7 @@ function qsm_fetch_theme_data() {
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	global $mlwQuizMasterNext;
+	global $pro_themes;
 	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
 	$folder_name   = QSM_THEME_PATH;
 	$folder_slug   = QSM_THEME_SLUG;
@@ -844,30 +968,24 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		}
 	}
 	?>
-<div class="theme-wrapper theme
-	<?php
-	if ( '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ) {
-		echo 'active';
-	}
-	?>
-	">
-	<input style="display: none" type="radio" name="quiz_theme_id" value="0"
-		<?php checked( $saved_quiz_theme, '0', true ); ?>>
-	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
-		<div class="downloaded-theme-button">
-			<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
+	<div class="theme-wrapper theme <?php echo '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
+		<input style="display: none" type="radio" name="quiz_theme_id" value="0"
+			<?php checked( $saved_quiz_theme, '0', true ); ?>>
+		<div class="theme-screenshot" id="qsm-theme-screenshot">
+			<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
+			<div class="downloaded-theme-button">
+				<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
+			</div>
+		</div>
+		<div class="theme-id-container">
+			<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
+			<div class="theme-actions">
+				<?php if ( 'default' !== $saved_quiz_theme ) { ?>
+				<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
+				<?php } ?>
+			</div>
 		</div>
 	</div>
-	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
-		<div class="theme-actions">
-			<?php if ( 'default' !== $saved_quiz_theme ) { ?>
-			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
-			<?php } ?>
-		</div>
-	</div>
-</div>
 	<?php do_action( 'qsm_add_after_default_theme' ); ?>
 	<?php
 	if ( $theme_folders ) {
@@ -875,43 +993,40 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			$theme_name = $theme['theme'];
 			$theme_id   = $theme['id'];
 			?>
-<div class="theme-wrapper theme
-			<?php
-			if ( $saved_quiz_theme === $theme_id ) {
-				echo 'active';
-			}
-			?>
-			">
-	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>"
-			<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
-	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
-		<div class="downloaded-theme-button">
-			<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
-		</div>
-	</div>
-	<span class="more-details" style="display: none;"><?php esc_html_e( 'Templates', 'quiz-master-next' ); ?></span>
-	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme['theme_name'] ); ?></h2>
-		<div class="theme-actions">
-			<?php
-			if ( $saved_quiz_theme != $theme_id ) {
-				if ( 'wizard_theme_list' === $wizard_theme_list ) {
-					?>
-					<?php
-				} else {
-					?>
-			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
-					<?php
-				}
-				?>
-			<?php } ?>
-			<?php if ( $saved_quiz_theme === $theme_id ) { ?>
-			<a class="button button-primary qsm-customize-color-settings" href="javascript:void(0)"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
-			<?php } ?>
-		</div>
-	</div>
-</div>
+			<div class="theme-wrapper theme <?php echo '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
+				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>"
+						<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
+				<div class="theme-screenshot" id="qsm-theme-screenshot">
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
+						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
+					<?php } ?>
+					<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
+					<div class="downloaded-theme-button">
+						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
+					</div>
+				</div>
+				<span class="more-details" style="display: none;"><?php esc_html_e( 'Templates', 'quiz-master-next' ); ?></span>
+				<div class="theme-id-container">
+					<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme['theme_name'] ); ?></h2>
+					<div class="theme-actions">
+						<?php
+						if ( $saved_quiz_theme != $theme_id ) {
+							if ( 'wizard_theme_list' === $wizard_theme_list ) {
+								?>
+								<?php
+							} else {
+								?>
+						<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
+								<?php
+							}
+							?>
+						<?php } ?>
+						<?php if ( $saved_quiz_theme === $theme_id ) { ?>
+						<a class="button button-primary qsm-customize-color-settings" href="javascript:void(0)"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
 			<?php
 			do_action( 'qsm_add_after_themes' );
 		}
@@ -921,8 +1036,9 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 function qsm_get_default_wizard_themes() {
 	global $mlwQuizMasterNext;
 	global $themes_data;
+	global $pro_themes;
 	$installed_themes    = $mlwQuizMasterNext->theme_settings->get_installed_themes();
-	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
+	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma' );
 	$default_themes_data = array();
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {
@@ -962,20 +1078,25 @@ function qsm_get_default_wizard_themes() {
 			$theme_screenshot = $theme['img'];
 			$theme_demo       = $theme['demo'];
 			?>
-<div class="theme-wrapper theme market-theme">
-	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
-		<div class="market-theme-url">
-			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-		</div>
-	</div>
-	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme_name ); ?></h2>
-	</div>
-</div>
+			<div class="theme-wrapper theme market-theme">
+				<div class="theme-screenshot" id="qsm-theme-screenshot">
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
+						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
+					<?php } ?>
+					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
+					<div class="market-theme-url">
+						<a class="button button-primary" target="_blank" rel="noopener"
+							href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
+						<a class="button" target="_blank" rel="noopener"
+							href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard">
+							<?php echo in_array( $theme_name, $pro_themes , true) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
+						</a>
+					</div>
+				</div>
+				<div class="theme-id-container">
+					<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme_name ); ?></h2>
+				</div>
+			</div>
 			<?php
 		}
 	}
@@ -983,6 +1104,7 @@ function qsm_get_default_wizard_themes() {
 
 function qsm_get_market_themes() {
 	global $themes_data;
+	global $pro_themes;
 	if ( ! empty( $themes_data ) ) {
 		foreach ( $themes_data  as $key => $theme ) {
 			$theme_name       = $theme['name'];
@@ -992,14 +1114,19 @@ function qsm_get_market_themes() {
 			?>
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
+					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
+						<span class="qsm-badge"><?php echo __('Pro', 'quiz-master-next'); ?></span>
+					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
 						<a class="button button-primary" target="_blank" rel="noopener"	href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
+						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard">
+							<?php echo in_array( $theme_name, $pro_themes , true) ? __( 'Buy Now', 'quiz-master-next' ) : __( 'Download', 'quiz-master-next' ) ; ?>
+						</a>
 					</div>
 				</div>
 				<div class="theme-id-container">
-					<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
+					<h2 class="theme-name" id="emarket-name"><?php echo esc_html( $theme_name ); ?></h2>
 				</div>
 			</div>
 			<?php

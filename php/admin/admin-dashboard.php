@@ -631,8 +631,27 @@ function qsm_create_new_quiz_from_wizard() {
 		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {
 			$quiz_options = array_replace( $get_saved_value, $quiz_options );
 		}
-		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
-		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
+		/**
+		 * Prepare Contact Fields
+		 */
+		$contact_form    = array();
+		$cf_fields       = QSM_Contact_Manager::default_fields();
+		if ( isset( $cf_fields['name'] ) ) {
+			$cf_fields['name']['enable'] = 'true';
+			$contact_form[]              = $cf_fields['name'];
+		}
+		if ( isset( $cf_fields['email'] ) ) {
+			$cf_fields['email']['enable']    = 'true';
+			$contact_form[]                  = $cf_fields['email'];
+		}
+		/**
+		 * Prepare Quiz Options
+		 */
+		$quiz_options = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
+		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array(
+			'quiz_options' => $quiz_options,
+			'contact_form' => $contact_form,
+		) );
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
