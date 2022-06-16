@@ -5,7 +5,7 @@
  *
  * @return void
  */
-function qsm_update_80() {
+function qsm_update_81() {
 	/**
 	 * Call legacy code.
 	 */
@@ -22,6 +22,6 @@ function qsm_update_80() {
  *
  * @return void
  */
-function qsm_update_80_db_version() {
-	QSM_Install::update_db_version( '8.0' );
+function qsm_update_81_db_version() {
+	QSM_Install::update_db_version( '8.1' );
 }

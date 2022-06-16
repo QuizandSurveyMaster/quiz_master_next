@@ -21,14 +21,14 @@ define( 'QSM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'QSM_SUBMENU', __FILE__ );
 define( 'QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'hide_qsm_adv', true );
-define( 'QSM_THEME_PATH', plugin_dir_path( __DIR__ ) );
-define( 'QSM_THEME_SLUG', plugins_url( '/' ) );
+define( 'QSM_PLUGIN_PHP_PATH', QSM_PLUGIN_PATH . 'php' );
 define( 'QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css' );
 define( 'QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js' );
-define( 'QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php' );
+define( 'QSM_THEME_PATH', plugin_dir_path( __DIR__ ) );
+define( 'QSM_THEME_SLUG', plugins_url( '/' ) );
+define( 'hide_qsm_adv', true );
 define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
-define( 'QSM_VERSION', '7.3.14' );
+define( 'QSM_VERSION', '8.0' );
 
 /**
  * This class is the main class of the plugin
@@ -45,7 +45,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '8.0';
+	public $version = '8.1';
 
 	/**
 	 * The single instance of the class.

@@ -20,9 +20,9 @@ class QSM_Install {
 	 * @var array
 	 */
 	private static $db_updates = array(
-		'8.0' => array(
-			'qsm_update_80',
-			'qsm_update_80_db_version'
+		'8.1' => array(
+			'qsm_update_81',
+			'qsm_update_81_db_version'
 		),
 	);
 
@@ -53,8 +53,8 @@ class QSM_Install {
 	 */
 	public static function check_version() {
 		if ( version_compare( get_option( 'qsm_version' ), QSM()->version, '<' ) ) {
-			self::update_qsm_version();
 			self::maybe_update_db_version();
+			self::update_qsm_version();
 		}
 	}
 
@@ -1640,7 +1640,7 @@ CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
 		/**
 		 * Include Updater file
 		 */
-		include_once dirname( __FILE__ ) . '/qsm-update-functions.php';
+		include_once QSM_PLUGIN_PHP_PATH . '/qsm-update-functions.php';
 
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( get_option( 'qsm_db_version' ), $version, '<' ) ) {
