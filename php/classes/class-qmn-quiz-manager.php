@@ -1480,7 +1480,7 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function submit_results( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $qmn_allowed_visit;
+		global $wpdb, $qmn_allowed_visit;
 		$result_display = '';
 
 		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
@@ -1548,26 +1548,26 @@ class QMNQuizManager {
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$unique_id                           = uniqid();
 			$results_id                          = 0;
+			// Creates our results array.
+			$results_array = array(
+				intval( $qmn_array_for_variables['timer'] ),
+				$qmn_array_for_variables['question_answers_array'],
+				htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
+				'contact'  => $contact_responses,
+				'timer_ms' => intval( $qmn_array_for_variables['timer_ms'] ),
+				'pagetime' => $mlw_qmn_pagetime,
+			);
+			$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
+			if ( isset( $results_array['parameters'] ) ) {
+				$qmn_array_for_variables['parameters'] = $results_array['parameters'];
+			}
+			$results_array['hidden_questions']          = $qmn_array_for_variables['hidden_questions'];
+			$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
+			$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
+			$results_array['minimum_possible_points']   = $qmn_array_for_variables['minimum_possible_points'];
 			// If the store responses in database option is set to Yes.
 			if ( 0 != $qmn_quiz_options->store_responses ) {
-				// Creates our results array.
-				$results_array = array(
-					intval( $qmn_array_for_variables['timer'] ),
-					$qmn_array_for_variables['question_answers_array'],
-					htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
-					'contact'  => $contact_responses,
-					'timer_ms' => intval( $qmn_array_for_variables['timer_ms'] ),
-					'pagetime' => $mlw_qmn_pagetime,
-				);
-				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
-				if ( isset( $results_array['parameters'] ) ) {
-					$qmn_array_for_variables['parameters'] = $results_array['parameters'];
-				}
-				$results_array['hidden_questions']          = $qmn_array_for_variables['hidden_questions'];
-				$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
-				$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
 				// Inserts the responses in the database.
-				global $wpdb;
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
@@ -1665,7 +1665,7 @@ class QMNQuizManager {
 			* Update the option `qmn_quiz_taken_cnt` value by 1 each time
 			* whenever the record inserted into the required table.
 			*/
-			if ( $results_insert ) {
+			if ( isset( $results_insert ) ) {
 				$rec_inserted = intval( get_option( 'qmn_quiz_taken_cnt' ) );
 				if ( 1000 > $rec_inserted ) {
 					if ( ! $rec_inserted ) {
@@ -1712,7 +1712,7 @@ class QMNQuizManager {
 			$result_display = apply_filters( 'qmn_end_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			// Legacy Code.
-			do_action( 'mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings );
+			do_action( 'mlw_qmn_load_results_page', $results_id, $qmn_quiz_options->quiz_settings );
 		} else {
 			$result_display .= apply_filters( 'qmn_captcha_varification_failed_msg', __( 'Captcha verification failed.', 'quiz-master-next' ), $qmn_quiz_options, $qmn_array_for_variables );
 		}
@@ -1779,6 +1779,7 @@ class QMNQuizManager {
 		$correct_status          = 'incorrect';
 		$answer_points           = 0;
 		$question_data           = array();
+		$hidden_questions        = array();
 		$total_possible_points   = 0;
 		$attempted_question      = 0;
 		$minimum_possible_points = 0;
