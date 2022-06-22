@@ -661,7 +661,7 @@ class QMNQuizManager {
 				}
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
-			$question_sql = implode( ', ', $question_ids );
+			$question_sql = implode( ',', $question_ids );
 
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
@@ -669,7 +669,7 @@ class QMNQuizManager {
 				}else {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
-					$question_sql = implode( ', ', $question_ids );
+					$question_sql = implode( ',', $question_ids );
 					?>
 					<script>
 						const d = new Date();
@@ -1747,13 +1747,13 @@ class QMNQuizManager {
 	public static function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
-
+		$new_questions = array();
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
-			$question_array = explode(", ",$question_sql);
+			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
 				if ( isset( $questions[ $key ] ) ) {
 					$new_questions[ $key ] = $questions[ $key ];
