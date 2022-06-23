@@ -304,7 +304,7 @@ function qsm_options_questions_tab_content() {
 								</div>
 								<?php do_action('qsm_after_options'); ?>
 							</div>
-							<div class="qsm-question-misc-options">
+							<div class="qsm-question-misc-options advanced-content">
 								<?php
 								$show_correct_answer_info = '';
 								$show_autofill = '';

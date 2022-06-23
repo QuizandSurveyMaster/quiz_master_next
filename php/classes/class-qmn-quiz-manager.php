@@ -114,6 +114,7 @@ class QMNQuizManager {
 				} elseif ( 'excel' === $value ) {
 					$mimes[] = 'application/excel, application/vnd.ms-excel, application/x-excel, application/x-msexcel';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+					$mimes[] = 'text/csv';
 				} elseif ( empty( $value ) ) {
 					// don't add blank mime type
 				} else {

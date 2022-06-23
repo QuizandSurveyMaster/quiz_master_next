@@ -1833,7 +1833,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
 
                 });
-                $('.questionElements .advanced-content > .qsm-row ').each(function () {
+                $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                     if ($(this).find('input[type="text"]').length > 0) {
                         var element_id = $(this).find('input[type="text"]').attr('id');
                         advanced_option[element_id] = $(this).find('input[type="text"]').val();

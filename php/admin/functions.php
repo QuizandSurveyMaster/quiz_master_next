@@ -472,11 +472,14 @@ function qsm_generate_question_option( $key, $single_option ) {
 	$type       = isset( $single_option['type'] ) ? $single_option['type'] : 'text';
 	$show       = isset( $single_option['show'] ) ? explode( ',', $single_option['show'] ) : array();
 	$show_class = '';
+	if ( in_array( $key, array( 'correct_answer_info', 'comments', 'hint' ), true ) ) {
+		$show_class .= 'core-option ';
+	}
 	if ( $show ) {
+		$show_class .= 'qsm_hide_for_other ';
 		foreach ( $show as $show_value ) {
 			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) . ' ';
 		}
-		$show_class .= ' qsm_hide_for_other';
 	}
 	$tooltip       = '';
 	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
