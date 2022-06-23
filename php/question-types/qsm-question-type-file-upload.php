@@ -27,6 +27,7 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="" />
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
 		<input class="mlw_file_upload_hidden_path" type="hidden" value="" />
+		<input class="mlw_file_upload_media_id" type="hidden" value="" />
 		<?php
 		echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
 }
