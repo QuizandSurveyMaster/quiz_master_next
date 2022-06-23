@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 8.0.1
+Stable tag: 8.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.2 (June 23, 2022) =
+* Bug: Fixed scoring issue while using random questions
+* Bug: Fixed issue with file question type validation settings
+* Bug: Fixed issue with video player in rich text answer type
+
 = 8.0.1 (June 17, 2022) =
 * Hotfix: Fixed issues while using random questions with question limit
 
