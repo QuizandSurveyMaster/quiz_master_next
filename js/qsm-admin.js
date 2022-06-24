@@ -1777,7 +1777,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 var comments = $("#comments").val();
                 advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
                 var category = $(".category-radio:checked").val();
-                var autofill = $("#hide_autofill").val();
                 var limit_text = $("#limit_text").val();
                 var limit_multiple_response = $("#limit_multiple_response").val();
                 var file_upload_limit = $("#file_upload_limit").val();
@@ -1833,7 +1832,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
 
                 });
-                $('.questionElements .advanced-content > .qsm-row ').each(function () {
+                $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                     if ($(this).find('input[type="text"]').length > 0) {
                         var element_id = $(this).find('input[type="text"]').attr('id');
                         advanced_option[element_id] = $(this).find('input[type="text"]').val();
@@ -2033,11 +2032,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (answerEditor === null || typeof answerEditor === "undefined") {
                     answerEditor = 'text';
                 }
-                //Check autofill setting
-                var disableAutofill = question.get('autofill');
-                if (disableAutofill === null || typeof disableAutofill === "undefined") {
-                    disableAutofill = '0';
-                }
                 //Get text limit value
                 var get_limit_text = question.get('limit_text');
                 if (get_limit_text === null || typeof get_limit_text === "undefined") {
@@ -2105,7 +2099,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 //Changed checked logic based on new structure for required.
                 $("input#required[value='" + question.get('required') + "']").prop('checked', true);
 
-                $("#hide_autofill").val(disableAutofill);
                 $("#limit_text").val(get_limit_text);
                 $("#limit_multiple_response").val(get_limit_mr);
                 $("#file_upload_limit").val(get_limit_fu);
@@ -2129,14 +2122,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (all_setting === null || typeof all_setting === "undefined") {} else {
                     $.each(all_setting, function (index, value) {
                         if ($('#' + index + '_area').length > 0) {
-                            if ($('#' + index + '_area').find('input[type="checkbox"]').length > 1) {
+                            if (1 == $('#' + index + '_area').find('input[type=checkbox]').length) {
+								$(".questionElements input[name='" + index + "'][value='" + value + "']").attr("checked", "true").prop('checked', true);
+							} else if ($('#' + index + '_area').find('input[type=checkbox]').length > 1) {
                                 var fut_arr = value.split(",");
                                 $.each(fut_arr, function (i) {
                                     $(".questionElements input[name='" + index + "[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true").prop('checked', true);
                                 });
                             } else {
-                                if (value != null)
+                                if (value != null) {
                                     $('#' + index).val(value);
+								}
                             }
                         }
                         if (index == 'matchAnswer') {

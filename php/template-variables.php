@@ -938,7 +938,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", "QSM Questions");
 	$question_description = '';
 	if ( ! empty( $answer[0] ) ) {
-		$question_description = do_shortcode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", "QSM Questions" ) );
+		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", "QSM Questions" );
 	}
 	if ( isset( $answer['question_title'] ) && '' !== $answer['question_title'] ) {
 		$add_br = '';
@@ -1194,7 +1194,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$question_max_point          = ( isset( $questions[ $answer['id'] ] ) ? qsm_get_question_maximum_points( $questions[ $answer['id'] ] ) : 0 );
 	$mlw_question_answer_display = str_replace( '%QUESTION_MAX_POINTS%', $question_max_point, $mlw_question_answer_display );
 
-	$mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
+	$mlw_question_answer_display = do_shortcode( wp_kses_post( $mlw_question_answer_display ) );
 
 	if ( $total_question_cnt == $qsm_question_cnt && false == $remove_border ) {
 		$extra_border_bottom_class = 'qsm-remove-border-bottom';

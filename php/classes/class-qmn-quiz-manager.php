@@ -114,6 +114,7 @@ class QMNQuizManager {
 				} elseif ( 'excel' === $value ) {
 					$mimes[] = 'application/excel, application/vnd.ms-excel, application/x-excel, application/x-msexcel';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+					$mimes[] = 'text/csv';
 				} elseif ( empty( $value ) ) {
 					// don't add blank mime type
 				} else {
@@ -661,7 +662,7 @@ class QMNQuizManager {
 				}
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
-			$question_sql = implode( ', ', $question_ids );
+			$question_sql = implode( ',', $question_ids );
 
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
@@ -669,7 +670,7 @@ class QMNQuizManager {
 				}else {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
-					$question_sql = implode( ', ', $question_ids );
+					$question_sql = implode( ',', $question_ids );
 					?>
 					<script>
 						const d = new Date();
@@ -1308,7 +1309,7 @@ class QMNQuizManager {
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$qmn_quiz_options->quiz_id}" );
 			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $qmn_array_for_variables );
 			?>
-				<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo wp_kses_post( $message_comments ); ?></label><br />
+				<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo do_shortcode( wp_kses_post( $message_comments ) ); ?></label><br />
 				<textarea cols="60" rows="10" id="mlwQuizComments" name="mlwQuizComments" class="qmn_comment_section"></textarea>
 			</div>
 			<?php
@@ -1747,13 +1748,13 @@ class QMNQuizManager {
 	public static function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
-
+		$new_questions = array();
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
-			$question_array = explode(", ",$question_sql);
+			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
 				if ( isset( $questions[ $key ] ) ) {
 					$new_questions[ $key ] = $questions[ $key ];
