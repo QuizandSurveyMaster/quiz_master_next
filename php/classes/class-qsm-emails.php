@@ -163,6 +163,9 @@ class QSM_Emails {
 					 * The value may have been set to false when failing a previous condition.
 					 */
 					$show = apply_filters( 'qsm_email_condition_check', $show, $condition, $response_data );
+					if( !$show ){
+						break;
+					}
 				}
 
 				if ( $show ) {
