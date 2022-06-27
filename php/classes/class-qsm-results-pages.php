@@ -37,7 +37,7 @@ class QSM_Results_Pages {
 
 			// Cycles through each possible page.
 			foreach ( $pages as $index => $page ) {
-				
+
 				$page_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" );
 				// Checks if any conditions are present. Else, set it as the default.
 				if ( ! empty( $page['conditions'] ) ) {
@@ -65,7 +65,7 @@ class QSM_Results_Pages {
 								} else {
 									$test = $response_data['total_score'];
 								}
-								
+
 								break;
 
 							case 'points':
@@ -113,7 +113,7 @@ class QSM_Results_Pages {
 								}
 								break;
 
-							case 'equal':                           
+							case 'equal':
 								if ( $test != $value ) {
 									$show = false;
 								}
@@ -131,6 +131,9 @@ class QSM_Results_Pages {
 						 * The value may have been set to false when failing a previous condition.
 						 */
 						$show = apply_filters( 'qsm_results_page_condition_check', $show, $condition, $response_data );
+						if( !$show ){
+							break;
+						}
 					}
 
 					// If we passed all conditions, show this page.
@@ -349,11 +352,11 @@ class QSM_Results_Pages {
 				$pages[ $i ]['conditions'] = array();
 			}
 
-			// Sanitize template data 
+			// Sanitize template data
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
 				// Sanitizes the conditions.
 				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
-				
+
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
