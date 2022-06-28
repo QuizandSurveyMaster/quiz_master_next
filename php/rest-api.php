@@ -673,7 +673,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				$intial_answers = $request['answers'];
 				$answers        = array();
 				if ( is_array( $intial_answers ) ) {
-					if ( $request['type'] == 8 ) {
+					if ( 8 == $request['type'] ) {
 						$answers = array(
 							array(
 								'0' => $request['name'],

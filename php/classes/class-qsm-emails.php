@@ -34,6 +34,7 @@ class QSM_Emails {
 			'quiz_id'                   => $result_data['quiz_id'],
 			'quiz_name'                 => $result_data['quiz_name'],
 			'quiz_system'               => $result_data['quiz_system'],
+			'form_type'                 => $result_data['form_type'],
 			'user_ip'                   => $result_data['user_ip'],
 			'user_name'                 => $result_data['name'],
 			'user_business'             => $result_data['business'],
@@ -53,7 +54,7 @@ class QSM_Emails {
 			'question_answers_array'    => $quiz_result[1],
 			'total_possible_points'     => $quiz_result['total_possible_points'],
 			'total_attempted_questions' => $quiz_result['total_attempted_questions'],
-			'minimum_possible_points'   => $quiz_result['minimum_possible_points'],
+			'minimum_possible_points'   => isset( $quiz_result['minimum_possible_points'] ) ? $quiz_result['minimum_possible_points'] : 0,
 			'comments'                  => $quiz_result[2],
 			'result_id'                 => $result_id,
 		);
@@ -162,6 +163,9 @@ class QSM_Emails {
 					 * The value may have been set to false when failing a previous condition.
 					 */
 					$show = apply_filters( 'qsm_email_condition_check', $show, $condition, $response_data );
+					if ( ! $show ) {
+						break;
+					}
 				}
 
 				if ( $show ) {
@@ -212,6 +216,7 @@ class QSM_Emails {
 		$content                               = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content                               = apply_filters( 'qmn_email_template_variable_results', $content, $response_data );
 		// convert css classes to inline.
+		$content                               = apply_filters( 'qsm_results_css_inliner', $content );
 		$content                               = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner( $content );
 		$content                               = html_entity_decode( $content );
 

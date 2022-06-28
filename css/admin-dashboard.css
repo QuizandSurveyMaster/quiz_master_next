@@ -555,7 +555,6 @@ ul.popuar-addon-ul::after {
 #model-wizard .qsm_popular_addons div.popuar-addon-ul>div>a {
 	display: block;
 	width: 100%;
-	height: 100%;
 }
 
 #model-wizard .qsm_popular_addons a:active,
@@ -599,6 +598,18 @@ ul.popuar-addon-ul::after {
 #model-wizard .theme:focus .theme-screenshot img,
 #model-wizard .theme:hover .theme-screenshot img {
 	opacity: 0.1;
+}
+
+.qsm-badge {
+    background: linear-gradient(225deg, #344ad6, #42d96b);
+    z-index: 9999;
+    position: absolute;
+    color: #fff;
+    right: 5px;
+    top: 5px;
+    border-radius: 10px;
+    padding: 0 10px;
+    text-transform: uppercase;
 }
 
 #accordion .ui-accordion-header-icon {

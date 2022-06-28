@@ -26,9 +26,8 @@ function qmn_accept_display( $id, $question, $answers ) {
 		<label class="qsm-input-label" for="mlwAcceptance">
 			<span class="qmn_accept_text">
 			<?php
-				$question = do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) );
-				$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question, "question-description-{$id}", 'QSM Questions' );
-				echo wp_kses_post( $question );
+				$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question, ENT_QUOTES ), "question-description-{$id}", 'QSM Questions' );
+				echo do_shortcode( wp_kses_post( $question ) );
 			?>
 			</span>
 		</label>
@@ -38,7 +37,7 @@ function qmn_accept_display( $id, $question, $answers ) {
 }
 
 function qmn_opt_in_review( $id, $question, $answers ) {
-	if ( $_POST[ 'question' . $id ] == 'on' ) {
+	if ( isset( $_POST[ 'question' . $id ] ) && 'on' == sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) ) ) {
 		$user_compare_text = 'opted';
 	} else {
 		$user_compare_text = 'not-opted';

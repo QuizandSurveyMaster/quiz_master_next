@@ -178,6 +178,7 @@ label.inline .mlw_qmn_question,
 .quiz_section textarea,
 .quiz_section input[type="text"],
 .quiz_section input[type="email"],
+.quiz_section input[type="url"],
 .quiz_section input[type="number"] {
   width: 70%;
   min-height: 35px;
@@ -208,11 +209,13 @@ label.inline .mlw_qmn_question,
 .quiz_section textarea:hover,
 .quiz_section input[type="text"]:hover,
 .quiz_section input[type="email"]:hover,
+.quiz_section input[type="url"]:hover,
 .quiz_section input[type="number"]:hover,
 .quiz_section select:focus,
 .quiz_section textarea:focus,
 .quiz_section input[type="text"]:focus,
 .quiz_section input[type="email"]:focus,
+.quiz_section input[type="url"]:focus,
 .quiz_section input[type="number"]:focus {
   outline: 0;
   background: #f7f7f7;
@@ -285,6 +288,7 @@ label.inline .mlw_qmn_question,
 .quiz_section.qmn_error input[type="text"],
 .quiz_section.qmn_error input[type="number"],
 .quiz_section.qmn_error input[type="email"],
+.quiz_section.qmn_error input[type="url"],
 .quiz_section.qmn_error input[type="checkbox"],
 .quiz_section.qmn_error input[type="file"],
 .quiz_section.qmn_error input[type="date"],
@@ -293,6 +297,7 @@ label.inline .mlw_qmn_question,
 .quiz_section.qmn_error input[type="text"]:hover,
 .quiz_section.qmn_error input[type="number"]:hover,
 .quiz_section.qmn_error input[type="email"]:hover,
+.quiz_section.qmn_error input[type="url"]:hover,
 .quiz_section.qmn_error input[type="checkbox"]:hover,
 .quiz_section.qmn_error input[type="file"]:hover,
 .quiz_section.qmn_error input[type="date"]:hover,
@@ -301,6 +306,7 @@ label.inline .mlw_qmn_question,
 .quiz_section.qmn_error input[type="text"]:focus,
 .quiz_section.qmn_error input[type="number"]:focus,
 .quiz_section.qmn_error input[type="email"]:focus,
+.quiz_section.qmn_error input[type="url"]:focus,
 .quiz_section.qmn_error input[type="checkbox"]:focus,
 .quiz_section.qmn_error input[type="file"]:focus
 .quiz_section.qmn_error input[type="date"]:focus {
@@ -422,6 +428,7 @@ label.inline .mlw_qmn_question,
 .qmn_quiz_container textarea,
 .qmn_quiz_container input[type="text"],
 .qmn_quiz_container input[type="email"],
+.qmn_quiz_container input[type="url"],
 .qmn_quiz_container input[type="number"] {
   background: #fff;
   border: 1px solid #3498db;
@@ -431,11 +438,13 @@ label.inline .mlw_qmn_question,
 .qmn_quiz_container textarea:hover,
 .qmn_quiz_container input[type="text"]:hover,
 .qmn_quiz_container input[type="email"]:hover,
+.qmn_quiz_container input[type="url"]:hover,
 .qmn_quiz_container input[type="number"]:hover,
 .qmn_quiz_container select:focus,
 .qmn_quiz_container textarea:focus,
 .qmn_quiz_container input[type="text"]:focus,
 .qmn_quiz_container input[type="email"]:focus,
+.qmn_quiz_container input[type="url"]:focus,
 .qmn_quiz_container input[type="number"]:focus {
   outline: 0;
   background: #fff;

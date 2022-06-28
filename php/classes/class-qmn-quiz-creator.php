@@ -319,7 +319,7 @@ class QMNQuizCreator {
 		if ( false !== $results ) {
 			$quiz_data = array(
 				'ID'         => $post_id,
-				'post_title' => $quiz_name
+				'post_title' => $quiz_name,
 			);
 			wp_update_post($quiz_data);
 
