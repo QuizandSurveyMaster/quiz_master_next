@@ -189,8 +189,7 @@ class QSM_Fields {
 					</table>
 				</div>
 			<?php
-			endif;
-			if ( 'text' === $current_tab ) : ?>
+			elseif ( 'text' === $current_tab ) : ?>
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
 						<li>
@@ -267,7 +266,11 @@ class QSM_Fields {
 						?>
 					</table>
 				</div>
-			<?php endif; ?>
+			<?php else :
+				foreach ( $fields as  $field ) {
+					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+				}
+			endif; ?>
 			<div class="qsm-tab-btns">
 				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
