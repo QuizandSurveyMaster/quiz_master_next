@@ -35,6 +35,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	);
 	$required                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
+	$case_sensitive              = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'case_sensitive' );
 	$limit_text                  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
 	$autofill_att                = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att              = $limit_text ? "maxlength='" . $limit_text . "' " : '';
