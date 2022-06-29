@@ -495,7 +495,7 @@ class QMNPluginHelper {
 			'message_before'                   => 'Welcome to your %QUIZ_NAME%',
 			'message_comment'                  => 'Please fill in the comment box below.',
 			'message_end_template'             => '',
-			'question_answer_template'         => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
+			'question_answer_template'         => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%<br/>%CORRECT_ANSWER_INFO%',
 			'question_answer_email_template'   => '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%',
 			'total_user_tries_text'            => 'You have utilized all of your attempts to pass this quiz.',
 			'require_log_in_text'              => 'This quiz is for logged in users only.',

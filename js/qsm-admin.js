@@ -1972,12 +1972,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }
             },
             openEditPopup: function (questionID, CurrentElement) {
+				jQuery('.qsm_tab_content').find('.question').removeClass('opened');
                 if (CurrentElement.parents('.question').next('.questionElements').length > 0) {
                     if (CurrentElement.parents('.question').next('.questionElements').is(":visible")) {
                         CurrentElement.parents('.question').next('.questionElements').slideUp('slow');
                         $('.questions').sortable('enable');
                         $('.page').sortable('enable');
-                        CurrentElement.parents('.question').removeClass('opened');
                     } else {
                         CurrentElement.parents('.question').addClass('opened');
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
@@ -2017,6 +2017,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 } else {
                     jQuery("#question-text").val(questionText);
                 }
+				if ( '' != questionText ) {
+					jQuery('.qsm-show-question-desc-box').trigger('click');
+				}
 
                 if ($('#wp-correct_answer_info-wrap').hasClass('html-active')) {
                     jQuery("#correct_answer_info").val(answerInfo);
@@ -2595,8 +2598,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					var questionElements = $(this).parents('.questionElements');
 					if (6 == questionElements.find('#question_type').val()) {
 						tinyMCE.get('question-text').setContent('');
-					} else {
-						tinyMCE.get('question-text').setContent('Add description here!');
 					}
 				}
 				$(this).next('.qsm-row').show();

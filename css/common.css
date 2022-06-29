@@ -133,9 +133,18 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     background-color: #808080 !important;
     opacity: 0.9;
 }
-.qsm-quiz-container .qsm-contact-type-checkbox input{
-    display: inline-block;
+.qsm-quiz-container select,
+.qsm-quiz-container input[type=checkbox],
+.qsm-quiz-container input[type=radio]{
+	cursor: pointer;
 }
+.qsm-quiz-container .qsm-contact-type-checkbox{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+.qsm-quiz-container .qsm-contact-type-checkbox input{margin: 0 5px 0 3px;}
 .mlw_qmn_question_number{
     font-weight: bold;
 }
@@ -321,24 +330,25 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }
 .qsm_tooltip {
   position: relative;
-  display: inline-block;
+  display: block;
+  cursor: pointer;
 }
 
 .qsm_tooltip .qsm_tooltiptext{
   visibility: hidden;
-  width: 120px;
-  background-color: black;
+  display: inline-block;
+  width: auto;
+  background-color: #222;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+  border-radius: 5px;
+  padding: 5px 10px;
 
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  line-height: 24px;
   bottom: 100%;
-  left: 50%;
-  margin-left: -60px;
+  left: 0;
 }
 .qsm_tooltip .qsm_tooltiptext a{
   background-color: black !important;
@@ -358,5 +368,5 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     margin: 10px 0;
 }
 .qsm-text-correct-option.not-opted {
-    color: #6f7479;
-  }
+	color: #6f7479;
+}
