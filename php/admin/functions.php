@@ -959,12 +959,10 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	global $mlwQuizMasterNext;
 	global $pro_themes;
 	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
-	$folder_name   = QSM_THEME_PATH;
-	$folder_slug   = QSM_THEME_SLUG;
 	$theme_folders = array();
 	if ( ! empty( $active_themes ) ) {
 		foreach ( $active_themes as $dir ) {
-			$theme_dir = $folder_name . $dir['theme'];
+			$theme_dir = WP_PLUGIN_DIR . '/' . $dir['theme'];
 			if ( is_dir( $theme_dir ) ) {
 				$theme_folders[] = $dir;
 			}
@@ -1003,7 +1001,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php esc_html_e('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
-					<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
+					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL.'/' . $theme_name . '/screenshot.png' ); ?>" />
 					<div class="downloaded-theme-button">
 						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 					</div>
