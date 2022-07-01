@@ -357,6 +357,25 @@ var QSMAdmin;
         }).open();
     });
 
+    // opens media library o set background image for quiz
+    $(document).on('click', '.set_background_image', function (e) {
+        var button = $(this);
+        e.preventDefault();
+            custom_uploader = wp.media({
+            title: 'Set background Image',
+            library: {
+                type: 'image'
+            },
+            button: {
+                text: 'Use this image' // button label text
+            },
+            multiple: false
+        }).on('select', function () { // it also has "open" and "close" events
+            var attachment = custom_uploader.state().get('selection').first().toJSON();
+            button.prev('.quiz_background_image').val(attachment.url);
+        }).open();
+    });
+
     $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {
         var value = $(this).val();
         if (value == '0' ) {
@@ -487,7 +506,7 @@ var QSMAdmin;
 		e.preventDefault();
 		jQuery('.qsm-help-tab-dropdown-list').toggleClass('opened');
 	} );
-	
+
 	$( document ).mouseup( function ( e ){
 		var link = $( ".qsm-help-tab-handle" );
 		var container = $( ".qsm-help-tab-dropdown-list" );
