@@ -2006,12 +2006,14 @@ class QSM_Install {
 				update_option( 'qmn-settings', $settings );
 			}
 
+			// Update 8.0.3
+			QSM_Migrate::fix_duplicate_questions();
+
 			update_option( 'mlw_quiz_master_version', $data );
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );
 		}
-
 	}
 
 	/**
