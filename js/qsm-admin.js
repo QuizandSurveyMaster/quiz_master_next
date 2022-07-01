@@ -2149,6 +2149,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 $('.questions').sortable('disable');
                 $('.page').sortable('disable');
 
+				if ( 13 == question.get( 'type' ) ) {
+					QSMQuestion.prepareEditPolarQuestion(question.get('type'));
+				}
                 QSMQuestion.sync_child_parent_category(questionID);
 
                 jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
@@ -2202,7 +2205,35 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     $('#change-answer-editor').val('text');
                     $('.answers-single').remove();
                 }
-            }
+            },
+			prepareEditPolarQuestion: function (question_val){
+				var answerType = $('#change-answer-editor').val();
+				if ( 13 == question_val ) {
+					if ( $( '#answers' ).find( '.answers-single' ).length < 2 ) {
+						$( '#new-answer-button' ).trigger( 'click' );
+						if ( $( '#answers' ).find( '.answers-single' ).length < 2 ) {
+							$( '#new-answer-button' ).trigger( 'click' );
+						}
+					}
+					if ( $( '#answers' ).find( '.answers-single' ).length > 2 ) {
+						jQuery( '#answers' ).find( '.answers-single' ).slice( 2 ).remove();
+					}
+					$( '.new-answer-button' ).hide();
+					$( '#answers' ).find( '.answers-single .remove-answer-icon' ).hide();
+
+					var ans_placeholder = "Left Label";
+					"image" == answerType && ( ans_placeholder = "Insert left image URL" ), $( "#answers" ).find( ".answers-single:first-child input.answer-text" ).attr( "placeholder", ans_placeholder );
+					ans_placeholder = "Right Label";
+					"image" == answerType && ( ans_placeholder = "Insert right image URL" ), $( "#answers" ).find( ".answers-single:last-child input.answer-text" ).attr( "placeholder", ans_placeholder ), $( "#answers" ).find( ".answers-single:first-child input.answer-points" ).attr( "placeholder", "Left Range" ), $( "#answers" ).find( ".answers-single:last-child input.answer-points" ).attr( "placeholder", "Right Range" );
+				} else {
+					var ans_placeholder = "Your answer";
+					"image" == answerType && ( ans_placeholder = "Insert image URL" ), $( "#answers" ).find( ".answers-single input.answer-text" ).attr( "placeholder", ans_placeholder ), $( "#answers" ).find( ".answers-single input.answer-points" ).attr( "placeholder", "Points" );
+					$( '.new-answer-button' ).show();
+					$( '.remove-answer-icon' ).show();
+				}
+				
+				//$( '#answers' ).find( '.answers-single:first-child ' )
+			}
         };
 
         $(function () {
@@ -2493,6 +2524,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
                     return false;
                 }
+				var question_val = $( '#question_type' ).val();
+				if ( 13 == question_val ) {
+					QSMQuestion.prepareEditPolarQuestion(question_val);
+				}
             });
 
             // Adds event handlers for searching questions
@@ -2545,38 +2580,41 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $(document).on('focus', '#question_type', function () {
                 previous_question_val = this.value;
             })
-            $(document).on('change', '#question_type', function() {
-                var question_val = $('#question_type').val();
-                QSMQuestion.question_type_change(previous_question_val, question_val);
-                if (6 == question_val) {
-                    var question_description = wp.editor.getContent('question-text');
-                    if (question_description == 'Add description here!') {
-                        tinyMCE.get('question-text').setContent('');
-                    }
-                }
-                if (14 == question_val) {
-                    $('.correct-answer').hide();
-                }
-                else{
-                    $('.correct-answer').show();
-                }
+			$( document ).on( 'change', '#question_type', function () {
+				var question_val = $( '#question_type' ).val();
+				QSMQuestion.question_type_change( previous_question_val, question_val );
+				if ( 6 == question_val ) {
+					var question_description = wp.editor.getContent( 'question-text' );
+					if ( question_description == 'Add description here!' ) {
+						tinyMCE.get( 'question-text' ).setContent( '' );
+					}
+				}
+				if ( 14 == question_val ) {
+					$( '.correct-answer' ).hide();
+				} else {
+					$( '.correct-answer' ).show();
+				}
 
-                // show points field only for polar in survey and simple form
-                if (qsmQuestionSettings.form_type != 0) {
-                    if (13 == question_val) {
-                        $('.answer-points').show();
-                    } else {
-                        $('.answer-points').val('').hide();
-                    }
-                }
+				// show points field only for polar in survey and simple form
+				if ( qsmQuestionSettings.form_type != 0 ) {
+					if ( 13 == question_val ) {
+						$( '.answer-points' ).show();
+					} else {
+						$( '.answer-points' ).val( '' ).hide();
+					}
+				}
 
-
-                $('.qsm_hide_for_other').hide();
-                if ($('.qsm_show_question_type_' + question_val).length > 0) {
-                    $('.qsm_show_question_type_' + question_val).show();
-                }
-                qsm_hide_show_question_desc(question_val);
-            });
+				$( '.qsm_hide_for_other' ).hide();
+				if ( $( '.qsm_show_question_type_' + question_val ).length > 0 ) {
+					$( '.qsm_show_question_type_' + question_val ).show();
+				}
+				qsm_hide_show_question_desc( question_val );
+				if ( 13 == question_val ) {
+					QSMQuestion.prepareEditPolarQuestion(question_val);
+				} else {
+					
+				}
+			} );
 
             //Add new category
             $(document).on('click', '#qsm-category-add-toggle', function () {
