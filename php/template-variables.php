@@ -609,7 +609,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			$return_points = 0;
 		}
 		$return_points = apply_filters( 'qsm_category_points', $return_points, $category_name, $mlw_quiz_array );
-		$content = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
+		$content       = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
 	}
 	return $content;
 }
@@ -683,7 +683,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			if ( $category_data['migrated'] ) {
 				if ( is_array( $answer['multicategories'] ) ) {
 					foreach ( $answer['multicategories'] as $category ) {
-						$category_name_object      = get_term_by( 'id', $category, 'qsm_category' );
+						$category_name_object = get_term_by( 'id', $category, 'qsm_category' );
 						if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 							$total_questions += 1;
 							if ( 'correct' == $answer['correct'] ) {
@@ -934,11 +934,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
-	$question_settings = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
-	$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", "QSM Questions");
+	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
+	$question_title       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", 'QSM Questions' );
 	$question_description = '';
 	if ( ! empty( $answer[0] ) ) {
-		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", "QSM Questions" );
+		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
 	if ( isset( $answer['question_title'] ) && '' !== $answer['question_title'] ) {
 		$add_br = '';
@@ -1028,19 +1028,27 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && 14 == $answer['question_type'] ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
-
+					
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
 							$show_user_answer = $new_array_user_answer[ $key ];
 
-							$is_answer_correct         = false;
-							$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-							$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
+							$is_answer_correct = 0;
+							$case_sensitive    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
+
+							if ( 1 === intval( $case_sensitive )) {
+								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
+								$decode_single_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
+							} else {
+								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
+								$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
+							}
+
 							if ( $decode_show_user_answer == $decode_single_user_answer ) {
-								$is_answer_correct = true;
+								$is_answer_correct = 1;
 							}
 							$index = $key + 1;
-
+							
 							if ( $is_answer_correct ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
@@ -1051,16 +1059,27 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) ) . '</span>';
 							}
-						}
-					} else {
-						$options = array();
+						}                   
+} else {
+						$options        = array();
+						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
+						
 						foreach ( $total_answers as $key => $single_answer ) {
-							$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
+							if ( 1 === intval( $case_sensitive )) {
+								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
+							} else {
+								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) ); 
+							}
 						}
-
+						
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								$key = array_search( mb_strtoupper( $show_user_answer ), $options, true );
+								if ( 1 === intval( $case_sensitive )) {
+									$key = array_search(  $show_user_answer , $options ,true);
+								}else {
+									$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
+								}
+								
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
@@ -1071,15 +1090,22 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 							}
 						} else {
+							
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								$key = array_search( mb_strtoupper( $show_user_answer ), $options, true );
+								if ( 1 === intval( $case_sensitive )) {
+									$key = array_search(  $show_user_answer , $options,true );
+								}else {
+									$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );   
+								}
+								
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
 								} else {
+									
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = 'No answer provided';
 									}
-									if ( 'correct' === $answer['correct'] ) {
+									if ( "correct" === $answer['correct'] ) {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . $show_user_answer . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
@@ -1139,7 +1165,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} else {
-					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", "", nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
+					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 				}
 			}
 		}
@@ -1172,10 +1198,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . do_shortcode( $user_answer_new ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	}
-	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], "answer-" . $answer[2], "QSM Answers" ) : 'NA';
+	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], 'answer-' . $answer[2], 'QSM Answers' ) : 'NA';
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
 		$qsm_correct_ans             = apply_filters( 'qsm_result_page_custom_correct_answer_template', $questions, $answer );
-		$qsm_correct_ans = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qsm_correct_ans, "answer-" . $qsm_correct_ans, "QSM Answers" );
+		$qsm_correct_ans             = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qsm_correct_ans, 'answer-' . $qsm_correct_ans, 'QSM Answers' );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
@@ -1267,12 +1293,12 @@ function qsm_is_allow_score_roundoff() {
 function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$question_display = '';
 	global $mlwQuizMasterNext;
-	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-	$input_text     = '';
-	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
-	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
-	$mid_point      = ( $second_point - $first_point ) / 2;
-	$is_reverse     = false;
+	$required     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$input_text   = '';
+	$first_point  = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
+	$second_point = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
+	$mid_point    = ( $second_point - $first_point ) / 2;
+	$is_reverse   = false;
 	if ( $first_point > $second_point ) {
 		$is_reverse = true;
 		$mid_point  = ( $first_point - $second_point ) / 2;
@@ -1317,12 +1343,12 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		}
 	}
 
-	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" ) . '</div>';
-	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
-	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"' . $slider_date_atts . '></div></div>';
-	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" ) . '</div>';
-	$question           = $input_text;
-	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
+	$input_text       .= "<div class='left-polar-title' $left_polar_title_style >" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $answers[0][0], 'QSM Answers' ) . '</div>';
+	$input_text       .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
+	$input_text       .= '<div id="slider-' . esc_attr( $id ) . '"' . $slider_date_atts . '></div></div>';
+	$input_text       .= "<div class='right-polar-title' $right_polar_title_style>" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $answers[1][0], 'QSM Answers' ) . '</div>';
+	$question          = $input_text;
+	$question_display .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
 }
 
@@ -1397,8 +1423,8 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		}
 	}
 	if ( '' !== $new_question_title ) {
-		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
-		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title  . '</div>';
+		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", 'QSM Questions' );
+		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
