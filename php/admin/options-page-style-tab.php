@@ -272,12 +272,28 @@ function qsm_options_styling_tab_content() {
 											value="<?php echo esc_attr( $theme_val['label'] ); ?>">
 										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][id]"
 											value="<?php echo esc_attr( $theme_val['id'] ); ?>">
-										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][type]" value="color">
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][type]" value="<?php echo esc_attr( $theme_val['type'] ); ?>">
 									</th>
 									<td>
-										<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text"
-											value="<?php echo esc_attr( $theme_val['default'] ); ?>"
-											data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
+										<?php
+										switch ( $theme_val['type'] ) {
+											case 'image': 
+                                                ?>
+												<input class="quiz_background_image" name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" >
+												<a class="set_background_image button" href="javascript:void(0);"><?php esc_html_e( 'Select Image', 'quiz-master-next' ); ?></a>
+												<?php
+												break;
+											case 'color': 
+                                                ?>
+												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
+												<?php
+												break;
+											default: 
+                                                ?>
+												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>"/>
+												<?php
+												break;
+										} ?>
 									</td>
 								</tr>
 								<?php
