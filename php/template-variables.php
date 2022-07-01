@@ -1036,7 +1036,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$is_answer_correct = 0;
 							$case_sensitive    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
 
-							if ( '1' == $case_sensitive ) {
+							if ( 1 === intval( $case_sensitive )) {
 								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
 								$decode_single_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
 							} else {
@@ -1065,7 +1065,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
 						
 						foreach ( $total_answers as $key => $single_answer ) {
-							if ( '1' == $case_sensitive ) {
+							if ( 1 === intval( $case_sensitive )) {
 								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
 							} else {
 								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) ); 
@@ -1074,7 +1074,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( '1' == $case_sensitive ) {
+								if ( 1 === intval( $case_sensitive )) {
 									$key = array_search(  $show_user_answer , $options ,true);
 								}else {
 									$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
@@ -1092,7 +1092,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						} else {
 							
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( '1' == $case_sensitive ) {
+								if ( 1 === intval( $case_sensitive )) {
 									$key = array_search(  $show_user_answer , $options,true );
 								}else {
 									$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );   
