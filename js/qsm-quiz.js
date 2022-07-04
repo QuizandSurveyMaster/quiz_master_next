@@ -905,7 +905,7 @@ function qmnFormSubmit(quiz_form_id) {
 	var $container = jQuery('#' + quiz_form_id).closest('.qmn_quiz_container');
 	var result = qmnValidation('#' + quiz_form_id + ' *', quiz_form_id);
 	if (!result) { return result; }
-	
+
 	/**
 	 * Update Timer in MS
 	 */
@@ -1063,7 +1063,7 @@ function qmnInit() {
 							delete disabledAnswer2[key];
 							localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
 					}
-					
+
 				});
 			}
 
@@ -1330,6 +1330,7 @@ function qmnInitPagination(quiz_id) {
 		qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 0, '#quizForm' + quiz_id);
 	}
 
+	jQuery(document).trigger('qsm_init_pagination_after', [quiz_id, qmn_quiz_data]);
 }
 
 function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
