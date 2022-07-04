@@ -396,10 +396,6 @@ border: 1px solid #e3e3e3;
     font-size: 18px;
   }
 
-  .quiz_section.radio .qmn_mc_answer_wrap label {
-    font-size: 18px;
-  }
-
   .quiz_section p.form-help { font-size: 14px; }
 
   .quiz_section select,

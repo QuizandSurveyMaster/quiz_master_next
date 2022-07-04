@@ -155,10 +155,6 @@ label.inline .mlw_qmn_question,
   margin: 5px 0 5px 0;
 }
 
-.qmn_radio_answers .qmn_mc_answer_wrap {
-  cursor: pointer;
-}
-
 .quiz_section .qmn_radio_answers label,
 .quiz_section .qmn_check_answers label,
 .quiz_section .qmn_accept_answers label {
@@ -485,10 +481,6 @@ label.inline .mlw_qmn_question,
 
   .quiz_section label,
   .quiz_section .mlw_qmn_question {
-    font-size: 18px;
-  }
-
-  .quiz_section .qmn_radio_answers .qmn_mc_answer_wrap label {
     font-size: 18px;
   }
 
