@@ -308,6 +308,7 @@ function qsm_options_questions_tab_content() {
 								<?php
 								$show_correct_answer_info = '';
 								$show_autofill = '';
+								$show_case_sensitive = '';
 								$show_limit_text = '';
 								$show_limit_multiple_response = '';
 								$show_file_upload_type = '';
@@ -318,6 +319,9 @@ function qsm_options_questions_tab_content() {
 									}
 									if ( isset( $type['options']['show_autofill'] ) && $type['options']['show_autofill'] ) {
 										$show_autofill .= ',' . $type['slug'];
+									}
+									if ( isset( $type['options']['show_case_sensitive'] ) && $type['options']['show_case_sensitive'] ) {
+										$show_case_sensitive .= ',' . $type['slug'];
 									}
 									if ( isset( $type['options']['show_limit_text'] ) && $type['options']['show_limit_text'] ) {
 										$show_limit_text .= ',' . $type['slug'];
@@ -373,6 +377,18 @@ function qsm_options_questions_tab_content() {
 										'default'  => '0',
 										'show'     => '3, 14' . $show_autofill,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
+									),
+									'case_sensitive'      => array(
+										'heading'  => __( 'Allow Case Sensitive', 'quiz-master-next' ),
+										'label'    => __( 'Case Sensitive Answer', 'quiz-master-next' ),
+										'type'     => 'single_checkbox',
+										'priority' => '12',
+										'options'  => array(
+											'1' => __( 'Yes', 'quiz-master-next' ),
+										),
+										'default'  => '0',
+										'show'     => '14' .$show_case_sensitive,
+										
 									),
 									'limit_text'          => array(
 										'heading'  => __( 'Limit Text', 'quiz-master-next' ),

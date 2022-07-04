@@ -122,4 +122,38 @@ class QSM_Migrate {
 
 		return $response;
 	}
+	
+	public static function fix_duplicate_questions() {
+		global $wpdb, $mlwQuizMasterNext;
+		$all_quizzes = $wpdb->get_results( "SELECT `quiz_id`, `quiz_settings` FROM `{$wpdb->prefix}mlw_quizzes` ORDER BY `quiz_id` DESC" );
+		if ( ! empty( $all_quizzes ) ) {
+			foreach ( $all_quizzes as $quiz ) {
+				$quiz_id     = $quiz->quiz_id;
+				$settings    = maybe_unserialize( $quiz->quiz_settings );
+				$pages       = isset( $settings['pages'] ) ? maybe_unserialize( $settings['pages'] ) : array();
+				$qpages      = isset( $settings['qpages'] ) ? maybe_unserialize( $settings['qpages'] ) : array();
+				if ( ! empty( $pages ) ) {
+					foreach ( $pages as $key => $page ) {
+						$questions		 = array_unique( $page );
+						$pages[$key]	 = $questions;
+						if ( ! isset( $qpages[$key] ) ) {
+							$qpages[$key] = array();
+						}
+						$qpages[$key]['questions'] = $questions;
+					}
+				}
+				/**
+				 * Setup new data
+				 */
+				$settings['pages']   = maybe_serialize( $pages );
+				$settings['qpages']  = maybe_serialize( $qpages );
+				/**
+				 * Update quiz settings
+				 */
+				$wpdb->update( $wpdb->prefix . 'mlw_quizzes', array( 'quiz_settings' => maybe_serialize( $settings ) ), array( 'quiz_id' => $quiz_id ), array( '%s' ), array( '%d' ) );
+			}
+		}
+		return;
+	}
+
 }

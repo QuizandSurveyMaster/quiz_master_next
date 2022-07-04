@@ -996,7 +996,8 @@ class QMNQuizManager {
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $question['hints'] ) ) {
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_html( $hint_data ) . '">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '</div>';
 				}
 				?>
 					</div>
@@ -1068,7 +1069,8 @@ class QMNQuizManager {
 					}
 					// Checks if a hint is entered.
 					if ( ! empty( $question['hints'] ) ) {
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_html( $hint_data ) . '">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '</div>';
 					}
 					?>
 						</div>
@@ -1253,8 +1255,9 @@ class QMNQuizManager {
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $mlw_question->hints ) ) {
+					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) );
 					?>
-					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz_hint_text-{$qmn_quiz_options->quiz_id}" ) ); ?><span class="qsm_tooltiptext"><?php echo wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) ); ?></span></div><br /><br />
+					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="<?php echo esc_html( $hint_data );?>"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz_hint_text-{$qmn_quiz_options->quiz_id}" ) ); ?></div><br /><br />
 					<?php
 				}
 				?>

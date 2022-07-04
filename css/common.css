@@ -329,33 +329,44 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     }
 }
 .qsm_tooltip {
-  position: relative;
-  display: block;
-  cursor: pointer;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
 }
 
 .qsm_tooltip .qsm_tooltiptext{
-  visibility: hidden;
-  display: inline-block;
-  width: auto;
-  background-color: #222;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  padding: 5px 10px;
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
 
-  /* Position the tooltip */
-  position: absolute;
-  line-height: 24px;
-  bottom: 100%;
-  left: 0;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -60px;
 }
 .qsm_tooltip .qsm_tooltiptext a{
-  background-color: black !important;
-  color: #fff!important;
+	background-color: black !important;
+	color: #fff!important;
 }
 .qsm_tooltip:hover .qsm_tooltiptext {
-  visibility: visible;
+	visibility: visible;
+}
+body .ui-tooltip, body .ui-tooltip.ui-widget-content{
+	box-shadow: none;
+	background: #222;
+	color: #fff;
+	border-radius: 6px;
+	box-sizing: border-box;
+	padding: 6px 10px;
+	font-size: 14px;
+	line-height: 22px;
+	text-align: justify;
 }
 .qsm_quiz_processing_box {
     display: inline-block;
