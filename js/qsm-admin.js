@@ -2226,7 +2226,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }
             },
 			prepareEditPolarQuestion: function (question_val){
-				var answerType = $('#change-answer-editor').val();
+				var answerType = $( '#change-answer-editor' ).val();
 				if ( 13 == question_val ) {
 					if ( $( '#answers' ).find( '.answers-single' ).length < 2 ) {
 						$( '#new-answer-button' ).trigger( 'click' );
@@ -2240,18 +2240,16 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					$( '.new-answer-button' ).hide();
 					$( '#answers' ).find( '.answers-single .remove-answer-icon' ).hide();
 
-					var ans_placeholder = "Left Label";
-					"image" == answerType && ( ans_placeholder = "Insert left image URL" ), $( "#answers" ).find( ".answers-single:first-child input.answer-text" ).attr( "placeholder", ans_placeholder );
-					ans_placeholder = "Right Label";
-					"image" == answerType && ( ans_placeholder = "Insert right image URL" ), $( "#answers" ).find( ".answers-single:last-child input.answer-text" ).attr( "placeholder", ans_placeholder ), $( "#answers" ).find( ".answers-single:first-child input.answer-points" ).attr( "placeholder", "Left Range" ), $( "#answers" ).find( ".answers-single:last-child input.answer-points" ).attr( "placeholder", "Right Range" );
+					let ans_l_placeholder = "Left Label";
+					"image" == answerType && ( ans_l_placeholder = "Insert left image URL" ), $( "#answers" ).find( ".answers-single:first-child input.answer-text" ).attr( "placeholder", ans_l_placeholder );
+					let ans_r_placeholder = "Right Label";
+					"image" == answerType && ( ans_r_placeholder = "Insert right image URL" ), $( "#answers" ).find( ".answers-single:last-child input.answer-text" ).attr( "placeholder", ans_r_placeholder ), $( "#answers" ).find( ".answers-single:first-child input.answer-points" ).attr( "placeholder", "Left Range" ), $( "#answers" ).find( ".answers-single:last-child input.answer-points" ).attr( "placeholder", "Right Range" );
 				} else {
-					var ans_placeholder = "Your answer";
-					"image" == answerType && ( ans_placeholder = "Insert image URL" ), $( "#answers" ).find( ".answers-single input.answer-text" ).attr( "placeholder", ans_placeholder ), $( "#answers" ).find( ".answers-single input.answer-points" ).attr( "placeholder", "Points" );
 					$( '.new-answer-button' ).show();
 					$( '.remove-answer-icon' ).show();
+					let ans_placeholder = "Your answer";
+					"image" == answerType && ( ans_placeholder = "Insert image URL" ), $( "#answers" ).find( ".answers-single input.answer-text" ).attr( "placeholder", ans_placeholder ), $( "#answers" ).find( ".answers-single input.answer-points" ).attr( "placeholder", "Points" );
 				}
-				
-				//$( '#answers' ).find( '.answers-single:first-child ' )
 			}
         };
 
@@ -2630,8 +2628,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				qsm_hide_show_question_desc( question_val );
 				if ( 13 == question_val ) {
 					QSMQuestion.prepareEditPolarQuestion(question_val);
-				} else {
-					
 				}
 			} );
 
