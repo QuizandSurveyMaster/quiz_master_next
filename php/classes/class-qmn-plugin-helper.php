@@ -453,6 +453,27 @@ class QMNPluginHelper {
 		}
 	}
 
+	public function get_questions_count( $quiz_id = 0 ) {
+		global $wpdb;
+		$quiz_id = intval( $quiz_id );
+		$count   = 0;
+		if ( empty( $quiz_id ) || 0 == $quiz_id ) {
+			return $count;
+		}
+
+		$quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT `quiz_settings` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id`=%d", $quiz_id ) );
+		if ( ! empty( $quiz_settings ) ) {
+			$settings    = maybe_unserialize( $quiz_settings );
+			$pages       = isset( $settings['pages'] ) ? maybe_unserialize( $settings['pages'] ) : array();
+			if ( ! empty( $pages ) ) {
+				foreach ( $pages as $page ) {
+					$count += count( $page );
+				}
+			}
+		}
+		return $count;
+	}
+
 	/**
 	 * Shuffle assoc array
 	 *

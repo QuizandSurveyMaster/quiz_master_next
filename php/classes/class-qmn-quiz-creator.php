@@ -657,15 +657,10 @@ class QMNQuizCreator {
 					$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 				} else {
 					foreach ( $logic_rules as $logic_data ) {
-						$data          = array(
-							$mlw_new_id,
-							maybe_serialize( $logic_data ),
-						);
-						$value_array[] = stripslashes( $wpdb->prepare( '(%d, %s)', $data ) );
+						$value_array[] = stripslashes( $wpdb->prepare( '(%d, %s)', $mlw_new_id, maybe_serialize( $logic_data ) ) );
 					}
 					$values = implode( ',', $value_array );
-					$query  = "INSERT INTO $logic_table (quiz_id, logic) VALUES ";
-					$query .= $values;
+					$query  = "INSERT INTO `{$logic_table}` (quiz_id, logic) VALUES {$values}";
 					$saved  = $wpdb->query( $query );
 					if ( false !== $saved ) {
 						update_option( "logic_rules_quiz_$mlw_new_id", gmdate( time() ) );

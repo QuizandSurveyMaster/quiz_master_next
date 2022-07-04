@@ -89,7 +89,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 		 * @param type $post_id
 		 */
 		public function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
-			global $wpdb;
+			global $wpdb, $mlwQuizMasterNext;
 			$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
 			switch ( $column ) {
 				case 'shortcode':
@@ -100,8 +100,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					break;
 
 				case 'total_questions':
-					$questions = $wpdb->get_var( "SELECT count(question_id) FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id`='{$quiz_id}' AND `deleted`='0'" );
-					echo esc_attr( $questions );
+					$total_questions = $mlwQuizMasterNext->pluginHelper->get_questions_count( $quiz_id );
+					echo esc_attr( $total_questions );
 					break;
 
 				case 'views':
