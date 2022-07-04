@@ -134,9 +134,12 @@ class QSM_Migrate {
 				$qpages      = isset( $settings['qpages'] ) ? maybe_unserialize( $settings['qpages'] ) : array();
 				if ( ! empty( $pages ) ) {
 					foreach ( $pages as $key => $page ) {
-						$questions                   = array_unique( $page );
-						$pages[ $key ]                 = $questions;
-						$qpages[ $key ]['questions']   = $questions;
+						$questions		 = array_unique( $page );
+						$pages[$key]	 = $questions;
+						if ( ! isset( $qpages[$key] ) ) {
+							$qpages[$key] = array();
+						}
+						$qpages[$key]['questions'] = $questions;
 					}
 				}
 				/**
