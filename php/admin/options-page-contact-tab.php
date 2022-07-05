@@ -147,6 +147,7 @@ function qsm_options_contact_tab_template() {
 					<option value="number" <# if (data.type == 'number') { #>selected<# } #> ><?php esc_html_e('Number', 'quiz-master-next');?></option>
 					<option value="date" <# if (data.type == 'date') { #>selected<# } #> ><?php esc_html_e('Date', 'quiz-master-next');?></option>
 					<option value="checkbox" <# if (data.type == 'checkbox') { #>selected<# } #> ><?php esc_html_e('Checkbox', 'quiz-master-next');?></option>
+					<?php do_action('qsm_extra_type_control_option'); ?>	
 				</select>
 			</div>
 			<div class="contact-form-group contact-form-inputs">
