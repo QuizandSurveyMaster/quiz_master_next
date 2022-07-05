@@ -508,7 +508,7 @@ class QSM_Contact_Manager {
 				<?php
 				break;
 			default:
-				do_action( 'qsm_extra_contact_filed', $fields, $quiz_options );
+				do_action( 'qsm_extra_contact_filed', $field, $quiz_options );
 				break;
 		}
 	}
