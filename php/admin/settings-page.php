@@ -1119,9 +1119,9 @@ class QMNGlobalSettingsPage {
 			</fieldset>';
 	}
 	/**
-	 * Generates Quiz Global  Field For Disable description on quiz result page?
+	 * Generates Quiz Global Field For Disable MathJax?
 	 *
-	 * @since 4.1.0
+	 * @since 8.0.3
 	 * @return void
 	 */
 	public function qsm_global_disable_mathjax() {
