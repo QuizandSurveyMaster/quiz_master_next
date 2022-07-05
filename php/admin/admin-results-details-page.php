@@ -77,6 +77,11 @@ function qsm_generate_results_details_tab() {
     $next_results     = $wpdb->get_var( $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > %d)", $result_id));
 
 	// If there is previous or next results, show buttons.
+	$disable_mathjax = isset( $quiz_options['disable_mathjax'] ) ? $quiz_options['disable_mathjax'] : '';
+	if ( 1 != $disable_mathjax ) {
+		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+		wp_add_inline_script( 'math_jax', $mlwQuizMasterNext::$default_MathJax_script, 'before' );
+	}
     echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
     echo '<h3 class="result-page-title">Quiz Result - '. esc_html( $results_data->quiz_name ) .'</h3>';
     echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. esc_html__( 'Back to Results', 'quiz-master-next' ) .'</a>';

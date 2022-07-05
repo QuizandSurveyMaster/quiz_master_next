@@ -215,6 +215,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['disable_description_on_result']      = $globalQuizsetting['disable_description_on_result'];
 			$setDefaultvalue['disable_scroll_next_previous_click'] = $globalQuizsetting['disable_scroll_next_previous_click'];
 			$setDefaultvalue['disable_first_page']                 = $globalQuizsetting['disable_first_page'];
+			$setDefaultvalue['disable_mathjax']                    = $globalQuizsetting['disable_mathjax'];
 			$setDefaultvalue['quiz_animation']                     = $globalQuizsetting['quiz_animation'];
 			$setDefaultvalue['result_page_fb_image']               = $globalQuizsetting['result_page_fb_image'];
 			$setDefaultvalue['randomness_order']                   = $globalQuizsetting['randomness_order'];

@@ -962,6 +962,10 @@ function qmnFormSubmit(quiz_form_id) {
 				return false;
 			}else{
 				qmnDisplayResults(response, quiz_form_id, $container);
+				// run MathJax on the new content
+				if ( 1 != qmn_quiz_data[quiz_id].disable_mathjax ) {
+					MathJax.typesetPromise();
+				}
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 				jQuery(".hide").parent().css('display','none');
@@ -993,8 +997,6 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 		$container.append('<div class="qmn_results_page"></div>');
 		$container.find('.qmn_results_page').html(results.display);
 		qsmScrollTo($container);
-		// run MathJax on the new content
-		MathJax.typesetPromise();
 		// Fires after result is populates via ajax
 		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
@@ -1404,8 +1406,10 @@ jQuery(function () {
 				parent_div.replaceWith(response);
 				//Reload the timer and pagination
 				qmnDoInit();
-
-				MathJax.typesetPromise();
+				
+				if ( 1 != qmn_quiz_data[quiz_id].disable_mathjax ) {
+					MathJax.typesetPromise();
+				}
 
 				// trigger fired on successfull retake quiz
 				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
@@ -1442,7 +1446,9 @@ jQuery(function () {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
-					MathJax.typesetPromise();
+					if ( 1 != qmn_quiz_data[quizID].disable_mathjax ) {
+						MathJax.typesetPromise();
+					}
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1491,7 +1497,9 @@ jQuery(function () {
 							$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 						}, 1000);
 					}
-					MathJax.typesetPromise();
+					if ( 1 != qmn_quiz_data[quizID].disable_mathjax ) {
+						MathJax.typesetPromise();
+					}
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
