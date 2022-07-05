@@ -158,8 +158,8 @@ label.inline .mlw_qmn_question,
 .quiz_section .qmn_radio_answers label,
 .quiz_section .qmn_check_answers label,
 .quiz_section .qmn_accept_answers label {
-  display: inline;
-  margin: 0 10px 0 5px;
+  display: inline-block;
+  margin: 0 5px;
   font-weight: normal;
   font-size: 14px;
   cursor: pointer;
@@ -223,17 +223,21 @@ label.inline .mlw_qmn_question,
 
 .qsm-results-page .qmn_image_option,
 .quiz_section .qmn_image_option {
-  width: 47%;
+  width: 48%;
   height: 250px;
   display: inline-flex !important;
-  /* position: relative; */
+  position: relative;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 1%;
+  box-sizing: border-box;
+  align-items: flex-end;
 }
 
 .qsm-results-page .qmn_image_option input[type="radio"],
 .qsm-results-page .qmn_image_option input[type="checkbox"],
 .quiz_section .qmn_image_option input[type="radio"],
 .quiz_section .qmn_image_option input[type="checkbox"] {
-  margin-top: 263px;
 }
 
 .qsm-results-page .qmn_image_option img,

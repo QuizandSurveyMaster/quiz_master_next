@@ -759,6 +759,25 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		$field_array = array(
+			'id'         => 'disable_mathjax',
+			'label'      => __( 'Disable MathJax', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Setting for pagination of quiz
 		$field_array = array(
 			'id'         => 'disable_scroll_next_previous_click',

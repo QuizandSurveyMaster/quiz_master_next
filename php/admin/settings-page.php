@@ -128,6 +128,7 @@ class QMNGlobalSettingsPage {
 			'disable_description_on_result'      => 0,
 			'disable_scroll_next_previous_click' => 0,
 			'disable_first_page'                 => 0,
+			'disable_mathjax'                    => 0,
 			'quiz_animation'                     => '',
 			'result_page_fb_image'               => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 			'randomness_order'                   => 0,
@@ -188,6 +189,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'disable_mathjax', __( 'Disable MathJax?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_mathjax' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-first-page', __( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -1114,6 +1116,22 @@ class QMNGlobalSettingsPage {
 				<label for="disable_description_on_result-1">Yes</label><br>
 				<input type="radio" id="disable_description_on_result-0" name="qsm-quiz-settings[disable_description_on_result]" value="0" ' . checked( $qsm_disable_description_on_result, '0', false ) . '>
 				<label for="disable_description_on_result-0">No</label><br>
+			</fieldset>';
+	}
+	/**
+	 * Generates Quiz Global  Field For Disable description on quiz result page?
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_disable_mathjax() {
+		global $globalQuizsetting;
+		$qsm_disable_mathjax = ( isset( $globalQuizsetting['disable_mathjax'] ) && '' !== $globalQuizsetting['disable_mathjax'] ? $globalQuizsetting['disable_mathjax'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="radio" id="disable_mathjax-1" name="qsm-quiz-settings[disable_mathjax]" value="1" ' . checked( $qsm_disable_mathjax, '1', false ) . ' >
+				<label for="disable_mathjax-1">Yes</label><br>
+				<input type="radio" id="disable_mathjax-0" name="qsm-quiz-settings[disable_mathjax]" value="0" ' . checked( $qsm_disable_mathjax, '0', false ) . '>
+				<label for="disable_mathjax-0">No</label><br>
 			</fieldset>';
 	}
 	/**
