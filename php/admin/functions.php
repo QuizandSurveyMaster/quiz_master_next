@@ -802,9 +802,7 @@ function qsm_create_new_quiz_wizard() {
 							</div>
 							<div class="qsm-addon-list-right">
 								<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
-									href="http://quizandsurveymaster.com/addons/?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-									target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+								<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'qsm-addons-page', 'all-addons-top') )?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 					</div>
