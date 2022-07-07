@@ -1701,13 +1701,13 @@ class QMNQuizManager {
 					array(
 						'name'          => 'send_emails',
 						'result_id'     => $results_id,
-						'quiz_settings' => isset( $qmn_quiz_options->quiz_settings ) ? maybe_unserialize( $qmn_quiz_options->quiz_settings ) : array(),
+						'quiz_settings' => $qmn_array_for_variables['quiz_settings'],
 					)
 				)->dispatch();
 			} else {
 				// Sends the emails.
 				$qmn_array_for_variables['email_processed'] = 'yes';
-				QSM_Emails::send_emails( $results_id );
+				QSM_Emails::send_emails( $results_id, $qmn_array_for_variables['quiz_settings'] );
 			}
 
 			/**
