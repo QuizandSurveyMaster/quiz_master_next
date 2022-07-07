@@ -45,8 +45,15 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
+								$size_style = '';
+								if ( ! empty($answer[4]) ) {
+									$size_style .= 'width:'.$answer[4].'px !important;';
+								}
+								if ( ! empty($answer[5]) ) {
+									$size_style .= ' height:'.$answer[5].'px !important;';
+								}
 								?>
-								<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+								<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" style="<?php echo esc_attr( $size_style ); ?>" />
 								<span class="qsm_image_caption">
 									<?php
 									$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );

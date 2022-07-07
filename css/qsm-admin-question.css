@@ -54,7 +54,7 @@
 }
 .modal-7-table tr td, .modal-8-table tr td {
 	vertical-align: top;
-	padding: 0 10px 5px 0 
+	padding: 0 10px 5px 0
 }
 #modal-8 footer {
 	margin-top: 15px;
@@ -308,6 +308,10 @@
 	margin: 10px 0 0;
 	text-decoration: none;
 }
+.qsm-image-size-section {
+    display: flex;
+}
+
 .questionElements .qsm-row>label {
 	position: relative;
 }
