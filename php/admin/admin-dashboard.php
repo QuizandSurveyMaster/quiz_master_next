@@ -131,45 +131,30 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener"
-								href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
-								class="welcome-icon"><span
-									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard') )?>" class="welcome-icon">
+								<span class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?>
+							</a>
 						</li>
-						<li><a target="_blank" rel="noopener"
-								href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
-								class="welcome-icon"><span
-									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php esc_html_e( 'See demos', 'quiz-master-next' ); ?></a>
+						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard" class="welcome-icon">
+								<span class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php esc_html_e( 'See demos', 'quiz-master-next' ); ?>
+							</a>
 						</li>
-						<li><a target="_blank" rel="noopener"
-								href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
-								class="welcome-icon"><span
-									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php esc_html_e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard') )?>" class="welcome-icon">
+								<span class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php esc_html_e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?>
+							</a>
 						</li>
-						<li><a target="_blank" rel="noopener"
-								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
-								class="welcome-icon"><span
-									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php esc_html_e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
+						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard" class="welcome-icon">
+								<span class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php esc_html_e( 'Explore QSM Themes', 'quiz-master-next' ); ?>
+							</a>
 						</li>
 					</ul>
 				</div>
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php esc_html_e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener"
-								href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
-								class="welcome-icon"><span
-									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a>
-						</li>
-						<li><a target="_blank" rel="noopener"
-								href="https://github.com/QuizandSurveyMaster/quiz_master_next"
-								class="welcome-icon"><span
-									class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a>
-						</li>
-						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
-								class="welcome-icon"><span
-									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
-						</li>
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -361,8 +346,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				?>
 			</ul>
 			<div class="pa-all-addon">
-				<a href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard" rel="noopener"
-					target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
+				<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard') )?>" rel="noopener" target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>
 	</div>
