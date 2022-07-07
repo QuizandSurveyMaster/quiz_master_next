@@ -1826,8 +1826,8 @@ var import_button;
                         var $answer = jQuery(answer);
                         var answer = '';
                         var caption = '';
-                        var width = '';
-                        var height = '';
+                        let width = '';
+                        let height = '';
                         if (answerType == 'rich') {
                             var ta_id = $answer.find('textarea').attr('id')
                             answer = wp.editor.getContent(ta_id);

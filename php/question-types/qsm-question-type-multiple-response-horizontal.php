@@ -42,10 +42,10 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 						<?php
 						if ( 'image' === $answerEditor ) {
 							$size_style = '';
-							if( !empty($answer[4]) ){
+							if ( ! empty($answer[4]) ) {
 								$size_style .= 'width:'.$answer[4].'px !important;';
 							}
-							if( !empty($answer[5]) ){
+							if ( ! empty($answer[5]) ) {
 								$size_style .= ' height:'.$answer[5].'px !important;';
 							}
 							?>
