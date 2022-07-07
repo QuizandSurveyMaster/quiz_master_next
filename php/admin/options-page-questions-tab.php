@@ -388,7 +388,7 @@ function qsm_options_questions_tab_content() {
 										),
 										'default'  => '0',
 										'show'     => '14' .$show_case_sensitive,
-										
+
 									),
 									'limit_text'          => array(
 										'heading'  => __( 'Limit Text', 'quiz-master-next' ),
@@ -1080,11 +1080,16 @@ function qsm_options_questions_tab_template() {
 				<# if ( 'rich' == data.answerType ) { #>
 					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
 				<# } else if ( 'image' == data.answerType ) { #>
-					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
+					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="<?php esc_attr_e( 'Insert image URL', 'quiz-master-next' ); ?>"/>
 					<a href="javascript:void(0)" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
-					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
+					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="<?php esc_attr_e( 'Image Caption', 'quiz-master-next' ); ?>"/>
+					<div class="qsm-image-size-section">
+						<input type="number" class="qsm-image-width" value="{{data.width}}" placeholder="<?php esc_attr_e( 'Image width in px', 'quiz-master-next' ); ?>"/>
+						<input type="number" class="qsm-image-height" value="{{data.height}}" placeholder="<?php esc_attr_e( 'Image height in px', 'quiz-master-next' ); ?>"/>
+					</div>
+					<label><?php esc_html_e( 'Leave blank for original size', 'quiz-master-next' ); ?></label>
 				<# } else { #>
-					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="<?php esc_attr_e( 'Your answer', 'quiz-master-next' ); ?>"/>
 				<# } #>
 			</div>
 			<# if ( 0 == data.form_type ) { #>
