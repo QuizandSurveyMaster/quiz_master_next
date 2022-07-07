@@ -53,10 +53,10 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					<?php
 					if ( 'image' === $answerEditor ) {
 						$size_style = '';
-						if( isset($answer[4]) ){
+						if( !empty($answer[4]) ){
 							$size_style .= 'width:'.$answer[4].'px !important;';
 						}
-						if( isset($answer[5]) ){
+						if( !empty($answer[5]) ){
 							$size_style .= ' height:'.$answer[5].'px !important;';
 						}
 						?>
