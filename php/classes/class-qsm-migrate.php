@@ -122,7 +122,7 @@ class QSM_Migrate {
 
 		return $response;
 	}
-	
+
 	public static function fix_duplicate_questions() {
 		global $wpdb, $mlwQuizMasterNext;
 		$all_quizzes = $wpdb->get_results( "SELECT `quiz_id`, `quiz_settings` FROM `{$wpdb->prefix}mlw_quizzes` ORDER BY `quiz_id` DESC" );
@@ -154,6 +154,34 @@ class QSM_Migrate {
 			}
 		}
 		return;
+	}
+
+	/**
+	 * This function check qsm post have assigned a quiz
+	 *
+	 * @since 8.0.3
+	 * @return void
+	 */
+	public static function fix_deleted_quiz_posts() {
+		global $wpdb;
+		$qsm_post_list = get_posts( array(
+			'post_type'      => 'qsm_quiz',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		) );
+		$qmn_quiz_ids  = $wpdb->get_results( "SELECT `quiz_id` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `deleted`='0'" );
+		if ( ! empty( $qmn_quiz_ids ) && ! empty( $qsm_post_list ) ) {
+			$quiz_ids = array( 0 );
+			if ( ! empty( $qmn_quiz_ids ) ) {
+				$quiz_ids = array_column( $qmn_quiz_ids, 'quiz_id' );
+			}
+			foreach ( $qsm_post_list as $post_id ) {
+				$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
+				if ( empty( $quiz_id ) || ! in_array( $quiz_id , $quiz_ids, true) ) {
+					wp_delete_post( $post_id );
+				}
+			}
+		}
 	}
 
 }

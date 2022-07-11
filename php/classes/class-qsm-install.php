@@ -2027,6 +2027,7 @@ class QSM_Install {
 
 			// Update 8.0.3
 			QSM_Migrate::fix_duplicate_questions();
+			QSM_Migrate::fix_deleted_quiz_posts();
 
 			update_option( 'mlw_quiz_master_version', $data );
 		}
@@ -2062,7 +2063,7 @@ class QSM_Install {
 		}
 		return (array) $links;
 	}
-	
+
 }
 
 $qsm_install = new QSM_Install();
