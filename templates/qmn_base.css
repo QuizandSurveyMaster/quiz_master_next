@@ -200,6 +200,23 @@ border: 1px solid #e3e3e3;
 .qmn_fill_blank.medium { width: 100px; }
 .qmn_fill_blank.large { width: 150px; }
 
+.qsm-results-page .qmn_image_option,
+.quiz_section .qmn_image_option {
+  width: 48%;
+  height: 250px;
+  display: inline-flex !important;
+  position: relative;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 1%;
+  box-sizing: border-box;
+  align-items: flex-end;
+}
+
+.qsm-results-page .qmn_image_option input[type="radio"],
+.qsm-results-page .qmn_image_option input[type="checkbox"],
+.quiz_section .qmn_image_option input[type="radio"],
+.quiz_section .qmn_image_option input[type="checkbox"] {margin: 4px;}
 
 /* Alerts and error state */
 
