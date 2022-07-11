@@ -2230,6 +2230,17 @@ input#duplicate_questions {
 #qsm-global-default-popup .qsm-popup__footer button{
     margin: 0 5px;
 }
+.qsm-badge {
+    background: linear-gradient(225deg, #344ad6, #42d96b);
+    z-index: 9999;
+    position: absolute;
+    color: #fff;
+    right: 5px;
+    top: 5px;
+    border-radius: 10px;
+    padding: 0 10px;
+    text-transform: uppercase;
+}
 /** Quiz Contact Tab Style **/
 .contact-form-builder-wrap{
 	display: flex;

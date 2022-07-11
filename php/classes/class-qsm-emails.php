@@ -20,9 +20,10 @@ class QSM_Emails {
 	 * Sends the emails for the quiz.
 	 *
 	 * @since 6.2.0
-	 * @param array $results_id result ID.
+	 * @param int $results_id result ID.
+	 * @param array $quiz_settings Quiz Settings.
 	 */
-	public static function send_emails( $result_id ) {
+	public static function send_emails( $result_id, $quiz_settings ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 		$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ), ARRAY_A );
@@ -57,6 +58,8 @@ class QSM_Emails {
 			'minimum_possible_points'   => isset( $quiz_result['minimum_possible_points'] ) ? $quiz_result['minimum_possible_points'] : 0,
 			'comments'                  => $quiz_result[2],
 			'result_id'                 => $result_id,
+			'quiz_settings'             => $quiz_settings,
+			'email_processed'           => 'yes',
 		);
 		$emails = self::load_emails( $response_data['quiz_id'] );
 

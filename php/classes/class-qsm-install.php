@@ -87,7 +87,7 @@ class QSM_Install {
 			),
 			'default'     => 0,
 			'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
-			'tooltip'     => __( 'To know more about our grading systems please ', 'quiz-master-next' ) . '<a target="_blank" href="https://quizandsurveymaster.com/docs/">' . __( 'read the documentation.', 'quiz-master-next' ) . '</a>',
+			'tooltip'     => __( 'To know more about our grading systems please ', 'quiz-master-next' ) . '<a target="_blank" href="'.qsm_get_plugin_link('docs', 'quiz-settings').'">' . __( 'read the documentation.', 'quiz-master-next' ) . '</a>',
 			'show_option' => 'form_type_0',
 			'option_tab'  => 'general',
 		);
@@ -743,6 +743,25 @@ class QSM_Install {
 		$field_array = array(
 			'id'         => 'disable_description_on_result',
 			'label'      => __( 'Disable description on quiz result page?', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		$field_array = array(
+			'id'         => 'disable_mathjax',
+			'label'      => __( 'Disable MathJax', 'quiz-master-next' ),
 			'type'       => 'radio',
 			'options'    => array(
 				array(
@@ -2006,12 +2025,14 @@ class QSM_Install {
 				update_option( 'qmn-settings', $settings );
 			}
 
+			// Update 8.0.3
+			QSM_Migrate::fix_duplicate_questions();
+
 			update_option( 'mlw_quiz_master_version', $data );
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );
 		}
-
 	}
 
 	/**
@@ -2034,13 +2055,41 @@ class QSM_Install {
 	public function plugin_row_meta( $links, $file ) {
 		if ( QSM_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
-				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
+				'docs'    => '<a href="' . esc_url( qsm_get_plugin_link('docs', 'plugins') ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
 				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_about&tab=help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
 			);
 			return array_merge( $links, $row_meta );
 		}
 		return (array) $links;
 	}
+	
 }
 
 $qsm_install = new QSM_Install();
+
+if ( ! function_exists( 'qsm_get_document_link' ) ) {
+
+	/**
+	 * Get Document link
+	 */
+	function qsm_get_plugin_link( $path = '', $source = '', $content = '' ) {
+		$link = 'https://quizandsurveymaster.com/';
+		if ( ! empty( $path ) ) {
+			$link .= $path;
+		}
+		$link = trailingslashit( $link );
+
+		/**
+		 * Prepare UTM parameters
+		 */
+		$link .= '?utm_campaign=qsm_plugin&utm_medium=plugin';
+		if ( ! empty( $source ) ) {
+			$link .= '&utm_source=' . $source;
+		}
+		if ( ! empty( $content ) ) {
+			$link .= '&utm_content=' . $content;
+		}
+
+		return $link;
+	}
+}

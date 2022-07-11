@@ -89,7 +89,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 		 * @param type $post_id
 		 */
 		public function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
-			global $wpdb;
+			global $wpdb, $mlwQuizMasterNext;
 			$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
 			switch ( $column ) {
 				case 'shortcode':
@@ -100,8 +100,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					break;
 
 				case 'total_questions':
-					$questions = $wpdb->get_var( "SELECT count(question_id) FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id`='{$quiz_id}' AND `deleted`='0'" );
-					echo esc_attr( $questions );
+					$total_questions = $mlwQuizMasterNext->pluginHelper->get_questions_count( $quiz_id );
+					echo esc_attr( $total_questions );
 					break;
 
 				case 'views':
@@ -286,7 +286,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 								<?php echo esc_html( PHP_VERSION ); ?>!
 								<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-								<a href="https://quizandsurveymaster.com/increased-minimum-php-version-qsm-6-0/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=minimum-php-notice" target="_blank" rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
+								<a href="<?php echo esc_url( qsm_get_plugin_link('increased-minimum-php-version-qsm-6-0', 'quiz-list-page', 'minimum-php-notice') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 							</p>
 						</div>
 						<?php
@@ -447,11 +447,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								</h3>
 							</main>
 							<footer class="qsm-popup__footer">
-								<a style="color: white;    text-decoration: none;"
-									href="https://quizandsurveymaster.com/downloads/export-import/" target="_blank"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<a style="color: white;text-decoration: none;" href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
@@ -489,7 +486,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						<h2><?php esc_html_e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
 						<div class="buttons">
 							<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
-							<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
+							<a class="button button-secondary button-hero" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'quiz-list-page') );?>" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</div>
 						<h3><?php esc_html_e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
 						<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

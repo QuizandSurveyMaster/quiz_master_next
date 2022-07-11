@@ -133,9 +133,18 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     background-color: #808080 !important;
     opacity: 0.9;
 }
-.qsm-quiz-container .qsm-contact-type-checkbox input{
-    display: inline-block;
+.qsm-quiz-container select,
+.qsm-quiz-container input[type=checkbox],
+.qsm-quiz-container input[type=radio]{
+	cursor: pointer;
 }
+.qsm-quiz-container .qsm-contact-type-checkbox{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+.qsm-quiz-container .qsm-contact-type-checkbox input{margin: 0 5px 0 3px;}
 .mlw_qmn_question_number{
     font-weight: bold;
 }
@@ -320,32 +329,44 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     }
 }
 .qsm_tooltip {
-  position: relative;
-  display: inline-block;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
 }
 
 .qsm_tooltip .qsm_tooltiptext{
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
 
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -60px;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -60px;
 }
 .qsm_tooltip .qsm_tooltiptext a{
-  background-color: black !important;
-  color: #fff!important;
+	background-color: black !important;
+	color: #fff!important;
 }
 .qsm_tooltip:hover .qsm_tooltiptext {
-  visibility: visible;
+	visibility: visible;
+}
+body .ui-tooltip, body .ui-tooltip.ui-widget-content{
+	box-shadow: none;
+	background: #222;
+	color: #fff;
+	border-radius: 6px;
+	box-sizing: border-box;
+	padding: 6px 10px;
+	font-size: 14px;
+	line-height: 22px;
+	text-align: justify;
 }
 .qsm_quiz_processing_box {
     display: inline-block;
@@ -358,5 +379,5 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     margin: 10px 0;
 }
 .qsm-text-correct-option.not-opted {
-    color: #6f7479;
-  }
+	color: #6f7479;
+}

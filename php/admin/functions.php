@@ -1,7 +1,7 @@
 <?php
 $themes_data = array();
 global $pro_themes;
-$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma' );
+$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'qsm-theme-fortune', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma', 'Fortune' );
 
 /**
  * @since 6.4.5
@@ -802,9 +802,7 @@ function qsm_create_new_quiz_wizard() {
 							</div>
 							<div class="qsm-addon-list-right">
 								<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
-									href="http://quizandsurveymaster.com/addons/?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-									target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+								<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'qsm-addons-page', 'all-addons-top') )?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 					</div>
@@ -959,12 +957,10 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	global $mlwQuizMasterNext;
 	global $pro_themes;
 	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
-	$folder_name   = QSM_THEME_PATH;
-	$folder_slug   = QSM_THEME_SLUG;
 	$theme_folders = array();
 	if ( ! empty( $active_themes ) ) {
 		foreach ( $active_themes as $dir ) {
-			$theme_dir = $folder_name . $dir['theme'];
+			$theme_dir = WP_PLUGIN_DIR . '/' . $dir['theme'];
 			if ( is_dir( $theme_dir ) ) {
 				$theme_folders[] = $dir;
 			}
@@ -1003,7 +999,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php esc_html_e('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
-					<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
+					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL.'/' . $theme_name . '/screenshot.png' ); ?>" />
 					<div class="downloaded-theme-button">
 						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 					</div>
@@ -1041,7 +1037,7 @@ function qsm_get_default_wizard_themes() {
 	global $themes_data;
 	global $pro_themes;
 	$installed_themes    = $mlwQuizMasterNext->theme_settings->get_installed_themes();
-	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma' );
+	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma', 'Fortune' );
 	$default_themes_data = array();
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {

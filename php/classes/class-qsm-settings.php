@@ -215,6 +215,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['disable_description_on_result']      = $globalQuizsetting['disable_description_on_result'];
 			$setDefaultvalue['disable_scroll_next_previous_click'] = $globalQuizsetting['disable_scroll_next_previous_click'];
 			$setDefaultvalue['disable_first_page']                 = $globalQuizsetting['disable_first_page'];
+			$setDefaultvalue['disable_mathjax']                    = $globalQuizsetting['disable_mathjax'];
 			$setDefaultvalue['quiz_animation']                     = $globalQuizsetting['quiz_animation'];
 			$setDefaultvalue['result_page_fb_image']               = $globalQuizsetting['result_page_fb_image'];
 			$setDefaultvalue['randomness_order']                   = $globalQuizsetting['randomness_order'];
@@ -297,10 +298,6 @@ class QSM_Quiz_Settings {
 		if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array['quiz_text'] ) || ! isset( $settings_array['quiz_leaderboards'] ) ) {
 			// Load the old options system
 			$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
-			// If no leadboard is present
-			if ( ! isset( $settings_array['quiz_leaderboards'] ) ) {
-				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
-			}
 			// If no options are present
 			if ( ! isset( $settings_array['quiz_options'] ) ) {
 				$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
@@ -341,7 +338,6 @@ class QSM_Quiz_Settings {
 					)
 				);
 			}
-
 			// If no text is present
 			if ( ! isset( $settings_array['quiz_text'] ) ) {
 				$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
@@ -384,6 +380,10 @@ class QSM_Quiz_Settings {
 						'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
 					)
 				);
+			}
+			// If no leadboard is present
+			if ( ! isset( $settings_array['quiz_leaderboards'] ) ) {
+				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
 			}
 			// Update new settings system
 			$results = $wpdb->update(

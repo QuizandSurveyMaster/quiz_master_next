@@ -326,22 +326,27 @@ class QMNQuizManager {
 		$question_amount = intval( $shortcode_args['question_amount'] );
 
 		ob_start();
+		global $wpdb, $mlwQuizMasterNext;
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
-			global $wpdb;
-			global $mlwQuizMasterNext;
-			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
-			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
-			wp_enqueue_style( 'dashicons' );
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-tooltip' );
-			wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
-			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
-			wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
-			wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
-			$query            = $wpdb->prepare( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id );
-			$result           = $wpdb->get_row( $query, ARRAY_A );
+			$result           = $wpdb->get_row( $wpdb->prepare( "SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id ), ARRAY_A );
 			if ( ! empty( $result ) && isset( $result['result_id'] ) ) {
+				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $result['quiz_id'] );
+				$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+
+				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
+				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
+				wp_enqueue_style( 'dashicons' );
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'jquery-ui-tooltip' );
+				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
+				wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
+				$disable_mathjax = isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '';
+				if ( 1 != $disable_mathjax ) {
+					wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
+					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
+				}
+
 				$result_id      = $result['result_id'];
 				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
 				$return_display = str_replace( '%FB_RESULT_ID%', $result_unique_id, $return_display );
@@ -350,8 +355,6 @@ class QMNQuizManager {
 			}
 			$return_display .= ob_get_clean();
 		} else {
-			global $wpdb;
-			global $mlwQuizMasterNext;
 			global $qmn_allowed_visit;
 			global $qmn_json_data;
 			$qmn_json_data     = array();
@@ -452,6 +455,7 @@ class QMNQuizManager {
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
 				'form_disable_autofill'              => isset( $qmn_quiz_options->form_disable_autofill ) ? $qmn_quiz_options->form_disable_autofill : '',
+				'disable_mathjax'                    => isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '',
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text'   => $correct_answer_text,
 				'quick_result_wrong_answer_text'     => $wrong_answer_text,
@@ -505,6 +509,7 @@ class QMNQuizManager {
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+
 				wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
 				wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
@@ -801,8 +806,6 @@ class QMNQuizManager {
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array(), $mlwQuizMasterNext->version, true );
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_script( 'jquery-touch-punch' );
-		wp_enqueue_style( 'qsm_model_css', QSM_PLUGIN_CSS_URL . '/qsm-admin.css', array(), $mlwQuizMasterNext->version );
-		wp_style_add_data( 'qsm_model_css', 'rtl', 'replace' );
 		wp_enqueue_script( 'qsm_model_js', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array(), $mlwQuizMasterNext->version, false );
 		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version, false );
 		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
@@ -817,8 +820,11 @@ class QMNQuizManager {
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 			)
 		);
-		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
-		wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
+		$disable_mathjax = isset( $options->disable_mathjax ) ? $options->disable_mathjax : '';
+		if ( 1 != $disable_mathjax ) {
+			wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
+			wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
+		}
 		global $qmn_total_questions, $qmn_all_questions_count;
 		$qmn_total_questions = $qmn_all_questions_count = 0;
 		global $mlw_qmn_section_count;
@@ -998,7 +1004,8 @@ class QMNQuizManager {
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $question['hints'] ) ) {
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_html( $hint_data ) . '">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '</div>';
 				}
 				?>
 					</div>
@@ -1070,7 +1077,8 @@ class QMNQuizManager {
 					}
 					// Checks if a hint is entered.
 					if ( ! empty( $question['hints'] ) ) {
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_html( $hint_data ) . '">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '</div>';
 					}
 					?>
 						</div>
@@ -1255,8 +1263,9 @@ class QMNQuizManager {
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $mlw_question->hints ) ) {
+					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) );
 					?>
-					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz_hint_text-{$qmn_quiz_options->quiz_id}" ) ); ?><span class="qsm_tooltiptext"><?php echo wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) ); ?></span></div><br /><br />
+					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="<?php echo esc_html( $hint_data );?>"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz_hint_text-{$qmn_quiz_options->quiz_id}" ) ); ?></div><br /><br />
 					<?php
 				}
 				?>
@@ -1690,14 +1699,15 @@ class QMNQuizManager {
 				$qmn_array_for_variables['email_processed'] = 'yes';
 				$this->qsm_background_email->data(
 					array(
-						'name'      => 'send_emails',
-						'result_id' => $results_id,
+						'name'          => 'send_emails',
+						'result_id'     => $results_id,
+						'quiz_settings' => $qmn_array_for_variables['quiz_settings'],
 					)
 				)->dispatch();
 			} else {
 				// Sends the emails.
 				$qmn_array_for_variables['email_processed'] = 'yes';
-				QSM_Emails::send_emails( $results_id );
+				QSM_Emails::send_emails( $results_id, $qmn_array_for_variables['quiz_settings'] );
 			}
 
 			/**
