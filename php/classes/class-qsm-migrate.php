@@ -182,7 +182,6 @@ class QSM_Migrate {
 				}
 			}
 		}
-		return;
 	}
 
 }
