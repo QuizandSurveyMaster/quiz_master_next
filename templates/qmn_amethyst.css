@@ -219,7 +219,11 @@ border: 1px solid #e3e3e3;
 .qsm-results-page .qmn_image_option input[type="radio"],
 .qsm-results-page .qmn_image_option input[type="checkbox"],
 .quiz_section .qmn_image_option input[type="radio"],
-.quiz_section .qmn_image_option input[type="checkbox"] {margin: 0 0 4px;}
+.quiz_section .qmn_image_option input[type="checkbox"] {
+    margin: 0 0 3px;
+    min-width: 15px;
+    min-height: 15px;
+}
 /* Alerts and error state */
 
 .qmn_error_message {
