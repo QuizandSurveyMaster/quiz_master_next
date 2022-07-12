@@ -170,7 +170,7 @@ class QSM_Migrate {
 			'fields'         => 'ids',
 		) );
 		$qmn_quiz_ids  = $wpdb->get_results( "SELECT `quiz_id` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `deleted`='0'" );
-		if ( ! empty( $qmn_quiz_ids ) && ! empty( $qsm_post_list ) ) {
+		if ( ! empty( $qsm_post_list ) ) {
 			$quiz_ids = array( 0 );
 			if ( ! empty( $qmn_quiz_ids ) ) {
 				$quiz_ids = array_column( $qmn_quiz_ids, 'quiz_id' );
