@@ -717,6 +717,7 @@ class QSM_Fields {
 		global $mlwQuizMasterNext;
 		$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
 		$class = $show_option ? $show_option . ' hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem' : '';
+		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
 		?>
 		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
