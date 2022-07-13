@@ -1698,17 +1698,18 @@ class QMNQuizManager {
 					// Send the emails in background.
 					$qmn_array_for_variables['quiz_settings']   = isset( $qmn_quiz_options->quiz_settings ) ? maybe_unserialize( $qmn_quiz_options->quiz_settings ) : array();
 					$qmn_array_for_variables['email_processed'] = 'yes';
+					$transient_id = 'response_'.rand(10000,99999);
+					set_transient( $transient_id, maybe_serialize( $qmn_array_for_variables ), 6000 );
 					$this->qsm_background_email->data(
 						array(
 							'name'          => 'send_emails',
-							'result_id'     => $results_id,
-							'quiz_settings' => $qmn_array_for_variables['quiz_settings'],
+							'transient_id'     => $transient_id,
 						)
 					)->dispatch();
 				} else {
 					// Sends the emails.
 					$qmn_array_for_variables['email_processed'] = 'yes';
-					QSM_Emails::send_emails( $results_id, $qmn_array_for_variables['quiz_settings'] );
+					QSM_Emails::send_emails( $transient_id );
 				}
 			}
 			/**

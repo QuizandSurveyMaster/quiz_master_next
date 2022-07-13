@@ -491,15 +491,11 @@ class QSM_Install {
 		$field_array = array(
 			'id'         => 'store_responses',
 			'label'      => __( 'Save Responses', 'quiz-master-next' ),
-			'type'       => 'radio',
+			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Yes', 'quiz-master-next' ),
+					'label' => __( 'Store response in database', 'quiz-master-next' ),
 					'value' => 1,
-				),
-				array(
-					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 0,
 				),
 			),
 			'default'    => 1,
@@ -511,16 +507,12 @@ class QSM_Install {
 		// Registers send_email setting
 		$field_array = array(
 			'id'         => 'send_email',
-			'label'      => __( 'Emails notifications', 'quiz-master-next' ),
-			'type'       => 'radio',
+			'label'      => '',
+			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Yes', 'quiz-master-next' ),
+					'label' => __( 'Enable email notification', 'quiz-master-next' ),
 					'value' => 1,
-				),
-				array(
-					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 0,
 				),
 			),
 			'default'    => 1,

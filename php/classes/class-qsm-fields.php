@@ -735,7 +735,7 @@ class QSM_Fields {
 					<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
 						name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $score_roundoff ); ?>
 						value="<?php echo esc_attr( $option["value"] ); ?>" />
-					<br />
+					<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"><?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?></label>
 					<?php
 					}
 					?>
