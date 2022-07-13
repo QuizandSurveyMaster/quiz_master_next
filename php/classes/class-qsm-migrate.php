@@ -168,9 +168,10 @@ class QSM_Migrate {
 			'post_type'      => 'qsm_quiz',
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
+			'post_status'    => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' ),
 		) );
 		$qmn_quiz_ids  = $wpdb->get_results( "SELECT `quiz_id` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `deleted`='0'" );
-		if ( ! empty( $qmn_quiz_ids ) && ! empty( $qsm_post_list ) ) {
+		if ( ! empty( $qsm_post_list ) ) {
 			$quiz_ids = array( 0 );
 			if ( ! empty( $qmn_quiz_ids ) ) {
 				$quiz_ids = array_column( $qmn_quiz_ids, 'quiz_id' );
