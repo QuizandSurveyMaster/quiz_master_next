@@ -508,6 +508,27 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers send_email setting
+		$field_array = array(
+			'id'         => 'send_email',
+			'label'      => __( 'Emails notifications', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 1,
+			'help'       => __( 'Results will be sent over email', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers disable_answer_onselect setting
 		$field_array = array(
 			'id'         => 'disable_answer_onselect',
