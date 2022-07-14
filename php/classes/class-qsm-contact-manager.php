@@ -386,7 +386,7 @@ class QSM_Contact_Manager {
 				}
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -423,7 +423,7 @@ class QSM_Contact_Manager {
 			case 'email':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -451,7 +451,7 @@ class QSM_Contact_Manager {
 			case 'date':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -466,7 +466,7 @@ class QSM_Contact_Manager {
 			case 'url':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_url_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_url_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -482,7 +482,7 @@ class QSM_Contact_Manager {
 			case 'number':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_number_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_number_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -508,7 +508,7 @@ class QSM_Contact_Manager {
 				<?php
 				break;
 			default:
-				do_action( 'qsm_extra_contact_filed', $fields, $quiz_options );
+				do_action( 'qsm_extra_contact_form_field_display', $field, $quiz_options, $index,$default_value );
 				break;
 		}
 	}
