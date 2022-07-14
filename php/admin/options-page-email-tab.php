@@ -40,7 +40,7 @@ function qsm_options_emails_tab_content() {
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 	$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
-	if( isset( $quiz_options['send_email'] ) && 1 != $quiz_options['send_email'] ){
+	if ( isset( $quiz_options['send_email'] ) && 1 != $quiz_options['send_email'] ) {
 		?>
 		<div class="error notice-large notice-error">
 			<p><?php _e( 'Emails are turned off. Please update ');?> <a href="<?php echo admin_url('admin.php?page=mlw_quiz_options&quiz_id='.$quiz_id.'&tab=options');?>"> <?php _e('this setting', 'quiz-master-next');?></a><?php _e( ' for the emails to work properly.', 'quiz-master-next' ); ?></p>
@@ -79,6 +79,7 @@ function qsm_options_emails_tab_content() {
 				<?php
 				$variable_list                                      = qsm_text_template_variable_list();
 				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
+				$variable_list['Core']['%ANSWER_X%']      = __( 'X = Question ID.It will show result of particular question.', 'quiz-master-next' );
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
 				// filter to add or remove variables from variable list for email tab

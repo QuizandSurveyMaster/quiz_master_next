@@ -46,6 +46,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_tak
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_social_share', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_result_id', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer', 20, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_answer', 20, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name', 10, 2 );
@@ -110,7 +111,50 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
 	}
 	return $content;
 }
-
+/**
+ * Changed the display structure to new structure.
+ *
+ * @since 8.0.3
+ * @param string $content
+ * @param array  $mlw_quiz_array
+ * Show particular  answer.
+ */
+* /
+function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
+	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
+	while ( false !== strpos( $content, '%ANSWER_' ) ) {
+		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
+		$question_answers_array = isset( $mlw_quiz_array['question_answers_array'] ) ? $mlw_quiz_array['question_answers_array'] : array();
+		$key                    = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
+		if ( isset( $question_answers_array[ $key ] ) ) {
+			global $mlwQuizMasterNext;
+			global $wpdb;
+			$answers = $question_answers_array[ $key ];
+			$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
+		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
+			
+			if ( isset($answers['user_answer']) ) {
+			if ( count($answers['user_answer']) > 1 ) {
+			 $content = str_replace( '%ANSWER_' . $question_id . '%', implode(",",$answers['user_answer']), $content );
+			}
+			else {
+				foreach ( $answers['user_answer'] as $answer ) {
+				if ( 'rich' === $question_settings['answerEditor'] ) {
+					$answerstr = htmlspecialchars_decode( $answer);
+				}
+				elseif ( 'image' === $question_settings['answerEditor'] ) {
+					$answerstr = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+				}else {
+					$answerstr = $answer;
+				}
+					$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
+				}
+			}
+		}   
+	}
+	}
+return $content;
+}
 /**
  * Replace total_possible_points variable with actual points
  *
