@@ -39,7 +39,9 @@ class QSM_Fields {
 							$sanitized_value = esc_url_raw( wp_unslash( $_POST[ $field["id"] ] ) );
 							break;
 
-						case 'radio':
+						case 'checkbox':
+							$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : 0;
+							break;
 						case 'date':
 							$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
 							break;

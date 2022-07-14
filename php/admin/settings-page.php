@@ -897,13 +897,15 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_save_responses() {
 		global $globalQuizsetting;
-		$qsm_store_responses = ( isset( $globalQuizsetting['store_responses'] ) && '' !== $globalQuizsetting['store_responses'] ? $globalQuizsetting['store_responses'] : '0' );
-		$qsm_send_email = ( isset( $globalQuizsetting['send_email'] ) && '' !== $globalQuizsetting['send_email'] ? $globalQuizsetting['send_email'] : '0' );
+		$qsm_store_responses = ( isset( $globalQuizsetting['store_responses'] ) && '' !== $globalQuizsetting['store_responses'] ? $globalQuizsetting['store_responses'] : '' );
+		$qsm_send_email = ( isset( $globalQuizsetting['send_email'] ) && '' !== $globalQuizsetting['send_email'] ? $globalQuizsetting['send_email'] : '' );
 		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="hidden" name="qsm-quiz-settings[store_responses]"  value="0">
 				<input type="checkbox" id="store_responses" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
-				<label for="store_responses">Store results permanently in database</label>
+				<label for="store_responses">'.__('Store results permanently in database', 'quiz-master-next').'</label>
+				<input type="hidden" name="qsm-quiz-settings[send_email]"  value="0">
 				<input type="checkbox" id="send_email" name="qsm-quiz-settings[send_email]" value="1" ' . checked( $qsm_send_email, '1', false ) . '>
-				<label for="send_email">Send email notifications</label>
+				<label for="send_email">'.__('Send email notifications', 'quiz-master-next').'</label>
 			</fieldset>';
 	}
 

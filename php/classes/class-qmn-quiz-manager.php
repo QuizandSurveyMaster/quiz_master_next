@@ -1576,7 +1576,7 @@ class QMNQuizManager {
 			$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
 			$results_array['minimum_possible_points']   = $qmn_array_for_variables['minimum_possible_points'];
 			// If the store responses in database option is set to Yes.
-			if ( 0 != $qmn_quiz_options->store_responses ) {
+			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
 				// Inserts the responses in the database.
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
@@ -1693,7 +1693,7 @@ class QMNQuizManager {
 
 			$qmn_global_settings           = (array) get_option( 'qmn-settings' );
 			$background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
-			if ( 0 != $qmn_quiz_options->send_email ) {
+			if ( 1 === intval( $qmn_quiz_options->send_email ) ) {
 				$qmn_array_for_variables['quiz_settings']   = isset( $qmn_quiz_options->quiz_settings ) ? maybe_unserialize( $qmn_quiz_options->quiz_settings ) : array();
 				$qmn_array_for_variables['email_processed'] = 'yes';
 				$transient_id = 'response_'.wp_rand(10000,99999);
