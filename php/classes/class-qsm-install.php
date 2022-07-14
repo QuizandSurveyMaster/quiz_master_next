@@ -787,6 +787,7 @@ class QSM_Install {
 				),
 			),
 			'default'    => 0,
+			'tooltip'    => __( 'Disable automatic conversion of MathJax(latex) symbols/equations.', 'quiz-master-next' ),
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
