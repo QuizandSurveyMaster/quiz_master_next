@@ -1693,23 +1693,24 @@ class QMNQuizManager {
 
 			$qmn_global_settings           = (array) get_option( 'qmn-settings' );
 			$background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
-			if ( 1 == $background_quiz_email_process ) {
-				// Send the emails in background.
+			if ( 0 != $qmn_quiz_options->send_email ) {
 				$qmn_array_for_variables['quiz_settings']   = isset( $qmn_quiz_options->quiz_settings ) ? maybe_unserialize( $qmn_quiz_options->quiz_settings ) : array();
 				$qmn_array_for_variables['email_processed'] = 'yes';
-				$this->qsm_background_email->data(
-					array(
-						'name'          => 'send_emails',
-						'result_id'     => $results_id,
-						'quiz_settings' => $qmn_array_for_variables['quiz_settings'],
-					)
-				)->dispatch();
-			} else {
-				// Sends the emails.
-				$qmn_array_for_variables['email_processed'] = 'yes';
-				QSM_Emails::send_emails( $results_id, $qmn_array_for_variables['quiz_settings'] );
+				$transient_id = 'response_'.wp_rand(10000,99999);
+				set_transient( $transient_id, maybe_serialize( $qmn_array_for_variables ), 6000 );
+				if ( 1 == $background_quiz_email_process ) {
+					// Send the emails in background.
+					$this->qsm_background_email->data(
+						array(
+							'name'         => 'send_emails',
+							'transient_id' => $transient_id,
+						)
+					)->dispatch();
+				} else {
+					// Sends the emails.
+					QSM_Emails::send_emails( $transient_id );
+				}
 			}
-
 			/**
 			 * Filters for filtering the results text after emails are sent.
 			 *

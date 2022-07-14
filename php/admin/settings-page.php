@@ -114,6 +114,7 @@ class QMNGlobalSettingsPage {
 			'question_numbering'                 => 0,
 			'show_optin'                         => 0,
 			'store_responses'                    => 1,
+			'send_email'                         => 1,
 			'disable_answer_onselect'            => 0,
 			'ajax_show_correct'                  => 0,
 			'contact_disable_autofill'           => 0,
@@ -176,7 +177,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'show-question-numbers', __( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-opt-in-answers-default', __( 'Show Opt-in type Answers to user', 'quiz-master-next' ), array( $this, 'qsm_global_show_optin_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
-		add_settings_field( 'save-responses', __( 'Save Responses', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
+		add_settings_field( 'save-responses', __( 'Submit Actions', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-auto-fill-for-contact-input', __( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
@@ -897,13 +898,13 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_save_responses() {
 		global $globalQuizsetting;
 		$qsm_store_responses = ( isset( $globalQuizsetting['store_responses'] ) && '' !== $globalQuizsetting['store_responses'] ? $globalQuizsetting['store_responses'] : '0' );
+		$qsm_send_email = ( isset( $globalQuizsetting['send_email'] ) && '' !== $globalQuizsetting['send_email'] ? $globalQuizsetting['send_email'] : '0' );
 		echo '<fieldset class="buttonset buttonset-hide" >
-				<input type="radio" id="store_responses-1" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
-				<label for="store_responses-1">Yes</label><br>
-				<input type="radio" id="store_responses-0" name="qsm-quiz-settings[store_responses]" value="0" ' . checked( $qsm_store_responses, '0', false ) . '>
-				<label for="store_responses-0">No</label><br>
-			</fieldset>
-			<span class="qsm-opt-desc">The results will be permanently stored in a database</span>';
+				<input type="checkbox" id="store_responses" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
+				<label for="store_responses">Store results permanently in database</label>
+				<input type="checkbox" id="send_email" name="qsm-quiz-settings[send_email]" value="1" ' . checked( $qsm_send_email, '1', false ) . '>
+				<label for="send_email">Send email notifications</label>
+			</fieldset>';
 	}
 
 	/**

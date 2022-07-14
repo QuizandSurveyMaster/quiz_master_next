@@ -201,6 +201,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['question_numbering']                 = $globalQuizsetting['question_numbering'];
 			$setDefaultvalue['show_optin']                         = $globalQuizsetting['show_optin'];
 			$setDefaultvalue['store_responses']                    = $globalQuizsetting['store_responses'];
+			$setDefaultvalue['send_email']                         = $globalQuizsetting['send_email'];
 			$setDefaultvalue['disable_answer_onselect']            = $globalQuizsetting['disable_answer_onselect'];
 			$setDefaultvalue['ajax_show_correct']                  = $globalQuizsetting['ajax_show_correct'];
 			$setDefaultvalue['contact_disable_autofill']           = $globalQuizsetting['contact_disable_autofill'];

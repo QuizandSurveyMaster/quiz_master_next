@@ -490,20 +490,33 @@ class QSM_Install {
 		// Registers store_responses setting
 		$field_array = array(
 			'id'         => 'store_responses',
-			'label'      => __( 'Save Responses', 'quiz-master-next' ),
-			'type'       => 'radio',
+			'label'      => __( 'Submit Actions', 'quiz-master-next' ),
+			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Yes', 'quiz-master-next' ),
+					'label' => __( 'Store results permanently in database', 'quiz-master-next' ),
 					'value' => 1,
-				),
-				array(
-					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 0,
 				),
 			),
 			'default'    => 1,
-			'help'       => __( 'The results will be permanently stored in a database', 'quiz-master-next' ),
+			'help'       => '',
+			'option_tab' => 'quiz_submission',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers send_email setting
+		$field_array = array(
+			'id'         => 'send_email',
+			'label'      => '',
+			'type'       => 'checkbox',
+			'options'    => array(
+				array(
+					'label' => __( 'Send email notifications', 'quiz-master-next' ),
+					'value' => 1,
+				),
+			),
+			'default'    => 1,
+			'help'       => '',
 			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
