@@ -31,11 +31,11 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		$image_class = '';
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
 			$size_style = '';
-			if ( ! empty($single_answer[4]) ) {
-				$size_style .= 'width:'.$single_answer[4].'px !important;';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
 			}
-			if ( ! empty($single_answer[5]) ) {
-				$size_style .= ' height:'.$single_answer[5].'px !important;';
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
 			}
 			$show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '" style="' . esc_attr( $size_style ) . '" />';
 			$image_class      = 'qmn_image_option';

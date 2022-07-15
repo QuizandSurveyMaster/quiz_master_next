@@ -308,9 +308,6 @@
 	margin: 10px 0 0;
 	text-decoration: none;
 }
-.qsm-image-size-section {
-    display: flex;
-}
 
 .questionElements .qsm-row>label {
 	position: relative;

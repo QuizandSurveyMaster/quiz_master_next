@@ -505,7 +505,19 @@ function qsm_generate_question_option( $key, $single_option ) {
 					<input type="text" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
 					<?php
 					break;
-
+				case 'multi_text':
+					$parent_key = $key;
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						foreach ( $single_option['options'] as $key => $value ) {
+							?>
+							<label><?php echo wp_kses_post( $value ); ?>
+								<input name="<?php echo esc_attr( $parent_key ); ?>[<?php echo esc_attr( $key ); ?>]" type="text" id="<?php echo esc_attr( $parent_key.'-'.$key ); ?>" />
+							</label>
+							<br />
+							<?php
+						}
+					}
+					break;
 				case 'number':
 					if ( isset( $single_option['label'] ) ) {
 						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
