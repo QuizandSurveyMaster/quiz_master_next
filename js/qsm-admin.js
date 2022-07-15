@@ -1797,9 +1797,6 @@ var import_button;
                     var comments = $("#comments").val();
                     advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
                     var category = $(".category-radio:checked").val();
-                    var limit_text = $("#limit_text").val();
-                    var limit_multiple_response = $("#limit_multiple_response").val();
-                    var file_upload_limit = $("#file_upload_limit").val();
                     var type_arr = [];
                     $.each($("input[name='file_upload_type[]']:checked"), function () {
                         type_value = $(this).val().replace(/,/g, '');
@@ -1826,8 +1823,6 @@ var import_button;
                         var $answer = jQuery(answer);
                         var answer = '';
                         var caption = '';
-                        let width = '';
-                        let height = '';
                         if (answerType == 'rich') {
                             var ta_id = $answer.find('textarea').attr('id')
                             answer = wp.editor.getContent(ta_id);
@@ -1836,10 +1831,6 @@ var import_button;
                             answer = $.QSMSanitize(answer);
                             caption = $answer.find('.answer-caption').val().trim();
                             caption = $.QSMSanitize(caption);
-                            width = $answer.find('.qsm-image-width').val().trim();
-                            width = $.QSMSanitize(width);
-                            height = $answer.find('.qsm-image-height').val().trim();
-                            height = $.QSMSanitize(height);
                         } else {
                             answer = $answer.find('.answer-text').val().trim();
                             answer = $.QSMSanitize(answer);
@@ -1852,7 +1843,7 @@ var import_button;
                         }
 
                         if (answerType == 'image') {
-                            answers.push([answer, points, correct, caption, width, height]);
+                            answers.push([answer, points, correct, caption]);
                         } else {
                             answers.push([answer, points, correct]);
                         }
@@ -1860,8 +1851,10 @@ var import_button;
                     });
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
-                            var element_id = $(this).find('input[type="text"]').attr('id');
-                            advanced_option[element_id] = $(this).find('input[type="text"]').val();
+                            $($(this).find('input[type="text"]')).each(function () {
+                                var element_id = $(this).attr('id');
+                                advanced_option[element_id] = $(this).val();
+                            });
                         } else if ($(this).find('input[type="number"]').length > 0) {
                             var element_id = $(this).find('input[type="number"]').attr('id');
                             advanced_option[element_id] = $(this).find('input[type="number"]').val();
@@ -1940,17 +1933,15 @@ var import_button;
                     }
                     console.log(answer);
                     var answerTemplate = wp.template('single-answer');
-                    if (answer.length >= 9 && answer[8] == 'image') {
+                    if (answer.length >= 7 && answer[6] == 'image') {
                         $('#answers').append(answerTemplate({
                             answer: decodeEntities(answer[0]),
                             points: answer[1],
                             correct: answer[2],
                             caption: answer[3],
-                            width: answer[4],
-                            height: answer[5],
-                            count: answer[6],
-                            question_id: answer[7],
-                            answerType: answer[8],
+                            count: answer[4],
+                            question_id: answer[5],
+                            answerType: answer[6],
                             form_type: qsmQuestionSettings.form_type,
                             quiz_system: qsmQuestionSettings.quiz_system
                         }));
@@ -2074,6 +2065,16 @@ var import_button;
                     if (get_limit_mr === null || typeof get_limit_mr === "undefined") {
                         get_limit_mr = '0';
                     }
+                    //Get image width value
+                    var image_width = question.get('img_width');
+                    if (image_width === null || typeof image_width === "undefined") {
+                        image_width = '';
+                    }
+                    //Get image height value
+                    var image_height = question.get('img_height');
+                    if (image_height === null || typeof image_height === "undefined") {
+                        image_height = '0';
+                    }
                     //Get file upload limit
                     var get_limit_fu = question.get('file_upload_limit');
                     if (get_limit_fu === null || typeof get_limit_fu === "undefined") {
@@ -2106,12 +2107,6 @@ var import_button;
                     }
                     var al = 0;
                     _.each(answers, function (answer) {
-                        if ('image' === answerEditor && !answer[4]) {
-                            answer[4] = '';
-                        }
-                        if ('image' === answerEditor && !answer[5]) {
-                            answer[5] = '';
-                        }
                         answer.push(al + 1);
                         answer.push(questionID);
                         answer.push(answerEditor);
@@ -2132,6 +2127,8 @@ var import_button;
 
                     qsm_hide_show_question_desc(question.get('type'));
                     $('#hint').val(question.get('hint'));
+                    $('#image_size-width').val(image_width);
+                    $('#image_size-height').val(image_height);
                     $("#question_type").val(question.get('type'));
                     $("#comments").val(question.get('comments'));
                     //Changed checked logic based on new structure for required.
@@ -2188,6 +2185,11 @@ var import_button;
                         QSMQuestion.prepareEditPolarQuestion(question.get('type'));
                     }
                     QSMQuestion.sync_child_parent_category(questionID);
+
+                    $('#image_size_area').hide();
+                    if ('image' === answerEditor) {
+                        $('#image_size_area').show();
+                    }
 
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
@@ -2549,6 +2551,10 @@ var import_button;
                     var newVal = $(this).val();
                     if (confirm('All answer will be reset, Do you want to still continue?')) {
                         $('#answers').find('.answers-single').remove();
+                        $('#image_size_area').hide();
+                        if ('image' === newVal) {
+                            $('#image_size_area').show();
+                        }
                     } else {
                         if (newVal == 'rich') {
                             $(this).val('text');
