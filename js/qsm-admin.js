@@ -2073,7 +2073,7 @@ var import_button;
                     //Get image height value
                     let image_height = question.get('img_height');
                     if (image_height === null || typeof image_height === "undefined") {
-                        image_height = 'gits';
+                        image_height = '';
                     }
                     //Get file upload limit
                     var get_limit_fu = question.get('file_upload_limit');
