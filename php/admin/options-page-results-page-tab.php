@@ -69,7 +69,6 @@ function qsm_options_results_tab_content() {
 				$variable_list                             = qsm_text_template_variable_list();
 				$variable_list['Core']['%POLL_RESULTS_X%'] = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
 				$variable_list['Core']['%RESULT_ID%']      = __( 'Show result id', 'quiz-master-next' );
-				$variable_list['Core']['%ANSWER_X%']      = __( 'X = Question ID.It will show result of particular question.', 'quiz-master-next' );
 				//filter to add or remove variables from variable list for pdf tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
 				if ( $variable_list ) {

@@ -121,35 +121,34 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
  */
 * /
 function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
+	global $mlwQuizMasterNext,$wpdb;
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
 		$question_answers_array = isset( $mlw_quiz_array['question_answers_array'] ) ? $mlw_quiz_array['question_answers_array'] : array();
 		$key                    = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
 		if ( isset( $question_answers_array[ $key ] ) ) {
-			global $mlwQuizMasterNext;
-			global $wpdb;
 			$answers = $question_answers_array[ $key ];
 			$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
 		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
-			
+			$answerstr              = "";
 			if ( isset($answers['user_answer']) ) {
-			if ( count($answers['user_answer']) > 1 ) {
-			 $content = str_replace( '%ANSWER_' . $question_id . '%', implode(",",$answers['user_answer']), $content );
-			}
-			else {
-				foreach ( $answers['user_answer'] as $answer ) {
 				if ( 'rich' === $question_settings['answerEditor'] ) {
-					$answerstr = htmlspecialchars_decode( $answer);
+					foreach ( $answers['user_answer'] as $answer ) {
+					$answerstr .= htmlspecialchars_decode($answer);
+					}
 				}
 				elseif ( 'image' === $question_settings['answerEditor'] ) {
-					$answerstr = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+					foreach ( $answers['user_answer'] as $answer ) {
+					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+					}
 				}else {
-					$answerstr = $answer;
+					$answerstr .= implode(",",$answers['user_answer']);
 				}
-					$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
-				}
-			}
+					
+				
+				$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
+			
 		}   
 	}
 	}

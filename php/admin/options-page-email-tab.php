@@ -79,7 +79,6 @@ function qsm_options_emails_tab_content() {
 				<?php
 				$variable_list                                      = qsm_text_template_variable_list();
 				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
-				$variable_list['Core']['%ANSWER_X%']      = __( 'X = Question ID.It will show result of particular question.', 'quiz-master-next' );
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
 				// filter to add or remove variables from variable list for email tab
