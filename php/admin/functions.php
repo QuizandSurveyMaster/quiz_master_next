@@ -507,7 +507,6 @@ function qsm_generate_question_option( $key, $single_option ) {
 					break;
 				case 'multi_text':
 					$parent_key = $key;
-					$default    = isset( $single_option['default'] ) ? $single_option['default'] : '';
 					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 						foreach ( $single_option['options'] as $key => $value ) {
 							?>

@@ -1852,18 +1852,18 @@ var import_button;
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
                             $($(this).find('input[type="text"]')).each(function () {
-                                var element_id = $(this).attr('id');
+                                let element_id = $(this).attr('id');
                                 advanced_option[element_id] = $(this).val();
                             });
                         } else if ($(this).find('input[type="number"]').length > 0) {
-                            var element_id = $(this).find('input[type="number"]').attr('id');
+                            let element_id = $(this).find('input[type="number"]').attr('id');
                             advanced_option[element_id] = $(this).find('input[type="number"]').val();
                         } else if ($(this).find('select').length > 0) {
-                            var element_id = $(this).find('select').attr('id');
+                            let element_id = $(this).find('select').attr('id');
                             advanced_option[element_id] = $(this).find('select').val();
                         } else if ($(this).find('input[type="checkbox"]').length > 0) {
-                            var element_id = $(this).find('input[type="checkbox"]').attr('name');
-                            var multi_value = $(this).find('input[type="checkbox"]:checked').map(function () {
+                            let element_id = $(this).find('input[type="checkbox"]').attr('name');
+                            let multi_value = $(this).find('input[type="checkbox"]:checked').map(function () {
                                 return this.value;
                             }).get().join(',');
                             element_id = element_id.replace('[]', '');
@@ -2066,14 +2066,14 @@ var import_button;
                         get_limit_mr = '0';
                     }
                     //Get image width value
-                    var image_width = question.get('img_width');
+                    let image_width = question.get('img_width');
                     if (image_width === null || typeof image_width === "undefined") {
                         image_width = '';
                     }
                     //Get image height value
-                    var image_height = question.get('img_height');
+                    let image_height = question.get('img_height');
                     if (image_height === null || typeof image_height === "undefined") {
-                        image_height = '';
+                        image_height = 'gits';
                     }
                     //Get file upload limit
                     var get_limit_fu = question.get('file_upload_limit');
