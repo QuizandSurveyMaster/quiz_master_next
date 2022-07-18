@@ -350,8 +350,8 @@ function qsm_options_questions_tab_content() {
 										'type'     => 'multi_text',
 										'priority' => '2',
 										'options'  => array(
-											'width'  => __( 'Width in pixel', 'quiz-master-next' ),
-											'height' => __( 'Height in pixel', 'quiz-master-next' ),
+											'width'  => __( 'Width ', 'quiz-master-next' ),
+											'height' => __( 'Height', 'quiz-master-next' ),
 										),
 										'default'  => '',
 										'show'     => '',
