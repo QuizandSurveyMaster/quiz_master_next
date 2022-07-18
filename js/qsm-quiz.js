@@ -352,15 +352,14 @@ var qsmTimerInterval = [];
 				});
 			}
 			// Gets timer element.
-			var $timer = QSM.getTimer(quizID);
+			let $timer = QSM.getTimer(quizID);
 
 			// Calculates starting time.
-			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
-			var timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID);
+			let timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
+			let timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID);
+			let seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
-			} else {
-				seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			}
 			$timer.text(QSM.secondsToTimer(seconds));
 		},
