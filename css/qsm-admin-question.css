@@ -308,7 +308,9 @@
 	margin: 10px 0 0;
 	text-decoration: none;
 }
-
+input#image_size-width {
+    margin-left: 6px;
+}
 .questionElements .qsm-row>label {
 	position: relative;
 }
