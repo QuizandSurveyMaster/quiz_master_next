@@ -119,7 +119,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
  * @param array  $mlw_quiz_array
  * Show particular  answer.
  */
-* /
+
 function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext,$wpdb;
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
