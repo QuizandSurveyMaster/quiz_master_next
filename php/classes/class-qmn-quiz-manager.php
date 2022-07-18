@@ -927,8 +927,7 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
-
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
+		if ( 1 < count( $pages ) && 1 !== intval( $options->disable_first_page ) && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
 			$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $quiz_data );
@@ -1163,7 +1162,7 @@ class QMNQuizManager {
 	public function display_begin_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlwQuizMasterNext, $qmn_json_data, $wp_embed;
 		$contact_fields = QSM_Contact_Manager::load_fields();
-		if ( ! empty( $qmn_quiz_options->message_before ) || ( 0 == $qmn_quiz_options->contact_info_location && $contact_fields ) ) {
+		if ( 1 !== intval( $qmn_quiz_options->disable_first_page ) && ( ! empty( $qmn_quiz_options->message_before ) || ( 0 == $qmn_quiz_options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			global $mlw_qmn_section_count;
 			$mlw_qmn_section_count += 1;
@@ -2652,7 +2651,7 @@ function qmn_timer_check( $display, $qmn_quiz_options, $qmn_array_for_variables 
 	global $qmn_json_data;
 	if ( $qmn_allowed_visit && 0 != $qmn_quiz_options->timer_limit ) {
 		$qmn_json_data['timer_limit'] = $qmn_quiz_options->timer_limit;
-		$display                     .= '<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>';
+		$display                     .= '<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>';
 	}
 	return $display;
 }

@@ -68,7 +68,7 @@ var qsmTimerInterval = [];
 			// If we are using the newer pagination system...
 			if (0 < $quizForm.children('.qsm-page').length) {
 				// If there is a first page...
-				if (qmn_quiz_data[quizID].hasOwnProperty('first_page') && !qmn_quiz_data[quizID].first_page) {
+				if ( !qmn_quiz_data[quizID].hasOwnProperty('first_page') || !qmn_quiz_data[quizID].first_page ) {
 					QSM.activateTimer(quizID);
 					$('.qsm-quiz-container-'+ quizID).find('.stoptimer-p').show();
 				}
@@ -282,17 +282,14 @@ var qsmTimerInterval = [];
 		 */
 		initPagination: function (quizID) {
 			var $quizForm = QSM.getQuizForm(quizID);
-
-
 			/**
 			 *
 			 * CHecking if the quiz is random
 			 */
 			$is_random = $('.qmn_quiz_container').hasClass('random');
 			if($is_random){
-			QSM.goToPage(quizID, 1);
-			}
-			else if (0 < $quizForm.children('.qsm-page').length) {
+				QSM.goToPage(quizID, 1);
+			} else if (0 < $quizForm.children('.qsm-page').length) {
 				$quizForm.children('.qsm-page').hide();
 				template = wp.template('qsm-pagination-' + quizID);
 				$quizForm.append(template());
@@ -354,6 +351,18 @@ var qsmTimerInterval = [];
 					jQuery(document).trigger('qsm_previous_button_click_after', [quizID]);
 				});
 			}
+			// Gets timer element.
+			var $timer = QSM.getTimer(quizID);
+
+			// Calculates starting time.
+			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
+			var timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID);
+			if ('yes' == timerStarted && 0 < timerRemaning) {
+				seconds = parseInt(timerRemaning);
+			} else {
+				seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
+			}
+			$timer.text(QSM.secondsToTimer(seconds));
 		},
 		/**
 		 * Navigates quiz to specific page
@@ -1137,14 +1146,14 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	if (go_to_top == 1 && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
 		qsmScrollTo($container);
 	}
-	if (qmn_quiz_data[quiz_id].disable_first_page == 1) {
-	if (slide_number == 0 && page_number == 0) {
-		$container.find(".qsm-auto-page-row.quiz_begin").hide();
-		$container.find('.qsm-auto-page-row.qsm-apc-' + (parseInt(page_number) + 1)).show();
-		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
-		$container.find('.current_page_hidden').val(parseInt(page_number) + 2);
-		$container.find(".mlw_previous").hide();
-	}
+	if ( !qmn_quiz_data[quiz_id].hasOwnProperty('first_page') || !qmn_quiz_data[quiz_id].first_page ) {
+		if (slide_number == 0 && page_number == 0) {
+			$container.find(".qsm-auto-page-row.quiz_begin").hide();
+			$container.find('.qsm-auto-page-row.qsm-apc-' + (parseInt(page_number) + 1)).show();
+			$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
+			$container.find('.current_page_hidden').val(parseInt(page_number) + 2);
+			$container.find(".mlw_previous").hide();
+		}
 	}
 	//Show the page counts
 	if (page_number > 0 && jQuery(quiz_form_id).closest('.qmn_quiz_container').find('.pages_count').length > 0) {
@@ -1406,7 +1415,7 @@ jQuery(function () {
 				parent_div.replaceWith(response);
 				//Reload the timer and pagination
 				qmnDoInit();
-				
+
 				if ( 1 != qmn_quiz_data[quiz_id].disable_mathjax ) {
 					MathJax.typesetPromise();
 				}
