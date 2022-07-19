@@ -378,9 +378,9 @@ class QSM_Contact_Manager {
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
 			$class .= 'mlwRequiredText qsm_required_text';
-		}
-		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden && 'checkbox' === $field["type"] ) {
-			$class .= ' mlwRequiredAccept';
+			if ( 'checkbox' === $field["type"] ) {
+				$class .= ' mlwRequiredAccept';
+			}
 		}
 		switch ( $field['type'] ) {
 			case 'text':
