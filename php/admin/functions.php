@@ -676,6 +676,7 @@ function qsm_create_new_quiz_wizard() {
 					<div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
 						<div class="input-group">
 							<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
+							<span style="color:red">*</span>
 								<span
 									class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 							</label>
