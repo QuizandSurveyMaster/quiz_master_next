@@ -1808,6 +1808,31 @@ var import_button;
                     if (!category) {
                         category = '';
                     }
+
+                    //polar question validation
+                    if (13 == type) {
+                        var polar_error = 0;
+                        var old_value = "";
+                        $('.answers-single .answer-points').each(function () {
+                            $(this).css('border-color', '');
+                            if ( "" != old_value && $(this).val() == old_value ) {
+                                alert("Left range and right range should be different");
+                                polar_error++;
+                            }
+                            if ("" == $(this).val()) {
+                                $(this).css('border-color', 'red');
+                                polar_error++;
+                            }
+                            old_value = $(this).val();
+                        });
+                        if (0 < polar_error) {
+                            setTimeout(function () {
+                                $('#save-edit-question-spinner').removeClass('is-active');
+                            }, 250);
+                            return false;
+                        }
+                    }
+
                     var multicategories = [];
                     $.each($("input[name='tax_input[qsm_category][]']:checked"), function () {
                         multicategories.push($(this).val());
@@ -2241,6 +2266,12 @@ var import_button;
                     if (2 == questionID && 'text' !== ans_type) {
                         $('#change-answer-editor').val('text');
                         $('.answers-single').remove();
+                    }
+                    if ( 13 != questionID ) {
+                        $('.new-answer-button').show();
+                        $('.remove-answer-icon').show();
+                        let ans_placeholder = "Your answer";
+                        "image" == ans_type && (ans_placeholder = "Insert image URL"), $("#answers").find(".answers-single input.answer-text").attr("placeholder", ans_placeholder), $("#answers").find(".answers-single input.answer-points").attr("placeholder", "Points");
                     }
                 },
                 prepareEditPolarQuestion: function (question_val) {
