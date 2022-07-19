@@ -359,7 +359,7 @@ class QSM_Contact_Manager {
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', $fields );
 	}
-	
+
 	/**
 	 * Generate Contact Field HTML
 	 * @param type $field
@@ -378,13 +378,16 @@ class QSM_Contact_Manager {
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
 			$class .= 'mlwRequiredText qsm_required_text';
+			if ( 'checkbox' === $field["type"] ) {
+				$class .= ' mlwRequiredAccept';
+			}
 		}
 		switch ( $field['type'] ) {
 			case 'text':
 				if ( 'phone' === $field['use'] ) {
 					$class .= 'mlwPhoneNumber';
 				}
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
@@ -421,7 +424,7 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'email':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
@@ -449,7 +452,7 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'date':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
@@ -464,7 +467,7 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'url':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_url_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
@@ -480,7 +483,7 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'number':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_number_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
