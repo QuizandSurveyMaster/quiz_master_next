@@ -1485,7 +1485,7 @@ var import_button;
                     if (pagination.current_page == 1) {
                         if (qsmQuestionSettings.categories.length > 0) {
                             var category_arr = qsmQuestionSettings.categories;
-                            $cat_html = '<option value="">' + qsm_admin_messages.all_categories + '</option>';
+                            let $cat_html = '<option value="">' + qsm_admin_messages.all_categories + '</option>';
                             $.each(category_arr, function (index, value) {
                                 if (value.category !== '') {
                                     if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
