@@ -110,7 +110,7 @@ class QMNGlobalSettingsPage {
 			'question_per_category'              => 0,
 			'contact_info_location'              => 0,
 			'loggedin_user_contact'              => 0,
-			'comment_section'                    => 0,
+			'comment_section'                    => 1,
 			'question_numbering'                 => 0,
 			'show_optin'                         => 0,
 			'store_responses'                    => 1,
@@ -902,10 +902,10 @@ class QMNGlobalSettingsPage {
 		echo '<fieldset class="buttonset buttonset-hide" >
 				<input type="hidden" name="qsm-quiz-settings[store_responses]"  value="0">
 				<input type="checkbox" id="store_responses" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
-				<label for="store_responses">'.__('Store results permanently in database', 'quiz-master-next').'</label>
+				<label for="store_responses">'.esc_html__('Store results permanently in database', 'quiz-master-next').'</label>
 				<input type="hidden" name="qsm-quiz-settings[send_email]"  value="0">
 				<input type="checkbox" id="send_email" name="qsm-quiz-settings[send_email]" value="1" ' . checked( $qsm_send_email, '1', false ) . '>
-				<label for="send_email">'.__('Send email notifications', 'quiz-master-next').'</label>
+				<label for="send_email">'.esc_html__('Send email notifications', 'quiz-master-next').'</label>
 			</fieldset>';
 	}
 
