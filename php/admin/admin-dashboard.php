@@ -155,6 +155,7 @@ function qsm_generate_dashboard_page() {
 						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="https://next.expresstech.io/qsm" class="welcome-icon"><span class="dashicons dashicons-feedback"></span>&nbsp;&nbsp;<?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -173,21 +174,22 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_recent_taken_quiz',
 				'title'    => 'Recent Taken Quiz',
 			),
-			'dashboard_roadmap'           => array(
+			'dashboard_chagelog'          => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_roadmap',
-				'title'    => 'roadmap',
+				'callback' => 'qsm_dashboard_chagelog',
+				'title'    => 'Changelog',
 			),
 			'dashboard_latest_blogs'      => array(
 				'sidebar'  => 'normal',
 				'callback' => 'qsm_dashboard_latest_blogs',
 				'title'    => 'Latest Blogs',
 			),
-			'dashboard_chagelog'          => array(
+			'dashboard_roadmap'           => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_chagelog',
-				'title'    => 'Changelog',
+				'callback' => 'qsm_dashboard_roadmap',
+				'title'    => 'roadmap',
 			),
+			
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
 		update_option( 'qsm_dashboard_widget_arr', $qsm_dashboard_widget );
