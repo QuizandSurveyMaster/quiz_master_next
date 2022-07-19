@@ -401,7 +401,6 @@ var qsmTimerInterval = [];
 			}
 			if ('1' == qmn_quiz_data[quizID].disable_first_page) {
 				if (pageNumber == 1) {
-					$quizForm.find(".quiz_begin").hide();
 					$quizForm.find(".mlw_previous").hide();
 					$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();
 				}
