@@ -734,14 +734,43 @@ function qsm_create_new_quiz_wizard() {
 								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['disable_first_page'],
 							),
+							'enable_contact_form'    => array(
+								'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
+								'value'       => 0,
+								'options'     => array(
+									array(
+										'label' => __( 'Yes', 'quiz-master-next' ),
+										'value' => 1,
+									),
+									array(
+										'label' => __( 'No', 'quiz-master-next' ),
+										'value' => 0,
+									),
+								),
+							),
+							'comment_section'        => array(
+								'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['comment_section'],
+							),
 						);
 						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
-								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
-								$field            = $all_settings[ $key ];
-								$field['label']   = $single_setting['option_name'];
-								$field['default'] = $single_setting['value'];
+								$index = array_search( $key, array_column( $all_settings, 'id' ), true );
+								if ( '' != $index && isset( $all_settings[ $index ] ) ) {
+									$field               = $all_settings[ $index ];
+									$field['label']      = $single_setting['option_name'];
+									$field['default']    = $single_setting['value'];
+								} else {
+									$field = array(
+										'id'      => $key,
+										'label'   => $single_setting['option_name'],
+										'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
+										'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
+										'default' => $single_setting['value'],
+										'help'    => __( 'Select when to display the contact form', 'quiz-master-next' ),
+									);
+								}
 								echo '<div class="input-group">';
 								QSM_Fields::generate_field( $field, $single_setting['value'] );
 								echo '</div>';

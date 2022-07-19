@@ -610,6 +610,7 @@ function qsm_create_new_quiz_from_wizard() {
 			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
 			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 			'disable_first_page'                 => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
+			'comment_section'                    => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 		);
 		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();
 		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {
@@ -619,14 +620,16 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Contact Fields
 		 */
 		$contact_form    = array();
-		$cf_fields       = QSM_Contact_Manager::default_fields();
-		if ( isset( $cf_fields['name'] ) ) {
-			$cf_fields['name']['enable'] = 'true';
-			$contact_form[]              = $cf_fields['name'];
-		}
-		if ( isset( $cf_fields['email'] ) ) {
-			$cf_fields['email']['enable']    = 'true';
-			$contact_form[]                  = $cf_fields['email'];
+		if ( isset( $_POST['enable_contact_form'] ) && 1 == sanitize_text_field( wp_unslash( $_POST['enable_contact_form'] ) ) ) {
+			$cf_fields       = QSM_Contact_Manager::default_fields();
+			if ( isset( $cf_fields['name'] ) ) {
+				$cf_fields['name']['enable'] = 'true';
+				$contact_form[]              = $cf_fields['name'];
+			}
+			if ( isset( $cf_fields['email'] ) ) {
+				$cf_fields['email']['enable']    = 'true';
+				$contact_form[]                  = $cf_fields['email'];
+			}
 		}
 		/**
 		 * Prepare Quiz Options

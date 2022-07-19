@@ -43,7 +43,7 @@ function qsm_options_emails_tab_content() {
 	if ( isset( $quiz_options['send_email'] ) && 1 != $quiz_options['send_email'] ) {
 		?>
 		<div class="error notice-large notice-error">
-			<p><?php esc_html_e( 'Emails are turned off. Please update ', 'quiz-master-next');?> <a href="<?php echo admin_url('admin.php?page=mlw_quiz_options&quiz_id='.$quiz_id.'&tab=options');?>"> <?php esc_html_e('this setting', 'quiz-master-next');?></a><?php esc_html_e( ' for the emails to work properly.', 'quiz-master-next' ); ?></p>
+			<p><?php esc_html_e( 'Emails are turned off. Please update ', 'quiz-master-next');?> <a href="<?php echo esc_url( admin_url('admin.php?page=mlw_quiz_options&quiz_id='.$quiz_id.'&tab=options') );?>"> <?php esc_html_e('this setting', 'quiz-master-next');?></a><?php esc_html_e( ' for the emails to work properly.', 'quiz-master-next' ); ?></p>
 		</div>
 		<?php
 	}
