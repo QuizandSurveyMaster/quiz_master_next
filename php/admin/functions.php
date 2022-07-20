@@ -742,7 +742,7 @@ function qsm_create_new_quiz_wizard() {
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
 								$index = array_search( $key, array_column( $all_settings, 'id' ), true );
-								if ( '' != $index && isset( $all_settings[ $index ] ) ) {
+								if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
 									$field               = $all_settings[ $index ];
 									$field['label']      = $single_setting['option_name'];
 									$field['default']    = $single_setting['value'];
