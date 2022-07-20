@@ -1811,6 +1811,7 @@ var import_button;
                     //polar question validation
                     if (13 == type) {
                         let polar_error = 0;
+                        let polar_required_error = 0;
                         let old_value = "";
                         $('.answers-single .answer-points').each(function () {
                             $(this).css('border-color', '');
@@ -1821,9 +1822,13 @@ var import_button;
                             if ("" == $(this).val()) {
                                 $(this).css('border-color', 'red');
                                 polar_error++;
+                                polar_required_error++;
                             }
                             old_value = $(this).val();
                         });
+                        if (0 < polar_required_error) {
+                            alert(qsm_admin_messages.range_fields_required);
+                        }
                         if (0 < polar_error) {
                             setTimeout(function () {
                                 $('#save-edit-question-spinner').removeClass('is-active');
@@ -2269,6 +2274,7 @@ var import_button;
                     if (13 != questionID) {
                         $('.new-answer-button').show();
                         $('.remove-answer-icon').show();
+                        $('.answer-points').css('border-color', '');
                         let ans_placeholder = qsm_admin_messages.your_answer;
                         "image" == ans_type && (ans_placeholder = qsm_admin_messages.insert_image_url), $("#answers").find(".answers-single input.answer-text").attr("placeholder", ans_placeholder), $("#answers").find(".answers-single input.answer-points").attr("placeholder", qsm_admin_messages.points);
                     }
@@ -2292,6 +2298,12 @@ var import_button;
                         "image" == answerType && (ans_l_placeholder = "Insert left image URL"), $("#answers").find(".answers-single:first-child input.answer-text").attr("placeholder", ans_l_placeholder);
                         let ans_r_placeholder = qsm_admin_messages.right_label;
                         "image" == answerType && (ans_r_placeholder = "Insert right image URL"), $("#answers").find(".answers-single:last-child input.answer-text").attr("placeholder", ans_r_placeholder), $("#answers").find(".answers-single:first-child input.answer-points").attr("placeholder", qsm_admin_messages.left_range), $("#answers").find(".answers-single:last-child input.answer-points").attr("placeholder", qsm_admin_messages.right_range);
+                        if ( "" == $("#answers").find(".answers-single:first-child input.answer-points").val() ) {
+                            $("#answers").find(".answers-single:first-child input.answer-points").val(0);
+                        }
+                        if ( "" == $("#answers").find(".answers-single:last-child input.answer-points").val() ) {
+                            $("#answers").find(".answers-single:last-child input.answer-points").val(5);
+                        }
                     } else {
                         $('.new-answer-button').show();
                         $('.remove-answer-icon').show();

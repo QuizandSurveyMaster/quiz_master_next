@@ -405,6 +405,7 @@ class MLWQuizMasterNext {
 			'page_name_required'         => __('Page Name is required!', 'quiz-master-next'),
 			'page_name_validation'       => __('Please use only Alphanumeric characters.', 'quiz-master-next'),
 			'polar_q_range_error'        => __('Left range and right range should be different', 'quiz-master-next'),
+			'range_fields_required'      => __('Range fields are required!', 'quiz-master-next'),
 			'points'                     => __('Points', 'quiz-master-next'),
 			'left_label'                 => __('Left Label', 'quiz-master-next'),
 			'right_label'                => __('Right Label', 'quiz-master-next'),
