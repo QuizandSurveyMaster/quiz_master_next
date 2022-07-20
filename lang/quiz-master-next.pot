@@ -3603,7 +3603,7 @@ msgid "Disable MathJax"
 msgstr ""
 
 #: php/classes/class-qsm-install.php:790
-msgid "Disable automatic conversion of MathJax(latex) symbols/equations."
+msgid "Allows you to write math formulas using TeX and LaTeX notation."
 msgstr ""
 
 #: php/classes/class-qsm-install.php:852
