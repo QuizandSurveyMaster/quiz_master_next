@@ -753,7 +753,7 @@ function qsm_create_new_quiz_wizard() {
 										'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
 										'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
 										'default' => $single_setting['value'],
-										'help'    => __( 'Select when to display the contact form', 'quiz-master-next' ),
+										'help'    => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 									);
 								}
 								echo '<div class="input-group">';
