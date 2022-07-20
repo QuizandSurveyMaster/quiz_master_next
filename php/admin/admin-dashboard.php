@@ -605,12 +605,8 @@ function qsm_create_new_quiz_from_wizard() {
 			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
 			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
 			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
-			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
-			'progress_bar'                       => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : '',
 			'timer_limit'                        => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
-			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
 			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
-			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 			'disable_first_page'                 => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
 			'comment_section'                    => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 		);
