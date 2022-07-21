@@ -2379,6 +2379,7 @@ var import_button;
                 $('.questions').on('click', '.delete-question-button', function (event) {
                     event.preventDefault();
                     remove = $(this);
+                    $(this).parents('.question').next('.questionElements').slideUp('slow');
                     // opens-up question-delete modal
                     MicroModal.show('modal-7');
                     $('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));

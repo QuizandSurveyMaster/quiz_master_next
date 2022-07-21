@@ -45,11 +45,17 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 	}
 
 	private function process_randomly() {
+		global $mlwQuizMasterNext;
 		$total_user_answers   = sizeof( $this->user_answer );
 		$total_correct_answer = sizeof( $this->correct_answer );
+		$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'case_sensitive' );
 		if ( $total_user_answers <= $total_correct_answer ) {
 			foreach ( $this->user_answer as $user_answer ) {
-				$answer_key = array_search( $this->prepare_for_string_matching( $user_answer ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
+				if( 1 === intval($case_sensitive ) ){
+					$answer_key = array_search( $user_answer, $this->correct_answer, true );
+				}else{
+					$answer_key = array_search( $this->prepare_for_string_matching( $user_answer ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
+				}
 				if ( false !== $answer_key ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[ $answer_key ][1];
@@ -59,7 +65,11 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 			}
 		} else {
 			foreach ( $this->correct_answer as $correct_answer ) {
-				$answer_key = array_search( $this->prepare_for_string_matching( $correct_answer ),  array_map( array( $this, 'prepare_for_string_matching' ), $this->user_answer ), true );
+				if( 1 === intval($case_sensitive ) ){
+					$answer_key = array_search( $correct_answer, $this->user_answer, true );
+				}else{
+					$answer_key = array_search( $this->prepare_for_string_matching( $correct_answer ),  array_map( array( $this, 'prepare_for_string_matching' ), $this->user_answer ), true );
+				}
 				if ( false !== $answer_key ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[ $answer_key ][1];
@@ -71,11 +81,16 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 	}
 
 	private function process_sequentially() {
+		global $mlwQuizMasterNext;
 		$total_user_answers   = sizeof( $this->user_answer );
 		$total_correct_answer = sizeof( $this->correct_answer );
+		$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'case_sensitive' );
 		if ( $total_user_answers <= $total_correct_answer ) {
 			foreach ( $this->user_answer as $user_answer_key => $user_answer ) {
-				if ( $this->prepare_for_string_matching( $user_answer ) === $this->prepare_for_string_matching( $this->correct_answer[ $user_answer_key ] ) ) {
+				if( 1 === intval($case_sensitive) && $user_answer ===  $this->correct_answer[ $user_answer_key ] ){
+					$this->answer_status = 'correct';
+					$this->points       += $this->answer_array[ $user_answer_key ][1];
+				}elseif ( $this->prepare_for_string_matching( $user_answer ) === $this->prepare_for_string_matching( $this->correct_answer[ $user_answer_key ] ) ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[ $user_answer_key ][1];
 				} else {
@@ -84,7 +99,10 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 			}
 		} else {
 			foreach ( $this->correct_answer as $correct_answer_key => $correct_answer ) {
-				if ( $this->prepare_for_string_matching( $correct_answer ) === $this->prepare_for_string_matching( $this->user_answer[ $correct_answer_key ] ) ) {
+				if( 1 === intval($case_sensitive) && $correct_answer === $this->user_answer[ $correct_answer_key ] ){
+					$this->answer_status = 'correct';
+					$this->points       += $this->answer_array[ $user_answer_key ][1];
+				}elseif ( $this->prepare_for_string_matching( $correct_answer ) === $this->prepare_for_string_matching( $this->user_answer[ $correct_answer_key ] ) ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[ $correct_answer_key ][1];
 				} else {
