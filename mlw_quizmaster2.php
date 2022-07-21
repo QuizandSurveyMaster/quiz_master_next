@@ -363,6 +363,7 @@ class MLWQuizMasterNext {
 			'try_again'                  => __('Please try again', 'quiz-master-next'),
 			'already_exists_in_database' => __('already exists in database', 'quiz-master-next'),
 			'confirm_message'            => __('Are you sure?', 'quiz-master-next'),
+			'case_sensitive'             => __('Case sensitive', 'quiz-master-next'),
 			'error_delete_result'        => __('Error to delete the result!', 'quiz-master-next'),
 			'copied'                     => __('Copied!', 'quiz-master-next'),
 			'set_feature_img'            => __('Set Featured Image', 'quiz-master-next'),

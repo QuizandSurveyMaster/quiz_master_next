@@ -308,7 +308,6 @@ function qsm_options_questions_tab_content() {
 								<?php
 								$show_correct_answer_info = '';
 								$show_autofill = '';
-								$show_case_sensitive = '';
 								$show_limit_text = '';
 								$show_limit_multiple_response = '';
 								$show_file_upload_type = '';
@@ -319,9 +318,6 @@ function qsm_options_questions_tab_content() {
 									}
 									if ( isset( $type['options']['show_autofill'] ) && $type['options']['show_autofill'] ) {
 										$show_autofill .= ',' . $type['slug'];
-									}
-									if ( isset( $type['options']['show_case_sensitive'] ) && $type['options']['show_case_sensitive'] ) {
-										$show_case_sensitive .= ',' . $type['slug'];
 									}
 									if ( isset( $type['options']['show_limit_text'] ) && $type['options']['show_limit_text'] ) {
 										$show_limit_text .= ',' . $type['slug'];
@@ -389,18 +385,6 @@ function qsm_options_questions_tab_content() {
 										'default'  => '0',
 										'show'     => '3, 14' . $show_autofill,
 										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'autofill'),
-									),
-									'case_sensitive'      => array(
-										'heading'  => __( 'Allow Case Sensitive', 'quiz-master-next' ),
-										'label'    => __( 'Case Sensitive Answer', 'quiz-master-next' ),
-										'type'     => 'single_checkbox',
-										'priority' => '12',
-										'options'  => array(
-											'1' => __( 'Yes', 'quiz-master-next' ),
-										),
-										'default'  => '0',
-										'show'     => '14' .$show_case_sensitive,
-
 									),
 									'limit_text'          => array(
 										'heading'  => __( 'Limit Text', 'quiz-master-next' ),
@@ -1103,11 +1087,17 @@ function qsm_options_questions_tab_template() {
 				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 				<# } #>
+				<# if ( 14 == data.question_type) { #>
+					<div class="qsm-case-sensitive-section"><label class="qsm-case-sensitive" ><input type="checkbox" class="qsm-case-sensitive-input" value="1" <# if ( 1 == data.case_sensitive ) { #> checked="checked" <# } #>/><?php esc_html_e( 'Case sensitive', 'quiz-master-next' ); ?></label></div>
+				<# } #>
 				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
 					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></label></div>
 				<# } #>
 			<# } else { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+					<# if ( 14 == data.question_type) { #>
+						<div class="qsm-case-sensitive-section"><label class="qsm-case-sensitive" ><input type="checkbox" class="qsm-case-sensitive-input" value="1" <# if ( 1 == data.case_sensitive ) { #> checked="checked" <# } #>/><?php esc_html_e( 'Case sensitive', 'quiz-master-next' ); ?></label></div>
+					<# } #>
 			<# } #>
 			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>

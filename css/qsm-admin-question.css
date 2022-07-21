@@ -515,6 +515,11 @@ a.import-button.button.disable_import::before {
 	margin-right: 0;
 	vertical-align: -webkit-baseline-middle;
 }
+.answers-single .qsm-case-sensitive {
+    width: 110px;
+    display: inline-block;
+    vertical-align: -webkit-baseline-middle;
+}
 .questionElements #postbox-container-1 select {
 	border: 1px solid #dddddd;
 	border-radius: 1px;

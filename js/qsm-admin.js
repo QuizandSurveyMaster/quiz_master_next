@@ -1852,6 +1852,7 @@ var import_button;
                         var $answer = jQuery(answer);
                         var answer = '';
                         var caption = '';
+                        let case_sensitive = 0;
                         if (answerType == 'rich') {
                             var ta_id = $answer.find('textarea').attr('id')
                             answer = wp.editor.getContent(ta_id);
@@ -1874,8 +1875,9 @@ var import_button;
                         if (answerType == 'image') {
                             answers.push([answer, points, correct, caption]);
                         } else {
-                            answers.push([answer, points, correct]);
+                            answers.push([{ 0: answer, 1: points, 2: correct, case_sensitive: case_sensitive }]);
                         }
+                        console.log(answers);
 
                     });
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
@@ -1972,7 +1974,8 @@ var import_button;
                             question_id: answer[5],
                             answerType: answer[6],
                             form_type: qsmQuestionSettings.form_type,
-                            quiz_system: qsmQuestionSettings.quiz_system
+                            quiz_system: qsmQuestionSettings.quiz_system,
+                            question_type: questionType
                         }));
                     } else {
                         $('#answers').append(answerTemplate({
@@ -1983,7 +1986,8 @@ var import_button;
                             question_id: answer[4],
                             answerType: answer[5],
                             form_type: qsmQuestionSettings.form_type,
-                            quiz_system: qsmQuestionSettings.quiz_system
+                            quiz_system: qsmQuestionSettings.quiz_system,
+                            question_type: questionType
                         }));
                     }
 
@@ -2298,10 +2302,10 @@ var import_button;
                         "image" == answerType && (ans_l_placeholder = "Insert left image URL"), $("#answers").find(".answers-single:first-child input.answer-text").attr("placeholder", ans_l_placeholder);
                         let ans_r_placeholder = qsm_admin_messages.right_label;
                         "image" == answerType && (ans_r_placeholder = "Insert right image URL"), $("#answers").find(".answers-single:last-child input.answer-text").attr("placeholder", ans_r_placeholder), $("#answers").find(".answers-single:first-child input.answer-points").attr("placeholder", qsm_admin_messages.left_range), $("#answers").find(".answers-single:last-child input.answer-points").attr("placeholder", qsm_admin_messages.right_range);
-                        if ( "" == $("#answers").find(".answers-single:first-child input.answer-points").val() ) {
+                        if ("" == $("#answers").find(".answers-single:first-child input.answer-points").val()) {
                             $("#answers").find(".answers-single:first-child input.answer-points").val(0);
                         }
-                        if ( "" == $("#answers").find(".answers-single:last-child input.answer-points").val() ) {
+                        if ("" == $("#answers").find(".answers-single:last-child input.answer-points").val()) {
                             $("#answers").find(".answers-single:last-child input.answer-points").val(5);
                         }
                     } else {
@@ -2672,8 +2676,13 @@ var import_button;
                     }
                     if (14 == question_val) {
                         $('.correct-answer').hide();
+                        if (!$('.answers-single .qsm-case-sensitive-section').length) {
+                            $('.answers-single div:last-of-type').before('<div class="qsm-case-sensitive-section"><label class="qsm-case-sensitive" ><input type="checkbox" class="qsm-case-sensitive-input" value="1"/>' + qsm_admin_messages.case_sensitive + '</label></div>');
+                        }
+                        $('.qsm-case-sensitive-section').show();
                     } else {
                         $('.correct-answer').show();
+                        $('.qsm-case-sensitive-section').hide();
                     }
 
                     // show points field only for polar in survey and simple form
@@ -2980,7 +2989,7 @@ var import_button;
                             if (results.status) {
                                 QSMAdmin.displayAlert(qsm_admin_messages.results_page_saved, 'success');
                             } else {
-                                QSMAdmin.displayAlert( qsm_admin_messages.results_page_save_error + ' ' + qsm_admin_messages.results_page_saved, 'error');
+                                QSMAdmin.displayAlert(qsm_admin_messages.results_page_save_error + ' ' + qsm_admin_messages.results_page_saved, 'error');
                             }
                         })
                         .fail(QSMAdmin.displayjQueryError);

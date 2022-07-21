@@ -558,7 +558,6 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'img_height'              => isset( $question['settings']['image_size-height'] ) ? $question['settings']['image_size-height'] : '',
 					'answerEditor'            => isset( $question['settings']['answerEditor'] ) ? $question['settings']['answerEditor'] : 'text',
 					'autofill'                => isset( $question['settings']['autofill'] ) ? $question['settings']['autofill'] : 0,
-					'case_sensitive'          => isset( $question['settings']['case_sensitive'] ) ? $question['settings']['case_sensitive'] : 0,
 					'limit_text'              => isset( $question['settings']['limit_text'] ) ? $question['settings']['limit_text'] : 0,
 					'limit_multiple_response' => isset( $question['settings']['limit_multiple_response'] ) ? $question['settings']['limit_multiple_response'] : 0,
 					'file_upload_limit'       => isset( $question['settings']['file_upload_limit'] ) ? $question['settings']['file_upload_limit'] : 0,

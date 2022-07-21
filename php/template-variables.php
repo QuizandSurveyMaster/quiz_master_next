@@ -145,11 +145,11 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 				}else {
 					$answerstr .= implode(",",$answers['user_answer']);
 				}
-					
-				
+
+
 				$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
-			
-		}   
+
+		}
 	}
 	}
 return $content;
@@ -1080,27 +1080,20 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && 14 == $answer['question_type'] ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
-					
+
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
 							$show_user_answer = $new_array_user_answer[ $key ];
 
-							$is_answer_correct = 0;
-							$case_sensitive    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
-
-							if ( 1 === intval( $case_sensitive ) ) {
-								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
-								$decode_single_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
-							} else {
-								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-								$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
-							}
+							$is_answer_correct = false;
+							$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
+							$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
 
 							if ( $decode_show_user_answer == $decode_single_user_answer ) {
-								$is_answer_correct = 1;
+								$is_answer_correct = true;
 							}
 							$index = $key + 1;
-							
+
 							if ( $is_answer_correct ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
@@ -1111,27 +1104,18 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) ) . '</span>';
 							}
-						}                   
-} else {
-						$options        = array();
-						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'case_sensitive' );
-						
-						foreach ( $total_answers as $key => $single_answer ) {
-							if ( 1 === intval( $case_sensitive ) ) {
-								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
-							} else {
-								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) ); 
-							}
 						}
-						
+				} else {
+						$options        = array();
+
+						foreach ( $total_answers as $key => $single_answer ) {
+							$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
+						}
+
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( 1 === intval( $case_sensitive ) ) {
-									$key = array_search(  $show_user_answer , $options ,true);
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
-								}
-								
+								$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
+
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
@@ -1142,18 +1126,15 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 							}
 						} else {
-							
+
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( 1 === intval( $case_sensitive ) ) {
-									$key = array_search(  $show_user_answer , $options,true );
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );   
-								}
-								
+
+								$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );
+
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
 								} else {
-									
+
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = 'No answer provided';
 									}
