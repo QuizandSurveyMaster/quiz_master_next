@@ -1048,22 +1048,14 @@ class QMNPluginHelper {
 
 	public function qsm_results_css_inliner( $html ) {
 
-		$incorrect_answer = "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
-		$correct_answer   = "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
-		$simple_answer    = "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
-		$html             = str_replace( '<br/>', '<br>', $html );
-		$html             = str_replace( '<br />', '<br>', $html );
-		$html             = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer qmn_image_option">', "$correct_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-simple-option qmn_image_option">', "$simple_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer ">', "$correct_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-simple-option ">', "$simple_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $html );
-		$html             = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $html );
-		$html             = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $html );
-		$html             = str_replace( '<span class="qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer">', "$correct_answer ", $html );
-		$html             = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
+		$html    = str_replace( '<br/>', '<br>', $html );
+		$html    = str_replace( '<br />', '<br>', $html );
+		$html    = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
+		$html    = preg_replace( '/<span class="qsm-text-simple-option(.*?)">(.*?)<\/span>/', "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;$2</span>", $html );
+		$html    = preg_replace( '/<span class="qsm-text-wrong-option(.*?)">(.*?)<\/span>/', "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;$2</span>", $html );
+		$html    = preg_replace( '/<span class="qmn_user_incorrect_answer(.*?)">(.*?)<\/span>/', "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;$2</span>", $html );
+		$html    = preg_replace( '/<span class="qsm-text-correct-option(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;$2</span>", $html );
+		$html    = preg_replace( '/<span class="qmn_user_correct_answer(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;$2</span>", $html );
 
 		return $html;
 	}
