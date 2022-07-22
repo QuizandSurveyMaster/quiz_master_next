@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 8.0.2
+Stable tag: 8.0.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,20 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.3 (July 22, 2022) =
+* Feature: Added option to enable/disable case sensitive answer for fill-in blank question
+* Feature: Added option to enable/disable MathJax
+* Feature: Added option to enable/disable emails notifications
+* Feature: Added option to set images size for image type answers
+* Feature: Added %ANSWER_X% variables to show user's answer to a specific question
+* Feature: Added translation support for all Javascript string messages
+* Bug: Fixed display issue with leaderboard customization block
+* Bug: Fixed issue with questions count in quiz list page
+* Bug: Fixed issue with %QUESTION_ANSWER_X% variables
+* Bug: Fixed issue while deleting/duplicating old quizzes
+* Bug: Fixed issue with timer while using pagination
+* Enhancement: Improved UI for image type answers options
+
 = 8.0.2 (June 23, 2022) =
 * Bug: Fixed scoring issue while using random questions
 * Bug: Fixed issue with file question type validation settings

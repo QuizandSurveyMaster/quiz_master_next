@@ -355,7 +355,7 @@ function qsm_options_questions_tab_content() {
 										),
 										'default'  => '',
 										'show'     => '',
-										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Multiple-Choice',
+										'documentation_link' => 'https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/#7-set-custom-image-size',
 									),
 									'comments'            => array(
 										'heading'  => __( 'Comment Box', 'quiz-master-next' ),
