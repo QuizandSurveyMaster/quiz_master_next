@@ -517,6 +517,7 @@ class QMNQuizManager {
 					'quiz_id'                => $result_data['quiz_id'],
 					'quiz_name'              => $result_data['quiz_name'],
 					'quiz_system'            => $result_data['quiz_system'],
+					'form_type'              => $result_data['form_type'],
 					'quiz_payment_id'        => '',
 					'user_ip'                => $result_data['user_ip'],
 					'user_name'              => $result_data['name'],
