@@ -1822,6 +1822,8 @@ class QMNQuizManager {
 					foreach ( $question_list as $question_id ) {
 						// When the questions are the same...
 						if ( $page_question_id == $question_id ) {
+							global $mlwQuizMasterNext;
+							$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 							$question          = $questions[ $page_question_id ];
 							$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result.
@@ -1899,6 +1901,7 @@ class QMNQuizManager {
 										'question_type'   => $question['question_type_new'],
 										'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
+										'case_sensitive'  => $case_sensitive,
 									),
 									$options,
 									$quiz_data
@@ -1918,6 +1921,8 @@ class QMNQuizManager {
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
+						global $mlwQuizMasterNext;
+						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 						// Reset question-specific variables.
 						$user_answer    = '';
 						$correct_answer = '';
@@ -1983,6 +1988,7 @@ class QMNQuizManager {
 									'question_type'     => $question['question_type_new'],
 									'question_title'    => isset( $question['settings']['question_title'] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['settings']['question_title'], "Question-{$question_id}", "QSM Questions") : '',
 									'user_compare_text' => $user_compare_text,
+									'case_sensitive'    => $case_sensitive,
 								),
 								$options,
 								$quiz_data
