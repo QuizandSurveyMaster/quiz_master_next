@@ -63,6 +63,8 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
  * @since  4.4.0
  */
 function qmn_fill_blank_review( $id, $question, $answers ) {
+	global $mlwQuizMasterNext;
+	$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'case_sensitive' );
 	$current_question  = new QSM_Question_Review_Fill_In_Blanks( $id, $question, $answers );
 	$user_text_array                   = $current_question->get_user_answer();
 	$correct_text_array                = $current_question->get_correct_answer();
@@ -73,6 +75,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	$return_array['user_compare_text'] = ! empty( $user_text_array ) ? implode( '=====', $user_text_array ) : '' ;
 	$return_array['user_answer']       = $user_text_array;
 	$return_array['correct_answer']    = $correct_text_array ;
+	$return_array['case_sensitive']    = $case_sensitive ;
 	if ( $current_question->get_question_text() ) {
 		$return_array['question_text'] = $current_question->get_question_text();
 	}

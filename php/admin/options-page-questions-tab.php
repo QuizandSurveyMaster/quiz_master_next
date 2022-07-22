@@ -341,7 +341,7 @@ function qsm_options_questions_tab_content() {
 										'heading'  => __( 'Correct Answer Info', 'quiz-master-next' ),
 										'type'     => 'textarea',
 										'default'  => '',
-										'priority' => '1',
+										'priority' => '2',
 										'show'     => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
 										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'correct_answer_info'),
 									),
@@ -394,7 +394,7 @@ function qsm_options_questions_tab_content() {
 										'heading'  => __( 'Allow Case Sensitive', 'quiz-master-next' ),
 										'label'    => __( 'Case Sensitive Answer', 'quiz-master-next' ),
 										'type'     => 'single_checkbox',
-										'priority' => '12',
+										'priority' => '1',
 										'options'  => array(
 											'1' => __( 'Yes', 'quiz-master-next' ),
 										),

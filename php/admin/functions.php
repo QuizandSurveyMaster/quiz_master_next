@@ -676,6 +676,7 @@ function qsm_create_new_quiz_wizard() {
 					<div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
 						<div class="input-group">
 							<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
+							<span style="color:red">*</span>
 								<span
 									class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 							</label>
@@ -698,50 +699,63 @@ function qsm_create_new_quiz_wizard() {
 						$all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 						global $globalQuizsetting;
 						$quiz_setting_option = array(
-							'form_type'              => array(
+							'form_type'           => array(
 								'option_name' => __( 'Form Type', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['form_type'],
 							),
-							'system'                 => array(
+							'system'              => array(
 								'option_name' => __( 'Grading System', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['system'],
 							),
-							'pagination'             => array(
-								'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['pagination'],
+							'enable_contact_form' => array(
+								'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
+								'value'       => 0,
+								'options'     => array(
+									array(
+										'label' => __( 'Yes', 'quiz-master-next' ),
+										'value' => 1,
+									),
+									array(
+										'label' => __( 'No', 'quiz-master-next' ),
+										'value' => 0,
+									),
+								),
 							),
-							'progress_bar'           => array(
-								'option_name' => __( 'Show Progress Bar', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['progress_bar'],
-							),
-							'timer_limit'            => array(
+							'timer_limit'         => array(
 								'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['timer_limit'],
 							),
-							'enable_pagination_quiz' => array(
-								'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['enable_pagination_quiz'],
-							),
-							'require_log_in'         => array(
+							'require_log_in'      => array(
 								'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['require_log_in'],
 							),
-							'disable_scroll_next_previous_click' => array(
-								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['disable_scroll_next_previous_click'],
-							),
-							'disable_first_page'     => array(
+							'disable_first_page'  => array(
 								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['disable_first_page'],
+							),
+							'comment_section'     => array(
+								'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['comment_section'],
 							),
 						);
 						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
-								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
-								$field            = $all_settings[ $key ];
-								$field['label']   = $single_setting['option_name'];
-								$field['default'] = $single_setting['value'];
+								$index = array_search( $key, array_column( $all_settings, 'id' ), true );
+								if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
+									$field               = $all_settings[ $index ];
+									$field['label']      = $single_setting['option_name'];
+									$field['default']    = $single_setting['value'];
+								} else {
+									$field = array(
+										'id'      => $key,
+										'label'   => $single_setting['option_name'],
+										'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
+										'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
+										'default' => $single_setting['value'],
+										'help'    => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+									);
+								}
 								echo '<div class="input-group">';
 								QSM_Fields::generate_field( $field, $single_setting['value'] );
 								echo '</div>';

@@ -155,6 +155,7 @@ function qsm_generate_dashboard_page() {
 						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="https://next.expresstech.io/qsm" class="welcome-icon"><span class="dashicons dashicons-feedback"></span>&nbsp;&nbsp;<?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -173,21 +174,22 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_recent_taken_quiz',
 				'title'    => 'Recent Taken Quiz',
 			),
-			'dashboard_roadmap'           => array(
+			'dashboard_chagelog'          => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_roadmap',
-				'title'    => 'roadmap',
+				'callback' => 'qsm_dashboard_chagelog',
+				'title'    => 'Changelog',
 			),
 			'dashboard_latest_blogs'      => array(
 				'sidebar'  => 'normal',
 				'callback' => 'qsm_dashboard_latest_blogs',
 				'title'    => 'Latest Blogs',
 			),
-			'dashboard_chagelog'          => array(
+			'dashboard_roadmap'           => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_chagelog',
-				'title'    => 'Changelog',
+				'callback' => 'qsm_dashboard_roadmap',
+				'title'    => 'roadmap',
 			),
+			
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
 		update_option( 'qsm_dashboard_widget_arr', $qsm_dashboard_widget );
@@ -599,17 +601,14 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Quiz Options.
 		 */
 		$quiz_options    = array(
-			'quiz_name'                          => $quiz_name,
-			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
-			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
-			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
-			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
-			'progress_bar'                       => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : '',
-			'timer_limit'                        => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
-			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
-			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
-			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
-			'disable_first_page'                 => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
+			'quiz_name'           => $quiz_name,
+			'quiz_featured_image' => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
+			'form_type'           => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
+			'system'              => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
+			'timer_limit'         => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'require_log_in'      => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
+			'disable_first_page'  => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
+			'comment_section'     => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 		);
 		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();
 		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {
@@ -619,14 +618,16 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Contact Fields
 		 */
 		$contact_form    = array();
-		$cf_fields       = QSM_Contact_Manager::default_fields();
-		if ( isset( $cf_fields['name'] ) ) {
-			$cf_fields['name']['enable'] = 'true';
-			$contact_form[]              = $cf_fields['name'];
-		}
-		if ( isset( $cf_fields['email'] ) ) {
-			$cf_fields['email']['enable']    = 'true';
-			$contact_form[]                  = $cf_fields['email'];
+		if ( isset( $_POST['enable_contact_form'] ) && 1 == sanitize_text_field( wp_unslash( $_POST['enable_contact_form'] ) ) ) {
+			$cf_fields       = QSM_Contact_Manager::default_fields();
+			if ( isset( $cf_fields['name'] ) ) {
+				$cf_fields['name']['enable'] = 'true';
+				$contact_form[]              = $cf_fields['name'];
+			}
+			if ( isset( $cf_fields['email'] ) ) {
+				$cf_fields['email']['enable']    = 'true';
+				$contact_form[]                  = $cf_fields['email'];
+			}
 		}
 		/**
 		 * Prepare Quiz Options

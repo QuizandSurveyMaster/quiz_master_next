@@ -104,7 +104,7 @@ class QMNQuizCreator {
 				'user_email'               => 2,
 				'user_phone'               => 2,
 				'admin_email'              => get_option( 'admin_email', 'Enter email' ),
-				'comment_section'          => 0,
+				'comment_section'          => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 				'question_from_total'      => 0,
 				'total_user_tries'         => 0,
 				'total_user_tries_text'    => isset( $default_texts['total_user_tries_text'] ) ? $default_texts['total_user_tries_text'] : __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
