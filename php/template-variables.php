@@ -133,7 +133,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
 			$answerstr              = "";
 			if ( isset($answers['user_answer']) ) {
-				if( 13 === intval( $answers['question_type'] ) ){
+				if ( 13 === intval( $answers['question_type'] ) ) {
 					$answerstr .= $answers['points'];
 				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
