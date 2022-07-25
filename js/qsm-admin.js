@@ -1960,7 +1960,6 @@ var import_button;
                     if (!questionType) {
                         questionType = $('#question_type').val();
                     }
-                    console.log(answer);
                     var answerTemplate = wp.template('single-answer');
                     if (answer.length >= 7 && answer[6] == 'image') {
                         $('#answers').append(answerTemplate({

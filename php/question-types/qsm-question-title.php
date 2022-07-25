@@ -39,7 +39,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	?>
 	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' >
 	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id ); ?>
-	<?php echo do_shortcode( wp_kses_post( $question_title . $deselect_answer ) ); ?>
+	<p><?php echo do_shortcode( wp_kses_post( $question_title . $deselect_answer ) ); ?></p>
 	</div>
 	<?php
 }

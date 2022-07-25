@@ -133,7 +133,9 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
 			$answerstr              = "";
 			if ( isset($answers['user_answer']) ) {
-				if ( 'rich' === $question_settings['answerEditor'] ) {
+				if( 13 === intval( $answers['question_type'] ) ){
+					$answerstr .= $answers['points'];
+				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
 					$answerstr .= htmlspecialchars_decode($answer);
 					}
@@ -1166,6 +1168,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						} elseif ( 13 == $answer['question_type'] ) {
 							$questionid                 = $questions[ $answer['id'] ]['question_id'];
 							$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
+							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
+							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 						} else {
@@ -1185,6 +1189,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						} elseif ( 13 == $answer['question_type'] ) {
 							$questionid                 = $questions[ $answer['id'] ]['question_id'];
 							$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
+							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
+							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 							$question_type              = $answer['question_type'];
 							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
@@ -1221,6 +1227,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		} else {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
 		}
+	} elseif ( 13 == $answer['question_type'] ) {
+		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 	} elseif ( in_array( $answer['question_type'], $use_custom_user_answer_template, true ) ) {
 		$qsm_user_ans                = apply_filters( 'qsm_result_page_custom_user_answer_template', $questions, $answer );
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $qsm_user_ans, $mlw_question_answer_display );
@@ -1335,6 +1344,9 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$answerEditor   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
+	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
+	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	$input_text   = '';
 	$first_point  = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
 	$second_point = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
@@ -1384,10 +1396,47 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		}
 	}
 
-	$input_text       .= "<div class='left-polar-title' $left_polar_title_style >" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $answers[0][0], 'QSM Answers' ) . '</div>';
+	$input_text       .= "<div class='left-polar-title' $left_polar_title_style >";
+	if ( 'image' === $answerEditor ) {
+		$size_style = '';
+		if ( ! empty($image_width) ) {
+			$size_style .= 'width:'.$image_width.'px !important;';
+		}
+		if ( ! empty($image_height) ) {
+			$size_style .= ' height:'.$image_height.'px !important;';
+		}
+		$left_image = $answers[0][0];
+		$caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
+		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+		$input_text .= '<img src="'.esc_url( trim( htmlspecialchars_decode( $left_image, ENT_QUOTES ) ) ).'"  style="'.esc_attr( $size_style ).'"  />';
+		$input_text .= '<span class="qsm_image_caption">'.esc_html( $caption_text ).'</span>';
+	} else {
+		$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" );
+		$input_text       .= do_shortcode( wp_kses_post( $left_title ) );
+	}
+
+	$input_text       .= "</div>";
 	$input_text       .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text       .= '<div id="slider-' . esc_attr( $id ) . '"' . $slider_date_atts . '></div></div>';
-	$input_text       .= "<div class='right-polar-title' $right_polar_title_style>" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $answers[1][0], 'QSM Answers' ) . '</div>';
+	$input_text       .= "<div class='right-polar-title' $right_polar_title_style>";
+	if ( 'image' === $answerEditor ) {
+		$size_style = '';
+		if ( ! empty($image_width) ) {
+			$size_style .= 'width:'.$image_width.'px !important;';
+		}
+		if ( ! empty($image_height) ) {
+			$size_style .= ' height:'.$image_height.'px !important;';
+		}
+		$right_image = $answers[1][0];
+		$caption_text = trim( htmlspecialchars_decode( $answers[1][3], ENT_QUOTES ) );
+		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+		$input_text .= '<img src="'.esc_url( trim( htmlspecialchars_decode( $right_image, ENT_QUOTES ) ) ).'"  style="'.esc_attr( $size_style ).'"  />';
+		$input_text .= '<span class="qsm_image_caption">'.esc_html( $caption_text ).'</span>';
+	} else {
+		$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[0][0], "QSM Answers" );
+		$input_text       .= do_shortcode( wp_kses_post( $right_title ) );
+	}
+	$input_text       .= "</div>";
 	$question          = $input_text;
 	$question_display .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
