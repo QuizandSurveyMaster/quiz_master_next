@@ -23,20 +23,6 @@
 			let polarQuestion = jQuery(this).find('.slider-main-wrapper div');
 			let questionID    = polarQuestion.attr('id').replace('slider-','');
 			qsmPolarSliderEach(polarQuestion,questionID,page);
-			if ('answer' === page || 'admin' === page){
-				let heightArray = jQuery(".mlw-qmn-question-result-"+questionID+" >> div").map(
-					function() {
-						return jQuery(this).height();
-					}).get();
-				let maxHeight = Math.max.apply(null, heightArray);
-				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);
-			} else {
-				let heightArray = jQuery(".question-section-id-"+questionID+" .question-type-polar-s >> div").map(function() {
-					return jQuery(this).height();
-				}).get();
-				let maxHeight = Math.max.apply(null,heightArray);
-				jQuery('.question-section-id-'+questionID+' .question-type-polar-s').height(maxHeight);
-			}
 		});
 	}
 
