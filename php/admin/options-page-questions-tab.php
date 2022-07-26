@@ -392,7 +392,7 @@ function qsm_options_questions_tab_content() {
 									),
 									'case_sensitive'      => array(
 										'heading'  => __( 'Allow Case Sensitive', 'quiz-master-next' ),
-										'label'    => __( 'Case Sensitive Answer', 'quiz-master-next' ),
+										'label'    => __( 'Require correct input of uppercase and lowercase letters', 'quiz-master-next' ),
 										'type'     => 'single_checkbox',
 										'priority' => '1',
 										'options'  => array(
