@@ -74,8 +74,13 @@ function qsm_generate_featured_addons() {
 	<div class="qsm-addon-anchor-left">
 		<div class="qsm-install-addon">
 			<a class="active" href="#qsm_installed_addons"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_add_addons"><?php esc_html_e( 'Add Addons', 'quiz-master-next' ); ?> <span
-					class="dashicons dashicons-arrow-right-alt2"></span></a>
+			<a href="#qsm_add_addons"><?php esc_html_e( 'Add Addons', 'quiz-master-next' ); ?> 
+				<?php if ( is_rtl() ) : ?>
+					<span class="dashicons dashicons-arrow-left-alt2"></span>
+				<?php else : ?>
+					<span class="dashicons dashicons-arrow-right-alt2"></span>
+				<?php endif; ?>
+			</a>
 		</div>
 		<div class="qsm-add-addon" style="display: none;">
 			<a class="active" href="#qsm_popular_addons"><?php esc_html_e( 'Popular', 'quiz-master-next' ); ?></a>
@@ -85,9 +90,7 @@ function qsm_generate_featured_addons() {
 	</div>
 	<div class="qsm-addon-list-right">
 		<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-		<a rel="noopener" style="text-decoration: none; font-size: 15px;"
-			href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-			target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+		<a rel="noopener" style="text-decoration: none; font-size: 15px;" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'qsm-addons-page', 'all-addons-top') );?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 	</div>
 </div>
 <div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor">
@@ -335,7 +338,7 @@ function qsm_display_optin_page() {
 				</div> -->
 		</div>
 
-		<p><?php esc_html_e( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master', 'quiz-master-next' ) . '</b>,' . __( ' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master ', 'quiz-master-next' ) . '</b>' . __( 'to its full potential. ', 'quiz-master-next' ) . '<a href="https://quizandsurveymaster.com/privacy-policy/" target="_blank">' . __( 'View our privacy policy', 'quiz-master-next' ) . '</a>'; ?>
+		<p><?php esc_html_e( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master', 'quiz-master-next' ) . '</b>,' . __( ' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master ', 'quiz-master-next' ) . '</b>' . __( 'to its full potential. ', 'quiz-master-next' ) . '<a href="' . qsm_get_plugin_link( 'privacy-policy', 'qsm-addons-page' ) . '" target="_blank">' . __( 'View our privacy policy', 'quiz-master-next' ) . '</a>'; ?>
 		</p>
 
 		<div id="wpas-mailchimp-signup-form-wrapper">

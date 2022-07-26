@@ -39,17 +39,21 @@ function qsm_options_emails_tab_content() {
 		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
-
+	$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+	if ( isset( $quiz_options['send_email'] ) && 1 != $quiz_options['send_email'] ) {
+		?>
+		<div class="error notice-large notice-error">
+			<p><?php esc_html_e( 'Emails are turned off. Please update ', 'quiz-master-next');?> <a href="<?php echo esc_url( admin_url('admin.php?page=mlw_quiz_options&quiz_id='.$quiz_id.'&tab=options') );?>"> <?php esc_html_e('this setting', 'quiz-master-next');?></a><?php esc_html_e( ' for the emails to work properly.', 'quiz-master-next' ); ?></p>
+		</div>
+		<?php
+	}
 	?>
 
 <!-- Emails Section -->
 <section class="qsm-quiz-email-tab" style="margin-top: 15px;">
 	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
-	<a style="float: right;" class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span
-			class="dashicons dashicons-upload"></span></a>
-	<a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"
-		rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a>
+	<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span class="dashicons dashicons-upload"></span></a>
 	<div id="qsm_emails">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>

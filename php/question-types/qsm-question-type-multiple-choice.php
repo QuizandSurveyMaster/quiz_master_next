@@ -18,6 +18,8 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$required           = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
+	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
+	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredRadio';
 	} else {
@@ -52,8 +54,15 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
 					<?php
 					if ( 'image' === $answerEditor ) {
+						$size_style = '';
+						if ( ! empty($image_width) ) {
+							$size_style .= 'width:'.$image_width.'px !important;';
+						}
+						if ( ! empty($image_height) ) {
+							$size_style .= ' height:'.$image_height.'px !important;';
+						}
 						?>
-						<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+						<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>" />
 						<span class="qsm_image_caption">
 							<?php
 							$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
@@ -65,7 +74,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					} else {
 						$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
-						echo wp_kses_post( do_shortcode( $answer_text ) );
+						echo do_shortcode( wp_kses_post( $answer_text ) );
 					}
 					?>
 					</label>

@@ -199,7 +199,9 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['loggedin_user_contact']              = $globalQuizsetting['loggedin_user_contact'];
 			$setDefaultvalue['comment_section']                    = $globalQuizsetting['comment_section'];
 			$setDefaultvalue['question_numbering']                 = $globalQuizsetting['question_numbering'];
+			$setDefaultvalue['show_optin']                         = $globalQuizsetting['show_optin'];
 			$setDefaultvalue['store_responses']                    = $globalQuizsetting['store_responses'];
+			$setDefaultvalue['send_email']                         = $globalQuizsetting['send_email'];
 			$setDefaultvalue['disable_answer_onselect']            = $globalQuizsetting['disable_answer_onselect'];
 			$setDefaultvalue['ajax_show_correct']                  = $globalQuizsetting['ajax_show_correct'];
 			$setDefaultvalue['contact_disable_autofill']           = $globalQuizsetting['contact_disable_autofill'];
@@ -214,6 +216,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['disable_description_on_result']      = $globalQuizsetting['disable_description_on_result'];
 			$setDefaultvalue['disable_scroll_next_previous_click'] = $globalQuizsetting['disable_scroll_next_previous_click'];
 			$setDefaultvalue['disable_first_page']                 = $globalQuizsetting['disable_first_page'];
+			$setDefaultvalue['disable_mathjax']                    = $globalQuizsetting['disable_mathjax'];
 			$setDefaultvalue['quiz_animation']                     = $globalQuizsetting['quiz_animation'];
 			$setDefaultvalue['result_page_fb_image']               = $globalQuizsetting['result_page_fb_image'];
 			$setDefaultvalue['randomness_order']                   = $globalQuizsetting['randomness_order'];
@@ -255,6 +258,19 @@ class QSM_Quiz_Settings {
 			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 			return false;
 		} else {
+			global $wpdb;
+			$results = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = $this->quiz_id AND meta_key = 'quiz_id'", ARRAY_A );
+			if ( ! empty( $results ) ) {
+				foreach ( $results as $result ) {
+					// update post_modified
+					$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+					$update = array(
+						'ID'            => $result['post_id'],
+						'post_modified' => $datetime,
+					);
+					wp_update_post( $update );
+				}
+			}
 			return true;
 		}
 
@@ -283,10 +299,6 @@ class QSM_Quiz_Settings {
 		if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array['quiz_text'] ) || ! isset( $settings_array['quiz_leaderboards'] ) ) {
 			// Load the old options system
 			$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
-			// If no leadboard is present
-			if ( ! isset( $settings_array['quiz_leaderboards'] ) ) {
-				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
-			}
 			// If no options are present
 			if ( ! isset( $settings_array['quiz_options'] ) ) {
 				$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
@@ -327,7 +339,6 @@ class QSM_Quiz_Settings {
 					)
 				);
 			}
-
 			// If no text is present
 			if ( ! isset( $settings_array['quiz_text'] ) ) {
 				$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
@@ -370,6 +381,10 @@ class QSM_Quiz_Settings {
 						'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
 					)
 				);
+			}
+			// If no leadboard is present
+			if ( ! isset( $settings_array['quiz_leaderboards'] ) ) {
+				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
 			}
 			// Update new settings system
 			$results = $wpdb->update(

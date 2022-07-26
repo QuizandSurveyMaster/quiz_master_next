@@ -206,7 +206,7 @@ function qmn_question_type_accept() {
         'extra_inputs' => array(),
         'function'     => '',
     );
-    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Opt-in', 'quiz-master-next' ), 'qmn_accept_display', false, null, $edit_args, null, 8 );
+    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Opt-in', 'quiz-master-next' ), 'qmn_accept_display', false, 'qmn_opt_in_review', $edit_args, null, 8 );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 8, 'input_field', 'Checkbox' );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 8, 'category', 'Choice' );
 }

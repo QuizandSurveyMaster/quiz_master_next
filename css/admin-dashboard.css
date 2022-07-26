@@ -276,13 +276,6 @@ ul.popuar-addon-ul::after {
 	box-sizing: border-box;
 }
 
-#model-wizard .qsm-popup__content .quiz_name {
-	width: 100%;
-	padding: 5px 10px 5px 10px;
-	border-radius: 0;
-	border: 1px solid #dfd4d4;
-}
-
 #model-wizard .qsm-popup__content .quiz_name.qsm-required {
 	border-color: #ff0000;
 	outline: none !important;
@@ -440,13 +433,6 @@ ul.popuar-addon-ul::after {
 	float: left;
 }
 
-#model-wizard #quiz_settings .input-group:nth-child(5),
-#model-wizard #quiz_settings .input-group:nth-child(6),
-#model-wizard #quiz_settings .input-group:nth-child(8),
-#model-wizard #quiz_settings .input-group:nth-child(10) {
-	display: none;
-}
-
 #new-quiz-form {
 	display: inline-block;
 	width: 100%;
@@ -555,7 +541,6 @@ ul.popuar-addon-ul::after {
 #model-wizard .qsm_popular_addons div.popuar-addon-ul>div>a {
 	display: block;
 	width: 100%;
-	height: 100%;
 }
 
 #model-wizard .qsm_popular_addons a:active,
@@ -837,12 +822,12 @@ h2.hndle.ui-sortable-handle {
 }
 
 #model-wizard .qsm-new-menu-elements input[type="text"],
+#model-wizard .qsm-new-menu-elements input[type="number"],
 #model-wizard .qsm-new-menu-elements select {
 	width: 60%;
 	max-width: 100%;
 	height: 35px;
 	border: solid 1px #dddddd;
-	box-shadow: 0px 0px 5px rgba(10, 10, 10, 0.3);
 	border-radius: 0;
 }
 

@@ -194,7 +194,7 @@ class QSM_Tracking {
 			echo '<div class="updated">';
 				echo '<p>' . esc_html__( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
 				echo '<p>' . esc_html__( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
-				echo '<p><a href="https://quizandsurveymaster.com/what-the-plugin-tracks/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=tracking-notice" target="_blank">' . esc_html__( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
+				echo '<p><a href="' . esc_url( qsm_get_plugin_link('what-the-plugin-tracks', 'tracking-notice') ) . '" target="_blank">' . esc_html__( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
 				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . esc_html__( 'Allow', 'quiz-master-next' ) . '</a>';
 				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . esc_html__( 'Do not allow', 'quiz-master-next' ) . '</a>';
 			echo '</div>';

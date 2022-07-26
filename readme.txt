@@ -2,15 +2,17 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 7.3.14
+Stable tag: 8.0.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Easily create exams, generate leads, surveys and any type of quiz with our popular WordPress Quiz Plugin. Custom flows, emails and create leaderboard
 
 == Description ==
+
+Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next)
 
 = Demoes! =
 * [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin)
@@ -72,6 +74,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Keep track how long a user takes on the quiz or survey
 * Able to set up time limits on the quiz or survey
 * Create and display math formulas
+* Compatible with [WPML](https://wpml.org/) and its extensions
 * And **Much** More...
 
 = QSM Addons =
@@ -113,8 +116,6 @@ If you like this plugin, consider exploring our other themes and plugins:
 📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc.
 
 ⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
-
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network.
 
 == Installation ==
 
@@ -162,6 +163,49 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.3 (July 26, 2022) =
+* Feature: Added option to enable/disable case sensitive answer for fill-in blank question
+* Feature: Added option to enable/disable MathJax
+* Feature: Added option to enable/disable emails notifications
+* Feature: Added option to set images size for image type answers
+* Feature: Added %ANSWER_X% variables to show user's answer to a specific question
+* Feature: Added translation support for all Javascript string messages
+* Feature: Added image answer support for polar question type
+* Bug: Fixed display issue with leaderboard customization block
+* Bug: Fixed issue with questions count in quiz list page
+* Bug: Fixed issue with %QUESTION_ANSWER_X% variables
+* Bug: Fixed issue while deleting/duplicating old quizzes
+* Bug: Fixed issue with timer while using pagination
+* Enhancement: Improved UI for image type answers options
+
+= 8.0.2 (June 23, 2022) =
+* Bug: Fixed scoring issue while using random questions
+* Bug: Fixed issue with file question type validation settings
+* Bug: Fixed issue with video player in rich text answer type
+
+= 8.0.1 (June 17, 2022) =
+* Hotfix: Fixed issues while using random questions with question limit
+
+= 8.0 (June 13, 2022) =
+* Feature: Added WPML compatibility
+* Feature: Added option to select correct answer logic
+* Feature: Added option to show and hide Opt-in question type on result page
+* Feature: Added validation options in contact form fields
+* Enhancement: Improved UI for question editor in admin panel
+* Enhancement: Redesigned contact tab interface in admin panel
+* Enhancement: Autosave last question when user creates new question
+* Enhancement: Added column to show the number of questions in quiz list
+* Enhancement: Added qsm_results_css_inliner hook to edit email template
+* Bug: Fixed issue with quiz links
+* Bug: Fixed deletion issue with trash quizzes
+* Bug: Fixed issues with random questions order
+* Bug: Fixed %AMOUNT_INCORRECT% & %AMOUNT_ATTEMPTED% variables
+* Bug: Fixed issue while updating quiz title
+* Bug: Fixed issue with duplicate question while importing from question bank
+* Bug: Fixed JS issue with polar question type
+* Bug: Fixed several PHP warning and errors
+* Bug: Fixed issue with HTML tags in answer text editor
+
 = 7.3.14 (April 5, 2022) =
 * Bug: Fixed issue with paragraph question type
 * Bug: Fixed issue with qmn_register_my_templates hook

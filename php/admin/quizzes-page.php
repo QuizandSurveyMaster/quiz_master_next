@@ -68,6 +68,10 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			if ( isset( $_REQUEST['post_status'] ) && 'trash' == $_REQUEST['post_status'] ) {
 				return $columns;
 			}
+			$sort_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=asc');
+			if ( isset( $_GET['orderby'] ) && isset( $_GET['order'] ) && "post_modified" === $_GET['orderby'] && "asc" === $_GET['order'] ) {
+				$sort_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=desc');
+			}
 			unset( $columns['author'] );
 			unset( $columns['comments'] );
 			unset( $columns['date'] );
@@ -75,7 +79,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			$columns['total_questions']  = __( 'No. of Questions', 'quiz-master-next' );
 			$columns['views']            = __( 'Views', 'quiz-master-next' );
 			$columns['participants']     = __( 'Participants', 'quiz-master-next' );
-			$columns['lastActivity']     = __( 'Last Modified', 'quiz-master-next' );
+			$columns['post_modified']        = "<a href='" . $sort_link . "'>" . __( 'Last Modified', 'quiz-master-next')  . "</a>";
 			return $columns;
 		}
 
@@ -85,7 +89,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 		 * @param type $post_id
 		 */
 		public function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
-			global $wpdb;
+			global $wpdb, $mlwQuizMasterNext;
 			$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
 			switch ( $column ) {
 				case 'shortcode':
@@ -96,8 +100,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					break;
 
 				case 'total_questions':
-					$questions = $wpdb->get_var( "SELECT count(question_id) FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id`='{$quiz_id}' AND `deleted`='0'" );
-					echo esc_attr( $questions );
+					$total_questions = $mlwQuizMasterNext->pluginHelper->get_questions_count( $quiz_id );
+					echo esc_attr( $total_questions );
 					break;
 
 				case 'views':
@@ -120,13 +124,11 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					echo wp_kses_post( $participants );
 					break;
 
-				case 'lastActivity':
-					$last_activity   = $wpdb->get_var( "SELECT `last_activity` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
-					$activity_date   = gmdate( get_option( 'date_format' ), strtotime( $last_activity ) );
-					$activity_time   = gmdate( 'h:i:s A', strtotime( $last_activity ) );
-					echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '</abbr>' );
+				case 'post_modified':
+					$activity_date   = get_the_modified_date( get_option( 'date_format' ),$post_id );
+					$activity_time   = get_the_modified_date( 'h:i:s A', $post_id );
+					echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '<br/> ' . $activity_time . '</abbr>' );
 					break;
-
 				default:
 					break;
 			}
@@ -277,14 +279,14 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' ); ?>
 						<a id="new_quiz_button" href="#" class="add-new-h2"><?php esc_html_e( 'Add New', 'quiz-master-next' ); ?></a>
 					</h1>
-					<?php 
+					<?php
 					if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
 						?>
 						<div class="qsm-info-box">
 							<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 								<?php echo esc_html( PHP_VERSION ); ?>!
 								<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-								<a href="https://quizandsurveymaster.com/increased-minimum-php-version-qsm-6-0/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=minimum-php-notice" target="_blank" rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
+								<a href="<?php echo esc_url( qsm_get_plugin_link('increased-minimum-php-version-qsm-6-0', 'quiz-list-page', 'minimum-php-notice') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 							</p>
 						</div>
 						<?php
@@ -297,6 +299,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					?>
 				</div>
 				<div class="clear"></div>
+				<style type="text/css">.post-type-qsm_quiz .wrap .wp-heading-inline, .post-type-qsm_quiz .wrap .wp-heading-inline+.page-title-action {display: none !important;}</style>
 				<?php
 			}
 		}
@@ -375,7 +378,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><b><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b>
+									<h3><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong>
 									</h3>
 									<label>
 										<input type="checkbox" value="1" name="qsm_delete_question_from_qb" />
@@ -409,7 +412,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="bult-delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><b><?php esc_html_e( 'Are you sure you want to delete selected quiz or survey?', 'quiz-master-next' ); ?></b>
+									<h3><strong><?php esc_html_e( 'Are you sure you want to delete selected quiz or survey?', 'quiz-master-next' ); ?></strong>
 									</h3>
 									<label>
 										<input type="checkbox" name="qsm_delete_question_from_qb" />
@@ -440,15 +443,12 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-								<h3><b><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></b>
+								<h3><strong><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></strong>
 								</h3>
 							</main>
 							<footer class="qsm-popup__footer">
-								<a style="color: white;    text-decoration: none;"
-									href="https://quizandsurveymaster.com/downloads/export-import/" target="_blank"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<a style="color: white;text-decoration: none;" href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
@@ -486,7 +486,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						<h2><?php esc_html_e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
 						<div class="buttons">
 							<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
-							<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
+							<a class="button button-secondary button-hero" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'quiz-list-page') );?>" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</div>
 						<h3><?php esc_html_e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
 						<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
