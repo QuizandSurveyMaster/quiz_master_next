@@ -163,13 +163,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.0.3 (July 22, 2022) =
+= 8.0.3 (July 26, 2022) =
 * Feature: Added option to enable/disable case sensitive answer for fill-in blank question
 * Feature: Added option to enable/disable MathJax
 * Feature: Added option to enable/disable emails notifications
 * Feature: Added option to set images size for image type answers
 * Feature: Added %ANSWER_X% variables to show user's answer to a specific question
 * Feature: Added translation support for all Javascript string messages
+* Feature: Added image answer support for polar question type
 * Bug: Fixed display issue with leaderboard customization block
 * Bug: Fixed issue with questions count in quiz list page
 * Bug: Fixed issue with %QUESTION_ANSWER_X% variables
