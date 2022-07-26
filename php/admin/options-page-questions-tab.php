@@ -391,7 +391,7 @@ function qsm_options_questions_tab_content() {
 										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'autofill'),
 									),
 									'case_sensitive'      => array(
-										'heading'  => __( 'Allow Case Sensitivity', 'quiz-master-next' ),
+										'heading'  => __( 'Case Sensitivity', 'quiz-master-next' ),
 										'label'    => __( 'Require correct input of uppercase and lowercase letters', 'quiz-master-next' ),
 										'type'     => 'single_checkbox',
 										'priority' => '1',
