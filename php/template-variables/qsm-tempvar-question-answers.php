@@ -30,7 +30,14 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		}
 		$image_class = '';
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-			$show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '"/>';
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
+			$show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '" style="' . esc_attr( $size_style ) . '" />';
 			$image_class      = 'qmn_image_option';
 		} else {
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );

@@ -359,7 +359,7 @@ class QSM_Contact_Manager {
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', $fields );
 	}
-	
+
 	/**
 	 * Generate Contact Field HTML
 	 * @param type $field
@@ -378,15 +378,18 @@ class QSM_Contact_Manager {
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
 			$class .= 'mlwRequiredText qsm_required_text';
+			if ( 'checkbox' === $field["type"] ) {
+				$class .= ' mlwRequiredAccept';
+			}
 		}
 		switch ( $field['type'] ) {
 			case 'text':
 				if ( 'phone' === $field['use'] ) {
 					$class .= 'mlwPhoneNumber';
 				}
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -416,14 +419,14 @@ class QSM_Contact_Manager {
 				$class       = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
+				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
 
 			case 'email':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -436,22 +439,22 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
+				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
 
 			case 'checkbox':
 				$class = apply_filters( 'qsm_contact_checkbox_field_class', $class, $field['use'] );
 				?>
-				<input type='checkbox' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> value='checked' />
+				<input type='checkbox' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> value='checked' />
 				<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo esc_attr( $index ); ?>'><?php echo wp_kses_post( $field_label ); ?></label>
 				<?php
 				break;
 
 			case 'date':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -459,14 +462,14 @@ class QSM_Contact_Manager {
 				$class = apply_filters( 'qsm_contact_date_field_class', $class, $field['use'] );
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-				<input type='date' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> value='' />
+				<input type='date' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> value='' />
 				<?php
 				break;
 
 			case 'url':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_url_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_url_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -475,14 +478,14 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
+				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
 
 			case 'number':
-				// Filer Value 
+				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_number_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_number_field_value', $default_value, $field['use'] );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -504,11 +507,11 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
+				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
 				break;
 			default:
-				do_action( 'qsm_extra_contact_filed', $fields, $quiz_options );
+				do_action( 'qsm_extra_contact_form_field_display', $field, $quiz_options, $index,$default_value );
 				break;
 		}
 	}

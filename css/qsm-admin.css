@@ -1177,6 +1177,12 @@ tr .qsm-opt-desc {
 	margin-top: 5px;
 	display: block;
 }
+.form-table .send_email .qsm-opt-tr, .form-table .send_email td {
+    padding-top: 0;
+}
+.form-table .store_responses .qsm-opt-tr, .form-table .store_responses td {
+    padding-bottom: 0;
+}
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
@@ -2229,6 +2235,17 @@ input#duplicate_questions {
 }
 #qsm-global-default-popup .qsm-popup__footer button{
     margin: 0 5px;
+}
+.qsm-badge {
+    background: linear-gradient(225deg, #344ad6, #42d96b);
+    z-index: 9999;
+    position: absolute;
+    color: #fff;
+    right: 5px;
+    top: 5px;
+    border-radius: 10px;
+    padding: 0 10px;
+    text-transform: uppercase;
 }
 /** Quiz Contact Tab Style **/
 .contact-form-builder-wrap{

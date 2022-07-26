@@ -135,11 +135,8 @@ function qsm_documentation_meta_box_content() {
 	?>
 	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
 	<ul>
-		<li>For assistance in using the plugin, read our <a href="https://quizandsurveymaster.com/docs/" rel="noopener"
-				target="_blank">documentation</a></li>
-		<li>For support, fill out the form on our <a
-				href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us"
-				rel="noopener" target="_blank">Contact Us Page</a></li>
+		<li>For assistance in using the plugin, read our <a href="<?php echo esc_url( qsm_get_plugin_link('docs', 'qsm-help-page', 'documentation') );?>" rel="noopener" target="_blank">documentation</a></li>
+		<li>For support, fill out the form on our <a href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'qsm-help-page', 'contact_us') );?>" rel="noopener" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }

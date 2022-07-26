@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.0.2
+ * Version: 8.0.3
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '8.0.2';
+	public $version = '8.0.3';
 
 	/**
 	 * QSM Alert Manager Object
@@ -295,8 +295,6 @@ class MLWQuizMasterNext {
 		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
 			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL . '/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-			wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 			wp_enqueue_script( 'jquery-ui-slider' );
 			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true );
 			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $this->version );
@@ -348,12 +346,8 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					break;
 				default:
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 					break;
@@ -362,6 +356,78 @@ class MLWQuizMasterNext {
 		// load admin JS after all dependencies are loaded
 		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch' ), $this->version, true );
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+		$qsm_admin_messages = array(
+			'error'                      => __('Error', 'quiz-master-next'),
+			'success'                    => __('Success', 'quiz-master-next'),
+			'category'                   => __('Category', 'quiz-master-next'),
+			'try_again'                  => __('Please try again', 'quiz-master-next'),
+			'already_exists_in_database' => __('already exists in database', 'quiz-master-next'),
+			'confirm_message'            => __('Are you sure?', 'quiz-master-next'),
+			'error_delete_result'        => __('Error to delete the result!', 'quiz-master-next'),
+			'copied'                     => __('Copied!', 'quiz-master-next'),
+			'set_feature_img'            => __('Set Featured Image', 'quiz-master-next'),
+			'set_bg_img'                 => __('Set Background Image', 'quiz-master-next'),
+			'insert_img'                 => __('Insert Image', 'quiz-master-next'),
+			'upload_img'                 => __('Upload Image', 'quiz-master-next'),
+			'use_img'                    => __('Use this image', 'quiz-master-next'),
+			'updating_db'                => __('Updating database', 'quiz-master-next'),
+			'update_db_success'          => __('Database updated successfully.', 'quiz-master-next'),
+			'quiz_submissions'           => __('Quiz Submissions', 'quiz-master-next'),
+			'saving_contact_fields'      => __('Saving contact fields...', 'quiz-master-next'),
+			'contact_fields_saved'       => __('Your contact fields have been saved!', 'quiz-master-next'),
+			'contact_fields_save_error'  => __('There was an error encountered when saving your contact fields.', 'quiz-master-next'),
+			'saving_emails'              => __('Saving emails...', 'quiz-master-next'),
+			'emails_saved'               => __('Emails were saved!', 'quiz-master-next'),
+			'emails_save_error'          => __('There was an error when saving the emails.', 'quiz-master-next'),
+			'saving_emails'              => __('Saving emails...', 'quiz-master-next'),
+			'saving_results_page'        => __('Saving results pages...', 'quiz-master-next'),
+			'results_page_saved'         => __('Results pages were saved!', 'quiz-master-next'),
+			'results_page_save_error'    => __('There was an error when saving the results pages.', 'quiz-master-next'),
+			'all_categories'             => __('All Categories', 'quiz-master-next'),
+			'add_question'               => __('Add Question', 'quiz-master-next'),
+			'question_created'           => __('Question created!', 'quiz-master-next'),
+			'new_question'               => __('Your new question!', 'quiz-master-next'),
+			'adding_question'            => __('Adding question...', 'quiz-master-next'),
+			'creating_question'          => __('Creating question...', 'quiz-master-next'),
+			'duplicating_question'       => __('Duplicating question...', 'quiz-master-next'),
+			'saving_question'            => __('Saving question...', 'quiz-master-next'),
+			'question_saved'             => __('Question was saved!', 'quiz-master-next'),
+			'loading_question'           => __('Loading questions...', 'quiz-master-next'),
+			'no_question_selected'       => __('No question is selected.', 'quiz-master-next'),
+			'question_reset_message'     => __('All answer will be reset, Do you want to still continue?', 'quiz-master-next'),
+			'your_answer'                => __('Your answer', 'quiz-master-next'),
+			'insert_image_url'           => __('Insert image URL', 'quiz-master-next'),
+			'saving_page_info'           => __('Saving page info', 'quiz-master-next'),
+			'saving_page_questions'      => __('Saving pages and questions...', 'quiz-master-next'),
+			'saved_page_questions'       => __('Questions and pages were saved!', 'quiz-master-next'),
+			'import_question_again'      => __('you want to import this question again?', 'quiz-master-next'),
+			'enter_question_title'       => __('Enter Question title or description', 'quiz-master-next'),
+			'page_name_required'         => __('Page Name is required!', 'quiz-master-next'),
+			'page_name_validation'       => __('Please use only Alphanumeric characters.', 'quiz-master-next'),
+			'polar_q_range_error'        => __('Left range and right range should be different', 'quiz-master-next'),
+			'range_fields_required'      => __('Range fields are required!', 'quiz-master-next'),
+			'points'                     => __('Points', 'quiz-master-next'),
+			'left_label'                 => __('Left Label', 'quiz-master-next'),
+			'right_label'                => __('Right Label', 'quiz-master-next'),
+			'left_range'                 => __('Left Range', 'quiz-master-next'),
+			'right_range'                => __('Right Range', 'quiz-master-next'),
+			'html_section_empty'         => __('Text/HTML Section cannot be empty', 'quiz-master-next'),
+			'blank_number_validation'    => __('Number of <strong>%BLANK%</strong> should be equal to options for sequential matching', 'quiz-master-next'),
+			'blank_required_validation'  => __('Atleast one <strong>%BLANK%</strong> and one option is required.', 'quiz-master-next'),
+			'polar_options_validation'   => __('You can not add more than 2 answer for Polar Question type', 'quiz-master-next'),
+			'hide_advance_options'       => __('Hide advance options «', 'quiz-master-next'),
+			'show_advance_options'       => __('Show advance options »', 'quiz-master-next'),
+			'category_not_empty'         => __('Category cannot be empty', 'quiz-master-next'),
+			'sendy_signup_validation'    => array(
+				'required_message'   => __('Please fill in your name and email.', 'quiz-master-next'),
+				'email_validation'   => __('Your email address is invalid.', 'quiz-master-next'),
+				'list_validation'    => __('Your list ID is invalid.', 'quiz-master-next'),
+				'already_subscribed' => __("You're already subscribed!", 'quiz-master-next'),
+				'success_message'    => __("Thanks, you are now subscribed to our mailing list!", 'quiz-master-next'),
+				'error_message'      => __("Sorry, unable to subscribe. Please try again later!", 'quiz-master-next'),
+			),
+		);
+		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 
 	}
 

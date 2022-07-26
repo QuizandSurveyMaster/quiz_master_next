@@ -20,44 +20,13 @@ class QSM_Emails {
 	 * Sends the emails for the quiz.
 	 *
 	 * @since 6.2.0
-	 * @param array $results_id result ID.
+	 * @param int $results_id result ID.
+	 * @param array $quiz_settings Quiz Settings.
 	 */
-	public static function send_emails( $result_id ) {
+	public static function send_emails( $transient_id ) {
 		global $mlwQuizMasterNext;
-		global $wpdb;
-		$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ), ARRAY_A );
-		if ( ! is_array( $result_data ) || empty( $result_data ) ) {
-			return;
-		}
-		$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
-		$response_data = array(
-			'quiz_id'                   => $result_data['quiz_id'],
-			'quiz_name'                 => $result_data['quiz_name'],
-			'quiz_system'               => $result_data['quiz_system'],
-			'form_type'                 => $result_data['form_type'],
-			'user_ip'                   => $result_data['user_ip'],
-			'user_name'                 => $result_data['name'],
-			'user_business'             => $result_data['business'],
-			'user_email'                => $result_data['email'],
-			'user_phone'                => $result_data['phone'],
-			'user_id'                   => $result_data['user'],
-			'timer'                     => $quiz_result[0],
-			'timer_ms'                  => $quiz_result['timer_ms'],
-			'time_taken'                => $result_data['time_taken'],
-			'contact'                   => $quiz_result['contact'],
-			'hidden_questions'          => $quiz_result['hidden_questions'],
-			'total_points'              => $result_data['point_score'],
-			'total_score'               => $result_data['correct_score'],
-			'total_correct'             => $result_data['correct'],
-			'total_questions'           => $result_data['total'],
-			'question_answers_display'  => '', // Kept for backwards compatibility
-			'question_answers_array'    => $quiz_result[1],
-			'total_possible_points'     => $quiz_result['total_possible_points'],
-			'total_attempted_questions' => $quiz_result['total_attempted_questions'],
-			'minimum_possible_points'   => isset( $quiz_result['minimum_possible_points'] ) ? $quiz_result['minimum_possible_points'] : 0,
-			'comments'                  => $quiz_result[2],
-			'result_id'                 => $result_id,
-		);
+
+		$response_data = maybe_unserialize( get_transient( $transient_id ) );
 		$emails = self::load_emails( $response_data['quiz_id'] );
 
 		if ( ! is_array( $emails ) || empty( $emails ) ) {
@@ -163,6 +132,9 @@ class QSM_Emails {
 					 * The value may have been set to false when failing a previous condition.
 					 */
 					$show = apply_filters( 'qsm_email_condition_check', $show, $condition, $response_data );
+					if ( ! $show ) {
+						break;
+					}
 				}
 
 				if ( $show ) {

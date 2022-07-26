@@ -136,11 +136,13 @@ label.inline .mlw_qmn_question,
 .quiz_section .qmn_radio_answers label,
 .quiz_section .qmn_check_answers label,
 .quiz_section .qmn_accept_answers label {
-  display: inline;
-  margin: 0 10px 0 5px;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0;
   font-weight: normal;
   font-size: 14px;
   cursor: pointer;
+  max-width: calc(100% - 40px);
 }
 
 .quiz_section.text-block h2 {
@@ -200,7 +202,27 @@ border: 1px solid #e3e3e3;
 .qmn_fill_blank.small { width: 50px; }
 .qmn_fill_blank.medium { width: 100px; }
 .qmn_fill_blank.large { width: 150px; }
+.qsm-results-page .qmn_image_option,
+.quiz_section .qmn_image_option {
+  width: 48%;
+  height: 250px;
+  display: inline-flex !important;
+  position: relative;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 1%;
+  box-sizing: border-box;
+  align-items: flex-end;
+}
 
+.qsm-results-page .qmn_image_option input[type="radio"],
+.qsm-results-page .qmn_image_option input[type="checkbox"],
+.quiz_section .qmn_image_option input[type="radio"],
+.quiz_section .qmn_image_option input[type="checkbox"] {
+    margin: 0 0 3px;
+    min-width: 15px;
+    min-height: 15px;
+}
 
 /* Alerts and error state */
 
@@ -393,10 +415,6 @@ border: 1px solid #e3e3e3;
 
   .quiz_section label,
   .quiz_section .mlw_qmn_question {
-    font-size: 18px;
-  }
-
-  .quiz_section.radio .qmn_mc_answer_wrap label {
     font-size: 18px;
   }
 

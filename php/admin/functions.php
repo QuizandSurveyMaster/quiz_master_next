@@ -1,7 +1,7 @@
 <?php
 $themes_data = array();
 global $pro_themes;
-$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma' );
+$pro_themes    = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'qsm-theme-fortune', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma', 'Fortune' );
 
 /**
  * @since 6.4.5
@@ -505,7 +505,19 @@ function qsm_generate_question_option( $key, $single_option ) {
 					<input type="text" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
 					<?php
 					break;
-
+				case 'multi_text':
+					$parent_key = $key;
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						foreach ( $single_option['options'] as $key => $value ) {
+							?>
+							<label><?php echo wp_kses_post( $value ); ?>
+								<input name="<?php echo esc_attr( $parent_key ); ?>[<?php echo esc_attr( $key ); ?>]" type="text" id="<?php echo esc_attr( $parent_key.'-'.$key ); ?>" />
+							</label>
+							<br />
+							<?php
+						}
+					}
+					break;
 				case 'number':
 					if ( isset( $single_option['label'] ) ) {
 						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
@@ -664,6 +676,7 @@ function qsm_create_new_quiz_wizard() {
 					<div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
 						<div class="input-group">
 							<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
+							<span style="color:red">*</span>
 								<span
 									class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 							</label>
@@ -686,50 +699,63 @@ function qsm_create_new_quiz_wizard() {
 						$all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 						global $globalQuizsetting;
 						$quiz_setting_option = array(
-							'form_type'              => array(
+							'form_type'           => array(
 								'option_name' => __( 'Form Type', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['form_type'],
 							),
-							'system'                 => array(
+							'system'              => array(
 								'option_name' => __( 'Grading System', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['system'],
 							),
-							'pagination'             => array(
-								'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['pagination'],
+							'enable_contact_form' => array(
+								'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
+								'value'       => 0,
+								'options'     => array(
+									array(
+										'label' => __( 'Yes', 'quiz-master-next' ),
+										'value' => 1,
+									),
+									array(
+										'label' => __( 'No', 'quiz-master-next' ),
+										'value' => 0,
+									),
+								),
 							),
-							'progress_bar'           => array(
-								'option_name' => __( 'Show Progress Bar', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['progress_bar'],
-							),
-							'timer_limit'            => array(
+							'timer_limit'         => array(
 								'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['timer_limit'],
 							),
-							'enable_pagination_quiz' => array(
-								'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['enable_pagination_quiz'],
-							),
-							'require_log_in'         => array(
+							'require_log_in'      => array(
 								'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['require_log_in'],
 							),
-							'disable_scroll_next_previous_click' => array(
-								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
-								'value'       => $globalQuizsetting['disable_scroll_next_previous_click'],
-							),
-							'disable_first_page'     => array(
+							'disable_first_page'  => array(
 								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 								'value'       => $globalQuizsetting['disable_first_page'],
+							),
+							'comment_section'     => array(
+								'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['comment_section'],
 							),
 						);
 						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
-								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
-								$field            = $all_settings[ $key ];
-								$field['label']   = $single_setting['option_name'];
-								$field['default'] = $single_setting['value'];
+								$index = array_search( $key, array_column( $all_settings, 'id' ), true );
+								if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
+									$field               = $all_settings[ $index ];
+									$field['label']      = $single_setting['option_name'];
+									$field['default']    = $single_setting['value'];
+								} else {
+									$field = array(
+										'id'      => $key,
+										'label'   => $single_setting['option_name'],
+										'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
+										'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
+										'default' => $single_setting['value'],
+										'help'    => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+									);
+								}
 								echo '<div class="input-group">';
 								QSM_Fields::generate_field( $field, $single_setting['value'] );
 								echo '</div>';
@@ -802,9 +828,7 @@ function qsm_create_new_quiz_wizard() {
 							</div>
 							<div class="qsm-addon-list-right">
 								<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
-									href="http://quizandsurveymaster.com/addons/?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-									target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+								<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'qsm-addons-page', 'all-addons-top') )?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 					</div>
@@ -870,6 +894,7 @@ function qsm_text_template_variable_list() {
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%AVERAGE_CATEGORY_POINTS_X%' => __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' ),
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
 		),
 	);
@@ -959,12 +984,10 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	global $mlwQuizMasterNext;
 	global $pro_themes;
 	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
-	$folder_name   = QSM_THEME_PATH;
-	$folder_slug   = QSM_THEME_SLUG;
 	$theme_folders = array();
 	if ( ! empty( $active_themes ) ) {
 		foreach ( $active_themes as $dir ) {
-			$theme_dir = $folder_name . $dir['theme'];
+			$theme_dir = WP_PLUGIN_DIR . '/' . $dir['theme'];
 			if ( is_dir( $theme_dir ) ) {
 				$theme_folders[] = $dir;
 			}
@@ -1003,7 +1026,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 					<?php if ( in_array( $theme_name, $pro_themes , true) ) { ?>
 						<span class="qsm-badge"><?php esc_html_e('Pro', 'quiz-master-next'); ?></span>
 					<?php } ?>
-					<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
+					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL.'/' . $theme_name . '/screenshot.png' ); ?>" />
 					<div class="downloaded-theme-button">
 						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 					</div>
@@ -1041,7 +1064,7 @@ function qsm_get_default_wizard_themes() {
 	global $themes_data;
 	global $pro_themes;
 	$installed_themes    = $mlwQuizMasterNext->theme_settings->get_installed_themes();
-	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma' );
+	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma', 'Fortune' );
 	$default_themes_data = array();
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {

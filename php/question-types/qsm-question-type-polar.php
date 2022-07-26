@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} 
+}
 
 /**
  * This function displays the fill in the blank question
@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_polar_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$answerEditor   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
+	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
+	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
 	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
 	$is_reverse     = false;
@@ -42,16 +45,58 @@ function qmn_polar_display( $id, $question, $answers ) {
 	?>
 	<span class="mlw_qmn_question question-type-polar-s">
 		<div class='left-polar-title'> <?php
-		$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" );
-		echo esc_html( $left_title );
+		if ( 'image' === $answerEditor ) {
+			$size_style = '';
+			if ( ! empty($image_width) ) {
+				$size_style .= 'width:'.$image_width.'px !important;';
+			}
+			if ( ! empty($image_height) ) {
+				$size_style .= ' height:'.$image_height.'px !important;';
+			}
+			$left_image = $answers[0][0];
+			?>
+			<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $left_image, ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>"  />
+			<span class="qsm_image_caption">
+				<?php
+				$caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
+				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+				echo esc_html( $caption_text );
+				?>
+			</span>
+			<?php
+		} else {
+			$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" );
+			echo do_shortcode( wp_kses_post( $left_title ) );
+		}
 		?> </div>
 		<div class='slider-main-wrapper'>
 			<input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
 			<div id="slider-<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
 		</div>
 		<div class='right-polar-title'><?php
-		$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" );
-		echo esc_html( $right_title );
+		if ( 'image' === $answerEditor ) {
+			$size_style = '';
+			if ( ! empty($image_width) ) {
+				$size_style .= 'width:'.$image_width.'px !important;';
+			}
+			if ( ! empty($image_height) ) {
+				$size_style .= ' height:'.$image_height.'px !important;';
+			}
+			$right_image = $answers[1][0];
+			?>
+			<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $right_image, ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>"  />
+			<span class="qsm_image_caption">
+				<?php
+				$caption_text = trim( htmlspecialchars_decode( $answers[1][3], ENT_QUOTES ) );
+				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+				echo esc_html( $caption_text );
+				?>
+			</span>
+			<?php
+		} else {
+			$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" );
+			echo do_shortcode( wp_kses_post( $right_title ) );
+		}
 		?></div>
 	</span>
 	<?php

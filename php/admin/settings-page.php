@@ -110,10 +110,11 @@ class QMNGlobalSettingsPage {
 			'question_per_category'              => 0,
 			'contact_info_location'              => 0,
 			'loggedin_user_contact'              => 0,
-			'comment_section'                    => 0,
+			'comment_section'                    => 1,
 			'question_numbering'                 => 0,
 			'show_optin'                         => 0,
 			'store_responses'                    => 1,
+			'send_email'                         => 1,
 			'disable_answer_onselect'            => 0,
 			'ajax_show_correct'                  => 0,
 			'contact_disable_autofill'           => 0,
@@ -128,6 +129,7 @@ class QMNGlobalSettingsPage {
 			'disable_description_on_result'      => 0,
 			'disable_scroll_next_previous_click' => 0,
 			'disable_first_page'                 => 0,
+			'disable_mathjax'                    => 0,
 			'quiz_animation'                     => '',
 			'result_page_fb_image'               => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 			'randomness_order'                   => 0,
@@ -175,7 +177,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'show-question-numbers', __( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-opt-in-answers-default', __( 'Show Opt-in type Answers to user', 'quiz-master-next' ), array( $this, 'qsm_global_show_optin_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
-		add_settings_field( 'save-responses', __( 'Save Responses', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
+		add_settings_field( 'save-responses', __( 'Submit Actions', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-auto-fill-for-contact-input', __( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
@@ -188,6 +190,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'disable_mathjax', __( 'Disable MathJax?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_mathjax' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-first-page', __( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -894,14 +897,16 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_save_responses() {
 		global $globalQuizsetting;
-		$qsm_store_responses = ( isset( $globalQuizsetting['store_responses'] ) && '' !== $globalQuizsetting['store_responses'] ? $globalQuizsetting['store_responses'] : '0' );
+		$qsm_store_responses = ( isset( $globalQuizsetting['store_responses'] ) && '' !== $globalQuizsetting['store_responses'] ? $globalQuizsetting['store_responses'] : '' );
+		$qsm_send_email = ( isset( $globalQuizsetting['send_email'] ) && '' !== $globalQuizsetting['send_email'] ? $globalQuizsetting['send_email'] : '' );
 		echo '<fieldset class="buttonset buttonset-hide" >
-				<input type="radio" id="store_responses-1" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
-				<label for="store_responses-1">Yes</label><br>
-				<input type="radio" id="store_responses-0" name="qsm-quiz-settings[store_responses]" value="0" ' . checked( $qsm_store_responses, '0', false ) . '>
-				<label for="store_responses-0">No</label><br>
-			</fieldset>
-			<span class="qsm-opt-desc">The results will be permanently stored in a database</span>';
+				<input type="hidden" name="qsm-quiz-settings[store_responses]"  value="0">
+				<input type="checkbox" id="store_responses" name="qsm-quiz-settings[store_responses]"  value="1" ' . checked( $qsm_store_responses, '1', false ) . '>
+				<label for="store_responses">'.esc_html__('Store results permanently in database', 'quiz-master-next').'</label>
+				<input type="hidden" name="qsm-quiz-settings[send_email]"  value="0">
+				<input type="checkbox" id="send_email" name="qsm-quiz-settings[send_email]" value="1" ' . checked( $qsm_send_email, '1', false ) . '>
+				<label for="send_email">'.esc_html__('Send email notifications', 'quiz-master-next').'</label>
+			</fieldset>';
 	}
 
 	/**
@@ -1114,6 +1119,22 @@ class QMNGlobalSettingsPage {
 				<label for="disable_description_on_result-1">Yes</label><br>
 				<input type="radio" id="disable_description_on_result-0" name="qsm-quiz-settings[disable_description_on_result]" value="0" ' . checked( $qsm_disable_description_on_result, '0', false ) . '>
 				<label for="disable_description_on_result-0">No</label><br>
+			</fieldset>';
+	}
+	/**
+	 * Generates Quiz Global Field For Disable MathJax?
+	 *
+	 * @since 8.0.3
+	 * @return void
+	 */
+	public function qsm_global_disable_mathjax() {
+		global $globalQuizsetting;
+		$qsm_disable_mathjax = ( isset( $globalQuizsetting['disable_mathjax'] ) && '' !== $globalQuizsetting['disable_mathjax'] ? $globalQuizsetting['disable_mathjax'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="radio" id="disable_mathjax-1" name="qsm-quiz-settings[disable_mathjax]" value="1" ' . checked( $qsm_disable_mathjax, '1', false ) . ' >
+				<label for="disable_mathjax-1">Yes</label><br>
+				<input type="radio" id="disable_mathjax-0" name="qsm-quiz-settings[disable_mathjax]" value="0" ' . checked( $qsm_disable_mathjax, '0', false ) . '>
+				<label for="disable_mathjax-0">No</label><br>
 			</fieldset>';
 	}
 	/**

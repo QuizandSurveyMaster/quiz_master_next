@@ -26,6 +26,8 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
+	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
+	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
 	<div class="qmn_check_answers qmn_multiple_horizontal_check <?php echo esc_attr( $mlw_require_class ); ?>">
@@ -41,8 +43,15 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 					<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 						<?php
 						if ( 'image' === $answerEditor ) {
+							$size_style = '';
+							if ( ! empty($image_width) ) {
+								$size_style .= 'width:'.$image_width.'px !important;';
+							}
+							if ( ! empty($image_height) ) {
+								$size_style .= ' height:'.$image_height.'px !important;';
+							}
 							?>
-							<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+							<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>"  />
 							<span class="qsm_image_caption">
 								<?php
 								$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
