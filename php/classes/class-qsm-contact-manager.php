@@ -220,18 +220,20 @@ class QSM_Contact_Manager {
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
-				$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $fields[ $i ]['label'], "quiz_contact_field_text-{$i}-{$options->quiz_id}" );
-				$field_array = array(
-					'label' => $field_label,
-					'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) : 'None',
-				);
-				if ( isset( $fields[ $i ]['use'] ) ) {
-					$field_array['use'] = $fields[ $i ]['use'];
+				if ( 'true' === $fields[ $i ]["enable"] || true === $fields[ $i ]["enable"] ) {
+					$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $fields[ $i ]['label'], "quiz_contact_field_text-{$i}-{$options->quiz_id}" );
+					$field_array = array(
+						'label' => $field_label,
+						'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) : 'None',
+					);
+					if ( isset( $fields[ $i ]['use'] ) ) {
+						$field_array['use'] = $fields[ $i ]['use'];
+					}
+					if ( isset( $fields[ $i ]['type'] ) ) {
+						$field_array['type'] = $fields[ $i ]['type'];
+					}
+					$responses[] = $field_array;
 				}
-				if ( isset( $fields[ $i ]['type'] ) ) {
-					$field_array['type'] = $fields[ $i ]['type'];
-				}
-				$responses[] = $field_array;
 			}
 		}
 
