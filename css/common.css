@@ -138,6 +138,11 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm-quiz-container input[type=radio]{
 	cursor: pointer;
 }
+.qmn_accept_answers input[type=checkbox] {
+    vertical-align: top;
+    position: relative;
+    bottom: -5px;
+}
 .qsm-quiz-container .qsm-contact-type-checkbox{
     display: flex;
     align-items: center;
