@@ -968,7 +968,7 @@ function qmnFormSubmit(quiz_form_id) {
 				MicroModal.show('modal-4');
 				return false;
 			} else {
-				qmnDisplayResults(response, quiz_form_id, $container);
+				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 					MathJax.typesetPromise();
@@ -992,10 +992,12 @@ function qsmDisplayLoading($container, quiz_id) {
 	loader_html += '</div>';
 	$container.empty();
 	$container.append(loader_html);
-	qsmScrollTo($container);
+	if (qmn_quiz_data[quiz_id].hasOwnProperty('disable_scroll_next_previous_click') && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
+		qsmScrollTo($container);
+	}
 }
 
-function qmnDisplayResults(results, quiz_form_id, $container) {
+function qmnDisplayResults(results, quiz_form_id, $container, quiz_id) {
 	$container.empty();
 	jQuery(document).trigger('qsm_before_display_result', [results, quiz_form_id, $container]);
 	if (results.redirect) {
@@ -1003,7 +1005,9 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 	} else {
 		$container.append('<div class="qmn_results_page"></div>');
 		$container.find('.qmn_results_page').html(results.display);
-		qsmScrollTo($container);
+		if (qmn_quiz_data[quiz_id].hasOwnProperty('disable_scroll_next_previous_click') && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
+			qsmScrollTo($container);
+		}
 		// Fires after result is populates via ajax
 		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
