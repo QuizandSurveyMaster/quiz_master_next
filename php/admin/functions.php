@@ -1070,7 +1070,7 @@ function qsm_get_default_wizard_themes() {
 	if ( ! empty( $themes_data ) ) {
 		foreach ( $default_themes as $theme ) {
 			$key = array_search( $theme, array_column( $installed_themes, 'theme_name' ), true );
-			if ( false !== $key ) { // installed themes to be removed
+			if ( false !== $key && $installed_themes[ $key ]['theme_active'] && file_exists(WP_PLUGIN_DIR .'/'. $installed_themes[ $key ]['theme']) ) { // installed themes to be removed
 				$key_to_unset = array_search( $theme, array_column( $themes_data, 'name' ), true );
 				if ( false !== $key_to_unset ) {
 					$keys_to_unset[] = $key_to_unset;

@@ -152,7 +152,7 @@ class QSM_Theme_Settings {
 	 */
 	public function get_installed_themes() {
 		global $wpdb;
-		$query          = "SELECT theme, theme_name FROM {$wpdb->prefix}$this->themes_table";
+		$query          = "SELECT theme, theme_name, theme_active FROM {$wpdb->prefix}$this->themes_table";
 		return $results = $wpdb->get_results( $query, ARRAY_A );
 	}
 
