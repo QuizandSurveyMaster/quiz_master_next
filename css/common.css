@@ -62,6 +62,9 @@ div .quiz_section .question-type-polar-s,
 .question-type-polar-s .qsm_image_caption{
     display: block;
 }
+.qsm_image_result_caption{
+    display: block;
+}
 .question-type-polar-s .ui-widget-content{
     background: #A5A5A5;
     border-color: #A5A5A5;

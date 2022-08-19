@@ -1,6 +1,7 @@
 <?php
 
 function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $answers_from_response, $question_settings ) {
+    echo "<pre>";print_r($answers_from_db);exit;
     $question_with_answer_text = '';
     $new_array_user_answer = isset($answers_from_response['user_compare_text']) ? explode('=====', $answers_from_response['user_compare_text']) : array();
     foreach ( $answers_from_db as $single_answer ) {
@@ -80,6 +81,7 @@ function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, 
 }
 
 function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $answers_from_db, $answers_from_response, $question_settings ) {
+    echo "<pre>";print_r($answers_from_db);exit;
     $question_with_answer_text = '';
     $user_selected_answer = htmlspecialchars_decode($answers_from_response[1], ENT_QUOTES);
     foreach ( $answers_from_db as $single_answer ) {

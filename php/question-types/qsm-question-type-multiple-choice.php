@@ -42,7 +42,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						<?php
 					} elseif ( 'image' === $answerEditor ) {
 						?>
-						<div class='qmn_mc_answer_wrap qmn_image_option <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
+						<div class='qmn_mc_answer_wrap qmn_image_option1 <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
 						<?php
 					} else {
 						?>
