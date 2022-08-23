@@ -377,7 +377,7 @@ class QSM_Install {
 				),
 			),
 			'default'    => 0,
-			'ph_text'       => __( 'Disable quiz submission after the end date/time', 'quiz-master-next' ),
+			'ph_text'    => __( 'Disable quiz submission after the end date/time', 'quiz-master-next' ),
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
