@@ -233,6 +233,22 @@ var QSMAdmin;
             e.preventDefault();
             MicroModal.show('show-all-variable');
         });
+        if ( "" != jQuery('#scheduled_time_end').val() ) {
+            jQuery('.not_allow_after_expired_time span').css('opacity', '1');
+            jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+        } else {
+            jQuery('.not_allow_after_expired_time span').css('opacity', '0.7');
+            jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+        }
+        jQuery(document).on('change', '#scheduled_time_end', function () {
+            if ( "" != jQuery(this).val() ) {
+                jQuery('.not_allow_after_expired_time span').css('opacity', '1');
+                jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+            } else {
+                jQuery('.not_allow_after_expired_time span').css('opacity', '0.7');
+                jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+            }
+        });
         //Hide/show tr based on selection
         $('.qsm_tab_content select').each(function () {
             var name = $(this).attr('name');
