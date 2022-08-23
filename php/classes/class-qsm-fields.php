@@ -90,13 +90,6 @@ class QSM_Fields {
 		if ( isset( $settings['result_page_fb_image'] ) && '' === $settings['result_page_fb_image'] ) {
 			$settings['result_page_fb_image'] = '' !== $result_page_fb_image ? $result_page_fb_image : $settings['result_page_fb_image'];
 		}
-		if ( empty( $settings['scheduled_time_end'] ) && ! empty( $settings['not_allow_after_expired_time'] ) && 1 == $settings['not_allow_after_expired_time'] ) {
-			?>
-			<div class="error notice-large notice-error">
-				<p><b><?php esc_html_e( 'Please set ', 'quiz-master-next');?></b> <a href="<?php echo esc_url( admin_url('admin.php?page=mlw_quiz_options&quiz_id='.$quiz_id.'&tab=options') );?>"> <?php esc_html_e('Quiz end date', 'quiz-master-next');?></a><?php esc_html_e( ' with', 'quiz-master-next' ); ?><b><?php esc_html_e( ' Do not allow quiz submission after the end date/time', 'quiz-master-next' ); ?> </b> <?php esc_html_e( ' option for the quiz to work properly.', 'quiz-master-next' ); ?></p>
-			</div>
-			<?php
-		}
 		?>
 		<form action="" method="post">
 			<?php wp_nonce_field( 'save_settings','save_settings_nonce' );
