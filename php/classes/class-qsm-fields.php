@@ -732,6 +732,9 @@ class QSM_Fields {
 			</th>
 			<td>
 				<fieldset class="buttonset buttonset-hide" data-hide='1'>
+					<?php if ( isset($field['ph_text']) && '' !== $field['ph_text'] ) { ?>
+						<span><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
+					<?php } ?>
 					<?php
 					foreach ( $field["options"] as $option ) {
 						?>
