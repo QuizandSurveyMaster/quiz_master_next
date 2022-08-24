@@ -21,18 +21,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$mlw_extra_class = '';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredRadio';
-	} else {
-		$mlw_require_class = '';
+		$mlw_extra_class = 'mlwRequiredRadio';
 	}
+	$mlw_extra_class .= apply_filters( 'qsm_horizontal_multiple_choice_extra_class', $mlw_extra_class, $id );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
 	?>
-	<div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_require_class ); ?>">
+	<div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_extra_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
