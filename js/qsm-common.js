@@ -12,10 +12,11 @@
 	jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
 		event.preventDefault();
 		let parentDivClass    = 'qsm-quiz-container-'+quiz_form_id.replace(new RegExp(/[a-zA-Z]/g),'');
-	    polarQuestions        = jQuery('.'+parentDivClass).find('.qmn_question_answer').find('.mlw_qmn_question').find('.question-type-polar-s');
+		polarQuestions        = jQuery('.'+parentDivClass).find('.qmn_question_answer').find('.mlw_qmn_question').find('.question-type-polar-s');
 		if(polarQuestions.length >0){
 			qsmPolarSlider('answer', polarQuestions);
 		}
+		
 	});
 
 	function qsmPolarSlider(page , polarQuestions){
@@ -103,27 +104,47 @@
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.left-polar-title').css('font-weight', '900');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.left-polar-title img').css('opacity', " 1 ");
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.right-polar-title').css('font-weight', '100');
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.right-polar-title img').css('opacity', "0.4");
 		} else if (ui.value == answer2 ) {
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.left-polar-title').css('font-weight', '100');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.left-polar-title img').css('opacity', "0.4");
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.right-polar-title').css('font-weight', '900');
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.right-polar-title img').css('opacity', "1");
 		} else if (ui.value == value) {
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.left-polar-title').css('font-weight', '400');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.left-polar-title img').css('opacity', "0.5");
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.right-polar-title').css('font-weight', '400');
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.right-polar-title img').css('opacity', "0.5");
 		} else if (ui.value < value ) {
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				lowerMidClass).css('font-weight', '600');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.left-polar-title img').css('opacity', "0.8");
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				upperMidClass).css('font-weight', '400');
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.right-polar-title img').css('opacity', "0.5");
 		} else if (ui.value > value ) {
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				lowerMidClass).css('font-weight', '400');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.left-polar-title img').css('opacity', "0.5");
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				upperMidClass).css('font-weight', '600');
+			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+				'.right-polar-title img').css('opacity', "0.8");	
 		}
 	}
 
@@ -131,7 +152,11 @@
 
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '400');
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s img').find(
+			'.left-polar-title img').css('opacity', "0.5");
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.right-polar-title').css('font-weight', '400');
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s img').find(
+			'.right-polar-title img').css('opacity', "0.5");
 	}
 }(jQuery));
