@@ -67,6 +67,9 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 						}
 						?>
 					</label>
+					<?php
+						echo apply_filters( 'qsm_multiple_response_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total);
+					?>
 				</span>
 					<?php
 				}

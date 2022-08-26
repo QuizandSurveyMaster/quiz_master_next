@@ -40,7 +40,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
-					$answer_class = 'image' === $answerEditor ? $answer_class.' qmn_image_option' : '';
+					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>">
 						<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
@@ -72,7 +72,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 							?>
 						</label>
 						<?php
-						echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answers );
+						echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total );
 						?>
 					</span>
 					<?php
