@@ -1719,13 +1719,33 @@ td.scheduled_time_start {
 .popup-template-span-wrap .popup-copied-des span.dashicons {
 	line-height: 28px;
 }
-.comment-inner-wrap {
-    /* display: none;
-    */
-}
 #qsm_themes h2.wp-heading-inline {
 	display: inline-block;
 	margin-right: 5px;
+}
+.qsm-upgrade-box{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.qsm-upgrade-box h3{
+    font-size: 20px;
+    line-height: normal;
+}
+.qsm-upgrade-box p{
+    font-size: 16px;
+    color: #50575e;
+    margin: 8px 0;
+}
+.qsm-upgrade-box .qsm-upgrade-buttons{
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 15px -15px;
+}
+.qsm-upgrade-box .qsm-upgrade-buttons a{
+    margin: 0 15px;
+    padding: 10px 15px;
 }
 /** * Style tab design */
 .wp-upload-form {
