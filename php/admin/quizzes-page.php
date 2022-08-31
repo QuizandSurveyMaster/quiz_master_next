@@ -434,21 +434,20 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					</div>
 				</div>
 				<!-- Popup for export import upsell -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-export-import" aria-hidden="true">
-					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="modal-export-import" aria-hidden="false">
+					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-export-import-title">
 							<header class="qsm-popup__header">
-								<h2 class="qsm-popup__title" id="modal-5-title"><?php esc_html_e( 'Extend QSM', 'quiz-master-next' ); ?>
-								</h2>
-								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+								<h2 class="qsm-popup__title" id="modal-export-import-title"><?php esc_html_e( 'Unleash Full Power of QSM', 'quiz-master-next' ); ?></h2>
+								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
 							</header>
-							<main class="qsm-popup__content" id="modal-5-content">
-								<h3><strong><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></strong>
-								</h3>
+							<main class="qsm-popup__content" id="modal-export-import-content">
+								<h3><?php esc_html_e( 'Export & Import feature is a part of premium addons.', 'quiz-master-next' ); ?></h3>
+								<h3><?php esc_html_e( 'Purchase Export & Import Addon or save more by upgrading to the QSM addons bundle.', 'quiz-master-next' ); ?></h3>
 							</main>
 							<footer class="qsm-popup__footer">
-								<a style="color: white;text-decoration: none;" href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy Addon', 'quiz-master-next' ); ?></a>
+								<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy QSM Bundle', 'quiz-master-next' ); ?></a>
 							</footer>
 						</div>
 					</div>
