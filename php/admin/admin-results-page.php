@@ -18,8 +18,8 @@ function qsm_generate_admin_results_page() {
 
 	// Retrieves the current stab and all registered tabs.
 	global $mlwQuizMasterNext;
-	$active_tab	 = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
-	$tab_array	 = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
+	$active_tab  = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
+	$tab_array   = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
 	?>
 	<div class="wrap">
 		<div>
@@ -89,15 +89,15 @@ function qsm_results_overview_tab_content() {
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
 
-		$mlw_delete_results_id	 = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
+		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action( 'qsm_before_delete_result', $mlw_delete_results_id );
 		// Updates table to mark results as deleted.
-		$results				 = $wpdb->update(
+		$results                 = $wpdb->update(
 			$wpdb->prefix . 'mlw_results', array(
-			'deleted' => 1,
+				'deleted' => 1,
 			), array( 'result_id' => $mlw_delete_results_id ), array(
-			'%d',
+				'%d',
 			), array( '%d' )
 		);
 
@@ -134,9 +134,9 @@ function qsm_results_overview_tab_content() {
 				} else {
 					$wpdb->update(
 						$wpdb->prefix . "mlw_results", array(
-						'deleted' => 1,
+							'deleted' => 1,
 						), array( 'result_id' => $result_id ), array(
-						'%d',
+							'%d',
 						), array( '%d' )
 					);
 				}
@@ -147,20 +147,20 @@ function qsm_results_overview_tab_content() {
 	}
 
 	// Prepares the SQL to retrieve the results.
-	$table_limit		 = 40;
-	$search_phrase_sql	 = '';
-	$delete				 = 'deleted=0';
-	$delete				 = apply_filters( 'qsm_results_delete_clause', $delete );
-	$order_by_sql		 = 'ORDER BY time_taken_real DESC';
+	$table_limit         = 40;
+	$search_phrase_sql   = '';
+	$delete              = 'deleted=0';
+	$delete              = apply_filters( 'qsm_results_delete_clause', $delete );
+	$order_by_sql        = 'ORDER BY time_taken_real DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
 		$sanitized_search_phrase = sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) );
-		$search_phrase_percents	 = '%' . esc_sql( $wpdb->esc_like( $sanitized_search_phrase ) ) . '%';
-		$search_phrase_sql		 = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
+		$search_phrase_percents  = '%' . esc_sql( $wpdb->esc_like( $sanitized_search_phrase ) ) . '%';
+		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-		$quiz_id			 = intval( $_GET['quiz_id'] );
-		$qsm_results_count	 = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
+		$quiz_id             = intval( $_GET['quiz_id'] );
+		$qsm_results_count   = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
 		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} {$search_phrase_sql}" );
 	}
@@ -169,38 +169,38 @@ function qsm_results_overview_tab_content() {
 	if ( isset( $_GET['qmn_order_by'] ) ) {
 		switch ( $_GET['qmn_order_by'] ) {
 			case 'quiz_name':
-				$order_by		 = 'quiz_name';
-				$order_by_sql	 = ' ORDER BY quiz_name DESC';
+				$order_by        = 'quiz_name';
+				$order_by_sql    = ' ORDER BY quiz_name DESC';
 				break;
 			case 'name':
-				$order_by		 = 'name';
-				$order_by_sql	 = ' ORDER BY name DESC';
+				$order_by        = 'name';
+				$order_by_sql    = ' ORDER BY name DESC';
 				break;
 			case 'point_score':
-				$order_by		 = 'point_score';
-				$order_by_sql	 = ' ORDER BY point_score DESC';
+				$order_by        = 'point_score';
+				$order_by_sql    = ' ORDER BY point_score DESC';
 				break;
 			case 'correct_score':
-				$order_by		 = 'correct_score';
-				$order_by_sql	 = ' ORDER BY correct_score DESC';
+				$order_by        = 'correct_score';
+				$order_by_sql    = ' ORDER BY correct_score DESC';
 				break;
 			default:
-				$order_by		 = 'time_taken_real';
-				$order_by_sql	 = ' ORDER BY time_taken_real DESC';
+				$order_by        = 'time_taken_real';
+				$order_by_sql    = ' ORDER BY time_taken_real DESC';
 		}
 	}
 
 	if ( isset( $_GET['qsm_results_page'] ) ) {
-		$result_page	 = intval( $_GET['qsm_results_page'] ) + 1;
-		$result_begin	 = $table_limit * $result_page;
+		$result_page     = intval( $_GET['qsm_results_page'] ) + 1;
+		$result_begin    = $table_limit * $result_page;
 	} else {
-		$result_page	 = 0;
-		$result_begin	 = 0;
+		$result_page     = 0;
+		$result_begin    = 0;
 	}
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-		$quiz_id		 = intval( $_GET['quiz_id'] );
-		$mlw_quiz_data	 = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
+		$quiz_id         = intval( $_GET['quiz_id'] );
+		$mlw_quiz_data   = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
 	} else {
 		$mlw_quiz_data = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
 	}
@@ -228,9 +228,9 @@ function qsm_results_overview_tab_content() {
 			</span>
 			<span class="pagination-links">
 				<?php
-				$mlw_qmn_previous_page	 = 0;
-				$mlw_current_page		 = $result_page + 1;
-				$mlw_total_pages		 = ceil( $qsm_results_count / $table_limit );
+				$mlw_qmn_previous_page   = 0;
+				$mlw_current_page        = $result_page + 1;
+				$mlw_total_pages         = ceil( $qsm_results_count / $table_limit );
 
 				$url_query_string = '';
 				if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
@@ -282,8 +282,8 @@ function qsm_results_overview_tab_content() {
 				<input type="hidden" name="quiz_id" value="<?php echo intval( $_GET['quiz_id'] ); ?>" />
 				<?php
 			}
-			$qsm_search_phrase	 = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) ) : '';
-			$qmn_order_by		 = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qmn_order_by'] ) ) : 'default';
+			$qsm_search_phrase   = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) ) : '';
+			$qmn_order_by        = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qmn_order_by'] ) ) : 'default';
 			?>
 			<input type="hidden" name="page" value="mlw_quiz_results">
 			<p class="search-box">
@@ -303,24 +303,24 @@ function qsm_results_overview_tab_content() {
 	</div>
 	<?php
 //process screen options
-	$user_id			 = get_current_user_id();
+	$user_id             = get_current_user_id();
 	if ( isset( $_POST["results-screen_option_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST["results-screen_option_nonce"] ) ), 'results_screen_option' ) ) {
-		$results_screen_option['page_url']	 = isset( $_POST['page_url'] ) ? sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) : "0";
-		$results_screen_option['page_name']	 = isset( $_POST['page_name'] ) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
-		$results_screen_option['business']	 = isset( $_POST['business'] ) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
-		$results_screen_option['phone']		 = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
+		$results_screen_option['page_url']   = isset( $_POST['page_url'] ) ? sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) : "0";
+		$results_screen_option['page_name']  = isset( $_POST['page_name'] ) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
+		$results_screen_option['business']   = isset( $_POST['business'] ) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
+		$results_screen_option['phone']      = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
 		$results_screen_option['ip_address'] = isset( $_POST['ip_address'] ) ? sanitize_text_field( wp_unslash( $_POST['ip_address'] ) ) : "0";
 		//set screen option as user meta
 		add_user_meta( $user_id, 'results_screen_option', $results_screen_option, true );
 	} else {
-		$results_screen_option	 = get_user_meta( $user_id, 'results_screen_option', true );
-		$results_screen_option	 = ! empty( $results_screen_option ) ? $results_screen_option : '';
+		$results_screen_option   = get_user_meta( $user_id, 'results_screen_option', true );
+		$results_screen_option   = ! empty( $results_screen_option ) ? $results_screen_option : '';
 		if ( empty( $results_screen_option ) ) {
 			$results_screen_option = array(
-				'page_url'	 => '0',
-				'page_name'	 => '0',
-				'business'	 => '1',
-				'phone'		 => '1',
+				'page_url'   => '0',
+				'page_name'  => '0',
+				'business'   => '1',
+				'phone'      => '1',
 				'ip_address' => '1',
 			);
 		}
@@ -334,23 +334,23 @@ function qsm_results_overview_tab_content() {
 		wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' );
 
 		$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
-			'score'			 => __( 'Score', 'quiz-master-next' ),
-			'time_complete'	 => __( 'Time To Complete', 'quiz-master-next' ),
-			'name'			 => __( 'Name', 'quiz-master-next' ),
-			'business'		 => __( 'Business', 'quiz-master-next' ),
-			'email'			 => __( 'Email', 'quiz-master-next' ),
-			'phone'			 => __( 'Phone', 'quiz-master-next' ),
-			'user'			 => __( 'User', 'quiz-master-next' ),
-			'time_taken'	 => __( 'Time Taken', 'quiz-master-next' ),
-			'ip'			 => __( 'IP Address', 'quiz-master-next' ),
-			'page_name'		 => __( 'Page Name', 'quiz-master-next' ),
-			'page_url'		 => __( 'Page URL', 'quiz-master-next' ),
-			) );
+			'score'         => __( 'Score', 'quiz-master-next' ),
+			'time_complete' => __( 'Time To Complete', 'quiz-master-next' ),
+			'name'          => __( 'Name', 'quiz-master-next' ),
+			'business'      => __( 'Business', 'quiz-master-next' ),
+			'email'         => __( 'Email', 'quiz-master-next' ),
+			'phone'         => __( 'Phone', 'quiz-master-next' ),
+			'user'          => __( 'User', 'quiz-master-next' ),
+			'time_taken'    => __( 'Time Taken', 'quiz-master-next' ),
+			'ip'            => __( 'IP Address', 'quiz-master-next' ),
+			'page_name'     => __( 'Page Name', 'quiz-master-next' ),
+			'page_url'      => __( 'Page URL', 'quiz-master-next' ),
+		) );
 
-		$values		 = $quiz_infos	 = [];
+		$values      = $quiz_infos   = [];
 		foreach ( $th_elements as $key => $th ) {
-			$values[$key]['title']	 = $th;
-			$values[$key]['style']	 = "";
+			$values[ $key ]['title']   = $th;
+			$values[ $key ]['style']   = "";
 		}
 
 		$display_none = ' style=display:none; ';
@@ -372,10 +372,10 @@ function qsm_results_overview_tab_content() {
 
 		if ( $mlw_quiz_data ) {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
-				$quiz_infos[]			 = $mlw_quiz_info;
-				$mlw_complete_time		 = '';
-				$mlw_qmn_results_array	 = maybe_unserialize( $mlw_quiz_info->quiz_results );
-				$hidden_questions		 = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
+				$quiz_infos[]            = $mlw_quiz_info;
+				$mlw_complete_time       = '';
+				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				$hidden_questions        = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {
@@ -385,12 +385,12 @@ function qsm_results_overview_tab_content() {
 					if ( $mlw_complete_minutes > 0 ) {
 						$mlw_complete_time .= "$mlw_complete_minutes minutes ";
 					}
-					$mlw_complete_seconds	 = $mlw_qmn_results_array[0] % 60;
-					$mlw_complete_time		 .= "$mlw_complete_seconds seconds";
+					$mlw_complete_seconds    = $mlw_qmn_results_array[0] % 60;
+					$mlw_complete_time       .= "$mlw_complete_seconds seconds";
 				}
 
-				$out_of_q	 = $mlw_quiz_info->total - $hidden_questions;
-				$form_type	 = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
+				$out_of_q    = $mlw_quiz_info->total - $hidden_questions;
+				$form_type   = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
 
 				if ( isset( $values['score'] ) ) {
 					if ( 1 === intval( $form_type ) || 2 === intval( $form_type ) ) {
@@ -436,8 +436,8 @@ function qsm_results_overview_tab_content() {
 					}
 				}
 
-				$date	 = gmdate( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
-				$time	 = gmdate( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
+				$date    = gmdate( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
+				$time    = gmdate( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 
 				if ( isset( $values['time_taken'] ) ) {
 					$values['time_taken']['content'][] = '<abbr title="' . esc_attr( $date . $time ) . '">' . esc_html( $date ) . '</abbr>';
@@ -455,8 +455,8 @@ function qsm_results_overview_tab_content() {
 				foreach ( $values as $k => $v ) {
 					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url' ], true ) ) {
 						$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
-						if ( isset( $values[$k] ) && ! empty( $content ) ) {
-							$values[$k]['content'][] = $content;
+						if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
+							$values[ $k ]['content'][] = $content;
 						}
 					}
 				}
@@ -485,12 +485,12 @@ function qsm_results_overview_tab_content() {
 					for ( $x = 0; $x < $co; $x ++ ) {
 						?>
 						<tr>
-							<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[$x]->result_id ); ?>" /></td>
-							<td><span style="font-size:16px;"><?php echo esc_html( $quiz_infos[$x]->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[$x]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[$x]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[$x]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a></span></div></td>
+							<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" /></td>
+							<td><span style="font-size:16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a></span></div></td>
 							<?php
 							foreach ( $values as $k => $v ) {
-								if ( isset( $v['content'][$x] ) ) {
-									echo '<td' . esc_html( $v['style'] ) . '><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][$x], $quiz_infos[$x], $k ) ) . '</span></td>';
+								if ( isset( $v['content'][ $x ] ) ) {
+									echo '<td' . esc_html( $v['style'] ) . '><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k ) ) . '</span></td>';
 								}
 							}
 							?>
