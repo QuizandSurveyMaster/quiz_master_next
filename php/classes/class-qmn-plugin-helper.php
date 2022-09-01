@@ -1068,15 +1068,16 @@ class QMNPluginHelper {
 			$is_categorized = isset( $question_type ['category'] ) && '' !== $question_type ['category'];
 			if ( $is_categorized ) {
 				$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
-					'slug' => $question_type['slug'],
-					'name' => $question_type['name'],
+					'slug'     => $question_type['slug'],
+					'name'     => $question_type['name'],
+					'disabled' => (isset( $question_type['display'] ) && '-1' == $question_type['display']) ? true : false,
 				);
 			} else {
 				$question_type_uncategorized['uncategorized'][ $question_type['slug'] ] = array(
-					'slug' => $question_type['slug'],
-					'name' => $question_type['name'],
+					'slug'     => $question_type['slug'],
+					'name'     => $question_type['name'],
+					'disabled' => (isset( $question_type['display'] ) && '-1' == $question_type['display']) ? true : false,
 				);
-
 			}
 		}
 		$question_type_categorized = array_merge( $question_type_categorized, $question_type_uncategorized );

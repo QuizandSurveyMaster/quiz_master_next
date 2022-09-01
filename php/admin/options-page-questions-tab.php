@@ -482,10 +482,11 @@ function qsm_options_questions_tab_content() {
 															<optgroup label="<?php echo esc_attr( $category_name ) ?>">
 																<?php
 																foreach ( $category_items as $type ) {
-																	if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
-																		echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
+																	if ( isset( $type['disabled'] ) && true === $type['disabled'] ) {
+																		echo '<option disabled value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+																	} else {
+																		echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 																	}
-																	echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 																}
 																?>
 															</optgroup>
