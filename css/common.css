@@ -421,11 +421,6 @@ body .ui-tooltip, body .ui-tooltip.ui-widget-content{
   overflow: hidden;
 }
 
-.admin_page_qsm_quiz_result_details .qmn_image_option img, .quiz_section .qmn_image_option img {
- 
-    object-fit: cover;
-}
-
 .admin_page_qsm_quiz_result_details .qmn_image_option{
     width: 48%;
     height: 250px;
@@ -447,7 +442,6 @@ body .ui-tooltip, body .ui-tooltip.ui-widget-content{
     right: 50px;
     padding: 5px;
     bottom:10px;
-    padding:5px;
     z-index:99;
     color: black;
 }

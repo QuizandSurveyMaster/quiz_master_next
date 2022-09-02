@@ -49,20 +49,22 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		}
 		if ( 0 == $form_type && ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) ) {
 			if ( $is_user_answer && $is_answer_correct ) {
-				$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption.'</span>' ;
+				$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption ;
 			} elseif ( ! $is_user_answer && $is_answer_correct ) {
-				$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption.'</span>';
+				$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption;
 			} elseif ( $is_user_answer && ! $is_answer_correct ) {
-				$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption.'</span>';
+				$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption;
 			} else {
-				$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption.'</span>';
+				$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption;
 			}
+			$question_with_answer_text .= '</span>';
 		} else {
 			if ( $is_user_answer ) {
-				$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption. '</span>';
+				$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption;
 			} else {
-				$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption.'</span>';
+				$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $hide . ' ' . $class . ' ' . $image_class . '">' . $show_user_answer .$caption;
 			}
+			$question_with_answer_text .= '</span>';
 		}
 	}
 	return $question_with_answer_text;
