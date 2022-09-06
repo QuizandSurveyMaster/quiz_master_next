@@ -26,6 +26,9 @@ function qmn_accept_display( $id, $question, $answers ) {
 		<label class="qsm-input-label" for="mlwAcceptance">
 			<span class="qmn_accept_text">
 			<?php
+				if ( empty($question) ) {
+					$question = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
+				}
 				$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question, ENT_QUOTES ), "question-description-{$id}", 'QSM Questions' );
 				echo do_shortcode( wp_kses_post( $question ) );
 			?>
