@@ -84,7 +84,6 @@
   display: block;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #f3f3f3;
 }
 
 .mlw_qmn_message_before p {
@@ -388,7 +387,6 @@ label.inline .mlw_qmn_question,
   align-items: stretch;
   flex-direction: column;
   padding: 15px 0 15px 0;
-  border-top: 1px solid #f3f3f3;
 }
 
 @media screen and (min-width: 500px) {
