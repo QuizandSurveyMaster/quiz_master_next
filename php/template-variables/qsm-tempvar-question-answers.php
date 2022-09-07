@@ -38,7 +38,6 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			if ( ! empty($question_settings['image_size-height']) ) {
 				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
 			}
-			
 			if ( ! empty($single_answer[3]) ) {
 				$caption = ' <span class="qsm_image_result_caption_default">'.$single_answer[3].'</span>';
 			}
