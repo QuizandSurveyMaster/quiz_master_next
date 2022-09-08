@@ -1102,6 +1102,7 @@ class QSM_Install {
 				'%QUESTION_MAX_POINTS%',
 			),
 		);
+		$field_array = apply_filters( 'qsm_text_fieldarray_list', $field_array);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers question_answer_template setting

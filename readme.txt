@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 8.0.3
+Stable tag: 8.0.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.4 (September 8, 2022) =
+* Feature: Added image answer captions on result page
+* Bug: Fixed issue with themes list in style tab
+* Bug: Fixed issue with quiz end date
+* Bug: Fixed issue with Opt-in question type label
+* Enhancement: Improved UI for quiz welcome page
+* Enhancement: Improved UI for polar questions
+* Enhancement: Improved UI for Opt-in questions
+
 = 8.0.3 (July 26, 2022) =
 * Feature: Added option to enable/disable case sensitive answer for fill-in blank question
 * Feature: Added option to enable/disable MathJax
