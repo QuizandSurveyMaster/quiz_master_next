@@ -564,7 +564,7 @@ class QMNQuizManager {
 	 */
 	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
-		// Prepare variables.options
+		// Prepare variables.
 		global $wpdb;
 		global $mlwQuizMasterNext;
 		$questions                = array();
