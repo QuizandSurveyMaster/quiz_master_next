@@ -406,6 +406,16 @@ class QMNQuizManager {
 			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
+			$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
+			$themes = array();
+			if ( ! empty( $active_themes ) ) {
+				foreach ( $active_themes as $dir ) {
+					$themes[] = $dir['theme'];
+				}
+			}
+			if ( ! in_array($saved_quiz_theme,$themes) ) {
+				$saved_quiz_theme = 'default' ;
+			}
 			$folder_name      = QSM_THEME_PATH . $saved_quiz_theme . '/';
 			if ( file_exists( $folder_name . 'functions.php' ) ) {
 				include $folder_name . 'functions.php';
@@ -833,6 +843,16 @@ class QMNQuizManager {
 		$auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
+		$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
+		$themes = array();
+		if ( ! empty( $active_themes ) ) {
+			foreach ( $active_themes as $dir ) {
+				$themes[] = $dir['theme'];
+			}
+		}
+		if ( ! in_array($saved_quiz_theme,$themes) ) {
+			$saved_quiz_theme = 'default' ;
+		}
 		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
 		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
