@@ -1545,6 +1545,18 @@ class QMNQuizManager {
 
 		$mlw_qmn_pagetime                      = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pagetime'] ) ) : array();
 		$mlw_qmn_timer                         = isset( $_POST['timer'] ) ? intval( $_POST['timer'] ) : 0;
+		if ( 0 === $mlw_qmn_timer && class_exists( 'QSM_Recaptcha' ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'Validation failed!', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			exit;
+		}
 		$mlw_qmn_timer_ms                      = isset( $_POST['timer_ms'] ) ? intval( $_POST['timer_ms'] ) : 0;
 		$qmn_array_for_variables['user_id']    = get_current_user_id();
 		$qmn_array_for_variables['timer']      = $mlw_qmn_timer;

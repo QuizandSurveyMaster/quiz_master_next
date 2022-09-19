@@ -2243,6 +2243,9 @@ var import_button;
                     $("#edit-page-id").text('').text(pageID);
                     jQuery('#page-options').find(':input, select, textarea').each(function (i, field) {
                         field.value = page.get(field.name);
+                        if ('undefined' == field.value) {
+                            field.value = "";
+                        }
                     });
                     MicroModal.show('modal-page-1');
                 },
