@@ -68,7 +68,7 @@ function qsm_generate_admin_results_page() {
 function qsm_results_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content' );
-	if (! class_exists('QSM_Analysis')) {
+	if ( ! class_exists('QSM_Analysis') ) {
 		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __('Reporting And Analysis', 'quiz-master-next'),'qsm_reporting_analysis_tabs_content');
 	}
 }
@@ -93,7 +93,7 @@ function qsm_results_overview_tab_content() {
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action( 'qsm_before_delete_result', $mlw_delete_results_id );
 		// Updates table to mark results as deleted.
-		$results                 = $wpdb->update($wpdb->prefix . 'mlw_results', array('deleted' => 1,), array('result_id' => $mlw_delete_results_id), array('%d',), array('%d'));
+		$results                 = $wpdb->update($wpdb->prefix . 'mlw_results', array( 'deleted' => 1 ), array( 'result_id' => $mlw_delete_results_id ), array( '%d' ), array( '%d' ));
 
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
@@ -127,7 +127,7 @@ function qsm_results_overview_tab_content() {
 					);
 				} else {
 					$wpdb->update(
-						$wpdb->prefix . "mlw_results", array('deleted' => 1,), array('result_id' => $result_id), array('%d',), array('%d')
+						$wpdb->prefix . "mlw_results", array( 'deleted' => 1 ), array( 'result_id' => $result_id ), array( '%d' ), array( '%d' )
 					);
 				}
 			}
@@ -312,7 +312,7 @@ function qsm_results_overview_tab_content() {
 		<input type="hidden" name="bulk_delete" value="confirmation" />
 		<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 		<?php
-		wp_nonce_field('bulk_delete','bulk_delete_nonce');
+		wp_nonce_field('bulk_delete', 'bulk_delete_nonce');
 
 		$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
 			'score'         => __( 'Score', 'quiz-master-next' ),
@@ -433,7 +433,7 @@ function qsm_results_overview_tab_content() {
 				if ( isset( $values['page_url'] ) ) {
 					$values['page_url']['content'][] = '<a href="' . esc_url( $mlw_quiz_info->page_url ) . '">' . esc_html( $mlw_quiz_info->page_url ) . '</a>';
 				}
-				foreach ($values as $k => $v) {
+				foreach ( $values as $k => $v ) {
 					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url' ], true ) ) {
 						$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 						if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
@@ -463,7 +463,7 @@ function qsm_results_overview_tab_content() {
 				<?php
 				$co = ! empty( $quiz_infos ) ? count( $quiz_infos ) : 0;
 				if ( $co > 0 ) {
-					for ($x = 0; $x < $co; $x++) {
+					for ( $x = 0; $x < $co; $x++ ) {
 						?>
 						<tr>
 							<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" /></td>
@@ -543,11 +543,10 @@ function qsm_results_overview_tab_content() {
 	<?php
 }
 
-function qsm_reporting_analysis_tabs_content( ) 
-{
+function qsm_reporting_analysis_tabs_content( ) {
 	?>
 	<div class="qsm-upgrade-box">
-		<h2>REPORT & ANALYSIS</h2>
+		<h2><?php _e('REPORT & ANALYSIS','quiz-master-next');?></h2>
 		<?php
 		$warning_image                 = plugins_url( '', dirname( __FILE__ )) . '/images/warning.png';
 		$report_analysis_chart_image   = plugins_url( '', dirname( __FILE__ )) . '/images/report_analysis_chart.png';
@@ -560,8 +559,8 @@ function qsm_reporting_analysis_tabs_content( )
 			<img src= <?php echo $read_icon_image ;?> alt="read">&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" rel="noopener" >Read Documentation</a>
 			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
-		<div><span><img src= <?php echo $report_analysis_chart_image ;?> alt="chart"></div>
-		<div><span><img src= <?php echo $information_image ;?> alt="information"></div>
+		<div><img src= <?php echo $report_analysis_chart_image ;?> alt="chart"></div>
+		<div><img src= <?php echo $information_image ;?> alt="information"></div>
 		<div class="qsm-upgrade-buttons">
 			<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
 			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page') );?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
