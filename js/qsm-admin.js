@@ -1389,7 +1389,7 @@ var QSMQuestion;
 var import_button;
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
-        if (window.location.href.indexOf('tab') == -1 || window.location.href.indexOf('tab=questions') > 0) {
+        if (window.location.href.indexOf('&tab') == -1 || window.location.href.indexOf('tab=questions') > 0) {
 
             $.QSMSanitize = function (input) {
                 return input.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
