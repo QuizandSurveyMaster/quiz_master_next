@@ -40,7 +40,7 @@ function qsm_generate_admin_results_page() {
 				}
 				$tab_url = "?page=mlw_quiz_results&tab={$tab['slug']}";
 				?>
-				<a href="<?php echo esc_url_raw($tab_url); ?>" class="nav-tab <?php echo esc_attr($active_class); ?>"><?php echo wp_kses_post($tab['title']); ?></a>
+				<a href="<?php echo esc_url_raw( $tab_url ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
 				<?php
 			}
 			?>
@@ -68,8 +68,8 @@ function qsm_generate_admin_results_page() {
 function qsm_results_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content' );
-	if ( ! class_exists('QSM_Analysis') ) {
-		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __('Reporting And Analysis', 'quiz-master-next'),'qsm_reporting_analysis_tabs_content');
+	if ( ! class_exists( 'QSM_Analysis' ) ) {
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
 	}
 }
 
@@ -93,7 +93,7 @@ function qsm_results_overview_tab_content() {
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action( 'qsm_before_delete_result', $mlw_delete_results_id );
 		// Updates table to mark results as deleted.
-		$results                 = $wpdb->update($wpdb->prefix . 'mlw_results', array( 'deleted' => 1 ), array( 'result_id' => $mlw_delete_results_id ), array( '%d' ), array( '%d' ));
+		$results                 = $wpdb->update( $wpdb->prefix . 'mlw_results', array( 'deleted' => 1 ), array( 'result_id' => $mlw_delete_results_id ), array( '%d' ), array( '%d' ) );
 
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
@@ -197,14 +197,19 @@ function qsm_results_overview_tab_content() {
 	?>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">
-			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ){document.bulk_delete_form.submit();}" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
-			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ){document.getElementById( 'bulk_permanent_delete' ).value = '1';document.bulk_delete_form.submit();}" class="button action">Bulk Permanent Delete</a>
+			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) {
+							document.bulk_delete_form.submit();
+						}" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
+			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) {
+							document.getElementById( 'bulk_permanent_delete' ).value = '1';
+							document.bulk_delete_form.submit();
+						}" class="button action">Bulk Permanent Delete</a>
 		</div>
 		<div class="tablenav-pages">
 			<span class="displaying-num">
 				<?php
 				/* translators: %s: Result Count */
-				echo esc_html(sprintf( _n('%s result','%s results', $qsm_results_count,'quiz-master-next'), number_format_i18n($qsm_results_count)));
+				echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) );
 				?>
 			</span>
 			<span class="pagination-links">
@@ -312,7 +317,7 @@ function qsm_results_overview_tab_content() {
 		<input type="hidden" name="bulk_delete" value="confirmation" />
 		<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 		<?php
-		wp_nonce_field('bulk_delete', 'bulk_delete_nonce');
+		wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' );
 
 		$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
 			'score'         => __( 'Score', 'quiz-master-next' ),
@@ -543,27 +548,27 @@ function qsm_results_overview_tab_content() {
 	<?php
 }
 
-function qsm_reporting_analysis_tabs_content( ) {
+function qsm_reporting_analysis_tabs_content() {
 	?>
 	<div class="qsm-upgrade-box">
-		<h2><?php _e('REPORT & ANALYSIS','quiz-master-next');?></h2>
+		<h2><?php _e( 'REPORT & ANALYSIS', 'quiz-master-next' ); ?></h2>
 		<?php
-		$warning_image                 = plugins_url( '', dirname( __FILE__ )) . '/images/warning.png';
-		$report_analysis_chart_image   = plugins_url( '', dirname( __FILE__ )) . '/images/report_analysis_chart.png';
-		$information_image             = plugins_url( '', dirname( __FILE__ )) . '/images/information.png';
-		$read_icon_image               = plugins_url( '', dirname( __FILE__ )) . '/images/read_icon.png';
+		$warning_image               = plugins_url( '', dirname( __FILE__ ) ) . '/images/warning.png';
+		$report_analysis_chart_image = plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png';
+		$information_image           = plugins_url( '', dirname( __FILE__ ) ) . '/images/information.png';
+		$read_icon_image             = plugins_url( '', dirname( __FILE__ ) ) . '/images/read_icon.png';
 		?>
-		<div><span><img src= <?php echo $warning_image ;?> alt="warning"></span></div>
-		<div class="qsm-upgrade-text"><?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' );?><br><?php esc_html_e('questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' );?><br><?php esc_html_e('designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?></div>
+		<div><span><img src= <?php echo $warning_image; ?> alt="warning"></span></div>
+		<div class="qsm-upgrade-text"><?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' ); ?><br><?php esc_html_e( 'questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' ); ?><br><?php esc_html_e( 'designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?></div>
 		<span  class="qsm-upgrade-read-icon">
-			<img src= <?php echo $read_icon_image ;?> alt="read">&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" rel="noopener" >Read Documentation</a>
+			<img src= <?php echo $read_icon_image; ?> alt="read">&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >Read Documentation</a>
 			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
-		<div><img src= <?php echo $report_analysis_chart_image ;?> alt="chart"></div>
-		<div><img src= <?php echo $information_image ;?> alt="information"></div>
+		<div><img src= <?php echo $report_analysis_chart_image; ?> alt="chart"></div>
+		<div><img src= <?php echo $information_image; ?> alt="information"></div>
 		<div class="qsm-upgrade-buttons">
-			<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
-			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page') );?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
