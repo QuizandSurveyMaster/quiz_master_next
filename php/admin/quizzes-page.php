@@ -446,7 +446,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<h3><?php esc_html_e( 'Purchase Export & Import Addon or save more by upgrading to the QSM addons bundle.', 'quiz-master-next' ); ?></h3>
 							</main>
 							<footer class="qsm-popup__footer">
-								<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy Addon', 'quiz-master-next' ); ?></a>
+								<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"  rel="noopener" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy Addon', 'quiz-master-next' ); ?></a>
 								<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy QSM Bundle', 'quiz-master-next' ); ?></a>
 							</footer>
 						</div>

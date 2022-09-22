@@ -580,14 +580,14 @@ function qsm_reporting_analysis_tabs_content(){
 				 esc_html_e('designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?>
 		</div>
 		<span  class="qsm-upgrade-read-icon">
-			<img src= <?php echo $read_icon_image ;?>>&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" >Read Documentation</a>
+			<img src= <?php echo $read_icon_image ;?>>&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" rel="noopener" >Read Documentation</a>
 			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
 		<div><span><img src= <?php echo $report_analysis_chart_image ;?>></div>
 		<div><span><img src= <?php echo $information_image ;?>></div>
 		<div class="qsm-upgrade-buttons">
-			<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
-			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page') );?>" target="_blank" class="qsm_report_analysis"  ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page') );?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
