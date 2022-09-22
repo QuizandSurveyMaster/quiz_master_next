@@ -207,17 +207,8 @@ function qsm_results_overview_tab_content() {
 	?>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">
-			<a id="result_bulkaction" href="javascript: void(0);"
-			   onclick="if ( confirm( 'Are you sure?' ) ) {
-						   document.bulk_delete_form.submit();
-					   }" class="button action">Bulk
-				Delete</a>&nbsp;&nbsp;&nbsp;
-			<a href="javascript: void(0);"
-			   onclick="if ( confirm( 'Are you sure?' ) ) {
-						   document.getElementById( 'bulk_permanent_delete' ).value = '1';
-						   document.bulk_delete_form.submit();
-					   }"
-			   class="button action">Bulk Permanent Delete</a>
+			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ){document.bulk_delete_form.submit();}" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
+			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ){document.getElementById( 'bulk_permanent_delete' ).value = '1';document.bulk_delete_form.submit();}" class="button action">Bulk Permanent Delete</a>
 		</div>
 		<div class="tablenav-pages">
 			<span class="displaying-num">
@@ -512,8 +503,7 @@ function qsm_results_overview_tab_content() {
 			<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
 			<input type='hidden' id='result_id' name='result_id' value='' />
 			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary'
-									 value='<?php esc_html_e( 'Delete Results', 'quiz-master-next' ); ?>' /></p>
+			<p class='submit'><input type='submit' class='button-primary' value='<?php esc_html_e( 'Delete Results', 'quiz-master-next' ); ?>' /></p>
 		</form>
 	</div>
 
@@ -573,18 +563,14 @@ function qsm_reporting_analysis_tabs_content(){
 		$information_image             = plugins_url( '', dirname( __FILE__ ) ) . '/images/information.png';
 		$read_icon_image               = plugins_url( '', dirname( __FILE__ ) ) . '/images/read_icon.png';
 		?>
-		<div><span><img src= <?php echo $warning_image ;?>></span></div>
-		<div class="qsm-upgrade-text">
-			<?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' );?><br><?php
-			     esc_html_e('questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' );?><br><?php
-				 esc_html_e('designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?>
-		</div>
+		<div><span><img src= <?php echo $warning_image ;?> alt="warning"></span></div>
+		<div class="qsm-upgrade-text"><?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' );?><br><?php esc_html_e('questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' );?><br><?php esc_html_e('designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?></div>
 		<span  class="qsm-upgrade-read-icon">
-			<img src= <?php echo $read_icon_image ;?>>&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" rel="noopener" >Read Documentation</a>
+			<img src= <?php echo $read_icon_image ;?> alt="read">&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons') );?>" target="_blank" rel="noopener" >Read Documentation</a>
 			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
-		<div><span><img src= <?php echo $report_analysis_chart_image ;?>></div>
-		<div><span><img src= <?php echo $information_image ;?>></div>
+		<div><span><img src= <?php echo $report_analysis_chart_image ;?> alt="chart"></div>
+		<div><span><img src= <?php echo $information_image ;?> alt="information"></div>
 		<div class="qsm-upgrade-buttons">
 			<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
 			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page') );?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>

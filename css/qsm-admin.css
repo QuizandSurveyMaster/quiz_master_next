@@ -1763,7 +1763,6 @@ td.scheduled_time_start {
 	 color:#1D4ED8;
 }
 .qsm-upgrade-box .qsm-upgrade-buttons{
-    display: inline-block;
     box-sizing: border-box;
     margin: 15px -15px;
 	width:75%;
@@ -1777,7 +1776,6 @@ td.scheduled_time_start {
     color: white;
 	text-decoration: none;
 	width: 25%;
-	font-size: 13px;    
 	height: 30px;
 	font-size: 16px;
 	text-align: center;
