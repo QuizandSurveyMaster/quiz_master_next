@@ -1738,14 +1738,59 @@ td.scheduled_time_start {
     color: #50575e;
     margin: 8px 0;
 }
+.qsm-upgrade-box .qsm-upgrade-text{
+    font-size:15px;
+	padding-top:10px;
+	word-wrap: break-word;
+}
+.qsm-upgrade-box .qsm-upgrade-read-icon{
+    display: flex;
+	align-items: 
+	baseline;padding-top:15px;
+}
+.qsm-upgrade-box .qsm-upgrade-read-icon a{
+	color: #1D4ED8;
+	font-size:15px;
+	text-decoration: none;
+}
+.qsm-upgrade-box .qsm-upgrade-read-icon img{
+	height : 15px;
+}
+.qsm-upgrade-box .qsm-upgrade-right-arrow{
+    font-size:10px;
+	position: relative; 
+     top: 2px;
+	 color:#1D4ED8;
+}
 .qsm-upgrade-box .qsm-upgrade-buttons{
     display: inline-block;
     box-sizing: border-box;
     margin: 15px -15px;
+	width:75%;
+	display: flex;
+    flex-direction: row;
+    align-content: stretch;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.qsm-upgrade-box .qsm-upgrade-buttons .qsm_bundle{
+    color: white;
+	text-decoration: none;
+	width: 25%;
+	font-size: 13px;    
+	height: 30px;
+	font-size: 16px;
+	text-align: center;
+    text-indent: 4px;
+	display: grid;
+    align-content: center;
 }
 .qsm-upgrade-box .qsm-upgrade-buttons a{
     margin: 0 15px;
-    padding: 10px 15px;
+	color: #1D4ED8;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 17px;
 }
 /** * Style tab design */
 .wp-upload-form {
