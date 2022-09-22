@@ -4,13 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-include 'question-types/qsm-question-type-multiple-choice.php';
-include 'question-types/qsm-question-type-multiple-response.php';
-include 'question-types/qsm-question-type-multiple-choice-horizontal.php';
-include 'question-types/qsm-question-type-multiple-response-horizontal.php';
-include 'question-types/qsm-question-type-dropdown.php';
-include 'question-types/qsm-question-type-polar.php';
-include 'question-types/qsm-question-type-opt-in.php';
+include_once 'question-types/qsm-question-type-multiple-choice.php';
+include_once 'question-types/qsm-question-type-multiple-response.php';
+include_once 'question-types/qsm-question-type-multiple-choice-horizontal.php';
+include_once 'question-types/qsm-question-type-multiple-response-horizontal.php';
+include_once 'question-types/qsm-question-type-dropdown.php';
+include_once 'question-types/qsm-question-type-polar.php';
+include_once 'question-types/qsm-question-type-opt-in.php';
 include_once 'question-types/qsm-question-type-date.php';
 include_once 'question-types/qsm-question-type-number.php';
 include_once 'question-types/qsm-question-type-short-answer.php';
@@ -18,13 +18,12 @@ include_once 'question-types/qsm-question-type-paragraph.php';
 include_once 'question-types/qsm-question-type-fill-in-the-blanks.php';
 include_once 'question-types/qsm-question-type-file-upload.php';
 include_once 'question-types/qsm-question-type-text-or-html.php';
-include 'question-types/qsm-question-type-captcha.php';
-include 'question-types/qsm-question-title.php';
-include 'classes/question-types/class-question-review.php';
-include 'classes/question-types/class-question-review-fill-in-blanks.php';
-include 'classes/question-types/class-question-review-file-upload.php';
-include 'classes/question-types/class-question-review-choice.php';
-include 'classes/question-types/class-question-review-text.php';
+include_once 'question-types/qsm-question-type-captcha.php';
+include_once 'question-types/qsm-question-title.php';
+include_once 'classes/question-types/class-question-review.php';
+include_once 'classes/question-types/class-question-review-fill-in-blanks.php';
+include_once 'classes/question-types/class-question-review-file-upload.php';
+include_once 'classes/question-types/class-question-review-choice.php';
 
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_choice' );
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
@@ -285,9 +284,9 @@ function qmn_extra_question_types() {
 	if ( ! class_exists( 'QSM_Advance_Question' ) ) {
 		$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Matching Pairs', 'quiz-master-next' ), '-1', false, null, null, null, 15 );
 		$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 15, 'category', 'Advanced' );
-		$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Radio Grid', 'quiz-master-next' ), '-1', false, null, null, null, 16 );
+		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Radio Grid', 'quiz-master-next'), '-1', false, null, null, null, 16);
 		$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 16, 'category', 'Advanced' );
-		$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Checkbox Grid', 'quiz-master-next' ), '-1', false, null, null, null, 17 );
-		$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 17, 'category', 'Advanced' );
+		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Checkbox Grid', 'quiz-master-next'), '-1', false, null, null, null, 17);
+		$mlwQuizMasterNext->pluginHelper->set_question_type_meta(17, 'category', 'Advanced');
 	}
 }
