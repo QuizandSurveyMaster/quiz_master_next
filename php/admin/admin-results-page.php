@@ -551,7 +551,7 @@ function qsm_results_overview_tab_content() {
 function qsm_reporting_analysis_tabs_content() {
 	?>
 	<div class="qsm-upgrade-box">
-		<h2><?php _e( 'REPORT & ANALYSIS', 'quiz-master-next' ); ?></h2>
+		<h2><?php esc_html_e('REPORT & ANALYSIS', 'quiz-master-next'); ?></h2>
 		<?php
 		$warning_image               = plugins_url( '', dirname( __FILE__ ) ) . '/images/warning.png';
 		$report_analysis_chart_image = plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png';
@@ -566,9 +566,13 @@ function qsm_reporting_analysis_tabs_content() {
 		</span>
 		<div><img src= <?php echo $report_analysis_chart_image; ?> alt="chart"></div>
 		<div><img src= <?php echo $information_image; ?> alt="information"></div>
-		<div class="qsm-upgrade-buttons">
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm_report_analysis"  rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
+		<div class="qsm-upgrade-buttons" style="flex-wrap: nowrap;margin-left:-3px;width:75%;">
+			<a href="<?php echo esc_url(qsm_get_plugin_link('pricing', 'quiz-list-page')); ?>"
+			target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" 
+			style="width:50%;font-size:20px;"  rel="noopener"><?php esc_html_e('Upgrade to QSM Bundle', 'quiz-master-next'); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page')); ?>" target="_blank" class="qsm_report_analysis" 
+			style="margin-left:-150px;padding-left:10px;color: #1D4ED8;text-decoration: none;font-weight: bold;font-size: 20px;width: 100%;text-align: center;
+			margin-top: 5px;"  rel="noopener" ><?php esc_html_e('Buy Report & Analysis Addon', 'quiz-master-next'); ?></a>
 		</div>
 	</div>
 	<?php

@@ -1181,3 +1181,38 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
 	}
 	return $array;
 }
+
+function qsm_admin_upgrade_popup( $qsm_pop_up_arguments ) {
+?>
+	<div class="qsm-popup__overlay" tabindex="-1">
+	<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-export-import-title"
+	style="padding:10px">
+	<div class="qsm-upgrade-box">
+	<header class="qsm-popup__header" >
+		<h5><?php esc_html_e('PREMIUM', 'quiz-master-next'); ?></h5>
+		<a  class="qsm-popup__close" style="border:none;padding:0px;" aria-label="Close modal" data-micromodal-close></a>
+	</header>
+<h2><?php echo $qsm_pop_up_arguments['popup_title']; ?></h2>
+<?php
+$read_icon_image             = plugins_url('', dirname(__FILE__)) . '/images/read_icon.png';
+?>
+<div class="qsm-upgrade-text" style="padding-top:none;font-size:13px;"><?php echo  $qsm_pop_up_arguments['popup_description']; ?></div>
+<span  class="qsm-upgrade-read-icon">
+	<img src= <?php echo $read_icon_image; ?> alt="read">&nbsp;<a href="<?php echo esc_url(qsm_get_plugin_link('docs/'.$qsm_pop_up_arguments['popup_doc_link'],
+	'quiz-help-box', 'add-ons')); ?>" target="_blank" rel="noopener" ><?php esc_html_e('Read Documentation', 'quiz-master-next' ); ?></a>
+	<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
+</span>
+<div class="qsm-upgrade-chart"><img  style="width:100%" src= <?php echo  $qsm_pop_up_arguments['popup_chart_image'];?> alt="chart"></div>
+<div style="margin-top:20px;"><img  style="width:100%" src= <?php  echo $qsm_pop_up_arguments['popup_information'];?> alt="information"></div>
+<div  class="qsm-upgrade-buttons-div">
+<a href="<?php echo esc_url(qsm_get_plugin_link('pricing', 'quiz-list-page')); ?>" target="_blank"   
+class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"  rel="noopener"><?php esc_html_e('Upgrade to QSM Bundle', 'quiz-master-next'); ?></a>
+<a href="<?php echo esc_url(qsm_get_plugin_link('downloads/'.$qsm_pop_up_arguments['popup_addon_link'], 'quiz-list-page')); ?>"   
+target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo $qsm_pop_up_arguments['popup_addon_name']; ?></a>
+</div>
+</div>
+	</div>
+</div>
+
+<?php } ?>
+
