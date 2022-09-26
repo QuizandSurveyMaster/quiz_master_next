@@ -282,11 +282,11 @@ add_action( 'plugins_loaded', 'qmn_extra_question_types' );
 function qmn_extra_question_types() {
 	global $mlwQuizMasterNext;
 	if ( ! class_exists( 'QSM_Advance_Question' ) ) {
-		$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Matching Pairs', 'quiz-master-next' ), '-1', false, null, null, null, 15 );
+		$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Matching Pairs', 'quiz-master-next' ), 'qmn_matching_pair_display', false, null, null, null, 15 );
 		$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 15, 'category', 'Advanced' );
-		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Radio Grid', 'quiz-master-next'), '-1', false, null, null, null, 16);
+		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Radio Grid', 'quiz-master-next'), 'qmn_radio_grid_display', false, null, null, null, 16);
 		$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 16, 'category', 'Advanced' );
-		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Checkbox Grid', 'quiz-master-next'), '-1', false, null, null, null, 17);
+		$mlwQuizMasterNext->pluginHelper->register_question_type(__('Checkbox Grid', 'quiz-master-next'), 'qmn_checkbox_grid_display', false, null, null, null, 17);
 		$mlwQuizMasterNext->pluginHelper->set_question_type_meta(17, 'category', 'Advanced');
 	}
 }

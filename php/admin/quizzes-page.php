@@ -434,23 +434,19 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					</div>
 				</div>
 				<!-- Popup for export import upsell -->
-				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="modal-export-import" aria-hidden="false">
-					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-export-import-title">
-							<header class="qsm-popup__header">
-								<h2 class="qsm-popup__title" id="modal-export-import-title"><?php esc_html_e( 'Unleash Full Power of QSM', 'quiz-master-next' ); ?></h2>
-								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
-							</header>
-							<main class="qsm-popup__content" id="modal-export-import-content">
-								<h3><?php esc_html_e( 'Export & Import feature is a part of premium addons.', 'quiz-master-next' ); ?></h3>
-								<h3><?php esc_html_e( 'Purchase Export & Import Addon or save more by upgrading to the QSM addons bundle.', 'quiz-master-next' ); ?></h3>
-							</main>
-							<footer class="qsm-popup__footer">
-								<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"  rel="noopener" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy Addon', 'quiz-master-next' ); ?></a>
-								<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary" style="color: white;text-decoration: none;" ><?php esc_html_e( 'Buy QSM Bundle', 'quiz-master-next' ); ?></a>
-							</footer>
-						</div>
-					</div>
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="modal-export-import" aria-hidden="false" style="display:none">
+				<?php
+				$qsm_pop_up_arguments = array(
+					"popup_id"          => 'modal-export-import',
+					"popup_title"       => 'EXPORT AND IMPORT',
+					"popup_description" => "Wondering how to import quizzes or survey data from one website and export it to another? Easily export and import data with this premium add-on.",
+					"popup_doc_link"    => "add-ons/export-import/",
+					"popup_chart_image" => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_import_chart.png',
+					"popup_information" => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_import_information.png',
+					"popup_addon_name"  => 'Buy Export & Import Addon',
+					"popup_addon_link"  => 'export-import',
+			    );
+				qsm_admin_upgrade_popup($qsm_pop_up_arguments); ?>
 				</div>
 				<!-- Popup for delete quiz -->
 				<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
@@ -494,6 +490,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<?php
 			}
 		}
+
+
 
 	}
 

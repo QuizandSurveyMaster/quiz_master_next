@@ -2691,7 +2691,9 @@ var import_button;
                     } else {
                         $('.correct-answer').show();
                     }
-
+                    if (15 == question_val || 16 == question_val || 17 == question_val) {
+                       $("#qsm_advanced_question_type_popup").show();
+                    } 
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
                         if (13 == question_val) {
@@ -2710,6 +2712,8 @@ var import_button;
                         QSMQuestion.prepareEditPolarQuestion(question_val);
                     }
                 });
+
+                
 
                 //Add new category
                 $(document).on('click', '#qsm-category-add-toggle', function () {
