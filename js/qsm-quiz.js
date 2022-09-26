@@ -26,14 +26,18 @@ var qsmTimerInterval = [];
 					QSM.initPagination(quizID);
 					qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 
-					if (quiz.hasOwnProperty('pagination') || ( quiz.qpages.hasOwnProperty(2) && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) {
+					if (quiz.hasOwnProperty('pagination') || quiz.qpages.hasOwnProperty(2)) {
 						qsmEndTimeTakenTimer(quizID);
 						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
 						jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val(0);
 						quizType = 'paginated';
-						if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
-							QSMPageTimer.endPageTimer(quizID, true);
-						}
+					}
+
+					if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
+						qsmEndTimeTakenTimer(quizID);
+						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
+						jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val(0);
+						QSMPageTimer.endPageTimer(quizID, true);
 					}
 
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
