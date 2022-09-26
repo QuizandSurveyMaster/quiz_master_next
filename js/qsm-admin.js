@@ -2692,7 +2692,7 @@ var import_button;
                         $('.correct-answer').show();
                     }
                     if (15 == question_val || 16 == question_val || 17 == question_val) {
-                       $("#qsm_advanced_question_type_popup").show();
+                        MicroModal.show('qsm_advanced_question_type_popup');
                     } 
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {

@@ -1184,9 +1184,9 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
 
 function qsm_admin_upgrade_popup( $qsm_pop_up_arguments ) {
 ?>
-	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+	<div class="qsm-popup__overlay" tabindex="-1">
 	<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-export-import-title"
-	 style="padding:10px">
+	style="padding:10px">
 	<div class="qsm-upgrade-box">
 	<header class="qsm-popup__header" >
 		<h5><?php esc_html_e('PREMIUM', 'quiz-master-next'); ?></h5>
@@ -1198,9 +1198,9 @@ $read_icon_image             = plugins_url('', dirname(__FILE__)) . '/images/rea
 ?>
 <div class="qsm-upgrade-text" style="padding-top:none;font-size:13px;"><?php echo  $qsm_pop_up_arguments['popup_description']; ?></div>
 <span  class="qsm-upgrade-read-icon">
-<img src= <?php echo $read_icon_image; ?> alt="read">&nbsp;<a href="<?php echo esc_url(qsm_get_plugin_link('docs/'.$qsm_pop_up_arguments['popup_doc_link'], 'quiz-help-box', 'add-ons')); ?>" 
-target="_blank" rel="noopener" ><?php esc_html_e('Read Documentation', 'quiz-master-next' ); ?></a>
-<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
+	<img src= <?php echo $read_icon_image; ?> alt="read">&nbsp;<a href="<?php echo esc_url(qsm_get_plugin_link('docs/'.$qsm_pop_up_arguments['popup_doc_link'],
+	'quiz-help-box', 'add-ons')); ?>" target="_blank" rel="noopener" ><?php esc_html_e('Read Documentation', 'quiz-master-next' ); ?></a>
+	<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 </span>
 <div class="qsm-upgrade-chart"><img  style="width:100%" src= <?php echo  $qsm_pop_up_arguments['popup_chart_image'];?> alt="chart"></div>
 <div style="margin-top:20px;"><img  style="width:100%" src= <?php  echo $qsm_pop_up_arguments['popup_information'];?> alt="information"></div>
