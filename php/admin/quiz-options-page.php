@@ -271,27 +271,27 @@ function qsm_generate_quiz_options() {
 	</div><!-- Backbone Views -->
 	<script type="text/javascript">jQuery(document).ready(function(){jQuery(".qsm-alerts-placeholder").length>0&&jQuery(".qsm-alerts").length>0&&jQuery(".qsm-alerts-placeholder").replaceWith(jQuery(".qsm-alerts"))});</script>
 	<?php
-	add_action( 'admin_footer', 'qsm_quiz_options_notice_template' );?>
+	add_action('admin_footer', 'qsm_quiz_options_notice_template');?>
+	<!--Div for the upgrade popup of advanced question type -->
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="qsm_advanced_question_type_popup" aria-hidden="false" 
-style="display:none">
-<?php
-if ( ! class_exists('QSM_Advance_Question') ) {
-$qsm_pop_up_arguments = array(
-	"popup_id"          => 'modal-export-import',
-	"popup_title"       => 'ADVANCED QUESTION TYPE',
-	"popup_description" => "Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, 
-							and Checkbox Grid questions in your quizzes and surveys.",
-	"popup_doc_link"    => "question-types/",
-	"popup_chart_image" => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
-	"popup_information" => plugins_url('', dirname(__FILE__)) . '/images/advance_question_type_information.png',
-	"popup_addon_name"  => 'Buy Advanced Questions Addon',
-	"popup_addon_link"  => 'advanced-question-types',
-);
-
-qsm_admin_upgrade_popup($qsm_pop_up_arguments);
-}
-?>
-</div>
+	style="display:none">
+	<?php
+		if ( ! class_exists('QSM_Advance_Question') ) {
+			$qsm_pop_up_arguments = array(
+				"popup_id"          => 'modal-export-import',
+				"popup_title"       => 'ADVANCED QUESTION TYPE',
+				"popup_description" => "Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, 
+										and Checkbox Grid questions in your quizzes and surveys.",
+				"popup_doc_link"    => "question-types/",
+				"popup_chart_image" => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
+				"popup_information" => plugins_url('', dirname(__FILE__)) . '/images/advance_question_type_information.png',
+				"popup_addon_name"  => 'Buy Advanced Questions Addon',
+				"popup_addon_link"  => 'advanced-question-types',
+			);
+			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+		}
+	?>
+	</div>
 <?php
 }
 
