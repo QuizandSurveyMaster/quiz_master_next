@@ -271,26 +271,8 @@ function qsm_generate_quiz_options() {
 	</div><!-- Backbone Views -->
 	<script type="text/javascript">jQuery(document).ready(function(){jQuery(".qsm-alerts-placeholder").length>0&&jQuery(".qsm-alerts").length>0&&jQuery(".qsm-alerts-placeholder").replaceWith(jQuery(".qsm-alerts"))});</script>
 	<?php
-	add_action( 'admin_footer', 'qsm_quiz_options_notice_template' );
-}
-
-/**
- * Adds the quiz option notice templates to the option tab.
- *
- * @since 7.3.5
- */
-function qsm_quiz_options_notice_template() {
-	?>
-	<!-- View for Notices -->
-	<script type="text/template" id="tmpl-notice">
-		<div class="notice notice-large notice-{{data.type}}">
-			<p>{{data.message}}</p>
-		</div>
-	</script>
-	<?php
-}?>
-
-<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="qsm_advanced_question_type_popup" aria-hidden="false" 
+	add_action( 'admin_footer', 'qsm_quiz_options_notice_template' );?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="qsm_advanced_question_type_popup" aria-hidden="false" 
 style="display:none">
 <?php
 if ( ! class_exists('QSM_Advance_Question') ) {
@@ -310,3 +292,23 @@ qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 }
 ?>
 </div>
+<?php
+}
+
+/**
+ * Adds the quiz option notice templates to the option tab.
+ *
+ * @since 7.3.5
+ */
+function qsm_quiz_options_notice_template() {
+	?>
+	<!-- View for Notices -->
+	<script type="text/template" id="tmpl-notice">
+		<div class="notice notice-large notice-{{data.type}}">
+			<p>{{data.message}}</p>
+		</div>
+	</script>
+	<?php
+}?>
+
+
