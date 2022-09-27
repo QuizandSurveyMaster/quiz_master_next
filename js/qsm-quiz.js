@@ -384,7 +384,9 @@ var qsmTimerInterval = [];
 				$quizForm.find('.qsm-next').show();
 			} else {
 				$quizForm.find('.qsm-submit-btn').show();
-				$quizForm.find('.g-recaptcha').show();
+				if ( !jQuery('.qsm-quiz-container-'+ quizID +'.random') || !qmn_quiz_data[quizID].hasOwnProperty('pagination') ) {
+					$quizForm.find('.g-recaptcha').show();
+				}
 			}
 			if (1 < pageNumber) {
 				$quizForm.find('.qsm-previous').show();
