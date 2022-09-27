@@ -341,7 +341,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<!-- Popup for new quiz -->
 				<?php qsm_create_new_quiz_wizard(); ?>
 				<!-- Popup for duplicate quiz -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="true">
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-4" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
 							<header class="qsm-popup__header">
@@ -359,17 +359,15 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 									<?php wp_nonce_field( 'qsm_duplicate_quiz', 'qsm_duplicate_quiz_nonce' ); ?>
 								</form>
 							</main>
-							<footer class="qsm-popup__footer">
-								<button id="duplicate-quiz-button"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></button>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<footer class="qsm-popup__footer qsm-popup__footer_with_btns">
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<button id="duplicate-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
 				</div>
 				<!-- Popup for delete quiz -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-5" aria-hidden="true">
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-5" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
 							<header class="qsm-popup__header">
@@ -378,8 +376,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong>
-									</h3>
+									<h3 style="margin-top: 0;"><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong></h3>
 									<label>
 										<input type="checkbox" value="1" name="qsm_delete_question_from_qb" />
 										<?php esc_html_e( 'Delete question from question bank?', 'quiz-master-next' ); ?>
@@ -393,11 +390,9 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 									<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
 								</form>
 							</main>
-							<footer class="qsm-popup__footer">
-								<button id="delete-quiz-button"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<footer class="qsm-popup__footer qsm-popup__footer_with_btns">
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<button id="delete-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
@@ -437,7 +432,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<?php
 				$qsm_pop_up_arguments = array(
 					"popup_id"          => 'modal-export-import',
-					"popup_title"       => 'EXPORT AND IMPORT',
+					"popup_title"       => 'Export & Import',
 					"popup_description" => "Wondering how to import quizzes or survey data from one website and export it to another? Easily export and import data with this premium add-on.",
 					"popup_doc_link"    => "add-ons/export-import/",
 					"popup_chart_image" => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_import_chart.png',

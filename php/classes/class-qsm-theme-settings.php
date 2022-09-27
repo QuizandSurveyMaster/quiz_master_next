@@ -231,7 +231,7 @@ class QSM_Theme_Settings {
 				$themes[] = $dir['theme'];
 			}
 		}
-		if (empty($result) || ! in_array($result, $themes, true)) {
+		if ( empty($result) || ! in_array($result, $themes, true) ) {
 			return 'default';
 		}
 		else {
