@@ -344,6 +344,7 @@ input#image_size-width {
 	color: #969696;
 	display: inline-block;
 	box-sizing: border-box;
+	vertical-align: middle;
 }
 #categorydiv .qsm-question-doc {
 	right: 15px;

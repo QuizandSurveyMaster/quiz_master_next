@@ -741,7 +741,7 @@ ul.changelog li.update div.two:before {
 	box-sizing: border-box;
 }
 .admin_page_mlw_quiz_options .update-nag{display: none;}
-.admin_page_mlw_quiz_options #wpcontent{
+.admin_page_mlw_quiz_options #wpwrap{
 	overflow: hidden;
 }
 .admin_page_mlw_quiz_options .qsm-info-widget {
