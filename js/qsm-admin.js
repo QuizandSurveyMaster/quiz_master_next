@@ -2696,6 +2696,8 @@ var import_button;
                     }
                     if (15 == question_val || 16 == question_val || 17 == question_val) {
                         MicroModal.show('modal-advanced-question-type');
+                        $('#question_type').val(previous_question_val);
+                        return false;
                     } 
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
