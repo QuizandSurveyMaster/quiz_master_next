@@ -558,14 +558,17 @@ function qsm_reporting_analysis_tabs_content() {
 		$information_image           = plugins_url( '', dirname( __FILE__ ) ) . '/images/information.png';
 		$read_icon_image             = plugins_url( '', dirname( __FILE__ ) ) . '/images/read_icon.png';
 		?>
-		<div><span><img src= <?php echo esc_url( $warning_image ); ?> alt="warning"></span></div>
+		<div><span><img src= <?php echo esc_url($warning_image); ?> alt="warning"></span></div>
 		<div class="qsm-upgrade-text"><?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' ); ?><br><?php esc_html_e( 'questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' ); ?><br><?php esc_html_e( 'designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?></div>
 		<span  class="qsm-upgrade-read-icon">
-			<img src= <?php echo esc_url( $read_icon_image ); ?> alt="read">&nbsp;<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >Read Documentation</a>
+			<img src= <?php echo esc_url($read_icon_image); ?> alt="read">&nbsp;
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >
+				<?php esc_html_e('Read Documentation', 'quiz-master-next'); ?>
+			</a>
 			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
-		<div><img src= <?php echo esc_url( $report_analysis_chart_image ); ?> alt="chart"></div>
-		<div><img src= <?php echo esc_url( $information_image ); ?> alt="information"></div>
+		<div><img src= <?php echo esc_url($report_analysis_chart_image); ?> alt="chart"></div>
+		<div><img src= <?php echo esc_url($information_image); ?> alt="information"></div>
 		<div class="qsm-upgrade-buttons qsm-upgrade-buttons-report-analysis">
 			<a href="<?php echo esc_url(qsm_get_plugin_link('pricing', 'quiz-list-page')); ?>"
 			target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"
