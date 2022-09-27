@@ -446,7 +446,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					"popup_addon_link"  => 'export-import',
 			    );
 				qsm_admin_upgrade_popup($qsm_pop_up_arguments); ?>
-				</div>
 				<!-- Popup for delete quiz -->
 				<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
