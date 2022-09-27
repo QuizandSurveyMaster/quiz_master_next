@@ -114,7 +114,7 @@ class QSM_Tracking {
 
     	// Retrieve current plugin information
 		if ( ! function_exists( 'get_plugins' ) ) {
-			include ABSPATH . '/wp-admin/includes/plugin.php';
+			include_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 		$plugins        = array_keys( get_plugins() );
 		$active_plugins = get_option( 'active_plugins', array() );
