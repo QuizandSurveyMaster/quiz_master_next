@@ -1729,6 +1729,17 @@ td.scheduled_time_start {
     box-sizing: border-box;
     padding: 10px;
 }
+.qsm-popup-upgrade-container{
+	padding:10px;
+}
+.qsm-popup-upgrade-close{
+	border:none;
+	padding:0px;
+}
+.qsm-popup-upgrade-text{
+	padding-top:none;
+	font-size:13px;
+}
 .qsm-upgrade-box h3{
     font-size: 20px;
     line-height: normal;
@@ -1793,6 +1804,15 @@ td.scheduled_time_start {
 .qsm-upgrade-chart{
 	width:100%;
 }
+.qsm-upgrade-chart img{
+	width:100%;
+}
+.qsm-popup-upgrade-info{
+	margin-top:20px;
+}
+.qsm-popup-upgrade-info img{
+	width:100%;
+}
 .qsm-upgrade-buttons-div{
 	width:98%;
 	box-sizing: border-box;
@@ -1808,6 +1828,26 @@ td.scheduled_time_start {
 	width:95%;
 	text-align: center;
 	padding-top:10px;
+}
+.qsm-upgrade-buttons-report-analysis{
+	flex-wrap: nowrap;
+	margin-left:-3px;
+	width:75%;
+}
+.qsm-upgrade-box .qsm-upgrade-buttons-report-analysis .qsm_bundle{
+	width:50%;
+	font-size:20px;
+}
+.qsm_report_analysis{
+	margin-left:-185px;
+	padding-left:10px;
+	color: #1D4ED8;
+	text-decoration:none;
+	font-weight: bold;
+	font-size:20px;
+	width: 100%;
+	text-align: center;
+	margin-top: 5px;
 }
 /** * Style tab design */
 .wp-upload-form {
