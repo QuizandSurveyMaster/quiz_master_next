@@ -282,7 +282,7 @@ function qsm_generate_quiz_options() {
 				"popup_doc_link"    => "question-types/",
 				"popup_chart_image" => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
 				"popup_information" => plugins_url('', dirname(__FILE__)) . '/images/advance_question_type_information.png',
-				"popup_addon_name"  => __('Buy Advanced Questions Addon', 'quiz-master-next') ,
+				"popup_addon_name"  => __('Buy Advanced Questions Addon', 'quiz-master-next'),
 				"popup_addon_link"  => 'advanced-question-types',
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
