@@ -1206,7 +1206,7 @@ $read_icon_image             = plugins_url('', dirname(__FILE__)) . '/images/rea
 	<img src= <?php echo esc_url($read_icon_image); ?> alt="read">&nbsp;
 	<a href="<?php echo esc_url(qsm_get_plugin_link('docs/'.$qsm_pop_up_arguments['popup_doc_link'],
 	'quiz-help-box', 'add-ons')); ?>" target="_blank" rel="noopener" >
-		<?php esc_html_e('Read Documentation', 'quiz-master-next' ); ?>
+		<?php esc_html_e('Read Documentation', 'quiz-master-next'); ?>
 	</a>
 	<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 </span>
