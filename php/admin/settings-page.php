@@ -1269,7 +1269,7 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_not_allow_after_expired_time = ( isset( $globalQuizsetting['not_allow_after_expired_time'] ) && '' !== $globalQuizsetting['not_allow_after_expired_time'] ? $globalQuizsetting['not_allow_after_expired_time'] : '' );
 		echo '<fieldset class="buttonset buttonset-hide not_allow_after_expired_time" >
-				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" ' . checked( $qsm_not_allow_after_expired_time, '1', false ) . '><label for="not_allow_after_expired_time-1"> '.__( "Do not allow quiz submission after the end date/time", "quiz-master-next" ).'</label>
+				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" ' . checked( $qsm_not_allow_after_expired_time, '1', false ) . '><label for="not_allow_after_expired_time-1"> '.esc_html__( "Do not allow quiz submission after the end date/time", "quiz-master-next" ).'</label>
 				<br>
 			</fieldset>';
 	}
