@@ -277,7 +277,7 @@ function qsm_generate_quiz_options() {
 		if ( ! class_exists('QSM_Advance_Question') ) {
 			$qsm_pop_up_arguments = array(
 				"popup_id"          => 'modal-advanced-question-type',
-				"popup_title"       => 'ADVANCED QUESTION TYPE',
+				"popup_title"       => 'Advanced Question Types',
 				"popup_description" => "Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, 
 										and Checkbox Grid questions in your quizzes and surveys.",
 				"popup_doc_link"    => "question-types/",
