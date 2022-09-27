@@ -408,7 +408,7 @@ class QMNQuizManager {
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
 			$folder_name      = QSM_THEME_PATH . $saved_quiz_theme . '/';
 			if ( file_exists( $folder_name . 'functions.php' ) ) {
-				include $folder_name . 'functions.php';
+				include_once $folder_name . 'functions.php';
 			}
 			do_action( 'qsm_enqueue_script_style', $qmn_quiz_options );
 
