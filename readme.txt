@@ -164,15 +164,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.0.4 (September 28, 2022) =
-* Feature: Added image answer captions on result page
+* Feature: Added captions for image answer on result page
 * Bug: Fixed issue with themes list in style tab
 * Bug: Fixed issue with quiz end date
-* Bug: Fixed issue with Opt-in question type label
-* Bug: Fixed inactive quiz themes PHP warning and errors
-* Enhancement: Improved UI for quiz welcome page
-* Enhancement: Improved UI for polar questions
-* Enhancement: Improved UI for Opt-in questions
-* Enhancement: Improved UI for Popup Notice
+* Bug: Fixed issue with labels for opt-in question type
+* Bug: Fixed PHP warning and errors with inactive quiz themes
+* Enhancement: Minor UI improvements
+* Enhancement: Improved Image alignment in image type answers
 
 = 8.0.3 (July 26, 2022) =
 * Feature: Added option to enable/disable case sensitive answer for fill-in blank question
