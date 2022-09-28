@@ -21,6 +21,7 @@ include_once 'question-types/qsm-question-type-text-or-html.php';
 include_once 'question-types/qsm-question-type-captcha.php';
 include_once 'question-types/qsm-question-title.php';
 include_once 'classes/question-types/class-question-review.php';
+include_once 'classes/question-types/class-question-review-text.php';
 include_once 'classes/question-types/class-question-review-fill-in-blanks.php';
 include_once 'classes/question-types/class-question-review-file-upload.php';
 include_once 'classes/question-types/class-question-review-choice.php';
