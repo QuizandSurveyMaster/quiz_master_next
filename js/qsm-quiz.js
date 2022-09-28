@@ -1658,3 +1658,12 @@ jQuery(document).ready(function () {
 });
 
 var quizType = 'default';
+
+//check max lengh
+function checkMaxLength(obj){
+    var value = obj.value;
+    var maxlength = obj.maxLength;
+    if (value.length > parseInt(maxlength)) {
+        obj.value = value.slice(0, parseInt(maxlength));
+    }
+}
