@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Template variable files
-require 'template-variables/qsm-tempvar-question-answers.php';
+require_once 'template-variables/qsm-tempvar-question-answers.php';
 // Template variable files for backward compatibility ( @since QSM 7.3.8 )
-require 'backward-compatibility/qsm-backward-compatibility-template-variables.php';
+require_once 'backward-compatibility/qsm-backward-compatibility-template-variables.php';
 
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
