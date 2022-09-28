@@ -1247,6 +1247,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
+			$caption = "";
 			if ( ! empty($single_answer[3]) ) {
 				$caption_name = array_search($image_url, $image_list, true);
 				$caption = '<span class="qsm_image_result_caption">'.$caption_name.'</span>';
@@ -1273,6 +1274,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
+		$caption = "";
 		if ( ! empty($single_answer[3]) ) {
 			$caption_name = array_search($image_url, $image_list, true);
 			$caption = '<span class="qsm_image_result_caption">'.$caption_name.'</span>';
