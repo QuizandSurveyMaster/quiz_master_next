@@ -1798,7 +1798,7 @@ td.scheduled_time_start {
 }
 .qsm-upgrade-box .qsm-upgrade-buttons{
     box-sizing: border-box;
-    margin: 15px -15px;
+    margin: 15px -2px;
 	width:75%;
 	display: flex;
     flex-direction: row;
@@ -1854,11 +1854,10 @@ td.scheduled_time_start {
 	padding-left:10px;
 	color: #1D4ED8;
 	text-decoration:none;
-	font-weight: bold;
+	font-weight: 600;
 	font-size:20px;
 	width: 100%;
 	text-align: center;
-	margin-top: 5px;
 }
 /** * Style tab design */
 .wp-upload-form {
