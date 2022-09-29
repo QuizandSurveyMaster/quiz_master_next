@@ -281,9 +281,9 @@ function qsm_generate_quiz_options() {
 				"popup_description" => __('Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, and Checkbox Grid questions in your quizzes and surveys.', 'quiz-master-next'),
 				"popup_doc_link"    => "question-types/",
 				"popup_chart_image" => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
-				"popup_information" => plugins_url('', dirname(__FILE__)) . '/images/advance_question_type_information.png',
+				"popup_information" => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
 				"popup_addon_name"  => __('Buy Advanced Questions Addon', 'quiz-master-next'),
-				"popup_addon_link"  => 'advanced-question-types',
+				"popup_addon_link"  => qsm_get_plugin_link( 'downloads/advanced-question-types', 'quiz-upgrade-box' ),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 		}
