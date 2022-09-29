@@ -369,16 +369,16 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
 			'id'         => 'not_allow_after_expired_time',
-			'label'      => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'label'      => '',
 			'type'       => 'checkbox',
 			'options'    => array(
 				array(
 					'value' => 1,
+					'label' => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
 				),
 			),
 			'default'    => 0,
-			'ph_text'    => '',
-			'option_tab' => 'quiz_submission',
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -1102,6 +1102,7 @@ class QSM_Install {
 				'%QUESTION_MAX_POINTS%',
 			),
 		);
+		$field_array = apply_filters( 'qsm_text_fieldarray_list', $field_array);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers question_answer_template setting

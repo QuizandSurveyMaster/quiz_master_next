@@ -21,18 +21,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$mlw_class = '';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredRadio';
-	} else {
-		$mlw_require_class = '';
+		$mlw_class = 'mlwRequiredRadio';
 	}
+	$mlw_class .= apply_filters( 'qsm_horizontal_multiple_choice_classes', $mlw_class, $id );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
 	?>
-	<div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_require_class ); ?>">
+	<div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
@@ -40,7 +40,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
-					$answer_class = 'image' === $answerEditor ? $answer_class.' qmn_image_option' : '';
+					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>">
 						<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
@@ -72,7 +72,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 							?>
 						</label>
 						<?php
-						echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answers );
+						echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total );
 						?>
 					</span>
 					<?php

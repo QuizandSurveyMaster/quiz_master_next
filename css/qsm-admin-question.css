@@ -1,8 +1,9 @@
 .question-controls {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: nowrap;
 }
 .qsm_tab_content a.button-gray{
 	border: transparent;
@@ -64,11 +65,6 @@
 	margin: 5px 0 0;
 	color: red;
 	font-size: 15px;
-}
-@media screen and (min-width:700px) {
-	.question-controls {
-		flex-direction: row;
-    }
 }
 .page {
 	width: 100%;
@@ -344,6 +340,7 @@ input#image_size-width {
 	color: #969696;
 	display: inline-block;
 	box-sizing: border-box;
+	vertical-align: middle;
 }
 #categorydiv .qsm-question-doc {
 	right: 15px;
@@ -656,7 +653,15 @@ a#qsm-category-add-toggle {
     }
 	.question-controls .search-box {
 		height: auto;
-    }
+		width: auto;
+		position: relative;
+		margin: 0;
+		bottom: 0;
+		top: 0;
+		right: 0;
+		left: 0;
+	}
+	.question-controls .search-box input{padding: 0 8px;min-height: auto;}
 	.questionElements .postbox {
 		max-width: 100%;
 		width: 100%;
@@ -668,4 +673,11 @@ a#qsm-category-add-toggle {
 	.answer-text-div {
 		width: 135%;
     }
+	.page{padding-bottom: 100px;}
+	.page-footer .page-header-buttons{flex-wrap: nowrap;}
+	.page-footer a.qsm-dashed-btn{
+	    font-size: 12px;
+	    padding: 5px 5px;
+	    margin: 5px;
+	}
 }

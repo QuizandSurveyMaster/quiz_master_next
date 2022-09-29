@@ -22,10 +22,13 @@ function qmn_accept_display( $id, $question, $answers ) {
 	}
 	?>
 	<div class="qmn_accept_answers">
-		<input type="checkbox" id="mlwAcceptance" name="<?php echo esc_attr( 'question' . $id ); ?>" class="<?php echo esc_attr( $mlw_require_class ); ?>" />
-		<label class="qsm-input-label" for="mlwAcceptance">
+		<input type="checkbox" id="mlwAcceptance<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( 'question' . $id ); ?>" class="<?php echo esc_attr( $mlw_require_class ); ?>" />
+		<label class="qsm-input-label" for="mlwAcceptance<?php echo esc_attr( $id ); ?>">
 			<span class="qmn_accept_text">
 			<?php
+				if ( empty($question) ) {
+					$question = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
+				}
 				$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question, ENT_QUOTES ), "question-description-{$id}", 'QSM Questions' );
 				echo do_shortcode( wp_kses_post( $question ) );
 			?>

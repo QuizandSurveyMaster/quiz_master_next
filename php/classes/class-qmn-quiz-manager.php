@@ -408,7 +408,7 @@ class QMNQuizManager {
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
 			$folder_name      = QSM_THEME_PATH . $saved_quiz_theme . '/';
 			if ( file_exists( $folder_name . 'functions.php' ) ) {
-				include $folder_name . 'functions.php';
+				include_once $folder_name . 'functions.php';
 			}
 			do_action( 'qsm_enqueue_script_style', $qmn_quiz_options );
 
@@ -1214,6 +1214,7 @@ class QMNQuizManager {
 		$animation_effect       = isset( $qmn_quiz_options->quiz_animation ) && '' !== $qmn_quiz_options->quiz_animation ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $qmn_quiz_options->enable_pagination_quiz ) && $qmn_quiz_options->enable_pagination_quiz ? $qmn_quiz_options->enable_pagination_quiz : 0;
 		$pagination_option      = $qmn_quiz_options->pagination;
+		$total_pagination       = $total_pages_count  = 1;
 		if ( $enable_pagination_quiz && $pagination_option ) {
 			$total_pages_count = count( $qmn_quiz_questions );
 			$total_pagination  = ceil( $total_pages_count / $pagination_option );
@@ -1428,8 +1429,16 @@ class QMNQuizManager {
 		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
 
-		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate ) {
-			echo wp_json_encode( array( 'quizExpired' => true ) );
+		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
 			die();
 		}
 		$data      = array(
@@ -1438,27 +1447,6 @@ class QMNQuizManager {
 			'quiz_system'     => $options->system,
 			'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
 		);
-		$post_data = array(
-			'g-recaptcha-response' => isset( $_POST['g-recaptcha-response'] ) ? sanitize_textarea_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '',
-		);
-		if ( class_exists( 'QSM_Recaptcha' ) ) {
-			$recaptcha_data = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'recaptcha_integration_settings' );
-			if ( isset( $recaptcha_data['enable_recaptcha'] ) && 'no' !== $recaptcha_data['enable_recaptcha'] ) {
-				$verified = qsm_verify_recaptcha( $post_data );
-				if ( ! $verified ) {
-					echo wp_json_encode(
-						array(
-							'display'       => htmlspecialchars_decode( 'ReCaptcha Validation failed!' ),
-							'redirect'      => false,
-							'result_status' => array(
-								'save_response' => false,
-							),
-						)
-					);
-					exit;
-				}
-			}
-		}
 		echo wp_json_encode( $this->submit_results( $options, $data ) );
 		die();
 	}
@@ -1492,7 +1480,7 @@ class QMNQuizManager {
 	public function submit_results( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $wpdb, $qmn_allowed_visit;
 		$result_display = '';
-
+		do_action( 'qsm_submit_results_before', $qmn_quiz_options, $qmn_array_for_variables );
 		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
 
 		$result_display = apply_filters( 'qmn_begin_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );

@@ -168,7 +168,11 @@ function qsm_options_styling_tab_content() {
 		</style>
 		<div class="theme-browser rendered current">
 			<div class="themes wp-clearfix">
-				<?php qsm_get_installed_theme( $saved_quiz_theme ); ?>
+				<?php
+				qsm_get_installed_theme( $saved_quiz_theme );
+				qsm_fetch_theme_data();
+				qsm_get_default_wizard_themes();
+				?>
 			</div>
 		</div>
 		<div class="theme-featured-image" style="display:none;">
@@ -277,18 +281,25 @@ function qsm_options_styling_tab_content() {
 									<td>
 										<?php
 										switch ( $theme_val['type'] ) {
-											case 'image': 
+											case 'image':
                                                 ?>
 												<input class="quiz_background_image" name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" >
 												<a class="set_background_image button" href="javascript:void(0);"><?php esc_html_e( 'Select Image', 'quiz-master-next' ); ?></a>
 												<?php
 												break;
-											case 'color': 
+											case 'color':
                                                 ?>
 												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
 												<?php
 												break;
-											default: 
+											case 'checkbox':
+												$theme_val['default'] = ! empty($theme_val['default']) ? $theme_val['default'] : 0;
+												?>
+												<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][value]" value="<?php echo esc_attr( $theme_val['value'] ); ?>">
+												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="checkbox" value="<?php echo esc_attr( $theme_val['value'] ); ?>" <?php echo $theme_val['value'] === $theme_val['default'] ? "checked" : ""; ?> />
+												<?php
+												break;
+											default:
                                                 ?>
 												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>"/>
 												<?php

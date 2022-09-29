@@ -14,11 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$mlw_class = '';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredCheck';
-	} else {
-		$mlw_require_class = '';
+		$mlw_class = 'mlwRequiredRadio';
 	}
+	$mlw_class .= apply_filters( 'qsm_horizontal_multiple_response_classes', $mlw_class, $id );
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
 	$limit_mr_text           = '';
 	if ( $limit_multiple_response > 0 ) {
@@ -30,7 +30,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<div class="qmn_check_answers qmn_multiple_horizontal_check <?php echo esc_attr( $mlw_require_class ); ?>">
+	<div class="qmn_check_answers qmn_multiple_horizontal_check <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
@@ -67,6 +67,9 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 						}
 						?>
 					</label>
+					<?php
+						echo apply_filters( 'qsm_multiple_response_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total);
+					?>
 				</span>
 					<?php
 				}

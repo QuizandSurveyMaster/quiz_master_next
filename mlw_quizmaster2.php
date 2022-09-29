@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.0.3
+ * Version: 8.0.4
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '8.0.3';
+	public $version = '8.0.4';
 
 	/**
 	 * QSM Alert Manager Object
@@ -153,75 +153,75 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
-		include 'php/classes/class-qsm-install.php';
-		include 'php/classes/class-qsm-fields.php';
+		include_once 'php/classes/class-qsm-install.php';
+		include_once 'php/classes/class-qsm-fields.php';
 
-		include 'php/classes/class-qmn-log-manager.php';
+		include_once 'php/classes/class-qmn-log-manager.php';
 		$this->log_manager = new QMN_Log_Manager();
 
-		include 'php/classes/class-qsm-audit.php';
+		include_once 'php/classes/class-qsm-audit.php';
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
-			include 'php/admin/functions.php';
-			include 'php/admin/stats-page.php';
-			include 'php/admin/quizzes-page.php';
-			include 'php/admin/admin-dashboard.php';
-			include 'php/admin/quiz-options-page.php';
-			include 'php/admin/admin-results-page.php';
-			include 'php/admin/admin-results-details-page.php';
-			include 'php/admin/tools-page.php';
-			include 'php/classes/class-qsm-changelog-generator.php';
-			include 'php/admin/about-page.php';
-			include 'php/admin/dashboard-widgets.php';
-			include 'php/admin/options-page-questions-tab.php';
-			include 'php/admin/options-page-contact-tab.php';
-			include 'php/admin/options-page-text-tab.php';
-			include 'php/admin/options-page-option-tab.php';
-			include 'php/admin/options-page-email-tab.php';
-			include 'php/admin/options-page-results-page-tab.php';
-			include 'php/admin/options-page-style-tab.php';
-			include 'php/admin/addons-page.php';
-			include 'php/admin/settings-page.php';
-			include 'php/classes/class-qsm-tracking.php';
-			include 'php/classes/class-qmn-review-message.php';
-			include 'php/gdpr.php';
+			include_once 'php/admin/functions.php';
+			include_once 'php/admin/stats-page.php';
+			include_once 'php/admin/quizzes-page.php';
+			include_once 'php/admin/admin-dashboard.php';
+			include_once 'php/admin/quiz-options-page.php';
+			include_once 'php/admin/admin-results-page.php';
+			include_once 'php/admin/admin-results-details-page.php';
+			include_once 'php/admin/tools-page.php';
+			include_once 'php/classes/class-qsm-changelog-generator.php';
+			include_once 'php/admin/about-page.php';
+			include_once 'php/admin/dashboard-widgets.php';
+			include_once 'php/admin/options-page-questions-tab.php';
+			include_once 'php/admin/options-page-contact-tab.php';
+			include_once 'php/admin/options-page-text-tab.php';
+			include_once 'php/admin/options-page-option-tab.php';
+			include_once 'php/admin/options-page-email-tab.php';
+			include_once 'php/admin/options-page-results-page-tab.php';
+			include_once 'php/admin/options-page-style-tab.php';
+			include_once 'php/admin/addons-page.php';
+			include_once 'php/admin/settings-page.php';
+			include_once 'php/classes/class-qsm-tracking.php';
+			include_once 'php/classes/class-qmn-review-message.php';
+			include_once 'php/gdpr.php';
 		}
-		include 'php/classes/class-qsm-questions.php';
-		include 'php/classes/class-qsm-contact-manager.php';
-		include 'php/classes/class-qsm-results-pages.php';
-		include 'php/classes/class-qsm-emails.php';
-		include 'php/classes/class-qmn-quiz-manager.php';
+		include_once 'php/classes/class-qsm-questions.php';
+		include_once 'php/classes/class-qsm-contact-manager.php';
+		include_once 'php/classes/class-qsm-results-pages.php';
+		include_once 'php/classes/class-qsm-emails.php';
+		include_once 'php/classes/class-qmn-quiz-manager.php';
 
-		include 'php/template-variables.php';
-		include 'php/adverts-generate.php';
-		include 'php/question-types.php';
-		include 'php/default-templates.php';
-		include 'php/shortcodes.php';
+		include_once 'php/template-variables.php';
+		include_once 'php/adverts-generate.php';
+		include_once 'php/question-types.php';
+		include_once 'php/default-templates.php';
+		include_once 'php/shortcodes.php';
 
 		if ( function_exists( 'register_block_type' ) ) {
-			include 'blocks/block.php';
+			include_once 'blocks/block.php';
 		}
 
-		include 'php/classes/class-qmn-alert-manager.php';
+		include_once 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();
 
-		include 'php/classes/class-qmn-quiz-creator.php';
+		include_once 'php/classes/class-qmn-quiz-creator.php';
 		$this->quizCreator = new QMNQuizCreator();
 
-		include 'php/classes/class-qmn-plugin-helper.php';
+		include_once 'php/classes/class-qmn-plugin-helper.php';
 		$this->pluginHelper = new QMNPluginHelper();
 
-		include 'php/classes/class-qsm-settings.php';
+		include_once 'php/classes/class-qsm-settings.php';
 		$this->quiz_settings = new QSM_Quiz_Settings();
 
-		include 'php/classes/class-qsm-theme-settings.php';
+		include_once 'php/classes/class-qsm-theme-settings.php';
 		$this->theme_settings = new QSM_Theme_Settings();
 
-		include 'php/classes/class-qsm-migrate.php';
+		include_once 'php/classes/class-qsm-migrate.php';
 		$this->migrationHelper = new QSM_Migrate();
 
-		include 'php/rest-api.php';
+		include_once 'php/rest-api.php';
 	}
 
 	/**

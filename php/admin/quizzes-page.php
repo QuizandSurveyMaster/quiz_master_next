@@ -341,7 +341,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<!-- Popup for new quiz -->
 				<?php qsm_create_new_quiz_wizard(); ?>
 				<!-- Popup for duplicate quiz -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="true">
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-4" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
 							<header class="qsm-popup__header">
@@ -359,17 +359,15 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 									<?php wp_nonce_field( 'qsm_duplicate_quiz', 'qsm_duplicate_quiz_nonce' ); ?>
 								</form>
 							</main>
-							<footer class="qsm-popup__footer">
-								<button id="duplicate-quiz-button"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></button>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<footer class="qsm-popup__footer qsm-popup__footer_with_btns">
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<button id="duplicate-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
 				</div>
 				<!-- Popup for delete quiz -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-5" aria-hidden="true">
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-5" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
 							<header class="qsm-popup__header">
@@ -378,8 +376,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong>
-									</h3>
+									<h3 style="margin-top: 0;"><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong></h3>
 									<label>
 										<input type="checkbox" value="1" name="qsm_delete_question_from_qb" />
 										<?php esc_html_e( 'Delete question from question bank?', 'quiz-master-next' ); ?>
@@ -393,11 +390,9 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 									<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
 								</form>
 							</main>
-							<footer class="qsm-popup__footer">
-								<button id="delete-quiz-button"
-									class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
-								<button class="qsm-popup__btn" data-micromodal-close
-									aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<footer class="qsm-popup__footer qsm-popup__footer_with_btns">
+								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<button id="delete-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 							</footer>
 						</div>
 					</div>
@@ -434,25 +429,18 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					</div>
 				</div>
 				<!-- Popup for export import upsell -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-export-import" aria-hidden="true">
-					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
-							<header class="qsm-popup__header">
-								<h2 class="qsm-popup__title" id="modal-5-title"><?php esc_html_e( 'Extend QSM', 'quiz-master-next' ); ?>
-								</h2>
-								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-							</header>
-							<main class="qsm-popup__content" id="modal-5-content">
-								<h3><strong><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></strong>
-								</h3>
-							</main>
-							<footer class="qsm-popup__footer">
-								<a style="color: white;text-decoration: none;" href="<?php echo esc_url( qsm_get_plugin_link('downloads/export-import', 'quiz-list-page') );?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-								<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-							</footer>
-						</div>
-					</div>
-				</div>
+				<?php
+				$qsm_pop_up_arguments = array(
+					"popup_id"          => 'modal-export-import',
+					"popup_title"       => __('Export & Import', 'quiz-master-next'),
+					"popup_description" => __('Wondering how to import quizzes or survey data from one website and export it to another? Easily export and import data with this premium add-on.', 'quiz-master-next'),
+					"popup_doc_link"    => "add-ons/export-import/",
+					"popup_chart_image" => plugins_url('', dirname(__FILE__)) . '/images/export_import_chart.png',
+					"popup_information" => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next'),
+					"popup_addon_name"  => __('Buy Export & Import Addon', 'quiz-master-next'),
+					"popup_addon_link"  => qsm_get_plugin_link( 'downloads/export-import', 'quiz-upgrade-box' ),
+				);
+				qsm_admin_upgrade_popup($qsm_pop_up_arguments); ?>
 				<!-- Popup for delete quiz -->
 				<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -495,6 +483,8 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<?php
 			}
 		}
+
+
 
 	}
 
