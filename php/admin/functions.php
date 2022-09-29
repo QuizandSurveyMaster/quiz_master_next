@@ -1175,7 +1175,7 @@ function qsm_admin_upgrade_popup( $qsm_pop_up_arguments ) {
 						<span><?php echo esc_html( $qsm_pop_up_arguments['popup_information'] ); ?></span>
 					</div>
 					<div  class="qsm-upgrade-buttons">
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-upgrade-box' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-upgrade-box' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
 						<a href="<?php echo esc_url( $qsm_pop_up_arguments['popup_addon_link'] ); ?>" target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo esc_html( $qsm_pop_up_arguments['popup_addon_name'] ); ?></a>
 					</div>
 				</main>

@@ -572,7 +572,7 @@ function qsm_reporting_analysis_tabs_content() {
 			<span><?php esc_html_e( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ) ?></span>
 		</div>
 		<div class="qsm-upgrade-buttons qsm-upgrade-buttons-report-analysis">
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
 			<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm_report_analysis" rel="noopener" ><?php esc_html_e( 'Buy Reporting & Analysis Addon', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
