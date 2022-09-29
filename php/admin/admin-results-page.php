@@ -69,7 +69,7 @@ function qsm_results_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content' );
 	if ( ! class_exists( 'QSM_Analysis' ) ) {
-		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting & Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
 	}
 }
 
