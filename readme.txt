@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.0.4 (September 28, 2022) =
+= 8.0.4 (September 29, 2022) =
 * Feature: Added captions for image answer on result page
 * Bug: Fixed issue with themes list in style tab
 * Bug: Fixed issue with quiz end date
