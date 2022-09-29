@@ -69,7 +69,7 @@ function qsm_results_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content' );
 	if ( ! class_exists( 'QSM_Analysis' ) ) {
-		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting & Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
 	}
 }
 
@@ -555,7 +555,7 @@ function qsm_reporting_analysis_tabs_content() {
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
 			<span><?php esc_html_e( 'Reporting & Analysis Addon required', 'quiz-master-next' ) ?></span>
 		</div>
-		<h2><?php esc_html_e( 'Reporting And Analysis', 'quiz-master-next' ); ?></h2>
+		<h2><?php esc_html_e( 'Reporting & Analysis', 'quiz-master-next' ); ?></h2>
 		<div class="qsm-upgrade-text qsm-popup-upgrade-text">
 			<?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?>
 		</div>
