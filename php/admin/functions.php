@@ -1160,23 +1160,23 @@ function qsm_admin_upgrade_popup( $qsm_pop_up_arguments ) {
 					<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-2-content">
-					<?php
-					$read_icon_image = plugins_url( '', dirname( __FILE__ ) ) . '/images/read_icon.png';
-					?>
 					<div class="qsm-upgrade-text qsm-popup-upgrade-text">
 						<?php echo esc_html( $qsm_pop_up_arguments['popup_description'] ); ?>
 					</div>
 					<span  class="qsm-upgrade-read-icon">
-						<img src= <?php echo esc_url( $read_icon_image ); ?> alt="read">
+						<img src= <?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?> alt="read">
 						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/' . $qsm_pop_up_arguments['popup_doc_link'], 'quiz-upgrade-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >
 							<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 						</a>
 					</span>
 					<div class="qsm-upgrade-chart"><img src= <?php echo esc_url( $qsm_pop_up_arguments['popup_chart_image'] ); ?> alt="chart"></div>
-					<div class="qsm-popup-upgrade-info"><img  src= <?php echo esc_url( $qsm_pop_up_arguments['popup_information'] ); ?> alt="information"></div>
-					<div  class="qsm-upgrade-buttons-div">
+					<div class="qsm-popup-upgrade-info">
+						<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
+						<span><?php echo esc_html( $qsm_pop_up_arguments['popup_information'] ); ?></span>
+					</div>
+					<div  class="qsm-upgrade-buttons">
 						<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-upgrade-box' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/' . $qsm_pop_up_arguments['popup_addon_link'], 'quiz-upgrade-box' ) ); ?>" target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo esc_html( $qsm_pop_up_arguments['popup_addon_name'] ); ?></a>
+						<a href="<?php echo esc_url( $qsm_pop_up_arguments['popup_addon_link'] ); ?>" target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo esc_html( $qsm_pop_up_arguments['popup_addon_name'] ); ?></a>
 					</div>
 				</main>
 			</div>

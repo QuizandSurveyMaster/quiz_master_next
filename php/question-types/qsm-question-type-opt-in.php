@@ -22,8 +22,8 @@ function qmn_accept_display( $id, $question, $answers ) {
 	}
 	?>
 	<div class="qmn_accept_answers">
-		<input type="checkbox" id="mlwAcceptance" name="<?php echo esc_attr( 'question' . $id ); ?>" class="<?php echo esc_attr( $mlw_require_class ); ?>" />
-		<label class="qsm-input-label" for="mlwAcceptance">
+		<input type="checkbox" id="mlwAcceptance<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( 'question' . $id ); ?>" class="<?php echo esc_attr( $mlw_require_class ); ?>" />
+		<label class="qsm-input-label" for="mlwAcceptance<?php echo esc_attr( $id ); ?>">
 			<span class="qmn_accept_text">
 			<?php
 				if ( empty($question) ) {

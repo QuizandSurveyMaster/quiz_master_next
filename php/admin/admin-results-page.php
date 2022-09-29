@@ -551,30 +551,29 @@ function qsm_results_overview_tab_content() {
 function qsm_reporting_analysis_tabs_content() {
 	?>
 	<div class="qsm-upgrade-box">
-		<h2><?php esc_html_e('REPORT & ANALYSIS', 'quiz-master-next'); ?></h2>
-		<?php
-		$warning_image               = plugins_url( '', dirname( __FILE__ ) ) . '/images/warning.png';
-		$report_analysis_chart_image = plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png';
-		$information_image           = plugins_url( '', dirname( __FILE__ ) ) . '/images/information.png';
-		$read_icon_image             = plugins_url( '', dirname( __FILE__ ) ) . '/images/read_icon.png';
-		?>
-		<div><span><img src= <?php echo esc_url($warning_image); ?> alt="warning"></span></div>
-		<div class="qsm-upgrade-text"><?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure', 'quiz-master-next' ); ?><br><?php esc_html_e( 'questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question ', 'quiz-master-next' ); ?><br><?php esc_html_e( 'designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?></div>
+		<div class="qsm-popup-upgrade-warning">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
+			<span><?php esc_html_e( 'Reporting & Analysis Addon required', 'quiz-master-next' ) ?></span>
+		</div>
+		<h2><?php esc_html_e( 'Reporting And Analysis', 'quiz-master-next' ); ?></h2>
+		<div class="qsm-upgrade-text qsm-popup-upgrade-text">
+			<?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?>
+		</div>
+		<div class="qsm-upgrade-text"></div>
 		<span  class="qsm-upgrade-read-icon">
-			<img src= <?php echo esc_url($read_icon_image); ?> alt="read">&nbsp;
-			<a href="<?php echo esc_url(qsm_get_plugin_link('docs/add-ons/reporting-analysis/', 'quiz-help-box', 'add-ons')); ?>" target="_blank" rel="noopener" >
-				<?php esc_html_e('Read Documentation', 'quiz-master-next'); ?>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?>" alt="read">
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons/reporting-analysis/', 'quiz-upgrade-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >
+				<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 			</a>
-			<span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 		</span>
-		<div><img src= <?php echo esc_url($report_analysis_chart_image); ?> alt="chart"></div>
-		<div><img src= <?php echo esc_url($information_image); ?> alt="information"></div>
+		<div class="qsm-upgrade-chart"><img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/report_analysis_chart.png' ); ?>" alt="chart"></div>
+		<div class="qsm-popup-upgrade-info">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
+			<span><?php esc_html_e( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Advanced Questions Addon separately.', 'quiz-master-next' ) ?></span>
+		</div>
 		<div class="qsm-upgrade-buttons qsm-upgrade-buttons-report-analysis">
-			<a href="<?php echo esc_url(qsm_get_plugin_link('pricing', 'quiz-list-page')); ?>"
-			target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle"
-			rel="noopener"><?php esc_html_e('Upgrade to QSM Bundle', 'quiz-master-next'); ?></a>
-			<a href="<?php echo esc_url( qsm_get_plugin_link('downloads/results-analysis', 'quiz-list-page')); ?>" target="_blank" class="qsm_report_analysis"
-			rel="noopener" ><?php esc_html_e('Buy Report & Analysis Addon', 'quiz-master-next'); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Bundle', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm_report_analysis" rel="noopener" ><?php esc_html_e( 'Buy Report & Analysis Addon', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
