@@ -936,6 +936,10 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
 	global $mlwQuizMasterNext;
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$quiz_options  = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+	if ( 0 == $quiz_options->show_optin && isset($answer['question_type']) && 8 == $answer['question_type'] ) {
+		return '';
+	}
 
 	$use_custom_default_template = array();
 	foreach ( $question_types as $type ) {
