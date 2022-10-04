@@ -1197,8 +1197,8 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 			?><div class="qsm-upgrade-text qsm-popup-upgrade-text"><?php echo esc_html( $args['description'] ); ?></div><?php
 		}
 		if ( ! empty( $args['doc_link'] ) ) {
-			?><span  class="qsm-upgrade-read-icon">
-				<img src= <?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?> alt="read">
+			?><span class="qsm-upgrade-read-icon">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?>" alt="read">
 				<a href="<?php echo esc_url( $args['doc_link'] ); ?>" target="_blank" rel="noopener" >
 					<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 				</a>
