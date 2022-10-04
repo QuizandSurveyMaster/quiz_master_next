@@ -2628,6 +2628,7 @@ var import_button;
                     if (13 == question_val) {
                         QSMQuestion.prepareEditPolarQuestion(question_val);
                     }
+                    jQuery(document).trigger('qsm-change-answer-editor-after');
                 });
 
                 // Adds event handlers for searching questions
