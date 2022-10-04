@@ -793,12 +793,13 @@ class QMNPluginHelper {
 	 * @param  string $function The function that displays the tab's content
 	 * @return void
 	 */
-	public function register_admin_results_tab( $title, $function ) {
+	public function register_admin_results_tab( $title, $function, $priority = 10 ) {
 		$slug                       = strtolower( str_replace( ' ', '-', $title ) );
 		$new_tab                    = array(
 			'title'    => $title,
 			'function' => $function,
 			'slug'     => $slug,
+			'priority' => $priority,
 		);
 		$this->admin_results_tabs[] = $new_tab;
 	}
@@ -812,6 +813,11 @@ class QMNPluginHelper {
 	 * @return array The array of registered tabs
 	 */
 	public function get_admin_results_tabs() {
+		/**
+		 * Sort tabs by priority
+		 */
+		array_multisort( array_column($this->admin_results_tabs, 'priority'), SORT_ASC, $this->admin_results_tabs);
+		
 		return $this->admin_results_tabs;
 	}
 
