@@ -763,12 +763,17 @@ function qsmScrollTo($element) {
 function qmnDisplayError(message, field, quiz_form_id) {
 	jQuery('#' + quiz_form_id + ' .qmn_error_message_section').addClass('qmn_error_message');
 	jQuery('#' + quiz_form_id + ' .qmn_error_message').text(message);
-	field.closest('.quiz_section').addClass('qmn_error');
+	if (field.parents('.qsm_contact_div').length) {
+		field.parents('.qsm_contact_div').addClass('qmn_error');
+	} else {
+		field.closest('.quiz_section').addClass('qmn_error');
+	}
 }
 
 function qmnResetError(quiz_form_id) {
 	jQuery('#' + quiz_form_id + ' .qmn_error_message').text('');
 	jQuery('#' + quiz_form_id + ' .qmn_error_message_section').removeClass('qmn_error_message');
+	jQuery('#' + quiz_form_id + ' .qsm_contact_div').removeClass('qmn_error');
 	jQuery('#' + quiz_form_id + ' .quiz_section').removeClass('qmn_error');
 }
 
