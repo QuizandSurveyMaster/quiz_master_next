@@ -206,6 +206,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 */
 
 .mlw_qmn_question .qmn_user_incorrect_answer{
+    display: block;
     color: #dc3232;
     margin-bottom: 5px;
     padding-left: 10px;
@@ -220,6 +221,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }
 
 .mlw_qmn_question .qmn_user_correct_answer{
+    display: block;
     color: green;
     margin-bottom: 5px;
     padding-left: 10px;
