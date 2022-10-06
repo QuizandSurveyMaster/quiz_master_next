@@ -136,7 +136,7 @@ class QMNQuizManager {
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
 		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
-			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
+			if ( isset( $_FILES['file']['size'] ) && $file_upload_limit > 0 && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
 				echo wp_json_encode( $json );
