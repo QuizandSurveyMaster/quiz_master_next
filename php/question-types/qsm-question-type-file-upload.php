@@ -45,7 +45,7 @@ function qmn_file_upload_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_File_Upload($id, $question, $answers);
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
-	$return_array['user_text']      = ! empty( $user_text_array ) ? '<a target="_blank" href="' . $user_text_array['url'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : '' ;
+	$return_array['user_text']      = (isset($user_text_array['url']) && ! empty( $user_text_array['url'] )) ? '<a target="_blank" href="' . $user_text_array['url'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : __( 'No file uploaded', 'quiz-master-next' ) ;
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status('url');
 	$return_array['points']         = $current_question->get_points();
