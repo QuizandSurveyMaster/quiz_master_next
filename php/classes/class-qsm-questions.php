@@ -290,12 +290,6 @@ class QSM_Questions {
 			if ( isset( $answer[3] ) ) {
 				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
 			}
-			if ( isset( $answer[4] ) ) {
-				array_push( $answers_array, htmlspecialchars( $answer[4], ENT_QUOTES ) );
-			}
-			if ( isset( $answer[5] ) ) {
-				array_push( $answers_array, htmlspecialchars( $answer[5], ENT_QUOTES ) );
-			}
 			$sanitize_answers[ $key ] = $answers_array;
 		}
 		$answers = apply_filters( 'qsm_answers_before_save', $sanitize_answers, $answers, $data );

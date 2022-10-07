@@ -341,9 +341,21 @@ function qsm_options_questions_tab_content() {
 										'heading'  => __( 'Correct Answer Info', 'quiz-master-next' ),
 										'type'     => 'textarea',
 										'default'  => '',
-										'priority' => '1',
+										'priority' => '2',
 										'show'     => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
 										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'correct_answer_info'),
+									),
+									'image_size'          => array(
+										'heading'  => __( 'Set custom image size', 'quiz-master-next' ),
+										'type'     => 'multi_text',
+										'priority' => '2',
+										'options'  => array(
+											'width'  => __( 'Width ', 'quiz-master-next' ),
+											'height' => __( 'Height', 'quiz-master-next' ),
+										),
+										'default'  => '',
+										'show'     => '',
+										'documentation_link' => 'https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/#7-set-custom-image-size',
 									),
 									'comments'            => array(
 										'heading'  => __( 'Comment Box', 'quiz-master-next' ),
@@ -379,10 +391,10 @@ function qsm_options_questions_tab_content() {
 										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'autofill'),
 									),
 									'case_sensitive'      => array(
-										'heading'  => __( 'Allow Case Sensitive', 'quiz-master-next' ),
-										'label'    => __( 'Case Sensitive Answer', 'quiz-master-next' ),
+										'heading'  => __( 'Case Sensitivity', 'quiz-master-next' ),
+										'label'    => __( 'Require correct input of uppercase and lowercase letters', 'quiz-master-next' ),
 										'type'     => 'single_checkbox',
-										'priority' => '12',
+										'priority' => '1',
 										'options'  => array(
 											'1' => __( 'Yes', 'quiz-master-next' ),
 										),
@@ -470,10 +482,11 @@ function qsm_options_questions_tab_content() {
 															<optgroup label="<?php echo esc_attr( $category_name ) ?>">
 																<?php
 																foreach ( $category_items as $type ) {
-																	if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
-																		echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
+																	if ( isset( $type['disabled'] ) && true === $type['disabled'] ) {
+																		echo '<option disabled value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+																	} else {
+																		echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 																	}
-																	echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 																}
 																?>
 															</optgroup>
@@ -1083,11 +1096,6 @@ function qsm_options_questions_tab_template() {
 					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="<?php esc_attr_e( 'Insert image URL', 'quiz-master-next' ); ?>"/>
 					<a href="javascript:void(0)" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
 					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="<?php esc_attr_e( 'Image Caption', 'quiz-master-next' ); ?>"/>
-					<div class="qsm-image-size-section">
-						<input type="number" class="qsm-image-width" value="{{data.width}}" placeholder="<?php esc_attr_e( 'Image width in px', 'quiz-master-next' ); ?>"/>
-						<input type="number" class="qsm-image-height" value="{{data.height}}" placeholder="<?php esc_attr_e( 'Image height in px', 'quiz-master-next' ); ?>"/>
-					</div>
-					<label><?php esc_html_e( 'Leave blank for original size', 'quiz-master-next' ); ?></label>
 				<# } else { #>
 					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="<?php esc_attr_e( 'Your answer', 'quiz-master-next' ); ?>"/>
 				<# } #>

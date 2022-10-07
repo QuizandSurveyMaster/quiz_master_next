@@ -39,7 +39,9 @@ class QSM_Fields {
 							$sanitized_value = esc_url_raw( wp_unslash( $_POST[ $field["id"] ] ) );
 							break;
 
-						case 'radio':
+						case 'checkbox':
+							$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : 0;
+							break;
 						case 'date':
 							$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
 							break;
@@ -717,6 +719,7 @@ class QSM_Fields {
 		global $mlwQuizMasterNext;
 		$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
 		$class = $show_option ? $show_option . ' hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem' : '';
+		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
 		?>
 		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
@@ -729,13 +732,16 @@ class QSM_Fields {
 			</th>
 			<td>
 				<fieldset class="buttonset buttonset-hide" data-hide='1'>
+					<?php if ( isset($field['ph_text']) && '' !== $field['ph_text'] ) { ?>
+						<span><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
+					<?php } ?>
 					<?php
 					foreach ( $field["options"] as $option ) {
 						?>
 					<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
 						name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $score_roundoff ); ?>
 						value="<?php echo esc_attr( $option["value"] ); ?>" />
-					<br />
+					<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"><?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?></label>
 					<?php
 					}
 					?>

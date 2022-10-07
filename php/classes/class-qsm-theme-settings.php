@@ -152,7 +152,7 @@ class QSM_Theme_Settings {
 	 */
 	public function get_installed_themes() {
 		global $wpdb;
-		$query          = "SELECT theme, theme_name FROM {$wpdb->prefix}$this->themes_table";
+		$query          = "SELECT theme, theme_name, theme_active FROM {$wpdb->prefix}$this->themes_table";
 		return $results = $wpdb->get_results( $query, ARRAY_A );
 	}
 
@@ -221,9 +221,22 @@ class QSM_Theme_Settings {
 	 */
 	public function get_active_quiz_theme_path( $quiz_id ) {
 		global $wpdb;
+		global $mlwQuizMasterNext;
 		$query  = $wpdb->prepare( "SELECT a.theme FROM {$wpdb->prefix}$this->themes_table AS a, {$wpdb->prefix}$this->settings_table AS b WHERE b.quiz_id = %d AND b.active_theme = 1 AND b.theme_id = a.id", $quiz_id );
 		$result = $wpdb->get_var( $query );
-		return $result ? $result : 'default';
+		$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
+		$themes = array();
+		if ( ! empty( $active_themes ) ) {
+			foreach ( $active_themes as $dir ) {
+				$themes[] = $dir['theme'];
+			}
+		}
+		if ( empty($result) || ! in_array($result, $themes, true) ) {
+			return 'default';
+		}
+		else {
+			return $result;
+		}
 	}
 
 	/**

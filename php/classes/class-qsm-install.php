@@ -369,16 +369,16 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
 			'id'         => 'not_allow_after_expired_time',
-			'label'      => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'label'      => '',
 			'type'       => 'checkbox',
 			'options'    => array(
 				array(
 					'value' => 1,
+					'label' => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
 				),
 			),
 			'default'    => 0,
-			'ph_text'    => '',
-			'option_tab' => 'quiz_submission',
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -490,20 +490,33 @@ class QSM_Install {
 		// Registers store_responses setting
 		$field_array = array(
 			'id'         => 'store_responses',
-			'label'      => __( 'Save Responses', 'quiz-master-next' ),
-			'type'       => 'radio',
+			'label'      => __( 'Submit Actions', 'quiz-master-next' ),
+			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Yes', 'quiz-master-next' ),
+					'label' => __( 'Store results permanently in database', 'quiz-master-next' ),
 					'value' => 1,
-				),
-				array(
-					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 0,
 				),
 			),
 			'default'    => 1,
-			'help'       => __( 'The results will be permanently stored in a database', 'quiz-master-next' ),
+			'help'       => '',
+			'option_tab' => 'quiz_submission',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers send_email setting
+		$field_array = array(
+			'id'         => 'send_email',
+			'label'      => '',
+			'type'       => 'checkbox',
+			'options'    => array(
+				array(
+					'label' => __( 'Send email notifications', 'quiz-master-next' ),
+					'value' => 1,
+				),
+			),
+			'default'    => 1,
+			'help'       => '',
 			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -774,6 +787,7 @@ class QSM_Install {
 				),
 			),
 			'default'    => 0,
+			'tooltip'    => __( 'Allows you to write math formulas using TeX and LaTeX notation.', 'quiz-master-next' ),
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1088,6 +1102,7 @@ class QSM_Install {
 				'%QUESTION_MAX_POINTS%',
 			),
 		);
+		$field_array = apply_filters( 'qsm_text_fieldarray_list', $field_array);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers question_answer_template setting
@@ -2027,6 +2042,7 @@ class QSM_Install {
 
 			// Update 8.0.3
 			QSM_Migrate::fix_duplicate_questions();
+			QSM_Migrate::fix_deleted_quiz_posts();
 
 			update_option( 'mlw_quiz_master_version', $data );
 		}
@@ -2062,7 +2078,7 @@ class QSM_Install {
 		}
 		return (array) $links;
 	}
-	
+
 }
 
 $qsm_install = new QSM_Install();

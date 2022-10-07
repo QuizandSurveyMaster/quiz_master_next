@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.0.2
+ * Version: 8.0.4
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '8.0.2';
+	public $version = '8.0.4';
 
 	/**
 	 * QSM Alert Manager Object
@@ -153,75 +153,75 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
-		include 'php/classes/class-qsm-install.php';
-		include 'php/classes/class-qsm-fields.php';
+		include_once 'php/classes/class-qsm-install.php';
+		include_once 'php/classes/class-qsm-fields.php';
 
-		include 'php/classes/class-qmn-log-manager.php';
+		include_once 'php/classes/class-qmn-log-manager.php';
 		$this->log_manager = new QMN_Log_Manager();
 
-		include 'php/classes/class-qsm-audit.php';
+		include_once 'php/classes/class-qsm-audit.php';
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
-			include 'php/admin/functions.php';
-			include 'php/admin/stats-page.php';
-			include 'php/admin/quizzes-page.php';
-			include 'php/admin/admin-dashboard.php';
-			include 'php/admin/quiz-options-page.php';
-			include 'php/admin/admin-results-page.php';
-			include 'php/admin/admin-results-details-page.php';
-			include 'php/admin/tools-page.php';
-			include 'php/classes/class-qsm-changelog-generator.php';
-			include 'php/admin/about-page.php';
-			include 'php/admin/dashboard-widgets.php';
-			include 'php/admin/options-page-questions-tab.php';
-			include 'php/admin/options-page-contact-tab.php';
-			include 'php/admin/options-page-text-tab.php';
-			include 'php/admin/options-page-option-tab.php';
-			include 'php/admin/options-page-email-tab.php';
-			include 'php/admin/options-page-results-page-tab.php';
-			include 'php/admin/options-page-style-tab.php';
-			include 'php/admin/addons-page.php';
-			include 'php/admin/settings-page.php';
-			include 'php/classes/class-qsm-tracking.php';
-			include 'php/classes/class-qmn-review-message.php';
-			include 'php/gdpr.php';
+			include_once 'php/admin/functions.php';
+			include_once 'php/admin/stats-page.php';
+			include_once 'php/admin/quizzes-page.php';
+			include_once 'php/admin/admin-dashboard.php';
+			include_once 'php/admin/quiz-options-page.php';
+			include_once 'php/admin/admin-results-page.php';
+			include_once 'php/admin/admin-results-details-page.php';
+			include_once 'php/admin/tools-page.php';
+			include_once 'php/classes/class-qsm-changelog-generator.php';
+			include_once 'php/admin/about-page.php';
+			include_once 'php/admin/dashboard-widgets.php';
+			include_once 'php/admin/options-page-questions-tab.php';
+			include_once 'php/admin/options-page-contact-tab.php';
+			include_once 'php/admin/options-page-text-tab.php';
+			include_once 'php/admin/options-page-option-tab.php';
+			include_once 'php/admin/options-page-email-tab.php';
+			include_once 'php/admin/options-page-results-page-tab.php';
+			include_once 'php/admin/options-page-style-tab.php';
+			include_once 'php/admin/addons-page.php';
+			include_once 'php/admin/settings-page.php';
+			include_once 'php/classes/class-qsm-tracking.php';
+			include_once 'php/classes/class-qmn-review-message.php';
+			include_once 'php/gdpr.php';
 		}
-		include 'php/classes/class-qsm-questions.php';
-		include 'php/classes/class-qsm-contact-manager.php';
-		include 'php/classes/class-qsm-results-pages.php';
-		include 'php/classes/class-qsm-emails.php';
-		include 'php/classes/class-qmn-quiz-manager.php';
+		include_once 'php/classes/class-qsm-questions.php';
+		include_once 'php/classes/class-qsm-contact-manager.php';
+		include_once 'php/classes/class-qsm-results-pages.php';
+		include_once 'php/classes/class-qsm-emails.php';
+		include_once 'php/classes/class-qmn-quiz-manager.php';
 
-		include 'php/template-variables.php';
-		include 'php/adverts-generate.php';
-		include 'php/question-types.php';
-		include 'php/default-templates.php';
-		include 'php/shortcodes.php';
+		include_once 'php/template-variables.php';
+		include_once 'php/adverts-generate.php';
+		include_once 'php/question-types.php';
+		include_once 'php/default-templates.php';
+		include_once 'php/shortcodes.php';
 
 		if ( function_exists( 'register_block_type' ) ) {
-			include 'blocks/block.php';
+			include_once 'blocks/block.php';
 		}
 
-		include 'php/classes/class-qmn-alert-manager.php';
+		include_once 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();
 
-		include 'php/classes/class-qmn-quiz-creator.php';
+		include_once 'php/classes/class-qmn-quiz-creator.php';
 		$this->quizCreator = new QMNQuizCreator();
 
-		include 'php/classes/class-qmn-plugin-helper.php';
+		include_once 'php/classes/class-qmn-plugin-helper.php';
 		$this->pluginHelper = new QMNPluginHelper();
 
-		include 'php/classes/class-qsm-settings.php';
+		include_once 'php/classes/class-qsm-settings.php';
 		$this->quiz_settings = new QSM_Quiz_Settings();
 
-		include 'php/classes/class-qsm-theme-settings.php';
+		include_once 'php/classes/class-qsm-theme-settings.php';
 		$this->theme_settings = new QSM_Theme_Settings();
 
-		include 'php/classes/class-qsm-migrate.php';
+		include_once 'php/classes/class-qsm-migrate.php';
 		$this->migrationHelper = new QSM_Migrate();
 
-		include 'php/rest-api.php';
+		include_once 'php/rest-api.php';
 	}
 
 	/**
@@ -356,6 +356,79 @@ class MLWQuizMasterNext {
 		// load admin JS after all dependencies are loaded
 		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch' ), $this->version, true );
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+		$qsm_admin_messages = array(
+			'error'                      => __('Error', 'quiz-master-next'),
+			'success'                    => __('Success', 'quiz-master-next'),
+			'category'                   => __('Category', 'quiz-master-next'),
+			'try_again'                  => __('Please try again', 'quiz-master-next'),
+			'already_exists_in_database' => __('already exists in database', 'quiz-master-next'),
+			'confirm_message'            => __('Are you sure?', 'quiz-master-next'),
+			'error_delete_result'        => __('Error to delete the result!', 'quiz-master-next'),
+			'copied'                     => __('Copied!', 'quiz-master-next'),
+			'set_feature_img'            => __('Set Featured Image', 'quiz-master-next'),
+			'set_bg_img'                 => __('Set Background Image', 'quiz-master-next'),
+			'insert_img'                 => __('Insert Image', 'quiz-master-next'),
+			'upload_img'                 => __('Upload Image', 'quiz-master-next'),
+			'use_img'                    => __('Use this image', 'quiz-master-next'),
+			'updating_db'                => __('Updating database', 'quiz-master-next'),
+			'update_db_success'          => __('Database updated successfully.', 'quiz-master-next'),
+			'quiz_submissions'           => __('Quiz Submissions', 'quiz-master-next'),
+			'saving_contact_fields'      => __('Saving contact fields...', 'quiz-master-next'),
+			'contact_fields_saved'       => __('Your contact fields have been saved!', 'quiz-master-next'),
+			'contact_fields_save_error'  => __('There was an error encountered when saving your contact fields.', 'quiz-master-next'),
+			'saving_emails'              => __('Saving emails...', 'quiz-master-next'),
+			'emails_saved'               => __('Emails were saved!', 'quiz-master-next'),
+			'emails_save_error'          => __('There was an error when saving the emails.', 'quiz-master-next'),
+			'saving_emails'              => __('Saving emails...', 'quiz-master-next'),
+			'saving_results_page'        => __('Saving results pages...', 'quiz-master-next'),
+			'results_page_saved'         => __('Results pages were saved!', 'quiz-master-next'),
+			'results_page_save_error'    => __('There was an error when saving the results pages.', 'quiz-master-next'),
+			'all_categories'             => __('All Categories', 'quiz-master-next'),
+			'add_question'               => __('Add Question', 'quiz-master-next'),
+			'question_created'           => __('Question created!', 'quiz-master-next'),
+			'new_question'               => __('Your new question!', 'quiz-master-next'),
+			'adding_question'            => __('Adding question...', 'quiz-master-next'),
+			'creating_question'          => __('Creating question...', 'quiz-master-next'),
+			'duplicating_question'       => __('Duplicating question...', 'quiz-master-next'),
+			'saving_question'            => __('Saving question...', 'quiz-master-next'),
+			'question_saved'             => __('Question was saved!', 'quiz-master-next'),
+			'load_more_quetions'         => __('Load more questions', 'quiz-master-next'),
+			'loading_question'           => __('Loading questions...', 'quiz-master-next'),
+			'no_question_selected'       => __('No question is selected.', 'quiz-master-next'),
+			'question_reset_message'     => __('All answer will be reset, Do you want to still continue?', 'quiz-master-next'),
+			'your_answer'                => __('Your answer', 'quiz-master-next'),
+			'insert_image_url'           => __('Insert image URL', 'quiz-master-next'),
+			'saving_page_info'           => __('Saving page info', 'quiz-master-next'),
+			'saving_page_questions'      => __('Saving pages and questions...', 'quiz-master-next'),
+			'saved_page_questions'       => __('Questions and pages were saved!', 'quiz-master-next'),
+			'import_question_again'      => __('you want to import this question again?', 'quiz-master-next'),
+			'enter_question_title'       => __('Enter Question title or description', 'quiz-master-next'),
+			'page_name_required'         => __('Page Name is required!', 'quiz-master-next'),
+			'page_name_validation'       => __('Please use only Alphanumeric characters.', 'quiz-master-next'),
+			'polar_q_range_error'        => __('Left range and right range should be different', 'quiz-master-next'),
+			'range_fields_required'      => __('Range fields are required!', 'quiz-master-next'),
+			'points'                     => __('Points', 'quiz-master-next'),
+			'left_label'                 => __('Left Label', 'quiz-master-next'),
+			'right_label'                => __('Right Label', 'quiz-master-next'),
+			'left_range'                 => __('Left Range', 'quiz-master-next'),
+			'right_range'                => __('Right Range', 'quiz-master-next'),
+			'html_section_empty'         => __('Text/HTML Section cannot be empty', 'quiz-master-next'),
+			'blank_number_validation'    => __('Number of <strong>%BLANK%</strong> should be equal to options for sequential matching', 'quiz-master-next'),
+			'blank_required_validation'  => __('Atleast one <strong>%BLANK%</strong> and one option is required.', 'quiz-master-next'),
+			'polar_options_validation'   => __('You can not add more than 2 answer for Polar Question type', 'quiz-master-next'),
+			'hide_advance_options'       => __('Hide advance options «', 'quiz-master-next'),
+			'show_advance_options'       => __('Show advance options »', 'quiz-master-next'),
+			'category_not_empty'         => __('Category cannot be empty', 'quiz-master-next'),
+			'sendy_signup_validation'    => array(
+				'required_message'   => __('Please fill in your name and email.', 'quiz-master-next'),
+				'email_validation'   => __('Your email address is invalid.', 'quiz-master-next'),
+				'list_validation'    => __('Your list ID is invalid.', 'quiz-master-next'),
+				'already_subscribed' => __("You're already subscribed!", 'quiz-master-next'),
+				'success_message'    => __("Thanks, you are now subscribed to our mailing list!", 'quiz-master-next'),
+				'error_message'      => __("Sorry, unable to subscribe. Please try again later!", 'quiz-master-next'),
+			),
+		);
+		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 
 	}
 
