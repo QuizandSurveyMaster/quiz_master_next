@@ -775,14 +775,15 @@ function qsm_create_new_quiz_wizard() {
 												<?php
 												if ( $popular_addons ) {
 													foreach ( $popular_addons as $key => $single_arr ) {
+														$link = qsm_get_utm_link( $single_arr['link'], 'new_quiz', 'addons', 'quizsurvey_' . sanitize_title( $single_arr['name'] ) );
 														?>
 														<div>
-															<a href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" rel="noopener">
+															<a href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
 																<span class="addon-itd-wrap">
 																	<img alt="" src="<?php echo esc_url( $single_arr['img'] ); ?>" />
 																</span>
 															</a>
-															<a class="addon-get-link" href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" rel="noopener">
+															<a class="addon-get-link" href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
 																<?php
 																esc_html_e( 'Buy now', 'quiz-master-next' );
 																echo ' : $ ' . esc_html( array_values( $single_arr['price'] )[0] );
@@ -799,7 +800,7 @@ function qsm_create_new_quiz_wizard() {
 								</div>
 								<div class="qsm-addon-list-right">
 									<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-									<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link( 'addons', 'qsm-addons-page', 'all-addons-top' ) ) ?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+									<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link( 'addons', 'new_quiz', 'addons', 'quizsurvey_all_addons' ) ) ?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 								</div>
 							</div>
 						</div>
@@ -1068,9 +1069,9 @@ function qsm_get_default_wizard_themes() {
 	if ( ! empty( $default_themes_data ) ) {
 		foreach ( $default_themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
-			$theme_url           = $theme['link'];
 			$theme_screenshot    = $theme['img'];
-			$theme_demo          = $theme['demo'];
+			$theme_url           = qsm_get_utm_link( $theme['link'], 'new_quiz', 'themes', 'quizsurvey_buy_' . sanitize_title( $theme_name ) );
+			$theme_demo          = qsm_get_utm_link( $theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $theme_name ) );
 			?>
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
@@ -1079,8 +1080,8 @@ function qsm_get_default_wizard_themes() {
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
-						<a class="button button-primary" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php echo in_array( $theme_name, $pro_themes, true ) ? esc_html__( 'Buy Now', 'quiz-master-next' ) : esc_html__( 'Download', 'quiz-master-next' ); ?>
+						<a class="button button-primary" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_demo ); ?>"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
+						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>"><?php echo in_array( $theme_name, $pro_themes, true ) ? esc_html__( 'Buy Now', 'quiz-master-next' ) : esc_html__( 'Download', 'quiz-master-next' ); ?>
 						</a>
 					</div>
 				</div>
@@ -1098,9 +1099,9 @@ function qsm_get_market_themes() {
 	if ( ! empty( $themes_data ) ) {
 		foreach ( $themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
-			$theme_url           = $theme['link'];
 			$theme_screenshot    = $theme['img'];
-			$theme_demo          = $theme['demo'];
+			$theme_url           = qsm_get_utm_link( $theme['link'], 'new_quiz', 'themes', 'quizsurvey_buy_' . sanitize_title( $theme_name ) );
+			$theme_demo          = qsm_get_utm_link( $theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $theme_name ) );
 			?>
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
@@ -1109,8 +1110,8 @@ function qsm_get_market_themes() {
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
-						<a class="button button-primary" target="_blank" rel="noopener"	href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard">
+						<a class="button button-primary" target="_blank" rel="noopener"	href="<?php echo esc_url( $theme_demo ); ?>"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
+						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>">
 							<?php echo in_array( $theme_name, $pro_themes, true ) ? esc_html__( 'Buy Now', 'quiz-master-next' ) : esc_html__( 'Download', 'quiz-master-next' ); ?>
 						</a>
 					</div>
@@ -1177,8 +1178,9 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 		"warning"      => '',
 		"information"  => '',
 		"buy_btn_text" => __( 'Buy Addon', 'quiz-master-next' ),
-		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons', 'quiz-upgrade-box' ),
-		"addon_link"   => qsm_get_plugin_link( 'addons', 'quiz-upgrade-box' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons', 'qsm', 'upgrade-box', 'read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm', 'upgrade-box', 'upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'addons', 'qsm', 'upgrade-box', 'buy_addon', 'qsm_plugin_upsell' ),
 	);
 	$args        = wp_parse_args( $args, $defaults );
 	?>
@@ -1215,7 +1217,7 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 		}
 		?>
 		<div class="qsm-upgrade-buttons qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-upgrade-box' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
 			<?php if ( ! empty( $args['addon_link'] ) ) : ?>
 				<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo esc_html( $args['buy_btn_text'] ); ?></a>
 			<?php endif; ?>

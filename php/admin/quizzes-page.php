@@ -438,8 +438,9 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/export_import_chart.png',
 						"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next'),
 						"buy_btn_text" => __('Buy Export & Import Addon', 'quiz-master-next'),
-						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'quiz-upgrade-box' ),
-						"addon_link"   => qsm_get_plugin_link( 'downloads/export-import', 'quiz-upgrade-box' ),
+						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'qsm_list', 'importexport_button', 'import-export-upsell_read_documentation', 'qsm_plugin_upsell' ),
+						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'importexport_button', 'import-export-upsell_upgrade', 'qsm_plugin_upsell' ),
+						"addon_link"   => qsm_get_plugin_link( 'downloads/export-import', 'qsm_list', 'importexport_button', 'import-export-upsell_buy_addon', 'qsm_plugin_upsell' ),
 					);
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
