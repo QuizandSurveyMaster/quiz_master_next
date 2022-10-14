@@ -846,6 +846,9 @@ ul.changelog li.update div.two:before {
 	color: #2271b1;
 	box-sizing: border-box;
 }
+.qsm-theme-color-settings .qsm-popup__content label{
+	font-weight: 400;
+}
 .qsm-popup__close {
 	background: transparent;
 	border: 0;
@@ -915,7 +918,8 @@ body .qsm-popup__btn-primary {
 		transform: translateY(-10%);
     }
 }
-.qsm-popup-slide {
+.qsm-popup-slide,
+.qsm-d-none{
 	display: none;
 }
 .qsm-popup-slide.is-open {
@@ -1665,29 +1669,30 @@ td.scheduled_time_start {
 .popup-template-span-wrap .popup-copied-des span.dashicons {
 	line-height: 28px;
 }
-.comment-inner-wrap {
-    /* display: none;
-    */
-}
+.qsm-theme-color-settings .qsm-popup__container,
 .qsm-standard-popup .qsm-popup__container{
 	padding: 0;
 	margin: 0;
 	position: relative;
-	min-width: 450px;
+	min-width: 525px;
 	max-width: 100%;
+	max-height: 90vh;
 }
+.qsm-theme-color-settings .qsm-popup__header .qsm-popup__title,
 .qsm-standard-popup .qsm-popup__header .qsm-popup__title{
 	padding: 10px 20px;
 }
-.qsm-standard-popup .qsm-popup__header .qsm-popup__close{
+.qsm-standard-popup .qsm-popup__header .qsm-popup__close,
+.qsm-theme-color-settings .qsm-popup__header .qsm-popup__close{
     position: relative;
     font-size: 22px;
     border: 1px solid #ddd;
     padding: 15px;
     cursor: pointer;
 }
-.qsm-standard-popup .qsm-popup__content{
-	padding: 20px 20px;
+.qsm-standard-popup .qsm-popup__content,
+.qsm-theme-color-settings .qsm-popup__content{
+	padding: 20px;
 	margin: 0;
 	box-shadow: inset 0 0 10px 1px #ddd;
 }
@@ -1696,6 +1701,7 @@ td.scheduled_time_start {
     width: 100%;
     border-spacing: 0 5px;
 }
+.qsm-theme-color-settings .qsm-popup__footer,
 .qsm-standard-popup .qsm-popup__footer{
 	padding: 12px 20px;
 }
@@ -2276,7 +2282,7 @@ input#duplicate_questions {
 }
 .qsm-badge {
     background: linear-gradient(225deg, #344ad6, #42d96b);
-    z-index: 9999;
+    z-index: 9;
     position: absolute;
     color: #fff;
     right: 5px;
@@ -2497,3 +2503,72 @@ input#duplicate_questions {
 	max-width: 100%;
 	min-width: auto;
 }
+/*QSM quiz theme setting tabs start*/
+.qsm-quiz-theme-option-subheading {
+    margin-bottom: 0;
+    color: #2f87cc;
+    font-size: 15px;
+}
+.qsm-theme-color-settings .quiz-theme-option-image-button {
+	padding: 3px 9px;
+    font-size: 11px;
+}
+.qsm-theme-color-settings .quiz-theme-option-image-button .dashicons{
+	line-height: 24px;
+}
+.qsm-theme-color-settings .wp-picker-container .wp-color-result.button,
+.qsm-theme-color-settings footer.qsm-popup__footer .button{
+	margin: 0 0 0 10px;
+}
+.qsm-theme-option-image,
+.qsm-theme-color-settings .wp-picker-container {
+    position: relative;
+}
+.qsm-theme-color-settings .wp-picker-holder {
+    position: absolute;
+	z-index: 9999;
+	top: 61px;
+    left: -136px;
+}
+.qsm-theme-color-settings .wp-picker-container label{
+	width: 195px;
+}
+.qsm-theme-color-settings .wp-picker-input-wrap {
+    position: absolute;
+    width: 258px;
+    top: 37px;
+    left: -136px;
+	z-index: 9999;
+}
+.qsm-theme-color-settings .qsm-popup__content{
+	max-height: 70vh;
+    overflow-x: auto;
+}
+.qsm-theme-color-settings span.wp-color-result-text {
+    min-width: 64px;
+}
+.qsm-theme-option-image{
+	width: 112px;
+}
+.qsm-theme-color-settings .quiz-theme-option-image-thumbnail {
+    max-width: 100%;
+    margin-top: 10px;
+    border: 1px solid #868686bd;
+    border-radius: 2px;
+}
+.qsm-theme-option-image-remove {
+    position: absolute;
+    right: 25px;
+    top: calc(50% - 10px);
+	opacity: 0;
+}
+.qsm-theme-color-settings .qsm-theme-option-image:hover .qsm-theme-option-image-remove{
+	opacity: 1;
+}
+.qsm-theme-color-settings hr {
+    margin: 25px 0;
+}
+.qsm-theme-color-settings footer.qsm-popup__footer {
+    text-align: right;
+}
+/*QSM quiz theme setting tabs end*/

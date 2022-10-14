@@ -992,9 +992,6 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			<div class="theme-wrapper theme <?php echo '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>" <?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
-					<?php if ( in_array( $theme_name, $pro_themes, true ) ) { ?>
-						<span class="qsm-badge"><?php esc_html_e( 'Pro', 'quiz-master-next' ); ?></span>
-					<?php } ?>
 					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL . '/' . $theme_name . '/screenshot.png' ); ?>" />
 					<div class="downloaded-theme-button">
 						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
@@ -1221,5 +1218,63 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 			<?php endif; ?>
 		</div>
 	</div>
+	<?php
+}
+
+/**
+ * Generates theme setting feilds
+ *
+ * @since 8.0.5
+ * @param string $type input type
+* @return string $label input label
+* @return string $name input name
+* @return string $value value
+* @return string $default_value default value
+* @return string $options other options array
+ * @return html
+ */
+function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, $options = array( 'button_text' => '' ) ) {
+	?>
+	<tr valign="top">
+		<th scope="row" class="qsm-opt-tr">
+			<label for="form_type"><?php echo esc_attr( $label ); ?></label>
+		</th>
+		<td align ="right">
+			<?php
+			switch ( $type ) {
+				case 'image':
+					?>
+					<input class="quiz-theme-option-image-input" name="settings[<?php echo esc_attr( $name ); ?>]" type="hidden" value="<?php echo esc_attr( $value ); ?>" >
+					<a class="quiz-theme-option-image-button button" <?php echo ! empty( $value ) ? 'style="display:none"' : ''; ?> href="javascript:void(0);"><span class="dashicons dashicons-format-image"></span> <?php esc_html_e( 'Select Image', 'quiz-master-next' ); ?></a>
+					<div class="qsm-theme-option-image <?php echo empty( $value ) ? 'qsm-d-none' : ''; ?>">
+						<img src="<?php echo esc_attr( $value ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
+						<a class="button button-small qsm-theme-option-image-remove" href="javascript:void(0)"><?php esc_html_e('Remove', 'quiz-master-next'); ?></a>
+					</div>
+					<?php
+					break;
+				case 'color':
+					?>
+					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default_value ); ?>" class="qsm-color-field" data-label="<?php echo esc_attr( $options['button_text'] ); ?>" />
+					<?php
+					break;
+				case 'hover_color':
+						?>
+						<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default_value ); ?>" class="qsm-color-field" data-label="<?php echo esc_attr( $options['button_text'] ); ?>" />
+						<input name="settings[<?php echo esc_attr( $options['hover_name'] ); ?>]" type="text" value="<?php echo esc_attr( $options['hover_value'] ); ?>" data-default-color="<?php echo esc_attr( $options['hover_default_value'] ); ?>" class="qsm-color-field" data-label="<?php echo esc_attr( $options['hover_button_text'] ); ?>" />
+						<?php
+		            break;
+				case 'checkbox':
+					?>
+					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php echo $value ? "checked" : ""; ?> />
+					<?php
+					break;
+				default:
+					?>
+					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
+					<?php
+					break;
+			} ?>
+		</td>
+	</tr>
 	<?php
 }
