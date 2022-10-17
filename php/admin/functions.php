@@ -700,6 +700,10 @@ function qsm_create_new_quiz_wizard() {
 									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['timer_limit'],
 								),
+								'pagination'         => array(
+									'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
+									'value'       => $globalQuizsetting['pagination'],
+								),
 								'require_log_in'      => array(
 									'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['require_log_in'],
@@ -965,7 +969,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		}
 	}
 	?>
-	<div class="theme-wrapper theme <?php echo '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
+	<div class="theme-wrapper qsm-default-theme theme <?php echo '' == $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
 		<input style="display: none" type="radio" name="quiz_theme_id" value="0" <?php checked( $saved_quiz_theme, '0', true ); ?>>
 		<div class="theme-screenshot" id="qsm-theme-screenshot">
 			<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
@@ -976,7 +980,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		<div class="theme-id-container">
 			<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
 			<div class="theme-actions">
-				<?php if ( 'default' !== $saved_quiz_theme ) { ?>
+				<?php if ( 0 !== $saved_quiz_theme && '' !== $saved_quiz_theme ) { ?>
 					<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
 				<?php } ?>
 			</div>
@@ -989,7 +993,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			$theme_name  = $theme['theme'];
 			$theme_id    = $theme['id'];
 			?>
-			<div class="theme-wrapper theme <?php echo '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
+			<div class="theme-wrapper <?php echo $theme_name; ?> theme <?php echo $theme_id == $saved_quiz_theme ? 'active' : ''; ?>">
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>" <?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
 					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL . '/' . $theme_name . '/screenshot.png' ); ?>" />
@@ -1003,10 +1007,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 					<div class="theme-actions">
 						<?php
 						if ( $saved_quiz_theme != $theme_id ) {
-							if ( 'wizard_theme_list' === $wizard_theme_list ) {
-								?>
-								<?php
-							} else {
+							if ( 'wizard_theme_list' !== $wizard_theme_list ) {
 								?>
 								<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
 								<?php
