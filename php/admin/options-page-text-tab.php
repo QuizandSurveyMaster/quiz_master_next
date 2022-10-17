@@ -143,7 +143,8 @@ function mlw_options_text_tab_content() {
                                             ?>
                                         </div>
                                         <div class="save-text-changes" style="padding:10px;">
-                                            <button id="qsm_save_text_message_variable" style="float:right;" class="button button-primary"><?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
+                                            <button id="qsm_save_text_message_variable" style="float:right;" class="button button-primary">
+                                            <?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
                                             <span class="spinner" ></span>
                                         </div>
                                 </div>

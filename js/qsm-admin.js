@@ -628,7 +628,6 @@ jQuery('.quiz_text_tab_custom').click(function (e) {
     jQuery(this).parent().addClass('currentli');
     jQuery('.quiz_style_tab_content').hide();
     jQuery('#' + current_id).show();
-    //jQuery('.quiz_text_tab_content').hide();
 });
 //quiz text tab
 jQuery('.quiz_text_tab').click(function (e) {
