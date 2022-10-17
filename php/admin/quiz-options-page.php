@@ -287,6 +287,9 @@ function qsm_generate_quiz_options() {
 				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+			?>
+			<style type="text/css">.question[data-question-type="15"],.question[data-question-type="16"],.question[data-question-type="17"]{border-color: red;}</style>
+			<?php
 		}
 	?>
 <?php

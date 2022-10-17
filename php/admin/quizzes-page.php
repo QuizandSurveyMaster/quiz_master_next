@@ -100,8 +100,31 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					break;
 
 				case 'total_questions':
-					$total_questions = $mlwQuizMasterNext->pluginHelper->get_questions_count( $quiz_id );
-					echo esc_attr( $total_questions );
+					$question_ids = $mlwQuizMasterNext->pluginHelper->get_questions_ids( $quiz_id );
+					echo esc_attr( count( $question_ids ) );
+
+					/**
+					 * Check for invalid Questions.
+					 */
+					$q_types		 = array();
+					$invalid_types	 = array();
+					$question_types	 = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
+					if ( ! empty( $question_types ) ) {
+						foreach ( $question_types as $data ) {
+							$q_types[] = $data->type;
+						}
+					}
+					if ( ! class_exists( 'QSM_Advance_Question' ) ) {
+						$invalid_types[] = 15;
+						$invalid_types[] = 16;
+						$invalid_types[] = 17;
+					}
+					if ( ! class_exists( 'QSM_Flashcards' ) ) {
+						$invalid_types[] = 18;
+					}
+					if ( ! empty( array_intersect( $invalid_types, $q_types ) ) ) {
+						echo '<span class="dashicons dashicons-warning qsm-quiz-warning-icon" title="' . __( '', 'quiz-master-next' ) . '"></span>';
+					}
 					break;
 
 				case 'views':

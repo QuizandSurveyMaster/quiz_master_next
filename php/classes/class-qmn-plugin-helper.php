@@ -430,25 +430,28 @@ class QMNPluginHelper {
 		$answers = apply_filters( 'qsm_single_question_answers', $answers, $question, $quiz_options );
 		foreach ( $this->question_types as $type ) {
 			if ( strtolower( str_replace( ' ', '-', $slug ) ) === $type['slug'] ) {
-				$qmn_all_questions_count += 1;
-				if ( $type['graded'] ) {
-					$qmn_total_questions += 1;
-					if ( 1 === intval( $quiz_options->question_numbering ) ) { ?>
-						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
-						<?php
+				if ( ! empty( $type['display'] ) && function_exists( $type['display'] ) ) {
+					$qmn_all_questions_count += 1;
+					if ( $type['graded'] ) {
+						$qmn_total_questions += 1;
+						if ( 1 === intval( $quiz_options->question_numbering ) ) { ?>
+							<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
+							<?php
+						}
 					}
-				}
-				if ( $quiz_options->show_category_on_front ) {
-					$categories = QSM_Questions::get_question_categories( $question_id );
-					if ( ! empty( $categories['category_name'] ) ) {
-						$cat_name = implode( ',', $categories['category_name'] );
-						?>
-						<div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div>
-						<?php
+					if ( $quiz_options->show_category_on_front ) {
+						$categories = QSM_Questions::get_question_categories( $question_id );
+						if ( ! empty( $categories['category_name'] ) ) {
+							$cat_name = implode( ',', $categories['category_name'] );
+							?>
+							<div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div>
+							<?php
+						}
 					}
+
+					call_user_func( $type['display'], intval( $question_id ), $question->question_name, $answers );
+					do_action( 'qsm_after_question', $question );
 				}
-				call_user_func( $type['display'], intval( $question_id ), $question->question_name, $answers );
-				do_action( 'qsm_after_question', $question );
 			}
 		}
 	}
@@ -472,6 +475,27 @@ class QMNPluginHelper {
 			}
 		}
 		return $count;
+	}
+
+	public function get_questions_ids( $quiz_id = 0 ) {
+		global $wpdb;
+		$quiz_id = intval( $quiz_id );
+		$ids   = array();
+		if ( empty( $quiz_id ) || 0 == $quiz_id ) {
+			return $count;
+		}
+
+		$quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT `quiz_settings` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id`=%d", $quiz_id ) );
+		if ( ! empty( $quiz_settings ) ) {
+			$settings    = maybe_unserialize( $quiz_settings );
+			$pages       = isset( $settings['pages'] ) ? maybe_unserialize( $settings['pages'] ) : array();
+			if ( ! empty( $pages ) ) {
+				foreach ( $pages as $page ) {
+					$ids = array_merge($ids, $page );
+				}
+			}
+		}
+		return $ids;
 	}
 
 	/**

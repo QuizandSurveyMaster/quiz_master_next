@@ -2497,3 +2497,8 @@ input#duplicate_questions {
 	max-width: 100%;
 	min-width: auto;
 }
+.qsm-quiz-warning-icon {
+    color: #b32d2e;
+    margin: 0 5px;
+    cursor: pointer;
+}

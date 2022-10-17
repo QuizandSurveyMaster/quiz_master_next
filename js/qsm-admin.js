@@ -1524,6 +1524,7 @@ var import_button;
                     }
                     $('#question-bank').append(template({
                         id: question.id,
+                        type: question.type,
                         question: questionText,
                         category: question.category,
                         quiz_name: question.quiz_name
@@ -1758,6 +1759,7 @@ var import_button;
                     }
                     $('.page:nth-child(' + page + ')').append(template({
                         id: model.id,
+                        type: model.get('type'),
                         category: model.get('category'),
                         question: questionName
                     }));

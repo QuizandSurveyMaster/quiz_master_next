@@ -1049,7 +1049,7 @@ function qsm_options_questions_tab_template() {
 
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
-		<div class="question question-new" data-question-id="{{data.id }}">
+		<div class="question question-new" data-question-id="{{data.id}}" data-question-type="{{data.type}}">
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div class="question-content-title-box">
@@ -1069,7 +1069,7 @@ function qsm_options_questions_tab_template() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}" data-question-type="{{data.type}}">
 			<div class="question-bank-selection">
 				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 			</div>
