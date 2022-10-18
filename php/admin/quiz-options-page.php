@@ -274,6 +274,7 @@ function qsm_generate_quiz_options() {
 	add_action('admin_footer', 'qsm_quiz_options_notice_template');?>
 	<!--Div for the upgrade popup of advanced question type -->
 	<?php
+	$style_tags = array();
 		if ( ! class_exists('QSM_Advance_Question') ) {
 			$qsm_pop_up_arguments = array(
 				"id"           => 'modal-advanced-question-type',
@@ -287,8 +288,16 @@ function qsm_generate_quiz_options() {
 				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+			$style_tags[] = '.question[data-question-type="15"]';
+			$style_tags[] = '.question[data-question-type="16"]';
+			$style_tags[] = '.question[data-question-type="17"]';
+		}
+		if ( ! class_exists('QSM_Flashcards') ) {
+			$style_tags[] = '.question[data-question-type="18"]';
+		}
+		if ( ! empty($style_tags) ) {
 			?>
-			<style type="text/css">.question[data-question-type="15"],.question[data-question-type="16"],.question[data-question-type="17"]{border-color: red;}</style>
+			<style type="text/css"><?php echo implode( ', ', $style_tags )?>{border-color: red;}</style>
 			<?php
 		}
 	?>
