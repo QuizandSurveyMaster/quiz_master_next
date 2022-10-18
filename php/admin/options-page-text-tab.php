@@ -63,16 +63,15 @@ function mlw_options_text_tab_content() {
                                         </ul>
                                     </div>
                                 </div>
-                      
-                        <div class="qsm-row">
-                                <!-- General text tab -->
+                            <div class="qsm-row">
+                            <!-- General text tab -->
                             <div   id="qsm_general_text" class="current quiz_text_tab_content qsm_general_text">
                                 <div>
                                     <h1><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h1>
                                         <ul>
                                             <?php if ( $editor_text_arr ) {
                                                 foreach ( $editor_text_arr as $key => $single_editor_arr ) {
-                                                if ( ! str_contains($single_editor_arr['label'],'%') ) {   
+                                                if ( ! str_contains($single_editor_arr['label'],'%') ) {
                                                         $class_current_li = "";
                                                         $class = "";
                                                         if ( 0 == $key ) {
@@ -80,8 +79,8 @@ function mlw_options_text_tab_content() {
                                                             $class = "current_general";
                                                         }
                                                     ?>
-                                                    <li class="qsm-custom-label-left-menu <?php echo $class_current_li;?>">
-                                                    <a   data-id="<?php  echo esc_attr( $single_editor_arr['id'] ); ?>"  data-label= "<?php  echo esc_attr( $single_editor_arr['label'] ); ?>" class="quiz_text_tab_message <?php echo $class;?>" ><?php  echo esc_attr( $single_editor_arr['label']); ?></a>
+                                                    <li class="qsm-custom-label-left-menu <?php echo esc_attr( $class_current_li );?>">
+                                                    <a   data-id="<?php  echo esc_attr( $single_editor_arr['id'] ); ?>"  data-label= "<?php  echo esc_attr( $single_editor_arr['label'] ); ?>" class="quiz_text_tab_message <?php echo esc_attr( $class );?>" ><?php  echo esc_attr( $single_editor_arr['label']); ?></a>
                                                     </li>
                                                 <?php
                                                     }
@@ -125,8 +124,8 @@ function mlw_options_text_tab_content() {
                                                             $class = "current_variable";
                                                         }
                                                     ?>
-                                                    <li class="qsm-custom-label-left-menu <?php echo $class_current_li;?>">
-                                                    <a   data-id="<?php  echo esc_attr( $single_editor_arr['id'] ); ?>"   data-label= "<?php  echo esc_attr( $single_editor_arr['label'] ); ?>" class="quiz_text_tab_message_variable <?php echo $class;?>" ><?php  echo esc_attr( $single_editor_arr['label'] ); ?></a>
+                                                    <li class="qsm-custom-label-left-menu <?php echo esc_attr( $class_current_li );?>">
+                                                    <a   data-id="<?php  echo esc_attr( $single_editor_arr['id'] ); ?>"   data-label= "<?php  echo esc_attr( $single_editor_arr['label'] ); ?>" class="quiz_text_tab_message_variable <?php echo esc_attr( $class );?>" ><?php  echo esc_attr( $single_editor_arr['label'] ); ?></a>
                                                     </li>
                                                 <?php
                                                     }
