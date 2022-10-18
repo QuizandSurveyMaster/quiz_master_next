@@ -796,6 +796,62 @@ ul.changelog li.update div.two:before {
 .qsm_tab_content label {
 	margin-right: 5px;
 }
+.qsm-sub-tab-menu{
+	display:flex;
+	flex-direction: row;
+}
+.qsm-sub-text-tab-menu{
+	display: inline-block;
+	width: 100%;
+}
+.qsm-custom-label-left-menu-ul{
+	width:20%;
+	border-right:1px solid #dddddd;
+}
+
+.save-text-changes{
+	padding:10px;
+}
+.save-text-changes .button{
+	position:absolute;
+	right:25px;
+}
+.qsm_general_text,.qsm_variable_text{
+	display:flex;
+	align-items: flex-start;
+}
+.qsm_general_text ul{
+	display:flex;
+	height:275px;
+	overflow-y:scroll;
+	flex-direction: column;
+}
+.qsm_variable_text ul{
+	display:flex;
+	flex-direction: column;
+	height:275px;
+}
+
+.quiz_style_tab_content .form-table{
+	width: 100%;
+}
+.qsm_general_text_editor,.qsm_variable_text_editor {
+	width:80%;
+}
+.qsm-custom-label-left-menu{
+	padding:10px;
+}
+.currentli,.currentli_general,.currentli_variable{
+border-left:4px solid #2271b1;
+background-color: #a1cef3 ;
+border-top:1px solid #dddddd;
+border-bottom:1px solid #dddddd;
+padding:10px;
+}
+.qsm-custom-label-left-menu a{
+	color:black;
+
+}
 .qsm_tab_content a{
 	cursor: pointer;
 	text-decoration: none;
@@ -1330,7 +1386,7 @@ td.scheduled_time_start {
 }
 .qsm-text-label-wrapper>h2 {
 	font-size: 24px;
-	border-bottom: 1px solid #ccc;
+	/*border-bottom: 1px solid #ccc;*/
 	padding-bottom: 10px;
 	line-height: normal;
 }
@@ -2496,4 +2552,7 @@ input#duplicate_questions {
 	width: 100%;
 	max-width: 100%;
 	min-width: auto;
+}
+.qsm-row input[type=text]{
+	border-radius: 4px;
 }
