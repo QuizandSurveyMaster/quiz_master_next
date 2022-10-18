@@ -417,10 +417,10 @@ class QMNPluginHelper {
 				$answer_ids = implode( ',', $answer_ids );
 				?>
 				<script>
-					const d = new Date();
-					d.setTime(d.getTime() + (365*24*60*60*1000));
-					let expires = "expires="+ d.toUTCString();
-					document.cookie = "answer_ids_<?php echo esc_attr( $question_id ); ?> = <?php echo esc_attr( $answer_ids ) ?>; "+expires+"; path=/";
+					var ans_d = new Date();
+					ans_d.setTime(ans_d.getTime() + (365*24*60*60*1000));
+					var ans_expires = "expires="+ ans_d.toUTCString();
+					document.cookie = "answer_ids_<?php echo esc_attr( $question_id ); ?> = <?php echo esc_attr( $answer_ids ) ?>; "+ans_expires+"; path=/";
 				</script>
 				<?php
 			}else {
