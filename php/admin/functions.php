@@ -700,7 +700,7 @@ function qsm_create_new_quiz_wizard() {
 									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['timer_limit'],
 								),
-								'pagination'         => array(
+								'pagination'          => array(
 									'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['pagination'],
 								),
@@ -993,7 +993,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			$theme_name  = $theme['theme'];
 			$theme_id    = $theme['id'];
 			?>
-			<div class="theme-wrapper <?php echo $theme_name; ?> theme <?php echo $theme_id == $saved_quiz_theme ? 'active' : ''; ?>">
+			<div class="theme-wrapper <?php echo esc_attr( $theme_name ); ?> theme <?php echo $theme_id == $saved_quiz_theme ? 'active' : ''; ?>">
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>" <?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
 					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL . '/' . $theme_name . '/screenshot.png' ); ?>" />

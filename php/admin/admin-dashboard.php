@@ -189,7 +189,7 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_roadmap',
 				'title'    => 'roadmap',
 			),
-			
+
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
 		update_option( 'qsm_dashboard_widget_arr', $qsm_dashboard_widget );
@@ -606,6 +606,7 @@ function qsm_create_new_quiz_from_wizard() {
 			'form_type'           => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
 			'system'              => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
 			'timer_limit'         => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'pagination'          => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
 			'require_log_in'      => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
 			'disable_first_page'  => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
 			'comment_section'     => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
