@@ -1108,7 +1108,7 @@ class QSM_Install {
 		// Registers question_answer_template setting
 		$field_array = array(
 			'id'        => 'question_answer_email_template',
-			'label'     => __( '%QUESTION_ANSWER_EMAIL% Text', 'quiz-master-next' ),
+			'label'     => __( '%QUESTIONS_ANSWERS_EMAIL% Text', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%',
 			'variables' => array(

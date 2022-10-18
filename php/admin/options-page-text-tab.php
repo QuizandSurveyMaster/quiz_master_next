@@ -46,7 +46,7 @@ function mlw_options_text_tab_content() {
                         <div class="qsm-text-header">
                             <div class="message-dropdown" style="width:100%">
                                 <div >
-                                    <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
+                                    <div class="qsm-sub-text-tab-menu">
                                         <ul class="subsubsub">
                                         <li>
                                             <a href="javascript:void(0)" data-id="qsm_general_text" class="current quiz_text_tab">
@@ -97,8 +97,8 @@ function mlw_options_text_tab_content() {
                                             wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array( 'textarea_rows' => 10 ) );
                                             ?>
                                         </div>
-                                        <div class="save-text-changes" style="padding:10px;">
-                                            <button id="qsm_save_text_message" style="float:right;" class="button button-primary"><?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
+                                        <div class="save-text-changes">
+                                            <button id="qsm_save_text_message"  class="button button-primary"><?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
                                             <span class="spinner" ></span>
                                         </div>
                                 </div>
@@ -142,8 +142,8 @@ function mlw_options_text_tab_content() {
                                             wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message_variable', array( 'textarea_rows' => 10 ) );
                                             ?>
                                         </div>
-                                        <div class="save-text-changes" style="padding:10px;">
-                                            <button id="qsm_save_text_message_variable" style="float:right;" class="button button-primary">
+                                        <div class="save-text-changes">
+                                            <button id="qsm_save_text_message_variable"  class="button button-primary">
                                             <?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
                                             <span class="spinner" ></span>
                                         </div>

@@ -192,8 +192,8 @@ class QSM_Fields {
 				</div>
 			<?php
 			elseif ( 'text' === $current_tab ) : ?>
-				<div class="qsm-sub-tab-menu"  style="display:flex;flex-direction: row;">
-					<ul style="width:20%;border-right:1px solid #dddddd;">
+				<div class="qsm-sub-tab-menu">
+					<ul class="qsm-custom-label-left-menu-ul">
 						<li class="qsm-custom-label-left-menu currentli">
 							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> 
@@ -213,62 +213,62 @@ class QSM_Fields {
 								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 							</a>
 						</li>
-			</ul>
+					</ul>
 					<div>
-					<div id="text-button" class="quiz_style_tab_content">
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'text-button' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						<div id="text-button" class="quiz_style_tab_content">
+							<table class="form-table">
+							<?php
+							// Cycles through each field
+							foreach ( $fields as  $field ) {
+								// Generate the field
+								if ( isset( $field['option_tab'] ) && 'text-button' === $field['option_tab'] ) {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
-						}
-						?>
-					</table>
-				</div>
-				<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'text-validation-messages' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+							?>
+							</table>
+						</div>
+						<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
+							<table class="form-table">
+							<?php
+							// Cycles through each field
+							foreach ( $fields as  $field ) {
+								// Generate the field
+								if ( isset( $field['option_tab'] ) && 'text-validation-messages' === $field['option_tab'] ) {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
-						}
-						?>
-					</table>
-				</div>
-				<div id="text-other" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'text-other' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+							?>
+							</table>
+						</div>
+						<div id="text-other" class="quiz_style_tab_content" style="display:none">
+							<table class="form-table">
+							<?php
+							// Cycles through each field
+							foreach ( $fields as  $field ) {
+								// Generate the field
+								if ( isset( $field['option_tab'] ) && 'text-other' === $field['option_tab'] ) {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
-						}
-						?>
-					</table>
-				</div>
-				<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'text-legacy' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+							?>
+							</table>
+						</div>
+						<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
+							<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+							<table class="form-table">
+							<?php
+							// Cycles through each field
+							foreach ( $fields as  $field ) {
+								// Generate the field
+								if ( isset( $field['option_tab'] ) && 'text-legacy' === $field['option_tab'] ) {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
-						}
-						?>
-					</table>
-				</div>
-			</div>
+							?>
+							</table>
+						</div>
+					</div>
 				</div>
 			<?php else :
 				foreach ( $fields as  $field ) {

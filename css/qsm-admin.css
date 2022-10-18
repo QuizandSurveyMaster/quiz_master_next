@@ -796,6 +796,26 @@ ul.changelog li.update div.two:before {
 .qsm_tab_content label {
 	margin-right: 5px;
 }
+.qsm-sub-tab-menu{
+	display:flex;
+	flex-direction: row;
+}
+.qsm-sub-text-tab-menu{
+	display: inline-block;
+	width: 100%;
+}
+.qsm-custom-label-left-menu-ul{
+	width:20%;
+	border-right:1px solid #dddddd;
+}
+
+.save-text-changes{
+	padding:10px;
+}
+.save-text-changes .button{
+	position:absolute;
+	right:25px;
+}
 .qsm_general_text,.qsm_variable_text{
 	display:flex;
 	align-items: flex-start;
@@ -810,6 +830,10 @@ ul.changelog li.update div.two:before {
 	display:flex;
 	flex-direction: column;
 	height:275px;
+}
+
+.quiz_style_tab_content .form-table{
+	width: 100%;
 }
 .qsm_general_text_editor,.qsm_variable_text_editor {
 	width:80%;
