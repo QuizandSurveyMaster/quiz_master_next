@@ -1527,7 +1527,7 @@ jQuery(function () {
 		var form_data = new FormData();
 		form_data.append('file', file_data);
 		form_data.append('action', 'qsm_upload_image_fd_question');
-		var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_hidden_value').attr("name").replace('question', '');
+		var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
 		form_data.append('question_id', question_id);
 		$this.next('.loading-uploaded-file').show();
 		jQuery.ajax({
@@ -1542,7 +1542,6 @@ jQuery(function () {
 				$this.next('.loading-uploaded-file').hide();
 				if (obj.type == 'success') {
 					$this.next().next('.remove-uploaded-file').show();
-					$this.next().next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
@@ -1576,7 +1575,6 @@ jQuery(function () {
 				var obj = jQuery.parseJSON(response);
 				if (obj.type == 'success') {
 					$this.hide();
-					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_value').val('');
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
 					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
