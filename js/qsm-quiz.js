@@ -25,8 +25,7 @@ var qsmTimerInterval = [];
 					quizID = parseInt(quiz.quiz_id);
 					QSM.initPagination(quizID);
 					qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
-
-					if ( ( quiz.hasOwnProperty('pagination') || ( quiz.qpages.hasOwnProperty(2) && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
+					if ( ( quiz.hasOwnProperty('pagination') || ( _.keys(quiz.qpages).length > 1 && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
 						qsmEndTimeTakenTimer(quizID);
 						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
 						jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val(0);
