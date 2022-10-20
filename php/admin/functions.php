@@ -1250,7 +1250,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					<input class="quiz-theme-option-image-input" name="settings[<?php echo esc_attr( $name ); ?>]" type="hidden" value="<?php echo esc_attr( $value ); ?>" >
 					<a class="quiz-theme-option-image-button button" <?php echo ! empty( $value ) ? 'style="display:none"' : ''; ?> href="javascript:void(0);"><span class="dashicons dashicons-format-image"></span> <?php esc_html_e( 'Select Image', 'quiz-master-next' ); ?></a>
 					<div class="qsm-theme-option-image <?php echo empty( $value ) ? 'qsm-d-none' : ''; ?>">
-						<img src="<?php echo esc_attr( $value ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
+						<img src="<?php echo esc_attr( $value ); ?>" alt="<?php echo esc_attr( $name ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
 						<a class="button button-small qsm-theme-option-image-remove" href="javascript:void(0)"><?php esc_html_e('Remove', 'quiz-master-next'); ?></a>
 					</div>
 					<?php
