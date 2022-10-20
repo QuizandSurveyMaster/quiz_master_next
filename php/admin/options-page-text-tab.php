@@ -160,7 +160,6 @@ function mlw_options_text_tab_content() {
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
                             <div class="qsm-text-variable-wrap">
                                 <?php
-                               // echo "<pre>";print_r($editor_text_arr);exit;
                                 $allowed_variables = isset( $editor_text_arr[0]['variables'] ) ? $editor_text_arr[0]['variables'] : array();
                                 if ( $allowed_variables ) {
                                     foreach ( $allowed_variables as $variable ) { ?>
@@ -205,7 +204,6 @@ function qsm_get_question_text_message(){
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
-        
         $key = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
         $allowed_text = '';
         if ( isset( $quiz_text_arr[ $key ] ) ) {
