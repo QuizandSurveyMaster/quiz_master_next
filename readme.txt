@@ -164,10 +164,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.0.5 (Oct 20, 2022) =
-* Bug: Fixed issue with deleted quiz
 * Bug: Fixed issue with random question and answers
 * Bug: Fixed issue with quiz timer
-* Bug: Fixed issue with file upload question type
+* Bug: Fixed issue with file size limit
 * Enhancement: Improved UI for required fields validation message
 * Enhancement: Improved UI in polar question
 * Enhancement: Improved UI in Opt-in question
