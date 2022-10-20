@@ -26,6 +26,22 @@ function mlw_options_text_tab_content() {
 	//wp_enqueue_style( 'qmn_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css' );
         $variable_list = qsm_text_template_variable_list();
 	?>
+                 <div class="qsm-sub-text-tab-menu">
+                                        <ul class="subsubsub">
+                                        <li>
+                                            <a href="javascript:void(0)" data-id="qsm_general_text" class="current quiz_text_tab">
+                                            <?php esc_html_e( 'General', 'quiz-master-next' ); ?></a> |
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" data-id="qsm_variable_text" class="quiz_text_tab">
+                                            <?php esc_html_e( 'QSM Variables', 'quiz-master-next' ); ?></a> |
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" data-id="qsm_custom_label" class="quiz_text_tab">
+                                            <?php esc_html_e( 'Labels', 'quiz-master-next' ); ?></a>
+                                        </li>
+                                        </ul>
+                                    </div>
         <div class="qsm-text-main-wrap">
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
@@ -43,32 +59,13 @@ function mlw_options_text_tab_content() {
                             }
                         }
                         ?>
-                        <div class="qsm-text-header">
-                            <div class="message-dropdown" style="width:100%">
-                                <div >
-                                    <div class="qsm-sub-text-tab-menu">
-                                        <ul class="subsubsub">
-                                        <li>
-                                            <a href="javascript:void(0)" data-id="qsm_general_text" class="current quiz_text_tab">
-                                            <?php esc_html_e( 'General Texts', 'quiz-master-next' ); ?></a> |
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-id="qsm_variable_text" class="quiz_text_tab">
-                                            <?php esc_html_e( 'Variable Texts', 'quiz-master-next' ); ?></a> |
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-id="qsm_custom_label" class="quiz_text_tab">
-                                            <?php esc_html_e( 'Custom Label', 'quiz-master-next' ); ?></a>
-                                        </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                      
+                <div class="qsm-text-header">
+                    <div class="message-dropdown" style="width:100%">
                         <div class="qsm-row">
                                 <!-- General text tab -->
                             <div   id="qsm_general_text" class="current quiz_text_tab_content qsm_general_text">
                                 <div>
-                                    <h1><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h1>
+                                    <h2><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h2>
                                         <ul>
                                             <?php if ( $editor_text_arr ) {
                                                 foreach ( $editor_text_arr as $key => $single_editor_arr ) {
@@ -90,7 +87,7 @@ function mlw_options_text_tab_content() {
                                         </ul>
                                 </div>
                                 <div  class="qsm_general_text_editor">
-                                    <h1  class ="select_message"><?php esc_html_e( 'Text Before Quiz', 'quiz-master-next' ); ?></h1>
+                                    <h2  class ="select_message"><?php esc_html_e( 'Text Before Quiz', 'quiz-master-next' ); ?></h2>
                                         <div class="qsm-text-content">
                                             <?php
                                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[0]['id'] );
@@ -105,7 +102,6 @@ function mlw_options_text_tab_content() {
                             </div>
                                 <!-- Custom lable -->
                                 <div class="qsm-text-label-wrapper quiz_text_tab_content" style="display:none;" id="qsm_custom_label" >
-                                        <h2><?php esc_html_e("Customize Labels", 'quiz-master-next'); ?></h2>
                                         <?php
                                         $mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
                                         ?>
@@ -113,7 +109,7 @@ function mlw_options_text_tab_content() {
                                 <!-- Variable text -->
                                 <div class="quiz_text_tab_content qsm_variable_text" style="display:none;" id="qsm_variable_text" >
                                 <div>
-                                    <h1><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h1>
+                                    <h2><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h2>
                                         <ul>
                                             <?php if ( $editor_text_arr ) {
                                                 foreach ( $editor_text_arr as $key => $single_editor_arr ) {
@@ -135,7 +131,7 @@ function mlw_options_text_tab_content() {
                                         </ul>
                                 </div>
                                 <div   class="qsm_variable_text_editor">
-                                    <h1 class ="select_message_variable"><?php esc_html_e( '%QUESTIONS_ANSWERS% Text', 'quiz-master-next' ); ?></h1>
+                                    <h2 class ="select_message_variable"><?php esc_html_e( '%QUESTIONS_ANSWERS% Text', 'quiz-master-next' ); ?></h2>
                                         <div class="qsm-text-content">
                                             <?php
                                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[7]['id'] );
@@ -164,6 +160,7 @@ function mlw_options_text_tab_content() {
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
                             <div class="qsm-text-variable-wrap">
                                 <?php
+                               // echo "<pre>";print_r($editor_text_arr);exit;
                                 $allowed_variables = isset( $editor_text_arr[0]['variables'] ) ? $editor_text_arr[0]['variables'] : array();
                                 if ( $allowed_variables ) {
                                     foreach ( $allowed_variables as $variable ) { ?>
@@ -208,6 +205,7 @@ function qsm_get_question_text_message(){
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
+        
         $key = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
         $allowed_text = '';
         if ( isset( $quiz_text_arr[ $key ] ) ) {

@@ -191,6 +191,7 @@ var QSMAdmin;
             jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
             jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
+                console.log(data);
                 if (data.success === true) {
                     var text_msg = data.text_message;
                     if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
@@ -636,7 +637,10 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('.quiz_text_tab').removeClass('current');
     jQuery(this).addClass('current');
     jQuery('.quiz_text_tab_content').hide();
-    if(current_id == 'qsm_variable_text'){ jQuery("#qsm_variable_text").css("display", "flex");}
+    jQuery("#postbox-container-1").show();
+    if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
+    if(current_id == 'qsm_variable_text'){ jQuery("#qsm_variable_text").css("display", "flex"); jQuery(".current_variable")[0].click();}
+    if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
     jQuery('#' + current_id).show();
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
