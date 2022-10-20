@@ -1493,13 +1493,13 @@ var import_button;
                     if (action == 'change') {
                         $('.qb-load-more-wrapper').remove();
                         $('#question-bank').find('.question-bank-question').remove();
-                        $('#question-bank').append('<div style="top: 45px;position: relative;" class="qsm-spinner-loader"></div>');
+                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
                     } else if ($('.qb-load-more-wrapper').length > 0) {
                         $('.qb-load-more-question').hide();
-                        $('.qb-load-more-wrapper').append('<div class="qsm-spinner-loader"></div>');
+                        $('.qb-load-more-wrapper').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
                     } else {
                         $('#question-bank').empty();
-                        $('#question-bank').append('<div class="qsm-spinner-loader"></div>');
+                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
                     }
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
@@ -1508,7 +1508,7 @@ var import_button;
                             xhr.setRequestHeader('X-WP-Nonce', qsmQuestionSettings.nonce);
                         },
                         data: {
-                            'quizID': 0,
+                            'quizID': $('#question-bank-quiz').val(),
                             'page': $('#question_back_page_number').length > 0 ? parseInt($('#question_back_page_number').val()) + 1 : 1,
                             'category': $('#question-bank-cat').val(),
                             'search': $('#question-bank-search-input').val()
@@ -2404,7 +2404,7 @@ var import_button;
                 });
 
                 //Show category related question
-                $(document).on('change', '#question-bank-cat', function (event) {
+                $(document).on('change', '#question-bank-cat, #question-bank-quiz', function (event) {
                     event.preventDefault();
                     QSMQuestion.loadQuestionBank('change');
                 });

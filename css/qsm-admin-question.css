@@ -377,6 +377,7 @@ input#image_size-width {
 	flex-wrap: nowrap;
 	flex-direction: column;
 	padding: 0 20px 20px;
+	min-height: 200px;
 }
 @-moz-keyframes qsm-spinner-loader {
 	0% {
