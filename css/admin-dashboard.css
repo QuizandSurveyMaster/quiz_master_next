@@ -944,7 +944,7 @@ h2.hndle.ui-sortable-handle {
 	display: flex;
 	background: #fff;
 	position: absolute;
-	z-index: 1;
+	z-index: 10;
 	border-bottom: 1px solid #dfd4d4;
 	justify-content: center;
 }

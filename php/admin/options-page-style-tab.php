@@ -250,7 +250,7 @@ function qsm_options_styling_tab_content() {
 			<form action="" method="post" class="qsm-theme-settings-frm">
 				<header class="qsm-popup__header">
 					<h2 class="qsm-popup__title" id="modal-2-title">
-						<?php esc_html_e( 'Customize Quiz Theme', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'Theme Settings', 'quiz-master-next' ); ?>
 					</h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
@@ -260,11 +260,15 @@ function qsm_options_styling_tab_content() {
 						<?php
 						global $wpdb;
 						$get_theme_settings         = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
-						$get_theme_default_settings = $wpdb->get_var( $wpdb->prepare( "SELECT default_settings from wp_mlw_themes WHERE id = %d", $saved_quiz_theme ) );
+						$get_theme_default_settings = $wpdb->get_var( $wpdb->prepare( "SELECT default_settings from {$wpdb->prefix}mlw_themes WHERE id = %d", $saved_quiz_theme ) );
 						$get_theme_settings         = maybe_unserialize($get_theme_settings);
 						$get_theme_default_settings = maybe_unserialize($get_theme_default_settings);
+						do_action( 'qsm_theme_option_before', $quiz_id, $saved_quiz_theme, $get_theme_settings, $get_theme_default_settings );
 						if ( $get_theme_settings ) {
 							foreach ( $get_theme_settings as $key => $theme_val ) {
+								if ( empty( $theme_val['type'] ) ) {
+									continue;
+								}
 								if ( '' === $theme_val ) {
 									$theme_val = $get_theme_default_settings[ $key ];
 								}
@@ -289,7 +293,7 @@ function qsm_options_styling_tab_content() {
 												break;
 											case 'color':
                                                 ?>
-												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
+												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="qsm-color-field" />
 												<?php
 												break;
 											case 'checkbox':
@@ -320,6 +324,7 @@ function qsm_options_styling_tab_content() {
 						}
 						?>
 					</table>
+				<?php do_action( 'qsm_theme_option_end', $quiz_id, $saved_quiz_theme, $get_theme_settings, $get_theme_default_settings ); ?>
 				</main>
 				<footer class="qsm-popup__footer">
 					<button type="submit" id="qsm-save-theme-settings"
@@ -383,7 +388,7 @@ function qsm_display_theme_settings() {
 				</th>
 				<td>
 					<input name="<?php echo esc_attr( $theme_val['id'] ); ?>" type="text" value="<?php echo esc_attr( $setting_val ); ?>"
-						data-default-color="<?php echo esc_attr( $setting_val ); ?>" class="my-color-field" />
+						data-default-color="<?php echo esc_attr( $setting_val ); ?>" class="qsm-color-field" />
 				</td>
 			</tr>
 			<?php

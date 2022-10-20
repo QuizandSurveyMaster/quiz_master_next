@@ -49,7 +49,7 @@ abstract class QSM_Question_Review {
 	}
 
 	public function decode_response_from_text_field( $data ) {
-		return trim( htmlspecialchars_decode( $data, ENT_QUOTES ) );
+		return trim( htmlentities( $data ) );
 	}
 
 

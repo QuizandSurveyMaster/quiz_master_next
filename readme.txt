@@ -167,10 +167,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issue with random question and answers
 * Bug: Fixed issue with quiz timer
 * Bug: Fixed issue with file size limit
+* Bug: Fixed security and Vulnerability issues.
 * Enhancement: Improved UI for required fields validation message
 * Enhancement: Improved UI in polar question
 * Enhancement: Improved UI in Opt-in question
-* Bug: Fixed security and Vulnerability issues.
 
 = 8.0.4 (September 28, 2022) =
 * Feature: Added captions for image answer on result page

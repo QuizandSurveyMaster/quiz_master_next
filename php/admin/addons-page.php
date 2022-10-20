@@ -90,7 +90,7 @@ function qsm_generate_featured_addons() {
 	</div>
 	<div class="qsm-addon-list-right">
 		<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-		<a rel="noopener" style="text-decoration: none; font-size: 15px;" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'qsm-addons-page', 'all-addons-top') );?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+		<a rel="noopener" style="text-decoration: none; font-size: 15px;" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'addon_setting', 'all_addons', 'addon-settings_qsm_addons') );?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 	</div>
 </div>
 <div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor">
@@ -141,35 +141,32 @@ function qsm_generate_featured_addons() {
 				<?php
 				if ( $popular_addons ) {
 					foreach ( $popular_addons as $key => $single_arr ) {
+						$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 						?>
-				<div>
-					<div class="addon-itd-wrap">
-						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
+						<div>
+							<div class="addon-itd-wrap">
+								<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
+								</div>
+								<div class="addon-title-descption">
+									<a class="addon-title" href="<?php echo esc_url( $addon_link ); ?>" target="_blank" rel="noopener">
+										<?php echo wp_kses_post( $single_arr['name'] ); ?>
+									</a>
+									<span class="description">
+										<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
+									</span>
+									<?php
+									if ( str_word_count( $single_arr['description'] ) > 9 ) {
+										echo '<a class="read-more read-more-1" href="' . esc_url( $addon_link ) . '">' . esc_html( $show_more ) . '</a>';
+									}
+									?>
+								</div>
+							</div>
+							<div class="addon-price">
+								<button class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
+								<a class="button button-primary addon-get-link" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>" target="_blank"><?php echo esc_html( $get_addon ); ?> <span class="dashicons dashicons-arrow-right-alt2"></span></a>
+							</div>
 						</div>
-						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
-								<?php echo wp_kses_post( $single_arr['name'] ); ?>
-							</a>
-							<span class="description">
-								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
-							</span>
-							<?php
-							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more read-more-1" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html( $show_more ) . '</a>';
-							}
-							?>
-						</div>
-					</div>
-					<div class="addon-price">
-						<button
-							class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
-						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php echo esc_html( $get_addon ); ?> <span
-								class="dashicons dashicons-arrow-right-alt2"></span></a>
-					</div>
-				</div>
-				<?php
+						<?php
 					}
 				}
 				?>
@@ -183,13 +180,14 @@ function qsm_generate_featured_addons() {
 				<?php
 				if ( $qsm_onsale_addons ) {
 					foreach ( $qsm_onsale_addons as $key => $single_arr ) {
+						$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'on_sale', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 						?>
 				<div>
 					<div class="addon-itd-wrap">
 						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
+							<a class="addon-title" href="<?php echo esc_url( $addon_link ); ?>" target="_blank" rel="noopener">
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
@@ -197,18 +195,14 @@ function qsm_generate_featured_addons() {
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more read-more-2" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html( $show_more ) . '</a>';
+								echo '<a class="read-more read-more-2" href="' . esc_url( $addon_link ) . '">' . esc_html( $show_more ) . '</a>';
 							}
 							?>
 						</div>
 					</div>
 					<div class="addon-price">
-						<button
-							class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
-						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php echo esc_html( $get_addon ); ?> <span
-								class="dashicons dashicons-arrow-right-alt2"></span></a>
+						<button class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
+						<a class="button button-primary addon-get-link" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>" target="_blank"><?php echo esc_html( $get_addon ); ?> <span class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
 				<?php
@@ -228,13 +222,14 @@ function qsm_generate_featured_addons() {
 						if ( 'Starter Bundle' === trim( $single_arr['name'] ) || 'Premium Bundle' === trim( $single_arr['name'] ) ) {
 							continue;
 						}
+						$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'new_addons', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 						?>
 				<div>
 					<div class="addon-itd-wrap">
 						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
+							<a class="addon-title" href="<?php echo esc_url( $addon_link ); ?>" target="_blank" rel="noopener">
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
@@ -242,18 +237,14 @@ function qsm_generate_featured_addons() {
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more read-more-3" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html( $show_more ) . '</a>';
+								echo '<a class="read-more read-more-3" href="' . esc_url( $addon_link ) . '">' . esc_html( $show_more ) . '</a>';
 							}
 							?>
 						</div>
 					</div>
 					<div class="addon-price">
-						<button
-							class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
-						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php echo esc_html( $get_addon ); ?> <span
-								class="dashicons dashicons-arrow-right-alt2"></span></a>
+						<button class="button button-primary addon-price-btn"><?php echo esc_html( $price ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
+						<a class="button button-primary addon-get-link" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>" target="_blank"><?php echo esc_html( $get_addon ); ?> <span class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
 				<?php
@@ -273,6 +264,7 @@ function qsm_generate_featured_addons() {
 		<h3 class="qsm-news-ads-title"><?php esc_html_e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
 		<?php
 			foreach ( $bundles as $key => $bundles_arr ) {
+				$bundle_link = qsm_get_utm_link( $bundles_arr['link'], 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
 				?>
 		<div class="qsm-info-widget">
 			<div class="bundle-icon">
@@ -284,8 +276,7 @@ function qsm_generate_featured_addons() {
 			</div>
 			<h3><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
 			<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
-			<a href="<?php echo esc_url( $bundles_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
+			<a href="<?php echo esc_url( $bundle_link ); ?>" target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
 				<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>
 				$<?php echo esc_html( array_values( $bundles_arr['price'] )[0] ); ?>
 				<span class="dashicons dashicons-arrow-right-alt2"></span>
@@ -425,8 +416,7 @@ function qsm_display_optin_page() {
 									style="font-size:14px; text-align:center; font-family:Helvetica, sans-serif; color:#333; background-color:transparent; border-width:px;">
 									<div class="sib-text-form-block">
 										<p>
-											<a href="https://sendinblue.com" rel="noopener"
-												target="_blank"><?php esc_html_e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
+											<a href="https://quizandsurveymaster.com/add-ons-terms-and-conditions/" rel="noopener" target="_blank"><?php esc_html_e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
 										</p>
 									</div>
 								</div>

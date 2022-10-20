@@ -24,10 +24,9 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
 		<div style="display: none;" class="loading-uploaded-file"><img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif' ); ?>"></div>
 		<div style="display: none;" class="remove-uploaded-file"><span class="dashicons dashicons-trash"></span></div>
-		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="" />
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
 		<input class="mlw_file_upload_hidden_path" type="hidden" value="" />
-		<input class="mlw_file_upload_media_id" type="hidden" value="" />
+		<input class="mlw_file_upload_media_id" name="question<?php echo esc_attr( $id ); ?>" type="hidden" value="" />
 		<?php
 		echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
 }
@@ -42,16 +41,20 @@ function qmn_file_upload_display( $id, $question, $answers ) {
  * @since  5.3.7
  */
 function qmn_file_upload_review( $id, $question, $answers ) {
-	$current_question               = new QSM_Question_Review_File_Upload($id, $question, $answers);
-	$user_text_array                = $current_question->get_user_answer();
-	$correct_text_array             = $current_question->get_correct_answer();
-	$return_array['user_text']      = ! empty( $user_text_array ) ? '<a target="_blank" href="' . $user_text_array['url'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : '' ;
-	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
-	$return_array['correct']        = $current_question->get_answer_status('url');
-	$return_array['points']         = $current_question->get_points();
-	$return_array['user_answer']    = $user_text_array;
-	$return_array['correct_answer'] = $correct_text_array ;
-	/** 
+	$current_question    = new QSM_Question_Review_File_Upload( $id, $question, $answers );
+	$user_text_array     = $current_question->get_user_answer();
+	$file_url            = (isset( $user_text_array['url'] ) && ! empty( $user_text_array['url'] )) ? $user_text_array['url'] : false;
+	if ( isset( $user_text_array['file_id'] ) && ! empty( $user_text_array['file_id'] ) ) {
+		$file_url = wp_get_attachment_url( $user_text_array['file_id'] );
+	}
+	$correct_text_array              = $current_question->get_correct_answer();
+	$return_array['user_text']       = ($file_url) ? '<a target="_blank" href="' . $file_url . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : __( 'No file uploaded', 'quiz-master-next' );
+	$return_array['correct_text']    = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
+	$return_array['correct']         = $current_question->get_answer_status( 'url' );
+	$return_array['points']          = $current_question->get_points();
+	$return_array['user_answer']     = $user_text_array;
+	$return_array['correct_answer']  = $correct_text_array;
+	/**
 	 * Hook to filter answers array
 	 */
 	return apply_filters( 'qmn_file_upload_review', $return_array, $answers );
