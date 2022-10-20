@@ -178,16 +178,9 @@ var QSMAdmin;
             jQuery('#screen-options-wrap').find('#welcome_panel-hide').prop('checked', false);
             postboxes.save_state('toplevel_page_qsm_dashboard');
         });
-        //Get the message in text tab general
-        jQuery(document).on('click', '.quiz_text_tab_message', function () {
-            var text_id = jQuery(this).attr('data-id');
-            var text_label = jQuery(this).attr('data-label');
-            jQuery(".select_message").html(text_label);
-            jQuery('.quiz_text_tab').removeClass('current_general');
-            jQuery('.qsm-custom-label-left-menu').removeClass('currentli_general');
-            jQuery(this).addClass('current_general');
-            jQuery(this).parent().addClass('currentli_general');
-            jQuery('#' + text_id).show();   
+        //Get the message in text tab
+        jQuery(document).on('change', '#qsm_question_text_message_id', function () {
+            var text_id = jQuery(this).val();
             jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
             jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
@@ -206,40 +199,12 @@ var QSMAdmin;
                 }
             });
         });
-                //Get the message in text tab variable
-                jQuery(document).on('click', '.quiz_text_tab_message_variable', function () {
-                    var text_id = jQuery(this).attr('data-id');
-                    var text_label = jQuery(this).attr('data-label');
-                    jQuery(".select_message_variable").html(text_label);
-                    jQuery('.quiz_style_tab').removeClass('current_variable');
-                    jQuery('.qsm-custom-label-left-menu').removeClass('currentli_variable');
-                    jQuery(this).addClass('current_variable');
-                    jQuery(this).parent().addClass('currentli_variable');
-                    jQuery('#' + text_id).show();   
-                    jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
-                    jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
-                        var data = jQuery.parseJSON(response);
-                        if (data.success === true) {
-                            var text_msg = data.text_message;
-                            if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
-                                jQuery("#qsm_question_text_message_variable").val(text_msg);
-                            } else {
-                                text_msg = text_msg.replace(/\n/g, "<br>");
-                                tinyMCE.get('qsm_question_text_message_variable').setContent(text_msg);
-                            }
-                            jQuery('.qsm-text-allowed-variables > .qsm-text-variable-wrap').html('').html(data.allowed_variable_text);
-                            jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
-                        } else {
-                            console.log(data.message);
-                        }
-                    });
-                });
-        //Save the message in text tab general text
+        //Save the message in text tab
         jQuery(document).on('click', '#qsm_save_text_message', function () {
             var $this = jQuery(this);
             $this.siblings('.spinner').addClass('is-active');
-            var text_id =  jQuery(".currentli_general .current_general").data('id');
-            var message =  wp.editor.getContent('qsm_question_text_message');
+            var text_id = jQuery('#qsm_question_text_message_id').val();
+            var message = wp.editor.getContent('qsm_question_text_message');
             jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
                 if (data.success === true) {
@@ -250,22 +215,6 @@ var QSMAdmin;
                 $this.siblings('.spinner').removeClass('is-active');
             });
         });
-            //Save the message in text tab variable text
-            jQuery(document).on('click', '#qsm_save_text_message_variable', function () {
-                var $this = jQuery(this);
-                $this.siblings('.spinner').addClass('is-active');
-                var text_id =  jQuery(".currentli_variable .current_variable").data('id');
-                var message =  wp.editor.getContent('qsm_question_text_message_variable');
-                jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
-                    var data = jQuery.parseJSON(response);
-                    if (data.success === true) {
-                        //Do nothing
-                    } else {
-                        console.log(data.message);
-                    }
-                    $this.siblings('.spinner').removeClass('is-active');
-                });
-            });
         //On click append on tiny mce
         jQuery(document).on('click', '.qsm-text-allowed-variables button.button', function () {
             var content = jQuery(this).text();
@@ -637,37 +586,17 @@ function deleteResults(id, quizName) {
     idHidden.value = id;
     idHiddenName.value = quizName;
 }
+
 //quiz options style tab
 jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
     var current_id = jQuery(this).attr('data-id');
     jQuery('.quiz_style_tab').removeClass('current');
-    jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
     jQuery('.quiz_style_tab_content').hide();
     jQuery('#' + current_id).show();
 });
-//quiz options text tab custom label
-jQuery('.quiz_text_tab_custom').click(function (e) {
-    e.preventDefault();
-    var current_id = jQuery(this).attr('data-id');
-    jQuery('.quiz_text_tab_custom').removeClass('current');
-    jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
-    jQuery(this).addClass('current');
-    jQuery(this).parent().addClass('currentli');
-    jQuery('.quiz_style_tab_content').hide();
-    jQuery('#' + current_id).show();
-});
-//quiz text tab
-jQuery('.quiz_text_tab').click(function (e) {
-    e.preventDefault();
-    var current_id = jQuery(this).attr('data-id');
-    jQuery('.quiz_text_tab').removeClass('current');
-    jQuery(this).addClass('current');
-    jQuery('.quiz_text_tab_content').hide();
-    if(current_id == 'qsm_variable_text'){ jQuery("#qsm_variable_text").css("display", "flex");}
-    jQuery('#' + current_id).show();
-});
+
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
     if (window.location.href.indexOf('tab=style') > 0) {
         function mlw_qmn_theme(theme) {
