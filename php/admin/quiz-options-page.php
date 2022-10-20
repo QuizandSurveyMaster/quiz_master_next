@@ -129,14 +129,14 @@ function qsm_generate_quiz_options() {
 					</a>
 					<div class="qsm-help-tab-dropdown-list">
 						<h3><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'quiz-help-box', 'contact_us') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL.'assets/Support.svg' ) ?>"> <?php esc_html_e( 'Get support', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/about-quiz-survey-master', 'quiz-help-box', 'overview') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Overview', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/creating-quizzes-and-surveys', 'quiz-help-box', 'creating-quizzes') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/question-types', 'quiz-help-box', 'question-types') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Question Types', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics', 'quiz-help-box', 'advanced-topics') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Advanced Topics', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/qsm-themes', 'quiz-help-box', 'qsm-themes') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'QSM Themes', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs/add-ons', 'quiz-help-box', 'add-ons') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link('docs', 'quiz-help-box', 'all-docs') );?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_support' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"> <?php esc_html_e( 'Get support', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_overview' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Overview', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_create_quiz' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/question-types', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_que_type' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Question Types', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/advanced-topics', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_adv_topic' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Advanced Topics', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/qsm-themes', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_themes' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'QSM Themes', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_addons' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></a>
+						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_all_doc' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?></a>
 					</div>
 				</div>
 			</div>
@@ -282,8 +282,9 @@ function qsm_generate_quiz_options() {
 				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
 				"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
 				"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
-				"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'quiz-upgrade-box' ),
-				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'quiz-upgrade-box' ),
+				"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
+				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'advance-question_type', 'advance-question-upsell_upgrade', 'qsm_plugin_upsell' ),
+				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 		}

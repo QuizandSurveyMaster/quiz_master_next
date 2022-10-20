@@ -553,8 +553,9 @@ function qsm_export_results_tabs_content() {
 		"warning"      => __( 'Export Results Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Export Results Addon separately.', 'quiz-master-next' ),
 		"buy_btn_text" => __( 'Buy Export Results Addon', 'quiz-master-next' ),
-		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-results', 'quiz-upgrade-box' ),
-		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'quiz-upgrade-box' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'export_results', 'result-exportresults-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
 }
@@ -567,8 +568,9 @@ function qsm_reporting_analysis_tabs_content() {
 		"warning"      => __( 'Reporting & Analysis Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ),
 		"buy_btn_text" => __( 'Buy Reporting & Analysis Addon', 'quiz-master-next' ),
-		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/reporting-analysis', 'quiz-upgrade-box' ),
-		"addon_link"   => qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-upgrade-box' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/reporting-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/results-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-ups_buy_addon', 'qsm_plugin_upsell' ),
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
 }

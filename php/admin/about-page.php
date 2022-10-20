@@ -114,8 +114,7 @@ function qsm_generate_about_page() {
 						echo wp_kses_post( $contributor_list );
 					}
 					?>
-				<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank"
-					class="button-primary">View GitHub Repo</a>
+				<a href="<?php echo esc_url( qsm_get_utm_link( 'https://github.com/QuizandSurveyMaster/quiz_master_next', 'qsm', 'about', 'about_git_repo' ) );?>" rel="noopener" target="_blank" class="button-primary">View GitHub Repo</a>
 			</div>
 			<?php
 				}
@@ -135,8 +134,8 @@ function qsm_documentation_meta_box_content() {
 	?>
 	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
 	<ul>
-		<li>For assistance in using the plugin, read our <a href="<?php echo esc_url( qsm_get_plugin_link('docs', 'qsm-help-page', 'documentation') );?>" rel="noopener" target="_blank">documentation</a></li>
-		<li>For support, fill out the form on our <a href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'qsm-help-page', 'contact_us') );?>" rel="noopener" target="_blank">Contact Us Page</a></li>
+		<li>For assistance in using the plugin, read our <a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank">documentation</a></li>
+		<li>For support, fill out the form on our <a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-us' ) );?>" rel="noopener" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }
