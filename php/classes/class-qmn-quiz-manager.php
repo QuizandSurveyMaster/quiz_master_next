@@ -136,7 +136,7 @@ class QMNQuizManager {
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
 		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
-			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
+			if ( isset( $_FILES['file']['size'] ) && $file_upload_limit > 0 && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
 				echo wp_json_encode( $json );
@@ -334,6 +334,11 @@ class QMNQuizManager {
 				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $result['quiz_id'] );
 				$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
+				// If quiz options isn't found, stop function.
+				if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
+					return __( 'This quiz is no longer available.', 'quiz-master-next' );
+				}
+
 				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
@@ -363,18 +368,21 @@ class QMNQuizManager {
 			if ( false === $success ) {
 				return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
 			}
-			$question_amount = intval( $question_amount );
 
-			// Legacy variable.
 			global $mlw_qmn_quiz;
 			$mlw_qmn_quiz = $quiz;
-
 			$return_display   = '';
 			$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			// Legacy variable.
 			/**
 			 * Filter Quiz Options before Quiz Display
 			 */
 			$qmn_quiz_options = apply_filters( 'qsm_shortcode_quiz_options', $qmn_quiz_options );
+
+			// If quiz options isn't found, stop function.
+			if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
+				return __( 'This quiz is no longer available.', 'quiz-master-next' );
+			}
 
 			// If quiz options isn't found, stop function.
 			if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
@@ -1423,6 +1431,18 @@ class QMNQuizManager {
 		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+		if ( is_null( $options ) || 1 == $options->deleted ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'This quiz is no longer available.' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			die();
+		}
 		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];

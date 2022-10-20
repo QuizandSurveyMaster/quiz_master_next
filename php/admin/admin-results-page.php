@@ -67,9 +67,12 @@ function qsm_generate_admin_results_page() {
  */
 function qsm_results_overview_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content' );
+	$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Quiz Results', 'quiz-master-next' ), 'qsm_results_overview_tab_content', 1 );
+	if ( ! class_exists( 'QSM_Exporting' ) ) {
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Export Results', 'quiz-master-next' ), 'qsm_export_results_tabs_content', 5 );
+	}
 	if ( ! class_exists( 'QSM_Analysis' ) ) {
-		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content' );
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content', 10 );
 	}
 }
 
@@ -197,13 +200,8 @@ function qsm_results_overview_tab_content() {
 	?>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">
-			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) {
-							document.bulk_delete_form.submit();
-						}" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
-			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) {
-							document.getElementById( 'bulk_permanent_delete' ).value = '1';
-							document.bulk_delete_form.submit();
-						}" class="button action">Bulk Permanent Delete</a>
+			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) { document.bulk_delete_form.submit(); }" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
+			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) { document.getElementById( 'bulk_permanent_delete' ).value = '1'; document.bulk_delete_form.submit(); }" class="button action">Bulk Permanent Delete</a>
 		</div>
 		<div class="tablenav-pages">
 			<span class="displaying-num">
@@ -335,8 +333,8 @@ function qsm_results_overview_tab_content() {
 
 		$values      = $quiz_infos   = [];
 		foreach ( $th_elements as $key => $th ) {
-			$values[ $key ]['title']   = $th;
-			$values[ $key ]['style']   = "";
+			$values[ $key ]['title'] = $th;
+			$values[ $key ]['style'] = "";
 		}
 
 		$display_none = ' style=display:none; ';
@@ -536,10 +534,8 @@ function qsm_results_overview_tab_content() {
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="save-results-screen-option-button"
-							class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
-					<button class="qsm-popup__btn" data-micromodal-close
-							aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button id="save-results-screen-option-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -548,33 +544,33 @@ function qsm_results_overview_tab_content() {
 	<?php
 }
 
+function qsm_export_results_tabs_content() {
+	$args = array(
+		"id"           => 'export-results',
+		"title"        => __( 'Export Results', 'quiz-master-next' ),
+		"description"  => __( 'As the quiz creator, you will want to export your quiz results in order to keep track of responses and provide an accurate record of who has completed the quiz. The Export Results addon provides an intuitive and flexible interface for exporting just the right results.', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_results.png',
+		"warning"      => __( 'Export Results Addon required', 'quiz-master-next' ),
+		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Export Results Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy Export Results Addon', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'export_results', 'result-exportresults-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
+}
 function qsm_reporting_analysis_tabs_content() {
-	?>
-	<div class="qsm-upgrade-box">
-		<div class="qsm-popup-upgrade-warning">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
-			<span><?php esc_html_e( 'Reporting & Analysis Addon required', 'quiz-master-next' ) ?></span>
-		</div>
-		<h2><?php esc_html_e( 'Reporting & Analysis', 'quiz-master-next' ); ?></h2>
-		<div class="qsm-upgrade-text qsm-popup-upgrade-text">
-			<?php esc_html_e( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ); ?>
-		</div>
-		<div class="qsm-upgrade-text"></div>
-		<span  class="qsm-upgrade-read-icon">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?>" alt="read">
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons/reporting-analysis/', 'quiz-upgrade-box', 'add-ons' ) ); ?>" target="_blank" rel="noopener" >
-				<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
-			</a>
-		</span>
-		<div class="qsm-upgrade-chart"><img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/report_analysis_chart.png' ); ?>" alt="chart"></div>
-		<div class="qsm-popup-upgrade-info">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
-			<span><?php esc_html_e( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ) ?></span>
-		</div>
-		<div class="qsm-upgrade-buttons qsm-upgrade-buttons-report-analysis">
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'pricing', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'downloads/results-analysis', 'quiz-list-page' ) ); ?>" target="_blank" class="qsm_report_analysis" rel="noopener" ><?php esc_html_e( 'Buy Reporting & Analysis Addon', 'quiz-master-next' ); ?></a>
-		</div>
-	</div>
-	<?php
+	$args = array(
+		"id"           => 'reporting-analysis',
+		"title"        => __( 'Reporting & Analysis', 'quiz-master-next' ),
+		"description"  => __( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png',
+		"warning"      => __( 'Reporting & Analysis Addon required', 'quiz-master-next' ),
+		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy Reporting & Analysis Addon', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/reporting-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/results-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-ups_buy_addon', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
 }

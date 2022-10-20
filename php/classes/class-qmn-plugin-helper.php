@@ -411,8 +411,26 @@ class QMNPluginHelper {
 		}
 		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
-			$answers = self::qsm_shuffle_assoc( $answers );
-			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
+			if ( empty($_COOKIE[ 'answer_ids_'.$question_id ]) ) {
+				$answers = self::qsm_shuffle_assoc( $answers );
+				$answer_ids = array_keys($answers);
+				$answer_ids = implode( ',', $answer_ids );
+				?>
+				<script>
+					var ans_d = new Date();
+					ans_d.setTime(ans_d.getTime() + (365*24*60*60*1000));
+					var ans_expires = "expires="+ ans_d.toUTCString();
+					document.cookie = "answer_ids_<?php echo esc_attr( $question_id ); ?> = <?php echo esc_attr( $answer_ids ) ?>; "+ans_expires+"; path=/";
+				</script>
+				<?php
+			}else {
+				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$question_id ] ) ) );
+				$answers_random = array();
+				foreach ( $answer_ids as $key ) {
+					$answers_random[ $key ] = $answers[ $key ];
+				}
+				$answers = $answers_random;
+			}
 		}
 
 		// convert answer array into key value pair
@@ -793,12 +811,13 @@ class QMNPluginHelper {
 	 * @param  string $function The function that displays the tab's content
 	 * @return void
 	 */
-	public function register_admin_results_tab( $title, $function ) {
+	public function register_admin_results_tab( $title, $function, $priority = 10 ) {
 		$slug                       = strtolower( str_replace( ' ', '-', $title ) );
 		$new_tab                    = array(
 			'title'    => $title,
 			'function' => $function,
 			'slug'     => $slug,
+			'priority' => $priority,
 		);
 		$this->admin_results_tabs[] = $new_tab;
 	}
@@ -812,6 +831,11 @@ class QMNPluginHelper {
 	 * @return array The array of registered tabs
 	 */
 	public function get_admin_results_tabs() {
+		/**
+		 * Sort tabs by priority
+		 */
+		array_multisort( array_column($this->admin_results_tabs, 'priority'), SORT_ASC, $this->admin_results_tabs);
+
 		return $this->admin_results_tabs;
 	}
 

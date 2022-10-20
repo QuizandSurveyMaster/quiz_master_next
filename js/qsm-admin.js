@@ -391,6 +391,35 @@ var QSMAdmin;
             }).open();
         });
 
+        //theme option setting image start
+        $(document).on('click', '.quiz-theme-option-image-button', function (e) {
+            let button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: qsm_admin_messages.use_img // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.prev('.quiz-theme-option-image-input').val(attachment.url);
+                button.next('.qsm-theme-option-image').fadeIn();
+                button.hide();
+                button.next('.qsm-theme-option-image').find('.quiz-theme-option-image-thumbnail').attr('src', attachment.url);
+            }).open();
+        });
+        jQuery(document).on('click', '.qsm-theme-option-image-remove', function () {
+            let button = $(this);
+            button.parents('.qsm-theme-option-image').hide();
+            button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-input').val("");
+            button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-button').fadeIn();
+
+        });
+        //theme option setting image end
+
         $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {
             var value = $(this).val();
             if (value == '0') {
@@ -604,8 +633,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
             jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
                 e.preventDefault();
                 MicroModal.show('qsm-theme-color-settings');
-                if (jQuery('.my-color-field').length > 0) {
-                    jQuery('.my-color-field').wpColorPicker();
+                if (jQuery('.qsm-color-field').length > 0) {
+                    jQuery('.qsm-color-field').wpColorPicker();
+                    jQuery('.qsm-color-field').each(function () {
+                        if (jQuery(this).attr('data-label')) {
+                            jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
+                        }
+                    });
+
                 }
             });
         });
@@ -2628,6 +2663,7 @@ var import_button;
                     if (13 == question_val) {
                         QSMQuestion.prepareEditPolarQuestion(question_val);
                     }
+                    jQuery(document).trigger('qsm-change-answer-editor-after');
                 });
 
                 // Adds event handlers for searching questions
@@ -2698,7 +2734,7 @@ var import_button;
                         MicroModal.show('modal-advanced-question-type');
                         $('#question_type').val(previous_question_val);
                         return false;
-                    } 
+                    }
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
                         if (13 == question_val) {
@@ -2718,7 +2754,7 @@ var import_button;
                     }
                 });
 
-                
+
 
                 //Add new category
                 $(document).on('click', '#qsm-category-add-toggle', function () {

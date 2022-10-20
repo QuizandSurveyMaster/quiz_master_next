@@ -936,6 +936,10 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
 	global $mlwQuizMasterNext;
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$quiz_options  = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+	if ( 0 == $quiz_options->show_optin && isset($answer['question_type']) && 8 == $answer['question_type'] ) {
+		return '';
+	}
 
 	$use_custom_default_template = array();
 	foreach ( $question_types as $type ) {
@@ -1025,33 +1029,35 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-			$qsm_random_quetion_answer = get_post_meta( $answer['id'], 'qsm_random_quetion_answer', true );
-			if ( ! empty( $qsm_random_quetion_answer ) ) {
-				$total_answers = $qsm_random_quetion_answer;
-				// No longer Need This Value
-				delete_post_meta( $answer['id'], 'qsm_random_quetion_answer' );
+			if ( ! empty($_COOKIE[ 'answer_ids_'.$answer['id'] ]) ) {
+				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$answer['id'] ] ) ) );
+				$answers_random = array();
+				foreach ( $answer_ids as $key ) {
+					$answers_random[ $key ] = $total_answers[ $key ];
+				}
+				$total_answers = $answers_random;
+				setcookie('answer_ids_'.$answer['id'], "", time() - 36000, "/");
 			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
-					$do_show_wrong = true;
+					$do_show_wrong       = true;
+					$user_given_answer   = '' === $answer[1] ? __( 'No answer provided', 'quiz-master-next' ) : htmlentities( $answer[1] );
 					foreach ( $total_answers as $single_answer_key => $single_answer ) {
 						$current_answer_zero = trim( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
-
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
-								$actual_answer = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 								if ( 5 == $answer['question_type'] ) {
-									$actual_answer       = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $actual_answer ) ) );
+									$user_given_answer   = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $user_given_answer ) ) );
 									$current_answer_zero = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $current_answer_zero ) ) );
 								}
 
-								if ( 0 == strcasecmp( $actual_answer, $current_answer_zero ) ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $answer[1], ENT_QUOTES ) . '</span>';
+								if ( 0 == strcasecmp( $user_given_answer, $current_answer_zero ) ) {
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $user_given_answer . '</span>';
 									$do_show_wrong              = false;
 								}
 							}
 						} else {
-							if ( isset( $single_answer[2] ) && strcasecmp( htmlspecialchars_decode( $answer[1], ENT_QUOTES ), $current_answer_zero ) == 0 ) {
+							if ( isset( $single_answer[2] ) && strcasecmp( $user_given_answer, $current_answer_zero ) == 0 ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
 							}
@@ -1059,8 +1065,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					}
 					if ( $do_show_wrong ) {
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
-							$user_given_answer          = '' === $answer[1] ? __( 'No answer provided', 'quiz-master-next' ) : $answer[1];
-							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode( $user_given_answer, ENT_QUOTES ) . '</span>';
+							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $user_given_answer . '</span>';
 							foreach ( $total_answers as $single_answer ) {
 								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
@@ -1068,8 +1073,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 							}
 						} else {
-							$user_given_answer          = '' === $answer[1] ? __( 'No answer provided', 'quiz-master-next' ) : $answer[1];
-							$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode( $user_given_answer, ENT_QUOTES ) . '</span>';
+							$question_with_answer_text .= '<span class="qsm-text-simple-option">' . $user_given_answer . '</span>';
 						}
 					}
 				} elseif ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {

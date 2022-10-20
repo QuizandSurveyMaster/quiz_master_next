@@ -282,33 +282,33 @@ label.inline .mlw_qmn_question,
   border-radius: 3px;
 }
 
-.quiz_section.qmn_error select,
-.quiz_section.qmn_error textarea,
-.quiz_section.qmn_error input[type="text"],
-.quiz_section.qmn_error input[type="number"],
-.quiz_section.qmn_error input[type="email"],
-.quiz_section.qmn_error input[type="url"],
-.quiz_section.qmn_error input[type="checkbox"],
-.quiz_section.qmn_error input[type="file"],
-.quiz_section.qmn_error input[type="date"],
-.quiz_section.qmn_error select:hover,
-.quiz_section.qmn_error textarea:hover,
-.quiz_section.qmn_error input[type="text"]:hover,
-.quiz_section.qmn_error input[type="number"]:hover,
-.quiz_section.qmn_error input[type="email"]:hover,
-.quiz_section.qmn_error input[type="url"]:hover,
-.quiz_section.qmn_error input[type="checkbox"]:hover,
-.quiz_section.qmn_error input[type="file"]:hover,
-.quiz_section.qmn_error input[type="date"]:hover,
-.quiz_section.qmn_error select:focus,
-.quiz_section.qmn_error textarea:focus,
-.quiz_section.qmn_error input[type="text"]:focus,
-.quiz_section.qmn_error input[type="number"]:focus,
-.quiz_section.qmn_error input[type="email"]:focus,
-.quiz_section.qmn_error input[type="url"]:focus,
-.quiz_section.qmn_error input[type="checkbox"]:focus,
-.quiz_section.qmn_error input[type="file"]:focus
-.quiz_section.qmn_error input[type="date"]:focus {
+.qsm-quiz-form .qmn_error select,
+.qsm-quiz-form .qmn_error textarea,
+.qsm-quiz-form .qmn_error input[type="text"],
+.qsm-quiz-form .qmn_error input[type="number"],
+.qsm-quiz-form .qmn_error input[type="email"],
+.qsm-quiz-form .qmn_error input[type="url"],
+.qsm-quiz-form .qmn_error input[type="checkbox"],
+.qsm-quiz-form .qmn_error input[type="file"],
+.qsm-quiz-form .qmn_error input[type="date"],
+.qsm-quiz-form .qmn_error select:hover,
+.qsm-quiz-form .qmn_error textarea:hover,
+.qsm-quiz-form .qmn_error input[type="text"]:hover,
+.qsm-quiz-form .qmn_error input[type="number"]:hover,
+.qsm-quiz-form .qmn_error input[type="email"]:hover,
+.qsm-quiz-form .qmn_error input[type="url"]:hover,
+.qsm-quiz-form .qmn_error input[type="checkbox"]:hover,
+.qsm-quiz-form .qmn_error input[type="file"]:hover,
+.qsm-quiz-form .qmn_error input[type="date"]:hover,
+.qsm-quiz-form .qmn_error select:focus,
+.qsm-quiz-form .qmn_error textarea:focus,
+.qsm-quiz-form .qmn_error input[type="text"]:focus,
+.qsm-quiz-form .qmn_error input[type="number"]:focus,
+.qsm-quiz-form .qmn_error input[type="email"]:focus,
+.qsm-quiz-form .qmn_error input[type="url"]:focus,
+.qsm-quiz-form .qmn_error input[type="checkbox"]:focus,
+.qsm-quiz-form .qmn_error input[type="file"]:focus
+.qsm-quiz-form .qmn_error input[type="date"]:focus {
   position: relative;
   border: 1px solid #da4f49;
   background: #F2DEDE;
@@ -317,11 +317,11 @@ label.inline .mlw_qmn_question,
   box-shadow: 0 0 10px rgba(218, 79, 73, .35);
 }
 
-.quiz_section.qmn_error {
+.qsm-quiz-form .qmn_error {
   position: relative;
 }
 
-.quiz_section.qmn_error:after {
+.qsm-quiz-form .qmn_error:after {
   content: '-';
   color: #fff;
   font-size: 20px;
@@ -341,9 +341,9 @@ label.inline .mlw_qmn_question,
 
 }
 
-.quiz_section.qmn_error .qmn_radio_answers,
-.quiz_section.qmn_error .qmn_check_answers,
-.quiz_section.qmn_error .qmn_accept_answers {
+.qsm-quiz-form .qmn_error .qmn_radio_answers,
+.qsm-quiz-form .qmn_error .qmn_check_answers,
+.qsm-quiz-form .qmn_error .qmn_accept_answers {
   border: 1px solid #da4f49;
   background: #F2DEDE;
   padding: 5px;

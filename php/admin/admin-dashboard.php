@@ -131,19 +131,19 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard') )?>" class="welcome-icon">
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon">
 								<span class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?>
 							</a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard" class="welcome-icon">
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://demo.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_see_demo') )?>" class="welcome-icon">
 								<span class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php esc_html_e( 'See demos', 'quiz-master-next' ); ?>
 							</a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard') )?>" class="welcome-icon">
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard', 'next_steps', 'dashboard_pricing') )?>" class="welcome-icon">
 								<span class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php esc_html_e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?>
 							</a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard" class="welcome-icon">
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://themes.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_themes') )?>" class="welcome-icon">
 								<span class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php esc_html_e( 'Explore QSM Themes', 'quiz-master-next' ); ?>
 							</a>
 						</li>
@@ -152,10 +152,10 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php esc_html_e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a></li>
-						<li><a target="_blank" rel="noopener" href="https://next.expresstech.io/qsm" class="welcome-icon"><span class="dashicons dashicons-feedback"></span>&nbsp;&nbsp;<?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
+						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><span class="dashicons dashicons-feedback"></span>&nbsp;&nbsp;<?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -189,7 +189,7 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_roadmap',
 				'title'    => 'roadmap',
 			),
-			
+
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
 		update_option( 'qsm_dashboard_widget_arr', $qsm_dashboard_widget );
@@ -337,8 +337,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 					foreach ( $addon_array as $key => $single_arr ) {
 						?>
 				<li>
-					<a href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=dashboard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-						target="_blank" rel="noopener">
+					<a href="<?php echo esc_url( qsm_get_utm_link( $single_arr['link'], 'dashboard', 'all_addon', sanitize_title( $single_arr['name'] ) ) ); ?>" target="_blank" rel="noopener">
 						<img src="<?php echo esc_url( $single_arr['img'] ); ?>" title="<?php echo esc_attr( $single_arr['name'] ); ?>" alt="<?php echo esc_attr( $single_arr['name'] ); ?>" >
 					</a>
 				</li>
@@ -348,7 +347,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				?>
 			</ul>
 			<div class="pa-all-addon">
-				<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard') )?>" rel="noopener" target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
+				<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard', 'all_addon', 'dashboard_addons') )?>" rel="noopener" target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>
 	</div>
@@ -496,8 +495,7 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
 				<li>
-					<a href="<?php echo esc_url( $single_feed_arr['link'] ); ?>?utm_source=plugin&utm_medium=dashboard"
-						target="_blank" rel="noopener">
+					<a href="<?php echo esc_url( qsm_get_utm_link( $single_feed_arr['link'], 'dashboard', 'latest-blog', sanitize_title( $single_feed_arr['title'] ) ) ); ?>" target="_blank" rel="noopener">
 						<?php echo wp_kses_post( $single_feed_arr['title'] ); ?>
 					</a>
 					<div class="post-description">
@@ -606,6 +604,7 @@ function qsm_create_new_quiz_from_wizard() {
 			'form_type'           => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
 			'system'              => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
 			'timer_limit'         => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'pagination'          => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
 			'require_log_in'      => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
 			'disable_first_page'  => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
 			'comment_section'     => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
