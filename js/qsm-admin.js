@@ -443,6 +443,35 @@ var QSMAdmin;
             }).open();
         });
 
+        //theme option setting image start
+        $(document).on('click', '.quiz-theme-option-image-button', function (e) {
+            let button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: qsm_admin_messages.use_img // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.prev('.quiz-theme-option-image-input').val(attachment.url);
+                button.next('.qsm-theme-option-image').fadeIn();
+                button.hide();
+                button.next('.qsm-theme-option-image').find('.quiz-theme-option-image-thumbnail').attr('src', attachment.url);
+            }).open();
+        });
+        jQuery(document).on('click', '.qsm-theme-option-image-remove', function () {
+            let button = $(this);
+            button.parents('.qsm-theme-option-image').hide();
+            button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-input').val("");
+            button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-button').fadeIn();
+
+        });
+        //theme option setting image end
+
         $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {
             var value = $(this).val();
             if (value == '0') {
@@ -679,8 +708,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
             jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
                 e.preventDefault();
                 MicroModal.show('qsm-theme-color-settings');
-                if (jQuery('.my-color-field').length > 0) {
-                    jQuery('.my-color-field').wpColorPicker();
+                if (jQuery('.qsm-color-field').length > 0) {
+                    jQuery('.qsm-color-field').wpColorPicker();
+                    jQuery('.qsm-color-field').each(function () {
+                        if (jQuery(this).attr('data-label')) {
+                            jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
+                        }
+                    });
+
                 }
             });
         });
@@ -1533,13 +1568,13 @@ var import_button;
                     if (action == 'change') {
                         $('.qb-load-more-wrapper').remove();
                         $('#question-bank').find('.question-bank-question').remove();
-                        $('#question-bank').append('<div style="top: 45px;position: relative;" class="qsm-spinner-loader"></div>');
+                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
                     } else if ($('.qb-load-more-wrapper').length > 0) {
                         $('.qb-load-more-question').hide();
-                        $('.qb-load-more-wrapper').append('<div class="qsm-spinner-loader"></div>');
+                        $('.qb-load-more-wrapper').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
                     } else {
                         $('#question-bank').empty();
-                        $('#question-bank').append('<div class="qsm-spinner-loader"></div>');
+                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
                     }
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
@@ -1548,7 +1583,7 @@ var import_button;
                             xhr.setRequestHeader('X-WP-Nonce', qsmQuestionSettings.nonce);
                         },
                         data: {
-                            'quizID': 0,
+                            'quizID': $('#question-bank-quiz').val(),
                             'page': $('#question_back_page_number').length > 0 ? parseInt($('#question_back_page_number').val()) + 1 : 1,
                             'category': $('#question-bank-cat').val(),
                             'search': $('#question-bank-search-input').val()
@@ -2444,7 +2479,7 @@ var import_button;
                 });
 
                 //Show category related question
-                $(document).on('change', '#question-bank-cat', function (event) {
+                $(document).on('change', '#question-bank-cat, #question-bank-quiz', function (event) {
                     event.preventDefault();
                     QSMQuestion.loadQuestionBank('change');
                 });
@@ -2774,7 +2809,7 @@ var import_button;
                         MicroModal.show('modal-advanced-question-type');
                         $('#question_type').val(previous_question_val);
                         return false;
-                    } 
+                    }
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
                         if (13 == question_val) {
@@ -2794,7 +2829,7 @@ var import_button;
                     }
                 });
 
-                
+
 
                 //Add new category
                 $(document).on('click', '#qsm-category-add-toggle', function () {

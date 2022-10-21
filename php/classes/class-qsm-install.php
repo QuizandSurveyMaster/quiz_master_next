@@ -2083,12 +2083,12 @@ class QSM_Install {
 
 $qsm_install = new QSM_Install();
 
-if ( ! function_exists( 'qsm_get_document_link' ) ) {
+if ( ! function_exists( 'qsm_get_plugin_link' ) ) {
 
 	/**
 	 * Get Document link
 	 */
-	function qsm_get_plugin_link( $path = '', $source = '', $content = '' ) {
+	function qsm_get_plugin_link( $path = '', $source = '', $medium = '', $content = '', $campaign = 'qsm_plugin' ) {
 		$link = 'https://quizandsurveymaster.com/';
 		if ( ! empty( $path ) ) {
 			$link .= $path;
@@ -2098,12 +2098,47 @@ if ( ! function_exists( 'qsm_get_document_link' ) ) {
 		/**
 		 * Prepare UTM parameters
 		 */
-		$link .= '?utm_campaign=qsm_plugin&utm_medium=plugin';
+		if ( ! empty( $campaign ) ) {
+			$link = add_query_arg( 'utm_campaign', $campaign, $link );
+		}
 		if ( ! empty( $source ) ) {
-			$link .= '&utm_source=' . $source;
+			$link = add_query_arg( 'utm_source', $source, $link );
+		}
+		if ( ! empty( $medium ) ) {
+			$link = add_query_arg( 'utm_medium', $medium, $link );
 		}
 		if ( ! empty( $content ) ) {
-			$link .= '&utm_content=' . $content;
+			$link = add_query_arg( 'utm_content', $content, $link );
+		}
+
+		return $link;
+	}
+}
+if ( ! function_exists( 'qsm_get_utm_link' ) ) {
+
+	/**
+	 * Get Document link
+	 */
+	function qsm_get_utm_link( $link = '', $source = '', $medium = '', $content = '', $campaign = 'qsm_plugin' ) {
+		if ( empty( $link ) ) {
+			return $link;
+		}
+		$link = trailingslashit( $link );
+
+		/**
+		 * Prepare UTM parameters
+		 */
+		if ( ! empty( $campaign ) ) {
+			$link = add_query_arg( 'utm_campaign', $campaign, $link );
+		}
+		if ( ! empty( $source ) ) {
+			$link = add_query_arg( 'utm_source', $source, $link );
+		}
+		if ( ! empty( $medium ) ) {
+			$link = add_query_arg( 'utm_medium', $medium, $link );
+		}
+		if ( ! empty( $content ) ) {
+			$link = add_query_arg( 'utm_content', $content, $link );
 		}
 
 		return $link;
