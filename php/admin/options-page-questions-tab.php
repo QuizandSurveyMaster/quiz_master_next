@@ -31,7 +31,7 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-
+	$quiz_data = $wpdb->get_results( "SELECT quiz_id, quiz_name	FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC" );
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
@@ -170,9 +170,19 @@ function qsm_options_questions_tab_content() {
 						<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> <?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 					</div>
 					<div class="qsm-question-bank-search">
-						<form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>"></form>
+						<form action="" method="post" id="question-bank-search-form">
+							<input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>">
+						</form>
 						<select name="question-bank-cat" id="question-bank-cat">
 							<option value=""><?php esc_html_e( 'All Categories', 'quiz-master-next' ); ?></option>
+						</select>
+						<select name="question-bank-quiz" id="question-bank-quiz">
+							<option value=""><?php esc_html_e( 'All Quiz', 'quiz-master-next' ); ?></option>
+							<?php
+							foreach ( $quiz_data as $quiz ) {
+								echo '<option value="'.esc_attr($quiz->quiz_id).'">'.esc_html($quiz->quiz_name).'</option>';
+							}
+							?>
 						</select>
 					</div>
 				</div>
@@ -343,7 +353,7 @@ function qsm_options_questions_tab_content() {
 										'default'  => '',
 										'priority' => '2',
 										'show'     => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'correct_answer_info'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'correct_answer_info', 'quizsurvey-correct_answer_info_doc'),
 									),
 									'image_size'          => array(
 										'heading'  => __( 'Set custom image size', 'quiz-master-next' ),
@@ -368,7 +378,7 @@ function qsm_options_questions_tab_content() {
 											'1' => __( 'None', 'quiz-master-next' ),
 										),
 										'default'  => '1',
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'comment-box'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'comment-box', 'quizsurvey-comment-box_doc'),
 									),
 									'hint'                => array(
 										'heading'  => __( 'Hint', 'quiz-master-next' ),
@@ -376,7 +386,7 @@ function qsm_options_questions_tab_content() {
 										'type'     => 'text',
 										'default'  => '',
 										'priority' => '4',
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'hints'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'hints', 'quizsurvey-hints_doc'),
 									),
 									'autofill'            => array(
 										'heading'  => __( 'Autofill', 'quiz-master-next' ),
@@ -388,7 +398,7 @@ function qsm_options_questions_tab_content() {
 										),
 										'default'  => '0',
 										'show'     => '3, 14' . $show_autofill,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'autofill'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'autofill', 'quizsurvey-autofill_doc'),
 									),
 									'case_sensitive'      => array(
 										'heading'  => __( 'Case Sensitivity', 'quiz-master-next' ),
@@ -409,7 +419,7 @@ function qsm_options_questions_tab_content() {
 										'priority' => '7',
 										'default'  => '',
 										'show'     => '3, 5, 7, 14' . $show_limit_text,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'limit_text'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'limit_text', 'quizsurvey-limit_text_doc'),
 									),
 									'limit_multiple_response' => array(
 										'heading'  => __( 'Limit Multiple choice', 'quiz-master-next' ),
@@ -418,7 +428,7 @@ function qsm_options_questions_tab_content() {
 										'priority' => '8',
 										'default'  => '',
 										'show'     => '4,10' . $show_limit_multiple_response,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'limit_multiple_response'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'limit_multiple_response', 'quizsurvey-limit_multiple_response_doc'),
 									),
 									'file_upload_limit'   => array(
 										'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
@@ -426,7 +436,7 @@ function qsm_options_questions_tab_content() {
 										'priority' => '9',
 										'default'  => '',
 										'show'     => '11' . $show_file_upload_limit,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'file_upload_limit'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'file_upload_limit', 'quizsurvey-file_upload_limit_doc'),
 									),
 									'file_upload_type'    => array(
 										'heading'  => __( 'Allow File type', 'quiz-master-next' ),
@@ -442,7 +452,7 @@ function qsm_options_questions_tab_content() {
 										),
 										'default'  => 'image',
 										'show'     => '11' . $show_file_upload_type,
-										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'file_upload_type'),
+										'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'file_upload_type', 'quizsurvey-file_upload_type_doc'),
 									),
 								);
 								$advanced_question_option = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
@@ -470,7 +480,7 @@ function qsm_options_questions_tab_content() {
 													<label>
 														<?php esc_html_e( 'Question Type', 'quiz-master-next' ); ?>
 														<?php
-														echo '<a class="qsm-question-doc" href="' . esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'question_type' ) ) . '" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
+														echo '<a class="qsm-question-doc" href="' . esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) ) . '" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
 														echo '<span class="dashicons dashicons-editor-help"></span>';
 														echo '</a>';
 														?>
@@ -495,7 +505,7 @@ function qsm_options_questions_tab_content() {
 														?>
 													</select>
 													<a class="question_info_tag hidden" target="_blank" rel="noopener"
-														href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/question-types/', 'question-popup', 'question_type' ) );?>"><?php esc_html_e( 'How to use this option?', 'quiz-master-next' ); ?></a>
+														href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/question-types/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) );?>"><?php esc_html_e( 'How to use this option?', 'quiz-master-next' ); ?></a>
 													<p class="hidden" id="question_type_info"></p>
 												</div>
 												<?php
@@ -524,7 +534,7 @@ function qsm_options_questions_tab_content() {
 														'default' => 'text',
 														'show' => '0,1,4,13' . $show_change_answer_editor,
 														// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
-														'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'answer-type'),
+														'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_type', 'quizsurvey-answer-type_doc' ),
 													),
 													'match-answer' => array(
 														'label' => __( 'Match Answer', 'quiz-master-next' ),
@@ -569,7 +579,7 @@ function qsm_options_questions_tab_content() {
 								<div id="categorydiv" class="postbox">
 									<h2 class="hndle ui-sortable-handle">
 										<span><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></span>
-										<a class="qsm-question-doc" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'category') );?>" target="_blank" title="View Documentation"><span class="dashicons dashicons-editor-help"></span></a>
+										<a class="qsm-question-doc" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'category', 'quizsurvey-category_doc') );?>" target="_blank" title="View Documentation"><span class="dashicons dashicons-editor-help"></span></a>
 									</h2>
 									<div class="inside">
 										<?php
@@ -590,7 +600,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'category',
 													'priority' => '5',
 													'default' => '',
-													'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'question-popup', 'category'),
+													'documentation_link' => qsm_get_plugin_link('docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'category', 'quizsurvey-category_doc'),
 												),
 											);
 										}

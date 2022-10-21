@@ -189,18 +189,18 @@ class QSM_Fields {
 							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> 
 						</li>
-						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_text_tab_custom">
+						<li>
+							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_style_tab">
 								<?php esc_html_e( 'Validation Messages', 'quiz-master-next' ); ?>
-							</a> 
+							</a>
 						</li>
-						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-other" class="quiz_text_tab_custom">
+						<li>
+							<a href="javascript:void(0)" data-id="text-other" class="quiz_style_tab">
 								<?php esc_html_e( 'Other', 'quiz-master-next' ); ?>
-							</a> 
+							</a>
 						</li>
-						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_text_tab_custom">
+						<li>
+							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_style_tab">
 								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 							</a>
 						</li>

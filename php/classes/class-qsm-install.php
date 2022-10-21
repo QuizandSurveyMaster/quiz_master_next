@@ -990,7 +990,7 @@ class QSM_Install {
 		// Registers message_before setting
 		$field_array = array(
 			'id'        => 'message_before',
-			'label'     => __( 'Text Before Quiz', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed Before Quiz', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1004,7 +1004,7 @@ class QSM_Install {
 		// Registers message_comment setting
 		$field_array = array(
 			'id'        => 'message_comment',
-			'label'     => __( 'Text for Comment Box', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed Before Comments Box If Enabled', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1018,7 +1018,7 @@ class QSM_Install {
 		// Registers message_end_template setting
 		$field_array = array(
 			'id'        => 'message_end_template',
-			'label'     => __( 'Text After Quiz', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1032,7 +1032,7 @@ class QSM_Install {
 		// Registers total_user_tries_text setting
 		$field_array = array(
 			'id'        => 'total_user_tries_text',
-			'label'     => __( 'Text For Limited Attempts', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed If User Has Tried Quiz Too Many Times', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1046,7 +1046,7 @@ class QSM_Install {
 		// Registers require_log_in_text setting
 		$field_array = array(
 			'id'        => 'require_log_in_text',
-			'label'     => __( 'Text for Registered User', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1060,7 +1060,7 @@ class QSM_Install {
 		// Registers scheduled_timeframe_text setting
 		$field_array = array(
 			'id'        => 'scheduled_timeframe_text',
-			'label'     => __( 'Text for Expired Quiz', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed If Date Is Outside Scheduled Timeframe', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1074,7 +1074,7 @@ class QSM_Install {
 		// Registers limit_total_entries_text setting
 		$field_array = array(
 			'id'        => 'limit_total_entries_text',
-			'label'     => __( 'Text for Limited Entries', 'quiz-master-next' ),
+			'label'     => __( 'Message Displayed If The Limit Of Total Entries Has Been Reached', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1088,7 +1088,7 @@ class QSM_Install {
 		// Registers question_answer_template setting
 		$field_array = array(
 			'id'        => 'question_answer_template',
-			'label'     => __( '%QUESTIONS_ANSWERS% Text', 'quiz-master-next' ),
+			'label'     => __( 'Results Page %QUESTIONS_ANSWERS% Text', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -2083,12 +2083,12 @@ class QSM_Install {
 
 $qsm_install = new QSM_Install();
 
-if ( ! function_exists( 'qsm_get_document_link' ) ) {
+if ( ! function_exists( 'qsm_get_plugin_link' ) ) {
 
 	/**
 	 * Get Document link
 	 */
-	function qsm_get_plugin_link( $path = '', $source = '', $content = '' ) {
+	function qsm_get_plugin_link( $path = '', $source = '', $medium = '', $content = '', $campaign = 'qsm_plugin' ) {
 		$link = 'https://quizandsurveymaster.com/';
 		if ( ! empty( $path ) ) {
 			$link .= $path;
@@ -2098,12 +2098,47 @@ if ( ! function_exists( 'qsm_get_document_link' ) ) {
 		/**
 		 * Prepare UTM parameters
 		 */
-		$link .= '?utm_campaign=qsm_plugin&utm_medium=plugin';
+		if ( ! empty( $campaign ) ) {
+			$link = add_query_arg( 'utm_campaign', $campaign, $link );
+		}
 		if ( ! empty( $source ) ) {
-			$link .= '&utm_source=' . $source;
+			$link = add_query_arg( 'utm_source', $source, $link );
+		}
+		if ( ! empty( $medium ) ) {
+			$link = add_query_arg( 'utm_medium', $medium, $link );
 		}
 		if ( ! empty( $content ) ) {
-			$link .= '&utm_content=' . $content;
+			$link = add_query_arg( 'utm_content', $content, $link );
+		}
+
+		return $link;
+	}
+}
+if ( ! function_exists( 'qsm_get_utm_link' ) ) {
+
+	/**
+	 * Get Document link
+	 */
+	function qsm_get_utm_link( $link = '', $source = '', $medium = '', $content = '', $campaign = 'qsm_plugin' ) {
+		if ( empty( $link ) ) {
+			return $link;
+		}
+		$link = trailingslashit( $link );
+
+		/**
+		 * Prepare UTM parameters
+		 */
+		if ( ! empty( $campaign ) ) {
+			$link = add_query_arg( 'utm_campaign', $campaign, $link );
+		}
+		if ( ! empty( $source ) ) {
+			$link = add_query_arg( 'utm_source', $source, $link );
+		}
+		if ( ! empty( $medium ) ) {
+			$link = add_query_arg( 'utm_medium', $medium, $link );
+		}
+		if ( ! empty( $content ) ) {
+			$link = add_query_arg( 'utm_content', $content, $link );
 		}
 
 		return $link;
