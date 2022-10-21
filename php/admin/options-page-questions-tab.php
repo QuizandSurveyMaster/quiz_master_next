@@ -180,7 +180,7 @@ function qsm_options_questions_tab_content() {
 							<option value=""><?php esc_html_e( 'All Quiz', 'quiz-master-next' ); ?></option>
 							<?php
 							foreach ( $quiz_data as $quiz ) {
-								echo '<option value="'.esc_attr($quiz->quiz_id).'" '. selected($current_quiz, $quiz->quiz_id) .'>'.esc_html($quiz->quiz_name).'</option>';
+								echo '<option value="'.esc_attr($quiz->quiz_id).'">'.esc_html($quiz->quiz_name).'</option>';
 							}
 							?>
 						</select>
