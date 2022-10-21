@@ -551,23 +551,16 @@ class QMNGlobalSettingsPage {
 					<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 						<ul class="subsubsub">
 							<li>
-								<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab">
-									<?php esc_html_e( 'General', 'quiz-master-next' ); ?></a> |
+								<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
 							</li>
 							<li>
-								<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab">
-									<?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?>
-								</a> |
+								<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
 							</li>
 							<li>
-								<a href="javascript:void(0)" data-id="display" class="quiz_style_tab">
-									<?php esc_html_e( 'Display', 'quiz-master-next' ); ?>
-								</a> |
+								<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
 							</li>
 							<li>
-								<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab">
-									<?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?>
-								</a>
+								<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
 							</li>
 						</ul>
 					</div>
