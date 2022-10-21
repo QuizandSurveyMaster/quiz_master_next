@@ -154,6 +154,10 @@ function qsm_register_rest_routes() {
 function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
+		$quiz_filter = '%%';
+		if ( ! empty( $_REQUEST['quizID'] ) ) {
+			$quiz_filter = sanitize_text_field( wp_unslash( $_REQUEST['quizID'] ) );
+		}
 		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['category'] ) ) : '';
 		$search   = isset( $_REQUEST['search'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['search'] ) ) : '';
 		$enabled  = get_option( 'qsm_multiple_category_enabled' );
@@ -170,12 +174,12 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
 				$question_ids = array_unique( $question_ids );
-				$query        = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN (%s) AND question_settings LIKE %s", implode( ',', $question_ids ), $search );
+				$query        = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN (%s) AND quiz_id LIKE %s AND question_settings LIKE %s", implode( ',', $question_ids ), $quiz_filter, $search );
 			} else {
-				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND question_settings LIKE %s", $category, '%' . $search . '%' );
+				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s AND question_settings LIKE %s", $category, $quiz_filter, '%' . $search . '%' );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank=0 AND question_settings LIKE %s", '%' . $search . '%' );
+			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank=0 AND quiz_id LIKE %s AND question_settings LIKE %s", $quiz_filter, '%' . $search . '%' );
 		}
 		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
 		$total_count       = isset( $total_count_query['total_question'] ) ? $total_count_query['total_question'] : 0;
@@ -201,7 +205,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				$question_ids = array_unique( $question_ids );
 				$query_result = array();
 				foreach ( $question_ids as $question_id ) {
-					$query         = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $question_id, '%' . $search . '%', $offset, $limit );
+					$query         = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND quiz_id LIKE %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $question_id, $quiz_filter, '%' . $search . '%', $offset, $limit );
 					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
 					if ( ! is_null( $question_data ) ) {
 						$query_result[] = $question_data;
@@ -209,11 +213,11 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				}
 				$questions = $query_result;
 			} else {
-				$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $category, '%' . $search . '%', $offset, $limit );
+				$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, '%' . $search . '%', $offset, $limit );
 				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 			}
 		} else {
-			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", '%' . $search . '%', $offset, $limit );
+			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, '%' . $search . '%', $offset, $limit );
 			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 		}
 
