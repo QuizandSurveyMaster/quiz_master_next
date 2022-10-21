@@ -99,28 +99,19 @@ class QSM_Fields {
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
 						<li>
-							<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab">
-								<?php esc_html_e( 'General', 'quiz-master-next' ); ?></a> |
+							<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab">
-								<?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab">
-								<?php esc_html_e( 'Display', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab">
-								<?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab">
-								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
-							</a>
+							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -192,7 +183,7 @@ class QSM_Fields {
 				</div>
 			<?php
 			elseif ( 'text' === $current_tab ) : ?>
-				<div class="qsm-sub-tab-menu">
+				<div class="left-bar">
 					<ul class="qsm-custom-label-left-menu-ul">
 						<li class="qsm-custom-label-left-menu currentli">
 							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
@@ -214,60 +205,60 @@ class QSM_Fields {
 							</a>
 						</li>
 					</ul>
-					<div>
-						<div id="text-button" class="quiz_style_tab_content">
-							<table class="form-table">
-							<?php
-							// Cycles through each field
-							foreach ( $fields as  $field ) {
-								// Generate the field
-								if ( isset( $field['option_tab'] ) && 'text-button' === $field['option_tab'] ) {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
+				</div>
+				<div class="right-bar">
+					<div id="text-button" class="quiz_style_tab_content">
+						<table class="form-table">
+						<?php
+						// Cycles through each field
+						foreach ( $fields as  $field ) {
+							// Generate the field
+							if ( isset( $field['option_tab'] ) && 'text-button' === $field['option_tab'] ) {
+								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 							}
-							?>
-							</table>
-						</div>
-						<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
-							<table class="form-table">
-							<?php
-							// Cycles through each field
-							foreach ( $fields as  $field ) {
-								// Generate the field
-								if ( isset( $field['option_tab'] ) && 'text-validation-messages' === $field['option_tab'] ) {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
+						}
+						?>
+						</table>
+					</div>
+					<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
+						<table class="form-table">
+						<?php
+						// Cycles through each field
+						foreach ( $fields as  $field ) {
+							// Generate the field
+							if ( isset( $field['option_tab'] ) && 'text-validation-messages' === $field['option_tab'] ) {
+								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 							}
-							?>
-							</table>
-						</div>
-						<div id="text-other" class="quiz_style_tab_content" style="display:none">
-							<table class="form-table">
-							<?php
-							// Cycles through each field
-							foreach ( $fields as  $field ) {
-								// Generate the field
-								if ( isset( $field['option_tab'] ) && 'text-other' === $field['option_tab'] ) {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
+						}
+						?>
+						</table>
+					</div>
+					<div id="text-other" class="quiz_style_tab_content" style="display:none">
+						<table class="form-table">
+						<?php
+						// Cycles through each field
+						foreach ( $fields as  $field ) {
+							// Generate the field
+							if ( isset( $field['option_tab'] ) && 'text-other' === $field['option_tab'] ) {
+								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 							}
-							?>
-							</table>
-						</div>
-						<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
-							<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
-							<table class="form-table">
-							<?php
-							// Cycles through each field
-							foreach ( $fields as  $field ) {
-								// Generate the field
-								if ( isset( $field['option_tab'] ) && 'text-legacy' === $field['option_tab'] ) {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
+						}
+						?>
+						</table>
+					</div>
+					<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
+						<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+						<table class="form-table">
+						<?php
+						// Cycles through each field
+						foreach ( $fields as  $field ) {
+							// Generate the field
+							if ( isset( $field['option_tab'] ) && 'text-legacy' === $field['option_tab'] ) {
+								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 							}
-							?>
-							</table>
-						</div>
+						}
+						?>
+						</table>
 					</div>
 				</div>
 			<?php else :
@@ -275,7 +266,7 @@ class QSM_Fields {
 					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 				}
 			endif; ?>
-			<div class="qsm-tab-btns" style="float:right">
+			<div class="qsm-tab-btns">
 				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>

@@ -799,53 +799,84 @@ ul.changelog li.update div.two:before {
 .qsm-sub-tab-menu{
 	display:flex;
 	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: stretch;
 }
 .qsm-sub-text-tab-menu{
 	display: inline-block;
 	width: 100%;
 }
-.qsm-custom-label-left-menu-ul{
-	width:20%;
-	border-right:1px solid #dddddd;
-}
 
 .save-text-changes{
 	padding:10px;
+	display: flex;
+	flex-direction: row-reverse;
+	flex-wrap: nowrap;
+	align-items: flex-end;
+	justify-content: flex-start;
 }
-.save-text-changes .button{
-	position:absolute;
-	right:25px;
-}
-.qsm_general_text,.qsm_variable_text{
+.quiz_text_tab_content{
 	display:flex;
-	align-items: flex-start;
+	align-items: stretch;
+	flex-wrap: wrap;
+	flex-direction: row;
+	border: 1px solid #dfd4d4;
 }
-.qsm_general_text ul{
+.quiz_text_tab_content form{
 	display:flex;
-	height:275px;
+	align-items: stretch;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+.quiz_text_tab_content form input{
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+.quiz_text_tab_content .qsm-tab-btns{
+    text-align: right;
+    width: calc(100% - 20px);
+    margin-bottom: 15px;
+}
+#poststuff .quiz_text_tab_content h2,
+.quiz_text_tab_content h2{
+    font-size: 18px;
+    line-height: 1.5;
+    padding: 10px 0;
+    margin: 0 0 10px;
+}
+.quiz_text_tab_content .left-bar{
+    width: 240px;
+    padding: 15px;
+}
+.quiz_text_tab_content .right-bar{
+    width: calc(100% - 280px);
+    padding: 15px;
+    box-sizing: border-box;
+    border-left: 1px solid #dfd4d4;
+}
+.quiz_text_tab_content .left-bar ul{
+	display:flex;
 	flex-direction: column;
+	flex-wrap: nowrap;
+	align-content: flex-start;
+	width: 100%;
+	margin: 0;
 }
-.qsm_variable_text ul{
-	display:flex;
-	flex-direction: column;
-	height:275px;
-}
-
 .quiz_style_tab_content .form-table{
 	width: 100%;
-}
-.qsm_general_text_editor,.qsm_variable_text_editor {
-	width:80%;
+	margin: 0;
 }
 .qsm-custom-label-left-menu{
-	padding:5px;
+	padding: 10px 6px;
+	cursor: pointer;
+	border-left: 4px solid transparent;
+	border-bottom: 1px solid #f9f9f9;
+	margin: 0;
 }
 .currentli,.currentli_general,.currentli_variable{
-border-left:4px solid #2271b1;
-background-color: #a1cef3 ;
-border-top:1px solid #dddddd;
-border-bottom:1px solid #dddddd;
-padding:10px;
+	border-left:4px solid #2271b1;
+	background-color: #a1cef3;
 }
 .qsm-custom-label-left-menu a{
 	color:black;
@@ -855,6 +886,15 @@ padding:10px;
 	cursor: pointer;
 	text-decoration: none;
 	outline: none;
+	display: inline-block;
+	box-sizing: border-box;
+}
+.qsm_tab_content .subsubsub li {border-left: 2px solid #aaa;padding: 0 5px;}
+.qsm_tab_content .subsubsub li:first-child{border-left: 0;padding-left: 0;}
+.qsm_tab_content .subsubsub li a{
+	font-size: 14px;
+	line-height: 1.2;
+	padding: 0;
 }
 .qsm_tab_content a:hover,.qsm_tab_content a:focus{
     outline: none;
@@ -1246,8 +1286,6 @@ tr .qsm-opt-desc {
 }
 .form-table .qsm-opt-tr {
 	position: relative;
-	padding-right: 24px;
-	padding-top: 15px;
 }
 td.scheduled_time_start {
 	padding-bottom: 0 !important;
@@ -1303,6 +1341,7 @@ td.scheduled_time_start {
 }
 .qsm-tab-btns a{
     margin: 0 10px;
+	width: auto;
 }
 /** * Text Tab design */
 .qsm-text-main-wrap {
@@ -1317,6 +1356,7 @@ td.scheduled_time_start {
 	position: relative;
 	background: #fff;
 	box-sizing: border-box;
+	border: 1px solid #dfd4d4;
 }
 .qsm-text-main-wrap #postbox-container-1 .qsm-text-header h5 {
 	font-size: 14px;
@@ -1329,22 +1369,12 @@ td.scheduled_time_start {
 	font-weight: 400;
 }
 .qsm-text-main-wrap .qsm-text-header {
-	padding: 20px;
-	border-bottom: 1px solid #f1f1f1;
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 }
-.qsm-text-main-wrap .qsm-text-header .qsm-question-text-tab{
-	height:500px;
-}
-.quiz_style_tab_content .form-table th {
-	text-align:center;
-}
-.qsm-text-main-wrap .qsm-text-header .message-dropdown label {
-	font-size: 14px;
-	font-weight: bold;
-}
+.qsm-text-main-wrap .qsm-text-header .qsm-row{margin:0;}
+.qsm-text-header h5{padding: 20px 20px 0;}
 .qsm-text-main-wrap .qsm-text-conent {
 	padding: 20px;
 	border-bottom: 1px solid #f1f1f1;
