@@ -333,7 +333,7 @@ class QMNQuizManager {
 			if ( ! empty( $result ) && isset( $result['result_id'] ) ) {
 				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $result['quiz_id'] );
 				$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-				
+
 				// If quiz options isn't found, stop function.
 				if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
 					return __( 'This quiz is no longer available.', 'quiz-master-next' );
@@ -368,7 +368,7 @@ class QMNQuizManager {
 			if ( false === $success ) {
 				return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
 			}
-			
+
 			global $mlw_qmn_quiz;
 			$mlw_qmn_quiz = $quiz;
 			$return_display   = '';
@@ -378,7 +378,7 @@ class QMNQuizManager {
 			 * Filter Quiz Options before Quiz Display
 			 */
 			$qmn_quiz_options = apply_filters( 'qsm_shortcode_quiz_options', $qmn_quiz_options );
-			
+
 			// If quiz options isn't found, stop function.
 			if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
 				return __( 'This quiz is no longer available.', 'quiz-master-next' );

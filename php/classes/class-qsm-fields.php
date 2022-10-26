@@ -99,28 +99,19 @@ class QSM_Fields {
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
 						<li>
-							<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab">
-								<?php esc_html_e( 'General', 'quiz-master-next' ); ?></a> |
+							<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab">
-								<?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab">
-								<?php esc_html_e( 'Display', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab">
-								<?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?>
-							</a> |
+							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab">
-								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
-							</a>
+							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -192,31 +183,32 @@ class QSM_Fields {
 				</div>
 			<?php
 			elseif ( 'text' === $current_tab ) : ?>
-				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
-					<ul class="subsubsub">
-						<li>
-							<a href="javascript:void(0)" data-id="text-button" class="current quiz_style_tab">
-								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> |
+				<div class="left-bar">
+					<ul class="qsm-custom-label-left-menu-ul">
+						<li class="qsm-custom-label-left-menu currentli">
+							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
+								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> 
 						</li>
-						<li>
-							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_style_tab">
+						<li class="qsm-custom-label-left-menu">
+							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Validation Messages', 'quiz-master-next' ); ?>
-							</a> |
+							</a> 
 						</li>
-						<li>
-							<a href="javascript:void(0)" data-id="text-other" class="quiz_style_tab">
+						<li class="qsm-custom-label-left-menu">
+							<a href="javascript:void(0)" data-id="text-other" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Other', 'quiz-master-next' ); ?>
-							</a> |
+							</a> 
 						</li>
-						<li>
-							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_style_tab">
+						<li class="qsm-custom-label-left-menu">
+							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 							</a>
 						</li>
 					</ul>
 				</div>
-				<div id="text-button" class="quiz_style_tab_content">
-					<table class="form-table" style="width: 100%;">
+				<div class="right-bar">
+					<div id="text-button" class="quiz_style_tab_content">
+						<table class="form-table">
 						<?php
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
@@ -226,10 +218,10 @@ class QSM_Fields {
 							}
 						}
 						?>
-					</table>
-				</div>
-				<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
+						</table>
+					</div>
+					<div id="text-validation-messages" class="quiz_style_tab_content" style="display:none">
+						<table class="form-table">
 						<?php
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
@@ -239,10 +231,10 @@ class QSM_Fields {
 							}
 						}
 						?>
-					</table>
-				</div>
-				<div id="text-other" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
+						</table>
+					</div>
+					<div id="text-other" class="quiz_style_tab_content" style="display:none">
+						<table class="form-table">
 						<?php
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
@@ -252,11 +244,11 @@ class QSM_Fields {
 							}
 						}
 						?>
-					</table>
-				</div>
-				<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
-					<table class="form-table" style="width: 100%;">
+						</table>
+					</div>
+					<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
+						<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+						<table class="form-table">
 						<?php
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
@@ -266,7 +258,8 @@ class QSM_Fields {
 							}
 						}
 						?>
-					</table>
+						</table>
+					</div>
 				</div>
 			<?php else :
 				foreach ( $fields as  $field ) {

@@ -31,7 +31,7 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-
+	$quiz_data = $wpdb->get_results( "SELECT quiz_id, quiz_name	FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC" );
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
@@ -170,9 +170,19 @@ function qsm_options_questions_tab_content() {
 						<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> <?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 					</div>
 					<div class="qsm-question-bank-search">
-						<form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>"></form>
+						<form action="" method="post" id="question-bank-search-form">
+							<input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>">
+						</form>
 						<select name="question-bank-cat" id="question-bank-cat">
 							<option value=""><?php esc_html_e( 'All Categories', 'quiz-master-next' ); ?></option>
+						</select>
+						<select name="question-bank-quiz" id="question-bank-quiz">
+							<option value=""><?php esc_html_e( 'All Quiz', 'quiz-master-next' ); ?></option>
+							<?php
+							foreach ( $quiz_data as $quiz ) {
+								echo '<option value="'.esc_attr($quiz->quiz_id).'">'.esc_html($quiz->quiz_name).'</option>';
+							}
+							?>
 						</select>
 					</div>
 				</div>
