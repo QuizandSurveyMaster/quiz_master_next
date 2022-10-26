@@ -106,9 +106,9 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					/**
 					 * Check for invalid Questions.
 					 */
-					$q_types		 = array();
-					$invalid_types	 = array();
-					$question_types	 = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
+					$q_types         = array();
+					$invalid_types   = array();
+					$question_types  = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
 					if ( ! empty( $question_types ) ) {
 						foreach ( $question_types as $data ) {
 							$q_types[] = $data->type;
