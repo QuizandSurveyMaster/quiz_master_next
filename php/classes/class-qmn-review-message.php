@@ -32,15 +32,15 @@ class QMN_Review_Message {
 	 */
 	public function add_hooks() {
 		add_action( 'admin_init', array( $this, 'check_message_display' ) );
-		add_action( 'admin_init', array( $this, 'nonce_notice_dismissed' ));
+		add_action( 'admin_init', array( $this, 'qsm_nonce_notice_dismissed' ));
 	}
 
-	function nonce_notice_dismissed() {
-		add_action( 'admin_notices', array( $this, 'nonce_notice' ));
+	function qsm_nonce_notice_dismissed() {
+		add_action( 'admin_notices', array( $this, 'qsm_nonce_notice' ));
 		$user_id = get_current_user_id();
 		if ( isset( $_GET['my-plugin-dismissed'] ) )
 		{
-			add_user_meta( $user_id, 'nonce_notice_dismissed', 'true', true );
+			add_user_meta( $user_id, 'qsm_nonce_notice_dismissed', 'true', true );
 		}
 	    }
 	/**
@@ -131,9 +131,9 @@ class QMN_Review_Message {
 			update_option( 'qmn_review_message_trigger', -1 );
 		}
 	}
-	public function nonce_notice() {
+	public function qsm_nonce_notice() {
 		$user_id = get_current_user_id();
-		if ( ! get_user_meta( $user_id, 'nonce_notice_dismissed' ) ) ?>
+		if ( ! get_user_meta( $user_id, 'qsm_nonce_notice_dismissed' ) ) ?>
 		<div class="nonce-validation">
 					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
 					<div class="nonce-text">
