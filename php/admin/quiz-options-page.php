@@ -117,6 +117,7 @@ function qsm_generate_quiz_options() {
 						</form>
 					<?php endif; ?>
 				</div>
+	
 				<div class="qsm-quiz-top-nav-links">
 					<a class="qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
 						<span class="dashicons dashicons-external"></span><?php esc_html_e( 'View Quiz', 'quiz-master-next' ); ?>
@@ -147,6 +148,23 @@ function qsm_generate_quiz_options() {
 			<div class="qsm-alerts">
 				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 			</div>
+			<?php $user_id = get_current_user_id();
+			if ( isset( $_POST['nonce_validation_notification'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce_validation_notification'] ) ), 'nonce_validation_notification' ) ) {
+				update_user_meta( $user_id, 'nonce_validation_notification' ,true);
+			}
+				if ( ! get_user_meta( $user_id, 'nonce_validation_notification' ) ) { ?>
+				<div class="nonce-validation">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
+					<div class="nonce-text">
+						<span> <strong><?php  echo esc_html__( "Your quiz has been created,started adding questions.", 'quiz-master-next' ) ?></strong></span>
+						<br><span> <?php  echo esc_html__( "To avoid the", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue", 'quiz-master-next' ) ?></a> <?php  echo esc_html__( ", be sure to remove the quiz pages from your cache if you use any caching plugins.", 'quiz-master-next' ) ?></span>
+					</div>
+					<form method="POST" action="">
+						<?php wp_nonce_field( 'nonce_validation_notification', 'nonce_validation_notification' ); ?>
+						<button type="submit"  style="float:right;"   id="nonce_validation_notification" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
+					</form>
+					</div>
+					<?php  } ?> 
 			<?php if ( $quiz_id ) {
 				$active_class_aadon = true;
 				?>

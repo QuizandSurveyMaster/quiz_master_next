@@ -32,17 +32,8 @@ class QMN_Review_Message {
 	 */
 	public function add_hooks() {
 		add_action( 'admin_init', array( $this, 'check_message_display' ) );
-		add_action( 'admin_init', array( $this, 'qsm_nonce_notice_dismissed' ));
 	}
 
-	function qsm_nonce_notice_dismissed() {
-		add_action( 'admin_notices', array( $this, 'qsm_nonce_notice' ));
-		$user_id = get_current_user_id();
-		if ( isset( $_GET['nonce-dismissed'] ) )
-		{
-			add_user_meta( $user_id, 'qsm_nonce_notice_dismissed', 'true', true );
-		}
-	    }
 	/**
 	 * Checks if message should be displayed
 	 *
@@ -131,19 +122,6 @@ class QMN_Review_Message {
 			update_option( 'qmn_review_message_trigger', -1 );
 		}
 	}
-	public function qsm_nonce_notice() {
-		$user_id = get_current_user_id();
-		if ( ! get_user_meta( $user_id, 'qsm_nonce_notice_dismissed' ) ) ?>
-		<div class="nonce-validation">
-					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
-					<div class="nonce-text">
-						<span> <strong><?php  echo esc_html__( "Your quiz has been created,started adding questions.", 'quiz-master-next' ) ?></strong></span>
-						<br><span> <?php  echo esc_html__( "To avoid the", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue", 'quiz-master-next' ) ?></a> <?php  echo esc_html__( ", be sure to remove the quiz pages from your cache if you use any caching plugins.", 'quiz-master-next' ) ?></span>
-					</div>
-					<a href="?nonce-dismissed" style="float:right;"  id="thanks_button" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
-					</div>
-					<?php 
-	} 
 }
 $qmn_review_message = new QMN_Review_Message();
 ?>
