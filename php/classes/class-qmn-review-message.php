@@ -138,7 +138,7 @@ function my_plugin_notice() {
 	<div class="nonce-validation">
 				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
 				<div class="nonce-text">
-					<span> <b><?php  echo esc_html__( "Your quiz has been created,started adding questions", 'quiz-master-next' ) ?></b></span>
+					<span> <strong><?php  echo esc_html__( "Your quiz has been created,started adding questions.", 'quiz-master-next' ) ?></strong></span>
 					<br><span> <?php  echo esc_html__( "To avoid the", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue", 'quiz-master-next' ) ?></a> <?php  echo esc_html__( ", be sure to remove the quiz pages from your cache if you use any caching plugins", 'quiz-master-next' ) ?></span>
 				</div>
 				<a href="?my-plugin-dismissed" style="float:right;"  id="thanks_button" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
