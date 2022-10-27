@@ -145,9 +145,5 @@ class QMN_Review_Message {
 					<?php 
 	} 
 }
-
-
-
-
 $qmn_review_message = new QMN_Review_Message();
 ?>
