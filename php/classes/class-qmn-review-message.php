@@ -38,7 +38,7 @@ class QMN_Review_Message {
 	function qsm_nonce_notice_dismissed() {
 		add_action( 'admin_notices', array( $this, 'qsm_nonce_notice' ));
 		$user_id = get_current_user_id();
-		if ( isset( $_GET['my-plugin-dismissed'] ) )
+		if ( isset( $_GET['nonce-dismissed'] ) )
 		{
 			add_user_meta( $user_id, 'qsm_nonce_notice_dismissed', 'true', true );
 		}
@@ -140,7 +140,7 @@ class QMN_Review_Message {
 						<span> <strong><?php  echo esc_html__( "Your quiz has been created,started adding questions.", 'quiz-master-next' ) ?></strong></span>
 						<br><span> <?php  echo esc_html__( "To avoid the", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue", 'quiz-master-next' ) ?></a> <?php  echo esc_html__( ", be sure to remove the quiz pages from your cache if you use any caching plugins.", 'quiz-master-next' ) ?></span>
 					</div>
-					<a href="?my-plugin-dismissed" style="float:right;"  id="thanks_button" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
+					<a href="?nonce-dismissed" style="float:right;"  id="thanks_button" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
 					</div>
 					<?php 
 	} 
