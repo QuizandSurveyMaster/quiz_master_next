@@ -1948,6 +1948,19 @@ td.scheduled_time_start {
 .qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a{
 	width: auto;margin-right: 10px;font-weight: 500;font-size: 14px;padding: 10px 20px;
 }
+.results-screen-options-wrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.results-screen-options-wrap label{
+    display: inline-block;
+    box-sizing: border-box;
+    width: 31%;
+    margin: 10px 1%;
+    font-size: 14px;
+}
 /** * Style tab design */
 .wp-upload-form {
 	background: #fafafa;
@@ -2062,6 +2075,9 @@ td.scheduled_time_start {
 	.result-page-title {
 		margin-bottom: 10px;
     }
+	.results-screen-options-wrap label{
+		width: 48%;
+	}
 }
 .qsm-text-template-span{
 	min-width: 100px;
