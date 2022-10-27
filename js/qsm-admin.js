@@ -351,6 +351,10 @@ var QSMAdmin;
             $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $(href).show();
         });
+        $(document).on('click', '#thanks_button', function (e) {
+          $(".nonce-validation").hide();
+        });
+        
 
         // opens media library o set featured image for quiz
         $(document).on('click', '#set_featured_image', function (e) {

@@ -1857,6 +1857,50 @@ td.scheduled_time_start {
 .qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a{
 	width: auto;margin-right: 10px;font-weight: 500;font-size: 14px;padding: 10px 20px;
 }
+#modal-6 .sc-shortcode-input{
+	padding:5px;
+	width:400px;
+	max-width:400px!important;
+}
+#modal-6 .qsm-popup__content{
+	margin-left:25px;
+}
+.qsm-popup-nonce-validation{
+	padding:12px;
+	padding-left:0;
+	width:90%;
+}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning{
+	font-size:12px;
+	padding:5px;
+}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning img{width: auto;height: 15px;margin-right: 8px;}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning a{font-weight: bold;}
+
+.nonce-validation {
+	border: 1px solid #2271b1;
+	background: #fff;
+	overflow:auto; 
+	border-left-color:   #2271b1;
+	margin: 10px 15px 2px;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+	border-left-width: 4px;
+}
+.nonce-validation img{
+    float: left;
+	width: auto;
+    height: 30px;
+	margin: 25px 20px;
+	margin-left:20px;
+}
+.nonce-text{
+	float: left;
+	margin-top:20px;
+}
+.nonce-validation .button-secondary{
+	margin:20px 20px;
+	float:right;
+}
 /** * Style tab design */
 .wp-upload-form {
 	background: #fafafa;

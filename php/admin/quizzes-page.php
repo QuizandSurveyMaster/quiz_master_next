@@ -445,28 +445,35 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
 				?>
-				<!-- Popup for delete quiz -->
-				<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
+				
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-nonce-alert" id="modal-6" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
-							<header class="qsm-popup__header">
-								<h2 class="qsm-popup__title" id="modal-5-title"><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></h2>
+						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+							<header class="qsm-popup__header qsm-question-bank-header">
+								<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></h2>
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-								<div class="qsm-row" style="margin-bottom: 30px;">
-									<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
-									<input type="text" value="" id="sc-shortcode-model-text" style="width: 72%;padding: 5px;">
-									<button class="button button-primary" id="sc-copy-shortcode"><span
-											class="dashicons dashicons-admin-page"></span></button>
-								</div>
-								<div class="qsm-row">
-									<lable><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
-									<input type="text" value="" id="sc-shortcode-model-text-link" style="width: 72%;padding: 5px;">
-									<button class="button button-primary" id="sc-copy-shortcode-link"><span
-											class="dashicons dashicons-admin-page"></span></button>
-								</div>
-							</main>
+												<div class="qsm-row" style="margin-bottom: 30px;">
+													<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
+													<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
+													<button class="button button-primary" id="sc-copy-shortcode"><span
+															class="dashicons dashicons-admin-page"></span></button>
+												</div>
+												<div class="qsm-row">
+													<lable  style="padding-right:15px;"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
+													<input type="text" value="" id="sc-shortcode-model-text-link"  class="sc-shortcode-input">
+													<button class="button button-primary" id="sc-copy-shortcode-link"><span
+															class="dashicons dashicons-admin-page"></span></button>
+															<div class="qsm-popup-nonce-validation">
+															<div class="qsm-popup-upgrade-warning">
+																<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
+																<span><?php esc_html_e( "If you're using a cache plugin, please exclude the page from your cache where you're about to use the quiz's shortcode to avoid", 'quiz-master-next' ); ?>
+																<a><?php esc_html_e("Nonce Validation Issue." , 'quiz-master-next') ;?></a></span>
+															</div>
+															</div>
+												</div>
+											</main>
 						</div>
 					</div>
 				</div>
