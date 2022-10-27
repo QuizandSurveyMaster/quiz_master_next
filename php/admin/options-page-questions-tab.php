@@ -133,33 +133,35 @@ function qsm_options_questions_tab_content() {
 		<?php
 	}
 	
-	/**
-					 * Check for invalid Questions.
-					 */
 	$question_ids = $mlwQuizMasterNext->pluginHelper->get_questions_ids( $quiz_id );
-	$q_types         = array();
-	$invalid_types   = array();
-	$question_types_new  = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
-	if ( ! empty( $question_types_new ) ) {
-		foreach ( $question_types_new as $data ) {
-			$q_types[] = $data->type;
+	if ( ! empty( $question_ids ) ) {
+		/**
+		 * Check for invalid Questions.
+		 */
+		$q_types         = array();
+		$invalid_types   = array();
+		$question_types_new  = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
+		if ( ! empty( $question_types_new ) ) {
+			foreach ( $question_types_new as $data ) {
+				$q_types[] = $data->type;
+			}
 		}
-	}
-	if ( ! class_exists( 'QSM_Advance_Question' ) ) {
-		$invalid_types[] = 15;
-		$invalid_types[] = 16;
-		$invalid_types[] = 17;
-	}
-	if ( ! class_exists( 'QSM_Flashcards' ) ) {
-		$invalid_types[] = 18;
-	}
-	if ( ! empty( array_intersect( $invalid_types, $q_types ) ) ) {
-		?>
-		<div class="notice notice-error notice-invalid-question-type">
-			<p><?php esc_html_e( 'This quiz contains advance question types which will be skipped on quiz page as there are no active add-ons to support these questions.', 'quiz-master-next' ); ?></p>
-			<p><?php esc_html_e( 'Please reactivate the related add-ons to make sure the quiz works as expected.', 'quiz-master-next' ); ?></p>
-		</div>
-		<?php
+		if ( ! class_exists( 'QSM_Advance_Question' ) ) {
+			$invalid_types[] = 15;
+			$invalid_types[] = 16;
+			$invalid_types[] = 17;
+		}
+		if ( ! class_exists( 'QSM_Flashcards' ) ) {
+			$invalid_types[] = 18;
+		}
+		if ( ! empty( array_intersect( $invalid_types, $q_types ) ) ) {
+			?>
+			<div class="notice notice-error notice-invalid-question-type">
+				<p><?php esc_html_e( 'This quiz contains advance question types which will be skipped on quiz page as there are no active add-ons to support these questions.', 'quiz-master-next' ); ?></p>
+				<p><?php esc_html_e( 'Please reactivate the related add-ons to make sure the quiz works as expected.', 'quiz-master-next' ); ?></p>
+			</div>
+			<?php
+		}
 	}
 	?>
 	<div class="question-controls">
