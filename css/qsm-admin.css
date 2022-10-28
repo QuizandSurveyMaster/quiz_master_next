@@ -1882,27 +1882,27 @@ td.scheduled_time_start {
 .qsm-popup-nonce-validation .qsm-popup-upgrade-warning img{width: auto;height: 15px;margin-right: 8px;}
 .qsm-popup-nonce-validation .qsm-popup-upgrade-warning a{font-weight: bold;}
 
-.nonce-validation {
-	border: 1px solid #2271b1;
+.qsm-nonce-validation {
+	border: 1px solid #FBBF24;
 	background: #fff;
 	overflow:auto; 
-	border-left-color:   #2271b1;
+	border-left-color:   #FBBF24;
 	margin: 10px 15px 2px;
 	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
 	border-left-width: 4px;
 }
-.nonce-validation img{
+.qsm-nonce-validation img{
     float: left;
 	width: auto;
     height: 30px;
 	margin: 25px 20px;
 	margin-left:20px;
 }
-.nonce-text{
+.qsm-nonce-text{
 	float: left;
 	margin-top:20px;
 }
-.nonce-validation .button-secondary{
+.qsm-nonce-validation .button-secondary{
 	margin:20px 20px;
 	float:right;
 }

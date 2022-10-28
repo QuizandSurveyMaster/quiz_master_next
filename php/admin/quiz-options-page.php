@@ -117,7 +117,6 @@ function qsm_generate_quiz_options() {
 						</form>
 					<?php endif; ?>
 				</div>
-	
 				<div class="qsm-quiz-top-nav-links">
 					<a class="qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
 						<span class="dashicons dashicons-external"></span><?php esc_html_e( 'View Quiz', 'quiz-master-next' ); ?>
@@ -153,11 +152,11 @@ function qsm_generate_quiz_options() {
 				update_user_meta( $user_id, 'nonce_validation_notification' ,true);
 			}
 				if ( ! get_user_meta( $user_id, 'nonce_validation_notification' ) ) { ?>
-				<div class="nonce-validation">
-					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
-					<div class="nonce-text">
-						<span> <strong><?php  echo esc_html__( "Your quiz has been created,started adding questions.", 'quiz-master-next' ) ?></strong></span>
-						<br><span> <?php  echo esc_html__( "To avoid the", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue", 'quiz-master-next' ) ?></a> <?php  echo esc_html__( ", be sure to remove the quiz pages from your cache if you use any caching plugins.", 'quiz-master-next' ) ?></span>
+				<div class="qsm-nonce-validation">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
+					<div class="qsm-nonce-text">
+						<span> <strong><?php  echo esc_html__( "Your quiz has been created, you can now start adding questions.", 'quiz-master-next' ) ?></strong></span>
+						<br><span> <?php  echo esc_html__( "Please note: If you are using any cache plugins, please remember to exclude your quiz pages from cache to prevent", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue.", 'quiz-master-next' ) ?></a></span>
 					</div>
 					<form method="POST" action="">
 						<?php wp_nonce_field( 'nonce_validation_notification', 'nonce_validation_notification' ); ?>
