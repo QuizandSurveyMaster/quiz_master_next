@@ -1892,9 +1892,9 @@ td.scheduled_time_start {
 	border-left-width: 4px;
 }
 .qsm-nonce-validation img{
-    float: left;
+	float: left;
 	width: auto;
-    height: 30px;
+	height: 30px;
 	margin: 25px 20px;
 	margin-left:20px;
 }
