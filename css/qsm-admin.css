@@ -1136,7 +1136,7 @@ div#modal-6 label {
 }
 	
 #modal-6 .qsm-popup__container{
-	max-width: 40%;
+	max-width: 600px;
 }	
 
 #modal-6 .button>span.dashicons {
