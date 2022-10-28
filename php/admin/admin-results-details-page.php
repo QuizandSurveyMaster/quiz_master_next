@@ -83,7 +83,7 @@ function qsm_generate_results_details_tab() {
 		wp_add_inline_script( 'math_jax', $mlwQuizMasterNext::$default_MathJax_script, 'before' );
 	}
     echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
-    echo '<h3 class="result-page-title">Quiz Result - '. esc_html( $results_data->quiz_name ) .'</h3>';
+    echo '<h3 class="result-page-title">'.esc_html__('Quiz Result','quiz-master-next').' - '. esc_html( $results_data->quiz_name ) .'</h3>';
     echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. esc_html__( 'Back to Results', 'quiz-master-next' ) .'</a>';
     if ( ! is_null( $previous_results ) && $previous_results ) {
         echo "<a class='button button-primary' title='View Previous Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" ><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
@@ -157,7 +157,7 @@ function qsm_generate_results_details_tab() {
             $template .= '<div class="overview-main-wrapper">';
             //User detail
             $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
-            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
+            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('User Detail','quiz-master-next').'</span></h2>';
             $template .= '<div class="inside">';
             if ( isset( $results_array['contact'] ) && is_array( $results_array['contact'] ) && ! empty( $results_array['contact'] ) ) {
                 for ( $i = 0; $i < count( $results_array["contact"] ); $i++ ) {
@@ -176,9 +176,9 @@ function qsm_generate_results_details_tab() {
             if ( isset( $results_data->form_type ) && 0 === intval( $results_data->form_type ) ) {
                 //Scoreboard design
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
-                $template .= '<div id="submitdiv" class="postbox qsm-scorecard-box"><h2 class="hndle ui-sortable-handle"><span>Scorecard</span></h2>';
+                $template .= '<div id="submitdiv" class="postbox qsm-scorecard-box"><h2 class="hndle ui-sortable-handle"><span>'.__('Scorecard','quiz-master-next').'</span></h2>';
                 $template .= '<div class="inside">';
-                $template .= $span_start. __( 'Correct Answers:', 'quiz-master-next' ) .'</label><span>%AMOUNT_CORRECT% Out of %TOTAL_QUESTIONS%</span></span>';
+                $template .= $span_start. __( 'Correct Answers:', 'quiz-master-next' ) .'</label><span class="qsm-correct-span"> <span class="amount-correct">%AMOUNT_CORRECT%</span> '.__('Out of','quiz-master-next').' %TOTAL_QUESTIONS%</span></span>';
                 $template .= $span_start. __( 'Points:', 'quiz-master-next' ) .'</label><span class="qsm-total-point">%POINT_SCORE% </span></span>';
                 $template .= $span_start. __( 'Percentage:', 'quiz-master-next' ) .'</label><span class="qsm-total-percentage">%CORRECT_SCORE%%</span></span>';
                 $template .= '</div>';
@@ -188,7 +188,7 @@ function qsm_generate_results_details_tab() {
 
             //Timer design
             $template .= '<div class="overview-inner-wrap">';
-            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Time Taken</span></h2>';
+            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('Time Taken','quiz-master-next').'</span></h2>';
             $template .= '<div class="inside">';
             $template .= '<div class="timer-div-wrapper">';
 
@@ -202,7 +202,7 @@ function qsm_generate_results_details_tab() {
             } else {
                 $template .= '<div>';
                 $template .= '<span class="hours timer-span">00</span>';
-                $template .= '<span class="timer-text">hours</span>';
+                $template .= '<span class="timer-text">'.__('hours','quiz-master-next').'</span>';
                 $template .= '</div>';
             }
             $mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
@@ -215,7 +215,7 @@ function qsm_generate_results_details_tab() {
             } else {
                 $template .= '<div>';
                 $template .= '<span class="minutes timer-span">00</span>';
-                $template .= '<span class="timer-text">minutes</span>';
+                $template .= '<span class="timer-text">'.__('minutes','quiz-master-next').'</span>';
                 $template .= '</div>';
             }
 
@@ -235,7 +235,7 @@ function qsm_generate_results_details_tab() {
 
             if ( 0 === intval( $comments_enabled ) ) {
                 $template .= '<div class="comment-inner-wrap" style="">';
-                $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
+                $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>'.__('User Comments','quiz-master-next').'</span></h2>';
                 $template .= '<div class="inside">';
                 $template .= '%COMMENT_SECTION%';
                 $template .= '</div>';
@@ -244,7 +244,7 @@ function qsm_generate_results_details_tab() {
             }
             //Response div
             $template .= '<div class="response-inner-wrap">';
-            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Responses</span></h2>';
+            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('Responses','quiz-master-next').'</span></h2>';
             $template .= '<div class="inside check">';
             $template .= '%QUESTIONS_ANSWERS%';
             $template .= '</div>';
@@ -258,7 +258,7 @@ function qsm_generate_results_details_tab() {
         if ( isset( $settings['results_details_template'] ) ) {
             $template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
         } else {
-            $template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+            $template = "<h2>".__('Quiz Results for','quiz-master-next')." %QUIZ_NAME%</h2>
             <p>%CONTACT_ALL%</p>
             <p>Name Provided: %USER_NAME%</p>
             <p>Business Provided: %USER_BUSINESS%</p>
