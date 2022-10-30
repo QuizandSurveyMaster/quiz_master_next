@@ -674,15 +674,15 @@ function qsm_create_new_quiz_wizard() {
 							$all_settings        = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 							global $globalQuizsetting;
 							$quiz_setting_option = array(
-								'form_type'           => array(
+								'form_type'              => array(
 									'option_name' => __( 'Form Type', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['form_type'],
 								),
-								'system'              => array(
+								'system'                 => array(
 									'option_name' => __( 'Grading System', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['system'],
 								),
-								'enable_contact_form' => array(
+								'enable_contact_form'    => array(
 									'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
 									'value'       => 0,
 									'options'     => array(
@@ -696,23 +696,31 @@ function qsm_create_new_quiz_wizard() {
 										),
 									),
 								),
-								'timer_limit'         => array(
+								'timer_limit'            => array(
 									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['timer_limit'],
 								),
-								'pagination'          => array(
+								'pagination'             => array(
 									'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['pagination'],
 								),
-								'require_log_in'      => array(
+								'enable_pagination_quiz' => array(
+									'option_name' => __( 'Show current page number', 'quiz-master-next' ),
+									'value'       => $globalQuizsetting['enable_pagination_quiz'],
+								),
+								'progress_bar'           => array(
+									'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
+									'value'       => $globalQuizsetting['enable_pagination_quiz'],
+								),
+								'require_log_in'         => array(
 									'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['require_log_in'],
 								),
-								'disable_first_page'  => array(
+								'disable_first_page'     => array(
 									'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['disable_first_page'],
 								),
-								'comment_section'     => array(
+								'comment_section'        => array(
 									'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['comment_section'],
 								),
