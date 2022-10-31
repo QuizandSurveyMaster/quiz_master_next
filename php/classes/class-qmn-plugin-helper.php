@@ -531,7 +531,6 @@ class QMNPluginHelper {
 	 */
 	public static function get_default_texts() {
 		$defaults = array(
-			'message_before'                   => 'Welcome to your %QUIZ_NAME%',
 			'message_comment'                  => 'Please fill in the comment box below.',
 			'message_end_template'             => '',
 			'question_answer_template'         => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%<br/>%CORRECT_ANSWER_INFO%',
