@@ -77,7 +77,7 @@ class QMNQuizCreator {
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
 				'quiz_name'                => $quiz_name,
-				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( '%QUIZ_NAME%', 'quiz-master-next' ),
 				'message_after'            => __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
 				'message_comment'          => isset( $default_texts['message_comment'] ) ? $default_texts['message_comment'] : __( 'Please fill in the comment box below.', 'quiz-master-next' ),
 				'message_end_template'     => '',
