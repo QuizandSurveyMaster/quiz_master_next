@@ -3168,7 +3168,7 @@ msgid "No animation"
 msgstr ""
 
 #: php/classes/class-qmn-quiz-creator.php:80
-msgid "Welcome to your %QUIZ_NAME%"
+msgid "%QUIZ_NAME%"
 msgstr ""
 
 #: php/classes/class-qmn-quiz-creator.php:81
