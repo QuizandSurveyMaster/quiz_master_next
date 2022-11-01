@@ -403,7 +403,6 @@ var QSMAdmin;
             $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $(href).show();
         });
-
         // opens media library o set featured image for quiz
         $(document).on('click', '#set_featured_image', function (e) {
             var button = $(this);
