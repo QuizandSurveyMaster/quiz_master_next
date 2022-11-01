@@ -1887,7 +1887,6 @@ td.scheduled_time_start {
 	background: #fff;
 	overflow:auto; 
 	border-left-color:   #FBBF24;
-	margin: 10px 15px 2px;
 	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
 	border-left-width: 4px;
 }
@@ -1906,6 +1905,12 @@ td.scheduled_time_start {
 	margin:20px 20px;
 	float:right;
 }
+
+.qsm-nonce-validation span{ 
+	display: inline-block;
+	margin-top: 2px;
+}
+
 /** * Style tab design */
 .wp-upload-form {
 	background: #fafafa;
