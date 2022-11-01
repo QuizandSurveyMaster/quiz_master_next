@@ -114,7 +114,7 @@ function mlw_options_text_tab_content() {
 								<!-- Variable text -->
 								<div class="quiz_text_tab_content qsm_variable_text" style="display:none;" id="qsm_variable_text" >
 									<div class="left-bar">
-										<h2><?php esc_html_e( 'Select Message', 'quiz-master-next' ); ?></h2>
+										<h2><?php esc_html_e( 'Select Variable Text', 'quiz-master-next' ); ?></h2>
 										<ul>
 											<?php
 											if ( $editor_text_arr ) {
@@ -192,7 +192,6 @@ function mlw_options_text_tab_content() {
 				</div>
 			</div>
 		</div>
-		<div class="qsm_text_customize_label"><?php esc_html_e( 'Customize Labels', 'quiz-master-next' ); ?> <span class="dashicons dashicons-arrow-down-alt"></span></div>
 	</div>
 
 	<?php
