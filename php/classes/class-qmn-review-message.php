@@ -124,4 +124,3 @@ class QMN_Review_Message {
 	}
 }
 $qmn_review_message = new QMN_Review_Message();
-?>
