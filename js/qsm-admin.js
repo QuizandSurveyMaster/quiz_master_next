@@ -403,7 +403,6 @@ var QSMAdmin;
             $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $(href).show();
         });
-
         // opens media library o set featured image for quiz
         $(document).on('click', '#set_featured_image', function (e) {
             var button = $(this);
@@ -668,8 +667,8 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('.quiz_text_tab_content').hide();
     jQuery("#postbox-container-1").show();
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
-    if(current_id == 'qsm_variable_text'){ jQuery("#qsm_variable_text").css("display", "flex"); jQuery(".current_variable")[0].click();}
-    if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
+    if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
+    if(current_id == 'qsm_custom_label'){ jQuery("#qsm_custom_label").css("display", "block"); jQuery("#postbox-container-1").css("display", "none");}
     jQuery('#' + current_id).show();
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
@@ -1634,6 +1633,7 @@ var import_button;
                     }
                     $('#question-bank').append(template({
                         id: question.id,
+                        type: question.type,
                         question: questionText,
                         category: question.category,
                         quiz_name: question.quiz_name
@@ -1868,6 +1868,7 @@ var import_button;
                     }
                     $('.page:nth-child(' + page + ')').append(template({
                         id: model.id,
+                        type: model.get('type'),
                         category: model.get('category'),
                         question: questionName
                     }));

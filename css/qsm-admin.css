@@ -822,6 +822,13 @@ ul.changelog li.update div.two:before {
 	flex-direction: row;
 	border: 1px solid #dfd4d4;
 }
+
+#poststuff .qsm_custom_label .qsm_custom_label-head{
+	padding-left: 20px;
+	padding-top: 20px;
+	margin:0;
+}
+
 .quiz_text_tab_content form{
 	display:flex;
 	align-items: stretch;
@@ -1225,6 +1232,15 @@ div#modal-6 label {
 	color: #999;
 	font-style: italic;
 }
+#modal-6 .qsm-popup__content{
+	padding: 20px 0 0 20px;
+	box-shadow: inset 0 0 10px 0px #ddd;
+}
+	
+#modal-6 .qsm-popup__container{
+	max-width: 600px;
+}	
+
 #modal-6 .button>span.dashicons {
 	line-height: 29px;
 }
@@ -1948,6 +1964,51 @@ td.scheduled_time_start {
 .qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a{
 	width: auto;margin-right: 10px;font-weight: 500;font-size: 14px;padding: 10px 20px;
 }
+#modal-6 .sc-shortcode-input{
+	padding:5px;
+	width:400px;
+	max-width:400px!important;
+}
+.qsm-popup-nonce-validation{
+	padding:12px;
+	width:90%;
+}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning{
+	font-size:12px;
+	padding:5px;
+}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning img{width: auto;height: 15px;margin-right: 8px;}
+.qsm-popup-nonce-validation .qsm-popup-upgrade-warning a{font-weight: bold;}
+
+.qsm-nonce-validation {
+	border: 1px solid #FBBF24;
+	background: #fff;
+	overflow:auto; 
+	border-left-color:   #FBBF24;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+	border-left-width: 4px;
+}
+.qsm-nonce-validation img{
+	float: left;
+	width: auto;
+	height: 30px;
+	margin: 25px 20px;
+	margin-left:20px;
+}
+.qsm-nonce-text{
+	float: left;
+	margin-top:20px;
+}
+.qsm-nonce-validation .button-secondary{
+	margin:20px 20px;
+	float:right;
+}
+
+.qsm-nonce-validation span{ 
+	display: inline-block;
+	margin-top: 2px;
+}
+
 /** * Style tab design */
 .wp-upload-form {
 	background: #fafafa;
@@ -2593,6 +2654,11 @@ input#duplicate_questions {
 	width: 100%;
 	max-width: 100%;
 	min-width: auto;
+}
+.qsm-quiz-warning-icon {
+    color: #b32d2e;
+    margin: 0 5px;
+    cursor: pointer;
 }
 /*QSM quiz theme setting tabs start*/
 .qsm-quiz-theme-option-subheading {
