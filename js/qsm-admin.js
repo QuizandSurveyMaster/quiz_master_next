@@ -651,6 +651,8 @@ jQuery('.quiz_style_tab').click(function (e) {
 jQuery('.quiz_text_tab_custom').click(function (e) {
     e.preventDefault();
     var current_id = jQuery(this).attr('data-id');
+    var text_label = jQuery(this).attr('data-label');
+    jQuery(".select_message_custom").html(text_label);
     jQuery('.quiz_text_tab_custom').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');

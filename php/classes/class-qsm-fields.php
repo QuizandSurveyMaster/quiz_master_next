@@ -186,28 +186,29 @@ class QSM_Fields {
 				<div class="left-bar">
 					<ul class="qsm-custom-label-left-menu-ul">
 						<li class="qsm-custom-label-left-menu currentli">
-							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-button" data-label="Buttons" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> 
 						</li>
 						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-validation-messages" data-label="Validation Messages" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Validation Messages', 'quiz-master-next' ); ?>
 							</a> 
 						</li>
 						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-other" class="quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-other" data-label="Other" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Other', 'quiz-master-next' ); ?>
 							</a> 
 						</li>
 						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-legacy" data-label="Legacy" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 							</a>
 						</li>
 					</ul>
 				</div>
-				<div class="right-bar">
-					<div id="text-button" class="quiz_style_tab_content">
+				<div class="right-bar qsm-custom-right-bar">
+				<h2 class ="select_message_custom"><?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></h2>
+					<div id="text-button" class="quiz_style_tab_content qsm-text-content">
 						<table class="form-table">
 						<?php
 						// Cycles through each field
@@ -266,7 +267,7 @@ class QSM_Fields {
 					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 				}
 			endif; ?>
-			<div class="qsm-tab-btns">
+			<div class="qsm-tab-btns qsm-custom-label-btns">
 				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
