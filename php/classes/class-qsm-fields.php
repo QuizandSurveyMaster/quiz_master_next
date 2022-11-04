@@ -184,10 +184,10 @@ class QSM_Fields {
 			<?php
 			elseif ( 'text' === $current_tab ) : ?>
 				<div class="left-bar">
-				<h2 class="qsm_custom_label-head"><?php esc_html_e( 'Select Labels', 'quiz-master-next' ); ?></h2>	
+				<h2><?php esc_html_e( 'Select Labels', 'quiz-master-next' ); ?></h2>	
 					<ul class="qsm-custom-label-left-menu-ul">
 						<li class="qsm-custom-label-left-menu currentli">
-							<a href="javascript:void(0)" data-id="text-button"  class="current quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a> 
 						</li>
 						<li class="qsm-custom-label-left-menu">
@@ -201,7 +201,7 @@ class QSM_Fields {
 							</a> 
 						</li>
 						<li class="qsm-custom-label-left-menu">
-							<a href="javascript:void(0)" data-id="text-legacy"  class="quiz_text_tab_custom">
+							<a href="javascript:void(0)" data-id="text-legacy" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 							</a>
 						</li>
@@ -272,7 +272,7 @@ class QSM_Fields {
 					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 				}
 			endif; ?>
-			<div class="qsm-tab-btns qsm-custom-label-btns">
+			<div class="qsm-tab-btns">
 				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
