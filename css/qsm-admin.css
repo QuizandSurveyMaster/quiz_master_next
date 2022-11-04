@@ -815,11 +815,6 @@ ul.changelog li.update div.two:before {
 	align-items: flex-end;
 	justify-content: flex-start;
 }
-#poststuff .qsm_custom_label .qsm_custom_label-head{
-	padding-left: 20px;
-	padding-top: 20px;
-	margin:0;
-}
 .quiz_text_tab_content{
 	display:flex;
 	align-items: stretch;
@@ -859,14 +854,6 @@ ul.changelog li.update div.two:before {
     padding: 15px;
     box-sizing: border-box;
     border-left: 1px solid #dfd4d4;
-}
-#qsm_custom_label .qsm-custom-right-bar{
-	position:absolute;
-	top:0px;
-	right:0px;
-}
-.qsm-custom-label-btns{
-	padding-top: 100px;
 }
 .quiz_text_tab_content .left-bar ul{
 	display:flex;

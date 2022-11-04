@@ -651,8 +651,6 @@ jQuery('.quiz_style_tab').click(function (e) {
 jQuery('.quiz_text_tab_custom').click(function (e) {
     e.preventDefault();
     var current_id = jQuery(this).attr('data-id');
-    var text_label = jQuery(this).attr('data-label');
-    jQuery(".select_message_custom").html(text_label);
     jQuery('.quiz_text_tab_custom').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
@@ -670,7 +668,7 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery("#postbox-container-1").show();
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
-    if(current_id == 'qsm_custom_label'){ jQuery("#qsm_custom_label").css("display", "block"); jQuery("#postbox-container-1").css("display", "none");}
+    if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
     jQuery('#' + current_id).show();
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
