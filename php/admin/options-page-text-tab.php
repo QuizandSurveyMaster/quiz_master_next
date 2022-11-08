@@ -107,8 +107,7 @@ function mlw_options_text_tab_content() {
 								</div>
 								<!-- Custom lable -->
 								<div class="quiz_text_tab_content qsm_custom_label"   style="display:none;" id="qsm_custom_label" >
-								<h2 class="qsm_custom_label-head"><?php esc_html_e( 'Select Labels', 'quiz-master-next' ); ?></h2>
-								<div class="qsm-text-label-wrapper" >
+								<div class="qsm-text-label-wrapper">
 									<?php
 									$mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
 									?>

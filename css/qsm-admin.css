@@ -815,11 +815,6 @@ ul.changelog li.update div.two:before {
 	align-items: flex-end;
 	justify-content: flex-start;
 }
-#poststuff .qsm_custom_label .qsm_custom_label-head{
-	padding-left: 20px;
-	padding-top: 20px;
-	margin:0;
-}
 .quiz_text_tab_content{
 	display:flex;
 	align-items: stretch;
