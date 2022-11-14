@@ -1250,14 +1250,20 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$user_answer_new = __( 'No Answer Provided', 'quiz-master-next' );
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
 			$caption = "";
 			if ( ! empty($single_answer[3]) ) {
 				$caption_name = array_search($image_url, $image_list, true);
 				$caption = '<span class="qsm_image_result_caption">'.$caption_name.'</span>';
-
 			}
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br$caption ", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'  style='" . esc_attr( $size_style ) . "'/>$close_span_with_br$caption ", $mlw_question_answer_display );
 
 
 		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
