@@ -13,7 +13,6 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_answer_key                       = 'input';
 			$user_answer_value                     = $this->sanitize_answer_from_post( wp_unslash( $_POST[ 'question' . $this->question_id ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$user_answer_value                     = $this->decode_response_from_text_field( $user_answer_value );
 			$this->user_answer[ $user_answer_key ] = $user_answer_value;
 		}
 	}
