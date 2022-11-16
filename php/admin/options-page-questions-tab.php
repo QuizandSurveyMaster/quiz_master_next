@@ -1122,6 +1122,7 @@ function qsm_options_questions_tab_template() {
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
 			<div class="remove-answer-icon"><a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-remove"></span></a></div>
+			<?php do_action( 'qsm_admin_single_answer_option_fields_before' ); ?>
 			<div class="answer-text-div qsm-editor-wrap">
 				<# if ( 'rich' == data.answerType ) { #>
 					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
