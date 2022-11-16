@@ -74,6 +74,15 @@
     align-items: center;
 }
 
+.qsm-create-btn-div{
+	cursor:not-allowed;
+}
+
+.qsm-add-role{
+	opacity:0.6;
+	pointer-events: none !important;
+}
+
 .popover-count {
     top: -2px !important;
     right: unset!important;
