@@ -122,11 +122,22 @@ function qsm_generate_dashboard_page() {
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
-					<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<?php 
+					$classname = "";
+				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
+					$classes = explode(",",$classname);
+					$classesname1 = (isset($classes[0]) && $classes[0] != "")? $classes[0] : "";
+					$classesname2 = (isset($classes[1]) && $classes[1] != "")? $classes[1] : "";
+					?>
+						<div class="<?php echo $classesname1;?>"><a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize <?php echo $classesname2;?>"
+						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' )?></a></div>
 					<p class="hide-if-no-customize">
-						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
+						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'View all quizzes', 'quiz-master-next' )?></a>
 					</p>
+					
+						
+					
+					
 				</div>
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>
