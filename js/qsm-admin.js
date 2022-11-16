@@ -1974,9 +1974,10 @@ var import_button;
                     var answerType = $('#change-answer-editor').val();
                     var matchAnswer = $('#match-answer').val();
 
-                    var answers = [];
-                    var $answers = jQuery('.answers-single');
-                    _.each($answers, function (answer) {
+                    var intcnt = 1;
+					var answers = [];
+                    var $answersElement = jQuery('.answers-single');
+                    _.each($answersElement, function (answer) {
                         var $answer = jQuery(answer);
                         var answer = '';
                         var caption = '';
@@ -1998,14 +1999,17 @@ var import_button;
                         if ($answer.find('.answer-correct').prop('checked')) {
                             correct = 1;
                         }
-
+						
+						var ansData = [answer, points, correct];
                         if (answerType == 'image') {
-                            answers.push([answer, points, correct, caption]);
-                        } else {
-                            answers.push([answer, points, correct]);
+							ansData.push(caption);
                         }
-
+						ansData = QSMQuestion.answerFilter(ansData, $answer, answerType);
+						answers.push(ansData);
+						intcnt++
                     });
+					model.set('answers', answers);
+					
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
                             $($(this).find('input[type="text"]')).each(function () {
@@ -2027,6 +2031,7 @@ var import_button;
                             advanced_option[element_id] = multi_value;
                         }
                     });
+					
                     model.save({
                         quizID: quizID,
                         type: type,
@@ -2054,6 +2059,9 @@ var import_button;
                     });
                     jQuery(document).trigger('qsm_save_question', [questionID, CurrentElement]);
                 },
+                answerFilter: function (ansData, $answer, answerType) {
+					return ansData;
+				},
                 saveSuccess: function (model) {
                     QSMAdmin.displayAlert(qsm_admin_messages.question_saved, 'success');
                     var template = wp.template('question');
@@ -2089,30 +2097,31 @@ var import_button;
                         questionType = $('#question_type').val();
                     }
                     var answerTemplate = wp.template('single-answer');
-                    if (answer.length >= 7 && answer[6] == 'image') {
-                        $('#answers').append(answerTemplate({
+					var ansTemp = {
+						answer: decodeEntities(answer[0]),
+						points: answer[1],
+						correct: answer[2],
+						count: answer['index'],
+						question_id: answer['question_id'],
+						answerType: answer['answerType'],
+						form_type: qsmQuestionSettings.form_type,
+						quiz_system: qsmQuestionSettings.quiz_system
+					};
+                    if (answer['answerType'] == 'image') {
+						ansTemp = {
                             answer: decodeEntities(answer[0]),
                             points: answer[1],
                             correct: answer[2],
                             caption: answer[3],
-                            count: answer[4],
-                            question_id: answer[5],
-                            answerType: answer[6],
+                            count: answer['index'],
+							question_id: answer['question_id'],
+							answerType: answer['answerType'],
                             form_type: qsmQuestionSettings.form_type,
                             quiz_system: qsmQuestionSettings.quiz_system
-                        }));
-                    } else {
-                        $('#answers').append(answerTemplate({
-                            answer: decodeEntities(answer[0]),
-                            points: answer[1],
-                            correct: answer[2],
-                            count: answer[3],
-                            question_id: answer[4],
-                            answerType: answer[5],
-                            form_type: qsmQuestionSettings.form_type,
-                            quiz_system: qsmQuestionSettings.quiz_system
-                        }));
+                        };
                     }
+					jQuery(document).trigger('qsm_new_answer_template', [ansTemp, answer, questionType]);
+					$('#answers').append(answerTemplate(ansTemp));
 
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
@@ -2130,8 +2139,8 @@ var import_button;
                         }
                     }
 
-                    if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
-                        var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
+                    if (answer['answerType'] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
+                        var textarea_id = 'answer-' + answer['question_id'] + '-' + answer['index'];
                         wp.editor.remove(textarea_id);
                         var settings = {
                             mediaButtons: true,
@@ -2261,11 +2270,11 @@ var import_button;
                             $("input[name='file_upload_type[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true");
                         });
                     }
-                    var al = 0;
-                    _.each(answers, function (answer) {
-                        answer.push(al + 1);
-                        answer.push(questionID);
-                        answer.push(answerEditor);
+                    var al = 1;
+					_.each(answers, function (answer) {
+                        answer['index'] = al;
+                        answer['question_id'] = questionID;
+                        answer['answerType'] = answerEditor;
                         QSMQuestion.addNewAnswer(answer, question.get('type'));
                         al++;
                     });
@@ -2612,7 +2621,10 @@ var import_button;
                     }
                     var question_id = $('#edit_question_id').val();
                     var answerType = $('#change-answer-editor').val();
-                    var answer = ['', '', 0, answer_length + 1, question_id, answerType];
+                    var answer = ['', '', 0];
+					answer['index'] = answer_length + 1;
+					answer['question_id'] = question_id;
+					answer['answerType'] = answerType;
                     QSMQuestion.addNewAnswer(answer, 0);
                 });
 

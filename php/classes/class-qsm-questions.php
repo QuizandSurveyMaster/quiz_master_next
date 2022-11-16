@@ -292,7 +292,7 @@ class QSM_Questions {
 			}
 			$sanitize_answers[ $key ] = $answers_array;
 		}
-		$answers = apply_filters( 'qsm_answers_before_save', $sanitize_answers, $answers, $data );
+		$answers = apply_filters( 'qsm_answers_before_save', $sanitize_answers, $answers, $data, $settings );
 
 		$question_name             = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
 		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
