@@ -1136,13 +1136,13 @@ function qsm_options_questions_tab_template() {
 			</div>
 			<# if ( 0 == data.form_type ) { #>
 				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+					<div class="answer-point-div"><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 				<# } #>
 				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></label></div>
+					<div class="answer-correct-div"><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></label></div>
 				<# } #>
 			<# } else { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+					<div class="answer-point-div"><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<# } #>
 			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>
