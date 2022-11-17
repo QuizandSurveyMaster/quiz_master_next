@@ -2614,18 +2614,19 @@ var import_button;
                 });
                 $(document).on('click', '#new-answer-button', function (event) {
                     event.preventDefault();
+                    var question_id = $('#edit_question_id').val();
+                    var questionType = $('#question_type').val();
                     var answer_length = $('#answers').find('.answers-single').length;
+                    var answerType = $('#change-answer-editor').val();
                     if (answer_length > 1 && $('#question_type').val() == 13) {
                         alert(qsm_admin_messages.polar_options_validation);
                         return;
                     }
-                    var question_id = $('#edit_question_id').val();
-                    var answerType = $('#change-answer-editor').val();
                     var answer = ['', '', 0];
 					answer['index'] = answer_length + 1;
 					answer['question_id'] = question_id;
 					answer['answerType'] = answerType;
-                    QSMQuestion.addNewAnswer(answer, 0);
+                    QSMQuestion.addNewAnswer(answer, questionType);
                 });
 
                 $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
