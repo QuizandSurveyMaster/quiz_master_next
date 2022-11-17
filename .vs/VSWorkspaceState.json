@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\js",
+    "\\js\\config",
+    "\\js\\extensions",
+    "\\js\\mathjax"
   ],
-  "SelectedNode": "\\readme.txt",
   "PreviewInSolutionExplorer": false
 }
