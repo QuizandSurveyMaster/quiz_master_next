@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.0.5 (Oct 20, 2022) =
+= 8.0.6 (Nov 21, 2022) =
 * Feature: Added option to search by quiz in question bank
 * Feature: Added option to set image size in email template
 * Bug: Fixed timer issue with multiple quiz shortcodes
