@@ -163,7 +163,7 @@ function qsm_generate_quiz_options() {
 						<button type="submit"  style="float:right;"   id="nonce_validation_notification" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
 					</form>
 					</div>
-					<?php  } ?> 
+					<?php  } ?>
 			<?php if ( $quiz_id ) {
 				$active_class_aadon = true;
 				?>
@@ -314,7 +314,10 @@ function qsm_generate_quiz_options() {
 		}
 		if ( ! empty($style_tags) ) {
 			?>
-			<style type="text/css"><?php echo implode( ', ', $style_tags )?>{border-color: red;}</style>
+			<style type="text/css">
+				<?php echo implode( ', ', $style_tags ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>
+				{border-color: red;}
+				</style>
 			<?php
 		}
 	?>
