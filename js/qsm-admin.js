@@ -191,7 +191,6 @@ var QSMAdmin;
             jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
             jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
-                console.log(data);
                 if (data.success === true) {
                     var text_msg = data.text_message;
                     if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
@@ -202,39 +201,35 @@ var QSMAdmin;
                     }
                     jQuery('.qsm-text-allowed-variables > .qsm-text-variable-wrap').html('').html(data.allowed_variable_text);
                     jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
-                } else {
-                    console.log(data.message);
                 }
             });
         });
-                //Get the message in text tab variable
-                jQuery(document).on('click', '.quiz_text_tab_message_variable', function () {
-                    var text_id = jQuery(this).attr('data-id');
-                    var text_label = jQuery(this).attr('data-label');
-                    jQuery(".select_message_variable").html(text_label);
-                    jQuery('.quiz_style_tab').removeClass('current_variable');
-                    jQuery('.qsm-custom-label-left-menu').removeClass('currentli_variable');
-                    jQuery(this).addClass('current_variable');
-                    jQuery(this).parent().addClass('currentli_variable');
-                    jQuery('#' + text_id).show();   
-                    jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
-                    jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
-                        var data = jQuery.parseJSON(response);
-                        if (data.success === true) {
-                            var text_msg = data.text_message;
-                            if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
-                                jQuery("#qsm_question_text_message_variable").val(text_msg);
-                            } else {
-                                text_msg = text_msg.replace(/\n/g, "<br>");
-                                tinyMCE.get('qsm_question_text_message_variable').setContent(text_msg);
-                            }
-                            jQuery('.qsm-text-allowed-variables > .qsm-text-variable-wrap').html('').html(data.allowed_variable_text);
-                            jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
-                        } else {
-                            console.log(data.message);
-                        }
-                    });
-                });
+		//Get the message in text tab variable
+		jQuery(document).on('click', '.quiz_text_tab_message_variable', function () {
+			var text_id = jQuery(this).attr('data-id');
+			var text_label = jQuery(this).attr('data-label');
+			jQuery(".select_message_variable").html(text_label);
+			jQuery('.quiz_style_tab').removeClass('current_variable');
+			jQuery('.qsm-custom-label-left-menu').removeClass('currentli_variable');
+			jQuery(this).addClass('current_variable');
+			jQuery(this).parent().addClass('currentli_variable');
+			jQuery('#' + text_id).show();   
+			jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
+			jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
+				var data = jQuery.parseJSON(response);
+				if (data.success === true) {
+					var text_msg = data.text_message;
+					if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
+						jQuery("#qsm_question_text_message_variable").val(text_msg);
+					} else {
+						text_msg = text_msg.replace(/\n/g, "<br>");
+						tinyMCE.get('qsm_question_text_message_variable').setContent(text_msg);
+					}
+					jQuery('.qsm-text-allowed-variables > .qsm-text-variable-wrap').html('').html(data.allowed_variable_text);
+					jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
+				}
+			});
+		});
         //Save the message in text tab general text
         jQuery(document).on('click', '#qsm_save_text_message', function () {
             var $this = jQuery(this);
@@ -245,28 +240,24 @@ var QSMAdmin;
                 var data = jQuery.parseJSON(response);
                 if (data.success === true) {
                     //Do nothing
-                } else {
-                    console.log(data.message);
                 }
                 $this.siblings('.spinner').removeClass('is-active');
             });
         });
-            //Save the message in text tab variable text
-            jQuery(document).on('click', '#qsm_save_text_message_variable', function () {
-                var $this = jQuery(this);
-                $this.siblings('.spinner').addClass('is-active');
-                var text_id =  jQuery(".currentli_variable .current_variable").data('id');
-                var message =  wp.editor.getContent('qsm_question_text_message_variable');
-                jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
-                    var data = jQuery.parseJSON(response);
-                    if (data.success === true) {
-                        //Do nothing
-                    } else {
-                        console.log(data.message);
-                    }
-                    $this.siblings('.spinner').removeClass('is-active');
-                });
-            });
+		//Save the message in text tab variable text
+		jQuery(document).on('click', '#qsm_save_text_message_variable', function () {
+			var $this = jQuery(this);
+			$this.siblings('.spinner').addClass('is-active');
+			var text_id =  jQuery(".currentli_variable .current_variable").data('id');
+			var message =  wp.editor.getContent('qsm_question_text_message_variable');
+			jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
+				var data = jQuery.parseJSON(response);
+				if (data.success === true) {
+					//Do nothing
+				}
+				$this.siblings('.spinner').removeClass('is-active');
+			});
+		});
         //On click append on tiny mce
         jQuery(document).on('click', '.qsm-text-allowed-variables button.button', function () {
             var content = jQuery(this).text();
