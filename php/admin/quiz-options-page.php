@@ -26,7 +26,7 @@ function qsm_generate_quiz_options() {
 	//user role addon is active
 	apply_filters('qsm_user_role_permission_page',true);
 	// Check user capability
-	if (!class_exists('QSM_User_Role')) {
+	if ( ! class_exists('QSM_User_Role') ) {
 	$user = wp_get_current_user();
 	if ( in_array( 'author', (array) $user->roles, true ) ) {
 		$user_id        = sanitize_text_field( $user->ID );
