@@ -123,7 +123,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							$invalid_types[] = 18;
 						}
 						if ( ! empty( array_intersect( $invalid_types, $q_types ) ) ) {
-							echo '<span class="dashicons dashicons-warning qsm-quiz-warning-icon" title="' . __( '', 'quiz-master-next' ) . '"></span>';
+							echo '<span class="dashicons dashicons-warning qsm-quiz-warning-icon"></span>';
 						}
 					}
 					break;
@@ -469,7 +469,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
 				?>
-				
 				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-nonce-alert" id="modal-6" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
