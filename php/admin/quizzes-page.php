@@ -302,7 +302,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<div class="wrap qsm-quizes-page">
 					<h1>
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' );
-						 $add_button ='<a id="new_quiz_button" href="#" class="add-new-h2">'.esc_html__( 'Add New', 'quiz-master-next' ).'</a>';
+						 $add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">'.esc_html__( 'Add New', 'quiz-master-next' ).'</a>';
 						echo apply_filters( 'qsm_add_quiz_after', $add_button);?>
 					</h1>
 					<?php
