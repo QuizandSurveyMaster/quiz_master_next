@@ -5,7 +5,7 @@
 	align-items: center;
 	flex-wrap: nowrap;
 }
-.qsm_tab_content a.button-gray{
+.qsm_tab_content a.button-gray {
 	border: transparent;
 }
 #delete-question-button {
@@ -18,10 +18,10 @@
 	flex-wrap: nowrap;
 }
 #delete-question-button .dashicons,
-#unlink-question-button .dashicons{
+#unlink-question-button .dashicons {
 	margin-right: 5px;
 }
-#modal-7 .qsm-popup__container{
+#modal-7 .qsm-popup__container {
 	max-width: 560px;
 }
 #modal-8 {
@@ -37,11 +37,11 @@
 	margin: -10px -10px 0 0;
 	font-size: 20px;
 }
-#modal-8-title{
+#modal-8-title {
 	color: #00449e;
 	opacity: 70%;
 }
-#modal-8 footer .dashicons{
+#modal-8 footer .dashicons {
 	font-size: 20px;
 	margin-right: 3px;
 	vertical-align: middle;
@@ -115,7 +115,7 @@
 	background-color: #fafafa;
 	box-shadow: 0 -2px 6px 0 #dadadb;
 }
-.page-footer a.qsm-dashed-btn{
+.page-footer a.qsm-dashed-btn {
 	min-width: 45%;
 	padding: 8px 15px;
 }
@@ -163,14 +163,14 @@
 	align-content: center;
 	position: relative;
 }
-.question-content-title-box{
+.question-content-title-box {
 	max-width: calc(100% - 200px);
 	line-height: 20px;
 }
-.question-content .qsm-actions-link-box{
+.question-content .qsm-actions-link-box {
 	display: none;
 }
-.question.opened .qsm-actions-link-box, .question-content:hover .qsm-actions-link-box{
+.question.opened .qsm-actions-link-box, .question-content:hover .qsm-actions-link-box {
 	display: inline-flex;
 }
 .question-content .dashicons.dashicons-move {
@@ -183,7 +183,7 @@
 	font-weight: 500;
 	margin: 2px 0;
 }
-.question-content .form-actions{
+.question-content .form-actions {
 	display: inline-flex;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -220,22 +220,22 @@
 	top: 5px;
 	vertical-align: top;
 }
-.qsm-question-bank-filters{
+.qsm-question-bank-filters {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: nowrap;
 	padding: 0 20px;
 }
-.qsm-question-bank-search{
+.qsm-question-bank-search {
 	display: inline-flex;
 }
-#modal-2 .qsm-popup__footer.qsm-question-bank-footer{
+#modal-2 .qsm-popup__footer.qsm-question-bank-footer {
 	display: none;
 }
-#modal-2 .qsm-popup__footer.qsm-question-bank-footer.opened{
+#modal-2 .qsm-popup__footer.qsm-question-bank-footer.opened {
 	display: flex;
 }
-.postbox-container .postbox{
+.postbox-container .postbox {
 	background: #fefefe;
 	border: 1px solid #f0f0f0;
 }
@@ -318,10 +318,10 @@ input#image_size-width {
 	position: relative;
 	top: 2px;
 }
-.qsm-editor-wrap #wp-question-text-wrap{
+.qsm-editor-wrap #wp-question-text-wrap {
 	margin-bottom: 20px;
 }
-.qsm-editor-wrap .wp-media-buttons{
+.qsm-editor-wrap .wp-media-buttons {
 	float: right;
 	margin: 6px 0 -3px 5px;
 }
@@ -364,15 +364,15 @@ input#image_size-width {
 .questionElements .qsm-tooltips-icon {
 	cursor: help;
 }
-#modal-2 .qsm-popup__content{
+#modal-2 .qsm-popup__content {
 	padding: 20px 0 0;
 }
-#modal-page-1 .qsm-popup__footer, #modal-2 .qsm-popup__footer, #modal-7 .qsm-popup__footer{
+#modal-page-1 .qsm-popup__footer, #modal-2 .qsm-popup__footer, #modal-7 .qsm-popup__footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
-#modal-2 #question-bank{
+#modal-2 #question-bank {
 	display: inline-block;
 	width: 100%;
 	box-sizing: border-box;
@@ -542,7 +542,7 @@ a.import-button.button.disable_import::before {
 	font-size: 14px;
 	text-decoration: none;
 }
-.qsm-hide-question-desc-box{
+.qsm-hide-question-desc-box {
 	display: inline-block;
 	font-size: 14px;
 	text-decoration: none;
@@ -562,14 +562,14 @@ a#qsm-category-add-toggle {
 	text-decoration: underline;
 	cursor: pointer;
 }
-#categorydiv .inside{
+#categorydiv .inside {
 	margin: 0;
 	padding: 0;
 }
-.multi_category_area{
+.multi_category_area {
 	margin: 0;
 }
-.multi_category_area .qsm-category-filter{
+.multi_category_area .qsm-category-filter {
 	margin: 0;
 	border-width: 0 !important;
 	border-bottom: 1px solid #eee !important;
@@ -585,7 +585,7 @@ a#qsm-category-add-toggle {
 	overflow-y: auto;
 	font-size: 14px;
 }
-.multi_category_area ul{
+.multi_category_area ul {
 	margin: 0;
 }
 .multi_category_area a.add-multiple-category {
