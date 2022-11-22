@@ -103,7 +103,7 @@ div .quiz_section .question-type-polar-s,
     margin-right: 30px;
 }
 .submit-the-form {
-    margin-left: 15px ;
+    margin-left: 15px !important;
 }
 body .qsm-popup__container {
     padding-top: 40px;
