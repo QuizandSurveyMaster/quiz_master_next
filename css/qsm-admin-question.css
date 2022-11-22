@@ -677,8 +677,8 @@ a#qsm-category-add-toggle {
 	.page{padding-bottom: 100px;}
 	.page-footer .page-header-buttons{flex-wrap: nowrap;}
 	.page-footer a.qsm-dashed-btn{
-	    font-size: 12px;
-	    padding: 5px 5px;
-	    margin: 5px;
+		font-size: 12px;
+		padding: 5px 5px;
+		margin: 5px;
 	}
 }
