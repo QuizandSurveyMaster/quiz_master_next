@@ -17,7 +17,8 @@
 	align-items: center;
 	flex-wrap: nowrap;
 }
-#delete-question-button .dashicons, #unlink-question-button .dashicons{
+#delete-question-button .dashicons,
+#unlink-question-button .dashicons{
     margin-right: 5px;
 }
 #modal-7 .qsm-popup__container{
@@ -118,7 +119,8 @@
 	min-width: 45%;
 	padding: 8px 15px;
 }
-.page-footer a.button .dashicons, .new-answer-button a#new-answer-button .dashicons {
+.page-footer a.button .dashicons, 
+.new-answer-button a#new-answer-button .dashicons {
 	line-height: 32px;
 }
 .question-create-page {
@@ -250,7 +252,8 @@
 .question-bank-question>div:nth-child(2) {
 	width: 75%;
 }
-.page-new, .question-new {
+.page-new, 
+.question-new {
 	background-color: #fff !important;
 }
 .correct-header {
@@ -265,7 +268,8 @@
 	position: relative;
 	flex-direction: row;
 }
-.answers-single select, .answers-single textarea, .answers-single input[type=text], .answers-single input[type=number]{
+.answers-single select, .answers-single textarea, 
+.answers-single input[type=text], .answers-single input[type=number] {
 	padding: 4px 10px;
 	margin: 0;
 }
@@ -297,7 +301,8 @@
     box-sizing: border-box;
     margin: 20px 0 0;
 }
-.qsm-feature-image-upl, .qsm-feature-image-rmv {
+.qsm-feature-image-upl,
+.qsm-feature-image-rmv {
 	display: block;
 	width: 100%;
 	font-size: 14px;
@@ -590,7 +595,8 @@ a#qsm-category-add-toggle {
 	margin: 10px 12px 10px;
 	text-decoration: none;
 }
-.quiz_form_type_0.quiz_quiz_systen_3 #question_type_13_description, .quiz_form_type_0.quiz_quiz_systen_1 #question_type_13_description {
+.quiz_form_type_0.quiz_quiz_systen_3 #question_type_13_description, 
+.quiz_form_type_0.quiz_quiz_systen_1 #question_type_13_description {
 	display: none !important;
 }
 #qsm-question-id {

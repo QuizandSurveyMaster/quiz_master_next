@@ -1316,7 +1316,7 @@ tr .qsm-opt-desc {
 	position: relative;
 }
 td.scheduled_time_start {
-	padding-bottom: 0 !important;
+	padding-bottom: 0 ;
 }
 .qsm-opt-tr .qsm-tooltips-icon {
 	margin: 0 0 0 0;
@@ -2523,9 +2523,9 @@ input#duplicate_questions {
 	padding: 4px;
 	border-bottom: 1px solid #dadada;
 }
-.contact-tab-sidebar .inside{
+.contact-tab-sidebar .inside {
 	padding: 0px 15px 10px;
-	margin: 0 !important;
+	margin: 0 ;
 }
 .contact-tab-sidebar .inside .inside-row {
 	display: block;
