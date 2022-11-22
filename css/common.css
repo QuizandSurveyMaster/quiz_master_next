@@ -72,8 +72,8 @@ div .quiz_section .question-type-polar-s,
 	padding: 5px 5px 5px 27px;
 }
 .question-type-polar-s .ui-widget-content {
-	background: #A5A5A5;
-	border-color: #A5A5A5;
+	background: #a5a5a5;
+	border-color: #a5a5a5;
 	border-radius: 0;
 	height: 20px;
 }
@@ -320,7 +320,7 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 }
 .quiz_section.qmn_error .mlw_answer_date {
 	border: 1px solid #da4f49;
-	background: #F2DEDE;
+	background: #f2dede;
 	padding: 5px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
