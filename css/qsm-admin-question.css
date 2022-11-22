@@ -539,7 +539,7 @@ a.import-button.button.disable_import::before {
 }
 .qsm-show-question-desc-box {
 	display: inline-block;
-	margin-bottom: 10px !important;
+	margin-bottom: 10px;
 	font-size: 14px;
 	text-decoration: none;
 }
