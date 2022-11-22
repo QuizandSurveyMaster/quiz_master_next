@@ -600,7 +600,7 @@ class QMNQuizCreator {
 				);
 				foreach ( $update_pages as $pages_key => $pages_value ) {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
-						if ( $page_q_id === $mlw_question->question_id ) {
+						if ( intval($page_q_id) === intval($mlw_question->question_id) ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}

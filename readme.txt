@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 8.0.5
+Stable tag: 8.0.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.6 (Nov 22, 2022) =
+* Feature: Added option to search by quiz in question bank
+* Feature: Added option to set image size in email template
+* Bug: Fixed timer issue with multiple quiz shortcodes
+* Bug: Fixed issue with german and french language questions
+* Enhancement: Added alert for non active question types
+* Enhancement: Improved UI in text tabs
+
 = 8.0.5 (Oct 20, 2022) =
 * Bug: Fixed issue with random question and answers
 * Bug: Fixed issue with quiz timer

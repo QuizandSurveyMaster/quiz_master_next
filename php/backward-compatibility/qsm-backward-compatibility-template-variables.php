@@ -17,7 +17,14 @@ function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $
         }
         $image_class = '';
         if ( isset($question_settings['answerEditor']) && 'image' == $question_settings['answerEditor'] ) {
-            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '"/>';
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
+            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '" style="' . esc_attr( $size_style ) . '"/>';
             $image_class      = 'qmn_image_option';
         } else {
             $show_user_answer = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);
@@ -60,7 +67,14 @@ function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, 
         }
         $image_class = '';
         if ( isset($question_settings['answerEditor']) && 'image' == $question_settings['answerEditor'] ) {
-            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '"/>';
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
+            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '" style="' . esc_attr( $size_style ) . '"/>';
             $image_class      = 'qmn_image_option';
         } else {
             $show_user_answer = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);
@@ -85,7 +99,14 @@ function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $answers_from_db, $a
     foreach ( $answers_from_db as $single_answer ) {
         $image_class = '';
         if ( isset($question_settings['answerEditor']) && 'image' == $question_settings['answerEditor'] ) {
-            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '"/>';
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
+            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '" style="' . esc_attr( $size_style ) . '"/>';
             $image_class      = 'qmn_image_option';
         } else {
             $show_user_answer = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);
@@ -105,7 +126,14 @@ function qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $answers_from_db, $
     foreach ( $answers_from_db as $single_answer ) {
         $image_class = '';
         if ( isset($question_settings['answerEditor']) && 'image' == $question_settings['answerEditor'] ) {
-            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '"/>';
+			$size_style = '';
+			if ( ! empty($question_settings['image_size-width']) ) {
+				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
+			}
+			if ( ! empty($question_settings['image_size-height']) ) {
+				$size_style .= ' height:'.$question_settings['image_size-height'].'px !important;';
+			}
+            $show_user_answer = '<img src="' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '" style="' . esc_attr( $size_style ) . '"/>';
             $image_class      = 'qmn_image_option';
         } else {
             $show_user_answer = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);

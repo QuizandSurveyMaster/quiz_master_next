@@ -147,6 +147,23 @@ function qsm_generate_quiz_options() {
 			<div class="qsm-alerts">
 				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 			</div>
+			<?php $user_id = get_current_user_id();
+			if ( isset( $_POST['nonce_validation_notification'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce_validation_notification'] ) ), 'nonce_validation_notification' ) ) {
+				update_user_meta( $user_id, 'nonce_validation_notification' ,true);
+			}
+				if ( ! get_user_meta( $user_id, 'nonce_validation_notification' ) ) { ?>
+				<div class="qsm-nonce-validation">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
+					<div class="qsm-nonce-text">
+						<span> <strong><?php  echo esc_html__( "Your quiz has been created, you can now start adding questions.", 'quiz-master-next' ) ?></strong></span>
+						<br><span> <?php  echo esc_html__( "Please note: If you are using any cache plugins, please remember to exclude your quiz pages from cache to prevent", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue.", 'quiz-master-next' ) ?></a></span>
+					</div>
+					<form method="POST" action="">
+						<?php wp_nonce_field( 'nonce_validation_notification', 'nonce_validation_notification' ); ?>
+						<button type="submit"  style="float:right;"   id="nonce_validation_notification" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
+					</form>
+					</div>
+					<?php  } ?>
 			<?php if ( $quiz_id ) {
 				$active_class_aadon = true;
 				?>
@@ -274,6 +291,7 @@ function qsm_generate_quiz_options() {
 	add_action('admin_footer', 'qsm_quiz_options_notice_template');?>
 	<!--Div for the upgrade popup of advanced question type -->
 	<?php
+	$style_tags = array();
 		if ( ! class_exists('QSM_Advance_Question') ) {
 			$qsm_pop_up_arguments = array(
 				"id"           => 'modal-advanced-question-type',
@@ -287,6 +305,20 @@ function qsm_generate_quiz_options() {
 				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+			$style_tags[] = '.question[data-question-type="15"]';
+			$style_tags[] = '.question[data-question-type="16"]';
+			$style_tags[] = '.question[data-question-type="17"]';
+		}
+		if ( ! class_exists('QSM_Flashcards') ) {
+			$style_tags[] = '.question[data-question-type="18"]';
+		}
+		if ( ! empty($style_tags) ) {
+			?>
+			<style type="text/css">
+				<?php echo implode( ', ', $style_tags ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>
+				{border-color: red;}
+				</style>
+			<?php
 		}
 	?>
 <?php

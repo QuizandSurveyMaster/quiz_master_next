@@ -390,6 +390,10 @@ class QMNQuizManager {
 			}
 
 			// Loads Quiz Template.
+			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL . '/animate.css', array(), $mlwQuizMasterNext->version );
+			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
+			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
+			wp_enqueue_style( 'dashicons' );
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
 				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
@@ -409,10 +413,6 @@ class QMNQuizManager {
 					echo "<style type='text/css' id='qmn_quiz_template-css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
 				}
 			}
-			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL . '/animate.css', array(), $mlwQuizMasterNext->version );
-			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
-			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
-			wp_enqueue_style( 'dashicons' );
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
 			$folder_name      = QSM_THEME_PATH . $saved_quiz_theme . '/';
 			if ( file_exists( $folder_name . 'functions.php' ) ) {
@@ -1675,7 +1675,7 @@ class QMNQuizManager {
 			if ( 1 == $qmn_quiz_options->enable_retake_quiz_button ) {
 				$result_display .= '<form method="POST">';
 				$result_display .= '<input type="hidden" value="' . $qmn_array_for_variables['quiz_id'] . '" name="qsm_retake_quiz_id" />';
-				$result_display .= '<input type="submit" value="' . apply_filters( 'qsm_retake_quiz_text', $qmn_quiz_options->retake_quiz_button_text ) . '" name="qsm_retake_button" />';
+				$result_display .= '<input type="submit" value="' . apply_filters( 'qsm_retake_quiz_text', $qmn_quiz_options->retake_quiz_button_text ) . '" name="qsm_retake_button" class="qsm-btn qsm_retake_button qmn_btn" id="qsm_retake_button" />';
 				$result_display .= '</form>';
 			}
 

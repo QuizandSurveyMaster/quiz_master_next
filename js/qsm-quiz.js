@@ -22,7 +22,7 @@ var qsmTimerInterval = [];
 				$('.g-recaptcha').hide();
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
-					quizID = parseInt(quiz.quiz_id);
+					let quizID = parseInt(quiz.quiz_id);
 					QSM.initPagination(quizID);
 					qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					if ( ( quiz.hasOwnProperty('pagination') || ( _.keys(quiz.qpages).length > 1 && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
@@ -419,7 +419,7 @@ var qsmTimerInterval = [];
 					}).animate({
 						Counter: new_text
 					}, {
-						duration: 1000,
+						duration: 500,
 						easing: 'swing',
 						step: function () {
 							jQuery('#quizForm' + quizID).find('.progressbar-text').text(Math.round(this.Counter) + ' %');
@@ -828,7 +828,7 @@ function qmnValidation(element, quiz_form_id) {
 				}
 			}
 			var by_pass = true;
-			if (qmn_quiz_data[quizID].timer_limit_val > 0 && qmn_quiz_data[quiz_id].hasOwnProperty('skip_validation_time_expire') && qmn_quiz_data[quiz_id].skip_validation_time_expire == 0) {
+			if (qmn_quiz_data[quiz_id].timer_limit_val > 0 && qmn_quiz_data[quiz_id].hasOwnProperty('skip_validation_time_expire') && qmn_quiz_data[quiz_id].skip_validation_time_expire == 0) {
 				by_pass = false;
 			}
 
@@ -937,8 +937,8 @@ function qmnFormSubmit(quiz_form_id) {
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
 
-	qsmEndTimeTakenTimer(quizID);
-	if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') ) {
+	qsmEndTimeTakenTimer(quiz_id);
+	if (qmn_quiz_data[quiz_id].hasOwnProperty('advanced_timer') && qmn_quiz_data[quiz_id].advanced_timer.hasOwnProperty('show_stop_timer') ) {
 		QSMPageTimer.endPageTimer(quiz_id);
 	}
 	if (qmn_quiz_data[quiz_id].hasOwnProperty('timer_limit')) {
@@ -958,7 +958,7 @@ function qmnFormSubmit(quiz_form_id) {
 			if (window.qsm_results_data === undefined) {
 				window.qsm_results_data = new Object();
 			}
-			window.qsm_results_data[quizID] = {
+			window.qsm_results_data[quiz_id] = {
 				'save_response': response.result_status['save_response'],
 				'id': response.result_status['id']
 			};
@@ -1249,7 +1249,7 @@ function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
 			}).animate({
 				Counter: new_text
 			}, {
-				duration: 1000,
+				duration: 500,
 				easing: 'swing',
 				step: function () {
 					jQuery('#qsm_progress_bar_' + quiz_id).find('.progressbar-text').text(Math.round(this.Counter) + ' %');

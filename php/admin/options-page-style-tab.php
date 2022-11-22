@@ -62,18 +62,13 @@ function qsm_options_styling_tab_content() {
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
 		<li>
-			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab">
-				<?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a> |
+			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
-			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab">
-				<?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?>
-			</a> |
+			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
-			<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab">
-				<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
-			</a>
+			<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
 		</li>
 	</ul>
 </div>
