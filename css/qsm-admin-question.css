@@ -276,7 +276,7 @@
 	margin-bottom: 5px;
 	text-align: center;
 }
-.answers-single>div.answer-correct-div{
+.answers-single>div.answer-correct-div {
 	min-width: auto;
 	width: 70px;
 	padding: 5px 0;
@@ -286,18 +286,18 @@
 	max-width: 60%;
 	position: relative;
 }
-.answers-single>div.remove-answer-icon{
+.answers-single>div.remove-answer-icon {
 	width: 20px;
 	min-width: 25px;
 	padding: 5px 0;
 }
-.qsm-question-misc-options{
+.qsm-question-misc-options {
     display: inline-block;
     width: 100%;
     box-sizing: border-box;
     margin: 20px 0 0;
 }
-.qsm-feature-image-upl, .qsm-feature-image-rmv{
+.qsm-feature-image-upl, .qsm-feature-image-rmv {
 	display: block;
 	width: 100%;
 	font-size: 14px;
@@ -321,18 +321,18 @@ input#image_size-width {
 	float: right;
 	margin: 6px 0 -3px 5px;
 }
-.qsm-editor-wrap .wp-media-buttons button{
+.qsm-editor-wrap .wp-media-buttons button {
 	font-size: 11px;
 	padding: 0 5px;
 	min-height: 26px;
 	margin: 0;
 	border-radius: 1px;
 }
-.qsm-editor-wrap .wp-media-buttons button .wp-media-buttons-icon{
+.qsm-editor-wrap .wp-media-buttons button .wp-media-buttons-icon {
     width:18px;
     height: 18px;
 }
-.qsm-editor-wrap .wp-media-buttons button .wp-media-buttons-icon:before{
+.qsm-editor-wrap .wp-media-buttons button .wp-media-buttons-icon:before {
     font-size: 16px;
 }
 .questionElements .qsm-question-doc {
