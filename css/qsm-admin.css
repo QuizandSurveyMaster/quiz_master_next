@@ -393,7 +393,9 @@ span.qsm-quiz-name {
 	font-size: 14px;
 	font-weight: bold;
 }
-.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link a {background: #FFF;}
+.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link a {
+	background: #fff;
+}
 .qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link span.dashicons {
 	margin-top: 4px;
 }
@@ -709,11 +711,7 @@ ul.changelog li.update div.two:before {
 	text-align: center;
 	background: #fff;
 	border: 1px solid #dfd4d4;
-	/* color: #000;
-	*/
 	font-weight: bold;
-	/* font-size: 14px;
-	*/
 	margin-bottom: 20px;
 	margin-top: 10px;
 }
@@ -870,7 +868,9 @@ ul.changelog li.update div.two:before {
 	border-bottom: 1px solid #f9f9f9;
 	margin: 0;
 }
-.currentli,.currentli_general,.currentli_variable {
+.currentli,
+.currentli_general,
+.currentli_variable {
 	border-left:4px solid #2271b1;
 	background-color: #a1cef3;
 }
@@ -899,7 +899,8 @@ ul.changelog li.update div.two:before {
 	line-height: 1.2;
 	padding: 0;
 }
-.qsm_tab_content a:hover,.qsm_tab_content a:focus {
+.qsm_tab_content a:hover,
+.qsm_tab_content a:focus {
 	outline: none;
 	text-decoration: none;
 	box-shadow: none;
@@ -1035,10 +1036,15 @@ body .qsm-popup__btn-primary {
 .qsm-popup-slide[aria-hidden="true"] .qsm-popup__container {
 	animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
-.qsm-popup-slide .qsm-popup__container, .qsm-popup-slide .qsm-popup__overlay {
+.qsm-popup-slide .qsm-popup__container,
+.qsm-popup-slide .qsm-popup__overlay {
 	will-change: transform;
 }
-.qsm-popup select, .qsm-popup textarea, .qsm-popup input[type=text], .qsm-popup input[type=search], .qsm-popup input[type=number] {
+.qsm-popup select,
+.qsm-popup textarea,
+.qsm-popup input[type=text],
+.qsm-popup input[type=search],
+.qsm-popup input[type=number] {
 	min-width: 200px !important;
 	max-width: 200px !important;
 	border: 1px solid #dddddd;
@@ -1512,7 +1518,7 @@ td.scheduled_time_start {
 	right: 0;
 	min-width: 300px;
 	z-index: 9;
-	background: #FFF;
+	background: #fff;
 	border: 1px solid #e0e0e0;
 	box-shadow: -5px 6px 6px 0 #ddd;
 	font-size: 14px;
@@ -1534,7 +1540,7 @@ td.scheduled_time_start {
 	display: block;
 	border-bottom: 1px solid #f0f0f0;
 	padding: 15px 20px;
-	color: #1F8CBE;
+	color: #1f8cbe;
 	text-align: left;
 	position: relative;
 }
@@ -1869,7 +1875,7 @@ td.scheduled_time_start {
 	margin-right: 5px;
 }
 .qsm-standard-popup .qsm-popup__header .qsm-popup__title .title-tag {
-	background: #D0DAFF;
+	background: #d0daff;
 	border-radius:5px;
 	padding: 4px 10px;
 	display: inline-block;
@@ -1938,12 +1944,12 @@ td.scheduled_time_start {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: flex-start;
-	background: #EFF6FF;
-	border: 1px solid #D1E5FF;
+	background: #eff6ff;
+	border: 1px solid #d1e5ff;
 	border-radius: 4px;
 	padding: 10px 8px;
 	margin: 5px 0;
-	color: #1E40AF;
+	color: #1e40af;
 	font-weight: 500;
 }
 .qsm-popup-upgrade-info img {
@@ -1952,10 +1958,10 @@ td.scheduled_time_start {
 	margin-right: 8px;
 }
 .qsm-popup-upgrade-warning {
-	background: #FFFBEB;
-	border: 1px solid #FBBF24;
+	background: #fffbeb;
+	border: 1px solid #fbbf24;
 	padding: 12px;
-	color: #92400E;
+	color: #92400e;
 	font-size: 15px;
 	align-items: center;
 }
@@ -2086,7 +2092,10 @@ td.scheduled_time_start {
 	}
 }
 @media screen and (max-width: 767px) {
-	.qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a {width: 100%;margin-right: 0;}
+	.qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a {
+		width: 100%;
+		margin-right: 0;
+	}
 	.qsm-quiz-row td:nth-of-type(2n) {
 		display: none;
 	}
@@ -2422,7 +2431,7 @@ input#duplicate_questions {
 	text-decoration: none;
 	padding: 15px 20px;
 	margin: 0;
-	background: #FFF;
+	background: #fff;
 	color: #666666;
 	cursor: pointer;
 }
@@ -2602,7 +2611,7 @@ input#duplicate_questions {
 	cursor: move;
 }
 .contact-form-field .sortable-handle a.move-field span {
-	color: #A6ABAF;
+	color: #a6abaf;
 	font-size: 22px;
 }
 .contact-form-field .contact-form-group .contact-form-label {
@@ -2650,7 +2659,7 @@ input#duplicate_questions {
 	border-color: rgba(255, 255, 255, 0);
 }
 .contact-form-field-settings:after {
-	border-bottom-color: #FFF;
+	border-bottom-color: #fff;
 	top: -28px;
 }
 .contact-form-field-settings:before {

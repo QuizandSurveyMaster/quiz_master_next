@@ -83,10 +83,10 @@
 	background-color: #fafafa;
 	padding: 15px 20px;
 	margin: 0 0 20px;
-	box-shadow: 0 2px 6px 0 #DADADB;
+	box-shadow: 0 2px 6px 0 #dadadb;
 }
 .page-header .dashicons {
-	color: #A6ABAF;
+	color: #a6abaf;
 	font-size: 25px;
 }
 .page-header .dashicons.dashicons-trash {
@@ -96,11 +96,11 @@
 	margin: 0 10px;
 }
 .page-header .edit-page-button span {
-	color: #1F8CBE;
+	color: #1f8cbe;
 }
 .page-header span.page-number {
 	font-size: 18px;
-	color: #A6ABAF;
+	color: #a6abaf;
 	display: inline-block;
 	font-style: italic;
 	margin: 3px 10px 0;
@@ -174,11 +174,11 @@
 	display: inline-flex;
 }
 .question-content .dashicons.dashicons-move {
-	color: #A6ABAF;
+	color: #a6abaf;
 	font-size: 22px;
 }
 .question-content .question-content-text {
-	color: #1F8CBE;
+	color: #1f8cbe;
 	font-size: 16px;
 	font-weight: 500;
 	margin: 2px 0;
@@ -267,8 +267,10 @@
 	position: relative;
 	flex-direction: row;
 }
-.answers-single select, .answers-single textarea, 
-.answers-single input[type=text], .answers-single input[type=number] {
+.answers-single select,
+.answers-single textarea,
+.answers-single input[type=text],
+.answers-single input[type=number] {
 	padding: 4px 10px;
 	margin: 0;
 }
@@ -367,7 +369,9 @@ input#image_size-width {
 #modal-2 .qsm-popup__content {
 	padding: 20px 0 0;
 }
-#modal-page-1 .qsm-popup__footer, #modal-2 .qsm-popup__footer, #modal-7 .qsm-popup__footer {
+#modal-page-1 .qsm-popup__footer,
+#modal-2 .qsm-popup__footer,
+#modal-7 .qsm-popup__footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -457,7 +461,7 @@ a.import-button.button.disable_import::before {
 	z-index: 5;
 }
 .ui-state-highlight {
-	background: #F3F3F3;
+	background: #f3f3f3;
 	border: 1px dashed #cbcbcb;
 	height: 50px;
 	margin: 15px 10px 0;
