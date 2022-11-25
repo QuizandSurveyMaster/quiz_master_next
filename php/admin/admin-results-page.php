@@ -197,6 +197,7 @@ function qsm_results_overview_tab_content() {
 	} else {
 		$mlw_quiz_data = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
 	}
+	apply_filters('qsm_user_role_permission_page_view_results',true);
 	?>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">

@@ -573,6 +573,17 @@ class MLWQuizMasterNext {
 			global $qsm_quiz_list_page;
 			$enabled            = get_option( 'qsm_multiple_category_enabled' );
 			$menu_position = self::get_free_menu_position(26.1, 0.3);
+			if ( ! class_exists('QSM_User_Role') ) {
+				$user = wp_get_current_user();
+				if ( in_array( 'subscriber', (array) $user->roles, true ) ) {
+					$role_capabilities = get_role( 'subscriber' );
+					$role_capabilities->remove_cap('edit_posts');
+					$role_capabilities->remove_cap('moderate_comments');
+				}
+			}
+			else {
+				apply_filters('qsm_user_role_menu_for_subcriber',true);
+			}
 			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 0 );
 			if ( $enabled && 'cancelled' !== $enabled ) {
