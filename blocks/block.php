@@ -12,12 +12,16 @@
  * Register our block.
  */
 function qsm_block_init() {
-	global $mlwQuizMasterNext;
+	global $wp_version, $mlwQuizMasterNext;
+
+	$dependencies = array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-request' );
+	if ( version_compare( $wp_version, '5.3', '>=' ) ) {
+		$dependencies = array_merge( $dependencies, array( 'wp-block-editor', 'wp-server-side-render' ) );
+	}
+
 	// Register our block editor script.
-	wp_register_script(
-		'qsm-quiz-block',
-		plugins_url( 'block.js', __FILE__ ),
-		array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-request' ), $mlwQuizMasterNext->version, true );      
+	wp_register_script( 'qsm-quiz-block', plugins_url( 'block.js', __FILE__ ), $dependencies, $mlwQuizMasterNext->version, true );
+	
 	// Register our block, and explicitly define the attributes we accept.
 	register_block_type( 'qsm/main-block', array(
 		'attributes'      => array(
