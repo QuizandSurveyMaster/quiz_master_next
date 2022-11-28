@@ -901,6 +901,10 @@ h2.hndle.ui-sortable-handle {
 	transition: all 0.5s ease !important;
 }
 
+#select_themes .theme.active .theme-screenshot {
+    border: 1px solid #1d2327;
+}
+
 #select_themes #qsm-theme-screenshot:after {
 	content: "";
 	display: block;
