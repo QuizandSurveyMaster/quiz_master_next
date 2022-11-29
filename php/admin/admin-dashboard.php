@@ -122,7 +122,7 @@ function qsm_generate_dashboard_page() {
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
-					<?php 
+					<?php
 					$classname = "";
 				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
 					$classes = explode(",",$classname);
@@ -135,15 +135,11 @@ function qsm_generate_dashboard_page() {
 						$classesname2 = $classes[1];
 					}
 					?>
-						<div class="<?php echo $classesname1;?>"><a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize <?php echo $classesname2;?>"
+						<div class="<?php echo esc_attr( $classesname1 );?>"><a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize <?php echo esc_attr( $classesname2 );?>"
 						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' )?></a></div>
 					<p class="hide-if-no-customize">
 						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'View all quizzes', 'quiz-master-next' )?></a>
 					</p>
-					
-						
-					
-					
 				</div>
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>

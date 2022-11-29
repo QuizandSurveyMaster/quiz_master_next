@@ -200,6 +200,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['comment_section']                    = $globalQuizsetting['comment_section'];
 			$setDefaultvalue['question_numbering']                 = $globalQuizsetting['question_numbering'];
 			$setDefaultvalue['show_optin']                         = $globalQuizsetting['show_optin'];
+			$setDefaultvalue['show_text_html']                     = $globalQuizsetting['show_text_html'];
 			$setDefaultvalue['store_responses']                    = $globalQuizsetting['store_responses'];
 			$setDefaultvalue['send_email']                         = $globalQuizsetting['send_email'];
 			$setDefaultvalue['disable_answer_onselect']            = $globalQuizsetting['disable_answer_onselect'];

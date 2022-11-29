@@ -113,6 +113,7 @@ class QMNGlobalSettingsPage {
 			'comment_section'                    => 1,
 			'question_numbering'                 => 0,
 			'show_optin'                         => 0,
+			'show_text_html'                     => 0,
 			'store_responses'                    => 1,
 			'send_email'                         => 1,
 			'disable_answer_onselect'            => 0,
@@ -177,6 +178,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'show-question-numbers', __( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-opt-in-answers-default', __( 'Show Opt-in type Answers to user', 'quiz-master-next' ), array( $this, 'qsm_global_show_optin_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
+		add_settings_field( 'show-text-html-in-answers-default', __( 'Show Text/HTML type section in result page', 'quiz-master-next' ), array( $this, 'qsm_global_show_text_html_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'save-responses', __( 'Submit Actions', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -1326,6 +1328,23 @@ class QMNGlobalSettingsPage {
 					<label for="show_optin-1">Yes</label><br>
 					<input type="radio" id="show_optin-0" name="qsm-quiz-settings[show_optin]"  value="0"  ' . checked( $qsm_question_show_optin_default, '0', false ) . '>
 					<label for="show_optin-0">No</label><br>
+			 </fieldset>';
+	}
+
+	/**
+	 * Generates quiz global field to check if want to show text html type answers to user
+	 *
+	 * @since 8.0.7
+	 * @return void
+	 */
+	public function qsm_global_show_text_html_answers() {
+		global $globalQuizsetting;
+		$qsm_question_show_text_html_default = ( isset( $globalQuizsetting['show_text_html'] ) && '' !== $globalQuizsetting['show_text_html'] ? $globalQuizsetting['show_text_html'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+					<input type="radio" id="show_text_html-1" name="qsm-quiz-settings[show_text_html]" value="1"  ' . checked( $qsm_question_show_text_html_default, '1', false ) . '>
+					<label for="show_text_html-1">Yes</label><br>
+					<input type="radio" id="show_text_html-0" name="qsm-quiz-settings[show_text_html]"  value="0"  ' . checked( $qsm_question_show_text_html_default, '0', false ) . '>
+					<label for="show_text_html-0">No</label><br>
 			 </fieldset>';
 	}
 
