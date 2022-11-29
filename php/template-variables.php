@@ -1297,7 +1297,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	}
 	$answer_3                    = ! empty( $answer[3] ) ? $answer[3] : 'NA';
 	$mlw_question_answer_display = str_replace( '%USER_COMMENTS%', $answer_3, $mlw_question_answer_display );
-	$answer_4                    = ! empty( $qmn_questions[ $answer['id'] ] ) || 6 == $answer['question_type'] ? $qmn_questions[ $answer['id'] ] : 'NA';
+	$answer_4                    = ! empty( $qmn_questions[ $answer['id'] ] ) ? $qmn_questions[ $answer['id'] ] : 'NA';
+	$answer_4                    = 6 == $answer['question_type'] ? "" : $answer_4 ;
 	$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER_INFO%', htmlspecialchars_decode( $answer_4, ENT_QUOTES ), $mlw_question_answer_display );
 	// Point score of the particular question.
 	$question_point              = isset( $answer['points'] ) ? $answer['points'] : '0';
