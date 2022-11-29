@@ -783,7 +783,7 @@ function qmnValidation(element, quiz_form_id) {
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
-		if (jQuery(this).attr('class')) {
+		if ( jQuery(this).attr('class') && jQuery(this).is(':visible') ) {
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
