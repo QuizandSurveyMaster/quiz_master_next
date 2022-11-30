@@ -19,6 +19,9 @@ class QMN_Log_Manager
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		// create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ) );
+		//create the edit quiz
+		add_action( 'init', array( $this, 'role_post_type' ) );
+		add_action( 'admin_init', 'add_subscriber_caps');
 	}
 
 	/**
@@ -54,6 +57,40 @@ class QMN_Log_Manager
 		// Registers QSM logs post type with filtered $args
 		register_post_type( 'qmn_log', apply_filters( 'qmn_log_post_type_args', $log_args ) );
 	}
+	function role_post_type() {
+		$labels = array( 
+			'name'          => _x( 'QSM Role', 'quiz-master-next' ),
+			'singular_name' => _x( 'QSM Role', 'quiz-master-next' ),
+			'add_new'       => _x( 'Add New', 'quiz-master-next' ),
+			'edit_item'     => _x( 'Edit', 'quiz-master-next' ),
+			'new_item'      => _x( 'New', 'quiz-master-next' ),
+			'view_item'     => _x( 'View', 'quiz-master-next' ),
+		);
+		$args = array(
+			'public'          => true,
+			'label'           => $labels,
+			'show_in_rest'    => true,
+			'taxonomies'      => array( 'category' ),
+			'capability_type' => array( 'role', 'roles' ), //custom capability type
+			'map_meta_cap'    => true, //map_meta_cap must be true
+			'capability_type' => 'post',
+			'capabilities'    => array(
+				'edit_posts'        => 'edit_roles',
+				'read'              => 'read_roles',
+				'moderate_comments' => 'moderate_comments_roles',
+			),
+		);
+		register_post_type( 'qsm_roles', $args );
+	}
+	function add_subscriber_caps() {
+		// gets the subscriber role
+		$subs = get_role( 'subscriber');
+		$subs->add_cap( 'edit_roles' ); 
+		$subs->add_cap( 'read_roles' ); 
+		$subs->add_cap( 'moderate_comments_roles' ); 
+	
+	}
+	
 
 	/**
 	 * Registers the qmn_log taxonomies which are the log types

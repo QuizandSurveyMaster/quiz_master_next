@@ -575,11 +575,25 @@ class MLWQuizMasterNext {
 			$menu_position = self::get_free_menu_position(26.1, 0.3);
 			if ( ! class_exists('QSM_User_Role') ) {
 				$user = wp_get_current_user();
-				if ( in_array( 'subscriber', (array) $user->roles, true ) ) {
-					$role_capabilities = get_role( 'subscriber' );
+				$roles = ( array ) $user->roles;
+				global $wp_roles;
+    		if ( ! isset( $wp_roles ) ) $wp_roles = new WP_Roles();
+    		$available_roles_names = $wp_roles->get_names();
+			$available_roles = array_slice($available_roles_names, 4, count($available_roles_names));
+			foreach ( $available_roles as $roles_key => $roles_value ) {
+				if ( $roles_key == $roles[0] ) {
+				$role_capabilities = get_role( $roles[0] );
+				if ( $role_capabilities->has_cap('read') ) {
+                	$role_capabilities->remove_cap( 'read' );
+         		}
+				if ( $role_capabilities->has_cap('edit_posts') ) {
 					$role_capabilities->remove_cap('edit_posts');
+				}
+				if ( $role_capabilities->has_cap('moderate_comments') ) {
 					$role_capabilities->remove_cap('moderate_comments');
 				}
+				}
+			}
 			}
 			else {
 				apply_filters('qsm_user_role_menu_for_subcriber',true);
