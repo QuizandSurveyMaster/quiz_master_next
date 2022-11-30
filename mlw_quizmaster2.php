@@ -242,6 +242,7 @@ class MLWQuizMasterNext {
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+		add_action( 'admin_init', array( $this, 'qsm_add_admin_capabilty' ));
 	}
 
 	/**
@@ -498,6 +499,15 @@ class MLWQuizMasterNext {
 			'rewrite'             => array( 'slug' => $cpt_slug ),
 			'has_archive'         => $has_archive,
 			'supports'            => array( 'title', 'author', 'comments', 'thumbnail' ),
+			'capabilities'        => array(
+				'edit_post'          => 'edit_quiz',
+				'edit_posts'         => 'edit_quizzes',
+				'edit_others_posts'  => 'edit_other_quizzes',
+				'publish_posts'      => 'publish_quizzes',
+				'read_post'          => 'read_quiz',
+				'read_private_posts' => 'read_private_quizzes',
+				'delete_post'        => 'delete_quiz',
+			),
 		);
 
 		// Registers post type.
@@ -529,6 +539,17 @@ class MLWQuizMasterNext {
 			'rewrite'           => false,
 		);
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
+	}
+	public function qsm_add_admin_capabilty(){
+		 // gets the administrator role
+		 $admins = get_role( 'administrator' );
+		 $admins->add_cap( 'edit_quiz' ); 
+		 $admins->add_cap( 'edit_quizzes' ); 
+		 $admins->add_cap( 'edit_other_quizzes' ); 
+		 $admins->add_cap( 'publish_quizzes' ); 
+		 $admins->add_cap( 'read_quiz' ); 
+		 $admins->add_cap( 'read_private_quizzes' ); 
+		 $admins->add_cap( 'delete_quiz' ); 
 	}
 
 	public function parent_file( $file_name ) {
