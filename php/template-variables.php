@@ -1011,9 +1011,18 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	} else {
 		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_description . '</b>', $mlw_question_answer_display );
 	}
-	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display );
+	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display, $answer['question_type'] );
 	$extra_border_bottom_class   = '';
 	$remove_border               = true;
+	if ( 6 == $answer['question_type'] ) {
+		$mlw_question_answer_display = str_replace( '%USER_ANSWERS_DEFAULT%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%USER_COMMENTS%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER_INFO%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%QUESTION_POINT_SCORE%', '', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%QUESTION_MAX_POINTS%', '', $mlw_question_answer_display );
+	}
 	if ( strpos( $mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%' ) !== false ) {
 		$remove_border             = false;
 		$question_with_answer_text = '';
@@ -1528,18 +1537,12 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
 	$polar_extra_class = '';
 	$question_display  = '';
-	if ( 'polar' == $question_type ) {
-		$polar_extra_class = 'question-type-polar-s';
-	}
+
 	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-	$deselect_answer  = '';
-	if ( isset( $qmn_quiz_options->enable_deselect_option ) && 1 == $qmn_quiz_options->enable_deselect_option && ( 'multiple_choice' === $question_type || 'horizontal_multiple_choice' === $question_type ) ) {
-		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">Deselect Answer</a>';
-	}
 
 	$question_numbering   = '';
-	$qmn_total_questions += 1;
-	if ( isset( $qmn_quiz_options->question_numbering ) && 1 == $qmn_quiz_options->question_numbering ) {
+	if ( isset( $qmn_quiz_options->question_numbering ) && 1 == $qmn_quiz_options->question_numbering && 6 != $question_type ) {
+		$qmn_total_questions += 1;
 		$question_numbering = '<span class="mlw_qmn_question_number">' . esc_html( $qmn_total_questions ) . '.&nbsp;</span>';
 	}
 
@@ -1554,6 +1557,6 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
+	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . '</div>';
 	return $question_display;
 }

@@ -64,7 +64,7 @@ function qsm_text_html_review( $id, $question, $answers ) {
 		'correct_answer'    => "",
 		'user_text'         => "",
 		'correct_text'      => "",
-		'correct'           => "",
+		'correct'           => "correct",
 		'points'            => "",
 		'user_compare_text' => "",
 	);
