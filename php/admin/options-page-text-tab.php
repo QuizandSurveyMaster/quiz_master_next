@@ -70,6 +70,7 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
+													echo $single_editor_arr['label'];
 													if ( ! str_contains( $single_editor_arr['label'], '%' ) ) {
 														$class_current_li    = "";
 														$class               = "";
