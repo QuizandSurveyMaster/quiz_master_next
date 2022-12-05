@@ -185,7 +185,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
 						'view'         => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>',
 					);
-					$actions           = apply_filters( 'qsm_quiz_actions_after', $actions,$post);
+					$actions           = apply_filters( 'qsm_quiz_actions_after', $actions, $post );
 					}
 		}
 			return $actions;
@@ -303,7 +303,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					<h1>
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' );
 						$add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">'.esc_html__( 'Add New', 'quiz-master-next' ).'</a>';
-						echo apply_filters( 'qsm_add_quiz_after', $add_button);?>
+						echo apply_filters( 'qsm_add_quiz_after', $add_button ); ?>
 					</h1>
 					<?php
 					if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
