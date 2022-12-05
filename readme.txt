@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.0.7 (Dec 02, 2022) =
+= 8.0.7 (Dec 05, 2022) =
 * Feature: Added option to show and hide Text/HTML question type on result page
 * Bug: Fixed block.js warnings
 * Bug: Fixed issue with required questions validations

@@ -1040,7 +1040,7 @@ function qsm_get_default_wizard_themes() {
 	global $themes_data;
 	global $pro_themes;
 	$installed_themes    = $mlwQuizMasterNext->theme_settings->get_installed_themes();
-	$default_themes      = array( 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene', 'Sigma', 'Fortune', 'Pixel', 'Sapience' );
+	$default_themes      = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Companion', 'Serene' );
 	$default_themes_data = array();
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {
@@ -1066,7 +1066,6 @@ function qsm_get_default_wizard_themes() {
 			}
 		}
 	}
-
 	$keys_to_unset = array_unique( $keys_to_unset );
 	rsort( $keys_to_unset );
 	foreach ( $keys_to_unset as $key ) {
