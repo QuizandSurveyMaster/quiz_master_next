@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 8.0.6
+Stable tag: 8.0.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0.7 (Dec 05, 2022) =
+* Feature: Added option to show and hide Text/HTML question type on result page
+* Bug: Fixed block.js warnings
+* Bug: Fixed issue with required questions validations
+
 = 8.0.6 (Nov 22, 2022) =
 * Feature: Added option to search by quiz in question bank
 * Feature: Added option to set image size in email template

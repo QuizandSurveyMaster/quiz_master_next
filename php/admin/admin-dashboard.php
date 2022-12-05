@@ -122,10 +122,23 @@ function qsm_generate_dashboard_page() {
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
-					<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<?php
+					$classname = "";
+				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
+					$classes = explode(",",$classname);
+					$classesname1 = "";
+					if ( isset($classes[0]) ) {
+						$classesname1 = $classes[0];
+					}
+					$classesname2 = "";
+					if ( isset($classes[1]) ) {
+						$classesname2 = $classes[1];
+					}
+					?>
+						<div class="<?php echo esc_attr( $classesname1 );?>"><a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize <?php echo esc_attr( $classesname2 );?>"
+						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' )?></a></div>
 					<p class="hide-if-no-customize">
-						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
+						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'View all quizzes', 'quiz-master-next' )?></a>
 					</p>
 				</div>
 				<div class="welcome-panel-column">
@@ -599,15 +612,17 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Quiz Options.
 		 */
 		$quiz_options    = array(
-			'quiz_name'           => $quiz_name,
-			'quiz_featured_image' => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
-			'form_type'           => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
-			'system'              => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
-			'timer_limit'         => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
-			'pagination'          => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
-			'require_log_in'      => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
-			'disable_first_page'  => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
-			'comment_section'     => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
+			'quiz_name'              => $quiz_name,
+			'quiz_featured_image'    => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
+			'form_type'              => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
+			'system'                 => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
+			'timer_limit'            => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'pagination'             => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
+			'enable_pagination_quiz' => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : 0,
+			'progress_bar'           => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : 0,
+			'require_log_in'         => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
+			'disable_first_page'     => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
+			'comment_section'        => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 		);
 		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();
 		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {

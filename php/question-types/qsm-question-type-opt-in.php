@@ -57,3 +57,16 @@ function qmn_opt_in_review( $id, $question, $answers ) {
 	$return_array['user_compare_text'] = $user_compare_text;
 	return apply_filters( 'qmn_opt_in_review', $return_array, $answers );
 }
+
+function qsm_text_html_review( $id, $question, $answers ) {
+	$return_array = array(
+		'user_answer'       => "",
+		'correct_answer'    => "",
+		'user_text'         => "",
+		'correct_text'      => "",
+		'correct'           => "correct",
+		'points'            => "",
+		'user_compare_text' => "",
+	);
+	return apply_filters( 'qsm_text_html_review', $return_array, $answers );
+}

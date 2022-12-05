@@ -1,19 +1,21 @@
-var quizListEndPoint =  wpApiSettings.root+'quiz-survey-master/v2/quizzlist/';
-var quizList;
-jQuery.ajax( quizListEndPoint , {
+var QSMQuizList, 
+	QSMQuizListEndPoint = wpApiSettings.root + 'quiz-survey-master/v2/quizzlist/';
+
+jQuery.ajax( QSMQuizListEndPoint, {
 	data: null ,
 	method: 'GET',
-	success : function(response){
-		quizList = response;
+	success : function( response ) {
+		QSMQuizList = response;
 	}
-});
+} );
 
 var el = wp.element.createElement,
 	registerBlockType = wp.blocks.registerBlockType,
-	ServerSideRender = wp.components.ServerSideRender,
+	ServerSideRender = ! wp.serverSideRender ? wp.components.ServerSideRender : wp.serverSideRender,
 	TextControl = wp.components.TextControl,
 	SelectControl = wp.components.SelectControl,
-	InspectorControls = wp.editor.InspectorControls;
+	PanelBody = wp.components.PanelBody,
+	InspectorControls = ! wp.blockEditor ? wp.editor.InspectorControls : wp.blockEditor.InspectorControls;
 
 /*
  * Registers the main QSM block
@@ -24,7 +26,7 @@ registerBlockType( 'qsm/main-block', {
 	category: 'widgets',        
 
 	edit: function( props ) {
-  	const quiz_arr = quizList;
+  		const quiz_arr = QSMQuizList;
 		return [
 			/*
 			 * The ServerSideRender element uses the REST API to automatically call
@@ -36,7 +38,7 @@ registerBlockType( 'qsm/main-block', {
 				attributes: props.attributes,
 			} ),
 			el( InspectorControls, {},
-				el( 'p', { style: { padding: '0 16px' } },
+				el( PanelBody, {},
 					el( SelectControl, {
 						label: 'Quiz/Survey ID',
 						value: props.attributes.quiz,
@@ -44,7 +46,7 @@ registerBlockType( 'qsm/main-block', {
 						onChange: ( value ) => { props.setAttributes( { quiz: value } ); },
 					} )
 				)				
-    	)				
+    		)				
 		];
 	},
 

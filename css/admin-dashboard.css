@@ -74,6 +74,15 @@
     align-items: center;
 }
 
+.qsm-create-btn-div{
+	cursor:not-allowed;
+}
+
+.qsm-add-role{
+	opacity:0.6;
+	pointer-events: none !important;
+}
+
 .popover-count {
     top: -2px !important;
     right: unset!important;
@@ -889,6 +898,10 @@ h2.hndle.ui-sortable-handle {
 	display: block;
 	box-shadow: 0 1px 1px rgb(0 0 0 / 50%);
 	transition: all 0.5s ease !important;
+}
+
+#select_themes .theme.active .theme-screenshot {
+    border: 1px solid #1d2327;
 }
 
 #select_themes #qsm-theme-screenshot:after {
