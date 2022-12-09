@@ -1063,12 +1063,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if ( 'correct' === $answer['correct'] ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $user_given_answer . '</span>';
 									$do_show_wrong              = false;
+									break;
 								}
 							}
 						} else {
 							if ( isset( $single_answer[2] ) && 'correct' === $answer['correct'] ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
+								break;
 							}
 						}
 					}
