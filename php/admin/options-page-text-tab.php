@@ -70,7 +70,7 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
-													if ( ! str_contains( $single_editor_arr['label'], '%' ) ) {
+													if ( ! strpos( $single_editor_arr['label'], '%',1 ) ) {
 														$class_current_li    = "";
 														$class               = "";
 														if ( 0 == $key ) {
@@ -121,7 +121,7 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
-													if ( str_contains( $single_editor_arr['label'], '%' ) ) {
+													if ( strpos( $single_editor_arr['label'], '%',1 ) ) {
 														$class_current_li    = "";
 														$class               = "";
 														if ( 7 == $key ) {
