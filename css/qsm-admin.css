@@ -2540,7 +2540,7 @@ input#duplicate_questions {
 }
 .contact-tab-sidebar .inside {
 	padding: 0px 15px 10px;
-	margin: 0 !important;
+	margin: 0;
 }
 .contact-tab-sidebar .inside .inside-row {
 	display: block;
