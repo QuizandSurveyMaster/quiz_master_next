@@ -1186,7 +1186,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
-							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template','', $total_answers, $questions, $answer );
+							$result_page_default_template = "";
+							$result_page_default_template = apply_filters( 'qsm_result_page_custom_default_template',$result_page_default_template, $total_answers, $questions, $answer );
+							$question_with_answer_text .= $result_page_default_template;
 						} else {
 							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings, $form_type );
