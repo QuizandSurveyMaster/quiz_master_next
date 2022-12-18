@@ -1292,7 +1292,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
 		$result_page_user_answer_template = "";
 		$result_page_user_answer_template .= apply_filters( 'qsm_result_page_custom_correct_answer_template',$result_page_user_answer_template, $questions, $answer );
-		$qsm_correct_ans             = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $result_page_user_answer_template, 'answer-' . $qsm_correct_ans, 'QSM Answers' );
+		$qsm_correct_ans             = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $result_page_user_answer_template, 'answer-' . $result_page_user_answer_template, 'QSM Answers' );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
 		$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
