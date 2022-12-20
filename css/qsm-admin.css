@@ -2188,6 +2188,21 @@ td.scheduled_time_start {
 	text-align: center;
 	left: 0;
 }
+.qsm-upgrade-popup-variable {
+	opacity:0.5;
+	pointer-events: none;
+}
+.qsm_tab_content .qsm-upgrade-popup-badge,
+.qsm_tab_content .qsm-upgrade-popup-badge:focus {
+	top: 5px;
+	text-transform: uppercase;
+	display:inline-block;
+	text-decoration: underline;
+}
+.qsm-upgrade-popup-category-name{
+	display:inline-block;
+	margin-right:10px;
+}
 .qsm-text-template-span:hover .click-to-copy {
 	display: inline-block;
 	background: #def0ff;
