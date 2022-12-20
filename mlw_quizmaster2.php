@@ -542,6 +542,14 @@ class MLWQuizMasterNext {
 	}
 	public function qsm_add_admin_capabilty(){
 		 if ( class_exists( 'QSM_User_Role' ) ) {
+			$role_options = get_option('qsm-user-role');
+			if(empty($role_options)){
+				$default_roles = array('editor','author','contributor');
+				foreach($default_roles as $roles){
+				$role_settings['role'][$roles]= array(1,2,3,4,5);
+				}
+				update_option( 'qsm-user-role',$role_settings);
+			}
 			$user = wp_get_current_user();
 			$roles = ( array ) $user->roles;
 			$rolename =  $roles[0];
