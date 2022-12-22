@@ -131,17 +131,17 @@ function qsm_options_emails_tab_content() {
 						// check if the $category_variables is an array for backward compatibility
 						if ( is_array( $category_variables ) ) {
 							$upgrade_link = "";
-							if((!class_exists('QSM_Extra_Variables')) && ($category_name == 'Extra Template Variables')){
+							if( ( !class_exists('QSM_Extra_Variables') ) && ( $category_name == 'Extra Template Variables') ) {
 								$upgrade_link = qsm_get_plugin_link('extra-template-variables');
 							}
-							if((!class_exists('Mlw_Qmn_Al_Widget')) && ($category_name == 'Advanced Leaderboard')){
+							if( ( !class_exists('Mlw_Qmn_Al_Widget') ) && ( $category_name == 'Advanced Leaderboard' ) ) {
 								$upgrade_link = qsm_get_plugin_link('downloads/advanced-leaderboard/');
 							}
 							
 							$classname = "";
 							$qsm_badge = "";
-							if(((!class_exists('QSM_Extra_Variables')) && ($category_name == 'Extra Template Variables')) ||
-							((!class_exists('Mlw_Qmn_Al_Widget')) && ($category_name == 'Advanced Leaderboard'))){
+							if( ( ( !class_exists('QSM_Extra_Variables') ) && ( $category_name == 'Extra Template Variables') ) ||
+							( ( !class_exists('Mlw_Qmn_Al_Widget') ) && ( $category_name == 'Advanced Leaderboard' ) ) ) {
 								$classname = "qsm-upgrade-popup-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
