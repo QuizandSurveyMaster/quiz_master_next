@@ -126,7 +126,7 @@ function qsm_generate_dashboard_page() {
 					if ( class_exists('QSM_User_Role') ) {
 						$user = wp_get_current_user();
 						$roles = ( array ) $user->roles;
-						if ( $roles[0] == 'administrator' ) {
+						if ( 'administrator' == $roles[0] ) {
 							?>
 							<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
 							href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' )?></a>
