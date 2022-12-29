@@ -1278,6 +1278,17 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php echo $value ? "checked" : ""; ?> />
 					<?php
 					break;
+				case 'input_control':
+						?>
+						<input name="settings[<?php echo esc_attr( $name ); ?>]" type="number" value="<?php echo esc_attr( $value ); ?>" class="qsm-number-field" />
+						<?php
+						$param = array(
+							'name'  => "settings[". $options['unit_name'] ."]",
+							'value' => $options['unit_value'],
+						);
+						qsm_get_input_control_unit( $param ); ?>
+						<?php
+		            break;
 				default:
 					?>
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
@@ -1287,4 +1298,62 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 		</td>
 	</tr>
 	<?php
+}
+
+/**
+ * This function prepare input unit options.
+ *
+ * @version 8.0.9
+ * @param array $param  List of attributes for a input control
+ *
+ * @return HTML
+ */
+function qsm_get_input_control_unit( $param ) {
+
+	if ( empty( $param['name'] ) ) {
+		return;
+	}
+
+	$value = '';
+
+	if ( ! empty( $param['value'] ) ) {
+		$value = $param['value'];
+	}
+
+
+	$unit_options = array( 'px', '%', 'em', 'rem', 'vw', 'vh' );
+
+	/**
+	 * Filters the input units.
+	 *
+	 * @param array $unit_options List of units.
+	 */
+	$unit_options = apply_filters( 'qsm_input_units', $unit_options );
+
+	$options = '';
+	foreach ( $unit_options as $unit ) {
+
+		$is_selected = '';
+		if ( $value === $unit ) {
+			$is_selected = 'selected';
+		}
+
+		$options .= sprintf(
+			'<option value="%1$s" %2$s >%1$s</option>',
+			esc_attr( $unit ),
+			esc_attr( $is_selected )
+		);
+	}
+	$allowed_tags = array(
+		'option' => array(
+			'value' => array(),
+			'selected' => array(),
+		)
+	);
+	echo sprintf(
+		'<select name="%1$s" class="qsm-theme-option-unit"> %2$s </select>',
+		esc_attr( $param['name'] ),
+		wp_kses( $options, $allowed_tags )
+	);
+
 }
