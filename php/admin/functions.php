@@ -1346,9 +1346,9 @@ function qsm_get_input_control_unit( $param ) {
 	}
 	$allowed_tags = array(
 		'option' => array(
-			'value' => array(),
+			'value'    => array(),
 			'selected' => array(),
-		)
+		),
 	);
 	echo sprintf(
 		'<select name="%1$s" class="qsm-theme-option-unit"> %2$s </select>',
