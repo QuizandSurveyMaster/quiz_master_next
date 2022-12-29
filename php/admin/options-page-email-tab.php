@@ -81,42 +81,8 @@ function qsm_options_emails_tab_content() {
 				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
-				if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
-					global $mlwQuizMasterNext;
-					$template_array = array(
-						'%LEADERBOARD_POSITION%'     => __('Display User Position out of total results (ie. 15 out of 52)', 'quiz-master-next' ),
-						'%LEADERBOARD_POSITION_URL%' => __('Display Leaderboard URL to check position.', 'quiz-master-next'  ),
-					);
-				
-					if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-						$leaderboard = array(
-							'Advanced Leaderboard' => $template_array,       
-						);
-					} else {
-						$extra_variables = $template_array;
-					}
-					$variable_list = array_merge($variable_list, $leaderboard );
-				}
-				if ( ! class_exists( 'QSM_Extra_Variables' ) ) {
-						global $mlwQuizMasterNext;
-						$template_array = array(
-							'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
-							'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
-							'%QUESTION_ANSWER_GROUP%%/QUESTION_ANSWER_GROUP%' => __('This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
-							'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
-							'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
-						);
-						
-						if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-							$extra_variables = array(
-								'Extra Template Variables' => $template_array,
-							);
-						} else {
-							$extra_variables = $template_array;
-						}
-						  
-						$variable_list = array_merge($variable_list, $extra_variables);
-				}
+				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
+
 				// filter to add or remove variables from variable list for email tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
 
@@ -144,12 +110,12 @@ function qsm_options_emails_tab_content() {
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
 							?>
-							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name ); ?></h2><?php echo $qsm_badge; ?></div>
+							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name ); ?></h2><?php echo  $qsm_badge ; ?></div>
 							<?php
 							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
 								<div class="popup-template-span-wrap">
-									<span class="qsm-text-template-span <?php echo $classname;?>">
+									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
 										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
 										<span class="button click-to-copy">Click to Copy</span>
 										<span class="temp-var-seperator">
