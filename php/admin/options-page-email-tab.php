@@ -82,7 +82,6 @@ function qsm_options_emails_tab_content() {
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
 				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
-
 				// filter to add or remove variables from variable list for email tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
 
