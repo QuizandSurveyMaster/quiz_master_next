@@ -187,7 +187,7 @@ var QSMAdmin;
             jQuery('.qsm-custom-label-left-menu').removeClass('currentli_general');
             jQuery(this).addClass('current_general');
             jQuery(this).parent().addClass('currentli_general');
-            jQuery('#' + text_id).show();   
+            jQuery('#' + text_id).show();
             jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
             jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
@@ -213,7 +213,7 @@ var QSMAdmin;
 			jQuery('.qsm-custom-label-left-menu').removeClass('currentli_variable');
 			jQuery(this).addClass('current_variable');
 			jQuery(this).parent().addClass('currentli_variable');
-			jQuery('#' + text_id).show();   
+			jQuery('#' + text_id).show();
 			jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
 			jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
 				var data = jQuery.parseJSON(response);
@@ -234,9 +234,10 @@ var QSMAdmin;
         jQuery(document).on('click', '#qsm_save_text_message', function () {
             var $this = jQuery(this);
             $this.siblings('.spinner').addClass('is-active');
+            var nonce   =  jQuery('#qsm_save_text_message_nonce').val();
             var text_id =  jQuery(".currentli_general .current_general").data('id');
             var message =  wp.editor.getContent('qsm_question_text_message');
-            jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
+            jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message', nonce: nonce }, function (response) {
                 var data = jQuery.parseJSON(response);
                 if (data.success === true) {
                     //Do nothing
@@ -248,9 +249,10 @@ var QSMAdmin;
 		jQuery(document).on('click', '#qsm_save_text_message_variable', function () {
 			var $this = jQuery(this);
 			$this.siblings('.spinner').addClass('is-active');
+            var nonce   =  jQuery('#qsm_save_text_message_nonce').val();
 			var text_id =  jQuery(".currentli_variable .current_variable").data('id');
 			var message =  wp.editor.getContent('qsm_question_text_message_variable');
-			jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message' }, function (response) {
+			jQuery.post(ajaxurl, { text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message', nonce: nonce }, function (response) {
 				var data = jQuery.parseJSON(response);
 				if (data.success === true) {
 					//Do nothing
@@ -1990,7 +1992,7 @@ var import_button;
                         if ($answer.find('.answer-correct').prop('checked')) {
                             correct = 1;
                         }
-						
+
 						var ansData = [answer, points, correct];
                         if (answerType == 'image') {
 							ansData.push(caption);
@@ -2000,7 +2002,7 @@ var import_button;
 						intcnt++
                     });
 					model.set('answers', answers);
-					
+
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
                             $($(this).find('input[type="text"]')).each(function () {
@@ -2022,7 +2024,7 @@ var import_button;
                             advanced_option[element_id] = multi_value;
                         }
                     });
-					
+
                     model.save({
                         quizID: quizID,
                         type: type,
@@ -2744,7 +2746,9 @@ var import_button;
                     if (13 == question_val) {
                         QSMQuestion.prepareEditPolarQuestion(question_val);
                     }
-                    jQuery(document).trigger('qsm-change-answer-editor-after');
+                    if (18 == question_val) {
+                        jQuery(document).trigger('qsm-change-answer-editor-after');
+                    }
                 });
 
                 // Adds event handlers for searching questions

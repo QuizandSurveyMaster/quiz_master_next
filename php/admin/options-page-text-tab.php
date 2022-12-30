@@ -70,7 +70,7 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
-													if ( ! str_contains( $single_editor_arr['label'], '%' ) ) {
+													if ( ! strpos( $single_editor_arr['label'], '%', 1 ) ) {
 														$class_current_li    = "";
 														$class               = "";
 														if ( 0 == $key ) {
@@ -100,6 +100,7 @@ function mlw_options_text_tab_content() {
 											?>
 										</div>
 										<div class="save-text-changes">
+											<?php wp_nonce_field( 'qsm_save_text_message_nonce', 'qsm_save_text_message_nonce' ); ?>
 											<button id="qsm_save_text_message" class="button button-primary"><?php esc_html_e( 'Save Text Message', 'quiz-master-next' ); ?></button>
 											<span class="spinner" ></span>
 										</div>
@@ -121,7 +122,7 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
-													if ( str_contains( $single_editor_arr['label'], '%' ) ) {
+													if ( strpos( $single_editor_arr['label'], '%', 1 ) ) {
 														$class_current_li    = "";
 														$class               = "";
 														if ( 7 == $key ) {
@@ -151,6 +152,7 @@ function mlw_options_text_tab_content() {
 											?>
 										</div>
 										<div class="save-text-changes">
+											<?php wp_nonce_field( 'qsm_save_text_message_nonce', 'qsm_save_text_message_nonce' ); ?>
 											<button id="qsm_save_text_message_variable" class="button button-primary">
 												<?php esc_html_e( 'Save Text Message', 'quiz-master-next' ); ?></button>
 											<span class="spinner" ></span>
@@ -254,21 +256,28 @@ add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_mess
  */
 function qsm_update_text_message() {
 	global $mlwQuizMasterNext;
-	$quiz_id             = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-	$text_id             = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
-	$message             = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
-	$settings            = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
-	$settings[ $text_id ]  = $message;
-	$results             = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );
-	if ( false !== $results ) {
-		do_action( 'qsm_saved_text_message', $quiz_id, $text_id, $message );
-		$results = array(
-			'success' => true,
-		);
-	} else {
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_save_text_message_nonce' ) ) {
+		$quiz_id             = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+		$text_id             = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
+		$message             = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
+		$settings            = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
+		$settings[ $text_id ]  = $message;
+		$results             = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );
+		if ( false !== $results ) {
+			do_action( 'qsm_saved_text_message', $quiz_id, $text_id, $message );
+			$results = array(
+				'success' => true,
+			);
+		} else {
+			$results = array(
+				'success' => false,
+				'message' => __( 'There has been an error in this action. Please share this with the developer', 'quiz-master-next' ),
+			);
+		}
+	}else {
 		$results = array(
 			'success' => false,
-			'message' => __( 'There has been an error in this action. Please share this with the developer', 'quiz-master-next' ),
+			'message' => __( 'Invalid request', 'quiz-master-next' ),
 		);
 	}
 	echo wp_json_encode( $results );

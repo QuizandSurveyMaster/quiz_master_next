@@ -1063,12 +1063,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if ( 'correct' === $answer['correct'] ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $user_given_answer . '</span>';
 									$do_show_wrong              = false;
+									break;
 								}
 							}
 						} else {
 							if ( isset( $single_answer[2] ) && 'correct' === $answer['correct'] ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
+								break;
 							}
 						}
 					}
@@ -1184,7 +1186,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
-							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
+							$result_page_default_template = "";
+							$result_page_default_template = apply_filters( 'qsm_result_page_custom_default_template', $result_page_default_template, $total_answers, $questions, $answer );
+							$question_with_answer_text .= $result_page_default_template;
 						} else {
 							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings, $form_type );
@@ -1206,7 +1210,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 							$question_type              = $answer['question_type'];
-							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
+							$result_page_default_template = "";
+							$result_page_default_template = apply_filters( 'qsm_result_page_custom_default_template', $result_page_default_template, $total_answers, $questions, $answer );
+							$question_with_answer_text .= $result_page_default_template;
 						} else {
 							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings, $form_type );
@@ -1244,8 +1250,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 	} elseif ( in_array( $answer['question_type'], $use_custom_user_answer_template, true ) ) {
-		$qsm_user_ans                = apply_filters( 'qsm_result_page_custom_user_answer_template', $questions, $answer );
-		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $qsm_user_ans, $mlw_question_answer_display );
+		$result_page_user_answer_template  = "";
+		$result_page_user_answer_template  .= apply_filters( 'qsm_result_page_custom_user_answer_template', $result_page_user_answer_template, $questions, $answer );
+		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $result_page_user_answer_template, $mlw_question_answer_display );
 	} else {
 		$total_answers           = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
 		foreach ( $total_answers as $key => $single_answer ) {
@@ -1283,8 +1290,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 }
 	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], 'answer-' . $answer[2], 'QSM Answers' ) : 'NA';
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
-		$qsm_correct_ans             = apply_filters( 'qsm_result_page_custom_correct_answer_template', $questions, $answer );
-		$qsm_correct_ans             = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qsm_correct_ans, 'answer-' . $qsm_correct_ans, 'QSM Answers' );
+		$result_page_user_answer_template  = "";
+		$result_page_user_answer_template .= apply_filters( 'qsm_result_page_custom_correct_answer_template', $result_page_user_answer_template, $questions, $answer );
+		$qsm_correct_ans                  = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $result_page_user_answer_template, 'answer-' . $result_page_user_answer_template, 'QSM Answers' );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
 		$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();

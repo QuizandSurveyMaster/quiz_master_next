@@ -1249,7 +1249,7 @@ function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
 			}).animate({
 				Counter: new_text
 			}, {
-				duration: 1000,
+				duration: 500,
 				easing: 'swing',
 				step: function () {
 					jQuery('#qsm_progress_bar_' + quiz_id).find('.progressbar-text').text(Math.round(this.Counter) + ' %');
