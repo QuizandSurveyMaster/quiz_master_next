@@ -137,7 +137,7 @@ function qsm_options_results_tab_content() {
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
 							?>
-							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo  $qsm_badge ; ?></div>
+							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
 							<?php
 							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
