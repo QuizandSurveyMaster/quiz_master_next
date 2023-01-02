@@ -12,7 +12,7 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 
 == Description ==
 
-Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next)
+Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.com/plugins/quiz-master-next)
 
 = Demoes! =
 * [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin)
@@ -115,7 +115,7 @@ If you like this plugin, consider exploring our other themes and plugins:
 
 📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc.
 
-⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
+⚡ [InstaWP](https://instawp.com/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
 
 == Installation ==
 
