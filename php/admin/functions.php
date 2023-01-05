@@ -1260,6 +1260,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						<img src="<?php echo esc_attr( $value ); ?>" alt="<?php echo esc_attr( $name ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
 						<a class="button button-small qsm-theme-option-image-remove" href="javascript:void(0)"><?php esc_html_e('Remove', 'quiz-master-next'); ?></a>
 					</div>
+					<a class="button <?php echo empty( $default_value != $value ) ? 'qsm-d-none' : ''; ?> qsm-theme-option-image-default" href="javascript:void(0)" data-default="<?php echo esc_attr( $default_value ); ?>" ><?php esc_html_e('Default', 'quiz-master-next'); ?></a>
 					<?php
 					break;
 				case 'color':
@@ -1310,7 +1311,6 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
 			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
 		);
-		
 		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
 			$extra_variables = array(
 				'Extra Template Variables' => $template_array,
@@ -1318,7 +1318,6 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		} else {
 			$extra_variables = $template_array;
 		}
-		  
 		$variable_list = array_merge($variable_list, $extra_variables);
 	}
 	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
@@ -1330,7 +1329,7 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 
 		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
 			$leaderboard = array(
-				'Advanced Leaderboard' => $template_array,       
+				'Advanced Leaderboard' => $template_array,
 			);
 		} else {
 			$extra_variables = $template_array;

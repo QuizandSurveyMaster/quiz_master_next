@@ -20,18 +20,18 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	if ( $limit_multiple_response > 0 ) {
 		$limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';
 	}
+	$mlw_class = '';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredCheck';
-	} else {
-		$mlw_require_class = '';
+		$mlw_class = 'mlwRequiredRadio';
 	}
+	$mlw_class .= apply_filters( 'qsm_multiple_response_classes', $mlw_class, $id );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<div class="qmn_check_answers <?php echo esc_attr( $mlw_require_class ); ?>">
+	<div class="qmn_check_answers <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
