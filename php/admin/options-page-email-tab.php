@@ -81,6 +81,7 @@ function qsm_options_emails_tab_content() {
 				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
+				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
 				// filter to add or remove variables from variable list for email tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
 
@@ -94,13 +95,26 @@ function qsm_options_emails_tab_content() {
 					foreach ( $variable_list as $category_name => $category_variables ) {
 						// check if the $category_variables is an array for backward compatibility
 						if ( is_array( $category_variables ) ) {
+							$classname = "";
+							$qsm_badge = "";
+							$upgrade_link = "";
+							if ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'extra-template-variables' );
+								$classname = "qsm-upgrade-popup-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
+							if ( ( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-leaderboard/' );
+								$classname = "qsm-upgrade-popup-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
 							?>
-							<div><h2><?php echo esc_attr( $category_name ); ?></h2></div>
+							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name ); ?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
 							<?php
 							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
 								<div class="popup-template-span-wrap">
-									<span class="qsm-text-template-span">
+									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
 										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
 										<span class="button click-to-copy">Click to Copy</span>
 										<span class="temp-var-seperator">

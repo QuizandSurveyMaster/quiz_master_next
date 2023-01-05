@@ -1311,7 +1311,6 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
 			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
 		);
-
 		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
 			$extra_variables = array(
 				'Extra Template Variables' => $template_array,
@@ -1319,7 +1318,6 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		} else {
 			$extra_variables = $template_array;
 		}
-
 		$variable_list = array_merge($variable_list, $extra_variables);
 	}
 	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
