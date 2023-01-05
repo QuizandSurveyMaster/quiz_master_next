@@ -1260,6 +1260,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						<img src="<?php echo esc_attr( $value ); ?>" alt="<?php echo esc_attr( $name ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
 						<a class="button button-small qsm-theme-option-image-remove" href="javascript:void(0)"><?php esc_html_e('Remove', 'quiz-master-next'); ?></a>
 					</div>
+					<a class="button <?php echo empty( $default_value != $value ) ? 'qsm-d-none' : ''; ?> qsm-theme-option-image-default" href="javascript:void(0)" data-default="<?php echo esc_attr( $default_value ); ?>" ><?php esc_html_e('Default', 'quiz-master-next'); ?></a>
 					<?php
 					break;
 				case 'color':
@@ -1300,6 +1301,45 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 	<?php
 }
 
+function qsm_extra_template_and_leaderboard( $variable_list ) {
+	if ( ! class_exists( 'QSM_Extra_Variables' ) ) {
+		global $mlwQuizMasterNext;
+		$template_array = array(
+			'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_GROUP%%/QUESTION_ANSWER_GROUP%' => __('This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
+			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
+			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+		);
+
+		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+			$extra_variables = array(
+				'Extra Template Variables' => $template_array,
+			);
+		} else {
+			$extra_variables = $template_array;
+		}
+
+		$variable_list = array_merge($variable_list, $extra_variables);
+	}
+	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
+		global $mlwQuizMasterNext;
+		$template_array = array(
+			'%LEADERBOARD_POSITION%'     => __('Display User Position out of total results (ie. 15 out of 52)', 'quiz-master-next' ),
+			'%LEADERBOARD_POSITION_URL%' => __('Display Leaderboard URL to check position.', 'quiz-master-next'  ),
+		);
+
+		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+			$leaderboard = array(
+				'Advanced Leaderboard' => $template_array,
+			);
+		} else {
+			$extra_variables = $template_array;
+		}
+		$variable_list = array_merge($variable_list, $leaderboard );
+	}
+	return $variable_list;
+}
 /**
  * This function prepare input unit options.
  *
@@ -1346,9 +1386,9 @@ function qsm_get_input_control_unit( $param ) {
 	}
 	$allowed_tags = array(
 		'option' => array(
-			'value' => array(),
+			'value'    => array(),
 			'selected' => array(),
-		)
+		),
 	);
 	echo sprintf(
 		'<select name="%1$s" class="qsm-theme-option-unit"> %2$s </select>',

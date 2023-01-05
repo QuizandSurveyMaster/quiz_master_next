@@ -457,9 +457,19 @@ var QSMAdmin;
         });
         jQuery(document).on('click', '.qsm-theme-option-image-remove', function () {
             let button = $(this);
+            button.parents('.qsm-theme-option-image').nextAll( ".qsm-theme-option-image-default" ).show();
             button.parents('.qsm-theme-option-image').hide();
             button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-input').val("");
             button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-button').fadeIn();
+
+        });
+        jQuery(document).on('click', '.qsm-theme-option-image-default', function () {
+            let button = $(this);
+            let default_img = $(this).data( "default" );
+            button.prevAll('.qsm-theme-option-image').show();
+            button.prevAll('.qsm-theme-option-image').find(".quiz-theme-option-image-thumbnail").attr( "src", default_img );
+            button.prevAll('.quiz-theme-option-image-input').val(default_img);
+            $(this).hide();
 
         });
         //theme option setting image end
@@ -1724,6 +1734,7 @@ var import_button;
                 updateQPage: function (pageID) {
                     QSMAdmin.displayAlert(qsm_admin_messages.saving_page_info, 'info');
                     var pageInfo = QSMQuestion.qpages.get(pageID);
+                    pageInfo.set("update_name", 1);
                     jQuery('#page-options').find(':input, select, textarea').each(function (i, field) {
                         pageInfo.set(field.name, field.value);
                     });
