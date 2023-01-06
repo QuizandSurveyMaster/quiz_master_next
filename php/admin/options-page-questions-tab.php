@@ -171,6 +171,11 @@ function qsm_options_questions_tab_content() {
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
 	</div>
+	<div class="get-started-link">
+		<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start/', 'quiz_editor', 'question_type', 'getting_started' ) ); ?>" target="_blank" title="<?php echo esc_html__( 'View Documentation', 'quiz-master-next' ) ?>">
+			<?php esc_html_e( 'How to Get Started?', 'quiz-master-next' ); ?>
+		</a>
+	</div>
 	<div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
 		<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
 			<div class="qsm-spinner-loader"></div>
@@ -506,7 +511,7 @@ function qsm_options_questions_tab_content() {
 														<label>
 															<?php esc_html_e( 'Question Type', 'quiz-master-next' ); ?>
 															<?php
-															echo '<a class="qsm-question-doc" href="' . esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) ) . '" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
+															echo '<a class="qsm-question-doc" href="' . esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/question-types/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) ) . '" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
 															echo '<span class="dashicons dashicons-editor-help"></span>';
 															echo '</a>';
 															?>
@@ -530,8 +535,6 @@ function qsm_options_questions_tab_content() {
 															}
 															?>
 														</select>
-														<a class="question_info_tag hidden" target="_blank" rel="noopener"
-															href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/question-types/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) ); ?>"><?php esc_html_e( 'How to use this option?', 'quiz-master-next' ); ?></a>
 														<p class="hidden" id="question_type_info"></p>
 													</div>
 													<?php
