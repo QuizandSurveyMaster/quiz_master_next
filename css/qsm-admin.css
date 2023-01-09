@@ -2812,11 +2812,3 @@ input#duplicate_questions {
 .qsm-row input[type="text"] {
 	border-radius: 4px;
 }
-/** Link How To Get Started? **/
-.qsm_tab_content .get-started-link{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-	font-size: 13px;
-	font-weight: 500;
-}

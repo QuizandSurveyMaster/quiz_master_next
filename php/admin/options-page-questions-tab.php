@@ -171,11 +171,6 @@ function qsm_options_questions_tab_content() {
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
 	</div>
-	<div class="get-started-link">
-		<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start/', 'quiz_editor', 'question_type', 'getting_started' ) ); ?>" target="_blank" title="<?php echo esc_html__( 'View Documentation', 'quiz-master-next' ) ?>">
-			<?php esc_html_e( 'How to Get Started?', 'quiz-master-next' ); ?>
-		</a>
-	</div>
 	<div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
 		<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
 			<div class="qsm-spinner-loader"></div>
@@ -563,7 +558,7 @@ function qsm_options_questions_tab_content() {
 															'default'            => 'text',
 															'show'               => '0,1,4,13' . $show_change_answer_editor,
 															// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
-															'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_type', 'quizsurvey-answer-type_doc' ),
+															'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_type', 'answer_type_doc#Answer-Type' ),
 														),
 														'match-answer'           => array(
 															'label'      => __( 'Match Answer', 'quiz-master-next' ),
