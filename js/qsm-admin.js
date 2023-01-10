@@ -1810,9 +1810,9 @@ var import_button;
                         placeholder: "ui-state-highlight",
                         connectWith: '.page',
                         stop: function (evt, ui) {
-                            var question_id =ui.item.data("question-id");
-                            var parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').data('page-id');
-                            var model = QSMQuestion.questions.get(question_id);
+                            let question_id =ui.item.data("question-id");
+                            let parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').data('page-id');
+                            let model = QSMQuestion.questions.get(question_id);
                             model.set('page', parent_page-1);
                             setTimeout(
                                 function () {
