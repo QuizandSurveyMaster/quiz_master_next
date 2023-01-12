@@ -2475,6 +2475,59 @@ var import_button;
                     QSMQuestion.addNewPage();
                 });
 
+                $('.questions').on('click', '.move-question-button', function (e) {
+                    e.preventDefault();
+                    $(this).parents('.question').next('.questionElements').slideUp('slow');
+                    MicroModal.show('modal-10');
+                    $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
+                    $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
+                });
+                
+                //  Confirm move question button
+                $("#move-question-button").on('click', function (e) {
+                    $(this).prop("disabled", true);
+                    $("#move-question-error").html("");
+                    if ( 0 < $("#changed_question_position").val() && 0 < $("#changed_question_page_no").val()) {
+                        new_page_section = $(".qsm_tab_content .page").eq( $("#changed_question_page_no").val() - 1 );
+                        if ( 0 != new_page_section.length) {
+                            new_element = new_page_section.find(".question").eq($("#changed_question_position").val() - 1);
+                            current_page_section = $(".qsm_tab_content .page").eq( $("#current_question_page_no").val() - 1 );
+                            current_element = current_page_section.find(".question").eq($("#current_question_position").val() - 1);
+                            if ( 0 == new_element.length ) {
+                                new_page_section.append(current_element.clone());
+                            } else {
+                                if ( 1 == $("#current_question_position").val() && $("#changed_question_page_no").val() == $("#current_question_page_no").val() ) {
+                                    new_element.after(current_element.clone());
+                                } else {
+                                    new_element.before(current_element.clone());
+                                }
+                            }
+                            current_element.remove();
+                            QSMQuestion.savePages();
+                            clear_move_form_values();
+                        } else {
+                            $("#move-question-error").html("Page is not available");
+                        }
+                    } else {
+                        $("#move-question-error").html("Please enter positive numbers.");
+                    }
+                    setTimeout(function () {
+                        $("#move-question-error").html("");
+                    }, 3000);
+                    $(this).prop("disabled", false);
+                });
+                
+                //  Cancel move question button
+                $("#cancel-question-button").on('click', function () {
+                    clear_move_form_values();
+                });
+                
+                //  Clear form values
+                function clear_move_form_values() {
+                    MicroModal.close('modal-10');
+                    $("#move-question-form input").val("");
+                }
+
                 $('.questions').on('click', '.new-question-button', function (event) {
                     event.preventDefault();
                     if (jQuery('.questionElements').is(':visible')) {

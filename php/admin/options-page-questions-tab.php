@@ -792,6 +792,38 @@ function qsm_options_questions_tab_content() {
 			</div>
 		</div>
 	</div>
+
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-10" aria-hidden="false">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-10-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-10-title"><?php esc_html_e( 'Move Question To', 'quiz-master-next' ); ?></h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-10-content">
+					<form action='' method='post' id="move-question-form">
+						<input type="hidden" id="current_question_page_no" /> 
+						<input type="hidden" id="current_question_position" /> 
+						<table class="modal-10-table">
+							<tr>
+								<td><strong><?php esc_html_e( 'Page No.', 'quiz-master-next' ); ?></strong></td>
+								<td><input type="number" class="page-no-text" id="changed_question_page_no" value="" placeholder="<?php esc_attr_e( 'Enter page no.', 'quiz-master-next' ); ?>"/></td>
+							</tr>
+							<tr>
+								<td><strong><?php esc_html_e( 'Question Position', 'quiz-master-next' ); ?></Strong></td>
+								<td><input type="number" class="question-position-text" id="changed_question_position" value="" placeholder="<?php esc_attr_e( 'Enter question position.', 'quiz-master-next' ); ?>"/></td>
+							</tr>
+						</table>
+					</form>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="cancel-question-button" class="cancel-move-question-button"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<span id="move-question-error"></span>
+					<button id="move-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+				</footer>
+			</div>
+		</div>
+	</div>
 	<?php
 }
 
@@ -1091,6 +1123,7 @@ function qsm_options_questions_tab_template() {
 					<div class="qsm-actions-link-box">
 						<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
 						<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
+						<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
 						<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
 					</div>
 				</div>

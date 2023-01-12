@@ -2812,3 +2812,21 @@ input#duplicate_questions {
 .qsm-row input[type="text"] {
 	border-radius: 4px;
 }
+/* Drag-drop question popup */
+#modal-10 .qsm-popup__footer{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#move-question-error{
+	color: red;
+}
+.qsm-popup__footer .cancel-move-question-button{
+	color: red !important;
+	border: transparent;
+	background: transparent;
+	cursor: pointer;
+}
+.qsm-popup__content #move-question-form strong{
+	color: #00449e;
+}
