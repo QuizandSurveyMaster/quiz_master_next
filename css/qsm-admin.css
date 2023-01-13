@@ -2830,3 +2830,6 @@ input#duplicate_questions {
 .qsm-popup__content #move-question-form strong{
 	color: #00449e;
 }
+#modal-10 .qsm-popup__content .custom-error-field{
+	text-align: center;
+}
