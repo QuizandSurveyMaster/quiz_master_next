@@ -274,7 +274,7 @@ class QMNQuizCreator {
 			}
 		}
 		
-		if( empty( $is_row_exists ) ){
+		if ( empty( $is_row_exists ) ) {
 			$qsm_delete = 1;
 		}
 
