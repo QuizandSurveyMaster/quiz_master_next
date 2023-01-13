@@ -2479,7 +2479,8 @@ var import_button;
                     e.preventDefault();
                     $(this).parents('.question').next('.questionElements').slideUp('slow');
                     MicroModal.show('modal-10');
-                    $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
+                    $("#current_question_page_no").val($(this).parents('.page').index() + 1);
+                    $("#changed_question_page_no").val($(this).parents('.page').data("page-id"));
                     $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
                 });
                 
