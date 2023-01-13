@@ -813,12 +813,14 @@ function qsm_options_questions_tab_content() {
 								<td><strong><?php esc_html_e( 'Question Position', 'quiz-master-next' ); ?></Strong></td>
 								<td><input type="number" class="question-position-text" id="changed_question_position" value="" placeholder="<?php esc_attr_e( 'Enter question position.', 'quiz-master-next' ); ?>"/></td>
 							</tr>
+							<tr>
+								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
+							</tr>
 						</table>
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
 					<button id="cancel-question-button" class="cancel-move-question-button"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-					<span id="move-question-error"></span>
 					<button id="move-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
