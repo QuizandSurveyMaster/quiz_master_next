@@ -806,15 +806,15 @@ function qsm_options_questions_tab_content() {
 						<input type="hidden" id="current_question_position" /> 
 						<table class="modal-10-table">
 							<tr>
+								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
+							</tr>
+							<tr>
 								<td><strong><?php esc_html_e( 'Page No.', 'quiz-master-next' ); ?></strong></td>
 								<td><input type="number" class="page-no-text" id="changed_question_page_no" value="" placeholder="<?php esc_attr_e( 'Enter page no.', 'quiz-master-next' ); ?>"/></td>
 							</tr>
 							<tr>
 								<td><strong><?php esc_html_e( 'Question Position', 'quiz-master-next' ); ?></Strong></td>
 								<td><input type="number" class="question-position-text" id="changed_question_position" value="" placeholder="<?php esc_attr_e( 'Enter question position.', 'quiz-master-next' ); ?>"/></td>
-							</tr>
-							<tr>
-								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
 							</tr>
 						</table>
 					</form>
