@@ -132,7 +132,7 @@ function qsm_options_questions_tab_content() {
 		</div>
 		<?php
 	}
-	
+
 	$question_ids = $mlwQuizMasterNext->pluginHelper->get_questions_ids( $quiz_id );
 	if ( ! empty( $question_ids ) ) {
 		/**
@@ -556,7 +556,7 @@ function qsm_options_questions_tab_content() {
 																'image'  => __( 'Image Answers', 'quiz-master-next' ),
 															),
 															'default'            => 'text',
-															'show'               => '0,1,4,13' . $show_change_answer_editor,
+															'show'               => '0,1,4,10,13' . $show_change_answer_editor,
 															// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
 															'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_type', 'answer_type_doc#Answer-Type' ),
 														),
@@ -802,8 +802,8 @@ function qsm_options_questions_tab_content() {
 				</header>
 				<main class="qsm-popup__content" id="modal-10-content">
 					<form action='' method='post' id="move-question-form">
-						<input type="hidden" id="current_question_page_no" /> 
-						<input type="hidden" id="current_question_position" /> 
+						<input type="hidden" id="current_question_page_no" />
+						<input type="hidden" id="current_question_position" />
 						<table class="modal-10-table">
 							<tr>
 								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
