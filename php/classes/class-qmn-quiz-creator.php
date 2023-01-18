@@ -609,7 +609,7 @@ class QMNQuizCreator {
 					}
 				}
 				// Fixed Rules Questions with new question ids
-				if ( $logic_rules && is_array( $logic_rules )) {
+				if ( is_array( $logic_rules )) {
 					foreach ( $logic_rules as $logic_key => $logic_value ) {
 						foreach ( $logic_value as $logic_cond_k => $logic_cond ) {
 							foreach ( $logic_cond as $l_cond_k => $logic_val ) {
