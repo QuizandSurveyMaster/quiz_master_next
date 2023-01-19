@@ -2648,20 +2648,13 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			$total_questions = count( $questions );
 		}
 
-		$default_texts = QMNPluginHelper::get_default_texts();
-		$quiz_btn_display_text = $default_texts['next_button_text']; // For old quizes set default here
-
-		if ( isset($qmn_quiz_options->start_quiz_survey_text) && "" != $qmn_quiz_options->start_quiz_survey_text ) {
-			$quiz_btn_display_text = $qmn_quiz_options->start_quiz_survey_text; // For old quizes set default here
-		}
-		
 		$qmn_json_data['pagination'] = array(
 			'amount'                 => $qmn_quiz_options->pagination,
 			'section_comments'       => $qmn_quiz_options->comment_section,
 			'total_questions'        => $total_questions,
 			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
-			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->start_quiz_survey_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;
