@@ -643,6 +643,26 @@ function qsm_create_new_quiz_from_wizard() {
 				$contact_form[]                  = $cf_fields['email'];
 			}
 		}
+
+		/**
+		 * Prepare Text Option(s)
+		 */
+
+		$default_texts = QMNPluginHelper::get_default_texts();
+		$start_quiz_text = $default_texts['next_button_text'];
+		$form_type = isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '';
+		if ( 0 == $form_type ) {
+			$start_quiz_text = $default_texts['start_quiz_text'];
+		}
+
+		if ( 1 == $form_type ) {
+			$start_quiz_text = $default_texts['start_survey_text'];
+		}
+		
+		$quiz_texts = array(
+			"start_quiz_survey_text" => $start_quiz_text,
+		);
+		
 		/**
 		 * Prepare Quiz Options
 		 */
@@ -650,6 +670,7 @@ function qsm_create_new_quiz_from_wizard() {
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array(
 			'quiz_options' => $quiz_options,
 			'contact_form' => $contact_form,
+			'quiz_text'    => $quiz_texts,
 		) );
 	}
 }
