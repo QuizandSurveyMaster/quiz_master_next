@@ -2649,11 +2649,12 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 		}
 
 		$qmn_json_data['pagination'] = array(
-			'amount'           => $qmn_quiz_options->pagination,
-			'section_comments' => $qmn_quiz_options->comment_section,
-			'total_questions'  => $total_questions,
-			'previous_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
-			'next_text'        => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'amount'                 => $qmn_quiz_options->pagination,
+			'section_comments'       => $qmn_quiz_options->comment_section,
+			'total_questions'        => $total_questions,
+			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->start_quiz_survey_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;
