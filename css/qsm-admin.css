@@ -2201,7 +2201,7 @@ td.scheduled_time_start {
 	cursor : help;
 }
 .qsm-upgrade-tooltip {
-	opacity: 100;
+	opacity: 1;
 }
 
 .qsm_tab_content .qsm-upgrade-popup-badge,
