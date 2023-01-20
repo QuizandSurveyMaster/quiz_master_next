@@ -95,9 +95,10 @@ function qsm_options_emails_tab_content() {
 					foreach ( $variable_list as $category_name => $category_variables ) {
 						// check if the $category_variables is an array for backward compatibility
 						if ( is_array( $category_variables ) ) {
-							$classname = "";
+							$classname = "qsm-text-template-span ";
 							$qsm_badge = "";
-							$upgrade_link = "";
+							$upgrade_link = "";$variable = "";
+							$tooltip = '';
 							if ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) {
 								$upgrade_link = qsm_get_plugin_link( 'extra-template-variables' );
 								$classname = "qsm-upgrade-popup-variable";
@@ -115,13 +116,19 @@ function qsm_options_emails_tab_content() {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-										<span class="button click-to-copy">Click to Copy</span>
-										<span class="temp-var-seperator">
-											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-												<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
-											</span>
-										</span>
+									<?php if ( ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) || (( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name )) ) {?>
+										<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
+													<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+												</span>
+												<?php } else { ?>
+												<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+												<span class='button click-to-copy'>Click to Copy</span>
+												<span class="temp-var-seperator">
+													<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+													<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
+													</span>
+												</span>
+											<?php } ?>
 									</span>
 								</div>
 								<?php

@@ -1366,7 +1366,8 @@ td.scheduled_time_start {
 	transform: translateX(-50%);
 	position: absolute;
 }
-.qsm-tooltips-icon:hover .qsm-tooltips, .qsm-tooltips:hover {
+.qsm-tooltips-icon:hover .qsm-tooltips,
+ .qsm-tooltips:hover {
 	display: block;
 	opacity: 1;
 	z-index: 9999;
@@ -1451,6 +1452,13 @@ td.scheduled_time_start {
 	font-size: 8px;
 	display: none;
 }
+ .qsm-text-template-span.qsm-upgrade-popup-variable .qsm-tooltips-icon {
+	display: block;
+ }
+ .qsm-text-template-span.qsm-upgrade-popup-variable .qsm-tooltips-icon:before {
+	display: none;
+ }
+
 .qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips {
 	left: calc(100% - 10px);
 	bottom: 30px;
@@ -2190,8 +2198,12 @@ td.scheduled_time_start {
 }
 .qsm-upgrade-popup-variable {
 	opacity: 0.5;
-	pointer-events: none;
+	cursor : help;
 }
+.qsm-upgrade-tooltip {
+	opacity: 1;
+}
+
 .qsm_tab_content .qsm-upgrade-popup-badge,
 .qsm_tab_content .qsm-upgrade-popup-badge:focus {
 	top: 5px;
@@ -2215,6 +2227,10 @@ td.scheduled_time_start {
 .qsm-text-template-span:hover .qsm-tooltips-icon {
 	display: inline-block;
 }
+.qsm-text-template-span.qsm-upgrade-popup-variable:hover .qsm-tooltips-icon {
+	display: block;
+}
+
 .qsm-text-template-span:hover .temp-var-seperator {
 	position: absolute;
 	display: flex;

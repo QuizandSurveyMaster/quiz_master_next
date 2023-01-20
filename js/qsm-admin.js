@@ -354,7 +354,7 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '#show-all-variable .qsm-text-template-span ', function (e) {
+        $(document).on('click', '#show-all-variable .qsm-text-template-span:not(.qsm-upgrade-popup-variable)', function (e) {
             e.preventDefault();
             let templateSpan = jQuery(this);
             let templateVariable = jQuery(this).children('.template-variable');
@@ -372,6 +372,7 @@ var QSMAdmin;
                 templateSpan.html(button_txt);
             }, 1000);
         });
+       
         $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
             $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
         });
