@@ -1557,6 +1557,7 @@ jQuery(function () {
 				jQuery(".qsm-submit-btn").attr('disabled', false);
 				if (obj.type == 'success') {
 					$this.next().next('.remove-uploaded-file').show();
+					$this.next().next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
@@ -1576,9 +1577,11 @@ jQuery(function () {
 	jQuery('.quiz_section .remove-uploaded-file').on('click', function () {
 		var $this = jQuery(this);
 		var media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
+		var nonce = jQuery(this).data("nonce");
 		var form_data = new FormData();
 		form_data.append('action', 'qsm_remove_file_fd_question');
 		form_data.append('media_id', media_id);
+		form_data.append('nonce', nonce);
 		jQuery.ajax({
 			url: qmn_ajax_object.ajaxurl,
 			type: 'POST',

@@ -165,6 +165,7 @@ class QMNQuizManager {
 					wp_update_attachment_metadata( $attach_id, $attach_data );
 					$json['type']      = 'success';
 					$json['media_id']  = $attach_id;
+					$json['wp_nonoce'] = wp_create_nonce( 'delete_atteched_file_' . $attach_id );
 					$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
 					$json['file_url']  = $movefile['url'];
 					$json['file_path'] = basename( $movefile['url'] );
@@ -194,7 +195,7 @@ class QMNQuizManager {
 	public function qsm_remove_file_fd_question() {
 		$json          = array();
 		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
-		if ( ! empty( $attachment_id ) ) {
+		if ( ! empty( $attachment_id ) && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_atteched_file_' . $attachment_id ) ) {
 			$delete = wp_delete_attachment( $attachment_id, true );
 			if ( $delete ) {
 				$json['type']    = 'success';
