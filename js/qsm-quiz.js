@@ -1575,10 +1575,10 @@ jQuery(function () {
 
 	//Ajax remove file code
 	jQuery('.quiz_section .remove-uploaded-file').on('click', function () {
-		var $this = jQuery(this);
-		var media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
-		var nonce = jQuery(this).data("nonce");
-		var form_data = new FormData();
+		let $this = jQuery(this);
+		let media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
+		let nonce = jQuery(this).data("nonce");
+		let form_data = new FormData();
 		form_data.append('action', 'qsm_remove_file_fd_question');
 		form_data.append('media_id', media_id);
 		form_data.append('nonce', nonce);
@@ -1590,7 +1590,7 @@ jQuery(function () {
 			contentType: false,
 			processData: false,
 			success: function (response) {
-				var obj = jQuery.parseJSON(response);
+				let obj = jQuery.parseJSON(response);
 				if (obj.type == 'success') {
 					$this.hide();
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
