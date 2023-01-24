@@ -98,7 +98,7 @@ var qsmTimerInterval = [];
 			var timer_ms = jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
-				qmnTimeTakenTimer(quizID) ;
+				qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 				jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
 					jQuery(this).val(timems);
@@ -719,6 +719,7 @@ function qmnDoInit() {
 		if (quizType == 'paginated') {
 			var timer_ms = jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
+				jQuery('.qsm-quiz-container-' + _quiz_id + ' #timer').val(0);
 				qsmTimerInterval[_quiz_id] = setInterval(function () { qmnTimeTakenTimer(_quiz_id) }, 1000);
 				jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
