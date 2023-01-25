@@ -136,7 +136,7 @@ function qsm_generate_featured_addons() {
 						?>
 						<div class="custom-addon-sub-div">
 							<div class="custom-addon-image">
-								<img src="<?php echo esc_url( $single_arr['img'] ); ?>">
+								<img alt="Addon Image" src="<?php echo esc_url( $single_arr['img'] ); ?>">
 							</div>
 							<div class="custom-addon-details">
 								<p>
@@ -158,7 +158,7 @@ function qsm_generate_featured_addons() {
 						?>
 						<div class="custom-addon-sub-div">
 						<div class="custom-addon-image">
-							<img src="<?php echo esc_url( $single_arr['img'] ); ?>">
+							<img alt="Addon Image" src="<?php echo esc_url( $single_arr['img'] ); ?>">
 						</div>
 						<div class="custom-addon-details">
 							<p>
@@ -183,7 +183,7 @@ function qsm_generate_featured_addons() {
 						?>
 						<div class="custom-addon-sub-div">
 							<div class="custom-addon-image">
-								<img src="<?php echo esc_url( $single_arr['img'] ); ?>">
+								<img alt="Addon Image" src="<?php echo esc_url( $single_arr['img'] ); ?>">
 							</div>
 							<div class="custom-addon-details">
 								<p>
@@ -222,7 +222,7 @@ function qsm_generate_featured_addons() {
 							<div class="qsm-bundles-icon qsm-bundles-dynamic-<?php echo $count; ?>">
 								<?php
 								if ( ! empty( $bundles_arr['icon'] ) ) {
-									echo '<img src="' . esc_url( $bundles_arr['icon'] ) . '" />';
+									echo '<img alt="Addon Image" src="' . esc_url( $bundles_arr['icon'] ) . '" />';
 								}
 								?>
 							</div>

@@ -2879,31 +2879,6 @@ input#duplicate_questions {
 	background: #f0f0f14a;
 	margin: 0;
 }
-.qsm-addon-browse-addons .qsm-addon-anchor-left .custom-add-addon {
-	padding: 0;
-}
-.qsm-addon-browse-addons .qsm-addon-anchor-left .custom-add-addon a.active {
-	background: #f0f0f14a;
-	color: #1F1F1F;
-}
-.qsm-addon-browse-addons .qsm-addon-anchor-left .custom-add-addon a {
-	margin: 7px 7px 7px 0;
-	font-weight: normal;
-	border-radius: 5px;
-	color: #3171A5;
-	font-weight: 500;
-	outline: none;
-	box-shadow: none;
-}
-.qsm-addon-browse-addons .qsm-addon-anchor-left .custom-add-addon span {
-	position: relative;
-	top: -4px;
-	border-radius: 5px;
-	background-color: #fff;
-	padding: 3px;
-	margin-left: 4px;
-	font-weight: normal;
-}
 .qsm-primary-acnhor .custom-addpn-news-ads {
 	border-radius: 5px;
 	padding: 0;
