@@ -252,6 +252,7 @@ span.qsm-quiz-name {
 	width: 75%;
 	float: left;
 	margin-top: 0;
+	clear: both;
 }
 .qsm-addon-news-ads {
 	width: 25%;
@@ -366,6 +367,7 @@ span.qsm-quiz-name {
 }
 .qsm-active-addons .installed_addons_wrapper, .qsm-active-addons .no_addons_installed {
 	border: 1px solid #ccd0d4;
+	clear: both;
 }
 .qsm-active-addons .no_addons_installed {
 	padding: 30px 25%;
@@ -582,7 +584,7 @@ div.qsm_icon_wrap {
 	top: -20px;
 	right: 0;
 	background-color: rgba(54, 58, 66, 1);
-	color: #1dd969;
+	color: #111827;
 	background-position: center 24px;
 	background-size: 85px 85px;
 	font-size: 14px;
@@ -2867,7 +2869,7 @@ input#duplicate_questions {
 }
 .custom-addon-sub-div .custom-addon-button {
 	width: 100%;
-	margin-top: 20px;
+	margin-top: 10px;
 	text-align: center;
 	border: 1px solid #3171A5;
 	padding: 8px 0;
@@ -2971,6 +2973,9 @@ input#duplicate_questions {
 	font-size: 13px;
     line-height: 1.5;
 }
+.custom-addon-upper .subsubsub{
+	padding: 10px 0;
+}
 @media screen and (max-width: 912px) {
 	.qsm-primary-acnhor .custom-addpn-news-ads {
 		display: flex;
@@ -2980,6 +2985,7 @@ input#duplicate_questions {
 	.qsm-addon-setting-wrap .qsm-primary-acnhor {
 		display: flex;
     	flex-direction: column;
+		clear: both;
 	}
 	.qsm-quiz-page-addon.qsm-addon-page-list {
 		width: 100%;

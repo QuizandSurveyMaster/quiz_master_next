@@ -372,7 +372,7 @@ var QSMAdmin;
                 templateSpan.html(button_txt);
             }, 1000);
         });
-       
+
         $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
             $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
         });
@@ -610,17 +610,15 @@ var QSMAdmin;
         }else{
             jQuery("#qsm_add_addons").hide();
             jQuery("#qsm_installed_addons").show();
-        }        
+        }
     });
-    
+
     jQuery(document).on('click', '.custom-explore-addon', function (e) {
         jQuery(".custom-addon-upper li a").removeClass('current');
         jQuery(".custom-addon-upper li a:first").addClass('current');
         jQuery("#qsm_installed_addons").hide();
         jQuery("#qsm_add_addons").show();
-    });    
-    
-    jQuery("#qsm_total_count_text").html('(' +jQuery("#qsm_total_count").val() + ')');
+    });
 
     jQuery(document).on('click', '.qsm-help-tab-handle', function (e) {
         e.preventDefault();
