@@ -535,6 +535,7 @@
 	border: 0px;
 	text-decoration: none;
 	text-align: center;
+	margin-bottom: 6px;
 }
 
 #model-wizard .qsm_popular_addons div.popuar-addon-ul .addon-get-link span {

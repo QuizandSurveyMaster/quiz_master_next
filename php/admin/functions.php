@@ -796,10 +796,7 @@ function qsm_create_new_quiz_wizard() {
 																</span>
 															</a>
 															<a class="addon-get-link" href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
-																<?php
-																esc_html_e( 'Buy now', 'quiz-master-next' );
-																echo ' : $ ' . esc_html( array_values( $single_arr['price'] )[0] );
-																?>
+																<?php _e( 'View Details', 'quiz-master-next' ); ?>
 															</a>
 														</div>
 														<?php
