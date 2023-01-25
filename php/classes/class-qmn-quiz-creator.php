@@ -230,6 +230,7 @@ class QMNQuizCreator {
 
 		$qsm_delete_from_db           = isset( $_POST['qsm_delete_from_db'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
 		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
+		$quizzes_table                = $wpdb->prefix . 'mlw_quizzes';
 
 		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
 		if ( empty( $quiz_post_id ) || ! current_user_can( 'delete_post', $quiz_post_id ) ) {
@@ -237,17 +238,13 @@ class QMNQuizCreator {
 			return;
 		}
 
+		$is_row_exists = $wpdb->get_var( $wpdb->prepare( "SELECT * FROM $quizzes_table WHERE quiz_id=%d", $quiz_id ) );
+		
 		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_id' => $quiz_id )
 			);
-			if ( $qsm_delete_questions_from_qb ) {
-				$wpdb->delete(
-					$wpdb->prefix . 'mlw_quizzes',
-					array( 'quiz_id' => $quiz_id )
-				);
-			}
 		} else {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
@@ -276,12 +273,18 @@ class QMNQuizCreator {
 				);
 			}
 		}
+		
+		if ( empty( $is_row_exists ) ) {
+			$qsm_delete = 1;
+		}
 
-		if ( $qsm_delete && ! empty( $quiz_post_id ) ) {
-			if ( $qsm_delete_from_db ) {
-				wp_delete_post( $quiz_post_id, true );
-			} else {
-				wp_trash_post( $quiz_post_id );
+		if ( $qsm_delete ) {
+			if ( ! empty( $quiz_post_id ) ) {
+				if ( $qsm_delete_from_db ) {
+					wp_delete_post( $quiz_post_id, true );
+				} else {
+					wp_trash_post( $quiz_post_id );
+				}
 			}
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );

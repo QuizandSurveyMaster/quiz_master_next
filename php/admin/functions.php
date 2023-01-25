@@ -796,10 +796,7 @@ function qsm_create_new_quiz_wizard() {
 																</span>
 															</a>
 															<a class="addon-get-link" href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
-																<?php
-																esc_html_e( 'Buy now', 'quiz-master-next' );
-																echo ' : $ ' . esc_html( array_values( $single_arr['price'] )[0] );
-																?>
+																<?php _e( 'View Details', 'quiz-master-next' ); ?>
 															</a>
 														</div>
 														<?php
@@ -1260,6 +1257,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						<img src="<?php echo esc_attr( $value ); ?>" alt="<?php echo esc_attr( $name ); ?>" class="quiz-theme-option-image-thumbnail"><br/>
 						<a class="button button-small qsm-theme-option-image-remove" href="javascript:void(0)"><?php esc_html_e('Remove', 'quiz-master-next'); ?></a>
 					</div>
+					<a class="button <?php echo empty( $default_value != $value ) ? 'qsm-d-none' : ''; ?> qsm-theme-option-image-default" href="javascript:void(0)" data-default="<?php echo esc_attr( $default_value ); ?>" ><?php esc_html_e('Default', 'quiz-master-next'); ?></a>
 					<?php
 					break;
 				case 'color':
@@ -1278,6 +1276,17 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php echo $value ? "checked" : ""; ?> />
 					<?php
 					break;
+				case 'input_control':
+						?>
+						<input name="settings[<?php echo esc_attr( $name ); ?>]" type="number" value="<?php echo esc_attr( $value ); ?>" class="qsm-number-field" />
+						<?php
+						$param = array(
+							'name'  => "settings[". $options['unit_name'] ."]",
+							'value' => $options['unit_value'],
+						);
+						qsm_get_input_control_unit( $param ); ?>
+						<?php
+		            break;
 				default:
 					?>
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
@@ -1287,4 +1296,99 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 		</td>
 	</tr>
 	<?php
+}
+
+function qsm_extra_template_and_leaderboard( $variable_list ) {
+	if ( ! class_exists( 'QSM_Extra_Variables' ) ) {
+		global $mlwQuizMasterNext;
+		$template_array = array(
+			'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_GROUP%%/QUESTION_ANSWER_GROUP%' => __('This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
+			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
+			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+		);
+		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+			$extra_variables = array(
+				'Extra Template Variables' => $template_array,
+			);
+		} else {
+			$extra_variables = $template_array;
+		}
+		$variable_list = array_merge($variable_list, $extra_variables);
+	}
+	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
+		global $mlwQuizMasterNext;
+		$template_array = array(
+			'%LEADERBOARD_POSITION%'     => __('Display User Position out of total results (ie. 15 out of 52)', 'quiz-master-next' ),
+			'%LEADERBOARD_POSITION_URL%' => __('Display Leaderboard URL to check position.', 'quiz-master-next'  ),
+		);
+
+		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+			$leaderboard = array(
+				'Advanced Leaderboard' => $template_array,
+			);
+		} else {
+			$extra_variables = $template_array;
+		}
+		$variable_list = array_merge($variable_list, $leaderboard );
+	}
+	return $variable_list;
+}
+/**
+ * This function prepare input unit options.
+ *
+ * @version 8.0.9
+ * @param array $param  List of attributes for a input control
+ *
+ * @return HTML
+ */
+function qsm_get_input_control_unit( $param ) {
+
+	if ( empty( $param['name'] ) ) {
+		return;
+	}
+
+	$value = '';
+
+	if ( ! empty( $param['value'] ) ) {
+		$value = $param['value'];
+	}
+
+
+	$unit_options = array( 'px', '%', 'em', 'rem', 'vw', 'vh' );
+
+	/**
+	 * Filters the input units.
+	 *
+	 * @param array $unit_options List of units.
+	 */
+	$unit_options = apply_filters( 'qsm_input_units', $unit_options );
+
+	$options = '';
+	foreach ( $unit_options as $unit ) {
+
+		$is_selected = '';
+		if ( $value === $unit ) {
+			$is_selected = 'selected';
+		}
+
+		$options .= sprintf(
+			'<option value="%1$s" %2$s >%1$s</option>',
+			esc_attr( $unit ),
+			esc_attr( $is_selected )
+		);
+	}
+	$allowed_tags = array(
+		'option' => array(
+			'value'    => array(),
+			'selected' => array(),
+		),
+	);
+	echo sprintf(
+		'<select name="%1$s" class="qsm-theme-option-unit"> %2$s </select>',
+		esc_attr( $param['name'] ),
+		wp_kses( $options, $allowed_tags )
+	);
+
 }

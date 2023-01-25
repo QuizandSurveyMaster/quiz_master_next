@@ -97,6 +97,7 @@ var qsmTimerInterval = [];
 		activateTimer: function (quizID) {
 			var timer_ms = jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
+				jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
 				qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 				jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
@@ -718,6 +719,7 @@ function qmnDoInit() {
 		if (quizType == 'paginated') {
 			var timer_ms = jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
+				jQuery('.qsm-quiz-container-' + _quiz_id + ' #timer').val(0);
 				qsmTimerInterval[_quiz_id] = setInterval(function () { qmnTimeTakenTimer(_quiz_id) }, 1000);
 				jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
@@ -775,10 +777,10 @@ function qmnResetError(quiz_form_id) {
 	jQuery('#' + quiz_form_id + ' .qsm_contact_div').removeClass('qmn_error');
 	jQuery('#' + quiz_form_id + ' .quiz_section').removeClass('qmn_error');
 }
-
+var show_result_validation = true;
 function qmnValidation(element, quiz_form_id) {
+	show_result_validation = true;
 	jQuery(document).trigger('qsm_before_validation', [element, quiz_form_id]);
-	var result = true;
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
@@ -789,7 +791,7 @@ function qmnValidation(element, quiz_form_id) {
 				var x = jQuery.trim(this.value);
 				if (!isEmail(x)) {
 					qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				/**
 				 * Validate email from allowed domains.
@@ -798,7 +800,7 @@ function qmnValidation(element, quiz_form_id) {
 				if ('undefined' != typeof domains) {
 					if (!isValidDomains(x, domains.split(","))) {
 						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
-						result = false;
+						show_result_validation = false;
 					}
 				}
 			}
@@ -806,7 +808,7 @@ function qmnValidation(element, quiz_form_id) {
 				// Remove any trailing and preceeding space.
 				if (!isUrlValid(jQuery.trim(this.value))) {
 					qmnDisplayError(error_messages.url_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 			}
 			if (jQuery(this).attr('class').indexOf('mlwMinLength') !== -1 && this.value !== "") {
@@ -815,7 +817,7 @@ function qmnValidation(element, quiz_form_id) {
 					var minlength_error = error_messages.minlength_error_text;
 					minlength_error = minlength_error.replace('%minlength%', jQuery(this).attr('minlength'));
 					qmnDisplayError(minlength_error, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 			}
 			if (jQuery(this).attr('class').indexOf('mlwMaxLength') !== -1 && this.value !== "") {
@@ -824,7 +826,7 @@ function qmnValidation(element, quiz_form_id) {
 					var maxlength_error = error_messages.maxlength_error_text;
 					maxlength_error = maxlength_error.replace('%maxlength%', jQuery(this).attr('maxlength'));
 					qmnDisplayError(maxlength_error, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 			}
 			var by_pass = true;
@@ -836,63 +838,63 @@ function qmnValidation(element, quiz_form_id) {
 
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredDate') > -1 && this.value === "") {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && jQuery.trim(this.value) === "") {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code) {
 					qmnDisplayError(error_messages.incorrect_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 && !jQuery(this).prop('checked')) {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-					result = false;
+					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1) {
 					check_val = jQuery(this).find('input:checked').val();
 					if (check_val == "No Answer Provided" || check_val == "" || check_val == undefined) {
 						qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-						result = false;
+						show_result_validation = false;
 					}
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredFileUpload') > -1) {
 					var selected_file = jQuery(this).get(0).files.length;
 					if (selected_file === 0) {
 						qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-						result = false;
+						show_result_validation = false;
 					}
 				}
 				if (jQuery(this).attr('class').indexOf('qsmRequiredSelect') > -1) {
 					check_val = jQuery(this).val();
 					if (check_val == "No Answer Provided" || check_val == "" || check_val == null) {
 						qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-						result = false;
+						show_result_validation = false;
 					}
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1) {
 					if (!jQuery(this).find('input:checked').length) {
 						qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-						result = false;
+						show_result_validation = false;
 					}
 				}
 				//Google recaptcha validation
 				if (jQuery(this).attr('class').indexOf('g-recaptcha-response') > -1) {
 					if (grecaptcha.getResponse() == "") {
 						alert('ReCaptcha is missing');
-						result = false;
+						show_result_validation = false;
 					}
 				}
 			}
 		}
 	});
 	jQuery(document).trigger('qsm_after_validation', [element, quiz_form_id]);
-	return result;
+	return show_result_validation;
 }
 
 function getFormData($form) {
@@ -935,7 +937,6 @@ function qmnFormSubmit(quiz_form_id) {
 	fd.append("nonce", qmn_ajax_object.security);
 	fd.append("currentuserTime", Math.round(new Date().getTime() / 1000));
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
-
 
 	qsmEndTimeTakenTimer(quiz_id);
 	if (qmn_quiz_data[quiz_id].hasOwnProperty('advanced_timer') && qmn_quiz_data[quiz_id].advanced_timer.hasOwnProperty('show_stop_timer') ) {
@@ -1093,6 +1094,19 @@ function qmnValidatePage(quiz_form_id) {
 	return result;
 }
 
+// Show start quiz button if first page is visible
+function check_if_show_start_quiz_button(container, total_pages, page_number) {
+	if(jQuery('.quiz_begin').css('display') == 'block'){
+		container.find(".mlw_custom_start").show();
+		container.find(".mlw_custom_next").hide();
+	}else{
+		container.find(".mlw_custom_start").hide();
+		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
+			container.find(".mlw_custom_next").show();
+		}
+	}
+}
+
 //Function to advance quiz to next page
 function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	jQuery(document).trigger('qsm_next_button_click_before', [quiz_form_id]);
@@ -1138,6 +1152,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.current_page_hidden').val(parseInt(page_number) + 1);
 		$container.find(".mlw_previous").show();
 	}
+	check_if_show_start_quiz_button($container, total_pages, page_number);
 	if (jQuery(quiz_form_id + " .quiz_section.quiz_end").is(':visible')) {
 		var button_width = jQuery(quiz_form_id + ' .qsm-submit-btn').width();
 		var progress_width = jQuery(quiz_form_id).parent().find('.qmn_pagination').width();
@@ -1197,6 +1212,7 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.current_page_hidden').val(parseInt(page_number) - 1);
 		$container.find(".mlw_next").show();
 	}
+	check_if_show_start_quiz_button($container, total_pages, page_number);
 	if (go_to_top == 1 && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
 		qsmScrollTo($container);
 	}
@@ -1285,7 +1301,8 @@ function qmnInitPagination(quiz_id) {
 		.append('<span class="qmn_page_message"></span>')
 		.append('<div class="qmn_page_counter_message"></div>')
 		.append('<div class="qsm-progress-bar" id="qsm_progress_bar_' + quiz_id + '" style="display:none;"><div class="progressbar-text"></div></div>')
-		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
+		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_start" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.start_quiz_survey_text + '</a>')
+		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
 
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
 		jQuery(document).trigger('qsm_init_progressbar_before', [quiz_id, qmn_quiz_data]);
@@ -1543,6 +1560,7 @@ jQuery(function () {
 				jQuery(".qsm-submit-btn").attr('disabled', false);
 				if (obj.type == 'success') {
 					$this.next().next('.remove-uploaded-file').show();
+					$this.next().next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
@@ -1560,11 +1578,13 @@ jQuery(function () {
 
 	//Ajax remove file code
 	jQuery('.quiz_section .remove-uploaded-file').on('click', function () {
-		var $this = jQuery(this);
-		var media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
-		var form_data = new FormData();
+		let $this = jQuery(this);
+		let media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
+		let nonce = jQuery(this).data("nonce");
+		let form_data = new FormData();
 		form_data.append('action', 'qsm_remove_file_fd_question');
 		form_data.append('media_id', media_id);
+		form_data.append('nonce', nonce);
 		jQuery.ajax({
 			url: qmn_ajax_object.ajaxurl,
 			type: 'POST',
@@ -1573,7 +1593,7 @@ jQuery(function () {
 			contentType: false,
 			processData: false,
 			success: function (response) {
-				var obj = jQuery.parseJSON(response);
+				let obj = jQuery.parseJSON(response);
 				if (obj.type == 'success') {
 					$this.hide();
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');

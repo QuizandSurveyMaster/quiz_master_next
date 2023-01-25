@@ -165,6 +165,7 @@ class QMNQuizManager {
 					wp_update_attachment_metadata( $attach_id, $attach_data );
 					$json['type']      = 'success';
 					$json['media_id']  = $attach_id;
+					$json['wp_nonoce'] = wp_create_nonce( 'delete_atteched_file_' . $attach_id );
 					$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
 					$json['file_url']  = $movefile['url'];
 					$json['file_path'] = basename( $movefile['url'] );
@@ -194,7 +195,7 @@ class QMNQuizManager {
 	public function qsm_remove_file_fd_question() {
 		$json          = array();
 		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
-		if ( ! empty( $attachment_id ) ) {
+		if ( ! empty( $attachment_id ) && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_atteched_file_' . $attachment_id ) ) {
 			$delete = wp_delete_attachment( $attachment_id, true );
 			if ( $delete ) {
 				$json['type']    = 'success';
@@ -809,7 +810,7 @@ class QMNQuizManager {
 			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->minlength_error_text, "quiz_minlength_error_text-{$options->quiz_id}" ),
 			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->maxlength_error_text, "quiz_maxlength_error_text-{$options->quiz_id}" ),
 		);
-
+		$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data ,$options);
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
 		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array(), $mlwQuizMasterNext->version, true );
@@ -2648,12 +2649,20 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			$total_questions = count( $questions );
 		}
 
+		$default_texts = QMNPluginHelper::get_default_texts();
+		$quiz_btn_display_text = $default_texts['next_button_text']; // For old quizes set default here
+
+		if ( isset($qmn_quiz_options->start_quiz_survey_text) && "" != $qmn_quiz_options->start_quiz_survey_text ) {
+			$quiz_btn_display_text = $qmn_quiz_options->start_quiz_survey_text; // For old quizes set default here
+		}
+
 		$qmn_json_data['pagination'] = array(
-			'amount'           => $qmn_quiz_options->pagination,
-			'section_comments' => $qmn_quiz_options->comment_section,
-			'total_questions'  => $total_questions,
-			'previous_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
-			'next_text'        => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'amount'                 => $qmn_quiz_options->pagination,
+			'section_comments'       => $qmn_quiz_options->comment_section,
+			'total_questions'        => $total_questions,
+			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;

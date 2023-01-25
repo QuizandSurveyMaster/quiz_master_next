@@ -359,6 +359,22 @@ class QSM_Quiz_Settings {
 						'facebook' => $quiz_options->social_media_text,
 					);
 				}
+				
+				/**
+				 * Prepare Text Option(s)
+				 */
+
+				$default_texts = QMNPluginHelper::get_default_texts();
+				$start_quiz_text = $default_texts['next_button_text'];
+				$form_type = isset( $settings_array['quiz_options']['form_type'] ) ? $settings_array['quiz_options']['form_type'] : '';
+				if ( 0 == $form_type ) {
+					$start_quiz_text = $default_texts['start_quiz_text'];
+				}
+
+				if ( 1 == $form_type ) {
+					$start_quiz_text = $default_texts['start_survey_text'];
+				}
+				
 				// Prepares new quiz_text section's settings
 				$settings_array['quiz_text'] = maybe_serialize(
 					array(
@@ -380,6 +396,7 @@ class QSM_Quiz_Settings {
 						'require_log_in_text'      => $quiz_options->require_log_in_text,
 						'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
 						'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
+						"start_quiz_survey_text"   => $start_quiz_text,
 					)
 				);
 			}

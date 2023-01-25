@@ -506,6 +506,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'category'        => ( isset( $categorysArray['category_name'] ) && ! empty( $categorysArray['category_name'] ) ? implode( ',', $categorysArray['category_name'] ) : '' ),
 					'multicategories' => $question['multicategories'],
 					'required'        => $question['settings']['required'],
+					'answerEditor'    => $question['settings']['answerEditor'],
 					'answers'         => $question['answers'],
 					'page'            => $question['page'],
 					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',

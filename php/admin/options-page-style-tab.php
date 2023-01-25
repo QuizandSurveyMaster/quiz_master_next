@@ -249,7 +249,7 @@ function qsm_options_styling_tab_content() {
 					</h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
-				<main class="qsm-popup__content" id="thme-color-settings-content">
+				<main class="qsm-popup__content" id="theme-color-settings-content">
 					<?php wp_nonce_field( 'save_theme_settings', 'save_theme_settings_nonce' ); ?>
 					<table class="form-table" style="width: 100%;">
 						<?php

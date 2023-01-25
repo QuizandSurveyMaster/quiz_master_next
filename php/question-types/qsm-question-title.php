@@ -38,8 +38,15 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	}
 	?>
 	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' >
-	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id ); ?>
-	<p><?php echo do_shortcode( wp_kses_post( $question_title . $deselect_answer ) ); ?></p>
+	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id );
+		$allow_html = wp_kses_allowed_html('post');
+		$allow_html['input']['autocomplete'] = 1;
+		$allow_html['input']['name'] = 1;
+		$allow_html['input']['class'] = 1;
+		$allow_html['input']['id'] = 1;
+		$allow_html['input']['maxlength'] = 1;
+	?>
+	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
 	</div>
 	<?php
 }

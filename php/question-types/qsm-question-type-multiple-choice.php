@@ -20,15 +20,15 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
+	$mlw_class = '';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredRadio';
-	} else {
-		$mlw_require_class = '';
+		$mlw_class = 'mlwRequiredRadio';
 	}
+	$mlw_class .= apply_filters( 'qsm_multiple_choice_classes', $mlw_class, $id );
 	// $question_title = apply_filters('the_content', $question);
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
 	?>
-	<div class='qmn_radio_answers <?php echo esc_attr( $mlw_require_class ); ?>'>
+	<div class='qmn_radio_answers <?php echo esc_attr( $mlw_class ); ?>'>
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;

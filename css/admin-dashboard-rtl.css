@@ -59,7 +59,7 @@
 }
 
 .welcome-panel .current_version {
-	color: #344ad4;
+	color: #111827;
 	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
@@ -535,6 +535,7 @@
 	border: 0px;
 	text-decoration: none;
 	text-align: center;
+	margin-bottom: 6px;
 }
 
 #model-wizard .qsm_popular_addons div.popuar-addon-ul .addon-get-link span {

@@ -354,7 +354,7 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '#show-all-variable .qsm-text-template-span ', function (e) {
+        $(document).on('click', '#show-all-variable .qsm-text-template-span:not(.qsm-upgrade-popup-variable)', function (e) {
             e.preventDefault();
             let templateSpan = jQuery(this);
             let templateVariable = jQuery(this).children('.template-variable');
@@ -372,6 +372,7 @@ var QSMAdmin;
                 templateSpan.html(button_txt);
             }, 1000);
         });
+
         $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
             $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
         });
@@ -457,9 +458,19 @@ var QSMAdmin;
         });
         jQuery(document).on('click', '.qsm-theme-option-image-remove', function () {
             let button = $(this);
+            button.parents('.qsm-theme-option-image').nextAll( ".qsm-theme-option-image-default" ).show();
             button.parents('.qsm-theme-option-image').hide();
             button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-input').val("");
             button.parents('.qsm-theme-option-image').prevAll('.quiz-theme-option-image-button').fadeIn();
+
+        });
+        jQuery(document).on('click', '.qsm-theme-option-image-default', function () {
+            let button = $(this);
+            let default_img = $(this).data( "default" );
+            button.prevAll('.qsm-theme-option-image').show();
+            button.prevAll('.qsm-theme-option-image').find(".quiz-theme-option-image-thumbnail").attr( "src", default_img );
+            button.prevAll('.quiz-theme-option-image-input').val(default_img);
+            $(this).hide();
 
         });
         //theme option setting image end
@@ -588,6 +599,25 @@ var QSMAdmin;
             content.show();
             parent.addClass('opened');
         }
+    });
+
+    jQuery(document).on('click', '.custom-addon-upper li a', function (e) {
+        jQuery(".custom-addon-upper li a").removeClass('current');
+        jQuery(this).addClass('current');
+        if(jQuery(this).data('section') == "all"){
+            jQuery("#qsm_installed_addons").hide();
+            jQuery("#qsm_add_addons").show();
+        }else{
+            jQuery("#qsm_add_addons").hide();
+            jQuery("#qsm_installed_addons").show();
+        }
+    });
+
+    jQuery(document).on('click', '.custom-explore-addon', function (e) {
+        jQuery(".custom-addon-upper li a").removeClass('current');
+        jQuery(".custom-addon-upper li a:first").addClass('current');
+        jQuery("#qsm_installed_addons").hide();
+        jQuery("#qsm_add_addons").show();
     });
 
     jQuery(document).on('click', '.qsm-help-tab-handle', function (e) {
@@ -1724,6 +1754,7 @@ var import_button;
                 updateQPage: function (pageID) {
                     QSMAdmin.displayAlert(qsm_admin_messages.saving_page_info, 'info');
                     var pageInfo = QSMQuestion.qpages.get(pageID);
+                    pageInfo.set("update_name", 1);
                     jQuery('#page-options').find(':input, select, textarea').each(function (i, field) {
                         pageInfo.set(field.name, field.value);
                     });
@@ -1799,6 +1830,10 @@ var import_button;
                         placeholder: "ui-state-highlight",
                         connectWith: '.page',
                         stop: function (evt, ui) {
+                            let question_id =ui.item.data("question-id");
+                            let parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').data('page-id');
+                            let model = QSMQuestion.questions.get(question_id);
+                            model.set('page', parent_page-1);
                             setTimeout(
                                 function () {
                                     $('.save-page-button').trigger('click');
@@ -2460,6 +2495,59 @@ var import_button;
                     QSMQuestion.addNewPage();
                 });
 
+                $('.questions').on('click', '.move-question-button', function (e) {
+                    e.preventDefault();
+                    $(this).parents('.question').next('.questionElements').slideUp('slow');
+                    MicroModal.show('modal-10');
+                    $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
+                    $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
+                });
+
+                //  Confirm move question button
+                $("#move-question-button").on('click', function (e) {
+                    $(this).prop("disabled", true);
+                    $("#move-question-error").html("");
+                    if ( 0 < $("#changed_question_position").val() && 0 < $("#changed_question_page_no").val()) {
+                        new_page_section = $(".qsm_tab_content .page").eq( $("#changed_question_page_no").val() - 1 );
+                        if ( 0 != new_page_section.length) {
+                            new_element = new_page_section.find(".question").eq($("#changed_question_position").val() - 1);
+                            current_page_section = $(".qsm_tab_content .page").eq( $("#current_question_page_no").val() - 1 );
+                            current_element = current_page_section.find(".question").eq($("#current_question_position").val() - 1);
+                            if ( 0 == new_element.length ) {
+                                new_page_section.append(current_element.clone());
+                            } else {
+                                if ( 1 == $("#current_question_position").val() && $("#changed_question_page_no").val() == $("#current_question_page_no").val() ) {
+                                    new_element.after(current_element.clone());
+                                } else {
+                                    new_element.before(current_element.clone());
+                                }
+                            }
+                            current_element.remove();
+                            QSMQuestion.savePages();
+                            clear_move_form_values();
+                        } else {
+                            $("#move-question-error").html("Page is not available");
+                        }
+                    } else {
+                        $("#move-question-error").html("Please enter positive numbers.");
+                    }
+                    setTimeout(function () {
+                        $("#move-question-error").html("");
+                    }, 3000);
+                    $(this).prop("disabled", false);
+                });
+
+                //  Cancel move question button
+                $("#cancel-question-button").on('click', function () {
+                    clear_move_form_values();
+                });
+
+                //  Clear form values
+                function clear_move_form_values() {
+                    MicroModal.close('modal-10');
+                    $("#move-question-form input").val("");
+                }
+
                 $('.questions').on('click', '.new-question-button', function (event) {
                     event.preventDefault();
                     if (jQuery('.questionElements').is(':visible')) {
@@ -2557,6 +2645,7 @@ var import_button;
                         $('.save-page-button').trigger('click');
                         QSMQuestion.countTotal();
                         MicroModal.close('modal-page-1');
+                        location.reload();
                     }
                 });
                 $(document).on('click', '#answers .delete-answer-button', function (event) {
@@ -2836,6 +2925,11 @@ var import_button;
                     qsm_hide_show_question_desc(question_val);
                     if (13 == question_val) {
                         QSMQuestion.prepareEditPolarQuestion(question_val);
+                    }
+                    var answerType = $('#change-answer-editor').val();
+                    $('#image_size_area').hide();
+                    if ('image' === answerType) {
+                        $('#image_size_area').show();
                     }
                 });
 
