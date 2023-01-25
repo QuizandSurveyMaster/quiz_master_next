@@ -332,7 +332,7 @@ add_action( 'wp_ajax_qsm_wizard_template_quiz_options', 'qsm_wizard_template_qui
  * Generate popular addon
  */
 function qsm_dashboard_popular_addon( $widget_id ) {
-		$addon_array = qsm_get_widget_data( 'products' );
+	$all_addons = qsm_get_widget_data( 'all_addons' );
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
@@ -346,15 +346,17 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 		<div class="main">
 			<ul class="popuar-addon-ul">
 				<?php
-				if ( $addon_array ) {
-					foreach ( $addon_array as $key => $single_arr ) {
-						?>
-				<li>
-					<a href="<?php echo esc_url( qsm_get_utm_link( $single_arr['link'], 'dashboard', 'all_addon', sanitize_title( $single_arr['name'] ) ) ); ?>" target="_blank" rel="noopener">
-						<img src="<?php echo esc_url( $single_arr['img'] ); ?>" title="<?php echo esc_attr( $single_arr['name'] ); ?>" alt="<?php echo esc_attr( $single_arr['name'] ); ?>" >
-					</a>
-				</li>
-				<?php
+				if ( $all_addons ) {
+					foreach ( $all_addons as $key => $single_arr ) {
+						if ( in_array( $single_arr['name'], array( "Export & Import", "Reporting & Analysis", "Export Results", "Advanced Question Types" ), true ) ) {
+							?>
+							<li>
+								<a href="<?php echo esc_url( qsm_get_utm_link( $single_arr['link'], 'dashboard', 'all_addon', sanitize_title( $single_arr['name'] ) ) ); ?>" target="_blank" rel="noopener">
+									<img src="<?php echo esc_url( $single_arr['img'] ); ?>" title="<?php echo esc_attr( $single_arr['name'] ); ?>" alt="<?php echo esc_attr( $single_arr['name'] ); ?>" >
+								</a>
+							</li>
+							<?php
+						}
 					}
 				}
 				?>

@@ -45,7 +45,7 @@ function qsm_generate_about_page() {
 	<style>
 	div.qsm_icon_wrap {
 		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
-		?>no-repeat;
+		?>no-repeat center;
 	}
 	</style>
 	<div class="wrap about-wrap">
