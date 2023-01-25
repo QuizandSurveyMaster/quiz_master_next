@@ -2829,24 +2829,175 @@ input#duplicate_questions {
 	border-radius: 4px;
 }
 /* Drag-drop question popup */
-#modal-10 .qsm-popup__footer{
+#modal-10 .qsm-popup__footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
-#move-question-error{
+#move-question-error {
 	color: red;
 }
-.qsm-popup__footer .cancel-move-question-button{
+.qsm-popup__footer .cancel-move-question-button {
 	color: red !important;
 	border: transparent;
 	background: transparent;
 	cursor: pointer;
 }
-.qsm-popup__content #move-question-form strong{
+.qsm-popup__content #move-question-form strong {
 	color: #00449e;
 }
-#modal-10 .qsm-popup__content .custom-error-field{
+#modal-10 .qsm-popup__content .custom-error-field {
 	text-align: center;
 	padding-bottom: 20px;
+}
+/* Re-design addon page */
+#qsm_installed_addons {
+	margin: 0;
+}
+.qsm_popular_addons div.popuar-addon-ul>div {
+	padding: 0;
+}
+.qsm_popular_addons div.custom-addon-sub-div {
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+}
+.qsm_popular_addons div.custom-addon-sub-div .addon-title {
+	font-weight: normal;
+}
+.custom-addon-sub-div .custom-addon-button {
+	width: 100%;
+	margin-top: 20px;
+	text-align: center;
+	border: 1px solid #3171A5;
+	padding: 8px 0;
+}
+.custom-addon-sub-div .custom-addon-link {
+	text-decoration: none;
+}
+.qsm-addon-browse-addons{
+	background: #f0f0f14a;
+	margin: 0;
+}
+.qsm-primary-acnhor .custom-addpn-news-ads {
+	border-radius: 5px;
+	padding: 0;
+	background: #FFFFFF;
+}
+.custom-addpn-news-ads .custom-news-ads-list {
+    background: #f0f0f1;
+	border-radius: 5px;
+	padding-top: 15px;
+}
+.custom-addpn-news-ads .qsm-bundles-widget {
+	box-shadow: 0 1px 1px 1px #d9dadb;
+	background: #FFFFFF;
+}
+.custom-addpn-news-ads .qsm-bundles-widget:first {
+	margin-top: 15px;
+}
+.custom-addpn-news-ads .qsm-bundles-widget:not(:last-child) {
+	margin-bottom: 15px;
+}
+.custom-addpn-news-ads .qsm-bundles-top {
+	display: flex;
+	align-items: center;
+	padding: 15px 15px 0 15px;
+}
+.custom-addpn-news-ads .qsm-bundles-bottom {
+	padding: 0 15px 15px 15px;
+}
+.custom-addpn-news-ads .qsm-bundles-bottom a {
+	width: 100%;
+    text-align: center;
+    padding: 8px;
+    background-color: #3B9A7A;
+}
+.custom-addpn-news-ads .qsm-bundles-bottom a span {
+	position: relative;
+    top: 5px;
+}
+.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title {
+	display: flex;
+    justify-content: center;
+	align-items: center;
+	background-color: #FFFFFF;
+	border-radius: 5px 5px 0 0;
+	margin: 0;
+	font-size: 12px;
+}
+.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-text {
+	padding-left: 10px;
+}
+.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-upper {
+	background-color: #d9dadb;
+}
+.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title img{
+	padding-right: 5px;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-icon {
+    padding: 10px;
+    border-radius: 10px;
+	width: 35px;
+	text-align: center;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-icon img{
+	height: 35px;
+}
+.custom-add-upper li a.current {
+	outline: none;
+	box-shadow: none;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .custom-addon-getnow {
+	border: none;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-0{
+	background-color: #01B592;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-1{
+	background-color: #EC706F;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-2{
+	background-color: #2270B1;
+}
+.custom-addon-sub-div .custom-addon-details {
+	display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+	padding: 0 15px 15px 15px;
+	height: 100%;
+}
+.qsm_popular_addons div.popuar-addon-ul .addon-title {
+	font-size: 13px;
+    line-height: 1.5;
+}
+@media screen and (max-width: 912px) {
+	.qsm-primary-acnhor .custom-addpn-news-ads {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+	.qsm-addon-setting-wrap .qsm-primary-acnhor {
+		display: flex;
+    	flex-direction: column;
+	}
+	.qsm-quiz-page-addon.qsm-addon-page-list {
+		width: 100%;
+	}
+	.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-text {
+		font-size: 14px;
+	}
+	.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-upper {
+		font-size: 12px !important;
+	}
+}
+@media screen and (max-width: 1080px) {
+	.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-text {
+		font-size: 12px;
+	}
+}
+@media screen and (max-width: 1200px) {
+	.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-upper {
+		font-size: 10px;
+	}
 }
