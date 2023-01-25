@@ -336,11 +336,11 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel:
-			<?php esc_html_e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text"><?php _e( 'Toggle panel', 'quiz-master-next' ); ?>:
+			<?php esc_html_e( 'Most Popular Extensions', 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Most Popular Extensions', 'quiz-master-next' ); ?></span>
 	</h2>
 	<div class="inside">
 		<div class="main">
@@ -362,7 +362,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				?>
 			</ul>
 			<div class="pa-all-addon">
-				<a href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard', 'all_addon', 'dashboard_addons') )?>" rel="noopener" target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
+				<a href="<?php echo esc_url( qsm_get_plugin_link('addons', 'dashboard', 'all_addon', 'dashboard_addons') )?>" rel="noopener" target="_blank"><?php esc_html_e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>
 	</div>

@@ -30,7 +30,7 @@ function qmn_addons_page() {
 		<?php
 		}
 		?>
-		<?php esc_html_e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
+		<?php esc_html_e( 'Extend QSM With Addons', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -76,7 +76,7 @@ function qsm_generate_featured_addons() {
 	<div class="wrap custom-addon-upper">
 		<ul class="subsubsub">
 			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons); ?>)</span></a> |</li>
-			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ); ?>)</span></a></li>
+			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ) - 1; ?>)</span></a></li>
 		</ul>
 	</div>
 	<div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor"  style="display: none;">
