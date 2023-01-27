@@ -307,9 +307,19 @@ var QSMAdmin;
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
             if ($('.' + name + '_' + value).length > 0) {
-                $('.' + name + '_' + value).show();
+                hide_show_quiz_options(value);
             }
         });
+
+        // form_type (0, 1, 2).
+        function hide_show_quiz_options(form_type) {
+            if (0 == form_type) {
+                $('.qsm_tab_content input[name="system"], .qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').show();
+            } else {
+                $('.qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').hide();
+            }
+        }
+
         $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
@@ -324,6 +334,7 @@ var QSMAdmin;
             if (system_option == 0 || system_option == 3) {
                 $('.qsm_hidden_tr_gradingsystem').show();
             }
+            hide_show_quiz_options($("select[name='form_type']").find(":selected").val());
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
