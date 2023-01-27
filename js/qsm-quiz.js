@@ -1103,6 +1103,9 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		container.find(".mlw_custom_start").hide();
 		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
 			container.find(".mlw_custom_next").show();
+			if (jQuery('.quiz_end').css('display') == 'block') {
+				container.find(".mlw_custom_next").hide();
+			}
 		}
 	}
 }
