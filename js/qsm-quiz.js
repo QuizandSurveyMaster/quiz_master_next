@@ -24,7 +24,6 @@ var qsmTimerInterval = [];
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
 					QSM.initPagination(quizID);
-					qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					if ( ( quiz.hasOwnProperty('pagination') || ( _.keys(quiz.qpages).length > 1 && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
 						qsmEndTimeTakenTimer(quizID);
 						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
@@ -37,6 +36,8 @@ var qsmTimerInterval = [];
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
 						quizType = 'timer';
+					} else {
+						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 				});
 			}
