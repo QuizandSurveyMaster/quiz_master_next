@@ -1262,7 +1262,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					break;
 				case 'color':
 					?>
-					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default_value ); ?>" class="qsm-color-field" data-label="<?php echo esc_attr( $options['button_text'] ); ?>" />
+					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default_value ); ?>" class="qsm-color-field" data-alpha-enabled="true" data-label="<?php echo esc_attr( $options['button_text'] ); ?>" />
 					<?php
 					break;
 				case 'hover_color':

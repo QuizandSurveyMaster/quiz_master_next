@@ -333,6 +333,7 @@ class MLWQuizMasterNext {
 				case 'style':
 					wp_enqueue_style( 'wp-color-picker' );
 					wp_enqueue_script( 'wp-color-picker');
+					wp_enqueue_script( 'wp-color-picker-alpha', QSM_PLUGIN_JS_URL . '/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), $this->version, true );
 					wp_enqueue_media();
 					break;
 				case 'options':
