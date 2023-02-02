@@ -804,6 +804,7 @@ function qsm_options_questions_tab_content() {
 					<form action='' method='post' id="move-question-form">
 						<input type="hidden" id="current_question_page_no" />
 						<input type="hidden" id="current_question_position" />
+						<input type="hidden" id="current_question_id" />
 						<table class="modal-10-table">
 							<tr>
 								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
