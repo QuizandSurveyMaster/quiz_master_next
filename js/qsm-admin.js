@@ -2512,6 +2512,7 @@ var import_button;
                     MicroModal.show('modal-10');
                     $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
                     $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
+                    $("#current_question_id, #current_question_id").val($(this).parents('.question').data("question-id"));
                 });
 
                 //  Confirm move question button
@@ -2534,6 +2535,10 @@ var import_button;
                                 }
                             }
                             current_element.remove();
+                            let question_id = $("#current_question_id").val();
+                            let parent_page = $("#changed_question_page_no").val();
+                            let model = QSMQuestion.questions.get(question_id);
+                            model.set('page', parent_page-1);
                             QSMQuestion.savePages();
                             clear_move_form_values();
                         } else {
