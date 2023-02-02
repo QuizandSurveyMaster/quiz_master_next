@@ -201,6 +201,7 @@ var qsmTimerInterval = [];
 				if (qmn_quiz_data[quizID].enable_result_after_timer_end == 1) {
 					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 				} else {
+					$('.qsm-quiz-container-' + quizID).find('.stoptimer-p').hide();
 					MicroModal.show('modal-3');
 				}
 				return;
