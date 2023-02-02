@@ -796,7 +796,7 @@ function qsm_create_new_quiz_wizard() {
 																</span>
 															</a>
 															<a class="addon-get-link" href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
-																<?php _e( 'View Details', 'quiz-master-next' ); ?>
+																<?php echo __( 'View Details', 'quiz-master-next' ); ?>
 															</a>
 														</div>
 														<?php
