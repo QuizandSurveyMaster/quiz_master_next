@@ -63,6 +63,104 @@ div .quiz_section .question-type-polar-s,
 .question-type-polar-s .qsm_image_caption {
 	display: block;
 }
+.qsm-popup-slide.is-open {
+	display: block !important;
+}
+.qsm-popup-slide[aria-hidden="false"] .qsm-popup__overlay {
+	animation: mmfadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+.qsm-popup-slide[aria-hidden="false"] .qsm-popup__container {
+	animation: mmslideIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+.qsm-popup-slide[aria-hidden="true"] .qsm-popup__overlay {
+	animation: mmfadeOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+.qsm-popup-slide[aria-hidden="true"] .qsm-popup__container {
+	animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+.qsm-popup-slide .qsm-popup__container,
+.qsm-popup-slide .qsm-popup__overlay {
+	will-change: transform;
+}
+.qsm-popup {
+	font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+}
+.qsm-popup__overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+}
+.qsm-popup__container {
+	background-color: #fff;
+	padding: 30px;
+	min-width: 500px;
+	max-width: 700px;
+	max-height: 95vh;
+	border-radius: 4px;
+	overflow-y: auto;
+	box-sizing: border-box;
+}
+.qsm-popup__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.qsm-popup__title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-weight: 600;
+	font-size: 1.25rem;
+	line-height: 1.25;
+	color: #2271b1;
+	box-sizing: border-box;
+}
+.qsm-theme-color-settings .qsm-popup__content label {
+	font-weight: 400;
+}
+.qsm-popup__close {
+	background: transparent;
+	border: 0;
+	color: #00449e;
+	text-decoration: none;
+}
+.qsm-popup__header .qsm-popup__close:before {
+	content: "\2715";
+}
+.qsm-popup__content {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	line-height: 1.5;
+	color: rgba(0, 0, 0, 0.8);
+}
+body .qsm-popup__btn {
+	font-size: 0.875rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	background-color: #e6e6e6;
+	color: rgba(0, 0, 0, 0.8);
+	border-radius: 0.25rem;
+	border-style: none;
+	border-width: 0;
+	cursor: pointer;
+	-webkit-appearance: button;
+	text-transform: none;
+	overflow: visible;
+	line-height: 1.15;
+	margin: 0;
+}
+body .qsm-popup__btn-primary {
+	background-color: #00449e;
+	color: #fff;
+}
 .qsm_image_result_caption,
 .qsm_image_result_caption_default {
 	background-color: white;
