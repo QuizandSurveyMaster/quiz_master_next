@@ -288,7 +288,7 @@ function qsm_options_styling_tab_content() {
 												break;
 											case 'color':
                                                 ?>
-												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="qsm-color-field" />
+												<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text" data-alpha-enabled="true" value="<?php echo esc_attr( $theme_val['default'] ); ?>" data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="qsm-color-field" />
 												<?php
 												break;
 											case 'checkbox':

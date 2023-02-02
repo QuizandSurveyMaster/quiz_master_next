@@ -24,7 +24,6 @@ var qsmTimerInterval = [];
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
 					QSM.initPagination(quizID);
-					qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					if ( ( quiz.hasOwnProperty('pagination') || ( _.keys(quiz.qpages).length > 1 && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
 						qsmEndTimeTakenTimer(quizID);
 						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
@@ -37,6 +36,8 @@ var qsmTimerInterval = [];
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
 						quizType = 'timer';
+					} else {
+						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 				});
 			}
@@ -200,6 +201,7 @@ var qsmTimerInterval = [];
 				if (qmn_quiz_data[quizID].enable_result_after_timer_end == 1) {
 					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 				} else {
+					$('.qsm-quiz-container-' + quizID).find('.stoptimer-p').hide();
 					MicroModal.show('modal-3');
 				}
 				return;
@@ -1103,6 +1105,9 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		container.find(".mlw_custom_start").hide();
 		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
 			container.find(".mlw_custom_next").show();
+			if (jQuery('.quiz_end').css('display') == 'block') {
+				container.find(".mlw_custom_next").hide();
+			}
 		}
 	}
 }

@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 8.0.9
+Stable tag: 8.0.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,7 +163,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.0.9 (Jan 25, 2022) =
+= 8.0.10 (Feb 02, 2023) =
+* Feature: Added option to set theme color transparency
+* Bug: Fixed issue with %TIMER_MINUTES% variable
+* Bug: Fixed issue with duplicate question position
+
+
+= 8.0.9 (Jan 25, 2023) =
 * Feature: Added option to move a question on specified page/position
 * Feature: Added image answer type support for horizontal multiple response questions
 * Feature: Added separate button on first page to start quiz/survey
@@ -172,8 +178,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issue with %TIMER_MINUTES% variable
 * Bug: Fixed security issues
 * Enhancement: Improved format of wrong answers in emails
-
-
 
 = 8.0.8 (Dec 15, 2022) =
 * Bug: Fixed issue with short answer question type

@@ -307,9 +307,19 @@ var QSMAdmin;
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
             if ($('.' + name + '_' + value).length > 0) {
-                $('.' + name + '_' + value).show();
+                hide_show_quiz_options(value);
             }
         });
+
+        // form_type (0, 1, 2).
+        function hide_show_quiz_options(form_type) {
+            if (0 == form_type) {
+                $('.qsm_tab_content input[name="system"], .qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').show();
+            } else {
+                $('.qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').hide();
+            }
+        }
+
         $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
@@ -324,6 +334,7 @@ var QSMAdmin;
             if (system_option == 0 || system_option == 3) {
                 $('.qsm_hidden_tr_gradingsystem').show();
             }
+            hide_show_quiz_options($("select[name='form_type']").find(":selected").val());
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
@@ -2501,6 +2512,7 @@ var import_button;
                     MicroModal.show('modal-10');
                     $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
                     $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
+                    $("#current_question_id, #current_question_id").val($(this).parents('.question').data("question-id"));
                 });
 
                 //  Confirm move question button
@@ -2523,6 +2535,10 @@ var import_button;
                                 }
                             }
                             current_element.remove();
+                            let question_id = $("#current_question_id").val();
+                            let parent_page = $("#changed_question_page_no").val();
+                            let model = QSMQuestion.questions.get(question_id);
+                            model.set('page', parent_page-1);
                             QSMQuestion.savePages();
                             clear_move_form_values();
                         } else {
