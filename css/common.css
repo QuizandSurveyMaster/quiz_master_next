@@ -175,7 +175,7 @@ body .qsm-popup__btn-primary {
 	border-radius: 0;
 	height: 20px;
 }
-.question-type-polar-s .ui-widget-content .ui-slider-handle { 
+.question-type-polar-s .ui-widget-content .ui-slider-handle {
 	background: rgb(119, 113, 113);
 	height: 32px;
 	border-color: rgb(119, 113, 113);
@@ -193,9 +193,6 @@ body .qsm-popup__btn-primary {
 }
 .qsm-deselect-answer {
 	float: right;
-}
-.qsm-popup__close {
-	text-decoration: none !important;
 }
 .qsm-popup__btn-primary {
 	margin-right: 30px;
@@ -547,8 +544,8 @@ body .ui-tooltip.ui-widget-content {
 	border-bottom: 1px solid #808080;
 	padding-bottom: 25px;
 }
-.qmn_btn, 
-.qsm-quiz-container.qmn_quiz_container .qmn_btn, 
+.qmn_btn,
+.qsm-quiz-container.qmn_quiz_container .qmn_btn,
 .qsm-quiz-container.qmn_quiz_container .btn {
 	position: relative;
 	display: inline-block;
