@@ -787,7 +787,7 @@ function qmnValidation(element, quiz_form_id) {
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
-		if ( jQuery(this).attr('class') && jQuery(this).is(':visible') ) {
+		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
@@ -837,7 +837,6 @@ function qmnValidation(element, quiz_form_id) {
 			}
 
 			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
-				
 
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
@@ -851,7 +850,7 @@ function qmnValidation(element, quiz_form_id) {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
- 				if ((jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1) && (jQuery('#question' +quiz_id).val() === "" || jQuery('#question' + quiz_id).val() === undefined)) {
+ 				if ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && ( "" === jQuery(this).val() || undefined === jQuery(this).val() ) ) {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}

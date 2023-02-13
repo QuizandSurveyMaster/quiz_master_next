@@ -43,8 +43,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 
 	?>
-	<span class="mlw_qmn_question question-type-polar-s  <?php echo esc_attr( $mlw_require_class ); ?>">
-					<input type='hidden' class='qmn_polar' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
+	<span class="mlw_qmn_question question-type-polar-s">
 		<div class='left-polar-title'> <?php
 		if ( 'image' === $answerEditor ) {
 			$size_style = '';
@@ -71,7 +70,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 		}
 		?> </div>
 		<div class='slider-main-wrapper'>
-
+			<input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
 			<div id="slider-<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
 		</div>
 		<div class='right-polar-title'><?php
