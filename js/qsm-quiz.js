@@ -850,10 +850,6 @@ function qmnValidation(element, quiz_form_id) {
 					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
- 				if ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && ( "" === jQuery(this).val() || undefined === jQuery(this).val() ) ) {
-					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-					show_result_validation = false;
-				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code) {
 					qmnDisplayError(error_messages.incorrect_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
