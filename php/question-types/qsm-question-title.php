@@ -18,6 +18,13 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'.__( 'Deselect Answer', 'quiz-master-next' ).'</a>';
 	}
 
+	if ( '' !== $new_question_title ) {
+		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
+		?>
+		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
+		<?php
+		$polar_extra_class .= ' qsm_remove_bold';
+	}
 	if ( $question_id ) {
 		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
 		if ( $featureImageID ) {
@@ -25,13 +32,6 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 			<div class="qsm-featured-image"><?php echo wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ); ?></div>
 			<?php
 		}
-	}
-	if ( '' !== $new_question_title ) {
-		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
-		?>
-		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
-		<?php
-		$polar_extra_class .= ' qsm_remove_bold';
 	}
 	if ( ! empty( $question_title ) ) {
 		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question_title, ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
