@@ -1056,7 +1056,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
 								if ( 5 == $answer['question_type'] ) {
-									$user_given_answer   = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $user_given_answer ) ) );
+									$user_given_answer   = htmlentities( $answer[1] );
 									$current_answer_zero = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $current_answer_zero ) ) );
 								}
 
