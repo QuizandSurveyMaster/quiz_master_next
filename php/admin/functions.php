@@ -222,7 +222,8 @@ add_action( 'admin_init', 'qsm_change_the_post_type' );
  * Transfer all quiz post to new cpt 'qsm_quiz'
  */
 function qsm_change_the_post_type() {
-	if ( 1 !== intval( get_option( 'qsm_change_the_post_type', '' ) ) ) {
+	$all_plugins = get_plugins();
+	if ( empty( $all_plugins['sensei-lms/sensei-lms.php'] ) && 1 !== intval( get_option( 'qsm_change_the_post_type', '' ) ) ) {
 		$post_arr    = array(
 			'post_type'      => 'quiz',
 			'posts_per_page' => -1,
