@@ -270,6 +270,9 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	display: block;
 	margin-bottom: 10px;
 }
+.qsm-quiz-container .quiz_section .qsm-align-fill-in-blanks:not(.qsm_remove_bold) {
+	display: inline-block;
+}
 .quiz_section iframe {
 	width: 100% !important;
 	min-height: 315px !important;

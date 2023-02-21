@@ -49,7 +49,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	qsm_question_title_func( $question, '', $new_question_title, $id );
+	qsm_question_title_func( $question, 'fill_in_blank', $new_question_title, $id );
 	echo apply_filters( 'qmn_fill_blank_display_front', '', $id, $question, $answers );
 }
 
