@@ -8,13 +8,12 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	global $wp_embed, $mlwQuizMasterNext;
 	$question_title    = $wp_embed->run_shortcode( $question_title );
 	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
-	$polar_extra_class = '';
-	$fill_in_blank_extra_class = '';
+	$title_extra_classes = '';
 	if ( 'polar' === $question_type ) {
-		$polar_extra_class = 'question-type-polar-s';
+		$title_extra_classes .= ' question-type-polar-s';
 	}
 	if ( 'fill_in_blank' === $question_type ) {
-		$fill_in_blank_extra_class = 'qsm-align-fill-in-blanks';
+		$title_extra_classes .= ' qsm-align-fill-in-blanks';
 	}
 	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$deselect_answer  = '';
@@ -27,7 +26,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		?>
 		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
 		<?php
-		$polar_extra_class .= ' qsm_remove_bold';
+		$title_extra_classes .= ' qsm_remove_bold';
 	}
 	if ( $question_id ) {
 		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
@@ -41,7 +40,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question_title, ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 	}
 	?>
-	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?> <?php echo esc_attr( $fill_in_blank_extra_class ); ?>' >
+	<div class='mlw_qmn_question <?php echo esc_attr( $title_extra_classes ); ?>' >
 	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id );
 		$allow_html = wp_kses_allowed_html('post');
 		$allow_html['input']['autocomplete'] = 1;
