@@ -203,16 +203,17 @@ function qsm_options_emails_tab_template() {
 	<div class="email-condition">
 		<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
 		<select class="email-condition-category">
-					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-					<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
-					<?php if ( ! empty( $categories ) ) { ?>
-						<?php foreach ( $categories as $cat ) { ?>
-						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
-						<?php } ?>
-					<?php } else { ?>
-						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-					<?php } ?>
-				</select>
+			<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+			<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+			<?php if ( ! empty( $categories ) ) { ?>
+				<?php foreach ( $categories as $cat ) { ?>
+				<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+				<?php } ?>
+			<?php } else { ?>
+				<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+			<?php } ?>
+			<?php do_action( 'qsm_email_page_condition_category' ); ?>
+		</select>
 		<select class="email-condition-criteria">
 			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
 			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
