@@ -119,7 +119,7 @@
 	min-width: 45%;
 	padding: 8px 15px;
 }
-.page-footer a.button .dashicons, 
+.page-footer a.button .dashicons,
 .new-answer-button a#new-answer-button .dashicons {
 	line-height: 32px;
 }
@@ -134,13 +134,7 @@
 	text-decoration: none;
 }
 .page-header-buttons {
-	display: flex;
-	width: 100%;
-	justify-content: space-around;
-	align-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	flex-direction: row;
+	text-align: right;
 }
 .question, .question-bank-question {
 	box-sizing: border-box;
