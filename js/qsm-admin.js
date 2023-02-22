@@ -1454,6 +1454,7 @@ var QSMContact;
                         'operator': operator,
                         'value': value
                     }));
+                    jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, criteria, operator, value]);
                 },
                 newCondition: function ($email) {
                     QSMAdminEmails.addCondition($email, '', 'score', 'equal', 0);
@@ -3264,6 +3265,7 @@ var import_button;
                         'operator': operator,
                         'value': value
                     }));
+                    jQuery(document).trigger('qsm_after_add_result_condition', [$page, category, criteria, operator, value]);
                 },
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, '', 'score', 'equal', 0);
