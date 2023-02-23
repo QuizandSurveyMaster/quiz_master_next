@@ -185,6 +185,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'disable-auto-fill-for-contact-input', __( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'disable-auto-fill-for-quiz-input', __( 'Disable auto fill for Quiz input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_quiz_input' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'display-category-name-on-front-end', __( 'Display category name on front end', 'quiz-master-next' ), array( $this, 'qsm_global_display_category_name_on_front_end' ), 'qsm_default_global_option_display', 'qmn-global-section' );
+		add_settings_field( 'hide-correct-answer', __( 'Hide Correct Answer', 'quiz-master-next' ), array( $this, 'qsm_global_hide_correct_answer' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-results-inline', __( 'Show results inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_results_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'end-quiz-if-there-is-wrong-answer', __( 'End quiz if there is wrong answer', 'quiz-master-next' ), array( $this, 'qsm_global_end_quiz_if_there_is_wrong_answer' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'show-correct-answer-inline', __( 'Show correct answer inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_correct_answer_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -1007,6 +1008,24 @@ class QMNGlobalSettingsPage {
 				<label for="enable_quick_result_mc-0">No</label><br>
 			 </fieldset>
 			<span class="qsm-opt-desc">Instantly displays the result for each question</span>';
+	}
+
+	/**
+	 * Generates Quiz Global  Field For Hide Correct Answer
+	 *
+	 * @since 8.1.0
+	 * @return void
+	 */
+	public function qsm_global_hide_correct_answer() {
+		global $globalQuizsetting;
+		$qsm_hide_correct_answer = ( isset( $globalQuizsetting['hide_correct_answer'] ) && '' !== $globalQuizsetting['hide_correct_answer'] ? $globalQuizsetting['hide_correct_answer'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="radio" id="hide_correct_answer-1" name="qsm-quiz-settings[hide_correct_answer]" value="1" ' . checked( $qsm_hide_correct_answer, '1', false ) . '>
+				<label for="hide_correct_answer-1">Yes</label><br>
+				<input type="radio" id="hide_correct_answer-0" name="qsm-quiz-settings[hide_correct_answer]" value="0" ' . checked( $qsm_hide_correct_answer, '0', false ) . '>
+				<label for="hide_correct_answer-0">No</label><br>
+			 </fieldset>
+			<span class="qsm-opt-desc">Hide correct answer on result page if user selected wrong answer from quiz.</span>';
 	}
 
 	/**
