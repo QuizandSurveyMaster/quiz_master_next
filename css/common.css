@@ -428,6 +428,10 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	display: inline-block;
 	cursor: pointer;
 }
+.qsm-quiz-form .mlw_answer_open_text,
+.qsm-quiz-form  .mlw_answer_number{
+	margin-bottom: 10px;
+}
 @media screen and (max-width: 767px) {
 	.question-type-polar-s .left-polar-title,
 	.question-type-polar-s .slider-main-wrapper,

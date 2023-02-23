@@ -220,6 +220,7 @@ class QMNQuizManager {
 		global $wpdb, $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
+		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
@@ -230,10 +231,18 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
-				if ( intval( $answer ) === $key && 1 === intval( $value[2] ) ) {
-					$got_ans        = true;
-					$correct_answer = true;
-					break;
+				if ( 'input' === $answer_type ) {
+					if ( $answer == $value[0] && 1 === intval( $value[2] ) ) {
+						$got_ans        = true;
+						$correct_answer = true;
+						break;
+					}
+				}else {
+					if ( intval( $answer ) === $key && 1 === intval( $value[2] ) ) {
+						$got_ans        = true;
+						$correct_answer = true;
+						break;
+					}
 				}
 			}
 		}
