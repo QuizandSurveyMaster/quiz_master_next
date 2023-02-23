@@ -1759,7 +1759,7 @@ var import_button;
                     //Create Default pages and one question.
                     if (qsmQuestionSettings.pages.length == 0 && QSMQuestion.questions.length == 0) {
                         $('.new-page-button').trigger('click');
-                        $('.questions .new-question-button').trigger('click');
+                        $('.questions .new-question-button:eq("1")').trigger('click');
                     }
                     QSMQuestion.countTotal();
                 },
