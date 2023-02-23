@@ -1459,7 +1459,7 @@ jQuery(function () {
 			let question_id = jQuery(this).attr('name').split('question')[1],
 			value = jQuery(this).val(),
 			$this = jQuery(this).parents('.quiz_section');
-			qsm_show_inline_result(question_id, value, $this, 'radio')
+			qsm_show_inline_result(quizID, question_id, value, $this, 'radio')
 		}
 	});
 	let qsm_inline_result_timer;
@@ -1472,13 +1472,13 @@ jQuery(function () {
 				let question_id = $i_this.attr('name').split('question')[1],
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
-				qsm_show_inline_result(question_id, value, $this, 'input');
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input');
 			}, 2000);
 		}
 	});
 
 	//inline result status function
-	function qsm_show_inline_result(question_id, value, $this, answer_type) {
+	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type) {
 		jQuery.ajax({
 			type: 'POST',
 			url: qmn_ajax_object.ajaxurl,
