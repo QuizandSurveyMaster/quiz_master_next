@@ -38,9 +38,10 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		}
 		$close_span = '</span>';
 		if ( 0 == $form_type && ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) ) {
+			$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );
 			if ( $is_user_answer && $is_answer_correct ) {
 				$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' .  $class . ' ' . $image_class . '">' . $show_user_answer .$caption.$close_span;
-			} elseif ( ! $is_user_answer && $is_answer_correct ) {
+			} elseif ( ! $is_user_answer && $is_answer_correct && 1 != $hide_correct_answer ) {
 				$question_with_answer_text .= '<span class="qsm-text-correct-option ' .  $class . ' ' . $image_class . '">' . $show_user_answer .$caption.$close_span;
 			} elseif ( $is_user_answer && ! $is_answer_correct ) {
 				$question_with_answer_text .= '<span class="qsm-text-wrong-option ' .  $class . ' ' . $image_class . '">' . $show_user_answer .$caption.$close_span;
