@@ -215,8 +215,6 @@ function qsm_generate_quiz_options() {
 					}
 					if ( class_exists( 'QSM_Export_Import' ) ) {
 						?><a class="button button-primary" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" style="float: right;" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
-					} else {
-						?><a id="show_import_export_popup" href="#" style="float: right;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 					}
 					?>
 				</nav>
