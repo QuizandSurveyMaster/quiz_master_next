@@ -787,7 +787,7 @@ function qmnValidation(element, quiz_form_id) {
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
-		if ( jQuery(this).attr('class') && jQuery(this).is(':visible') ) {
+		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
@@ -1453,42 +1453,62 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('change', '.qmn_radio_answers input', function (e) {
+	jQuery(document).on('change', '.qmn_radio_answers input' , function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			var question_id = jQuery(this).attr('name').split('question')[1],
-				value = jQuery(this).val(),
-				$this = jQuery(this).parents('.quiz_section');
-			jQuery.ajax({
-				type: 'POST',
-				url: qmn_ajax_object.ajaxurl,
-				data: {
-					action: "qsm_get_question_quick_result",
-					question_id: question_id,
-					answer: value,
-					show_correct_info: qmn_quiz_data[quizID].enable_quick_correct_answer_info
-				},
-				success: function (response) {
-					var data = jQuery.parseJSON(response);
-					$this.find('.quick-question-res-p').remove();
-					$this.find('.qsm-inline-correct-info').remove();
-					if (data.success == 'correct') {
-						$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
-						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-					} else if (data.success == 'incorrect') {
-						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
-						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-					}
-					if (1 != qmn_quiz_data[quizID].disable_mathjax) {
-						MathJax.typesetPromise();
-					}
-				},
-				error: function (errorThrown) {
-					alert(errorThrown);
-				}
-			});
+			let question_id = jQuery(this).attr('name').split('question')[1],
+			value = jQuery(this).val(),
+			$this = jQuery(this).parents('.quiz_section');
+			qsm_show_inline_result(quizID, question_id, value, $this, 'radio')
 		}
 	});
+	let qsm_inline_result_timer;
+	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number', function (e) {
+		let $i_this = jQuery(this);
+		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
+			clearTimeout(qsm_inline_result_timer);
+			qsm_inline_result_timer = setTimeout(() => {
+				let question_id = $i_this.attr('name').split('question')[1],
+				value = $i_this.val(),
+				$this = $i_this.parents('.quiz_section');
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input');
+			}, 2000);
+		}
+	});
+
+	//inline result status function
+	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type) {
+		jQuery.ajax({
+			type: 'POST',
+			url: qmn_ajax_object.ajaxurl,
+			data: {
+				action: "qsm_get_question_quick_result",
+				question_id: question_id,
+				answer: value,
+				answer_type: answer_type,
+				show_correct_info: qmn_quiz_data[quizID].enable_quick_correct_answer_info
+			},
+			success: function (response) {
+				var data = jQuery.parseJSON(response);
+				$this.find('.quick-question-res-p').remove();
+				$this.find('.qsm-inline-correct-info').remove();
+				if (data.success == 'correct') {
+					$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
+					$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+				} else if (data.success == 'incorrect') {
+					$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
+					$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+				}
+				if (1 != qmn_quiz_data[quizID].disable_mathjax) {
+					MathJax.typesetPromise();
+				}
+			},
+			error: function (errorThrown) {
+				alert(errorThrown);
+			}
+		});
+	}
 
 	// Autocomplete off
 	jQuery('.qsm-quiz-container').find('.qmn_quiz_id').each(function () {

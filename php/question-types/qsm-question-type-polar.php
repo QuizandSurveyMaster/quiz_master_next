@@ -35,7 +35,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$slider_data_atts .= ' data-is_reverse=' . intval( $is_reverse ) . ' ';
 	$slider_data_atts .= ' data-is_required=' . $required . ' ';
 	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredText';
+		$mlw_require_class = 'mlwRequiredText mlwRequiredPolar';
 	} else {
 		$mlw_require_class = '';
 	}

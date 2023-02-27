@@ -2293,6 +2293,7 @@ input#question_search::-webkit-search-cancel-button {
 	align-items: center;
 	flex-wrap: nowrap;
 	flex-direction: row;
+	max-width: calc(100% - 275px);
 }
 .qsm-quiz-nav-bar .qsm-quiz-heading .qsm_quiz_title {
 	padding: 0;
@@ -3005,5 +3006,19 @@ input#duplicate_questions {
 @media screen and (max-width: 1200px) {
 	.qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title-upper {
 		font-size: 10px;
+	}
+}
+@media screen and (max-width: 767px) {
+	.qsm-quiz-nav-bar .qsm-quiz-heading{
+		max-width: 100%;
+	}
+	.qsm-quiz-nav-bar .qsm-quiz-top-nav-links{
+		justify-content: flex-end;
+		width: 100%;
+	}
+	.mlw_quiz_options .button-primary{
+		padding: 0px 5px;
+		font-size: 12px;
+		min-height: 35px;
 	}
 }

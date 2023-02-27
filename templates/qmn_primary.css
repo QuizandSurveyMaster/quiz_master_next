@@ -337,7 +337,7 @@ label.inline .mlw_qmn_question,
 
 .qsm-quiz-form .qmn_error .qmn_radio_answers,
 .qsm-quiz-form .qmn_error .qmn_check_answers,
-.qsm-quiz-form .qmn_error .qmn_accept_answers {
+.qsm-quiz-form .qmn_error .qmn_accept_answers{
   border: 1px solid #da4f49;
   background: #F2DEDE;
   padding: 5px;

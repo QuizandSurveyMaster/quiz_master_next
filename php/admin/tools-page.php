@@ -46,7 +46,7 @@ function qsm_restore_function() {
 	global $wpdb;
 
 	// Checks if form was submitted.
-	if ( isset( $_POST['restore_quiz'] ) ) {
+	if ( isset( $_POST['restore_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['restore_quiz_nonce'] ) ), 'restore_quiz_nonce' ) && isset( $_POST['restore_quiz'] ) ) {
 		$restore = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
@@ -88,7 +88,7 @@ function qsm_restore_function() {
 			}
 			wp_reset_postdata();
 			?>
-			<span style="color:red;"><?php esc_html_e( 'Quiz Has Been Restored!', 'quiz-master-next' ); ?></span>
+			<span style="color:green;"><?php esc_html_e( 'Quiz Has Been Restored!', 'quiz-master-next' ); ?></span>
 			<?php
 		}
 	}
@@ -96,6 +96,7 @@ function qsm_restore_function() {
 	?>
 	<h3><?php esc_html_e( 'Choose a quiz in the drop down and then click the button to restore a deleted quiz.', 'quiz-master-next' ); ?></h3>
 	<form action='' method="post">
+		<?php wp_nonce_field( 'restore_quiz_nonce', 'restore_quiz_nonce' ); ?>
 		<select name="restore_quiz">
 			<?php
 			foreach ( $quizzes as $quiz ) {

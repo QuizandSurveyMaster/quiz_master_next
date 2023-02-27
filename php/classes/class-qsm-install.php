@@ -664,6 +664,27 @@ class QSM_Install {
 			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		
+		// Settings for quick result
+		$field_array = array(
+			'id'         => 'hide_correct_answer',
+			'label'      => __( 'Hide Correct Answer', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 0,
+			'help'       => __( 'Hide correct answer on result page if user selected wrong answer from quiz.', 'quiz-master-next' ),
+			'option_tab' => 'display',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
 			'id'         => 'end_quiz_if_wrong',
