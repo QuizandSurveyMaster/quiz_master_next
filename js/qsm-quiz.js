@@ -1491,12 +1491,15 @@ jQuery(function () {
 			},
 			success: function (response) {
 				var data = jQuery.parseJSON(response);
+				console.log(data)
 				$this.find('.quick-question-res-p').remove();
 				$this.find('.qsm-inline-correct-info').remove();
+				$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer'); 
 				if (data.success == 'correct') {
 					$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
 					$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 				} else if (data.success == 'incorrect') {
+					$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
 					$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 					$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 				}

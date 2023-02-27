@@ -517,3 +517,7 @@ label.inline .mlw_qmn_question,
   font-size: 18px;
   line-height: 24px;
 }
+
+.data-correct-answer {
+    color: green;
+}
