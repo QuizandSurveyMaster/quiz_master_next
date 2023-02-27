@@ -1096,13 +1096,17 @@ class QMNPluginHelper {
 	 */
 
 	public function qsm_results_css_inliner( $html ) {
+		
+		global $mlwQuizMasterNext;
+		$grading = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+		$wr_sign = 1 != $grading ? "&#x2715;&nbsp;" : "";
 
 		$html    = str_replace( '<br/>', '<br>', $html );
 		$html    = str_replace( '<br />', '<br>', $html );
 		$html    = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
 		$html    = preg_replace( '/<span class="qsm-text-simple-option(.*?)">(.*?)<\/span>/', "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;$2</span>", $html );
 		$html    = preg_replace( '/<span class="qsm-text-wrong-option(.*?)">(.*?)<\/span>/', "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;&nbsp;$2</span>", $html );
-		$html    = preg_replace( '/<span class="qmn_user_incorrect_answer(.*?)">(.*?)<\/span>/', "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;&nbsp;$2</span>", $html );
+		$html    = preg_replace( '/<span class="qmn_user_incorrect_answer(.*?)">(.*?)<\/span>/', "<span style='color:red;display:block;margin-bottom:5px;'>".$wr_sign."$2</span>", $html );
 		$html    = preg_replace( '/<span class="qsm-text-correct-option(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 		$html    = preg_replace( '/<span class="qmn_user_correct_answer(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 
