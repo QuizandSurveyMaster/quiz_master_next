@@ -1079,7 +1079,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $user_given_answer . '</span>';
 							foreach ( $total_answers as $single_answer ) {
 								$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );
-								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] &&  1 != $hide_correct_answer ) {
+								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && 1 != $hide_correct_answer ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 									break;
 								}
