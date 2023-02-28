@@ -1491,7 +1491,6 @@ jQuery(function () {
 			},
 			success: function (response) {
 				var data = jQuery.parseJSON(response);
-				console.log(data)
 				$this.find('.quick-question-res-p').remove();
 				$this.find('.qsm-inline-correct-info').remove();
 				$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer'); 
