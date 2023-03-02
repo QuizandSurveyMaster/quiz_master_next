@@ -1021,21 +1021,28 @@ function qmnInit() {
 			let key = parseInt(quiz.quiz_id);
 			if (qmn_quiz_data[key].ajax_show_correct === '1') {
 				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					var chosen_answer = jQuery(this).val();
-					var question_id = jQuery(this).attr('name').replace(/question/i, '');
-					var chosen_id = jQuery(this).attr('id');
-					jQuery.each(qmn_quiz_data[key].question_list, function (i, value) {
-						if (question_id == value.question_id) {
-							jQuery.each(value.answers, function (j, answer) {
-								if (answer[0] === chosen_answer) {
-									if (answer[2] !== 1) {
-										jQuery('#' + chosen_id).parent().addClass("qmn_incorrect_answer");
-									}
-								}
-								if (answer[2] === 1) {
-									jQuery(':radio[name=question' + question_id + '][value="' + answer[0] + '"]').parent().addClass("qmn_correct_answer");
-								}
-							});
+					$this = jQuery(this);
+					var value = $this.val();
+					var question_id = $this.attr('name').replace(/question/i, '');
+					jQuery.ajax({
+						type: 'POST',
+						url: qmn_ajax_object.ajaxurl,
+						data: {
+							action: "qsm_get_question_quick_result",
+							question_id: question_id,
+							answer: value,
+						},
+						success: function (response) {
+							var data = jQuery.parseJSON(response);
+							if (data.success == 'correct') {
+								$this.parent().addClass("qmn_correct_answer");
+
+							} else if (data.success == 'incorrect') {
+								$this.parent().addClass("qmn_incorrect_answer");
+							}
+						},
+						error: function (errorThrown) {
+							alert(errorThrown);
 						}
 					});
 				});
