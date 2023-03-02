@@ -691,3 +691,22 @@ a#qsm-category-add-toggle {
 		margin: 5px;
 	}
 }
+
+@media screen and (max-width: 767px) {
+	#modal-2 .qsm-popup__container {
+		max-width: initial;
+		min-width: initial;
+	}
+	.qsm-question-bank-filters {
+		flex-direction: column;
+	}
+	.qsm-question-bank-search {
+		display: flex;
+		flex-direction: column;
+	}
+	.qsm-popup select, .qsm-popup textarea, .qsm-popup input[type=text], .qsm-popup input[type=search], .qsm-popup input[type=number] {
+		min-width: initial !important;
+		max-width: initial !important;
+		width: 330px;
+	}
+}
