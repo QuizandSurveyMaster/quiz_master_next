@@ -3021,4 +3021,59 @@ input#duplicate_questions {
 		font-size: 12px;
 		min-height: 35px;
 	}
+	.contact-form-builder-wrap {
+		flex-direction: column;
+	}
+	.contact-tab-sidebar {
+		max-width: initial;
+		width: 100%;
+	}
+	.contact-form-field {
+		flex-direction: column;
+		align-items: initial;
+		font-size: 12px;
+		padding-bottom: 0;
+	}
+	.contact-form-field > div {
+		margin: 2px 0;
+	}
+	.contact-tab-content {
+		width: 100%;
+		max-width: initial;
+		margin-right: 0;
+	}
+	.contact-form-field  .contact-form-switch {
+		position: relative;
+		bottom: 35px;
+		left: 70%;
+	}
+	.contact-form-field .contact-form-actions, 
+	.contact-form-field  .contact-form-switch {
+		margin-top: 5px;
+	}
+	.wp-core-ui .contact-form-field  select {
+		max-width: initial;
+	}
+	.qsm_tab_content .qsm-page-subheading {
+		font-size: 17px;
+		padding-top: 10px;
+	}
+	.contact-tab-content .hide-control {
+		font-size: 14px;
+		position: relative;
+    	top: -7px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.quiz_text_tab_content {
+		flex-direction: column;
+	}
+	.quiz_text_tab_content .left-bar, .quiz_text_tab_content .right-bar {
+		width: 100%;
+	}
+	.nav-tab-wrapper .button-primary {
+		position: relative;
+    	top: 10px;
+	}
 }
