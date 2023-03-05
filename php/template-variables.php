@@ -403,7 +403,7 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_NAME%', ( isset( $mlw_quiz_array['user_name'] ) ? $mlw_quiz_array['user_name'] : '' ), $content );
+	$content = str_replace( '%USER_NAME%', ( isset( $mlw_quiz_array['user_name'] ) ? html_entity_decode( $mlw_quiz_array['user_name'] ) : '' ), $content );
 	return $content;
 }
 
