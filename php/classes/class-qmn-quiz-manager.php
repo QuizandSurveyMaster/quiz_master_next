@@ -1401,7 +1401,6 @@ class QMNQuizManager {
 		} else {
 			?>
 			<div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
-				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
 			</div>
 			<?php
 		}
@@ -2671,6 +2670,7 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 
 		$default_texts = QMNPluginHelper::get_default_texts();
 		$quiz_btn_display_text = $default_texts['next_button_text']; // For old quizes set default here
+		$quiz_btn_submit_text = $default_texts['submit_button_text']; // For old quizes set default here
 
 		if ( isset($qmn_quiz_options->start_quiz_survey_text) && "" != $qmn_quiz_options->start_quiz_survey_text ) {
 			$quiz_btn_display_text = $qmn_quiz_options->start_quiz_survey_text; // For old quizes set default here
@@ -2683,6 +2683,7 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'submit_quiz_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_submit_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;

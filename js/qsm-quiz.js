@@ -1155,6 +1155,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length) {
 				submit_button = jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").html();
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
+				jQuery(".qsm-quiz-container-" + quiz_id + " .qsm-submit-btn").show();
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
@@ -1214,6 +1215,7 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
 	var slide_original_val = parseInt(slide_number) - 1;
 	if (slide_original_val == 0) {
 		$container.find(".mlw_next").show();
+		$container.find(".qsm-submit-btn").hide();
 		jQuery(quiz_form_id + " .qsm-auto-page-row.quiz_begin").show();
 		$container.find('.slide_number_hidden').val(slide_original_val);
 		$container.find('.current_page_hidden').val(parseInt(page_number) - 1);
@@ -1223,6 +1225,7 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.slide_number_hidden').val(slide_original_val);
 		$container.find('.current_page_hidden').val(parseInt(page_number) - 1);
 		$container.find(".mlw_next").show();
+		$container.find(".qsm-submit-btn").hide();
 	}
 	check_if_show_start_quiz_button($container, total_pages, page_number);
 	if (go_to_top == 1 && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
@@ -1314,6 +1317,7 @@ function qmnInitPagination(quiz_id) {
 		.append('<div class="qmn_page_counter_message"></div>')
 		.append('<div class="qsm-progress-bar" id="qsm_progress_bar_' + quiz_id + '" style="display:none;"><div class="progressbar-text"></div></div>')
 		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_start" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.start_quiz_survey_text + '</a>')
+		.append('<input type="submit" value="' + qmn_quiz_data[quiz_id].pagination.submit_quiz_text + '" class="qsm-btn qsm-submit-btn qmn_btn" style="display:none;"/>')
 		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
 
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
