@@ -364,6 +364,10 @@ label.inline .mlw_qmn_question,
   margin: 3px;
 }
 
+.qmn_pagination .mlw_previous {
+  margin-right: 5px;
+}
+
 .qmn_pagination :nth-child(0) { order: 0; }
 .qmn_pagination :nth-child(1) { order: 1; }
 .qmn_pagination :nth-child(2) { order: 2; }
