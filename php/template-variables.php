@@ -1011,7 +1011,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	} else {
 		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_description . '</b>', $mlw_question_answer_display );
 	}
-	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display, $answer['question_type'] );
+	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display, $answer['question_type'], "", $answer['id'] );
 	$extra_border_bottom_class   = '';
 	$remove_border               = true;
 	if ( 6 == $answer['question_type'] ) {
@@ -1549,23 +1549,25 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 
 	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
+	if ( $question_id ) {
+		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
+		if ( $featureImageID && isset( $qmn_quiz_options->show_question_featured_image_in_result ) && 1 === intval( $qmn_quiz_options->show_question_featured_image_in_result ) ) {
+			$question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
+		}
+	}
+
 	$question_numbering   = '';
 	if ( isset( $qmn_quiz_options->question_numbering ) && 1 == $qmn_quiz_options->question_numbering && 6 != $question_type ) {
 		$qmn_total_questions += 1;
 		$question_numbering = '<span class="mlw_qmn_question_number">' . esc_html( $qmn_total_questions ) . '.&nbsp;</span>';
 	}
 
-	if ( $question_id ) {
-		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
-		if ( $featureImageID ) {
-			$question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
-		}
-	}
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", 'QSM Questions' );
 		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . '</div>';
+
 	return $question_display;
 }
