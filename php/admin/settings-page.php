@@ -191,6 +191,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'show-correct-answer-inline', __( 'Show correct answer inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_correct_answer_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'retake-quiz', __( 'Retake Quiz', 'quiz-master-next' ), array( $this, 'qsm_global_retake_quiz' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option_display', 'qmn-global-section' );
+		add_settings_field( 'show-current-page-number', __( 'Show question featured image in results page', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_featured_image_in_result' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'disable_mathjax', __( 'Disable MathJax?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_mathjax' ), 'qsm_default_global_option_general', 'qmn-global-section' );
@@ -1099,6 +1100,23 @@ class QMNGlobalSettingsPage {
 				<label for="enable_pagination_quiz-1">Yes</label><br>
 				<input type="radio" id="enable_pagination_quiz-0" name="qsm-quiz-settings[enable_pagination_quiz]" value="0" ' . checked( $qsm_enable_pagination_quiz, '0', false ) . '>
 				<label for="enable_pagination_quiz-0">No</label><br>
+			</fieldset>';
+	}
+
+	/**
+	 * Generates Quiz Global  Field For Show question feature image in result
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_show_question_featured_image_in_result() {
+		global $globalQuizsetting;
+		$qsm_show_question_featured_image_in_result = ( isset( $globalQuizsetting['show_question_featured_image_in_result'] ) && '' !== $globalQuizsetting['show_question_featured_image_in_result'] ? $globalQuizsetting['show_question_featured_image_in_result'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="radio" id="show_question_featured_image_in_result-1" name="qsm-quiz-settings[show_question_featured_image_in_result]" value="1" ' . checked( $qsm_show_question_featured_image_in_result, '1', false ) . '>
+				<label for="show_question_featured_image_in_result-1">Yes</label><br>
+				<input type="radio" id="show_question_featured_image_in_result-0" name="qsm-quiz-settings[show_question_featured_image_in_result]" value="0" ' . checked( $qsm_show_question_featured_image_in_result, '0', false ) . '>
+				<label for="show_question_featured_image_in_result-0">No</label><br>
 			</fieldset>';
 	}
 
