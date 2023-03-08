@@ -169,6 +169,7 @@ function qsm_generate_results_details_tab() {
                 $template .= $span_start. __( 'Phone:', 'quiz-master-next' ) .$span_end. $results_data->phone .$spanend;
                 $template .= $span_start. __( 'Email:', 'quiz-master-next' ) .$span_end. $results_data->email .$spanend;
             }
+            $template .= apply_filters('qsm_admin_results_details_contact', "", $results_array);
             $template .= '</div>';
             $template .= '</div>';
             $template .= '</div>';
