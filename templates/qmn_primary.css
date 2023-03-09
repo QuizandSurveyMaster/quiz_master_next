@@ -366,6 +366,11 @@ label.inline .mlw_qmn_question,
 
 .qmn_pagination .mlw_previous {
   margin-right: 5px;
+  margin-top: 5px;
+}
+
+.qmn_pagination .mlw_next, .qmn_pagination .qsm-submit-btn {
+  margin-top: 5px;
 }
 
 .qmn_pagination :nth-child(0) { order: 0; }
