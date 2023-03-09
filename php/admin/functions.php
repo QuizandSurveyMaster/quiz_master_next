@@ -709,6 +709,10 @@ function qsm_create_new_quiz_wizard() {
 									'option_name' => __( 'Show current page number', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['enable_pagination_quiz'],
 								),
+								'show_question_featured_image_in_result' => array(
+									'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
+									'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
+								),
 								'progress_bar'           => array(
 									'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['enable_pagination_quiz'],

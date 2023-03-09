@@ -221,7 +221,7 @@ class QSM_Emails {
 		}
 		if ( is_email( $user_email ) && true === $reply_to ) {
 			$name      = sanitize_text_field( $response_data['user_name'] );
-			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
+			$headers[] = 'Reply-To: ' . html_entity_decode( $name ). ' <' . $user_email . '>';
 		}
 		/**
 		 * Filter to modify email headers.

@@ -664,7 +664,7 @@ class QSM_Install {
 			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		
+
 		// Settings for quick result
 		$field_array = array(
 			'id'         => 'hide_correct_answer',
@@ -756,6 +756,26 @@ class QSM_Install {
 		$field_array = array(
 			'id'         => 'enable_pagination_quiz',
 			'label'      => __( 'Show current page number', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'display',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Setting for pagination of quiz
+		$field_array = array(
+			'id'         => 'show_question_featured_image_in_result',
+			'label'      => __( 'Show question featured image in results page', 'quiz-master-next' ),
 			'type'       => 'radio',
 			'options'    => array(
 				array(
