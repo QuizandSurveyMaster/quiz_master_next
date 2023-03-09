@@ -328,11 +328,11 @@ var qsmTimerInterval = [];
 				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
-					var $quizForm = QSM.getQuizForm(quizID);
+					let $quizForm = QSM.getQuizForm(quizID);
 					jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
 						if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
 							if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
-								var question_id = jQuery(this).attr('name').split('question')[1],
+								let question_id = jQuery(this).attr('name').split('question')[1],
 								value = jQuery(this).val(),
 								$this = jQuery(this).parents('.quiz_section');
 								if (value !== "") {
@@ -1034,9 +1034,9 @@ function qmnInit() {
 			let key = parseInt(quiz.quiz_id);
 			if (qmn_quiz_data[key].ajax_show_correct === '1') {
 				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					$this = jQuery(this);
-					var value = $this.val();
-					var question_id = $this.attr('name').replace(/question/i, '');
+					let $this = jQuery(this);
+					let value = $this.val();
+					let question_id = $this.attr('name').replace(/question/i, '');
 					jQuery.ajax({
 						type: 'POST',
 						url: qmn_ajax_object.ajaxurl,
@@ -1046,7 +1046,7 @@ function qmnInit() {
 							answer: value,
 						},
 						success: function (response) {
-							var data = jQuery.parseJSON(response);
+							let data = jQuery.parseJSON(response);
 							if (data.success == 'correct') {
 								$this.parent().addClass("qmn_correct_answer");
 
@@ -1368,13 +1368,13 @@ function qmnInitPagination(quiz_id) {
 
 	jQuery(document).on("click", ".qsm-quiz-container-" + quiz_id + " .mlw_next", function (event) {
 		event.preventDefault();
-		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-		var $quizForm = QSM.getQuizForm(quiz_id);
+		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+		let $quizForm = QSM.getQuizForm(quiz_id);
 		jQuery(document).trigger('qsm_auto_next_button_click_before', [quiz_id]);
 		jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
 			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
 				if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
-					var question_id = jQuery(this).attr('name').split('question')[1],
+					let question_id = jQuery(this).attr('name').split('question')[1],
 					value = jQuery(this).val(),
 					$this = jQuery(this).parents('.quiz_section');
 					if (value !== "") {
@@ -1442,17 +1442,17 @@ jQuery(function () {
 
 	jQuery(document).on('click', ".qsm-submit-btn", function (event) {
 		event.preventDefault();
-		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-		var form_id = "quizForm"+quiz_id;
-		var recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
+		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+		let form_id = "quizForm"+quiz_id;
+		let recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
 		if (!recaptcha.length) {
 			qmnFormSubmit(form_id);
 			return false;
 		}
 
 		// Proceed reCaptcha v3
-		var site_key = jQuery('#' + form_id).find("#qsm_grecaptcha_v3_sitekey").val();
-		var submit_action = jQuery('#' + form_id).find("#qsm_grecaptcha_v3_nonce").val();
+		let site_key = jQuery('#' + form_id).find("#qsm_grecaptcha_v3_sitekey").val();
+		let submit_action = jQuery('#' + form_id).find("#qsm_grecaptcha_v3_nonce").val();
 		grecaptcha.ready(function () {
 			grecaptcha.execute(site_key, { action: submit_action }).then(function (token) {
 				jQuery('#' + form_id).find("#qsm_grecaptcha_v3_response").val(token);
