@@ -328,11 +328,11 @@ var qsmTimerInterval = [];
 				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
-					var $quizForm = QSM.getQuizForm(quizID);
+					let $quizForm = QSM.getQuizForm(quizID);
 					jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
 						if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
 							if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
-								var question_id = jQuery(this).attr('name').split('question')[1],
+								let question_id = jQuery(this).attr('name').split('question')[1],
 								value = jQuery(this).val(),
 								$this = jQuery(this).parents('.quiz_section');
 								if (value !== "") {
