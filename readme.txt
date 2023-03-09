@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 8.1.0
+Stable tag: 8.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.1 (March 09, 2023) =
+* Feature: Added an option to highlight the correct answer if the user selected the wrong answer
+* Feature: Added an option to show/hide the question's featured image on the result page
+* Bug: Fixed an issue with adding a class for the correct/incorrect answers option
+* Bug: Fixed an encoding issue in the email header
+* Bug: Fixed an issue with immediately ending the quiz if the user selects the wrong answer in pagination
+* Enhancement: Improved the user interface for the question bank popup and options tabs
+* Enhancement: Improved the user interface for the quiz next and submit buttons
+
+
 = 8.1.0 (Feb 27, 2023) =
 * Feature: Added a new feature that allows users to show or hide correct answers on the result page
 * Bug: Fixed a bug that caused issues with the required field for the polar question type
