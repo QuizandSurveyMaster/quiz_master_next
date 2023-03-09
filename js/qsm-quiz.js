@@ -1442,8 +1442,8 @@ jQuery(function () {
 
 	jQuery(document).on('click', ".qsm-submit-btn", function (event) {
 		event.preventDefault();
-		var form = jQuery(this).closest('form')[0];
-		var form_id = form.id;
+		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+		var form_id = "quizForm"+quiz_id;
 		var recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
 		if (!recaptcha.length) {
 			qmnFormSubmit(form_id);
