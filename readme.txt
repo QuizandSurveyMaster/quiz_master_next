@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 8.1.1
+Stable tag: 8.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.2 (March 15, 2023) =
+* Hotfix: Fixed submit button visiblity issue with random question option
+
 = 8.1.1 (March 09, 2023) =
 * Feature: Added an option to highlight the correct answer if the user selected the wrong answer
 * Feature: Added an option to show/hide the question's featured image on the result page
