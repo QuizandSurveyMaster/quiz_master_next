@@ -295,7 +295,7 @@ var QSMAdmin;
             }
         });
         //Hide/show tr based on selection
-        $('.qsm_tab_content select').each(function () {
+        $('.qsm_tab_content .qsm-opt-tr select').each(function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             if ($('.' + name + '_' + value).length > 0) {
