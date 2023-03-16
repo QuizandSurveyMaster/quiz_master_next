@@ -2448,7 +2448,7 @@ class QMNQuizManager {
 	 * @since  5.3.0
 	 * @return string The IP address or a phrase if not collected
 	 */
-	private function get_user_ip() {
+	public function get_user_ip() {
 		$ip            = __( 'Not collected', 'quiz-master-next' );
 		$settings      = (array) get_option( 'qmn-settings' );
 		$ip_collection = '0';

@@ -992,6 +992,11 @@ function qmnFormSubmit(quiz_form_id) {
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 				jQuery(".hide").parent().css('display', 'none');
 			}
+		},
+		error: function (errorThrown) {
+			var response = { display: errorThrown.responseText + "<br/> Error:" + errorThrown.statusText};
+			qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
+			console.log(errorThrown);
 		}
 	});
 
@@ -1444,6 +1449,7 @@ jQuery(function () {
 		event.preventDefault();
 		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		let form_id = "quizForm"+quiz_id;
+		jQuery(document).trigger('qsm_quiz_submit_trigger', [quiz_id]);
 		let recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
 		if (!recaptcha.length) {
 			qmnFormSubmit(form_id);

@@ -160,6 +160,7 @@ class QSM_Emails {
 	 */
 	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
 
+		do_action( 'qsm_email_send_start', $response_data, $to, $subject );
 		global $mlwQuizMasterNext;
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
@@ -240,6 +241,7 @@ class QSM_Emails {
 		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
 				wp_mail( $to_email, $subject, $content, $headers, $attachments );
+				do_action( 'qsm_email_send_after', $response_data, $to_email, $subject );
 			}
 		}
 	}
