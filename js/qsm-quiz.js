@@ -994,7 +994,7 @@ function qmnFormSubmit(quiz_form_id) {
 			}
 		},
 		error: function (errorThrown) {
-			var response = { display: errorThrown.responseText + "<br/> Error:" + errorThrown.statusText};
+			let response = { display: errorThrown.responseText + "<br/> Error:" + errorThrown.statusText};
 			qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 			console.log(errorThrown);
 		}
