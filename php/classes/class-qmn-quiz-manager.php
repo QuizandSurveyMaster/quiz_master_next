@@ -1521,7 +1521,7 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function submit_results( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $wpdb, $qmn_allowed_visit;
+		global $wpdb, $qmn_allowed_visit, $mlwQuizMasterNext;
 		$result_display = '';
 		do_action( 'qsm_submit_results_before', $qmn_quiz_options, $qmn_array_for_variables );
 		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
@@ -1691,7 +1691,6 @@ class QMNQuizManager {
 			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 			setcookie("question_ids_".$qmn_array_for_variables['quiz_id'], "", time() - 36000, "/");
 			// Converts date to the preferred format
-			global $mlwQuizMasterNext;
 			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format( $qmn_array_for_variables );
 
 			// Determines redirect/results page.
