@@ -1626,6 +1626,9 @@ class QMNQuizManager {
 						),
 						array( 'result_id' => $results_id )
 					);
+					if ( false === $results_update ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 					$results_insert = $wpdb->insert(
@@ -1678,6 +1681,9 @@ class QMNQuizManager {
 						)
 					);
 					$results_id     = $wpdb->insert_id;
+					if ( false === $results_insert ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+					}
 				}
 			}
 			$qmn_array_for_variables['response_saved']   = isset( $results_insert ) ? $results_insert : false;
