@@ -241,9 +241,9 @@ class QSM_Emails {
 		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
 				$mailResult = wp_mail( $to_email, $subject, $content, $headers, $attachments );
-				if( $mailResult ){
+				if ( $mailResult ) {
 					do_action( 'qsm_after_sending_email', $response_data, $to_email, $subject );
-				}else{
+				}else {
 					$mlwQuizMasterNext->log_manager->add( 'There has been an error in wp_mail. Please check SMTP details mail not sending. Error Code: 0001', 0, 'error' );
 				}
 			}
