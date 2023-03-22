@@ -1335,7 +1335,7 @@ function qmnInitPagination(quiz_id) {
 		.append('<div class="qmn_page_counter_message"></div>')
 		.append('<div class="qsm-progress-bar" id="qsm_progress_bar_' + quiz_id + '" style="display:none;"><div class="progressbar-text"></div></div>')
 		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_start" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.start_quiz_survey_text + '</a>')
-		.append('<input type="submit" value="' + qmn_quiz_data[quiz_id].pagination.submit_quiz_text + '" class="qsm-btn qsm-submit-btn qmn_btn 2" style="display:none;"/>')
+		.append('<input type="submit" value="' + qmn_quiz_data[quiz_id].pagination.submit_quiz_text + '" class="qsm-btn qsm-submit-btn qmn_btn" style="display:none;"/>')
 		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
 
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
