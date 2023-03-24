@@ -887,6 +887,7 @@ function qmnValidation(element, quiz_form_id) {
 				}
 				if (jQuery(this).attr('class').indexOf('qsmRequiredSelect') > -1) {
 					check_val = jQuery(this).val();
+					alert(check_val);
 					if (check_val == "No Answer Provided" || check_val == "" || check_val == null) {
 						qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
 						show_result_validation = false;

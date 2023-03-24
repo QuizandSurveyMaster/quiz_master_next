@@ -159,6 +159,12 @@ class QSM_Contact_Manager {
 						if ( 'email' === $fields[ $i ]['use'] ) {
 							$value = $email;
 						}
+						if ( 'radio' === $fields[ $i ]['use'] ) {
+							$value = $radio;
+						}
+						if ( 'select' === $fields[ $i ]['use'] ) {
+							$value = $select;
+						}
 						self::generate_contact_field($fields[ $i ], $i, $options, $value);
 					?>
 					</div>
@@ -379,10 +385,16 @@ class QSM_Contact_Manager {
 		$fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
-			$class .= 'mlwRequiredText qsm_required_text';
-			if ( 'checkbox' === $field["type"] ) {
-				$class .= ' mlwRequiredAccept';
-			}
+			if ( 'radio' === $field["type"] ) {
+				$class .= ' mlwRequiredRadiomlwRequiredRadio ';
+			}elseif ( 'select' === $field["type"] ) {
+				$class .= 'qsmRequiredSelect';
+			}else {
+				$class .= 'mlwRequiredText qsm_required_text';
+				if ( 'checkbox' === $field["type"] ) {
+					$class .= ' mlwRequiredAccept';
+				}                           
+			}           
 		}
 		switch ( $field['type'] ) {
 			case 'text':
@@ -424,7 +436,6 @@ class QSM_Contact_Manager {
 				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
-
 			case 'email':
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
@@ -510,6 +521,76 @@ class QSM_Contact_Manager {
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
+				<?php
+				break;
+
+			case 'radio':
+				// Filer Value
+				if ( empty( $contact_disable_autofill ) ) {
+					$default_value   = apply_filters( 'qsm_contact_radio_field_value', $default_value, $field['use'] );
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
+				} else {
+					$fieldAttr .= " autocomplete='off' ";
+				}
+				/**
+				 * Add options validation
+				 */
+				if ( isset( $field['options'] ) ) {
+					// print_r($class);
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<div class='qmn_radio_answers <?php echo esc_attr( $class ); ?>'>
+				<?php
+					$option_values  = explode(",", $field['options']);
+					for ( $i = 0; $i < count($option_values); $i++ ) {
+						?>
+					<div class='qmn_mc_answer_wrap'>
+						<input 
+							type='radio' 
+							class='qmn_quiz_radio' 
+							name='contact_field_<?php echo esc_attr( $index ); ?>' 
+							value='<?php echo esc_attr( $i ); ?>' 
+						/>
+						<label class='qsm_input_label' for='<?php echo esc_attr( $field_label ); ?>'>
+							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
+						</label>
+					</div>
+						<?php
+					}
+				}
+				echo '</div>';
+				break;
+			case 'select':
+				// Filer Value
+				if ( empty( $contact_disable_autofill ) ) {
+					$default_value   = apply_filters( 'qsm_contact_select_field_value', $default_value, $field['use'] );
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
+				} else {
+					$fieldAttr .= " autocomplete='off' ";
+				}
+				// If REQUIRED is set then assigning the required class
+				// $class = $field['required'] ? 'qsmRequiredSelect' : '';
+				if ( isset( $field['options'] ) ) {
+					// $fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' ";
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
+					<option value=''>
+						<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
+					</option>				
+				<?php
+					$option_values = explode( ",", $field['options'] ); 
+				// Iterating over comma separeted values to populate option tag                
+					for ( $i = 0; $i < count($option_values); $i++ ) {
+						?>
+						<option value='<?php echo esc_attr( trim($option_values[ $i ]) ); ?>'>
+							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
+						</option>
+						<?php
+					}
+				}
+				?>				
+				</select>
 				<?php
 				break;
 			default:
