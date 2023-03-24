@@ -158,13 +158,7 @@ class QSM_Contact_Manager {
 						}
 						if ( 'email' === $fields[ $i ]['use'] ) {
 							$value = $email;
-						}
-						if ( 'radio' === $fields[ $i ]['use'] ) {
-							$value = $radio;
-						}
-						if ( 'select' === $fields[ $i ]['use'] ) {
-							$value = $select;
-						}
+						}                       
 						self::generate_contact_field($fields[ $i ], $i, $options, $value);
 					?>
 					</div>
@@ -548,7 +542,7 @@ class QSM_Contact_Manager {
 							type='radio' 
 							class='qmn_quiz_radio' 
 							name='contact_field_<?php echo esc_attr( $index ); ?>' 
-							value='<?php echo esc_attr( $i ); ?>' 
+							value='<?php echo esc_attr( $option_values[ $i ] ); ?>' 
 						/>
 						<label class='qsm_input_label' for='<?php echo esc_attr( $field_label ); ?>'>
 							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
