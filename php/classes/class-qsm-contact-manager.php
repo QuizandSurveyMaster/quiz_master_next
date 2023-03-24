@@ -536,7 +536,6 @@ class QSM_Contact_Manager {
 				 * Add options validation
 				 */
 				if ( isset( $field['options'] ) ) {
-					// print_r($class);
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<div class='qmn_radio_answers <?php echo esc_attr( $class ); ?>'>
@@ -569,9 +568,7 @@ class QSM_Contact_Manager {
 					$fieldAttr .= " autocomplete='off' ";
 				}
 				// If REQUIRED is set then assigning the required class
-				// $class = $field['required'] ? 'qsmRequiredSelect' : '';
 				if ( isset( $field['options'] ) ) {
-					// $fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>

@@ -174,7 +174,7 @@ function qsm_options_contact_tab_template() {
 				</div>
 				<div class="contact-form-group field-options">
 					<label class="contact-form-label"><?php esc_html_e('Options', 'quiz-master-next');?></label>
-					<textarea title="Use comma seperated values." class="contact-form-control" placeholder="Option-1, Option-2, Option-3" name="options" cols="30" rows="5">{{data.options}}</textarea>
+					<textarea title="<?php esc_html_e('Use comma seperated values.', 'quiz-master-next');?>" class="contact-form-control" placeholder="<?php esc_html_e('Option-1, Option-2, Option-3', 'quiz-master-next');?>" name="options" cols="30" rows="5">{{data.options}}</textarea>
 				</div>
 				<div class="contact-form-group min-max-option">
 					<label class="contact-form-label"><?php esc_html_e('Min Length', 'quiz-master-next');?></label>

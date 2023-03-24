@@ -1203,7 +1203,6 @@ var QSMContact;
                     QSMContact.addField(fieldArray);
                 },
                 prepareFieldData: function (field) {
-                    console.log(field);
                     var fieldArray = {
                         label: field.find('.label-control').val(),
                         type: field.find('.type-control').val(),

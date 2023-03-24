@@ -190,9 +190,6 @@ label.inline .mlw_qmn_question,
   transition: all .5s ease-in-out;
 }
 
-/* .quiz_section select {
-  height: 38px;
-} */
 .quiz_section select.qsm_select.qsm_dropdown {
   height: auto;
 }
