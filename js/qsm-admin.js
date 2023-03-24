@@ -1299,6 +1299,9 @@ var QSMContact;
                     if ('email' == type) {
                         field.find('.contact-form-field-settings .email-option').show();
                     }
+                    if ('radio' == type || 'select' == type) {
+                        field.find('.contact-form-field-settings .field-options').show();
+                    }
                     jQuery(document).trigger('qsm_contact_field_hide_show_settings', [field, type]);
                 }
             };

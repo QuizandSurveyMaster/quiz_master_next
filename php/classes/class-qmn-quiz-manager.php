@@ -948,6 +948,7 @@ class QMNQuizManager {
 	 * @return string The HTML for the pages
 	 */
 	public function display_pages( $options, $quiz_data ) {
+	
 		global $mlwQuizMasterNext, $wp_embed;
 		global $qmn_json_data;
 		$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
