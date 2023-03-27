@@ -715,10 +715,10 @@ class QMNQuizManager {
 					</script>
 					<?php
 				}
-				$order_by_sql = 'ORDER BY FIELD(question_id,'.$question_sql.')';
+				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
 
-			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
+			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), $cat_query, $order_by_sql, $limit_sql );
 			$questions = $wpdb->get_results( stripslashes( $query ) );
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
@@ -948,7 +948,6 @@ class QMNQuizManager {
 	 * @return string The HTML for the pages
 	 */
 	public function display_pages( $options, $quiz_data ) {
-	
 		global $mlwQuizMasterNext, $wp_embed;
 		global $qmn_json_data;
 		$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
