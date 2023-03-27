@@ -1154,6 +1154,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	if (page_number >= total_pages) {
 		alert('Next page not found.');
 		$container.find(".mlw_next").hide();
+		$container.find(".qsm-submit-btn").show();
 		jQuery(quiz_form_id + " .qsm-auto-page-row.quiz_end").show();
 		return true;
 	}
@@ -1163,6 +1164,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.current_page_hidden').val('1');
 	} else if (total_pages == parseInt(page_number) + 1) { //Last page
 		$container.find(".mlw_next").hide();
+		$container.find(".qsm-submit-btn").show();
 		jQuery(quiz_form_id + " .qsm-auto-page-row.quiz_end").show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
 		$container.find('.current_page_hidden').val(parseInt(page_number) + 1);
@@ -1171,9 +1173,8 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	} else if (slide_number >= 0 && page_number >= 1) {
 		if (total_pages == parseInt(page_number) + 2) { // if last page empty
 			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length) {
-				submit_button = jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").html();
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
-				jQuery(".qsm-quiz-container-" + quiz_id + " .qsm-submit-btn").show();
+				$container.find(".qsm-submit-btn").show();
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
