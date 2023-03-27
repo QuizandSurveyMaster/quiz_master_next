@@ -1395,7 +1395,9 @@ class QMNQuizManager {
 					echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 				}
 				?>
-				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<?php if ( 0 === intval( $pagination_option ) ) : ?>
+					<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<?php endif; ?>
 			</div>
 			<?php
 		} else {
