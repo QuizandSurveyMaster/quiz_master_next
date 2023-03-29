@@ -1083,7 +1083,7 @@ function qsm_get_default_wizard_themes() {
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
 					<?php if ( in_array( $theme_name, $pro_themes, true ) ) { ?>
-						<span class="qsm-badge"><?php esc_html_e( 'Pro', 'quiz-master-next' ); ?></span>
+						<span class="qsm-badge"><?php esc_html_e( 'Paid', 'quiz-master-next' ); ?></span>
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
@@ -1113,7 +1113,7 @@ function qsm_get_market_themes() {
 			<div class="theme-wrapper theme market-theme">
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
 					<?php if ( in_array( $theme_name, $pro_themes, true ) ) { ?>
-						<span class="qsm-badge"><?php esc_html_e( 'Pro', 'quiz-master-next' ); ?></span>
+						<span class="qsm-badge"><?php esc_html_e( 'Paid', 'quiz-master-next' ); ?></span>
 					<?php } ?>
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">

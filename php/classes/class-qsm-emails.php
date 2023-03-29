@@ -160,6 +160,7 @@ class QSM_Emails {
 	 */
 	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
 
+		do_action( 'qsm_start_sending_email', $response_data, $to, $subject );
 		global $mlwQuizMasterNext;
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
@@ -239,7 +240,12 @@ class QSM_Emails {
 		// Cycle through each to email address and send the email.
 		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
-				wp_mail( $to_email, $subject, $content, $headers, $attachments );
+				$mailResult = wp_mail( $to_email, $subject, $content, $headers, $attachments );
+				if ( $mailResult ) {
+					do_action( 'qsm_after_sending_email', $response_data, $to_email, $subject );
+				}else {
+					$mlwQuizMasterNext->log_manager->add( 'There has been an error in wp_mail. Please check SMTP details mail not sending. Error Code: 0001', 0, 'error' );
+				}
 			}
 		}
 	}

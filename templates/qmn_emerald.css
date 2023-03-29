@@ -173,8 +173,6 @@ border: 1px solid #e3e3e3;
         transition: all .5s ease-in-out;
 }
 
-.quiz_section select { height: 38px; }
-
 .quiz_section select:hover,
 .quiz_section textarea:hover,
 .quiz_section input[type="text"]:hover,

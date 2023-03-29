@@ -321,6 +321,11 @@ function qsm_variable_result_id( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_point_score( $content, $mlw_quiz_array ) {
+	global $mlwQuizMasterNext;
+	$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff' );
+	if ( $score_roundoff && isset( $mlw_quiz_array['total_points'] ) ) {
+		$mlw_quiz_array['total_points'] = round( $mlw_quiz_array['total_points'] );
+	}
 	$content = str_replace( '%POINT_SCORE%', ( isset( $mlw_quiz_array['total_points'] ) ? $mlw_quiz_array['total_points'] : '' ), $content );
 	return $content;
 }

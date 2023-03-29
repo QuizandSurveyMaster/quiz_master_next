@@ -800,7 +800,7 @@ function qmnValidation(element, quiz_form_id) {
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
-		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
+		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || jQuery(this).attr('class').indexOf('mlwRequiredAccept') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
@@ -992,6 +992,11 @@ function qmnFormSubmit(quiz_form_id) {
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 				jQuery(".hide").parent().css('display', 'none');
 			}
+		},
+		error: function (errorThrown) {
+			let response = { display: errorThrown.responseText + "<br/> Error:" + errorThrown.statusText};
+			qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
+			console.log(errorThrown);
 		}
 	});
 
@@ -1149,6 +1154,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	if (page_number >= total_pages) {
 		alert('Next page not found.');
 		$container.find(".mlw_next").hide();
+		$container.find(".qsm-submit-btn").show();
 		jQuery(quiz_form_id + " .qsm-auto-page-row.quiz_end").show();
 		return true;
 	}
@@ -1158,6 +1164,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.current_page_hidden').val('1');
 	} else if (total_pages == parseInt(page_number) + 1) { //Last page
 		$container.find(".mlw_next").hide();
+		$container.find(".qsm-submit-btn").show();
 		jQuery(quiz_form_id + " .qsm-auto-page-row.quiz_end").show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
 		$container.find('.current_page_hidden').val(parseInt(page_number) + 1);
@@ -1166,9 +1173,8 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	} else if (slide_number >= 0 && page_number >= 1) {
 		if (total_pages == parseInt(page_number) + 2) { // if last page empty
 			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length) {
-				submit_button = jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").html();
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
-				jQuery(".qsm-quiz-container-" + quiz_id + " .qsm-submit-btn").show();
+				$container.find(".qsm-submit-btn").show();
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
@@ -1444,6 +1450,7 @@ jQuery(function () {
 		event.preventDefault();
 		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		let form_id = "quizForm"+quiz_id;
+		jQuery(document).trigger('qsm_quiz_submit_trigger', [quiz_id]);
 		let recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
 		if (!recaptcha.length) {
 			qmnFormSubmit(form_id);

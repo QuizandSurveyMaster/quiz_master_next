@@ -147,6 +147,8 @@ function qsm_options_contact_tab_template() {
 					<option value="number" <# if (data.type == 'number') { #>selected<# } #> ><?php esc_html_e('Number', 'quiz-master-next');?></option>
 					<option value="date" <# if (data.type == 'date') { #>selected<# } #> ><?php esc_html_e('Date', 'quiz-master-next');?></option>
 					<option value="checkbox" <# if (data.type == 'checkbox') { #>selected<# } #> ><?php esc_html_e('Checkbox', 'quiz-master-next');?></option>
+					<option value="radio" <# if (data.type == 'radio') { #>selected<# } #> ><?php esc_html_e('Radio', 'quiz-master-next');?></option>
+					<option value="select" <# if (data.type == 'select') { #>selected<# } #> ><?php esc_html_e('Select', 'quiz-master-next');?></option>
 					<?php do_action('qsm_extra_contact_form_field_type'); ?>	
 				</select>
 			</div>
@@ -154,7 +156,7 @@ function qsm_options_contact_tab_template() {
 				<label class="contact-form-label"><?php esc_html_e('Label', 'quiz-master-next');?></label>
 				<input type="text" class="contact-form-control label-control" value="{{data.label}}">
 				<input type="hidden" class="use-control" value="{{data.use}}">
-			</div>
+			</div>			
 			<div class="contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
 					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
@@ -169,6 +171,10 @@ function qsm_options_contact_tab_template() {
 				<h3><?php esc_html_e('Settings', 'quiz-master-next');?></h3>
 				<div class="contact-form-group required-option">
 					<label class="contact-form-label"><input type="checkbox" name="required" class="required-control" <# if ( "true" == data.required || true == data.required ) { #>checked<# } #> ><span><?php esc_html_e('Required?', 'quiz-master-next');?></span></label>
+				</div>
+				<div class="contact-form-group field-options">
+					<label class="contact-form-label"><?php esc_html_e('Options', 'quiz-master-next');?></label>
+					<textarea title="<?php esc_html_e('Use comma seperated values.', 'quiz-master-next');?>" class="contact-form-control" placeholder="<?php esc_html_e('Option-1, Option-2, Option-3', 'quiz-master-next');?>" name="options" cols="30" rows="5">{{data.options}}</textarea>
 				</div>
 				<div class="contact-form-group min-max-option">
 					<label class="contact-form-label"><?php esc_html_e('Min Length', 'quiz-master-next');?></label>

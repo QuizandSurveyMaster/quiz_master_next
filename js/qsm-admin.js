@@ -295,7 +295,7 @@ var QSMAdmin;
             }
         });
         //Hide/show tr based on selection
-        $('.qsm_tab_content select').each(function () {
+        $('.qsm_tab_content .qsm-opt-tr select').each(function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             if ($('.' + name + '_' + value).length > 0) {
@@ -1298,6 +1298,9 @@ var QSMContact;
                     }
                     if ('email' == type) {
                         field.find('.contact-form-field-settings .email-option').show();
+                    }
+                    if ('radio' == type || 'select' == type) {
+                        field.find('.contact-form-field-settings .field-options').show();
                     }
                     jQuery(document).trigger('qsm_contact_field_hide_show_settings', [field, type]);
                 }

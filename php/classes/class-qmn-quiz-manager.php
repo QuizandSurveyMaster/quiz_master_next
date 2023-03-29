@@ -715,10 +715,10 @@ class QMNQuizManager {
 					</script>
 					<?php
 				}
-				$order_by_sql = 'ORDER BY FIELD(question_id,'.$question_sql.')';
+				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
 
-			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
+			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), $cat_query, $order_by_sql, $limit_sql );
 			$questions = $wpdb->get_results( stripslashes( $query ) );
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
@@ -1395,7 +1395,9 @@ class QMNQuizManager {
 					echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 				}
 				?>
-				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<?php if ( 0 === intval( $pagination_option ) ) : ?>
+					<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<?php endif; ?>
 			</div>
 			<?php
 		} else {
@@ -1521,7 +1523,7 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function submit_results( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $wpdb, $qmn_allowed_visit;
+		global $wpdb, $qmn_allowed_visit, $mlwQuizMasterNext;
 		$result_display = '';
 		do_action( 'qsm_submit_results_before', $qmn_quiz_options, $qmn_array_for_variables );
 		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
@@ -1626,6 +1628,9 @@ class QMNQuizManager {
 						),
 						array( 'result_id' => $results_id )
 					);
+					if ( false === $results_update ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 					$results_insert = $wpdb->insert(
@@ -1678,6 +1683,9 @@ class QMNQuizManager {
 						)
 					);
 					$results_id     = $wpdb->insert_id;
+					if ( false === $results_insert ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+					}
 				}
 			}
 			$qmn_array_for_variables['response_saved']   = isset( $results_insert ) ? $results_insert : false;
@@ -1685,7 +1693,6 @@ class QMNQuizManager {
 			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 			setcookie("question_ids_".$qmn_array_for_variables['quiz_id'], "", time() - 36000, "/");
 			// Converts date to the preferred format
-			global $mlwQuizMasterNext;
 			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format( $qmn_array_for_variables );
 
 			// Determines redirect/results page.
@@ -2448,7 +2455,7 @@ class QMNQuizManager {
 	 * @since  5.3.0
 	 * @return string The IP address or a phrase if not collected
 	 */
-	private function get_user_ip() {
+	public function get_user_ip() {
 		$ip            = __( 'Not collected', 'quiz-master-next' );
 		$settings      = (array) get_option( 'qmn-settings' );
 		$ip_collection = '0';
@@ -2678,7 +2685,6 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 		if ( isset($qmn_quiz_options->start_quiz_survey_text) && "" != $qmn_quiz_options->start_quiz_survey_text ) {
 			$quiz_btn_display_text = $qmn_quiz_options->start_quiz_survey_text; // For old quizes set default here
 		}
-
 		$qmn_json_data['pagination'] = array(
 			'amount'                 => $qmn_quiz_options->pagination,
 			'section_comments'       => $qmn_quiz_options->comment_section,
@@ -2686,7 +2692,7 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
-			'submit_quiz_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_submit_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'submit_quiz_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support($qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;
