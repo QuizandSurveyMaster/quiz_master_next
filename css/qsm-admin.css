@@ -2526,7 +2526,6 @@ input#duplicate_questions {
 	top: 5px;
 	border-radius: 10px;
 	padding: 0 10px;
-	text-transform: uppercase;
 }
 .themes-container .market-theme:hover .market-theme-url {
 	opacity: 1;
@@ -3047,7 +3046,7 @@ input#duplicate_questions {
 		bottom: 35px;
 		left: 70%;
 	}
-	.contact-form-field .contact-form-actions, 
+	.contact-form-field .contact-form-actions,
 	.contact-form-field  .contact-form-switch {
 		margin-top: 5px;
 	}

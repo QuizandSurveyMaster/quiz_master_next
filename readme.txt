@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.2
+Stable tag: 8.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.3 (March 29, 2023) =
+* Feature: Added Select and Radio input types as new features for contact fields
+* Bug: Resolved an issue where the submit button was not visible when pagination was used
+* Bug: Fixed submit button label rename issue with auto pagination
+* Bug: Fixed a problem with rounding scores
+* Bug: Improved security and resolved vulnerability issues
+* Bug: Corrected a validation issue with contact field checkboxes
+* Enhancement: Checked and confirmed compatibility with WordPress version 6.2
+
 = 8.1.2 (March 15, 2023) =
 * Hotfix: Fixed submit button visiblity issue with random question option
 
