@@ -1403,7 +1403,7 @@ class QMNQuizManager {
 		} else {
 			?>
 			<div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
-				<?php if ( ( ! empty( $qmn_quiz_options->randomness_order ) && 0 !== intval( $qmn_quiz_options->randomness_order ) ) || ( ! empty( $qmn_quiz_options->question_from_total ) && 0 !== intval( $qmn_quiz_options->question_from_total ) ) && ( empty( $qmn_quiz_options->pagination ) || 0 === intval( $qmn_quiz_options->pagination ) ) ) : ?>
+				<?php if ( ( ( ! empty( $qmn_quiz_options->randomness_order ) && 0 !== intval( $qmn_quiz_options->randomness_order ) ) || ( ! empty( $qmn_quiz_options->question_from_total ) && 0 !== intval( $qmn_quiz_options->question_from_total ) ) ) && ( empty( $qmn_quiz_options->pagination ) || 0 === intval( $qmn_quiz_options->pagination ) ) ) : ?>
 					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
 				<?php endif; ?>
 			</div>
