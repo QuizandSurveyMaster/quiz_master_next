@@ -164,7 +164,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.1.4 (March 31, 2023) =
-* Hotfix: Resolved an issue where where the submit button appeared twice
+* Hotfix: Resolved an issue where the submit button appeared twice
 
 = 8.1.3 (March 29, 2023) =
 * Feature: Added Select and Radio input types as new features for contact fields
