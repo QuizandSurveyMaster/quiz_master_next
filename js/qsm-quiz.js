@@ -1123,7 +1123,7 @@ function qmnValidatePage(quiz_form_id) {
 
 // Show start quiz button if first page is visible
 function check_if_show_start_quiz_button(container, total_pages, page_number) {
-	if(jQuery('.quiz_begin').css('display') == 'block'){
+	if(container.find('.quiz_begin').css('display') == 'block'){
 		container.find(".mlw_custom_start").show();
 		container.find(".mlw_custom_next").hide();
 	}else{
