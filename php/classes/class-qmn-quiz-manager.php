@@ -702,6 +702,9 @@ class QMNQuizManager {
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
+					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
+						$question_sql = implode( ',', $question_ids );
+					}
 				}else {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
@@ -718,8 +721,8 @@ class QMNQuizManager {
 				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
 
-			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), $cat_query, $order_by_sql, $limit_sql );
-			$questions = $wpdb->get_results( stripslashes( $query ) );
+			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
+			$questions = $wpdb->get_results( $query );
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
