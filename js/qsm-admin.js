@@ -105,6 +105,12 @@ var QSMAdmin;
             var checked_data = jQuery(this).val().toString();
             jQuery('.catergory_comma_values').val(checked_data);
         });
+        jQuery('.category_selection_random').multiselect( {
+            columns: 1,
+            placeholder: qsm_admin_messages.select_category,
+            search: true,
+            selectAll: true
+        } );
         jQuery('.row-actions-c > .rtq-delete-result').click(function (e) {
             e.preventDefault();
             var $this = jQuery(this);
