@@ -1498,7 +1498,7 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('change', '.qmn_radio_answers input' , function (e) {
+	jQuery(document).on('change', '.qmn_radio_answers input, .qsm_dropdown' , function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 			let question_id = jQuery(this).attr('name').split('question')[1],
