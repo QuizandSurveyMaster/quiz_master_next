@@ -192,6 +192,7 @@ label.inline .mlw_qmn_question,
 
 .quiz_section select.qsm_select.qsm_dropdown {
   height: auto;
+  margin-bottom: 5px;
 }
 .quiz_section select:hover,
 .quiz_section textarea:hover,
