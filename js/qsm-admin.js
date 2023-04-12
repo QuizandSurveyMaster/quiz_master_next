@@ -1702,7 +1702,6 @@ var import_button;
                     var newModel = _.clone(model.attributes);
                     newModel.question_id = newModel.id;
                     newModel.id = null;
-                    console.log(newModel);
                     QSMQuestion.questions.create(
                         newModel, {
                         headers: {
@@ -1870,7 +1869,7 @@ var import_button;
                 addNewQuestionFromQuestionBank: function (model) {
                     var page = parseInt($('#add-question-bank-page').val(), 10);
                     model.set('page', page);
-                    // QSMQuestion.questions.add(model);
+                    QSMQuestion.questions.add(model);
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.savePages();
 
