@@ -1700,7 +1700,9 @@ var import_button;
                 },
                 questionBankSuccess: function (model) {
                     var newModel = _.clone(model.attributes);
+                    newModel.question_id = newModel.id;
                     newModel.id = null;
+                    console.log(newModel);
                     QSMQuestion.questions.create(
                         newModel, {
                         headers: {
@@ -1868,14 +1870,16 @@ var import_button;
                 addNewQuestionFromQuestionBank: function (model) {
                     var page = parseInt($('#add-question-bank-page').val(), 10);
                     model.set('page', page);
-                    QSMQuestion.questions.add(model);
+                    // QSMQuestion.questions.add(model);
                     QSMQuestion.addQuestionToPage(model);
+                    QSMQuestion.savePages();
+
                     $('.import-button').removeClass('disable_import');
                     QSMQuestion.countTotal();
                     import_button.html('').html(qsm_admin_messages.add_question);
                     import_button.attr("onclick", "return confirm(" + qsm_admin_messages.confirm_message + "' '" + qsm_admin_messages.import_question_again + ")");
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
-                    $('#save-popup-button').trigger('click');
+                    // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
                     var default_answers = parseInt(qsmQuestionSettings.default_answers);
