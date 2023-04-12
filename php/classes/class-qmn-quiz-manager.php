@@ -221,8 +221,9 @@ class QMNQuizManager {
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
-		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
+		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
+		$settings          = maybe_unserialize( $question_array['question_settings'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
 		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo-{$question_id}" );
 
@@ -233,7 +234,11 @@ class QMNQuizManager {
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
 				if ( 'input' === $answer_type ) {
-					if ( $answer == $value[0] && 1 === intval( $value[2] ) ) {
+					if ( empty( $settings['case_sensitive'] ) ) {
+						$answer = mb_strtoupper($answer);
+						$value[0] = mb_strtoupper($value[0]);
+					}
+					if ( $answer == $value[0] && ( 1 === intval( $value[2] ) || 14 === intval( $question_array['question_type_new'] ) ) ) {
 						$got_ans        = true;
 						$correct_answer = true;
 						break;

@@ -1508,7 +1508,7 @@ jQuery(function () {
 		}
 	});
 	let qsm_inline_result_timer;
-	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number', function (e) {
+	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
