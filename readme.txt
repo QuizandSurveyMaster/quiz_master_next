@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.4
+Stable tag: 8.1.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,8 +163,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.5 (April 13, 2023) =
+* Feature: Added option to display inline results for fill-in-the-blank and dropdown question types
+* Bug: Resolved an issue with the next button when multiple quizzes are used on the same page
+* Bug: Fixed a critical error on the result page
+* Bug: Addressed security and vulnerability concerns
+* Bug: Resolved an issue with hidden required questions validation
+* Bug: Fixed the correct answer information issue when importing questions from the question bank
+* Enhancement: Improved the user interface of the categories dropdown in the Options tab
+
 = 8.1.4 (March 31, 2023) =
-* Hotfix: Resolved an issue where where the submit button appeared twice
+* Hotfix: Resolved an issue where the submit button appeared twice
 
 = 8.1.3 (March 29, 2023) =
 * Feature: Added Select and Radio input types as new features for contact fields

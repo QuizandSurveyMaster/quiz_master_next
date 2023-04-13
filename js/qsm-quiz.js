@@ -1123,7 +1123,7 @@ function qmnValidatePage(quiz_form_id) {
 
 // Show start quiz button if first page is visible
 function check_if_show_start_quiz_button(container, total_pages, page_number) {
-	if(jQuery('.quiz_begin').css('display') == 'block'){
+	if(container.find('.quiz_begin').css('display') == 'block'){
 		container.find(".mlw_custom_start").show();
 		container.find(".mlw_custom_next").hide();
 	}else{
@@ -1498,7 +1498,7 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('change', '.qmn_radio_answers input' , function (e) {
+	jQuery(document).on('change', '.qmn_radio_answers input, .qsm_dropdown' , function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 			let question_id = jQuery(this).attr('name').split('question')[1],
@@ -1508,7 +1508,7 @@ jQuery(function () {
 		}
 	});
 	let qsm_inline_result_timer;
-	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number', function (e) {
+	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
@@ -1517,13 +1517,13 @@ jQuery(function () {
 				let question_id = $i_this.attr('name').split('question')[1],
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
-				qsm_show_inline_result(quizID, question_id, value, $this, 'input');
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input',$this.find('.qmn_fill_blank').index($i_this));
 			}, 2000);
 		}
 	});
 
 	//inline result status function
-	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type) {
+	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, index = null ) {
 		jQuery.ajax({
 			type: 'POST',
 			url: qmn_ajax_object.ajaxurl,
@@ -1531,6 +1531,7 @@ jQuery(function () {
 				action: "qsm_get_question_quick_result",
 				question_id: question_id,
 				answer: value,
+				index: index,
 				answer_type: answer_type,
 				show_correct_info: qmn_quiz_data[quizID].enable_quick_correct_answer_info
 			},

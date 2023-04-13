@@ -24,7 +24,7 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	if ( 0 == $required ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
-	$mlw_class .= apply_filters( 'qsm_multiple_response_classes', $mlw_class, $id );
+	$mlw_class = apply_filters( 'qsm_multiple_response_classes', $mlw_class, $id );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );

@@ -594,9 +594,9 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
  * @return array An array that contains the key 'id' for the new question.
  */
 function qsm_rest_create_question( WP_REST_Request $request ) {
-
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
+		global $wpdb;
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			try {
@@ -614,12 +614,16 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 				$settings       = array(
 					'required'       => $request['required'],
 					'answerEditor'   => 'text',
-					'question_title' => $request['name'],
+					'question_title' => $request['question_title'],
 				);
 				$intial_answers = $request['answers'];
 				$answers        = array();
 				if ( is_array( $intial_answers ) ) {
 					$answers = $intial_answers;
+				}
+				if ( ! empty( $request['question_id'] ) ) {
+					$settings = $wpdb->get_var( $wpdb->prepare( 'SELECT question_settings FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $request['question_id'] ) );
+					$settings = maybe_unserialize( $settings );
 				}
 				$question_id = QSM_Questions::create_question( $data, $answers, $settings );
 

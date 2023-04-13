@@ -221,8 +221,9 @@ class QMNQuizManager {
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
-		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
+		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
+		$settings          = maybe_unserialize( $question_array['question_settings'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
 		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo-{$question_id}" );
 
@@ -230,10 +231,15 @@ class QMNQuizManager {
 		$got_ans           = false;
 		$correct_answer    = false;
 		$count = 0;
+		$ans_index = isset( $_POST['index'] ) ? intval( $_POST['index'] ) : 0;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
 				if ( 'input' === $answer_type ) {
-					if ( $answer == $value[0] && 1 === intval( $value[2] ) ) {
+					if ( empty( $settings['case_sensitive'] ) ) {
+						$answer = mb_strtoupper($answer);
+						$value[0] = mb_strtoupper($value[0]);
+					}
+					if ( $answer == $value[0] && ( 1 === intval( $value[2] ) || 14 === intval( $question_array['question_type_new'] ) ) && ( empty( $settings['matchAnswer'] ) || 'random' === $settings['matchAnswer'] || $key == $ans_index  ) ) {
 						$got_ans        = true;
 						$correct_answer = true;
 						break;
@@ -702,6 +708,9 @@ class QMNQuizManager {
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
+					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
+						$question_sql = implode( ',', $question_ids );
+					}
 				}else {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
@@ -718,8 +727,8 @@ class QMNQuizManager {
 				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
 
-			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), $cat_query, $order_by_sql, $limit_sql );
-			$questions = $wpdb->get_results( stripslashes( $query ) );
+			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
+			$questions = $wpdb->get_results( $query );
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options

@@ -380,7 +380,7 @@ class QSM_Contact_Manager {
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
 			if ( 'radio' === $field["type"] ) {
-				$class .= ' mlwRequiredRadiomlwRequiredRadio ';
+				$class .= ' mlwRequiredRadio ';
 			}elseif ( 'select' === $field["type"] ) {
 				$class .= 'qsmRequiredSelect';
 			}else {
