@@ -431,6 +431,7 @@ class MLWQuizMasterNext {
 				'error_message'      => __("Sorry, unable to subscribe. Please try again later!", 'quiz-master-next'),
 			),
 			'select_category'            => __("Select Category", 'quiz-master-next'),
+			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
 		);
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 
