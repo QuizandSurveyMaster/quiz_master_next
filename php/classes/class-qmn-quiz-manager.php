@@ -231,6 +231,7 @@ class QMNQuizManager {
 		$got_ans           = false;
 		$correct_answer    = false;
 		$count = 0;
+		$ans_index = isset( $_POST['index'] ) ? intval( $_POST['index'] ) : 0;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
 				if ( 'input' === $answer_type ) {
@@ -238,7 +239,7 @@ class QMNQuizManager {
 						$answer = mb_strtoupper($answer);
 						$value[0] = mb_strtoupper($value[0]);
 					}
-					if ( $answer == $value[0] && ( 1 === intval( $value[2] ) || 14 === intval( $question_array['question_type_new'] ) ) ) {
+					if ( $answer == $value[0] && ( 1 === intval( $value[2] ) || 14 === intval( $question_array['question_type_new'] ) ) && ( empty( $settings['matchAnswer'] ) || 'random' === $settings['matchAnswer'] || $key == $ans_index  ) ) {
 						$got_ans        = true;
 						$correct_answer = true;
 						break;
