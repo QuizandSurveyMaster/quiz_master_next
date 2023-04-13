@@ -1517,7 +1517,7 @@ jQuery(function () {
 				let question_id = $i_this.attr('name').split('question')[1],
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
-				qsm_show_inline_result(quizID, question_id, value, $this, 'input', $i_this.index('.qmn_fill_blank'));
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input',$this.find('.qmn_fill_blank').index($i_this));
 			}, 2000);
 		}
 	});
