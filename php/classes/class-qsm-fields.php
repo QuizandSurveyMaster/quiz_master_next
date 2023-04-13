@@ -621,7 +621,7 @@ class QSM_Fields {
 					}
 					$cat_array = array_unique( $cat_array );
 					if ( $cat_array || $categories_tree ) {
-						?><select class="category_selection_random" multiple=""><option value="">Select Categories</option><?php
+						?><select class="category_selection_random" multiple=""><?php
 						if ( $multiple_category_system ) {
 							echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
 						} else {
