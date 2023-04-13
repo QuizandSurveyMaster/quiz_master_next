@@ -1610,15 +1610,14 @@ var import_button;
                 },
                 loadQuestionBank: function (action = '') {
                     if (action == 'change') {
-                        $('.qb-load-more-wrapper').remove();
-                        $('#question-bank').find('.question-bank-question').remove();
+                        $('#question-bank').empty();
                         $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
                     } else if ($('.qb-load-more-wrapper').length > 0) {
                         $('.qb-load-more-question').hide();
-                        $('.qb-load-more-wrapper').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
+                        $('.qb-load-more-wrapper').append('<div class="qsm-spinner-loader"></div>');
                     } else {
                         $('#question-bank').empty();
-                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px); class="qsm-spinner-loader"></div>');
+                        $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
                     }
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
@@ -1668,6 +1667,9 @@ var import_button;
                             $('#question-bank-cat').html($cat_html);
                             $('#question-bank-cat').val(pagination.category);
                         }
+                    }
+                    if ( 1 > questions.length ) {
+                        $('#question-bank').append('<div style="margin-top: 70px;text-align: center;" >' + qsm_admin_messages.questions_not_found + '</div>');
                     }
                 },
                 addQuestionToQuestionBank: function (question) {
