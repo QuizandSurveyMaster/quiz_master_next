@@ -1517,13 +1517,13 @@ jQuery(function () {
 				let question_id = $i_this.attr('name').split('question')[1],
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
-				qsm_show_inline_result(quizID, question_id, value, $this, 'input');
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input', $i_this.index());
 			}, 2000);
 		}
 	});
 
 	//inline result status function
-	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type) {
+	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, index = null ) {
 		jQuery.ajax({
 			type: 'POST',
 			url: qmn_ajax_object.ajaxurl,
@@ -1531,6 +1531,7 @@ jQuery(function () {
 				action: "qsm_get_question_quick_result",
 				question_id: question_id,
 				answer: value,
+				index: index,
 				answer_type: answer_type,
 				show_correct_info: qmn_quiz_data[quizID].enable_quick_correct_answer_info
 			},
