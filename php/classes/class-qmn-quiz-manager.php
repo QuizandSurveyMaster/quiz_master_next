@@ -2131,7 +2131,7 @@ class QMNQuizManager {
 
 		$question_type     = $question['question_type_new'];
 		$question_required = ( 0 === maybe_unserialize( $question['question_settings'] )['required'] );
-		$multi_response    = ( '4' === $question_type || '10' === $question_type );
+		$multi_response    = ( '4' === $question_type || '10' === $question_type || '14' === $question_type );
 
 		return self::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response );
 
