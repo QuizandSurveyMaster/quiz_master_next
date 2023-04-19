@@ -21,6 +21,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	$mlw_class = '';
+	$add_label = array();
 	if ( 0 == $required ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
@@ -33,20 +34,25 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
 			foreach ( $answers as $answer_index => $answer ) {
+				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
+				$mrq_checkbox_class = '';
+				if ( empty( $add_label[ $answer_index ] ) ) {
+					$mrq_checkbox_class = "mrq_checkbox_class";
+				}
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					if ( 'rich' === $answerEditor ) {
 						?>
-						<div class='qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
+						<div class='qmn_mc_answer_wrap <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
 						<?php
 					} elseif ( 'image' === $answerEditor ) {
 						?>
-						<div class='qmn_mc_answer_wrap qmn_image_option <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
+						<div class='qmn_mc_answer_wrap qmn_image_option <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'>
 						<?php
 					} else {
 						?>
-						<div class="qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>" id="question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?> ">
+						<div class="qmn_mc_answer_wrap <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>" id="question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?> ">
 						<?php
 					}
 					?>
@@ -65,16 +71,16 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>" />
 						<span class="qsm_image_caption">
 							<?php
-							$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
+							$caption_text = trim( htmlspecialchars_decode($answer[3], ENT_QUOTES ) );
 							$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
-							echo esc_html( $caption_text );
+							echo  $add_label[ $answer_index ]." ".esc_html( $caption_text );
 							?>
 						</span>
 						<?php
 					} else {
-						$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+						$answer_text = trim( htmlspecialchars_decode($add_label[ $answer_index ]." ".$answer[0], ENT_QUOTES ) );
 						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
-						echo do_shortcode( wp_kses_post( $answer_text ) );
+						echo do_shortcode( wp_kses_post($answer_text ) );
 					}
 					?>
 					</label>
@@ -84,6 +90,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 				</div>
 					<?php
 				}
+				//}
 			}
 			?>
 			<input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" />

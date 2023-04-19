@@ -36,13 +36,18 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
 			foreach ( $answers as $answer_index => $answer ) {
+				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
+				$mrq_checkbox_class = '';
+				if ( empty( $add_label[ $answer_index ] ) ) {
+					$mrq_checkbox_class = "mrq_checkbox_class";
+				}
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					$answer_class = 'image' === $answerEditor ? $answer_class.' qmn_image_option' : '';
 					?>
-					<div class="qsm_check_answer <?php echo esc_attr( $answer_class ); ?>">
-						<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) . '[]'; ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+					<div class="qsm_check_answer <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>">
+						<input type="checkbox"  <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) . '[]'; ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
@@ -59,12 +64,12 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 									<?php
 									$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
 									$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
-									echo esc_html( $caption_text );
+									echo $add_label[ $answer_index ]." ".esc_html( $caption_text );
 									?>
 								</span>
 								<?php
 							} else {
-								$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+								$answer_text = trim( htmlspecialchars_decode( $add_label[ $answer_index ]." ". $answer[0], ENT_QUOTES ) );
 								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
 								echo do_shortcode( wp_kses_post( $answer_text ) );
 							}
