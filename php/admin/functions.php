@@ -1440,7 +1440,4 @@ function qsm_get_input_label_selected( $param ) {
 		esc_attr( $param['name'] ),
 		wp_kses( $options ,$allowed_tags)
 	);
-	
-
- 
 }
