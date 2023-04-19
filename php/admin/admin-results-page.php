@@ -26,7 +26,7 @@ function qsm_generate_admin_results_page() {
 			<h2 id="result_details">
 				<?php esc_html_e( 'Quiz Results', 'quiz-master-next' );
 				if ( "quiz-results" == $active_tab ) { ?>
-					<span id="results-screen-option-button" class="button">Screen Options</span>
+					<span id="results-screen-option-button" class="button"><?php echo esc_html__( 'Screen Options', 'quiz-master-next' ) ?></span>
 				<?php } ?>
 			</h2>
 		</div>
