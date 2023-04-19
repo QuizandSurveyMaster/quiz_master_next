@@ -38,6 +38,7 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 			foreach ( $answers as $answer_index => $answer ) {
 				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
 				$mrq_checkbox_class = '';
+				$add_label_value = isset($add_label[ $answer_index ]) ? $add_label[ $answer_index ] : '';
 				if ( empty( $add_label[ $answer_index ] ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
@@ -64,12 +65,12 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 									<?php
 									$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
 									$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
-									echo $add_label[ $answer_index ]." ".esc_html( $caption_text );
+									echo $add_label_value." ".esc_html( $caption_text );
 									?>
 								</span>
 								<?php
 							} else {
-								$answer_text = trim( htmlspecialchars_decode( $add_label[ $answer_index ]." ". $answer[0], ENT_QUOTES ) );
+								$answer_text = trim( htmlspecialchars_decode( $add_label_value." ". $answer[0], ENT_QUOTES ) );
 								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
 								echo do_shortcode( wp_kses_post( $answer_text ) );
 							}
