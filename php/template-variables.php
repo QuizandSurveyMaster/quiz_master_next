@@ -1348,7 +1348,7 @@ function qsm_get_question_maximum_points( $question = array() ) {
 		$answer_points = array( 0 );
 		foreach ( $question['answers'] as $ans ) {
 			if ( isset( $ans[1] ) ) {
-				$answer_points[] = intval( $ans[1] );
+				$answer_points[] = floatval( $ans[1] );
 			}
 		}
 		$question_max_point = max( $answer_points );
