@@ -1571,7 +1571,7 @@ jQuery(function () {
 	jQuery(document).on('change ', '.qmn_radio_answers input , .qmn_check_answers input , .qsm_select', function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
-		if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && !jQuery('.mlw_next').length ) {
+		if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
 			var question_id = jQuery(this).attr('name').split('question')[1],
 				value = jQuery(this).val(),
 				$this = jQuery(this).parents('.quiz_section');
