@@ -1736,6 +1736,7 @@ function checkMaxLength(obj){
 }
 
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
+	let quiz_id =  $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
 		type: 'POST',
 		url: qmn_ajax_object.ajaxurl,
@@ -1743,7 +1744,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			action: "qsm_get_question_quick_result",
 			question_id: question_id,
 			answer: value,
-			show_correct_info: qmn_quiz_data[quizID].enable_quick_correct_answer_info
+			show_correct_info: qmn_quiz_data[quiz_id].enable_quick_correct_answer_info
 		},
 		success: function (response) {
 			var data = jQuery.parseJSON(response);
