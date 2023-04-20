@@ -2119,7 +2119,7 @@ class QMNQuizManager {
 
 		foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
 			if ( isset( $single_answer_arr[1] ) ) {
-				$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] ) . "<br/>";
+				$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
 				if ( floatval( $single_answer_arr[1] ) > 0 ) {
 					array_push( $max_value_array, $single_answer_arr[1] );
 				}
