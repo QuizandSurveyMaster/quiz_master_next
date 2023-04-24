@@ -163,11 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.1.6 (April 21, 2023) =
-* Bug: Resolved a JavaScript conflict with the Adava theme
+= 8.1.6 (April 24, 2023) =
+* Bug: Resolved a JavaScript conflict with the Avada theme
 * Bug: PHP warnings related to disallowing submission after quiz expiry have been fixed
 * Bug: Fixed issue with end quiz if there is wrong answer option
 * Bug: Corrected decimal and negative points calculations associated with point-related variables
+* Bug: Fixed visiblity issue with start button
 
 = 8.1.5 (April 13, 2023) =
 * Feature: Added option to display inline results for fill-in-the-blank and dropdown question types
