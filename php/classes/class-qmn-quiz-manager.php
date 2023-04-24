@@ -1172,7 +1172,7 @@ class QMNQuizManager {
 		 *
 		 * @since 7.3.5
 		 */
-		$start_button_text = !empty( $options->start_quiz_survey_text ) ? $options->start_quiz_survey_text : $options->next_button_text;
+		$start_button_text = ! empty( $options->start_quiz_survey_text ) ? $options->start_quiz_survey_text : $options->next_button_text;
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
 			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->previous_button_text, "quiz_previous_button_text-{$options->quiz_id}" ) ) . '</a>
 			<span class="qmn_page_message"></span>
