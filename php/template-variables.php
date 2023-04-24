@@ -1360,13 +1360,19 @@ function qsm_get_question_maximum_points( $question = array() ) {
 				$multiple_choise[] = $type['slug'];
 			}
 		}
-		if ( 4 == $question['question_type_new'] || 10 == $question['question_type_new'] || in_array( $question['question_type_new'], $multiple_choise, true ) ) {
+		if ( 4 == $question['question_type_new'] || 10 == $question['question_type_new'] || 14 == $question['question_type_new'] || in_array( $question['question_type_new'], $multiple_choise, true ) ) {
 			$limit_multiple_response = ( isset( $question['settings']['limit_multiple_response'] ) ) ? intval( $question['settings']['limit_multiple_response'] ) : 0;
 			if ( $limit_multiple_response > 0 && count( $answer_points ) > $limit_multiple_response ) {
 				rsort( $answer_points );
 				$answer_points = array_slice( $answer_points, 0, $limit_multiple_response, true );
 			}
-			$question_max_point = array_sum( $answer_points );
+			$question_max_point = 0;
+			foreach ( $answer_points as $answer_point ) {
+				if ( $answer_point > 0 ) {
+				  $question_max_point += $answer_point; // add the number to the sum if it's positive
+				}
+			  }
+
 			$question_max_point = apply_filters( 'qsm_question_max_point', $question_max_point, $answer_points );
 		}
 	}
