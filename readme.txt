@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.5
+Stable tag: 8.1.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.6 (April 21, 2023) =
+* Bug: Resolved a JavaScript conflict with the Adava theme
+* Bug: PHP warnings related to disallowing submission after quiz expiry have been fixed
+* Bug: Fixed issue with end quiz if there is wrong answer option
+* Bug: Corrected decimal and negative points calculations associated with point-related variables
+
 = 8.1.5 (April 13, 2023) =
 * Feature: Added option to display inline results for fill-in-the-blank and dropdown question types
 * Bug: Resolved an issue with the next button when multiple quizzes are used on the same page
