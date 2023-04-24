@@ -381,8 +381,8 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel:
-			<?php esc_html_e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">
+			<?php esc_html_e( 'Toggle panel: Recently Taken Quizzes', 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span></h2>
@@ -462,7 +462,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							<a
 								href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
 							| <a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
-								class="trash rtq-delete-result">Delete</a>
+								class="trash rtq-delete-result"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
 						</p>
 					</div>
 				</li>
@@ -497,7 +497,7 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text"><?php esc_html_e( "Toggle panel: Latest from our blog", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
@@ -514,7 +514,7 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 						<?php echo wp_kses_post( $single_feed_arr['title'] ); ?>
 					</a>
 					<div class="post-description">
-						<?php echo wp_kses_post( $single_feed_arr['excerpt'] ); ?>
+						<?php echo wp_kses_post( htmlspecialchars_decode( $single_feed_arr['excerpt'], ENT_QUOTES ) ); ?>
 					</div>
 				</li>
 				<?php
@@ -550,7 +550,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 	?>
 	<div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 		<button type="button" class="handlediv" aria-expanded="true">
-			<span class="screen-reader-text">Toggle panel: <?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></span>
+			<span class="screen-reader-text"><?php esc_html_e( 'Toggle panel: Changelog', 'quiz-master-next' ); ?></span>
 			<span class="toggle-indicator" aria-hidden="true"></span>
 		</button>
 		<h2 class="hndle ui-sortable-handle">
@@ -685,7 +685,7 @@ function qsm_dashboard_roadmap( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text"><?php esc_html_e( "Toggle panel: What's Next", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span></h2>
@@ -694,26 +694,26 @@ function qsm_dashboard_roadmap( $widget_id ) {
 			<ul class="what-new-ul">
 				<li>
 					<a href="https://app.productstash.io/qsm#/roadmap"
-						target="_blank" rel="noopener"> Roadmap
+						target="_blank" rel="noopener"> <?php esc_html_e( "Roadmap", "quiz-master-next"); ?>
 					</a>
 					<div class="post-description">
-						Visit out public Roadmap to checkout what's in the development pipepline of QSM.
+						<?php esc_html_e( "Visit out public Roadmap to checkout what's in the development pipepline of QSM.", "quiz-master-next"); ?>
 					</div>
 				</li>
 				<li>
 					<a href="https://app.productstash.io/qsm#/updates"
-						target="_blank" rel="noopener">Recent Updates
+						target="_blank" rel="noopener"><?php esc_html_e( "Recent Updates", "quiz-master-next"); ?>
 					</a>
 					<div class="post-description">
-						Checkout our updates page to know more about our recent releases
+						<?php esc_html_e( "Checkout our updates page to know more about our recent releases", "quiz-master-next"); ?>
 					</div>
 				</li>
 				<li>
 					<a href="https://app.productstash.io/qsm#/ideas"
-						target="_blank" rel="noopener">Submit your ideas
+						target="_blank" rel="noopener"><?php esc_html_e( "Submit your ideas", "quiz-master-next"); ?>
 					</a>
 					<div class="post-description">
-						We are open your suggestions on how to improve QSM. Please visit our ideas page to share your thoughts.
+						<?php esc_html_e( "We are open your suggestions on how to improve QSM. Please visit our ideas page to share your thoughts.", "quiz-master-next"); ?>
 					</div>
 				</li>
 			</ul>
