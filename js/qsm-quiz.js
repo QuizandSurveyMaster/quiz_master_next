@@ -396,6 +396,7 @@ var qsmTimerInterval = [];
 			$quizForm.find('.qsm-submit-btn').hide();
 			$quizForm.find('.g-recaptcha').hide();
 			if (pageNumber < $pages.length) {
+				$quizForm.find('.qsm-next').show();
 				check_if_show_start_quiz_button($container, $pages.length, pageNumber);
 			} else {
 				$quizForm.find('.qsm-submit-btn').show();
