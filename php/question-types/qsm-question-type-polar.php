@@ -17,8 +17,8 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$answerEditor   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
-	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
-	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
+	$first_point    = isset( $answers[0][1] ) ? floatval( $answers[0][1] ) : 0;
+	$second_point   = isset( $answers[1][1] ) ? floatval( $answers[1][1] ) : 0;
 	$is_reverse     = false;
 	$check_point    = $second_point;
 	if ( $first_point > $second_point ) {

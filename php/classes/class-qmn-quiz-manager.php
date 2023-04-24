@@ -1172,12 +1172,14 @@ class QMNQuizManager {
 		 *
 		 * @since 7.3.5
 		 */
+		$start_button_text = ! empty( $options->start_quiz_survey_text ) ? $options->start_quiz_survey_text : $options->next_button_text;
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
 			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->previous_button_text, "quiz_previous_button_text-{$options->quiz_id}" ) ) . '</a>
 			<span class="qmn_page_message"></span>
 			<div class="qmn_page_counter_message"></div>
 			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->next_button_text, "quiz_next_button_text-{$options->quiz_id}" ) ) . '</a>
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_start" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $start_button_text, "quiz_next_button_text-{$options->quiz_id}" ) ) . '</a>
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->next_button_text, "quiz_next_button_text-{$options->quiz_id}" ) ) . '</a>
 			<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="' . esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->submit_button_text, "quiz_submit_button_text-{$options->quiz_id}" ) ) . '" />
 		</div>';
 		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination );
@@ -1483,7 +1485,7 @@ class QMNQuizManager {
 		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
 
-		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
+		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
 			echo wp_json_encode(
 				array(
 					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
@@ -2120,10 +2122,10 @@ class QMNQuizManager {
 		foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
 			if ( isset( $single_answer_arr[1] ) ) {
 				$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
-				if ( intval( $single_answer_arr[1] ) > 0 ) {
+				if ( floatval( $single_answer_arr[1] ) > 0 ) {
 					array_push( $max_value_array, $single_answer_arr[1] );
 				}
-				if ( intval( $single_answer_arr[1] ) < 0 ) {
+				if ( floatval( $single_answer_arr[1] ) < 0 ) {
 					array_push( $min_value_array, $single_answer_arr[1] );
 				}
 			}
@@ -2131,7 +2133,7 @@ class QMNQuizManager {
 
 		$question_type     = $question['question_type_new'];
 		$question_required = ( 0 === maybe_unserialize( $question['question_settings'] )['required'] );
-		$multi_response    = ( '4' === $question_type || '10' === $question_type );
+		$multi_response    = ( '4' === $question_type || '10' === $question_type || '14' === $question_type );
 
 		return self::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response );
 

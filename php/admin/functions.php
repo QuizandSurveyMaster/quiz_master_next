@@ -1292,6 +1292,13 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						qsm_get_input_control_unit( $param ); ?>
 						<?php
 		            break;
+				case 'dropdown':
+						$param = array(
+							'name'  => "settings[". $name ."]",
+							'value' => $value,
+						);
+						qsm_get_input_label_selected( $param ); 
+		            break;
 				default:
 					?>
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
@@ -1396,4 +1403,41 @@ function qsm_get_input_control_unit( $param ) {
 		wp_kses( $options, $allowed_tags )
 	);
 
+}
+
+function qsm_get_input_label_selected( $param ) {
+	if ( empty( $param['name'] ) ) {
+		return;
+	}
+	$value = '';
+
+	if ( ! empty( $param['value'] ) ) {
+		$value = $param['value'];
+	}
+
+	$label_options = array( 'Numbers', 'Alphabets', 'Default' );
+
+	$options = '';
+	foreach ( $label_options as $labels ) {
+		$is_selected = '';
+		if ( $value === $labels ) {
+			$is_selected = 'selected';
+		}
+		$options .= sprintf(
+			'<option value="%1$s" %2$s >%1$s</option>',
+			esc_attr( $labels ),
+			esc_attr( $is_selected )
+		);
+	}
+	$allowed_tags = array(
+		'option' => array(
+			'value'    => array(),
+			'selected' => array(),
+		),
+	);
+	echo sprintf(
+		'<select name="%1$s"> %2$s </select>',
+		esc_attr( $param['name'] ),
+		wp_kses( $options ,$allowed_tags)
+	);
 }

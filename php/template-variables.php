@@ -1320,7 +1320,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	}
 	$answer_3                    = ! empty( $answer[3] ) ? $answer[3] : 'NA';
 	$mlw_question_answer_display = str_replace( '%USER_COMMENTS%', $answer_3, $mlw_question_answer_display );
-	$answer_4                    = ! empty( $qmn_questions[ $answer['id'] ] ) ? $qmn_questions[ $answer['id'] ] : 'NA';
+	$answer_4                    = ! empty( $qmn_questions[ $answer['id'] ] ) ? $qmn_questions[ $answer['id'] ] : '';
 	$answer_4                    = 6 == $answer['question_type'] ? "" : $answer_4 ;
 	$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER_INFO%', htmlspecialchars_decode( $answer_4, ENT_QUOTES ), $mlw_question_answer_display );
 	// Point score of the particular question.
@@ -1348,7 +1348,7 @@ function qsm_get_question_maximum_points( $question = array() ) {
 		$answer_points = array( 0 );
 		foreach ( $question['answers'] as $ans ) {
 			if ( isset( $ans[1] ) ) {
-				$answer_points[] = intval( $ans[1] );
+				$answer_points[] = floatval( $ans[1] );
 			}
 		}
 		$question_max_point = max( $answer_points );
@@ -1360,13 +1360,18 @@ function qsm_get_question_maximum_points( $question = array() ) {
 				$multiple_choise[] = $type['slug'];
 			}
 		}
-		if ( 4 == $question['question_type_new'] || 10 == $question['question_type_new'] || in_array( $question['question_type_new'], $multiple_choise, true ) ) {
+		if ( 4 == $question['question_type_new'] || 10 == $question['question_type_new'] || 14 == $question['question_type_new'] || in_array( $question['question_type_new'], $multiple_choise, true ) ) {
 			$limit_multiple_response = ( isset( $question['settings']['limit_multiple_response'] ) ) ? intval( $question['settings']['limit_multiple_response'] ) : 0;
 			if ( $limit_multiple_response > 0 && count( $answer_points ) > $limit_multiple_response ) {
 				rsort( $answer_points );
 				$answer_points = array_slice( $answer_points, 0, $limit_multiple_response, true );
 			}
-			$question_max_point = array_sum( $answer_points );
+			$question_max_point = 0;
+			foreach ( $answer_points as $answer_point ) {
+				if ( $answer_point > 0 ) {
+					$question_max_point += $answer_point;
+				}
+			}
 			$question_max_point = apply_filters( 'qsm_question_max_point', $question_max_point, $answer_points );
 		}
 	}
