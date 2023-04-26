@@ -1300,8 +1300,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				foreach ( $image_list as $key => $value ) {
 					if ( in_array( $value , $user_text_array_multiple_response, true ) ) {
 						if ( is_numeric( $key ) ) { $key = ""; }
-							$caption = '<span class="qsm_image_result_caption">'.$key.'</span>';
-							$images_answer .= "$open_span_tag<img src='".esc_url( $value )."'  style='" . esc_attr( $size_style ) . "'/>'".esc_html( $caption.$close_span_without_br );
+							$caption_name = '<span class="qsm_image_result_caption">'.$key.'</span>';
+							$images_answer .= "$open_span_tag<img src='".esc_url( $value )."'  style='" . esc_attr( $size_style ) . "'/>'".esc_html( $caption_name.$close_span_without_br );
 						}
 				}
 				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$images_answer", $mlw_question_answer_display );
