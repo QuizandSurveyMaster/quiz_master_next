@@ -1754,14 +1754,14 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm]);
 			if (data.success == 'correct') {
 			} else if (data.success == 'incorrect') {
-				$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
+				$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
 				$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 				setTimeout(function () {
 					$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
 					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 				}, 1000);
 			}
-			if (1 != qmn_quiz_data[quizID].disable_mathjax) {
+			if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 				MathJax.typesetPromise();
 			}
 		},
