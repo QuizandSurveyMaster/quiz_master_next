@@ -23,6 +23,17 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					jQuery.ajax({
+						url: qmn_ajax_object.ajaxurl,
+						data: {
+							action: "qsm_create_quiz_nonce",
+							quiz_id: quizID,
+						},
+						type: 'POST',
+						success: function (response) {
+							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data+'"/>');
+						}
+					});
 					QSM.initPagination(quizID);
 					if ( ( quiz.hasOwnProperty('pagination') || ( _.keys(quiz.qpages).length > 1 && !jQuery('.qsm-quiz-container-'+quizID+' .qsm-auto-page-row').length ) ) ) {
 						qsmEndTimeTakenTimer(quizID);
@@ -950,7 +961,7 @@ function qmnFormSubmit(quiz_form_id) {
 		fd.append(input.name, input.value);
 	});
 	fd.append("action", 'qmn_process_quiz');
-	fd.append("nonce", qmn_ajax_object.security);
+	fd.append("nonce", jQuery('#qsm_nonce_' + quiz_id ).val() );
 	fd.append("currentuserTime", Math.round(new Date().getTime() / 1000));
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
