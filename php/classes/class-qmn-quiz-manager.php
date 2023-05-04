@@ -643,7 +643,7 @@ class QMNQuizManager {
 		// If using newer pages system from 5.2.
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		// Get all question IDs needed.
-		$total_pages           = count( $pages );
+		$total_pages           = is_countable($pages) ? count( $pages ) : 0;
 		$category_question_ids = array();
 		if ( $multiple_category_system && ! empty( $exploded_arr ) ) {
 			$term_ids      = implode( ', ', $exploded_arr );
@@ -910,7 +910,7 @@ class QMNQuizManager {
 				echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && 0 !== count( $pages ) ) {
+				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
