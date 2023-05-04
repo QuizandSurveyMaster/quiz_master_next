@@ -108,6 +108,14 @@ class MLWQuizMasterNext {
 	 * @since 7.3.0
 	 */
 	public $migrationHelper;
+	
+	/**
+	 * QSM Check License object
+	 *
+	 * @var object
+	 * @since 8.1.7
+	 */
+	public $check_license;
 
 	/**
 	 * Holds quiz_data
@@ -221,6 +229,8 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-migrate.php';
 		$this->migrationHelper = new QSM_Migrate();
 
+		
+
 		include_once 'php/rest-api.php';
 	}
 
@@ -261,6 +271,8 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_load_textdomain() {
 		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+		include_once 'php/classes/class-qsm-check-license.php';
+		$this->check_license = new QSM_Check_License();
 	}
 
 	/**
