@@ -34,7 +34,7 @@ if ( class_exists('QSM_license') ) {
 						'url'        => home_url(),
 					),
 				);
-				$activation_response = wp_remote_post( 'http://quizandsurveymaster.com', $params );
+				$activation_response = wp_remote_post( 'https://quizandsurveymaster.com', $params );
 				if ( ! empty( $activation_response ) ) {
 					$body = json_decode( $activation_response['body'] );
 					if ( $body->success ) {
