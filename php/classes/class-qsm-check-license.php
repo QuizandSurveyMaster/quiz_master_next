@@ -39,9 +39,9 @@ if ( class_exists('QSM_license') ) {
 					$body = json_decode( $activation_response['body'] );
 					if ( $body->success ) {
 						$response = array(
-							'status'         => 'success',
-							'message'        => __( 'License validated Successfully', 'quiz-master-next' ),
-							'expiry_date'    => date("d-m-Y", strtotime($body->expires))
+							'status'      => 'success',
+							'message'     => __( 'License validated Successfully', 'quiz-master-next' ),
+							'expiry_date' => date("d-m-Y", strtotime($body->expires)),
 						);
 					} else {
 						$error_message   = array(
@@ -64,9 +64,9 @@ if ( class_exists('QSM_license') ) {
 							$expires = date("d-m-Y", strtotime($body->expires));
 						}
 						$response = array(
-							'status'         => 'error',
-							'message'        => $message,
-							'expiry_date'    => $expires,
+							'status'      => 'error',
+							'message'     => $message,
+							'expiry_date' => $expires,
 						);
 					}
 				}
