@@ -393,7 +393,7 @@ class QSM_Contact_Manager {
 		switch ( $field['type'] ) {
 			case 'text':
 				if ( 'phone' === $field['use'] ) {
-					$class .= 'mlwPhoneNumber';
+					$class .= ' mlwPhoneNumber';
 				}
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
