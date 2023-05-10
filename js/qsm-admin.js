@@ -45,8 +45,8 @@ var QSMAdmin;
         }
     };
     $(function () {
-        var optionCount = jQuery('select.question_limit_category:last option').length-1;
-        var selectCount = jQuery('select.question_limit_category').length;
+        let optionCount = jQuery('select.question_limit_category:last option').length-1;
+        let selectCount = jQuery('select.question_limit_category').length;
         if(optionCount == selectCount) {
             jQuery(".add-more-link").hide();
         }
@@ -122,11 +122,11 @@ var QSMAdmin;
             }
         });
         jQuery(document).on('click','.add-more-category', function () {
-            var original = jQuery('div.select-category-question-limit-maindiv');
-            var lastChild = original.children().last();
-            var clonedChild = lastChild.clone();
-            var optionCount = jQuery('select.question_limit_category:last option').length-1;
-            var selectCount = jQuery('select.question_limit_category').length+1;
+            let original = jQuery('div.select-category-question-limit-maindiv');
+            let lastChild = original.children().last();
+            let clonedChild = lastChild.clone();
+            let optionCount = jQuery('select.question_limit_category:last option').length-1;
+            let selectCount = jQuery('select.question_limit_category').length+1;
             clonedChild.appendTo(original);
             if(optionCount <= selectCount) {
                 jQuery(".add-more-link").hide();

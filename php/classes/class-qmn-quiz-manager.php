@@ -706,10 +706,7 @@ class QMNQuizManager {
 				$category_question_limit = maybe_unserialize($quiz_options->select_category_question);
 				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
-				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
 				if ( ! empty( $category_ids ) ) {
-					$term_ids    = implode( ',',$category_question_limit['category_select_key'] );
-					$question_id = implode( ',', $question_ids );
 					$question_count = array();
 					$question_limit_sql = $category_question_limit['question_limit_key'];
 					$i = 0;

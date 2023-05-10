@@ -54,8 +54,12 @@ class QSM_Fields {
 							break;
 						case 'selectinput':
 							$sanitized_value = array();
-							if( isset( $_POST[ "category_select_key" ] ) ) $category_select_key = $_POST[ "category_select_key" ];
-							if( isset( $_POST[ "question_limit_key" ] ) ) $question_limit_key = $_POST[ "question_limit_key" ];
+							if( isset( $_POST[ "category_select_key" ] ) ) {
+								$category_select_key = $_POST[ "category_select_key" ]; 
+							}							
+							if( isset( $_POST[ "question_limit_key" ] ) ) {
+								$question_limit_key = $_POST[ "question_limit_key" ];
+							}
 							$sanitized_value[ 'category_select_key' ] = qsm_sanitize_rec_array( wp_unslash( $category_select_key ) );
 							$sanitized_value[ 'question_limit_key' ] = qsm_sanitize_rec_array( wp_unslash( $question_limit_key ) );
 							$sanitized_value  = maybe_serialize( $sanitized_value );
