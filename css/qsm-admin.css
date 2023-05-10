@@ -1168,6 +1168,11 @@ h3.addon_category_name {
 	height: auto;
 	min-width: 300px;
 }
+
+.qsm_tab_content input[name="question_limit_key[]"] {
+	max-width: 70px;
+	min-width: 70px;
+} 
 .qsm_tab_content textarea {
 	background: #ffffff none repeat scroll 0 0;
 	border: 1px solid #dddddd;

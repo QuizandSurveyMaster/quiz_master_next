@@ -286,7 +286,21 @@ class QSM_Install {
 		);
 
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
+		// Registers Rounding setting
+		$field_array = array(
+			'id'          => 'limit_category_checkbox',
+			'label'       => __( 'Limit questions for each category', 'quiz-master-next' ),
+			'type'        => 'checkbox',
+			'options'     => array(
+				array(
+					'value' => 1,
+				),
+			),
+			'default'     => 0,
+			'show_option' => 'form_type_1',
+			'option_tab'  => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		// Registers question_per_category setting
 		$field_array = array(
 			'id'         => 'question_per_category',
@@ -299,8 +313,7 @@ class QSM_Install {
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-		// Registers category setting
+		//Registers category setting
 		$field_array = array(
 			'id'         => 'randon_category',
 			'label'      => __( 'Questions Categories', 'quiz-master-next' ),
@@ -310,6 +323,19 @@ class QSM_Install {
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		
+		// Registers system setting
+		$field_array = array(
+			'id'                  => 'select_category_question',
+			'category_select_key' => 'question_limit_category',
+			'question_limit_key'  => 'question_limit_key',
+			'label'               => __( 'Select Category', 'quiz-master-next' ),
+			'type'                => 'selectinput',
+			'default'             => '',
+			'option_tab'          => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		
 
 		// Registers randomness_order setting
 		$field_array = array(
