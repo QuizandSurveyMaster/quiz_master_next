@@ -134,7 +134,7 @@ var QSMAdmin;
         });
         jQuery(document).on('click', '.remove-row', function(){
             jQuery(this).parent('.select-category-question-limit-subdiv').remove();
-            jQuery('.select-category-question-limit-subdiv:last').append("<div class='add-more-link'><a href='javascript:void(0)' class='add-more-category'>+Add More</a></div>");
+            jQuery('.select-category-question-limit-subdiv:last').append("<div class='add-more-link'><a href='javascript:void(0)' class='add-more-category'>+"+qsm_admin_messages.add_more+"</a></div>");
         });
         jQuery('.category_selection_random').multiselect( {
             columns: 1,

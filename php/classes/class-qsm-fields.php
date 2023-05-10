@@ -827,7 +827,7 @@ class QSM_Fields {
 				?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
-							<option>Select</option><?php
+							<option><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></option><?php
 							foreach ( $categories['list'] as $key => $single_cat ) {
 								?><option <?php echo ( isset( $value['category_select_key'][ $i ]) && ($key == $value['category_select_key'][ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
 							}?>
