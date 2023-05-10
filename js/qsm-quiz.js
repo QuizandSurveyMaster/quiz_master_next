@@ -956,6 +956,7 @@ function qmnFormSubmit(quiz_form_id) {
 
 	//Convert serialize data into index array
 	var unindexed_array = jQuery('#' + quiz_form_id).serializeArray();
+	jQuery(document).trigger('qsm_before_form_data_process', [quiz_form_id, unindexed_array]);
 	var fd = new FormData();
 	jQuery.each(unindexed_array, function (key, input) {
 		fd.append(input.name, input.value);
