@@ -444,6 +444,7 @@ class MLWQuizMasterNext {
 			),
 			'select_category'            => __("Select Category", 'quiz-master-next'),
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
+			'add_more'        			 => __("Add more", 'quiz-master-next'),
 		);
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 
