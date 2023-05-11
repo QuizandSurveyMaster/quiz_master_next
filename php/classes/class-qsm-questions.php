@@ -67,6 +67,7 @@ class QSM_Questions {
 	 * @return array The array of questions.
 	 */
 	public static function load_questions_by_pages( $quiz_id ) {
+
 		// Prepares our variables.
 		global $wpdb;
 		global $mlwQuizMasterNext;
@@ -98,6 +99,7 @@ class QSM_Questions {
 
 			// Get all questions.
 			$question_array = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s)", $question_sql ), 'ARRAY_A' );
+			
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
 				$multicategories = self::get_question_categories( $question['question_id'] );
