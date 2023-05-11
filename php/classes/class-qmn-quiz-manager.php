@@ -929,10 +929,7 @@ class QMNQuizManager {
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
-
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && 0 !== count( $pages ) && 0 == $options->limit_category_checkbox ) {
-
+				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) && 0 == $options->limit_category_checkbox ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
@@ -970,7 +967,7 @@ class QMNQuizManager {
 		<?php
 		echo apply_filters( 'qmn_end_quiz', '', $options, $quiz_data );
 	}
-}
+
 	/**
 	 * Creates the pages of content for the quiz/survey
 	 *

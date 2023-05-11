@@ -50,6 +50,13 @@ var QSMAdmin;
         if(optionCount == selectCount) {
             jQuery(".add-more-link").hide();
         }
+        if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
+            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").hide();
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
+        } else {
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
+            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random .qsm_tab_content .category_selection_random').parents("tr").show();
+        }
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
@@ -132,9 +139,9 @@ var QSMAdmin;
                 jQuery(".add-more-link").hide();
             }
         });
-        jQuery(document).on('click', '.remove-row', function(){
+        jQuery(document).on('click', '.delete-category-button', function(){
             jQuery(this).parent('.select-category-question-limit-subdiv').remove();
-            jQuery('.select-category-question-limit-subdiv:last').append("<div class='add-more-link'><a href='javascript:void(0)' class='add-more-category'>+"+qsm_admin_messages.add_more+"</a></div>");
+            jQuery('.select-category-question-limit-subdiv:last').append("<div class='add-more-link' style='padding-top:6px;'><a href='javascript:void(0)' class='add-more-category'>+"+qsm_admin_messages.add_more+"</a></div>");
         });
         jQuery('.category_selection_random').multiselect( {
             columns: 1,

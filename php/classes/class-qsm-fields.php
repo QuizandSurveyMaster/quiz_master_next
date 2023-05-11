@@ -54,14 +54,11 @@ class QSM_Fields {
 							break;
 						case 'selectinput':
 							$sanitized_value = array();
-							if( isset( $_POST[ "category_select_key" ] ) ) {
-								$category_select_key = $_POST[ "category_select_key" ]; 
-							}							
-							if( isset( $_POST[ "question_limit_key" ] ) ) {
-								$question_limit_key = $_POST[ "question_limit_key" ];
-							}
-							$sanitized_value[ 'category_select_key' ] = qsm_sanitize_rec_array( wp_unslash( $category_select_key ) );
-							$sanitized_value[ 'question_limit_key' ] = qsm_sanitize_rec_array( wp_unslash( $question_limit_key ) );
+							$category_select_key = isset( $_POST["category_select_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["category_select_key"] ) ) : '';
+							$question_limit_key = isset( $_POST["question_limit_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["question_limit_key"] ) ) : '';
+
+							$sanitized_value['category_select_key'] = $category_select_key;
+							$sanitized_value['question_limit_key'] = $question_limit_key ;
 							$sanitized_value  = maybe_serialize( $sanitized_value );
 							break;
 						default:
@@ -785,6 +782,7 @@ class QSM_Fields {
 	public static function generate_selectinput_field( $field, $value ) {
 		global $wpdb,$mlwQuizMasterNext;
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+		
 		$value = ! empty($value) ? maybe_unserialize($value) : array(
 			"category_select_key"     => array(), 
 			"question_limit_category" => array(),
@@ -811,15 +809,17 @@ class QSM_Fields {
 					if ( count($value['category_select_key']) == 0 && ! empty($categories) ) { ?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
-							<option><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></option><?php
-							foreach ( $categories['list'] as $key => $single_cat ) {
-								?><option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
-							}?>
+							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
+							if ( ! empty($categories['list'] ) ) {
+								foreach ( $categories['list'] as $key => $single_cat ) {
+									?><option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
+								}
+							} ?>
 						</select>
-				<label><input type="number" name="question_limit_key[]"  value=""  placeholder="Limit" ></label><a href="javascript:void(0)" class="remove-row">x</a></div>
+				<label><input type="number" name="question_limit_key[]"  value=""  placeholder="Set Question Limit" ></label><a href="javascript:void(0)" class="delete-category-button"><span class="dashicons dashicons-remove"></span></a></div>
 				</div>
 				<div class="add-more-link">
-					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add More','quiz-master-next'); ?></a>
+					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add','quiz-master-next'); ?></a>
 				</div>
 				<?php  } elseif ( ! empty($value['category_select_key']) ) { 
 				$i = 0 ;
@@ -827,18 +827,20 @@ class QSM_Fields {
 				?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
-							<option><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></option><?php
-							foreach ( $categories['list'] as $key => $single_cat ) {
-								?><option <?php echo ( isset( $value['category_select_key'][ $i ]) && ($key == $value['category_select_key'][ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
+							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
+							if ( ! empty($categories['list'] ) ) {
+								foreach ( $categories['list'] as $key => $single_cat ) {
+									?><option <?php echo ( isset( $value['category_select_key'][ $i ]) && ($key == $value['category_select_key'][ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
+								} 
 							}?>
 						</select>
-				<label><input type="number" name="question_limit_key[]"  value="<?php  echo  $value['question_limit_key'][ $i ];?>"  placeholder="Limit" ></label><a href="javascript:void(0)" class="remove-row">x</a></div>
+				<label><input type="number" name="question_limit_key[]"  value="<?php  echo  $value['question_limit_key'][ $i ];?>"  placeholder="Set Question Limit" ></label><a href="javascript:void(0)" class="delete-category-button"><span class="dashicons dashicons-remove"></span></a></div>
 				<?php $i++;
 			 	}
 			?>
 				</div>
 				<div class="add-more-link">
-					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add More','quiz-master-next'); ?></a>
+					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add','quiz-master-next'); ?></a>
 				</div>
 			<?php } else {
 						echo 'No category found.';
