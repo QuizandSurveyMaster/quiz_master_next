@@ -30,7 +30,7 @@ if ( class_exists('QSM_license') ) {
 					'body'      => array(
 						'edd_action' => 'activate_license',
 						'license'    => $license_key,
-						'item_name'  => urlencode( $item_name ), /* The name of product in EDD. */
+						'item_name'  => rawurlencode( $item_name ), /* The name of product in EDD. */
 						'url'        => home_url(),
 					),
 				);

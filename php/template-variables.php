@@ -57,6 +57,7 @@ add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_links'
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_social_share', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_total_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_points', 10, 2 );
 
 /**
@@ -376,6 +377,17 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
+	global $wp_current_filter;
+	if ( 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mlw_quizzes';
+		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
+		$quiz_settings = maybe_unserialize($quiz_data->quiz_settings);
+		$qpages = maybe_unserialize( $quiz_settings['qpages'] );
+		$total_questions = count( $qpages[0]['questions'] );
+		$content = str_replace( '%TOTAL_QUESTIONS%', $total_questions, $content );
+		return $content;
+	}
 	$content = str_replace( '%TOTAL_QUESTIONS%', ( isset( $mlw_quiz_array['total_questions'] ) ? $mlw_quiz_array['total_questions'] : '' ), $content );
 	return $content;
 }
