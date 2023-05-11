@@ -56,6 +56,7 @@ class QSM_Quiz_Settings {
 	 */
 	public function register_setting( $field_array, $section = 'quiz_options' ) {
 		// Adds field to registered fields
+		$field_array = apply_filters( 'qsm_register_settings_before', $field_array );
 		$this->registered_fields[ $section ][] = $field_array;
 	}
 
