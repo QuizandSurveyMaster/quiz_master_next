@@ -806,7 +806,7 @@ class QSM_Fields {
 			<div class = "select-category-question-limit-maindiv">
 				<?php 
 					$categories = QSM_Questions::get_quiz_categories( $quiz_id );
-					$category_select_key =  (! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();
+					$category_select_key = ( ! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();
 					if ( count ( $category_select_key) == 0 && ! empty( $categories ) ) { ?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
