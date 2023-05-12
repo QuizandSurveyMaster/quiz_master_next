@@ -781,7 +781,7 @@ class QSM_Fields {
 	 */
 	public static function generate_selectinput_field( $field, $value ) {
 		global $wpdb,$mlwQuizMasterNext;
-		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+		$show_option = isset( $field['show_option'] )  ? $field['show_option'] : '';
 		
 		$value = ! empty($value) ? maybe_unserialize($value) : array(
 			"category_select_key"     => array(), 
