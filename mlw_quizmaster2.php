@@ -271,8 +271,10 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_load_textdomain() {
 		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
-		include_once 'php/classes/class-qsm-check-license.php';
-		$this->check_license = new QSM_Check_License();
+		if ( class_exists('QSM_Check_License') ) { 
+			include_once 'php/classes/class-qsm-check-license.php';
+			$this->check_license = new QSM_Check_License();
+		}
 	}
 
 	/**
