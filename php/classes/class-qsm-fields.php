@@ -806,7 +806,8 @@ class QSM_Fields {
 			<div class = "select-category-question-limit-maindiv">
 				<?php 
 					$categories = QSM_Questions::get_quiz_categories( $quiz_id );
-					if ( count($value['category_select_key']) == 0 && ! empty($categories) ) { ?>
+					$category_select_key =  (! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();
+					if ( count ( $category_select_key) == 0 && ! empty( $categories ) ) { ?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
 							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
@@ -821,16 +822,16 @@ class QSM_Fields {
 				<div class="add-more-link">
 					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add','quiz-master-next'); ?></a>
 				</div>
-				<?php  } elseif ( ! empty($value['category_select_key']) ) { 
+				<?php } elseif ( ! empty( $category_select_key ) ) { 
 				$i = 0 ;
-				foreach ( $value['category_select_key'] as $categorylist ) {
+				foreach ( $category_select_key as $categorylist ) {
 				?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
 							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
 							if ( ! empty($categories['list'] ) ) {
 								foreach ( $categories['list'] as $key => $single_cat ) {
-									?><option <?php echo ( isset( $value['category_select_key'][ $i ]) && ($key == $value['category_select_key'][ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
+									?><option <?php echo ( isset( $category_select_key [ $i ]) && ($key == $category_select_key[ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
 								} 
 							}?>
 						</select>
