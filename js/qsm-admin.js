@@ -146,7 +146,7 @@ var QSMAdmin;
             if((jQuery('div.select-category-question-limit-subdiv').length) > 1){
                 jQuery(this).parent('.select-category-question-limit-subdiv').remove(); 
             }
-            var nextDiv = jQuery('.select-category-question-limit-maindiv').next('div');
+            let nextDiv = jQuery('.select-category-question-limit-maindiv').next('div');
             if(nextDiv.next('div.add-more-link').length === 0 ) {
                 jQuery(".add-more-link").show();
             }
