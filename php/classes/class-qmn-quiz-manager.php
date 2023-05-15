@@ -713,10 +713,13 @@ class QMNQuizManager {
 					$tq_ids = array();
 					foreach ( $category_question_limit['category_select_key'] as $category ) {
 						$limit = $category_question_limit['question_limit_key'][ $i ];
-						$tq_ids[] = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' LIMIT $limit", ARRAY_A );
+						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id`,`term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' LIMIT $limit", ARRAY_A );
 						$i++;
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
+					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+						shuffle( $final_result );
+					}
 					$question_ids = $final_result;
 				}
 			}
@@ -743,7 +746,6 @@ class QMNQuizManager {
 				}
 				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
-			
 			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			
 			$questions = $wpdb->get_results( $query );
@@ -929,7 +931,7 @@ class QMNQuizManager {
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages )) {
+				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
