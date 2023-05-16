@@ -354,7 +354,7 @@ var QSMAdmin;
                 $('.' + name + '_' + value).show();
             }
         });
-        $(document).on('change', '.qsm_tab_content select, #quiz_settings_wrapper select', function () {
+        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
