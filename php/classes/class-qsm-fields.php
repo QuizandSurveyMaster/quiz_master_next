@@ -779,7 +779,6 @@ class QSM_Fields {
 	 * @param mixed $value The current value of the setting
 	 */
 	public static function generate_selectinput_field( $field, $value ) {
-		
 		global $wpdb,$mlwQuizMasterNext;
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 		
