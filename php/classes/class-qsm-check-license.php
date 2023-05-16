@@ -41,7 +41,7 @@ if ( class_exists('QSM_license') ) {
 						$response = array(
 							'status'      => 'success',
 							'message'     => __( 'License validated Successfully', 'quiz-master-next' ),
-							'expiry_date' => date("d-m-Y", strtotime($body->expires)),
+							'expiry_date' => 'lifetime' != $body->expires ? date("d-m-Y", strtotime($body->expires)) : date("d-m-Y", strtotime('+1000 years')),
 						);
 					} else {
 						$error_message   = array(
