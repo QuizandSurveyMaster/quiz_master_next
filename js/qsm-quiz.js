@@ -1512,12 +1512,13 @@ jQuery(function () {
 	});
 
 	jQuery(document).on('change', '.qmn_radio_answers input, .qsm_dropdown' , function (e) {
+		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 			let question_id = jQuery(this).attr('name').split('question')[1],
 			value = jQuery(this).val(),
 			$this = jQuery(this).parents('.quiz_section');
-			qsm_show_inline_result(quizID, question_id, value, $this, 'radio')
+			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
 	});
 	let qsm_inline_result_timer;
@@ -1530,13 +1531,15 @@ jQuery(function () {
 				let question_id = $i_this.attr('name').split('question')[1],
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
-				qsm_show_inline_result(quizID, question_id, value, $this, 'input',$this.find('.qmn_fill_blank').index($i_this));
+				qsm_show_inline_result(quizID, question_id, value, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
 			}, 2000);
 		}
 	});
 
 	//inline result status function
-	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, index = null ) {
+	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
+		jQuery('.qsm-spinner-loader').remove();
+		$i_this.next('.qsm-input-label').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;"></div>');
 		jQuery.ajax({
 			type: 'POST',
 			url: qmn_ajax_object.ajaxurl,
@@ -1564,9 +1567,11 @@ jQuery(function () {
 				if (1 != qmn_quiz_data[quizID].disable_mathjax) {
 					MathJax.typesetPromise();
 				}
+				jQuery('.qsm-spinner-loader').remove();
 			},
 			error: function (errorThrown) {
 				alert(errorThrown);
+				jQuery('.qsm-spinner-loader').remove();
 			}
 		});
 	}
