@@ -56,7 +56,6 @@ class QSM_Fields {
 							$sanitized_value = array();
 							$category_select_key = isset( $_POST["category_select_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["category_select_key"] ) ) : '';
 							$question_limit_key = isset( $_POST["question_limit_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["question_limit_key"] ) ) : '';
-
 							$sanitized_value['category_select_key'] = $category_select_key;
 							$sanitized_value['question_limit_key'] = $question_limit_key ;
 							$sanitized_value  = maybe_serialize( $sanitized_value );
