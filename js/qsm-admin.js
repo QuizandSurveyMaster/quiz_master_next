@@ -1468,6 +1468,16 @@ var QSMContact;
                         });
                         emails.push(email);
                     });
+                    let _X_validation = false;
+                    _.each(emails, function( email ) {
+                        if( email.content.indexOf('_X') != -1 || email.subject.indexOf('_X') != -1 ) {
+                            _X_validation = true;
+                        }
+                    });
+                    if( _X_validation ) {
+                        QSMAdmin.displayAlert( qsm_admin_messages._X_validation_fails, 'error');
+                        return false;
+                    }
                     var data = {
                         'emails': emails,
                         'rest_nonce': qsmEmailsObject.rest_user_nonce
@@ -3283,6 +3293,16 @@ var import_button;
                         });
                         pages.push(page);
                     });
+                    let _X_validation = false;
+                    _.each(pages, function( page ) {
+                        if( page.page.indexOf('_X') != -1 ) {
+                            _X_validation = true;
+                        }
+                    });
+                    if( _X_validation ) {
+                        QSMAdmin.displayAlert( qsm_admin_messages._X_validation_fails, 'error');
+                        return false;
+                    }
                     var data = {
                         'pages': pages,
                         'rest_nonce': qsmResultsObject.rest_user_nonce
