@@ -447,7 +447,7 @@ class MLWQuizMasterNext {
 			'select_category'            => __("Select Category", 'quiz-master-next'),
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
 			'add_more'                   => __("Add", 'quiz-master-next'),
-			'_X_validation_fails'		 => __("Please replace _X with an appropriate text. For more details refer to that template variable.", 'quiz-master-next'),
+			'_X_validation_fails'		 => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
 		);
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 
