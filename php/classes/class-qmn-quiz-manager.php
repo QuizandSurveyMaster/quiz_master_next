@@ -234,7 +234,7 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		$count = 0;
 		$ans_index = isset( $_POST['index'] ) ? intval( $_POST['index'] ) : 0;
-		$correct_index 	= 0;
+		$correct_index  = 0;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
 				if ( 'input' === $answer_type ) {
