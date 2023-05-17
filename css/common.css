@@ -403,6 +403,10 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	right: 0;
 	z-index: 1;
 }
+.qsm-disabled-btn {
+    opacity: 0.5;
+    pointer-events: none;
+}
 .quiz_section input[type="text"].qmn_fill_blank {
 	display: inline-block;
 }
