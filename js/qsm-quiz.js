@@ -340,6 +340,10 @@ var qsmTimerInterval = [];
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					let $quizForm = QSM.getQuizForm(quizID);
+					jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').addClass('qsm-disabled-btn');
+					jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').append('<div class="qsm-spinner-loader" style="font-size: 3.5px;margin-right: -5px;margin-left: 10px;"></div>');
+					localStorage.setItem('qsm_total_validation_question' + quizID, 0);
+					localStorage.setItem('qsm_total_validated_question' + quizID, 0);
 					jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
 						if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
 							if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
@@ -347,12 +351,19 @@ var qsmTimerInterval = [];
 								value = jQuery(this).val(),
 								$this = jQuery(this).parents('.quiz_section');
 								if (value !== "") {
+									let qsm_validation_question = localStorage.getItem('qsm_total_validation_question' + quizID);
+									qsm_validation_question++
+									localStorage.setItem('qsm_total_validation_question' + quizID, qsm_validation_question);
 									qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm);
 								}
 							}
 						}
 					})
-					QSM.nextPage(quizID);
+					if (localStorage.getItem('qsm_total_validation_question' + quizID) == localStorage.getItem('qsm_total_validated_question' + quizID) ) {
+						jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').removeClass('qsm-disabled-btn');
+						jQuery('.qsm-quiz-container-' + quizID + ' .qsm-spinner-loader').remove();
+						QSM.nextPage(quizID);
+					}
 					var $container = jQuery('.qsm-quiz-container-' + quizID);
 					if (qmn_quiz_data[quizID].disable_scroll_next_previous_click != 1) {
 						qsmScrollTo($container);
@@ -1386,10 +1397,15 @@ function qmnInitPagination(quiz_id) {
 	}
 
 	jQuery(document).on("click", ".qsm-quiz-container-" + quiz_id + " .mlw_next", function (event) {
-		event.preventDefault();
 		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-		let $quizForm = QSM.getQuizForm(quiz_id);
 		jQuery(document).trigger('qsm_auto_next_button_click_before', [quiz_id]);
+		event.preventDefault();
+		let $quizForm = QSM.getQuizForm(quiz_id);
+		jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').addClass('qsm-disabled-btn');
+		jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').append('<div class="qsm-spinner-loader" style="font-size: 3.5px;margin-right: -5px;margin-left: 10px;"></div>');
+		localStorage.setItem('qsm_total_validation_question' + quiz_id, 0);
+		localStorage.setItem('qsm_total_validated_question' + quiz_id, 0);
+
 		jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
 			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
 				if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
@@ -1397,14 +1413,21 @@ function qmnInitPagination(quiz_id) {
 					value = jQuery(this).val(),
 					$this = jQuery(this).parents('.quiz_section');
 					if (value !== "") {
+						let qsm_validation_question = localStorage.getItem('qsm_total_validation_question' + quiz_id);
+						qsm_validation_question++
+						localStorage.setItem('qsm_total_validation_question' + quiz_id, qsm_validation_question);
 						qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm);
 					}
 				}
 			}
 		})
 
-		if (qmnValidatePage('quizForm' + quiz_id)) {
-			qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
+		if ( localStorage.getItem('qsm_total_validation_question' + quiz_id) ==  localStorage.getItem('qsm_total_validated_question' + quiz_id) ) {
+			jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').removeClass('qsm-disabled-btn');
+			jQuery('.qsm-quiz-container-' + quiz_id + ' .qsm-spinner-loader').remove();
+			if (qmnValidatePage('quizForm' + quiz_id)) {
+				qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
+			}
 		}
 		jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 	});
@@ -1754,7 +1777,7 @@ function checkMaxLength(obj){
 }
 
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
-	let quiz_id =  $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
 		type: 'POST',
 		url: qmn_ajax_object.ajaxurl,
@@ -1769,18 +1792,31 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			$this.find('.quick-question-res-p').remove();
 			$this.find('.qsm-inline-correct-info').remove();
 			jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm]);
-			if (data.success == 'correct') {
-			} else if (data.success == 'incorrect') {
+			if (data.success == 'incorrect') {
 				$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
 				$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 				setTimeout(function () {
 					$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
 					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 				}, 1000);
+			} else {
+				let qsm_validated_question = localStorage.getItem('qsm_total_validated_question' + quiz_id);
+				qsm_validated_question++
+				localStorage.setItem('qsm_total_validated_question' + quiz_id, qsm_validated_question);
+				if ( qmnValidatePage('quizForm' + quiz_id) && localStorage.getItem('qsm_total_validation_question' + quiz_id) ==  localStorage.getItem('qsm_total_validated_question' + quiz_id) ) {
+					jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').removeClass('qsm-disabled-btn');
+					jQuery('.qsm-quiz-container-' + quiz_id + ' .qsm-spinner-loader').remove();
+					if (qmn_quiz_data[quiz_id].pagination && qmn_quiz_data[quiz_id].pagination.amount) {
+						qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
+					} else {
+						QSM.nextPage(quizID);
+					}
+				}
 			}
 			if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 				MathJax.typesetPromise();
 			}
+
 		},
 		error: function (errorThrown) {
 			alert(errorThrown);
