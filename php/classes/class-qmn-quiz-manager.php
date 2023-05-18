@@ -708,18 +708,18 @@ class QMNQuizManager {
 				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				if ( ! empty( $category_ids ) ) {
-					$question_count = array();
 					$question_limit_sql = $category_question_limit['question_limit_key'];
-					$i = 0;
 					$tq_ids = array();
-					foreach ( $category_question_limit['category_select_key'] as $category ) {
-						$limit = $category_question_limit['question_limit_key'][ $i ];
+					foreach ( $category_question_limit['category_select_key'] as $key => $category ) {
+						if ( empty( $category ) || empty( $category_question_limit['question_limit_key'][ $key ] ) ) {
+							continue;
+						}
+						$limit = $category_question_limit['question_limit_key'][ $key ];
 						$exclude_ids = 0;
 						if ( ! empty( $tq_ids ) ) {
 							$exclude_ids = implode(',', array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id') );
 						}
 						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) LIMIT $limit", ARRAY_A );
-						$i++;
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
