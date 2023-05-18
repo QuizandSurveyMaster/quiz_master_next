@@ -323,7 +323,7 @@ class QSM_Install {
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		
+
 		// Registers system setting
 		$field_array = array(
 			'id'                  => 'select_category_question',
@@ -333,9 +333,10 @@ class QSM_Install {
 			'type'                => 'selectinput',
 			'default'             => '',
 			'option_tab'          => 'general',
+			'help'                => __( 'You also need to set Limit Number of questions', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		
+
 
 		// Registers randomness_order setting
 		$field_array = array(

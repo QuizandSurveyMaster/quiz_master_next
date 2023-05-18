@@ -54,8 +54,8 @@ class QSM_Fields {
 							break;
 						case 'selectinput':
 							$sanitized_value = array();
-							$category_select_key = isset( $_POST["category_select_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["category_select_key"] ) ) : '';
-							$question_limit_key = isset( $_POST["question_limit_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["question_limit_key"] ) ) : '';
+							$category_select_key = isset( $_POST["category_select_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["category_select_key"] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+							$question_limit_key = isset( $_POST["question_limit_key"] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST["question_limit_key"] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 							$sanitized_value['category_select_key'] = $category_select_key;
 							$sanitized_value['question_limit_key'] = $question_limit_key ;
 							$sanitized_value  = maybe_serialize( $sanitized_value );
@@ -67,7 +67,7 @@ class QSM_Fields {
 				}
 				$settings_array[ $field["id"] ] = $sanitized_value;
 			}
-			
+
 			$quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
 			// Update the settings and show alert based on outcome
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
@@ -496,7 +496,7 @@ class QSM_Fields {
 			$display = "style='display:none;'";
 		}
 		?>
-		<tr valign="top" <?php echo $display; ?>>
+		<tr valign="top" <?php echo esc_html( $display ); ?>>
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -608,7 +608,7 @@ class QSM_Fields {
 		if ( ! empty($limit_category_checkbox) ) {
 			$display = "style='display:none;'";
 		} ?>
-		<tr valign="top" <?php echo $display;?> >
+		<tr valign="top" <?php echo esc_html( $display );?> >
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -781,9 +781,9 @@ class QSM_Fields {
 	public static function generate_selectinput_field( $field, $value ) {
 		global $wpdb,$mlwQuizMasterNext;
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
-		
+
 		$value = ! empty($value) ? maybe_unserialize($value) : array(
-			"category_select_key"     => array(), 
+			"category_select_key"     => array(),
 			"question_limit_category" => array(),
 		) ;
 		$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
@@ -792,7 +792,7 @@ class QSM_Fields {
 		if ( '' == $limit_category_checkbox ) {
 			$display = "style='display:none;'";
 		} ?>
-		<tr valign="top" <?php echo $display;?> >
+		<tr valign="top" <?php echo esc_html( $display );?> >
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -803,13 +803,13 @@ class QSM_Fields {
 			</th>
 			<td>
 			<div class = "select-category-question-limit-maindiv">
-				<?php 
+				<?php
 					$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 					$category_select_key = ( ! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();
 					if ( count ( $category_select_key) == 0 && ! empty( $categories ) ) { ?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
-							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
+							<option value=""><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
 							if ( ! empty($categories['list'] ) ) {
 								foreach ( $categories['list'] as $key => $single_cat ) {
 									?><option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
@@ -821,20 +821,20 @@ class QSM_Fields {
 				<div class="add-more-link">
 					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add','quiz-master-next'); ?></a>
 				</div>
-				<?php } elseif ( ! empty( $category_select_key ) ) { 
+				<?php } elseif ( ! empty( $category_select_key ) ) {
 				$i = 0 ;
 				foreach ( $category_select_key as $categorylist ) {
 				?>
 					<div class = "select-category-question-limit-subdiv">
 						<select class="question_limit_category" name="category_select_key[]">
-							<option><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
+							<option value=""><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></option><?php
 							if ( ! empty($categories['list'] ) ) {
 								foreach ( $categories['list'] as $key => $single_cat ) {
 									?><option <?php echo ( isset( $category_select_key [ $i ]) && ($key == $category_select_key[ $i ]) ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $single_cat ); ?></option><?php
-								} 
+								}
 							}?>
 						</select>
-				<label><input type="number" name="question_limit_key[]"  value="<?php  echo  $value['question_limit_key'][ $i ];?>"  placeholder="Set Question Limit" ></label><a href="javascript:void(0)" class="delete-category-button"><span class="dashicons dashicons-remove"></span></a></div>
+				<label><input type="number" name="question_limit_key[]"  value="<?php  echo esc_attr( $value['question_limit_key'][ $i ] );?>"  placeholder="<?php esc_html_e('Set Question Limit','quiz-master-next'); ?>" ></label><a href="javascript:void(0)" class="delete-category-button"><span class="dashicons dashicons-remove"></span></a></div>
 				<?php $i++;
 			 	}
 			?>
@@ -842,9 +842,11 @@ class QSM_Fields {
 				<div class="add-more-link">
 					<a href="javascript:void(0)" class="add-more-category" >+<?php esc_html_e('Add','quiz-master-next'); ?></a>
 				</div>
-			<?php } else {
-						echo 'No category found.';
+			<?php
+			} else {
+				echo 'No category found.';
 			} ?>
+				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 			</td>
 		</tr>
 		<?php

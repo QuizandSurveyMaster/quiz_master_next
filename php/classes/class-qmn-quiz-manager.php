@@ -696,9 +696,9 @@ class QMNQuizManager {
 							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 								shuffle( $tv );
 							}
-							
+
 							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, $quiz_options->question_per_category ) );
-							
+
 						}
 					}
 					$question_ids = array_unique( $random );
@@ -708,14 +708,18 @@ class QMNQuizManager {
 				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				if ( ! empty( $category_ids ) ) {
-					$question_count = array();
 					$question_limit_sql = $category_question_limit['question_limit_key'];
-					$i = 0;
 					$tq_ids = array();
-					foreach ( $category_question_limit['category_select_key'] as $category ) {
-						$limit = $category_question_limit['question_limit_key'][ $i ];
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id`,`term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' LIMIT $limit", ARRAY_A );
-						$i++;
+					foreach ( $category_question_limit['category_select_key'] as $key => $category ) {
+						if ( empty( $category ) || empty( $category_question_limit['question_limit_key'][ $key ] ) ) {
+							continue;
+						}
+						$limit = $category_question_limit['question_limit_key'][ $key ];
+						$exclude_ids = 0;
+						if ( ! empty( $tq_ids ) ) {
+							$exclude_ids = implode(',', array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id') );
+						}
+						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) LIMIT $limit", ARRAY_A );
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
@@ -749,13 +753,13 @@ class QMNQuizManager {
 			}
 			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions = $wpdb->get_results( $query );
-			
+
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
 			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && 0 == $quiz_options->question_per_category && 0 == $quiz_options->limit_category_checkbox ) {
 				$ordered_questions = array();
-				
+
 				foreach ( $questions as $question ) {
 					$key = array_search( intval( $question->question_id ), $question_ids, true );
 					if ( false !== $key ) {
@@ -764,7 +768,7 @@ class QMNQuizManager {
 				}
 				ksort( $ordered_questions );
 				$questions = $ordered_questions;
-				
+
 			}
 		} else {
 			$question_ids = apply_filters( 'qsm_load_questions_ids', array(), $quiz_id, $quiz_options );
@@ -774,7 +778,7 @@ class QMNQuizManager {
 				$question_sql = " AND question_id IN ($qids) ";
 			}
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
-			
+
 		}
 		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 	}
