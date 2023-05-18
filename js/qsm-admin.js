@@ -144,7 +144,7 @@ var QSMAdmin;
         });
         jQuery(document).on('click', '.delete-category-button', function() {
             if((jQuery('div.select-category-question-limit-subdiv').length) > 1){
-                jQuery(this).parent('.select-category-question-limit-subdiv').remove(); 
+                jQuery(this).parent('.select-category-question-limit-subdiv').remove();
             }
             let nextDiv = jQuery('.select-category-question-limit-maindiv').next('div');
             if(nextDiv.next('div.add-more-link').length === 0 ) {
@@ -1759,6 +1759,7 @@ var import_button;
                 questionBankSuccess: function (model) {
                     var newModel = _.clone(model.attributes);
                     newModel.question_id = newModel.id;
+                    newModel.quizID = qsmTextTabObject.quiz_id;
                     newModel.id = null;
                     QSMQuestion.questions.create(
                         newModel, {
