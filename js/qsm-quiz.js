@@ -1809,7 +1809,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 					if (qmn_quiz_data[quiz_id].pagination && qmn_quiz_data[quiz_id].pagination.amount) {
 						qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
 					} else {
-						QSM.nextPage(quizID);
+						QSM.nextPage(quiz_id);
 					}
 				}
 			}
