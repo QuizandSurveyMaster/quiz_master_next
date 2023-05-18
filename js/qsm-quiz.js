@@ -1407,7 +1407,7 @@ function qmnInitPagination(quiz_id) {
 		localStorage.setItem('qsm_total_validated_question' + quiz_id, 0);
 
 		jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
-			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong == 1 && jQuery(this).is(':visible') && jQuery(this).is('input, select')) {
+			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong == 1 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
 				if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
 					let question_id = jQuery(this).attr('name').split('question')[1],
 					value = jQuery(this).val(),
