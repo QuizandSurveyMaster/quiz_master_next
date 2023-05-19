@@ -271,7 +271,7 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_load_textdomain() {
 		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
-		if ( version_compare( $this->version, '8.1.5', '>' ) ) { 
+		if ( class_exists('QSM_license') ) {
 			include_once 'php/classes/class-qsm-check-license.php';
 			$this->check_license = new QSM_Check_License();
 		}
