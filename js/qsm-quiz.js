@@ -337,7 +337,6 @@ var qsmTimerInterval = [];
 				}
 				QSM.goToPage(quizID, 1);
 				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
-					jQuery(document).trigger('qsm_before_show_inline_results_unanswered');
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					let $quizForm = QSM.getQuizForm(quizID);
@@ -1164,7 +1163,6 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 
 //Function to advance quiz to next page
 function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
-	jQuery(document).trigger('qsm_before_show_inline_results_unanswered');
 	jQuery(document).trigger('qsm_next_button_click_before', [quiz_form_id]);
 	var quiz_id = +jQuery(quiz_form_id).find('.qmn_quiz_id').val();
 	var $container = jQuery(quiz_form_id).closest('.qmn_quiz_container');
