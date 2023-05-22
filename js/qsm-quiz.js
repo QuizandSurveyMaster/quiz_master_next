@@ -1537,41 +1537,28 @@ jQuery(function () {
 	jQuery(document).on('change', '.qmn_radio_answers input, .qsm_dropdown' , function (e) {
 		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		let value = jQuery(this).val();
+		let $this = jQuery(this).parents('.quiz_section');
+		let question_id = $i_this.attr('name').split('question')[1];
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			let question_id = jQuery(this).attr('name').split('question')[1],
-			value = jQuery(this).val(),
-			$this = jQuery(this).parents('.quiz_section');
 			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
-		if (typeof inline_dashboard !== 'undefined' && inline_dashboard !== null && inline_dashboard.inline_dashboard != 0) {
-			let question_id = $i_this.attr('name').split('question')[1];
-			value = jQuery(this).val();
-			$this = jQuery(this).parents('.quiz_section');
-			jQuery(document).trigger('qsm_display_inline_dashboard', [quizID, question_id, value, $this, 'radio']);	
-		}
+		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);	
 	});
 	let qsm_inline_result_timer;
 	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
-		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			clearTimeout(qsm_inline_result_timer);
-			qsm_inline_result_timer = setTimeout(() => {
-				let question_id = $i_this.attr('name').split('question')[1],
-				value = $i_this.val(),
-				$this = $i_this.parents('.quiz_section');
+		let question_id = $i_this.attr('name').split('question')[1];
+		let value = $i_this.val();
+		let $this = $i_this.parents('.quiz_section');
+		clearTimeout(qsm_inline_result_timer);
+		qsm_inline_result_timer = setTimeout(() => {
+			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 				qsm_show_inline_result(quizID, question_id, value, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
-			}, 2000);
-		}
-		if (typeof inline_dashboard !== 'undefined' && inline_dashboard !== null && inline_dashboard.inline_dashboard != 0) {
-			clearTimeout(qsm_inline_result_timer);
-			qsm_inline_result_timer = setTimeout(() => {
-				let question_id = $i_this.attr('name').split('question')[1];
-				value = jQuery(this).val();
-				$this = jQuery(this).parents('.quiz_section');
-				jQuery(document).trigger('qsm_display_inline_dashboard', [quizID, question_id, value, $this, 'input', $this.find('.qmn_fill_blank').index($i_this)]);
-			}, 2000);
-		}
+			}
+			jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'input', $this.find('.qmn_fill_blank').index($i_this)]);
+		}, 2000);
 	});
 
 	//inline result status function
