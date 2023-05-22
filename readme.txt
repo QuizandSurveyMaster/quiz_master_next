@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.6
+Stable tag: 8.1.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.7 (May 22, 2023) =
+* Feature: Now users can set separate question limits for individual categories.
+* Bug: Fixed issues with ending a quiz if wrong answer is selected
+* Enhancement: Enhanced the validation flow for the "end quiz if wrong answer" option.
+* Enhancement: Added a warning alert to notify users when they attempt to save invalid variables in the result or email template
+* Enhancement: Improved the functionality of nonce validation
+* Enhancement: Enhanced the user interface for displaying multiple response results
+* Enhancement: Improved the user experience for the "show inline result" option
+
+
+
 = 8.1.6 (April 24, 2023) =
 * Bug: Resolved a JavaScript conflict with the Avada theme
 * Bug: PHP warnings related to disallowing submission after quiz expiry have been fixed
