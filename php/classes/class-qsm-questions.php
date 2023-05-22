@@ -67,7 +67,6 @@ class QSM_Questions {
 	 * @return array The array of questions.
 	 */
 	public static function load_questions_by_pages( $quiz_id ) {
-
 		// Prepares our variables.
 		global $wpdb;
 		global $mlwQuizMasterNext;
@@ -99,7 +98,6 @@ class QSM_Questions {
 
 			// Get all questions.
 			$question_array = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s)", $question_sql ), 'ARRAY_A' );
-
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
 				$multicategories = self::get_question_categories( $question['question_id'] );
@@ -372,7 +370,11 @@ class QSM_Questions {
 					'term_id'     => $term_id,
 					'taxonomy'    => 'qsm_category',
 				);
-				$wpdb->insert( $question_terms_table, $term_rel_data );
+				// Check if the data already exists in the table
+				$data_exists = $wpdb->get_row($wpdb->prepare("SELECT * FROM $question_terms_table WHERE question_id = %s AND quiz_id = %s AND term_id = %s AND taxonomy = %s", $question_id, intval( $data['quiz_id'] ), $term_id, 'qsm_category' ));
+				if ( ! $data_exists ) {
+					$wpdb->insert( $question_terms_table, $term_rel_data );
+				}
 			}
 		}
 

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.1.6
+ * Version: 8.1.7
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '8.1.6';
+	public $version = '8.1.7';
 
 	/**
 	 * QSM Alert Manager Object
@@ -108,6 +108,14 @@ class MLWQuizMasterNext {
 	 * @since 7.3.0
 	 */
 	public $migrationHelper;
+
+	/**
+	 * QSM Check License object
+	 *
+	 * @var object
+	 * @since 8.1.7
+	 */
+	public $check_license;
 
 	/**
 	 * Holds quiz_data
@@ -221,6 +229,8 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-migrate.php';
 		$this->migrationHelper = new QSM_Migrate();
 
+
+
 		include_once 'php/rest-api.php';
 	}
 
@@ -261,6 +271,10 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_load_textdomain() {
 		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+		if ( class_exists('QSM_license') ) {
+			include_once 'php/classes/class-qsm-check-license.php';
+			$this->check_license = new QSM_Check_License();
+		}
 	}
 
 	/**
@@ -432,6 +446,8 @@ class MLWQuizMasterNext {
 			),
 			'select_category'            => __("Select Category", 'quiz-master-next'),
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
+			'add_more'                   => __("Add", 'quiz-master-next'),
+			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
 		);
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
 

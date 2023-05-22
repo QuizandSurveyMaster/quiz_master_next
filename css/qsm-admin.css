@@ -1168,6 +1168,23 @@ h3.addon_category_name {
 	height: auto;
 	min-width: 300px;
 }
+.delete-category-button {
+	color: #dc3232;
+}
+.add-more-link {
+	font-weight: 500;
+}
+.select-category-question-limit-subdiv {
+	margin-bottom: 10px; /* add 20px margin between each row */
+  }
+.qsm_tab_content input[name="question_limit_key[]"] {
+	max-width: 150px;
+	min-width: 150px;
+} 
+.qsm_tab_content .question_limit_category {
+	max-width: 200px;
+	min-width: 200px;
+} 
 .qsm_tab_content textarea {
 	background: #ffffff none repeat scroll 0 0;
 	border: 1px solid #dddddd;
