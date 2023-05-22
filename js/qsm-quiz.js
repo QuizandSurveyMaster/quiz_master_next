@@ -337,6 +337,7 @@ var qsmTimerInterval = [];
 				}
 				QSM.goToPage(quizID, 1);
 				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
+					jQuery(document).trigger('qsm_before_show_inline_results_unanswered');
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					let $quizForm = QSM.getQuizForm(quizID);
@@ -1163,6 +1164,7 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 
 //Function to advance quiz to next page
 function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
+	jQuery(document).trigger('qsm_before_show_inline_results_unanswered');
 	jQuery(document).trigger('qsm_next_button_click_before', [quiz_form_id]);
 	var quiz_id = +jQuery(quiz_form_id).find('.qmn_quiz_id').val();
 	var $container = jQuery(quiz_form_id).closest('.qmn_quiz_container');
@@ -1543,6 +1545,12 @@ jQuery(function () {
 			$this = jQuery(this).parents('.quiz_section');
 			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
+		if (typeof inline_dashboard !== 'undefined' && inline_dashboard !== null && inline_dashboard.inline_dashboard != 0) {
+			let question_id = $i_this.attr('name').split('question')[1];
+			value = jQuery(this).val();
+			$this = jQuery(this).parents('.quiz_section');
+			jQuery(document).trigger('qsm_display_inline_dashboard', [quizID, question_id, value, $this, 'radio']);	
+		}
 	});
 	let qsm_inline_result_timer;
 	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
@@ -1555,6 +1563,15 @@ jQuery(function () {
 				value = $i_this.val(),
 				$this = $i_this.parents('.quiz_section');
 				qsm_show_inline_result(quizID, question_id, value, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
+			}, 2000);
+		}
+		if (typeof inline_dashboard !== 'undefined' && inline_dashboard !== null && inline_dashboard.inline_dashboard != 0) {
+			clearTimeout(qsm_inline_result_timer);
+			qsm_inline_result_timer = setTimeout(() => {
+				let question_id = $i_this.attr('name').split('question')[1];
+				value = jQuery(this).val();
+				$this = jQuery(this).parents('.quiz_section');
+				jQuery(document).trigger('qsm_display_inline_dashboard', [quizID, question_id, value, $this, 'input', $this.find('.qmn_fill_blank').index($i_this)]);
 			}, 2000);
 		}
 	});
