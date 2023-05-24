@@ -1470,7 +1470,7 @@ var QSMContact;
                     });
                     let _X_validation = false;
                     _.each(emails, function( email ) {
-                        if( email.content.indexOf('_X') != -1 || email.subject.indexOf('_X') != -1 ) {
+                        if( email.content.indexOf('_X%') != -1 || email.subject.indexOf('_X%') != -1 ) {
                             _X_validation = true;
                         }
                     });
@@ -3296,7 +3296,7 @@ var import_button;
                     });
                     let _X_validation = false;
                     _.each(pages, function( page ) {
-                        if( page.page.indexOf('_X') != -1 ) {
+                        if( page.page.indexOf('_X%') != -1 ) {
                             _X_validation = true;
                         }
                     });
