@@ -74,7 +74,11 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 							<?php
 							$caption_text = trim( htmlspecialchars_decode($answer[3], ENT_QUOTES ) );
 							$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+<<<<<<< Updated upstream
 							echo  $add_label_value." ".esc_html( $caption_text );
+=======
+							echo $add_label_value." ".esc_html( $caption_text );
+>>>>>>> Stashed changes
 							?>
 						</span>
 						<?php
