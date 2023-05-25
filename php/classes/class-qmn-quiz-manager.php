@@ -823,6 +823,9 @@ class QMNQuizManager {
 			global $qmn_json_data;
 			$qmn_json_data['question_list'] = $question_list;
 		}
+		if ( isset( $qmn_json_data['pagination']['total_questions'] ) ) {
+			$qmn_json_data['pagination']['total_questions'] = count($question_list);
+		}
 
 		return $mlw_qmn_answer_arrays;
 	}
