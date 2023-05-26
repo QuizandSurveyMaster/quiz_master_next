@@ -70,6 +70,7 @@ class QSM_Quiz_Settings {
 	public function load_setting_fields( $section = 'quiz_options' ) {
 		// Checks if section exists in registered fields and returns it if it does
 		if ( isset( $this->registered_fields[ $section ] ) ) {
+			$this->registered_fields[ $section ] = apply_filters( 'qsm_load_setting_fields_before', $this->registered_fields[ $section ] );
 			return $this->registered_fields[ $section ];
 		} else {
 			return false;

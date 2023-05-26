@@ -1779,7 +1779,7 @@ function checkMaxLength(obj){
         obj.value = value.slice(0, parseInt(maxlength));
     }
 }
-
+var submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
@@ -1795,18 +1795,14 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			var data = jQuery.parseJSON(response);
 			$this.find('.quick-question-res-p').remove();
 			$this.find('.qsm-inline-correct-info').remove();
-			jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm]);
-			if (data.success == 'incorrect') {
-				if(qmn_quiz_data[quiz_id].wrong_answer_limit > 1){
-					jQuery(document).trigger('qsm_after_incorrect_answer', [data, question_id, quiz_id]);
-				}else{
-					$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
-					$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-					setTimeout(function () {
-						$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
-						$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
-					}, 1000);
-				}
+			jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm, data, question_id, quiz_id]);
+			if (data.success == 'incorrect' && submit_status) {
+				$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
+				$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+				setTimeout(function () {
+					$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
+					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
+				}, 1000);
 			} else {
 				let qsm_validated_question = localStorage.getItem('qsm_total_validated_question' + quiz_id);
 				qsm_validated_question++
