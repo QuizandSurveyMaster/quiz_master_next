@@ -51,16 +51,15 @@ function qsm_options_emails_tab_content() {
 
 <!-- Emails Section -->
 <section class="qsm-quiz-email-tab" style="margin-top: 15px;">
-	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
-	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
-	<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span class="dashicons dashicons-upload"></span></a>
 	<div id="qsm_emails">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
-	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
+	<div class="option-page-result-page-tab-footer">
+		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
+		<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+	</div>
 </section>
-
 <!-- Templates -->
 	<?php add_action( 'admin_footer', 'qsm_options_emails_tab_template' ); ?>
 <!--Template popup-->
