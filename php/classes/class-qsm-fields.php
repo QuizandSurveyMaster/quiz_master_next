@@ -277,7 +277,7 @@ class QSM_Fields {
 					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 				}
 			endif; ?>
-			<div class="qsm-tab-btns">
+			<div class="option-page-option-tab-footer">
 				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>

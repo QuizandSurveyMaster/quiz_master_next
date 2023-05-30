@@ -1801,15 +1801,14 @@ td.scheduled_time_start {
 .qsm-quiz-email-tab .qsm-show-all-variable-text span.dashicons,
 .qsm-quiz-result-tab .qsm-show-all-variable-text span.dashicons {
 	font-size: 16px;
-	line-height: 22px;
+	/* line-height: 22px; */
 }
 .qsm-quiz-email-tab .qsm-show-all-variable-text,
 .qsm-quiz-result-tab .qsm-show-all-variable-text {
-	position: fixed;
-	bottom: 20px;
-	right: 25px;
-	background: #fff;
-	color: #5c5959;
+	position: relative;
+	right: 30px;
+	background: rgb(255, 255, 255);
+	color: #3a7592;
 	padding: 10px 20px;
 	box-sizing: border-box;
 	z-index: 99;
@@ -2992,6 +2991,74 @@ input#duplicate_questions {
 }
 .custom-addon-upper .subsubsub{
 	padding: 10px 0;
+}
+.auto-fold .option-page-result-page-tab-footer {
+    left: 36px;
+}
+.option-page-result-page-tab-footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 160px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;	
+	align-items: center;
+	justify-content: space-between;
+	background-color: rgb(255, 255, 255);
+	padding: 15px;
+	z-index: 9999;
+}
+.option-page-result-page-tab-footer .save-pages, 
+.option-page-result-page-tab-footer .save-emails {
+	position: relative;
+	left: 16px;
+}
+.auto-fold .option-page-option-tab-footer {
+    left: 36px;
+}
+.option-page-option-tab-footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 160px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	background-color: rgb(255, 255, 255);
+	padding: 15px;
+	z-index: 9999;
+}
+@media screen and (min-width: 961px) and (max-width: 1440px) {
+	.folded .option-page-result-page-tab-footer {
+		left: 36px !important;
+	}
+	.option-page-result-page-tab-footer {
+		left: 160px !important;
+	}
+	.folded .option-page-option-tab-footer {
+		left: 36px !important;
+	}
+	.option-page-option-tab-footer {
+		left: 160px !important;
+	}
+}
+@media screen and (max-width: 782px) {
+	.option-page-result-page-tab-footer {
+		left: 0 !important;
+	}
+	.option-page-option-tab-footer {
+		left: 0 !important;
+	}
+}
+@media screen and (max-width: 350px) {
+	.option-page-result-page-tab-footer {
+		flex-direction: column;
+	}
+	.option-page-option-tab-footer {
+		flex-direction: column;
+	}
 }
 @media screen and (max-width: 912px) {
 	.qsm-primary-acnhor .custom-addpn-news-ads {
