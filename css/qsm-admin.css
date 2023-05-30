@@ -3030,6 +3030,9 @@ input#duplicate_questions {
 	padding: 15px;
 	z-index: 9999;
 }
+.option-page-option-tab-footer a {
+	margin-left: 15px;
+}
 @media screen and (min-width: 961px) and (max-width: 1440px) {
 	.folded .option-page-result-page-tab-footer {
 		left: 36px !important;
