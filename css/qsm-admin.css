@@ -3036,7 +3036,7 @@ input#duplicate_questions {
 .option-page-option-tab-footer button {
 	margin-left: 15px !important;
 }
-@media screen and (min-width: 961px) and (max-width: 1440px) {
+@media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer {
 		left: 36px !important;
 	}
