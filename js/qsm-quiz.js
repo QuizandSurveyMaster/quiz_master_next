@@ -1548,7 +1548,7 @@ jQuery(function () {
 	});
 	jQuery(document).on('input change', '.mlw_answer_number' , function (e) {
 		let $i_this = jQuery(this);
-		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		let value = jQuery(this).val();
 		let $this = jQuery(this).parents('.quiz_section');
 		let question_id = $i_this.attr('name').split('question')[1];
