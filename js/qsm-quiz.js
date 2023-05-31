@@ -969,7 +969,7 @@ function qmnFormSubmit(quiz_form_id) {
 	jQuery(document).trigger('qsm_before_form_data_process', [quiz_form_id, unindexed_array]);
 	var fd = new FormData();
 	jQuery.each(unindexed_array, function (key, input) {
-			fd.append(input.name, input.value);
+		fd.append(input.name, input.value);
 	});
 	fd.append("action", 'qmn_process_quiz');
 	fd.append("nonce", jQuery('#qsm_nonce_' + quiz_id ).val() );
@@ -994,7 +994,6 @@ function qmnFormSubmit(quiz_form_id) {
 		type: 'POST',
 		success: function (response) {
 			response = JSON.parse(response);
-			console.log(response);
 			if (window.qsm_results_data === undefined) {
 				window.qsm_results_data = new Object();
 			}
@@ -1559,7 +1558,7 @@ jQuery(function () {
 		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);	
 	});
 	let qsm_inline_result_timer;
-	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank', function (e) {
+	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		let question_id = $i_this.attr('name').split('question')[1];
