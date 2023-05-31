@@ -1544,7 +1544,7 @@ jQuery(function () {
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
-		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);	
+		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);
 	});
 	jQuery(document).on('input change', '.mlw_answer_number' , function (e) {
 		let $i_this = jQuery(this);
@@ -1652,7 +1652,7 @@ jQuery(function () {
 		var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
 		form_data.append('question_id', question_id);
 		$this.next('.loading-uploaded-file').show();
-		jQuery(".qsm-submit-btn").attr('disabled', true);
+		jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', true);
 		jQuery.ajax({
 			url: qmn_ajax_object.ajaxurl,
 			type: 'POST',
@@ -1663,7 +1663,7 @@ jQuery(function () {
 			success: function (response) {
 				var obj = jQuery.parseJSON(response);
 				$this.next('.loading-uploaded-file').hide();
-				jQuery(".qsm-submit-btn").attr('disabled', false);
+				jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', false);
 				if (obj.type == 'success') {
 					$this.next().next('.remove-uploaded-file').show();
 					$this.next().next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
