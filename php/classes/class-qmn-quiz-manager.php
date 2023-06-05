@@ -184,7 +184,7 @@ class QMNQuizManager {
 			}
 		} else {
 			$json['type']    = 'error';
-			$json['message'] = __( 'File type is not supported!', 'quiz-master-next' );
+			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;
