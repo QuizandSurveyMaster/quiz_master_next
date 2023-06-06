@@ -608,14 +608,15 @@ class QMNPluginHelper {
 	 * Translate string before display
 	 */
 	public static function qsm_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
-		/**
-		 * Decode HTML Special characters.
-		 */
-		$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+
 		/**
 		 * Check if WPML String Translation plugin is activated.
 		 */
 		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			/**
+			 * Decode HTML Special characters.
+			 */
+			$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
 			$translation_slug    = sanitize_title( $translation_slug );
 			$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
@@ -1096,7 +1097,7 @@ class QMNPluginHelper {
 	 */
 
 	public function qsm_results_css_inliner( $html ) {
-		
+
 		global $mlwQuizMasterNext;
 		$grading = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 		$wr_sign = 1 != $grading ? "&#x2715;&nbsp;" : "";
