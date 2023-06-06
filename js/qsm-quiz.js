@@ -1475,7 +1475,23 @@ function maxLengthCheck(object) {
 }
 
 jQuery(function () {
-	jQuery('.qmn_quiz_container').tooltip();
+	jQuery('.qmn_quiz_container').tooltip({
+		position: {
+		  my: "center top+10",
+		  at: "center bottom",
+		  classes: {
+			"ui-tooltip": "hint-qsm-tooltip"
+		  },
+		  using: function( position, feedback ) {
+			jQuery( this ).css( position );
+			jQuery( "<div>" )
+			  .addClass( "qsm-tooltip-arrow" )
+			  .addClass( feedback.vertical )
+			  .addClass( feedback.horizontal )
+			  .appendTo( this );
+		  }
+		}
+	  });
 
 	jQuery('.qmn_quiz_container input').on('keypress', function (e) {
 		if (e.which === 13) {
@@ -1555,7 +1571,7 @@ jQuery(function () {
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
-		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);	
+		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);
 	});
 	let qsm_inline_result_timer;
 	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {
