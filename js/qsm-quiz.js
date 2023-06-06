@@ -966,6 +966,12 @@ function qmnFormSubmit(quiz_form_id) {
 	jQuery('.mlw_answer_open_text').attr('disabled', false);
 	//Convert serialize data into index array
 	var unindexed_array = jQuery('#' + quiz_form_id).serializeArray();
+	unindexed_array.push(
+		{
+			name: 'quiz_start_date', 
+			value: get_quiz_start_date(quiz_id)
+		}
+	)
 	jQuery(document).trigger('qsm_before_form_data_process', [quiz_form_id, unindexed_array]);
 	var fd = new FormData();
 	jQuery.each(unindexed_array, function (key, input) {
@@ -1024,6 +1030,22 @@ function qmnFormSubmit(quiz_form_id) {
 	});
 
 	return false;
+}
+
+jQuery(document).on('qsm_after_quiz_submit', function(e, quiz_form_id) {
+	let quiz_id = quiz_form_id.replace("quizForm", "");
+	if( localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
+		localStorage.removeItem('mlw_quiz_start_date' + quiz_id);
+	}
+})
+
+function get_quiz_start_date(quiz_id) {
+	if ( null != localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
+		var d = new Date();
+		d.setTime(parseInt(localStorage.getItem('mlw_quiz_start_date' + quiz_id)));
+		return d;
+	}
+	return '';
 }
 
 function qsmDisplayLoading($container, quiz_id) {
@@ -1129,7 +1151,6 @@ function qmnInit() {
 							localStorage.setItem("disable_answer", JSON.stringify(disabledAnswer2));
 						}
 					}
-
 				});
 			}
 
@@ -1785,6 +1806,16 @@ jQuery(document).ready(function () {
 		mlw_captchaCTX.textBaseline = 'middle';
 		document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
+});
+
+// Quiz start date
+jQuery(document).ready(function () {
+	_.each(qmn_quiz_data, function (quiz) {
+		let quiz_id = parseInt(quiz.quiz_id);
+		if ( null == localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
+			localStorage.setItem('mlw_quiz_start_date' + quiz_id, new Date().getTime());
+		}
+	});
 });
 
 var quizType = 'default';
