@@ -1612,11 +1612,13 @@ class QMNQuizManager {
 		$mlw_qmn_pagetime                      = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pagetime'] ) ) : array();
 		$mlw_qmn_timer                         = isset( $_POST['timer'] ) ? intval( $_POST['timer'] ) : 0;
 		$mlw_qmn_timer_ms                      = isset( $_POST['timer_ms'] ) ? intval( $_POST['timer_ms'] ) : 0;
+		$mlw_quiz_start_date                   = isset( $_POST['quiz_start_date'] ) ? $_POST['quiz_start_date'] : '';
 		$qmn_array_for_variables['user_id']    = get_current_user_id();
 		$qmn_array_for_variables['timer']      = $mlw_qmn_timer;
 		$qmn_array_for_variables['timer_ms']   = $mlw_qmn_timer_ms;
 		$qmn_array_for_variables['time_taken'] = current_time( 'h:i:s A m/d/Y' );
 		$qmn_array_for_variables['contact']    = $contact_responses;
+		$qmn_array_for_variables['quiz_start_date']    = $mlw_quiz_start_date;
 		$hidden_questions                      = array();
 		if ( isset( $_POST['qsm_hidden_questions'] ) ) {
 			$hidden_questions = sanitize_text_field( wp_unslash( $_POST['qsm_hidden_questions'] ) );
@@ -1649,6 +1651,7 @@ class QMNQuizManager {
 			$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
 			$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
 			$results_array['minimum_possible_points']   = $qmn_array_for_variables['minimum_possible_points'];
+			$results_array['quiz_start_date']   		= $qmn_array_for_variables['quiz_start_date'];
 			// If the store responses in database option is set to Yes.
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
 				// Inserts the responses in the database.
