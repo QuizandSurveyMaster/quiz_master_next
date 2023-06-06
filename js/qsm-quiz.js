@@ -23,6 +23,9 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
+						localStorage.setItem('mlw_quiz_start_date' + quizID, new Date().getTime());
+					}
 					jQuery.ajax({
 						url: qmn_ajax_object.ajaxurl,
 						data: {
@@ -1806,16 +1809,6 @@ jQuery(document).ready(function () {
 		mlw_captchaCTX.textBaseline = 'middle';
 		document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
-});
-
-// Quiz start date
-jQuery(document).ready(function () {
-	_.each(qmn_quiz_data, function (quiz) {
-		let quiz_id = parseInt(quiz.quiz_id);
-		if ( null == localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
-			localStorage.setItem('mlw_quiz_start_date' + quiz_id, new Date().getTime());
-		}
-	});
 });
 
 var quizType = 'default';
