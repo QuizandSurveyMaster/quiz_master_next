@@ -1044,9 +1044,7 @@ jQuery(document).on('qsm_after_quiz_submit', function(e, quiz_form_id) {
 
 function get_quiz_start_date(quiz_id) {
 	if ( null != localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
-		var d = new Date();
-		d.setTime(parseInt(localStorage.getItem('mlw_quiz_start_date' + quiz_id)));
-		return d;
+		return parseInt(localStorage.getItem('mlw_quiz_start_date' + quiz_id));
 	}
 	return '';
 }
