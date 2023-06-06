@@ -329,7 +329,7 @@ function qsm_results_overview_tab_content() {
 			'phone'         => __( 'Phone', 'quiz-master-next' ),
 			'user'          => __( 'User', 'quiz-master-next' ),
 			'start_date'    => __( 'Start Date', 'quiz-master-next' ),
-			'time_taken'    => __( 'Time Taken', 'quiz-master-next' ),
+			'time_taken'    => __( 'End Date', 'quiz-master-next' ),
 			'ip'            => __( 'IP Address', 'quiz-master-next' ),
 			'page_name'     => __( 'Page Name', 'quiz-master-next' ),
 			'page_url'      => __( 'Page URL', 'quiz-master-next' ),
@@ -400,10 +400,6 @@ function qsm_results_overview_tab_content() {
 					$values['time_complete']['content'][] = $mlw_complete_time;
 				}
 
-				if ( isset( $values['start_date'] ) ) {
-					$values['start_date']['content'][] = isset($mlw_qmn_results_array['quiz_start_date']) ? $mlw_qmn_results_array['quiz_start_date'] : ' ';
-				}
-
 				if ( isset( $values['name'] ) ) {
 					$values['name']['content'][] = $mlw_quiz_info->name;
 				}
@@ -427,12 +423,22 @@ function qsm_results_overview_tab_content() {
 						$values['user']['content'][] = '<a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . $mlw_quiz_info->user ) ) . '">' . esc_html( $mlw_quiz_info->user ) . '</a>';
 					}
 				}
+				
+				if ( isset( $values['start_date'] ) ) {
+					if( isset($mlw_qmn_results_array['quiz_start_date']) ) {
+						$sdate    = gmdate( get_option( 'date_format' ), intval( $mlw_qmn_results_array['quiz_start_date'] ) / 1000 );
+						$stime    = gmdate( "h:i:s A", intval( $mlw_qmn_results_array['quiz_start_date'] ) / 1000 );
+						$values['start_date']['content'][] =  $sdate .' '. $stime;
+					} else {
+						$values['start_date']['content'][] =  ' ';
+					}
+				}
 
 				$date    = gmdate( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 				$time    = gmdate( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 
 				if ( isset( $values['time_taken'] ) ) {
-					$values['time_taken']['content'][] = '<abbr title="' . esc_attr( $date . $time ) . '">' . esc_html( $date ) . '</abbr>';
+					$values['time_taken']['content'][] = $date .' '. $time;
 				}
 				if ( isset( $values['ip'] ) ) {
 					$values['ip']['content'][] = $mlw_quiz_info->user_ip;

@@ -972,7 +972,7 @@ function qmnFormSubmit(quiz_form_id) {
 	unindexed_array.push(
 		{
 			name: 'quiz_start_date', 
-			value: get_quiz_start_date(quiz_id)
+			value: localStorage.getItem('mlw_quiz_start_date' + quiz_id)
 		}
 	)
 	jQuery(document).trigger('qsm_before_form_data_process', [quiz_form_id, unindexed_array]);
@@ -1041,15 +1041,6 @@ jQuery(document).on('qsm_after_quiz_submit', function(e, quiz_form_id) {
 		localStorage.removeItem('mlw_quiz_start_date' + quiz_id);
 	}
 })
-
-function get_quiz_start_date(quiz_id) {
-	if ( null != localStorage.getItem('mlw_quiz_start_date' + quiz_id) ) {
-		var d = new Date();
-		d.setTime(parseInt(localStorage.getItem('mlw_quiz_start_date' + quiz_id)));
-		return d;
-	}
-	return '';
-}
 
 function qsmDisplayLoading($container, quiz_id) {
 	jQuery(document).trigger('qsm_before_loader_init', [$container,quiz_id]);
