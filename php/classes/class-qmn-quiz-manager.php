@@ -886,6 +886,7 @@ class QMNQuizManager {
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
+				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 			)
 		);
 		$disable_mathjax = isset( $options->disable_mathjax ) ? $options->disable_mathjax : '';
