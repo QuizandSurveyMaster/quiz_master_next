@@ -24,7 +24,7 @@ var qsmTimerInterval = [];
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
-						localStorage.setItem('mlw_quiz_start_date' + quizID, new Date().getTime());
+						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
 					}
 					jQuery.ajax({
 						url: qmn_ajax_object.ajaxurl,

@@ -426,8 +426,8 @@ function qsm_results_overview_tab_content() {
 				
 				if ( isset( $values['start_date'] ) ) {
 					if( isset($mlw_qmn_results_array['quiz_start_date']) ) {
-						$sdate    = gmdate( get_option( 'date_format' ), intval( $mlw_qmn_results_array['quiz_start_date'] ) / 1000 );
-						$stime    = gmdate( "h:i:s A", intval( $mlw_qmn_results_array['quiz_start_date'] ) / 1000 );
+						$sdate    = gmdate( get_option( 'date_format' ), strtotime( $mlw_qmn_results_array['quiz_start_date'] ) );
+						$stime    = gmdate( "h:i:s A", strtotime( $mlw_qmn_results_array['quiz_start_date'] ) );
 						$values['start_date']['content'][] =  $sdate .' '. $stime;
 					} else {
 						$values['start_date']['content'][] =  ' ';
