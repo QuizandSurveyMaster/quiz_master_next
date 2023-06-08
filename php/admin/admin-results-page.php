@@ -297,6 +297,8 @@ function qsm_results_overview_tab_content() {
 		$results_screen_option['business']   = isset( $_POST['business'] ) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
 		$results_screen_option['phone']      = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
 		$results_screen_option['ip_address'] = isset( $_POST['ip_address'] ) ? sanitize_text_field( wp_unslash( $_POST['ip_address'] ) ) : "0";
+		$results_screen_option['start_date'] = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : "0";
+		$results_screen_option['time_taken'] = isset( $_POST['time_taken'] ) ? sanitize_text_field( wp_unslash( $_POST['time_taken'] ) ) : "0";
 		//set screen option as user meta
 		add_user_meta( $user_id, 'results_screen_option', $results_screen_option, true );
 	} else {
@@ -311,6 +313,8 @@ function qsm_results_overview_tab_content() {
 				'ip_address' => '1',
 			);
 		}
+		$results_screen_option['start_date'] =	"0";
+		$results_screen_option['time_taken'] =	"0";
 	}
 	?>
 
@@ -356,6 +360,12 @@ function qsm_results_overview_tab_content() {
 		}
 		if ( "0" === $results_screen_option['ip_address'] ) {
 			$values['ip']['style'] = $display_none;
+		}
+		if ( "0" === $results_screen_option['start_date'] ) {
+			$values['start_date']['style'] = $display_none;
+		}
+		if ( "0" === $results_screen_option['time_taken'] ) {
+			$values['time_taken']['style'] = $display_none;
 		}
 		
 		if ( $mlw_quiz_data ) {
@@ -542,6 +552,14 @@ function qsm_results_overview_tab_content() {
 						<label>
 							<input type="checkbox" name="ip_address" value="1" <?php checked( $results_screen_option['ip_address'], "1", true ) ?>/>
 							<?php esc_html_e( 'IP Address', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="start_date" value="1" <?php checked( $results_screen_option['start_date'], "1", true ) ?>/>
+							<?php esc_html_e( 'Start Date', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="time_taken" value="1" <?php checked( $results_screen_option['time_taken'], "1", true ) ?>/>
+							<?php esc_html_e( 'End Date', 'quiz-master-next' ); ?>
 						</label>
 						<?php wp_nonce_field( 'results_screen_option', 'results-screen_option_nonce' ); ?>
 					</form>
