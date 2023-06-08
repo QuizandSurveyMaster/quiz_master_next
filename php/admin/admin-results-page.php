@@ -313,8 +313,8 @@ function qsm_results_overview_tab_content() {
 				'ip_address' => '1',
 			);
 		}
-		$results_screen_option['start_date'] =	"0";
-		$results_screen_option['time_taken'] =	"0";
+		$results_screen_option['start_date'] = "0";
+		$results_screen_option['time_taken'] = "0";
 	}
 	?>
 
