@@ -971,7 +971,7 @@ function qmnFormSubmit(quiz_form_id) {
 	var unindexed_array = jQuery('#' + quiz_form_id).serializeArray();
 	unindexed_array.push(
 		{
-			name: 'quiz_start_date', 
+			name: 'quiz_start_date',
 			value: localStorage.getItem('mlw_quiz_start_date' + quiz_id)
 		}
 	)
@@ -1569,17 +1569,6 @@ jQuery(function () {
 	jQuery(document).on('change', '.qmn_radio_answers input, .qsm_dropdown' , function (e) {
 		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
-		let value = jQuery(this).val();
-		let $this = jQuery(this).parents('.quiz_section');
-		let question_id = $i_this.attr('name').split('question')[1];
-		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
-		}
-		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);
-	});
-	jQuery(document).on('input change', '.mlw_answer_number' , function (e) {
-		let $i_this = jQuery(this);
-		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		let value = jQuery(this).val();
 		let $this = jQuery(this).parents('.quiz_section');
 		let question_id = $i_this.attr('name').split('question')[1];
