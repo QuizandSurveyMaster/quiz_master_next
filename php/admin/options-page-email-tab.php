@@ -56,8 +56,11 @@ function qsm_options_emails_tab_content() {
 	</div>
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
 	<div class="option-page-result-page-tab-footer">
-		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
-		<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+		<div class="footer-bar-notice"></div>
+		<div class="result-tab-footer-buttons">
+			<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+			<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
+		</div>
 	</div>
 </section>
 <!-- Templates -->

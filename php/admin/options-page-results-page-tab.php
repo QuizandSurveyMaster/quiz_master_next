@@ -45,8 +45,11 @@ function qsm_options_results_tab_content() {
 	</div>
 	<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
 	<div class="option-page-result-page-tab-footer">
-		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
-		<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+		<div class="footer-bar-notice"></div>
+		<div class="result-tab-footer-buttons">
+			<a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+			<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+		</div>
 	</div>
 </section>
 <!-- Templates -->

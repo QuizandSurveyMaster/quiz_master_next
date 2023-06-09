@@ -3002,17 +3002,47 @@ input#duplicate_questions {
 	left: 160px;
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 	flex-wrap: wrap;	
 	align-items: center;
-	justify-content: space-between;
-	background-color: rgb(255, 255, 255);
-	padding: 15px;
+	background: #ffffff;
+    border-top: 1px solid #DADADA;
 	z-index: 9999;
 }
-.option-page-result-page-tab-footer .save-pages, 
-.option-page-result-page-tab-footer .save-emails {
-	position: relative;
-	left: 16px;
+.option-page-result-page-tab-footer .result-tab-footer-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 10px 30px 8px 0;
+	max-width: 50%;
+}
+.option-page-result-page-tab-footer .footer-bar-notice {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 0 0 0 30px;
+	width: 50%;
+}
+@media screen and (max-width: 653px) {
+	.auto-fold .option-page-result-page-tab-footer {
+		flex-direction: column;
+	} 
+	.auto-fold .option-page-result-page-tab-footer .result-tab-footer-buttons {
+		width: 100%;
+	}
+	.option-page-result-page-tab-footer .result-tab-footer-buttons {
+		left: 36px;
+	}
+}
+.option-page-result-page-tab-footer .footer-bar-notice .notice-large {
+	padding: 5px 5px 5px 10px  !important;
+}
+.option-page-result-page-tab-footer .footer-bar-notice .notice {
+	width: 80%;
+	background: rgba(255, 255, 255, 0);
+	border: none !important;
+	box-shadow: none !important;
+	margin: 0 !important;
 }
 .auto-fold .option-page-option-tab-footer {
     left: 36px;
@@ -3025,16 +3055,28 @@ input#duplicate_questions {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: flex-end;
 	flex-wrap: wrap;
-	background-color: rgb(255, 255, 255);
 	padding: 15px;
 	z-index: 9999;
+	background: #ffffff;
+    border-top: 1px solid #DADADA;
 }
-.option-page-option-tab-footer a {
-	margin-left: 15px;
+.option-page-option-tab-footer .result-tab-footer-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 20%;
 }
-.option-page-option-tab-footer button {
-	margin-left: 15px !important;
+@media screen and (max-width: 800px) {
+	.option-page-option-tab-footer .result-tab-footer-buttons {
+		width: 100%;
+	}
+}
+@media screen and (min-width: 801px) and (max-width: 1200px) {
+	.option-page-option-tab-footer .result-tab-footer-buttons {
+		width: 30%;
+	}
 }
 @media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer {
