@@ -1652,7 +1652,7 @@ class QMNQuizManager {
 			$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
 			$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
 			$results_array['minimum_possible_points']   = $qmn_array_for_variables['minimum_possible_points'];
-			$results_array['quiz_start_date']   		= $qmn_array_for_variables['quiz_start_date'];
+			$results_array['quiz_start_date']           = $qmn_array_for_variables['quiz_start_date'];
 			// If the store responses in database option is set to Yes.
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
 				// Inserts the responses in the database.
