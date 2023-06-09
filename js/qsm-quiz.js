@@ -971,7 +971,7 @@ function qmnFormSubmit(quiz_form_id) {
 	var unindexed_array = jQuery('#' + quiz_form_id).serializeArray();
 	unindexed_array.push(
 		{
-			name: 'quiz_start_date', 
+			name: 'quiz_start_date',
 			value: localStorage.getItem('mlw_quiz_start_date' + quiz_id)
 		}
 	)
@@ -1490,7 +1490,23 @@ function maxLengthCheck(object) {
 }
 
 jQuery(function () {
-	jQuery('.qmn_quiz_container').tooltip();
+	jQuery('.qmn_quiz_container').tooltip({
+		position: {
+		  my: "center top+10",
+		  at: "center bottom",
+		  classes: {
+			"ui-tooltip": "hint-qsm-tooltip"
+		  },
+		  using: function( position, feedback ) {
+			jQuery( this ).css( position );
+			jQuery( "<div>" )
+			  .addClass( "qsm-tooltip-arrow" )
+			  .addClass( feedback.vertical )
+			  .addClass( feedback.horizontal )
+			  .appendTo( this );
+		  }
+		}
+	  });
 
 	jQuery('.qmn_quiz_container input').on('keypress', function (e) {
 		if (e.which === 13) {
@@ -1560,17 +1576,6 @@ jQuery(function () {
 			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
 		}
 		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);
-	});
-	jQuery(document).on('input change', '.mlw_answer_number' , function (e) {
-		let $i_this = jQuery(this);
-		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
-		let value = jQuery(this).val();
-		let $this = jQuery(this).parents('.quiz_section');
-		let question_id = $i_this.attr('name').split('question')[1];
-		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
-		}
-		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);	
 	});
 	let qsm_inline_result_timer;
 	jQuery(document).on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank ', function (e) {

@@ -823,9 +823,6 @@ class QMNQuizManager {
 			global $qmn_json_data;
 			$qmn_json_data['question_list'] = $question_list;
 		}
-		if ( isset( $qmn_json_data['pagination']['total_questions'] ) ) {
-			$qmn_json_data['pagination']['total_questions'] = count($question_list);
-		}
 
 		return $mlw_qmn_answer_arrays;
 	}
@@ -1613,7 +1610,7 @@ class QMNQuizManager {
 		$mlw_qmn_pagetime                      = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pagetime'] ) ) : array();
 		$mlw_qmn_timer                         = isset( $_POST['timer'] ) ? intval( $_POST['timer'] ) : 0;
 		$mlw_qmn_timer_ms                      = isset( $_POST['timer_ms'] ) ? intval( $_POST['timer_ms'] ) : 0;
-		$mlw_quiz_start_date                   = isset( $_POST['quiz_start_date'] ) ? $_POST['quiz_start_date'] : '';
+		$mlw_quiz_start_date                   = isset( $_POST['quiz_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_start_date'] ) ) : '';
 		$qmn_array_for_variables['user_id']    = get_current_user_id();
 		$qmn_array_for_variables['timer']      = $mlw_qmn_timer;
 		$qmn_array_for_variables['timer_ms']   = $mlw_qmn_timer_ms;
