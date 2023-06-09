@@ -758,6 +758,17 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		$field_array = array(
+			'id'         => 'wrong_answer_limit',
+			'label'      => __( 'Set wrong answer limit', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 1,
+			'help'       => __( 'The quiz will automatically submit on reaching the wrong answer limit.', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Setting for retake quiz
 		$field_array = array(
 			'id'         => 'enable_retake_quiz_button',

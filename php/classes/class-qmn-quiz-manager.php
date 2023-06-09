@@ -510,7 +510,14 @@ class QMNQuizManager {
 			} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
-
+			
+			if(!isset($qmn_json_data['wrong_answer_limit'])) {
+				$qmn_json_data['wrong_answer_limit'] = 1;
+			}
+			$wrong_answer_limit = isset($qmn_quiz_options->wrong_answer_limit) ? $qmn_quiz_options->wrong_answer_limit : 1;
+			$quiz_settings = maybe_unserialize( $qmn_quiz_options->quiz_settings );
+			$quiz_options = maybe_unserialize( $quiz_settings['quiz_options'] );
+			$qmn_json_data['wrong_answer_limit'] = isset($quiz_options['wrong_answer_limit']) ? $quiz_options['wrong_answer_limit'] : $wrong_answer_limit;
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
