@@ -29,12 +29,24 @@ var QSMAdmin;
             var template = wp.template('notice');
             var data = {
                 message: message,
-                type: type
+                type: type,
+                dismissible: true
             };
             $('.qsm-alerts').append(template(data));
+            $('.footer-bar-notice').append(template(data));
+
+            if ($('.footer-bar-notice').find('.notice-success').length > 0) {
+                $('.footer-bar-notice').css('color', 'green');
+            }
+            
+            if ($('.footer-bar-notice').find('.notice-error').length > 0) {
+                $('.footer-bar-notice').css('color', 'red');
+            }
+            $('.footer-bar-notice .notice').fadeOut(5000);
         },
         clearAlerts: function () {
             $('.qsm-alerts').empty();
+            $('.footer-bar-notice').empty();
         },
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
@@ -60,6 +72,11 @@ var QSMAdmin;
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
+        });
+        
+        $(document).on('click', '#close', function (e) {
+            e.preventDefault();
+            $('.footer-bar-notice').empty();
         });
 
         //show set global default potion popup
