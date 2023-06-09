@@ -300,7 +300,7 @@ function qsm_results_overview_tab_content() {
 		$results_screen_option['start_date'] = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : "0";
 		$results_screen_option['time_taken'] = isset( $_POST['time_taken'] ) ? sanitize_text_field( wp_unslash( $_POST['time_taken'] ) ) : "0";
 		//set screen option as user meta
-		add_user_meta( $user_id, 'results_screen_option', $results_screen_option, true );
+		update_user_meta( $user_id, 'results_screen_option', $results_screen_option );
 	} else {
 		$results_screen_option   = get_user_meta( $user_id, 'results_screen_option', true );
 		$results_screen_option   = ! empty( $results_screen_option ) ? $results_screen_option : '';
@@ -313,8 +313,12 @@ function qsm_results_overview_tab_content() {
 				'ip_address' => '1',
 			);
 		}
-		$results_screen_option['start_date'] = "0";
-		$results_screen_option['time_taken'] = "0";
+		if ( ! isset( $results_screen_option['start_date'] ) ) {
+			$results_screen_option['start_date'] = "0";
+		}
+		if ( ! isset( $results_screen_option['time_taken'] ) ) {
+			$results_screen_option['time_taken'] = "0";
+		}
 	}
 	?>
 
