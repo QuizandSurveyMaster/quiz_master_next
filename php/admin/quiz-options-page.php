@@ -283,7 +283,7 @@ function qsm_generate_quiz_options() {
 					<footer class="qsm-popup__footer">
 						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 						<form action="" method="post">
-							<?php wp_nonce_field( 'set_global_default_settings','save_global_default_ettings_nonce' ); ?>
+							<?php wp_nonce_field( 'set_global_default_settings','set_global_default_settings_nonce' ); ?>
 							<button name="global_setting" class="button button-primary" type="submit"><?php esc_html_e( 'Continue', 'quiz-master-next' ); ?></button>
 						</form>
 					</footer>

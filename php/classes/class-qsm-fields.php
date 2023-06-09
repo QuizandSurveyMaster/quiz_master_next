@@ -22,7 +22,7 @@ class QSM_Fields {
     	$result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
 		$settings_array_before_update = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 		// If nonce is correct, save settings
-		if ( ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) || ( isset( $_POST["save_global_default_ettings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_global_default_ettings_nonce'] ) ), 'set_global_default_settings' ) ) ) {
+		if ( ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) || ( isset( $_POST["set_global_default_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['set_global_default_settings_nonce'] ) ), 'set_global_default_settings' ) ) ) {
 			// Cycle through fields to retrieve all posted values
 			$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 			foreach ( $fields as $field ) {
