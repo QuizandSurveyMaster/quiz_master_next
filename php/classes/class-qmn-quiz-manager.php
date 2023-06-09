@@ -511,7 +511,7 @@ class QMNQuizManager {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 			
-			if(!isset($qmn_json_data['wrong_answer_limit'])) {
+			if ( ! isset($qmn_json_data['wrong_answer_limit']) ) {
 				$qmn_json_data['wrong_answer_limit'] = 1;
 			}
 			$wrong_answer_limit = isset($qmn_quiz_options->wrong_answer_limit) ? $qmn_quiz_options->wrong_answer_limit : 1;
