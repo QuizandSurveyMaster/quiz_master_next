@@ -3070,12 +3070,11 @@ input#duplicate_questions {
 .option-page-option-tab-footer .result-tab-footer-buttons {
 	display: flex;
 	flex-direction: row;
-	width: 20%;
 }
 .option-page-option-tab-footer .result-tab-footer-buttons #qsm-blobal-settings {
 	margin: 0 20px 0 0;
 }
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
 	.option-page-option-tab-footer .result-tab-footer-buttons {
 		width: 100%;
 	}
@@ -3084,7 +3083,7 @@ input#duplicate_questions {
 	.option-page-option-tab-footer .result-tab-footer-buttons {
 		width: 30%;
 	}
-}
+} */
 @media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer {
 		left: 36px !important;
