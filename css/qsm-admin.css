@@ -1798,25 +1798,6 @@ td.scheduled_time_start {
 	max-width: 1200px;
 	width: 100%;
 }
-.qsm-quiz-email-tab .qsm-show-all-variable-text span.dashicons,
-.qsm-quiz-result-tab .qsm-show-all-variable-text span.dashicons {
-	font-size: 16px;
-	/* line-height: 22px; */
-}
-.qsm-quiz-email-tab .qsm-show-all-variable-text,
-.qsm-quiz-result-tab .qsm-show-all-variable-text {
-	position: relative;
-	right: 30px;
-	background: rgb(255, 255, 255);
-	color: #3a7592;
-	padding: 10px 20px;
-	box-sizing: border-box;
-	z-index: 99;
-	border-radius: 5px;
-	border: 1px solid #cdbaba;
-	cursor: pointer;
-	text-decoration: none;
-}
 .popup-template-span-wrap .popup-copied-des {
 	color: green;
 }
@@ -3008,27 +2989,30 @@ input#duplicate_questions {
 	background: #ffffff;
     border-top: 1px solid #DADADA;
 	z-index: 9999;
+	padding: 10px 30px 8px 10px;
 }
 .option-page-result-page-tab-footer .result-tab-footer-buttons {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	padding: 10px 30px 8px 0;
-	max-width: 50%;
+	flex-direction: row;	
 }
 .option-page-result-page-tab-footer .footer-bar-notice {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	padding: 0 0 0 30px;
-	width: 50%;
+	width: 60%;
+}
+@media screen and (min-width: 1900px) {
+	.option-page-option-tab-footer {
+		flex-direction: row-reverse;
+	}
 }
 @media screen and (max-width: 653px) {
 	.auto-fold .option-page-result-page-tab-footer {
 		flex-direction: column;
 	} 
 	.auto-fold .option-page-result-page-tab-footer .result-tab-footer-buttons {
-		width: 100%;
+		width: 50%;
 	}
 	.option-page-result-page-tab-footer .result-tab-footer-buttons {
 		left: 36px;
@@ -3049,9 +3033,6 @@ input#duplicate_questions {
 .auto-fold .option-page-option-tab-footer {
     left: 36px;
 }
-.option-page-option-tab-footer {
-	padding: 15px 20px 15px 15px;
-}
 .option-page-option-tab-footer .footer-bar-notice {
 	width: 60%;
 }
@@ -3060,7 +3041,10 @@ input#duplicate_questions {
 	flex-direction: row;
 }
 .option-page-option-tab-footer .result-tab-footer-buttons #qsm-blobal-settings {
-	margin: 0 20px 0 0;
+	margin: 0 10px 0 0;
+}
+.option-page-result-page-tab-footer .result-tab-footer-buttons .qsm-show-all-variable-text {
+	margin: 0 10px 0 0;
 }
 @media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer {
