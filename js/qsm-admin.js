@@ -3416,20 +3416,20 @@ var import_button;
 }(jQuery));
 
 jQuery(document).ready(function () {
-    let parent = jQuery('#wrong_answer_limit').parents('td');
-    
-    jQuery('#wrong_answer_limit').css({
-        'width': '65px'
-    });
+    single = jQuery('#wrong_answer_limit');
+    let parent = single.parents('td');
+    single.attr('min', '1');
+    single.addClass('small-text');
     
     parent.css({
         'display': 'flex',
-        'flex-direction': 'column-reverse',
         'padding-top': '0'
     });
     
     parent.find('.qsm-opt-desc').css({
         'font-style': 'initial',
+        'margin-left': '5px',
+        'color': '#3c434a',
     });
 
     jQuery(".quiz_style_tab_content [name='end_quiz_if_wrong']").on('click', function (event) {

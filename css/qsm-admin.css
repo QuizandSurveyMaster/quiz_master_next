@@ -3169,4 +3169,9 @@ input#duplicate_questions {
 .mlw_quiz_options .qsm_tab_content input[name="wrong_answer_limit"]#wrong_answer_limit {
 	min-width: 65px;
 	width: 65px;
+	box-shadow: 0 0 0 transparent;
+    border-radius: 4px;
+    border: 1px solid #8c8f94;
+    background-color: #fff;
+    color: #2c3338;
 }
