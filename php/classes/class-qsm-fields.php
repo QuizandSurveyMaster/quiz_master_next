@@ -500,7 +500,7 @@ class QSM_Fields {
 			$display = "style='display:none;'";
 		}
 		?>
-		<tr valign="top" <?php echo esc_html( $display ); ?>>
+		<tr class="<?php echo ! empty($field['container_class']) ? esc_attr($field['container_class']) : ""; ?>" valign="top" <?php echo esc_html( $display ); ?>>
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -510,7 +510,7 @@ class QSM_Fields {
 				<?php } ?>
 			</th>
 			<td>
-				<input type="number" step="1" min="0" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" />
+				<input class="small-text" type="number" step="1" min="<?php echo ! empty($field['min']) ? esc_attr($field['min']) : 0; ?>" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" />
 				<?php if ( isset($field['help']) && '' !== $field['help'] ) { ?>
 				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 				<?php } ?>
@@ -529,8 +529,11 @@ class QSM_Fields {
 	public static function generate_radio_field( $field, $value ) {
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 		$class = $show_option ? $show_option . ' hidden qsm_hidden_tr' : '';
+		if ( ! empty($field['container_class']) ) {
+			$class .= ' '.$field['container_class'];
+		}
 		?>
-		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
+		<tr valign="top" class="<?php echo esc_attr( $class ); ?>" >
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
