@@ -278,6 +278,9 @@ class QSM_Fields {
 				}
 			endif; ?>
 			<div class="option-page-option-tab-footer">
+				<div class="footer-bar-notice">
+					<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
+				</div>
 				<div class="result-tab-footer-buttons">
 					<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 						<a class="button-secondary" id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>

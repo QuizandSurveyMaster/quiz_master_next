@@ -3037,12 +3037,14 @@ input#duplicate_questions {
 .option-page-result-page-tab-footer .footer-bar-notice .notice-large {
 	padding: 5px 5px 5px 10px  !important;
 }
+.option-page-option-tab-footer .footer-bar-notice .updated,
 .option-page-result-page-tab-footer .footer-bar-notice .notice {
 	width: 80%;
 	background: rgba(255, 255, 255, 0);
 	border: none !important;
 	box-shadow: none !important;
 	margin: 0 !important;
+	padding: 0 !important;
 }
 .auto-fold .option-page-option-tab-footer {
     left: 36px;
@@ -3055,12 +3057,15 @@ input#duplicate_questions {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: space-between;
 	flex-wrap: wrap;
 	padding: 15px;
 	z-index: 9999;
 	background: #ffffff;
     border-top: 1px solid #DADADA;
+}
+.option-page-option-tab-footer .footer-bar-notice {
+	width: 60%;
 }
 .option-page-option-tab-footer .result-tab-footer-buttons {
 	display: flex;

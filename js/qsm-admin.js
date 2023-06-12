@@ -73,6 +73,18 @@ var QSMAdmin;
             event.preventDefault();
             QSMAdmin.selectTab($(this));
         });
+
+        $(document).ready(function(){
+            if ($('.footer-bar-notice').find('.updated').length > 0) {
+                $('.footer-bar-notice').css('color', 'green');
+                $('.footer-bar-notice .updated').fadeOut(5000);
+            }
+            
+            if ($('.footer-bar-notice').find('.error').length > 0) {
+                $('.footer-bar-notice').css('color', 'red');
+                $('.footer-bar-notice .error').fadeOut(5000);
+            }
+        });
         
         $(document).on('click', '#close', function (e) {
             e.preventDefault();
