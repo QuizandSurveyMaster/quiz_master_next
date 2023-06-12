@@ -760,11 +760,11 @@ class QSM_Install {
 
 		$field_array = array(
 			'id'         => 'wrong_answer_limit',
-			'label'      => __( 'Set wrong answer limit', 'quiz-master-next' ),
+			'label'      => "",
 			'type'       => 'number',
 			'options'    => array(),
 			'default'    => 1,
-			'help'       => __( 'The quiz will automatically submit on reaching the wrong answer limit.', 'quiz-master-next' ),
+			'help'       => __( 'Number of wrong answers before ending the quiz', 'quiz-master-next' ),
 			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );

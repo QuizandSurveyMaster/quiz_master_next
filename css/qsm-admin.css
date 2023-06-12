@@ -3166,3 +3166,7 @@ input#duplicate_questions {
     	top: 10px;
 	}
 }
+.mlw_quiz_options .qsm_tab_content input[name="wrong_answer_limit"]#wrong_answer_limit {
+	min-width: 65px;
+	width: 65px;
+}

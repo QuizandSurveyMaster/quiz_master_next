@@ -3414,3 +3414,36 @@ var import_button;
         }
     }
 }(jQuery));
+
+jQuery(document).ready(function () {
+    let parent = jQuery('#wrong_answer_limit').parents('td');
+    
+    jQuery('#wrong_answer_limit').css({
+        'width': '65px'
+    });
+    
+    parent.css({
+        'display': 'flex',
+        'flex-direction': 'column-reverse',
+        'padding-top': '0'
+    });
+    
+    parent.find('.qsm-opt-desc').css({
+        'font-style': 'initial',
+    });
+
+    jQuery(".quiz_style_tab_content [name='end_quiz_if_wrong']").on('click', function (event) {
+        if(jQuery(this).val() == 1) {
+            parent.parents('tr').show();
+        }else{
+            parent.parents('tr').hide();
+        }
+    });
+
+    if (jQuery(".quiz_style_tab_content [name='end_quiz_if_wrong']:checked").val() == 1) {
+        parent.parents('tr').show();
+    } else {
+        parent.parents('tr').hide();
+    }
+
+});
