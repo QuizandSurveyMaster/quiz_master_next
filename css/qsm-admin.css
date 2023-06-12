@@ -3059,7 +3059,7 @@ input#duplicate_questions {
 	align-items: center;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	padding: 15px;
+	padding: 15px 20px 15px 15px;
 	z-index: 9999;
 	background: #ffffff;
     border-top: 1px solid #DADADA;
@@ -3070,8 +3070,10 @@ input#duplicate_questions {
 .option-page-option-tab-footer .result-tab-footer-buttons {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	width: 20%;
+}
+.option-page-option-tab-footer .result-tab-footer-buttons #qsm-blobal-settings {
+	margin: 0 20px 0 0;
 }
 @media screen and (max-width: 800px) {
 	.option-page-option-tab-footer .result-tab-footer-buttons {
