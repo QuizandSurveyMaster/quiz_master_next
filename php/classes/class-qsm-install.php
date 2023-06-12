@@ -714,10 +714,10 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
-			'id'         => 'end_quiz_if_wrong',
-			'label'      => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
-			'type'       => 'radio',
-			'options'    => array(
+			'id'              => 'end_quiz_if_wrong',
+			'label'           => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
+			'type'            => 'radio',
+			'options'         => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -727,9 +727,10 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default'    => 0,
-			'help'       => __( 'This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types', 'quiz-master-next' ),
-			'option_tab' => 'quiz_submission',
+			'default'         => 0,
+			'help'            => __( 'This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types', 'quiz-master-next' ),
+			'option_tab'      => 'quiz_submission',
+			'container_class' => 'qsm-incorrect-input-count',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -759,13 +760,15 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
-			'id'         => 'wrong_answer_limit',
-			'label'      => "",
-			'type'       => 'number',
-			'options'    => array(),
-			'default'    => 1,
-			'help'       => __( 'Number of wrong answers before ending the quiz', 'quiz-master-next' ),
-			'option_tab' => 'quiz_submission',
+			'id'              => 'wrong_answer_limit',
+			'label'           => "",
+			'type'            => 'number',
+			'options'         => array(),
+			'default'         => 1,
+			'help'            => __( 'Number of wrong answers before ending the quiz', 'quiz-master-next' ),
+			'option_tab'      => 'quiz_submission',
+			'min'             => 1,
+			'container_class' => 'qsm-show-inline-text qsm-correct-incorrect-answer',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 

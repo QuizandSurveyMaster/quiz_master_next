@@ -3175,3 +3175,14 @@ input#duplicate_questions {
     background-color: #fff;
     color: #2c3338;
 }
+
+.qsm-show-inline-text td {
+	display: flex;
+	padding-top: 0;
+}
+
+.qsm-show-inline-text .qsm-opt-desc {
+	font-style: initial;
+	margin-left: 5px;
+	color: #3c434a;
+}

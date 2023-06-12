@@ -3415,35 +3415,16 @@ var import_button;
     }
 }(jQuery));
 
-jQuery(document).ready(function () {
-    single = jQuery('#wrong_answer_limit');
-    let parent = single.parents('td');
-    single.attr('min', '1');
-    single.addClass('small-text');
-    
-    parent.css({
-        'display': 'flex',
-        'padding-top': '0'
-    });
-    
-    parent.find('.qsm-opt-desc').css({
-        'font-style': 'initial',
-        'margin-left': '5px',
-        'color': '#3c434a',
-    });
-
-    jQuery(".quiz_style_tab_content [name='end_quiz_if_wrong']").on('click', function (event) {
-        if(jQuery(this).val() == 1) {
-            parent.parents('tr').show();
-        }else{
-            parent.parents('tr').hide();
-        }
-    });
-
-    if (jQuery(".quiz_style_tab_content [name='end_quiz_if_wrong']:checked").val() == 1) {
-        parent.parents('tr').show();
-    } else {
-        parent.parents('tr').hide();
+jQuery(".qsm-incorrect-input-count input").on('click', function (event) {
+    if(jQuery(this).val() == 1) {
+        jQuery('.qsm-correct-incorrect-answer').show();
+    }else{
+        jQuery('.qsm-correct-incorrect-answer').hide();
     }
-
 });
+
+if (jQuery(".qsm-incorrect-input-count [name='end_quiz_if_wrong']:checked").val() == 1) {
+    jQuery('.qsm-correct-incorrect-answer').show();
+} else {
+    jQuery('.qsm-correct-incorrect-answer').hide();
+}
