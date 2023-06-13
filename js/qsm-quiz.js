@@ -540,13 +540,13 @@ var qsmTimerInterval = [];
 			}
 		}),
 		changes: function (data, question_id, quiz_id) {
-			answers = myLogicModel.get('answers');
+			answers = qsmLogicModel.get('answers');
 			answers.push({
 				'q_id': question_id,
 				'incorrect': data.success == 'correct' ? 0 : 1,
 			});
-			myLogicModel.set({ 'answers': QSM.filter_question(myLogicModel.get('answers')) });
-			update_answers = myLogicModel.get('answers');
+			qsmLogicModel.set({ 'answers': QSM.filter_question(qsmLogicModel.get('answers')) });
+			let update_answers = qsmLogicModel.get('answers');
 			let incorrect = 0;
 
 			update_answers.forEach(function(obj){
@@ -561,7 +561,7 @@ var qsmTimerInterval = [];
 			}
 		},
 		filter_question: function(arr) {
-			var result = {};
+			let result = {};
 			arr.forEach(function(obj) {
 				if (obj.q_id) {
 					result[obj.q_id] = obj;
@@ -723,7 +723,7 @@ var qsmTimerInterval = [];
 
 // Global Variables
 var qsmTitleText = document.title;
-var myLogicModel = new QSM.q_counter({});
+var qsmLogicModel = new QSM.q_counter({});
 
 /**
  * Validates an email ID.
@@ -1853,7 +1853,7 @@ function checkMaxLength(obj){
         obj.value = value.slice(0, parseInt(maxlength));
     }
 }
-var submit_status = true;
+let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
@@ -1869,7 +1869,6 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			var data = jQuery.parseJSON(response);
 			$this.find('.quick-question-res-p').remove();
 			$this.find('.qsm-inline-correct-info').remove();
-			// jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm, data, question_id, quiz_id]);
 			QSM.changes(data, question_id.replace(/\D/g, ""), quiz_id);
 			if (data.success == 'incorrect' && submit_status) {
 				$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
