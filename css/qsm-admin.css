@@ -3169,7 +3169,7 @@ input#duplicate_questions {
     	top: 10px;
 	}
 }
-.mlw_quiz_options .qsm_tab_content input[name="wrong_answer_limit"]#wrong_answer_limit {
+.mlw_quiz_options .qsm_tab_content input[name="end_quiz_if_wrong"]#end_quiz_if_wrong, #end_quiz_if_wrong {
 	min-width: 65px;
 	width: 65px;
 	box-shadow: 0 0 0 transparent;
@@ -3177,15 +3177,4 @@ input#duplicate_questions {
     border: 1px solid #8c8f94;
     background-color: #fff;
     color: #2c3338;
-}
-
-.qsm-show-inline-text td {
-	display: flex;
-	padding-top: 0;
-}
-
-.qsm-show-inline-text .qsm-opt-desc {
-	font-style: initial;
-	margin-left: 5px;
-	color: #3c434a;
 }

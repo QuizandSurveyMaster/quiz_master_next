@@ -188,7 +188,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'display-category-name-on-front-end', __( 'Display category name on front end', 'quiz-master-next' ), array( $this, 'qsm_global_display_category_name_on_front_end' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'hide-correct-answer', __( 'Hide Correct Answer', 'quiz-master-next' ), array( $this, 'qsm_global_hide_correct_answer' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-results-inline', __( 'Show results inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_results_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
-		add_settings_field( 'end-quiz-if-there-is-wrong-answer', __( 'End quiz if there is wrong answer', 'quiz-master-next' ), array( $this, 'qsm_global_end_quiz_if_there_is_wrong_answer' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
+		add_settings_field( 'end-quiz-if-there-is-wrong-answer', __( 'End quiz', 'quiz-master-next' ), array( $this, 'qsm_global_end_quiz_if_there_is_wrong_answer' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'show-correct-answer-inline', __( 'Show correct answer inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_correct_answer_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'retake-quiz', __( 'Retake Quiz', 'quiz-master-next' ), array( $this, 'qsm_global_retake_quiz' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -1039,13 +1039,8 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_end_quiz_if_there_is_wrong_answer() {
 		global $globalQuizsetting;
 		$qsm_end_quiz_if_wrong = ( isset( $globalQuizsetting['end_quiz_if_wrong'] ) && '' !== $globalQuizsetting['end_quiz_if_wrong'] ? $globalQuizsetting['end_quiz_if_wrong'] : '0' );
-		echo '<fieldset class="buttonset buttonset-hide" >
-				<input type="radio" id="end_quiz_if_wrong-1" name="qsm-quiz-settings[end_quiz_if_wrong]" value="1" ' . checked( $qsm_end_quiz_if_wrong, '1', false ) . ' >
-				<label for="end_quiz_if_wrong-1">Yes</label><br>
-				<input type="radio" id="end_quiz_if_wrong-0" name="qsm-quiz-settings[end_quiz_if_wrong]"  value="0" ' . checked( $qsm_end_quiz_if_wrong, '0', false ) . '>
-				<label for="end_quiz_if_wrong-0">No</label><br>
-			 </fieldset>
-			 <span class="qsm-opt-desc">This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types</span>';
+		echo __('If', 'quiz-master-next').' <input class="small-text" type="number" step="1" min="0" id="end_quiz_if_wrong" name="qsm-quiz-settings[end_quiz_if_wrong]" value="' . esc_attr( $qsm_end_quiz_if_wrong ) . '">'.__(' wrong answer(s)', 'quiz-master-next').'
+			  <span class="qsm-opt-desc">'.__('If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next').'</span>';
 	}
 
 	/**

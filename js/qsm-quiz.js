@@ -348,7 +348,7 @@ var qsmTimerInterval = [];
 					localStorage.setItem('qsm_total_validation_question' + quizID, 0);
 					localStorage.setItem('qsm_total_validated_question' + quizID, 0);
 					jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
-						if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
+						if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
 							if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
 								let question_id = jQuery(this).attr('name').split('question')[1],
 								value = jQuery(this).val(),
@@ -554,7 +554,7 @@ var qsmTimerInterval = [];
 				incorrect++;
 			}
 			});
-			if( qmn_quiz_data[quiz_id].wrong_answer_limit <= incorrect ) {
+			if( qmn_quiz_data[quiz_id].end_quiz_if_wrong <= incorrect ) {
 				submit_status = true;
 			}else{
 				submit_status = false;
@@ -1459,7 +1459,7 @@ function qmnInitPagination(quiz_id) {
 		localStorage.setItem('qsm_total_validated_question' + quiz_id, 0);
 
 		jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
-			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong == 1 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
+			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
 				if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
 					let question_id = jQuery(this).attr('name').split('question')[1],
 					value = jQuery(this).val(),
@@ -1690,7 +1690,7 @@ jQuery(function () {
 	jQuery(document).on('change ', '.qmn_radio_answers input , .qmn_check_answers input , .qsm_select', function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
-		if (qmn_quiz_data[quizID].end_quiz_if_wrong == 1 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
+		if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
 			var question_id = jQuery(this).attr('name').split('question')[1],
 				value = jQuery(this).val(),
 				$this = jQuery(this).parents('.quiz_section');
