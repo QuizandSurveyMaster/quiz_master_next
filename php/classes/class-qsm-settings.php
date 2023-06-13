@@ -70,6 +70,7 @@ class QSM_Quiz_Settings {
 	public function load_setting_fields( $section = 'quiz_options' ) {
 		// Checks if section exists in registered fields and returns it if it does
 		if ( isset( $this->registered_fields[ $section ] ) ) {
+			$this->registered_fields[ $section ] = apply_filters( 'qsm_load_setting_fields_before', $this->registered_fields[ $section ] );
 			return $this->registered_fields[ $section ];
 		} else {
 			return false;
@@ -185,6 +186,7 @@ class QSM_Quiz_Settings {
             $setDefaultvalue                                       = $old_value;
 			$setDefaultvalue['form_type']                          = $globalQuizsetting['form_type'];
 			$setDefaultvalue['system']                             = $globalQuizsetting['system'];
+			$setDefaultvalue['correct_answer_logic']               = $globalQuizsetting['correct_answer_logic'];
 			$setDefaultvalue['score_roundoff']                     = $globalQuizsetting['score_roundoff'];
 			$setDefaultvalue['progress_bar']                       = $globalQuizsetting['progress_bar'];
 			$setDefaultvalue['require_log_in']                     = $globalQuizsetting['require_log_in'];
@@ -360,7 +362,7 @@ class QSM_Quiz_Settings {
 						'facebook' => $quiz_options->social_media_text,
 					);
 				}
-				
+
 				/**
 				 * Prepare Text Option(s)
 				 */
@@ -375,7 +377,7 @@ class QSM_Quiz_Settings {
 				if ( 1 == $form_type ) {
 					$start_quiz_text = $default_texts['start_survey_text'];
 				}
-				
+
 				// Prepares new quiz_text section's settings
 				$settings_array['quiz_text'] = maybe_serialize(
 					array(

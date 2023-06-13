@@ -495,6 +495,7 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	visibility: visible;
 }
 body .ui-tooltip,
+.hint-qsm-tooltip,
 body .ui-tooltip.ui-widget-content {
 	box-shadow: none;
 	background: #222;
@@ -506,6 +507,39 @@ body .ui-tooltip.ui-widget-content {
 	line-height: 22px;
 	text-align: justify;
 }
+.qsm-tooltip-arrow {
+	width: 70px;
+	height: 16px;
+	overflow: hidden;
+	position: absolute;
+	left: 50%;
+	margin-left: -35px;
+	bottom: -16px;
+}
+.qsm-tooltip-arrow.top {
+	top: -16px;
+	bottom: auto;
+}
+
+.qsm-tooltip-arrow:after {
+	content: "";
+	background: #222;
+	border: 1px solid rgb(243, 243, 243);
+	position: absolute;
+	left: 20px;
+	top: -20px;
+	width: 25px;
+	height: 25px;
+	box-shadow: 6px 5px 9px -9px black;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.qsm-tooltip-arrow.top:after {
+	bottom: -20px;
+	top: auto;
+}
+
 .qsm_quiz_processing_box {
 	display: inline-block;
 	width: 100%;

@@ -1285,7 +1285,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
 			$size_style = '';
-			
+
 			if ( ! empty($question_settings['image_size-width']) ) {
 				$size_style .= 'width:'.$question_settings['image_size-width'].'px !important;';
 			}
@@ -1303,12 +1303,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				foreach ( $total_answers as $key => $single_answer ) {
 					if ( empty($single_answer[3]) ) {
 						$image_list[] = $single_answer[0];
-					} else { 
+					} else {
 						$image_list[ $single_answer[3] ] = $single_answer[0];
 					}
 				}
 				$user_answer_multiple_response = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
 				$user_text_array_multiple_response = explode(', ',$user_answer_multiple_response);
+				$images_answer = "";
 				foreach ( $image_list as $key => $value ) {
 					if ( in_array( $value , $user_text_array_multiple_response, true ) ) {
 						if ( is_numeric( $key ) ) { $key = ""; }
@@ -1318,7 +1319,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$images_answer", $mlw_question_answer_display );
 			} else {
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'  style='" . esc_attr( $size_style ) . "'/>'". esc_html($close_span_with_br.$caption ), $mlw_question_answer_display ); 
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'  style='" . esc_attr( $size_style ) . "'/>'". esc_html($close_span_with_br.$caption ), $mlw_question_answer_display );
 			}
 		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );

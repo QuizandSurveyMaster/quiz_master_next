@@ -29,12 +29,24 @@ var QSMAdmin;
             var template = wp.template('notice');
             var data = {
                 message: message,
-                type: type
+                type: type,
+                dismissible: true
             };
             $('.qsm-alerts').append(template(data));
+            $('.footer-bar-notice').append(template(data));
+
+            if ($('.footer-bar-notice').find('.notice-success').length > 0) {
+                $('.footer-bar-notice').css('color', 'green');
+            }
+            
+            if ($('.footer-bar-notice').find('.notice-error').length > 0) {
+                $('.footer-bar-notice').css('color', 'red');
+            }
+            $('.footer-bar-notice .notice').fadeOut(5000);
         },
         clearAlerts: function () {
             $('.qsm-alerts').empty();
+            $('.footer-bar-notice').empty();
         },
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
@@ -60,6 +72,23 @@ var QSMAdmin;
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
+        });
+
+        $(document).ready(function(){
+            if ($('.footer-bar-notice').find('.updated').length > 0) {
+                $('.footer-bar-notice').css('color', 'green');
+                $('.footer-bar-notice .updated').fadeOut(5000);
+            }
+            
+            if ($('.footer-bar-notice').find('.error').length > 0) {
+                $('.footer-bar-notice').css('color', 'red');
+                $('.footer-bar-notice .error').fadeOut(5000);
+            }
+        });
+        
+        $(document).on('click', '#close', function (e) {
+            e.preventDefault();
+            $('.footer-bar-notice').empty();
         });
 
         //show set global default potion popup
@@ -1470,7 +1499,7 @@ var QSMContact;
                     });
                     let _X_validation = false;
                     _.each(emails, function( email ) {
-                        if( email.content.indexOf('_X') != -1 || email.subject.indexOf('_X') != -1 ) {
+                        if( email.content.indexOf('_X%') != -1 || email.subject.indexOf('_X%') != -1 ) {
                             _X_validation = true;
                         }
                     });
@@ -2893,7 +2922,7 @@ var import_button;
                     if (pageKey.replace(/^\s+|\s+$/g, "").length == 0) {
                         alert(qsm_admin_messages.page_name_required);
                         return false;
-                    } else if (null == pageKey.match(/^[A-Za-z0-9\-\s]+$/)) {
+                    } else if (null == pageKey.match(/^[ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñA-Za-z0-9\-\s]+$/)) {
                         alert(qsm_admin_messages.page_name_validation);
                         return false;
                     } else {
@@ -3296,7 +3325,7 @@ var import_button;
                     });
                     let _X_validation = false;
                     _.each(pages, function( page ) {
-                        if( page.page.indexOf('_X') != -1 ) {
+                        if( page.page.indexOf('_X%') != -1 ) {
                             _X_validation = true;
                         }
                     });

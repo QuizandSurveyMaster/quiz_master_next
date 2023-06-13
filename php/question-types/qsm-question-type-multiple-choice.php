@@ -74,7 +74,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 							<?php
 							$caption_text = trim( htmlspecialchars_decode($answer[3], ENT_QUOTES ) );
 							$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
-							echo esc_html( $add_label_value )." ".esc_html( $caption_text );
+							echo  wp_kses_post( $add_label_value )." ".esc_html( $caption_text );
 							?>
 						</span>
 						<?php
@@ -118,8 +118,8 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_answer']    = $user_text_array;
 	$return_array['correct_answer'] = $correct_text_array;
-	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '';
-	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '';
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( ', ', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
 	return apply_filters( 'qmn_multiple_choice_review', $return_array, $answers );

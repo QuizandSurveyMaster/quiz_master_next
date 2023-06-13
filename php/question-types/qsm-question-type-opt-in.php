@@ -50,8 +50,8 @@ function qmn_opt_in_review( $id, $question, $answers ) {
 	$correct_text_array                = $current_question->get_correct_answer();
 	$return_array['user_answer']       = $user_text_array;
 	$return_array['correct_answer']    = $correct_text_array;
-	$return_array['user_text']         = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '';
-	$return_array['correct_text']      = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
+	$return_array['user_text']         = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '';
+	$return_array['correct_text']      = ! empty( $correct_text_array ) ? implode( ', ', $correct_text_array ) : '';
 	$return_array['correct']           = 'opt-in';
 	$return_array['points']            = '';
 	$return_array['user_compare_text'] = $user_compare_text;

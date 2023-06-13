@@ -257,7 +257,7 @@ class QSM_Questions {
 	 * @return int The ID of the question that was created/saved.
 	 */
 	private static function create_save_question( $data, $answers, $settings, $is_creating = true ) {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 
 		// Prepare defaults and parse.
 		$defaults = array(

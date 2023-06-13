@@ -22,7 +22,7 @@ class QSM_Fields {
     	$result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
 		$settings_array_before_update = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 		// If nonce is correct, save settings
-		if ( ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) || ( isset( $_POST["save_global_default_ettings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_global_default_ettings_nonce'] ) ), 'set_global_default_settings' ) ) ) {
+		if ( ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) || ( isset( $_POST["set_global_default_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['set_global_default_settings_nonce'] ) ), 'set_global_default_settings' ) ) ) {
 			// Cycle through fields to retrieve all posted values
 			$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 			foreach ( $fields as $field ) {
@@ -277,16 +277,20 @@ class QSM_Fields {
 					QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 				}
 			endif; ?>
-			<div class="qsm-tab-btns">
-				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
-				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
-					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
-				<?php } ?>
+			<div class="option-page-option-tab-footer">
+				<div class="footer-bar-notice">
+					<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
+				</div>
+				<div class="result-tab-footer-buttons">
+					<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
+						<a class="button-secondary" id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
+					<?php } ?>
+					<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+				</div>
 			</div>
 		</form>
 		<?php
   	}
-
 	/**
 	 * Prepares the field and calls the correct generate field function based on field's type
 	 *
@@ -495,8 +499,10 @@ class QSM_Fields {
 		if ( ! empty($limit_category_checkbox) && 'question_per_category' == $field["id"] ) {
 			$display = "style='display:none;'";
 		}
+		$prefix_text = isset($field['prefix_text']) ? $field['prefix_text']." " : "";
+		$suffix_text = isset($field['suffix_text']) ? " ".$field['suffix_text'] : "";
 		?>
-		<tr valign="top" <?php echo esc_html( $display ); ?>>
+		<tr class="<?php echo ! empty($field['container_class']) ? esc_attr($field['container_class']) : ""; ?>" valign="top" <?php echo esc_html( $display ); ?>>
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -506,7 +512,7 @@ class QSM_Fields {
 				<?php } ?>
 			</th>
 			<td>
-				<input type="number" step="1" min="0" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" />
+				<?php echo esc_html( $prefix_text ); ?><input class="small-text" type="number" step="1" min="<?php echo ! empty($field['min']) ? esc_attr($field['min']) : 0; ?>" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" /><?php echo esc_html( $suffix_text ); ?>
 				<?php if ( isset($field['help']) && '' !== $field['help'] ) { ?>
 				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 				<?php } ?>
@@ -525,8 +531,11 @@ class QSM_Fields {
 	public static function generate_radio_field( $field, $value ) {
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 		$class = $show_option ? $show_option . ' hidden qsm_hidden_tr' : '';
+		if ( ! empty($field['container_class']) ) {
+			$class .= ' '.$field['container_class'];
+		}
 		?>
-		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
+		<tr valign="top" class="<?php echo esc_attr( $class ); ?>" >
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>

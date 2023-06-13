@@ -713,26 +713,6 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-		$field_array = array(
-			'id'         => 'end_quiz_if_wrong',
-			'label'      => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
-			'type'       => 'radio',
-			'options'    => array(
-				array(
-					'label' => __( 'Yes', 'quiz-master-next' ),
-					'value' => 1,
-				),
-				array(
-					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 0,
-				),
-			),
-			'default'    => 0,
-			'help'       => __( 'This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types', 'quiz-master-next' ),
-			'option_tab' => 'quiz_submission',
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
 		// Settings for quick result
 		$field_array = array(
 			'id'         => 'enable_quick_correct_answer_info',
@@ -755,6 +735,21 @@ class QSM_Install {
 			'default'    => 0,
 			'help'       => __( 'Show correct user info when inline result is enabled.', 'quiz-master-next' ),
 			'option_tab' => 'display',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		$field_array = array(
+			'id'              => 'end_quiz_if_wrong',
+			'label'           => __( 'End quiz', 'quiz-master-next' ),
+			'type'            => 'number',
+			'options'         => array(),
+			'default'         => 1,
+			'help'            => __( 'If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next' ),
+			'option_tab'      => 'quiz_submission',
+			'min'             => 0,
+			'container_class' => 'qsm-show-inline-text qsm-correct-incorrect-answer',
+			'prefix_text'     => __( 'If', 'quiz-master-next' ),
+			'suffix_text'     => __( 'wrong answer(s).', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
