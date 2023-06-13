@@ -512,7 +512,7 @@ class QSM_Fields {
 				<?php } ?>
 			</th>
 			<td>
-				<?php echo $prefix_text; ?><input class="small-text" type="number" step="1" min="<?php echo ! empty($field['min']) ? esc_attr($field['min']) : 0; ?>" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" /><?php echo $suffix_text; ?>
+				<?php echo esc_html( $prefix_text ); ?><input class="small-text" type="number" step="1" min="<?php echo ! empty($field['min']) ? esc_attr($field['min']) : 0; ?>" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" /><?php echo esc_html( $suffix_text ); ?>
 				<?php if ( isset($field['help']) && '' !== $field['help'] ) { ?>
 				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 				<?php } ?>
