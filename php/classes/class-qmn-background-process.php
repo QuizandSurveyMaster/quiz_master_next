@@ -39,7 +39,8 @@ class QSM_Background_Request extends WP_Async_Request {
                 $this->really_long_running_task();
                 QSM_Emails::send_emails( $transient_id );
             } catch ( Exception $e ) {
-                if ( defined('WP_DEBUG') && WP_DEBUG ) {
+                $settings = (array) get_option( 'qmn-settings' );
+                if ( ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'] ) {
                     trigger_error('Background email triggered fatal error for callback.', E_USER_WARNING); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
                 }
             }
