@@ -3415,16 +3415,16 @@ var import_button;
     }
 }(jQuery));
 
-jQuery(".qsm-incorrect-input-count input").on('click', function (event) {
-    if(jQuery(this).val() == 1) {
-        jQuery('.qsm-correct-incorrect-answer').show();
-    }else{
-        jQuery('.qsm-correct-incorrect-answer').hide();
-    }
-});
+// jQuery(".qsm-incorrect-input-count input").on('click', function (event) {
+//     if(jQuery(this).val() == 1) {
+//         jQuery('.qsm-correct-incorrect-answer').show();
+//     }else{
+//         jQuery('.qsm-correct-incorrect-answer').hide();
+//     }
+// });
 
-if (jQuery(".qsm-incorrect-input-count [name='end_quiz_if_wrong']:checked").val() == 1) {
-    jQuery('.qsm-correct-incorrect-answer').show();
-} else {
-    jQuery('.qsm-correct-incorrect-answer').hide();
-}
+// if (jQuery(".qsm-incorrect-input-count [name='end_quiz_if_wrong']:checked").val() == 1) {
+//     jQuery('.qsm-correct-incorrect-answer').show();
+// } else {
+//     jQuery('.qsm-correct-incorrect-answer').hide();
+// }

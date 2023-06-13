@@ -491,7 +491,7 @@ class QMNQuizManager {
 				'disable_first_page'                 => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
-				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
+				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : 1,
 				'form_disable_autofill'              => isset( $qmn_quiz_options->form_disable_autofill ) ? $qmn_quiz_options->form_disable_autofill : '',
 				'disable_mathjax'                    => isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '',
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
@@ -511,13 +511,6 @@ class QMNQuizManager {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 			
-			if ( ! isset($qmn_json_data['wrong_answer_limit']) ) {
-				$qmn_json_data['wrong_answer_limit'] = 1;
-			}
-			$wrong_answer_limit = isset($qmn_quiz_options->wrong_answer_limit) ? $qmn_quiz_options->wrong_answer_limit : 1;
-			$quiz_settings = maybe_unserialize( $qmn_quiz_options->quiz_settings );
-			$quiz_options = maybe_unserialize( $quiz_settings['quiz_options'] );
-			$qmn_json_data['wrong_answer_limit'] = isset($quiz_options['wrong_answer_limit']) ? $quiz_options['wrong_answer_limit'] : $wrong_answer_limit;
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
