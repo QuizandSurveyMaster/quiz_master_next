@@ -1039,16 +1039,8 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_end_quiz_if_there_is_wrong_answer() {
 		global $globalQuizsetting;
 		$qsm_end_quiz_if_wrong = ( isset( $globalQuizsetting['end_quiz_if_wrong'] ) && '' !== $globalQuizsetting['end_quiz_if_wrong'] ? $globalQuizsetting['end_quiz_if_wrong'] : '0' );
-		echo 'If <input class="small-text" type="number" step="1" min="0" id="end_quiz_if_wrong" name="qsm-quiz-settings[end_quiz_if_wrong]" value="' . esc_attr( $qsm_end_quiz_if_wrong ) . '"> wrong answer(s)
-			  <span class="qsm-opt-desc">If this set to \'0\' then quiz will not end any incorrect number of answer.</span>';
-
-		// echo '<fieldset class="buttonset buttonset-hide" >
-		// 		<input type="radio" id="end_quiz_if_wrong-1" name="qsm-quiz-settings[end_quiz_if_wrong]" value="1" ' . checked( $qsm_end_quiz_if_wrong, '1', false ) . ' >
-		// 		<label for="end_quiz_if_wrong-1">Yes</label><br>
-		// 		<input type="radio" id="end_quiz_if_wrong-0" name="qsm-quiz-settings[end_quiz_if_wrong]"  value="0" ' . checked( $qsm_end_quiz_if_wrong, '0', false ) . '>
-		// 		<label for="end_quiz_if_wrong-0">No</label><br>
-		// 	 </fieldset>
-		// 	 <span class="qsm-opt-desc">This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types</span>';
+		echo __('If', 'quiz-master-next').' <input class="small-text" type="number" step="1" min="0" id="end_quiz_if_wrong" name="qsm-quiz-settings[end_quiz_if_wrong]" value="' . esc_attr( $qsm_end_quiz_if_wrong ) . '">'.__(' wrong answer(s)', 'quiz-master-next').'
+			  <span class="qsm-opt-desc">'.__('If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next').'</span>';
 	}
 
 	/**

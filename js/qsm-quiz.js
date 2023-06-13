@@ -554,7 +554,6 @@ var qsmTimerInterval = [];
 				incorrect++;
 			}
 			});
-			console.log(update_answers)
 			if( qmn_quiz_data[quiz_id].end_quiz_if_wrong <= incorrect ) {
 				submit_status = true;
 			}else{
