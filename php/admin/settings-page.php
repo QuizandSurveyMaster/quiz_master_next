@@ -1039,8 +1039,8 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_end_quiz_if_there_is_wrong_answer() {
 		global $globalQuizsetting;
 		$qsm_end_quiz_if_wrong = ( isset( $globalQuizsetting['end_quiz_if_wrong'] ) && '' !== $globalQuizsetting['end_quiz_if_wrong'] ? $globalQuizsetting['end_quiz_if_wrong'] : '0' );
-		echo __('If', 'quiz-master-next').' <input class="small-text" type="number" step="1" min="0" id="end_quiz_if_wrong" name="qsm-quiz-settings[end_quiz_if_wrong]" value="' . esc_attr( $qsm_end_quiz_if_wrong ) . '">'.__(' wrong answer(s)', 'quiz-master-next').'
-			  <span class="qsm-opt-desc">'.__('If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next').'</span>';
+		echo esc_html__('If', 'quiz-master-next').' <input class="small-text" type="number" step="1" min="0" id="end_quiz_if_wrong" name="qsm-quiz-settings[end_quiz_if_wrong]" value="' . esc_attr( $qsm_end_quiz_if_wrong ) . '">'.esc_html__(' wrong answer(s)', 'quiz-master-next').'
+			  <span class="qsm-opt-desc">'.esc_html__('If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next').'</span>';
 	}
 
 	/**

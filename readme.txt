@@ -163,14 +163,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.1.8 (June 08, 2023) =
+= 8.1.8 (June 13, 2023) =
+* Feature: Added option to end quiz after x number of wrong answers
 * Feature: Added option to display the start and end dates of quizzes in the result list
-* Bug: Fixed issue with the progress bar when using a limited number of questions
+* Bug: Fixed issue with correct answer logic while applying global setting
+* Bug: Resolved hyperlink problem with multiple answer in email.
 * Enhancement: Improve show inline result UX
 * Enhancement: Improve questions hint tooltip UI
 * Enhancement: Implemented various improvements to enhance the user experience of the quiz admin panel
-
-
 
 = 8.1.7 (May 22, 2023) =
 * Feature: Now users can set separate question limits for individual categories.
@@ -180,8 +180,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: Improved the functionality of nonce validation
 * Enhancement: Enhanced the user interface for displaying multiple response results
 * Enhancement: Improved the user experience for the "show inline result" option
-
-
 
 = 8.1.6 (April 24, 2023) =
 * Bug: Resolved a JavaScript conflict with the Avada theme
