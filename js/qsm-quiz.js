@@ -1686,8 +1686,26 @@ jQuery(function () {
 		}
 	});
 
+	jQuery(document).on('change ', '.qmn_check_answers input', function (e) {
+		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		var $quizForm = QSM.getQuizForm(quizID);
+		if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
+			var question_id = jQuery(this).attr('name').split('question')[1],
+			$this = jQuery(this).parents('.quiz_section');
+			var parent = jQuery(this).closest('.qmn_check_answers');
+			var checkedValues = parent.find('input[type="checkbox"]:checked').map(function() {
+				return jQuery(this).val();
+			}).get();
+			qsm_submit_quiz_if_answer_wrong(question_id, checkedValues, $this, $quizForm, 'checkbox');
+			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
+				qsm_show_inline_result(quizID, question_id, value, $this, 'checkbox', $i_this)
+			}
+			jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, checkedValues, $this, 'checkbox']);
+		}
+	});
+
 	// End Quiz If Wrong
-	jQuery(document).on('change ', '.qmn_radio_answers input , .qmn_check_answers input , .qsm_select', function (e) {
+	jQuery(document).on('change ', '.qmn_radio_answers input, .qsm_select', function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
 		if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
@@ -1854,7 +1872,7 @@ function checkMaxLength(obj){
     }
 }
 let submit_status = true;
-function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
+function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = 'input') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
 		type: 'POST',
@@ -1863,6 +1881,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm) {
 			action: "qsm_get_question_quick_result",
 			question_id: question_id,
 			answer: value,
+			answer_type: answer_type,
 			show_correct_info: qmn_quiz_data[quiz_id].enable_quick_correct_answer_info
 		},
 		success: function (response) {
