@@ -510,7 +510,7 @@ class QMNQuizManager {
 			} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
-			
+
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
@@ -1079,7 +1079,7 @@ class QMNQuizManager {
 			if ( 0 == $options->comment_section ) {
 				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 				?>
-					<div class="quiz_section quiz_begin">
+					<div class="quiz_section">
 						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 						<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 					</div>
@@ -1167,7 +1167,7 @@ class QMNQuizManager {
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page">
-				<div class="quiz_section quiz_begin">
+				<div class="quiz_section">
 					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 					<textarea id="mlwQuizComments" name="mlwQuizComments" class="qsm-comments qmn_comment_section"></textarea>
 				</div>

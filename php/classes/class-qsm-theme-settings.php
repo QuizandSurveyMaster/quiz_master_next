@@ -232,7 +232,7 @@ class QSM_Theme_Settings {
 				$themes[] = $dir['theme'];
 			}
 		}
-		if ( !empty($result) && in_array($result, $themes, true) ) {
+		if ( ! empty($result) && in_array($result, $themes, true) ) {
 			$theme_path = $result;
 		}
 		return apply_filters( 'get_active_quiz_theme_path', $theme_path, $quiz_id, $active_themes );
