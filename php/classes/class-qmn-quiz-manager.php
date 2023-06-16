@@ -221,20 +221,25 @@ class QMNQuizManager {
 	public function qsm_get_question_quick_result() {
 		global $wpdb, $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
+		$answer            = isset( $_POST['answer'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['answer'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
-		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
+		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
 		$settings          = maybe_unserialize( $question_array['question_settings'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
 		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo-{$question_id}" );
-
+		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $question_array['quiz_id'] ) );
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
+		$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
+		$correct_answer_logic = $quiz_options['correct_answer_logic'];
 		$show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( wp_unslash( $_POST['show_correct_info'] ) ) : 0;
 		$got_ans           = false;
 		$correct_answer    = false;
 		$count = 0;
 		$ans_index = isset( $_POST['index'] ) ? intval( $_POST['index'] ) : 0;
 		$correct_index  = 0;
+		$answer_count = 0;
+		$total_correct_answer = 0;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
 				if ( 'input' === $answer_type ) {
@@ -246,6 +251,27 @@ class QMNQuizManager {
 						$got_ans        = true;
 						$correct_answer = true;
 						break;
+					}
+				}elseif ( 'checkbox' === $answer_type ) {
+					if ( 0 == $correct_answer_logic ) {
+						foreach ( $answer as $anskey => $ansvalue ) {
+							if ( intval( $ansvalue ) === $key && 1 == $value[2] ) {
+								$got_ans        = true;
+								$correct_answer = true;
+								break 2;
+							}
+						}
+					}else {
+						if ( intval( $answer[ $key ] ) === $key && 1 == $value[2] ) {
+							$answer_count++;
+						}else {
+							if ( isset($answer[ $key ]) ) {
+								$answer_count--;
+							}
+						}
+						if ( 1 == $value[2] ) {
+							$total_correct_answer++;
+						}
 					}
 				}else {
 					if ( intval( $answer ) === $key && 1 === intval( $value[2] ) ) {
@@ -262,6 +288,15 @@ class QMNQuizManager {
 						$correct_index = $count;
 					}
 					$count++;
+				}
+			}
+
+			if ( 'checkbox' === $answer_type ) {
+				if ( 1 == $correct_answer_logic ) {
+					if ( 0 != $answer_count && 0 != $total_correct_answer && $total_correct_answer == $answer_count ) {
+						$got_ans        = true;
+						$correct_answer = true;
+					}
 				}
 			}
 		}
