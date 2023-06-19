@@ -1680,13 +1680,13 @@ jQuery(function () {
 	// Autocomplete off
 	jQuery('.qsm-quiz-container').find('.qmn_quiz_id').each(function () {
 		var quizID = jQuery(this).val();
-		var $quizForm = QSM.getQuizForm(quizID);
 		if (qmn_quiz_data[quizID].form_disable_autofill == 1) {
 			jQuery('#quizForm' + quizID).attr('autocomplete', 'off');
 		}
 	});
 
 	jQuery(document).on('change ', '.qmn_check_answers input', function (e) {
+		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
 		var question_id = jQuery(this).attr('name').split('question')[1],
