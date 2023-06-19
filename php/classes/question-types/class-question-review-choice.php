@@ -48,5 +48,8 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 		if ( ( $this->correct_answer_logic && count( $this->correct_answer ) === $user_correct_ans || ! $this->correct_answer_logic && $user_correct_ans === $total_correct_ans ) && $is_user_attempted ) {
 			$this->answer_status = 'correct';
 		}
+		if ( in_array( $this->question_type, array( 0, 1 ) ) && 0 < $user_correct_ans ) {
+			$this->answer_status = 'correct';
+		}
 	}
 }
