@@ -1689,19 +1689,19 @@ jQuery(function () {
 	jQuery(document).on('change ', '.qmn_check_answers input', function (e) {
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
+		var question_id = jQuery(this).attr('name').split('question')[1],
+		$this = jQuery(this).parents('.quiz_section');
+		var parent = jQuery(this).closest('.qmn_check_answers');
+		var checkedValues = parent.find('input[type="checkbox"]:checked').map(function() {
+			return jQuery(this).val();
+		}).get();
 		if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
-			var question_id = jQuery(this).attr('name').split('question')[1],
-			$this = jQuery(this).parents('.quiz_section');
-			var parent = jQuery(this).closest('.qmn_check_answers');
-			var checkedValues = parent.find('input[type="checkbox"]:checked').map(function() {
-				return jQuery(this).val();
-			}).get();
 			qsm_submit_quiz_if_answer_wrong(question_id, checkedValues, $this, $quizForm, 'checkbox');
-			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-				qsm_show_inline_result(quizID, question_id, value, $this, 'checkbox', $i_this)
-			}
-			jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, checkedValues, $this, 'checkbox']);
 		}
+		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
+			qsm_show_inline_result(quizID, question_id, checkedValues, $this, 'checkbox', $i_this)
+		}
+		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, checkedValues, $this, 'checkbox']);
 	});
 
 	// End Quiz If Wrong
