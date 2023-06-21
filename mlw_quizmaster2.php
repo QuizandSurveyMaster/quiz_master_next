@@ -467,6 +467,7 @@ class MLWQuizMasterNext {
 		$cpt_slug       = 'quiz';
 		$settings       = (array) get_option( 'qmn-settings' );
 		$plural_name    = __( 'Quizzes & Surveys', 'quiz-master-next' );
+		$publicly_queryable = ! empty( $settings['disable_quiz_public_link'] ) ? false : true;
 
 		// Checks if admin turned off archive.
 		if ( isset( $settings['cpt_archive'] ) && '1' === $settings['cpt_archive'] ) {
@@ -513,7 +514,7 @@ class MLWQuizMasterNext {
 			'show_in_menu'        => 'qsm_dashboard',
 			'show_in_nav_menus'   => true,
 			'labels'              => $quiz_labels,
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => $publicly_queryable,
 			'exclude_from_search' => $exclude_search,
 			'label'               => $plural_name,
 			'rewrite'             => array( 'slug' => $cpt_slug ),

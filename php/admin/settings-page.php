@@ -75,7 +75,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -376,18 +376,20 @@ class QMNGlobalSettingsPage {
 	 */
 	public function cpt_archive_field() {
 		$settings    = (array) get_option( 'qmn-settings' );
-		$cpt_archive = '0';
-		if ( isset( $settings['cpt_archive'] ) ) {
-			$cpt_archive = esc_attr( $settings['cpt_archive'] );
-		}
-		$checked = '';
-		if ( '1' == $cpt_archive ) {
-			$checked = " checked='checked'";
-		}
-
-		echo '<label class="switch">';
-			echo '<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings[cpt_archive]" value="1"' . esc_attr( $checked ) . '/>';
-		echo '<span class="slider round"></span></label>';
+		$cpt_archive = ! empty( $settings['cpt_archive'] ) ? esc_attr( $settings['cpt_archive'] ) : 0;
+		$cpt_link = ! empty( $settings['disable_quiz_public_link'] ) ? esc_attr( $settings['disable_quiz_public_link'] ) : 0;
+		?>
+		<fieldset>
+			<label for="qmn-settings-cpt_archive">
+				<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings-cpt_archive" value="1" <?php checked( $cpt_archive, 1, true ); ?> />
+				<?php esc_html_e( 'Disable Quiz Archive', 'quiz-master-next'); ?>
+			</label><br/>
+			<label for="qmn-settings-qsm-quiz-public-link">
+				<input type="checkbox" name="qmn-settings[disable_quiz_public_link]" id="qmn-settings-qsm-quiz-public-link" value="1" <?php echo checked( $cpt_link, 1, true ); ?> />
+				<?php esc_html_e( 'Disable Quiz Public link', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<?php
 	}
 
 	/**
