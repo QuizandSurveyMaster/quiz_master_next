@@ -1978,9 +1978,7 @@ class QMNQuizManager {
 								$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
 
 								if ( '' !== trim( $user_answer ) ) {
-									if ( 'No Answer Provided' !== $user_answer ) {
-										$attempted_question++;
-									}
+									$attempted_question++;
 								}
 
 								// If a comment was submitted
@@ -2067,9 +2065,7 @@ class QMNQuizManager {
 							$correct_answer    = $results_array['correct_text'];
 							$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
 							if ( '' !== trim( $user_answer ) ) {
-								if ( 'No Answer Provided' !== $user_answer ) {
-									$attempted_question++;
-								}
+								$attempted_question++;
 							}
 							// If a comment was submitted.
 							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
