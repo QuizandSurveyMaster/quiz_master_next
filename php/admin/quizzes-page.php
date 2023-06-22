@@ -198,6 +198,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			unset( $bulk_actions['edit'] );
 			unset( $bulk_actions['trash'] );
 			$bulk_actions['delete_pr'] = __( 'Delete Permanently', 'quiz-master-next' );
+			$bulk_actions['set_global'] = __( 'Set Global Settings', 'quiz-master-next' );
 			return $bulk_actions;
 		}
 
@@ -222,6 +223,19 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
 				setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
 				$redirect_to     = add_query_arg( 'quiz_bulk_delete', count( $post_ids ), $redirect_to );
+			}elseif ( 'set_global' == $doaction && ! empty( $post_ids ) ) {
+				global $globalQuizsetting, $mlwQuizMasterNext;
+				foreach ( $post_ids as $post_id ) {
+					$quiz_id     = get_post_meta( $post_id, 'quiz_id', true );
+					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+					$quiz_options = $mlwQuizMasterNext->quiz_settings->get_setting( 'quiz_options');
+					$settings = wp_parse_args($globalQuizsetting,$quiz_options);
+					$mlwQuizMasterNext->quiz_settings->update_setting( 'quiz_options', $settings );
+					$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been updated to global settings: ".$settings['quiz_name'], $quiz_id, '' );
+				}
+				$mlwQuizMasterNext->alertManager->newAlert( count($post_ids) . __( ' Quiz/Survey has been updated successfully.', 'quiz-master-next' ), 'success' );
+				$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
+				setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
 			}
 			return $redirect_to;
 		}
