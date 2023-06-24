@@ -53,6 +53,9 @@ var qsmTimerInterval = [];
 					} else {
 						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
+					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
+						jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
+					}
 				});
 			}
 		},
@@ -296,9 +299,7 @@ var qsmTimerInterval = [];
 			 * CHecking if the quiz is random
 			 */
 			$is_random = $('.qmn_quiz_container').hasClass('random');
-			if ($is_random) {
-				QSM.goToPage(quizID, 1);
-			} else if (0 < $quizForm.children('.qsm-page').length) {
+			if (0 < $quizForm.children('.qsm-page').length) {
 				$quizForm.children('.qsm-page').hide();
 				template = wp.template('qsm-pagination-' + quizID);
 				$quizForm.append(template());
@@ -803,6 +804,9 @@ function qmnDoInit() {
 					jQuery(this).val(timems);
 				});
 			}
+		}
+		if ( jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') || jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').closest('.qsm-page').is(':visible') ) {
+			jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
 		}
 	});
 }
@@ -1871,7 +1875,7 @@ function checkMaxLength(obj){
     }
 }
 let submit_status = true;
-function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = 'input') {
+function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	jQuery.ajax({
 		type: 'POST',

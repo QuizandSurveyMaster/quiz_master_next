@@ -1114,7 +1114,7 @@ class QMNQuizManager {
 			if ( 0 == $options->comment_section ) {
 				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 				?>
-					<div class="quiz_section">
+					<div class="quiz_section qsm-quiz-comment-section" style="display:none">
 						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 						<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 					</div>
@@ -1202,7 +1202,7 @@ class QMNQuizManager {
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page">
-				<div class="quiz_section">
+				<div class="quiz_section qsm-quiz-comment-section" style="display:none">
 					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 					<textarea id="mlwQuizComments" name="mlwQuizComments" class="qsm-comments qmn_comment_section"></textarea>
 				</div>
@@ -1271,7 +1271,7 @@ class QMNQuizManager {
 			$mlw_qmn_section_count += 1;
 			$animation_effect       = isset( $qmn_quiz_options->quiz_animation ) && '' !== $qmn_quiz_options->quiz_animation ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
 			?>
-			<div class="qsm-auto-page-row quiz_section <?php echo esc_attr( $animation_effect ); ?> quiz_begin">
+			<div class="qsm-auto-page-row quiz_section quiz_begin <?php echo esc_attr( $animation_effect ); ?>">
 				<?php
 				$message_before = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_before, ENT_QUOTES ), "quiz_message_before-{$qmn_quiz_options->quiz_id}" );
 				$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $qmn_array_for_variables );
@@ -1414,9 +1414,8 @@ class QMNQuizManager {
 		global $mlwQuizMasterNext, $mlw_qmn_section_count;
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$qsm_d_none            = 0 == $qmn_quiz_options->randomness_order ? 'qsm-d-none' : '';
 			?>
-			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count . ' ' . $qsm_d_none ); ?>" >
+			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count ); ?>" style="display:none">
 			<?php
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$qmn_quiz_options->quiz_id}" );
 			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $qmn_array_for_variables );
