@@ -126,7 +126,7 @@ function qsm_audit_box() {
 	// Else, start at 0.
 	if ( isset( $_GET['audit_page'] ) ) {
 		$page  = intval( $_GET['audit_page'] ) + 1;
-		$begin = $table_limit * $begin;
+		$begin = $table_limit;
 	} else {
 		$page  = 0;
 		$begin = 0;
