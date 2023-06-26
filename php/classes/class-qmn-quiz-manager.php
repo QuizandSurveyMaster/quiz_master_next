@@ -1760,7 +1760,9 @@ class QMNQuizManager {
 					);
 					$results_id     = $wpdb->insert_id;
 					if ( false === $results_insert ) {
-						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+						$quiz_submitted_data = qsm_printTableRows($qmn_array_for_variables);
+						$mlwQuizMasterNext->log_manager->add( __('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], '<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
 					}
 				}
 			}
@@ -2850,3 +2852,22 @@ add_filter(
 	}
 );
 
+// Print table rows
+function qsm_printTableRows( $array, $prefix = '' ) {
+	$table = "<table>";
+    foreach ( $array as $key => $value ) {
+        $table .= '<tr>';
+        if ( is_array($value) ) {
+            $table .= '<td>' . $prefix . $key . '</td>';
+            $table .= '<td></td>';
+            $table .= '</tr>';
+            qsm_printTableRows($value, $prefix . $key . ' - ');
+        } else {
+            $table .= '<td>' . $prefix . $key . '</td>';
+            $table .= '<td>' . $value . '</td>';
+            $table .= '</tr>';
+        }
+    }
+	$table .= '</table>';
+	return $table;
+}
