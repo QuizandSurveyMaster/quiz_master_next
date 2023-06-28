@@ -176,6 +176,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 		public function qsm_post_row_actions( $actions, $post ) {
 			$post_status = isset( $_REQUEST['post_status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ) ) : 'all';
 			if ( 'qsm_quiz' == $post->post_type && 'trash' != $post_status ) {
+				$settings    = (array) get_option( 'qmn-settings' );
 				$quiz_id = get_post_meta( $post->ID, 'quiz_id', true );
 				if ( ! empty( $quiz_id ) ) {
 					$actions = array(
@@ -183,8 +184,10 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						'duplicate'    => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>',
 						'delete'       => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>',
 						'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
-						'view'         => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>',
 					);
+					if ( empty( $settings['disable_quiz_public_link'] ) ) {
+						$actions['view'] = '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>';
+					}
 					$actions           = apply_filters( 'qsm_quiz_actions_after', $actions, $post );
 					}
 		}
@@ -195,6 +198,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			unset( $bulk_actions['edit'] );
 			unset( $bulk_actions['trash'] );
 			$bulk_actions['delete_pr'] = __( 'Delete Permanently', 'quiz-master-next' );
+			$bulk_actions['set_global'] = __( 'Set Global Settings', 'quiz-master-next' );
 			return $bulk_actions;
 		}
 
@@ -219,6 +223,19 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
 				setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
 				$redirect_to     = add_query_arg( 'quiz_bulk_delete', count( $post_ids ), $redirect_to );
+			}elseif ( 'set_global' == $doaction && ! empty( $post_ids ) ) {
+				global $globalQuizsetting, $mlwQuizMasterNext;
+				foreach ( $post_ids as $post_id ) {
+					$quiz_id     = get_post_meta( $post_id, 'quiz_id', true );
+					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+					$quiz_options = $mlwQuizMasterNext->quiz_settings->get_setting( 'quiz_options');
+					$settings = wp_parse_args($globalQuizsetting,$quiz_options);
+					$mlwQuizMasterNext->quiz_settings->update_setting( 'quiz_options', $settings );
+					$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been updated to global settings: ".$settings['quiz_name'], $quiz_id, '' );
+				}
+				$mlwQuizMasterNext->alertManager->newAlert( count($post_ids) . __( ' Quiz/Survey has been updated successfully.', 'quiz-master-next' ), 'success' );
+				$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
+				setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
 			}
 			return $redirect_to;
 		}

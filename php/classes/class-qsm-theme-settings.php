@@ -225,18 +225,17 @@ class QSM_Theme_Settings {
 		$query  = $wpdb->prepare( "SELECT a.theme FROM {$wpdb->prefix}$this->themes_table AS a, {$wpdb->prefix}$this->settings_table AS b WHERE b.quiz_id = %d AND b.active_theme = 1 AND b.theme_id = a.id", $quiz_id );
 		$result = $wpdb->get_var( $query );
 		$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
+		$theme_path = 'default';
 		$themes = array();
 		if ( ! empty( $active_themes ) ) {
 			foreach ( $active_themes as $dir ) {
 				$themes[] = $dir['theme'];
 			}
 		}
-		if ( empty($result) || ! in_array($result, $themes, true) ) {
-			return 'default';
+		if ( ! empty($result) && in_array($result, $themes, true) ) {
+			$theme_path = $result;
 		}
-		else {
-			return $result;
-		}
+		return apply_filters( 'get_active_quiz_theme_path', $theme_path, $quiz_id, $active_themes );
 	}
 
 	/**

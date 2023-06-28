@@ -1312,6 +1312,16 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+		// Registers start_quiz_survey_text setting
+		$field_array = array(
+			'id'         => 'no_answer_text',
+			'label'      => __( 'No Answer Text', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'No Answer Provided', 'quiz-master-next' ),
+			'option_tab' => 'text-button',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
 		// Registers empty_error_text setting
 		$field_array = array(
 			'id'         => 'empty_error_text',
