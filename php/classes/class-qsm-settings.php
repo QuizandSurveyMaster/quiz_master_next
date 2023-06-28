@@ -427,7 +427,11 @@ class QSM_Quiz_Settings {
 			// Cycle through each setting in section
 			foreach ( $fields as $field ) {
 				// Check if setting exists in section settings and, if not, set it to the default
-				if ( ! isset( $unserialized_section[ $field['id'] ] ) ) {
+				if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+					foreach ( $field['fields'] as $key => $value ) {
+						$unserialized_section[ $key ] = $value['default'];
+					}
+				} elseif ( ! isset( $unserialized_section[ $field['id'] ] ) ) {
 					$unserialized_section[ $field['id'] ] = $field['default'];
 				}
 			}

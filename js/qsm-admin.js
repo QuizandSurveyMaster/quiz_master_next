@@ -38,7 +38,7 @@ var QSMAdmin;
             if ($('.footer-bar-notice').find('.notice-success').length > 0) {
                 $('.footer-bar-notice').css('color', 'green');
             }
-            
+
             if ($('.footer-bar-notice').find('.notice-error').length > 0) {
                 $('.footer-bar-notice').css('color', 'red');
             }
@@ -63,11 +63,11 @@ var QSMAdmin;
             jQuery(".add-more-link").hide();
         }
         if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
-            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").hide();
+            jQuery('#question_per_category').hide();
             jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
         } else {
             jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
-            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random .qsm_tab_content .category_selection_random').parents("tr").show();
+            jQuery('#question_per_category').show();
         }
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
@@ -79,13 +79,13 @@ var QSMAdmin;
                 $('.footer-bar-notice').css('color', 'green');
                 $('.footer-bar-notice .updated').fadeOut(5000);
             }
-            
+
             if ($('.footer-bar-notice').find('.error').length > 0) {
                 $('.footer-bar-notice').css('color', 'red');
                 $('.footer-bar-notice .error').fadeOut(5000);
             }
         });
-        
+
         $(document).on('click', '#close', function (e) {
             e.preventDefault();
             $('.footer-bar-notice').empty();
@@ -359,20 +359,36 @@ var QSMAdmin;
             e.preventDefault();
             MicroModal.show('show-all-variable');
         });
-        if ( "" != jQuery('#scheduled_time_end').val() ) {
-            jQuery('.not_allow_after_expired_time label').css('opacity', '1');
+        if ( "" != jQuery('#scheduled_time_end-input').val() ) {
+            jQuery('#not_allow_after_expired_time label').css('opacity', '1');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
         } else {
-            jQuery('.not_allow_after_expired_time label').css('opacity', '0.7');
+            jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
         }
-        jQuery(document).on('change', '#scheduled_time_end', function () {
+        jQuery(document).on('change', '#scheduled_time_end-input', function () {
             if ( "" != jQuery(this).val() ) {
-                jQuery('.not_allow_after_expired_time label').css('opacity', '1');
+                jQuery('#not_allow_after_expired_time label').css('opacity', '1');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
             } else {
-                jQuery('.not_allow_after_expired_time label').css('opacity', '0.7');
+                jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+            }
+        });
+        if ( 0 != jQuery('#question_from_total-input').val() ) {
+            jQuery('#limit_category_checkbox label').css('opacity', '1');
+            jQuery('#limit_category_checkbox-1').attr('disabled', false);
+        } else {
+            jQuery('#limit_category_checkbox label').css('opacity', '0.7');
+            jQuery('#limit_category_checkbox-1').attr('disabled', true);
+        }
+        jQuery(document).on('change', '#question_from_total-input', function () {
+            if ( 0 != jQuery(this).val() ) {
+                jQuery('#limit_category_checkbox label').css('opacity', '1');
+                jQuery('#limit_category_checkbox-1').attr('disabled', false);
+            } else {
+                jQuery('#limit_category_checkbox label').css('opacity', '0.7');
+                jQuery('#limit_category_checkbox-1').attr('disabled', true);
             }
         });
         //Hide/show tr based on selection
@@ -383,39 +399,37 @@ var QSMAdmin;
                 $('.' + name + '_' + value).show();
             }
         });
-        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
-            var name = $(this).attr('name');
+        $(document).on('change', '.qsm_tab_content #form_type input, #quiz_settings_wrapper input[name="form_type"]', function () {
             var value = $(this).val();
-            $('.qsm_hidden_tr').hide();
-            if ($('.' + name + '_' + value).length > 0) {
-                hide_show_quiz_options(value);
-            }
+            hide_show_quiz_options(value);
         });
 
         // form_type (0, 1, 2).
         function hide_show_quiz_options(form_type) {
             if (0 == form_type) {
-                $('.qsm_tab_content input[name="system"], .qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').show();
+                $('#score_roundoff').parents('tr').show();
+                $('#correct_answer_logic').show();
             } else {
-                $('.qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').hide();
+                $('#score_roundoff').parents('tr').hide();
+                $('#correct_answer_logic').hide();
             }
         }
 
         $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
-            var name = $(this).attr('name');
             var value = $(this).val();
-            $('.qsm_hidden_tr_gradingsystem').hide();
+            $('#correct_answer_logic, #score_roundoff').hide();
             if (value == 0 || value == 3) {
-                $('.qsm_hidden_tr_gradingsystem').show();
+                $('#correct_answer_logic, #score_roundoff').show();
             }
         });
         $(document).ready(function () {
             var system_option = $("input[type=radio][name='system']:checked").val();
-            $('.qsm_hidden_tr_gradingsystem').hide();
+            $('#correct_answer_logic, #score_roundoff').hide();
             if (system_option == 0 || system_option == 3) {
-                $('.qsm_hidden_tr_gradingsystem').show();
+                $('#correct_answer_logic, #score_roundoff').show();
             }
-            hide_show_quiz_options($("select[name='form_type']").find(":selected").val());
+            hide_show_quiz_options($("input[name='form_type']:checked").val());
+            jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
