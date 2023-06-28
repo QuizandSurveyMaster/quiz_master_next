@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.8
+Stable tag: 8.1.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.9 (June 28, 2023) =
+* Feature: Added option to disable quiz public links
+* Feature: Added option to apply global setting on multiple quizzes
+* Feature: Added the ability to set a default text for unanswered questions
+* Feature: Added option to store failed quiz submitted data
+* Feature: Added option to enable/disable QSM logs
+* Bug: Fixed visiblity issue with next button on comment screen
+* Bug: Fixed correct answer logic issue with multi choice question type
+
 = 8.1.8 (June 13, 2023) =
 * Feature: Added option to end quiz after x number of wrong answers
 * Feature: Added option to display the start and end dates of quizzes in the result list
