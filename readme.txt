@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.2.0 (June 30, 2023) =
+= 8.1.10 (June 30, 2023) =
 * Bug: Fixed issues with timer after 8.1.9 release
 
 = 8.1.9 (June 28, 2023) =
