@@ -805,8 +805,8 @@ function qmnDoInit() {
 				});
 			}
 		}
-		if ( jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') || jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').closest('.qsm-page').is(':visible') ) {
-			jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
+		if ( jQuery('.qsm-quiz-container-' + _quiz_id + ' .qsm-submit-btn').is(':visible') || jQuery('.qsm-quiz-container-' + _quiz_id + ' .qsm-quiz-comment-section').closest('.qsm-page').is(':visible') ) {
+			jQuery('.qsm-quiz-container-' + _quiz_id + ' .qsm-quiz-comment-section').fadeIn();
 		}
 	});
 }
