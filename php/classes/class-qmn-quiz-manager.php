@@ -221,7 +221,11 @@ class QMNQuizManager {
 	public function qsm_get_question_quick_result() {
 		global $wpdb, $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-		$answer            = isset( $_POST['answer'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['answer'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( isset( $_POST["answer"] ) && is_array( $_POST["answer"] ) ) {
+			$answer = isset( $_POST['answer'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['answer'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		}else {
+			$answer = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
+		}
 		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
@@ -262,7 +266,7 @@ class QMNQuizManager {
 							}
 						}
 					}else {
-						if ( intval( $answer[ $key ] ) === $key && 1 == $value[2] ) {
+						if ( 1 == $answer_array[ $answer[ $key ] ][2] ) {
 							$answer_count++;
 						}else {
 							if ( isset($answer[ $key ]) ) {
@@ -1089,7 +1093,7 @@ class QMNQuizManager {
 					}
 				}
 				?>
-					<div class="quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+					<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $question['question_type_new'] ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
 				<?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
@@ -1162,7 +1166,7 @@ class QMNQuizManager {
 						}
 					}
 					?>
-						<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>' data-qid='<?php echo esc_attr( $question_id ); ?>'>
+						<div class='quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $question['question_type_new'] ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>' data-qid='<?php echo esc_attr( $question_id ); ?>'>
 					<?php
 					$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
@@ -1351,7 +1355,7 @@ class QMNQuizManager {
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
 			?>
-			<div class="quiz_section qsm-question-wrapper <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
+			<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $mlw_question->question_type_new ); ?> <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
 				<?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 				if ( 0 == $mlw_question->comments ) {
