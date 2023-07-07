@@ -64,9 +64,11 @@ var QSMAdmin;
         }
         if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
             jQuery('#question_per_category').hide();
+            jQuery('.category_selection_random').parents("tr").hide();
             jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
         } else {
             jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
+            jQuery('.category_selection_random').parents("tr").show();
             jQuery('#question_per_category').show();
         }
         $('.qsm-tab').on('click', function (event) {
@@ -150,13 +152,31 @@ var QSMAdmin;
         $(document).on('change', '#limit_category_checkbox-1', function (event) {
             event.preventDefault();
             if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
-                jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").hide();
+                jQuery('#question_per_category').hide();
                 jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
+                jQuery('.category_selection_random').parents("tr").hide();
             } else {
                 jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
-                jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").show();
+                jQuery('#question_per_category').show();
+                jQuery('.category_selection_random').parents("tr").show();
             }
         });
+        show_hide_show_correct_answer();
+        $(document).on('change', '#enable_quick_result_mc-1', function (event) {
+            show_hide_show_correct_answer();
+        });
+        function show_hide_show_correct_answer() {
+            if (jQuery('#enable_quick_result_mc-1:checked').length > 0) {
+                jQuery('#enable_quick_correct_answer_info').css('opacity', '1');
+            } else {
+                jQuery('#enable_quick_correct_answer_info').css('opacity', '0.5');
+            }
+        }
+        jQuery(document).on('change', '#preferred-date-format-custom', function() {
+            var customValue = jQuery(this).val();
+            jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+        });
+
         jQuery(document).on('click','.add-more-category', function () {
             let original = jQuery('div.select-category-question-limit-maindiv');
             let lastChild = original.children().last();
@@ -378,17 +398,21 @@ var QSMAdmin;
         if ( 0 != jQuery('#question_from_total-input').val() ) {
             jQuery('#limit_category_checkbox label').css('opacity', '1');
             jQuery('#limit_category_checkbox-1').attr('disabled', false);
+            jQuery('#question_per_category').show();
         } else {
             jQuery('#limit_category_checkbox label').css('opacity', '0.7');
             jQuery('#limit_category_checkbox-1').attr('disabled', true);
+            jQuery('#question_per_category').hide();
         }
         jQuery(document).on('change', '#question_from_total-input', function () {
             if ( 0 != jQuery(this).val() ) {
                 jQuery('#limit_category_checkbox label').css('opacity', '1');
                 jQuery('#limit_category_checkbox-1').attr('disabled', false);
+                jQuery('#question_per_category').show();
             } else {
                 jQuery('#limit_category_checkbox label').css('opacity', '0.7');
                 jQuery('#limit_category_checkbox-1').attr('disabled', true);
+                jQuery('#question_per_category').hide();
             }
         });
         //Hide/show tr based on selection
@@ -429,7 +453,9 @@ var QSMAdmin;
                 $('#correct_answer_logic, #score_roundoff').show();
             }
             hide_show_quiz_options($("input[name='form_type']:checked").val());
-            jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
+            if (jQuery('.qsm-date-picker').length) {
+                jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
+            }
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
@@ -520,6 +546,24 @@ var QSMAdmin;
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.prev().val(attachment.url);
                 button.nextAll('.qsm_featured_image_preview').attr('src', attachment.url);
+            }).open();
+        });
+
+        $(document).on('click', '.qsm-image-btn', function (e) {
+            var button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                title: qsm_admin_messages.set_feature_img,
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: qsm_admin_messages.use_img // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.prev('.qsm-image-input').val(attachment.url);
             }).open();
         });
 

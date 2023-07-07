@@ -3196,3 +3196,13 @@ body .qsm_tab_content .qsm-small-input-field input[type="text"] {
 .qsm-quiz-dates fieldset#scheduled_time_start, .qsm-quiz-dates fieldset#scheduled_time_end {
     display: inline-block;
 }
+.qsm-image-field {
+    display: flex;
+}
+.qsm-image-field span {
+    padding-top: 4px;
+}
+fieldset#enable_quick_correct_answer_info {
+    margin-left: 25px;
+    margin-top: 4px;
+}

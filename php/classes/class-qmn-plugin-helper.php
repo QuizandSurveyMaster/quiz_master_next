@@ -980,7 +980,7 @@ class QMNPluginHelper {
 				'value' => 'heartBeat',
 			),
 			array(
-				'label' => __( 'No animation', 'quiz-master-next' ),
+				'label' => __( 'Select Quiz Animation', 'quiz-master-next' ),
 				'value' => '',
 			),
 		);
