@@ -1610,7 +1610,7 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . '</div>';
+	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode( htmlspecialchars( $question_title, ENT_QUOTES ) ) . '</div>';
 
 	return $question_display;
 }
