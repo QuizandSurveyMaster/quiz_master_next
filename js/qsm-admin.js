@@ -38,7 +38,7 @@ var QSMAdmin;
             if ($('.footer-bar-notice').find('.notice-success').length > 0) {
                 $('.footer-bar-notice').css('color', 'green');
             }
-            
+
             if ($('.footer-bar-notice').find('.notice-error').length > 0) {
                 $('.footer-bar-notice').css('color', 'red');
             }
@@ -79,13 +79,13 @@ var QSMAdmin;
                 $('.footer-bar-notice').css('color', 'green');
                 $('.footer-bar-notice .updated').fadeOut(5000);
             }
-            
+
             if ($('.footer-bar-notice').find('.error').length > 0) {
                 $('.footer-bar-notice').css('color', 'red');
                 $('.footer-bar-notice .error').fadeOut(5000);
             }
         });
-        
+
         $(document).on('click', '#close', function (e) {
             e.preventDefault();
             $('.footer-bar-notice').empty();
@@ -383,7 +383,7 @@ var QSMAdmin;
                 $('.' + name + '_' + value).show();
             }
         });
-        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
+        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category,.qsm-woo-result-related-products, .qsm-woo-email-related-products), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
@@ -906,7 +906,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             event.preventDefault();
             MicroModal.show('modal-export-import');
         });
-        $(document).on('change', '.qsm_tab_content select, #quiz_settings_wrapper select', function () {
+        $(document).on('change', '.qsm_tab_content select:not(.qsm-woo-result-related-products, .qsm-woo-email-related-products), #quiz_settings_wrapper select', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
@@ -1577,7 +1577,7 @@ var QSMContact;
                         };
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
-                    jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo]);
+                    jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo, QSMAdminEmails.total]);
                 },
                 newEmail: function () {
                     var conditions = [{
@@ -3402,7 +3402,7 @@ var import_button;
                         quicktags: true,
                     };
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
-                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect]);
+                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total]);
                 },
                 newResultsPage: function () {
                     var conditions = [{
