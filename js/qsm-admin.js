@@ -383,7 +383,7 @@ var QSMAdmin;
                 $('.' + name + '_' + value).show();
             }
         });
-        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category,.qsm-woo-related-products), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
+        $(document).on('change', '.qsm_tab_content select:not(.question_limit_category,.qsm-woo-result-related-products, .qsm-woo-email-related-products), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
@@ -906,7 +906,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             event.preventDefault();
             MicroModal.show('modal-export-import');
         });
-        $(document).on('change', '.qsm_tab_content select:not(.qsm-woo-related-products), #quiz_settings_wrapper select', function () {
+        $(document).on('change', '.qsm_tab_content select:not(.qsm-woo-result-related-products, .qsm-woo-email-related-products), #quiz_settings_wrapper select', function () {
             var name = $(this).attr('name');
             var value = $(this).val();
             $('.qsm_hidden_tr').hide();
