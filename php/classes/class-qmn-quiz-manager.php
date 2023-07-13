@@ -456,11 +456,11 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
 				$encryption[ $question['question_id'] ]['settings'] = maybe_unserialize( $question['question_settings'] );
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
-				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );  
+				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
 			$return_display .= '<script>
 			var encryptionKey = "'.md5(time()).'";
-			var data = '.json_encode($encryption).';
+			var data = '.wp_json_encode($encryption).';
 			var jsonString = JSON.stringify(data);
 			var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();
 			</script>';
@@ -705,7 +705,7 @@ class QMNQuizManager {
 			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions = $wpdb->get_results( $query );
 			$question_order = array();
-			if ( ! empty($question_ids) ) {         
+			if ( ! empty($question_ids) ) {
 				foreach ( $question_ids as $question_id_order ) {
 					foreach ( $questions as $obj ) {
 						if ( $obj->question_id == $question_id_order ) {
@@ -1450,8 +1450,7 @@ class QMNQuizManager {
 			exit;
 		}
 
-		global $qmn_allowed_visit;
-		global $mlwQuizMasterNext;
+		global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb;
 
 		$qmn_allowed_visit = true;
 		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
@@ -1486,6 +1485,48 @@ class QMNQuizManager {
 				)
 			);
 			die();
+		}
+		if ( 0 != $options->limit_total_entries ) {
+			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
+			if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
+		}
+		if ( 0 != $options->total_user_tries ) {
+
+			// Prepares the variables
+			$mlw_qmn_user_try_count = 0;
+
+			// Checks if the user is logged in. If so, check by user id. If not, check by IP.
+			if ( is_user_logged_in() ) {
+				$current_user           = wp_get_current_user();
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user=%d AND deleted=0 AND quiz_id=%d", $current_user->ID, $options->quiz_id ) );
+			} else {
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $this->get_user_ip(), $options->quiz_id ) );
+			}
+
+			// If user has already reached the limit for this quiz
+			if ( $mlw_qmn_user_try_count >= $options->total_user_tries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
 		}
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
@@ -2659,7 +2700,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 	return $display;
 }
 
-add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 10, 3 );
+add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 20, 3 );
 
 function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	global $mlwQuizMasterNext, $qmn_allowed_visit;
@@ -2667,10 +2708,10 @@ function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_vari
 		global $wpdb;
 		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables['quiz_id'] ) );
 		if ( $mlw_qmn_entries_count >= $qmn_quiz_options->limit_total_entries ) {
+			$qmn_allowed_visit = false;
 			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$qmn_quiz_options->quiz_id}" );
 			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $mlw_message ), $qmn_array_for_variables );
 			$display          .= $mlw_message;
-			$qmn_allowed_visit = false;
 		}
 	}
 	return $display;
