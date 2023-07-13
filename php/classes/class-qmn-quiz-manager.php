@@ -458,12 +458,12 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
 				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
-			$return_display .= '<script>
+			$qsm_inline_encrypt_js = '
 			var encryptionKey = "'.md5(time()).'";
 			var data = '.wp_json_encode($encryption).';
 			var jsonString = JSON.stringify(data);
-			var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();
-			</script>';
+			var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
+			wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 
@@ -834,9 +834,9 @@ class QMNQuizManager {
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_script( 'jquery-touch-punch' );
 		wp_enqueue_script( 'qsm_model_js', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array(), $mlwQuizMasterNext->version, false );
-		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version, false );
+		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'progress-bar', 'qsm_encryption' ), $mlwQuizMasterNext->version, false );
 		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
-		wp_enqueue_script( 'qsm_encryption', QSM_PLUGIN_JS_URL . '/crypto-js.js', array( 'qsm_quiz' ), $mlwQuizMasterNext->version, false );
+		wp_enqueue_script( 'qsm_encryption', QSM_PLUGIN_JS_URL . '/crypto-js.js', array( 'jquery' ), $mlwQuizMasterNext->version, false );
 		wp_localize_script(
 			'qsm_quiz',
 			'qmn_ajax_object',
