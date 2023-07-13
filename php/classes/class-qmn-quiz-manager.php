@@ -451,12 +451,12 @@ class QMNQuizManager {
 			$correct_answer_logic = $quiz_options['correct_answer_logic'];
 			$question_array    = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = (%d)", $quiz ), 'ARRAY_A' );
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
-			foreach ($question_array as $key => $question) {
-				$encryption[$question['question_id']]['question_type_new'] = $question['question_type_new'];
-				$encryption[$question['question_id']]['answer_array'] = maybe_unserialize( $question['answer_array'] );
-				$encryption[$question['question_id']]['settings'] = maybe_unserialize( $question['question_settings'] );
-				$encryption[$question['question_id']]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
-				$encryption[$question['question_id']]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[$question['question_id']]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );	
+			foreach ( $question_array as $key => $question ) {
+				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];
+				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
+				$encryption[ $question['question_id'] ]['settings'] = maybe_unserialize( $question['question_settings'] );
+				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
+				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );  
 			}
 			$return_display .= '<script>
 			var encryptionKey = "'.md5(time()).'";
