@@ -164,7 +164,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.1.11 (July 14, 2023) =
-* Hotfix: Fixed security and Vulnerability issues.
+* Bug: Resolved problem causing a blank screen upon submission
+* Bug: Rectified issues with the layout of the progress bar
+* Bug: Fixed security vulnerabilities and enhanced overall system protection
 
 = 8.1.10 (June 30, 2023) =
 * Bug: Fixed issues with timer after 8.1.9 release
