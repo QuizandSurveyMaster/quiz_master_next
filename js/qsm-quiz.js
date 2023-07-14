@@ -1062,7 +1062,6 @@ function qmnFormSubmit(quiz_form_id) {
 				}
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
-				jQuery(".hide").parent().css('display', 'none');
 			}
 		},
 		error: function (errorThrown) {
@@ -1881,7 +1880,7 @@ function decryptData(encryptedData, encryptionKey) {
 	var decryptedObject = JSON.parse(decryptedData);
 	return decryptedObject;
 }
-  
+
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '') {
 	var decrypt = decryptData(encryptedData, encryptionKey);
 	var question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
@@ -1966,7 +1965,7 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 			}
 		}
 	}
-	
+
 	if (2 == show_correct_info) {
 		got_ans = true;
 	}
