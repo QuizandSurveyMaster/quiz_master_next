@@ -1904,7 +1904,7 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 						value[0] = value[0].toUpperCase();
 					}
 
-					if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (empty(settings['matchAnswer']) || 'random' === settings['matchAnswer'] || key == ans_index)) {
+					if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
 						got_ans = true;
 						correct_answer = true;
 						break;
