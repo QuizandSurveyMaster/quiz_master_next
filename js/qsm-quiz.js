@@ -1875,96 +1875,98 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '') {
-	var decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
-	var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-	var decrypt = JSON.parse(decryptedData);
-	var question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
-	var answer = typeof answer !== 'undefined' ? answer : '';
-	var answer_type = typeof answer_type !== 'undefined' ? answer_type : '';
-	var answer_array = decrypt[question_id].answer_array;
-	var settings = decrypt[question_id].settings;
-	var correct_info_text = decrypt[question_id].correct_info_text;
-	var correct_answer_logic = decrypt.correct_answer_logic;
-	var show_correct_info = typeof show_correct_info !== 'undefined' && show_correct_info != 0 ? show_correct_info : '';
-	var got_ans = false;
-	var correct_answer = false;
-	var count = 0;
-	var index = typeof index !== 'undefined' ? index : 0;
-	var correct_index = 0;
-	var answer_count = 0;
-	var total_correct_answer = 0;
-	if (answer_array && false === got_ans) {
-		for (var key in answer_array) {
-			var value = answer_array[key];
+	if (typeof encryptedData !== 'undefined') {
+		var decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+		var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+		var decrypt = JSON.parse(decryptedData);
+		var question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
+		var answer = typeof answer !== 'undefined' ? answer : '';
+		var answer_type = typeof answer_type !== 'undefined' ? answer_type : '';
+		var answer_array = decrypt[question_id].answer_array;
+		var settings = decrypt[question_id].settings;
+		var correct_info_text = decrypt[question_id].correct_info_text;
+		var correct_answer_logic = decrypt.correct_answer_logic;
+		var show_correct_info = typeof show_correct_info !== 'undefined' && show_correct_info != 0 ? show_correct_info : '';
+		var got_ans = false;
+		var correct_answer = false;
+		var count = 0;
+		var index = typeof index !== 'undefined' ? index : 0;
+		var correct_index = 0;
+		var answer_count = 0;
+		var total_correct_answer = 0;
+		if (answer_array && false === got_ans) {
+			for (var key in answer_array) {
+				var value = answer_array[key];
 
-			if ('input' === answer_type) {
-				if (!settings['case_sensitive']) {
-					answer = answer.toUpperCase();
-					value[0] = value[0].toUpperCase();
-				}
+				if ('input' === answer_type) {
+					if (!settings['case_sensitive']) {
+						answer = answer.toUpperCase();
+						value[0] = value[0].toUpperCase();
+					}
 
-				if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (empty(settings['matchAnswer']) || 'random' === settings['matchAnswer'] || key == ans_index)) {
-					got_ans = true;
-					correct_answer = true;
-					break;
-				}
-			} else if ('checkbox' === answer_type) {
-				if (0 == correct_answer_logic) {
-					for (var anskey in answer) {
-						var ansvalue = answer[anskey];
-						if (parseInt(ansvalue) === parseInt(key) && 1 == value[2]) {
-							got_ans = true;
-							correct_answer = true;
-							break;
+					if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (empty(settings['matchAnswer']) || 'random' === settings['matchAnswer'] || key == ans_index)) {
+						got_ans = true;
+						correct_answer = true;
+						break;
+					}
+				} else if ('checkbox' === answer_type) {
+					if (0 == correct_answer_logic) {
+						for (var anskey in answer) {
+							var ansvalue = answer[anskey];
+							if (parseInt(ansvalue) === parseInt(key) && 1 == value[2]) {
+								got_ans = true;
+								correct_answer = true;
+								break;
+							}
+						}
+					} else {
+
+						if (answer_array[answer[key]] !== undefined) {
+							if (1 == answer_array[answer[key]][2]) {
+								answer_count++;
+							} else {
+								if (answer[key] !== undefined) {
+									answer_count--;
+								}
+							}
+						}
+						if (1 == value[2]) {
+							total_correct_answer++;
 						}
 					}
 				} else {
-
-					if (answer_array[answer[key]] !== undefined) {
-						if (1 == answer_array[answer[key]][2]) {
-							answer_count++;
-						} else {
-							if (answer[key] !== undefined) {
-								answer_count--;
-							}
-						}
+					if (parseInt(answer) === parseInt(key) && 1 === parseInt(value[2])) {
+						got_ans = true;
+						correct_answer = true;
+						break;
 					}
+				}
+			}
+
+			for (var key in answer_array) {
+				var value = answer_array[key];
+				if (false == correct_answer) {
 					if (1 == value[2]) {
-						total_correct_answer++;
+						correct_index = count;
+					}
+					count++;
+				}
+			}
+
+			if ('checkbox' === answer_type) {
+				if (1 == correct_answer_logic) {
+					if (0 != answer_count && 0 != total_correct_answer && total_correct_answer == answer_count) {
+						got_ans = true;
+						correct_answer = true;
 					}
 				}
-			} else {
-				if (parseInt(answer) === parseInt(key) && 1 === parseInt(value[2])) {
-					got_ans = true;
-					correct_answer = true;
-					break;
-				}
 			}
+		}
+		
+		if (2 == show_correct_info) {
+			got_ans = true;
 		}
 
-		for (var key in answer_array) {
-			var value = answer_array[key];
-			if (false == correct_answer) {
-				if (1 == value[2]) {
-					correct_index = count;
-				}
-				count++;
-			}
-		}
-
-		if ('checkbox' === answer_type) {
-			if (1 == correct_answer_logic) {
-				if (0 != answer_count && 0 != total_correct_answer && total_correct_answer == answer_count) {
-					got_ans = true;
-					correct_answer = true;
-				}
-			}
-		}
+		return { "correct_index": correct_index, "success": correct_answer ? 'correct' : 'incorrect', "message": show_correct_info && got_ans ? correct_info_text : "" };
 	}
-	
-	if (2 == show_correct_info) {
-		got_ans = true;
-	}
-
-	return { "correct_index": correct_index, "success": correct_answer ? 'correct' : 'incorrect', "message": show_correct_info && got_ans ? correct_info_text : "" };
 }
