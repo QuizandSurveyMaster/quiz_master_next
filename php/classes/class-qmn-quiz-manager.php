@@ -1522,8 +1522,7 @@ class QMNQuizManager {
 			exit;
 		}
 
-		global $qmn_allowed_visit;
-		global $mlwQuizMasterNext;
+		global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb;
 
 		$qmn_allowed_visit = true;
 		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
@@ -1559,6 +1558,50 @@ class QMNQuizManager {
 			);
 			die();
 		}
+
+		if ( 0 != $options->limit_total_entries ) {
+			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
+			if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
+		}
+		if ( 0 != $options->total_user_tries ) {
+
+			// Prepares the variables
+			$mlw_qmn_user_try_count = 0;
+
+			// Checks if the user is logged in. If so, check by user id. If not, check by IP.
+			if ( is_user_logged_in() ) {
+				$current_user           = wp_get_current_user();
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user=%d AND deleted=0 AND quiz_id=%d", $current_user->ID, $options->quiz_id ) );
+			} else {
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $this->get_user_ip(), $options->quiz_id ) );
+			}
+
+			// If user has already reached the limit for this quiz
+			if ( $mlw_qmn_user_try_count >= $options->total_user_tries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
+		}
+
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
 			'quiz_name'       => $options->quiz_name,
@@ -2731,7 +2774,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 	return $display;
 }
 
-add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 10, 3 );
+add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 20, 3 );
 
 function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	global $mlwQuizMasterNext, $qmn_allowed_visit;
