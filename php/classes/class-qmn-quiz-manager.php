@@ -458,12 +458,19 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
 				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
-			$qsm_inline_encrypt_js = '
-			var encryptionKey = "'.md5(time()).'";
-			var data = '.wp_json_encode($encryption).';
-			var jsonString = JSON.stringify(data);
-			var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
-			wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			$quiz_inline_results_count = 0;
+			if ( isset($qmn_settings_array['quiz_inline_results']) ) {
+				$quiz_inline_results_count = $qmn_settings_array['quiz_inline_results']['quiz_inline_results_count'];
+			}
+			if ( isset($quiz_inline_results_count) && 1 == $quiz_inline_results_count || (isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong']) || 1 == $qmn_json_data['enable_quick_result_mc'] && 0 < $qmn_json_data['enable_quick_correct_answer_info'] ) {
+				$qsm_inline_encrypt_js = '
+				var encryptionKey = "'.md5(time()).'";
+				var data = '.wp_json_encode($encryption).';
+				var jsonString = JSON.stringify(data);
+				var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
+				wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			}
+			
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 
