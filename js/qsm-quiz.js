@@ -1874,21 +1874,16 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 	}
 }
 
-
-function decryptData(encryptedData, encryptionKey) {
+function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '') {
 	var decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
 	var decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-	var decryptedObject = JSON.parse(decryptedData);
-	return decryptedObject;
-}
-  
-function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '') {
-	var decrypt = decryptData(encryptedData, encryptionKey);
+	var decrypt = JSON.parse(decryptedData);
 	var question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
 	var answer = typeof answer !== 'undefined' ? answer : '';
 	var answer_type = typeof answer_type !== 'undefined' ? answer_type : '';
 	var answer_array = decrypt[question_id].answer_array;
 	var settings = decrypt[question_id].settings;
+	var correct_info_text = decrypt[question_id].correct_info_text;
 	var correct_answer_logic = decrypt.correct_answer_logic;
 	var show_correct_info = typeof show_correct_info !== 'undefined' && show_correct_info != 0 ? show_correct_info : '';
 	var got_ans = false;
@@ -1971,5 +1966,5 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 		got_ans = true;
 	}
 
-	return { "correct_index": correct_index, "success": correct_answer ? 'correct' : 'incorrect', "message": show_correct_info && got_ans ? show_correct_info : "" };
+	return { "correct_index": correct_index, "success": correct_answer ? 'correct' : 'incorrect', "message": show_correct_info && got_ans ? correct_info_text : "" };
 }
