@@ -470,7 +470,7 @@ class QMNQuizManager {
 				var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
 				wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
 			}
-			
+
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 

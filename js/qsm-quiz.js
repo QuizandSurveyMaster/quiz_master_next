@@ -1062,7 +1062,6 @@ function qmnFormSubmit(quiz_form_id) {
 				}
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
-				jQuery(".hide").parent().css('display', 'none');
 			}
 		},
 		error: function (errorThrown) {

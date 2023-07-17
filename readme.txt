@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.10
+Stable tag: 8.1.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,7 +115,7 @@ If you like this plugin, consider exploring our other themes and plugins:
 
 📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc.
 
-⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
+⚡ [InstaWP](https://instawp.com/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
 
 == Installation ==
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.11 (July 14, 2023) =
+* Bug: Resolved problem causing a blank screen upon submission
+* Bug: Rectified issues with the layout of the progress bar
+* Bug: Fixed security vulnerabilities and enhanced overall system protection
+
 = 8.1.10 (June 30, 2023) =
 * Bug: Fixed issues with timer after 8.1.9 release
 
