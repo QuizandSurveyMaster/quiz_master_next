@@ -47,7 +47,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';
 					?>
 				<span class="mlw_horizontal_multiple <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>">
-					<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) . '[]'; ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+					<input type="checkbox" class="qmn_check_answers_new" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) . '[]'; ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 					<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 						<?php
 						if ( 'image' === $answerEditor ) {
