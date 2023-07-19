@@ -449,8 +449,18 @@ class QMNQuizManager {
 			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
 			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
 			$correct_answer_logic = $quiz_options['correct_answer_logic'];
-			$question_array    = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = (%d)", $quiz ), 'ARRAY_A' );
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
+			$enc_questions = array();
+			if ( ! empty( $qpages_arr ) ) {
+				foreach ( $qpages_arr as $item ) {
+					$enc_questions = array_merge($enc_questions, $item['questions']);
+				}
+			}
+			$enc_questions = implode(',', $enc_questions);
+			$question_array = $wpdb->get_results(
+				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings 
+				FROM {$wpdb->prefix}mlw_questions 
+				WHERE question_id IN ($enc_questions)", ARRAY_A);
 			foreach ( $question_array as $key => $question ) {
 				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];
 				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
