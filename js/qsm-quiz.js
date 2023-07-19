@@ -346,7 +346,7 @@ var qsmTimerInterval = [];
 					let $quizForm = QSM.getQuizForm(quizID);
 					jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').addClass('qsm-disabled-btn');
 					jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').append('<div class="qsm-spinner-loader" style="font-size: 3.5px;margin-right: -5px;margin-left: 10px;"></div>');
-					jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
+					jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
 						if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
 							if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
 								let question_id = jQuery(this).attr('name').split('question')[1],
@@ -855,7 +855,7 @@ var show_result_validation = true;
 function qmnValidation(element, quiz_form_id) {
 	show_result_validation = true;
 	jQuery(document).trigger('qsm_before_validation', [element, quiz_form_id]);
-	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
+	var quiz_id = quiz_form_id.replace('quizForm', '');
 	var error_messages = qmn_quiz_data[quiz_id].error_messages;
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
@@ -1437,7 +1437,7 @@ function qmnInitPagination(quiz_id) {
 		jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').addClass('qsm-disabled-btn');
 		jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').append('<div class="qsm-spinner-loader" style="font-size: 3.5px;margin-right: -5px;margin-left: 10px;"></div>');
 
-		jQuery('.qmn_radio_answers:visible input:checked , .qmn_check_answers:visible input:checked , .qsm_select:visible').each(function () {
+		jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
 			if (qmn_quiz_data[quiz_id].end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
 				if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
 					let question_id = jQuery(this).attr('name').split('question')[1],
@@ -1455,7 +1455,7 @@ function qmnInitPagination(quiz_id) {
 		if (qmnValidatePage('quizForm' + quiz_id)) {
 			qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
 		}
-		
+
 		jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 	});
 
@@ -1577,7 +1577,7 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('change', '.qmn_radio_answers .qmn_radio_answers_new, .qsm_dropdown' , function (e) {
+	jQuery(document).on('change', '.qmn-multiple-choice-input, .qsm_dropdown' , function (e) {
 		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
@@ -1646,7 +1646,7 @@ jQuery(function () {
 		}
 	});
 
-	jQuery(document).on('change ', '.qmn_check_answers .qmn_check_answers_new', function (e) {
+	jQuery(document).on('change ', '.qsm-multiple-response-input', function (e) {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		let $quizForm = QSM.getQuizForm(quizID);
@@ -1831,9 +1831,6 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 		$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 		$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
 		$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
-	}else{
-		$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_correct_answer_text + '</div>')
-		$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 	}
 	if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 		MathJax.typesetPromise();
@@ -1928,7 +1925,7 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 				}
 			}
 		}
-		
+
 		if (2 == show_correct_info) {
 			got_ans = true;
 		}

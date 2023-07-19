@@ -49,7 +49,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>">
-						<input type="radio" class="qmn_quiz_radio qmn_radio_answers_new" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+						<input type="radio" class="qmn_quiz_radio qmn-multiple-choice-input" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {

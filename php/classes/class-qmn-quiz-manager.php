@@ -458,8 +458,8 @@ class QMNQuizManager {
 			}
 			$enc_questions = implode(',', $enc_questions);
 			$question_array = $wpdb->get_results(
-				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings 
-				FROM {$wpdb->prefix}mlw_questions 
+				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
+				FROM {$wpdb->prefix}mlw_questions
 				WHERE question_id IN ($enc_questions)", ARRAY_A);
 			foreach ( $question_array as $key => $question ) {
 				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];

@@ -158,7 +158,7 @@ class QSM_Contact_Manager {
 						}
 						if ( 'email' === $fields[ $i ]['use'] ) {
 							$value = $email;
-						}                       
+						}
 						self::generate_contact_field($fields[ $i ], $i, $options, $value);
 					?>
 					</div>
@@ -387,8 +387,8 @@ class QSM_Contact_Manager {
 				$class .= 'mlwRequiredText qsm_required_text';
 				if ( 'checkbox' === $field["type"] ) {
 					$class .= ' mlwRequiredAccept';
-				}                           
-			}           
+				}
+			}
 		}
 		switch ( $field['type'] ) {
 			case 'text':
@@ -538,11 +538,11 @@ class QSM_Contact_Manager {
 					for ( $i = 0; $i < count($option_values); $i++ ) {
 						?>
 					<div class='qmn_mc_answer_wrap'>
-						<input 
-							type='radio' 
-							class='qmn_quiz_radio qmn_radio_answers_new' 
-							name='contact_field_<?php echo esc_attr( $index ); ?>' 
-							value='<?php echo esc_attr( $option_values[ $i ] ); ?>' 
+						<input
+							type='radio'
+							class='qmn_quiz_radio'
+							name='contact_field_<?php echo esc_attr( $index ); ?>'
+							value='<?php echo esc_attr( $option_values[ $i ] ); ?>'
 						/>
 						<label class='qsm_input_label' for='<?php echo esc_attr( $field_label ); ?>'>
 							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
@@ -568,10 +568,10 @@ class QSM_Contact_Manager {
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
 					<option value=''>
 						<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
-					</option>				
+					</option>
 				<?php
-					$option_values = explode( ",", $field['options'] ); 
-				// Iterating over comma separeted values to populate option tag                
+					$option_values = explode( ",", $field['options'] );
+				// Iterating over comma separeted values to populate option tag
 					for ( $i = 0; $i < count($option_values); $i++ ) {
 						?>
 						<option value='<?php echo esc_attr( trim($option_values[ $i ]) ); ?>'>
@@ -580,7 +580,7 @@ class QSM_Contact_Manager {
 						<?php
 					}
 				}
-				?>				
+				?>
 				</select>
 				<?php
 				break;
