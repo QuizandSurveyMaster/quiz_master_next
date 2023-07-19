@@ -452,7 +452,7 @@ class QMNQuizManager {
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
 			$enc_questions = array();
 			if ( ! empty( $qpages_arr ) ) {
-				foreach ($qpages_arr as $item) {
+				foreach ( $qpages_arr as $item ) {
 					$enc_questions = array_merge($enc_questions, $item['questions']);
 				}
 			}
