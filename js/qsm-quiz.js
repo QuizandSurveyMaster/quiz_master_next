@@ -358,6 +358,8 @@ var qsmTimerInterval = [];
 							}
 						}
 					})
+					jQuery('.qsm-quiz-container-' + quizID + ' .mlw_custom_next').removeClass('qsm-disabled-btn');
+					jQuery('.qsm-quiz-container-' + quizID + ' .qsm-spinner-loader').remove();
 					QSM.nextPage(quizID);
 					var $container = jQuery('.qsm-quiz-container-' + quizID);
 					if (qmn_quiz_data[quizID].disable_scroll_next_previous_click != 1) {
@@ -1446,8 +1448,10 @@ function qmnInitPagination(quiz_id) {
 					}
 				}
 			}
-		})
+		});
 
+		jQuery('.qsm-quiz-container-' + quiz_id + ' .mlw_custom_next').removeClass('qsm-disabled-btn');
+		jQuery('.qsm-quiz-container-' + quiz_id + ' .qsm-spinner-loader').remove();
 		if (qmnValidatePage('quizForm' + quiz_id)) {
 			qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
 		}
