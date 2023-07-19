@@ -449,8 +449,18 @@ class QMNQuizManager {
 			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
 			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
 			$correct_answer_logic = $quiz_options['correct_answer_logic'];
-			$question_array    = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = (%d)", $quiz ), 'ARRAY_A' );
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
+			$enc_questions = array();
+			if ( ! empty( $qpages_arr ) ) {
+				foreach ( $qpages_arr as $item ) {
+					$enc_questions = array_merge($enc_questions, $item['questions']);
+				}
+			}
+			$enc_questions = implode(',', $enc_questions);
+			$question_array = $wpdb->get_results(
+				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings 
+				FROM {$wpdb->prefix}mlw_questions 
+				WHERE question_id IN ($enc_questions)", ARRAY_A);
 			foreach ( $question_array as $key => $question ) {
 				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];
 				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
@@ -458,12 +468,15 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
 				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
-			$qsm_inline_encrypt_js = '
-			var encryptionKey = "'.md5(time()).'";
-			var data = '.wp_json_encode($encryption).';
-			var jsonString = JSON.stringify(data);
-			var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
-			wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) ) {
+				$qsm_inline_encrypt_js = '
+				var encryptionKey = "'.md5(time()).'";
+				var data = '.wp_json_encode($encryption).';
+				var jsonString = JSON.stringify(data);
+				var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
+				wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			}
+
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 

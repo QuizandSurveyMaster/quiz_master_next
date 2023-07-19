@@ -540,7 +540,7 @@ class QSM_Contact_Manager {
 					<div class='qmn_mc_answer_wrap'>
 						<input 
 							type='radio' 
-							class='qmn_quiz_radio' 
+							class='qmn_quiz_radio qmn_radio_answers_new' 
 							name='contact_field_<?php echo esc_attr( $index ); ?>' 
 							value='<?php echo esc_attr( $option_values[ $i ] ); ?>' 
 						/>

@@ -308,14 +308,6 @@ function qsm_options_styling_tab_content() {
 								</tr>
 								<?php
 							}
-						} else {
-						?>
-						<tr>
-							<td colspan="2">
-								<?php esc_html_e( 'No settings found', 'quiz-master-next' ); ?>
-							</td>
-						</tr>
-						<?php
 						}
 						?>
 					</table>
