@@ -1616,10 +1616,10 @@ jQuery(function () {
 		$this.find('.quick-question-res-p').remove();
 		$this.find('.qsm-inline-correct-info').remove();
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
-		if (data.success == 'correct') {
+		if ( 0 < value.length && data.success == 'correct') {
 			$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-		} else if (data.success == 'incorrect') {
+		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
 			$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
@@ -1823,12 +1823,8 @@ let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 	var data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quiz_id].enable_quick_correct_answer_info);
-	$this.find('.quick-question-res-p').remove();
-	$this.find('.qsm-inline-correct-info').remove();
 	QSM.changes(data, question_id.replace(/\D/g, ""), quiz_id);
 	if (data.success == 'incorrect' && submit_status) {
-		$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quiz_id].quick_result_wrong_answer_text + '</div>')
-		$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 		$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
 		$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 	}
