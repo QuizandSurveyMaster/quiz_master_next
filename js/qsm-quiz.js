@@ -1854,8 +1854,8 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 		let answer_count = 0;
 		let total_correct_answer = 0;
 		if (answer_array && false === got_ans) {
-			for ( key in answer_array) {
-				value = answer_array[key];
+			for ( let key in answer_array) {
+				let value = answer_array[key];
 
 				if ('input' === answer_type) {
 					if (!settings['case_sensitive']) {
