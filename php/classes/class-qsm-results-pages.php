@@ -34,7 +34,7 @@ class QSM_Results_Pages {
 <div class="qsm-results-page">
 	<?php
 			do_action( 'qsm_before_results_page' );
-
+			$page_index = 0;
 			// Cycles through each possible page.
 			foreach ( $pages as $index => $page ) {
 
@@ -139,6 +139,7 @@ class QSM_Results_Pages {
 					// If we passed all conditions, show this page.
 					if ( $show ) {
 						$content = $page_content;
+						$page_index = $index;
 						if ( $page['redirect'] ) {
 							$redirect = $page['redirect'];
 						}
@@ -169,7 +170,7 @@ class QSM_Results_Pages {
 			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
 
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
-			do_action( 'qsm_after_results_page' );
+			do_action( 'qsm_after_results_page', $response_data, $page_index );
 			?>
 </div>
 <?php

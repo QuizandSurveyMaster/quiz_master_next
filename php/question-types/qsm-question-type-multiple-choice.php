@@ -57,7 +57,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						<?php
 					}
 					?>
-					<input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+					<input type='radio' class='qmn_quiz_radio qmn-multiple-choice-input' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
 					<?php
 					if ( 'image' === $answerEditor ) {

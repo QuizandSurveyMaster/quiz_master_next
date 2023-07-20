@@ -221,6 +221,7 @@ function qsm_options_results_tab_template(){
 						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
+						<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
 					</div>
 				</main>
 			</div>

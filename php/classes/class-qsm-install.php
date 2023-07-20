@@ -743,7 +743,7 @@ class QSM_Install {
 			'label'           => __( 'End quiz', 'quiz-master-next' ),
 			'type'            => 'number',
 			'options'         => array(),
-			'default'         => 1,
+			'default'         => 0,
 			'help'            => __( 'If this set to \'0\' then quiz will not end any incorrect number of answer.', 'quiz-master-next' ),
 			'option_tab'      => 'quiz_submission',
 			'min'             => 0,
