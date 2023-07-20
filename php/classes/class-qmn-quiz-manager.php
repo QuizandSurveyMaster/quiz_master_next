@@ -470,7 +470,7 @@ class QMNQuizManager {
 			}
 			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) ) {
 				$qsm_inline_encrypt_js = '
-				var encryptionKey = "'.md5(time()).'";
+				var encryptionKey = "'.hash('sha256',time()).'";
 				var data = '.wp_json_encode($encryption).';
 				var jsonString = JSON.stringify(data);
 				var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
