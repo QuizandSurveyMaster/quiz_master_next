@@ -371,13 +371,13 @@ function qsm_results_overview_tab_content() {
 		if ( "0" === $results_screen_option['time_taken'] ) {
 			$values['time_taken']['style'] = $display_none;
 		}
-		
+
 		if ( $mlw_quiz_data ) {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
 				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
-				$hidden_questions        = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
+				$hidden_questions        = ! empty( $mlw_qmn_results_array['hidden_questions'] ) && is_array($mlw_qmn_results_array['hidden_questions']) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {
@@ -437,7 +437,7 @@ function qsm_results_overview_tab_content() {
 						$values['user']['content'][] = '<a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . $mlw_quiz_info->user ) ) . '">' . esc_html( $mlw_quiz_info->user ) . '</a>';
 					}
 				}
-				
+
 				if ( isset( $values['start_date'] ) ) {
 					if ( isset($mlw_qmn_results_array['quiz_start_date']) ) {
 						$sdate    = gmdate( get_option( 'date_format' ), strtotime( $mlw_qmn_results_array['quiz_start_date'] ) );

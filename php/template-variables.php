@@ -553,7 +553,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 		$total_question_cnt = count( $mlw_quiz_array['question_answers_array'] );
 		$qsm_question_cnt   = 1;
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( in_array( $answer['id'], $hidden_questions, true ) ) {
+			if ( ! empty( $hidden_questions ) && is_array( $hidden_questions ) && in_array( $answer['id'], $hidden_questions, true ) ) {
 				continue;
 			}
 			$display .= qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt );
