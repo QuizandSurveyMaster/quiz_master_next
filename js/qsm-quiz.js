@@ -1110,6 +1110,19 @@ function qmnInit() {
 	if (typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
 		_.each(qmn_quiz_data, function (quiz) {
 			let key = parseInt(quiz.quiz_id);
+			if (qmn_quiz_data[key].ajax_show_correct === '1') {
+				jQuery('.qmn-multiple-choice-input, .qsm_dropdown, .qsm-multiple-response-input').change(function () {
+					let $this = jQuery(this);
+					let value = $this.val();
+					let question_id = $this.attr('name').replace(/question/i, '');
+					let data = qsm_question_quick_result_js(question_id, value, '', qmn_quiz_data[key].enable_quick_correct_answer_info);
+					if (data.success == 'correct') {
+						$this.parent().addClass("qmn_correct_answer");
+					} else if (data.success == 'incorrect') {
+						$this.parent().addClass("qmn_incorrect_answer");
+					}
+				});
+			}
 
 			if (qmn_quiz_data[key].disable_answer === '1') {
 
