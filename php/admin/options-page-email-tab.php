@@ -196,6 +196,7 @@ function qsm_options_emails_tab_template() {
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
 				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
 				<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
+				<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
 			</div>
 		</main>
 	</div>

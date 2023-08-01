@@ -68,8 +68,6 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
-		add_action( 'wp_ajax_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
-		add_action( 'wp_ajax_nopriv_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
 		add_action( 'wp_ajax_nopriv_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 		add_action( 'wp_ajax_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 
@@ -213,105 +211,6 @@ class QMNQuizManager {
 		exit;
 	}
 
-
-	/**
-	 * @version 6.3.2
-	 * Get question quick result
-	 */
-	public function qsm_get_question_quick_result() {
-		global $wpdb, $mlwQuizMasterNext;
-		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-		$answer            = isset( $_POST['answer'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['answer'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$answer_type       = isset( $_POST['answer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['answer_type'] ) ) : '';
-		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, answer_array, question_answer_info, question_type_new, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
-		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
-		$settings          = maybe_unserialize( $question_array['question_settings'] );
-		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
-		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo-{$question_id}" );
-		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $question_array['quiz_id'] ) );
-		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
-		$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
-		$correct_answer_logic = $quiz_options['correct_answer_logic'];
-		$show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( wp_unslash( $_POST['show_correct_info'] ) ) : 0;
-		$got_ans           = false;
-		$correct_answer    = false;
-		$count = 0;
-		$ans_index = isset( $_POST['index'] ) ? intval( $_POST['index'] ) : 0;
-		$correct_index  = 0;
-		$answer_count = 0;
-		$total_correct_answer = 0;
-		if ( $answer_array && false === $got_ans ) {
-			foreach ( $answer_array as $key => $value ) {
-				if ( 'input' === $answer_type ) {
-					if ( empty( $settings['case_sensitive'] ) ) {
-						$answer = mb_strtoupper($answer);
-						$value[0] = mb_strtoupper($value[0]);
-					}
-					if ( $answer == $value[0] && ( 1 === intval( $value[2] ) || 14 === intval( $question_array['question_type_new'] ) ) && ( empty( $settings['matchAnswer'] ) || 'random' === $settings['matchAnswer'] || $key == $ans_index  ) ) {
-						$got_ans        = true;
-						$correct_answer = true;
-						break;
-					}
-				}elseif ( 'checkbox' === $answer_type ) {
-					if ( 0 == $correct_answer_logic ) {
-						foreach ( $answer as $anskey => $ansvalue ) {
-							if ( intval( $ansvalue ) === $key && 1 == $value[2] ) {
-								$got_ans        = true;
-								$correct_answer = true;
-								break 2;
-							}
-						}
-					}else {
-						if ( intval( $answer[ $key ] ) === $key && 1 == $value[2] ) {
-							$answer_count++;
-						}else {
-							if ( isset($answer[ $key ]) ) {
-								$answer_count--;
-							}
-						}
-						if ( 1 == $value[2] ) {
-							$total_correct_answer++;
-						}
-					}
-				}else {
-					if ( intval( $answer ) === $key && 1 === intval( $value[2] ) ) {
-						$got_ans        = true;
-						$correct_answer = true;
-						break;
-					}
-				}
-			}
-
-			foreach ( $answer_array as $key => $value ) {
-				if ( false == $correct_answer ) {
-					if ( 1 == $value[2] ) {
-						$correct_index = $count;
-					}
-					$count++;
-				}
-			}
-
-			if ( 'checkbox' === $answer_type ) {
-				if ( 1 == $correct_answer_logic ) {
-					if ( 0 != $answer_count && 0 != $total_correct_answer && $total_correct_answer == $answer_count ) {
-						$got_ans        = true;
-						$correct_answer = true;
-					}
-				}
-			}
-		}
-		if ( 2 == $show_correct_info ) {
-			$got_ans = true;
-		}
-		echo wp_json_encode(
-			array(
-				'correct_index' => $correct_index,
-				'success'       => $correct_answer ? 'correct' : 'incorrect',
-				'message'       => $show_correct_info && $got_ans ? '<b>' . __( 'Correct Info: ', 'quiz-master-next' ) . '</b>' . do_shortcode( $correct_info_text ) : '',
-			)
-		);
-		wp_die();
-	}
 
 	/**
 	 * Export CSV file
@@ -547,6 +446,36 @@ class QMNQuizManager {
 			}
 
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
+			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
+			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
+			$correct_answer_logic = $quiz_options['correct_answer_logic'];
+			$encryption['correct_answer_logic'] = $correct_answer_logic;
+			$enc_questions = array();
+			if ( ! empty( $qpages_arr ) ) {
+				foreach ( $qpages_arr as $item ) {
+					$enc_questions = array_merge($enc_questions, $item['questions']);
+				}
+			}
+			$enc_questions = implode(',', $enc_questions);
+			$question_array = $wpdb->get_results(
+				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
+				FROM {$wpdb->prefix}mlw_questions
+				WHERE question_id IN ($enc_questions)", ARRAY_A);
+			foreach ( $question_array as $key => $question ) {
+				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];
+				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
+				$encryption[ $question['question_id'] ]['settings'] = maybe_unserialize( $question['question_settings'] );
+				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
+				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
+			}
+			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) ) {
+				$qsm_inline_encrypt_js = '
+				var encryptionKey = "'.hash('sha256',time()).'";
+				var data = '.wp_json_encode($encryption).';
+				var jsonString = JSON.stringify(data);
+				var encryptedData = CryptoJS.AES.encrypt(jsonString, encryptionKey).toString();';
+				wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			}
 
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
@@ -788,7 +717,18 @@ class QMNQuizManager {
 			}
 			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions = $wpdb->get_results( $query );
-
+			$question_order = array();
+			if ( ! empty($question_ids) ) {
+				foreach ( $question_ids as $question_id_order ) {
+					foreach ( $questions as $obj ) {
+						if ( $obj->question_id == $question_id_order ) {
+							$question_order[] = $obj;
+							break;
+						}
+					}
+				}
+				$questions = $question_order;
+			}
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
@@ -907,8 +847,9 @@ class QMNQuizManager {
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_script( 'jquery-touch-punch' );
 		wp_enqueue_script( 'qsm_model_js', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array(), $mlwQuizMasterNext->version, false );
-		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version, false );
+		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'progress-bar', 'qsm_encryption' ), $mlwQuizMasterNext->version, false );
 		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
+		wp_enqueue_script( 'qsm_encryption', QSM_PLUGIN_JS_URL . '/crypto-js.js', array( 'jquery' ), $mlwQuizMasterNext->version, false );
 		wp_localize_script(
 			'qsm_quiz',
 			'qmn_ajax_object',
@@ -1089,7 +1030,7 @@ class QMNQuizManager {
 					}
 				}
 				?>
-					<div class="quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+					<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $question['question_type_new'] ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
 				<?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
@@ -1162,7 +1103,7 @@ class QMNQuizManager {
 						}
 					}
 					?>
-						<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>' data-qid='<?php echo esc_attr( $question_id ); ?>'>
+						<div class='quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $question['question_type_new'] ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr( $category_class ); ?>' data-qid='<?php echo esc_attr( $question_id ); ?>'>
 					<?php
 					$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
@@ -1351,7 +1292,7 @@ class QMNQuizManager {
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
 			?>
-			<div class="quiz_section qsm-question-wrapper <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
+			<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $mlw_question->question_type_new ); ?> <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
 				<?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 				if ( 0 == $mlw_question->comments ) {
@@ -1522,8 +1463,7 @@ class QMNQuizManager {
 			exit;
 		}
 
-		global $qmn_allowed_visit;
-		global $mlwQuizMasterNext;
+		global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb;
 
 		$qmn_allowed_visit = true;
 		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
@@ -1558,6 +1498,48 @@ class QMNQuizManager {
 				)
 			);
 			die();
+		}
+		if ( 0 != $options->limit_total_entries ) {
+			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
+			if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
+		}
+		if ( 0 != $options->total_user_tries ) {
+
+			// Prepares the variables
+			$mlw_qmn_user_try_count = 0;
+
+			// Checks if the user is logged in. If so, check by user id. If not, check by IP.
+			if ( is_user_logged_in() ) {
+				$current_user           = wp_get_current_user();
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user=%d AND deleted=0 AND quiz_id=%d", $current_user->ID, $options->quiz_id ) );
+			} else {
+				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $this->get_user_ip(), $options->quiz_id ) );
+			}
+
+			// If user has already reached the limit for this quiz
+			if ( $mlw_qmn_user_try_count >= $options->total_user_tries ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				die();
+			}
 		}
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
@@ -2731,7 +2713,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 	return $display;
 }
 
-add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 10, 3 );
+add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 20, 3 );
 
 function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	global $mlwQuizMasterNext, $qmn_allowed_visit;
@@ -2739,10 +2721,10 @@ function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_vari
 		global $wpdb;
 		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables['quiz_id'] ) );
 		if ( $mlw_qmn_entries_count >= $qmn_quiz_options->limit_total_entries ) {
+			$qmn_allowed_visit = false;
 			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$qmn_quiz_options->quiz_id}" );
 			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $mlw_message ), $qmn_array_for_variables );
 			$display          .= $mlw_message;
-			$qmn_allowed_visit = false;
 		}
 	}
 	return $display;

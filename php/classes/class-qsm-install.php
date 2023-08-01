@@ -762,7 +762,6 @@ class QSM_Install {
 			'option_tab' => 'contact_form',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
 		// Setting for display first page
 		$field_array = array(
 			'id'         => 'disable_first_page',

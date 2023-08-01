@@ -138,10 +138,10 @@ class QSM_Emails {
 				}
 
 				if ( $show ) {
-					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
+					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
 				}
 			} else {
-				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
+				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
 			}
 		}
 
@@ -158,7 +158,7 @@ class QSM_Emails {
 	 * @param string $content The body of the email.
 	 * @param bool   $reply_to True if set user email as Reply To header.
 	 */
-	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
+	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to, $index = 0 ) {
 
 		do_action( 'qsm_start_sending_email', $response_data, $to, $subject );
 		global $mlwQuizMasterNext;
@@ -186,7 +186,7 @@ class QSM_Emails {
 		$content                               = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content                               = apply_filters( 'qmn_email_template_variable_results', $content, $response_data );
 		// convert css classes to inline.
-		$content                               = apply_filters( 'qsm_results_css_inliner', $content );
+		$content                               = apply_filters( 'qsm_results_css_inliner', $content, $response_data, $index );
 		$content                               = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner( $content );
 		$content                               = html_entity_decode( $content );
 
