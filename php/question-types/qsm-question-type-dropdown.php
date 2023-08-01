@@ -32,7 +32,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-					$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, "answer-" . $answer_text, "QSM Answers" );
+					$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, "answer-" . $id . "-" . $answer_index, "QSM Answers" );
 					?>
 					<option value="<?php echo esc_attr( $answer_index ); ?>"><?php echo esc_html( $answer_text ); ?></option>
 					<?php

@@ -65,14 +65,14 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 								<span class="qsm_image_caption">
 									<?php
 									$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
-									$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+									$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-' . $answer_index, 'QSM Answers' );
 									echo  wp_kses_post( $add_label_value )." ".esc_html( $caption_text );
 									?>
 								</span>
 								<?php
 							} else {
 								$answer_text = trim( htmlspecialchars_decode($add_label_value." ". $answer[0], ENT_QUOTES ) );
-								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
 								echo do_shortcode( wp_kses_post( $answer_text ) );
 							}
 							?>
