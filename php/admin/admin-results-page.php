@@ -461,7 +461,11 @@ function qsm_results_overview_tab_content() {
 					$values['page_name']['content'][] = $mlw_quiz_info->page_name;
 				}
 				if ( isset( $values['page_url'] ) ) {
-					$values['page_url']['content'][] = '<a href="' . esc_url( $mlw_quiz_info->page_url ) . '">' . esc_html( $mlw_quiz_info->page_url ) . '</a>';
+					$quiz_page_url = $mlw_quiz_info->page_url;
+					if ( ! empty( $mlw_qmn_results_array['page_url'] ) ) {
+						$quiz_page_url = $mlw_qmn_results_array['page_url'];
+					}
+					$values['page_url']['content'][] = '<a href="' . esc_url( $quiz_page_url ) . '">' . esc_html( $quiz_page_url ) . '</a>';
 				}
 				foreach ( $values as $k => $v ) {
 					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url' ], true ) ) {
