@@ -1691,6 +1691,10 @@ class QMNQuizManager {
 					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+					if ( 254 < strlen($http_referer) ) {
+						$results_array['page_url'] = $http_referer;
+						$http_referer = substr($http_referer, 0, 254);
+					}
 					$results_insert = $wpdb->insert(
 						$table_name,
 						array(
@@ -1952,7 +1956,7 @@ class QMNQuizManager {
 								}
 
 								// If the user's answer was correct
-								if ( 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+								if ( !empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
 									$total_correct += 1;
 									$correct_status = 'correct';
 								}

@@ -101,7 +101,7 @@ function qsm_generate_results_details_tab() {
     $total_hidden_questions = 0;
     $results = maybe_unserialize( $results_data->quiz_results );
     if ( is_array( $results ) ) {
-        $total_hidden_questions = isset( $results['hidden_questions'] ) ? count( $results['hidden_questions'] ) : 0;
+        $total_hidden_questions = ! empty( $results['hidden_questions'] ) && is_array( $results['hidden_questions'] ) ? count( $results['hidden_questions'] ) : 0;
         if ( ! isset( $results["contact"] ) ) {
             $results["contact"] = array();
         }

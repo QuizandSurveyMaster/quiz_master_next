@@ -1111,11 +1111,11 @@ function qmnInit() {
 		_.each(qmn_quiz_data, function (quiz) {
 			let key = parseInt(quiz.quiz_id);
 			if (qmn_quiz_data[key].ajax_show_correct === '1') {
-				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
+				jQuery('.qmn-multiple-choice-input, .qsm_dropdown, .qsm-multiple-response-input').change(function () {
 					let $this = jQuery(this);
 					let value = $this.val();
 					let question_id = $this.attr('name').replace(/question/i, '');
-					let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info);
+					let data = qsm_question_quick_result_js(question_id, value, '', qmn_quiz_data[key].enable_quick_correct_answer_info);
 					if (data.success == 'correct') {
 						$this.parent().addClass("qmn_correct_answer");
 					} else if (data.success == 'incorrect') {
