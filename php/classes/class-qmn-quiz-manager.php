@@ -1691,7 +1691,10 @@ class QMNQuizManager {
 					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
-					$http_referer = substr($http_referer, 0, 254);
+					if ( 254 < strlen($http_referer) ) {
+						$results_array['page_url'] = $http_referer;
+						$http_referer = substr($http_referer, 0, 254);
+					}
 					$results_insert = $wpdb->insert(
 						$table_name,
 						array(

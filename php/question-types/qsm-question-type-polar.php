@@ -59,13 +59,13 @@ function qmn_polar_display( $id, $question, $answers ) {
 			<span class="qsm_image_caption">
 				<?php
 				$caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
-				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-0', 'QSM Answers' );
 				echo esc_html( $caption_text );
 				?>
 			</span>
 			<?php
 		} else {
-			$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" );
+			$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $id . '-0', "QSM Answers" );
 			echo do_shortcode( wp_kses_post( $left_title ) );
 		}
 		?> </div>
@@ -88,13 +88,13 @@ function qmn_polar_display( $id, $question, $answers ) {
 			<span class="qsm_image_caption">
 				<?php
 				$caption_text = trim( htmlspecialchars_decode( $answers[1][3], ENT_QUOTES ) );
-				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+				$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-1', 'QSM Answers' );
 				echo esc_html( $caption_text );
 				?>
 			</span>
 			<?php
 		} else {
-			$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" );
+			$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $id . '-1', "QSM Answers" );
 			echo do_shortcode( wp_kses_post( $right_title ) );
 		}
 		?></div>

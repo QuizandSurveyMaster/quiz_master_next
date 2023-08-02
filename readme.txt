@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 8.1.12
+Stable tag: 8.1.13
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.13 (August 02, 2023) =
+* Bug: Fixed translation issue with German latters
+* Bug: Resolved quiz store issue related to long quiz URLs
+* Bug: Fixed issue with inline CSS class in quiz answer selection
+
+
 = 8.1.12 (July 20, 2023) =
 * Bug: The HTML tag issue with the admin result page has been resolved
 * Bug: Fixed issue with question position on manual pagination
