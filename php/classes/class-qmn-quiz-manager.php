@@ -1956,7 +1956,7 @@ class QMNQuizManager {
 								}
 
 								// If the user's answer was correct
-								if ( !empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+								if ( ! empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
 									$total_correct += 1;
 									$correct_status = 'correct';
 								}
