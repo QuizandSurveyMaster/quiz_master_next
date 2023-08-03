@@ -164,7 +164,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.1.13 (August 02, 2023) =
-* Bug: Fixed translation issue with German latters
+* Bug: Fixed translation issue with German letters
 * Bug: Resolved quiz store issue related to long quiz URLs
 * Bug: Fixed issue with inline CSS class in quiz answer selection
 
