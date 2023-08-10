@@ -43,13 +43,14 @@ class QMN_Log_Manager
 		/* logs post type */
 		$settings = (array) get_option( 'qmn-settings' );
 		$log_args = array(
-			'labels'          => array( 'name' => 'QSM Logs' ),
-			'public'          => ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'],
-			'query_var'       => false,
-			'rewrite'         => false,
-			'capability_type' => 'post',
-			'supports'        => array( 'title', 'editor' ),
-			'can_export'      => false,
+			'labels'             => array( 'name' => 'QSM Logs' ),
+			'public'             => ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'],
+			'query_var'          => false,
+			'publicly_queryable' => false,
+			'rewrite'            => false,
+			'capability_type'    => 'post',
+			'supports'           => array( 'title', 'editor' ),
+			'can_export'         => false,
 		);
 
 		// Registers QSM logs post type with filtered $args

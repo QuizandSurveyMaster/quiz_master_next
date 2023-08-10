@@ -274,7 +274,7 @@ class QSM_Contact_Manager {
 		global $mlwQuizMasterNext;
 		$default_fields  = self::default_fields();
 		$fields          = maybe_unserialize( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' ) );
-		if ( ! empty( $fields ) ) {
+		if ( ! empty( $fields ) && is_array( $fields ) ) {
 			$used_keys = array();
 			foreach ( $fields as $index => $field ) {
 				/**
