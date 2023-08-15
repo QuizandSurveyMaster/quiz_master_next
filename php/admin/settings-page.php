@@ -462,7 +462,14 @@ class QMNGlobalSettingsPage {
 			<p>The answers were as follows:</p>
 			%QUESTIONS_ANSWERS%';
 		}
-		wp_editor( $template, 'results_template', array( 'textarea_name' => 'qmn-settings[results_details_template]' ) );
+		wp_editor( $template, 'results_template', array(
+			'textarea_name' => 'qmn-settings[results_details_template]',
+			'tinymce'       => array(
+				'toolbar1' => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
+				'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
+			),
+		)
+		);
 	}
 
 	/**
