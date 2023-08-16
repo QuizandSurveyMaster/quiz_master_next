@@ -180,7 +180,9 @@ var qsmTimerInterval = [];
 			// Updates timer element and title on browser tab.
 			var $timer = QSM.getTimer(quizID);
 			$timer.text(display);
-			document.title = display + ' ' + qsmTitleText;
+			if (0 < qmn_quiz_data[quizID].timer_limit) {
+				document.title = display + ' ' + qsmTitleText;
+			}
 
 			/*CUSTOM TIMER*/
 			if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') && qmn_quiz_data[quizID].advanced_timer.timer_design == 'big_timer') {
