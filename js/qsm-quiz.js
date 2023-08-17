@@ -206,7 +206,7 @@ var qsmTimerInterval = [];
 			}
 
 			// If timer is run out, disable fields.
-			if (0 >= secondsRemaining) {
+			if (0 >= secondsRemaining && 0 < qmn_quiz_data[quizID].timer_limit) {
 				clearInterval(qmn_quiz_data[quizID].timerInterval);
 				$(".mlw_qmn_quiz input:radio").attr('disabled', true);
 				$(".mlw_qmn_quiz input:checkbox").attr('disabled', true);
