@@ -20,7 +20,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	if ( isset( $qmn_quiz_options->enable_deselect_option ) && 1 == $qmn_quiz_options->enable_deselect_option && ( 'multiple_choice' === $question_type || 'horizontal_multiple_choice' === $question_type ) ) {
 		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'.__( 'Deselect Answer', 'quiz-master-next' ).'</a>';
 	}
-
+	do_action('qsm_question_title_func_before',$question, $question_type, $new_question_title, $question_id );
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		?>
@@ -52,4 +52,5 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
 	</div>
 	<?php
+	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );
 }
