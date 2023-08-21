@@ -34,7 +34,8 @@ var qsmTimerInterval = [];
 						},
 						type: 'POST',
 						success: function (response) {
-							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data+'"/>');
+							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_unique_key" id="qsm_unique_key'+quizID+'" value="'+response.data.unique_key+'"/>');
+							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data.nonce+'"/>');
 						}
 					});
 					QSM.initPagination(quizID);

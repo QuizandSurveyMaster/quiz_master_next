@@ -1646,7 +1646,7 @@ class QMNQuizManager {
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$unique_id                           = uniqid();
+			$unique_id                           = ! empty( $_REQUEST[ 'qsm_unique_key'.$quiz_id ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ 'qsm_unique_key'.$quiz_id ] ) ) : uniqid();
 			$results_id                          = 0;
 			// Creates our results array.
 			$results_array = array(
@@ -2598,7 +2598,10 @@ class QMNQuizManager {
 	 */
 	public function qsm_create_quiz_nonce() {
 		$quiz_id = ! empty( $_REQUEST['quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['quiz_id'] ) ) : 0;
-		wp_send_json_success(  wp_create_nonce( 'qsm_submit_quiz_' . $quiz_id ) );
+		wp_send_json_success( array(
+			'nonce'      => wp_create_nonce( 'qsm_submit_quiz_' . $quiz_id ),
+			'unique_key' => uniqid(),
+		) );
 	}
 }
 
