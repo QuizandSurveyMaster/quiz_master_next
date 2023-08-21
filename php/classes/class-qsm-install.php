@@ -1633,8 +1633,9 @@ class QSM_Install {
   			time_taken_real DATETIME NOT NULL,
   			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
-                        unique_id varchar(255) NOT NULL,
-                        form_type INT NOT NULL,
+            unique_id varchar(255) NOT NULL,
+            form_type INT NOT NULL,
+			UNIQUE (unique_id),
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
 
@@ -1724,6 +1725,7 @@ class QSM_Install {
 	 */
 	public function update() {
 		global $wpdb, $mlwQuizMasterNext;
+		$results_table_name = $wpdb->prefix . 'mlw_results';
 		$data = $mlwQuizMasterNext->version;
 		if ( ! get_option( 'qmn_original_version' ) ) {
 			add_option( 'qmn_original_version', $data );
@@ -2148,6 +2150,11 @@ class QSM_Install {
      		<p>The answers were as follows:</p>
          %QUESTIONS_ANSWERS%';
 				update_option( 'qmn-settings', $settings );
+			}
+
+			// Update 8.1.14
+			if ( ! $wpdb->query("SHOW KEYS FROM {$results_table_name} WHERE Key_name = 'unique_id_unique'" ) ) {
+				$results = $wpdb->query("ALTER TABLE {$results_table_name} ADD UNIQUE (unique_id)");
 			}
 
 			// Update 8.0.3

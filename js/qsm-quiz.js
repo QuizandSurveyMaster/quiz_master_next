@@ -34,7 +34,8 @@ var qsmTimerInterval = [];
 						},
 						type: 'POST',
 						success: function (response) {
-							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data+'"/>');
+							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_'+quizID+'" value="'+response.data.unique_key+'"/>');
+							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data.nonce+'"/>');
 						}
 					});
 					QSM.initPagination(quizID);
@@ -1017,6 +1018,7 @@ function qmnFormSubmit(quiz_form_id) {
 	});
 	fd.append("action", 'qmn_process_quiz');
 	fd.append("nonce", jQuery('#qsm_nonce_' + quiz_id ).val() );
+	fd.append("qsm_unique_key", jQuery('#qsm_unique_key_' + quiz_id ).val() );
 	fd.append("currentuserTime", Math.round(new Date().getTime() / 1000));
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
