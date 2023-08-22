@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 8.1.13
+Stable tag: 8.1.14
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,11 +163,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.14 (August 22, 2023) =
+* Feature: Added option to change text label for "No answer provided”
+* Bug: Resolved the issue where the timer would continue to display in the page title even after being disabled
+* Bug: Addressed several PHP warnings
+* Bug: Patched a vulnerability to prevent race conditions during submission
+* Enhancement: Included an option to underline text in the editor
+
 = 8.1.13 (August 02, 2023) =
 * Bug: Fixed translation issue with German letters
 * Bug: Resolved quiz store issue related to long quiz URLs
 * Bug: Fixed issue with inline CSS class in quiz answer selection
-
 
 = 8.1.12 (July 20, 2023) =
 * Bug: The HTML tag issue with the admin result page has been resolved
