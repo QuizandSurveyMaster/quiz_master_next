@@ -168,6 +168,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Resolved the issue where the timer would continue to display in the page title even after being disabled
 * Bug: Addressed several PHP warnings
 * Bug: Patched a vulnerability to prevent race conditions during submission
+* Bug: Fixed Cross Site Scripting (XSS) vulnerability in question description
 * Enhancement: Included an option to underline text in the editor
 
 = 8.1.13 (August 02, 2023) =
