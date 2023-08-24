@@ -339,6 +339,7 @@ class QMNPluginHelper {
 			'slug'    => $slug,
 			'options' => $options,
 		);
+		$new_type = apply_filters( 'register_question_type_new_type',$new_type );
 		$this->question_types[ $slug ] = $new_type;
 	}
 

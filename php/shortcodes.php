@@ -78,7 +78,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 			$setting = maybe_unserialize( $quiz->quiz_settings );
 			$options = maybe_unserialize( $setting['quiz_options'] );
 			$start_date = strtotime( $options['scheduled_time_start'] );
-			$end_date   = strtotime( $options['scheduled_time_end'] ); 
+			$end_date   = strtotime( $options['scheduled_time_end'] );
 			$now      = strtotime( current_time( 'm/d/Y H:i' ) );
 			if ( $end_date && $end_date < $now ) {
 				continue;
@@ -243,7 +243,7 @@ function qsm_get_post_id_from_quiz_id( $quiz_id ) {
 
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div', 10, 3 );
 function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
-	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end ) {
+	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end && 0 < $qmn_quiz_options->timer_limit ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';

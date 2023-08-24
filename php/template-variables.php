@@ -1073,7 +1073,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
 								if ( 5 == $answer['question_type'] ) {
-									$user_given_answer   = htmlentities( $answer[1] );
 									$current_answer_zero = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $current_answer_zero ) ) );
 								}
 
@@ -1279,8 +1278,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			}
 		}
 		$user_answer_new         = $answer[1];
-		$is_choice_question_type = 0 == $answer['question_type'] || 1 == $answer['question_type'] || 2 == $answer['question_type'] || 4 == $answer['question_type'] || 10 == $answer['question_type'];
-		if ( $is_choice_question_type && '' === $answer[1] ) {
+		$no_answer_question_type = array( 0, 1, 2, 3, 4, 5, 7, 10, 12, 14 );
+		if ( in_array( intval( $answer['question_type'] ), $no_answer_question_type, true) && empty( str_replace( ', ','',$user_answer_new ) ) ) {
 			$user_answer_new = $quiz_options->no_answer_text;
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
@@ -1610,7 +1609,7 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . '</div>';
+	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode(  $question_title  ) . '</div>';
 
 	return $question_display;
 }

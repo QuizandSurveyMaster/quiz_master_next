@@ -1571,7 +1571,8 @@ var QSMContact;
                             mediaButtons: true,
                             tinymce: {
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
                             },
                             quicktags: true,
                         };
@@ -2286,7 +2287,8 @@ var import_button;
                             mediaButtons: true,
                             tinymce: {
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
                             },
                             quicktags: true,
                         };
@@ -2469,10 +2471,8 @@ var import_button;
                                     $.each(fut_arr, function (i) {
                                         $(".questionElements input[name='" + index + "[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true").prop('checked', true);
                                     });
-                                } else {
-                                    if (value != null) {
-                                        $('#' + index).val(value);
-                                    }
+                                } else if (value != null) {
+                                    $('#' + index).val(value);
                                 }
                             }
                             if (index == 'matchAnswer') {
@@ -2522,7 +2522,8 @@ var import_button;
                         mediaButtons: true,
                         tinymce: {
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
                         },
                         quicktags: true,
                     };
@@ -2628,12 +2629,10 @@ var import_button;
                             current_element = current_page_section.find(".question").eq($("#current_question_position").val() - 1);
                             if ( 0 == new_element.length ) {
                                 new_page_section.append(current_element.clone());
-                            } else {
-                                if ( 1 == $("#current_question_position").val() && $("#changed_question_page_no").val() == $("#current_question_page_no").val() ) {
+                            } else if ( 1 == $("#current_question_position").val() && $("#changed_question_page_no").val() == $("#current_question_page_no").val() ) {
                                     new_element.after(current_element.clone());
-                                } else {
-                                    new_element.before(current_element.clone());
-                                }
+                            } else {
+                                new_element.before(current_element.clone());
                             }
                             current_element.remove();
                             let question_id = $("#current_question_id").val();
@@ -2793,15 +2792,11 @@ var import_button;
                                 MicroModal.show('modal-8');
                                 return false;
                             }
-                        } else {
-                            if (blanks == null || options_length === 0) {
-                                $('.modal-8-table').html(qsm_admin_messages.blank_required_validation);
-                                MicroModal.show('modal-8');
-                                return false;
-                            }
+                        } else if (blanks == null || options_length === 0) {
+                            $('.modal-8-table').html(qsm_admin_messages.blank_required_validation);
+                            MicroModal.show('modal-8');
+                            return false;
                         }
-
-
                     }
                     $('#save-edit-question-spinner').addClass('is-active');
                     var model_html = $('#modal-1-content').html();
@@ -3397,7 +3392,8 @@ var import_button;
                         mediaButtons: true,
                         tinymce: {
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
                         },
                         quicktags: true,
                     };
