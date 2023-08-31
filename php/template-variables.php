@@ -383,7 +383,7 @@ function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$quiz_settings = maybe_unserialize($quiz_data->quiz_settings);
-		$quiz_questions = maybe_unserialize( $quiz_settings['pages'] );
+		$quiz_questions = !empty( $quiz_settings['pages'] ) ? maybe_unserialize( $quiz_settings['pages'] ) : array();
 		$total_questions = isset( $quiz_questions[0] ) ? count( $quiz_questions[0] ) : 0;
 		$content = str_replace( '%TOTAL_QUESTIONS%', $total_questions, $content );
 		return $content;
