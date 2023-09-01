@@ -1231,6 +1231,10 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
+			if (qmn_quiz_data[quizID].contact_info_location == 1) {
+				$container.find(".qsm-submit-btn").hide();
+				$container.find(".mlw_next").show();
+			}			
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
