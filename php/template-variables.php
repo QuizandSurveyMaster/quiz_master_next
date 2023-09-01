@@ -1279,7 +1279,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		$user_answer_new         = $answer[1];
 		$no_answer_question_type = array( 0, 1, 2, 3, 4, 5, 7, 10, 12, 14 );
-		if ( in_array( intval( $answer['question_type'] ), $no_answer_question_type, true) && empty( str_replace( ', ','',$user_answer_new ) ) ) {
+		if ( in_array( intval( $answer['question_type'] ), $no_answer_question_type, true) && "" == str_replace( ', ','',$user_answer_new ) ) {
 			$user_answer_new = $quiz_options->no_answer_text;
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
