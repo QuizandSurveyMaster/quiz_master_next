@@ -1225,12 +1225,16 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.g-recaptcha').show();
 	} else if (slide_number >= 0 && page_number >= 1) {
 		if (total_pages == parseInt(page_number) + 2) { // if last page empty
-			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length || qmn_quiz_data[quizID].contact_info_location == 1) {
+			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length) {
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
 				$container.find(".qsm-submit-btn").show();
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
+			if (qmn_quiz_data[quizID].contact_info_location == 1) {
+				$container.find(".qsm-submit-btn").hide();
+				$container.find(".mlw_next").show();
+			}			
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
