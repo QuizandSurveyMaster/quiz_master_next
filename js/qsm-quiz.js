@@ -1225,7 +1225,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		$container.find('.g-recaptcha').show();
 	} else if (slide_number >= 0 && page_number >= 1) {
 		if (total_pages == parseInt(page_number) + 2) { // if last page empty
-			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length) {
+			if (jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").length || qmn_quiz_data[quizID].contact_info_location == 1) {
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
 				$container.find(".qsm-submit-btn").show();
 				$container.find(".mlw_next").hide();
