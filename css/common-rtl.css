@@ -309,20 +309,6 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 
 @media screen and (max-width: 767px) {
 
-	.question-type-polar-s .left-polar-title,
-	.question-type-polar-s .slider-main-wrapper,
-	.question-type-polar-s .right-polar-title {
-		width: 100%;
-		position: relative;
-		top: auto;
-		right: auto;
-		left: auto;
-		bottom: auto;
-		transform: none;
-		margin-bottom: 30px;
-		float: right;
-	}
-
 	.question-type-polar-s {
 		height: auto !important;
 	}
