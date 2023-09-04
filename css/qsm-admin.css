@@ -1614,6 +1614,7 @@ td.scheduled_time_start {
 	width: auto;
 	height: 25px;
 }
+.nav-tab-wrapper .qsm-import-export-btn{float: right;}
 .qsm-option-tab-dropdown {
 	position: relative;
 	display: inline-block;

@@ -14,6 +14,7 @@
 .qsm-option-tab-dropdown-list{right: 0;left: auto;}
 .nav-tab{margin-left: .5em;margin-right: 0;}
 .qsm-option-tab-dropdown-item{margin:0;}
+.nav-tab-wrapper .qsm-import-export-btn{float: left;}
 .overview-main-wrapper .overview-inner-wrap:last-child {margin-left: 0;}
 .overview-main-wrapper .overview-inner-wrap {margin-left: 2%;margin-right: 0;}
 div.qsm_icon_wrap{left:0;right:auto;}

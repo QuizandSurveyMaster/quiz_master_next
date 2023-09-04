@@ -1231,7 +1231,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
-			if (qmn_quiz_data[quizID].contact_info_location == 1) {
+			if (qmn_quiz_data[quiz_id].contact_info_location == 1) {
 				$container.find(".qsm-submit-btn").hide();
 				$container.find(".mlw_next").show();
 			}			
