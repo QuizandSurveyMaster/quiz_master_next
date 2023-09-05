@@ -1027,7 +1027,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				$question_description =  htmlspecialchars_decode(  $question_description, ENT_QUOTES ) ;
 			}
 			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_title . '</b>' . $add_br . $question_description . $add_br, $mlw_question_answer_display );
-			
 		}
 	} else {
 		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_description . '</b>', $mlw_question_answer_display );
