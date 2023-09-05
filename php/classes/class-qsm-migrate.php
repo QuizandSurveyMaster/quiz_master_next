@@ -153,6 +153,8 @@ class QSM_Migrate {
 				$wpdb->update( $wpdb->prefix . 'mlw_quizzes', array( 'quiz_settings' => maybe_serialize( $settings ) ), array( 'quiz_id' => $quiz_id ), array( '%s' ), array( '%d' ) );
 			}
 		}
+		update_option( 'fixed_duplicate_questions', 1 );
+
 		return;
 	}
 

@@ -237,6 +237,33 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	top: 4px;
 }
 
+div .qsm-results-page .qmn_image_option {
+    display: inline-block !important;
+    height: auto;
+}
+.mlw_qmn_question span.qsm-text-wrong-option.qmn_image_option::before,
+.mlw_qmn_question span.qsm-text-simple-option.qmn_image_option:before,
+.mlw_qmn_question span.qsm-text-correct-option.qmn_image_option::before {
+	display: none;
+}
+.mlw_qmn_question span.qsm-text-simple-option.qmn_image_option::after,
+.mlw_qmn_question span.qsm-text-correct-option.qmn_image_option::after,
+.mlw_qmn_question span.qsm-text-wrong-option.qmn_image_option::after {
+    content: "\f335";
+    font-family: dashicons;
+    position: relative;
+    top: 3px;
+    right: 0;
+    float: right;
+}
+.qsm-results-page span.qsm_image_result_caption_default {
+    float: left;
+    width: calc(100% - 22px);
+    display: block;
+}
+.mlw_qmn_question span.qsm-text-correct-option.qmn_image_option::after {
+    content: "\f159";
+}
 .mlw_qmn_question .qsm-text-simple-option {
 	display: flex;
 	margin-bottom: 5px;
