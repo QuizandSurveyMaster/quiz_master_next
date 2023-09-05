@@ -182,7 +182,7 @@ class QMNQuizManager {
 			}
 		} else {
 			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
+			$json['message'] = __( 'File Upload Unsuccessful!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;

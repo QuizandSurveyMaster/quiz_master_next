@@ -1688,11 +1688,14 @@ jQuery(function () {
 				$this.next('.loading-uploaded-file').hide();
 				jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', false);
 				if (obj.type == 'success') {
+					//jQuery('.loading-uploaded-file').replaceWith('<span class=" dashicons dashicons-trash remove-uploaded-file"></span>');
 					$this.next().next('.remove-uploaded-file').show();
 					$this.next().next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
+					$this.next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
-					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').addClass('mlw-file-upload-success-msg').text('').text(obj.message);
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
 				} else {
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
