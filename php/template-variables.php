@@ -1029,7 +1029,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			if( isset( $_GET['page'] ) &&  'qsm_quiz_result_details' == sanitize_text_field( wp_unslash( $_GET['page'] ) )) {
 				$question_description =  htmlspecialchars_decode(  $question_description, ENT_QUOTES ) ;
 			}
-			$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_title . '</b></span><br/>' . $question_description, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_title . '</b></span><br/>' . $question_description . '</div>', $mlw_question_answer_display );
 		}
 	} else {
 		$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<b>' . $question_description . '</b></div>', $mlw_question_answer_display );
