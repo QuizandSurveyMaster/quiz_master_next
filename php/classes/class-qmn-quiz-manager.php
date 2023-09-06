@@ -131,7 +131,6 @@ class QMNQuizManager {
 			echo wp_json_encode( $json );
 			exit;
 		}
-
 		$uploaded_file = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
@@ -181,8 +180,9 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
+			
 			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
+			$json['message'] = __( 'File Upload Unsuccessful!(please upload {'.$file_upload_type.' type})', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;
