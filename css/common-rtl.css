@@ -283,7 +283,9 @@ div .qsm-results-page .qmn_image_option {
 	border-bottom: 1px solid #808080;
 	padding-bottom: 25px;
 }
-
+.qmn_question_answer img {
+    max-width: 100%;
+}
 .qmn_quiz_container.qsm_auto_pagination_enabled {
 	position: relative;
 }
