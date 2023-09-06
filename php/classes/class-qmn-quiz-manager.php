@@ -131,7 +131,6 @@ class QMNQuizManager {
 			echo wp_json_encode( $json );
 			exit;
 		}
-
 		$uploaded_file = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
@@ -181,8 +180,9 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
+			
 			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
+			$json['message'] = __( 'File Upload Unsuccessful!(please upload {'.$file_upload_type.' type})', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;
@@ -905,6 +905,8 @@ class QMNQuizManager {
 			?>
 			<form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $quiz_form_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
+				<input type="hidden" name="qsm_nonce" id="qsm_nonce_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo wp_create_nonce( 'qsm_submit_quiz_' . $quiz_data['quiz_id'] );?>">
+				<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo uniqid(); ?>">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span>
 				<?php
