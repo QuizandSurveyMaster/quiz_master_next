@@ -375,6 +375,10 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	background: #fff;
 	border-radius: 50%;
 	line-height: 1;
+	margin-top: 5px;
+}
+.qmn_question_answer img {
+    max-width: 100%;
 }
 .qsm-results-page .mlw_qmn_question .qmn_image_option {
 	flex-direction: column;

@@ -951,7 +951,7 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  * @return string
  */
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $qmn_total_questions;
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 	$quiz_options  = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	if ( isset($answer['question_type']) && ( ( 0 == $quiz_options->show_optin && 8 == $answer['question_type'] ) || ( 0 == $quiz_options->show_text_html && 6 == $answer['question_type'] ) ) ) {
@@ -1015,13 +1015,16 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( ! empty( $answer[0] ) ) {
 		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
+	$question_description = !empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>': $question_description;
+	$question_numbering   = '';
+	if ( isset( $quiz_options->question_numbering ) && 1 == $quiz_options->question_numbering && 6 != $answer['question_type'] ) {
+		$qmn_total_questions += 1;
+		$question_numbering = '<span class="mlw_qmn_question_number">' . esc_html( $qmn_total_questions ) . '.&nbsp;</span>';
+	}
+
 	if ( isset( $answer['question_title'] ) && '' !== $answer['question_title'] ) {
-		$add_br = '';
-		if ( '' !== $answer[0] ) {
-			$add_br = '<br/>';
-		}
 		if ( 1 == $disable_description_on_result ) {
-			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_title . '</b>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_title . '</b></span></div>', $mlw_question_answer_display );
 		} else {
 			if( isset( $_GET['page'] ) &&  'qsm_quiz_result_details' == sanitize_text_field( wp_unslash( $_GET['page'] ) )) {
 				$question_description =  htmlspecialchars_decode(  $question_description, ENT_QUOTES ) ;
@@ -1029,7 +1032,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_title . '</b>' . $add_br . $question_description . $add_br, $mlw_question_answer_display );
 		}
 	} else {
-		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_description . '</b>', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_description . '</b></span></div>', $mlw_question_answer_display );
 	}
 	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display, $answer['question_type'], "", $answer['id'] );
 	$extra_border_bottom_class   = '';
@@ -1601,18 +1604,12 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		}
 	}
 
-	$question_numbering   = '';
-	if ( isset( $qmn_quiz_options->question_numbering ) && 1 == $qmn_quiz_options->question_numbering && 6 != $question_type ) {
-		$qmn_total_questions += 1;
-		$question_numbering = '<span class="mlw_qmn_question_number">' . esc_html( $qmn_total_questions ) . '.&nbsp;</span>';
-	}
-
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", 'QSM Questions' );
 		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_display .= "<div class='mlw_qmn_question' >" . $question_numbering . do_shortcode(  $question_title  ) . '</div>';
+	$question_display .= "<div class='mlw_qmn_question' >" . do_shortcode(  $question_title  ) . '</div>';
 
 	return $question_display;
 }
