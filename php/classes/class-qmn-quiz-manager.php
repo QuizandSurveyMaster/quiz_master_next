@@ -449,7 +449,7 @@ class QMNQuizManager {
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
 			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
-			$correct_answer_logic = ! empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
+			$correct_answer_logic = !empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
 			$enc_questions = array();
 			if ( ! empty( $qpages_arr ) ) {
