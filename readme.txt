@@ -163,6 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.15 (September 8, 2023) =
+* Bug: Fixed Missing Next Button in Auto-pagination
+* Bug: Fixed HTML tag issue on admin result page.
+* Bug: Fixed Nonce Validation error
+* Bug: Fixed translation issue with retake quiz button
+
 = 8.1.14 (August 24, 2023) =
 * Feature: Added option to change text label for "No answer provided”
 * Bug: Resolved the issue where the timer would continue to display in the page title even after being disabled
