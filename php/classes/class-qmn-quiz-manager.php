@@ -180,12 +180,12 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
-			if(!empty ($file_upload_type)) {
+			if ( ! empty ($file_upload_type) ) {
 				$filestype = explode(',', $file_upload_type);
-				foreach( $filestype as $file) {
-					if (strpos($file, '/') !== false) {
+				foreach ( $filestype as $file ) {
+					if ( strpos($file, '/') !== false ) {
 						$filetypes = explode('/', $file);
-						if( !empty($filetypes[0]) && 'application' == $filetypes[0]){
+						if ( ! empty($filetypes[0]) && 'application' == $filetypes[0] ) {
 							$filetypes_allowed[] = 'pdf';
 						} else {
 						$filetypes_allowed[] = $filetypes[0];
@@ -194,13 +194,13 @@ class QMNQuizManager {
 						$filetypes_allowed[] = $file;
 					}
 				}
-				if (count($filetypes_allowed) > 1) {
+				if ( count($filetypes_allowed) > 1 ) {
 					$files_allowed = implode(',', $filetypes_allowed);
 				} else {
 					$files_allowed = $filetypes_allowed[0]; // Just take the single element
 				}
 				$json['type']    = 'error';
-				$json['message'] = __( 'File Upload Unsuccessful! (Please upload '.$files_allowed.' file type)', 'quiz-master-next' );
+				$json['message'] = __('File Upload Unsuccessful! (Please upload ', 'quiz-master-next') . $files_allowed . __(' file type)', 'quiz-master-next');
 				echo wp_json_encode( $json );
 			} else {
 				$json['type']    = 'error';
@@ -471,7 +471,7 @@ class QMNQuizManager {
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
 			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
-			$correct_answer_logic = !empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
+			$correct_answer_logic = ! empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
 			$enc_questions = array();
 			if ( ! empty( $qpages_arr ) ) {
