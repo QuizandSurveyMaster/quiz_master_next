@@ -1695,6 +1695,7 @@ jQuery(function () {
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').addClass('mlw-file-upload-success-msg').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
 				} else {
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').removeClass('mlw-file-upload-success-msg');
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
 					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
