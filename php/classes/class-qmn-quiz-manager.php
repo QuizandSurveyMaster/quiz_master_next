@@ -905,8 +905,8 @@ class QMNQuizManager {
 			?>
 			<form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $quiz_form_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
-				<input type="hidden" name="qsm_nonce" id="qsm_nonce_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo wp_create_nonce( 'qsm_submit_quiz_' . $quiz_data['quiz_id'] );?>">
-				<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo uniqid(); ?>">
+				<input type="hidden" name="qsm_nonce" id="qsm_nonce_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo esc_attr( wp_create_nonce( 'qsm_submit_quiz_' . intval( $quiz_data['quiz_id'] ) ) );?>">
+				<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo esc_attr( uniqid() ); ?>">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span>
 				<?php

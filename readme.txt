@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 8.1.14
+Stable tag: 8.1.15
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.15 (September 11, 2023) =
+* Bug: Fixed issue causing numeric responses of 0 to display as "No Answer Provided" in emails
+* Bug: Fixed issue with next button while using manual pagination
+* Bug: Fixed WPML issue with retake and start buttons
+* Bug: Fixed custom CSS issue
+* Enhancement: Improve file upload question type functionality
+* Enhancement: Improve nonce validation logic
+* Enhancement: Improved RTL (Right-to-Left) layout support
+
 = 8.1.14 (August 24, 2023) =
 * Feature: Added option to change text label for "No answer provided”
 * Bug: Resolved the issue where the timer would continue to display in the page title even after being disabled

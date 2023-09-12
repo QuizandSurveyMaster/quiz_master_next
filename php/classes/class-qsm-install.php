@@ -2158,7 +2158,7 @@ class QSM_Install {
 			}
 
 			// Update 8.0.3
-			if ( !get_option( 'fixed_duplicate_questions' ) ) {
+			if ( ! get_option( 'fixed_duplicate_questions' ) ) {
 				QSM_Migrate::fix_duplicate_questions();
 			}
 			QSM_Migrate::fix_deleted_quiz_posts();
