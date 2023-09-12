@@ -34,8 +34,8 @@ var qsmTimerInterval = [];
 						},
 						type: 'POST',
 						success: function (response) {
-							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_'+quizID+'" value="'+response.data.unique_key+'"/>');
-							jQuery('.qsm-quiz-container-' + quizID + '').prepend('<input type="hidden" name="qsm_nonce" id="qsm_nonce_'+quizID+'" value="'+response.data.nonce+'"/>');
+							jQuery('.qsm-quiz-container-' + quizID + ' #qsm_unique_key_'+quizID).val(response.data.unique_key);
+							jQuery('.qsm-quiz-container-' + quizID + ' #qsm_nonce_'+quizID).val(response.data.nonce);
 						}
 					});
 					QSM.initPagination(quizID);
@@ -1231,6 +1231,10 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 				$container.find(".mlw_next").hide();
 				$container.find('.g-recaptcha').show();
 			}
+			if (qmn_quiz_data[quiz_id].contact_info_location == 1) {
+				$container.find(".qsm-submit-btn").hide();
+				$container.find(".mlw_next").show();
+			}			
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
@@ -1685,11 +1689,13 @@ jQuery(function () {
 				jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', false);
 				if (obj.type == 'success') {
 					$this.next().next('.remove-uploaded-file').show();
-					$this.next().next('.remove-uploaded-file').attr("data-nonce", obj.wp_nonoce);
+					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val(obj.wp_nonoce);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
 				} else {
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').removeClass('mlw-file-upload-success-msg');
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();
 					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
@@ -1702,10 +1708,10 @@ jQuery(function () {
 	});
 
 	//Ajax remove file code
-	jQuery('.quiz_section .remove-uploaded-file').on('click', function () {
+	jQuery(document).on('click ', '.quiz_section .remove-uploaded-file', function () {
 		let $this = jQuery(this);
 		let media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
-		let nonce = jQuery(this).data("nonce");
+		let nonce = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val();
 		let form_data = new FormData();
 		form_data.append('action', 'qsm_remove_file_fd_question');
 		form_data.append('media_id', media_id);
@@ -1722,9 +1728,10 @@ jQuery(function () {
 				if (obj.type == 'success') {
 					$this.hide();
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
+					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val('');
 					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
 					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
-					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
+					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text(obj.message);
 				} else {
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').show();

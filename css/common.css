@@ -300,10 +300,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	border: 1px solid red;
 	width: 31px;
 	padding: 5px 5px 0px 5px;
-	display: inline-block;
-	cursor: pointer;
 }
-
 
 /**
 * Design for new template variable QUESTION_WITH_ANSWER
@@ -370,6 +367,10 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	background: #fff;
 	border-radius: 50%;
 	line-height: 1;
+	margin-top: 5px;
+}
+.qmn_question_answer img {
+    max-width: 100%;
 }
 .qsm-results-page .mlw_qmn_question .qmn_image_option {
 	flex-direction: column;
