@@ -49,6 +49,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_quest
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_answer', 20, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_notattempted_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result', 10, 3 );
 add_filter( 'qmn_end_results', 'qsm_variable_poll_result', 10, 3 );
@@ -187,7 +188,13 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
 	$content                   = str_replace( '%AMOUNT_ATTEMPTED%', $total_attempted_questions, $content );
 	return $content;
 }
-
+function qsm_variable_total_notattempted_questions( $content, $mlw_quiz_array ) {
+	$total_attempted_questions = isset( $mlw_quiz_array['total_attempted_questions'] ) ? $mlw_quiz_array['total_attempted_questions'] : 0;
+	$total_questions = isset( $mlw_quiz_array['total_questions'] ) ? $mlw_quiz_array['total_questions'] : 0;
+	$total_unattempted_questions = $total_questions - $total_attempted_questions;
+	$content                   = str_replace( '%AMOUNT_UNATTEMPTED%', $total_unattempted_questions, $content );
+	return $content;
+}
 /**
  * Show poll result
  *
@@ -383,7 +390,7 @@ function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$quiz_settings = maybe_unserialize($quiz_data->quiz_settings);
-		$quiz_questions = !empty( $quiz_settings['pages'] ) ? maybe_unserialize( $quiz_settings['pages'] ) : array();
+		$quiz_questions = ! empty( $quiz_settings['pages'] ) ? maybe_unserialize( $quiz_settings['pages'] ) : array();
 		$total_questions = isset( $quiz_questions[0] ) ? count( $quiz_questions[0] ) : 0;
 		$content = str_replace( '%TOTAL_QUESTIONS%', $total_questions, $content );
 		return $content;
@@ -1015,7 +1022,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( ! empty( $answer[0] ) ) {
 		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
-	$question_description = !empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>': $question_description;
+	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>' : $question_description;
 	$question_numbering   = '';
 	if ( isset( $quiz_options->question_numbering ) && 1 == $quiz_options->question_numbering && 6 != $answer['question_type'] ) {
 		$qmn_total_questions += 1;
@@ -1026,8 +1033,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( 1 == $disable_description_on_result ) {
 			$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_title . '</b></span></div>', $mlw_question_answer_display );
 		} else {
-			if( isset( $_GET['page'] ) &&  'qsm_quiz_result_details' == sanitize_text_field( wp_unslash( $_GET['page'] ) )) {
-				$question_description =  htmlspecialchars_decode(  $question_description, ENT_QUOTES ) ;
+			if ( isset( $_GET['page'] ) && 'qsm_quiz_result_details' == sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) {
+				$question_description = htmlspecialchars_decode(  $question_description, ENT_QUOTES ) ;
 			}
 			$mlw_question_answer_display = str_replace( '%QUESTION%', '<div class="qsm-question-title-description">' . $question_numbering .'<span class="qsm-result-question-title"><b>' . $question_title . '</b></span><br/>' . $question_description . '</div>', $mlw_question_answer_display );
 		}
