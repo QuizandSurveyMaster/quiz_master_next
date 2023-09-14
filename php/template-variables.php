@@ -49,6 +49,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_quest
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_answer', 20, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_unattempted_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result', 10, 3 );
 add_filter( 'qmn_end_results', 'qsm_variable_poll_result', 10, 3 );
@@ -187,7 +188,22 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
 	$content                   = str_replace( '%AMOUNT_ATTEMPTED%', $total_attempted_questions, $content );
 	return $content;
 }
-
+/**
+ * Function to get the count of not answered questions or not attempted questions
+ *
+ * @since 8.1.16
+ *
+ * @param  string $content
+ * @param  array  $mlw_quiz_array
+ * @return string $content
+ */
+function qsm_variable_total_unattempted_questions( $content, $mlw_quiz_array ) {
+	$total_attempted_questions = isset( $mlw_quiz_array['total_attempted_questions'] ) ? $mlw_quiz_array['total_attempted_questions'] : 0;
+	$total_questions = isset( $mlw_quiz_array['total_questions'] ) ? $mlw_quiz_array['total_questions'] : 0;
+	$total_unattempted_questions = $total_questions - $total_attempted_questions;
+	$content                   = str_replace( '%AMOUNT_UNATTEMPTED%', $total_unattempted_questions, $content );
+	return $content;
+}
 /**
  * Show poll result
  *
