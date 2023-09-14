@@ -2246,7 +2246,8 @@ var import_button;
 						question_id: answer['question_id'],
 						answerType: answer['answerType'],
 						form_type: qsmQuestionSettings.form_type,
-						quiz_system: qsmQuestionSettings.quiz_system
+						quiz_system: qsmQuestionSettings.quiz_system,
+                        question_type: questionType,
 					};
                     if (answer['answerType'] == 'image') {
 						ansTemp = {
@@ -2258,7 +2259,8 @@ var import_button;
 							question_id: answer['question_id'],
 							answerType: answer['answerType'],
                             form_type: qsmQuestionSettings.form_type,
-                            quiz_system: qsmQuestionSettings.quiz_system
+                            quiz_system: qsmQuestionSettings.quiz_system,
+                            question_type: questionType
                         };
                     }
 					jQuery(document).trigger('qsm_new_answer_template', [ansTemp, answer, questionType]);
