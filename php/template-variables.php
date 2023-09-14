@@ -189,9 +189,9 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
 	return $content;
 }
 /**
- * Replace total_unattempted_questions variable with 
+ * Function to get the count of not answered questions or not attempted questions
  *
- * @since 7.0.2
+ * @since 8.1.16
  *
  * @param  string $content
  * @param  array  $mlw_quiz_array
