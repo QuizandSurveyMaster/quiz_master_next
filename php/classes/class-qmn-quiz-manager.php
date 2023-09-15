@@ -180,9 +180,33 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
-			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
-			echo wp_json_encode( $json );
+			if ( ! empty ($file_upload_type) ) {
+				$filestype = explode(',', $file_upload_type);
+				foreach ( $filestype as $file ) {
+					if ( strpos($file, '/') !== false ) {
+						$filetypes = explode('/', $file);
+						if ( ! empty($filetypes[0]) && 'application' == $filetypes[0] ) {
+							$filetypes_allowed[] = 'pdf';
+						} else {
+						$filetypes_allowed[] = $filetypes[0];
+						}
+					}else { 
+						$filetypes_allowed[] = $file;
+					}
+				}
+				if ( count($filetypes_allowed) > 1 ) {
+					$files_allowed = implode(',', $filetypes_allowed);
+				} else {
+					$files_allowed = $filetypes_allowed[0]; // Just take the single element
+				}
+				$json['type']    = 'error';
+				$json['message'] = __('File Upload Unsuccessful! (Please upload ', 'quiz-master-next') . $files_allowed . __(' file type)', 'quiz-master-next');
+				echo wp_json_encode( $json );
+			} else {
+				$json['type']    = 'error';
+				$json['message'] = __( 'File Upload Unsuccessful! (Please select file type)', 'quiz-master-next' );
+				echo wp_json_encode( $json );
+			}
 		}
 		exit;
 	}
