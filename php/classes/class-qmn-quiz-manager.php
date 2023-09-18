@@ -1292,19 +1292,13 @@ class QMNQuizManager {
 		$current_page_number = 1;
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( 0 != $pagination_option ) {
-				if ( 1 == $pagination_option ) {
+				if ( 1 == $pagination_option || 1 == $pages_count % $pagination_option || 1 == $pages_count ) {
 					?>
-					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
+					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr($current_page_number); ?>" style="display: none;">
 					<?php
 					$current_page_number++;
-				} else {
-					if ( 1 == $pages_count % $pagination_option || 1 == $pages_count ) { // beginning of the row or first.
-						?>
-						<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
-						<?php
-						$current_page_number++;
-					}
-				}
+					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
+				} 
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
 			$category_class      = '';
