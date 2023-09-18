@@ -1292,7 +1292,7 @@ class QMNQuizManager {
 		$current_page_number = 1;
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( 0 != $pagination_option ) {
-				if ( 1 == $pagination_option || 1 == $pages_count % $pagination_option || 1 == $pages_count) {
+				if ( 1 == $pagination_option || 1 == $pages_count % $pagination_option || 1 == $pages_count ) {
 					?>
 					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr($current_page_number); ?>" style="display: none;">
 					<?php
