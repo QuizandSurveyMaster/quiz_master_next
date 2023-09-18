@@ -938,7 +938,7 @@ class QMNQuizManager {
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
+				if ( 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
@@ -995,6 +995,23 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
+			shuffle( $pages );
+			$question_list_array = array();
+			foreach( $pages as &$question_ids ){
+				shuffle( $question_ids );
+				$question_list_array = array_merge($question_list_array, $question_ids);
+			}
+			$question_list_str = implode( ',', $question_list_array );
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ) ?>; "+expires+"; path=/";
+			</script>
+			<?php
+		}
 		if ( 1 < count( $pages ) && 1 !== intval( $options->disable_first_page ) && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
