@@ -998,7 +998,7 @@ class QMNQuizManager {
 		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
 			shuffle( $pages );
 			$question_list_array = array();
-			foreach( $pages as &$question_ids ){
+			foreach ( $pages as &$question_ids ) {
 				shuffle( $question_ids );
 				$question_list_array = array_merge($question_list_array, $question_ids);
 			}
@@ -1896,7 +1896,6 @@ class QMNQuizManager {
 	 * @return array The results of the user's score
 	 */
 	public static function check_answers( $options, $quiz_data ) {
-
 		global $mlwQuizMasterNext;
 		$new_questions = array();
 		// Load the pages and questions
@@ -2135,7 +2134,13 @@ class QMNQuizManager {
 				}
 			}
 		}
+		foreach ( $question_data as $questiontype ) { 
+			if ( 11 == $questiontype['question_type'] ) {
+				$total_questions = $total_questions - 1;
+			}
+		}
 
+		
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );

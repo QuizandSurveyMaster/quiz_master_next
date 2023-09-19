@@ -52,7 +52,6 @@ function qmn_file_upload_review( $id, $question, $answers ) {
 	$return_array['user_text']       = ($file_url) ? '<a target="_blank" href="' . $file_url . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : __( 'No file uploaded', 'quiz-master-next' );
 	$return_array['correct_text']    = ! empty( $correct_text_array ) ? implode( ', ', $correct_text_array ) : '';
 	$return_array['correct']         = $current_question->get_answer_status( 'url' );
-	$return_array['points']          = $current_question->get_points();
 	$return_array['user_answer']     = $user_text_array;
 	$return_array['correct_answer']  = $correct_text_array;
 	/**
