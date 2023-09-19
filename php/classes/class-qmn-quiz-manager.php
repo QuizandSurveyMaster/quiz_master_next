@@ -996,7 +996,7 @@ class QMNQuizManager {
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
 		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
-			shuffle( $pages );
+			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
 			$question_list_array = array();
 			foreach( $pages as &$question_ids ){
 				shuffle( $question_ids );
