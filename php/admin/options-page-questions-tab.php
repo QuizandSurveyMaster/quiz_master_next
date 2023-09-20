@@ -124,14 +124,6 @@ function qsm_options_questions_tab_content() {
 		</div>
 		<?php
 	}
-	$randomness = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'randomness_order' );
-	if ( 0 != $randomness ) {
-		?>
-		<div class="notice notice-warning">
-			<p><?php esc_html_e( 'This quiz has the "Are the questions random?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to "No".', 'quiz-master-next' ); ?></p>
-		</div>
-		<?php
-	}
 
 	$question_ids = $mlwQuizMasterNext->pluginHelper->get_questions_ids( $quiz_id );
 	if ( ! empty( $question_ids ) ) {

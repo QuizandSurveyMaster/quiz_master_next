@@ -180,9 +180,33 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
-			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
-			echo wp_json_encode( $json );
+			if ( ! empty ($file_upload_type) ) {
+				$filestype = explode(',', $file_upload_type);
+				foreach ( $filestype as $file ) {
+					if ( strpos($file, '/') !== false ) {
+						$filetypes = explode('/', $file);
+						if ( ! empty($filetypes[0]) && 'application' == $filetypes[0] ) {
+							$filetypes_allowed[] = 'pdf';
+						} else {
+						$filetypes_allowed[] = $filetypes[0];
+						}
+					}else { 
+						$filetypes_allowed[] = $file;
+					}
+				}
+				if ( count($filetypes_allowed) > 1 ) {
+					$files_allowed = implode(',', $filetypes_allowed);
+				} else {
+					$files_allowed = $filetypes_allowed[0]; // Just take the single element
+				}
+				$json['type']    = 'error';
+				$json['message'] = __('File Upload Unsuccessful! (Please upload ', 'quiz-master-next') . $files_allowed . __(' file type)', 'quiz-master-next');
+				echo wp_json_encode( $json );
+			} else {
+				$json['type']    = 'error';
+				$json['message'] = __( 'File Upload Unsuccessful! (Please select file type)', 'quiz-master-next' );
+				echo wp_json_encode( $json );
+			}
 		}
 		exit;
 	}
@@ -914,7 +938,7 @@ class QMNQuizManager {
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
+				if ( 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
@@ -971,6 +995,23 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
+			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
+			$question_list_array = array();
+			foreach ( $pages as &$question_ids ) {
+				shuffle( $question_ids );
+				$question_list_array = array_merge($question_list_array, $question_ids);
+			}
+			$question_list_str = implode( ',', $question_list_array );
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ) ?>; "+expires+"; path=/";
+			</script>
+			<?php
+		}
 		if ( 1 < count( $pages ) && 1 !== intval( $options->disable_first_page ) && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
@@ -1268,19 +1309,13 @@ class QMNQuizManager {
 		$current_page_number = 1;
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( 0 != $pagination_option ) {
-				if ( 1 == $pagination_option ) {
+				if ( 1 == $pagination_option || 1 == $pages_count % $pagination_option || 1 == $pages_count ) {
 					?>
-					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
+					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr($current_page_number); ?>" style="display: none;">
 					<?php
 					$current_page_number++;
-				} else {
-					if ( 1 == $pages_count % $pagination_option || 1 == $pages_count ) { // beginning of the row or first.
-						?>
-						<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
-						<?php
-						$current_page_number++;
-					}
-				}
+					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
+				} 
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
 			$category_class      = '';
@@ -1438,6 +1473,19 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function display_results( $options, $data ) {
+		$quiz_id = ! empty( $_REQUEST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qmn_quiz_id'] ) ) : 0 ;
+		if ( ! isset( $_REQUEST['qsm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			exit;
+		}
 		$result        = $this->submit_results( $options, $data );
 		$results_array = $result;
 		return $results_array['display'];
@@ -1861,7 +1909,6 @@ class QMNQuizManager {
 	 * @return array The results of the user's score
 	 */
 	public static function check_answers( $options, $quiz_data ) {
-
 		global $mlwQuizMasterNext;
 		$new_questions = array();
 		// Load the pages and questions
@@ -2100,7 +2147,13 @@ class QMNQuizManager {
 				}
 			}
 		}
+		foreach ( $question_data as $questiontype ) { 
+			if ( 11 == $questiontype['question_type'] ) {
+				$total_questions = $total_questions - 1;
+			}
+		}
 
+		
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );

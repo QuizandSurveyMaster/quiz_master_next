@@ -187,7 +187,6 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
 	$content                   = str_replace( '%AMOUNT_ATTEMPTED%', $total_attempted_questions, $content );
 	return $content;
 }
-
 /**
  * Show poll result
  *
