@@ -166,7 +166,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 8.1.16 (September 20, 2023) =
 * Feature: Added option to use random question and answer with manual pagination
 * Bug: Fix quiz score calculation issue with file upload question types
-* Enhancement: Improve nonce validation logic
+* Enhancement: Improved nonce validation logic
 
 = 8.1.15 (September 11, 2023) =
 * Bug: Fixed issue causing numeric responses of 0 to display as "No Answer Provided" in emails
