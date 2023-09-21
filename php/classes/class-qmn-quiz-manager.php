@@ -435,6 +435,7 @@ class QMNQuizManager {
 			$wrong_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text );
 			$wrong_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz_quick_result_wrong_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$quiz_processing_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" );
+			$quiz_limit_choice = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_limit_choice, "quiz_quiz_limit_choice-{$qmn_array_for_variables['quiz_id']}" );
 			$qmn_json_data = array(
 				'quiz_id'                            => $qmn_array_for_variables['quiz_id'],
 				'quiz_name'                          => $qmn_array_for_variables['quiz_name'],
@@ -456,6 +457,7 @@ class QMNQuizManager {
 				'quick_result_correct_answer_text'   => $correct_answer_text,
 				'quick_result_wrong_answer_text'     => $wrong_answer_text,
 				'quiz_processing_message'            => $quiz_processing_message,
+				'quiz_limit_choice'                  => $quiz_limit_choice,
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 			);
@@ -879,13 +881,14 @@ class QMNQuizManager {
 			'qmn_ajax_object',
 			array(
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
-				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+				'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->quiz_limit_choice, "quiz_quiz_limit_choice-{$options->quiz_id}" ),
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 			)
 		);
+
 		$disable_mathjax = isset( $options->disable_mathjax ) ? $options->disable_mathjax : '';
 		if ( 1 != $disable_mathjax ) {
 			wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
