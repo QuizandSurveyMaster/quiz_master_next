@@ -32,6 +32,8 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			}
 			$show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '" style="' . esc_attr( $size_style ) . '" />';
 			$image_class      = 'qmn_image_option';
+		} elseif ( isset( $question_settings['answerEditor'] ) && 'rich' === $question_settings['answerEditor'] ) {
+			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
 		} else {
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
 			$image_class      = '';
