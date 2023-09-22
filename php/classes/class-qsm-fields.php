@@ -28,7 +28,7 @@ class QSM_Fields {
 			foreach ( $fields as $field ) {
 				// Sanitize the values based on type
 				$sanitized_value = '';
-				if ( isset( $_POST[ $field["id"] ] ) || 'selectinput' == $field["type"] ) {
+				if ( ( isset( $_POST[ $field["id"] ] ) && 'multiple_fields' !== $field["type"] ) || 'selectinput' == $field["type"] ) {
 					switch ( $field["type"] ) {
 						case 'text':
 							$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
@@ -65,7 +65,27 @@ class QSM_Fields {
 							break;
 					}
 				}
-				$settings_array[ $field["id"] ] = $sanitized_value;
+				if ( 'multiple_fields' == $field["type"] ) {
+					foreach ( $field["fields"] as $key => $value ) {
+						switch ( $value["type"] ) {
+							case 'url':
+								$sanitized_value = esc_url_raw( wp_unslash( $_POST[ $key ] ) );
+								break;
+							case 'checkbox':
+								$sanitized_value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : 0;
+								break;
+							case 'number':
+								$sanitized_value = intval( $_POST[ $key ] );
+								break;
+							default:
+								$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+								break;
+						}
+						$settings_array[ $key ] = $sanitized_value;
+					}
+				}else {
+					$settings_array[ $field["id"] ] = $sanitized_value;
+				}
 			}
 
 			$quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
@@ -128,7 +148,11 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 						// Generate the field
 							if ( isset( $field['option_tab'] ) && 'general' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+									QSM_Fields::generate_field( $field, $settings );
+								}else {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
 						}
 						?>
@@ -141,7 +165,11 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 							// Generate the field
 							if ( isset( $field['option_tab'] ) && 'quiz_submission' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+									QSM_Fields::generate_field( $field, $settings );
+								}else {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
 						}
 						?>
@@ -154,7 +182,11 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 							// Generate the field
 							if ( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+									QSM_Fields::generate_field( $field, $settings );
+								}else {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
 						}
 						?>
@@ -167,7 +199,11 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 							// Generate the field
 							if ( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ) {
-								QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+									QSM_Fields::generate_field( $field, $settings );
+								}else {
+									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+								}
 							}
 						}
 						?>
@@ -312,7 +348,7 @@ class QSM_Fields {
 		$field = wp_parse_args( $field, $defaults );
 
 		// If id is not valid, return false
-		if ( is_null( $field["id"] ) || empty( $field["id"] ) ) {
+		if ( ( is_null( $field["id"] ) || empty( $field["id"] ) ) && 'multiple_fields' !== $field['type'] ) {
 			return false;
 		}
 
@@ -326,6 +362,126 @@ class QSM_Fields {
 		QSM_Fields::$method( $field, $value );
 
 		return true;
+	}
+
+	/**
+	 * Generate multiple fields
+	 *
+	 * @since 8.1.17
+	 * @param array $fields The array that contains the data for all fields
+	 * @param array $settings The array that holds the settings for this section
+	 */
+	public static function generate_multiple_fields_field( $fields, $value ) {
+		?>
+		<tr valign="top" class="<?php echo ! empty( $fields['container_class'] ) ? $fields['container_class'] : ''; ?>">
+			<th scope="row" class="qsm-opt-tr">
+				<label><?php echo wp_kses_post( $fields['label'] ); ?></label>
+				<?php if ( isset($fields['tooltip']) && '' !== $fields['tooltip'] ) { ?>
+				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+					<span class="qsm-tooltips"><?php echo wp_kses_post( $fields['tooltip'] ); ?></span>
+				</span>
+				<?php } ?>
+			</th>
+			<td>
+				<?php
+				foreach ( $fields['fields'] as $key => $field ) {
+					if ( isset( $value[ $key ] ) ) {
+						?>
+						<fieldset class="buttonset buttonset-hide" data-hide='1' id="<?php echo $key; ?>">
+						<?php
+						if ( ! empty( $field['prefix_text'] ) ) {
+							echo $field['prefix_text'];
+						}
+						switch ( $field["type"] ) {
+							case 'checkbox':
+								foreach ( $field["options"] as $option ) {
+									?>
+									<label class="qsm-option-label" for="<?php echo sanitize_title( $key . '-' . $option["value"] ); ?>">
+										<input type="checkbox" id="<?php echo sanitize_title( $key . '-' . $option["value"] ); ?>"
+											name="<?php echo esc_attr( $key ); ?>" <?php checked( $option["value"], $value[ $key ] ); ?>
+											value="<?php echo esc_attr( $option["value"] ); ?>" />
+										<?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?>
+									</label>
+									<?php
+								}
+								break;
+							case 'radio':
+								foreach ( $field["options"] as $option ) {
+									?>
+									<label class="qsm-option-label" for="<?php echo sanitize_title( $key . '-' . $option["value"] ); ?>">
+										<input type="radio" id="<?php echo sanitize_title( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
+										<?php
+										$allowed_tags = wp_kses_allowed_html('post');
+										$allowed_tags['input'] = array(
+																'class' => 1,
+																'id'    => 1,
+																'type'  => 1,
+																'name'  => 1,
+																'value' => 1,
+															);
+										echo isset( $option["label"] ) ? wp_kses( $option["label"], $allowed_tags ) : ""; ?>
+									</label>
+									<?php
+								}
+								break;
+							case 'date':
+								?>
+								<input autocomplete="off" class="qsm-date-picker" type="text" placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" id="<?php echo sanitize_title( $key ); ?>-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value[ $key ] ); ?>" />
+								<?php
+								break;
+							case 'number':
+								?>
+								<input class="small-text" type="number" placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" step="1" min="<?php echo ! empty($field['min']) ? esc_attr($field['min']) : 0; ?>" id="<?php echo sanitize_title( $key ); ?>-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value[ $key ] ); ?>" />
+								<?php
+								break;
+							case 'textarea':
+								?>
+								<textarea placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" id="<?php echo sanitize_title( $key ); ?>-input" name="<?php echo esc_attr( $key ); ?>"><?php echo esc_attr( $value[ $key ] ); ?></textarea>
+								<?php
+								break;
+							case 'image':
+								?>
+								<div class="qsm-image-field">
+									<input placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" type="text" class="qsm-image-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value[ $key ] ); ?>">
+									<a class="qsm-image-btn button" class="button"><span class="dashicons dashicons-format-image"></span> <?php echo esc_html( $field['button_label'] ); ?></a>
+								</div>
+								<?php
+								break;
+							case 'select':
+								?>
+								<select name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>-select">
+									<?php
+									foreach ( $field["options"] as $option ) {
+										?>
+										<option <?php selected( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>"><?php echo wp_kses_post( $option["label"] ); ?></option>
+										<?php
+									}
+									?>
+								</select>
+								<?php
+								break;
+							default:
+								?>
+								<input type="text" placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" id="<?php echo esc_attr( $key ); ?>-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value[ $key ] ); ?>" />
+								<?php
+								break;
+							?>
+						<?php
+						}
+						if ( ! empty( $field['suffix_text'] ) ) {
+							echo $field['suffix_text'];
+						}
+						?>
+						</fieldset>
+						<?php
+					}
+				}
+				if ( isset($fields['help']) && '' !== $fields['help'] ) { ?>
+				<span class="qsm-opt-desc"><?php echo wp_kses_post( $fields['help'] ); ?></span>
+				<?php } ?>
+			</td>
+		</tr>
+		<?php
 	}
 
 	/**
