@@ -418,7 +418,7 @@ class QSM_Quiz_Settings {
 		}
 		// Cycle through registered settings
 		$registered_fields = $this->registered_fields;
-		if( is_array($registered_fields) ){
+		if ( is_array($registered_fields) ) {
 			foreach ( $registered_fields as $section => $fields ) {
 				// Check if section exists in settings and, if not, set it to empty array
 				if ( ! isset( $settings_array[ $section ] ) ) {

@@ -413,12 +413,12 @@ class QSM_Fields {
 										<?php
 										$allowed_tags = wp_kses_allowed_html('post');
 										$allowed_tags['input'] = array(
-																'class' => 1,
-																'id'    => 1,
-																'type'  => 1,
-																'name'  => 1,
-																'value' => 1,
-															);
+											'class' => 1,
+											'id'    => 1,
+											'type'  => 1,
+											'name'  => 1,
+											'value' => 1,
+										);
 										echo isset( $option["label"] ) ? wp_kses( $option["label"], $allowed_tags ) : ""; ?>
 									</label>
 									<?php
