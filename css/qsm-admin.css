@@ -852,6 +852,9 @@ ul.changelog li.update div.two:before {
 	box-sizing: border-box;
 	border-left: 1px solid #dfd4d4;
 }
+.quiz_text_tab_content .right-bar .quiz_style_tab_content .form-table th {
+	width: 250px;
+}
 .quiz_text_tab_content .left-bar ul {
 	display: flex;
 	flex-direction: column;
@@ -1621,6 +1624,7 @@ td.scheduled_time_start {
 	width: auto;
 	height: 25px;
 }
+.nav-tab-wrapper .qsm-import-export-btn{float: right;}
 .qsm-option-tab-dropdown {
 	position: relative;
 	display: inline-block;

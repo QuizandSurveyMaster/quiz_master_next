@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 8.1.12
+Stable tag: 8.1.16
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,33 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.16 (September 20, 2023) =
+* Feature: Added option to use random question and answer with manual pagination
+* Bug: Fix quiz score calculation issue with file upload question types
+* Enhancement: Improved nonce validation logic
+
+= 8.1.15 (September 11, 2023) =
+* Bug: Fixed issue causing numeric responses of 0 to display as "No Answer Provided" in emails
+* Bug: Fixed issue with next button while using manual pagination
+* Bug: Fixed WPML issue with retake and start buttons
+* Bug: Fixed custom CSS issue
+* Enhancement: Improve file upload question type functionality
+* Enhancement: Improve nonce validation logic
+* Enhancement: Improved RTL (Right-to-Left) layout support
+
+= 8.1.14 (August 24, 2023) =
+* Feature: Added option to change text label for "No answer provided”
+* Bug: Resolved the issue where the timer would continue to display in the page title even after being disabled
+* Bug: Addressed several PHP warnings
+* Bug: Patched a vulnerability to prevent race conditions during submission
+* Bug: Fixed Cross Site Scripting (XSS) vulnerability in question description
+* Enhancement: Included an option to underline text in the editor
+
+= 8.1.13 (August 02, 2023) =
+* Bug: Fixed translation issue with German letters
+* Bug: Resolved quiz store issue related to long quiz URLs
+* Bug: Fixed issue with inline CSS class in quiz answer selection
+
 = 8.1.12 (July 20, 2023) =
 * Bug: The HTML tag issue with the admin result page has been resolved
 * Bug: Fixed issue with question position on manual pagination

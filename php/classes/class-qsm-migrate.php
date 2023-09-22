@@ -145,14 +145,16 @@ class QSM_Migrate {
 				/**
 				 * Setup new data
 				 */
-				$settings['pages']   = maybe_serialize( $pages );
-				$settings['qpages']  = maybe_serialize( $qpages );
+				$settings['pages']   = ! empty( $pages ) && is_array( $pages) ? maybe_serialize( $pages ) : "";
+				$settings['qpages']  = ! empty( $qpages ) && is_array( $qpages) ? maybe_serialize( $qpages ) : "";
 				/**
 				 * Update quiz settings
 				 */
 				$wpdb->update( $wpdb->prefix . 'mlw_quizzes', array( 'quiz_settings' => maybe_serialize( $settings ) ), array( 'quiz_id' => $quiz_id ), array( '%s' ), array( '%d' ) );
 			}
 		}
+		update_option( 'fixed_duplicate_questions', 1 );
+
 		return;
 	}
 

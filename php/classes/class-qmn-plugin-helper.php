@@ -339,6 +339,7 @@ class QMNPluginHelper {
 			'slug'    => $slug,
 			'options' => $options,
 		);
+		$new_type = apply_filters( 'register_question_type_new_type',$new_type );
 		$this->question_types[ $slug ] = $new_type;
 	}
 
@@ -581,6 +582,7 @@ class QMNPluginHelper {
 			'quick_result_correct_answer_text' => __('Correct! You have selected correct answer.', 'quiz-master-next'),
 			'quick_result_wrong_answer_text'   => __('Wrong! You have selected wrong answer.', 'quiz-master-next'),
 			'quiz_processing_message'          => '',
+			'quiz_limit_choice'                => __('Limit of choice is reached.', 'quiz-master-next'),
 			'name_field_text'                  => __('Name', 'quiz-master-next'),
 			'business_field_text'              => __('Business', 'quiz-master-next'),
 			'email_field_text'                 => __('Email', 'quiz-master-next'),
@@ -619,6 +621,14 @@ class QMNPluginHelper {
 			$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
 			$translation_slug    = sanitize_title( $translation_slug );
 			$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
+			if ( 'QSM Answers' === $domain && $new_text == $translation_text ) {
+				if ( 0 === strpos($translation_slug, 'caption-') ) {
+					$translation_slug    = sanitize_title( 'caption-' . $translation_text );
+				}else {
+					$translation_slug    = sanitize_title( 'answer-' . $translation_text );
+				}
+				$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
+			}
 			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
 			/**
 			 * Return translation for non-default strings.
@@ -675,13 +685,13 @@ class QMNPluginHelper {
 		$answers = isset( $question_data['answer_array'] ) ? maybe_unserialize( $question_data['answer_array'] ) : array();
 		if ( ! empty( $answers ) ) {
 			$answerEditor = isset( $settings['answerEditor'] ) ? $settings['answerEditor'] : 'text';
-			foreach ( $answers as $ans ) {
+			foreach ( $answers as $key => $ans ) {
 				if ( 'image' === $answerEditor ) {
 					$caption_text = trim( htmlspecialchars_decode( $ans[3], ENT_QUOTES ) );
-					$this->qsm_register_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+					$this->qsm_register_language_support( $caption_text, 'caption-' . $question_id . '-' . $key, 'QSM Answers' );
 				} else {
 					$answer_text = trim( htmlspecialchars_decode( $ans[0], ENT_QUOTES ) );
-					$this->qsm_register_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+					$this->qsm_register_language_support( $answer_text, 'answer-' . $question_id . '-' . $key, 'QSM Answers' );
 				}
 			}
 		}

@@ -219,6 +219,7 @@ function qsm_options_results_tab_template(){
 							<p><?php esc_html_e( 'Create the results page that should be shown when the conditions are met.', 'quiz-master-next' ); ?></p>
 						</div>
 						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
+						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
 						<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>

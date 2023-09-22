@@ -131,7 +131,6 @@ class QMNQuizManager {
 			echo wp_json_encode( $json );
 			exit;
 		}
-
 		$uploaded_file = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
@@ -181,9 +180,33 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 			}
 		} else {
-			$json['type']    = 'error';
-			$json['message'] = __( 'Incorrect File Type uploaded. Please upload the allowed file type!', 'quiz-master-next' );
-			echo wp_json_encode( $json );
+			if ( ! empty ($file_upload_type) ) {
+				$filestype = explode(',', $file_upload_type);
+				foreach ( $filestype as $file ) {
+					if ( strpos($file, '/') !== false ) {
+						$filetypes = explode('/', $file);
+						if ( ! empty($filetypes[0]) && 'application' == $filetypes[0] ) {
+							$filetypes_allowed[] = 'pdf';
+						} else {
+						$filetypes_allowed[] = $filetypes[0];
+						}
+					}else { 
+						$filetypes_allowed[] = $file;
+					}
+				}
+				if ( count($filetypes_allowed) > 1 ) {
+					$files_allowed = implode(',', $filetypes_allowed);
+				} else {
+					$files_allowed = $filetypes_allowed[0]; // Just take the single element
+				}
+				$json['type']    = 'error';
+				$json['message'] = __('File Upload Unsuccessful! (Please upload ', 'quiz-master-next') . $files_allowed . __(' file type)', 'quiz-master-next');
+				echo wp_json_encode( $json );
+			} else {
+				$json['type']    = 'error';
+				$json['message'] = __( 'File Upload Unsuccessful! (Please select file type)', 'quiz-master-next' );
+				echo wp_json_encode( $json );
+			}
 		}
 		exit;
 	}
@@ -373,7 +396,8 @@ class QMNQuizManager {
 					wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
 				} elseif ( $registered_template && file_exists( get_theme_file_path( '/templates/' . $registered_template['path'] ) ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
-				} else {
+				}
+				if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
 					echo "<style type='text/css' id='qmn_quiz_template-css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
 				}
 			}
@@ -411,6 +435,7 @@ class QMNQuizManager {
 			$wrong_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text );
 			$wrong_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz_quick_result_wrong_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$quiz_processing_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" );
+			$quiz_limit_choice = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_limit_choice, "quiz_quiz_limit_choice-{$qmn_array_for_variables['quiz_id']}" );
 			$qmn_json_data = array(
 				'quiz_id'                            => $qmn_array_for_variables['quiz_id'],
 				'quiz_name'                          => $qmn_array_for_variables['quiz_name'],
@@ -432,6 +457,7 @@ class QMNQuizManager {
 				'quick_result_correct_answer_text'   => $correct_answer_text,
 				'quick_result_wrong_answer_text'     => $wrong_answer_text,
 				'quiz_processing_message'            => $quiz_processing_message,
+				'quiz_limit_choice'                  => $quiz_limit_choice,
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 			);
@@ -448,7 +474,7 @@ class QMNQuizManager {
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 			$qmn_settings_array = maybe_unserialize( $qmn_quiz_options->quiz_settings );
 			$quiz_options = maybe_unserialize( $qmn_settings_array['quiz_options'] );
-			$correct_answer_logic = $quiz_options['correct_answer_logic'];
+			$correct_answer_logic = ! empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
 			$enc_questions = array();
 			if ( ! empty( $qpages_arr ) ) {
@@ -855,13 +881,14 @@ class QMNQuizManager {
 			'qmn_ajax_object',
 			array(
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
-				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+				'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->quiz_limit_choice, "quiz_quiz_limit_choice-{$options->quiz_id}" ),
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 			)
 		);
+
 		$disable_mathjax = isset( $options->disable_mathjax ) ? $options->disable_mathjax : '';
 		if ( 1 != $disable_mathjax ) {
 			wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
@@ -905,6 +932,8 @@ class QMNQuizManager {
 			?>
 			<form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $quiz_form_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
+				<input type="hidden" name="qsm_nonce" id="qsm_nonce_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo esc_attr( wp_create_nonce( 'qsm_submit_quiz_' . intval( $quiz_data['quiz_id'] ) ) );?>">
+				<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_<?php echo esc_attr($quiz_data['quiz_id']); ?>" value="<?php echo esc_attr( uniqid() ); ?>">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span>
 				<?php
@@ -912,7 +941,7 @@ class QMNQuizManager {
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
-				if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
+				if ( 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
 					// ... else, use older system.
@@ -969,6 +998,23 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
+			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
+			$question_list_array = array();
+			foreach ( $pages as &$question_ids ) {
+				shuffle( $question_ids );
+				$question_list_array = array_merge($question_list_array, $question_ids);
+			}
+			$question_list_str = implode( ',', $question_list_array );
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ) ?>; "+expires+"; path=/";
+			</script>
+			<?php
+		}
 		if ( 1 < count( $pages ) && 1 !== intval( $options->disable_first_page ) && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
@@ -1266,19 +1312,13 @@ class QMNQuizManager {
 		$current_page_number = 1;
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( 0 != $pagination_option ) {
-				if ( 1 == $pagination_option ) {
+				if ( 1 == $pagination_option || 1 == $pages_count % $pagination_option || 1 == $pages_count ) {
 					?>
-					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
+					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr($current_page_number); ?>" style="display: none;">
 					<?php
 					$current_page_number++;
-				} else {
-					if ( 1 == $pages_count % $pagination_option || 1 == $pages_count ) { // beginning of the row or first.
-						?>
-						<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
-						<?php
-						$current_page_number++;
-					}
-				}
+					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
+				} 
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
 			$category_class      = '';
@@ -1436,6 +1476,19 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function display_results( $options, $data ) {
+		$quiz_id = ! empty( $_REQUEST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qmn_quiz_id'] ) ) : 0 ;
+		if ( ! isset( $_REQUEST['qsm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			exit;
+		}
 		$result        = $this->submit_results( $options, $data );
 		$results_array = $result;
 		return $results_array['display'];
@@ -1646,7 +1699,7 @@ class QMNQuizManager {
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$unique_id                           = uniqid();
+			$unique_id                           = ! empty( $_REQUEST['qsm_unique_key'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qsm_unique_key'] ) ) : uniqid();
 			$results_id                          = 0;
 			// Creates our results array.
 			$results_array = array(
@@ -1691,6 +1744,10 @@ class QMNQuizManager {
 					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+					if ( 254 < strlen($http_referer) ) {
+						$results_array['page_url'] = $http_referer;
+						$http_referer = substr($http_referer, 0, 254);
+					}
 					$results_insert = $wpdb->insert(
 						$table_name,
 						array(
@@ -1765,7 +1822,7 @@ class QMNQuizManager {
 			if ( 1 == $qmn_quiz_options->enable_retake_quiz_button ) {
 				$result_display .= '<form method="POST">';
 				$result_display .= '<input type="hidden" value="' . $qmn_array_for_variables['quiz_id'] . '" name="qsm_retake_quiz_id" />';
-				$result_display .= '<input type="submit" value="' . apply_filters( 'qsm_retake_quiz_text', $qmn_quiz_options->retake_quiz_button_text ) . '" name="qsm_retake_button" class="qsm-btn qsm_retake_button qmn_btn" id="qsm_retake_button" />';
+				$result_display .= '<input type="submit" value="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( apply_filters( 'qsm_retake_quiz_text', $qmn_quiz_options->retake_quiz_button_text ), "quiz_retake_quiz_button_text-{$qmn_quiz_options->quiz_id}" ) . '" name="qsm_retake_button" class="qsm-btn qsm_retake_button qmn_btn" id="qsm_retake_button" />';
 				$result_display .= '</form>';
 			}
 
@@ -1855,7 +1912,6 @@ class QMNQuizManager {
 	 * @return array The results of the user's score
 	 */
 	public static function check_answers( $options, $quiz_data ) {
-
 		global $mlwQuizMasterNext;
 		$new_questions = array();
 		// Load the pages and questions
@@ -1952,7 +2008,7 @@ class QMNQuizManager {
 								}
 
 								// If the user's answer was correct
-								if ( 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+								if ( ! empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
 									$total_correct += 1;
 									$correct_status = 'correct';
 								}
@@ -2094,7 +2150,13 @@ class QMNQuizManager {
 				}
 			}
 		}
+		foreach ( $question_data as $questiontype ) { 
+			if ( 11 == $questiontype['question_type'] ) {
+				$total_questions = $total_questions - 1;
+			}
+		}
 
+		
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
@@ -2594,7 +2656,10 @@ class QMNQuizManager {
 	 */
 	public function qsm_create_quiz_nonce() {
 		$quiz_id = ! empty( $_REQUEST['quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['quiz_id'] ) ) : 0;
-		wp_send_json_success(  wp_create_nonce( 'qsm_submit_quiz_' . $quiz_id ) );
+		wp_send_json_success( array(
+			'nonce'      => wp_create_nonce( 'qsm_submit_quiz_' . $quiz_id ),
+			'unique_key' => uniqid(),
+		) );
 	}
 }
 
@@ -2756,7 +2821,7 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'total_questions'        => $total_questions,
 			'previous_text'          => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->previous_button_text, "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
 			'next_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->next_button_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
-			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'start_quiz_survey_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_btn_display_text, "quiz_start_quiz_text-{$qmn_quiz_options->quiz_id}" ),
 			'submit_quiz_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support($qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}

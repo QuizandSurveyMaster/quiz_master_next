@@ -1280,7 +1280,16 @@ class QSM_Install {
 			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
+		// Registers limit the number of choices
+		$field_array = array(
+			'id'         => 'quiz_limit_choice',
+			'label'      => __( 'Answer choice limit message', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Text to notify that the answer choice limit is exceeded in the multiple response type question.', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 		// Registers name_field_text setting
 		$field_array = array(
 			'id'         => 'name_field_text',
@@ -1467,8 +1476,9 @@ class QSM_Install {
   			time_taken_real DATETIME NOT NULL,
   			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
-                        unique_id varchar(255) NOT NULL,
-                        form_type INT NOT NULL,
+            unique_id varchar(255) NOT NULL,
+            form_type INT NOT NULL,
+			UNIQUE (unique_id),
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
 
@@ -1558,6 +1568,7 @@ class QSM_Install {
 	 */
 	public function update() {
 		global $wpdb, $mlwQuizMasterNext;
+		$results_table_name = $wpdb->prefix . 'mlw_results';
 		$data = $mlwQuizMasterNext->version;
 		if ( ! get_option( 'qmn_original_version' ) ) {
 			add_option( 'qmn_original_version', $data );
@@ -1984,8 +1995,15 @@ class QSM_Install {
 				update_option( 'qmn-settings', $settings );
 			}
 
+			// Update 8.1.14
+			if ( ! $wpdb->query("SHOW KEYS FROM {$results_table_name} WHERE Key_name = 'unique_id_unique'" ) ) {
+				$results = $wpdb->query("ALTER TABLE {$results_table_name} ADD UNIQUE (unique_id)");
+			}
+
 			// Update 8.0.3
-			QSM_Migrate::fix_duplicate_questions();
+			if ( ! get_option( 'fixed_duplicate_questions' ) ) {
+				QSM_Migrate::fix_duplicate_questions();
+			}
 			QSM_Migrate::fix_deleted_quiz_posts();
 
 			update_option( 'mlw_quiz_master_version', $data );
