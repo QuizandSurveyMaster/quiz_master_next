@@ -465,8 +465,6 @@ class QSM_Fields {
 								<input type="text" placeholder="<?php echo ! empty( $field['placeholder'] ) ? $field['placeholder'] : ''; ?>" id="<?php echo esc_attr( $key ); ?>-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value[ $key ] ); ?>" />
 								<?php
 								break;
-							?>
-						<?php
 						}
 						if ( ! empty( $field['suffix_text'] ) ) {
 							echo $field['suffix_text'];
