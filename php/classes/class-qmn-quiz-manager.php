@@ -1506,7 +1506,7 @@ class QMNQuizManager {
 		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'display'       => apply_filters( 'qsm_nonce_failed_message', htmlspecialchars_decode( 'Nonce Validation failed!' ) ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
