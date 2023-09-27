@@ -956,7 +956,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( isset($answer['question_type']) && ( ( 0 == $quiz_options->show_optin && 8 == $answer['question_type'] ) || ( 0 == $quiz_options->show_text_html && 6 == $answer['question_type'] ) ) ) {
 		return '';
 	}
-
+	$questions = apply_filters( 'qsm_questions_answers_shortcode_to_text_question', $questions,$mlw_quiz_array,$answer,$qsm_question_cnt, $total_question_cnt );
 	$use_custom_default_template = array();
 	foreach ( $question_types as $type ) {
 		if ( isset( $type['options']['use_custom_default_template'] ) && $type['options']['use_custom_default_template'] ) {
