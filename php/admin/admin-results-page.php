@@ -76,6 +76,9 @@ function qsm_results_overview_tab() {
 	if ( ! class_exists( 'QSM_Analysis' ) ) {
 		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Reporting And Analysis', 'quiz-master-next' ), 'qsm_reporting_analysis_tabs_content', 10 );
 	}
+	if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
+		$mlwQuizMasterNext->pluginHelper->register_admin_results_tab( __( 'Proctor Reports', 'quiz-master-next' ), 'qsm_proctor_quiz_tabs_content', 12 );
+	}
 }
 
 add_action( 'plugins_loaded', 'qsm_results_overview_tab' );
@@ -371,9 +374,19 @@ function qsm_results_overview_tab_content() {
 		if ( "0" === $results_screen_option['time_taken'] ) {
 			$values['time_taken']['style'] = $display_none;
 		}
-
+		if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
+			$proctor_class = "qsm-quiz-proctor-addon";
+		}else {
+			$proctor_class = "";
+		}
 		if ( $mlw_quiz_data ) {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
+				$mlw_quiz_info->proctor_report_class = $proctor_class;
+				if ( "" == $proctor_class ) {
+					$mlw_quiz_info->proctor_report_link = "admin.php?page=qsm_quiz_result_details&tab=proctor-results&quiz_id=$mlw_quiz_info->quiz_id&result_id=$mlw_quiz_info->result_id";
+				}else {
+					$mlw_quiz_info->proctor_report_link = "#";
+				}
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
 				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
@@ -501,7 +514,7 @@ function qsm_results_overview_tab_content() {
 						?>
 						<tr>
 							<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" /></td>
-							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class','', $quiz_infos[ $x ]->result_id ); ?>"><span style="font-size:16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a></span></div></td>
+							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class','', $quiz_infos[ $x ]->result_id ); ?>"><span style="font-size:16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> | <a class="<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_class ); ?>"  href='<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_link ); ?>'><?php esc_html_e( 'View Report', 'quiz-master-next' ); ?></a></span></div></td>
 							<?php
 							foreach ( $values as $k => $v ) {
 								if ( isset( $v['content'][ $x ] ) ) {
@@ -581,6 +594,20 @@ function qsm_results_overview_tab_content() {
 	</div>
 
 	<?php
+	if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
+		$qsm_pop_up_arguments = array(
+			"id"           => 'modal-proctor-quiz',
+			"title"        => __('Quiz Proctor', 'quiz-master-next'),
+			"description"  => __('Enhance exam fairness using Quiz Proctor: Capture images, monitor tab shifts, and prevent cheating by restricting copy/paste within the quiz. Ensure focus and equity with full-screen mode.', 'quiz-master-next'),
+			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/proctor_quiz_chart.png',
+			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Quiz Proctor Addon separately.', 'quiz-master-next'),
+			"buy_btn_text" => __('Buy Quiz Proctor Addon', 'quiz-master-next'),
+			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor/', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+			"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+		);
+		qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+	}
 }
 
 function qsm_export_results_tabs_content() {
@@ -610,6 +637,22 @@ function qsm_reporting_analysis_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/reporting-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/results-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-ups_buy_addon', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
+}
+
+function qsm_proctor_quiz_tabs_content() {
+	$args = array(
+		"id"           => 'proctoring-quiz',
+		"title"        => __( 'Quiz Proctor', 'quiz-master-next' ),
+		"description"  => __( 'Enhance exam fairness using Quiz Proctor: Capture images, monitor tab shifts, and prevent cheating by restricting copy/paste within the quiz. Ensure focus and equity with full-screen mode.', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
+		"warning"      => __( 'Missing Feature - Quiz Proctor Add-on required', 'quiz-master-next' ),
+		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Proctoring Quiz Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy Quiz Proctor Addon', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
 }
