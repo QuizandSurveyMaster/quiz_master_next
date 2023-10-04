@@ -1111,7 +1111,12 @@ class QMNQuizManager {
 				$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$options->quiz_id}" );
 				?>
 					<div class="quiz_section">
-						<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data ); ?></div>
+						<div class='qsm-after-message mlw_qmn_message_end'>
+							<?php
+							$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data );
+							echo do_shortcode( wp_kses_post( $message_after ) );
+							?>
+						</div>
 				<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
@@ -1201,7 +1206,12 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page" style="display: none;">
 				<div class="quiz_section">
-					<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data ); ?></div>
+					<div class='qsm-after-message mlw_qmn_message_end'>
+						<?php
+						$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data );
+						echo do_shortcode( wp_kses_post( $message_after ) );
+						?>
+					</div>
 					<?php
 					if ( 1 == $options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $options );
@@ -1438,7 +1448,8 @@ class QMNQuizManager {
 					<span class='mlw_qmn_message_end'>
 					<?php
 						$message_end = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$qmn_quiz_options->quiz_id}" );
-						echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_end ), $qmn_array_for_variables );
+						$message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_end ), $qmn_array_for_variables );
+						echo do_shortcode( wp_kses_post( $message_end ) );
 					?>
 					</span>
 					<br /><br />
