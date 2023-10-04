@@ -190,7 +190,7 @@ class QMNQuizManager {
 						} else {
 						$filetypes_allowed[] = $filetypes[0];
 						}
-					}else { 
+					}else {
 						$filetypes_allowed[] = $file;
 					}
 				}
@@ -1318,7 +1318,7 @@ class QMNQuizManager {
 					<?php
 					$current_page_number++;
 					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
-				} 
+				}
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
 			$category_class      = '';
@@ -1519,13 +1519,24 @@ class QMNQuizManager {
 		global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb;
 
 		$qmn_allowed_visit = true;
-		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
-		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
+		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 		$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-		if ( is_null( $options ) || 1 == $options->deleted ) {
+		$post_ids = get_posts(array(
+			'post_type'   => 'qsm_quiz', // Replace with the post type you're working with
+			'meta_key'    => 'quiz_id',
+			'meta_value'  => intval( $quiz_id ),
+			'fields'      => 'ids',
+			'numberposts' => 1,
+		));
+		$post_status = false;
+		if ( ! empty( $post_ids[0] ) ) {
+			$post_status = get_post_status( $post_ids[0] );
+		}
+
+		if ( is_null( $options ) || 1 == $options->deleted || 'publish' !== $post_status ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'This quiz is no longer available.' ),
+					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -2150,13 +2161,13 @@ class QMNQuizManager {
 				}
 			}
 		}
-		foreach ( $question_data as $questiontype ) { 
+		foreach ( $question_data as $questiontype ) {
 			if ( 11 == $questiontype['question_type'] ) {
 				$total_questions = $total_questions - 1;
 			}
 		}
 
-		
+
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
