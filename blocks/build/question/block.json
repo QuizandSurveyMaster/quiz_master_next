@@ -1,0 +1,98 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qsm/quiz-question",
+  "version": "0.1.0",
+  "title": "Question",
+  "category": "widgets",
+  "parent": [
+    "qsm/quiz-page"
+  ],
+  "icon": "feedback",
+  "description": "QSM Quiz Question",
+  "attributes": {
+    "questionID": {
+      "type": "string",
+      "default": "0"
+    },
+    "type": {
+      "type": "string",
+      "default": "0"
+    },
+    "description": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "correctAnswerInfo": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "commentBox": {
+      "type": "string",
+      "default": "0"
+    },
+    "category": {
+      "type": "number"
+    },
+    "multicategories": {
+      "type": "array"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "featureImageID": {
+      "type": "number"
+    },
+    "featureImageSrc": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "array"
+    },
+    "answerEditor": {
+      "type": "string",
+      "default": "text"
+    },
+    "matchAnswer": {
+      "type": "string",
+      "default": "random"
+    },
+    "required": {
+      "type": "string",
+      "default": "0"
+    },
+    "otherSettings": {
+      "type": "object",
+      "default": {}
+    },
+    "settings": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "usesContext": [
+    "quiz-master-next/quizID",
+    "quiz-master-next/pageID"
+  ],
+  "providesContext": {
+    "quiz-master-next/questionID": "questionID"
+  },
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "main-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}

@@ -1,0 +1,55 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+ $qsm_primary_color: #666666;
+ $qsm_wp_primary_color : #1f8cbe;
+
+.qsm-placeholder-select-create-quiz{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    .components-base-control{
+        max-width: 50%;
+    }
+}
+
+.qsm-placeholder-quiz-create-form{
+    width: 50%;
+    .components-button{
+        width: fit-content;
+    }
+}
+
+.wp-block-qsm-quiz-question {
+    /*Question Title*/
+    .qsm-question-title {
+        color: $qsm_wp_primary_color;
+        font-size: 1.38rem;
+    }
+
+    /*Question description*/
+    .qsm-question-description, 
+    .qsm-question-correct-answer-info,
+    .qsm-question-hint {
+        font-size: 1rem;
+    }
+
+    /*Question options*/
+    .qsm-question-answer-option{
+        color: $qsm_primary_color;
+        font-size: 0.9rem;
+        margin-left: 1rem;
+    }
+
+    /*Question block in editing mode*/
+    &.in-editing-mode{
+        .qsm-question-title{
+            color: $qsm_primary_color;
+        }
+    }
+    
+}

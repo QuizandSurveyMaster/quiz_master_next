@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "qsm/quiz",
+	"version": "0.1.0",
+	"title": "QSM Quiz",
+	"category": "widgets",
+	"icon": "feedback",
+	"description": "Easily and quickly add quizzes and surveys to your website.",
+	"attributes": {
+		"quizID": {
+			"type": "string",
+			"default": "0"
+		}
+	},
+	"providesContext": {
+		"quiz-master-next/quizID": "quizID"
+	},
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "main-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qsm/quiz-answer-option",
+  "version": "0.1.0",
+  "title": "Answer Option",
+  "category": "widgets",
+  "parent": [
+    "qsm/quiz-question"
+  ],
+  "icon": "feedback",
+  "description": "QSM Quiz answer option",
+  "attributes": {
+    "optionID": {
+      "type": "string",
+      "default": "0"
+    },
+    "content": {
+      "type": "string",
+      "default": ""
+    },
+    "points": {
+      "type": "string",
+      "default": "0"
+    },
+    "isCorrect": {
+      "type": "string",
+      "default": "0"
+    }
+  },
+  "usesContext": [
+    "quiz-master-next/quizID",
+    "quiz-master-next/pageID",
+    "quiz-master-next/questionID"
+  ],
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "main-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}
