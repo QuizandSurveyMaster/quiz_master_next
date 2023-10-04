@@ -610,6 +610,11 @@ var QSMAdmin;
         deleteResults(qid, qname);
     });
 
+    $(document).on('click', '#the-list .qsm-quiz-proctor-addon', function (e) {
+        e.preventDefault();
+        MicroModal.show('modal-proctor-quiz');
+    });
+
     jQuery(document).on('click', '#btn_export', function (e) {
         e.preventDefault();
         jQuery.ajax({
