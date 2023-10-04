@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 8.1.15
+Stable tag: 8.1.16
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.16 (September 20, 2023) =
+* Feature: Added option to use random question and answer with manual pagination
+* Bug: Fix quiz score calculation issue with file upload question types
+* Enhancement: Improved nonce validation logic
+
 = 8.1.15 (September 11, 2023) =
 * Bug: Fixed issue causing numeric responses of 0 to display as "No Answer Provided" in emails
 * Bug: Fixed issue with next button while using manual pagination

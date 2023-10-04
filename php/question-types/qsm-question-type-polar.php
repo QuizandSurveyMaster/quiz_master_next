@@ -55,7 +55,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 			}
 			$left_image = $answers[0][0];
 			?>
-			<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $left_image, ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>"  />
+			<img class="qsm-polar-img" alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $left_image, ENT_QUOTES ) ) ); ?>"  style="<?php echo esc_attr( $size_style ); ?>"  />
 			<span class="qsm_image_caption">
 				<?php
 				$caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
