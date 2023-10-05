@@ -2068,7 +2068,8 @@ var import_button;
                     var quizID = parseInt(qsmTextTabObject.quiz_id);
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
-                    advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    var required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
                     $.each($("input[name='file_upload_type[]']:checked"), function () {
@@ -2155,6 +2156,7 @@ var import_button;
 						intcnt++
                     });
 					model.set('answers', answers);
+					model.set('required', required);
 
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
