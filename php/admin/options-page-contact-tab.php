@@ -149,14 +149,14 @@ function qsm_options_contact_tab_template() {
 					<option value="checkbox" <# if (data.type == 'checkbox') { #>selected<# } #> ><?php esc_html_e('Checkbox', 'quiz-master-next');?></option>
 					<option value="radio" <# if (data.type == 'radio') { #>selected<# } #> ><?php esc_html_e('Radio', 'quiz-master-next');?></option>
 					<option value="select" <# if (data.type == 'select') { #>selected<# } #> ><?php esc_html_e('Select', 'quiz-master-next');?></option>
-					<?php do_action('qsm_extra_contact_form_field_type'); ?>	
+					<?php do_action('qsm_extra_contact_form_field_type'); ?>
 				</select>
 			</div>
 			<div class="contact-form-group contact-form-inputs">
 				<label class="contact-form-label"><?php esc_html_e('Label', 'quiz-master-next');?></label>
 				<input type="text" class="contact-form-control label-control" value="{{data.label}}">
 				<input type="hidden" class="use-control" value="{{data.use}}">
-			</div>			
+			</div>
 			<div class="contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
 					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
@@ -195,4 +195,3 @@ function qsm_options_contact_tab_template() {
 	</script>
 	<?php
 }
-		
