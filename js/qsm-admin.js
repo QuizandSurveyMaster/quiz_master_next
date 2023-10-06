@@ -668,6 +668,11 @@ var QSMAdmin;
         deleteResults(qid, qname);
     });
 
+    $(document).on('click', '#the-list .qsm-quiz-proctor-addon', function (e) {
+        e.preventDefault();
+        MicroModal.show('modal-proctor-quiz');
+    });
+
     jQuery(document).on('click', '#btn_export', function (e) {
         e.preventDefault();
         jQuery.ajax({
@@ -2121,7 +2126,8 @@ var import_button;
                     var quizID = parseInt(qsmTextTabObject.quiz_id);
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
-                    advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    var required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
                     $.each($("input[name='file_upload_type[]']:checked"), function () {
@@ -2208,6 +2214,7 @@ var import_button;
 						intcnt++
                     });
 					model.set('answers', answers);
+					model.set('required', required);
 
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
