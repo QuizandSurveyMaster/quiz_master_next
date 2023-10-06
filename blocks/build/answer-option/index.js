@@ -110,6 +110,7 @@ function Edit(props) {
     ...blockProps
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: "p",
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Answer options', 'quiz-master-next'),
     "aria-label": (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Question answer', 'quiz-master-next'),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Your Answer', 'quiz-master-next'),
     value: content,
@@ -150,9 +151,11 @@ function Edit(props) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   qsmFormData: function() { return /* binding */ qsmFormData; },
 /* harmony export */   qsmIsEmpty: function() { return /* binding */ qsmIsEmpty; },
 /* harmony export */   qsmSanitizeName: function() { return /* binding */ qsmSanitizeName; },
-/* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; }
+/* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; },
+/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; }
 /* harmony export */ });
 //Check if undefined, null, empty
 const qsmIsEmpty = data => 'undefined' === typeof data || null === data || '' === data;
@@ -168,6 +171,25 @@ const qsmSanitizeName = name => {
 
 // Remove anchor tags from button text content.
 const qsmStripTags = text => text.replace(/<\/?a[^>]*>/g, '');
+
+//prepare form data
+const qsmFormData = (obj = false) => {
+  let newData = new FormData();
+  newData.append('qsm_block_api_call', '1');
+  if (false !== obj) {
+    for (let k in obj) {
+      if (obj.hasOwnProperty(k)) {
+        newData.append(k, obj[k]);
+      }
+    }
+  }
+  return newData;
+};
+const qsmUniqid = (prefix = "", random = false) => {
+  const sec = Date.now() * 1000 + Math.random() * 1000;
+  const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
+  return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
+};
 
 /***/ }),
 
@@ -267,7 +289,7 @@ module.exports = window["wp"]["i18n"];
   \**************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"qsm/quiz-answer-option","version":"0.1.0","title":"Answer Option","category":"widgets","parent":["qsm/quiz-question"],"icon":"feedback","description":"QSM Quiz answer option","attributes":{"optionID":{"type":"string","default":"0"},"content":{"type":"string","default":""},"points":{"type":"string","default":"0"},"isCorrect":{"type":"string","default":"0"}},"usesContext":["quiz-master-next/quizID","quiz-master-next/pageID","quiz-master-next/questionID"],"example":{},"supports":{"html":false},"textdomain":"main-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"qsm/quiz-answer-option","version":"0.1.0","title":"Answer Option","category":"widgets","parent":["qsm/quiz-question"],"icon":"remove","description":"QSM Quiz answer option","attributes":{"optionID":{"type":"string","default":"0"},"content":{"type":"string","default":""},"points":{"type":"string","default":"0"},"isCorrect":{"type":"string","default":"0"}},"usesContext":["quiz-master-next/quizID","quiz-master-next/pageID","quiz-master-next/questionID"],"example":{},"supports":{"html":false},"textdomain":"main-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

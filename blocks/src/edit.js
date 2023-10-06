@@ -7,8 +7,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { store as editorStore } from '@wordpress/editor';
-import { store as coreStore } from '@wordpress/core-data';
+import { store as noticesStore } from '@wordpress/notices';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	PanelBody,
@@ -24,7 +23,7 @@ import {
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import './editor.scss';
-import { qsmIsEmpty } from './helper';
+import { qsmIsEmpty, qsmFormData, qsmUniqid } from './helper';
 export default function Edit( props ) {
 	//check for QSM initialize data
 	if ( 'undefined' === typeof qsmBlockData ) {
@@ -32,63 +31,31 @@ export default function Edit( props ) {
 	}
 
 	const { className, attributes, setAttributes, isSelected, clientId } = props;
-	/*
-	"	quiz_name": {
-			"type": "string",
-			"default": ""
-		},
-		"quiz_featured_image": {
-			"type": "string",
-			"default": ""
-		},
-		"form_type": {
-			"type": "string",
-			"default": ""
-		},
-		"system": {
-			"type": "string",
-			"default": ""
-		},
-		"timer_limit": {
-			"type": "string",
-			"default": ""
-		},
-		"pagination": {
-			"type": "string",
-			"default": ""
-		},
-		"enable_pagination_quiz": {
-			"type": "number",
-			"default": 0
-		},
-		"progress_bar": {
-			"type": "number",
-			"default": 0
-		},
-		"require_log_in": {
-			"type": "number",
-			"default": 0
-		},
-		"disable_first_page": {
-			"type": "number",
-			"default": 0
-		},
-		"comment_section": {
-			"type": "number",
-			"default": 1
-		}
-	*/
+	const { createNotice } = useDispatch( noticesStore );
 	const {
 		quizID 
 	} = attributes;
 
+	//quiz attribute
 	const [ quizAttr, setQuizAttr ] = useState( qsmBlockData.globalQuizsetting );
+	//quiz list
 	const [ quizList, setQuizList ] = useState( qsmBlockData.QSMQuizList );
+	//quiz list
+	const [ quizMessage, setQuizMessage ] = useState( {
+		error: false,
+		msg: ''
+	} );
+	//weather creating a new quiz
 	const [ createQuiz, setCreateQuiz ] = useState( false );
+	//weather saving quiz
 	const [ saveQuiz, setSaveQuiz ] = useState( false );
+	//weather to show advance option
 	const [ showAdvanceOption, setShowAdvanceOption ] = useState( false );
+	//Quiz template on set Quiz ID
 	const [ quizTemplate, setQuizTemplate ] = useState( [] );
+	//Quiz Options to create attributes label, description and layout
 	const quizOptions = qsmBlockData.quizOptions;
+
 	/**Initialize block from server */
 	useEffect( () => {
 		let shouldSetQSMAttr = true;
@@ -196,40 +163,27 @@ export default function Edit( props ) {
 		
 	}, [ quizID ] );
 
-	
+	/**
+	 * vault dash Icon
+	 * @returns vault dash Icon
+	 */
 	const feedbackIcon = () => (
 	<Icon 
-			icon={
-				() => (
-					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						color="#ffffff"
-						>
-						<rect
-							x="2.75"
-							y="3.75"
-							width="18.5"
-							height="16.5"
-							stroke="#0EA489"
-							strokeWidth="1.5"
-						/>
-						<rect x="6" y="7" width="12" height="1" fill="#0EA489" />
-						<rect x="6" y="11" width="12" height="1" fill="#0EA489" />
-						<rect x="6" y="15" width="12" height="1" fill="#0EA489" />
-					</svg>
-				)
-			}
+			icon="vault"
+			size="36"
 	/>
 	);
+
+	/**
+	 * 
+	 * @returns Placeholder for quiz in case quiz ID is not set
+	 */
 	const quizPlaceholder = ( ) => {
 		return (
 			<Placeholder
 				icon={ feedbackIcon }
-				label={ __( 'Quiz And Survey Master' ) }
+				label={ __( 'Quiz And Survey Master', 'quiz-master-next' ) }
+				instructions={ __( 'Easily and quickly add quizzes and surveys inside the block editor.', 'quiz-master-next' ) }
 			>
 				{
 					<>
@@ -295,6 +249,7 @@ export default function Edit( props ) {
 									'pagination',
 								].map( ( item ) => (
 									<TextControl
+										key={ 'quiz-create-text-'+item }
 										type='number'
 										label={ quizOptions?.[item]?.label }
 										help={ quizOptions?.[item]?.help }
@@ -314,6 +269,7 @@ export default function Edit( props ) {
 									'comment_section'
 								].map( ( item ) => (
 								<ToggleControl
+									key={ 'quiz-create-toggle-'+item }
 									label={ quizOptions?.[item]?.label }
 									help={ quizOptions?.[item]?.help }
 									checked={ ! qsmIsEmpty( quizAttr[item] ) && '1' == quizAttr[item]  }
@@ -339,6 +295,11 @@ export default function Edit( props ) {
 		);
 	};
 
+	/**
+	 * Set attribute value
+	 * @param { any } value attribute value to set
+	 * @param { string } attr_name attribute name
+	 */
 	const setQuizAttributes = ( value , attr_name ) => {
 		let newAttr = quizAttr;
 		newAttr[ attr_name ] = value;
@@ -346,9 +307,141 @@ export default function Edit( props ) {
 	}
 
 	const createNewQuiz = () => {
+		if ( qsmIsEmpty( quizAttr.quiz_name ) ) {
+			console.log("empty quiz_name");
+			return;
+		}
+		//save quiz status
+		setSaveQuiz( true );
+		// let quizData = {
+		// 	"quiz_name": quizAttr.quiz_name,
+		// 	"qsm_new_quiz_nonce": qsmBlockData.qsm_new_quiz_nonce
+		// };
+		let quizData = qsmFormData({
+			'quiz_name': quizAttr.quiz_name,
+			'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
+		});
+		
+		if ( showAdvanceOption ) {
+			['form_type', 
+			'system', 
+			'timer_limit', 
+			'pagination',
+			'enable_contact_form', 
+			'enable_pagination_quiz', 
+			'show_question_featured_image_in_result',
+			'progress_bar',
+			'require_log_in',
+			'disable_first_page',
+			'comment_section'
+			].forEach( ( item ) => ( 'undefined' === typeof quizAttr[ item ] || null === quizAttr[ item ] ) ? '' : quizData.append( item, quizAttr[ item ] ) );
+		}
 
+		//AJAX call
+		apiFetch( {
+			path: '/quiz-survey-master/v1/quiz/create_quiz',
+			method: 'POST',
+			body: quizData
+		} ).then( ( res ) => {
+			console.log( res );
+			//save quiz status
+			setSaveQuiz( false );
+			if ( 'success' == res.status ) {
+				//create a question
+				let newQuestion = qsmFormData( {
+					"id": null,
+					"quizID": res.quizID,
+					"type": "0",
+					"name": "",
+					"question_title": "",
+					"answerInfo": "",
+					"comments": "1",
+					"hint": "",
+					"category": "",
+					"required": 1,
+					"answers": [],
+					"page": 0
+				} );
+				//AJAX call
+				apiFetch( {
+					path: '/quiz-survey-master/v1/questions',
+					method: 'POST',
+					body: newQuestion
+				} ).then( ( response ) => {
+					console.log("question response", response);
+					if ( 'success' == response.status ) {
+						let question_id = response.id;
+
+						/**Page attributes required format */
+						// pages[0][]: 2512
+						// 	qpages[0][id]: 2
+						// 	qpages[0][quizID]: 76
+						// 	qpages[0][pagekey]: Ipj90nNT
+						// 	qpages[0][hide_prevbtn]: 0
+						// 	qpages[0][questions][]: 2512
+						// 	post_id: 111
+						
+						let newPage = qsmFormData( {
+							"action": qsmBlockData.save_pages_action,
+							"quiz_id": res.quizID,
+							"nonce": qsmBlockData.saveNonce,
+							"post_id": res.quizPostID,
+						} );
+						newPage.append( 'pages[0][]', question_id  );
+						newPage.append( 'qpages[0][id]', 1  );
+						newPage.append( 'qpages[0][quizID]', res.quizID );
+						newPage.append( 'qpages[0][pagekey]', qsmUniqid()  );
+						newPage.append( 'qpages[0][hide_prevbtn]', 0  );
+						newPage.append( 'qpages[0][questions][]', question_id  );
+
+
+						//create a page
+						apiFetch( {
+							url: qsmBlockData.ajax_url,
+							method: 'POST',
+							body: newPage
+						} ).then( ( pageResponse ) => {
+							console.log("pageResponse", pageResponse);
+							if ( 'success' == pageResponse.status ) {
+								//set new quiz ID
+								setAttributes( { quizID: res.quizID } );
+							}
+						});
+
+					}
+					
+				}).catch(
+					( error ) => {
+						console.log( 'error',error );
+						createNotice( 'error', error.message, {
+							isDismissible: true,
+							type: 'snackbar',
+						} );
+					}
+				);
+				
+			} 
+
+			//create notice
+			createNotice( res.status, res.msg, {
+				isDismissible: true,
+				type: 'snackbar',
+			} );
+		} ).catch(
+			( error ) => {
+				console.log( 'error',error );
+				createNotice( 'error', error.message, {
+					isDismissible: true,
+					type: 'snackbar',
+				} );
+			}
+		);
+	  
 	}
 
+	/**
+	 * Inner Blocks
+	 */
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		template: quizTemplate,

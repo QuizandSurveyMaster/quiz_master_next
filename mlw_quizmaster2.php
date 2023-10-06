@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.1.16
+ * Version: 9.1.16
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -153,6 +153,17 @@ class MLWQuizMasterNext {
 		$this->add_hooks();
 	}
 
+	//Check admin capabilities
+	public function qsm_is_admin( $check_permission = 'manage_options' ) {
+		if ( ! function_exists( 'wp_get_current_user' ) && file_exists( ABSPATH . "wp-includes/pluggable.php" ) ) { 
+			require_once( ABSPATH . "wp-includes/pluggable.php" ); 
+		}
+		if ( ! function_exists( 'current_user_can' ) && file_exists( ABSPATH . "wp-includes/capabilities.php" ) ) { 
+			require_once( ABSPATH . "wp-includes/capabilities.php" ); 
+		}
+		return ( function_exists( 'wp_get_current_user' ) && function_exists( 'current_user_can' ) && current_user_can( $check_permission ) );
+	}
+
 	/**
 	 * Load File Dependencies
 	 *
@@ -161,6 +172,8 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
+		include_once 'blocks/block.php';
+		
 		include_once 'php/classes/class-qsm-install.php';
 		include_once 'php/classes/class-qsm-fields.php';
 
@@ -170,7 +183,7 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-audit.php';
 		$this->audit_manager = new QSM_Audit();
 
-		if ( is_admin() ) {
+		if ( is_admin() || $this->qsm_is_admin() ) {
 			include_once 'php/admin/functions.php';
 			include_once 'php/admin/stats-page.php';
 			include_once 'php/admin/quizzes-page.php';
@@ -205,11 +218,7 @@ class MLWQuizMasterNext {
 		include_once 'php/adverts-generate.php';
 		include_once 'php/question-types.php';
 		include_once 'php/default-templates.php';
-		include_once 'php/shortcodes.php';
-
-		if ( function_exists( 'register_block_type' ) ) {
-			include_once 'blocks/block.php';
-		}
+		include_once 'php/shortcodes.php';		
 
 		include_once 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();

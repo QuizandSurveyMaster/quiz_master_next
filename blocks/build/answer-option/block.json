@@ -8,7 +8,7 @@
   "parent": [
     "qsm/quiz-question"
   ],
-  "icon": "feedback",
+  "icon": "remove",
   "description": "QSM Quiz answer option",
   "attributes": {
     "optionID": {

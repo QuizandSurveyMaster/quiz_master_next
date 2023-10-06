@@ -159,6 +159,7 @@ export default function Edit( props ) {
 	<div  { ...blockProps } >
 		<RichText
 			tagName='h4'
+			title={ __( 'Question title', 'quiz-master-next' ) }
 			aria-label={ __( 'Question title', 'quiz-master-next' ) }
 			placeholder={  __( 'Type your question here', 'quiz-master-next' ) }
 			value={ title }
@@ -172,6 +173,7 @@ export default function Edit( props ) {
 			<>
 			<RichText
 				tagName='p'
+				title={ __( 'Question description', 'quiz-master-next' ) }
 				aria-label={ __( 'Question description', 'quiz-master-next' ) }
 				placeholder={  __( 'Description goes here', 'quiz-master-next' ) }
 				value={ decodeHtml( description ) }
@@ -186,6 +188,7 @@ export default function Edit( props ) {
 			/>
 			<RichText
 				tagName='p'
+				title={ __( 'Correct Answer Info', 'quiz-master-next' ) }
 				aria-label={ __( 'Correct Answer Info', 'quiz-master-next' ) }
 				placeholder={  __( 'Correct answer info goes here', 'quiz-master-next' ) }
 				value={ decodeHtml( correctAnswerInfo ) }
@@ -196,6 +199,7 @@ export default function Edit( props ) {
 			/>
 			<RichText
 				tagName='p'
+				title={ __( 'Hint', 'quiz-master-next' ) }
 				aria-label={ __( 'Hint', 'quiz-master-next' ) }
 				placeholder={  __( 'hint goes here', 'quiz-master-next' ) }
 				value={ hint }

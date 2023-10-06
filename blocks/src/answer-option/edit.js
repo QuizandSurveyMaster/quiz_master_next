@@ -89,6 +89,7 @@ onRemove } = props;
 	<div  { ...blockProps } >
 		<RichText
 			tagName='p'
+			title={ __( 'Answer options', 'quiz-master-next' ) }
 			aria-label={ __( 'Question answer', 'quiz-master-next' ) }
 			placeholder={  __( 'Your Answer', 'quiz-master-next' ) }
 			value={ content }

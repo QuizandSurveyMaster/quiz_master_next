@@ -10,9 +10,11 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   qsmFormData: function() { return /* binding */ qsmFormData; },
 /* harmony export */   qsmIsEmpty: function() { return /* binding */ qsmIsEmpty; },
 /* harmony export */   qsmSanitizeName: function() { return /* binding */ qsmSanitizeName; },
-/* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; }
+/* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; },
+/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; }
 /* harmony export */ });
 //Check if undefined, null, empty
 const qsmIsEmpty = data => 'undefined' === typeof data || null === data || '' === data;
@@ -28,6 +30,25 @@ const qsmSanitizeName = name => {
 
 // Remove anchor tags from button text content.
 const qsmStripTags = text => text.replace(/<\/?a[^>]*>/g, '');
+
+//prepare form data
+const qsmFormData = (obj = false) => {
+  let newData = new FormData();
+  newData.append('qsm_block_api_call', '1');
+  if (false !== obj) {
+    for (let k in obj) {
+      if (obj.hasOwnProperty(k)) {
+        newData.append(k, obj[k]);
+      }
+    }
+  }
+  return newData;
+};
+const qsmUniqid = (prefix = "", random = false) => {
+  const sec = Date.now() * 1000 + Math.random() * 1000;
+  const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
+  return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
+};
 
 /***/ }),
 
@@ -176,6 +197,7 @@ function Edit(props) {
     ...blockProps
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: "h4",
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Question title', 'quiz-master-next'),
     "aria-label": (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Question title', 'quiz-master-next'),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Type your question here', 'quiz-master-next'),
     value: title,
@@ -187,6 +209,7 @@ function Edit(props) {
     className: 'qsm-question-title'
   }), isParentOfSelectedBlock && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: "p",
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Question description', 'quiz-master-next'),
     "aria-label": (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Question description', 'quiz-master-next'),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Description goes here', 'quiz-master-next'),
     value: decodeHtml(description),
@@ -201,6 +224,7 @@ function Edit(props) {
     template: QUESTION_TEMPLATE
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: "p",
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Correct Answer Info', 'quiz-master-next'),
     "aria-label": (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Correct Answer Info', 'quiz-master-next'),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Correct answer info goes here', 'quiz-master-next'),
     value: decodeHtml(correctAnswerInfo),
@@ -212,6 +236,7 @@ function Edit(props) {
     __unstableAllowPrefixTransformations: true
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: "p",
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hint', 'quiz-master-next'),
     "aria-label": (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Hint', 'quiz-master-next'),
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('hint goes here', 'quiz-master-next'),
     value: hint,
@@ -322,7 +347,7 @@ module.exports = window["wp"]["i18n"];
   \*********************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"qsm/quiz-question","version":"0.1.0","title":"Question","category":"widgets","parent":["qsm/quiz-page"],"icon":"feedback","description":"QSM Quiz Question","attributes":{"questionID":{"type":"string","default":"0"},"type":{"type":"string","default":"0"},"description":{"type":"string","source":"html","selector":"p","default":""},"title":{"type":"string","default":""},"correctAnswerInfo":{"type":"string","source":"html","selector":"p","default":""},"commentBox":{"type":"string","default":"0"},"category":{"type":"number"},"multicategories":{"type":"array"},"hint":{"type":"string"},"featureImageID":{"type":"number"},"featureImageSrc":{"type":"string"},"answers":{"type":"array"},"answerEditor":{"type":"string","default":"text"},"matchAnswer":{"type":"string","default":"random"},"required":{"type":"string","default":"0"},"otherSettings":{"type":"object","default":{}},"settings":{"type":"object","default":{}}},"usesContext":["quiz-master-next/quizID","quiz-master-next/pageID"],"providesContext":{"quiz-master-next/questionID":"questionID"},"example":{},"supports":{"html":false},"textdomain":"main-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"qsm/quiz-question","version":"0.1.0","title":"Question","category":"widgets","parent":["qsm/quiz-page"],"icon":"move","description":"QSM Quiz Question","attributes":{"questionID":{"type":"string","default":"0"},"type":{"type":"string","default":"0"},"description":{"type":"string","source":"html","selector":"p","default":""},"title":{"type":"string","default":""},"correctAnswerInfo":{"type":"string","source":"html","selector":"p","default":""},"commentBox":{"type":"string","default":"0"},"category":{"type":"number"},"multicategories":{"type":"array"},"hint":{"type":"string"},"featureImageID":{"type":"number"},"featureImageSrc":{"type":"string"},"answers":{"type":"array"},"answerEditor":{"type":"string","default":"text"},"matchAnswer":{"type":"string","default":"random"},"required":{"type":"string","default":"0"},"otherSettings":{"type":"object","default":{}},"settings":{"type":"object","default":{}}},"usesContext":["quiz-master-next/quizID","quiz-master-next/pageID"],"providesContext":{"quiz-master-next/questionID":"questionID"},"example":{},"supports":{"html":false},"textdomain":"main-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

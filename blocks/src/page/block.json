@@ -6,7 +6,7 @@
 	"title": "Page",
 	"category": "widgets",
 	"parent": [ "qsm/quiz" ],
-	"icon": "feedback",
+	"icon": "text-page",
 	"description": "QSM Quiz Page",
 	"attributes": {
 		"pageID": {

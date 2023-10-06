@@ -90,19 +90,6 @@ function qsm_register_rest_routes() {
 			},
 		)
 	);
-
-	//get quiz structure data
-	register_rest_route(
-		'quiz-survey-master/v1',
-		'/quiz/structure',
-		array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => 'qsm_quiz_structure_data',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
-			},
-		)
-	);
 		// Register rest api to get quiz list
 		register_rest_route(
 			'qsm',
@@ -135,7 +122,6 @@ function qsm_register_rest_routes() {
 				},
 			)
 		);
-		
 		// Get Categories of quiz
 		register_rest_route(
 			'quiz-survey-master/v1',
@@ -797,103 +783,3 @@ function qsm_get_quizzes_list() {
 	}
 	return $qsm_quiz_list;
 }
-
-if ( ! function_exists( 'qsm_quiz_structure_data' ) ) {
-	function qsm_quiz_structure_data( WP_REST_Request $request ) {
-
-		$result = array(
-			'status' => 'error',
-			'msg'    => __( 'User not found', 'quiz-master-next' ),
-		);
-		if ( ! is_user_logged_in() || ! function_exists( 'wp_get_current_user' ) || empty( wp_get_current_user() ) ) {
-			return $result;
-		}
-	
-		$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
-
-		if ( empty( $quiz_id ) && ! is_numeric( $quiz_id ) ) {
-			$result['msg'] = __( 'Invalid quiz id', 'quiz-master-next' );
-			return $result;
-		}
-
-		global $wpdb;
-
-		
-		$quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0 AND quiz_id = %d ORDER BY quiz_id DESC", $quiz_id ), ARRAY_A );
-	
-		if ( ! empty( $quiz_data ) ) {
-			
-			// Cycle through each quiz and retrieve all of quiz's questions.
-			foreach ( $quiz_data as $key => $quiz ) {
-				
-				$question_data = QSM_Questions::load_questions_by_pages( $quiz['quiz_id'] );
-				$quiz_data[ $key ]['questions'] = $question_data;
-
-				//unserialize quiz_settings
-				if ( ! empty( $quiz_data[ $key ]['quiz_settings'] ) ) {
-					$quiz_data[ $key ]['quiz_settings'] = maybe_unserialize( $quiz_data[ $key ]['quiz_settings'] );
-					//unserialize pages
-					if ( ! empty( $quiz_data[ $key ]['quiz_settings']['qpages'] ) ) {
-						$quiz_data[ $key ]['qpages'] = maybe_unserialize( $quiz_data[ $key ]['quiz_settings']['qpages'] );
-						if ( ! empty( $quiz_data[ $key ]['quiz_settings']['pages'] ) ) {
-							$quiz_data[ $key ]['pages'] = maybe_unserialize( $quiz_data[ $key ]['quiz_settings']['pages'] );
-							//group question under individual pages
-							if ( is_array( $quiz_data[ $key ]['qpages'] ) ) {
-								foreach ( $quiz_data[ $key ]['qpages'] as $pageIndex => $page ) {
-									if ( ! empty( $page['questions'] ) && ! empty( $quiz_data[ $key ]['pages'][ $pageIndex ] ) ) {
-										$quiz_data[ $key ]['qpages'][$pageIndex]['question_arr'] = array();
-										foreach ( $quiz_data[ $key ]['pages'][ $pageIndex ] as $qIndex => $q ) {
-											$quiz_data[ $key ]['qpages'][$pageIndex]['question_arr'][] = $quiz_data[ $key ]['questions'][$q];
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-	
-				// checking if logic is updated to tables
-				$logic_updated = get_option( 'logic_rules_quiz_' . $quiz['quiz_id'] );
-				if ( $logic_updated ) {
-					$query      = $wpdb->prepare( "SELECT logic FROM {$wpdb->prefix}mlw_logic where quiz_id = %d", $quiz['quiz_id'] );
-					$logic_data = $wpdb->get_results( $query, ARRAY_N );
-					$logics     = array();
-					if ( ! empty( $logic_data ) ) {
-						foreach ( $logic_data as $logic ) {
-							$logics[] = maybe_unserialize( $logic[0] );
-						}
-						$serialized_logic           = maybe_serialize( $logics );
-						$quiz_data[ $key ]['logic'] = $serialized_logic;
-					}
-				}
-	
-				// get featured image of quiz if available
-				$qsm_featured_image = get_option( 'quiz_featured_image_' . $quiz['quiz_id'] );
-				if ( $qsm_featured_image ) {
-					$quiz_data[ $key ]['featured_image'] = $qsm_featured_image;
-				}
-	
-				// get themes setting
-				$query       = $wpdb->prepare( "SELECT A.theme, B.quiz_theme_settings, B.active_theme FROM {$wpdb->prefix}mlw_themes A, {$wpdb->prefix}mlw_quiz_theme_settings B where A.id = B.theme_id and B.quiz_id = %d", $quiz['quiz_id'] );
-				$themes_data = $wpdb->get_results( $query, ARRAY_N );
-				if ( ! empty( $themes_data ) ) {
-					$themes = array();
-					foreach ( $themes_data as $data ) {
-						$themes[] = $data;
-					}
-					$serialized_themes           = maybe_serialize( $themes );
-					$quiz_data[ $key ]['themes'] = $serialized_themes;
-				}
-			}
-			return array(
-				'status' => 'success',
-				'result' => $quiz_data[0],
-			);
-			
-		}else {
-			$result['msg'] = __( 'Quiz not found!', 'quiz-master-next' );
-			return $result;
-		}
-	}
-}
-

@@ -5,8 +5,8 @@
   "version": "0.1.0",
   "title": "QSM Quiz",
   "category": "widgets",
-  "icon": "feedback",
-  "description": "Easily and quickly add quizzes and surveys to your website.",
+  "icon": "vault",
+  "description": "Easily and quickly add quizzes and surveys inside the block editor.",
   "attributes": {
     "quizID": {
       "type": "string",

@@ -8,7 +8,7 @@
   "parent": [
     "qsm/quiz-page"
   ],
-  "icon": "feedback",
+  "icon": "move",
   "description": "QSM Quiz Question",
   "attributes": {
     "questionID": {
