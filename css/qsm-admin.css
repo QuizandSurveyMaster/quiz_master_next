@@ -799,6 +799,7 @@ ul.changelog li.update div.two:before {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: stretch;
+	border-bottom: 1px solid #cecece;
 }
 .qsm-sub-text-tab-menu {
 	display: inline-block;
@@ -891,10 +892,6 @@ ul.changelog li.update div.two:before {
 	display: inline-block;
 	box-sizing: border-box;
 }
-.qsm_tab_content .subsubsub li {
-	border-left: 2px solid #aaa;
-	padding: 0 5px;
-}
 .qsm_tab_content .subsubsub li:first-child {
 	border-left: 0;
 	padding-left: 0;
@@ -902,13 +899,16 @@ ul.changelog li.update div.two:before {
 .qsm_tab_content .subsubsub li a {
 	font-size: 14px;
 	line-height: 1.2;
-	padding: 0;
+	padding: 10px;
 }
 .qsm_tab_content a:hover,
 .qsm_tab_content a:focus {
 	outline: none;
 	text-decoration: none;
 	box-shadow: none;
+}
+.qsm_tab_content .subsubsub li a.current{
+	border-bottom: 3px solid #00BEE9;
 }
 /* Popup */
 .qsm-popup {
@@ -1335,7 +1335,7 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
-.form-table td fieldset label {
+body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
 	margin-right: 20px !important;
 	width: 100%;
 }

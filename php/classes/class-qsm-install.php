@@ -41,7 +41,7 @@ class QSM_Install {
 	public function register_default_settings() {
 
 		global $mlwQuizMasterNext;
-		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+		$settings_value = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 
 		// Registers require_log_in setting
 		$field_array = array(
@@ -633,7 +633,7 @@ class QSM_Install {
 			'option_tab'      => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		$preferred_date_format = ! empty( $settings_array['preferred_date_format'] ) && ! in_array( $settings_array['preferred_date_format'], array( 'F j, Y', 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ? $settings_array['preferred_date_format'] : "";
+		$preferred_date_format = ! empty( $settings_value['preferred_date_format'] ) && ! in_array( $settings_value['preferred_date_format'], array( 'F j, Y', 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ? $settings_value['preferred_date_format'] : "";
 		$field_array = array(
 			'id'         => '',
 			'type'       => 'multiple_fields',
