@@ -168,7 +168,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Added a new feature to accept shortcodes in the text set to display at the end of quizzes.
 * Bug: Fixed issues with HTML tags in exported PDFs
 * Bug: Fixed issues with HTML tags in question descriptions
-* Bug: Fixed the behavior of questions marked as required.
+* Bug: Fixed issue with the 'Required box' unchecking itself
 * Bug: Patched a vulnerability related to draft quiz submissions
 
 = 8.1.16 (September 20, 2023) =

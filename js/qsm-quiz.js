@@ -1111,7 +1111,7 @@ function qmnInit() {
 					let $this = jQuery(this);
 					let value = $this.val();
 					let question_id = $this.attr('name').replace(/question/i, '');
-					let data = qsm_question_quick_result_js(question_id, value, '', qmn_quiz_data[key].enable_quick_correct_answer_info);
+					let data = qsm_question_quick_result_js(question_id, value, '', qmn_quiz_data[key].enable_quick_correct_answer_info,key);
 					if (data.success == 'correct') {
 						$this.parent().addClass("qmn_correct_answer");
 					} else if (data.success == 'incorrect') {
@@ -1612,7 +1612,7 @@ jQuery(function () {
 	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
 		jQuery('.qsm-spinner-loader').remove();
 		addSpinnerLoader($this,$i_this);
-		let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info);
+		let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
 		$this.find('.quick-question-res-p').remove();
 		$this.find('.qsm-inline-correct-info').remove();
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
@@ -1826,7 +1826,7 @@ function checkMaxLength(obj){
 let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quiz_id].enable_quick_correct_answer_info);
+	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quiz_id].enable_quick_correct_answer_info,quiz_id);
 	QSM.changes(data, question_id.replace(/\D/g, ""), quiz_id);
 	if (data.success == 'incorrect' && submit_status) {
 		$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
@@ -1837,9 +1837,11 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 	}
 }
 
-function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '') {
-	if (typeof encryptedData !== 'undefined') {
-		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
+	
+	if (typeof encryptedData[quiz_id] !== 'undefined') {
+		
+		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 		let decrypt = JSON.parse(decryptedData);
 		question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;

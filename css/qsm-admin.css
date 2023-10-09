@@ -1917,7 +1917,7 @@ td.scheduled_time_start {
 .qsm-upgrade-box .qsm-upgrade-text {
 	font-size: 16px;
 	line-height: 22px;
-	text-align: justify;
+	text-align: left;
 }
 .qsm-upgrade-box .qsm-upgrade-read-icon {
 	display: flex;
@@ -1948,7 +1948,13 @@ td.scheduled_time_start {
 }
 .qsm-upgrade-chart img {
 	max-width: 100%;
+	width: 100%;
 }
+
+.admin_page_mlw_quiz_options .nav-tab-active:focus, .admin_page_mlw_quiz_options .nav-tab-active:focus:active, .admin_page_mlw_quiz_options .nav-tab-active:hover {
+	border: 1px solid #c3c4c7;
+}
+
 .qsm-popup-upgrade-warning,
 .qsm-popup-upgrade-info {
 	display: flex;
