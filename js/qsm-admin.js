@@ -2068,7 +2068,7 @@ var import_button;
                     var quizID = parseInt(qsmTextTabObject.quiz_id);
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
-                    var required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
                     advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
