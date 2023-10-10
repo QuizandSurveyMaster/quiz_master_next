@@ -29,8 +29,12 @@ export const qsmFormData = ( obj = false ) => {
 	return newData;
 }
 
+//generate uiniq id
 export const qsmUniqid = (prefix = "", random = false) => {
     const sec = Date.now() * 1000 + Math.random() * 1000;
     const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
     return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}`:""}`;
 };
+
+//return data if not empty otherwise default value
+export const qsmValueOrDefault = ( data, defaultValue = '' ) => qsmIsEmpty( data ) ? defaultValue :data;

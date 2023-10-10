@@ -24,10 +24,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_notices__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
-/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helper */ "./src/helper.js");
+/* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/editor */ "@wordpress/editor");
+/* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_editor__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./helper */ "./src/helper.js");
+
 
 
 
@@ -77,11 +80,133 @@ function Edit(props) {
   //Quiz Options to create attributes label, description and layout
   const quizOptions = qsmBlockData.quizOptions;
 
+  //check if page is saving
+  const isSavingPage = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(select => {
+    const {
+      isAutosavingPost,
+      isSavingPost
+    } = select(_wordpress_editor__WEBPACK_IMPORTED_MODULE_6__.store);
+    return isSavingPost() || isAutosavingPost();
+  }, []);
+  const {
+    getBlock
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store);
+
+  /**
+   * Prepare quiz data e.g. quiz details, questions, answers etc to save 
+   * @returns quiz data
+   */
+  const getQuizDataToSave = () => {
+    let blocks = getBlock(clientId);
+    if ((0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(blocks)) {
+      return false;
+    }
+    console.log("blocks", blocks);
+    blocks = blocks.innerBlocks;
+    let quizDataToSave = {
+      quiz_id: quizAttr.quiz_id,
+      post_id: quizAttr.post_id,
+      quiz: {},
+      pages: [],
+      qpages: [],
+      questions: []
+    };
+    let pageSNo = 0;
+    //loop through inner blocks
+    blocks.forEach(block => {
+      if ('qsm/quiz-page' === block.name) {
+        let pageID = block.attributes.pageID;
+        let questions = [];
+        if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(block.innerBlocks) && 0 < block.innerBlocks.length) {
+          let questionBlocks = block.innerBlocks;
+          //Question Blocks
+          questionBlocks.forEach(questionBlock => {
+            if ('qsm/quiz-question' !== questionBlock.name) {
+              return true;
+            }
+            let answers = [];
+            //Answer option blocks
+            if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(questionBlock.innerBlocks) && 0 < questionBlock.innerBlocks.length) {
+              let answerOptionBlocks = questionBlock.innerBlocks;
+              answerOptionBlocks.forEach(answerOptionBlock => {
+                if ('qsm/quiz-answer-option' !== answerOptionBlock.name) {
+                  return true;
+                }
+                let answerAttr = answerOptionBlock.attributes;
+                answers.push([(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(answerAttr?.content), (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(answerAttr?.points), (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(answerAttr?.isCorrect)]);
+              });
+            }
+
+            //questions Data
+            let questionAttr = questionBlock.attributes;
+            questions.push(questionAttr.questionID);
+            quizDataToSave.questions.push({
+              "id": questionAttr.questionID,
+              "quizID": quizAttr.quiz_id,
+              "postID": quizAttr.post_id,
+              "type": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.type, '0'),
+              "name": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.description),
+              "question_title": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.title),
+              "answerInfo": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.correctAnswerInfo),
+              "comments": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.commentBox, '1'),
+              "hint": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.hint),
+              "category": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.category),
+              "required": (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmValueOrDefault)(questionAttr?.required, 1),
+              "answers": answers,
+              "page": pageSNo
+            });
+          });
+        }
+
+        // pages[0][]: 2512
+        // 	qpages[0][id]: 2
+        // 	qpages[0][quizID]: 76
+        // 	qpages[0][pagekey]: Ipj90nNT
+        // 	qpages[0][hide_prevbtn]: 0
+        // 	qpages[0][questions][]: 2512
+        // 	post_id: 111
+        //page data
+        quizDataToSave.pages.push(questions);
+        quizDataToSave.qpages.push({
+          'id': pageID,
+          'quizID': quizAttr.quiz_id,
+          'pagekey': block.attributes.pageKey,
+          'hide_prevbtn': block.attributes.hidePrevBtn,
+          'questions': questions
+        });
+        pageSNo++;
+      }
+    });
+
+    //Quiz details
+    quizDataToSave.quiz = {
+      'quiz_name': quizAttr.quiz_name,
+      'quiz_id': quizAttr.quiz_id,
+      'post_id': quizAttr.post_id
+    };
+    if (showAdvanceOption) {
+      ['form_type', 'system', 'timer_limit', 'pagination', 'enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].forEach(item => {
+        if ('undefined' !== typeof quizAttr[item] && null !== quizAttr[item]) {
+          quizDataToSave.quiz[item] = quizAttr[item];
+        }
+      });
+    }
+    return quizDataToSave;
+  };
+
+  //saving Quiz on save page
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (isSavingPage) {
+      let qsmData = getQuizDataToSave();
+      console.log("qsmData", qsmData);
+    }
+  }, [isSavingPage]);
+
   /**Initialize block from server */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     let shouldSetQSMAttr = true;
     if (shouldSetQSMAttr) {
-      if (!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizID) && 0 < quizID && ((0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr) || (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr?.quizID) || quizID != quizAttr.quiz_id)) {
+      if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizID) && 0 < quizID && ((0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr) || (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr?.quizID) || quizID != quizAttr.quiz_id)) {
         _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
           path: '/quiz-survey-master/v1/quiz/structure',
           method: 'POST',
@@ -96,16 +221,16 @@ function Edit(props) {
               ...quizAttr,
               ...result
             });
-            if (!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(result.qpages)) {
+            if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(result.qpages)) {
               let quizTemp = [];
               result.qpages.forEach(page => {
                 let questions = [];
-                if (!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(page.question_arr)) {
+                if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(page.question_arr)) {
                   page.question_arr.forEach(question => {
-                    if (!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(question)) {
+                    if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(question)) {
                       let answers = [];
                       //answers options blocks
-                      if (!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(question.answers) && 0 < question.answers.length) {
+                      if (!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(question.answers) && 0 < question.answers.length) {
                         question.answers.forEach((answer, aIndex) => {
                           answers.push(['qsm/quiz-answer-option', {
                             optionID: aIndex,
@@ -169,7 +294,7 @@ function Edit(props) {
    * vault dash Icon
    * @returns vault dash Icon
    */
-  const feedbackIcon = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Icon, {
+  const feedbackIcon = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Icon, {
     icon: "vault",
     size: "36"
   });
@@ -179,13 +304,13 @@ function Edit(props) {
    * @returns Placeholder for quiz in case quiz ID is not set
    */
   const quizPlaceholder = () => {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Placeholder, {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Placeholder, {
       icon: feedbackIcon,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz And Survey Master', 'quiz-master-next'),
       instructions: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Easily and quickly add quizzes and surveys inside the block editor.', 'quiz-master-next')
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizList) && 0 < quizList.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizList) && 0 < quizList.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "qsm-placeholder-select-create-quiz"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.SelectControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('', 'quiz-master-next'),
       value: quizID,
       options: quizList,
@@ -194,49 +319,49 @@ function Edit(props) {
       }),
       disabled: createQuiz,
       __nextHasNoMarginBottom: true
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OR', 'quiz-master-next')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OR', 'quiz-master-next')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
       variant: "link",
       onClick: () => setCreateQuiz(!createQuiz)
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add New', 'quiz-master-next'))), ((0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizList) || createQuiz) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.__experimentalVStack, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add New', 'quiz-master-next'))), ((0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizList) || createQuiz) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.__experimentalVStack, {
       spacing: "3",
       className: "qsm-placeholder-quiz-create-form"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.TextControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz Name *', 'quiz-master-next'),
       help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter a name for this Quiz', 'quiz-master-next'),
       value: quizAttr?.quiz_name || '',
       onChange: val => setQuizAttributes(val, 'quiz_name')
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
       variant: "link",
       onClick: () => setShowAdvanceOption(!showAdvanceOption)
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Advance options', 'quiz-master-next')), showAdvanceOption && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Advance options', 'quiz-master-next')), showAdvanceOption && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.SelectControl, {
       label: quizOptions?.form_type?.label,
       value: quizAttr?.form_type,
       options: quizOptions?.form_type?.options,
       onChange: val => setQuizAttributes(val, 'form_type'),
       __nextHasNoMarginBottom: true
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.SelectControl, {
       label: quizOptions?.system?.label,
       value: quizAttr?.system,
       options: quizOptions?.system?.options,
       onChange: val => setQuizAttributes(val, 'system'),
       help: quizOptions?.system?.help,
       __nextHasNoMarginBottom: true
-    }), ['timer_limit', 'pagination'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+    }), ['timer_limit', 'pagination'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.TextControl, {
       key: 'quiz-create-text-' + item,
       type: "number",
       label: quizOptions?.[item]?.label,
       help: quizOptions?.[item]?.help,
-      value: (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr[item]) ? 0 : quizAttr[item],
+      value: (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr[item]) ? 0 : quizAttr[item],
       onChange: val => setQuizAttributes(val, item)
-    })), ['enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToggleControl, {
+    })), ['enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.ToggleControl, {
       key: 'quiz-create-toggle-' + item,
       label: quizOptions?.[item]?.label,
       help: quizOptions?.[item]?.help,
-      checked: !(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item],
-      onChange: () => setQuizAttributes(!(0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item] ? 0 : 1, item)
-    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
+      checked: !(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item],
+      onChange: () => setQuizAttributes(!(0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item] ? 0 : 1, item)
+    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
       variant: "primary",
-      disabled: saveQuiz || (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr.quiz_name),
+      disabled: saveQuiz || (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr.quiz_name),
       onClick: () => createNewQuiz()
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Create Quiz', 'quiz-master-next')))));
   };
@@ -254,7 +379,7 @@ function Edit(props) {
     });
   };
   const createNewQuiz = () => {
-    if ((0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizAttr.quiz_name)) {
+    if ((0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizAttr.quiz_name)) {
       console.log("empty quiz_name");
       return;
     }
@@ -264,7 +389,7 @@ function Edit(props) {
     // 	"quiz_name": quizAttr.quiz_name,
     // 	"qsm_new_quiz_nonce": qsmBlockData.qsm_new_quiz_nonce
     // };
-    let quizData = (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmFormData)({
+    let quizData = (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmFormData)({
       'quiz_name': quizAttr.quiz_name,
       'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
     });
@@ -283,7 +408,7 @@ function Edit(props) {
       setSaveQuiz(false);
       if ('success' == res.status) {
         //create a question
-        let newQuestion = (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmFormData)({
+        let newQuestion = (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmFormData)({
           "id": null,
           "quizID": res.quizID,
           "type": "0",
@@ -316,7 +441,7 @@ function Edit(props) {
             // 	qpages[0][questions][]: 2512
             // 	post_id: 111
 
-            let newPage = (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmFormData)({
+            let newPage = (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmFormData)({
               "action": qsmBlockData.save_pages_action,
               "quiz_id": res.quizID,
               "nonce": qsmBlockData.saveNonce,
@@ -325,7 +450,7 @@ function Edit(props) {
             newPage.append('pages[0][]', question_id);
             newPage.append('qpages[0][id]', 1);
             newPage.append('qpages[0][quizID]', res.quizID);
-            newPage.append('qpages[0][pagekey]', (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmUniqid)());
+            newPage.append('qpages[0][pagekey]', (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmUniqid)());
             newPage.append('qpages[0][hide_prevbtn]', 0);
             newPage.append('qpages[0][questions][]', question_id);
 
@@ -375,15 +500,15 @@ function Edit(props) {
     template: quizTemplate,
     allowedBlocks: ['qsm/quiz-page']
   });
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz settings', 'quiz-master-next'),
     initialOpen: true
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz Name *', 'quiz-master-next'),
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter a name for this Quiz', 'quiz-master-next'),
     value: quizAttr?.quiz_name || '',
     onChange: val => setQuizAttributes(val, 'quiz_name')
-  }))), (0,_helper__WEBPACK_IMPORTED_MODULE_8__.qsmIsEmpty)(quizID) || '0' == quizID ? quizPlaceholder() : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }))), (0,_helper__WEBPACK_IMPORTED_MODULE_9__.qsmIsEmpty)(quizID) || '0' == quizID ? quizPlaceholder() : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...innerBlocksProps
   }));
 }
@@ -402,7 +527,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   qsmIsEmpty: function() { return /* binding */ qsmIsEmpty; },
 /* harmony export */   qsmSanitizeName: function() { return /* binding */ qsmSanitizeName; },
 /* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; },
-/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; }
+/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; },
+/* harmony export */   qsmValueOrDefault: function() { return /* binding */ qsmValueOrDefault; }
 /* harmony export */ });
 //Check if undefined, null, empty
 const qsmIsEmpty = data => 'undefined' === typeof data || null === data || '' === data;
@@ -432,11 +558,16 @@ const qsmFormData = (obj = false) => {
   }
   return newData;
 };
+
+//generate uiniq id
 const qsmUniqid = (prefix = "", random = false) => {
   const sec = Date.now() * 1000 + Math.random() * 1000;
   const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
   return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
 };
+
+//return data if not empty otherwise default value
+const qsmValueOrDefault = (data, defaultValue = '') => qsmIsEmpty(data) ? defaultValue : data;
 
 /***/ }),
 
@@ -538,6 +669,16 @@ module.exports = window["wp"]["components"];
 /***/ (function(module) {
 
 module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/editor":
+/*!********************************!*\
+  !*** external ["wp","editor"] ***!
+  \********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["editor"];
 
 /***/ }),
 

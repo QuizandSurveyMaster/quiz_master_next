@@ -14,7 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   qsmIsEmpty: function() { return /* binding */ qsmIsEmpty; },
 /* harmony export */   qsmSanitizeName: function() { return /* binding */ qsmSanitizeName; },
 /* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; },
-/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; }
+/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; },
+/* harmony export */   qsmValueOrDefault: function() { return /* binding */ qsmValueOrDefault; }
 /* harmony export */ });
 //Check if undefined, null, empty
 const qsmIsEmpty = data => 'undefined' === typeof data || null === data || '' === data;
@@ -44,11 +45,16 @@ const qsmFormData = (obj = false) => {
   }
   return newData;
 };
+
+//generate uiniq id
 const qsmUniqid = (prefix = "", random = false) => {
   const sec = Date.now() * 1000 + Math.random() * 1000;
   const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
   return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
 };
+
+//return data if not empty otherwise default value
+const qsmValueOrDefault = (data, defaultValue = '') => qsmIsEmpty(data) ? defaultValue : data;
 
 /***/ }),
 
