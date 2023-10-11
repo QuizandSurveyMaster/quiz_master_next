@@ -348,7 +348,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				<?php
 				if ( $all_addons ) {
 					foreach ( $all_addons as $key => $single_arr ) {
-						if ( in_array( $single_arr['name'], array( "Export & Import", "Reporting & Analysis", "Export Results", "Advanced Question Types" ), true ) ) {
+						if ( in_array( $single_arr['name'], array( "Export & Import", "Reporting and Analysis", "Export Results", "Advanced Question Types" ), true ) ) {
 							?>
 							<li>
 								<a href="<?php echo esc_url( qsm_get_utm_link( $single_arr['link'], 'dashboard', 'all_addon', sanitize_title( $single_arr['name'] ) ) ); ?>" target="_blank" rel="noopener">
