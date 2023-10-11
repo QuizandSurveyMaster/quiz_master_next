@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.1.17 (October 10, 2023) =
+= 8.1.17 (October 11, 2023) =
 * Feature: Added option to include custom text when the answer choice limit exceeds in multiple response type questions.
 * Feature: Added a new feature to accept shortcodes in the text set to display at the end of quizzes.
 * Bug: Fixed issues with HTML tags in exported PDFs
