@@ -2137,11 +2137,11 @@ class QMNQuizManager {
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += $results_array['points'];
-							$answer_points += $results_array['points'];
+							$points_earned += (float)$results_array['points'];
+							$answer_points += (float)$results_array['points'];
 
 							// If the user's answer was correct.
-							if ( 'correct' == $results_array['correct'] ) {
+							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;
 								$correct_status = 'correct';
 							}
@@ -2163,8 +2163,8 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
-							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
-							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+							$user_answer_array    = isset( $results_array['user_answer'] ) && is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
+							$correct_answer_array = isset( $results_array['correct_answer'] ) && is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array
 							$question_data[] = apply_filters(
