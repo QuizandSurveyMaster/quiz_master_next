@@ -25,19 +25,19 @@
     }
   },
   "usesContext": [
-    "quiz-master-next/quizID"
+    "quiz-master-next/quizID",
+    "quiz-master-next/quizAttr"
   ],
   "providesContext": {
     "quiz-master-next/pageID": "pageID"
   },
   "example": {},
   "supports": {
-    "html": false
+    "html": false,
+    "multiple": false
   },
   "textdomain": "main-block",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php",
-  "viewScript": "file:./view.js"
+  "style": "file:./style-index.css"
 }

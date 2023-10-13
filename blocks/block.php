@@ -102,6 +102,31 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		}
 
 		/**
+		 * Get hierarchical qsm_category 
+		 */
+		private function hierarchical_qsm_category( $cat = 0 ) {
+		  $category = [];
+		  $next = get_categories( array(
+				'taxonomy'       => 'qsm_category',
+				'hide_empty' 	 => false,
+				'hierarchical'	 => true,
+				'orderby'		 => 'name',
+				'order'			 => 'ASC',
+				'parent'		 => $cat
+			) );
+		
+		  if( $next ) {
+			foreach( $next as $cat ) {
+				$cat->name = $cat->cat_name;
+				$cat->id = $cat->term_id;
+				$cat->children = $this->hierarchical_qsm_category( $cat->term_id );
+				$category[] = $cat;
+			}
+		  }
+		  return $category;
+		} 
+
+		/**
 		 * Register scripts for block
 		 */
 		public function register_block_scripts() {
@@ -135,7 +160,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					);
 				}
 			}
-			
+				
 			wp_localize_script(
 				'qsm-quiz-editor-script',
 				'qsmBlockData',
@@ -171,9 +196,10 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					),
 					'categoryList' => get_terms(  array(
 							'taxonomy'             => 'qsm_category',
-							'hide_empty' => false
+							'hide_empty' 		   => false
 						)
 					),
+					'hierarchicalCategoryList'=> $this->hierarchical_qsm_category(),
 					'commentBox'         => array(
 						'heading'  => __( 'Comment Box', 'quiz-master-next' ),
 						'label'    => __( 'Field Type', 'quiz-master-next' ),
@@ -187,6 +213,12 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					)
 				)
 			);
+		}
+
+		//nonce to save question
+		private function get_rest_nonce( $quiz_id ) {
+			$user_id = get_current_user_id();
+			return wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id );
 		}
 
 		/**
@@ -219,6 +251,19 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			//get quiz structure data
 			register_rest_route(
 				'quiz-survey-master/v1',
+				'/quiz/hierarchical-category-list',
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'hierarchical_category_list' ),
+					'permission_callback' => function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+
+			//get quiz structure data
+			register_rest_route(
+				'quiz-survey-master/v1',
 				'/quiz/structure',
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
@@ -242,8 +287,32 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				)
 			);
 
+			//save Quiz
+			register_rest_route(
+				'quiz-survey-master/v1',
+				'/quiz/save_quiz',
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'save_quiz' ),
+					'permission_callback' => function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+
 			//save pages and question order inside page : qsm_ajax_save_pages()
 
+		}
+
+		/**
+		 * REST API
+		 * get hierarchical qsm category list
+		 */
+		public function hierarchical_category_list() {
+			return array(
+				'status' => 'success',
+				'result' => $this->hierarchical_qsm_category(),
+			);
 		}
 
 		//get post id from quiz id
@@ -296,6 +365,8 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			$quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0 AND quiz_id = %d ORDER BY quiz_id DESC", $quiz_id ), ARRAY_A );
 		
 			if ( ! empty( $quiz_data ) ) {
+				//nonce to save question
+				$quiz_data[0]['rest_nonce'] = $this->get_rest_nonce( $quiz_id );
 				$quiz_data[0]['post_id'] = $this->get_post_id_from_quiz_id( intval( $quiz_id ) );
 				// Cycle through each quiz and retrieve all of quiz's questions.
 				foreach ( $quiz_data as $key => $quiz ) {
@@ -416,13 +487,89 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			);
 		}
 
+		/**
+		 * REST API 
+		 * Create quiz using quiz name and other options
+		 * 
+		 * 
+		 * @return { integer } quizID quiz id of newly created quiz
+		 * 
+		 */
+		public function save_quiz( WP_REST_Request $request ) {
+			//verify nonce
+			if ( ! isset( $_POST['qsm_block_quiz_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['qsm_block_quiz_nonce'] ) ), 'qsm_block_quiz' ) || empty( $_POST['quizData'] ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Invalid or missing input.', 'quiz-master-next' ),
+					'post'   => $_POST
+				);
+			}
+
+			if ( ! function_exists( 'qsm_rest_save_question' ) || ! function_exists( 'qsm_ajax_save_pages' ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'can\'t save quiz', 'quiz-master-next' )
+				);
+			}
+			
+			//quiz data
+			$_POST['quizData'] = json_decode( wp_unslash( $_POST['quizData']  ), true );
+			$quiz_id = intval( sanitize_key( wp_unslash( $_POST['quizData']['quiz_id'] ) ) );
+			$post_id = intval( sanitize_key( wp_unslash( $_POST['quizData']['post_id'] ) ) );
+			if ( empty( $quiz_id ) || empty( $post_id ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Missing quiz_id or post_id', 'quiz-master-next' )
+				);
+			}
+			
+			global $mlwQuizMasterNext;
+			//Save Questions
+			if ( ! empty( $_POST['quizData']['questions'] ) ) {
+				//nonce to save question
+				$request[ 'rest_nonce' ] = $this->get_rest_nonce( $quiz_id );
+				
+				foreach ( $_POST['quizData']['questions'] as $question ) {
+					foreach ($question as $qkey => $qvalue) {
+						$request[ $qkey ] = $qvalue;
+					}
+					qsm_rest_save_question( $request );
+				}
+			}
+			
+			//save quiz name
+			if ( ! empty(  $_POST['quizData']['quiz'] ) && ! empty(  $_POST['quizData']['quiz']['quiz_name'] )  ) {
+				$quiz_name = sanitize_key( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
+				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name )  ) {
+					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
+				}
+			}
+			
+			//Save Pages
+			if ( ! empty( $_POST['quizData']['pages'] ) ) {
+				foreach ( $_POST['quizData'] as $qkey => $qvalue) {
+					$_POST[ $qkey ] = $qvalue;
+				}
+				qsm_ajax_save_pages();
+			}
+
+			return array(
+				'status' => 'success',
+				'msg'    => __( 'Quiz saved successfully', 'quiz-master-next' )
+			);
+
+		}
+
 	}
 
 	QSMBlock::get_instance();
 }
 
 if ( ! function_exists( 'is_qsm_block_api_call' ) ) {
-	function is_qsm_block_api_call() {
-		return ! empty( $_POST['qsm_block_api_call'] );
+	function is_qsm_block_api_call( $postcheck = false ) {
+		if ( empty( $postcheck ) ) {
+			return ! empty( $_POST['qsm_block_api_call'] );
+		}
+		return ( ! empty( $_POST['qsm_block_api_call'] ) && ! empty( $_POST[ $postcheck ] )  );
 	}
 }

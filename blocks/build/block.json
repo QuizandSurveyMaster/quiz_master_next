@@ -11,10 +11,15 @@
     "quizID": {
       "type": "string",
       "default": "0"
+    },
+    "quizAttr": {
+      "type": "object",
+      "default": {}
     }
   },
   "providesContext": {
-    "quiz-master-next/quizID": "quizID"
+    "quiz-master-next/quizID": "quizID",
+    "quiz-master-next/quizAttr": "quizAttr"
   },
   "example": {},
   "supports": {
@@ -23,7 +28,5 @@
   "textdomain": "main-block",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php",
-  "viewScript": "file:./view.js"
+  "style": "file:./style-index.css"
 }

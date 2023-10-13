@@ -872,6 +872,9 @@ function qsm_ajax_save_pages() {
 		);
 		wp_update_post( $update );
 	}
+	if ( is_qsm_block_api_call( 'save_entire_quiz' ) ) {
+		return true;
+	}
 	echo wp_json_encode( $json );
 	wp_die();
 }

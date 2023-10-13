@@ -34,20 +34,6 @@ export default function Edit( props ) {
 
 	const [ qsmPageAttr, setQsmPageAttr ] = useState( qsmBlockData.globalQuizsetting );
 	
-	/**Initialize block from server */
-	useEffect( () => {
-		let shouldSetQSMAttr = true;
-		if ( shouldSetQSMAttr ) {
-			//console.log("attr",attributes);
-			
-		}
-		
-		//cleanup
-		return () => {
-			shouldSetQSMAttr = false;
-		};
-		
-	}, [ quizID ] );
 	const blockProps = useBlockProps();
 
 	return (

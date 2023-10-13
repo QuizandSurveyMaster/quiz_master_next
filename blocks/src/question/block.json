@@ -67,16 +67,14 @@
 			"type": "string",
 			"default": "0"
 		},
-		"otherSettings": {
-			"type": "object",
-			"default": {}
+		"media": {
+			"type": "object"
 		},
 		"settings": {
-			"type": "object",
-			"default": {}
+			"type": "object"
 		}
 	},
-	"usesContext": [ "quiz-master-next/quizID", "quiz-master-next/pageID" ],
+	"usesContext": [ "quiz-master-next/quizID", "quiz-master-next/pageID", "quiz-master-next/quizAttr" ],
 	"providesContext": {
 		"quiz-master-next/questionID": "questionID"
 	},
@@ -87,7 +85,5 @@
 	"textdomain": "main-block",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php",
-	"viewScript": "file:./view.js"
+	"style": "file:./style-index.css"
 }

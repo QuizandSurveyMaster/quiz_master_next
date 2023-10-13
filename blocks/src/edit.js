@@ -25,7 +25,7 @@ import {
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import './editor.scss';
-import { qsmIsEmpty, qsmFormData, qsmUniqid, qsmValueOrDefault } from './helper';
+import { qsmIsEmpty, qsmFormData, qsmUniqid, qsmValueOrDefault, qsmDecodeHtml } from './helper';
 export default function Edit( props ) {
 	//check for QSM initialize data
 	if ( 'undefined' === typeof qsmBlockData ) {
@@ -35,11 +35,12 @@ export default function Edit( props ) {
 	const { className, attributes, setAttributes, isSelected, clientId } = props;
 	const { createNotice } = useDispatch( noticesStore );
 	const {
-		quizID 
+		quizID,
+		quizAttr
 	} = attributes;
 
 	//quiz attribute
-	const [ quizAttr, setQuizAttr ] = useState( qsmBlockData.globalQuizsetting );
+	const globalQuizsetting = qsmBlockData.globalQuizsetting;
 	//quiz list
 	const [ quizList, setQuizList ] = useState( qsmBlockData.QSMQuizList );
 	//quiz list
@@ -61,155 +62,26 @@ export default function Edit( props ) {
 	//check if page is saving
 	const isSavingPage = useSelect( ( select ) => {
 		const { isAutosavingPost, isSavingPost } = select( editorStore );
-		return isSavingPost() ||  isAutosavingPost();
+		return isSavingPost() && ! isAutosavingPost();
 	}, [] );
 
 	const { getBlock } = useSelect( blockEditorStore );
-
-	/**
-	 * Prepare quiz data e.g. quiz details, questions, answers etc to save 
-	 * @returns quiz data
-	 */
-	const getQuizDataToSave = ( ) => {	
-		let blocks = getBlock( clientId ); 
-		if ( qsmIsEmpty( blocks ) ) {
-			return false;
-		}
-		console.log( "blocks", blocks);
-		blocks = blocks.innerBlocks;
-		let quizDataToSave = {
-			quiz_id: quizAttr.quiz_id,
-			post_id: quizAttr.post_id,
-			quiz:{},
-			pages:[],
-			qpages:[],
-			questions:[]
-		};
-		let pageSNo = 0;
-		//loop through inner blocks
-		blocks.forEach( (block) => {
-			if ( 'qsm/quiz-page' === block.name ) {
-				let pageID = block.attributes.pageID;
-				let questions = [];
-				if ( ! qsmIsEmpty( block.innerBlocks ) && 0 <  block.innerBlocks.length ) { 
-					let questionBlocks = block.innerBlocks;
-					//Question Blocks
-					questionBlocks.forEach( ( questionBlock ) => {
-						if ( 'qsm/quiz-question' !== questionBlock.name ) {
-							return true;
-						}
-						let answers = [];
-						//Answer option blocks
-						if ( ! qsmIsEmpty( questionBlock.innerBlocks ) && 0 <  questionBlock.innerBlocks.length ) { 
-							let answerOptionBlocks = questionBlock.innerBlocks;
-							answerOptionBlocks.forEach( ( answerOptionBlock ) => {
-								if ( 'qsm/quiz-answer-option' !== answerOptionBlock.name ) {
-									return true;
-								}
-								let answerAttr = answerOptionBlock.attributes;
-								answers.push([
-									qsmValueOrDefault( answerAttr?.content ),
-									qsmValueOrDefault( answerAttr?.points ),
-									qsmValueOrDefault( answerAttr?.isCorrect ),
-								]);
-							});
-						}
-						
-						//questions Data
-						let questionAttr = questionBlock.attributes;
-						questions.push( questionAttr.questionID );
-						quizDataToSave.questions.push({
-							"id": questionAttr.questionID,
-							"quizID": quizAttr.quiz_id,
-							"postID": quizAttr.post_id,
-							"type": qsmValueOrDefault( questionAttr?.type , '0' ),
-							"name": qsmValueOrDefault( questionAttr?.description ),
-							"question_title": qsmValueOrDefault( questionAttr?.title ),
-							"answerInfo": qsmValueOrDefault( questionAttr?.correctAnswerInfo ),
-							"comments": qsmValueOrDefault( questionAttr?.commentBox, '1' ),
-							"hint": qsmValueOrDefault( questionAttr?.hint ),
-							"category": qsmValueOrDefault( questionAttr?.category ),
-							"required": qsmValueOrDefault( questionAttr?.required, 1 ),
-							"answers": answers,
-							"page": pageSNo
-						});
-					});
-				}
-
-				// pages[0][]: 2512
-				// 	qpages[0][id]: 2
-				// 	qpages[0][quizID]: 76
-				// 	qpages[0][pagekey]: Ipj90nNT
-				// 	qpages[0][hide_prevbtn]: 0
-				// 	qpages[0][questions][]: 2512
-				// 	post_id: 111
-				//page data
-				quizDataToSave.pages.push( questions );
-				quizDataToSave.qpages.push( {
-					'id': pageID,
-					'quizID': quizAttr.quiz_id,
-					'pagekey': block.attributes.pageKey,
-					'hide_prevbtn':block.attributes.hidePrevBtn,
-					'questions': questions
-				} );
-				pageSNo++;
-			}
-		});
-
-		//Quiz details
-		quizDataToSave.quiz =  {   
-			'quiz_name': quizAttr.quiz_name,
-			'quiz_id': quizAttr.quiz_id,
-			'post_id': quizAttr.post_id,
-		};
-		if ( showAdvanceOption ) {
-			[
-			'form_type', 
-			'system', 
-			'timer_limit', 
-			'pagination',
-			'enable_contact_form', 
-			'enable_pagination_quiz', 
-			'show_question_featured_image_in_result',
-			'progress_bar',
-			'require_log_in',
-			'disable_first_page',
-			'comment_section'
-			].forEach( ( item ) => { 
-				if ( 'undefined' !== typeof quizAttr[ item ] && null !== quizAttr[ item ] ) {
-					quizDataToSave.quiz[ item ] = quizAttr[ item ];
-				}
-			});
-		}
-		return quizDataToSave;
-	}
-
-	//saving Quiz on save page
-	useEffect( () => {
-		if ( isSavingPage ) {
-			let qsmData =  getQuizDataToSave();
-			console.log("qsmData",qsmData);
-		}
-	}, [ isSavingPage ] );
 
 	/**Initialize block from server */
 	useEffect( () => {
 		let shouldSetQSMAttr = true;
 		if ( shouldSetQSMAttr ) {
 
-			if ( ! qsmIsEmpty( quizID ) && 0 < quizID && ( qsmIsEmpty( quizAttr ) || qsmIsEmpty( quizAttr?.quizID ) || quizID != quizAttr.quiz_id ) ) {
+			if ( ! qsmIsEmpty( quizID ) && 0 < quizID  ) {
 				apiFetch( {
 					path: '/quiz-survey-master/v1/quiz/structure',
 					method: 'POST',
 					data: { quizID: quizID },
 				} ).then( ( res ) => {
-					console.log( res );
+					console.log( "quiz render data", res );
 					if ( 'success' == res.status ) {
 						let result = res.result;
-						setQuizAttr( {
-							...quizAttr,
-							...result
-						} );
+						setAttributes( { quizAttr: { ...result } } );
 						if ( ! qsmIsEmpty( result.qpages ) ) {
 							let quizTemp = [];
 							result.qpages.forEach( page  => {
@@ -439,9 +311,167 @@ export default function Edit( props ) {
 	const setQuizAttributes = ( value , attr_name ) => {
 		let newAttr = quizAttr;
 		newAttr[ attr_name ] = value;
-		setQuizAttr( { ...newAttr } );
+		setAttributes( { quizAttr: { ...newAttr } } );
 	}
 
+	/**
+	 * Prepare quiz data e.g. quiz details, questions, answers etc to save 
+	 * @returns quiz data
+	 */
+	const getQuizDataToSave = ( ) => {	
+		let blocks = getBlock( clientId ); 
+		if ( qsmIsEmpty( blocks ) ) {
+			return false;
+		}
+		console.log( "blocks", blocks);
+		blocks = blocks.innerBlocks;
+		let quizDataToSave = {
+			quiz_id: quizAttr.quiz_id,
+			post_id: quizAttr.post_id,
+			quiz:{},
+			pages:[],
+			qpages:[],
+			questions:[]
+		};
+		let pageSNo = 0;
+		//loop through inner blocks
+		blocks.forEach( (block) => {
+			if ( 'qsm/quiz-page' === block.name ) {
+				let pageID = block.attributes.pageID;
+				let questions = [];
+				if ( ! qsmIsEmpty( block.innerBlocks ) && 0 <  block.innerBlocks.length ) { 
+					let questionBlocks = block.innerBlocks;
+					//Question Blocks
+					questionBlocks.forEach( ( questionBlock ) => {
+						if ( 'qsm/quiz-question' !== questionBlock.name ) {
+							return true;
+						}
+						let answers = [];
+						//Answer option blocks
+						if ( ! qsmIsEmpty( questionBlock.innerBlocks ) && 0 <  questionBlock.innerBlocks.length ) { 
+							let answerOptionBlocks = questionBlock.innerBlocks;
+							answerOptionBlocks.forEach( ( answerOptionBlock ) => {
+								if ( 'qsm/quiz-answer-option' !== answerOptionBlock.name ) {
+									return true;
+								}
+								let answerAttr = answerOptionBlock.attributes;
+								answers.push([
+									qsmValueOrDefault( answerAttr?.content ),
+									qsmValueOrDefault( answerAttr?.points ),
+									qsmValueOrDefault( answerAttr?.isCorrect ),
+								]);
+							});
+						}
+						
+						//questions Data
+						let questionAttr = questionBlock.attributes;
+						questions.push( questionAttr.questionID );
+						quizDataToSave.questions.push({
+							"id": questionAttr.questionID,
+							"quizID": quizAttr.quiz_id,
+							"postID": quizAttr.post_id,
+							"answerEditor": qsmValueOrDefault( questionAttr?.answerEditor, 'text' ),
+							"type": qsmValueOrDefault( questionAttr?.type , '0' ),
+							"name": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.description ) ),
+							"question_title": qsmValueOrDefault( questionAttr?.title ),
+							"answerInfo": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.correctAnswerInfo ) ),
+							"comments": qsmValueOrDefault( questionAttr?.commentBox, '1' ),
+							"hint": qsmValueOrDefault( questionAttr?.hint ),
+							"category": qsmValueOrDefault( questionAttr?.category ),
+							"multicategories": [],
+							"required": qsmValueOrDefault( questionAttr?.required, 1 ),
+							"answers": answers,
+							"page": pageSNo
+						});
+					});
+				}
+
+				// pages[0][]: 2512
+				// 	qpages[0][id]: 2
+				// 	qpages[0][quizID]: 76
+				// 	qpages[0][pagekey]: Ipj90nNT
+				// 	qpages[0][hide_prevbtn]: 0
+				// 	qpages[0][questions][]: 2512
+				// 	post_id: 111
+				//page data
+				quizDataToSave.pages.push( questions );
+				quizDataToSave.qpages.push( {
+					'id': pageID,
+					'quizID': quizAttr.quiz_id,
+					'pagekey': block.attributes.pageKey,
+					'hide_prevbtn':block.attributes.hidePrevBtn,
+					'questions': questions
+				} );
+				pageSNo++;
+			}
+		});
+
+		//Quiz details
+		quizDataToSave.quiz =  {   
+			'quiz_name': quizAttr.quiz_name,
+			'quiz_id': quizAttr.quiz_id,
+			'post_id': quizAttr.post_id,
+		};
+		if ( showAdvanceOption ) {
+			[
+			'form_type', 
+			'system', 
+			'timer_limit', 
+			'pagination',
+			'enable_contact_form', 
+			'enable_pagination_quiz', 
+			'show_question_featured_image_in_result',
+			'progress_bar',
+			'require_log_in',
+			'disable_first_page',
+			'comment_section'
+			].forEach( ( item ) => { 
+				if ( 'undefined' !== typeof quizAttr[ item ] && null !== quizAttr[ item ] ) {
+					quizDataToSave.quiz[ item ] = quizAttr[ item ];
+				}
+			});
+		}
+		return quizDataToSave;
+	}
+
+	//saving Quiz on save page
+	useEffect( () => {
+		if ( isSavingPage ) {
+			let quizData =  getQuizDataToSave();
+			console.log( "quizData", quizData);
+			//save quiz status
+			setSaveQuiz( true );
+			
+			quizData = qsmFormData({
+				'save_entire_quiz': '1',
+				'quizData': JSON.stringify( quizData ),
+				'qsm_block_quiz_nonce' : qsmBlockData.nonce,
+				"nonce": qsmBlockData.saveNonce,//save pages nonce
+			});
+
+			//AJAX call
+			apiFetch( {
+				path: '/quiz-survey-master/v1/quiz/save_quiz',
+				method: 'POST',
+				body: quizData
+			} ).then( ( res ) => {
+				console.log( res );
+			} ).catch(
+				( error ) => {
+					console.log( 'error',error );
+					createNotice( 'error', error.message, {
+						isDismissible: true,
+						type: 'snackbar',
+					} );
+				}
+			);
+		}
+	}, [ isSavingPage ] );
+
+	/**
+	 * Create new quiz and set quiz ID
+	 * 
+	 */
 	const createNewQuiz = () => {
 		if ( qsmIsEmpty( quizAttr.quiz_name ) ) {
 			console.log("empty quiz_name");
@@ -449,10 +479,7 @@ export default function Edit( props ) {
 		}
 		//save quiz status
 		setSaveQuiz( true );
-		// let quizData = {
-		// 	"quiz_name": quizAttr.quiz_name,
-		// 	"qsm_new_quiz_nonce": qsmBlockData.qsm_new_quiz_nonce
-		// };
+		
 		let quizData = qsmFormData({
 			'quiz_name': quizAttr.quiz_name,
 			'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
@@ -487,6 +514,7 @@ export default function Edit( props ) {
 				let newQuestion = qsmFormData( {
 					"id": null,
 					"quizID": res.quizID,
+					"answerEditor": "text",
 					"type": "0",
 					"name": "",
 					"question_title": "",

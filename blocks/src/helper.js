@@ -1,6 +1,13 @@
 //Check if undefined, null, empty
 export const qsmIsEmpty = ( data ) => ( 'undefined' === typeof data || null === data || '' === data );
 
+//Decode htmlspecialchars
+export const qsmDecodeHtml = ( html ) => {
+	var txt = document.createElement("textarea");
+	txt.innerHTML = html;
+	return txt.value;
+}
+
 export const qsmSanitizeName = ( name ) => {
 	if ( qsmIsEmpty( name ) ) {
 		name = '';
@@ -18,6 +25,7 @@ export const qsmStripTags = ( text ) => text.replace( /<\/?a[^>]*>/g, '' );
 //prepare form data
 export const qsmFormData = ( obj = false ) => {
 	let newData = new FormData();
+	//add to check if api call from editor
 	newData.append('qsm_block_api_call', '1');
 	if ( false !== obj ) {
 		for ( let k in obj ) {
@@ -27,6 +35,27 @@ export const qsmFormData = ( obj = false ) => {
 		}
 	}
 	return newData;
+}
+
+//add objecyt to form data
+export const qsmAddObjToFormData = ( formKey, valueObj, data = new FormData() ) => {
+	if ( qsmIsEmpty( formKey ) || qsmIsEmpty( valueObj ) || 'object' !== typeof valueObj ) {
+		return data;
+	}
+
+	for (let key in valueObj) {
+		if ( valueObj.hasOwnProperty(key) ) {
+			let value = valueObj[key];
+			if ( 'object' === value ) {
+				qsmAddObjToFormData( formKey+'['+key+']', value,  data );
+			} else {
+				data.append( formKey+'['+key+']', valueObj[key] );
+			}
+			
+		}
+	}
+
+	return data;
 }
 
 //generate uiniq id

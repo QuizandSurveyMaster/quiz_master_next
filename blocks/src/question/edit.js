@@ -7,9 +7,8 @@ import {
 	InnerBlocks,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { store as editorStore } from '@wordpress/editor';
-import { store as coreStore } from '@wordpress/core-data';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { store as noticesStore } from '@wordpress/notices';
+import { useDispatch, useSelect, select } from '@wordpress/data';
 import {
 	PanelBody,
 	PanelRow,
@@ -18,13 +17,27 @@ import {
 	RangeControl,
 	RadioControl,
 	SelectControl,
+	CheckboxControl,
 } from '@wordpress/components';
-import { qsmIsEmpty, qsmStripTags } from '../helper';
+import FeaturedImage from '../component/FeaturedImage';
+import SelectAddCategory from '../component/SelectAddCategory';
+import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmAddObjToFormData } from '../helper';
+
+
+//check for duplicate questionID attr
+const isQuestionIDReserved = ( questionIDCheck, clientIdCheck ) => {
+    const blocksClientIds = select( 'core/block-editor' ).getClientIdsWithDescendants();
+    return qsmIsEmpty( blocksClientIds ) ? false : blocksClientIds.some( ( blockClientId ) => {
+        const { questionID  } = select( 'core/block-editor' ).getBlockAttributes( blockClientId );
+		//different Client Id but same questionID attribute means duplicate
+        return clientIdCheck !== blockClientId && questionID === questionIDCheck;
+    } );
+};
+
 /**
  * https://github.com/WordPress/gutenberg/blob/HEAD/packages/block-editor/src/components/rich-text/README.md#allowedformats-array
  *  
  */
-
 export default function Edit( props ) {
 	//check for QSM initialize data
 	if ( 'undefined' === typeof qsmBlockData ) {
@@ -37,8 +50,14 @@ export default function Edit( props ) {
 	const isParentOfSelectedBlock = useSelect( ( select ) => isSelected || select( 'core/block-editor' ).hasSelectedInnerBlock( clientId, true ) );
 
 	const quizID = context['quiz-master-next/quizID'];
+	const {
+		quiz_name,
+		post_id,
+		rest_nonce
+	} = context['quiz-master-next/quizAttr'];
 	const pageID = context['quiz-master-next/pageID'];
-	
+	const { createNotice } = useDispatch( noticesStore );
+
 	const {
 		questionID,
 		type,
@@ -54,37 +73,77 @@ export default function Edit( props ) {
 		answers,
 		answerEditor,
 		matchAnswer,
-		otherSettings,
+		required,
 		settings,
 	} = attributes;
 
 	const [ quesAttr, setQuesAttr ] = useState( settings );
-
-	/**Initialize block from server */
+	
+	/**Generate question id if not set or in case duplicate questionID ***/
 	useEffect( () => {
-		let shouldSetQSMAttr = true;
-		if ( shouldSetQSMAttr ) {
+		let shouldSetID = true;
+		if ( shouldSetID ) {
+		
+			if ( qsmIsEmpty( questionID ) || '0' == questionID || ( ! qsmIsEmpty( questionID ) && isQuestionIDReserved( questionID, clientId ) ) ) {
+				
+				//create a question
+				let newQuestion = qsmFormData( {
+					"id": null,
+					"rest_nonce": rest_nonce,
+					"quizID": quizID,
+					"quiz_name": quiz_name,
+					"postID": post_id,
+					"answerEditor": qsmValueOrDefault( answerEditor, 'text' ),
+					"type": qsmValueOrDefault( type , '0' ),
+					"name": qsmDecodeHtml( qsmValueOrDefault( description ) ),
+					"question_title": qsmValueOrDefault( title ),
+					"answerInfo": qsmDecodeHtml( qsmValueOrDefault( correctAnswerInfo ) ),
+					"comments": qsmValueOrDefault( commentBox, '1' ),
+					"hint": qsmValueOrDefault( hint ),
+					"category": qsmValueOrDefault( category ),
+					"multicategories": [],
+					"required": qsmValueOrDefault( required, 1 ),
+					"answers": answers,
+					"page": 0,
+					"featureImageID": featureImageID,
+					"featureImageSrc": featureImageSrc,
+					"matchAnswer": null,
+				} );
 
-			
+				//AJAX call
+				apiFetch( {
+					path: '/quiz-survey-master/v1/questions',
+					method: 'POST',
+					body: newQuestion
+				} ).then( ( response ) => {
+					console.log("question created", response);
+					if ( 'success' == response.status ) {
+						let question_id = response.id;
+						setAttributes( { questionID: question_id } );
+					}
+				}).catch(
+					( error ) => {
+						console.log( 'error',error );
+						createNotice( 'error', error.message, {
+							isDismissible: true,
+							type: 'snackbar',
+						} );
+					}
+				);
+			}
 		}
 		
 		//cleanup
 		return () => {
-			shouldSetQSMAttr = false;
+			shouldSetID = false;
 		};
 		
-	}, [ quizID ] );
+	}, [] );
 
+	//add classes
 	const blockProps = useBlockProps( {
 		className: isParentOfSelectedBlock ? ' in-editing-mode':'' ,
 	} );
-
-	//Decode htmlspecialchars
-	const decodeHtml = ( html ) => {
-		var txt = document.createElement("textarea");
-		txt.innerHTML = html;
-		return txt.value;
-	}
 
 	const QUESTION_TEMPLATE = [
 		[
@@ -101,6 +160,34 @@ export default function Edit( props ) {
 		]
 
 	];
+
+	//check if a category is selected
+	const isCategorySelected = ( termId ) => ( category == termId || multicategories.includes( termId ) );
+
+	//set or unset category
+	const setUnsetCatgory = ( termId ) => {
+		if ( qsmIsEmpty( category ) && ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ) {
+			setAttributes({ category: termId });
+		} else if ( termId == category ) {
+			setAttributes({ category: '' });
+		} else {
+			let multiCat = ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ? [] : multicategories;
+
+			if ( multiCat.includes( termId ) ) {
+				//remove category if already set
+				multiCat = multiCat.filter( catID =>  catID != termId );
+			} else {
+				//add category if not set
+				multiCat.push( termId );
+				//console.log("add multi", termId);
+			}
+
+			setAttributes({ 
+				category: '',
+				multicategories: [ ...multiCat ]
+			});
+		}
+	}
 
 	return (
 	<>
@@ -142,6 +229,34 @@ export default function Edit( props ) {
 			}
 			__nextHasNoMarginBottom
 		/>
+		<ToggleControl
+			label={ __( 'Required', 'quiz-master-next' ) }
+			checked={ ! qsmIsEmpty( required ) && '1' == required  }
+			onChange={ () => setAttributes( { required : ( ( ! qsmIsEmpty( required ) && '1' == required ) ? 0 : 1 ) } ) }
+		/>
+		</PanelBody>
+		{/**Categories */}
+		<SelectAddCategory 
+			isCategorySelected={ isCategorySelected }
+			setUnsetCatgory={ setUnsetCatgory }
+		/>
+		{/**Feature Image */}
+		<PanelBody title={ __( 'Featured image', 'quiz-master-next' ) } initialOpen={ true }>
+		    <FeaturedImage 
+			featureImageID={ featureImageID }
+			onUpdateImage={ ( mediaDetails ) => {
+				setAttributes({ 
+					featureImageID: mediaDetails.id,
+					featureImageSrc: mediaDetails.url
+				});
+			}  }
+			onRemoveImage={ ( id ) => {
+				setAttributes({ 
+					featureImageID: undefined,
+					featureImageSrc: undefined,
+				});
+			}  }
+			/>
 		</PanelBody>
 		{/**Comment Box */}
 		<PanelBody title={ qsmBlockData.commentBox.heading } >
@@ -176,7 +291,7 @@ export default function Edit( props ) {
 				title={ __( 'Question description', 'quiz-master-next' ) }
 				aria-label={ __( 'Question description', 'quiz-master-next' ) }
 				placeholder={  __( 'Description goes here', 'quiz-master-next' ) }
-				value={ decodeHtml( description ) }
+				value={ qsmDecodeHtml( description ) }
 				onChange={ ( description ) => setAttributes({ description }) }
 				className={ 'qsm-question-description' }
 				__unstableEmbedURLOnPaste
@@ -191,7 +306,7 @@ export default function Edit( props ) {
 				title={ __( 'Correct Answer Info', 'quiz-master-next' ) }
 				aria-label={ __( 'Correct Answer Info', 'quiz-master-next' ) }
 				placeholder={  __( 'Correct answer info goes here', 'quiz-master-next' ) }
-				value={ decodeHtml( correctAnswerInfo ) }
+				value={ qsmDecodeHtml( correctAnswerInfo ) }
 				onChange={ ( correctAnswerInfo ) => setAttributes({ correctAnswerInfo }) }
 				className={ 'qsm-question-correct-answer-info' }
 				__unstableEmbedURLOnPaste

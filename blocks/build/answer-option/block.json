@@ -31,6 +31,7 @@
   "usesContext": [
     "quiz-master-next/quizID",
     "quiz-master-next/pageID",
+    "quiz-master-next/quizAttr",
     "quiz-master-next/questionID"
   ],
   "example": {},
@@ -40,7 +41,5 @@
   "textdomain": "main-block",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php",
-  "viewScript": "file:./view.js"
+  "style": "file:./style-index.css"
 }
