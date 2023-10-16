@@ -296,6 +296,7 @@ function qsm_results_overview_tab_content() {
 	$user_id             = get_current_user_id();
 	if ( isset( $_POST["results-screen_option_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST["results-screen_option_nonce"] ) ), 'results_screen_option' ) ) {
 		$results_screen_option['page_url']   = isset( $_POST['page_url'] ) ? sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) : "0";
+		$results_screen_option['view_result_page']   = isset( $_POST['view_result_page'] ) ? sanitize_text_field( wp_unslash( $_POST['view_result_page'] ) ) : "0";
 		$results_screen_option['page_name']  = isset( $_POST['page_name'] ) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
 		$results_screen_option['business']   = isset( $_POST['business'] ) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
 		$results_screen_option['phone']      = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
@@ -309,11 +310,12 @@ function qsm_results_overview_tab_content() {
 		$results_screen_option   = ! empty( $results_screen_option ) ? $results_screen_option : '';
 		if ( empty( $results_screen_option ) ) {
 			$results_screen_option = array(
-				'page_url'   => '0',
-				'page_name'  => '0',
-				'business'   => '1',
-				'phone'      => '1',
-				'ip_address' => '1',
+				'page_url'         => '0',
+				'view_result_page' => '0',
+				'page_name'        => '0',
+				'business'         => '1',
+				'phone'            => '1',
+				'ip_address'       => '1',
 			);
 		}
 		if ( ! isset( $results_screen_option['start_date'] ) ) {
@@ -332,18 +334,19 @@ function qsm_results_overview_tab_content() {
 		wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' );
 
 		$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
-			'score'         => __( 'Score', 'quiz-master-next' ),
-			'time_complete' => __( 'Time To Complete', 'quiz-master-next' ),
-			'name'          => __( 'Name', 'quiz-master-next' ),
-			'business'      => __( 'Business', 'quiz-master-next' ),
-			'email'         => __( 'Email', 'quiz-master-next' ),
-			'phone'         => __( 'Phone', 'quiz-master-next' ),
-			'user'          => __( 'User', 'quiz-master-next' ),
-			'start_date'    => __( 'Start Date', 'quiz-master-next' ),
-			'time_taken'    => __( 'End Date', 'quiz-master-next' ),
-			'ip'            => __( 'IP Address', 'quiz-master-next' ),
-			'page_name'     => __( 'Page Name', 'quiz-master-next' ),
-			'page_url'      => __( 'Page URL', 'quiz-master-next' ),
+			'score'            => __( 'Score', 'quiz-master-next' ),
+			'time_complete'    => __( 'Time To Complete', 'quiz-master-next' ),
+			'name'             => __( 'Name', 'quiz-master-next' ),
+			'business'         => __( 'Business', 'quiz-master-next' ),
+			'email'            => __( 'Email', 'quiz-master-next' ),
+			'phone'            => __( 'Phone', 'quiz-master-next' ),
+			'user'             => __( 'User', 'quiz-master-next' ),
+			'start_date'       => __( 'Start Date', 'quiz-master-next' ),
+			'time_taken'       => __( 'End Date', 'quiz-master-next' ),
+			'ip'               => __( 'IP Address', 'quiz-master-next' ),
+			'page_name'        => __( 'Page Name', 'quiz-master-next' ),
+			'page_url'         => __( 'Page URL', 'quiz-master-next' ),
+			'view_result_page' => __( 'Page Result', 'quiz-master-next' ),
 		) );
 
 		$values      = $quiz_infos   = [];
@@ -373,6 +376,9 @@ function qsm_results_overview_tab_content() {
 		}
 		if ( "0" === $results_screen_option['time_taken'] ) {
 			$values['time_taken']['style'] = $display_none;
+		}
+		if ( "0" === $results_screen_option['view_result_page'] ) {
+			$values['view_result_page']['style'] = $display_none;
 		}
 		if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
 			$proctor_class = "qsm-quiz-proctor-addon";
@@ -480,8 +486,13 @@ function qsm_results_overview_tab_content() {
 					}
 					$values['page_url']['content'][] = '<a href="' . esc_url( $quiz_page_url ) . '">' . esc_html( $quiz_page_url ) . '</a>';
 				}
+				if ( isset( $values['view_result_page']) ) {
+					$quiz_page_url = $mlw_quiz_info->page_url;
+					$unique_id = $mlw_quiz_info->unique_id;
+					$values['view_result_page']['content'][] = '<a target="_blank" class="button" href="' . esc_url( $quiz_page_url ) . '?result_id=' . esc_attr( $unique_id ) . '">' . esc_html__( 'View Result Page', 'quiz-master-next' ) . '</a>';
+				}
 				foreach ( $values as $k => $v ) {
-					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url' ], true ) ) {
+					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url', 'view_result_page' ], true ) ) {
 						$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 						if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
 							$values[ $k ]['content'][] = $content;
@@ -557,6 +568,10 @@ function qsm_results_overview_tab_content() {
 						<label>
 							<input type="checkbox" value="1" name="page_url" <?php checked( $results_screen_option['page_url'], "1", true ) ?>/>
 							<?php esc_html_e( 'Page URL', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" value="1" name="view_result_page" <?php checked( $results_screen_option['view_result_page'], "1", true ) ?>/>
+							<?php esc_html_e( 'Page Result', 'quiz-master-next' ); ?>
 						</label>
 						<label>
 							<input type="checkbox" name="page_name" value="1" <?php checked( $results_screen_option['page_name'], "1", true ) ?>/>
