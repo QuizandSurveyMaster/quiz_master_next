@@ -308,16 +308,15 @@ function qsm_results_overview_tab_content() {
 	} else {
 		$results_screen_option   = get_user_meta( $user_id, 'results_screen_option', true );
 		$results_screen_option   = ! empty( $results_screen_option ) ? $results_screen_option : '';
-		if ( empty( $results_screen_option ) ) {
-			$results_screen_option = array(
-				'page_url'         => '0',
-				'view_result_page' => '0',
-				'page_name'        => '0',
-				'business'         => '1',
-				'phone'            => '1',
-				'ip_address'       => '1',
-			);
-		}
+		$default_results_screen_option = array(
+			'page_url'         => '0',
+			'view_result_page' => '0',
+			'page_name'        => '0',
+			'business'         => '1',
+			'phone'            => '1',
+			'ip_address'       => '1',
+		);
+		$results_screen_option = wp_parse_args( $results_screen_option, $default_results_screen_option );
 		if ( ! isset( $results_screen_option['start_date'] ) ) {
 			$results_screen_option['start_date'] = "0";
 		}
@@ -346,7 +345,7 @@ function qsm_results_overview_tab_content() {
 			'ip'               => __( 'IP Address', 'quiz-master-next' ),
 			'page_name'        => __( 'Page Name', 'quiz-master-next' ),
 			'page_url'         => __( 'Page URL', 'quiz-master-next' ),
-			'view_result_page' => __( 'Page Result', 'quiz-master-next' ),
+			'view_result_page' => __( 'Result Page', 'quiz-master-next' ),
 		) );
 
 		$values      = $quiz_infos   = [];
@@ -489,7 +488,7 @@ function qsm_results_overview_tab_content() {
 				if ( isset( $values['view_result_page']) ) {
 					$quiz_page_url = $mlw_quiz_info->page_url;
 					$unique_id = $mlw_quiz_info->unique_id;
-					$values['view_result_page']['content'][] = '<a target="_blank" class="button" href="' . esc_url( $quiz_page_url ) . '?result_id=' . esc_attr( $unique_id ) . '">' . esc_html__( 'View Result Page', 'quiz-master-next' ) . '</a>';
+					$values['view_result_page']['content'][] = '<a target="_blank" class="button" href="' . esc_url( $quiz_page_url ) . '?result_id=' . esc_attr( $unique_id ) . '">' . esc_html__( 'View', 'quiz-master-next' ) . '</a>';
 				}
 				foreach ( $values as $k => $v ) {
 					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url', 'view_result_page' ], true ) ) {
