@@ -9,12 +9,11 @@
   "description": "Easily and quickly add quizzes and surveys inside the block editor.",
   "attributes": {
     "quizID": {
-      "type": "string",
-      "default": "0"
+      "type": "number",
+      "default": 0
     },
     "quizAttr": {
-      "type": "object",
-      "default": {}
+      "type": "object"
     }
   },
   "providesContext": {

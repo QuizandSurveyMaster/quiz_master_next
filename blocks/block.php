@@ -35,7 +35,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_scripts' ) );
 			
 			add_action( 'rest_api_init', array( $this, 'register_editor_rest_routes' ) );
-			
+			//$this->get_post_id_from_quiz_id( 98 );
 		}
 
 		/**
@@ -230,6 +230,9 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		 */
 		public function qsm_block_render( $attributes, $content, $block ) {
 			global $qmnQuizManager;
+			if ( ! empty( $attributes ) && ! empty( $attributes['quizID'] ) ) {
+				$attributes['quiz'] = intval( $attributes['quizID'] );
+			}
 			return $qmnQuizManager->display_shortcode( $attributes );
 		}
 
@@ -320,6 +323,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			$post_ids      = get_posts( array(
 				'posts_per_page' => 1,
 				'post_type'      => 'qsm_quiz',
+				'post_status'	 =>  array( 'publish', 'draft' ),
 				'fields'         => 'ids',
 				'meta_query'     => array(
 					array(
@@ -330,6 +334,8 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				),
 			) );
 			wp_reset_postdata();
+			// echo "quis id $quiz_id <br> ";
+			// print_r( $post_ids );exit;
 			return ( empty( $post_ids ) || ! is_array( $post_ids ) )? 0 : $post_ids[0];
 		}
 
@@ -519,7 +525,8 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			if ( empty( $quiz_id ) || empty( $post_id ) ) {
 				return array(
 					'status' => 'error',
-					'msg'    => __( 'Missing quiz_id or post_id', 'quiz-master-next' )
+					'msg'    => __( 'Missing quiz_id or post_id', 'quiz-master-next' ),
+					'post'	 => $_POST
 				);
 			}
 			
@@ -537,11 +544,23 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				}
 			}
 			
-			//save quiz name
+			//save quiz name and publish quiz
 			if ( ! empty(  $_POST['quizData']['quiz'] ) && ! empty(  $_POST['quizData']['quiz']['quiz_name'] )  ) {
 				$quiz_name = sanitize_key( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
 				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name )  ) {
+					//update quiz name
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
+
+					//publish quiz
+					$update_status = wp_update_post( array(
+						'ID'          => $post_id,
+						'post_status' => 'publish',
+					) );
+					$update_status = wp_update_post( $arg_post_arr );
+					
+					if ( false === $update_status ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', '', 0, 'error' );
+					}
 				}
 			}
 			

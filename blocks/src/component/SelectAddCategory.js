@@ -83,24 +83,43 @@ const SelectAddCategory = ({
         });
     }
 
-    const addNewCategoryInList = () => {
-       
+    const getCategoryNameArray = ( categories ) => {
+        let cats = [];
+        categories.forEach( cat => {
+            cats.push( cat.name );
+            if ( 0 < cat.children.length ) {
+               let childCategory = getCategoryNameArray( cat.children );
+                cats = [ ...cats, ...childCategory ];
+            }
+        });
+        return cats;
     }
 
     //check if category name already exists and set new category name
     const checkSetNewCategory = ( catName, categories ) => {
-        let matchName = false;
-        categories.forEach( cat => {
-            if ( cat.name == catName ) {
-                matchName = true;
-                return false;
-            } else if ( 0 < cat.children.length ) {
-                checkSetNewCategory( catName, cat.children )
-            }
-        });
+        categories = getCategoryNameArray( categories );
+        console.log( "categories", categories );
+        if ( categories.includes( catName ) ) {
+            setNewCategoryError( catName );
+        } else {
+            setNewCategoryError( false );
+            setFormCatName( catName );
+        }
+        // categories.forEach( cat => {
+        //     if ( cat.name == catName ) {
+        //         matchName = true;
+        //         return false;
+        //     } else if ( 0 < cat.children.length ) {
+        //         checkSetNewCategory( catName, cat.children )
+        //     }
+        // });
         
-        setNewCategoryError( matchName );
-        setFormCatName( catName );
+        // if ( matchName ) {
+        //     setNewCategoryError( matchName );
+        // } else {
+        //     setNewCategoryError( matchName );
+        //     setFormCatName( catName );
+        // }
     }
 
     const renderTerms = ( categories ) => {
@@ -176,7 +195,7 @@ const SelectAddCategory = ({
 						</FlexItem>
                         <FlexItem>
                             <p className='qsm-error-text' >
-                                { newCategoryError && __( 'Category ', 'quiz-master-next' ) + formCatName + __( ' already exists.', 'quiz-master-next' ) }
+                                { false !== newCategoryError && __( 'Category ', 'quiz-master-next' ) + newCategoryError + __( ' already exists.', 'quiz-master-next' ) }
                             </p>
                         </FlexItem>
 					</Flex>

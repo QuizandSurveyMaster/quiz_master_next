@@ -34,13 +34,14 @@ export default function Edit( props ) {
 
 	const { className, attributes, setAttributes, isSelected, clientId } = props;
 	const { createNotice } = useDispatch( noticesStore );
-	const {
-		quizID,
-		quizAttr
-	} = attributes;
-
 	//quiz attribute
 	const globalQuizsetting = qsmBlockData.globalQuizsetting;
+	const {
+		quizID,
+		quizAttr = globalQuizsetting
+	} = attributes;
+
+
 	//quiz list
 	const [ quizList, setQuizList ] = useState( qsmBlockData.QSMQuizList );
 	//quiz list
@@ -70,98 +71,8 @@ export default function Edit( props ) {
 	/**Initialize block from server */
 	useEffect( () => {
 		let shouldSetQSMAttr = true;
-		if ( shouldSetQSMAttr ) {
-
-			if ( ! qsmIsEmpty( quizID ) && 0 < quizID  ) {
-				apiFetch( {
-					path: '/quiz-survey-master/v1/quiz/structure',
-					method: 'POST',
-					data: { quizID: quizID },
-				} ).then( ( res ) => {
-					console.log( "quiz render data", res );
-					if ( 'success' == res.status ) {
-						let result = res.result;
-						setAttributes( { quizAttr: { ...result } } );
-						if ( ! qsmIsEmpty( result.qpages ) ) {
-							let quizTemp = [];
-							result.qpages.forEach( page  => {
-								let questions = [];
-								if ( ! qsmIsEmpty( page.question_arr ) ) {
-									page.question_arr.forEach( question => {
-										if ( ! qsmIsEmpty( question ) ) {
-											let answers = [];
-											//answers options blocks
-											if ( ! qsmIsEmpty( question.answers ) && 0 < question.answers.length ) {
-												
-												question.answers.forEach( ( answer, aIndex ) => {
-													answers.push(
-														[
-															'qsm/quiz-answer-option',
-															{
-																optionID:aIndex,
-																content:answer[0],
-																points:answer[1],
-																isCorrect:answer[2]
-															}
-														]
-													);
-												});
-											}
-											//question blocks
-											questions.push(
-												[
-													'qsm/quiz-question',
-													{
-														questionID: question.question_id,
-														type: question.question_type_new,
-														answerEditor: question.settings.answerEditor,
-														title: question.settings.question_title,
-														description: question.question_name,
-														required: question.settings.required,
-														hint:question.hints,
-														answers: question.answers,
-														correctAnswerInfo:question.question_answer_info,
-														category:question.category,
-														multicategories:question.multicategories,
-														commentBox: question.comments,
-														matchAnswer: question.settings.matchAnswer,
-														featureImageID: question.settings.featureImageID,
-														featureImageSrc: question.settings.featureImageSrc,
-														settings: question.settings
-													},
-													answers
-												]
-											);
-										}
-									});
-								}
-								//console.log("page",page);
-								quizTemp.push(
-									[
-										'qsm/quiz-page',
-										{
-											pageID:page.id,
-											pageKey: page.pagekey,
-											hidePrevBtn: page.hide_prevbtn,
-											quizID: page.quizID
-										},
-										questions
-									]
-								)
-							});
-							setQuizTemplate( quizTemp );
-						}
-						// QSM_QUIZ = [
-						// 	[
-
-						// 	]
-						// ];
-					} else {
-						console.log( "error "+ res.msg );
-					}
-				} );
-				
-			}
+		if ( shouldSetQSMAttr && ! qsmIsEmpty( quizID ) && 0 < quizID ) {
+			initializeQuizAttributes( quizID );
 		}
 		
 		//cleanup
@@ -169,8 +80,104 @@ export default function Edit( props ) {
 			shouldSetQSMAttr = false;
 		};
 		
-	}, [ quizID ] );
+	}, [ ] );
 
+	/**Initialize quiz attributes: first time render only */
+	const initializeQuizAttributes = ( quiz_id ) => {
+		if ( ! qsmIsEmpty( quiz_id ) && 0 < quiz_id  ) {
+			apiFetch( {
+				path: '/quiz-survey-master/v1/quiz/structure',
+				method: 'POST',
+				data: { quizID: quiz_id },
+			} ).then( ( res ) => {
+				//console.log( "quiz render data", res );
+				if ( 'success' == res.status ) {
+					let result = res.result;
+					setAttributes( { 
+						quizID: parseInt( quiz_id ),
+						quizAttr: { ...quizAttr, ...result }
+					} );
+					if ( ! qsmIsEmpty( result.qpages ) ) {
+						let quizTemp = [];
+						result.qpages.forEach( page  => {
+							let questions = [];
+							if ( ! qsmIsEmpty( page.question_arr ) ) {
+								page.question_arr.forEach( question => {
+									if ( ! qsmIsEmpty( question ) ) {
+										let answers = [];
+										//answers options blocks
+										if ( ! qsmIsEmpty( question.answers ) && 0 < question.answers.length ) {
+											
+											question.answers.forEach( ( answer, aIndex ) => {
+												answers.push(
+													[
+														'qsm/quiz-answer-option',
+														{
+															optionID:aIndex,
+															content:answer[0],
+															points:answer[1],
+															isCorrect:answer[2]
+														}
+													]
+												);
+											});
+										}
+										//question blocks
+										questions.push(
+											[
+												'qsm/quiz-question',
+												{
+													questionID: question.question_id,
+													type: question.question_type_new,
+													answerEditor: question.settings.answerEditor,
+													title: question.settings.question_title,
+													description: question.question_name,
+													required: question.settings.required,
+													hint:question.hints,
+													answers: question.answers,
+													correctAnswerInfo:question.question_answer_info,
+													category:question.category,
+													multicategories:question.multicategories,
+													commentBox: question.comments,
+													matchAnswer: question.settings.matchAnswer,
+													featureImageID: question.settings.featureImageID,
+													featureImageSrc: question.settings.featureImageSrc,
+													settings: question.settings
+												},
+												answers
+											]
+										);
+									}
+								});
+							}
+							//console.log("page",page);
+							quizTemp.push(
+								[
+									'qsm/quiz-page',
+									{
+										pageID:page.id,
+										pageKey: page.pagekey,
+										hidePrevBtn: page.hide_prevbtn,
+										quizID: page.quizID
+									},
+									questions
+								]
+							)
+						});
+						setQuizTemplate( quizTemp );
+					}
+					// QSM_QUIZ = [
+					// 	[
+
+					// 	]
+					// ];
+				} else {
+					console.log( "error "+ res.msg );
+				}
+			} );
+			
+		}
+	}
 	/**
 	 * vault dash Icon
 	 * @returns vault dash Icon
@@ -202,7 +209,7 @@ export default function Edit( props ) {
 						value={ quizID }
 						options={ quizList }
 						onChange={ ( quizID ) =>
-							setAttributes( { quizID } )
+							initializeQuizAttributes( quizID )
 						}
 						disabled={ createQuiz }
 						__nextHasNoMarginBottom
@@ -323,7 +330,7 @@ export default function Edit( props ) {
 		if ( qsmIsEmpty( blocks ) ) {
 			return false;
 		}
-		console.log( "blocks", blocks);
+		//console.log( "blocks", blocks);
 		blocks = blocks.innerBlocks;
 		let quizDataToSave = {
 			quiz_id: quizAttr.quiz_id,
@@ -438,7 +445,7 @@ export default function Edit( props ) {
 	useEffect( () => {
 		if ( isSavingPage ) {
 			let quizData =  getQuizDataToSave();
-			console.log( "quizData", quizData);
+			//console.log( "quizData", quizData);
 			//save quiz status
 			setSaveQuiz( true );
 			
@@ -455,7 +462,7 @@ export default function Edit( props ) {
 				method: 'POST',
 				body: quizData
 			} ).then( ( res ) => {
-				console.log( res );
+				//console.log( res );
 			} ).catch(
 				( error ) => {
 					console.log( 'error',error );
@@ -485,20 +492,18 @@ export default function Edit( props ) {
 			'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
 		});
 		
-		if ( showAdvanceOption ) {
-			['form_type', 
-			'system', 
-			'timer_limit', 
-			'pagination',
-			'enable_contact_form', 
-			'enable_pagination_quiz', 
-			'show_question_featured_image_in_result',
-			'progress_bar',
-			'require_log_in',
-			'disable_first_page',
-			'comment_section'
-			].forEach( ( item ) => ( 'undefined' === typeof quizAttr[ item ] || null === quizAttr[ item ] ) ? '' : quizData.append( item, quizAttr[ item ] ) );
-		}
+		['form_type', 
+		'system', 
+		'timer_limit', 
+		'pagination',
+		'enable_contact_form', 
+		'enable_pagination_quiz', 
+		'show_question_featured_image_in_result',
+		'progress_bar',
+		'require_log_in',
+		'disable_first_page',
+		'comment_section'
+		].forEach( ( item ) => ( 'undefined' === typeof quizAttr[ item ] || null === quizAttr[ item ] ) ? '' : quizData.append( item, quizAttr[ item ] ) );
 
 		//AJAX call
 		apiFetch( {
@@ -567,8 +572,8 @@ export default function Edit( props ) {
 						} ).then( ( pageResponse ) => {
 							console.log("pageResponse", pageResponse);
 							if ( 'success' == pageResponse.status ) {
-								//set new quiz ID
-								setAttributes( { quizID: res.quizID } );
+								//set new quiz
+								initializeQuizAttributes( res.quizID );
 							}
 						});
 
