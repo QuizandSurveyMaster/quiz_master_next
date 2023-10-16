@@ -82,7 +82,8 @@
     "quiz-master-next/quizAttr"
   ],
   "providesContext": {
-    "quiz-master-next/questionID": "questionID"
+    "quiz-master-next/questionID": "questionID",
+    "quiz-master-next/questionType": "type"
   },
   "example": {},
   "supports": {

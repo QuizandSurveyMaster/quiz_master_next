@@ -15,6 +15,7 @@ import {
 	PanelRow,
 	TextControl,
 	ToggleControl,
+	__experimentalHStack as HStack,
 	RangeControl,
 	RadioControl,
 	SelectControl,
@@ -34,6 +35,7 @@ onRemove } = props;
 	const quizID = context['quiz-master-next/quizID'];
 	const pageID = context['quiz-master-next/pageID'];
 	const questionID = context['quiz-master-next/questionID'];
+	const questionType = context['quiz-master-next/questionType'];
 	const name = 'qsm/quiz-answer-option';
 	const {
 		optionID,
@@ -67,6 +69,8 @@ onRemove } = props;
 		txt.innerHTML = html;
 		return txt.value;
 	}
+
+	const inputType = ['4','10'].includes( questionType ) ? "checkbox":"radio";
 	
 	return (
 	<>
@@ -87,6 +91,12 @@ onRemove } = props;
 		</PanelBody>
 	</InspectorControls>
 	<div  { ...blockProps } >
+		<HStack
+			className="edit-post-document-actions__title"
+			spacing={ 1 }
+			justify='left'
+		>
+ 		<input type={ inputType }  readOnly tabIndex="-1" />
 		<RichText
 			tagName='p'
 			title={ __( 'Answer options', 'quiz-master-next' ) }
@@ -120,6 +130,7 @@ onRemove } = props;
 			className={ 'qsm-question-answer-option' }
 			identifier='text'
 		/>
+		</HStack>
 	</div>
 	</>
 	);

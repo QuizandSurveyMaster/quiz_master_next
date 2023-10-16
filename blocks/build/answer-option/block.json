@@ -32,7 +32,8 @@
     "quiz-master-next/quizID",
     "quiz-master-next/pageID",
     "quiz-master-next/quizAttr",
-    "quiz-master-next/questionID"
+    "quiz-master-next/questionID",
+    "quiz-master-next/questionType"
   ],
   "example": {},
   "supports": {
