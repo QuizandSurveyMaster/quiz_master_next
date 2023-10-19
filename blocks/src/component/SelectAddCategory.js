@@ -37,6 +37,22 @@ const SelectAddCategory = ({
     //category list 
     const [ categories, setCategories ] = useState( qsmBlockData?.hierarchicalCategoryList );
 
+     //get category id-details object 
+     const getCategoryIdDetailsObject = ( categories ) => {
+        let catObj = {};
+        categories.forEach( cat => {
+            catObj[ cat.id ] = cat;
+            if ( 0 < cat.children.length ) {
+               let childCategory = getCategoryIdDetailsObject( cat.children );
+               catObj = { ...catObj, ...childCategory };
+            }
+        });
+        return catObj;
+    }
+
+    //category id wise details
+    const [ categoryIdDetails, setCategoryIdDetails ] = useState( qsmIsEmpty( qsmBlockData?.hierarchicalCategoryList ) ? {} : getCategoryIdDetailsObject( qsmBlockData.hierarchicalCategoryList ) );
+
     const addNewCategoryLabel = __( 'Add New Category ', 'quiz-master-next' );
     const noParentOption = `— ${ __( 'Parent Category ', 'quiz-master-next' ) } —`;
 
@@ -69,11 +85,12 @@ const SelectAddCategory = ({
                    // console.log("new categorieslist",  res);
                     if ( 'success' == res.status ) {
                         setCategories( res.result );
+                        setCategoryIdDetails( res.result );
                          //set form
                         setFormCatName( '' );
                         setFormCatParent( 0 );
                         //set category selected
-                        setUnsetCatgory( term_id );
+                        setUnsetCatgory( term_id, getCategoryIdDetailsObject( term.id ) );
                         setAddingNewCategory( false );
                     }
                 });
@@ -83,6 +100,7 @@ const SelectAddCategory = ({
         });
     }
 
+    //get category name array
     const getCategoryNameArray = ( categories ) => {
         let cats = [];
         categories.forEach( cat => {
@@ -132,7 +150,7 @@ const SelectAddCategory = ({
 					<CheckboxControl
                         label={ term.name }
                         checked={ isCategorySelected( term.id ) }
-                        onChange={ () => setUnsetCatgory( term.id ) }
+                        onChange={ () => setUnsetCatgory( term.id, categoryIdDetails ) }
                     />
 					{ !! term.children.length && (
 						<div className="editor-post-taxonomies__hierarchical-terms-subchoices">

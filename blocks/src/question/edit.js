@@ -21,7 +21,7 @@ import {
 } from '@wordpress/components';
 import FeaturedImage from '../component/FeaturedImage';
 import SelectAddCategory from '../component/SelectAddCategory';
-import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmAddObjToFormData } from '../helper';
+import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray } from '../helper';
 
 
 //check for duplicate questionID attr
@@ -59,6 +59,7 @@ export default function Edit( props ) {
 	const { createNotice } = useDispatch( noticesStore );
 
 	const {
+		isChanged = false,//use in editor only to detect if any change occur in this block
 		questionID,
 		type,
 		description,
@@ -74,10 +75,8 @@ export default function Edit( props ) {
 		answerEditor,
 		matchAnswer,
 		required,
-		settings,
 	} = attributes;
-
-	const [ quesAttr, setQuesAttr ] = useState( settings );
+	
 	
 	/**Generate question id if not set or in case duplicate questionID ***/
 	useEffect( () => {
@@ -140,6 +139,36 @@ export default function Edit( props ) {
 		
 	}, [] );
 
+	//detect change in question
+	useEffect( () => {
+		let shouldSetChanged = true;
+		if ( shouldSetChanged && isSelected  && false === isChanged ) {
+			//console.log("changed question", questionID );
+			setAttributes( { isChanged: true } );
+		}
+
+		//cleanup
+		return () => {
+			shouldSetChanged = false;
+		};
+	}, [
+		questionID,
+		type,
+		description,
+		title,
+		correctAnswerInfo,
+		commentBox,
+		category,
+		multicategories,
+		hint,
+		featureImageID,
+		featureImageSrc,
+		answers,
+		answerEditor,
+		matchAnswer,
+		required,
+	] )
+
 	//add classes
 	const blockProps = useBlockProps( {
 		className: isParentOfSelectedBlock ? ' in-editing-mode':'' ,
@@ -161,33 +190,62 @@ export default function Edit( props ) {
 
 	];
 
+	//Get category ancestor
+	const getCategoryAncestors = ( termId, categories ) => {
+		let parents = [];
+		if ( ! qsmIsEmpty( categories[ termId ] ) && '0' != categories[ termId ]['parent'] ) {
+			termId = categories[ termId ]['parent'];
+			parents.push( termId );
+			if ( ! qsmIsEmpty( categories[ termId ] ) && '0' != categories[ termId ]['parent'] ) {
+				let ancestor = getCategoryAncestors( termId, categories );
+				parents = [ ...parents, ...ancestor ];
+			}
+		} 
+		
+		return qsmUniqueArray( parents );
+	 }
+
 	//check if a category is selected
-	const isCategorySelected = ( termId ) => ( category == termId || multicategories.includes( termId ) );
+	const isCategorySelected = ( termId ) =>  multicategories.includes( termId );
 
 	//set or unset category
-	const setUnsetCatgory = ( termId ) => {
-		if ( qsmIsEmpty( category ) && ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ) {
-			setAttributes({ category: termId });
-		} else if ( termId == category ) {
-			setAttributes({ category: '' });
-		} else {
-			let multiCat = ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ? [] : multicategories;
-
-			if ( multiCat.includes( termId ) ) {
-				//remove category if already set
-				multiCat = multiCat.filter( catID =>  catID != termId );
-			} else {
-				//add category if not set
-				multiCat.push( termId );
-				//console.log("add multi", termId);
-			}
-
-			setAttributes({ 
-				category: '',
-				multicategories: [ ...multiCat ]
+	const setUnsetCatgory = ( termId, categories ) => {
+		let multiCat = ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ? ( qsmIsEmpty( category ) ? [] : [ category ] ) : multicategories;
+		
+		//Case: category unselected
+		if ( multiCat.includes( termId ) ) {
+			//remove category if already set
+			multiCat = multiCat.filter( catID =>  catID != termId );
+			let children = [];
+			//check for if any child is selcted 
+			multiCat.forEach( childCatID => {
+				//get ancestors of category
+				let ancestorIds = getCategoryAncestors( childCatID, categories );
+				//given unselected category is an ancestor of selected category
+				if ( ancestorIds.includes( termId ) ) {
+					//remove category if already set
+					multiCat = multiCat.filter( catID =>  catID != childCatID );
+				}
 			});
+		} else {
+			//add category if not set
+			multiCat.push( termId );
+			//get ancestors of category
+			let ancestorIds = getCategoryAncestors( termId, categories );
+			//select all ancestor
+			multiCat = [ ...multiCat, ...ancestorIds ];
 		}
+
+		multiCat = qsmUniqueArray( multiCat );
+
+		setAttributes({ 
+			category: '',
+			multicategories: [ ...multiCat ]
+		});
 	}
+
+	//Notes relation to question type
+	const notes = ['12','7','3','5','14'].includes( type ) ? __( 'Note: Add only correct answer options with their respective points score.', 'quiz-master-next' ) : '';
 
 	return (
 	<>
@@ -201,6 +259,7 @@ export default function Edit( props ) {
 			onChange={ ( type ) =>
 				setAttributes( { type } )
 			}
+			help={ qsmIsEmpty( qsmBlockData.question_type_description[ type ] ) ? '' : qsmBlockData.question_type_description[ type ]+' '+notes }
 			__nextHasNoMarginBottom
 		>
 			{
@@ -220,15 +279,18 @@ export default function Edit( props ) {
 			}
 	   	</SelectControl>
 		{/**Answer Type */}
-		<SelectControl
-			label={ qsmBlockData.answerEditor.label }
-			value={ answerEditor || qsmBlockData.answerEditor.default }
-			options={ qsmBlockData.answerEditor.options }
-			onChange={ ( answerEditor ) =>
-				setAttributes( { answerEditor } )
-			}
-			__nextHasNoMarginBottom
-		/>
+		{
+			['0','4','1','10','13'].includes( type ) && 
+			<SelectControl
+				label={ qsmBlockData.answerEditor.label }
+				value={ answerEditor || qsmBlockData.answerEditor.default }
+				options={ qsmBlockData.answerEditor.options }
+				onChange={ ( answerEditor ) =>
+					setAttributes( { answerEditor } )
+				}
+				__nextHasNoMarginBottom
+			/>
+		}
 		<ToggleControl
 			label={ __( 'Required', 'quiz-master-next' ) }
 			checked={ ! qsmIsEmpty( required ) && '1' == required  }
@@ -297,10 +359,14 @@ export default function Edit( props ) {
 				__unstableEmbedURLOnPaste
 				__unstableAllowPrefixTransformations
 			/>
-			<InnerBlocks
-				allowedBlocks={ ['qsm/quiz-answer-option'] }
-				template={ QUESTION_TEMPLATE }
-			/>
+			{
+				! ['8','11','6','9'].includes( type ) &&
+				<InnerBlocks
+					allowedBlocks={ ['qsm/quiz-answer-option'] }
+					template={ QUESTION_TEMPLATE }
+				/>
+			}
+			
 			<RichText
 				tagName='p'
 				title={ __( 'Correct Answer Info', 'quiz-master-next' ) }

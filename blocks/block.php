@@ -96,6 +96,9 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						),
 					),
 				),
+				'supports' => array(
+					'inserter' => false // Hide this block from the inserter.
+				),
 				'editor_script'   => 'qsm-quiz-block',
 				'render_callback' => array( $this, 'qsm_block_render' ),
 			) );
@@ -152,7 +155,21 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 
 			$question_type = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
 			$question_types = array();
+			$question_type_description = array(
+				'13' => __( 'Displays a range between two given option. Please keep only two option here and remove others.', 'quiz-master-next' )
+			);
 			if ( ! empty( $question_type ) && is_array( $question_type ) ) {
+				//Question description
+				$question_type_desc = $mlwQuizMasterNext->pluginHelper->description_array();
+				if ( ! empty( $question_type_desc )  && is_array( $question_type_desc ) ) {
+					foreach ( $question_type_desc as  $question_desc ) {
+						if ( ! empty( $question_desc['question_type_id'] ) && ! empty( $question_desc['description'] ) ) {
+							$question_type_description[ $question_desc['question_type_id'] ] = $question_desc['description'];
+						}
+					}
+				}
+				
+				//Question types category wise
 				foreach ($question_type as $category => $qtypes ) {
 					$question_types[] = array(
 						'category' => $category,
@@ -184,6 +201,9 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						'default'            => '0',
 						'documentation_link' =>  esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/question-types/', 'quiz_editor', 'question_type', 'quizsurvey-question-type_doc' ) ),
 					),
+					'question_type_description' => $question_type_description,
+					'is_pro_activated' => class_exists( 'QSM_Advance_Question' ) ? '1' : '0',
+					'upgrade_link' => function_exists( 'qsm_get_plugin_link' ) ? qsm_get_plugin_link( 'pricing', 'qsm', 'upgrade-box', 'upgrade', 'qsm_plugin_upsell' ) : '',
 					'answerEditor' =>  array(
 						'label'              => __( 'Answers Type', 'quiz-master-next' ),
 						'options'            => array(

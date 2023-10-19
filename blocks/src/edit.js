@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+import { decodeEntities } from '@wordpress/html-entities';
 import {
 	InspectorControls,
 	InnerBlocks,
@@ -90,7 +91,7 @@ export default function Edit( props ) {
 				method: 'POST',
 				data: { quizID: quiz_id },
 			} ).then( ( res ) => {
-				//console.log( "quiz render data", res );
+				console.log( "quiz render data", res );
 				if ( 'success' == res.status ) {
 					let result = res.result;
 					setAttributes( { 
@@ -353,6 +354,9 @@ export default function Edit( props ) {
 						if ( 'qsm/quiz-question' !== questionBlock.name ) {
 							return true;
 						}
+						
+						let questionAttr = questionBlock.attributes;
+						let answerEditor = qsmValueOrDefault( questionAttr?.answerEditor, 'text' );
 						let answers = [];
 						//Answer option blocks
 						if ( ! qsmIsEmpty( questionBlock.innerBlocks ) && 0 <  questionBlock.innerBlocks.length ) { 
@@ -362,34 +366,49 @@ export default function Edit( props ) {
 									return true;
 								}
 								let answerAttr = answerOptionBlock.attributes;
-								answers.push([
-									qsmValueOrDefault( answerAttr?.content ),
+								let answerContent = qsmValueOrDefault( answerAttr?.content );
+								//if rich text
+								if ( ! qsmIsEmpty( questionAttr?.answerEditor ) && 'rich' === questionAttr.answerEditor ) {
+									answerContent = qsmDecodeHtml( decodeEntities( answerContent ) );
+								}
+								let ans = [
+									answerContent,
 									qsmValueOrDefault( answerAttr?.points ),
 									qsmValueOrDefault( answerAttr?.isCorrect ),
-								]);
+								];
+								//answer options are image type
+								if ( 'image' === answerEditor && ! qsmIsEmpty( answerAttr?.caption ) ) {
+									ans.push( answerAttr?.caption );
+								}
+								answers.push( ans );
 							});
 						}
 						
 						//questions Data
-						let questionAttr = questionBlock.attributes;
 						questions.push( questionAttr.questionID );
-						quizDataToSave.questions.push({
-							"id": questionAttr.questionID,
-							"quizID": quizAttr.quiz_id,
-							"postID": quizAttr.post_id,
-							"answerEditor": qsmValueOrDefault( questionAttr?.answerEditor, 'text' ),
-							"type": qsmValueOrDefault( questionAttr?.type , '0' ),
-							"name": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.description ) ),
-							"question_title": qsmValueOrDefault( questionAttr?.title ),
-							"answerInfo": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.correctAnswerInfo ) ),
-							"comments": qsmValueOrDefault( questionAttr?.commentBox, '1' ),
-							"hint": qsmValueOrDefault( questionAttr?.hint ),
-							"category": qsmValueOrDefault( questionAttr?.category ),
-							"multicategories": [],
-							"required": qsmValueOrDefault( questionAttr?.required, 1 ),
-							"answers": answers,
-							"page": pageSNo
-						});
+						//update question only if changes occured
+						if ( questionAttr.isChanged ) {
+							quizDataToSave.questions.push({
+								"id": questionAttr.questionID,
+								"quizID": quizAttr.quiz_id,
+								"postID": quizAttr.post_id,
+								"answerEditor": answerEditor,
+								"type": qsmValueOrDefault( questionAttr?.type , '0' ),
+								"name": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.description ) ),
+								"question_title": qsmValueOrDefault( questionAttr?.title ),
+								"answerInfo": qsmDecodeHtml( qsmValueOrDefault( questionAttr?.correctAnswerInfo ) ),
+								"comments": qsmValueOrDefault( questionAttr?.commentBox, '1' ),
+								"hint": qsmValueOrDefault( questionAttr?.hint ),
+								"category": qsmValueOrDefault( questionAttr?.category ),
+								"multicategories": qsmValueOrDefault( questionAttr?.multicategories, [] ),
+								"required": qsmValueOrDefault( questionAttr?.required, 1 ),
+								"answers": answers,
+								"featureImageID":qsmValueOrDefault( questionAttr?.featureImageID ),
+								"featureImageSrc":qsmValueOrDefault( questionAttr?.featureImageSrc ),
+								"page": pageSNo
+							});
+						}
+						
 					});
 				}
 
@@ -445,7 +464,7 @@ export default function Edit( props ) {
 	useEffect( () => {
 		if ( isSavingPage ) {
 			let quizData =  getQuizDataToSave();
-			//console.log( "quizData", quizData);
+			console.log( "quizData", quizData);
 			//save quiz status
 			setSaveQuiz( true );
 			
@@ -462,7 +481,11 @@ export default function Edit( props ) {
 				method: 'POST',
 				body: quizData
 			} ).then( ( res ) => {
-				//console.log( res );
+				//create notice
+				createNotice( res.status, res.msg, {
+					isDismissible: true,
+					type: 'snackbar',
+				} );
 			} ).catch(
 				( error ) => {
 					console.log( 'error',error );

@@ -19,6 +19,10 @@
       "type": "string",
       "default": ""
     },
+    "caption": {
+      "type": "string",
+      "default": ""
+    },
     "points": {
       "type": "string",
       "default": "0"
@@ -33,7 +37,9 @@
     "quiz-master-next/pageID",
     "quiz-master-next/quizAttr",
     "quiz-master-next/questionID",
-    "quiz-master-next/questionType"
+    "quiz-master-next/questionType",
+    "quiz-master-next/answerType",
+    "quiz-master-next/questionChanged"
   ],
   "example": {},
   "supports": {

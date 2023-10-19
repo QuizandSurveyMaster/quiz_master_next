@@ -9,6 +9,10 @@
 	"icon": "move",
 	"description": "QSM Quiz Question",
 	"attributes": {
+		"isChanged":{
+			"type": "string",
+			"default": false
+		},
 		"questionID": {
 			"type": "string",
 			"default": "0"
@@ -77,7 +81,9 @@
 	"usesContext": [ "quiz-master-next/quizID", "quiz-master-next/pageID", "quiz-master-next/quizAttr" ],
 	"providesContext": {
 		"quiz-master-next/questionID": "questionID",
-		"quiz-master-next/questionType":"type"
+		"quiz-master-next/questionType":"type",
+		"quiz-master-next/answerType":"answerEditor",
+		"quiz-master-next/questionChanged":"isChanged"
 	},
 	"example": {},
 	"supports": {

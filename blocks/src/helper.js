@@ -1,6 +1,15 @@
 //Check if undefined, null, empty
 export const qsmIsEmpty = ( data ) => ( 'undefined' === typeof data || null === data || '' === data );
 
+//Get Unique array values
+export const qsmUniqueArray = ( arr ) => {
+	if ( qsmIsEmpty( arr ) || ! Array.isArray( arr ) ) {
+		return arr;
+	}
+	return arr.filter( ( val, index, arr ) => arr.indexOf( val ) === index );
+}
+
+
 //Decode htmlspecialchars
 export const qsmDecodeHtml = ( html ) => {
 	var txt = document.createElement("textarea");
@@ -19,8 +28,12 @@ export const qsmSanitizeName = ( name ) => {
 	return name;
 }
 
-// Remove anchor tags from button text content.
-export const qsmStripTags = ( text ) => text.replace( /<\/?a[^>]*>/g, '' );
+// Remove anchor tags from text content.
+export const qsmStripTags = ( text ) => {
+	let div = document.createElement("div");
+	div.innerHTML = qsmDecodeHtml( text );
+	return  div.innerText;
+}
 
 //prepare form data
 export const qsmFormData = ( obj = false ) => {
