@@ -582,6 +582,7 @@ class QMNPluginHelper {
 			'quick_result_correct_answer_text' => __('Correct! You have selected correct answer.', 'quiz-master-next'),
 			'quick_result_wrong_answer_text'   => __('Wrong! You have selected wrong answer.', 'quiz-master-next'),
 			'quiz_processing_message'          => '',
+			'quiz_limit_choice'                => __('Limit of choice is reached.', 'quiz-master-next'),
 			'name_field_text'                  => __('Name', 'quiz-master-next'),
 			'business_field_text'              => __('Business', 'quiz-master-next'),
 			'email_field_text'                 => __('Email', 'quiz-master-next'),

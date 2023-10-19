@@ -418,20 +418,26 @@ class QSM_Quiz_Settings {
 		}
 		// Cycle through registered settings
 		$registered_fields = $this->registered_fields;
-		foreach ( $registered_fields as $section => $fields ) {
-			// Check if section exists in settings and, if not, set it to empty array
-			if ( ! isset( $settings_array[ $section ] ) ) {
-				$settings_array[ $section ] = array();
-			}
-			$unserialized_section = maybe_unserialize( $settings_array[ $section ] );
-			// Cycle through each setting in section
-			foreach ( $fields as $field ) {
-				// Check if setting exists in section settings and, if not, set it to the default
-				if ( ! isset( $unserialized_section[ $field['id'] ] ) ) {
-					$unserialized_section[ $field['id'] ] = $field['default'];
+		if ( is_array($registered_fields) ) {
+			foreach ( $registered_fields as $section => $fields ) {
+				// Check if section exists in settings and, if not, set it to empty array
+				if ( ! isset( $settings_array[ $section ] ) ) {
+					$settings_array[ $section ] = array();
 				}
+				$unserialized_section = maybe_unserialize( $settings_array[ $section ] );
+				// Cycle through each setting in section
+				foreach ( $fields as $field ) {
+					// Check if setting exists in section settings and, if not, set it to the default
+					if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
+						foreach ( $field['fields'] as $key => $value ) {
+							$unserialized_section[ $key ] = $value['default'];
+						}
+					} elseif ( ! isset( $unserialized_section[ $field['id'] ] ) ) {
+						$unserialized_section[ $field['id'] ] = $field['default'];
+					}
+				}
+				$settings_array[ $section ] = maybe_serialize( $unserialized_section );
 			}
-			$settings_array[ $section ] = maybe_serialize( $unserialized_section );
 		}
 		$this->settings = $settings_array;
 	}

@@ -1446,7 +1446,16 @@ class QSM_Install {
 			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
+		// Registers limit the number of choices
+		$field_array = array(
+			'id'         => 'quiz_limit_choice',
+			'label'      => __( 'Answer choice limit message', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Text to notify that the answer choice limit is exceeded in the multiple response type question.', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 		// Registers name_field_text setting
 		$field_array = array(
 			'id'         => 'name_field_text',
