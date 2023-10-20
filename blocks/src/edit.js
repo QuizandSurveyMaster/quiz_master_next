@@ -72,8 +72,17 @@ export default function Edit( props ) {
 	/**Initialize block from server */
 	useEffect( () => {
 		let shouldSetQSMAttr = true;
-		if ( shouldSetQSMAttr && ! qsmIsEmpty( quizID ) && 0 < quizID ) {
-			initializeQuizAttributes( quizID );
+		if ( shouldSetQSMAttr ) {
+			//add upgrade modal
+			if ( '0' == qsmBlockData.is_pro_activated ) {
+				setTimeout(() => {
+					addUpgradePopupHtml();
+				}, 100);
+			}
+			//initialize QSM block
+			if ( ! qsmIsEmpty( quizID ) && 0 < quizID ) {
+				initializeQuizAttributes( quizID );
+			}
 		}
 		
 		//cleanup
@@ -83,6 +92,26 @@ export default function Edit( props ) {
 		
 	}, [ ] );
 
+	/**Add modal advanced-question-type */
+	const addUpgradePopupHtml = () => {
+		let modalEl = document.getElementById('modal-advanced-question-type');
+		if ( qsmIsEmpty( modalEl ) ) {
+			apiFetch( {
+				path: '/quiz-survey-master/v1/quiz/advance-ques-type-upgrade-popup',
+				method: 'POST',
+			} ).then( ( res ) => {
+				let bodyEl = document.getElementById('wpbody-content');
+				if ( ! qsmIsEmpty( bodyEl ) && 'success' == res.status ) { 
+					bodyEl.insertAdjacentHTML('afterbegin', res.result );
+				}
+			} ).catch(
+				( error ) => {
+					console.log( 'error',error );
+				}
+			);
+		}
+	}
+
 	/**Initialize quiz attributes: first time render only */
 	const initializeQuizAttributes = ( quiz_id ) => {
 		if ( ! qsmIsEmpty( quiz_id ) && 0 < quiz_id  ) {
@@ -91,7 +120,7 @@ export default function Edit( props ) {
 				method: 'POST',
 				data: { quizID: quiz_id },
 			} ).then( ( res ) => {
-				console.log( "quiz render data", res );
+				//console.log( "quiz render data", res );
 				if ( 'success' == res.status ) {
 					let result = res.result;
 					setAttributes( { 
@@ -117,7 +146,8 @@ export default function Edit( props ) {
 															optionID:aIndex,
 															content:answer[0],
 															points:answer[1],
-															isCorrect:answer[2]
+															isCorrect:answer[2],
+															caption: qsmValueOrDefault( answer[3] )
 														}
 													]
 												);
@@ -175,7 +205,11 @@ export default function Edit( props ) {
 				} else {
 					console.log( "error "+ res.msg );
 				}
-			} );
+			} ).catch(
+				( error ) => {
+					console.log( 'error',error );
+				}
+			);
 			
 		}
 	}
@@ -464,7 +498,7 @@ export default function Edit( props ) {
 	useEffect( () => {
 		if ( isSavingPage ) {
 			let quizData =  getQuizDataToSave();
-			console.log( "quizData", quizData);
+			//console.log( "quizData", quizData);
 			//save quiz status
 			setSaveQuiz( true );
 			
@@ -534,7 +568,7 @@ export default function Edit( props ) {
 			method: 'POST',
 			body: quizData
 		} ).then( ( res ) => {
-			console.log( res );
+			//console.log( res );
 			//save quiz status
 			setSaveQuiz( false );
 			if ( 'success' == res.status ) {
@@ -560,7 +594,7 @@ export default function Edit( props ) {
 					method: 'POST',
 					body: newQuestion
 				} ).then( ( response ) => {
-					console.log("question response", response);
+					//console.log("question response", response);
 					if ( 'success' == response.status ) {
 						let question_id = response.id;
 
@@ -593,7 +627,7 @@ export default function Edit( props ) {
 							method: 'POST',
 							body: newPage
 						} ).then( ( pageResponse ) => {
-							console.log("pageResponse", pageResponse);
+							//console.log("pageResponse", pageResponse);
 							if ( 'success' == pageResponse.status ) {
 								//set new quiz
 								initializeQuizAttributes( res.quizID );

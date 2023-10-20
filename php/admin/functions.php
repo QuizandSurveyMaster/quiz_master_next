@@ -1155,6 +1155,21 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
 	return $array;
 }
 
+function qsm_advance_question_type_upgrade_popup() {
+	$qsm_pop_up_arguments = array(
+		"id"           => 'modal-advanced-question-type',
+		"title"        => __('Advanced Question Types', 'quiz-master-next'),
+		"description"  => __('Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, and Checkbox Grid questions in your quizzes and surveys.', 'quiz-master-next'),
+		"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
+		"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
+		"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
+		"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'advance-question_type', 'advance-question-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+}
+
 function qsm_admin_upgrade_popup( $args = array() ) {
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">

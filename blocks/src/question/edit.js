@@ -77,6 +77,8 @@ export default function Edit( props ) {
 		required,
 	} = attributes;
 	
+	const proActivated = ( '1' == qsmBlockData.is_pro_activated );
+	const isAdvanceQuestionType = ( qtype ) => 14 < parseInt( qtype );
 	
 	/**Generate question id if not set or in case duplicate questionID ***/
 	useEffect( () => {
@@ -115,7 +117,7 @@ export default function Edit( props ) {
 					method: 'POST',
 					body: newQuestion
 				} ).then( ( response ) => {
-					console.log("question created", response);
+					//console.log("question created", response);
 					if ( 'success' == response.status ) {
 						let question_id = response.id;
 						setAttributes( { questionID: question_id } );
@@ -247,7 +249,33 @@ export default function Edit( props ) {
 	//Notes relation to question type
 	const notes = ['12','7','3','5','14'].includes( type ) ? __( 'Note: Add only correct answer options with their respective points score.', 'quiz-master-next' ) : '';
 
+	//set Question type
+	const setQuestionType = ( qtype ) => {
+		if ( ! qsmIsEmpty( MicroModal ) && ! proActivated && ['15', '16', '17'].includes( qtype ) ) {
+			//Show modal for advance question type
+			let modalEl = document.getElementById('modal-advanced-question-type');
+			if ( ! qsmIsEmpty( modalEl ) ) {
+				MicroModal.show('modal-advanced-question-type');
+			}
+		} else {
+			setAttributes( { type: qtype } );
+		}
+	}
+
 	return (
+	 isAdvanceQuestionType( type ) ? (
+	<>
+	<InspectorControls>
+		<PanelBody title={ __( 'Question settings', 'quiz-master-next' ) } initialOpen={ true }>
+		<h2 className="block-editor-block-card__title">{ __( 'ID', 'quiz-master-next' )+': '+questionID }</h2>
+		<h3>{ __( 'Advanced Question Type', 'quiz-master-next' ) }</h3>
+		</PanelBody>
+		</InspectorControls>	
+		<div  { ...blockProps } >
+		<h4 className={ 'qsm-question-title qsm-error-text' } >{ __( 'Advanced Question Type : ', 'quiz-master-next' ) + title }</h4>
+		</div>
+	</>
+	):(
 	<>
 	<InspectorControls>
 		<PanelBody title={ __( 'Question settings', 'quiz-master-next' ) } initialOpen={ true }>
@@ -257,7 +285,7 @@ export default function Edit( props ) {
 			label={ qsmBlockData.question_type.label }
 			value={ type || qsmBlockData.question_type.default }
 			onChange={ ( type ) =>
-				setAttributes( { type } )
+				setQuestionType( type )
 			}
 			help={ qsmIsEmpty( qsmBlockData.question_type_description[ type ] ) ? '' : qsmBlockData.question_type_description[ type ]+' '+notes }
 			__nextHasNoMarginBottom
@@ -265,11 +293,11 @@ export default function Edit( props ) {
 			{
 			  ! qsmIsEmpty( qsmBlockData.question_type.options ) && qsmBlockData.question_type.options.map( qtypes => 
 				(
-				<optgroup label={ qtypes.category } key={ "qtypes"+qtypes.category } >
+				<optgroup label={ qtypes.category } key={ "qtypes"+qtypes.category }  >
 					{
 						qtypes.types.map( qtype => 
 							(
-							   <option value={ qtype.slug } key={ "qtype"+qtype.slug } >{ qtype.name }</option>
+							   <option value={ qtype.slug } key={ "qtype"+qtype.slug } disabled={ ( proActivated && isAdvanceQuestionType( qtype.slug ) ) } >{ qtype.name }</option>
 							)
 						)
 					}
@@ -393,5 +421,6 @@ export default function Edit( props ) {
 		}
 	</div>
 	</>
+	)
 	);
 }

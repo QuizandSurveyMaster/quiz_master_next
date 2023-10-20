@@ -271,13 +271,26 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				return;
 			}
 
-			//get quiz structure data
+			//get quiz hierarchical category structure data
 			register_rest_route(
 				'quiz-survey-master/v1',
 				'/quiz/hierarchical-category-list',
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'hierarchical_category_list' ),
+					'permission_callback' => function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+
+			//get quiz advance question type upgrade popup html
+			register_rest_route(
+				'quiz-survey-master/v1',
+				'/quiz/advance-ques-type-upgrade-popup',
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'advance_question_type_upgrade_popup' ),
 					'permission_callback' => function () {
 						return current_user_can( 'edit_posts' );
 					},
@@ -337,6 +350,24 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				'result' => $this->hierarchical_qsm_category(),
 			);
 		}
+
+		/**
+		 * REST API
+		 * get hierarchical qsm category list
+		 */
+		public function advance_question_type_upgrade_popup() {
+			$contents = '';
+			if ( function_exists( 'qsm_advance_question_type_upgrade_popup' ) ) {
+				ob_start();
+				qsm_advance_question_type_upgrade_popup();
+				$contents = ob_get_clean();
+			} 
+			return array(
+				'status' => 'success',
+				'result' =>  $contents,
+			);
+		}
+		
 
 		//get post id from quiz id
 		private function get_post_id_from_quiz_id( $quiz_id ) {
