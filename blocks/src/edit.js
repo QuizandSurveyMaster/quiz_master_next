@@ -50,11 +50,11 @@ export default function Edit( props ) {
 		error: false,
 		msg: ''
 	} );
-	//weather creating a new quiz
+	//whether creating a new quiz
 	const [ createQuiz, setCreateQuiz ] = useState( false );
-	//weather saving quiz
+	//whether saving quiz
 	const [ saveQuiz, setSaveQuiz ] = useState( false );
-	//weather to show advance option
+	//whether to show advance option
 	const [ showAdvanceOption, setShowAdvanceOption ] = useState( false );
 	//Quiz template on set Quiz ID
 	const [ quizTemplate, setQuizTemplate ] = useState( [] );

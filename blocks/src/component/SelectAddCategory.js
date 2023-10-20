@@ -24,7 +24,7 @@ const SelectAddCategory = ({
     setUnsetCatgory
 }) => {
 
-    //weather showing add category form
+    //whether showing add category form
 	const [ showForm, setShowForm ] = useState( false );
     //new category name
     const [ formCatName, setFormCatName ] = useState( '' );
