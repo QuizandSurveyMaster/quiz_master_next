@@ -25,6 +25,7 @@ var qsmTimerInterval = [];
 					let quizID = parseInt(quiz.quiz_id);
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
 						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
+						localStorage.setItem('mlw_time_consumed_quiz' + quizID, 1);
 					}
 					jQuery.ajax({
 						url: qmn_ajax_object.ajaxurl,
@@ -129,14 +130,18 @@ var qsmTimerInterval = [];
 			var seconds = 0;
 
 			// Calculates starting time.
+			var timerTotal = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
-			var timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID);
+			var timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
+			var timerRemaning = timerTotal - timerConsumed;
+			
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
 			} else {
 				seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			}
 			qmn_quiz_data[quizID].timerRemaning = seconds;
+			qmn_quiz_data[quizID].timerConsumed = timerConsumed;
 
 			//hidden timer
 			jQuery(".hiddentimer").html(seconds);
@@ -159,10 +164,12 @@ var qsmTimerInterval = [];
 		 */
 		timer: function (quizID) {
 			qmn_quiz_data[quizID].timerRemaning -= 1;
+			qmn_quiz_data[quizID].timerConsumed += 1;
 			if (0 > qmn_quiz_data[quizID].timerRemaning) {
 				qmn_quiz_data[quizID].timerRemaning = 0;
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
+			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
 			var display = QSM.secondsToTimer(secondsRemaining);
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
@@ -171,6 +178,7 @@ var qsmTimerInterval = [];
 				return false;
 			}
 			// Sets our local storage values for the timer being started and current timer value.
+			localStorage.setItem('mlw_time_consumed_quiz' + quizID, secondsConsumed );
 			localStorage.setItem('mlw_time_quiz' + quizID, secondsRemaining);
 			localStorage.setItem('mlw_started_quiz' + quizID, "yes");
 
@@ -231,6 +239,7 @@ var qsmTimerInterval = [];
 		endTimer: function (quizID) {
 			localStorage.setItem('mlw_time_quiz' + quizID, 'completed');
 			localStorage.setItem('mlw_started_quiz' + quizID, 'no');
+			localStorage.removeItem('mlw_time_consumed_quiz' + quizID);
 			document.title = qsmTitleText;
 			if (typeof qmn_quiz_data[quizID].timerInterval != 'undefined') {
 				clearInterval(qmn_quiz_data[quizID].timerInterval);
@@ -382,8 +391,9 @@ var qsmTimerInterval = [];
 
 			// Calculates starting time.
 			let timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
-			let timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID);
+			let timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
 			let seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
+			let timerRemaning = seconds - timerConsumed;
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
 			}

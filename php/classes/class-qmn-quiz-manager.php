@@ -728,7 +728,11 @@ class QMNQuizManager {
 						if ( ! empty( $tq_ids ) && ! empty( (array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id')) ) ) {
 							$exclude_ids = implode(',', array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id') );
 						}
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) LIMIT $limit", ARRAY_A );
+						$category_order_sql = '';
+						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+							$category_order_sql = 'ORDER BY rand()';
+						}
+						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
@@ -2133,11 +2137,11 @@ class QMNQuizManager {
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += $results_array['points'];
-							$answer_points += $results_array['points'];
+							$points_earned += (float)$results_array['points'];
+							$answer_points += (float)$results_array['points'];
 
 							// If the user's answer was correct.
-							if ( 'correct' == $results_array['correct'] ) {
+							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;
 								$correct_status = 'correct';
 							}
@@ -2159,8 +2163,8 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
-							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
-							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+							$user_answer_array    = isset( $results_array['user_answer'] ) && is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
+							$correct_answer_array = isset( $results_array['correct_answer'] ) && is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array
 							$question_data[] = apply_filters(

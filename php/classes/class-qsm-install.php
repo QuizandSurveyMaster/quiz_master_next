@@ -633,7 +633,7 @@ class QSM_Install {
 			'option_tab'      => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		$preferred_date_format = ! empty( $settings_value['preferred_date_format'] ) && ! in_array( $settings_value['preferred_date_format'], array( 'F j, Y', 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ? $settings_value['preferred_date_format'] : "";
+		$preferred_date_format = ! empty( $settings_value['preferred_date_format'] ) && ! in_array( $settings_value['preferred_date_format'], array( 'F j, Y', 'Y-m-d', 'm/d/Y', 'd/m/Y' ), true ) ? $settings_value['preferred_date_format'] : "";
 		$field_array = array(
 			'id'         => '',
 			'type'       => 'multiple_fields',
@@ -643,7 +643,7 @@ class QSM_Install {
 					'type'         => 'image',
 					'default'      => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 					'button_label' => __( 'Select Logo', 'quiz-master-next' ),
-					'suffix'       => __( '<label><i><small class="qsm-font-light">' . __( "If left blank, the QSM logo will be displayed", 'quiz-master-next' ) . '</small></i></label>', 'quiz-master-next' ),
+					'suffix'       => '<label><i><small class="qsm-font-light">' . __( "If left blank, the QSM logo will be displayed", 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'ajax_show_correct'                  => array(
 					'type'    => 'checkbox',

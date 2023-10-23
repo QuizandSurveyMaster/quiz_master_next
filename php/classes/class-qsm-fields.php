@@ -69,16 +69,16 @@ class QSM_Fields {
 					foreach ( $field["fields"] as $key => $value ) {
 						switch ( $value["type"] ) {
 							case 'url':
-								$sanitized_value = ! empty( $_POST[ $key ] ) ? esc_url_raw( wp_unslash( $_POST[ $key ] ) ) : "";
+								$sanitized_value = isset( $_POST[ $key ] ) ? esc_url_raw( wp_unslash( $_POST[ $key ] ) ) : "";
 								break;
 							case 'checkbox':
 								$sanitized_value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : 0;
 								break;
 							case 'number':
-								$sanitized_value = ! empty( $_POST[ $key ] ) ? intval( $_POST[ $key ] ) : "";
+								$sanitized_value = isset( $_POST[ $key ] ) ? intval( $_POST[ $key ] ) : "";
 								break;
 							default:
-								$sanitized_value = ! empty( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : "";
+								$sanitized_value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : "";
 								break;
 						}
 						$settings_array[ $key ] = $sanitized_value;
