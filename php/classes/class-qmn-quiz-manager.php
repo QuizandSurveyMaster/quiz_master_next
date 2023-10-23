@@ -509,13 +509,13 @@ class QMNQuizManager {
                 if (encryptedData === undefined) {
                       var encryptedData = {};
                 }
-				    
-				    
-				    
-				    
+
+
+
+
 
 				encryptionKey['.$quiz_id.'] = "'.hash('sha256',time().$quiz_id).'";
-				
+
 				data['.$quiz_id.'] = '.wp_json_encode($encryption).';
 				jsonString['.$quiz_id.'] = JSON.stringify(data['.$quiz_id.']);
 				encryptedData['.$quiz_id.'] = CryptoJS.AES.encrypt(jsonString['.$quiz_id.'], encryptionKey['.$quiz_id.']).toString();';
@@ -1859,6 +1859,9 @@ class QMNQuizManager {
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
+			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
+				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
+			}
 			$result_display .= $results_pages['display'];
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
