@@ -1195,14 +1195,6 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 
         $(document).find('#select_themes .theme-actions').remove();
 
-        $(document).on('click', '#new_quiz_button', function () {
-            $('#quiz_settings').find('.qsm-opt-desc').each(function () {
-                if ($(this)) {
-                    desc = $(this);
-                    desc.parents('.input-group').find('label:first-child').append(desc);
-                }
-            })
-        });
     }
 }(jQuery));
 
