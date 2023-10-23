@@ -3,8 +3,15 @@
   "apiVersion": 3,
   "name": "qsm/quiz",
   "version": "0.1.0",
-  "title": "QSM Quiz",
+  "title": "Quiz",
   "category": "widgets",
+  "keywords": [
+    "Quiz",
+    "QSM Quiz",
+    "Survey",
+    "form",
+    "Quiz Block"
+  ],
   "icon": "vault",
   "description": "Easily and quickly add quizzes and surveys inside the block editor.",
   "attributes": {

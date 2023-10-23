@@ -67,7 +67,7 @@ export default function Edit( props ) {
 		correctAnswerInfo,
 		commentBox,
 		category,
-		multicategories,
+		multicategories=[],
 		hint,
 		featureImageID,
 		featureImageSrc,
