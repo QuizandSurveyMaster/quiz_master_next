@@ -361,6 +361,7 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
+					wp_enqueue_media();
 					break;
 				default:
 					wp_enqueue_editor();
