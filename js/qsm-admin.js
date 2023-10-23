@@ -173,7 +173,7 @@ var QSMAdmin;
             }
         }
         jQuery(document).on('change', '#preferred-date-format-custom', function() {
-            var customValue = jQuery(this).val();
+            let customValue = jQuery(this).val();
             jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
         });
 
@@ -550,7 +550,7 @@ var QSMAdmin;
         });
 
         $(document).on('click', '.qsm-image-btn', function (e) {
-            var button = $(this);
+            let button = $(this);
             e.preventDefault();
             custom_uploader = wp.media({
                 title: qsm_admin_messages.set_feature_img,
@@ -562,7 +562,7 @@ var QSMAdmin;
                 },
                 multiple: false
             }).on('select', function () { // it also has "open" and "close" events
-                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.prev('.qsm-image-input').val(attachment.url);
             }).open();
         });

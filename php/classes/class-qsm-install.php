@@ -42,7 +42,7 @@ class QSM_Install {
 
 		global $mlwQuizMasterNext;
 		$settings_value = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
-
+		$i_tag = '<i class="qsm-font-light">';
 		// Registers require_log_in setting
 		$field_array = array(
 			'label'      => __( 'Select Type', 'quiz-master-next' ),
@@ -149,7 +149,7 @@ class QSM_Install {
 					'prefix_text' => __( 'Other Answer Settings:', 'quiz-master-next' ),
 					'options'     => array(
 						array(
-							'label' => __( 'Allow user to deselect an answer and leave it blank. ', 'quiz-master-next' ) . '<i class="qsm-font-light">(' . __( 'Works with multiple choice & horizontal multiple choice questions only', 'quiz-master-next' ) . ')</i>',
+							'label' => __( 'Allow user to deselect an answer and leave it blank. ', 'quiz-master-next' ) . $i_tag . '(' . __( 'Works with multiple choice & horizontal multiple choice questions only', 'quiz-master-next' ) . ')</i>',
 							'value' => 1,
 						),
 					),
@@ -250,7 +250,7 @@ class QSM_Install {
 			'fields'          => array(
 				'question_from_total'     => array(
 					'type'        => 'number',
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'Maximum question limit', 'quiz-master-next' ) . '</i>',
+					'suffix_text' => $i_tag . __( 'Maximum question limit', 'quiz-master-next' ) . '</i>',
 					'default'     => 0,
 				),
 				'limit_category_checkbox' => array(
@@ -265,7 +265,7 @@ class QSM_Install {
 				),
 				'question_per_category'   => array(
 					'type'        => 'number',
-					'suffix_text' => '<span class="qsm-opt-tr"><i class="qsm-font-light">' . __( "Limit number of questions per category", "quiz-master-next" ) . '</i> <span class="dashicons dashicons-editor-help qsm-tooltips-icon"><span class="qsm-tooltips">' . __( "Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.", "quiz-master-next" ) . '</span></span><span>',
+					'suffix_text' => '<span class="qsm-opt-tr">' . $i_tag . __( "Limit number of questions per category", "quiz-master-next" ) . '</i> <span class="dashicons dashicons-editor-help qsm-tooltips-icon"><span class="qsm-tooltips">' . __( "Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.", "quiz-master-next" ) . '</span></span><span>',
 					'default'     => 0,
 				),
 			),
@@ -306,7 +306,7 @@ class QSM_Install {
 			'type'            => 'number',
 			'default'         => 1,
 			'container_class' => 'qsm-small-input-field',
-			'suffix_text'     => '<i class="qsm-font-light">' . __( 'Adds number of answer field', 'quiz-master-next' ) . "</i>",
+			'suffix_text'     => $i_tag . __( 'Adds number of answer field', 'quiz-master-next' ) . "</i>",
 			'option_tab'      => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -336,7 +336,7 @@ class QSM_Install {
 			'fields'          => array(
 				'timer_limit'                   => array(
 					'type'        => 'number',
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'minutes', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the time restriction.', 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text' => $i_tag . __( 'minutes', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the time restriction.', 'quiz-master-next' ) . '</small></i></label>',
 					'default'     => 0,
 				),
 				'enable_result_after_timer_end' => array(
@@ -374,13 +374,13 @@ class QSM_Install {
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'Incorrect answers will end the quiz', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the Incorrect answers limit', 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text' => $i_tag . __( 'Incorrect answers will end the quiz', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the Incorrect answers limit', 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'disable_answer_onselect' => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Prevent users from changing their response.', 'quiz-master-next' ) . '<i class="qsm-font-light">(' . __( 'Works with multiple choice questions only', 'quiz-master-next' ) . ')</i>',
+							'label' => __( 'Prevent users from changing their response.', 'quiz-master-next' ) . $i_tag . '(' . __( 'Works with multiple choice questions only', 'quiz-master-next' ) . ')</i>',
 							'value' => 1,
 						),
 					),
@@ -401,13 +401,13 @@ class QSM_Install {
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'Attempts', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the limit on attempts.', 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text' => $i_tag . __( 'Attempts', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the limit on attempts.', 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'limit_total_entries'       => array(
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'Entries', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the limit on entries.', 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text' => $i_tag . __( 'Entries', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( 'Set it to 0 or blank to remove the limit on entries.', 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'enable_retake_quiz_button' => array(
 					'type'    => 'checkbox',
@@ -519,7 +519,7 @@ class QSM_Install {
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => '<i class="qsm-font-light">' . __( 'Questions Per Page', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( "Setting a limit overrides the quiz questions' default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text' => $i_tag . __( 'Questions Per Page', 'quiz-master-next' ) . '</i><label><i><small class="qsm-font-light">' . __( "Setting a limit overrides the quiz questions' default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'question_numbering'     => array(
 					'type'    => 'checkbox',
