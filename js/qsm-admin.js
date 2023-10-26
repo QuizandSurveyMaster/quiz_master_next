@@ -62,15 +62,6 @@ var QSMAdmin;
         if(optionCount == selectCount) {
             jQuery(".add-more-link").hide();
         }
-        if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
-            jQuery('#question_per_category').hide();
-            jQuery('.category_selection_random').parents("tr").hide();
-            jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
-        } else {
-            jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
-            jQuery('.category_selection_random').parents("tr").show();
-            jQuery('#question_per_category').show();
-        }
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
@@ -404,11 +395,22 @@ var QSMAdmin;
             jQuery('#limit_category_checkbox-1').attr('disabled', true);
             jQuery('#question_per_category').hide();
         }
+        if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
+            jQuery('#question_per_category').hide();
+            jQuery('.category_selection_random').parents("tr").hide();
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
+        } else {
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
+            jQuery('.category_selection_random').parents("tr").show();
+            jQuery('#question_per_category').show();
+        }
         jQuery(document).on('change', '#question_from_total-input', function () {
             if ( 0 != jQuery(this).val() ) {
                 jQuery('#limit_category_checkbox label').css('opacity', '1');
                 jQuery('#limit_category_checkbox-1').attr('disabled', false);
-                jQuery('#question_per_category').show();
+                if (!jQuery('#limit_category_checkbox-1:checked').length) {
+                    jQuery('#question_per_category').show();
+                }
             } else {
                 jQuery('#limit_category_checkbox label').css('opacity', '0.7');
                 jQuery('#limit_category_checkbox-1').attr('disabled', true);
