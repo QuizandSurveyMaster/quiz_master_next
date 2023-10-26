@@ -509,13 +509,13 @@ class QMNQuizManager {
                 if (encryptedData === undefined) {
                       var encryptedData = {};
                 }
-				    
-				    
-				    
-				    
+
+
+
+
 
 				encryptionKey['.$quiz_id.'] = "'.hash('sha256',time().$quiz_id).'";
-				
+
 				data['.$quiz_id.'] = '.wp_json_encode($encryption).';
 				jsonString['.$quiz_id.'] = JSON.stringify(data['.$quiz_id.']);
 				encryptedData['.$quiz_id.'] = CryptoJS.AES.encrypt(jsonString['.$quiz_id.'], encryptionKey['.$quiz_id.']).toString();';
@@ -1567,7 +1567,7 @@ class QMNQuizManager {
 			$post_status = get_post_status( $post_ids[0] );
 		}
 
-		if ( is_null( $options ) || 1 == $options->deleted || 'publish' !== $post_status ) {
+		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
@@ -1577,8 +1577,21 @@ class QMNQuizManager {
 					),
 				)
 			);
-			die();
+			wp_die();
 		}
+		if ( 'publish' !== $post_status ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
+
 		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
@@ -1595,7 +1608,7 @@ class QMNQuizManager {
 					),
 				)
 			);
-			die();
+			wp_die();
 		}
 		if ( 0 != $options->limit_total_entries ) {
 			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
@@ -1609,7 +1622,7 @@ class QMNQuizManager {
 						),
 					)
 				);
-				die();
+				wp_die();
 			}
 		}
 		if ( 0 != $options->total_user_tries ) {
@@ -1636,7 +1649,7 @@ class QMNQuizManager {
 						),
 					)
 				);
-				die();
+				wp_die();
 			}
 		}
 		$data      = array(
@@ -1646,7 +1659,7 @@ class QMNQuizManager {
 			'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
 		);
 		echo wp_json_encode( $this->submit_results( $options, $data ) );
-		die();
+		wp_die();
 	}
 
 	/**
