@@ -509,13 +509,13 @@ class QMNQuizManager {
                 if (encryptedData === undefined) {
                       var encryptedData = {};
                 }
-				    
-				    
-				    
-				    
+
+
+
+
 
 				encryptionKey['.$quiz_id.'] = "'.hash('sha256',time().$quiz_id).'";
-				
+
 				data['.$quiz_id.'] = '.wp_json_encode($encryption).';
 				jsonString['.$quiz_id.'] = JSON.stringify(data['.$quiz_id.']);
 				encryptedData['.$quiz_id.'] = CryptoJS.AES.encrypt(jsonString['.$quiz_id.'], encryptionKey['.$quiz_id.']).toString();';
@@ -1567,10 +1567,22 @@ class QMNQuizManager {
 			$post_status = get_post_status( $post_ids[0] );
 		}
 
-		if ( is_null( $options ) || 1 == $options->deleted || 'publish' !== $post_status ) {
+		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			die();
+		}
+		if ( 'publish' !== $post_status ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1859,6 +1871,9 @@ class QMNQuizManager {
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
+			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
+				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
+			}
 			$result_display .= $results_pages['display'];
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
@@ -2137,11 +2152,11 @@ class QMNQuizManager {
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += $results_array['points'];
-							$answer_points += $results_array['points'];
+							$points_earned += (float)$results_array['points'];
+							$answer_points += (float)$results_array['points'];
 
 							// If the user's answer was correct.
-							if ( 'correct' == $results_array['correct'] ) {
+							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;
 								$correct_status = 'correct';
 							}
@@ -2163,8 +2178,8 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
-							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
-							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+							$user_answer_array    = isset( $results_array['user_answer'] ) && is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
+							$correct_answer_array = isset( $results_array['correct_answer'] ) && is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array
 							$question_data[] = apply_filters(

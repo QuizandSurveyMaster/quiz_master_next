@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 8.1.17
+ * Version: 8.1.18
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -361,6 +361,7 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
+					wp_enqueue_media();
 					break;
 				default:
 					wp_enqueue_editor();
