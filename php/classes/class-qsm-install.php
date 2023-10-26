@@ -169,7 +169,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Allow math formulas for mathematical & technical questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
+							'label' => __( 'Disable math formulas for mathematical & technical questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -596,11 +596,11 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Display the question description on the results page', 'quiz-master-next' ),
+							'label' => __( 'Disable description on quiz result page', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
-					'default' => 1,
+					'default' => 0,
 				),
 			),
 			'container_class' => 'qsm-small-input-field',

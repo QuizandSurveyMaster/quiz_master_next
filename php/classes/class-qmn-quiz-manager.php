@@ -662,7 +662,6 @@ class QMNQuizManager {
 				$category_question_ids[] = $q_data[0];
 			}
 		}
-
 		if ( $total_pages > 0 ) {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
@@ -685,9 +684,7 @@ class QMNQuizManager {
 					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-
-					$tq_ids = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
-
+					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
@@ -705,9 +702,7 @@ class QMNQuizManager {
 							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 								shuffle( $tv );
 							}
-
 							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, $quiz_options->question_per_category ) );
-
 						}
 					}
 					$question_ids = array_unique( $random );
@@ -743,8 +738,8 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
+			if ( ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) ) {
+				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
 						$question_sql = implode( ',', $question_ids );
@@ -1021,7 +1016,7 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) && empty( $options->question_per_category ) ) {
 			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
 			$question_list_array = array();
 			foreach ( $pages as &$question_ids ) {
@@ -1121,7 +1116,7 @@ class QMNQuizManager {
 					</div>
 				<?php
 			}
-			if ( 0 == $options->comment_section ) {
+			if ( 0 == $options->comment_section && "" !== $options->comment_section ) {
 				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 				?>
 					<div class="quiz_section qsm-quiz-comment-section" style="display:none">
@@ -1213,7 +1208,7 @@ class QMNQuizManager {
 				$pages_count++;
 			}
 		}
-		if ( count( $pages ) > 1 && 0 == $options->comment_section ) {
+		if ( count( $pages ) > 1 && 0 == $options->comment_section && "" !== $options->comment_section ) {
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page">
@@ -1426,7 +1421,7 @@ class QMNQuizManager {
 	 */
 	public function display_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlwQuizMasterNext, $mlw_qmn_section_count;
-		if ( 0 == $qmn_quiz_options->comment_section ) {
+		if ( 0 == $qmn_quiz_options->comment_section && "" !== $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			?>
 			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count ); ?>" style="display:none">
@@ -1965,7 +1960,7 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
 			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
