@@ -1567,28 +1567,10 @@ class QMNQuizManager {
 			$post_status = get_post_status( $post_ids[0] );
 		}
 
-		if ( is_null( $options ) || 1 == $options->deleted || 'publish' !== $post_status ) {
+		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
-					'redirect'      => false,
-					'result_status' => array(
-						'save_response' => false,
-					),
-				)
-			);
-			die();
-		}
-		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
-		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
-		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
-		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
-		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
-
-		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
-			echo wp_json_encode(
-				array(
-					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1601,6 +1583,25 @@ class QMNQuizManager {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			die();
+		}
+
+		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
+		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
+		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
+		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
+		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
+
+		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
