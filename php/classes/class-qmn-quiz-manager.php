@@ -1577,7 +1577,7 @@ class QMNQuizManager {
 		if ( 'publish' !== $post_status ) {
 			echo wp_json_encode(
 				array(
-					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your results.', 'quiz-master-next' ),
+					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
