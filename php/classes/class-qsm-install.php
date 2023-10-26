@@ -1476,8 +1476,10 @@ class QSM_Install {
   			time_taken_real DATETIME NOT NULL,
   			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
-            unique_id varchar(255) NOT NULL,
+            unique_id varchar(100) NOT NULL,
             form_type INT NOT NULL,
+			page_name varchar(255) NOT NULL,
+			page_url varchar(255) NOT NULL,
 			UNIQUE (unique_id),
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
