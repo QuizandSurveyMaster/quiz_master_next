@@ -1562,10 +1562,22 @@ class QMNQuizManager {
 			$post_status = get_post_status( $post_ids[0] );
 		}
 
-		if ( is_null( $options ) || 1 == $options->deleted || 'publish' !== $post_status ) {
+		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			die();
+		}
+		if ( 'publish' !== $post_status ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
