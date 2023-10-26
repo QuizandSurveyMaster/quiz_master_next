@@ -1577,7 +1577,7 @@ class QMNQuizManager {
 					),
 				)
 			);
-			die();
+			wp_die();
 		}
 		if ( 'publish' !== $post_status ) {
 			echo wp_json_encode(
@@ -1589,7 +1589,7 @@ class QMNQuizManager {
 					),
 				)
 			);
-			die();
+			wp_die();
 		}
 
 		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
@@ -1608,7 +1608,7 @@ class QMNQuizManager {
 					),
 				)
 			);
-			die();
+			wp_die();
 		}
 		if ( 0 != $options->limit_total_entries ) {
 			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
@@ -1622,7 +1622,7 @@ class QMNQuizManager {
 						),
 					)
 				);
-				die();
+				wp_die();
 			}
 		}
 		if ( 0 != $options->total_user_tries ) {
@@ -1649,7 +1649,7 @@ class QMNQuizManager {
 						),
 					)
 				);
-				die();
+				wp_die();
 			}
 		}
 		$data      = array(
@@ -1659,7 +1659,7 @@ class QMNQuizManager {
 			'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
 		);
 		echo wp_json_encode( $this->submit_results( $options, $data ) );
-		die();
+		wp_die();
 	}
 
 	/**
