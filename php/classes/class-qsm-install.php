@@ -1480,7 +1480,7 @@ class QSM_Install {
             form_type INT NOT NULL,
 			page_name varchar(255) NOT NULL,
 			page_url varchar(255) NOT NULL,
-			UNIQUE (unique_id),
+			UNIQUE KEY (unique_id),
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
 
