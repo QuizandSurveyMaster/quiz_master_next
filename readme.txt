@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.3
 Requires PHP: 5.4
-Stable tag: 8.1.17
+Stable tag: 8.1.18
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.18 (October 26, 2023) =
+* Enhancement: Updated the message when you submit a quiz in draft mode
+
 = 8.1.17 (October 11, 2023) =
 * Feature: Added option to include custom text when the answer choice limit exceeds in multiple response type questions.
 * Feature: Added a new feature to accept shortcodes in the text set to display at the end of quizzes.
