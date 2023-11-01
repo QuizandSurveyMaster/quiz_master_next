@@ -3249,7 +3249,6 @@ var import_button;
                         var new_category_data = {
                             action: 'save_new_category',
                             name: new_category,
-                            quiz_id: qsmQuestionSettings.quizID,
                             nonce: qsmQuestionSettings.saveNonce,
                             parent: parent_category
                         };

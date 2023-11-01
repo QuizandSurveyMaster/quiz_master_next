@@ -1068,8 +1068,6 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
-	$user_id    = get_current_user_id();
-	$quiz_id    = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 	$parent     = ( -1 == $parent ) ? 0 : $parent;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
 		$term_array = wp_insert_term(
