@@ -1494,6 +1494,27 @@ var QSMContact;
                         });
                         emails.push(email);
                     });
+                    /*-------------- MailerLite Settings Start ------------*/
+                    let ml_settings = {};
+                    if( $('#mailerlite-automation-email-tab').is(':visible') ) {
+                        var groupId = $('#mailerlite-automation-email-tab .ml-group').val();
+                        var quiz_id = $('#mailerlite-automation-email-tab .ml-quiz-id').val();
+                        var tagMappings = [];
+
+                        $('#mailerlite-automation-email-tab .ml-tag-conditions').each(function () {
+                            tagMappings.push({
+                                'min': $(this).find('span:eq(0) .tag-mappings-min').val(),
+                                'max': $(this).find('span:eq(0) .tag-mappings-max').val(),
+                                'tag': $(this).find('span:eq(1) .tag-mappings-tag').val(),
+                            })
+                        });
+                        ml_settings = {
+                            'quiz_id': quiz_id,
+                            'group_id': groupId,
+                            'tag_mappings': tagMappings
+                        }
+                    }
+                    /*-------------- MailerLite Settings End ------------*/
                     let _X_validation = false;
                     _.each(emails, function( email ) {
                         if( email.content.indexOf('_X%') != -1 || email.subject.indexOf('_X%') != -1 ) {
@@ -1516,12 +1537,14 @@ var QSMContact;
                     })
                         .done(function (results) {
                             if (results.status) {
+                                jQuery(document).trigger('qsm_after_save_email', [ml_settings]);                    
                                 QSMAdmin.displayAlert(qsm_admin_messages.emails_saved, 'success');
                             } else {
                                 QSMAdmin.displayAlert(qsm_admin_messages.emails_save_error + ' ' + qsm_admin_messages.try_again, 'error');
                             }
                         })
                         .fail(QSMAdmin.displayjQueryError);
+
                 },
                 loadEmails: function () {
                     $.ajax({
