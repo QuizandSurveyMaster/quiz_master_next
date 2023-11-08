@@ -3226,3 +3226,85 @@ input#preferred-date-format-custom {
     min-width: 110px;
     display: inline-block;
 }
+/* ----------------MailerLite Promo CSS--------------- */
+.mailerlite-automation,
+.mailerlite-automation .ml-promo-btn {
+	display: flex;
+	flex-direction: column;
+	padding: 5px 0;
+}
+.mailerlite-automation .accordion {
+	background-color: #eee;
+	color: #444;
+	cursor: pointer;
+	padding: 10px 10px;
+	width: 100%;
+	text-align: left;
+	border: none;
+	border-bottom: 1px solid rgb(206, 204, 204);
+	outline: none;
+	transition: 0.4s;
+	font-size: 16px;
+	background-color: rgb(255, 255, 255);
+	font-weight: 600;
+}
+.mailerlite-automation .panel {
+	position: relative;
+	display: none;
+	top: 0;
+	padding: 0 18px;
+	background-color: white;
+	box-sizing: border-box;
+}
+.mailerlite-automation .ml-desc {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 18px;
+	letter-spacing: 0em;
+	text-align: left;
+}
+.mailerlite-automation .ml-doc-link {
+	margin: 0 0 10px 0;
+	font-weight: 600;
+	color: blue;
+}
+.mailerlite-automation .ml-doc-link span {
+	font-size: small;
+    top: 3px;
+    position: relative;
+}
+.mailerlite-automation .ml-info {
+	display: inline-flex;
+    padding: 3px;
+    border: 0.63px solid #EFF6FF;
+    width: 100%;
+    border-radius: 4px;
+    background: #EFF6FF;
+}
+.mailerlite-automation .ml-info span:first-child {
+	font-size: 15px;
+    padding: 12px 5px 12px 12px;;
+    color: #60A5FA;
+}
+.mailerlite-automation .ml-info span:nth-child(2) {
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: 0em;
+	text-align: left;
+	color: #1E40AF;
+	padding: 7px;
+}
+.mailerlite-automation .ml-promo-btn .ml-bundle-link {
+	text-align: center;
+    font-size: 16px;
+    padding: 4px 0;
+}
+.mailerlite-automation .ml-promo-btn .ml-addon-link {
+	text-align: center;
+    font-size: 16px;
+	padding: 20px 0;
+    font-weight: 500;
+    line-height: 15.11px;
+    color: #2771E4;
+}
