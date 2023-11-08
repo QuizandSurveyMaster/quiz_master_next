@@ -119,6 +119,7 @@ body .qsm-popup .qsm-popup__btn {
 	padding-bottom: 10px;
 }
 
+body #modal-3.qsm-popup .qsm-popup__content,
 body .qsm-popup__content {
 	text-align: center;
 }
@@ -137,6 +138,7 @@ body .qsm-popup__content>p.qsm-time-up-text {
 
 footer.qsm-popup__footer {
 	text-align: center;
+	padding: 10px;
 }
 
 footer.qsm-popup__footer button.qsm-popup-secondary-button {
@@ -403,4 +405,12 @@ div .qsm-results-page .qmn_image_option {
     -webkit-transition: background .25s ease-out;
     -moz-transition: background .25s ease-out;
     transition: background .25s ease-out;
+}
+.qsm-result-page-warning {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
 }
