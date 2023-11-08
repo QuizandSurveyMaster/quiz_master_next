@@ -279,55 +279,6 @@ function qsm_generate_dashboard_page() {
 
 /**
  * @since 7.0
- * @global Obj $mlwQuizMasterNext
- * Generate the post settings and required plugin in popup
- */
-function qsm_wizard_template_quiz_options() {
-	global $mlwQuizMasterNext;
-	$settings              = isset( $_POST['settings'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$addons                = isset( $_POST['addons'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['addons'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$all_settings          = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-	$recommended_addon_str = '';
-	if ( $settings ) {
-		foreach ( $settings as $key => $single_setting ) {
-			$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
-			$field            = $all_settings[ $key ];
-			$field['label']   = $single_setting['option_name'];
-			$field['default'] = $single_setting['value'];
-			QSM_Fields::generate_field( $field, $single_setting['value'] );
-		}
-	} else {
-		esc_html_e( 'No settings are found!', 'quiz-master-next' );
-	}
-	echo '=====';
-	if ( $addons ) {
-		$recommended_addon_str .= '<ul>';
-		foreach ( $addons as $single_addon ) {
-			$recommended_addon_str .= '<li>';
-			if ( isset( $single_addon['attribute'] ) && '' !== $single_addon['attribute'] ) {
-				$attr                   = $single_addon['attribute'];
-				$recommended_addon_str .= '<span class="ra-attr qra-att-' . $attr . '">' . $attr . '</span>';
-			}
-			$link                   = isset( $single_addon['link'] ) ? $single_addon['link'] : '';
-			$recommended_addon_str .= '<a target="_blank" href="' . $link . '">';
-			if ( isset( $single_addon['img'] ) && '' !== $single_addon['img'] ) {
-				$img                    = $single_addon['img'];
-				$recommended_addon_str .= '<img src="' . $img . '"/>';
-			}
-			$recommended_addon_str .= '</a>';
-			$recommended_addon_str .= '</li>';
-		}
-		$recommended_addon_str .= '</ul>';
-	} else {
-		$recommended_addon_str .= __( 'No addons are found!', 'quiz-master-next' );
-	}
-	echo wp_kses_post( $recommended_addon_str );
-	exit;
-}
-add_action( 'wp_ajax_qsm_wizard_template_quiz_options', 'qsm_wizard_template_quiz_options' );
-
-/**
- * @since 7.0
  * @param str $widget_id
  * Generate popular addon
  */

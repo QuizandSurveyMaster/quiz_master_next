@@ -960,7 +960,7 @@ function qsm_send_data_sendy() {
 add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
 function qsm_dashboard_delete_result() {
 	$result_id = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
-	if ( $result_id ) {
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) && $result_id ) {
 		global $wpdb;
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_results',
@@ -973,11 +973,9 @@ function qsm_dashboard_delete_result() {
 			),
 			array( '%d' )
 		);
-		echo 'success';
-		exit;
+		wp_send_json_success();
 	}
-	echo 'failed';
-	exit;
+	wp_send_json_error();
 }
 
 /**
@@ -1071,14 +1069,16 @@ function qsm_save_new_category() {
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
 	$parent     = ( -1 == $parent ) ? 0 : $parent;
-	$term_array = wp_insert_term(
-		$category,
-		'qsm_category',
-		array(
-			'parent' => $parent,
-		)
-	);
-	echo wp_json_encode( $term_array );
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
+		$term_array = wp_insert_term(
+			$category,
+			'qsm_category',
+			array(
+				'parent' => $parent,
+			)
+		);
+		echo wp_json_encode( $term_array );
+	}
 	exit;
 }
 

@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 8.1.18
+Stable tag: 8.1.19
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.1.19 (November 08, 2023) =
+* Feature: Added an option to display result URLs on the admin result page
+* Bug: Resolved Cross Site Request Forgery vulnerability
+* Enhacements: Improved quiz timer performance
+* Enhacements: Added a user alert message for cases where results will not be stored in the database
+
 = 8.1.18 (October 26, 2023) =
 * Enhancement: Updated the message when you submit a quiz in draft mode
 

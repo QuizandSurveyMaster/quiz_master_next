@@ -120,12 +120,12 @@ add_action( 'wp_ajax_qsm_show_disabled_contact_fields', 'qsm_show_disabled_conta
 function qsm_show_disabled_contact_fields() {
 	global $wpdb, $mlwQuizMasterNext;
 	$user_id = get_current_user_id();
-	if ( isset( $_POST['show'] ) ) {
+	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) && isset( $_POST['show'] ) ) {
 		update_user_meta( $user_id, 'qsm_show_disabled_contact_fields', sanitize_text_field( wp_unslash( $_POST['show'] ) ) );
 	}
 	// Sends posted form data to Contact Manager to sanitize and save.
-	echo '1';
-	die();
+	wp_send_json_success();
 }
 
 function qsm_options_contact_tab_template() {

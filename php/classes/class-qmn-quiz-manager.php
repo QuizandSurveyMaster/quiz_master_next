@@ -686,8 +686,7 @@ class QMNQuizManager {
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
 
-					$tq_ids = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
-
+					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
@@ -744,7 +743,7 @@ class QMNQuizManager {
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
+				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
 						$question_sql = implode( ',', $question_ids );
@@ -1021,7 +1020,7 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) ) {
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) && empty( $options->question_per_category ) ) {
 			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
 			$question_list_array = array();
 			foreach ( $pages as &$question_ids ) {
@@ -1872,6 +1871,9 @@ class QMNQuizManager {
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
+			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
+				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
+			}
 			$result_display .= $results_pages['display'];
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
@@ -1975,7 +1977,7 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
 			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
@@ -2150,11 +2152,11 @@ class QMNQuizManager {
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += $results_array['points'];
-							$answer_points += $results_array['points'];
+							$points_earned += (float)$results_array['points'];
+							$answer_points += (float) $results_array['points'];
 
 							// If the user's answer was correct.
-							if ( 'correct' == $results_array['correct'] ) {
+							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;
 								$correct_status = 'correct';
 							}
@@ -2176,8 +2178,8 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
-							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
-							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+							$user_answer_array    = isset( $results_array['user_answer'] ) && is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
+							$correct_answer_array = isset( $results_array['correct_answer'] ) && is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array
 							$question_data[] = apply_filters(
