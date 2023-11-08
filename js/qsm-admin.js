@@ -3447,7 +3447,7 @@ var import_button;
 // MailerLite Inactive promo banner
 jQuery(document).on('click', '.mailerlite-automation .accordion', function(event) {
     // Find the corresponding panel for the clicked accordion
-    var panel = jQuery(this).closest('.mailerlite-automation').find('.panel');
+    let panel = jQuery(this).closest('.mailerlite-automation').find('.panel');
 
     if (panel.css('display') === 'block') {
         panel.css('display', 'none');
