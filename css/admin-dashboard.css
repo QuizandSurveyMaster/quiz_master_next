@@ -1,5 +1,4 @@
 .welcome-panel-column .dashicons {
-	/* font-size: 30px; */
 	color: #606a73;
 	font-size: 23px;
 	margin-right: 5px;
@@ -250,7 +249,6 @@ ul.popuar-addon-ul::after {
 	padding: 0;
 	background: #f3f3f3;
 	min-width: 70vw;
-	/* max-width: 1040px; */
 	border-radius: 0;
 	max-height: 85vh;
 	overflow: hidden;
@@ -261,7 +259,6 @@ ul.popuar-addon-ul::after {
 	margin: 0;
 	max-height: 75vh;
 	overflow-y: auto;
-	/* padding-bottom: 59px; */
 }
 
 #model-wizard .qsm-popup__header {
@@ -544,7 +541,6 @@ ul.popuar-addon-ul::after {
 }
 
 #quiz_settings_wrapper tr {
-	/*display: inline-block;*/
 	width: 100%;
 }
 
@@ -742,7 +738,6 @@ h2.hndle.ui-sortable-handle {
 }
 
 #model-wizard .qsm-new-menu-elements .input-group>label {
-	/* color: #888; */
 	display: inline-block;
 	font-size: 16px;
 	margin-bottom: 5px;
