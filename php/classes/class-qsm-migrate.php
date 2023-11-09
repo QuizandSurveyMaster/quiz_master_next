@@ -54,22 +54,13 @@ class QSM_Migrate {
 					$result          = $wpdb->query( $insert_query );
 					if ( $result > 0 ) {
 						update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
-						$response    = array(
-							'status' => true,
-							'count'  => $result,
-						);
 						$update      = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
 						$updated     = $wpdb->query( $update );
+						wp_send_json_success();
 					} else {
-						$response = array(
-							'status' => false,
-						);
+						wp_send_json_error();
 					}
 				} else {
-					$response    = array(
-						'status' => true,
-						'count'  => 0,
-					);
 					update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 				}
 				wp_send_json_success();

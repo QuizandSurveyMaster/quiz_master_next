@@ -1516,7 +1516,7 @@ var QSMContact;
                     })
                         .done(function (results) {
                             if (results.status) {
-                                jQuery(document).trigger('qsm_after_save_email');                    
+                                jQuery(document).trigger('qsm_after_save_email');
                                 QSMAdmin.displayAlert(qsm_admin_messages.emails_saved, 'success');
                             } else {
                                 QSMAdmin.displayAlert(qsm_admin_messages.emails_save_error + ' ' + qsm_admin_messages.try_again, 'error');

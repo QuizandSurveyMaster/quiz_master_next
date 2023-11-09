@@ -134,7 +134,6 @@ var qsmTimerInterval = [];
 			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
 			var timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
 			var timerRemaning = timerTotal - timerConsumed;
-			
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
 			} else {
@@ -1244,7 +1243,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 			if (qmn_quiz_data[quiz_id].contact_info_location == 1) {
 				$container.find(".qsm-submit-btn").hide();
 				$container.find(".mlw_next").show();
-			}			
+			}
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
@@ -1848,9 +1847,9 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
-	
+
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
-		
+
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 		let decrypt = JSON.parse(decryptedData);

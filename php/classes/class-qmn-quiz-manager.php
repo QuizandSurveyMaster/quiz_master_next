@@ -738,7 +738,7 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) ) {
+			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
@@ -2150,7 +2150,6 @@ class QMNQuizManager {
 						if ( ! isset( $results_array['null_review'] ) ) {
 							$points_earned += (float)$results_array['points'];
 							$answer_points += (float)$results_array['points'];
-
 							// If the user's answer was correct.
 							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;

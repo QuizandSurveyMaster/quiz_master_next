@@ -1,8 +1,4 @@
 /******************** Quizzes/Surveys Page *********************/
-/*.qsm-quizes-page .widefat td {
- font-size: 16px !important;
-}
-*/
 @-moz-keyframes qsm-spinner-loader {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -1291,8 +1287,6 @@ div#modal-6 label {
 .qsm-no-quiz-wrapper .dashicons.dashicons-format-chat {
 	font-size: 200px;
 	display: block;
-	/* line-height: 200px;
-	*/
 	width: auto;
 	height: auto;
 }
@@ -1494,7 +1488,6 @@ td.scheduled_time_start {
 }
 .qsm-text-label-wrapper>h2 {
 	font-size: 24px;
-	/*border-bottom: 1px solid #ccc;*/
 	padding-bottom: 10px;
 	line-height: normal;
 }
