@@ -958,7 +958,10 @@ class QMNQuizManager {
 				echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-
+				if ( 2 === intval( $options->randomness_order ) || 3 === intval( $options->randomness_order ) ) {
+					global $quiz_answer_random_ids;
+					$quiz_answer_random_ids = array();
+				}
 				if ( 0 == $options->question_from_total && 0 == $options->pagination && is_countable($pages) && 0 !== count( $pages ) ) {
 					$this->display_pages( $options, $quiz_data );
 				} else {
@@ -975,7 +978,7 @@ class QMNQuizManager {
 				}
 				echo apply_filters( 'qmn_before_error_message', '', $options, $quiz_data );
 				?>
-				<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
+					<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
 					<input type="hidden" name="qmn_all_questions_count" id="qmn_all_questions_count" value="<?php echo esc_attr( $qmn_all_questions_count ); ?>" />
 					<input type="hidden" name="total_questions" id="total_questions" value="<?php echo esc_attr( $qmn_total_questions ); ?>" />
 					<input type="hidden" name="timer" id="timer" value="0" />
@@ -983,6 +986,11 @@ class QMNQuizManager {
 					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' />
 					<?php
+					if ( 2 === intval( $options->randomness_order ) || 3 === intval( $options->randomness_order ) ) {
+						?>
+						<input type="hidden" name="quiz_answer_random_ids" id="quiz_answer_random_ids_<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" value="<?php echo esc_attr( maybe_serialize( $quiz_answer_random_ids ) ); ?>" />
+						<?php
+					}
 					if ( isset( $_GET['payment_id'] ) && '' !== $_GET['payment_id'] ) {
 						$payment_id = sanitize_text_field( wp_unslash( $_GET['payment_id'] ) );
 						?>
