@@ -3219,3 +3219,31 @@ input#preferred-date-format-custom {
     min-width: 110px;
     display: inline-block;
 }
+/* ----------------Addon Promo CSS--------------- */
+.qsm-addon-promo-wrapper {
+	display: flex;
+	flex-direction: column;
+	padding: 5px 0;
+}
+.qsm-addon-promo-wrapper .accordion {
+	color: #444;
+	cursor: pointer;
+	padding: 10px 10px;
+	width: 100%;
+	text-align: left;
+	border: none;
+	border-bottom: 1px solid rgb(206, 204, 204);
+	outline: none;
+	transition: 0.4s;
+	font-size: 16px;
+	background-color: rgb(255, 255, 255);
+	font-weight: 600;
+}
+.qsm-addon-promo-wrapper .panel {
+	position: relative;
+	display: none;
+	top: 0;
+	padding: 0 18px;
+	background-color: white;
+	box-sizing: border-box;
+}
