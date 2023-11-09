@@ -198,32 +198,32 @@ function qsm_options_emails_tab_template() {
 				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
 				<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				<?php if ( empty($ml_settings) ) : ?>
-					<div class="mailerlite-automation">
+					<div class=".qsm-addon-promo-wrapper">
 						<button class="accordion">
 							<?php esc_html_e( 'MailerLite Automation', 'quiz-master-next' ); ?>
 							<span style="float:right" class="dashicons dashicons-arrow-down-alt2"></span>
 						</button>
 						<div class="panel">
-							<p class="ml-desc">
+							<p class="addon-promo-desc">
 								<?php esc_html_e( 'This tool helps you to seamlessly integrate your MailerLite account with quizzes and surveys created in QSM, so you can easily collect the contact information of quiz or survey takers and automate the process of sending targeted, custom emails straight from MailerLite.', 'quiz-master-next' ); ?>								
 							</p>
-							<a class="ml-doc-link" href="">
+							<a class="addon-promo-doc-link" href="">
 								<span class="dashicons dashicons-media-document"></span>
 								<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-right-alt"></span>
 							</a>
 							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/mailerlite_promo.png' ); ?>" class="ml-promo-banner" >
-							<p class="ml-info">
+							<p class="addon-promo-info">
 								<span class="dashicons dashicons-info"></span>
 								<span>
 									<?php esc_html_e( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy MailerLite Integration Addon separately.', 'quiz-master-next' ); ?>
 								</span>
 							</p>
-							<div class="ml-promo-btn">
-								<a href="" class="ml-bundle-link button-primary">
+							<div class="addon-purchase-link-btn">
+								<a href="" class="qsm-bundle-link button-primary">
 									<?php esc_html_e( 'Upgrade to QSM bundle', 'quiz-master-next' ); ?>
 								</a>
-								<a href="" class="ml-addon-link">
+								<a href="" class="addon-purchase-link">
 									<?php esc_html_e( 'Buy MailerLite Integration Addon', 'quiz-master-next' ); ?>
 								</a>
 							</div>

@@ -3445,9 +3445,9 @@ var import_button;
 }(jQuery));
 
 // MailerLite Inactive promo banner
-jQuery(document).on('click', '.mailerlite-automation .accordion', function(event) {
+jQuery(document).on('click', '.qsm-addon-promo-wrapper .accordion', function(event) {
     // Find the corresponding panel for the clicked accordion
-    let panel = jQuery(this).closest('.mailerlite-automation').find('.panel');
+    let panel = jQuery(this).closest('.qsm-addon-promo-wrapper').find('.panel');
 
     if (panel.css('display') === 'block') {
         panel.css('display', 'none');

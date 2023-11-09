@@ -3227,13 +3227,13 @@ input#preferred-date-format-custom {
     display: inline-block;
 }
 /* ----------------MailerLite Promo CSS--------------- */
-.mailerlite-automation,
-.mailerlite-automation .ml-promo-btn {
+.qsm-addon-promo-wrapper,
+.qsm-addon-promo-wrapper addon-purchase-link-btn {
 	display: flex;
 	flex-direction: column;
 	padding: 5px 0;
 }
-.mailerlite-automation .accordion {
+.qsm-addon-promo-wrapper .accordion {
 	color: #444;
 	cursor: pointer;
 	padding: 10px 10px;
@@ -3247,7 +3247,7 @@ input#preferred-date-format-custom {
 	background-color: rgb(255, 255, 255);
 	font-weight: 600;
 }
-.mailerlite-automation .panel {
+.qsm-addon-promo-wrapper .panel {
 	position: relative;
 	display: none;
 	top: 0;
@@ -3255,24 +3255,24 @@ input#preferred-date-format-custom {
 	background-color: white;
 	box-sizing: border-box;
 }
-.mailerlite-automation .ml-desc {
+.qsm-addon-promo-wrapper .addon-promo-desc {
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 18px;
 	letter-spacing: 0em;
 	text-align: left;
 }
-.mailerlite-automation .ml-doc-link {
+.qsm-addon-promo-wrapper .addon-promo-doc-link {
 	margin: 0 0 10px 0;
 	font-weight: 600;
 	color: blue;
 }
-.mailerlite-automation .ml-doc-link span {
+.qsm-addon-promo-wrapper .addon-promo-doc-link span {
 	font-size: small;
     top: 3px;
     position: relative;
 }
-.mailerlite-automation .ml-info {
+.qsm-addon-promo-wrapper .addon-promo-info {
 	display: inline-flex;
     padding: 3px;
     border: 0.63px solid #EFF6FF;
@@ -3280,12 +3280,12 @@ input#preferred-date-format-custom {
     border-radius: 4px;
     background: #EFF6FF;
 }
-.mailerlite-automation .ml-info span:first-child {
+.qsm-addon-promo-wrapper .addon-promo-info span:first-child {
 	font-size: 15px;
     padding: 12px 5px 12px 12px;
     color: #60A5FA;
 }
-.mailerlite-automation .ml-info span:nth-child(2) {
+.qsm-addon-promo-wrapper .addon-promo-info span:nth-child(2) {
 	font-size: 12px;
 	font-weight: 500;
 	line-height: 20px;
@@ -3294,12 +3294,12 @@ input#preferred-date-format-custom {
 	color: #1E40AF;
 	padding: 7px;
 }
-.mailerlite-automation .ml-promo-btn .ml-bundle-link {
+.qsm-addon-promo-wrapper addon-purchase-link-btn .qsm-bundle-link {
 	text-align: center;
     font-size: 16px;
     padding: 4px 0;
 }
-.mailerlite-automation .ml-promo-btn .ml-addon-link {
+.qsm-addon-promo-wrapper addon-purchase-link-btn .addon-purchase-link {
 	text-align: center;
     font-size: 16px;
 	padding: 20px 0;
