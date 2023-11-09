@@ -1054,17 +1054,18 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			12,
 			5,
 			7,
-		// 14,
 		);
 		$form_type   = isset( $mlw_quiz_array['form_type'] ) ? $mlw_quiz_array['form_type'] : 0;
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-			if ( ! empty($_COOKIE[ 'answer_ids_'.$answer['id'] ]) ) {
-				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$answer['id'] ] ) ) );
+			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
-				foreach ( $answer_ids as $key ) {
-					$answers_random[ $key ] = $total_answers[ $key ];
+				$quiz_answer_random_ids = maybe_unserialize( sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) ) );
+				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
+					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
+						$answers_random[ $key ] = $total_answers[ $key ];
+					}
 				}
 				$total_answers = $answers_random;
 				setcookie('answer_ids_'.$answer['id'], "", time() - 36000, "/");
