@@ -198,35 +198,13 @@ function qsm_options_emails_tab_template() {
 				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
 				<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				<?php if ( empty($ml_settings) ) : ?>
-					<div class=".qsm-addon-promo-wrapper">
+					<div class="qsm-addon-promo-wrapper">
 						<button class="accordion">
 							<?php esc_html_e( 'MailerLite Automation', 'quiz-master-next' ); ?>
 							<span style="float:right" class="dashicons dashicons-arrow-down-alt2"></span>
 						</button>
 						<div class="panel">
-							<p class="addon-promo-desc">
-								<?php esc_html_e( 'This tool helps you to seamlessly integrate your MailerLite account with quizzes and surveys created in QSM, so you can easily collect the contact information of quiz or survey takers and automate the process of sending targeted, custom emails straight from MailerLite.', 'quiz-master-next' ); ?>								
-							</p>
-							<a class="addon-promo-doc-link" href="">
-								<span class="dashicons dashicons-media-document"></span>
-								<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?>
-								<span class="dashicons dashicons-arrow-right-alt"></span>
-							</a>
-							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/mailerlite_promo.png' ); ?>" class="ml-promo-banner" >
-							<p class="addon-promo-info">
-								<span class="dashicons dashicons-info"></span>
-								<span>
-									<?php esc_html_e( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy MailerLite Integration Addon separately.', 'quiz-master-next' ); ?>
-								</span>
-							</p>
-							<div class="addon-purchase-link-btn">
-								<a href="" class="qsm-bundle-link button-primary">
-									<?php esc_html_e( 'Upgrade to QSM bundle', 'quiz-master-next' ); ?>
-								</a>
-								<a href="" class="addon-purchase-link">
-									<?php esc_html_e( 'Buy MailerLite Integration Addon', 'quiz-master-next' ); ?>
-								</a>
-							</div>
+							<?php qsm_mailerlite_quiz_tabs_content(); ?>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -273,5 +251,20 @@ function qsm_options_emails_tab_template() {
 </script>
 
 	<?php
+}
+function qsm_mailerlite_quiz_tabs_content() {
+	$args = array(
+		"id"           => 'mailerlite-integration',
+		"title"        => __( 'MailerLite Integration', 'quiz-master-next' ),
+		"description"  => __( 'This tool helps you to seamlessly integrate your MailerLite account with quizzes and surveys created in QSM, so you can easily collect the contact information of quiz or survey takers and automate the process of sending targeted, custom emails straight from MailerLite.', 'quiz-master-next' ),
+		"chart_image"  => QSM_PLUGIN_URL . 'assets/mailerlite_promo.png',
+		"warning"      => __( 'Missing Feature - MailerLite Integration Add-on required', 'quiz-master-next' ),
+		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy MailerLite Integration Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy MailerLite Integration Addon', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/mailerlite-integration', 'quiz-documentation', 'plugin', 'mailerlite-integration', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'mailerlite-integration', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/mailerlite-integration', 'quiz-documentation', 'plugin', 'mailerlite-integration', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
 }
 ?>
