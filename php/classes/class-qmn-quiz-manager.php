@@ -739,7 +739,7 @@ class QMNQuizManager {
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
 			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) ) {
+				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) && empty( $quiz_options->limit_category_checkbox ) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
 						$question_sql = implode( ',', $question_ids );
