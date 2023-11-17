@@ -134,6 +134,7 @@ var qsmTimerInterval = [];
 			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
 			var timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
 			var timerRemaning = timerTotal - timerConsumed;
+			
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
 			} else {
@@ -188,6 +189,9 @@ var qsmTimerInterval = [];
 				document.title = display + ' ' + qsmTitleText;
 			}
 
+			var $quizForm = QSM.getQuizForm(quizID);
+			var total_seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
+			var ninety_sec = total_seconds - (total_seconds * 90 / 100);
 			/*CUSTOM TIMER*/
 			if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') && qmn_quiz_data[quizID].advanced_timer.timer_design == 'big_timer') {
 				$(".second.circle").parent('.mlw_quiz_form').addClass('qsm_big_timer');
@@ -200,11 +204,19 @@ var qsmTimerInterval = [];
 					animation: false,
 					fill: { gradient: ["#00bb40", "#00511c"] }
 				});
+			}else if($quizForm.find('.linear-custom-timer').length) {
+				linearFormatTimeLeft(quizID, secondsRemaining, total_seconds);	
+			}else if($quizForm.find('.v_line-timer-top').length) {
+				vLineFormatTimeLeft(quizID, secondsRemaining, total_seconds);
+			}else if($quizForm.find('.box-timer-top').length) {
+				boxFormatTimeLeft(quizID, secondsRemaining, total_seconds);
+			}else if($quizForm.find('.oval-timer-top').length) {
+				ovalFormatTimeLeft(quizID, secondsRemaining, total_seconds);
+			}else if($quizForm.find('.half-circle-timer').length) {
+				halfFormatTimeLeft(quizID, secondsRemaining, total_seconds);
+			}else if($quizForm.find('.shade-circle-timer').length) {
+				shadeFormatTimeLeft(quizID, secondsRemaining, total_seconds);
 			}
-
-			var $quizForm = QSM.getQuizForm(quizID);
-			var total_seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
-			var ninety_sec = total_seconds - (total_seconds * 90 / 100);
 			if (ninety_sec == secondsRemaining) {
 				$quizForm.closest('.qmn_quiz_container').find('.qsm_ninety_warning').fadeIn();
 			}
@@ -582,7 +594,7 @@ var qsmTimerInterval = [];
 			if (undefined != pid) {
 				var $qpages = qmn_quiz_data[quizID].qpages;
 				var $curr_page_opt = $qpages[pid];
-				if ($curr_page_opt.hasOwnProperty('pagetimer') && 0 != $curr_page_opt.pagetimer) {
+				if (($curr_page_opt.hasOwnProperty('pagetimer') && 0 != $curr_page_opt.pagetimer) || ($curr_page_opt.hasOwnProperty('pagetimer_second') && 0 != $curr_page_opt.pagetimer_second)) {
 					var $timer_box = $currentpage.find('.qsm-pagetimer');
 					var seconds = 0;
 					var timerStarted = localStorage.getItem('mlw_started_q' + quizID + '_page' + pid);
@@ -596,10 +608,15 @@ var qsmTimerInterval = [];
 						}
 					} else {
 						seconds = parseFloat($curr_page_opt.pagetimer) * 60;
+						if($curr_page_opt.hasOwnProperty('pagetimer_second') && "" != $curr_page_opt.pagetimer_second) {
+							seconds = seconds + parseInt($curr_page_opt.pagetimer_second);
+						}
 					}
 					qmn_quiz_data[quizID].qpages[pid].timerRemaning = seconds;
 					/* Makes the timer appear. */
-					$timer_box.show();
+					if(!qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
+						$timer_box.show();
+					}
 					$timer_box.text(QSMPageTimer.secondsToTimer(seconds));
 					/* Sets up timer interval. */
 					qmn_quiz_data[quizID].qpages[pid].timerInterval = setInterval(QSMPageTimer.timer, 1000, quizID, pid, $timer_box);
@@ -626,17 +643,24 @@ var qsmTimerInterval = [];
 				qmn_quiz_data[quizID].qpages[pid].timerRemaning = 0;
 			}
 			var total_seconds = parseFloat($page.pagetimer) * 60;
+			if($page.hasOwnProperty('pagetimer_second') && "" != $page.pagetimer_second) {
+				total_seconds = total_seconds + parseInt($page.pagetimer_second);
+			}
 			var secondsRemaining = qmn_quiz_data[quizID].qpages[pid].timerRemaning;
 			var display = QSMPageTimer.secondsToTimer(secondsRemaining);
 			$timer_box.text(display);
+			jQuery(document).trigger('qsm_change_timer', [quizID, secondsRemaining, $page.pagetimer, total_seconds]);
 			var pageTimeTaken = total_seconds - secondsRemaining;
 			jQuery('#pagetime_' + pid).val(pageTimeTaken);
 			/* Sets our local storage values for the timer being started and current timer value. */
 			localStorage.setItem('mlw_started_q' + quizID + '_page' + pid, "yes");
 			localStorage.setItem('mlw_time_q' + quizID + '_page' + pid, secondsRemaining);
-			if ($page.hasOwnProperty('pagetimer_warning') && 0 != $page.pagetimer_warning) {
+			if ((($page.hasOwnProperty('pagetimer_warning') && 0 != $page.pagetimer_warning) || ($page.hasOwnProperty('pagetimer_warning_second') && 0 != $page.pagetimer_warning_second)) && ($page.hasOwnProperty('warning_checkbox') && 0 != $page.warning_checkbox) ) {
 				var page_warning_sec = parseFloat($page.pagetimer_warning) * 60;
-				if (page_warning_sec == secondsRemaining) {
+				if($page.hasOwnProperty('pagetimer_warning_second') && "" != $page.pagetimer_warning_second) {
+					page_warning_sec = page_warning_sec + parseInt($page.pagetimer_warning_second);
+				}
+				if (Math.round(page_warning_sec) == secondsRemaining) {
 					$timer_box.parents('.qsm-page').find('.qsm-pagetimer-warning').fadeIn();
 				}
 			}
@@ -662,7 +686,7 @@ var qsmTimerInterval = [];
 		 */
 		endPageTimer: function (quizID, clearStorage = false) {
 			jQuery.each(qmn_quiz_data[quizID].qpages, function (i, value) {
-				if (value.hasOwnProperty('pagetimer') && 0 != value.pagetimer) {
+				if ((value.hasOwnProperty('pagetimer') && 0 != value.pagetimer) || value.hasOwnProperty('pagetimer_second') && 0 != value.pagetimer_second) {
 					if (clearStorage) {
 						localStorage.removeItem('mlw_started_q' + quizID + '_page' + value.id);
 						localStorage.removeItem('mlw_stoped_q' + quizID + '_page' + value.id);
@@ -1243,7 +1267,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 			if (qmn_quiz_data[quiz_id].contact_info_location == 1) {
 				$container.find(".qsm-submit-btn").hide();
 				$container.find(".mlw_next").show();
-			}
+			}			
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
 		$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
@@ -1847,9 +1871,9 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
-
+	
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
-
+		
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 		let decrypt = JSON.parse(decryptedData);

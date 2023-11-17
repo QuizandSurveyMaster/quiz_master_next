@@ -155,6 +155,23 @@ function qsm_options_questions_tab_content() {
 			<?php
 		}
 	}
+	$read_only = "";
+	$disable_class = "";
+	if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) {
+		$read_only = 'readonly';
+		$disable_class = 'qsm-disabled-td';
+	} else {
+		$date_now = date("d-m-Y");
+		$settings_data   = get_option('qsm_addon_advanced_timer_settings', '');
+		$license         = isset( $settings_data['license_key'] ) ? trim( $settings_data['license_key'] ) : '';
+		$license_status  = isset( $settings_data['license_status'] ) ? $settings_data['license_status'] : '';
+		if ( version_compare( $mlwQuizMasterNext->version, '8.1.6', '<' ) && (isset($settings_data['expiry_date']) && "" != $settings_data['expiry_date']) && (isset($settings_data['last_validate']) && "" != $settings_data['last_validate']) && strtotime($date_now) > strtotime($settings_data['expiry_date']) && strtotime($date_now) >= strtotime($settings_data['last_validate']) ) { 
+			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
+			$target_text = __('License Key Expired. ', 'quiz-master-next');
+			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
+			echo wp_kses_post($target_link);
+		}
+	}
 	?>
 	<div class="question-controls">
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
@@ -665,15 +682,39 @@ function qsm_options_questions_tab_content() {
 					<input type="hidden" name="edit_page_id" id="edit_page_id" value="">
 					<div id="page-options">
 						<div class="qsm-row">
-							<label><?php esc_html_e( 'Page Name', 'quiz-master-next' ); ?></label>
+							<label class="qsm-page-setting-label"><?php esc_html_e( 'Page Name', 'quiz-master-next' ); ?></label>
 							<input type="text" id="pagekey" name="pagekey" value="">
 						</div>
 						<div class="qsm-row">
-							<label><?php esc_html_e( 'Hide Previous Button?', 'quiz-master-next' ); ?></label>
-							<select name="hide_prevbtn" id="hide_prevbtn">
-								<option value="0" selected="selected"><?php esc_html_e( 'No', 'quiz-master-next' ); ?></option>
-								<option value="1"><?php esc_html_e( 'Yes', 'quiz-master-next' ); ?></option>
-							</select>
+							<label class="qsm-page-setting-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></label>
+							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
+							<span class="qsm-page-setting-span"><?php _e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
+						</div>
+						<div class="qsm-page-setting-container">
+							<div class="qsm-page-setting-top ">
+								<div class="qsm-page-setting-left">
+									<span class="qsm-page-setting-label"><?php _e( 'Page Timer', 'quiz-master-next' ); ?></span>
+								</div>
+								<div class="qsm-page-setting-right">
+									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
+										<label><?php _e( 'How many minutes does the user have to finish the page?', 'quiz-master-next' ); ?></label>
+										<span><?php _e( 'Set a time limit to complete this page in ', 'quiz-master-next' ); ?></span><input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" id="pagetimer" name="pagetimer" value="0" placeholder="<?php _e( 'MM', 'quiz-master-next' ); ?>"> : <input type="number" <?php echo esc_html($read_only); ?> step="1" class="small-text" min="0" id="pagetimer_second" name="pagetimer_second" value="0" placeholder="<?php _e( 'SS', 'quiz-master-next' ); ?>">
+									</div>
+									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
+										<input <?php echo esc_html($read_only); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
+										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php _e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> : 
+										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php _e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
+									</div>
+								</div>
+							</div>
+							<div class="qsm-page-setting-bottom ">
+								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
+								<div class="qsm-popup-upgrade-warning">
+									<img src="http://new-site.local/wp-content/plugins/quiz_master_next/php/images/info-yellow.png" alt="information">
+									<span><?php _e( 'You can set timer in each page using Advanced Timer Add-on. '); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'pricing', 'advanced-timer', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); _e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+								</div>
+							<?php } ?>
+							</div>
 						</div>
 						<?php do_action( 'qsm_action_quiz_page_attributes_fields' ); ?>
 					</div>

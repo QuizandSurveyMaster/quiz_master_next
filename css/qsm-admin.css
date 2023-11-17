@@ -1,4 +1,8 @@
 /******************** Quizzes/Surveys Page *********************/
+/*.qsm-quizes-page .widefat td {
+ font-size: 16px !important;
+}
+*/
 @-moz-keyframes qsm-spinner-loader {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -1287,6 +1291,8 @@ div#modal-6 label {
 .qsm-no-quiz-wrapper .dashicons.dashicons-format-chat {
 	font-size: 200px;
 	display: block;
+	/* line-height: 200px;
+	*/
 	width: auto;
 	height: auto;
 }
@@ -1488,6 +1494,7 @@ td.scheduled_time_start {
 }
 .qsm-text-label-wrapper>h2 {
 	font-size: 24px;
+	/*border-bottom: 1px solid #ccc;*/
 	padding-bottom: 10px;
 	line-height: normal;
 }
@@ -1953,6 +1960,92 @@ td.scheduled_time_start {
 
 .admin_page_mlw_quiz_options .nav-tab-active:focus, .admin_page_mlw_quiz_options .nav-tab-active:focus:active, .admin_page_mlw_quiz_options .nav-tab-active:hover {
 	border: 1px solid #c3c4c7;
+}
+
+.notice-error.notice-advance-timer {
+	padding: 10px 15px;
+}
+
+.qsm-page-setting-top {
+    display: flex;
+}
+
+.qsm-page-setting-top .qsm-page-setting-left span {
+    width: 120px;
+    display: inline-block;
+	margin-bottom: 5px;
+    color: #000;
+    font-weight: 500;
+    margin: 0 5px 5px 0;
+    font-size: 13px;
+}
+
+#page-options .qsm-popup-upgrade-warning {
+    line-height: 1.5;
+    max-width: 500px;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	font-size: 13px;
+}
+
+#page-options .qsm-page-setting-top .qsm-row label {
+    display: none;
+}
+
+#page-options .qsm-page-setting-top .qsm-row input[type=number] {
+    min-width: 50px !important;
+    max-width: 50px !important;
+}
+
+#page-options .qsm-page-setting-top .qsm-row input[type=number]::placeholder {
+    font-size: 12px;
+}
+ 
+
+#page-options > div {
+	line-height: 2.5;
+}
+
+#page-options .qsm-row label {
+	display: inline-block;
+	width: 120px;
+	margin-bottom: 5px;
+    color: #000;
+    font-weight: 500;
+	padding: 0 10px;
+}
+
+#page-options .qsm-row input[type="text"] {
+	border-radius: 0;
+}
+
+#page-options .qsm-row input[type=checkbox] {
+	border-radius: 0;
+}
+
+#page-options .qsm-page-setting-label {
+	font-weight: 500;
+}
+
+#page-options .qsm-page-setting-span {
+	font-weight: 500;
+	color: #a6abaf;
+}
+
+.qsm-disabled-td {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+
+.qsm-page-setting-container {
+	padding: 10px;
+	background-color: #F0F0F0;
+}
+#page-options .qsm-popup-upgrade-warning img {
+	width: auto;
+	height: 16px;
+	margin-right: 8px;
+	margin-bottom: 16px;
 }
 
 .qsm-popup-upgrade-warning,
@@ -3218,32 +3311,4 @@ input#preferred-date-format-custom {
 .qsm-date-time-text {
     min-width: 110px;
     display: inline-block;
-}
-/* ----------------Addon Promo CSS--------------- */
-.qsm-addon-promo-wrapper {
-	display: flex;
-	flex-direction: column;
-	padding: 5px 0;
-}
-.qsm-addon-promo-wrapper .accordion {
-	color: #444;
-	cursor: pointer;
-	padding: 10px 10px;
-	width: 100%;
-	text-align: left;
-	border: none;
-	border-bottom: 1px solid rgb(206, 204, 204);
-	outline: none;
-	transition: 0.4s;
-	font-size: 16px;
-	background-color: rgb(255, 255, 255);
-	font-weight: 600;
-}
-.qsm-addon-promo-wrapper .panel {
-	position: relative;
-	display: none;
-	top: 0;
-	padding: 0 18px;
-	background-color: white;
-	box-sizing: border-box;
 }
