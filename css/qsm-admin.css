@@ -2014,21 +2014,12 @@ td.scheduled_time_start {
 	padding: 0 10px;
 }
 
-#page-options .qsm-row input[type="text"] {
-	border-radius: 0;
-}
-
-#page-options .qsm-row input[type=checkbox] {
-	border-radius: 0;
-}
-
 #page-options .qsm-page-setting-label {
 	font-weight: 500;
 }
 
 #page-options .qsm-page-setting-span {
 	font-weight: 500;
-	color: #a6abaf;
 }
 
 .qsm-disabled-td {
@@ -2039,8 +2030,12 @@ td.scheduled_time_start {
 
 .qsm-page-setting-container {
 	padding: 10px;
-	background-color: #F0F0F0;
 }
+
+#page-options .qsm-page-setting-right  input[type="number"] {
+	border-radius: 4px;
+}
+
 #page-options .qsm-popup-upgrade-warning img {
 	width: auto;
 	height: 16px;

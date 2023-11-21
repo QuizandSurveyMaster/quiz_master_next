@@ -644,7 +644,10 @@ var qsmTimerInterval = [];
 			}
 			var total_seconds = parseFloat($page.pagetimer) * 60;
 			if($page.hasOwnProperty('pagetimer_second') && "" != $page.pagetimer_second) {
-				total_seconds = total_seconds + parseInt($page.pagetimer_second);
+				if ($page.pagetimer == "" || $page.pagetimer == 0) {
+					var total_seconds = 0;
+				}
+				total_seconds = parseInt(total_seconds) + parseInt($page.pagetimer_second);
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].qpages[pid].timerRemaning;
 			var display = QSMPageTimer.secondsToTimer(secondsRemaining);
@@ -693,6 +696,21 @@ var qsmTimerInterval = [];
 						localStorage.removeItem('mlw_time_q' + quizID + '_page' + value.id);
 					}
 					var secondsRemaining = qmn_quiz_data[quizID].qpages[value.id].timerRemaning;
+					var timerStarted = localStorage.getItem('mlw_started_q' + quizID + '_page' + value.id);
+					var timerStoped = localStorage.getItem('mlw_stoped_q' + quizID + '_page' + value.id);
+					var timerRemaning = localStorage.getItem('mlw_time_q' + quizID + '_page' + value.id);
+					if (timerStoped != 'undefined' && timerStoped > 0) {
+						secondsRemaining = timerStoped;
+					} else if ('yes' == timerStarted) {
+						if (0 < timerRemaning) {
+							secondsRemaining = parseInt(timerRemaning);
+						}
+					} else {
+						secondsRemaining = parseFloat(qmn_quiz_data[quizID].qpages[value.id].pagetimer) * 60;
+						if(qmn_quiz_data[quizID].qpages[value.id].hasOwnProperty('pagetimer_second') && "" != qmn_quiz_data[quizID].qpages[value.id].pagetimer_second) {
+							secondsRemaining = secondsRemaining + parseInt(qmn_quiz_data[quizID].qpages[value.id].pagetimer_second);
+						}
+					}
 					localStorage.setItem('mlw_stoped_q' + quizID + '_page' + value.id, secondsRemaining);
 					localStorage.setItem('mlw_time_q' + quizID + '_page' + value.id, 'completed');
 					if (typeof qmn_quiz_data[quizID].qpages[value.id].timerInterval != 'undefined') {
@@ -1793,9 +1811,13 @@ jQuery(function () {
 	jQuery('.pagetime-goto-nextpage').click(function (e) {
 		e.preventDefault();
 		var quiz_id = jQuery(this).data('quiz_id');
-		QSM.nextPage(quiz_id);
 		var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
-		qsmScrollTo($container);
+		if(!$container.find('.qsm-submit-btn').is(':visible')) {
+			QSM.nextPage(quiz_id);
+			qsmScrollTo($container);
+		}else{ 
+			$container.find(".mlw_custom_next").hide();
+		}
 	});
 
 	jQuery(document).on('keyup', '.mlwPhoneNumber', function (e) {

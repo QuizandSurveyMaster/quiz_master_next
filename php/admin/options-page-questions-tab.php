@@ -157,9 +157,11 @@ function qsm_options_questions_tab_content() {
 	}
 	$read_only = "";
 	$disable_class = "";
+	$background = "#FFFFFF";
 	if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) {
 		$read_only = 'readonly';
 		$disable_class = 'qsm-disabled-td';
+		$background = "#F0F0F0";
 	} else {
 		$date_now = date("d-m-Y");
 		$settings_data   = get_option('qsm_addon_advanced_timer_settings', '');
@@ -169,6 +171,15 @@ function qsm_options_questions_tab_content() {
 			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
 			$target_text = __('License Key Expired. ', 'quiz-master-next');
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
+			echo wp_kses_post($target_link);
+		}
+		if( (isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate']) ) {
+			$read_only = 'readonly';
+			$disable_class = 'qsm-disabled-td';
+			$background = "#F0F0F0";
+			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
+			$target_text = __(' Your Advanced Timer Settings are not saved successfully. Validate license to save the settings. ', 'quiz-master-next');
+			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'</div>' );
 			echo wp_kses_post($target_link);
 		}
 	}
@@ -690,7 +701,7 @@ function qsm_options_questions_tab_content() {
 							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
 							<span class="qsm-page-setting-span"><?php _e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
 						</div>
-						<div class="qsm-page-setting-container">
+						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr($background); ?>">
 							<div class="qsm-page-setting-top ">
 								<div class="qsm-page-setting-left">
 									<span class="qsm-page-setting-label"><?php _e( 'Page Timer', 'quiz-master-next' ); ?></span>
@@ -711,7 +722,7 @@ function qsm_options_questions_tab_content() {
 								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
 									<img src="http://new-site.local/wp-content/plugins/quiz_master_next/php/images/info-yellow.png" alt="information">
-									<span><?php _e( 'You can set timer in each page using Advanced Timer Add-on. '); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'pricing', 'advanced-timer', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); _e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<span><?php _e( 'You can set timer in each page using Advanced Timer Add-on. '); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); _e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
 								</div>
 							<?php } ?>
 							</div>
