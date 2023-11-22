@@ -192,20 +192,7 @@ var qsmTimerInterval = [];
 			var total_seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			var ninety_sec = total_seconds - (total_seconds * 90 / 100);
 			/*CUSTOM TIMER*/
-			if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') && qmn_quiz_data[quizID].advanced_timer.timer_design == 'big_timer') {
-				$(".second.circle").parent('.mlw_quiz_form').addClass('qsm_big_timer');
-				$(".second.circle").show();
-				$(".second.circle strong").html(display);
-				var datashow = ($(".hiddentimer").html() - secondsRemaining) / $(".hiddentimer").html();
-				$(".second.circle").circleProgress({
-					startAngle: 11,
-					value: datashow,
-					animation: false,
-					fill: { gradient: ["#00bb40", "#00511c"] }
-				});
-			}else {
-				jQuery(document).trigger('load_timer_faces', [quizID, secondsRemaining, total_seconds]);
-			}
+			jQuery(document).trigger('load_timer_faces', [quizID, secondsRemaining, total_seconds, display]);
 			if (ninety_sec == secondsRemaining) {
 				$quizForm.closest('.qmn_quiz_container').find('.qsm_ninety_warning').fadeIn();
 			}
