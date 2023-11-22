@@ -1,8 +1,4 @@
 /******************** Quizzes/Surveys Page *********************/
-/*.qsm-quizes-page .widefat td {
- font-size: 16px !important;
-}
-*/
 @-moz-keyframes qsm-spinner-loader {
 	0% {
 		-moz-transform: rotate(0deg);
@@ -1291,8 +1287,6 @@ div#modal-6 label {
 .qsm-no-quiz-wrapper .dashicons.dashicons-format-chat {
 	font-size: 200px;
 	display: block;
-	/* line-height: 200px;
-	*/
 	width: auto;
 	height: auto;
 }
@@ -1494,7 +1488,6 @@ td.scheduled_time_start {
 }
 .qsm-text-label-wrapper>h2 {
 	font-size: 24px;
-	/*border-bottom: 1px solid #ccc;*/
 	padding-bottom: 10px;
 	line-height: normal;
 }
@@ -1984,7 +1977,7 @@ td.scheduled_time_start {
     line-height: 1.5;
     max-width: 500px;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 #page-options .qsm-page-setting-top .qsm-row label {
@@ -2007,11 +2000,11 @@ td.scheduled_time_start {
 
 #page-options .qsm-row label {
 	display: inline-block;
-    width: 110px;
-    margin-bottom: 5px;
+	width: 120px;
+	margin-bottom: 5px;
     color: #000;
     font-weight: 500;
-    padding: 0px 5px 0 10px;
+	padding: 0 10px;
 }
 
 #page-options .qsm-page-setting-label {
