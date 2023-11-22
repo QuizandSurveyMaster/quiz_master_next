@@ -1865,8 +1865,14 @@ var import_button;
                     QSMAdmin.displayAlert(qsm_admin_messages.saving_page_info, 'info');
                     var pageInfo = QSMQuestion.qpages.get(pageID);
                     pageInfo.set("update_name", 1);
-                    jQuery('#page-options').find(':input, select, textarea').each(function (i, field) {
+                    jQuery('#page-options').find(':input, select, textarea, :checkbox').each(function (i, field) {
                         pageInfo.set(field.name, field.value);
+                        if (field.type === 'checkbox') {
+                            pageInfo.set(field.name, field.checked ? '1' : '0');
+                        }
+                        if (field.type === 'number') {
+                            pageInfo.set(field.name, field.value == "" ? 0 : field.value);
+                        }
                     });
                 },
                 savePages: function () {
@@ -2505,10 +2511,14 @@ var import_button;
                     var page = QSMQuestion.qpages.get(pageID);
                     $('#edit_page_id').val(pageID);
                     $("#edit-page-id").text('').text(pageID);
-                    jQuery('#page-options').find(':input, select, textarea').each(function (i, field) {
+                    jQuery('#page-options').find(':input, select, textarea, :checkbox').each(function (i, field) {
                         field.value = page.get(field.name);
                         if ('undefined' == field.value) {
                             field.value = "";
+                        }
+                        if (field.type === 'checkbox') {
+                            field.value = page.get(field.name);
+                            field.checked = field.value === '1';
                         }
                     });
                     MicroModal.show('modal-page-1');

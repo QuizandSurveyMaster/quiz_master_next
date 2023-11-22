@@ -173,7 +173,7 @@ function qsm_options_questions_tab_content() {
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
 			echo wp_kses_post($target_link);
 		}
-		if( (isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate']) ) {
+		if ( (isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate']) ) {
 			$read_only = 'readonly';
 			$disable_class = 'qsm-disabled-td';
 			$background = "#F0F0F0";
@@ -721,8 +721,8 @@ function qsm_options_questions_tab_content() {
 							<div class="qsm-page-setting-bottom ">
 								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
-									<img src="http://new-site.local/wp-content/plugins/quiz_master_next/php/images/info-yellow.png" alt="information">
-									<span><?php _e( 'You can set timer in each page using Advanced Timer Add-on. '); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); _e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
+									<span><?php _e( 'You can set timer in each page using Advanced Timer Add-on. '); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); _e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
 								</div>
 							<?php } ?>
 							</div>
