@@ -86,6 +86,33 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qsm_remove_file_fd_question', array( $this, 'qsm_remove_file_fd_question' ) );
 
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
+		add_action('wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
+
+	}
+
+	/**
+	 * @version 8.2.0
+	 * ajax login function
+	 */
+	public function qsm_ajax_login() {
+		$username = ! empty( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
+		$password = ! empty( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+
+		$user = get_user_by('login', $username);
+
+		if ( ! $user ) {
+			wp_send_json_error( array( 'message' => __( 'User not found! Please try again.', 'quiz-master-next' ) ) );
+		}
+
+		$user_id = $user->ID;
+
+		// Check the password
+		if ( ! wp_check_password( $password, $user->user_pass, $user_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		}else {
+			wp_send_json_success();
+		}
+
 	}
 
 	/**
@@ -898,6 +925,7 @@ class QMNQuizManager {
 			'qsm_quiz',
 			'qmn_ajax_object',
 			array(
+				'site_url'                  => site_url(),
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 				'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->quiz_limit_choice, "quiz_quiz_limit_choice-{$options->quiz_id}" ),
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
@@ -2744,7 +2772,10 @@ function qmn_require_login_check( $display, $qmn_quiz_options, $qmn_array_for_va
 		$mlw_message = str_replace( "\n", '<br>', $mlw_message );
 		// $display .= do_shortcode($mlw_message);
 		$display .= do_shortcode( $mlw_message );
-		$display .= wp_login_form( array( 'echo' => false ) );
+		$display .= wp_login_form( array(
+			'echo'    => false,
+			'form_id' => 'qsm-login-form',
+		) );
 	}
 	return $display;
 }

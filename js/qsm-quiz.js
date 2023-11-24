@@ -1617,6 +1617,35 @@ jQuery(function () {
 		}, 2000);
 	});
 
+	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
+		e.preventDefault();
+
+		var form = jQuery(this);
+		var username = form.find('input[name="log"]').val();
+		var password = form.find('input[name="pwd"]').val();
+		form.find('input[type="submit"]').attr('disabled', true);
+		jQuery(".qsm-login-form-warning").remove();
+
+		// Make a request to the WordPress REST API to log in
+		jQuery.ajax({
+			url: qmn_ajax_object.ajaxurl,
+			method: 'POST',
+			data: {
+                action: 'qsm_ajax_login',
+                username: username,
+                password: password,
+            },
+			success: function (response) {
+                if ( response.success ) {
+                    form.get(0).submit();
+				} else {
+                    form.append('<div class="qsm-result-page-warning qsm-login-form-warning">' + response.data.message + '</div>');
+					form.find('input[type="submit"]').attr('disabled', false);
+				}
+            }
+		});
+	});
+
 	//inline result status function
 	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
 		jQuery('.qsm-spinner-loader').remove();
