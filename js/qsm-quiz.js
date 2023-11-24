@@ -1620,9 +1620,9 @@ jQuery(function () {
 	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
 		e.preventDefault();
 
-		var form = jQuery(this);
-		var username = form.find('input[name="log"]').val();
-		var password = form.find('input[name="pwd"]').val();
+		let form = jQuery(this);
+		let username = form.find('input[name="log"]').val();
+		let password = form.find('input[name="pwd"]').val();
 		form.find('input[type="submit"]').attr('disabled', true);
 		jQuery(".qsm-login-form-warning").remove();
 
