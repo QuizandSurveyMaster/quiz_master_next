@@ -176,7 +176,6 @@ function qsm_options_questions_tab_content() {
 			$read_only = 'readonly';
 			$disable_class = 'qsm-disabled-td';
 			$background = "#F0F0F0";
-			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
 			$target_text = __(' Your Advanced Timer Settings are not saved successfully. Validate license to save the settings. ', 'quiz-master-next');
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'</div>' );
 			echo wp_kses_post($target_link);
