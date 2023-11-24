@@ -166,14 +166,13 @@ function qsm_options_questions_tab_content() {
 		$date_now = date("d-m-Y");
 		$settings_data   = get_option('qsm_addon_advanced_timer_settings', '');
 		$license         = isset( $settings_data['license_key'] ) ? trim( $settings_data['license_key'] ) : '';
-		$license_status  = isset( $settings_data['license_status'] ) ? $settings_data['license_status'] : '';
-		if ( version_compare( $mlwQuizMasterNext->version, '8.1.6', '<' ) && (isset($settings_data['expiry_date']) && "" != $settings_data['expiry_date']) && (isset($settings_data['last_validate']) && "" != $settings_data['last_validate']) && strtotime($date_now) > strtotime($settings_data['expiry_date']) && strtotime($date_now) >= strtotime($settings_data['last_validate']) ) { 
+		if ( version_compare( $mlwQuizMasterNext->version, '8.1.6', '<' ) && (isset($settings_data['expiry_date']) && "" != $settings_data['expiry_date']) && (isset($settings_data['last_validate']) && "" != $settings_data['last_validate']) && strtotime($date_now) > strtotime($settings_data['expiry_date']) && strtotime($date_now) >= strtotime($settings_data['last_validate']) ) {
 			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
 			$target_text = __('License Key Expired. ', 'quiz-master-next');
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
 			echo wp_kses_post($target_link);
 		}
-		if ( (isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate']) ) {
+		if ( isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate'] ) {
 			$read_only = 'readonly';
 			$disable_class = 'qsm-disabled-td';
 			$background = "#F0F0F0";

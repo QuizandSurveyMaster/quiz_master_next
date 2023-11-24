@@ -2000,11 +2000,11 @@ td.scheduled_time_start {
 
 #page-options .qsm-row label {
 	display: inline-block;
-	width: 120px;
+	width: 115px;
 	margin-bottom: 5px;
     color: #000;
     font-weight: 500;
-	padding: 0 10px;
+	padding: 0 0 0 10px;
 }
 
 #page-options .qsm-page-setting-label {
