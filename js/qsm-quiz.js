@@ -8,7 +8,6 @@
  **************************/
 
 var QSM;
-var QSMPageTimer;
 var qsmTimerInterval = [];
 (function ($) {
 	QSM = {
@@ -45,9 +44,7 @@ var qsmTimerInterval = [];
 						jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
 						jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val(0);
 						quizType = 'paginated';
-						if ( qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') ) {
-							QSMPageTimer.endPageTimer(quizID, true);
-						}
+						jQuery(document).trigger('start_stop_page_timer', [quizID]);
 					}
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
@@ -188,23 +185,11 @@ var qsmTimerInterval = [];
 				document.title = display + ' ' + qsmTitleText;
 			}
 
-			/*CUSTOM TIMER*/
-			if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') && qmn_quiz_data[quizID].advanced_timer.timer_design == 'big_timer') {
-				$(".second.circle").parent('.mlw_quiz_form').addClass('qsm_big_timer');
-				$(".second.circle").show();
-				$(".second.circle strong").html(display);
-				var datashow = ($(".hiddentimer").html() - secondsRemaining) / $(".hiddentimer").html();
-				$(".second.circle").circleProgress({
-					startAngle: 11,
-					value: datashow,
-					animation: false,
-					fill: { gradient: ["#00bb40", "#00511c"] }
-				});
-			}
-
 			var $quizForm = QSM.getQuizForm(quizID);
 			var total_seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			var ninety_sec = total_seconds - (total_seconds * 90 / 100);
+			/*CUSTOM TIMER*/
+			jQuery(document).trigger('load_timer_faces', [quizID, secondsRemaining, total_seconds, display]);
 			if (ninety_sec == secondsRemaining) {
 				$quizForm.closest('.qmn_quiz_container').find('.qsm_ninety_warning').fadeIn();
 			}
@@ -411,12 +396,7 @@ var qsmTimerInterval = [];
 			var $container = jQuery( '.qsm-quiz-container-' + quizID );
 			$pages.hide();
 			$currentPage.show();
-
-			if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.hasOwnProperty('show_stop_timer') ) {
-				QSMPageTimer.endPageTimer(quizID);
-				QSMPageTimer.initPageTimer(quizID, $currentPage);
-			}
-
+			jQuery(document).trigger('end_page_timer_init_page_timer', [quizID, $currentPage]);
 			$quizForm.find('.current_page_hidden').val(pageNumber - 1);
 			$quizForm.find('.qsm-previous').hide();
 			$quizForm.find('.qsm-next').hide();
@@ -570,148 +550,6 @@ var qsmTimerInterval = [];
 			return Object.values(result);
 		},
 	};
-
-	QSMPageTimer = {
-		/**
-		 * Init Page Timer
-		 */
-		initPageTimer: function (quizID, $currentpage) {
-			jQuery(document).trigger('qsm_init_page_timer_before', [quizID, $currentpage]);
-			var $quizForm = QSM.getQuizForm(quizID);
-			var pid = $currentpage.data('pid');
-			if (undefined != pid) {
-				var $qpages = qmn_quiz_data[quizID].qpages;
-				var $curr_page_opt = $qpages[pid];
-				if ($curr_page_opt.hasOwnProperty('pagetimer') && 0 != $curr_page_opt.pagetimer) {
-					var $timer_box = $currentpage.find('.qsm-pagetimer');
-					var seconds = 0;
-					var timerStarted = localStorage.getItem('mlw_started_q' + quizID + '_page' + pid);
-					var timerStoped = localStorage.getItem('mlw_stoped_q' + quizID + '_page' + pid);
-					var timerRemaning = localStorage.getItem('mlw_time_q' + quizID + '_page' + pid);
-					if (timerStoped != 'undefined' && timerStoped > 0) {
-						seconds = timerStoped;
-					} else if ('yes' == timerStarted) {
-						if (0 < timerRemaning) {
-							seconds = parseInt(timerRemaning);
-						}
-					} else {
-						seconds = parseFloat($curr_page_opt.pagetimer) * 60;
-					}
-					qmn_quiz_data[quizID].qpages[pid].timerRemaning = seconds;
-					/* Makes the timer appear. */
-					$timer_box.show();
-					$timer_box.text(QSMPageTimer.secondsToTimer(seconds));
-					/* Sets up timer interval. */
-					qmn_quiz_data[quizID].qpages[pid].timerInterval = setInterval(QSMPageTimer.timer, 1000, quizID, pid, $timer_box);
-				}
-				$currentpage.find('.page_intro_wrapper video').each(function () {
-					var $this = jQuery(this);
-					var src = $this.find('source').attr('src');
-					$this.attr('src', src)
-					$this.load();
-					$this.get(0).play();
-				});
-			}
-			jQuery(document).trigger('qsm_init_page_timer_after', [quizID, $currentpage]);
-		},
-		/**
-		 * Reduces the timer by one second and checks if timer is 0
-		 * @param int quizID The ID of the quiz.
-		 */
-		timer: function (quizID, pid, $timer_box) {
-			var $quizForm = QSM.getQuizForm(quizID);
-			var $page = qmn_quiz_data[quizID].qpages[pid];
-			qmn_quiz_data[quizID].qpages[pid].timerRemaning -= 1;
-			if (0 > qmn_quiz_data[quizID].qpages[pid].timerRemaning) {
-				qmn_quiz_data[quizID].qpages[pid].timerRemaning = 0;
-			}
-			var total_seconds = parseFloat($page.pagetimer) * 60;
-			var secondsRemaining = qmn_quiz_data[quizID].qpages[pid].timerRemaning;
-			var display = QSMPageTimer.secondsToTimer(secondsRemaining);
-			$timer_box.text(display);
-			var pageTimeTaken = total_seconds - secondsRemaining;
-			jQuery('#pagetime_' + pid).val(pageTimeTaken);
-			/* Sets our local storage values for the timer being started and current timer value. */
-			localStorage.setItem('mlw_started_q' + quizID + '_page' + pid, "yes");
-			localStorage.setItem('mlw_time_q' + quizID + '_page' + pid, secondsRemaining);
-			if ($page.hasOwnProperty('pagetimer_warning') && 0 != $page.pagetimer_warning) {
-				var page_warning_sec = parseFloat($page.pagetimer_warning) * 60;
-				if (page_warning_sec == secondsRemaining) {
-					$timer_box.parents('.qsm-page').find('.qsm-pagetimer-warning').fadeIn();
-				}
-			}
-			/* If timer is run out, disable fields. */
-			if (0 >= secondsRemaining) {
-				clearInterval(qmn_quiz_data[quizID].qpages[pid].timerInterval);
-
-				$(".qsm-page:visible input:radio").attr('disabled', true);
-				$(".qsm-page:visible input:checkbox").attr('disabled', true);
-				$(".qsm-page:visible select").attr('disabled', true);
-				$(".qsm-page:visible .mlw_qmn_question_comment").attr('disabled', true);
-				$(".qsm-page:visible .mlw_answer_open_text").attr('disabled', true);
-				$(".qsm-page:visible .mlw_answer_number").attr('disabled', true);
-
-				QSMPageTimer.endPageTimer(quizID);
-				MicroModal.show('modal-page-1');
-				return;
-			}
-		},
-		/**
-		 * Clears timer interval
-		 * @param int quizID The ID of the quiz
-		 */
-		endPageTimer: function (quizID, clearStorage = false) {
-			jQuery.each(qmn_quiz_data[quizID].qpages, function (i, value) {
-				if (value.hasOwnProperty('pagetimer') && 0 != value.pagetimer) {
-					if (clearStorage) {
-						localStorage.removeItem('mlw_started_q' + quizID + '_page' + value.id);
-						localStorage.removeItem('mlw_stoped_q' + quizID + '_page' + value.id);
-						localStorage.removeItem('mlw_time_q' + quizID + '_page' + value.id);
-					}
-					var secondsRemaining = qmn_quiz_data[quizID].qpages[value.id].timerRemaning;
-					localStorage.setItem('mlw_stoped_q' + quizID + '_page' + value.id, secondsRemaining);
-					localStorage.setItem('mlw_time_q' + quizID + '_page' + value.id, 'completed');
-					if (typeof qmn_quiz_data[quizID].qpages[value.id].timerInterval != 'undefined') {
-						clearInterval(qmn_quiz_data[quizID].qpages[value.id].timerInterval);
-					}
-				}
-			});
-		},
-		/**
-		 * Converts seconds to 00:00:00 format
-		 * @param int seconds The number of seconds
-		 * @return string A string in H:M:S format
-		 */
-		secondsToTimer: function (seconds) {
-			var formattedTime = '';
-			seconds = parseInt(seconds);
-			var hours = Math.floor(seconds / 3600);
-			if (0 === hours) {
-				formattedTime = '00:';
-			} else if (10 > hours) {
-				formattedTime = '0' + hours + ':';
-			} else {
-				formattedTime = hours + ':';
-			}
-			var minutes = Math.floor((seconds % 3600) / 60);
-			if (0 === minutes) {
-				formattedTime = formattedTime + '00:';
-			} else if (10 > minutes) {
-				formattedTime = formattedTime + '0' + minutes + ':';
-			} else {
-				formattedTime = formattedTime + minutes + ':';
-			}
-			var remainder = Math.floor((seconds % 60));
-			if (0 === remainder) {
-				formattedTime = formattedTime + '00';
-			} else if (10 > remainder) {
-				formattedTime = formattedTime + '0' + remainder;
-			} else {
-				formattedTime = formattedTime + remainder;
-			}
-			return formattedTime;
-		},
-	}
 
 	// On load code
 	$(function () {
@@ -1798,9 +1636,13 @@ jQuery(function () {
 	jQuery('.pagetime-goto-nextpage').click(function (e) {
 		e.preventDefault();
 		var quiz_id = jQuery(this).data('quiz_id');
-		QSM.nextPage(quiz_id);
 		var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
-		qsmScrollTo($container);
+		if(!$container.find('.qsm-submit-btn').is(':visible')) {
+			QSM.nextPage(quiz_id);
+			qsmScrollTo($container);
+		}else{ 
+			$container.find(".mlw_custom_next").hide();
+		}
 	});
 
 	jQuery(document).on('keyup', '.mlwPhoneNumber', function (e) {
@@ -1876,9 +1718,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
-
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
-
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 		let decrypt = JSON.parse(decryptedData);
