@@ -3453,21 +3453,3 @@ var import_button;
         }
     }
 }(jQuery));
-
-// MailerLite Inactive promo banner
-jQuery(document).on('click', '.qsm-addon-promo-wrapper .accordion', function(event) {
-    // Find the corresponding panel for the clicked accordion
-    let panel = jQuery(this).closest('.qsm-addon-promo-wrapper').find('.panel');
-
-    if (panel.css('display') === 'block') {
-        panel.css('display', 'none');
-        jQuery(this).removeClass('active');
-        jQuery(this).find('span').removeClass('dashicons-arrow-up-alt2');
-        jQuery(this).find('span').addClass('dashicons-arrow-down-alt2');
-    } else {
-        panel.css('display', 'block');
-        jQuery(this).addClass('active');
-        jQuery(this).find('span').removeClass('dashicons-arrow-down-alt2');
-        jQuery(this).find('span').addClass('dashicons-arrow-up-alt2');
-    }
-});
