@@ -521,7 +521,6 @@ class QMNQuizCreator {
 			}
 		}
 
-
 		// Update quiz settings
 		$update_quiz_settings = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
 		$update_pages         = maybe_unserialize( $update_quiz_settings['pages'] );
