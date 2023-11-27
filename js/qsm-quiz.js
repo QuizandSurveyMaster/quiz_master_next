@@ -1487,22 +1487,22 @@ jQuery(function () {
 	function qsm_check_shortcode(message = null) {
 
 		// Check if message contains a video shortcode
-		var videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\]/g;
-		var videoMatch = message.match(videoRegex);
+		let videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\]/g;
+		let videoMatch = message.match(videoRegex);
 
 		if (videoMatch) {
-			var videoHTML = message.replace(videoRegex, function(match, src, width, height) {
+			let videoHTML = message.replace(videoRegex, function(match, src, width, height) {
 				return '<video src="' + (src || '') + '" width="' + (width || '') + '" height="' + (height || '') + '" controls></video>';
 			});
 			return '<div class="video-content">' + videoHTML + '</div>';
 		}
 	
 		// Check if message contains an image shortcode
-		var imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
-		var imageMatch = message.match(imageRegex);
+		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
+		let imageMatch = message.match(imageRegex);
 
 		if (imageMatch) {
-			var imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
+			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
 				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
 			});
 			return '<div class="image-content">' + imageHTML + '</div>';
