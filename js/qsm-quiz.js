@@ -1484,6 +1484,33 @@ jQuery(function () {
 		});
 	});
 
+	function qsm_check_shortcode(message = null) {
+
+		// Check if message contains a video shortcode
+		let videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\]/g;
+		let videoMatch = message.match(videoRegex);
+
+		if (videoMatch) {
+			let videoHTML = message.replace(videoRegex, function(match, src, width, height) {
+				return '<video src="' + (src || '') + '" width="' + (width || '') + '" height="' + (height || '') + '" controls></video>';
+			});
+			return '<div class="video-content">' + videoHTML + '</div>';
+		}
+	
+		// Check if message contains an image shortcode
+		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
+		let imageMatch = message.match(imageRegex);
+
+		if (imageMatch) {
+			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
+				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
+			});
+			return '<div class="image-content">' + imageHTML + '</div>';
+		}
+
+		return message;
+	}
+
 	//inline result status function
 	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
 		jQuery('.qsm-spinner-loader').remove();
@@ -1494,11 +1521,11 @@ jQuery(function () {
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 		if ( 0 < value.length && data.success == 'correct') {
 			$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
 			$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		}
 		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
 			MathJax.typesetPromise();
