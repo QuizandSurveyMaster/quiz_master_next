@@ -1485,19 +1485,30 @@ jQuery(function () {
 	});
 
 	function qsm_check_shortcode(message = null) {
-		// Check if message contains a video shortcode
-		let videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\smp4="([^"]+)")|(?:\sm4v="([^"]+)")|(?:\swebm="([^"]+)")|(?:\sogv="([^"]+)")|(?:\swmv="([^"]+)")|(?:\sflv="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\](.*?)\[\/video\]/g;
-		let videoMatch = message.match(videoRegex);
-	
+		const videoAttributesRegex = /(?:\ssrc="([^"]+)")|(?:\smp4="([^"]+)")|(?:\sm4v="([^"]+)")|(?:\swebm="([^"]+)")|(?:\sogv="([^"]+)")|(?:\swmv="([^"]+)")|(?:\sflv="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")/g;
+		const videoContentRegex = /\[video(?:(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*)\](.*?)\[\/video\]/g;
+
+		let videoMatch = message.match(videoContentRegex);
+
 		if (videoMatch) {
-			let videoHTML = message.replace(videoRegex, function(match, src, mp4, m4v, webm, ogv, wmv, flv, width, height, content) {
-				const videoSource = src || mp4 || m4v || webm || ogv || wmv || flv || '';
-				const videoTag = '<video src="' + videoSource + '" width="' + (width || '') + '" height="' + (height || '') + '" controls>' + (content || '') + '</video>';
-				return '<div class="video-content">' + videoTag + '</div>';
+			let videoHTML = message.replace(videoContentRegex, function(match, content) {
+				let attributesMatch;
+				let src = '';
+				let width = '';
+				let height = '';
+
+				while ((attributesMatch = videoAttributesRegex.exec(match)) !== null) {
+					src = src || attributesMatch[1] || attributesMatch[2] || attributesMatch[3] || attributesMatch[4] || attributesMatch[5] || attributesMatch[6] || attributesMatch[7] || '';
+					width = width || attributesMatch[8] || '';
+					height = height || attributesMatch[9] || '';
+				}
+
+				const videoTag = `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
+				return `<div class="video-content">${videoTag}</div>`;
 			});
 			return videoHTML;
 		}
-	
+		
 		// Check if message contains an image shortcode
 		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
 		let imageMatch = message.match(imageRegex);
