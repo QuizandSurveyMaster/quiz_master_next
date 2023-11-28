@@ -166,6 +166,12 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
+			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
+				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
+				if(secondsRemaining < 0) {
+					secondsRemaining = 0;
+				}
+			}
 			var display = QSM.secondsToTimer(secondsRemaining);
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
