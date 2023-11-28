@@ -1507,16 +1507,17 @@ jQuery(function () {
 				let height = '';
 
 				videoAttributePatterns.forEach(pattern => {
-					if (!src) {
-						const attrMatch = match.match(pattern);
-						if (attrMatch) {
+					const attrMatch = match.match(pattern);
+					if (attrMatch) {
+						if (pattern.toString().includes('width')) {
+							width = attrMatch[1] || '';
+						} else if (pattern.toString().includes('height')) {
+							height = attrMatch[1] || '';
+						} else {
 							src = attrMatch[1] || '';
-							if (pattern.toString().includes('width')) width = attrMatch[1] || '';
-							if (pattern.toString().includes('height')) height = attrMatch[1] || '';
 						}
 					}
 				});
-
 				const videoTag = `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
 				return `<div class="video-content">${videoTag}</div>`;
 			});
