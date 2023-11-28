@@ -1484,41 +1484,50 @@ jQuery(function () {
 		});
 	});
 
-	function qsm_check_shortcode(message = null) {
-		const videoAttributePatterns = [
-			/\ssrc="([^"]+)"/,
-			/\smp4="([^"]+)"/,
-			/\sm4v="([^"]+)"/,
-			/\swebm="([^"]+)"/,
-			/\sogv="([^"]+)"/,
-			/\swmv="([^"]+)"/,
-			/\sflv="([^"]+)"/,
-			/\swidth="(\d+)"/,
-			/\sheight="(\d+)"/
-		];
-		
+	const videoAttributePatterns = [
+		/\ssrc="([^"]+)"/,
+		/\smp4="([^"]+)"/,
+		/\sm4v="([^"]+)"/,
+		/\swebm="([^"]+)"/,
+		/\sogv="([^"]+)"/,
+		/\swmv="([^"]+)"/,
+		/\sflv="([^"]+)"/,
+		/\swidth="(\d+)"/,
+		/\sheight="(\d+)"/
+	];
+
+	function parseAttributes(match, src, width, height) {
+		let videoAttrs = { src: '', width: '', height: '' };
+	
+		videoAttributePatterns.forEach(pattern => {
+			const attrMatch = match.match(pattern);
+			if (attrMatch) {
+				const value = attrMatch[1] || '';
+				if (pattern.toString().includes('width')) {
+					videoAttrs.width = value;
+				} else if (pattern.toString().includes('height')) {
+					videoAttrs.height = value;
+				} else {
+					videoAttrs.src = value;
+				}
+			}
+		});
+	
+		return videoAttrs;
+	}
+	
+	function generateVideoTag(src, width, height, content) {
+		return `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
+	}
+
+	function qsm_check_shortcode(message = null) {				
 		const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
 		let videoMatch = message.match(videoContentRegex);
 
 		if (videoMatch) {
 			let videoHTML = message.replace(videoContentRegex, function(match, content) {
-				let src = '';
-				let width = '';
-				let height = '';
-
-				videoAttributePatterns.forEach(pattern => {
-					const attrMatch = match.match(pattern);
-					if (attrMatch) {
-						if (pattern.toString().includes('width')) {
-							width = attrMatch[1] || '';
-						} else if (pattern.toString().includes('height')) {
-							height = attrMatch[1] || '';
-						} else {
-							src = attrMatch[1] || '';
-						}
-					}
-				});
-				const videoTag = `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
+				const { src, width, height } = parseAttributes(match);
+				const videoTag = generateVideoTag(src, width, height, content);
 				return `<div class="video-content">${videoTag}</div>`;
 			});
 			return videoHTML;
