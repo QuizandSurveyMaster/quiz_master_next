@@ -1485,23 +1485,37 @@ jQuery(function () {
 	});
 
 	function qsm_check_shortcode(message = null) {
-		const videoAttributesRegex = /(?:\ssrc="([^"]+)")|(?:\smp4="([^"]+)")|(?:\sm4v="([^"]+)")|(?:\swebm="([^"]+)")|(?:\sogv="([^"]+)")|(?:\swmv="([^"]+)")|(?:\sflv="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")/g;
-		const videoContentRegex = /\[video(?:(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*)\](.*?)\[\/video\]/g;
-
+		const videoAttributePatterns = [
+			/\ssrc="([^"]+)"/,
+			/\smp4="([^"]+)"/,
+			/\sm4v="([^"]+)"/,
+			/\swebm="([^"]+)"/,
+			/\sogv="([^"]+)"/,
+			/\swmv="([^"]+)"/,
+			/\sflv="([^"]+)"/,
+			/\swidth="(\d+)"/,
+			/\sheight="(\d+)"/
+		];
+		
+		const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
 		let videoMatch = message.match(videoContentRegex);
 
 		if (videoMatch) {
 			let videoHTML = message.replace(videoContentRegex, function(match, content) {
-				let attributesMatch;
 				let src = '';
 				let width = '';
 				let height = '';
 
-				while ((attributesMatch = videoAttributesRegex.exec(match)) !== null) {
-					src = src || attributesMatch[1] || attributesMatch[2] || attributesMatch[3] || attributesMatch[4] || attributesMatch[5] || attributesMatch[6] || attributesMatch[7] || '';
-					width = width || attributesMatch[8] || '';
-					height = height || attributesMatch[9] || '';
-				}
+				videoAttributePatterns.forEach(pattern => {
+					if (!src) {
+						const attrMatch = match.match(pattern);
+						if (attrMatch) {
+							src = attrMatch[1] || '';
+							if (pattern.toString().includes('width')) width = attrMatch[1] || '';
+							if (pattern.toString().includes('height')) height = attrMatch[1] || '';
+						}
+					}
+				});
 
 				const videoTag = `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
 				return `<div class="video-content">${videoTag}</div>`;
