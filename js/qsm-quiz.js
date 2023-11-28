@@ -1485,29 +1485,30 @@ jQuery(function () {
 	});
 
 	function qsm_check_shortcode(message = null) {
-
 		// Check if message contains a video shortcode
-		let videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\]/g;
+		let videoRegex = /\[video(?:(?:\ssrc="([^"]+)")|(?:\smp4="([^"]+)")|(?:\sm4v="([^"]+)")|(?:\swebm="([^"]+)")|(?:\sogv="([^"]+)")|(?:\swmv="([^"]+)")|(?:\sflv="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,3}\s*\](.*?)\[\/video\]/g;
 		let videoMatch = message.match(videoRegex);
-
+	
 		if (videoMatch) {
-			let videoHTML = message.replace(videoRegex, function(match, src, width, height) {
-				return '<video src="' + (src || '') + '" width="' + (width || '') + '" height="' + (height || '') + '" controls></video>';
+			let videoHTML = message.replace(videoRegex, function(match, src, mp4, m4v, webm, ogv, wmv, flv, width, height, content) {
+				const videoSource = src || mp4 || m4v || webm || ogv || wmv || flv || '';
+				const videoTag = '<video src="' + videoSource + '" width="' + (width || '') + '" height="' + (height || '') + '" controls>' + (content || '') + '</video>';
+				return '<div class="video-content">' + videoTag + '</div>';
 			});
-			return '<div class="video-content">' + videoHTML + '</div>';
+			return videoHTML;
 		}
 	
 		// Check if message contains an image shortcode
 		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
 		let imageMatch = message.match(imageRegex);
-
+	
 		if (imageMatch) {
 			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
 				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
 			});
 			return '<div class="image-content">' + imageHTML + '</div>';
 		}
-
+	
 		return message;
 	}
 
