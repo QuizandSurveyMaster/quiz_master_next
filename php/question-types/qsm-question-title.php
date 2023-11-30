@@ -48,6 +48,10 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$allow_html['input']['class'] = 1;
 		$allow_html['input']['id'] = 1;
 		$allow_html['input']['maxlength'] = 1;
+		$allow_html['select']['name'] = 1;
+		$allow_html['select']['class'] = 1;
+		$allow_html['select']['id'] = 1;
+		$allow_html['option']['value'] = 1;
 	?>
 	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
 	</div>
