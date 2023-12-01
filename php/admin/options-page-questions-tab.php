@@ -158,6 +158,7 @@ function qsm_options_questions_tab_content() {
 	$read_only = "";
 	$disable_class = "";
 	$background = "#FFFFFF";
+	$display_advance = "yes";
 	if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) {
 		$read_only = 'readonly';
 		$disable_class = 'qsm-disabled-td';
@@ -180,6 +181,12 @@ function qsm_options_questions_tab_content() {
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'</div>' );
 			echo wp_kses_post($target_link);
 		}
+		$advancetimer = 'qsm-advanced-timer/qsm-advanced-timer.php';
+		$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $advancetimer);
+		$version_number = $plugin_data['Version'];
+		if ( version_compare($version_number, '2.0.0', '<') ) {
+			$display_advance = "no";
+		} 
 	}
 	?>
 	<div class="question-controls">
@@ -699,6 +706,7 @@ function qsm_options_questions_tab_content() {
 							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
 							<span class="qsm-page-setting-span"><?php _e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
 						</div>
+						<?php if ( "yes" == $display_advance ) { ?>
 						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr($background); ?>">
 							<div class="qsm-page-setting-top ">
 								<div class="qsm-page-setting-left">
@@ -725,6 +733,7 @@ function qsm_options_questions_tab_content() {
 							<?php } ?>
 							</div>
 						</div>
+						<?php } ?>
 						<?php do_action( 'qsm_action_quiz_page_attributes_fields' ); ?>
 					</div>
 				</main>
