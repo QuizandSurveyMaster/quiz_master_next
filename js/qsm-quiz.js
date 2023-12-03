@@ -166,6 +166,12 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
+			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
+				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
+				if(secondsRemaining < 0) {
+					secondsRemaining = 0;
+				}
+			}
 			var display = QSM.secondsToTimer(secondsRemaining);
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
@@ -1484,13 +1490,75 @@ jQuery(function () {
 		});
 	});
 
+	const videoAttributePatterns = [
+		/\ssrc="([^"]+)"/,
+		/\smp4="([^"]+)"/,
+		/\sm4v="([^"]+)"/,
+		/\swebm="([^"]+)"/,
+		/\sogv="([^"]+)"/,
+		/\swmv="([^"]+)"/,
+		/\sflv="([^"]+)"/,
+		/\swidth="(\d+)"/,
+		/\sheight="(\d+)"/
+	];
+
+	function parseAttributes(match, src, width, height) {
+		let videoAttrs = { src: '', width: '', height: '' };
+
+		videoAttributePatterns.forEach(pattern => {
+			const attrMatch = match.match(pattern);
+			if (attrMatch) {
+				const value = attrMatch[1] || '';
+				if (pattern.toString().includes('width')) {
+					videoAttrs.width = value;
+				} else if (pattern.toString().includes('height')) {
+					videoAttrs.height = value;
+				} else {
+					videoAttrs.src = value;
+				}
+			}
+		});
+
+		return videoAttrs;
+	}
+
+	function generateVideoTag(src, width, height, content) {
+		return `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
+	}
+
+	function qsm_check_shortcode(message = null) {
+		const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
+		let videoMatch = message.match(videoContentRegex);
+
+		if (videoMatch) {
+			let videoHTML = message.replace(videoContentRegex, function(match, content) {
+				const { src, width, height } = parseAttributes(match);
+				const videoTag = generateVideoTag(src, width, height, content);
+				return `<div class="video-content">${videoTag}</div>`;
+			});
+			return videoHTML;
+		}
+
+		// Check if message contains an image shortcode
+		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
+		let imageMatch = message.match(imageRegex);
+
+		if (imageMatch) {
+			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
+				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
+			});
+			return '<div class="image-content">' + imageHTML + '</div>';
+		}
+
+		return message;
+	}
+
 	//inline result status function
 	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
 		jQuery('.qsm-spinner-loader').remove();
 		addSpinnerLoader($this,$i_this);
 		let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
-		$this.find('.quick-question-res-p').remove();
-		$this.find('.qsm-inline-correct-info').remove();
+		$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 		if ( 0 < value.length && data.success == 'correct') {
 			$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
