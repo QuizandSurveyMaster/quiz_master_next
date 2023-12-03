@@ -1504,7 +1504,7 @@ jQuery(function () {
 
 	function parseAttributes(match, src, width, height) {
 		let videoAttrs = { src: '', width: '', height: '' };
-	
+
 		videoAttributePatterns.forEach(pattern => {
 			const attrMatch = match.match(pattern);
 			if (attrMatch) {
@@ -1518,15 +1518,15 @@ jQuery(function () {
 				}
 			}
 		});
-	
+
 		return videoAttrs;
 	}
-	
+
 	function generateVideoTag(src, width, height, content) {
 		return `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
 	}
 
-	function qsm_check_shortcode(message = null) {				
+	function qsm_check_shortcode(message = null) {
 		const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
 		let videoMatch = message.match(videoContentRegex);
 
@@ -1538,18 +1538,18 @@ jQuery(function () {
 			});
 			return videoHTML;
 		}
-		
+
 		// Check if message contains an image shortcode
 		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
 		let imageMatch = message.match(imageRegex);
-	
+
 		if (imageMatch) {
 			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
 				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
 			});
 			return '<div class="image-content">' + imageHTML + '</div>';
 		}
-	
+
 		return message;
 	}
 
@@ -1558,15 +1558,14 @@ jQuery(function () {
 		jQuery('.qsm-spinner-loader').remove();
 		addSpinnerLoader($this,$i_this);
 		let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
-		$this.find('.quick-question-res-p').remove();
-		$this.find('.qsm-inline-correct-info').remove();
+		$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 		if ( 0 < value.length && data.success == 'correct') {
-			$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
+			$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
-			$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
+			$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		}
 		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
@@ -1709,7 +1708,7 @@ jQuery(function () {
 		if(!$container.find('.qsm-submit-btn').is(':visible')) {
 			QSM.nextPage(quiz_id);
 			qsmScrollTo($container);
-		}else{ 
+		}else{
 			$container.find(".mlw_custom_next").hide();
 		}
 	});

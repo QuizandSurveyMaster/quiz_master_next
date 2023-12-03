@@ -377,7 +377,7 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 	global $wp_current_filter;
-	if ( 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+	if ( ! empty( $wp_current_filter[1] ) && 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
