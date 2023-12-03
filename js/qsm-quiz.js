@@ -1493,11 +1493,11 @@ jQuery(function () {
 		$this.find('.qsm-inline-correct-info').remove();
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 		if ( 0 < value.length && data.success == 'correct') {
-			$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
+			$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
-			$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
+			$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 			$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 		}
 		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
@@ -1640,7 +1640,7 @@ jQuery(function () {
 		if(!$container.find('.qsm-submit-btn').is(':visible')) {
 			QSM.nextPage(quiz_id);
 			qsmScrollTo($container);
-		}else{ 
+		}else{
 			$container.find(".mlw_custom_next").hide();
 		}
 	});

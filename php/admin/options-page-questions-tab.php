@@ -711,7 +711,7 @@ function qsm_options_questions_tab_content() {
 									</div>
 									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
 										<input <?php echo esc_html($read_only); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
-										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php _e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> : 
+										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php _e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> :
 										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php _e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
 									</div>
 								</div>
