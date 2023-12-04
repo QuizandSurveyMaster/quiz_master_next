@@ -1947,7 +1947,86 @@ td.scheduled_time_start {
 .admin_page_mlw_quiz_options .nav-tab-active:focus, .admin_page_mlw_quiz_options .nav-tab-active:focus:active, .admin_page_mlw_quiz_options .nav-tab-active:hover {
 	border: 1px solid #c3c4c7;
 }
+.notice-error.notice-advance-timer {
+	padding: 10px 15px;
+}
 
+.qsm-page-setting-top {
+    display: flex;
+}
+
+.qsm-page-setting-top .qsm-page-setting-left span {
+    width: 120px;
+    display: inline-block;
+	margin-bottom: 5px;
+    color: #000;
+    font-weight: 500;
+    margin: 0 5px 5px 0;
+    font-size: 13px;
+}
+
+#page-options .qsm-popup-upgrade-warning {
+    line-height: 1.5;
+    max-width: 500px;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	font-size: 13px;
+}
+
+#page-options .qsm-page-setting-top .qsm-row label {
+    display: none;
+}
+
+#page-options .qsm-page-setting-top .qsm-row input[type=number] {
+    min-width: 50px !important;
+    max-width: 50px !important;
+}
+
+#page-options .qsm-page-setting-top .qsm-row input[type=number]::placeholder {
+    font-size: 12px;
+}
+
+
+#page-options > div {
+	line-height: 2.5;
+}
+
+#page-options .qsm-row label {
+	display: inline-block;
+	width: 115px;
+	margin-bottom: 5px;
+    color: #000;
+    font-weight: 500;
+	padding: 0 0 0 10px;
+}
+
+#page-options .qsm-page-setting-label {
+	font-weight: 500;
+}
+
+#page-options .qsm-page-setting-span {
+	font-weight: 500;
+}
+
+.qsm-disabled-td {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+
+.qsm-page-setting-container {
+	padding: 10px;
+}
+
+#page-options .qsm-page-setting-right  input[type="number"] {
+	border-radius: 4px;
+}
+
+#page-options .qsm-popup-upgrade-warning img {
+	width: auto;
+	height: 16px;
+	margin-right: 8px;
+	margin-bottom: 16px;
+}
 .qsm-popup-upgrade-warning,
 .qsm-popup-upgrade-info {
 	display: flex;

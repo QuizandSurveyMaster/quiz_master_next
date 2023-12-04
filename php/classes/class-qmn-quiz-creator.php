@@ -239,7 +239,7 @@ class QMNQuizCreator {
 		}
 
 		$is_row_exists = $wpdb->get_var( $wpdb->prepare( "SELECT * FROM $quizzes_table WHERE quiz_id=%d", $quiz_id ) );
-		
+
 		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
 				$wpdb->prefix . 'mlw_quizzes',
@@ -273,7 +273,7 @@ class QMNQuizCreator {
 				);
 			}
 		}
-		
+
 		if ( empty( $is_row_exists ) ) {
 			$qsm_delete = 1;
 		}
@@ -492,6 +492,34 @@ class QMNQuizCreator {
 			)
 		);
 		$mlw_new_id = $wpdb->insert_id;
+
+		$settings = (array) get_option('qmn-settings');
+		$duplicate_quiz_with_theme = ! empty($settings['duplicate_quiz_with_theme']) ? esc_attr($settings['duplicate_quiz_with_theme']) : 0;
+
+		if ( '1' === $duplicate_quiz_with_theme ) {
+			$theme_table = $wpdb->prefix . 'mlw_quiz_theme_settings';
+			$old_quiz_theme_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $theme_table WHERE quiz_id = %d AND active_theme = 1", $quiz_id));
+
+			if ( $old_quiz_theme_data ) {
+				$new_quiz_theme_data = array(
+					'theme_id'            => $old_quiz_theme_data->theme_id,
+					'quiz_id'             => $mlw_new_id,
+					'quiz_theme_settings' => $old_quiz_theme_data->quiz_theme_settings,
+					'active_theme'        => 1,
+				);
+
+				$format = array(
+					'%d',
+					'%d',
+					'%s',
+					'%d',
+				);
+
+				$wpdb->insert($theme_table, $new_quiz_theme_data, $format);
+				$mlwQuizMasterNext->alertManager->newAlert(__('There has been an error in this action. Please share this with the developer. Error Code: 0051', 'quiz-master-next'), 'error');
+				$mlwQuizMasterNext->log_manager->add('Error 0051', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error');
+			}
+		}
 
 		// Update quiz settings
 		$update_quiz_settings = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );

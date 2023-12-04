@@ -48,6 +48,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$allow_html['input']['class'] = 1;
 		$allow_html['input']['id'] = 1;
 		$allow_html['input']['maxlength'] = 1;
+		$allow_html = apply_filters( 'qsm_allow_html_question_title_after', $allow_html, $question_id );
 	?>
 	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
 	</div>

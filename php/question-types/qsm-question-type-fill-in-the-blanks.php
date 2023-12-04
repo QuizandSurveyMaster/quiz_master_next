@@ -44,6 +44,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		$mlw_require_class = '';
 	}
 	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_require_class' name='question" . $id . "[]' />";
+	$input_text = apply_filters( 'qsm_fill_in_blanks_input_after', $input_text, $id, $question, $answers, $mlw_require_class );
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
