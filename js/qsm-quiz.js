@@ -1565,7 +1565,7 @@ jQuery(function () {
 		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
 			$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(( data.message ) + '</div>');
+			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode( data.message ) + '</div>');
 		}
 		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
 			MathJax.typesetPromise();
