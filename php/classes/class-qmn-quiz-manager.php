@@ -2780,12 +2780,12 @@ function qmn_require_login_check( $display, $qmn_quiz_options, $qmn_array_for_va
 			'echo'    => false,
 			'form_id' => 'qsm-login-form',
 		) );
-		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip'), $mlwQuizMasterNext->version, true );
+		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, true );
 		wp_localize_script(
 			'qsm_common',
 			'qmn_common_ajax_object',
 			array(
-				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			)
 		);
 	}

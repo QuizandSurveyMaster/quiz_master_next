@@ -1192,6 +1192,9 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
  */
 function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
+		if ( ( !qmn_quiz_data[quiz_id].hasOwnProperty('first_page') || !qmn_quiz_data[quiz_id].first_page ) && 0 == page_number ) {
+			page_number++;
+		}
 		var qmn_total_questions = qmn_quiz_data[quiz_id].pagination.total_questions;
 		var pagination = qmn_quiz_data[quiz_id].pagination.amount;
 		total_page_number = Math.ceil(qmn_total_questions / pagination);
