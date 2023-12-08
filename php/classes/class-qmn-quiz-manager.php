@@ -383,7 +383,7 @@ class QMNQuizManager {
 			wp_enqueue_style( 'dashicons' );
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
-				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
+				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES) ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', QSM_PLUGIN_CSS_URL . '/qmn_quiz.css', array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
