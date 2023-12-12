@@ -11,11 +11,10 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		$user_answer_keys  = ! empty( $user_answer_array ) ? array_keys( $user_answer_array ) : array();
 		$is_answer_correct = false;
 		$is_user_answer    = false;
-		if ( 2 == $answers_from_response['question_type'] && 0 == $question_settings['inline-drop-down'] && 'multiple' == $question_settings['drop-down-type'] ) {
-			$is_answer_correct = ($single_answer[0] === $user_answer_array[$single_answer_key]);
-		} else {
-			$is_answer_correct = (1 === intval($single_answer[2]));
+		if ( 1 === intval($single_answer[2]) ) {
+			$is_answer_correct = true;
 		}
+		$is_answer_correct = apply_filters( 'qsm_is_answer_correct_choice_before', $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );
 		if ( in_array( $single_answer_key, $user_answer_keys, true ) ) {
 			$is_user_answer = true;
 		}
@@ -35,11 +34,8 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			$show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '" style="' . esc_attr( $size_style ) . '" />';
 			$image_class      = 'qmn_image_option';
 		} else {
-			if ( 2 == $answers_from_response['question_type'] && 0 == $question_settings['inline-drop-down'] && 'multiple' == $question_settings['drop-down-type'] ) {
-				$show_user_answer = !empty($user_answer_array[$single_answer_key]) ? htmlspecialchars_decode( $user_answer_array[$single_answer_key], ENT_QUOTES ) : $single_answer[0];
-			} else {
-				$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ), 'answer-' . $single_answer[0], 'QSM Answers' );
-			}
+			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ), 'answer-' . $single_answer[0], 'QSM Answers' );
+			$show_user_answer = apply_filters( 'qsm_show_user_answer_before', $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type, $show_user_answer );
 			$image_class      = '';
 		}
 		$close_span = '</span>';
