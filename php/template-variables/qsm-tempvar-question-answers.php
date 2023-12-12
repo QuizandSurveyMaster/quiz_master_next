@@ -2,7 +2,7 @@
 function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, $grading_system, $question_settings, $form_type = 0 ) {
 	global $mlwQuizMasterNext;
 	$question_with_answer_text = '';
-	$class                     = '';	
+	$class                     = '';
 	foreach ( $total_answers as $single_answer_key => $single_answer ) {
 		if ( 8 == $answers_from_response['question_type'] && 'not-opted' == $answers_from_response['user_compare_text'] ) {
 			$class = 'not-opted';
@@ -18,7 +18,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		}
 		if ( in_array( $single_answer_key, $user_answer_keys, true ) ) {
 			$is_user_answer = true;
-		}		
+		}
 		$image_class = '';
 		$caption = '';
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
