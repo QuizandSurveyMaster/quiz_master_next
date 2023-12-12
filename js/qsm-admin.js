@@ -2069,11 +2069,7 @@ var import_button;
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
                     let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
-                    let inline_drop_down = $(".questionElements input[name='inline-drop-down']").is(":checked") ? 0 : 1;
-                    let drop_down_type = $(".questionElements select[name='drop-down-type']").val();
                     advanced_option['required'] = required;
-                    advanced_option['inline-drop-down'] = inline_drop_down;
-                    advanced_option['drop-down-type'] = drop_down_type;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
                     $.each($("input[name='file_upload_type[]']:checked"), function () {
@@ -2161,9 +2157,7 @@ var import_button;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
-					model.set('inline_drop_down', required);
-					model.set('drop_down_type', required);
-
+                    jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
                             $($(this).find('input[type="text"]')).each(function () {
