@@ -2069,7 +2069,11 @@ var import_button;
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
                     let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    let inline_drop_down = $(".questionElements input[name='inline-drop-down']").is(":checked") ? 0 : 1;
+                    let drop_down_type = $(".questionElements select[name='drop-down-type']").val();
                     advanced_option['required'] = required;
+                    advanced_option['inline-drop-down'] = inline_drop_down;
+                    advanced_option['drop-down-type'] = drop_down_type;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
                     $.each($("input[name='file_upload_type[]']:checked"), function () {
@@ -2157,6 +2161,8 @@ var import_button;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
+					model.set('inline_drop_down', required);
+					model.set('drop_down_type', required);
 
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
@@ -2486,6 +2492,9 @@ var import_button;
                             }
                             if (index == 'matchAnswer') {
                                 $('#match-answer').val(value);
+                            }
+                            if (index == 'drop-down-type') {
+                                $('#drop-down-type').val(value);
                             }
                         });
                     }
@@ -2818,6 +2827,7 @@ var import_button;
                     QSMQuestion.saveQuestion($(this).parents('.questionElements').children('#edit_question_id').val(), $(this));
                     $('.save-page-button').trigger('click');
                     $('#modal-1-content').html(model_html);
+                    jQuery(document).trigger('qsm_save_popup_button_after', [questionElements]);
                 });
                 $(document).on('click', '#new-answer-button', function (event) {
                     event.preventDefault();
@@ -3056,6 +3066,7 @@ var import_button;
                     if ('image' === answerType) {
                         $('#image_size_area').show();
                     }
+                    jQuery(document).trigger('qsm_question_type_change_after', [question_val]);
                 });
 
 

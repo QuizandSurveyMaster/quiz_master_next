@@ -22,6 +22,9 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
+	$show = true;
+	$show = apply_filters( 'qsm_check_show_answer_drop_down', $id, $question, $answers );
+	if ( $show ) {
 	?>
 	<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>">
 	<option disabled selected value><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
@@ -42,6 +45,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 		?>
  	</select>
 	<?php
+	}
 	echo apply_filters( 'qmn_drop_down_display_front', '', $id, $question, $answers );
 }
 
@@ -55,7 +59,13 @@ function qmn_drop_down_display( $id, $question, $answers ) {
  * @since  4.4.0
  */
 function qmn_drop_down_review( $id, $question, $answers ) {
+	global $mlwQuizMasterNext;
+	$inline_drop_down = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'inline-drop-down' );
+	$drop_down_type = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'drop-down-type' );
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
+	if ( class_exists( 'QSM_Advance_Question_Review_Choice' ) && 0 == $inline_drop_down && 'multiple' == $drop_down_type ) {
+		$current_question = new QSM_Advance_Question_Review_Choice( $id, $question, $answers );
+	}
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '' ;

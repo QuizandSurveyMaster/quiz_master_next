@@ -41,7 +41,9 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	}
 	?>
 	<div class='mlw_qmn_question <?php echo esc_attr( $title_extra_classes ); ?>' >
-	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id );
+	<?php
+		$question_title = apply_filters( 'qsm_question_title_func_before', $question, $question_type, $new_question_title, $question_id );
+		do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id );
 		$allow_html = wp_kses_allowed_html('post');
 		$allow_html['input']['autocomplete'] = 1;
 		$allow_html['input']['name'] = 1;
