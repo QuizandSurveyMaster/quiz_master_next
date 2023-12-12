@@ -2487,10 +2487,8 @@ var import_button;
                             if (index == 'matchAnswer') {
                                 $('#match-answer').val(value);
                             }
-                            if (index == 'drop-down-type') {
-                                $('#drop-down-type').val(value);
-                            }
                         });
+                        jQuery(document).trigger('qsm_all_question_setting_after', [all_setting]);
                     }
                     CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     $('#modal-1-content').html(questionElements);
