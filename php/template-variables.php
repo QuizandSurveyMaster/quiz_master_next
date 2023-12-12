@@ -1061,14 +1061,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
 			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
-				$quiz_answer_random_ids = maybe_unserialize( sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) ) );
+				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
+				$quiz_answer_random_ids = maybe_unserialize( $quiz_answer_random_ids );
 				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
 					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
 						$answers_random[ $key ] = $total_answers[ $key ];
 					}
 				}
 				$total_answers = $answers_random;
-				setcookie('answer_ids_'.$answer['id'], "", time() - 36000, "/");
 			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {

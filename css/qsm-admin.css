@@ -1954,6 +1954,9 @@ td.scheduled_time_start {
 .admin_page_mlw_quiz_options .nav-tab-active:focus, .admin_page_mlw_quiz_options .nav-tab-active:focus:active, .admin_page_mlw_quiz_options .nav-tab-active:hover {
 	border: 1px solid #c3c4c7;
 }
+.notice-error.notice-advance-timer {
+	padding: 10px 15px;
+}
 
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
@@ -1992,7 +1995,6 @@ td.scheduled_time_start {
 #page-options .qsm-page-setting-top .qsm-row input[type=number]::placeholder {
     font-size: 12px;
 }
- 
 
 #page-options > div {
 	line-height: 2.5;

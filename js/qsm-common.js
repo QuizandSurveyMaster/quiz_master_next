@@ -16,7 +16,36 @@
 		if(polarQuestions.length >0){
 			qsmPolarSlider('answer', polarQuestions);
 		}
-		
+
+	});
+
+	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
+		e.preventDefault();
+
+		let form = jQuery(this);
+		let username = form.find('input[name="log"]').val();
+		let password = form.find('input[name="pwd"]').val();
+		form.find('input[type="submit"]').attr('disabled', true);
+		jQuery(".qsm-login-form-warning").remove();
+
+		// Make a request to the WordPress REST API to log in
+		jQuery.ajax({
+			url: qmn_common_ajax_object.ajaxurl,
+			method: 'POST',
+			data: {
+                action: 'qsm_ajax_login',
+                username: username,
+                password: password,
+            },
+			success: function (response) {
+                if ( response.success ) {
+                    form.get(0).submit();
+				} else {
+                    form.append('<div class="qsm-result-page-warning qsm-login-form-warning">' + response.data.message + '</div>');
+					form.find('input[type="submit"]').attr('disabled', false);
+				}
+            }
+		});
 	});
 
 	function qsmPolarSlider(page , polarQuestions){
@@ -144,7 +173,7 @@
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				upperMidClass).css('font-weight', '600');
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-				'.right-polar-title img').css('opacity', "0.8");	
+				'.right-polar-title img').css('opacity', "0.8");
 		}
 	}
 

@@ -137,7 +137,7 @@ class QSM_Emails {
 					}
 				}
 
-				if ( $show ) {                  
+				if ( $show ) {
 					do_action( 'qsm_send_result_email_before', $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
 					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
 				}
