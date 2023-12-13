@@ -2822,7 +2822,7 @@ var import_button;
                     if (!$(this).prop('checked')) {
                         $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', false);
                     } else {
-                        var allCheckboxesChecked = $(this).closest('.page').find('.qsm-admin-select-question-input:checked').length === $(this).closest('.page').find('.qsm-admin-select-question-input').length;
+                        let allCheckboxesChecked = $(this).closest('.page').find('.qsm-admin-select-question-input:checked').length === $(this).closest('.page').find('.qsm-admin-select-question-input').length;
                         $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
                     }
                 });
