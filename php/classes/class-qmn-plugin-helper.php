@@ -554,6 +554,7 @@ class QMNPluginHelper {
 			'retake_quiz_button_text'          => __('Retake Quiz', 'quiz-master-next'),
 			'previous_button_text'             => __('Previous', 'quiz-master-next'),
 			'next_button_text'                 => __('Next', 'quiz-master-next'),
+			'deselect_answer_text'             => __('Deselect Answer', 'quiz-master-next'),
 			'empty_error_text'                 => __('Please complete all required fields!', 'quiz-master-next'),
 			'email_error_text'                 => __('Not a valid e-mail address!', 'quiz-master-next'),
 			'number_error_text'                => __('This field must be a number!', 'quiz-master-next'),

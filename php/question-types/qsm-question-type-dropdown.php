@@ -60,7 +60,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
  */
 function qmn_drop_down_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
-	$current_question 				= apply_filters( 'qmn_drop_down_review_before', $id, $question, $answers, $current_question );
+	$current_question               = apply_filters( 'qmn_drop_down_review_before', $id, $question, $answers, $current_question );
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '' ;
