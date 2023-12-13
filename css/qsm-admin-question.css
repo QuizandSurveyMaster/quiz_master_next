@@ -175,7 +175,7 @@
 	color: #1f8cbe;
 	font-size: 16px;
 	font-weight: 500;
-	margin: 2px 0;
+	margin: 2px 0 2px 30px;
 }
 .question-content .form-actions {
 	display: inline-flex;
@@ -192,7 +192,16 @@
 	color: #939697;
 	font-weight: normal;
 	font-style: italic;
-	margin: 3px 0;
+	margin: 3px 0 3px 30px;
+}
+.qsm-admin-select-question-input {
+    position: absolute;
+    top: calc(50% - 3px);
+    visibility: hidden;
+}
+.question:hover .qsm-admin-select-question-input,
+.qsm-admin-select-question-input:checked {
+    visibility: visible;
 }
 .question-content>div {
 	margin: 0 10px;
@@ -619,6 +628,13 @@ a#qsm-category-add-toggle {
 }
 .question_info_tag {
 	float: right;
+}
+.qsm-admin-bulk-actions{
+	margin-top: 10px;
+}
+input.qsm-admin-select-page-question {
+    margin-left: 74px;
+    display: inline-block;
 }
 @media (min-width: 783px) and (max-width: 1199px) {
 	#poststuff #post-body.columns-2 #side-sortables {

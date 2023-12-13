@@ -556,7 +556,6 @@ var qsmTimerInterval = [];
 			return Object.values(result);
 		},
 	};
-
 	// On load code
 	$(function () {
 		qmnDoInit();
@@ -1193,6 +1192,9 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
  */
 function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
+		if ( ( !qmn_quiz_data[quiz_id].hasOwnProperty('first_page') || !qmn_quiz_data[quiz_id].first_page ) && 0 == page_number ) {
+			page_number++;
+		}
 		var qmn_total_questions = qmn_quiz_data[quiz_id].pagination.total_questions;
 		var pagination = qmn_quiz_data[quiz_id].pagination.amount;
 		total_page_number = Math.ceil(qmn_total_questions / pagination);
@@ -1459,35 +1461,6 @@ jQuery(function () {
 			}
 			jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'input', $this.find('.qmn_fill_blank').index($i_this)]);
 		}, 2000);
-	});
-
-	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
-		e.preventDefault();
-
-		let form = jQuery(this);
-		let username = form.find('input[name="log"]').val();
-		let password = form.find('input[name="pwd"]').val();
-		form.find('input[type="submit"]').attr('disabled', true);
-		jQuery(".qsm-login-form-warning").remove();
-
-		// Make a request to the WordPress REST API to log in
-		jQuery.ajax({
-			url: qmn_ajax_object.ajaxurl,
-			method: 'POST',
-			data: {
-                action: 'qsm_ajax_login',
-                username: username,
-                password: password,
-            },
-			success: function (response) {
-                if ( response.success ) {
-                    form.get(0).submit();
-				} else {
-                    form.append('<div class="qsm-result-page-warning qsm-login-form-warning">' + response.data.message + '</div>');
-					form.find('input[type="submit"]').attr('disabled', false);
-				}
-            }
-		});
 	});
 
 	const videoAttributePatterns = [
