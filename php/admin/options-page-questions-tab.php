@@ -191,8 +191,17 @@ function qsm_options_questions_tab_content() {
 	?>
 	<div class="question-controls">
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
-		<p class="search-box">
-			<label class="screen-reader-text" for="question_search">Search Questions:</label>
+
+	</div>
+	<div class="qsm-admin-bulk-actions">
+		<select name="action" id="bulk-delete-question-selector">
+			<option value=""><?php esc_html_e( 'Bulk actions', 'quiz-master-next' ); ?></option>
+			<option value="delete"><?php esc_html_e( 'Delete permanently', 'quiz-master-next' ); ?></option>
+			<option value="unlink"><?php esc_html_e( 'Remove from quiz', 'quiz-master-next' ); ?></option>
+		</select>
+		<input type="submit" id="qsm-bulk-delete-question-submit" class="button action" value="<?php esc_html_e( 'Apply', 'quiz-master-next' ); ?>">
+		<p class="search-box">&nbsp;&nbsp;
+			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
 	</div>
@@ -1093,34 +1102,39 @@ add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_qu
  */
 function qsm_delete_question_from_database() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
-		echo wp_json_encode(
-			array(
-				'success' => false,
-				'message' => __(
-					'Nonce verification failed.',
-					'quiz-master-next'
-				),
-			)
-		);
-		wp_die();
+		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
-		global $wpdb;
-		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
-		echo wp_json_encode(
-			array(
-				'success' => true,
-				'message' => __(
-					'Question removed Successfully.',
-					'quiz-master-next'
-				),
-			)
-		);
+		global $wpdb, $mlwQuizMasterNext;
+		$results = $wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
+		if ( $results ) {
+			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
+		}else {
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
+			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question ID:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
 	}
-	exit;
 }
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
+
+function qsm_bulk_delete_question_from_database() {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
+		wp_send_json_error( __( 'Nonce verification failed!', 'quiz-master-next' ) );
+	}
+	$question_id = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
+	if ( $question_id ) {
+		global $wpdb, $mlwQuizMasterNext;
+		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
+		if ( $results ) {
+			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
+		}else {
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
+			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
+	}
+}
+add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );
 
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 
@@ -1159,6 +1173,7 @@ function qsm_options_questions_tab_template() {
 					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
+			<label for="qsm-admin-select-page-question-{{data.id}}"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select all questions', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
 				<div class="page-header-buttons">
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
@@ -1174,7 +1189,10 @@ function qsm_options_questions_tab_template() {
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div class="question-content-title-box">
-					<div class="question-content-text">{{{data.question}}}</div>
+					<input type="checkbox" class="qsm-admin-select-question-input" value="{{data.id}}">
+					<div class="question-content-text">
+						{{{data.question}}}
+					</div>
 					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 				</div>
 				<div class="form-actions">
