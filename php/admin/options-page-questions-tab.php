@@ -599,7 +599,7 @@ function qsm_options_questions_tab_content() {
 														'required'               => array(
 															'label'      => __( 'Required?', 'quiz-master-next' ),
 															'type'       => 'single_checkbox',
-															'priority'   => '2',
+															'priority'   => '3',
 															'options'    => array(
 																'0' => __( 'Yes', 'quiz-master-next' ),
 															),
