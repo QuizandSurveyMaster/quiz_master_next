@@ -271,6 +271,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	font-weight: normal;
 	display: block;
 	margin-bottom: 10px;
+	display: contents;
 }
 .qsm-quiz-container .quiz_section .qsm-align-fill-in-blanks:not(.qsm_remove_bold) {
 	display: inline-block;
