@@ -570,7 +570,7 @@ function qsm_results_overview_tab_content() {
 						</label>
 						<label>
 							<input type="checkbox" value="1" name="view_result_page" <?php checked( $results_screen_option['view_result_page'], "1", true ) ?>/>
-							<?php esc_html_e( 'Page Result', 'quiz-master-next' ); ?>
+							<?php esc_html_e( 'Result Page', 'quiz-master-next' ); ?>
 						</label>
 						<label>
 							<input type="checkbox" name="page_name" value="1" <?php checked( $results_screen_option['page_name'], "1", true ) ?>/>

@@ -2097,7 +2097,7 @@ var import_button;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
-
+                    jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
                             $($(this).find('input[type="text"]')).each(function () {
@@ -2428,6 +2428,7 @@ var import_button;
                                 $('#match-answer').val(value);
                             }
                         });
+                        jQuery(document).trigger('qsm_all_question_setting_after', [all_setting]);
                     }
                     CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     $('#modal-1-content').html(questionElements);
@@ -2758,6 +2759,7 @@ var import_button;
                     QSMQuestion.saveQuestion($(this).parents('.questionElements').children('#edit_question_id').val(), $(this));
                     $('.save-page-button').trigger('click');
                     $('#modal-1-content').html(model_html);
+                    jQuery(document).trigger('qsm_save_popup_button_after', [questionElements]);
                 });
                 $(document).on('click', '#new-answer-button', function (event) {
                     event.preventDefault();
@@ -2996,9 +2998,8 @@ var import_button;
                     if ('image' === answerType) {
                         $('#image_size_area').show();
                     }
+                    jQuery(document).trigger('qsm_question_type_change_after', [question_val]);
                 });
-
-
 
                 //Add new category
                 $(document).on('click', '#qsm-category-add-toggle', function () {
