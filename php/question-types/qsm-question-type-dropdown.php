@@ -27,24 +27,24 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	$show = apply_filters( 'qsm_check_show_answer_drop_down', $show, $id, $question, $answers );
 	if ( $show ) {
 	?>
-	<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>">
-	<option disabled selected value><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
-		<?php
-		if ( is_array( $answers ) ) {
-			$mlw_answer_total = 0;
-			foreach ( $answers as $answer_index => $answer ) {
-				$mlw_answer_total++;
-				if ( '' !== $answer[0] ) {
-					$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-					$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, "answer-" . $id . "-" . $answer_index, "QSM Answers" );
-					?>
-					<option value="<?php echo esc_attr( $answer_index ); ?>"><?php echo esc_html( $answer_text ); ?></option>
-					<?php
+		<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>">
+		<option disabled selected value><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
+			<?php
+			if ( is_array( $answers ) ) {
+				$mlw_answer_total = 0;
+				foreach ( $answers as $answer_index => $answer ) {
+					$mlw_answer_total++;
+					if ( '' !== $answer[0] ) {
+						$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, "answer-" . $id . "-" . $answer_index, "QSM Answers" );
+						?>
+						<option value="<?php echo esc_attr( $answer_index ); ?>"><?php echo esc_html( $answer_text ); ?></option>
+						<?php
+					}
 				}
 			}
-		}
-		?>
- 	</select>
+			?>
+		</select>
 	<?php
 	}
 	echo apply_filters( 'qmn_drop_down_display_front', '', $id, $question, $answers );
@@ -61,7 +61,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
  */
 function qmn_drop_down_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
-	$current_question 				= apply_filters( 'qmn_drop_down_review_before', $current_question, $id, $question, $answers );
+	$current_question               = apply_filters( 'qmn_drop_down_review_before', $current_question, $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '' ;

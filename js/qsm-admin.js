@@ -3132,8 +3132,6 @@ var import_button;
                     jQuery(document).trigger('qsm_question_type_change_after', [question_val]);
                 });
 
-
-
                 //Add new category
                 $(document).on('click', '#qsm-category-add-toggle', function () {
                     if ($('#qsm-category-add').is(":visible")) {

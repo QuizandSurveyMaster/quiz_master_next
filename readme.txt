@@ -163,12 +163,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.2.0 (December 04, 2023) =
+= 8.2.0 (December 14, 2023) =
+* Feature: Added option to change deselect answer text
 * Feature: Added option to duplicate quiz theme settings
 * Bug: Fixed issue related to limiting random questions by category
 * Bug: Fixed issue with images and video tags in the correct answer info
 * Enhacements: Improved login form validations
-* Enhacements: Reduce number of cookies
+* Enhacements: Improved performance by optimizing cookies
 
 = 8.1.19 (November 08, 2023) =
 * Feature: Added an option to display result URLs on the admin result page

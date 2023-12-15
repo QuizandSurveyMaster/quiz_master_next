@@ -867,9 +867,7 @@ function qmnFormSubmit(quiz_form_id) {
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
 	qsmEndTimeTakenTimer(quiz_id);
-	if (qmn_quiz_data[quiz_id].hasOwnProperty('advanced_timer') && qmn_quiz_data[quiz_id].advanced_timer.hasOwnProperty('show_stop_timer') ) {
-		QSMPageTimer.endPageTimer(quiz_id);
-	}
+
 	if (qmn_quiz_data[quiz_id].hasOwnProperty('timer_limit')) {
 		QSM.endTimer(quiz_id);
 	}
