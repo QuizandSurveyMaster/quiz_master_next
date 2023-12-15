@@ -14,6 +14,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		if ( 1 === intval( $single_answer[2] ) ) {
 			$is_answer_correct = true;
 		}
+		$is_answer_correct = apply_filters( 'qsm_is_answer_correct_choice_before', $is_answer_correct, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );
 		if ( in_array( $single_answer_key, $user_answer_keys, true ) ) {
 			$is_user_answer = true;
 		}
@@ -34,6 +35,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			$image_class      = 'qmn_image_option';
 		} else {
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ), 'answer-' . $single_answer[0], 'QSM Answers' );
+			$show_user_answer = apply_filters( 'qsm_show_user_answer_before', $show_user_answer, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );
 			$image_class      = '';
 		}
 		$close_span = '</span>';

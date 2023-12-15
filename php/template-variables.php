@@ -377,7 +377,7 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 	global $wp_current_filter;
-	if ( 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+	if ( ! empty( $wp_current_filter[1] ) && 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
@@ -1060,14 +1060,16 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-			if ( ! empty($_COOKIE[ 'answer_ids_'.$answer['id'] ]) ) {
-				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$answer['id'] ] ) ) );
+			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
-				foreach ( $answer_ids as $key ) {
-					$answers_random[ $key ] = $total_answers[ $key ];
+				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
+				$quiz_answer_random_ids = maybe_unserialize( $quiz_answer_random_ids );
+				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
+					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
+						$answers_random[ $key ] = $total_answers[ $key ];
+					}
 				}
 				$total_answers = $answers_random;
-				setcookie('answer_ids_'.$answer['id'], "", time() - 36000, "/");
 			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {

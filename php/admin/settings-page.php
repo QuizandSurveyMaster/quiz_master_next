@@ -76,6 +76,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'duplicate-quiz-with-theme', __( 'Duplicate Quiz Controls', 'quiz-master-next' ), array( $this, 'qsm_duplicate_quiz_with_theme' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -366,6 +367,25 @@ class QMNGlobalSettingsPage {
 		echo '<label class="switch">';
 			echo '<input type="checkbox" name="qmn-settings[cpt_search]" id="qmn-settings[cpt_search]" value="1"' . esc_attr( $checked ) . ' />';
 		echo '<span class="slider round"></span></label>';
+	}
+
+	/**
+	 * Generates Setting Field To Duplicate Quiz with Theme Settings
+	 *
+	 * @since 8.1.19
+	 * @return void
+	 */
+	public function qsm_duplicate_quiz_with_theme() {
+		$settings = (array) get_option( 'qmn-settings' );
+		$duplicate_quiz_with_theme = ! empty( $settings['duplicate_quiz_with_theme'] ) ? esc_attr( $settings['duplicate_quiz_with_theme'] ) : 0;
+		?>
+		<fieldset>
+			<label for="qmn-settings-duplicate_quiz_with_theme">
+				<input type="checkbox" name="qmn-settings[duplicate_quiz_with_theme]" id="qmn-settings-duplicate_quiz_with_theme" value="1" <?php checked( $duplicate_quiz_with_theme, 1, true ); ?> />
+				<?php esc_html_e( 'Enable quiz duplication along with theme settings', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<?php
 	}
 
 	/**

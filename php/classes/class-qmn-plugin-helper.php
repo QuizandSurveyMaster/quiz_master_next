@@ -412,26 +412,10 @@ class QMNPluginHelper {
 		}
 		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
-			if ( empty($_COOKIE[ 'answer_ids_'.$question_id ]) ) {
-				$answers = self::qsm_shuffle_assoc( $answers );
-				$answer_ids = array_keys($answers);
-				$answer_ids = implode( ',', $answer_ids );
-				?>
-				<script>
-					var ans_d = new Date();
-					ans_d.setTime(ans_d.getTime() + (365*24*60*60*1000));
-					var ans_expires = "expires="+ ans_d.toUTCString();
-					document.cookie = "answer_ids_<?php echo esc_attr( $question_id ); ?> = <?php echo esc_attr( $answer_ids ) ?>; "+ans_expires+"; path=/";
-				</script>
-				<?php
-			}else {
-				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$question_id ] ) ) );
-				$answers_random = array();
-				foreach ( $answer_ids as $key ) {
-					$answers_random[ $key ] = $answers[ $key ];
-				}
-				$answers = $answers_random;
-			}
+			$answers = self::qsm_shuffle_assoc( $answers );
+			global $quiz_answer_random_ids;
+			$answer_ids = array_keys($answers);
+			$quiz_answer_random_ids[ $question_id ] = $answer_ids;
 		}
 
 		// convert answer array into key value pair
@@ -570,6 +554,7 @@ class QMNPluginHelper {
 			'retake_quiz_button_text'          => __('Retake Quiz', 'quiz-master-next'),
 			'previous_button_text'             => __('Previous', 'quiz-master-next'),
 			'next_button_text'                 => __('Next', 'quiz-master-next'),
+			'deselect_answer_text'             => __('Deselect Answer', 'quiz-master-next'),
 			'empty_error_text'                 => __('Please complete all required fields!', 'quiz-master-next'),
 			'email_error_text'                 => __('Not a valid e-mail address!', 'quiz-master-next'),
 			'number_error_text'                => __('This field must be a number!', 'quiz-master-next'),
