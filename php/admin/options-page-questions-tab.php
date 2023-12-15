@@ -173,13 +173,22 @@ function qsm_options_questions_tab_content() {
 			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
 			echo wp_kses_post($target_link);
 		}
-		if ( isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate'] ) {
+		if ( ( isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate'] ) || empty($settings_data) ) {
 			$read_only = 'readonly';
 			$disable_class = 'qsm-disabled-td';
 			$background = "#F0F0F0";
-			$target_text = __(' Your Advanced Timer Settings are not saved successfully. Validate license to save the settings. ', 'quiz-master-next');
-			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'</div>' );
-			echo wp_kses_post($target_link);
+			$admin_page_url = esc_url(admin_url('admin.php?page=qmn_addons&tab=advanced-timer'));
+			$error_message = sprintf(
+				'<div class="notice notice-error notice-advance-timer">
+					<strong>%s</strong> %s <a href="%s" target="_blank">%s</a> %s
+				</div>',
+				__('Error! ', 'quiz-master-next'),
+				__('Your Advanced Timer Settings are not saved successfully. ', 'quiz-master-next'),
+				$admin_page_url,
+				__('Validate license', 'quiz-master-next'),
+				__('to save the settings. ', 'quiz-master-next')
+			);
+			echo wp_kses_post($error_message);
 		}
 		$advancetimer = 'qsm-advanced-timer/qsm-advanced-timer.php';
 		$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $advancetimer);
