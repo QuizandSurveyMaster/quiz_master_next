@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.2.0 (December 14, 2023) =
+= 8.2.0 (December 15, 2023) =
 * Feature: Added option to change deselect answer text
 * Feature: Added option to duplicate quiz theme settings
 * Bug: Fixed issue related to limiting random questions by category
