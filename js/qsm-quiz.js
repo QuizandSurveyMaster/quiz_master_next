@@ -1533,11 +1533,11 @@ jQuery(function () {
 		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 		if ( 0 < value.length && data.success == 'correct') {
 			$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode( data.message ) + '</div>');
+			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		} else if ( 0 < value.length && data.success == 'incorrect') {
 			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
 			$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode( data.message ) + '</div>');
+			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 		}
 		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
 			MathJax.typesetPromise();
@@ -1675,7 +1675,6 @@ jQuery(function () {
 	jQuery('.pagetime-goto-nextpage').click(function (e) {
 		e.preventDefault();
 		var quiz_id = jQuery(this).data('quiz_id');
-		QSM.nextPage(quiz_id);
 		var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
 		if(!$container.find('.qsm-submit-btn').is(':visible')) {
 			QSM.nextPage(quiz_id);
@@ -1758,9 +1757,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
-
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
-
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 		let decrypt = JSON.parse(decryptedData);

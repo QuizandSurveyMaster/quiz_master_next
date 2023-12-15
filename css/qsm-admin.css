@@ -1329,8 +1329,15 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
-.form-table td fieldset label {
+body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
 	margin-right: 20px !important;
+	width: 100%;
+}
+#correct_answer_logic {
+    padding-bottom: 10px;
+}
+.qsm-font-light {
+	font-weight: 300;
 }
 .form-table .qsm-opt-tr {
 	position: relative;
@@ -1951,6 +1958,10 @@ td.scheduled_time_start {
 	padding: 10px 15px;
 }
 
+.notice-error.notice-advance-timer {
+	padding: 10px 15px;
+}
+
 .qsm-page-setting-top {
     display: flex;
 }
@@ -1958,6 +1969,7 @@ td.scheduled_time_start {
 .qsm-page-setting-top .qsm-page-setting-left span {
     width: 120px;
     display: inline-block;
+	margin-bottom: 5px;
     color: #000;
     font-weight: 500;
     margin: 0 5px 5px 0;
@@ -1983,7 +1995,6 @@ td.scheduled_time_start {
 #page-options .qsm-page-setting-top .qsm-row input[type=number]::placeholder {
     font-size: 12px;
 }
-
 
 #page-options > div {
 	line-height: 2.5;
@@ -2026,6 +2037,7 @@ td.scheduled_time_start {
 	margin-right: 8px;
 	margin-bottom: 16px;
 }
+
 .qsm-popup-upgrade-warning,
 .qsm-popup-upgrade-info {
 	display: flex;
@@ -3250,7 +3262,8 @@ input#duplicate_questions {
     	top: 10px;
 	}
 }
-.mlw_quiz_options .qsm_tab_content input[name="end_quiz_if_wrong"]#end_quiz_if_wrong, #end_quiz_if_wrong {
+body .qsm_tab_content .qsm-small-input-field input[type="number"],
+body .qsm_tab_content .qsm-small-input-field input[type="text"] {
 	min-width: 65px;
 	width: 65px;
 	box-shadow: 0 0 0 transparent;
@@ -3258,4 +3271,34 @@ input#duplicate_questions {
     border: 1px solid #8c8f94;
     background-color: #fff;
     color: #2c3338;
+}
+.qsm_tab_content input[type=text].qsm-date-picker {
+    background: url(../assets/calendar.png) no-repeat right 10px center;
+    background-size: 14px;
+    padding: 3px 10px;
+    min-width: 100px;
+    background-color: #fff;
+}
+.qsm-quiz-dates fieldset#scheduled_time_start, .qsm-quiz-dates fieldset#scheduled_time_end {
+    display: inline-block;
+}
+.qsm-image-field {
+    display: flex;
+}
+.qsm-image-field span {
+    padding-top: 4px;
+}
+fieldset#enable_quick_correct_answer_info {
+    margin-left: 25px;
+    margin-top: 4px;
+}
+.qsm-mb-1, .qsm_tab_content fieldset{
+	margin-bottom: .25rem;
+}
+input#preferred-date-format-custom {
+    min-width: 100px;
+}
+.qsm-date-time-text {
+    min-width: 110px;
+    display: inline-block;
 }

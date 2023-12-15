@@ -296,6 +296,7 @@ function qsm_results_overview_tab_content() {
 	$user_id             = get_current_user_id();
 	if ( isset( $_POST["results-screen_option_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST["results-screen_option_nonce"] ) ), 'results_screen_option' ) ) {
 		$results_screen_option['page_url']   = isset( $_POST['page_url'] ) ? sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) : "0";
+		$results_screen_option['view_result_page']   = isset( $_POST['view_result_page'] ) ? sanitize_text_field( wp_unslash( $_POST['view_result_page'] ) ) : "0";
 		$results_screen_option['page_name']  = isset( $_POST['page_name'] ) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
 		$results_screen_option['view_result_page'] = isset( $_POST['view_result_page'] ) ? sanitize_text_field( wp_unslash( $_POST['view_result_page'] ) ) : "0";
 		$results_screen_option['business']   = isset( $_POST['business'] ) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
@@ -345,7 +346,7 @@ function qsm_results_overview_tab_content() {
 			'ip'               => __( 'IP Address', 'quiz-master-next' ),
 			'page_name'        => __( 'Page Name', 'quiz-master-next' ),
 			'page_url'         => __( 'Page URL', 'quiz-master-next' ),
-			'view_result_page' => __( 'Result Page', 'quiz-master-next'),
+			'view_result_page' => __( 'Result Page', 'quiz-master-next' ),
 		) );
 
 		$values      = $quiz_infos   = [];

@@ -338,7 +338,7 @@ function qsm_generate_quiz_options() {
 function qsm_quiz_options_notice_template() {
 	?>
 	<!-- View for Notices -->
-	<script type="text/template" id="tmpl-notice">		
+	<script type="text/template" id="tmpl-notice">
 		<div class="notice notice-large notice-{{data.type}}">
 			<p>{{data.message}}</p>
 		</div>

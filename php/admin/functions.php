@@ -654,22 +654,8 @@ function qsm_create_new_quiz_wizard() {
 							<div class="input-group">
 								<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
 									<span style="color:red">*</span>
-									<span
-										class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 								</label>
-								<input type="text" class="quiz_name" name="quiz_name" value="" required="">
-							</div>
-							<div class="input-group featured_image">
-								<label for="quiz_name"><?php esc_html_e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
-									<span class="qsm-opt-desc">
-										<?php esc_html_e( 'Enter an external URL or Choose from Media Library.', 'quiz-master-next' ); ?>
-										<?php esc_html_e( 'Can be changed further from style tab', 'quiz-master-next' ); ?>
-									</span>
-								</label>
-								<span id="qsm_span">
-									<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
-									<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
-								</span>
+								<input type="text" class="quiz_name" name="quiz_name" value="" required="" placeholder="<?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?>">
 							</div>
 							<?php
 							$all_settings        = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
@@ -678,14 +664,48 @@ function qsm_create_new_quiz_wizard() {
 								'form_type'              => array(
 									'option_name' => __( 'Form Type', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['form_type'],
+									'default'     => 0,
+									'type'        => 'select',
+									'options'     => array(
+										array(
+											'label' => __( 'Quiz', 'quiz-master-next' ),
+											'value' => 0,
+										),
+										array(
+											'label' => __( 'Survey', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'Simple Form', 'quiz-master-next' ),
+											'value' => 2,
+										),
+									),
 								),
 								'system'                 => array(
 									'option_name' => __( 'Grading System', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['system'],
+									'default'     => 0,
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Correct/Incorrect', 'quiz-master-next' ),
+											'value' => 0,
+										),
+										array(
+											'label' => __( 'Points', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'Both', 'quiz-master-next' ),
+											'value' => 3,
+										),
+									),
+									'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 								),
 								'enable_contact_form'    => array(
 									'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
 									'value'       => 0,
+									'type'        => 'radio',
 									'options'     => array(
 										array(
 											'label' => __( 'Yes', 'quiz-master-next' ),
@@ -696,38 +716,118 @@ function qsm_create_new_quiz_wizard() {
 											'value' => 0,
 										),
 									),
+									'help'        => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 								),
 								'timer_limit'            => array(
 									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['timer_limit'],
+									'type'        => 'number',
+									'default'     => 0,
+									'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
 								),
 								'pagination'             => array(
 									'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['pagination'],
+									'type'        => 'number',
+									'default'     => 0,
+									'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
 								),
 								'enable_pagination_quiz' => array(
 									'option_name' => __( 'Show current page number', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['enable_pagination_quiz'],
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 0,
+										),
+									),
+									'default'     => 0,
 								),
 								'show_question_featured_image_in_result' => array(
 									'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 0,
+										),
+									),
+									'default'     => 0,
 								),
 								'progress_bar'           => array(
 									'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['enable_pagination_quiz'],
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 0,
+										),
+									),
+									'default'     => 0,
 								),
 								'require_log_in'         => array(
 									'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['require_log_in'],
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 0,
+										),
+									),
+									'default'     => 0,
+									'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
 								),
 								'disable_first_page'     => array(
 									'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['disable_first_page'],
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 1,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 0,
+										),
+									),
+									'default'     => 0,
 								),
 								'comment_section'        => array(
 									'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
 									'value'       => $globalQuizsetting['comment_section'],
+									'type'        => 'radio',
+									'options'     => array(
+										array(
+											'label' => __( 'Yes', 'quiz-master-next' ),
+											'value' => 0,
+										),
+										array(
+											'label' => __( 'No', 'quiz-master-next' ),
+											'value' => 1,
+										),
+									),
+									'default'     => 1,
+									'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
 								),
 							);
 							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
@@ -745,7 +845,7 @@ function qsm_create_new_quiz_wizard() {
 											'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
 											'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
 											'default' => $single_setting['value'],
-											'help'    => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+											'help'    => isset( $single_setting['help'] ) ? $single_setting['help'] : "",
 										);
 									}
 									echo '<div class="input-group">';

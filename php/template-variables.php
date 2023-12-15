@@ -1054,7 +1054,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			12,
 			5,
 			7,
-		// 14,
 		);
 		$form_type   = isset( $mlw_quiz_array['form_type'] ) ? $mlw_quiz_array['form_type'] : 0;
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;

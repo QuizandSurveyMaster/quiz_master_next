@@ -409,7 +409,7 @@ class QMNQuizManager {
 			wp_enqueue_style( 'dashicons' );
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
-				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
+				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES) ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', QSM_PLUGIN_CSS_URL . '/qmn_quiz.css', array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
@@ -688,7 +688,6 @@ class QMNQuizManager {
 				$category_question_ids[] = $q_data[0];
 			}
 		}
-
 		if ( $total_pages > 0 ) {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
@@ -711,7 +710,6 @@ class QMNQuizManager {
 					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-
 					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
@@ -730,9 +728,7 @@ class QMNQuizManager {
 							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 								shuffle( $tv );
 							}
-
 							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, $quiz_options->question_per_category ) );
-
 						}
 					}
 					$question_ids = array_unique( $random );
@@ -1009,7 +1005,7 @@ class QMNQuizManager {
 				}
 				echo apply_filters( 'qmn_before_error_message', '', $options, $quiz_data );
 				?>
-				<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
+					<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
 					<input type="hidden" name="qmn_all_questions_count" id="qmn_all_questions_count" value="<?php echo esc_attr( $qmn_all_questions_count ); ?>" />
 					<input type="hidden" name="total_questions" id="total_questions" value="<?php echo esc_attr( $qmn_total_questions ); ?>" />
 					<input type="hidden" name="timer" id="timer" value="0" />
@@ -2189,7 +2185,6 @@ class QMNQuizManager {
 						if ( ! isset( $results_array['null_review'] ) ) {
 							$points_earned += (float)$results_array['points'];
 							$answer_points += (float)$results_array['points'];
-
 							// If the user's answer was correct.
 							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;

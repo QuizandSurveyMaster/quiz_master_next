@@ -62,13 +62,6 @@ var QSMAdmin;
         if(optionCount == selectCount) {
             jQuery(".add-more-link").hide();
         }
-        if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
-            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").hide();
-            jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
-        } else {
-            jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
-            jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random .qsm_tab_content .category_selection_random').parents("tr").show();
-        }
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
@@ -150,13 +143,31 @@ var QSMAdmin;
         $(document).on('change', '#limit_category_checkbox-1', function (event) {
             event.preventDefault();
             if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
-                jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").hide();
+                jQuery('#question_per_category').hide();
                 jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
+                jQuery('.category_selection_random').parents("tr").hide();
             } else {
                 jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
-                jQuery('.qsm_tab_content input[name="question_per_category"],.qsm_tab_content .category_selection_random').parents("tr").show();
+                jQuery('#question_per_category').show();
+                jQuery('.category_selection_random').parents("tr").show();
             }
         });
+        show_hide_show_correct_answer();
+        $(document).on('change', '#enable_quick_result_mc-1', function (event) {
+            show_hide_show_correct_answer();
+        });
+        function show_hide_show_correct_answer() {
+            if (jQuery('#enable_quick_result_mc-1:checked').length > 0) {
+                jQuery('#enable_quick_correct_answer_info').css('opacity', '1');
+            } else {
+                jQuery('#enable_quick_correct_answer_info').css('opacity', '0.5');
+            }
+        }
+        jQuery(document).on('change', '#preferred-date-format-custom', function() {
+            let customValue = jQuery(this).val();
+            jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+        });
+
         jQuery(document).on('click','.add-more-category', function () {
             let original = jQuery('div.select-category-question-limit-maindiv');
             let lastChild = original.children().last();
@@ -192,11 +203,11 @@ var QSMAdmin;
             if (confirm(qsm_admin_messages.confirm_message)) {
                 var action = 'qsm_dashboard_delete_result';
                 var result_id = jQuery(this).data('result_id');
-                $.post(ajaxurl, { result_id: result_id, action: action, nonce: wpApiSettings.nonce },
+                $.post(ajaxurl, { result_id: result_id, action: action, nonce: wpApiSettings.nonce  },
                     function (response) {
                         if (response.success) {
-                            $this.parents('li').slideUp();
                             $this.parents('li').remove();
+                            $this.parents('li').slideUp();
                         } else {
                             alert(qsm_admin_messages.error_delete_result);
                         }
@@ -330,20 +341,51 @@ var QSMAdmin;
             e.preventDefault();
             MicroModal.show('show-all-variable');
         });
-        if ( "" != jQuery('#scheduled_time_end').val() ) {
-            jQuery('.not_allow_after_expired_time label').css('opacity', '1');
+        if ( "" != jQuery('#scheduled_time_end-input').val() ) {
+            jQuery('#not_allow_after_expired_time label').css('opacity', '1');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
         } else {
-            jQuery('.not_allow_after_expired_time label').css('opacity', '0.7');
+            jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
         }
-        jQuery(document).on('change', '#scheduled_time_end', function () {
+        jQuery(document).on('change', '#scheduled_time_end-input', function () {
             if ( "" != jQuery(this).val() ) {
-                jQuery('.not_allow_after_expired_time label').css('opacity', '1');
+                jQuery('#not_allow_after_expired_time label').css('opacity', '1');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
             } else {
-                jQuery('.not_allow_after_expired_time label').css('opacity', '0.7');
+                jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+            }
+        });
+        if ( 0 != jQuery('#question_from_total-input').val() ) {
+            jQuery('#limit_category_checkbox label').css('opacity', '1');
+            jQuery('#limit_category_checkbox-1').attr('disabled', false);
+            jQuery('#question_per_category').show();
+        } else {
+            jQuery('#limit_category_checkbox label').css('opacity', '0.7');
+            jQuery('#limit_category_checkbox-1').attr('disabled', true);
+            jQuery('#question_per_category').hide();
+        }
+        if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
+            jQuery('#question_per_category').hide();
+            jQuery('.category_selection_random').parents("tr").hide();
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").show();
+        } else {
+            jQuery('div.select-category-question-limit-maindiv').parents("tr").hide();
+            jQuery('.category_selection_random').parents("tr").show();
+            jQuery('#question_per_category').show();
+        }
+        jQuery(document).on('change', '#question_from_total-input', function () {
+            if ( 0 != jQuery(this).val() ) {
+                jQuery('#limit_category_checkbox label').css('opacity', '1');
+                jQuery('#limit_category_checkbox-1').attr('disabled', false);
+                if (!jQuery('#limit_category_checkbox-1:checked').length) {
+                    jQuery('#question_per_category').show();
+                }
+            } else {
+                jQuery('#limit_category_checkbox label').css('opacity', '0.7');
+                jQuery('#limit_category_checkbox-1').attr('disabled', true);
+                jQuery('#question_per_category').hide();
             }
         });
         //Hide/show tr based on selection
@@ -355,38 +397,38 @@ var QSMAdmin;
             }
         });
         $(document).on('change', '.qsm_tab_content select:not(.question_limit_category,.qsm-woo-result-related-products, .qsm-woo-email-related-products), #quiz_settings_wrapper select:not(.question_limit_category)', function () {
-            var name = $(this).attr('name');
             var value = $(this).val();
-            $('.qsm_hidden_tr').hide();
-            if ($('.' + name + '_' + value).length > 0) {
-                hide_show_quiz_options(value);
-            }
+            hide_show_quiz_options(value);
         });
 
         // form_type (0, 1, 2).
         function hide_show_quiz_options(form_type) {
             if (0 == form_type) {
-                $('.qsm_tab_content input[name="system"], .qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').show();
+                $('#score_roundoff').parents('tr').show();
+                $('#correct_answer_logic').show();
             } else {
-                $('.qsm_tab_content input[name="score_roundoff"], .qsm_tab_content input[name="correct_answer_logic"]').parents('tr').hide();
+                $('#score_roundoff').parents('tr').hide();
+                $('#correct_answer_logic').hide();
             }
         }
 
         $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
-            var name = $(this).attr('name');
             var value = $(this).val();
-            $('.qsm_hidden_tr_gradingsystem').hide();
+            $('#correct_answer_logic, #score_roundoff').hide();
             if (value == 0 || value == 3) {
-                $('.qsm_hidden_tr_gradingsystem').show();
+                $('#correct_answer_logic, #score_roundoff').show();
             }
         });
         $(document).ready(function () {
             var system_option = $("input[type=radio][name='system']:checked").val();
-            $('.qsm_hidden_tr_gradingsystem').hide();
+            $('#correct_answer_logic, #score_roundoff').hide();
             if (system_option == 0 || system_option == 3) {
-                $('.qsm_hidden_tr_gradingsystem').show();
+                $('#correct_answer_logic, #score_roundoff').show();
             }
-            hide_show_quiz_options($("select[name='form_type']").find(":selected").val());
+            hide_show_quiz_options($("input[name='form_type']:checked").val());
+            if (jQuery('.qsm-date-picker').length) {
+                jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
+            }
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
@@ -477,6 +519,24 @@ var QSMAdmin;
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.prev().val(attachment.url);
                 button.nextAll('.qsm_featured_image_preview').attr('src', attachment.url);
+            }).open();
+        });
+
+        $(document).on('click', '.qsm-image-btn', function (e) {
+            let button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                title: qsm_admin_messages.set_feature_img,
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: qsm_admin_messages.use_img // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.prev('.qsm-image-input').val(attachment.url);
             }).open();
         });
 
@@ -843,7 +903,6 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                     heightStyle: "content"
                 });
                 jQuery('#accordion h3.ui-accordion-header').next().slideDown();
-                jQuery('.template-list .template-list-inner:first-child').trigger('click');
             }
         });
 
@@ -1128,7 +1187,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 value: 'cancel',
                 nonce: wpApiSettings.nonce
             },
-            success: function (response) {
+            success: function (status) {
                 if (response.success) {
                     $('.multiple-category-notice').hide();
                 }
@@ -1464,6 +1523,7 @@ var QSMContact;
                             }
                         })
                         .fail(QSMAdmin.displayjQueryError);
+
                 },
                 loadEmails: function () {
                     $.ajax({
@@ -2688,13 +2748,84 @@ var import_button;
                             'nonce': qsmQuestionSettings.single_question_nonce
                         },
                         success: function (response) {
-                            // do nothing
+                            if (response.success) {
+                                remove.parents('.question').remove();
+                                QSMQuestion.countTotal();
+                                $('.save-page-button').trigger('click');
+                            } else {
+                                QSMAdmin.displayAlert(response.data, 'error');
+                            }
                         }
                     });
-                    remove.parents('.question').remove();
-                    QSMQuestion.countTotal();
-                    $('.save-page-button').trigger('click');
                     MicroModal.close('modal-7');
+                });
+                // removes bulk question from database
+                $(document).on('click', '#qsm-bulk-delete-question-submit', function (event) {
+                    event.preventDefault();
+                    jQuery('#qsm-bulk-delete-question-submit').attr('disabled', true);
+                    let bulk_action = $("#bulk-delete-question-selector").val();
+                    let checkedValues = $('.qsm-admin-select-question-input:checked')
+                    .map(function () {
+                        return $(this).val();
+                    })
+                    .get()
+                    let question_id = checkedValues.join(',');
+                    if (question_id == undefined || question_id == null || question_id == '') {
+                        jQuery('#qsm-bulk-delete-question-submit').attr('disabled', false);
+                        return;
+                    }
+                    if ('delete' === bulk_action) {
+                        $.ajax({
+                            url: ajaxurl,
+                            method: 'POST',
+                            data: {
+                                'action': 'qsm_bulk_delete_question_from_database',
+                                'question_id': question_id,
+                                'nonce': qsmQuestionSettings.single_question_nonce
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    checkedValues.forEach(function (questionId) {
+                                        $('.question[data-question-id="' + questionId + '"]').remove();
+                                    });
+                                    jQuery('.qsm-admin-select-page-question').prop('checked',false);
+                                    QSMQuestion.countTotal();
+                                    $('.save-page-button').trigger('click');
+                                } else {
+                                    QSMAdmin.displayAlert(response.data, 'error');
+                                }
+                                jQuery('#qsm-bulk-delete-question-submit').attr('disabled', false);
+                            }
+                        });
+                    }else if ('unlink' === bulk_action) {
+                        checkedValues.forEach(function (questionId) {
+                            $('.question[data-question-id="' + questionId + '"]').remove();
+                        });
+                        jQuery('.qsm-admin-select-page-question').prop('checked',false);
+                        QSMQuestion.countTotal();
+                        $('.save-page-button').trigger('click');
+                    }
+                });
+
+                $(document).on('click', '.qsm-admin-select-page-question', function () {
+                    let isChecked = $(this).prop('checked');
+                    let checkboxesToToggle = $(this).closest('.page').find('.qsm-admin-select-question-input');
+                    checkboxesToToggle.prop('checked', isChecked);
+                    if (!isChecked) {
+                        $('.qsm-admin-select-page-question').prop('checked', false);
+                    } else {
+                        let allCheckboxesChecked = checkboxesToToggle.length === checkboxesToToggle.filter(':checked').length;
+                        $('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
+                    }
+                });
+
+                $(document).on('click', '.qsm-admin-select-question-input', function () {
+                    if (!$(this).prop('checked')) {
+                        $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', false);
+                    } else {
+                        let allCheckboxesChecked = $(this).closest('.page').find('.qsm-admin-select-question-input:checked').length === $(this).closest('.page').find('.qsm-admin-select-question-input').length;
+                        $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
+                    }
                 });
 
                 // unlink question from  a particular quiz.
@@ -3394,4 +3525,3 @@ var import_button;
         }
     }
 }(jQuery));
-
