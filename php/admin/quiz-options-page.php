@@ -103,6 +103,23 @@ function qsm_generate_quiz_options() {
 
 	$qsm_core_tabs = array( 'questions', 'contact', 'text', 'options', 'emails', 'results-pages', 'style' );
 	$addon_tabs    = '';
+	if ( class_exists ( 'QSM_AdvancedTimer' ) ) {
+		$settings_data   = get_option('qsm_addon_advanced_timer_settings', '');
+		if ( ( isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate'] ) || empty($settings_data) ) {
+			$admin_page_url = esc_url(admin_url('admin.php?page=qmn_addons&tab=advanced-timer'));
+			$error_message = sprintf(
+				'<div class="notice notice-error notice-advance-timer">
+					<strong>%s</strong> %s <a href="%s" target="_blank">%s</a> %s
+				</div>',
+				__('Error! ', 'quiz-master-next'),
+				__('Your Advanced Timer Settings are not saved successfully. ', 'quiz-master-next'),
+				$admin_page_url,
+				__('Validate license', 'quiz-master-next'),
+				__('to save the settings. ', 'quiz-master-next')
+			);
+			echo wp_kses_post($error_message);
+		}
+	}
 	?>
 	<div class="wrap" id="mlw_quiz_wrap">
 		<div class='mlw_quiz_options' id="mlw_quiz_options">
