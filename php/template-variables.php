@@ -146,7 +146,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
 					}
 				}else {
-					$answerstr .= implode(",",$answers['user_answer']);
+					$answerstr .= implode(", ",$answers['user_answer']);
 				}
 
 
