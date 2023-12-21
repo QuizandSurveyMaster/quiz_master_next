@@ -329,7 +329,7 @@ function qsm_options_styling_tab_content() {
 add_action( 'admin_menu', 'qsm_register_theme_setting_submenu_page' );
 
 function qsm_register_theme_setting_submenu_page() {
-	add_submenu_page( null, __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );
+	add_submenu_page( 'options.php', __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );
 }
 
 function qsm_display_theme_settings() {

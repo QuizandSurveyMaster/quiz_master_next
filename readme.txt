@@ -163,19 +163,19 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.2.0 (December 14, 2023) =
+= 8.2.0 (December 15, 2023) =
 * Feature: Added option to change deselect answer text
 * Feature: Added option to duplicate quiz theme settings
 * Bug: Fixed issue related to limiting random questions by category
 * Bug: Fixed issue with images and video tags in the correct answer info
-* Enhacements: Improved login form validations
-* Enhacements: Improved performance by optimizing cookies
+* Enhancement: Improved login form validations
+* Enhancement: Improved performance by optimizing cookies
 
 = 8.1.19 (November 08, 2023) =
 * Feature: Added an option to display result URLs on the admin result page
 * Bug: Resolved Cross Site Request Forgery vulnerability
-* Enhacements: Improved quiz timer performance
-* Enhacements: Added a user alert message for cases where results will not be stored in the database
+* Enhancement: Improved quiz timer performance
+* Enhancement: Added a user alert message for cases where results will not be stored in the database
 
 = 8.1.18 (October 26, 2023) =
 * Enhancement: Updated the message when you submit a quiz in draft mode
