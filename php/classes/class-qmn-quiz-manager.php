@@ -889,6 +889,7 @@ class QMNQuizManager {
 		if ( ! $qmn_allowed_visit ) {
 			return;
 		}
+		wp_enqueue_script('vimeo-iframe-api', 'https://player.vimeo.com/api/player.js');
 		wp_enqueue_script( 'json2' );
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'jquery-ui-core' );

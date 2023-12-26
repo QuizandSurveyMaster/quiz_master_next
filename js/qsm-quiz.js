@@ -1332,12 +1332,26 @@ function qmnInitPagination(quiz_id) {
 
 function qsmPauseVideo( quiz_id, btn ) {
 	let video_sections = jQuery(btn).closest(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('video:visible');
+	let iframeVideos = jQuery(btn).closest(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('iframe:visible');
+	
+	iframeVideos.each(function() {
+		let src = this.src;
+		const vimeoDomainPattern = /^(?:https?:\/\/)?(?:www\.)?(player\.)?vimeo\.com\/.*$/;
+		if ( vimeoDomainPattern.test(src) ) {
+			const vimeoPlayer = new Vimeo.Player(this);
+			vimeoPlayer.pause();
+		} else {
+			jQuery(this).attr('src', '');
+            jQuery(this).attr('src', src);
+		}
+	});
 	video_sections.each(function() {
 		if (!this.paused) {
 			this.pause();
 		}
 	});
 }
+
 function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
 	var sTop = window.screen.height / 2 - (218);
 	var sLeft = window.screen.width / 2 - (313);
