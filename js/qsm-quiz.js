@@ -1336,14 +1336,8 @@ function qsmPauseVideo( quiz_id, btn ) {
 	
 	iframeVideos.each(function() {
 		let src = this.src;
-		const vimeoDomainPattern = /^(?:https?:\/\/)?(?:www\.)?(player\.)?vimeo\.com\/.*$/;
-		if ( vimeoDomainPattern.test(src) ) {
-			const vimeoPlayer = new Vimeo.Player(this);
-			vimeoPlayer.pause();
-		} else {
-			jQuery(this).attr('src', '');
-            jQuery(this).attr('src', src);
-		}
+		jQuery(this).attr('src', '');
+		jQuery(this).attr('src', src);
 	});
 	video_sections.each(function() {
 		if (!this.paused) {
