@@ -1338,7 +1338,6 @@ function qsmPauseVideo( quiz_id, btn ) {
 	
 	iframeVideos.each(function() {
 		let src = this.src;
-		jQuery(this).attr('src', '');
 		jQuery(this).attr('src', src);
 	});
 	video_sections.each(function() {
