@@ -755,7 +755,7 @@ function qmnValidation(element, quiz_form_id) {
 				by_pass = false;
 			}
 
-			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || 0 === localStorage.getItem('mlw_time_quiz' + quiz_id) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
+			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || 0 == localStorage.getItem('mlw_time_quiz' + quiz_id) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
 
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
