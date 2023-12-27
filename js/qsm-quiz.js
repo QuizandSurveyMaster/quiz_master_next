@@ -755,7 +755,7 @@ function qmnValidation(element, quiz_form_id) {
 				by_pass = false;
 			}
 
-			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
+			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || 0 == localStorage.getItem('mlw_time_quiz' + quiz_id) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
 
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
@@ -806,8 +806,10 @@ function qmnValidation(element, quiz_form_id) {
 				}
 				//Google recaptcha validation
 				if (jQuery(this).attr('class').indexOf('g-recaptcha-response') > -1) {
-					if (grecaptcha.getResponse() == "") {
-						alert('ReCaptcha is missing');
+					let recaptcha_id = jQuery(this).attr('id');
+					let recaptcha_index = 'g-recaptcha-response' === recaptcha_id ? 0 : recaptcha_id.replace("g-recaptcha-response-", "");
+					if (grecaptcha.getResponse(recaptcha_index) == "") {
+						alert(error_messages.recaptcha_error_text);
 						show_result_validation = false;
 					}
 				}
