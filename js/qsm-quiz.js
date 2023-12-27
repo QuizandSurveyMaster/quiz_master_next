@@ -807,7 +807,7 @@ function qmnValidation(element, quiz_form_id) {
 				//Google recaptcha validation
 				if (jQuery(this).attr('class').indexOf('g-recaptcha-response') > -1) {
 					let recaptcha_id = jQuery(this).attr('id');
-					let recaptcha_index = recaptcha_id.replace("g-recaptcha-response-", "");
+					let recaptcha_index = 'g-recaptcha-response' === recaptcha_id ? 0 : recaptcha_id.replace("g-recaptcha-response-", "");
 					if (grecaptcha.getResponse(recaptcha_index) == "") {
 						alert(error_messages.recaptcha_error_text);
 						show_result_validation = false;
