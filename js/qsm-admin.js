@@ -1575,6 +1575,7 @@ var QSMContact;
                             },
                             quicktags: true,
                         };
+                        jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
                     jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo, QSMAdminEmails.total]);
@@ -2301,6 +2302,7 @@ var import_button;
                             },
                             quicktags: true,
                         };
+                        jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize(textarea_id, settings);
                         var anser = QSMQuestion.prepareQuestionText(answer[0]);
                         $(textarea_id).val(anser);
@@ -2541,6 +2543,7 @@ var import_button;
                         },
                         quicktags: true,
                     };
+                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('question-text', settings);
                     wp.editor.initialize('correct_answer_info', settings);
                 },
@@ -3483,6 +3486,7 @@ var import_button;
                         },
                         quicktags: true,
                     };
+                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total]);
                 },
