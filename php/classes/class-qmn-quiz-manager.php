@@ -907,6 +907,7 @@ class QMNQuizManager {
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
 		);
 		$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data ,$options);
+		$quiz_time_over = __( 'Quiz time is over.', 'quiz-master-next' );
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
 		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array(), $mlwQuizMasterNext->version, true );
@@ -924,7 +925,7 @@ class QMNQuizManager {
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 				'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->quiz_limit_choice, "quiz_quiz_limit_choice-{$options->quiz_id}" ),
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
-				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
+				'quiz_time_over'            => esc_html($quiz_time_over),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 			)
