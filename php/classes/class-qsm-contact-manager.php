@@ -397,7 +397,7 @@ class QSM_Contact_Manager {
 				}
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'],$quiz_options );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -433,7 +433,7 @@ class QSM_Contact_Manager {
 			case 'email':
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'],$quiz_options );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -461,7 +461,7 @@ class QSM_Contact_Manager {
 			case 'date':
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_text_field_value', $default_value, $field['use'],$quiz_options );
 					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
