@@ -2740,8 +2740,8 @@ var import_button;
                 });
                 // removes question from database
                 $(document).on('click', '.qsm-delete-question-button-btn', function () {
-                    var question_id = $(this).attr('data-question-iid');
-                    var checkedValues = "";
+                    let question_id = $(this).attr('data-question-iid');
+                    let checkedValues = "";
                     if ("selected-questions" == question_id || "all-questions" == question_id) {
                         if ("all-questions" == question_id) {
                             checkedValues = $('.qsm-admin-select-question-input')
@@ -2756,7 +2756,7 @@ var import_button;
                                 })
                                 .get();
                         }
-                        var question_ids = checkedValues.join(',');
+                        let question_ids = checkedValues.join(',');
                         if (question_ids == undefined || question_ids == null || question_ids == '') {
                             return;
                         }
@@ -2862,8 +2862,8 @@ var import_button;
                 // unlink question from  a particular quiz.
                 $(document).on('click', '.qsm-unlink-question-button-btn', function (event) {
                     event.preventDefault();
-                    var question_id = $(this).attr('data-question-iid');
-                    var checkedValues = "";
+                    let question_id = $(this).attr('data-question-iid');
+                    let checkedValues = "";
                     if ("selected-questions" == question_id || "all-questions" == question_id) {
                         if ("all-questions" == question_id) {
                             checkedValues = $('.qsm-admin-select-question-input')
