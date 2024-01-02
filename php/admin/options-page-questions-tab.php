@@ -200,19 +200,14 @@ function qsm_options_questions_tab_content() {
 	?>
 	<div class="question-controls">
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
-
-	</div>
-	<div class="qsm-admin-bulk-actions">
-		<select name="action" id="bulk-delete-question-selector">
-			<option value=""><?php esc_html_e( 'Bulk actions', 'quiz-master-next' ); ?></option>
-			<option value="delete"><?php esc_html_e( 'Delete permanently', 'quiz-master-next' ); ?></option>
-			<option value="unlink"><?php esc_html_e( 'Remove from quiz', 'quiz-master-next' ); ?></option>
-		</select>
-		<input type="submit" id="qsm-bulk-delete-question-submit" class="button action" value="<?php esc_html_e( 'Apply', 'quiz-master-next' ); ?>">
 		<p class="search-box">&nbsp;&nbsp;
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
+	</div>
+	<div class="qsm-admin-bulk-actions">
+		<button id="qsm-bulk-delete-question" class="button button-danger"><?php esc_html_e( 'Delete Selected', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
+		<button id="qsm-bulk-delete-all-question" class="button button-danger"><?php esc_html_e( 'Delete All', 'quiz-master-next' ); ?></button>
 	</div>
 	<div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
 		<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
@@ -240,7 +235,7 @@ function qsm_options_questions_tab_content() {
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
 						<div class="qsm-question-bank-select">
-							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> <?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
+							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 						</div>
 						<div class="qsm-question-bank-search">
 							<form action="" method="post" id="question-bank-search-form">
@@ -788,8 +783,8 @@ function qsm_options_questions_tab_content() {
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
-					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
+					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
+					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -1182,7 +1177,7 @@ function qsm_options_questions_tab_template() {
 					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
-			<label for="qsm-admin-select-page-question-{{data.id}}"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select all questions', 'quiz-master-next' ); ?></label>
+			<label for="qsm-admin-select-page-question-{{data.id}}" class="qsm-admin-select-page-question-label"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select All', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
 				<div class="page-header-buttons">
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
@@ -1195,21 +1190,23 @@ function qsm_options_questions_tab_template() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new" data-question-id="{{data.id}}" data-question-type="{{data.type}}">
-			<div class="question-content">
-				<div><span class="dashicons dashicons-move"></span></div>
-				<div class="question-content-title-box">
-					<input type="checkbox" class="qsm-admin-select-question-input" value="{{data.id}}">
-					<div class="question-content-text">
-						{{{data.question}}}
+			<div class="qsm-question-container">
+				<input type="checkbox" class="qsm-admin-select-question-input" value="{{data.id}}">
+				<div class="question-content">
+					<div><span class="dashicons dashicons-move"></span></div>
+					<div class="question-content-title-box">
+						<div class="question-content-text">
+							{{{data.question}}}
+						</div>
+						<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 					</div>
-					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
-				</div>
-				<div class="form-actions">
-					<div class="qsm-actions-link-box">
-						<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
-						<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
-						<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
-						<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+					<div class="form-actions">
+						<div class="qsm-actions-link-box">
+							<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
+							<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
+							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
+							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+						</div>
 					</div>
 				</div>
 			</div>

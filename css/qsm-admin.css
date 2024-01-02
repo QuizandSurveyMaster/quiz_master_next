@@ -3302,3 +3302,10 @@ input#preferred-date-format-custom {
     min-width: 110px;
     display: inline-block;
 }
+.wp-core-ui .button-danger {
+    color: #DC3232;
+    border-color: #DC3232;
+}
+.wp-core-ui .button-danger:hover {
+	color: #ca1010; border-color: #ca1010;
+}
