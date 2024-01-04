@@ -146,7 +146,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
 					}
 				}else {
-					$answerstr .= implode(",",$answers['user_answer']);
+					$answerstr .= implode(", ",$answers['user_answer']);
 				}
 
 
@@ -1100,10 +1100,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					if ( $do_show_wrong ) {
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $user_given_answer . '</span>';
-							foreach ( $total_answers as $single_answer ) {
+							foreach ( $total_answers as $single_answer_key => $single_answer ) {
+								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );
 								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && 1 != $hide_correct_answer ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $questionid . '-' . $single_answer_key, 'QSM Answers' ) . '</span>';
 									break;
 								}
 							}

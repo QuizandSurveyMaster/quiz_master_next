@@ -1511,10 +1511,11 @@ var QSMContact;
                             tinymce: {
                                 forced_root_block: '',
                                 toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                             },
                             quicktags: true,
                         };
+                        jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
                     jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo, QSMAdminEmails.total]);
@@ -2237,10 +2238,11 @@ var import_button;
                             tinymce: {
                                 forced_root_block: '',
                                 toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                             },
                             quicktags: true,
                         };
+                        jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize(textarea_id, settings);
                         var anser = QSMQuestion.prepareQuestionText(answer[0]);
                         $(textarea_id).val(anser);
@@ -2477,10 +2479,11 @@ var import_button;
                         tinymce: {
                             forced_root_block: '',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                         },
                         quicktags: true,
                     };
+                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('question-text', settings);
                     wp.editor.initialize('correct_answer_info', settings);
                 },
@@ -2676,34 +2679,160 @@ var import_button;
                     $('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
                 });
                 // removes question from database
-                $('#delete-question-button').click(function (event) {
-                    event.preventDefault();
-                    var question_id = $(this).data('question-iid');
-                    $.ajax({
-                        url: ajaxurl,
-                        method: 'POST',
-                        data: {
-                            'action': 'qsm_delete_question_from_database',
-                            'question_id': question_id,
-                            'nonce': qsmQuestionSettings.single_question_nonce
-                        },
-                        success: function (response) {
-                            // do nothing
+                $(document).on('click', '.qsm-delete-question-button-btn', function () {
+                    let question_id = $(this).attr('data-question-iid');
+                    let checkedValues = "";
+                    if ("selected-questions" == question_id || "all-questions" == question_id) {
+                        if ("all-questions" == question_id) {
+                            checkedValues = $('.qsm-admin-select-question-input')
+                                .map(function () {
+                                    return $(this).val();
+                                })
+                                .get();
+                        } else {
+                            checkedValues = $('.qsm-admin-select-question-input:checked')
+                                .map(function () {
+                                    return $(this).val();
+                                })
+                                .get();
                         }
-                    });
-                    remove.parents('.question').remove();
-                    QSMQuestion.countTotal();
-                    $('.save-page-button').trigger('click');
+                        let question_ids = checkedValues.join(',');
+                        if (question_ids == undefined || question_ids == null || question_ids == '') {
+                            return;
+                        }
+                        $.ajax({
+                            url: ajaxurl,
+                            method: 'POST',
+                            data: {
+                                'action': 'qsm_bulk_delete_question_from_database',
+                                'question_id': question_ids,
+                                'nonce': qsmQuestionSettings.single_question_nonce
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    checkedValues.forEach(function (questionId) {
+                                        $('.question[data-question-id="' + questionId + '"]').remove();
+                                    });
+                                    jQuery('.qsm-admin-select-page-question').prop('checked',false);
+                                    QSMQuestion.countTotal();
+                                    $('.save-page-button').trigger('click');
+                                } else {
+                                    QSMAdmin.displayAlert(response.data, 'error');
+                                }
+                                jQuery('.qsm-admin-bulk-actions').fadeOut();
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: ajaxurl,
+                            method: 'POST',
+                            data: {
+                                'action': 'qsm_delete_question_from_database',
+                                'question_id': question_id,
+                                'nonce': qsmQuestionSettings.single_question_nonce
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    remove.parents('.question').remove();
+                                    QSMQuestion.countTotal();
+                                    $('.save-page-button').trigger('click');
+                                } else {
+                                    QSMAdmin.displayAlert(response.data, 'error');
+                                }
+                            }
+                        });
+                    }
                     MicroModal.close('modal-7');
+                });
+                // delete bulk question from database
+                $(document).on('click', '#qsm-bulk-delete-question', function (event) {
+                    event.preventDefault();
+                    MicroModal.show('modal-7');
+                    $('#unlink-question-button').attr('data-question-iid', 'selected-questions');
+                    $('#delete-question-button').attr('data-question-iid', 'selected-questions');
+                });
+                // remove bulk question from quiz
+                $(document).on('click', '#qsm-bulk-delete-all-question', function (event) {
+                    event.preventDefault();
+                    MicroModal.show('modal-7');
+                    $('#unlink-question-button').attr('data-question-iid', 'all-questions');
+                    $('#delete-question-button').attr('data-question-iid', 'all-questions');
+                });
+
+                $(document).on('click', '.qsm-admin-select-page-question', function () {
+                    let isChecked = $(this).prop('checked');
+                    let checkboxesToToggle = $(this).closest('.page').find('.qsm-admin-select-question-input');
+                    checkboxesToToggle.prop('checked', isChecked);
+                    if (!isChecked) {
+                        $('.qsm-admin-select-page-question').prop('checked', false);
+                    } else {
+                        let allCheckboxesChecked = checkboxesToToggle.length === checkboxesToToggle.filter(':checked').length;
+                        $('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
+                    }
+                    let count = jQuery('.qsm-admin-select-question-input:checked').length;
+                    jQuery('.qsm-selected-question-count').html(count);
+                    if (count) {
+                        jQuery('.qsm-admin-bulk-actions').fadeIn();
+                    } else {
+                        jQuery('.qsm-admin-bulk-actions').fadeOut();
+                    }
+                });
+
+                $(document).on('click', '.qsm-admin-select-question-input', function () {
+                    if (!$(this).prop('checked')) {
+                        $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', false);
+                    } else {
+                        let allCheckboxesChecked = $(this).closest('.page').find('.qsm-admin-select-question-input:checked').length === $(this).closest('.page').find('.qsm-admin-select-question-input').length;
+                        $(this).closest('.page').find('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
+                    }
+                    if ( $(this).closest('.page').find('.qsm-admin-select-question-input:checked').length ) {
+                        $(this).closest('.page').find('.qsm-admin-select-page-question-label').fadeIn();
+                    } else {
+                        $(this).closest('.page').find('.qsm-admin-select-page-question-label').fadeOut();
+                    }
+                    let count = jQuery('.qsm-admin-select-question-input:checked').length;
+                    jQuery('.qsm-selected-question-count').html(count);
+                    if (count) {
+                        jQuery('.qsm-admin-bulk-actions').fadeIn();
+                    } else {
+                        jQuery('.qsm-admin-bulk-actions').fadeOut();
+                    }
                 });
 
                 // unlink question from  a particular quiz.
-                $('#unlink-question-button').click(function (event) {
+                $(document).on('click', '.qsm-unlink-question-button-btn', function (event) {
                     event.preventDefault();
-                    var question_id = $(this).data('question-iid');
-                    remove.parents('.question').remove();
-                    QSMQuestion.countTotal();
-                    $('.save-page-button').trigger('click');
+                    let question_id = $(this).attr('data-question-iid');
+                    let checkedValues = "";
+                    if ("selected-questions" == question_id || "all-questions" == question_id) {
+                        if ("all-questions" == question_id) {
+                            checkedValues = $('.qsm-admin-select-question-input')
+                                .map(function () {
+                                    return $(this).val();
+                                })
+                                .get();
+                        } else {
+                            checkedValues = $('.qsm-admin-select-question-input:checked')
+                                .map(function () {
+                                    return $(this).val();
+                                })
+                                .get();
+                        }
+                        let question_ids = checkedValues.join(',');
+                        if (undefined != question_ids && null != question_ids && '' != question_ids) {
+                            checkedValues.forEach(function (questionId) {
+                                $('.question[data-question-id="' + questionId + '"]').remove();
+                            });
+                            QSMQuestion.countTotal();
+                            $('.save-page-button').trigger('click');
+                            jQuery('.qsm-admin-bulk-actions').fadeOut();
+                            jQuery('.qsm-admin-select-page-question').prop('checked',false);
+                        }
+                    } else {
+                        remove.parents('.question').remove();
+                        QSMQuestion.countTotal();
+                        $('.save-page-button').trigger('click');
+                    }
                     MicroModal.close('modal-7');
                 });
 
@@ -3348,10 +3477,11 @@ var import_button;
                         tinymce: {
                             forced_root_block: '',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
-                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help'
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                         },
                         quicktags: true,
                     };
+                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total]);
                 },

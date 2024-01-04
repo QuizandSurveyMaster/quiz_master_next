@@ -409,7 +409,7 @@ class QMNQuizManager {
 			wp_enqueue_style( 'dashicons' );
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
-				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
+				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES) ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', QSM_PLUGIN_CSS_URL . '/qmn_quiz.css', array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
@@ -520,7 +520,7 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
 				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
-			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) ) {
+			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) || ( ! empty( $qmn_json_data['ajax_show_correct'] ) && 1 == $qmn_json_data['ajax_show_correct'] ) ) {
 				$quiz_id = $qmn_json_data['quiz_id'];
 				$qsm_inline_encrypt_js = '
 				if (encryptionKey === undefined) {
@@ -913,6 +913,7 @@ class QMNQuizManager {
 			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->url_error_text, "quiz_url_error_text-{$options->quiz_id}" ),
 			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->minlength_error_text, "quiz_minlength_error_text-{$options->quiz_id}" ),
 			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->maxlength_error_text, "quiz_maxlength_error_text-{$options->quiz_id}" ),
+			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
 		);
 		$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data ,$options);
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
@@ -931,8 +932,8 @@ class QMNQuizManager {
 				'site_url'                  => site_url(),
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 				'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->quiz_limit_choice, "quiz_quiz_limit_choice-{$options->quiz_id}" ),
-				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
-				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
+				'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
+				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 			)
