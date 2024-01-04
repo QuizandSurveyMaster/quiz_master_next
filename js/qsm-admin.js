@@ -1187,7 +1187,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 value: 'cancel',
                 nonce: wpApiSettings.nonce
             },
-            success: function (status) {
+            success: function (response) {
                 if (response.success) {
                     $('.multiple-category-notice').hide();
                 }
