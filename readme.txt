@@ -166,7 +166,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 8.2.1 (January 05, 2024) =
 * Feature: Added option to delete bulk questions
 * Bug: Resolved JavaScript conflicts
-* Bug: Fixe translation issue on quiz result page
+* Bug: Fixed translation issue on quiz result page
 * Enhancement: Improved logic to auto pause emabded video after changing page
 
 = 8.2.0 (December 15, 2023) =
