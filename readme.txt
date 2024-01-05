@@ -163,10 +163,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 8.2.1 (January 04, 2024) =
+= 8.2.1 (January 05, 2024) =
 * Feature: Added option to delete bulk questions
-* Bug: Fixed JS conflict with save and resume
-* Bug: Fixed JS conflict with recaptcha while using multiple quizzes
+* Bug: Resolved JavaScript conflicts
 * Enhancement: Improved logic to auto pause emabded video after changing page
 
 = 8.2.0 (December 15, 2023) =

@@ -121,6 +121,9 @@ function qsm_generate_featured_addons() {
 					<?php
 					if ( $all_addons ) {
 						foreach ( $all_addons as $key => $single_arr ) {
+							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) ) {
+								continue;
+							}
 							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 							?>
 							<div class="custom-addon-sub-div">
