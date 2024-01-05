@@ -160,7 +160,7 @@ function qsm_generate_featured_addons() {
 				// $count For dynamic class
 				$count = 0;
 					foreach ( $bundles as $key => $bundles_arr ) {
-						$bundle_link = qsm_get_utm_link( $bundles_arr['link'], 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
+						$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
 						?>
 						<div class="qsm-bundles-widget">
 							<div class="qsm-bundles-top">
