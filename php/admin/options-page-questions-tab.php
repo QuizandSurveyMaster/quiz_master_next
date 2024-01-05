@@ -201,9 +201,13 @@ function qsm_options_questions_tab_content() {
 	<div class="question-controls">
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
 		<p class="search-box">
-			<label class="screen-reader-text" for="question_search">Search Questions:</label>
+			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
+	</div>
+	<div class="qsm-admin-bulk-actions">
+		<button id="qsm-bulk-delete-question" class="button button-danger"><?php esc_html_e( 'Delete Selected', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
+		<button id="qsm-bulk-delete-all-question" class="button button-danger"><?php esc_html_e( 'Delete All', 'quiz-master-next' ); ?></button>
 	</div>
 	<div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
 		<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
@@ -608,7 +612,7 @@ function qsm_options_questions_tab_content() {
 														'required'               => array(
 															'label'      => __( 'Required?', 'quiz-master-next' ),
 															'type'       => 'single_checkbox',
-															'priority'   => '2',
+															'priority'   => '3',
 															'options'    => array(
 																'0' => __( 'Yes', 'quiz-master-next' ),
 															),
@@ -779,8 +783,8 @@ function qsm_options_questions_tab_content() {
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
-					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
+					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
+					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -1102,37 +1106,41 @@ add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_qu
  */
 function qsm_delete_question_from_database() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
-		echo wp_json_encode(
-			array(
-				'success' => false,
-				'message' => __(
-					'Nonce verification failed.',
-					'quiz-master-next'
-				),
-			)
-		);
-		wp_die();
+		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
-		global $wpdb;
-		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
-		echo wp_json_encode(
-			array(
-				'success' => true,
-				'message' => __(
-					'Question removed Successfully.',
-					'quiz-master-next'
-				),
-			)
-		);
+		global $wpdb, $mlwQuizMasterNext;
+		$results = $wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
+		if ( $results ) {
+			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
+		}else {
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
+			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question ID:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
 	}
-	exit;
 }
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
 
-add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
+function qsm_bulk_delete_question_from_database() {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
+		wp_send_json_error( __( 'Nonce verification failed!', 'quiz-master-next' ) );
+	}
+	$question_id = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
+	if ( $question_id ) {
+		global $wpdb, $mlwQuizMasterNext;
+		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
+		if ( $results ) {
+			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
+		}else {
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
+			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
+	}
+}
+add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );
 
+add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
@@ -1168,6 +1176,7 @@ function qsm_options_questions_tab_template() {
 					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
+			<label for="qsm-admin-select-page-question-{{data.id}}" class="qsm-admin-select-page-question-label"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select All', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
 				<div class="page-header-buttons">
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
@@ -1180,18 +1189,23 @@ function qsm_options_questions_tab_template() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new" data-question-id="{{data.id}}" data-question-type="{{data.type}}">
-			<div class="question-content">
-				<div><span class="dashicons dashicons-move"></span></div>
-				<div class="question-content-title-box">
-					<div class="question-content-text">{{{data.question}}}</div>
-					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
-				</div>
-				<div class="form-actions">
-					<div class="qsm-actions-link-box">
-						<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
-						<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
-						<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
-						<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+			<div class="qsm-question-container">
+				<input type="checkbox" class="qsm-admin-select-question-input" value="{{data.id}}">
+				<div class="question-content">
+					<div><span class="dashicons dashicons-move"></span></div>
+					<div class="question-content-title-box">
+						<div class="question-content-text">
+							{{{data.question}}}
+						</div>
+						<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
+					</div>
+					<div class="form-actions">
+						<div class="qsm-actions-link-box">
+							<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
+							<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
+							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
+							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+						</div>
 					</div>
 				</div>
 			</div>

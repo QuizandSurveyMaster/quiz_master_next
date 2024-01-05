@@ -1332,6 +1332,9 @@ tr .qsm-opt-desc {
 .form-table td fieldset label {
 	margin-right: 20px !important;
 }
+.qsm-font-light {
+	font-weight: 300;
+}
 .form-table .qsm-opt-tr {
 	position: relative;
 }
@@ -1950,7 +1953,9 @@ td.scheduled_time_start {
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
 }
-
+.notice-error.notice-advance-timer {
+	padding: 10px 15px;
+}
 .qsm-page-setting-top {
     display: flex;
 }
@@ -3258,4 +3263,11 @@ input#duplicate_questions {
     border: 1px solid #8c8f94;
     background-color: #fff;
     color: #2c3338;
+}
+.wp-core-ui .button-danger {
+    color: #DC3232;
+    border-color: #DC3232;
+}
+.wp-core-ui .button-danger:hover {
+	color: #ca1010; border-color: #ca1010;
 }

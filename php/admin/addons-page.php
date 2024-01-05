@@ -121,6 +121,9 @@ function qsm_generate_featured_addons() {
 					<?php
 					if ( $all_addons ) {
 						foreach ( $all_addons as $key => $single_arr ) {
+							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) ) {
+								continue;
+							}
 							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 							?>
 							<div class="custom-addon-sub-div">
@@ -157,7 +160,7 @@ function qsm_generate_featured_addons() {
 				// $count For dynamic class
 				$count = 0;
 					foreach ( $bundles as $key => $bundles_arr ) {
-						$bundle_link = qsm_get_utm_link( $bundles_arr['link'], 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
+						$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
 						?>
 						<div class="qsm-bundles-widget">
 							<div class="qsm-bundles-top">

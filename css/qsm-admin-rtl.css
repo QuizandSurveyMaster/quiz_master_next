@@ -20,3 +20,5 @@
 div.qsm_icon_wrap{left:0;right:auto;}
 .text-right{text-align: left !important;}
 .text-left{text-align: right !important;}
+.wp-core-ui .button-danger { color: #DC3232; border-color: #DC3232; }
+.wp-core-ui .button-danger:hover { color: #ca1010; border-color: #ca1010; }
