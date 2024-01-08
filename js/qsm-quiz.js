@@ -964,6 +964,7 @@ function qmnInit() {
 					let quiz_form_id = $this.parents('.qsm-quiz-form').attr('id');
 					let quiz_id = quiz_form_id.replace('quizForm', '');
 					let question_id = $this.attr('name').replace(/question/i, '');
+					let data = qsm_question_quick_result_js(question_id, value, '', qmn_quiz_data[quiz_id].enable_quick_correct_answer_info,quiz_id);
 					if (data.success == 'correct') {
 						$this.parent().addClass("qmn_correct_answer");
 					} else if (data.success == 'incorrect') {
@@ -1329,9 +1330,6 @@ function qmnInitPagination(quiz_id) {
 
 	jQuery(document).trigger('qsm_init_pagination_after', [quiz_id, qmn_quiz_data]);
 }
-jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after', function(event, quiz_id) {
-	let video_sections = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('video');
-	let iframeVideos = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('iframe');
 
 jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after', function(event, quiz_id) {
 	let video_sections = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('video');

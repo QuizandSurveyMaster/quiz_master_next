@@ -1339,9 +1339,6 @@ body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
 .qsm-font-light {
 	font-weight: 300;
 }
-.qsm-font-light {
-	font-weight: 300;
-}
 .form-table .qsm-opt-tr {
 	position: relative;
 }
