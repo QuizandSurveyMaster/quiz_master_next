@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 8.2.0
+Stable tag: 8.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.2.1 (January 05, 2024) =
+* Feature: Added option to delete bulk questions
+* Bug: Resolved JavaScript conflicts
+* Bug: Fixed translation issue on quiz result page
+* Enhancement: Improved logic to auto pause emabded video after changing page
+
 = 8.2.0 (December 15, 2023) =
 * Feature: Added option to change deselect answer text
 * Feature: Added option to duplicate quiz theme settings

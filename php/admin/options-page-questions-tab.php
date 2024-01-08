@@ -200,7 +200,7 @@ function qsm_options_questions_tab_content() {
 	?>
 	<div class="question-controls">
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
-		<p class="search-box">&nbsp;&nbsp;
+		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 		</p>
@@ -1141,7 +1141,6 @@ function qsm_bulk_delete_question_from_database() {
 add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );
 
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
-
 function qsm_save_new_category() {
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';

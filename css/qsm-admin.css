@@ -1339,6 +1339,9 @@ body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
 .qsm-font-light {
 	font-weight: 300;
 }
+.qsm-font-light {
+	font-weight: 300;
+}
 .form-table .qsm-opt-tr {
 	position: relative;
 }
@@ -1957,15 +1960,12 @@ td.scheduled_time_start {
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
 }
-
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
 }
-
 .qsm-page-setting-top {
     display: flex;
 }
-
 .qsm-page-setting-top .qsm-page-setting-left span {
     width: 120px;
     display: inline-block;
