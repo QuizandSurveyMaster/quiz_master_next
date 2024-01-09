@@ -51,8 +51,14 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$allow_html['input']['id'] = 1;
 		$allow_html['input']['maxlength'] = 1;
 		$allow_html = apply_filters( 'qsm_allow_html_question_title_after', $allow_html, $question_id );
+		$pattern = '/<code>(.*?)<\/code>/s';
+		$question_title_modified_html = preg_replace_callback($pattern, function ( $matches ) {
+			$replacement = preg_replace([ '/<(?!(\/?code|br)[ >])/', '/>(?!(\/?code|br)[ \/>])/' ], [ '&lt;', '&gt;' ], $matches[0]);
+			return $replacement;
+		}, $question_title);
+		$question_title_modified_html = str_replace([ 'code&gt;', 'br /&gt;' ],[ 'code/>', 'br />' ], $question_title_modified_html );
 	?>
-	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
+	<p><?php echo do_shortcode( wp_kses( $question_title_modified_html . $deselect_answer, $allow_html ) ); ?></p>
 	</div>
 	<?php
 	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );
