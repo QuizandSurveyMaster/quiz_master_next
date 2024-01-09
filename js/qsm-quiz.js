@@ -1334,11 +1334,17 @@ function qmnInitPagination(quiz_id) {
 jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after', function(event, quiz_id) {
 	let video_sections = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('video');
 	let iframeVideos = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('iframe');
+	let audio_sections = jQuery(`.qsm-quiz-container-${quiz_id}.qmn_quiz_container`).find('audio');
 	iframeVideos.each(function() {
 		let src = this.src;
 		jQuery(this).attr('src', src);
 	});
 	video_sections.each(function() {
+		if (!this.paused) {
+			this.pause();
+		}
+	});
+	audio_sections.each(function() {
 		if (!this.paused) {
 			this.pause();
 		}
