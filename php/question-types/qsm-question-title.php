@@ -53,8 +53,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$allow_html = apply_filters( 'qsm_allow_html_question_title_after', $allow_html, $question_id );
 		$pattern = '/<code>(.*?)<\/code>/s';
 		$question_title_modified_html = preg_replace_callback($pattern, function ( $matches ) {
-			$replacement = preg_replace([ '/<(?!(\/?code|br)[ >])/', '/>(?!(\/?code|br)[ \/>])/' ], [ '&lt;', '&gt;' ], $matches[0]);
-			return $replacement;
+			return preg_replace([ '/<(?!(\/?code|br)[ >])/', '/>(?!(\/?code|br)[ \/>])/' ], [ '&lt;', '&gt;' ], $matches[0]);
 		}, $question_title);
 		$question_title_modified_html = str_replace([ 'code&gt;', 'br /&gt;' ],[ 'code/>', 'br />' ], $question_title_modified_html );
 	?>
