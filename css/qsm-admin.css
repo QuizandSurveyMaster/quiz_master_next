@@ -1957,15 +1957,12 @@ td.scheduled_time_start {
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
 }
-
 .notice-error.notice-advance-timer {
 	padding: 10px 15px;
 }
-
 .qsm-page-setting-top {
     display: flex;
 }
-
 .qsm-page-setting-top .qsm-page-setting-left span {
     width: 120px;
     display: inline-block;
