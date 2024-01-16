@@ -96,10 +96,7 @@ function mlw_options_text_tab_content() {
 											wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array(
 												'editor_height' => 250,
 												'textarea_rows' => 10,
-												'tinymce' => array(
-													'toolbar1'      => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-													'toolbar2'      => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
-												),
+												'tinymce' => true,
 											) );
 											?>
 										</div>
@@ -152,10 +149,7 @@ function mlw_options_text_tab_content() {
 											wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message_variable', array(
 												'editor_height' => 250,
 												'textarea_rows' => 10,
-												'tinymce' => array(
-													'toolbar1'      => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-													'toolbar2'      => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
-												),
+												'tinymce' => true,
 											) );
 											?>
 										</div>
