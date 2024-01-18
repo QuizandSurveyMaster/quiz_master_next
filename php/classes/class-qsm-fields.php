@@ -597,12 +597,10 @@ class QSM_Fields {
 				</label>
 			</th>
 			<td>
-				<?php wp_editor( htmlspecialchars_decode( $value, ENT_QUOTES ), $field["id"], array(
-	'tinymce' => array(
-		'toolbar1' => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-		'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
-	),
-) ); ?>
+				<?php
+				wp_editor( htmlspecialchars_decode( $value, ENT_QUOTES ), $field["id"], array(
+					'tinymce' => true,
+				) ); ?>
 			</td>
 		</tr>
 		<?php
