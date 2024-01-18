@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 8.2.1
+Stable tag: 8.2.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.2.2 (January 18, 2024) =
+* Feature: Added an option to mark texts as code snippets in the question description
+* Bug: Fixed the issue of skipping question validation after the quiz timer ends
+* Bug: Fixed issue when using apostrophe in fill-in-the-blanks questions
+* Bug: Fixed the quiz navigation problem with reCAPTCHA
+* Enhancement: Improved auto-pause logic for embedded audio when shifting pages.
+
 = 8.2.1 (January 05, 2024) =
 * Feature: Added option to delete bulk questions
 * Bug: Resolved JavaScript conflicts

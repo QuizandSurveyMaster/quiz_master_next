@@ -1539,18 +1539,19 @@ var QSMContact;
                         })
                         .fail(QSMAdmin.displayjQueryError);
                 },
-                addCondition: function ($email, category, criteria, operator, value) {
+                addCondition: function ($email, category, extra_condition, criteria, operator, value) {
                     var template = wp.template('email-condition');
                     $email.find('.email-when-conditions').append(template({
                         'category': category,
+                        'extra_condition': extra_condition,
                         'criteria': criteria,
                         'operator': operator,
                         'value': value
                     }));
-                    jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, criteria, operator, value]);
+                    jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, extra_condition, criteria, operator, value]);
                 },
                 newCondition: function ($email) {
-                    QSMAdminEmails.addCondition($email, '', 'score', 'equal', 0);
+                    QSMAdminEmails.addCondition($email, 'quiz', '', 'score', 'equal', 0);
                 },
                 addEmail: function (conditions, to, subject, content, replyTo) {
                     QSMAdminEmails.total += 1;
@@ -1560,6 +1561,7 @@ var QSMContact;
                         QSMAdminEmails.addCondition(
                             $('.qsm-email:last-child'),
                             condition.category,
+                            condition.extra_condition,
                             condition.criteria,
                             condition.operator,
                             condition.value
@@ -3454,11 +3456,13 @@ var import_button;
                         }
                         $(this).find('.results-page-condition').each(function () {
                             page.conditions.push({
-                                'category': $(this).children('.results-page-condition-category').val(),
-                                'criteria': $(this).children('.results-page-condition-criteria').val(),
-                                'operator': $(this).children('.results-page-condition-operator').val(),
-                                'value': $(this).children('.results-page-condition-value').val()
+                                'category': $(this).find('.results-page-condition-category').val(),
+                                'extra_condition': $(this).find('.results-page-extra-condition-category').val(),
+                                'criteria': $(this).find('.results-page-condition-criteria').val(),
+                                'operator': $(this).find('.results-page-condition-operator').val(),
+                                'value': $(this).find('.results-page-condition-value').val()
                             });
+                            console.log(page);
                         });
                         pages.push(page);
                     });
@@ -3506,18 +3510,35 @@ var import_button;
                         })
                         .fail(QSMAdmin.displayjQueryError);
                 },
-                addCondition: function ($page, category, criteria, operator, value) {
+                addCondition: function ($page, category, extra_condition, criteria, operator, value) {
                     var template = wp.template('results-page-condition');
                     $page.find('.results-page-when-conditions').append(template({
                         'category': category,
+                        'extra_condition': extra_condition,
+                        'criteria': criteria,
                         'criteria': criteria,
                         'operator': operator,
                         'value': value
                     }));
-                    jQuery(document).trigger('qsm_after_add_result_condition', [$page, category, criteria, operator, value]);
+                    $page.find('.results-page-condition').each(function () {
+                        let extraCategory = jQuery(this).find('.results-page-extra-condition-category');
+                        if ('quiz' == jQuery(this).find('.results-page-condition-category').val() || '' == jQuery(this).find('.results-page-condition-category').val()) {
+                            extraCategory.hide();
+                            jQuery(this).find('.results-page-condition-operator').show();
+                            jQuery(this).find('option.qsm-questions-criteria').show();
+                            jQuery(this).find('option.qsm-score-criteria').show()
+                        } else if ('category' == jQuery(this).find('.results-page-condition-category').val()) {
+                            jQuery(this).find('.option.qsm-questions-criteria').hide();
+                            extraCategory.find('option').hide();
+                            extraCategory.find('.qsm-condition-category').show();
+                            jQuery(this).find('option.qsm-score-criteria').show()
+                            jQuery(this).find('.results-page-condition-operator').show();
+                        }
+                    });
+                    jQuery(document).trigger('qsm_after_add_result_condition', [$page, category, extra_condition, criteria, operator, value]);
                 },
                 newCondition: function ($page) {
-                    QSMAdminResults.addCondition($page, '', 'score', 'equal', 0);
+                    QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
                 addResultsPage: function (conditions, page, redirect) {
                     QSMAdminResults.total += 1;
@@ -3527,6 +3548,7 @@ var import_button;
                         QSMAdminResults.addCondition(
                             $('.results-page:last-child'),
                             condition.category,
+                            condition.extra_condition,
                             condition.criteria,
                             condition.operator,
                             condition.value
@@ -3547,7 +3569,8 @@ var import_button;
                 },
                 newResultsPage: function () {
                     var conditions = [{
-                        'category': '',
+                        'category': 'quiz',
+                        'extra-condition': '',
                         'criteria': 'score',
                         'operator': 'greater',
                         'value': '0'
@@ -3580,6 +3603,34 @@ var import_button;
                     event.preventDefault();
                     $(this).closest('.results-page-condition').remove();
                 });
+            });
+            jQuery(document).on('change', '.results-page-condition-category', function () {
+                let container = jQuery(this).closest('.results-page-condition');
+                let extraCategory = container.find('.results-page-extra-condition-category');
+                if ('quiz' == jQuery(this).val() || '' == jQuery(this).val()) {
+                    extraCategory.hide();
+                    container.find('.results-page-condition-operator').show();
+                    container.find('.results-page-condition-criteria').show();
+                    container.find('.condition-default-value').show();
+                    container.find('.results-page-condition-operator option').hide().prop("selected", false);
+                    container.find('.results-page-condition-operator option.default_operator').show();
+                    container.find('.results-page-condition-operator option.default_operator:first').prop("selected", true);
+                    container.find('option.qsm-score-criteria').show();
+                    container.find('.results-page-condition-criteria').find('option.qsm-points-criteria').prop("selected", true);
+                } else if ('category' == jQuery(this).val()) {
+                    extraCategory.show();
+                    container.find('.results-page-condition-criteria').show();
+                    container.find('.results-page-condition-operator').show();
+                    extraCategory.find('option').prop("selected", false).hide();
+                    extraCategory.find('.qsm-condition-category').show();
+                    container.find('.condition-default-value').show();
+                    container.find('.results-page-condition-criteria').find('option.qsm-points-criteria').prop("selected", true);
+                    extraCategory.find('option:visible:first').prop("selected", true);
+                    container.find('.results-page-condition-operator option').hide().prop("selected", true);
+                    container.find('.results-page-condition-operator option.default_operator').show();
+                    container.find('.results-page-condition-operator option.default_operator:first').prop("selected", true);
+                    container.find('option.qsm-score-criteria').show()
+                }
             });
         }
     }
