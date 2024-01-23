@@ -1867,6 +1867,13 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 			got_ans = true;
 		}
 
-		return { "correct_index": correct_index, "success": correct_answer ? 'correct' : 'incorrect', "message": show_correct_info && got_ans ? correct_info_text : "" };
+		let returnObject = { 
+			"correct_index": correct_index, 
+			"success": correct_answer ? 'correct' : 'incorrect', 
+			"message": show_correct_info && got_ans ? correct_info_text : "" 
+		};
+
+		jQuery(document).trigger('qsm_question_quick_result_js_after', [returnObject, correct_answer, answer, answer_array, answer_type, settings, decrypt, question_id]);
+		return returnObject;
 	}
 }
