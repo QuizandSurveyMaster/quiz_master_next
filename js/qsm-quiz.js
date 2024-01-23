@@ -1330,7 +1330,6 @@ function qmnInitPagination(quiz_id) {
 
 	jQuery(document).trigger('qsm_init_pagination_after', [quiz_id, qmn_quiz_data]);
 }
-
 jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after', function(event, quiz_id) {
 	let video_sections = jQuery('.qsm-quiz-container-' + quiz_id + '.qmn_quiz_container').find('video');
 	let iframeVideos = jQuery('.qsm-quiz-container-' + quiz_id + '.qmn_quiz_container .qsm-page, .qsm-quiz-container-' + quiz_id + '.qmn_quiz_container .qsm-auto-page-row').find('iframe');
@@ -1867,10 +1866,10 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 			got_ans = true;
 		}
 
-		let returnObject = { 
-			"correct_index": correct_index, 
-			"success": correct_answer ? 'correct' : 'incorrect', 
-			"message": show_correct_info && got_ans ? correct_info_text : "" 
+		let returnObject = {
+			"correct_index": correct_index,
+			"success": correct_answer ? 'correct' : 'incorrect',
+			"message": show_correct_info && got_ans ? correct_info_text : ""
 		};
 
 		jQuery(document).trigger('qsm_question_quick_result_js_after', [returnObject, correct_answer, answer, answer_array, answer_type, settings, decrypt, question_id]);
