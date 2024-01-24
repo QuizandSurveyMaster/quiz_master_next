@@ -110,7 +110,7 @@ function qsm_register_rest_routes() {
 				'callback'            => 'qsm_get_quiz_info',
 				'permission_callback' => '__return_true',
 			)
-		);		
+		);      
 
 		// Register rest api to get quiz result JSON by result_id
 		register_rest_route(
@@ -405,11 +405,11 @@ function qsm_get_basic_info_quiz( WP_REST_Request $request ) {
 
 function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 	
-    if ($request->get_param('result_id')) {
+    if ( $request->get_param('result_id') ) {
 		global $wpdb;
 		$results_table_name              = $wpdb->prefix . 'mlw_results';
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
-        if ($results_data) {
+        if ( $results_data ) {
 			$results_data->quiz_results = maybe_unserialize($results_data->quiz_results);
 			$request = array(
                 'success' => true,
@@ -420,7 +420,7 @@ function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 				'success' => false,
 				'message' => __('Quiz result not found', 'quiz-master-next'),
 			);
-		}		
+		}       
     } else {
 		global $wpdb;
 		$limit = $request->get_param('limit');
@@ -431,42 +431,42 @@ function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 		$order = $request->get_param('order');
 
 		$query = "SELECT * FROM {$wpdb->prefix}mlw_results WHERE 1=1";
-		if (empty($limit)) {
+		if ( empty($limit) ) {
 			$limit = 10;
 		}
 		$limit = empty($limit) ? 10 : $limit;
 		$order = empty($order) ? 'ASC' : $order;
 		
-		if (!empty($quiz_id)) {
+		if ( ! empty($quiz_id) ) {
 			$query .= $wpdb->prepare(" AND quiz_id = %s", $quiz_id);
         }
 
-		if (!empty($name)) {
+		if ( ! empty($name) ) {
 			$username  = '%' . esc_sql( $wpdb->esc_like( $name ) ) . '%';
 			$query .= $wpdb->prepare(" AND name LIKE %s", $username);
         }
 
-		if (!empty($email)) {
+		if ( ! empty($email) ) {
 			$useremail  = '%' . esc_sql( $wpdb->esc_like( $email ) ) . '%';
 			$query .= $wpdb->prepare(" AND email LIKE %s", $useremail);
         }
 
-		if (!empty($from_date)) {
+		if ( ! empty($from_date) ) {
 			$query .= $wpdb->prepare( " AND time_taken_real >= %s", $from_date );
         }
 
 		$results = $wpdb->get_results($query .= " ORDER BY result_id {$order} LIMIT {$limit}");
 		
-		if ($results) {
+		if ( $results ) {
 			$data = [];
-			foreach ($results as $key => $value) {
+			foreach ( $results as $key => $value ) {
 				$value->quiz_results = maybe_unserialize($value->quiz_results);
 				$data[] = $value;
 			}
 			$response = array(
-				'count' => count($data),
+				'count'   => count($data),
 				'success' => true,
-				'data' => $data,
+				'data'    => $data,
 			);
 		} else {
 			$response = array(
@@ -488,10 +488,10 @@ function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 
 function qsm_get_quiz_info( WP_REST_Request $request ) {
 
-    if ($request->get_param('quiz_id')) {
+    if ( $request->get_param('quiz_id') ) {
         global $mlwQuizMasterNext;
         $quiz_data = $mlwQuizMasterNext->pluginHelper->prepare_quiz($request->get_param('quiz_id'));
-        if ($quiz_data) {
+        if ( $quiz_data ) {
             $qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
             $apiFormatArray = qsm_convert_to_api_format($qmn_quiz_options);
             $response = array(
@@ -510,30 +510,30 @@ function qsm_get_quiz_info( WP_REST_Request $request ) {
 		$quiz_name = $request->get_param('quiz_name');
 		$from_date = $request->get_param('from_date');
 		$query = "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE 1=1";
-		if (empty($limit)) {
+		if ( empty($limit) ) {
 			$limit = 10;
 		}
 
-		if (!empty($quiz_name)) {
+		if ( ! empty($quiz_name) ) {
 			$qnsearch  = '%' . esc_sql( $wpdb->esc_like( $quiz_name ) ) . '%';
 			$query .= $wpdb->prepare(" AND quiz_name LIKE %s", $qnsearch);
         }
 
-		if (!empty($from_date)) {
+		if ( ! empty($from_date) ) {
 			$query .= $wpdb->prepare( " AND last_activity >= %s", $from_date );
         }
 
 		$results = $wpdb->get_results($query .= " LIMIT {$limit}");
 		$data = [];
-		foreach ($results as $key => $value) {
+		foreach ( $results as $key => $value ) {
 			$apiFormatArray = qsm_convert_to_api_format($value);
 			$data[] = $apiFormatArray;
 		}
 
-		if ($results) {
+		if ( $results ) {
 			$response = array(
 				'success' => true,
-				'data' => $data,
+				'data'    => $data,
 			);
 		} else {
 			$response = array(
@@ -545,50 +545,50 @@ function qsm_get_quiz_info( WP_REST_Request $request ) {
 	return rest_ensure_response($response);
 }
 
-function qsm_convert_to_api_format($inputObject) {
+function qsm_convert_to_api_format( $inputObject ) {
 
 	$apiFormat = [];
 
-	foreach ($inputObject as $key => $value) {
-		if ($key === 'message_after' || $key === 'user_email_template' || $key === 'quiz_settings') {
-			$apiFormat[$key] = maybe_unserialize($value);
-			if ($key === 'quiz_settings') {
-				$apiFormat[$key] = qsm_unserialize_to_api_format($apiFormat[$key]); 
+	foreach ( $inputObject as $key => $value ) {
+		if ( $key === 'message_after' || $key === 'user_email_template' || $key === 'quiz_settings' ) {
+			$apiFormat[ $key ] = maybe_unserialize($value);
+			if ( $key === 'quiz_settings' ) {
+				$apiFormat[ $key ] = qsm_unserialize_to_api_format($apiFormat[ $key ]); 
 			}
-		} else if (is_array($value) || is_object($value)) {
-			$apiFormat[$key] = qsm_convert_to_api_format($value); 
+		} elseif ( is_array($value) || is_object($value) ) {
+			$apiFormat[ $key ] = qsm_convert_to_api_format($value); 
 		} else {
-			$apiFormat[$key] = $value;
+			$apiFormat[ $key ] = $value;
 		}
 	}
 
 	return $apiFormat;
 }
 
-function qsm_unserialize_to_api_format($data) {
+function qsm_unserialize_to_api_format( $data ) {
 	$result = array();
 
-	if (is_serialized($data)) {
+	if ( is_serialized($data) ) {
 		return maybe_unserialize($data);
 	}
 
-	foreach ($data as $key => $value) {
-		if (is_serialized($value)) {
-			$result[$key] = qsm_unserialize_recursive_loop($value);
+	foreach ( $data as $key => $value ) {
+		if ( is_serialized($value) ) {
+			$result[ $key ] = qsm_unserialize_recursive_loop($value);
 		} else {
-			$result[$key] = $value;
+			$result[ $key ] = $value;
 		}
 	}
 
 	return $result;
 }
 
-function qsm_unserialize_recursive_loop($value) {
+function qsm_unserialize_recursive_loop( $value ) {
 	$unserializedValue = maybe_unserialize($value);
 
-	if (is_array($unserializedValue)) {
-		foreach ($unserializedValue as $innerKey => $innerValue) {
-			$unserializedValue[$innerKey] = qsm_unserialize_recursive_loop($innerValue);
+	if ( is_array($unserializedValue) ) {
+		foreach ( $unserializedValue as $innerKey => $innerValue ) {
+			$unserializedValue[ $innerKey ] = qsm_unserialize_recursive_loop($innerValue);
 		}
 	}
 
