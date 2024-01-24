@@ -1482,98 +1482,8 @@ jQuery(function () {
 		}, 2000);
 	});
 
-	const videoAttributePatterns = [
-		/\ssrc="([^"]+)"/,
-		/\smp4="([^"]+)"/,
-		/\sm4v="([^"]+)"/,
-		/\swebm="([^"]+)"/,
-		/\sogv="([^"]+)"/,
-		/\swmv="([^"]+)"/,
-		/\sflv="([^"]+)"/,
-		/\swidth="(\d+)"/,
-		/\sheight="(\d+)"/
-	];
-
-	function parseAttributes(match, src, width, height) {
-		let videoAttrs = { src: '', width: '', height: '' };
-
-		videoAttributePatterns.forEach(pattern => {
-			const attrMatch = match.match(pattern);
-			if (attrMatch) {
-				const value = attrMatch[1] || '';
-				if (pattern.toString().includes('width')) {
-					videoAttrs.width = value;
-				} else if (pattern.toString().includes('height')) {
-					videoAttrs.height = value;
-				} else {
-					videoAttrs.src = value;
-				}
-			}
-		});
-
-		return videoAttrs;
-	}
-
-	function generateVideoTag(src, width, height, content) {
-		return `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
-	}
-
-	function qsm_check_shortcode(message = null) {
-		const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
-		let videoMatch = message.match(videoContentRegex);
-
-		if (videoMatch) {
-			let videoHTML = message.replace(videoContentRegex, function(match, content) {
-				const { src, width, height } = parseAttributes(match);
-				const videoTag = generateVideoTag(src, width, height, content);
-				return `<div class="video-content">${videoTag}</div>`;
-			});
-			return videoHTML;
-		}
-
-		// Check if message contains an image shortcode
-		let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
-		let imageMatch = message.match(imageRegex);
-
-		if (imageMatch) {
-			let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
-				return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
-			});
-			return '<div class="image-content">' + imageHTML + '</div>';
-		}
-
-		return message;
-	}
-
 	//inline result status function
-	function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
-		jQuery('.qsm-spinner-loader').remove();
-		addSpinnerLoader($this,$i_this);
-		let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
-		$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
-		$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
-		if ( 0 < value.length && data.success == 'correct') {
-			$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
-		} else if ( 0 < value.length && data.success == 'incorrect') {
-			$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
-			$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
-			$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
-		}
-		if (1 != qmn_quiz_data[quizID].disable_mathjax) {
-			MathJax.typesetPromise();
-		}
-		jQuery('.qsm-spinner-loader').remove();
-	}
-	function addSpinnerLoader($this,$i_this) {
-		if ($this.find('.mlw_answer_open_text').length) {
-			$this.find('.mlw_answer_open_text').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;margin-left:10px;"></div>');
-		  } else if ($this.find('.mlw_answer_number').length) {
-			$this.find('.mlw_answer_number').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;margin-left:10px;"></div>');
-		  } else {
-			$i_this.next('.qsm-input-label').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;"></div>');
-		  }
-	  }
+	
 	// Autocomplete off
 	jQuery('.qsm-quiz-container').find('.qmn_quiz_id').each(function () {
 		var quizID = jQuery(this).val();
@@ -1730,6 +1640,98 @@ jQuery(function () {
 		return false;
 	});
 });
+
+const videoAttributePatterns = [
+	/\ssrc="([^"]+)"/,
+	/\smp4="([^"]+)"/,
+	/\sm4v="([^"]+)"/,
+	/\swebm="([^"]+)"/,
+	/\sogv="([^"]+)"/,
+	/\swmv="([^"]+)"/,
+	/\sflv="([^"]+)"/,
+	/\swidth="(\d+)"/,
+	/\sheight="(\d+)"/
+];
+
+function parseAttributes(match, src, width, height) {
+	let videoAttrs = { src: '', width: '', height: '' };
+
+	videoAttributePatterns.forEach(pattern => {
+		const attrMatch = match.match(pattern);
+		if (attrMatch) {
+			const value = attrMatch[1] || '';
+			if (pattern.toString().includes('width')) {
+				videoAttrs.width = value;
+			} else if (pattern.toString().includes('height')) {
+				videoAttrs.height = value;
+			} else {
+				videoAttrs.src = value;
+			}
+		}
+	});
+
+	return videoAttrs;
+}
+
+function generateVideoTag(src, width, height, content) {
+	return `<video src="${src}" width="${width}" height="${height}" controls>${content}</video>`;
+}
+
+function qsm_check_shortcode(message = null) {
+	const videoContentRegex = /\[video(?:\s(?:src|mp4|m4v|webm|ogv|wmv|flv|width|height)="[^"]*")*\](.*?)\[\/video\]/g;
+	let videoMatch = message.match(videoContentRegex);
+
+	if (videoMatch) {
+		let videoHTML = message.replace(videoContentRegex, function(match, content) {
+			const { src, width, height } = parseAttributes(match);
+			const videoTag = generateVideoTag(src, width, height, content);
+			return `<div class="video-content">${videoTag}</div>`;
+		});
+		return videoHTML;
+	}
+
+	// Check if message contains an image shortcode
+	let imageRegex = /\[img(?:(?:\ssrc="([^"]+)")|(?:\salt="([^"]+)")|(?:\swidth="(\d+)")|(?:\sheight="(\d+)")){0,4}\s*\]/g;
+	let imageMatch = message.match(imageRegex);
+
+	if (imageMatch) {
+		let imageHTML = message.replace(imageRegex, function(match, src, alt, width, height) {
+			return '<img src="' + (src || '') + '" alt="' + (alt || '') + '" width="' + (width || '') + '" height="' + (height || '') + '">';
+		});
+		return '<div class="image-content">' + imageHTML + '</div>';
+	}
+
+	return message;
+}
+
+function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
+	jQuery('.qsm-spinner-loader').remove();
+	addSpinnerLoader($this,$i_this);
+	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
+	$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
+	$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
+	if ( 0 < value.length && data.success == 'correct') {
+		$this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
+		$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
+	} else if ( 0 < value.length && data.success == 'incorrect') {
+		$this.find('.qmn_radio_answers').children().eq(parseInt(data.correct_index)).addClass('data-correct-answer');
+		$this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
+		$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
+	}
+	if (1 != qmn_quiz_data[quizID].disable_mathjax) {
+		MathJax.typesetPromise();
+	}
+	jQuery('.qsm-spinner-loader').remove();
+}
+function addSpinnerLoader($this,$i_this) {
+	if ($this.find('.mlw_answer_open_text').length) {
+		$this.find('.mlw_answer_open_text').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;margin-left:10px;"></div>');
+	  } else if ($this.find('.mlw_answer_number').length) {
+		$this.find('.mlw_answer_number').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;margin-left:10px;"></div>');
+	  } else {
+		$i_this.next('.qsm-input-label').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;"></div>');
+	  }
+  }
 
 // captcha question type
 var mlw_code;
