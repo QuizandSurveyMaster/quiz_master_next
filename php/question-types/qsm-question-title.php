@@ -22,7 +22,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$deselect_answer_text = ! empty( $qmn_quiz_options->deselect_answer_text ) ? $qmn_quiz_options->deselect_answer_text : $default_texts['deselect_answer_text'];
 		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'. $mlwQuizMasterNext->pluginHelper->qsm_language_support( $deselect_answer_text, "deselect_answer_text-{$qmn_quiz_options->quiz_id}" ) .'</a>';
 	}
-	do_action('qsm_question_title_func_before',$question, $question_type, $new_question_title, $question_id );
+	do_action('qsm_question_title_function_before',$question, $question_type, $new_question_title, $question_id );
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
