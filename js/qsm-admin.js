@@ -1494,7 +1494,6 @@ var QSMContact;
                             });
                         });
                         emails.push(email);
-                        console.log(emails);
                     });
                     let _X_validation = false;
                     _.each(emails, function( email ) {
@@ -3655,7 +3654,7 @@ var import_button;
 
     function qsmHandleOperatorChange(containerClass, defaultValueClass) {
         jQuery(document).on('change', '.' + containerClass + '-operator', function () {
-            var selectedOption = jQuery(this).find('option:selected');
+            let selectedOption = jQuery(this).find('option:selected');
             if (selectedOption.hasClass('default_operator')) {
                 jQuery(this).closest('.' + containerClass).find('.' + defaultValueClass).show();
             }

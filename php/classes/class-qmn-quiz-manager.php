@@ -907,7 +907,7 @@ class QMNQuizManager {
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
 		);
 		$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data ,$options);
-		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array( 'underscore' ), '1.1.0', true );
+		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
 		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array(), $mlwQuizMasterNext->version, true );
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $mlwQuizMasterNext->version );
