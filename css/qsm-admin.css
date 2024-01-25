@@ -467,7 +467,7 @@ span.qsm-quiz-name {
 	align-items: center;
 	justify-content: flex-end;
 	background-color: #fff;
-	padding: 10px 35px;
+	padding: 10px;
 	border-bottom: 1px solid #dfd4d4;
 }
 #qsm_emails .delete-email-button {
@@ -477,6 +477,11 @@ span.qsm-quiz-name {
 	cursor: pointer;
 	transition-duration: 200ms;
 }
+.delete-page-button {
+    border: none;
+    background: transparent;
+	cursor: pointer;
+}
 #qsm_emails .delete-email-button:hover {
 	transform: scale(1.2);
 }
@@ -485,14 +490,12 @@ span.qsm-quiz-name {
 	flex-direction: column;
 }
 .results-page-when, .results-page-show, .email-when, .email-show {
-	padding: 10px;
-	background-color: #f1f1f1;
-	border: 1px solid #dfd4d4;
-	margin: 15px 0;
+	padding: 15px;
 	min-width: 60%;
 }
 .results-page-when, .email-when {
 	margin-right: 15px;
+	border-right: 1px solid #dfd4d4;
 }
 .results-page-content-header, .email-content-header {
 	margin-bottom: 10px;
@@ -501,31 +504,57 @@ span.qsm-quiz-name {
 	margin-bottom: 5px;
 	display: block;
 }
-.results-page-content-header h4, .results-page-content-header p, .email-content-header h4, .email-content-header p {
-	margin: 0;
+.results-page-content-header h4,
+ .email-content-header h4{
+	font-size: 20px;
+	margin: 5px 0 15px;
+	font-weight: 400;
 }
 .results-page-condition, .email-condition {
-	display: flex;
-	flex-direction: column;
 	margin-bottom: 15px;
+	border-radius: 10px;
+    background: #F8F9F9;
+	padding: 10px;
+	position: relative;
 }
-.results-page-condition>select, .results-page-condition>input, .email-condition>select, .email-condition>input {
-	min-width: auto !important;
-	max-width: 100%;
+.qsm-result-condition-title,
+.qsm-email-condition-title {
+    font-size: 16px;
+}
+input[type="text"].results-page-redirect {
+    min-width: 100%;
+}
+.qsm-result-condition-mode,
+.qsm-email-condition-mode {
+    margin-bottom: 15px;
+}
+.results-page-condition .qsm-result-condition-container select, .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], .email-condition .qsm-email-condition-container select, .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"] {
+	min-width: auto;
+	width: 100%;
+	border-radius: 4px;
+	border-color: #1e1e1e;
+}
+.results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
 }
 .delete-condition-button {
 	background: none;
-	border: 1px solid #1dd969;
-	color: #dc3232;
 	cursor: pointer;
 	transition-duration: 200ms;
-	padding: 6px;
+	position: absolute;
+	right: 0;
+    top: 10px;
 }
 .delete-condition-button:hover {
 	transform: scale(1.1);
 }
 .email-show .label {
 	display: block;
+}
+.qsm-email-reply-to{
+	margin-top: 10px;
 }
 .results-page-show textarea, .to-email, .subject, .email-template {
 	width: 100%;
@@ -540,12 +569,8 @@ span.qsm-quiz-name {
 		width: calc(50% - 15px);
 		min-width: unset;
 	}
-	.results-page-condition, .email-condition {
-		align-items: center;
-		flex-direction: row;
-	}
-	.results-page-condition>select, .results-page-condition>input, .email-condition>select, .email-condition>input {
-		max-width: 23%;
+	.results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container {
+		flex-wrap: nowrap;
 	}
 	.delete-condition-button {
 		border: none;

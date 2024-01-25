@@ -288,8 +288,12 @@
 }
 .answers-single>div.answer-correct-div {
 	min-width: auto;
-	width: 70px;
+	width: 80px;
+	height: 26px;
 	padding: 5px 0;
+	background: #fff;
+    border: 1px solid #bdbdbd7a;
+    border-radius: 4px;
 }
 .answers-single>div.answer-text-div {
 	width: 560px;
