@@ -181,7 +181,7 @@ function qsm_options_emails_tab_template() {
 				<div class="email-when-conditions">
 					<!-- Conditions go here. Review template below. -->
 				</div>
-				<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+				<a class="new-condition" href="javascript:void(0);"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 			</div>
 			<div class="email-show">
 				<div class="email-content-header">
@@ -195,7 +195,7 @@ function qsm_options_emails_tab_template() {
 				<input type="text" class="subject" value="{{ data.subject }}">
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
 				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
-				<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
+				<label class="qsm-email-reply-to"><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
 			</div>
 		</main>
@@ -204,37 +204,56 @@ function qsm_options_emails_tab_template() {
 
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
-		<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-		<select class="email-condition-category">
-			<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-			<optgroup label="<?php esc_html_e( 'Question Categories', 'quiz-master-next' ); ?>">
-			<?php if ( ! empty( $categories ) ) { ?>
-				<?php foreach ( $categories as $cat ) { ?>
-				<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+		<div class="qsm-email-condition-mode">
+			<span class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</span>
+			<select class="email-condition-category">
+				<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+					<?php if ( ! empty( $categories ) ) {
+						$category_names = array_map(function( $category ) {
+							return $category[0];
+						}, $categories);
+					?>
+					<#
+					let categories = '<?php echo wp_json_encode($category_names); ?>';
+					let categories_array = JSON.parse(categories);
+					#>
+						<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
+					<?php } else { ?>
+						<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+					<?php } ?>
+				<?php do_action( 'qsm_email_page_condition_category' ); ?>
+			</select>
+			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+		</div>
+		<div class="qsm-email-condition-container">
+			<select class="email-extra-condition-category">
+				<?php if ( ! empty( $categories ) ) { ?>
+					<?php foreach ( $categories as $cat ) { ?>
+					<option class="qsm-condition-category" value="<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>' || data.extra_condition == '<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+					<?php } ?>
+				<?php } else { ?>
+					<option class="qsm-condition-category" value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
 				<?php } ?>
-			<?php } else { ?>
-				<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-			<?php } ?>
-			</optgroup>
-			<?php do_action( 'qsm_email_page_condition_category' ); ?>
-		</select>
-		<select class="email-condition-criteria">
-			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
-			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
-			<?php do_action( 'qsm_email_condition_criteria' ); ?>
-		</select>
-		<?php do_action( 'qsm_email_extra_condition_fields' ); ?>
-		<select class="email-condition-operator">
-			<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
-			<?php do_action( 'qsm_email_condition_operator' ); ?>
-		</select>
-		<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">
-		<?php do_action( 'qsm_email_condition_value' ); ?>
+				<?php do_action( 'qsm_email_extra_condition_category' ); ?>
+			</select>
+			<select class="email-condition-criteria">
+				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points', 'quiz-master-next' ); ?></option>
+				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct percentage', 'quiz-master-next' ); ?></option>
+				<?php do_action( 'qsm_email_condition_criteria' ); ?>
+			</select>
+			<?php do_action( 'qsm_email_extra_condition_fields' ); ?>
+			<select class="email-condition-operator">
+				<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
+				<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
+				<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
+				<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
+				<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
+				<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
+				<?php do_action( 'qsm_email_condition_operator' ); ?>
+			</select>
+			<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">
+			<?php do_action( 'qsm_email_condition_value' ); ?>
+		</div>
 	</div>
 </script>
 

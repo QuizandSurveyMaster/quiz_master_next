@@ -1486,13 +1486,15 @@ var QSMContact;
                         };
                         $(this).find('.email-condition').each(function () {
                             email.conditions.push({
-                                'category': $(this).children('.email-condition-category').val(),
-                                'criteria': $(this).children('.email-condition-criteria').val(),
-                                'operator': $(this).children('.email-condition-operator').val(),
-                                'value': $(this).children('.email-condition-value').val()
+                                'category': $(this).find('.email-condition-category').val(),
+                                'extra_condition': $(this).find('.email-extra-condition-category').val(),
+                                'criteria': $(this).find('.email-condition-criteria').val(),
+                                'operator': $(this).find('.email-condition-operator').val(),
+                                'value': $(this).find('.email-condition-value').val()
                             });
                         });
                         emails.push(email);
+                        console.log(emails);
                     });
                     let _X_validation = false;
                     _.each(emails, function( email ) {
@@ -1548,6 +1550,21 @@ var QSMContact;
                         'operator': operator,
                         'value': value
                     }));
+                    $email.find('.email-condition').each(function () {
+                        let extraCategory = jQuery(this).find('.email-extra-condition-category');
+                        if ('quiz' == jQuery(this).find('.email-condition-category').val() || '' == jQuery(this).find('.email-condition-category').val()) {
+                            extraCategory.hide();
+                            jQuery(this).find('.email-condition-operator').show();
+                            jQuery(this).find('option.qsm-questions-criteria').show();
+                            jQuery(this).find('option.qsm-score-criteria').show()
+                        } else if ('category' == jQuery(this).find('.email-condition-category').val()) {
+                            jQuery(this).find('.option.qsm-questions-criteria').hide();
+                            extraCategory.find('option').hide();
+                            extraCategory.find('.qsm-condition-category').show();
+                            jQuery(this).find('option.qsm-score-criteria').show()
+                            jQuery(this).find('.email-condition-operator').show();
+                        }
+                    });
                     jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, extra_condition, criteria, operator, value]);
                 },
                 newCondition: function ($email) {
@@ -1585,6 +1602,7 @@ var QSMContact;
                 newEmail: function () {
                     var conditions = [{
                         'category': '',
+                        'extra_condition': '',
                         'criteria': 'score',
                         'operator': 'greater',
                         'value': '0'
@@ -3462,7 +3480,6 @@ var import_button;
                                 'operator': $(this).find('.results-page-condition-operator').val(),
                                 'value': $(this).find('.results-page-condition-value').val()
                             });
-                            console.log(page);
                         });
                         pages.push(page);
                     });
@@ -3604,34 +3621,50 @@ var import_button;
                     $(this).closest('.results-page-condition').remove();
                 });
             });
-            jQuery(document).on('change', '.results-page-condition-category', function () {
-                let container = jQuery(this).closest('.results-page-condition');
-                let extraCategory = container.find('.results-page-extra-condition-category');
-                if ('quiz' == jQuery(this).val() || '' == jQuery(this).val()) {
-                    extraCategory.hide();
-                    container.find('.results-page-condition-operator').show();
-                    container.find('.results-page-condition-criteria').show();
-                    container.find('.condition-default-value').show();
-                    container.find('.results-page-condition-operator option').hide().prop("selected", false);
-                    container.find('.results-page-condition-operator option.default_operator').show();
-                    container.find('.results-page-condition-operator option.default_operator:first').prop("selected", true);
-                    container.find('option.qsm-score-criteria').show();
-                    container.find('.results-page-condition-criteria').find('option.qsm-points-criteria').prop("selected", true);
-                } else if ('category' == jQuery(this).val()) {
-                    extraCategory.show();
-                    container.find('.results-page-condition-criteria').show();
-                    container.find('.results-page-condition-operator').show();
-                    extraCategory.find('option').prop("selected", false).hide();
-                    extraCategory.find('.qsm-condition-category').show();
-                    container.find('.condition-default-value').show();
-                    container.find('.results-page-condition-criteria').find('option.qsm-points-criteria').prop("selected", true);
-                    extraCategory.find('option:visible:first').prop("selected", true);
-                    container.find('.results-page-condition-operator option').hide().prop("selected", true);
-                    container.find('.results-page-condition-operator option.default_operator').show();
-                    container.find('.results-page-condition-operator option.default_operator:first').prop("selected", true);
-                    container.find('option.qsm-score-criteria').show()
-                }
-            });
         }
     }
+    function qsmHandleConditionChange(containerClass, extraCategoryClass, operatorClass, criteriaClass, defaultValueClass) {
+        jQuery(document).on('change', '.' + containerClass + '-category', function () {
+            let container = jQuery(this).closest('.' + containerClass);
+            let extraCategory = container.find('.' + extraCategoryClass);
+
+            if ('quiz' == jQuery(this).val() || '' == jQuery(this).val()) {
+                extraCategory.hide();
+                container.find('.' + operatorClass).show();
+                container.find('.' + criteriaClass).show();
+                container.find('.' + defaultValueClass).show();
+                container.find('.' + operatorClass + ' option').hide().prop("selected", false);
+                container.find('.' + operatorClass + ' option.default_operator').show().prop("selected", true);
+                container.find('option.qsm-score-criteria').show();
+                container.find('.' + criteriaClass + ' option.qsm-points-criteria').prop("selected", true);
+            } else if ('category' == jQuery(this).val()) {
+                extraCategory.show();
+                container.find('.' + criteriaClass).show();
+                container.find('.' + operatorClass).show();
+                extraCategory.find('option').prop("selected", false).hide();
+                extraCategory.find('.qsm-condition-category').show();
+                container.find('.' + defaultValueClass).show();
+                container.find('.' + criteriaClass + ' option.qsm-points-criteria').prop("selected", true);
+                extraCategory.find('option:visible:first').prop("selected", true);
+                container.find('.' + operatorClass + ' option').hide().prop("selected", true);
+                container.find('.' + operatorClass + ' option.default_operator').show().prop("selected", true);
+                container.find('option.qsm-score-criteria').show();
+            }
+        });
+    }
+
+    function qsmHandleOperatorChange(containerClass, defaultValueClass) {
+        jQuery(document).on('change', '.' + containerClass + '-operator', function () {
+            var selectedOption = jQuery(this).find('option:selected');
+            if (selectedOption.hasClass('default_operator')) {
+                jQuery(this).closest('.' + containerClass).find('.' + defaultValueClass).show();
+            }
+        });
+    }
+
+    // Usage
+    qsmHandleConditionChange('results-page-condition', 'results-page-extra-condition-category', 'results-page-condition-operator', 'results-page-condition-criteria', 'condition-default-value');
+    qsmHandleOperatorChange('results-page-condition', 'condition-default-value');
+    qsmHandleConditionChange('email-condition', 'email-extra-condition-category', 'email-condition-operator', 'email-condition-criteria', 'condition-default-value');
+    qsmHandleOperatorChange('email-condition', 'condition-default-value');
 }(jQuery));

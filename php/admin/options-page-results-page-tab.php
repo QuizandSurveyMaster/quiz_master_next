@@ -211,7 +211,7 @@ function qsm_options_results_tab_template(){
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+						<a class="new-condition" href="javascript:void(0);"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
@@ -244,6 +244,8 @@ function qsm_options_results_tab_template(){
 					let categories_array = JSON.parse(categories);
 					#>
 						<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
+					<?php } else { ?>
+						<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
 					<?php } ?>
 					<?php do_action( 'qsm_results_page_condition_category' ); ?>
 				</select>
@@ -260,10 +262,9 @@ function qsm_options_results_tab_template(){
 					<?php } ?>
 					<?php do_action( 'qsm_results_page_extra_condition_category' ); ?>
 				</select>
-
 				<select class="results-page-condition-criteria">
-					<option value="points" class="qsm-points-criteria" <# if (data.criteria == 'points' || data.category == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
-					<option value="score" class="qsm-score-criteria" <# if (data.criteria == 'score' || data.category == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
+					<option value="points" class="qsm-points-criteria" <# if (data.criteria == 'points' || data.category == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points', 'quiz-master-next' ); ?></option>
+					<option value="score" class="qsm-score-criteria" <# if (data.criteria == 'score' || data.category == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct percentage', 'quiz-master-next' ); ?></option>
 					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
 				</select>
 				<?php do_action( 'qsm_results_page_extra_condition_fields' ); ?>
