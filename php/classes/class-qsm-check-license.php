@@ -33,9 +33,11 @@ class QSM_Check_License
 					'url'        => home_url(),
 				),
 			);
-			$activation_response = wp_remote_post( 'https://quizandsurveymaster.com', $params );
+			// https://quizandsurveymaster.com
+			$activation_response = wp_remote_post( 'https://staging.qsm.expresstech.io/', $params );
 			if ( ! empty( $activation_response ) ) {
-				$body = json_decode( $activation_response['body'] );
+				preg_match('/\{.*\}/s', $activation_response['body'], $matches);
+				$body = json_decode( $matches[0] );
 				if ( $body->success ) {
 					$response = array(
 						'status'      => 'success',

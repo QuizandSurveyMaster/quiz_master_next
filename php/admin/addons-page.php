@@ -71,7 +71,7 @@ function qsm_generate_featured_addons() {
 	$show_more = __( 'Show more', 'quiz-master-next' );
 	$view_details = __( 'View Details', 'quiz-master-next' );
 	$all_addons = qsm_get_widget_data( 'all_addons' );
-
+	if( ! class_exists('QSM_Installer') ) { 
 	?>
 	<div class="wrap custom-addon-upper">
 		<ul class="subsubsub">
@@ -188,6 +188,8 @@ function qsm_generate_featured_addons() {
 		</div>
 	</div>
 <?php
+	} 
+	do_action('qsm_add_new_settings_tab');
 }
 
 /**
