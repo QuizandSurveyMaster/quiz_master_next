@@ -743,9 +743,9 @@ function qmnValidation(element, quiz_form_id) {
 			}
 			if ( jQuery(this).hasClass('mlw_answer_open_text') || jQuery(this).hasClass('qmn_fill_blank') || jQuery(this).hasClass('mlw_answer_number')) {
 				if (jQuery.trim(this.value).length < jQuery(this).attr('minlength')) {
-					var minlength_error = error_messages.minlength_error_text;
-					minlength_error = minlength_error.replace('%minlength%', jQuery(this).attr('minlength'));
-					qmnDisplayError(minlength_error, jQuery(this), quiz_form_id);
+					let minCharError = error_messages.minCharError_text;
+					minCharError = minCharError.replace('%minlength%', jQuery(this).attr('minlength'));
+					qmnDisplayError(minCharError, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
 			}			
