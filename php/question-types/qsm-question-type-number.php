@@ -16,8 +16,8 @@ function qmn_number_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required       	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_text     	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$min_text_length	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
-	$min_text_attr		= $min_text_length ? "minlength='" . $min_text_length . "' " : '';
+	$min_num_text		= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
+	$min_num_attr		= $min_num_text ? "minlength='" . $min_num_text . "' " : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredNumber';
 	} else {
@@ -27,7 +27,7 @@ function qmn_number_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<input type="number" class="mlw_answer_number <?php echo esc_attr( $mlw_require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>" oninput="checkMaxLength(this)" <?php endif; ?> <?php echo esc_attr( $min_text_attr ); ?> />
+	<input type="number" class="mlw_answer_number <?php echo esc_attr( $mlw_require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>" oninput="checkMaxLength(this)" <?php endif; ?> <?php echo esc_attr( $min_num_attr ); ?> />
 	<?php
 	echo apply_filters( 'qmn_number_display_front', '', $id, $question, $answers );
 }
