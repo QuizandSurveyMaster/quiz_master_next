@@ -20,7 +20,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		'height'       => true,
 		'min'          => true,
 		'max'          => true,
-		'minlenght'    => true,
+		'minlength'    => true,
 		'maxlength'    => true,
 		'name'         => true,
 		'pattern'      => true,
@@ -36,14 +36,16 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	$required                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
 	$limit_text                  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
+	$min_fill_text 				 = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
 	$autofill_att                = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att              = $limit_text ? "maxlength='" . $limit_text . "' " : '';
+	$min_fill_text_att         	 = $min_fill_text ? "minlength='" . $min_fill_text . "' " : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
 	} else {
 		$mlw_require_class = '';
 	}
-	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_require_class' name='question" . $id . "[]' />";
+	$input_text = '<input ' . $min_fill_text_att . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_require_class' name='question" . $id . "[]' />";
 	$input_text = apply_filters( 'qsm_fill_in_blanks_input_after', $input_text, $id, $question, $answers, $mlw_require_class );
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
