@@ -1181,6 +1181,7 @@ h3.addon_category_name {
 .qsm_global_settings input[type="email"],
 .qsm_global_settings input[type="url"],
 .qsm-addon-setting-wrap input[type="email"],
+.qsm-addon-setting-wrap input[type="password"],
 .qsm-addon-setting-wrap input[type="text"],
 .qsm-addon-setting-wrap input[type="url"],
 .qsm-addon-setting-wrap input[type="number"] {
