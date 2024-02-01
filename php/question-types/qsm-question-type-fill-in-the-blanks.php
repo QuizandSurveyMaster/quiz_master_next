@@ -36,10 +36,10 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	$required                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
 	$limit_text                  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$min_fill_text 				 = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
+	$min_fill_text               = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
 	$autofill_att                = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att              = $limit_text ? "maxlength='" . $limit_text . "' " : '';
-	$min_fill_text_att         	 = $min_fill_text ? "minlength='" . $min_fill_text . "' " : '';
+	$min_fill_text_att           = $min_fill_text ? "minlength='" . $min_fill_text . "' " : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
 	} else {

@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qmn_number_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
-	$required       	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-	$limit_text     	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$min_num_text		= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
-	$min_num_attr		= $min_num_text ? "minlength=" . $min_num_text . "" : '';
+	$required           = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$limit_text         = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
+	$min_num_text       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
+	$min_num_attr       = $min_num_text ? "minlength=" . $min_num_text . "" : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredNumber';
 	} else {

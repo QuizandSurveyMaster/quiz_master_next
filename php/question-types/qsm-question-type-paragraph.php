@@ -16,8 +16,8 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$min_length	= $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
-	$min_length_attr	= $min_length ? "minlength=" . $min_length . "" : '';
+	$min_length = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
+	$min_length_attr    = $min_length ? "minlength=" . $min_length . "" : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
 	} else {
