@@ -38,7 +38,7 @@ class QMNQuizManager {
 	public $mathjax_url                   = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
 	public $mathjax_version               = '3.2.0';
 
-	protected $qsm_background_email;
+	public $qsm_background_email;
 	/**
 	 * Main Construct Function
 	 *

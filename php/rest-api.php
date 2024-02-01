@@ -123,6 +123,17 @@ function qsm_register_rest_routes() {
 			)
 		);
 
+		// Register rest api to submit quiz results
+		register_rest_route(
+			'qsm',
+			'/submitquiz/',
+			array(
+				'methods'             => 'POST',
+				'callback'            => 'qsm_api_quiz_submit',
+				'permission_callback' => '__return_true',
+			)
+		);
+
 		// Register rest api to get result of quiz
 		register_rest_route(
 			'qsm',
@@ -532,6 +543,7 @@ function qsm_get_quiz_info( WP_REST_Request $request ) {
 
 		if ( $results ) {
 			$response = array(
+				'count'   => count($data),
 				'success' => true,
 				'data'    => $data,
 			);
@@ -594,6 +606,142 @@ function qsm_unserialize_recursive_loop( $value ) {
 
 	return $unserializedValue;
 }
+
+/**
+ * Submit quiz by api
+ * @since 8.2.2
+ */
+
+function qsm_api_quiz_submit( $request ) {
+	
+	$quiz_id = ! empty( $_POST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) : 0 ;
+	$ajax_url = admin_url('admin-ajax.php');	
+
+	global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb, $qmnQuizManager;
+	$qmn_allowed_visit = true;
+	$qmnQuizManager = new QMNQuizManager();
+	include_once plugin_dir_path( __FILE__ ) . 'classes/class-qmn-background-process.php';
+	$qmnQuizManager->qsm_background_email = new QSM_Background_Request();
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+	$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+	$post_ids = get_posts(array(
+		'post_type'   => 'qsm_quiz', // Replace with the post type you're working with
+		'meta_key'    => 'quiz_id',
+		'meta_value'  => intval( $quiz_id ),
+		'fields'      => 'ids',
+		'numberposts' => 1,
+	));
+	
+
+	if ( ! empty( $post_ids[0] ) ) {
+		$post_status = get_post_status( $post_ids[0] );
+	}
+
+	if ( is_null( $options ) || 1 == $options->deleted ) {
+		echo wp_json_encode(
+			array(
+				'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+				'redirect'      => false,
+				'result_status' => array(
+					'save_response' => false,
+				),
+			)
+		);
+		wp_die();
+	}
+	if ( 'publish' !== $post_status ) {
+		echo wp_json_encode(
+			array(
+				'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
+				'redirect'      => false,
+				'result_status' => array(
+					'save_response' => false,
+				),
+			)
+		);
+		wp_die();
+	}
+	
+	$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
+	$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
+	$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
+	$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
+	$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
+	$post_status = false;
+	
+	if ( 0 != $options->limit_total_entries ) {
+		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
+		if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
+			echo wp_json_encode(
+				array(
+					'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
+	}
+	$data      = array(
+		'quiz_id'         => $options->quiz_id,
+		'quiz_name'       => $options->quiz_name,
+		'quiz_system'     => $options->system,
+		'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
+	);
+
+	return rest_ensure_response( $qmnQuizManager->submit_results( $options, $data ) );
+}
+
+/**
+ * Get the questions by quiz 
+ *
+ * @since 8.2.2
+ * @param WP_REST_Request $request
+ * @param $quiz_id, $question_id
+ */
+
+function qsm_get_quiz_questions( WP_REST_Request $request ){
+	if ( $request->get_param('quiz_id') || $request->get_param('question_id' ) ) {
+        global $mlwQuizMasterNext, $wpdb;
+		$question_id = $request->get_param('question_id' );
+		$quiz_id = $request->get_param('quiz_id' );
+		$data = [];
+		if($question_id) {
+			$results = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $question_id ) );
+			$results->answer_array = maybe_unserialize( $results->answer_array );	
+			$results->question_settings = maybe_unserialize( $results->question_settings );	
+			$data[] = $results;
+		} elseif ($quiz_id) {
+			$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE quiz_id=%d', $quiz_id ) );
+			foreach ($results as $key => $result) {
+				$result->answer_array = maybe_unserialize( $result->answer_array );	
+				$result->question_settings = maybe_unserialize( $result->question_settings );	
+				$data[] = $result;
+			}
+		}
+
+		if ( $results ) {
+			$response = array(
+				'success' => true,
+				'data'    => $data,
+			);
+		} else {
+			$response = array(
+				'success' => false,
+				'message' => __('No questions availalbe.', 'quiz-master-next'),
+			);
+		}
+    } else {
+		$response = array(
+			'success' => false,
+			'message' => __('Error to processing your request.', 'quiz-master-next'),
+		);
+	}
+	return rest_ensure_response($response);
+}
+
 
 /**
  * Gets emails for a quiz.
