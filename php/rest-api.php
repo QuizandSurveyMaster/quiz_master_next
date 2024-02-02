@@ -134,6 +134,17 @@ function qsm_register_rest_routes() {
 			)
 		);
 
+		// Register rest api to submit quiz results
+		register_rest_route(
+			'qsm',
+			'/get_questions/',
+			array(
+				'methods'             => 'GET',
+				'callback'            => 'qsm_get_quiz_questions',
+				'permission_callback' => '__return_true',
+			)
+		);
+
 		// Register rest api to get result of quiz
 		register_rest_route(
 			'qsm',
@@ -414,80 +425,97 @@ function qsm_get_basic_info_quiz( WP_REST_Request $request ) {
  * @param WP_REST_Request $request
  */
 
-function qsm_get_quiz_result_info( WP_REST_Request $request ) {
+ function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 	
     if ( $request->get_param('result_id') ) {
-		global $wpdb;
-		$results_table_name              = $wpdb->prefix . 'mlw_results';
-		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
+        global $wpdb;
+        $results_table_name = $wpdb->prefix . 'mlw_results';
+        $results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
+
         if ( $results_data ) {
-			$results_data->quiz_results = maybe_unserialize($results_data->quiz_results);
-			$request = array(
+            $results_data->quiz_results = maybe_unserialize($results_data->quiz_results);
+            $response = array(
                 'success' => true,
                 'data'    => $results_data,
             );
         } else {
-			$request = array(
-				'success' => false,
-				'message' => __('Quiz result not found', 'quiz-master-next'),
-			);
-		}       
+            $response = array(
+                'success' => false,
+                'message' => __('Quiz result not found based on this result id.', 'quiz-master-next'),
+            );
+        }       
     } else {
-		global $wpdb;
-		$limit = $request->get_param('limit');
-		$quiz_id = $request->get_param('quiz_id');
-		$name = $request->get_param('name');
-		$email = $request->get_param('email');
-		$from_date = $request->get_param('time_taken_real');
-		$order = $request->get_param('order');
+        global $wpdb;
+        $limit = $request->get_param('limit');
+        $quiz_id = $request->get_param('quizId');
+        $name = $request->get_param('name');
+        $email = $request->get_param('email');
+        $from_date = $request->get_param('from_date');
+        $order = $request->get_param('order');
+        $s = $request->get_param('s');
 
-		$query = "SELECT * FROM {$wpdb->prefix}mlw_results WHERE 1=1";
-		if ( empty($limit) ) {
-			$limit = 10;
-		}
-		$limit = empty($limit) ? 10 : $limit;
-		$order = empty($order) ? 'ASC' : $order;
-		
-		if ( ! empty($quiz_id) ) {
-			$query .= $wpdb->prepare(" AND quiz_id = %s", $quiz_id);
+        $query = "SELECT * FROM {$wpdb->prefix}mlw_results WHERE 1=1";
+        $limit = empty($limit) ? 10 : $limit;
+        $order = empty($order) ? 'ASC' : $order;
+
+        if ( ! empty($quiz_id) ) {
+            $query .= $wpdb->prepare(" AND quiz_id = %s", $quiz_id);
         }
 
+		if ( ! empty($s) ) {
+			$rsearch  = '%' . esc_sql( $wpdb->esc_like( $s ) ) . '%';
+			$query .= $wpdb->prepare(" AND (name LIKE %s OR quiz_name LIKE %s OR email LIKE %s)", $rsearch, $rsearch, $rsearch);
+		}
+		
 		if ( ! empty($name) ) {
-			$username  = '%' . esc_sql( $wpdb->esc_like( $name ) ) . '%';
-			$query .= $wpdb->prepare(" AND name LIKE %s", $username);
-        }
-
-		if ( ! empty($email) ) {
-			$useremail  = '%' . esc_sql( $wpdb->esc_like( $email ) ) . '%';
-			$query .= $wpdb->prepare(" AND email LIKE %s", $useremail);
-        }
-
-		if ( ! empty($from_date) ) {
-			$query .= $wpdb->prepare( " AND time_taken_real >= %s", $from_date );
-        }
-
-		$results = $wpdb->get_results($query .= " ORDER BY result_id {$order} LIMIT {$limit}");
-		
-		if ( $results ) {
-			$data = [];
-			foreach ( $results as $key => $value ) {
-				$value->quiz_results = maybe_unserialize($value->quiz_results);
-				$data[] = $value;
-			}
-			$response = array(
-				'count'   => count($data),
-				'success' => true,
-				'data'    => $data,
-			);
-		} else {
-			$response = array(
-				'success' => false,
-				'message' => __('No result data available', 'quiz-master-next'),
-			);
+			$query .= $wpdb->prepare(" AND name = %s", $name);
 		}
-	}
-	return rest_ensure_response($response);
+		
+		if ( ! empty($email) ) {
+			$query .= $wpdb->prepare(" AND email = %s", $email);
+		}
+
+        if ( ! empty($from_date) ) {
+            $query .= $wpdb->prepare( " AND time_taken_real >= %s", $from_date );
+        }
+
+        $results = $wpdb->get_results($query .= " ORDER BY result_id {$order} LIMIT {$limit}");
+        
+        if ( $results ) {
+            $data = [];
+            foreach ( $results as $key => $value ) {
+                $value->quiz_results = maybe_unserialize($value->quiz_results);
+                $data[] = $value;
+            }
+            $response = array(
+                'count'   => count($data),
+                'success' => true,
+                'data'    => $data,
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => "",
+            );
+        }
+
+		if ( ! $results ) {
+			if ( ! $request->get_param('result_id') && ! $request->get_param('quizId') && empty($name) && empty($email) && ! $request->get_param('from_date') ) {
+				$response['message'] = __('No quiz results available.found for the specified criteria.', 'quiz-master-next');
+			} elseif ( ! $request->get_param('quizId') ) {
+				$response['message'] = __('No search results found based on the quiz id.', 'quiz-master-next');
+			} elseif ( ! empty($name) && empty($email) ) {
+				$response['message'] = __('No search results found based on the provided name.', 'quiz-master-next');
+			} elseif ( empty($name) && ! empty($email) ) {
+				$response['message'] = __('No search results found based on the provided email.', 'quiz-master-next');
+			} else {
+				$response['message'] = __('No results found for the specified criteria', 'quiz-master-next');
+			}
+		}    
 }
+    return rest_ensure_response($response);
+}
+
 
 /**
  * Get the quiz by quiz id
@@ -499,31 +527,28 @@ function qsm_get_quiz_result_info( WP_REST_Request $request ) {
 
 function qsm_get_quiz_info( WP_REST_Request $request ) {
 
-    if ( $request->get_param('quiz_id') ) {
+    if ( $request->get_param('quizId') ) {
         global $mlwQuizMasterNext;
-        $quiz_data = $mlwQuizMasterNext->pluginHelper->prepare_quiz($request->get_param('quiz_id'));
+        $quiz_data = $mlwQuizMasterNext->pluginHelper->prepare_quiz($request->get_param('quizId'));
         if ( $quiz_data ) {
             $qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-            $apiFormatArray = qsm_convert_to_api_format($qmn_quiz_options);
+            $formated_array = qsm_convert_to_api_format($qmn_quiz_options);
             $response = array(
                 'success' => true,
-                'data'    => $apiFormatArray,
+                'data'    => $formated_array,
             );
         } else {
 			$response = array(
 				'success' => false,
-				'message' => __('Quiz not found', 'quiz-master-next'),
+				'message' => __('Quiz not found on given quiz id.', 'quiz-master-next'),
 			);
         }
     } else {
 		global $wpdb;
-		$limit = $request->get_param('limit');
+		$limit     = $request->get_param( 'limit' ) ? $request->get_param( 'limit' ) : 10;
 		$quiz_name = $request->get_param('quiz_name');
 		$from_date = $request->get_param('from_date');
 		$query = "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE 1=1";
-		if ( empty($limit) ) {
-			$limit = 10;
-		}
 
 		if ( ! empty($quiz_name) ) {
 			$qnsearch  = '%' . esc_sql( $wpdb->esc_like( $quiz_name ) ) . '%';
@@ -535,13 +560,14 @@ function qsm_get_quiz_info( WP_REST_Request $request ) {
         }
 
 		$results = $wpdb->get_results($query .= " LIMIT {$limit}");
-		$data = [];
-		foreach ( $results as $key => $value ) {
-			$apiFormatArray = qsm_convert_to_api_format($value);
-			$data[] = $apiFormatArray;
-		}
-
 		if ( $results ) {
+
+			$data = [];
+			foreach ( $results as $key => $value ) {
+				$formated_array = qsm_convert_to_api_format($value);
+				$data[] = $formated_array;
+			}
+
 			$response = array(
 				'count'   => count($data),
 				'success' => true,
@@ -550,8 +576,18 @@ function qsm_get_quiz_info( WP_REST_Request $request ) {
 		} else {
 			$response = array(
 				'success' => false,
-				'message' => __('No quiz data available', 'quiz-master-next'),
+				'message' => "",
 			);
+		}       
+
+		if ( ! $results ) {
+			if ( empty($quiz_name) && ! $request->get_param('from_date') ) {
+				$response['message'] = __('No quiz results available.', 'quiz-master-next');
+			}elseif ( empty($quiz_name) ) {
+				$response['message'] = __('No search results found based on the provided quiz name.', 'quiz-master-next');
+			}else {
+				$response['message'] = __('No quizzes found for the specified criteria', 'quiz-master-next');
+			}
 		}
     }
 	return rest_ensure_response($response);
@@ -615,7 +651,7 @@ function qsm_unserialize_recursive_loop( $value ) {
 function qsm_api_quiz_submit( $request ) {
 	
 	$quiz_id = ! empty( $_POST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) : 0 ;
-	$ajax_url = admin_url('admin-ajax.php');	
+	$ajax_url = admin_url('admin-ajax.php');    
 
 	global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb, $qmnQuizManager;
 	$qmn_allowed_visit = true;
@@ -631,7 +667,6 @@ function qsm_api_quiz_submit( $request ) {
 		'fields'      => 'ids',
 		'numberposts' => 1,
 	));
-	
 
 	if ( ! empty( $post_ids[0] ) ) {
 		$post_status = get_post_status( $post_ids[0] );
@@ -702,42 +737,76 @@ function qsm_api_quiz_submit( $request ) {
  * @param $quiz_id, $question_id
  */
 
-function qsm_get_quiz_questions( WP_REST_Request $request ){
-	if ( $request->get_param('quiz_id') || $request->get_param('question_id' ) ) {
-        global $mlwQuizMasterNext, $wpdb;
+function qsm_get_quiz_questions( WP_REST_Request $request ) {
+	
+	if ( $request->get_param('question_id') ) {
+        global $wpdb;
 		$question_id = $request->get_param('question_id' );
-		$quiz_id = $request->get_param('quiz_id' );
-		$data = [];
-		if($question_id) {
-			$results = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $question_id ) );
-			$results->answer_array = maybe_unserialize( $results->answer_array );	
-			$results->question_settings = maybe_unserialize( $results->question_settings );	
-			$data[] = $results;
-		} elseif ($quiz_id) {
-			$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE quiz_id=%d', $quiz_id ) );
-			foreach ($results as $key => $result) {
-				$result->answer_array = maybe_unserialize( $result->answer_array );	
-				$result->question_settings = maybe_unserialize( $result->question_settings );	
-				$data[] = $result;
-			}
+		$results = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $question_id ) );
+		if ( $results ) {
+			$results->answer_array = maybe_unserialize( $results->answer_array );   
+			$results->question_settings = maybe_unserialize( $results->question_settings ); 
+			$response = array(
+				'success' => true,
+				'data'    => $results,
+			);
+		} else {
+			$response = array(
+				'success' => false,
+				'message' => __('No question found in this given question id.', 'quiz-master-next'),
+			);
 		}
+    } else { 
+		$data = [];
+		global $wpdb;
+		$question_name = $request->get_param('question_name' );
+		$quiz_id = $request->get_param('quizId' );
+		$limit     = $request->get_param( 'limit' ) ? $request->get_param( 'limit' ) : 10;
+
+		$query = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE 1=1";
+
+		if ( ! empty($question_name) ) {
+			$qnsearch  = '%' . esc_sql( $wpdb->esc_like( $question_name ) ) . '%';
+			$query .= $wpdb->prepare(" AND question_name LIKE %s", $qnsearch);
+        }
+
+		if ( ! empty($quiz_id) ) {
+			$query .= $wpdb->prepare( " AND quiz_id=%d", $quiz_id );
+        }
+
+		$results = $wpdb->get_results($query .= " LIMIT {$limit}");
 
 		if ( $results ) {
+
+			foreach ( $results as $key => $result ) {
+				$result->answer_array = maybe_unserialize( $result->answer_array ); 
+				$result->question_settings = maybe_unserialize( $result->question_settings );   
+				$data[] = $result;
+			}
+		
 			$response = array(
+				'count'   => count($data),
 				'success' => true,
 				'data'    => $data,
 			);
 		} else {
 			$response = array(
 				'success' => false,
-				'message' => __('No questions availalbe.', 'quiz-master-next'),
+				'message' => "",
 			);
+		}   
+
+		if ( ! $results ) {
+			if ( ! $request->get_param('quizId') && ! $request->get_param('question_name') ) {
+				$response['message'] = __('No quiz results available.', 'quiz-master-next');
+			} elseif ( ! empty($quiz_id) && empty($question_name) ) {
+				$response['message'] = __('No questions are available for the given quiz id.', 'quiz-master-next');
+			} elseif ( empty($quiz_id) && ! empty($question_name) ) {
+				$response['message'] = __('No question results found for the provided search.', 'quiz-master-next');
+			} else {
+				$response['message'] = __('No questions found for the specified criteria', 'quiz-master-next');
+			}
 		}
-    } else {
-		$response = array(
-			'success' => false,
-			'message' => __('Error to processing your request.', 'quiz-master-next'),
-		);
 	}
 	return rest_ensure_response($response);
 }
