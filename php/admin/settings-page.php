@@ -154,28 +154,24 @@ class QMNGlobalSettingsPage {
 	 */
 	public function quiz_default_global_option_init() {
 		register_setting( 'qsm-quiz-settings-group', 'qsm-quiz-settings' );
-		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option_general' );
-		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option_quiz_submission' );
-		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option_display' );
-		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option_contact' );
-		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_general' );
+		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_quiz_submission' );
+		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_display' );
+		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_contact' );
+		add_settings_field( 'quiz-type', __( 'Select Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'correct_answer_logic', __( 'Correct Answer Logic', 'quiz-master-next' ), array( $this, 'correct_answer_logic' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'correct_answer_logic', __( 'Answer Settings', 'quiz-master-next' ), array( $this, 'correct_answer_logic' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'random-questions', __( 'Random Questions', 'quiz-master-next' ), array( $this, 'qsm_global_random_questions' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'quiz-dates', __( 'Quiz Dates', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_dates' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'limit-number-of-questions', __( 'Limit number of Questions', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option_display', 'qmn-global-section' );
-		add_settings_field( 'require-user-login', __( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'questions-per-page', __( 'Questions Per Page', 'quiz-master-next' ), array( $this, 'qsm_global_questions_per_page' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'time-limit-in-minutes', __( 'Time Limit (in minutes)', 'quiz-master-next' ), array( $this, 'qsm_global_time_limit_in_minutes' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'force-submit-after-timer-expiry', __( 'Force submit after timer expiry', 'quiz-master-next' ), array( $this, 'qsm_global_force_submit_after_timer_expiry' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'skip-validations-when-time-expire', __( 'Skip validations when time expire', 'quiz-master-next' ), array( $this, 'qsm_global_skip_validations_when_time_expire' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'limit-attempts', __( 'Limit Attempts', 'quiz-master-next' ), array( $this, 'qsm_global_limit_attempts' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'limit-entries', __( 'Limit Entries', 'quiz-master-next' ), array( $this, 'qsm_global_limit_entries' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
-		add_settings_field( 'limit-number-of-questions', __( 'Limit number of Questions', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'limit-number-of-questions-per-category', __( 'Limit number of Questions Per Category', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions_per_category' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'quiz-dates', __( 'Quiz Dates', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_dates' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'can-submit-after-end-date', "", array( $this, 'qsm_global_do_not_allow_quiz_submission_after_the_end_datetime' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'random-questions', __( 'Random Questions', 'quiz-master-next' ), array( $this, 'qsm_global_random_questions' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'contact-form-position', __( 'Contact form position', 'quiz-master-next' ), array( $this, 'qsm_global_contact_form_position' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'show-contact-form-to-logged-in-users', __( 'Show contact form to logged in users', 'quiz-master-next' ), array( $this, 'qsm_global_show_contact_form_to_logged_in_users' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option_general', 'qmn-global-section' );
@@ -186,7 +182,6 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-auto-fill-for-contact-input', __( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
-		add_settings_field( 'disable-auto-fill-for-quiz-input', __( 'Disable auto fill for Quiz input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_quiz_input' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'display-category-name-on-front-end', __( 'Display category name on front end', 'quiz-master-next' ), array( $this, 'qsm_global_display_category_name_on_front_end' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'hide-correct-answer', __( 'Hide Correct Answer', 'quiz-master-next' ), array( $this, 'qsm_global_hide_correct_answer' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-results-inline', __( 'Show results inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_results_inline' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -195,9 +190,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'retake-quiz', __( 'Retake Quiz', 'quiz-master-next' ), array( $this, 'qsm_global_retake_quiz' ), 'qsm_default_global_option_quiz_submission', 'qmn-global-section' );
 		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'show-current-page-number', __( 'Show question featured image in results page', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_featured_image_in_result' ), 'qsm_default_global_option_display', 'qmn-global-section' );
-		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option_general', 'qmn-global-section' );
-		add_settings_field( 'disable_mathjax', __( 'Disable MathJax?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_mathjax' ), 'qsm_default_global_option_general', 'qmn-global-section' );
+		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option_display', 'qmn-global-section' );
 		add_settings_field( 'disable-first-page', __( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option_contact', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option_display', 'qmn-global-section' );
@@ -224,7 +217,6 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function global_section() {
-		esc_html_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
 		if ( 'cancelled' === $enabled ) {
 			?>
@@ -658,6 +650,7 @@ class QMNGlobalSettingsPage {
 		echo '</label>';
 	}
 
+	/* ====== General Tab start ==========*/
 	/**
 	 * Generates Quiz Global  Field For Quiz Type
 	 *
@@ -667,11 +660,27 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_quiz_type() {
 		global $globalQuizsetting;
 		$qsm_form_type = ( isset( $globalQuizsetting['form_type'] ) && '' !== $globalQuizsetting['form_type'] ? $globalQuizsetting['form_type'] : '' );
-		echo '<div class="global_form_type_settiong"><select name ="qsm-quiz-settings[form_type]">
-			<option value="0" ' . ( 0 === intval( $qsm_form_type ) ? 'Selected' : '' ) . '>Quiz</option>
-			<option value="1" ' . ( 1 === intval( $qsm_form_type ) ? 'Selected' : '' ) . ' >Survey</option>
-			<option value="2" ' . ( 2 === intval( $qsm_form_type ) ? 'Selected' : '' ) . '>Simple Form</option>
-		</select></div>';
+		$qsm_require_log_in = ( isset( $globalQuizsetting['require_log_in'] ) && '' !== $globalQuizsetting['require_log_in'] ? $globalQuizsetting['require_log_in'] : '0' );
+		?>
+		<fieldset class="buttonset buttonset-hide" data-hide="1" id="form-type">
+			<label class="qsm-option-label" for="qsm-form-type-0">
+				<input type="radio" id="qsm-form-type-0" name="qsm-quiz-settings[form_type]" checked="checked" value="0" <?php checked( $qsm_form_type, 0 ); ?>>
+				<?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?>
+			</label>
+			<label class="qsm-option-label" for="qsm-form-type-1">
+				<input type="radio" id="qsm-form-type-1" name="qsm-quiz-settings[form_type]" value="1" <?php checked( $qsm_form_type, 1 ); ?>>
+				<?php esc_html_e( 'Survey', 'quiz-master-next' ); ?>
+			</label>
+			<label class="qsm-option-label" for="qsm-form-type-2">
+				<input type="radio" id="qsm-form-type-2" name="qsm-quiz-settings[form_type]" value="2" <?php checked( $qsm_form_type, 2 ); ?>>
+				<?php esc_html_e( 'Simple Form', 'quiz-master-next' ); ?>
+			</label>
+			<label for="qsm-require-log-in">
+				<input type="checkbox" id="qsm-require-log-in" name="qsm-quiz-settings[require_log_in]" value="1" <?php checked( $qsm_require_log_in, 1 ); ?>>
+				<?php esc_html_e( 'Allow only logged-in users to access the content', 'quiz-master-next' ); ?>
+			</label>
+		</fieldset>
+		<?php
 	}
 
 	/**
@@ -683,31 +692,186 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_grading_system() {
 		global $globalQuizsetting;
 		$qsm_system = ( isset( $globalQuizsetting['system'] ) && '' !== $globalQuizsetting['system'] ? $globalQuizsetting['system'] : '' );
-		echo '<fieldset class="buttonset buttonset-hide global_setting_system" >
-					<input type="radio" id="system-0" name="qsm-quiz-settings[system]" value="0" ' . checked( $qsm_system, '0', false ) . '>
-					<label for="system-0">Correct/Incorrect</label><br>
-					<input type="radio" id="system-1" name="qsm-quiz-settings[system]" value="1" ' . checked( $qsm_system, '1', false ) . '>
-					<label for="system-1">Points</label><br>
-					<input type="radio" id="system-3" name="qsm-quiz-settings[system]"  value="3" ' . checked( $qsm_system, '3', false ) . '>
-					<label for="system-3">Both</label><br>
-				</fieldset>
-				<span class="qsm-opt-desc">Select the system for grading the quiz.</span>';
+		$qsm_score_roundoff = ( isset( $globalQuizsetting['score_roundoff'] ) && '' !== $globalQuizsetting['score_roundoff'] ? $globalQuizsetting['score_roundoff'] : '' );
+		?>
+		<fieldset class="buttonset buttonset-hide global_setting_system" >
+			<label for="qsm-system-0">
+				<input type="radio" id="qsm-system-0" name="qsm-quiz-settings[system]" value="0" <?php checked( $qsm_system, 0 ); ?>>
+				<?php esc_html_e( 'Correct/Incorrect', 'quiz-master-next' ); ?>
+			</label>
+			<label for="qsm-system-1">
+				<input type="radio" id="qsm-system-1" name="qsm-quiz-settings[system]" value="1" <?php checked( $qsm_system, 1 ); ?>>
+				<?php esc_html_e( 'Points', 'quiz-master-next' ); ?>
+			</label>
+			<label for="qsm-system-3">
+				<input type="radio" id="qsm-system-3" name="qsm-quiz-settings[system]"  value="3" <?php checked( $qsm_system, 3 ); ?>>
+				<?php esc_html_e( 'Both', 'quiz-master-next' ); ?>
+			</label>
+			<label for="qsm-score-roundoff">
+				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_system, 1 ); ?>>
+				<?php esc_html_e( 'Allow Score Round-off', 'quiz-master-next' ); ?>
+			</label>
+		</fieldset>
+		<?php
 	}
 
 	/**
-	 * Generates Quiz Global  Field For Allow Score Round-off
+	 * Generates quiz global field for correct answers logic field
+	 *
+	 * @since 7.3.15
+	 * @return void
+	 */
+	public function correct_answer_logic(){
+		global $globalQuizsetting;
+		$qsm_all_correct_selected = ( isset( $globalQuizsetting['correct_answer_logic'] ) && '' !== $globalQuizsetting['correct_answer_logic'] ? $globalQuizsetting['correct_answer_logic'] : '' );
+		$qsm_enable_deselect_option = ( isset( $globalQuizsetting['enable_deselect_option'] ) && '' !== $globalQuizsetting['enable_deselect_option'] ? $globalQuizsetting['enable_deselect_option'] : '0' );
+		$qsm_form_disable_autofill = ( isset( $globalQuizsetting['form_disable_autofill'] ) && '' !== $globalQuizsetting['form_disable_autofill'] ? $globalQuizsetting['form_disable_autofill'] : '0' );
+		$qsm_disable_mathjax = ( isset( $globalQuizsetting['disable_mathjax'] ) && '' !== $globalQuizsetting['disable_mathjax'] ? $globalQuizsetting['disable_mathjax'] : '0' );
+		?>
+		<fieldset class="buttonset buttonset-hide qsm-p-b-10" id="qsm-correct-answer-logic">
+			<div class="qsm-mb-1"><?php esc_html_e( 'Correct Answer Logic', 'quiz-master-next' ); ?>:</div>
+			<label for="qsm-correct-answer-logic-1">
+				<input type="radio" id="qsm-correct-answer-logic-1" name="qsm-quiz-settings[correct_answer_logic]" value="1" <?php checked( $qsm_all_correct_selected, 1 ); ?>>
+				<?php esc_html_e( 'All correct answers', 'quiz-master-next'); ?>
+			</label>
+			<label for="qsm-correct-answer-logic-0">
+				<input type="radio" id="qsm-correct-answer-logic-0" name="qsm-quiz-settings[correct_answer_logic]"  value="0" <?php checked( $qsm_all_correct_selected, 0 ); ?>>
+				<?php esc_html_e( 'Any correct answer', 'quiz-master-next' ); ?>
+			</label>
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide">
+			<div class="qsm-mb-1"><?php esc_html_e( 'Other Answer Settings', 'quiz-master-next' ); ?>:</div>
+			<label class="qsm-option-label" for="qsm-enable-deselect-option">
+				<input type="checkbox" id="qsm-enable-deselect-option" name="qsm-quiz-settings[enable_deselect_option]" value="1" <?php checked( $qsm_enable_deselect_option, 1 ); ?>>
+				<?php esc_html_e( 'Allow user to deselect an answer and leave it blank.', 'quiz-master-next' ); ?>
+				<i class="qsm-font-light">(<?php esc_html_e( 'Works with multiple choice & horizontal multiple choice questions only', 'quiz-master-next' ); ?>)</i>
+			</label>
+			<label class="qsm-option-label" for="qsm-form-disable-autofill">
+				<input type="checkbox" id="qsm-form-disable-autofill" name="qsm-quiz-settings[form_disable_autofill]" value="1" <?php checked( $qsm_form_disable_autofill, 1 ); ?>>
+				<?php esc_html_e( 'Disable auto-fill suggestions for the quiz inputs.', 'quiz-master-next' ); ?>
+			</label>
+			<label class="qsm-option-label" for="qsm-disable-mathjax">
+				<input type="checkbox" id="qsm-disable-mathjax" name="qsm-quiz-settings[disable_mathjax]" value="1" <?php checked( $qsm_disable_mathjax, 1 ); ?>>
+				<?php esc_html_e( 'Disable math formulas for mathematical & technical questions, using TeX and LaTeX notation.', 'quiz-master-next' ); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+	/**
+	 * Generates Quiz Global  Field For Random Questions
 	 *
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function qsm_global_score_roundoff() {
+	public function qsm_global_random_questions() {
 		global $globalQuizsetting;
-		$qsm_score_roundoff = ( isset( $globalQuizsetting['score_roundoff'] ) && '' !== $globalQuizsetting['score_roundoff'] ? $globalQuizsetting['score_roundoff'] : '' );
-		echo '<fieldset class="buttonset buttonset-hide global_setting_score_roundoff" >
-				<input type="checkbox" id="score_roundoff-1" name="qsm-quiz-settings[score_roundoff]" value="1" ' . checked( $qsm_score_roundoff, '1', false ) . '>
-			  </fieldset>';
+		$qsm_randomness_order = ( isset( $globalQuizsetting['randomness_order'] ) && '' !== $globalQuizsetting['randomness_order'] ? $globalQuizsetting['randomness_order'] : '' );
+		?>
+		<fieldset class="buttonset buttonset-hide" data-hide="1">
+			<label for="qsm-randomness-order-1">
+				<input type="radio" id="qsm-randomness-order-1" name="qsm-quiz-settings[randomness_order]" <?php checked( $qsm_randomness_order, 1 ); ?> value="1">
+				<?php esc_html_e( 'Random Questions', 'quiz-master-next'); ?>
+			</label>
+			<label for="qsm-randomness-order-2">
+				<input type="radio" id="qsm-randomness-order-2" name="qsm-quiz-settings[randomness_order]" <?php checked( $qsm_randomness_order, 2 ); ?> value="2">
+				<?php esc_html_e( 'Random Questions And Answers', 'quiz-master-next'); ?>
+			</label>
+			<label for="qsm-randomness-order-3">
+				<input type="radio" id="qsm-randomness-order-3" name="qsm-quiz-settings[randomness_order]" <?php checked( $qsm_randomness_order, 3 ); ?> value="3">
+				<?php esc_html_e( 'Random Answers', 'quiz-master-next'); ?>
+			</label>
+			<label for="qsm-randomness-order-0">
+				<input type="radio" id="qsm-randomness-order-0" name="qsm-quiz-settings[randomness_order]" <?php checked( $qsm_randomness_order, 0 ); ?> value="0">
+				<?php esc_html_e( 'Disabled', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+	/**
+	 * Generates Quiz Global  Field For Quiz Dates
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_quiz_dates() {
+		global $globalQuizsetting;
+		$qsm_scheduled_time_start = ( isset( $globalQuizsetting['scheduled_time_start'] ) && '' !== $globalQuizsetting['scheduled_time_start'] ? $globalQuizsetting['scheduled_time_start'] : '' );
+		$qsm_scheduled_time_end   = ( isset( $globalQuizsetting['scheduled_time_end'] ) && '' !== $globalQuizsetting['scheduled_time_end'] ? $globalQuizsetting['scheduled_time_end'] : '' );
+		$qsm_not_allow_after_expired_time = ( isset( $globalQuizsetting['not_allow_after_expired_time'] ) && '' !== $globalQuizsetting['not_allow_after_expired_time'] ? $globalQuizsetting['not_allow_after_expired_time'] : '' );
+		?>
+		<fieldset class="buttonset buttonset-hide qsm_tab_content" data-hide="1" id="qsm-scheduled-time" style="padding-left:0">
+			<input autocomplete="off" class="qsm-date-picker" type="text" placeholder="<?php esc_attr_e( 'Start Date', 'quiz-master-next'); ?> " id="qsm-scheduled-time-start-input" name="qsm-quiz-settings[scheduled_time_start]" value="<?php echo esc_attr($qsm_scheduled_time_start); ?>">
+			<input autocomplete="off" class="qsm-date-picker" type="text" placeholder="<?php esc_attr_e( 'End Date', 'quiz-master-next'); ?>" id="scheduled_time_end-input" name="qsm-quiz-settings[scheduled_time_end]" value="<?php echo esc_attr($qsm_scheduled_time_end); ?>">
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide" data-hide="1" id="not_allow_after_expired_time">
+			<label class="qsm-option-label" for="not_allow_after_expired_time-1">
+				<input type="checkbox" id="not_allow_after_expired_time-1" name="not_allow_after_expired_time" value="1" <?php checked( $qsm_not_allow_after_expired_time, 1 ); ?> >
+				<?php esc_html_e( 'Do not allow quiz submission after the end date/time', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<?php
+	}
+	/**
+	 * Generates Quiz Global  Field For Limit number of Questions
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_limit_number_of_questions() {
+		global $globalQuizsetting;
+		$qsm_question_from_total = ( isset( $globalQuizsetting['question_from_total'] ) && '' !== $globalQuizsetting['question_from_total'] ? $globalQuizsetting['question_from_total'] : '0' );
+		$qsm_question_per_category = ( isset( $globalQuizsetting['question_per_category'] ) && '' !== $globalQuizsetting['question_per_category'] ? $globalQuizsetting['question_per_category'] : '0' );
+		?>
+		<fieldset class="buttonset buttonset-hide qsm-p-b-10" data-hide="1" id="qsm-question-from-total">
+			<input class="small-text" type="number" step="1" min="0" id="qsm-question-from-total-input" name="qsm-quiz-settings[question_from_total]" value="<?php echo esc_attr( $qsm_question_from_total ); ?>">
+			<?php esc_html_e( 'Maximum question limit', 'quiz-master-next'); ?>
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide" data-hide="1" id="qsm-question-per-category" style="">
+			<input class="small-text" type="number" step="1" min="0" id="qsm-question-per-category-input" name="qsm-quiz-settings[question_per_category]" value="<?php echo esc_attr( $qsm_question_per_category ); ?>">
+				<span class="qsm-opt-tr">
+					<?php esc_html_e( 'Limit number of questions per category', 'quiz-master-next'); ?>
+					<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+						<span class="qsm-tooltips">
+							<?php esc_html_e( 'Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.', 'quiz-master-next'); ?>
+						</span>
+					</span>
+				</span>
+		</fieldset>
+		<?php
 	}
 
+	/**
+	 * Generates quiz global field for default answers field
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	public function default_answers(){
+		global $globalQuizsetting;
+		$default_answers = ( isset( $globalQuizsetting['default_answers'] ) ? $globalQuizsetting['default_answers'] : 1 );
+		?>
+		<label class="qsm-option-label" for="qsm-default-answers">
+			<input class="small-text" type="number" step="1" min="0" id="qsm-default-answers" name="qsm-quiz-settings[default_answers]" value="<?php echo esc_attr( $default_answers ); ?>">
+			<?php esc_html_e( 'Adds number of answer fields', 'quiz-master-next' ); ?>
+		<?php
+	}
+	/**
+	 * Generates Quiz Global  Field For Enable comments
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_enable_comments() {
+		global $globalQuizsetting;
+		$qsm_comment_section = ( isset( $globalQuizsetting['comment_section'] ) && '' !== $globalQuizsetting['comment_section'] ? $globalQuizsetting['comment_section'] : '0' );
+		?>
+		<label for="comment_section-0">
+			<input type="checkbox" id="comment_section-0" name="qsm-quiz-settings[comment_section]" value="0" <?php checked( $qsm_comment_section, 0 ); ?> >
+			<?php esc_html_e( 'Allow users to post comments after completion', 'quiz-master-next' ); ?>
+		</label>
+		<?php
+	}
+	/* ====== General Tab End ==========*/
 	/**
 	 * Generates Quiz Global  Field For Show progress bar
 	 *
@@ -723,25 +887,6 @@ class QMNGlobalSettingsPage {
 				<input type="radio" id="progress_bar-0" name="qsm-quiz-settings[progress_bar]"  value="0"  ' . checked( $qsm_progress_bar, '0', false ) . '>
 				<label for="progress_bar-0">No</label><br>
 			 </fieldset>';
-	}
-
-	/**
-	 * Generates Quiz Global  Field For Require User Login
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_require_user_login() {
-		global $globalQuizsetting;
-
-		$qsm_require_log_in = ( isset( $globalQuizsetting['require_log_in'] ) && '' !== $globalQuizsetting['require_log_in'] ? $globalQuizsetting['require_log_in'] : '0' );
-			echo '<fieldset class="buttonset buttonset-hide" >
-					<input type="radio" id="require_log_in-1" name="qsm-quiz-settings[require_log_in]" value="1" ' . checked( $qsm_require_log_in, '1', false ) . '>
-					<label for="require_log_in-1">Yes</label><br>
-					<input type="radio" id="require_log_in-0" name="qsm-quiz-settings[require_log_in]"  value="0" ' . checked( $qsm_require_log_in, '0', false ) . '>
-					<label for="require_log_in-0">No</label><br>
-				  </fieldset>
-				  <span class="qsm-opt-desc">Enabling this allows only logged in users to take the quiz</span>';
 	}
 
 	/**
@@ -830,36 +975,6 @@ class QMNGlobalSettingsPage {
 			  <span class="qsm-opt-desc">Leave 0 for unlimited entries</span>';
 
 	}
-
-	/**
-	 * Generates Quiz Global  Field For Limit number of Questions
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_limit_number_of_questions() {
-		global $globalQuizsetting;
-		$qsm_question_from_total = ( isset( $globalQuizsetting['question_from_total'] ) && '' !== $globalQuizsetting['question_from_total'] ? $globalQuizsetting['question_from_total'] : '0' );
-		echo '<input type="number" step="1" min="0" id="question_from_total" name="qsm-quiz-settings[question_from_total]" value="' . esc_attr( $qsm_question_from_total ) . '">
-			  <span class="qsm-opt-desc">Leave 0 to load all questions</span>';
-	}
-
-
-
-	/**
-	 * Generates Quiz Global  Field For Limit number of Questions Per Category
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_limit_number_of_questions_per_category() {
-		global $globalQuizsetting;
-		$qsm_question_per_category = ( isset( $globalQuizsetting['question_per_category'] ) && '' !== $globalQuizsetting['question_per_category'] ? $globalQuizsetting['question_per_category'] : '0' );
-		echo '<input type="number" step="1" min="0" id="question_per_category" name="qsm-quiz-settings[question_per_category]" value="' . esc_attr( $qsm_question_per_category ) . '">
-			  <span class="qsm-opt-desc">Leave 0 to load all questions. You also need to set Limit Number of questions, as well as select Question Categories</span>';
-	}
-
-
 	/**
 	 * Generates Quiz Global  Field For Contact form position
 	 *
@@ -895,25 +1010,6 @@ class QMNGlobalSettingsPage {
 			  </fieldset>
 			  <span class="qsm-opt-desc">Logged in users can edit their contact information</span>';
 	}
-
-	/**
-	 * Generates Quiz Global  Field For Enable comments
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_enable_comments() {
-		global $globalQuizsetting;
-		$qsm_comment_section = ( isset( $globalQuizsetting['comment_section'] ) && '' !== $globalQuizsetting['comment_section'] ? $globalQuizsetting['comment_section'] : '0' );
-		echo '<fieldset class="buttonset buttonset-hide" >
-					<input type="radio" id="comment_section-0" name="qsm-quiz-settings[comment_section]" value="0"  ' . checked( $qsm_comment_section, '0', false ) . '>
-					<label for="comment_section-0">Yes</label><br>
-					<input type="radio" id="comment_section-1" name="qsm-quiz-settings[comment_section]"  value="1"  ' . checked( $qsm_comment_section, '1', false ) . '>
-					<label for="comment_section-1">No</label><br>
-				</fieldset>
-				<span class="qsm-opt-desc">Allow users to enter their comments after the quiz</span>';
-	}
-
 	/**
 	 * Generates Quiz Global  Field For Show question numbers
 	 *
@@ -1002,23 +1098,6 @@ class QMNGlobalSettingsPage {
 					<input type="radio" id="contact_disable_autofill-0" name="qsm-quiz-settings[contact_disable_autofill]"  value="0"  ' . checked( $qsm_contact_disable_autofill, '0', false ) . '>
 					<label for="contact_disable_autofill-0">No</label><br>
 			  </fieldset>';
-	}
-
-	/**
-	 * Generates Quiz Global  Field For Disable auto fill for Quiz input
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_disable_auto_fill_for_quiz_input() {
-		global $globalQuizsetting;
-		$qsm_form_disable_autofill = ( isset( $globalQuizsetting['form_disable_autofill'] ) && '' !== $globalQuizsetting['form_disable_autofill'] ? $globalQuizsetting['form_disable_autofill'] : '0' );
-		echo '<fieldset class="buttonset buttonset-hide" >
-					<input type="radio" id="form_disable_autofill-1" name="qsm-quiz-settings[form_disable_autofill]" value="1" ' . checked( $qsm_form_disable_autofill, '1', false ) . '>
-					<label for="form_disable_autofill-1">Yes</label><br>
-					<input type="radio" id="form_disable_autofill-0" name="qsm-quiz-settings[form_disable_autofill]"  value="0" ' . checked( $qsm_form_disable_autofill, '0', false ) . '>
-					<label for="form_disable_autofill-0">No</label><br>
-			 </fieldset>';
 	}
 
 	/**
@@ -1161,23 +1240,6 @@ class QMNGlobalSettingsPage {
 	}
 
 	/**
-	 * Generates Quiz Global  Field For Deselect Answer
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_deselect_answer() {
-		global $globalQuizsetting;
-		$qsm_enable_deselect_option = ( isset( $globalQuizsetting['enable_deselect_option'] ) && '' !== $globalQuizsetting['enable_deselect_option'] ? $globalQuizsetting['enable_deselect_option'] : '0' );
-		echo '<fieldset class="buttonset buttonset-hide" >
-					<input type="radio" id="enable_deselect_option-1" name="qsm-quiz-settings[enable_deselect_option]" value="1" ' . checked( $qsm_enable_deselect_option, '1', false ) . '>
-					<label for="enable_deselect_option-1">Yes</label><br>
-					<input type="radio" id="enable_deselect_option-0" name="qsm-quiz-settings[enable_deselect_option]"  value="0" ' . checked( $qsm_enable_deselect_option, '0', false ) . '>
-					<label for="enable_deselect_option-0">No</label><br>
-			 </fieldset>
-			 <span class="qsm-opt-desc">Users are able deselect an answer and leave it blank. Works with Multiple Choice and Horizintal Multiple Choice questions only</span>';
-	}
-	/**
 	 * Generates Quiz Global  Field For Disable description on quiz result page?
 	 *
 	 * @since 4.1.0
@@ -1193,22 +1255,7 @@ class QMNGlobalSettingsPage {
 				<label for="disable_description_on_result-0">No</label><br>
 			</fieldset>';
 	}
-	/**
-	 * Generates Quiz Global Field For Disable MathJax?
-	 *
-	 * @since 8.0.3
-	 * @return void
-	 */
-	public function qsm_global_disable_mathjax() {
-		global $globalQuizsetting;
-		$qsm_disable_mathjax = ( isset( $globalQuizsetting['disable_mathjax'] ) && '' !== $globalQuizsetting['disable_mathjax'] ? $globalQuizsetting['disable_mathjax'] : '0' );
-		echo '<fieldset class="buttonset buttonset-hide" >
-				<input type="radio" id="disable_mathjax-1" name="qsm-quiz-settings[disable_mathjax]" value="1" ' . checked( $qsm_disable_mathjax, '1', false ) . ' >
-				<label for="disable_mathjax-1">Yes</label><br>
-				<input type="radio" id="disable_mathjax-0" name="qsm-quiz-settings[disable_mathjax]" value="0" ' . checked( $qsm_disable_mathjax, '0', false ) . '>
-				<label for="disable_mathjax-0">No</label><br>
-			</fieldset>';
-	}
+
 	/**
 	 * Generates Quiz Global  Field For Disable scroll on next and previous button click?
 	 *
@@ -1277,77 +1324,6 @@ class QMNGlobalSettingsPage {
 	}
 
 	/**
-	 * Generates Quiz Global  Field For Random Questions
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_random_questions() {
-		global $globalQuizsetting;
-		$qsm_randomness_order = ( isset( $globalQuizsetting['randomness_order'] ) && '' !== $globalQuizsetting['randomness_order'] ? $globalQuizsetting['randomness_order'] : '' );
-		$options              = array(
-			array(
-				'label' => __( 'Random Questions', 'quiz-master-next' ),
-				'value' => 1,
-			),
-			array(
-				'label' => __( 'Random Questions And Answers', 'quiz-master-next' ),
-				'value' => 2,
-			),
-			array(
-				'label' => __( 'Random Answers', 'quiz-master-next' ),
-				'value' => 3,
-			),
-			array(
-				'label' => __( 'Disabled', 'quiz-master-next' ),
-				'value' => 0,
-			),
-		);
-		echo '<select name="qsm-quiz-settings[randomness_order]">';
-		foreach ( $options as $value ) {
-			echo '<option value="' . esc_attr( $value['value'] ) . '" ' . ( isset( $qsm_randomness_order ) && $qsm_randomness_order == $value['value'] ? 'Selected' : '' ) . ' >' . esc_html( $value['label'] ) . '</option>';
-		}
-		echo '</select>';
-	}
-	/**
-	 * Generates Quiz Global  Field For Quiz Dates
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_quiz_dates() {
-		global $globalQuizsetting;
-		$qsm_scheduled_time_start = ( isset( $globalQuizsetting['scheduled_time_start'] ) && '' !== $globalQuizsetting['scheduled_time_start'] ? $globalQuizsetting['scheduled_time_start'] : '' );
-		$qsm_scheduled_time_end   = ( isset( $globalQuizsetting['scheduled_time_end'] ) && '' !== $globalQuizsetting['scheduled_time_end'] ? $globalQuizsetting['scheduled_time_end'] : '' );
-		echo '<div>
-				<span class="qsm-ph_text">Start Date</span>
-				<input autocomplete="off" type="text" id="scheduled_time_start" name="qsm-quiz-settings[scheduled_time_start]" value="' . esc_attr( $qsm_scheduled_time_start ) . '">
-				<span class="qsm-opt-desc">If set, Quiz will be accessible only after this date</span>
-			</div>';
-		echo '<div>
-				<span class="qsm-ph_text">End Date</span>
-				<input autocomplete="off" type="text" id="scheduled_time_end" name="qsm-quiz-settings[scheduled_time_end]" value="' . esc_attr( $qsm_scheduled_time_end ) . '">
-				<span class="qsm-opt-desc"> If set, Quiz will not be accessible after this date</span>
-			 </div>';
-			wp_add_inline_script( 'qsm_admin_js', 'jQuery(function(){jQuery("#scheduled_time_start,#scheduled_time_end").datetimepicker({format: "m/d/Y H:i",step: 1});});' );
-	}
-	/**
-	 * Generates Quiz Global  Field For Do not allow quiz submission after the end date/time
-	 *
-	 * @since 4.1.0
-	 * @return void
-	 */
-	public function qsm_global_do_not_allow_quiz_submission_after_the_end_datetime() {
-		global $globalQuizsetting;
-		$qsm_not_allow_after_expired_time = ( isset( $globalQuizsetting['not_allow_after_expired_time'] ) && '' !== $globalQuizsetting['not_allow_after_expired_time'] ? $globalQuizsetting['not_allow_after_expired_time'] : '' );
-		echo '<fieldset class="buttonset buttonset-hide not_allow_after_expired_time" >
-				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" ' . checked($qsm_not_allow_after_expired_time, '1', false) . '>
-				<label for="not_allow_after_expired_time-1"> '.esc_html__("Do not allow quiz submission after the end date/time", "quiz-master-next").'</label>
-				<br>
-			</fieldset>';
-	}
-
-	/**
 	 * Generates quiz global field for preferred date format
 	 *
 	 * @since x.x.x
@@ -1361,36 +1337,6 @@ class QMNGlobalSettingsPage {
 		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
 
-	/**
-	 * Generates quiz global field for default answers field
-	 *
-	 * @since x.x.x
-	 * @return void
-	 */
-	public function default_answers(){
-		global $globalQuizsetting;
-		$default_answers = ( isset( $globalQuizsetting['default_answers'] ) ? $globalQuizsetting['default_answers'] : 1 );
-		echo '<input type="number" id="default_answers" name="qsm-quiz-settings[default_answers]" value="' . esc_attr( $default_answers ) . '" min="1">';
-		echo '<span class="qsm-opt-desc">Adds number of answer fields.</span>';
-	}
-
-	/**
-	 * Generates quiz global field for correct answers logic field
-	 *
-	 * @since 7.3.15
-	 * @return void
-	 */
-	public function correct_answer_logic(){
-		global $globalQuizsetting;
-		$qsm_all_correct_selected = ( isset( $globalQuizsetting['correct_answer_logic'] ) && '' !== $globalQuizsetting['correct_answer_logic'] ? $globalQuizsetting['correct_answer_logic'] : '' );
-
-		echo '<fieldset class="buttonset buttonset-hide" >
-			<input type="radio" id="correct_answer_logic-1" name="qsm-quiz-settings[correct_answer_logic]" value="1" ' . checked( $qsm_all_correct_selected, '1', false ) . '>
-			<label for="correct_answer_logic-1">All correct answers</label><br>
-			<input type="radio" id="correct_answer_logic-0" name="qsm-quiz-settings[correct_answer_logic]"  value="0" ' . checked( $qsm_all_correct_selected, '0', false ) . '>
-			<label for="correct_answer_logic-0">Any correct answer</label><br>
-		</fieldset>';
-	}
 	/**
 	 * Generates quiz global field to check if want to show opt-in type answers to user
 	 *

@@ -159,7 +159,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Enable auto-fill suggestions for the quiz inputs.', 'quiz-master-next' ),
+							'label' => __( 'Disable auto-fill suggestions for the quiz inputs.', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -306,7 +306,7 @@ class QSM_Install {
 			'type'            => 'number',
 			'default'         => 1,
 			'container_class' => 'qsm-small-input-field',
-			'suffix_text'     => __( 'Adds number of answer field', 'quiz-master-next' ),
+			'suffix_text'     => __( 'Adds number of answer fields', 'quiz-master-next' ),
 			'option_tab'      => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
