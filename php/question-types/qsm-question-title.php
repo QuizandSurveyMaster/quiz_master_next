@@ -39,7 +39,8 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 			<?php
 		}
 	}
-	if ( ! empty( $question_title ) ) {
+	$inline_drop_down = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'inline-drop-down' );
+	if ( ! empty( $question_title ) && 'fill_in_blank' !== $question_type && 0 !== $inline_drop_down ) {
 		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question_title, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 	}
 	?>
@@ -64,26 +65,3 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	<?php
 	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );
 }
-
-function qsm_wpml_support_for_question_desc($question_desc, $question_type, $q_id) {
-	global $mlwQuizMasterNext;
-	if ( strpos( $question_desc, '%BLANK%' ) !== false ) {
-		$q_required          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'required' );
-		$q_autofill          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'autofill' );
-		$q_limit_text        = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'limit_text' );
-		$q_min_fill_text 	 = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'min_text_length' );
-		$q_autofill_att      = $q_autofill ? "autocomplete='off' " : '';
-		$q_limit_text_att    = $q_limit_text ? "maxlength='" . $q_limit_text . "' " : '';
-		$q_min_fill_text_att = $q_min_fill_text ? "minlength='" . $q_min_fill_text . "' " : '';
-		if ( 0 == $q_required ) {
-			$q_mlw_require_class = 'mlwRequiredText';
-		} else {
-			$q_mlw_require_class = '';
-		}
-		$wpml_replace_text = '<input ' . $q_min_fill_text_att . $q_autofill_att . $q_limit_text_att . " type='text' class='qmn_fill_blank $q_mlw_require_class' name='question" . $q_id . "[]' />";
-		$wpml_replace_text = apply_filters( 'qsm_wpml_text_replace_after', $wpml_replace_text, $q_id, $question_desc, $q_mlw_require_class );
-		$question_desc = str_replace( '%BLANK%', $wpml_replace_text, do_shortcode( htmlspecialchars_decode( $question_desc, ENT_QUOTES ) ) );
-	}
-	return $question_desc;
-}
-add_filter( 'qsm_question_description_before', 'qsm_wpml_support_for_question_desc', 20, 3 );

@@ -47,6 +47,9 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	}
 	$input_text = '<input ' . $min_fill_text_att . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_require_class' name='question" . $id . "[]' />";
 	$input_text = apply_filters( 'qsm_fill_in_blanks_input_after', $input_text, $id, $question, $answers, $mlw_require_class );
+	if ( ! empty( $question ) ) {
+		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
+	}
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
