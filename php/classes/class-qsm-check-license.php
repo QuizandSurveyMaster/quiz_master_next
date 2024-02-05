@@ -44,6 +44,24 @@ class QSM_Check_License
 						'message'     => __( 'License validated Successfully', 'quiz-master-next' ),
 						'expiry_date' => 'lifetime' != $body->expires ? gmdate( "d-m-Y", strtotime( $body->expires ) ) : gmdate( "d-m-Y", strtotime( '+1000 years' ) ),
 					);
+					if ( class_exists('QSM_Installer') ) { 
+						$older_settings = QSM_Installer::qsm_get_plugin_by_name( $item_name );
+						if ( 0 < $body->activations_left || 'unlimited' == $body->activations_left || ( isset($older_settings['license_key']) && $older_settings['license_key'] == $license_key ) ) { 
+							// Do Nothing
+						} else {
+							$expires = isset( $body->expires ) ? gmdate("d-m-Y", strtotime($body->expires)) : "";
+							if ( 0 == $exp_request->activations_left ) {
+								$message = __( 'No activations left !', 'quiz-installer' );
+							} else {
+								$message = $exp_request->error;
+							}
+							$response = array(
+								'status'      => 'error',
+								'message'     => $message,
+								'expiry_date' => $expires,
+							);
+						}
+					}
 				} else {
 					$error_message   = array(
 						'missing'               => __( 'License doesn\'t exist', 'quiz-master-next' ),
