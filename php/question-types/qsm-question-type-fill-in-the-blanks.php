@@ -70,6 +70,9 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
  */
 function qmn_fill_blank_review( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
+	if ( ! empty( $question ) ) {
+		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
+	}
 	$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'case_sensitive' );
 	$current_question  = new QSM_Question_Review_Fill_In_Blanks( $id, $question, $answers );
 	$user_text_array                   = $current_question->get_user_answer();
