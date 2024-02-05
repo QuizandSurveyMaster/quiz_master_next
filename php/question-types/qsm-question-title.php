@@ -39,7 +39,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 			<?php
 		}
 	}
-	if ( ! empty( $question_title ) ) {
+	if ( ! empty( $question_title ) && 'fill_in_blank' !== $question_type ) {
 		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question_title, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 	}
 	?>
