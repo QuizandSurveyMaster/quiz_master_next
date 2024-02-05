@@ -331,10 +331,6 @@ class QSM_Contact_Manager {
 			return true;
 		}
 
-		if ( ! is_array( $fields ) || empty( $fields ) ) {
-			//return false;
-		}
-
 		$quiz_id = intval( $quiz_id );
 		if ( 0 === $quiz_id ) {
 			return false;
