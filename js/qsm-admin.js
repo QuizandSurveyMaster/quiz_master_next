@@ -167,7 +167,14 @@ var QSMAdmin;
             let customValue = jQuery(this).val();
             jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
         });
-
+        if( jQuery('#qsm-select-quiz-apply').length ) {
+            jQuery('#qsm-select-quiz-apply').multiselect( {
+                columns: 1,
+                search: true,
+                selectAll: true,
+                dropdownAutoWidth: false
+            } );
+        }
         jQuery(document).on('click','.add-more-category', function () {
             let original = jQuery('div.select-category-question-limit-maindiv');
             let lastChild = original.children().last();

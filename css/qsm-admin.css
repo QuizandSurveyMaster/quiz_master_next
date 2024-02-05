@@ -760,7 +760,8 @@ ul.changelog li.update div.two:before {
 .admin_page_mlw_quiz_options .update-nag {
 	display: none;
 }
-.admin_page_mlw_quiz_options #wpwrap {
+.admin_page_mlw_quiz_options #wpwrap,
+#qsm-export-settings-options button {
 	overflow: hidden;
 }
 .admin_page_mlw_quiz_options .qsm-info-widget {

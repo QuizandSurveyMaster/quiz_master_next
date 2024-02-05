@@ -519,7 +519,7 @@ class QSM_Install {
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( "Setting a limit overrides the quiz questions' default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</label>',
+					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( "Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</label>',
 				),
 				'question_numbering'     => array(
 					'type'    => 'checkbox',
