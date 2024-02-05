@@ -65,45 +65,25 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );
 }
 
-function qsm_wpml_support_for_question_desc($question, $question_type, $id) {
+function qsm_wpml_support_for_question_desc($question_desc, $question_type, $q_id) {
 	global $mlwQuizMasterNext;
-	if ( strpos( $question, '%BLANK%' ) !== false ) {
-		$allowedposttags['input'] = array(
-			'autocomplete' 	=> true,
-			'class' 		=> true,
-			'id' 			=> true,
-			'height' 		=> true,
-			'min' 			=> true,
-			'max' 			=> true,
-			'minlength' 	=> true,
-			'maxlength' 	=> true,
-			'name' 			=> true,
-			'pattern' 		=> true,
-			'placeholder' 	=> true,
-			'readonly' 		=> true,
-			'required' 		=> true,
-			'size' 			=> true,
-			'step' 			=> true,
-			'type' 			=> true,
-			'value' 		=> true,
-			'width' 		=> true,
-		);
-		$required                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-		$autofill                    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
-		$limit_text                  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-		$min_fill_text 				 = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
-		$autofill_att                = $autofill ? "autocomplete='off' " : '';
-		$limit_text_att              = $limit_text ? "maxlength='" . $limit_text . "' " : '';
-		$min_fill_text_att         	 = $min_fill_text ? "minlength='" . $min_fill_text . "' " : '';
-		if ( 0 == $required ) {
-			$mlw_require_class = 'mlwRequiredText';
+	if ( strpos( $question_desc, '%BLANK%' ) !== false ) {
+		$q_required          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'required' );
+		$q_autofill          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'autofill' );
+		$q_limit_text        = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'limit_text' );
+		$q_min_fill_text 	 = $mlwQuizMasterNext->pluginHelper->get_question_setting( $q_id, 'min_text_length' );
+		$q_autofill_att      = $q_autofill ? "autocomplete='off' " : '';
+		$q_limit_text_att    = $q_limit_text ? "maxlength='" . $q_limit_text . "' " : '';
+		$q_min_fill_text_att = $q_min_fill_text ? "minlength='" . $q_min_fill_text . "' " : '';
+		if ( 0 == $q_required ) {
+			$q_mlw_require_class = 'mlwRequiredText';
 		} else {
-			$mlw_require_class = '';
+			$q_mlw_require_class = '';
 		}
-		$input_text = '<input ' . $min_fill_text_att . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_require_class' name='question" . $id . "[]' />";
-		$input_text = apply_filters( 'qsm_wpml_text_replace_after', $input_text, $id, $question, $mlw_require_class );
-		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
+		$wpml_replace_text = '<input ' . $q_min_fill_text_att . $q_autofill_att . $q_limit_text_att . " type='text' class='qmn_fill_blank $q_mlw_require_class' name='question" . $q_id . "[]' />";
+		$wpml_replace_text = apply_filters( 'qsm_wpml_text_replace_after', $wpml_replace_text, $q_id, $question_desc, $q_mlw_require_class );
+		$question_desc = str_replace( '%BLANK%', $wpml_replace_text, do_shortcode( htmlspecialchars_decode( $question_desc, ENT_QUOTES ) ) );
 	}
-	return $question;
+	return $question_desc;
 }
 add_filter( 'qsm_question_description_before', 'qsm_wpml_support_for_question_desc', 20, 3 );
