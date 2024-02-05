@@ -538,11 +538,11 @@ class QMNGlobalSettingsPage {
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
 			<h2 class="nav-tab-wrapper">
-				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
 			</h2>
+
 			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] ) { ?>
 				<form action="options.php" method="POST" class="qsm_global_settings">
 					<?php
@@ -561,18 +561,10 @@ class QMNGlobalSettingsPage {
 						?>
 						<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 							<ul class="subsubsub">
-								<li>
-									<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
-								</li>
-								<li>
-									<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
-								</li>
-								<li>
-									<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
-								</li>
-								<li>
-									<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
-								</li>
+								<li><a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a></li>
+								<li><a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a></li>
+								<li><a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a></li>
+								<li><a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a></li>
 							</ul>
 						</div>
 
@@ -590,11 +582,13 @@ class QMNGlobalSettingsPage {
 						</div>
 						<?php
 					}
-					submit_button(); ?>
+					submit_button();
+					?>
 				</form>
 			<?php } ?>
-			<?php
-			if ( ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ) {
+
+			<?php if ( ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ) { ?>
+				<?php
 				if ( isset( $_POST['qsm-apply-global-settings-nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm-apply-global-settings-nonce'] ) ), 'qsm-apply-global-settings-nonce' ) && ! empty( $_POST['qsm-select-quiz'] ) ) {
 					global $mlwQuizMasterNext;
 					$quizzes = qsm_sanitize_rec_array( wp_unslash( $_POST['qsm-select-quiz'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -603,7 +597,7 @@ class QMNGlobalSettingsPage {
 						$quiz_settings  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 						$global_settings = QMNGlobalSettingsPage::get_global_quiz_settings();
 						$global_settings = wp_parse_args( $global_settings, $quiz_settings );
-						$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $global_settings );
+						$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $global_settings );
 					}
 					echo '<div class="updated" style="padding: 10px;">';
 						echo '<span>' . count( $quizzes ) . esc_html__( ' Quiz have been updated!', 'quiz-master-next' ) . '</span>';
@@ -612,8 +606,8 @@ class QMNGlobalSettingsPage {
 				?>
 				<h2><?php esc_html_e( 'Apply global setting on quizzes', 'quiz-master-next' ); ?></h2>
 				<form action="" method="POST">
+					<?php wp_nonce_field( 'qsm-apply-global-settings-nonce', 'qsm-apply-global-settings-nonce' ); ?>
 					<?php
-					wp_nonce_field( 'qsm-apply-global-settings-nonce', 'qsm-apply-global-settings-nonce' );
 					$args    = array(
 						'post_type'      => 'qsm_quiz',
 						'posts_per_page' => -1,
@@ -625,14 +619,12 @@ class QMNGlobalSettingsPage {
 						<label class="qsm-label"><?php esc_html_e( 'Select Quizzes', 'quiz-master-next' ); ?></label>
 						<div id="qsm-export-settings-options">
 							<select name="qsm-select-quiz[]" multiple="multiple" id="qsm-select-quiz-apply" required>
-								<?php
-								if ( $quizzes ) {
-									foreach ( $quizzes as $quiz ) {
-										$quiz_id     = get_post_meta( $quiz->ID, 'quiz_id', true );
-										echo '<option value=' . esc_attr( $quiz_id ) . ' id=' . esc_attr( $quiz_id ) . '>' . esc_html( $quiz->post_title ) . '</option>';
-									}
-								}
-								?>
+								<?php if ( $quizzes ) : ?>
+									<?php foreach ( $quizzes as $quiz ) : ?>
+										<?php $quiz_id = get_post_meta( $quiz->ID, 'quiz_id', true ); ?>
+										<option value="<?php echo esc_attr( $quiz_id ); ?>" id="<?php echo esc_attr( $quiz_id ); ?>"><?php echo esc_html( $quiz->post_title ); ?></option>
+									<?php endforeach; ?>
+								<?php endif; ?>
 							</select>
 						</div>
 					</div>
@@ -640,9 +632,7 @@ class QMNGlobalSettingsPage {
 						<input type="submit" name="apply-global-settings" class="button button-primary" value="<?php esc_html_e( 'Apply settings', 'quiz-master-next' ); ?>">
 					</p>
 				</form>
-				<?php
-			}
-			?>
+			<?php } ?>
 		</div>
 		<?php
 	}

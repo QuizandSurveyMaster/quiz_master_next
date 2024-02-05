@@ -606,8 +606,7 @@ var QSMAdmin;
         //theme option setting image end
 
         $(document).on('change', '.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]', function () {
-            var value = $(this).val();
-            if ( 0 == value ) {
+            if ( 0 == $(this).val() ) {
                 $('.global_setting_system').parents('tr').show();
                 $('#qsm-score-roundoff').parents('label').show();
                 $("#qsm-correct-answer-logic").show();
@@ -618,9 +617,7 @@ var QSMAdmin;
             }
         });
         $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {
-            var value = $(this).val();
-            var value1 = $('.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]:checked').val();
-            if (value != '1' && value1 == '0') {
+            if ( 1 != $(this).val() && 0 == $('.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]:checked').val() ) {
                 $('#qsm-score-roundoff').parents('label').show();
                 $("#qsm-correct-answer-logic").show();
             } else {
