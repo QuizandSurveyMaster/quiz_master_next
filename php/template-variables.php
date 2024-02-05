@@ -1142,7 +1142,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							}
 							$index = $key + 1;
 							if ( $is_answer_correct ) {
-								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $decode_single_user_answer . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
 								if ( '' === $show_user_answer ) {
 									$show_user_answer = $quiz_options->no_answer_text;
