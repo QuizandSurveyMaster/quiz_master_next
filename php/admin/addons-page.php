@@ -23,14 +23,11 @@ function qmn_addons_page() {
 	<h2>
 		<?php
 		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
-			?>
-		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
-				class="dashicons dashicons-arrow-left-alt"></span>
-			<?php esc_html_e( 'Back to list', 'quiz-master-next' ); ?></a>
-		<?php
+			$key = array_search($_GET['tab'], array_column($tab_array, 'slug'));
+    		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
+			echo esc_html_e( 'Manage ' . $addon_title . ' Addon', 'quiz-master-next' );
 		}
 		?>
-		<?php esc_html_e( 'Extend QSM With Addons', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -94,7 +91,7 @@ function qsm_generate_featured_addons() {
 				<div class="installed_addon">
 					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
 					<span class="installed_addon_link">
-						<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
+						<a target="_blank" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 								class="dashicons dashicons-admin-generic"></span>
 							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
 					</span>
