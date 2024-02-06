@@ -25,7 +25,8 @@ function qmn_addons_page() {
 		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
 			$key = array_search($_GET['tab'], array_column($tab_array, 'slug'));
     		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
-			echo esc_html_e( 'Manage ' . $addon_title . ' Addon', 'quiz-master-next' );
+			echo esc_html_e( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title );
+			esc_html_e( ' Addon', 'quiz-master-next' );
 		}
 		?>
 	</h2>
