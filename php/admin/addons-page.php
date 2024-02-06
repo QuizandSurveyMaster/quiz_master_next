@@ -91,7 +91,7 @@ function qsm_generate_featured_addons() {
 				<div class="installed_addon">
 					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
 					<span class="installed_addon_link">
-						<a target="_blank" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
+						<a target="_blank" rel="noopener" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 								class="dashicons dashicons-admin-generic"></span>
 							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
 					</span>
