@@ -760,7 +760,8 @@ ul.changelog li.update div.two:before {
 .admin_page_mlw_quiz_options .update-nag {
 	display: none;
 }
-.admin_page_mlw_quiz_options #wpwrap {
+.admin_page_mlw_quiz_options #wpwrap,
+#qsm-export-settings-options button {
 	overflow: hidden;
 }
 .admin_page_mlw_quiz_options .qsm-info-widget {
@@ -907,6 +908,7 @@ ul.changelog li.update div.two:before {
 	padding: 10px 6px;
 	width: 100%;
 }
+.qsm-sub-tab-menu a,
 .qsm_tab_content a {
 	cursor: pointer;
 	text-decoration: none;
@@ -914,11 +916,11 @@ ul.changelog li.update div.two:before {
 	display: inline-block;
 	box-sizing: border-box;
 }
-.qsm_tab_content .subsubsub li:first-child {
+.qsm-sub-tab-menu .subsubsub li:first-child {
 	border-left: 0;
 	padding-left: 0;
 }
-.qsm_tab_content .subsubsub li a {
+.qsm-sub-tab-menu .subsubsub li a {
 	font-size: 14px;
 	line-height: 1.2;
 	padding: 10px;
@@ -929,7 +931,7 @@ ul.changelog li.update div.two:before {
 	text-decoration: none;
 	box-shadow: none;
 }
-.qsm_tab_content .subsubsub li a.current{
+.qsm-sub-tab-menu .subsubsub li a.current{
 	border-bottom: 3px solid #00BEE9;
 }
 /* Popup */
@@ -1177,7 +1179,6 @@ h3.addon_category_name {
 .qsm_tab_content input[type="number"],
 .qsm_tab_content input[type="url"],
 .qsm_global_settings input[type="text"],
-.qsm_global_settings input[type="number"],
 .qsm_global_settings input[type="email"],
 .qsm_global_settings input[type="url"],
 .qsm-addon-setting-wrap input[type="email"],
@@ -1355,11 +1356,12 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
-body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
+.form-table td fieldset label {
 	margin-right: 20px !important;
 	width: 100%;
 }
-#correct_answer_logic {
+#correct_answer_logic,
+.qsm-p-b-10 {
     padding-bottom: 10px;
 }
 .qsm-font-light {

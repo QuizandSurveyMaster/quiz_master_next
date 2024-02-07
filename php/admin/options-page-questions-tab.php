@@ -485,6 +485,15 @@ function qsm_options_questions_tab_content() {
 											'show'     => '3, 5, 7, 14' . $show_limit_text,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'limit_text', 'quizsurvey-limit_text_doc' ),
 										),
+										'min_text_length'  => array(
+											'heading'  => __( 'Minimum Characters', 'quiz-master-next' ),
+											'label'    => __( 'Minimum number of characters required', 'quiz-master-next' ),
+											'type'     => 'text',
+											'priority' => '11',
+											'default'  => '',
+											'show'     => '3, 5, 7, 14',
+											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'min_text_length', 'quizsurvey-min_text_length_doc' ),
+										),
 										'limit_multiple_response' => array(
 											'heading'  => __( 'Limit Multiple choice', 'quiz-master-next' ),
 											'label'    => __( 'Maximum number of choice selection allowed', 'quiz-master-next' ),

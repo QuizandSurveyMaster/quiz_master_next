@@ -524,6 +524,7 @@ class QMNQuizCreator {
 		// Update quiz settings
 		$update_quiz_settings = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
 		$update_pages         = maybe_unserialize( $update_quiz_settings['pages'] );
+		$update_q_pages       = maybe_unserialize( $update_quiz_settings['qpages'] );
 		// get logic data from logic table first or else from quiz_settings
 		if ( ! is_null( $logic_table_exists ) ) {
 			$query       = $wpdb->prepare( "SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id );
@@ -633,6 +634,7 @@ class QMNQuizCreator {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
 						if ( intval($page_q_id) === intval($mlw_question->question_id) ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
+							$update_q_pages[ $pages_key ]['questions'][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}
 				}
@@ -681,6 +683,7 @@ class QMNQuizCreator {
 				}
 			}
 			$update_quiz_settings['pages'] = maybe_serialize( $update_pages );
+			$update_quiz_settings['qpages'] = maybe_serialize( $update_q_pages );
 			// saves data in logic table first or else in quiz_settings.
 			$value_array = array();
 			if ( is_array( $logic_rules ) && ! empty( $logic_rules ) ) {

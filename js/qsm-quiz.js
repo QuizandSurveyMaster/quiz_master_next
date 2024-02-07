@@ -674,13 +674,18 @@ function qmnClearField(field) {
 	if (field.defaultValue == field.value) field.value = '';
 }
 
+var qsmPagescrolling = false;
 function qsmScrollTo($element) {
-	if ($element.length > 0) {
-		jQuery(document).trigger('qsm_scroll_to_top_before', [$element]);
-		jQuery('html, body').animate({ scrollTop: $element.offset().top - 150 }, 1000);
-		jQuery(document).trigger('qsm_scroll_to_top_after', [$element]);
-	}
+    if ($element.length > 0 && !qsmPagescrolling) {
+        qsmPagescrolling = true;
+        jQuery(document).trigger('qsm_scroll_to_top_before', [$element]);
+        jQuery('html, body').animate({ scrollTop: $element.offset().top - 150 }, 1000, function() {
+            qsmPagescrolling = false;
+            jQuery(document).trigger('qsm_scroll_to_top_after', [$element]);
+        });
+    }
 }
+
 
 function qmnDisplayError(message, field, quiz_form_id) {
 	jQuery('#' + quiz_form_id + ' .qmn_error_message_section').addClass('qmn_error_message');
@@ -738,6 +743,14 @@ function qmnValidation(element, quiz_form_id) {
 					var minlength_error = error_messages.minlength_error_text;
 					minlength_error = minlength_error.replace('%minlength%', jQuery(this).attr('minlength'));
 					qmnDisplayError(minlength_error, jQuery(this), quiz_form_id);
+					show_result_validation = false;
+				}
+			}
+			if ( jQuery(this).hasClass('mlw_answer_open_text') || jQuery(this).hasClass('qmn_fill_blank') || jQuery(this).hasClass('mlw_answer_number')) {
+				if (jQuery.trim(this.value).length < jQuery(this).attr('minlength')) {
+					let minCharError = error_messages.minlength_error_text;
+					minCharError = minCharError.replace('%minlength%', jQuery(this).attr('minlength'));
+					qmnDisplayError(minCharError, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
 			}
@@ -1483,7 +1496,7 @@ jQuery(function () {
 	});
 
 	//inline result status function
-	
+
 	// Autocomplete off
 	jQuery('.qsm-quiz-container').find('.qmn_quiz_id').each(function () {
 		var quizID = jQuery(this).val();

@@ -28,8 +28,9 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 	}
 
 	public function set_correct_answer() {
+		global $mlwQuizMasterNext;
 		foreach ( $this->answer_array as $answer_key => $answer_value ) {
-			$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0] );
+			$this->correct_answer[ $answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->sanitize_answer_from_db( $answer_value[0] ), "answer-{$this->question_id}-{$answer_key}", "QSM Answers" );
 		}
 	}
 
