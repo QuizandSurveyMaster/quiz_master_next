@@ -3635,7 +3635,7 @@ var import_button;
                     let result_page = jQuery(this).closest("header").next("main");
                     let conditions = [];
                     let redirect_value = result_page.find('.results-page-redirect').val();
-                    var page = wp.editor.getContent( result_page.find('.results-page-template').attr('id') );
+                    let page = wp.editor.getContent( result_page.find('.results-page-template').attr('id') );
                     result_page.find('.results-page-condition').each(function () {
                         conditions.push({
                             'category': $(this).find('.results-page-condition-category').val(),

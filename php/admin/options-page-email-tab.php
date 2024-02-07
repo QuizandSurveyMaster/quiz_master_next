@@ -196,7 +196,10 @@ function qsm_options_emails_tab_template() {
 				<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
 				<?php do_action( 'qsm_after_send_email_label' ); ?>
 				<input type="email" class="qsm-to-email" value="{{ data.to }}">
-				<label class="qsm-email-reply-to"><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
+				<label class="qsm-email-reply-to">
+					<input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>
+					<?php esc_html_e( 'Add user email as Reply-To', 'quiz-master-next' ); ?>
+				</label>
 				<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
 				<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
