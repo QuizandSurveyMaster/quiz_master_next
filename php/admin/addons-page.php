@@ -22,8 +22,8 @@ function qmn_addons_page() {
 <div class="wrap qsm-addon-setting-wrap">
 	<h2>
 		<?php
-		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
-			$key = array_search($_GET['tab'], array_column($tab_array, 'slug'));
+		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+			$key = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column($tab_array, 'slug'), true );
     		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
 			echo esc_html__( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title ) . esc_html__( ' Addon', 'quiz-master-next' );
 		}
