@@ -200,7 +200,12 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
 				<header class="results-page-header">
-					<div><button class="delete-page-button"><span class="dashicons dashicons-trash"></span></button></div>
+					<strong><?php esc_html_e( 'Result Page ', 'quiz-master-next' ); ?> {{data.id}}</strong>
+					<div class="qsm-template-btn-group">
+						<button class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></button>
+						<button class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></button>
+						<button class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></button>
+					<div>
 				</header>
 				<main class="results-page-content">
 					<div class="results-page-when">
