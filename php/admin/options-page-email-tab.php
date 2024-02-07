@@ -170,7 +170,12 @@ function qsm_options_emails_tab_template() {
 <script type="text/template" id="tmpl-email">
 	<div class="qsm-email">
 		<header class="qsm-email-header">
-			<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
+			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
+			<div class="qsm-template-btn-group">
+				<button class="qsm-delete-email-button"><span class="dashicons dashicons-trash"></span></button>
+				<button class="qsm-duplicate-email-template-button"><span class="dashicons dashicons-admin-page"></span></button>
+				<button class="qsm-toggle-email-template-button"><span class="dashicons dashicons-arrow-down-alt2"></span></button>
+			<div>
 		</header>
 		<main class="qsm-email-content">
 			<div class="email-when">
@@ -190,12 +195,12 @@ function qsm_options_emails_tab_template() {
 				</div>
 				<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
 				<?php do_action( 'qsm_after_send_email_label' ); ?>
-				<input type="email" class="to-email" value="{{ data.to }}">
+				<input type="email" class="qsm-to-email" value="{{ data.to }}">
+				<label class="qsm-email-reply-to"><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
-				<input type="text" class="subject" value="{{ data.subject }}">
+				<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
 				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
-				<label class="qsm-email-reply-to"><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
 			</div>
 		</main>

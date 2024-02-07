@@ -1479,8 +1479,8 @@ var QSMContact;
                         }
                         email = {
                             'conditions': [],
-                            'to': $(this).find('.to-email').val(),
-                            'subject': $(this).find('.subject').val(),
+                            'to': $(this).find('.qsm-to-email').val(),
+                            'subject': $(this).find('.qsm-email-subject').val(),
                             'content': email_content,
                             'replyTo': $(this).find('.reply-to').prop('checked'),
                         };
@@ -1619,6 +1619,32 @@ var QSMContact;
                     event.preventDefault();
                     QSMAdminEmails.newEmail();
                 });
+                jQuery(document).on('click', '.qsm-duplicate-email-template-button', function () {
+                    let template = jQuery(this).closest("header").next("main");
+                    let email_content = '';
+                    if (template.find('.email-template').parent('.wp-editor-container').length > 0) {
+                        email_content = wp.editor.getContent(template.find('.email-template').attr('id'));
+                    } else {
+                        email_content = template.find('.email-template').val()
+                    }
+                    let conditions = [];
+                    template.find('.email-condition').each(function () {
+                        conditions.push({
+                            'category': jQuery(this).find('.email-condition-category').val(),
+                            'extra_condition': jQuery(this).find('.email-extra-condition-category').val(),
+                            'criteria': jQuery(this).find('.email-condition-criteria').val(),
+                            'operator': jQuery(this).find('.email-condition-operator').val(),
+                            'value': jQuery(this).find('.email-condition-value').val()
+                        });
+                    });
+                    let to = template.find('.qsm-to-email').val();
+                    let subject = template.find('.qsm-email-subject').val();
+                    let content = email_content;
+                    let replyTo = template.find('.reply-to').prop('checked');
+
+                    QSMAdminEmails.addEmail(conditions, to, subject, content, replyTo);
+                    jQuery('html, body').animate({ scrollTop: jQuery('.qsm-email:last-child').offset().top - 150 }, 1000);
+                });
                 $('.save-emails').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminEmails.saveEmails();
@@ -1628,9 +1654,12 @@ var QSMContact;
                     $page = $(this).closest('.qsm-email');
                     QSMAdminEmails.newCondition($page);
                 });
-                $('#qsm_emails').on('click', '.delete-email-button', function (event) {
+                $('#qsm_emails').on('click', '.qsm-delete-email-button', function (event) {
                     event.preventDefault();
                     $(this).closest('.qsm-email').remove();
+                });
+                jQuery(document).on('click', '.qsm-toggle-email-template-button', function () {
+                    jQuery(this).closest("header").next("main").slideToggle();
                 });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
@@ -3602,6 +3631,23 @@ var import_button;
                     event.preventDefault();
                     QSMAdminResults.newResultsPage();
                 });
+                jQuery(document).on('click', '.qsm-duplicate-result-page-button', function () {
+                    let result_page = jQuery(this).closest("header").next("main");
+                    let conditions = [];
+                    let redirect_value = result_page.find('.results-page-redirect').val();
+                    var page = wp.editor.getContent( result_page.find('.results-page-template').attr('id') );
+                    result_page.find('.results-page-condition').each(function () {
+                        conditions.push({
+                            'category': $(this).find('.results-page-condition-category').val(),
+                            'extra_condition': $(this).find('.results-page-extra-condition-category').val(),
+                            'criteria': $(this).find('.results-page-condition-criteria').val(),
+                            'operator': $(this).find('.results-page-condition-operator').val(),
+                            'value': $(this).find('.results-page-condition-value').val()
+                        });
+                    });
+                    QSMAdminResults.addResultsPage(conditions, page, redirect_value);
+                    jQuery('html, body').animate({ scrollTop: jQuery('.results-page:last-child').offset().top - 150 }, 1000);
+                });
                 $('.save-pages').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminResults.saveResults();
@@ -3611,13 +3657,16 @@ var import_button;
                     $page = $(this).closest('.results-page');
                     QSMAdminResults.newCondition($page);
                 });
-                $('#results-pages').on('click', '.delete-page-button', function (event) {
+                $('#results-pages').on('click', '.qsm-delete-result-button', function (event) {
                     event.preventDefault();
                     $(this).closest('.results-page').remove();
                 });
                 $('#results-pages').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
                     $(this).closest('.results-page-condition').remove();
+                });
+                jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
+                    jQuery(this).closest("header").next("main").slideToggle();
                 });
             });
         }

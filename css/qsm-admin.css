@@ -465,25 +465,21 @@ span.qsm-quiz-name {
 .results-page-header, #qsm_emails .qsm-email-header {
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: space-between;
 	background-color: #fff;
 	padding: 10px;
 	border-bottom: 1px solid #dfd4d4;
 }
-#qsm_emails .delete-email-button {
+.qsm-delete-email-button,
+.qsm-duplicate-email-template-button,
+.qsm-toggle-email-template-button,
+.qsm-delete-result-button,
+.qsm-duplicate-result-page-button,
+.qsm-toggle-result-page-button{
 	background: none;
 	border: none;
-	color: #dc3232;
-	cursor: pointer;
 	transition-duration: 200ms;
-}
-.delete-page-button {
-    border: none;
-    background: transparent;
 	cursor: pointer;
-}
-#qsm_emails .delete-email-button:hover {
-	transform: scale(1.2);
 }
 .results-page-content, .qsm-email-content {
 	display: flex;
@@ -521,9 +517,6 @@ span.qsm-quiz-name {
 .qsm-email-condition-title {
     font-size: 16px;
 }
-input[type="text"].results-page-redirect {
-    min-width: 100%;
-}
 .qsm-result-condition-mode,
 .qsm-email-condition-mode {
     margin-bottom: 15px;
@@ -553,12 +546,14 @@ input[type="text"].results-page-redirect {
 .email-show .label {
 	display: block;
 }
-.qsm-email-reply-to{
-	margin-top: 10px;
-}
-.results-page-show textarea, .to-email, .subject, .email-template {
+.results-page-show textarea, .email-show .qsm-email-reply-to, .qsm_tab_content input[type="text"].qsm-email-subject, .email-template, .qsm-to-email, .qsm_tab_content input[type="text"].results-page-redirect {
 	width: 100%;
 	margin-bottom: 10px;
+}
+.qsm_tab_content input[type="text"].qsm-email-subject,
+.qsm_tab_content input[type="text"].results-page-redirect{
+	border-radius: 3px;
+	border-color: #8C8FAC;
 }
 @media screen and (min-width: 760px) {
 	.results-page-content, .qsm-email-content {
