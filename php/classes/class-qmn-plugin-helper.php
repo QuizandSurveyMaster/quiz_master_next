@@ -856,8 +856,7 @@ class QMNPluginHelper {
 		 * Sort tabs by priority
 		 */
 		array_multisort( array_column($this->admin_results_tabs, 'priority'), SORT_ASC, $this->admin_results_tabs);
-
-		return $this->admin_results_tabs;
+		return apply_filters( 'qmn_admin_results_tabs', $this->admin_results_tabs );
 	}
 
 	/**
