@@ -836,7 +836,7 @@ class QMNGlobalSettingsPage {
 			<input class="small-text" type="number" step="1" min="0" id="qsm-question-from-total-input" name="qsm-quiz-settings[question_from_total]" value="<?php echo esc_attr( $qsm_question_from_total ); ?>">
 			<?php esc_html_e( 'Maximum question limit', 'quiz-master-next'); ?>
 		</fieldset>
-		<fieldset class="buttonset buttonset-hide" data-hide="1" id="qsm-question-per-category" style="">
+		<fieldset class="buttonset buttonset-hide" data-hide="1" id="qsm-question-per-category">
 			<input class="small-text" type="number" step="1" min="0" id="qsm-question-per-category-input" name="qsm-quiz-settings[question_per_category]" value="<?php echo esc_attr( $qsm_question_per_category ); ?>">
 				<span class="qsm-opt-tr">
 					<?php esc_html_e( 'Limit number of questions per category', 'quiz-master-next'); ?>
@@ -873,10 +873,10 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_enable_comments() {
 		global $globalQuizsetting;
-		$qsm_comment_section = ( isset( $globalQuizsetting['comment_section'] ) && '' !== $globalQuizsetting['comment_section'] ? $globalQuizsetting['comment_section'] : '0' );
+		$qsm_comment_section = ( isset( $globalQuizsetting['comment_section'] ) && '' !== $globalQuizsetting['comment_section'] ? $globalQuizsetting['comment_section'] : 0 );
 		?>
-		<label for="comment_section-0">
-			<input type="checkbox" id="comment_section-0" name="qsm-quiz-settings[comment_section]" value="0" <?php checked( $qsm_comment_section, 0 ); ?> >
+		<label class="qsm-opt-tr" for="qsm-comment-section">
+			<input type="checkbox" id="qsm-comment-section" name="qsm-quiz-settings[comment_section]" value="0" <?php checked( $qsm_comment_section, 0 ); ?> >
 			<?php esc_html_e( 'Allow users to post comments after completion', 'quiz-master-next' ); ?>
 		</label>
 		<?php

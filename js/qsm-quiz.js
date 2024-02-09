@@ -1895,15 +1895,18 @@ jQuery(document).on( 'click', '.qsm-quiz-container', function() {
     jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
     jQuery(this).addClass('qsm-recently-active');
 });
-jQuery(document).keydown(function(e) {
-	if (e.keyCode === 39) {
-        jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+jQuery(document).keydown(function (e) {
+	if ( jQuery('.qsm-quiz-container.qsm-recently-active').length ) {
+		if (39 === e.keyCode) {
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+		}
+		if (37 === e.keyCode) {
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
+		}
+		if (13 === e.keyCode && 0 === jQuery('textarea:focus').length) {
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+		}
 	}
-	if (e.keyCode === 37) {
-        jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
-	}
-	if (e.keyCode === 13) {
-        jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
-    }
 });
 
