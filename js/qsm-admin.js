@@ -1198,7 +1198,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
         if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
             function addTinyMceAutoSuggestion() {
-                if ( 'undefined' !== typeof tinymce && null !== tinymce  ) {
+                if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
                         //Auto complete commands
                         var commands = [];
