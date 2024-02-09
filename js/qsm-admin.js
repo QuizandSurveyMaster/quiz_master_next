@@ -1193,6 +1193,140 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     $('.multiple-category-notice').show();
 }(jQuery));
 
+//TinyMCE slash command auto suggest
+(function ($) {
+    if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
+        if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
+            function addTinyMceAutoSuggestion() {
+                if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
+                    tinymce.PluginManager.add('qsmslashcommands', function(editor) {
+                        //Auto complete commands
+                        var commands = [];
+                        for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
+                            if ( qsm_admin_messages.qsm_variables.hasOwnProperty( qsm_var_group ) ) {
+                                for (let qsm_var_item in qsm_admin_messages.qsm_variables[qsm_var_group]) {
+                                    if ( qsm_admin_messages.qsm_variables[qsm_var_group].hasOwnProperty( qsm_var_item ) ) {
+                                        let cname = qsm_var_item.replace(/\W/g, '');
+                                        cname = cname.replace(/_/g, ' ');
+                                        commands.push(
+                                            {
+                                                name:cname,
+                                                value:qsm_var_item,
+                                                description:qsm_admin_messages.qsm_variables[qsm_var_group][qsm_var_item],
+                                                group: qsm_var_group,
+
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                         }
+                       
+                        //Show autocomplete modal
+                        function showAutocomplete( editor, clear =false ) {
+                            removeAutocomplete( editor, clear );
+                            var autocomplete = document.createElement('div');
+                            autocomplete.className = 'qsm-autocomplete';
+                            var newCommand = commands;
+                            var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                            if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {
+                                if ( false === clear ) {
+                                    newCommand = commands.filter(suggestion =>
+                                        suggestion.name.toLowerCase().startsWith(qsm_search.toLowerCase())
+                                    );
+                                }
+                            } else {
+                                qsm_search = '';
+                            }
+                            let var_group = [];
+                            let item_index = 1;
+                            newCommand.forEach( function( command ) {
+                                if ( -1 == var_group.indexOf( command.group ) ) {
+                                    var_group.push( command.group );
+                                    let item_group = document.createElement('div');
+                                    item_group.className = 'qsm-autocomplete-item-group';
+                                    item_group.textContent = command.group;
+                                    autocomplete.appendChild(item_group);
+                                }   
+                                var item = document.createElement('div');
+                                item.className = 'qsm-autocomplete-item';
+                               
+                                item.textContent = command.name;
+                                item.onclick = function() {
+                                    for (let i = 0; i <= qsm_search.length; i++) {
+                                        editor.execCommand('Delete');
+                                    }
+                                    //editor.insertContent( command.description );
+                                    editor.execCommand('mceInsertContent', false, command.value);
+                                    //editor.execCommand(command.name);
+                                    autocomplete.remove();
+                                    editor.getContainer().setAttribute('qsm_search', '');
+                                    editor.qsmShowAutocomplete = false;
+                                };
+                                autocomplete.appendChild(item);
+                            });
+                            editor.getContainer().appendChild(autocomplete);
+                            editor.qsmShowAutocomplete = true;
+                        }
+
+                        //Remove autocomplete modal
+                        function removeAutocomplete( editor, clear = true ) {
+                            //Remove auto complete
+                            var autocomplete =  editor.getContainer().querySelector('.qsm-autocomplete');
+                            if ( 'undefined' !== typeof autocomplete && null !== autocomplete  ) {
+                                autocomplete.remove();
+                            }
+                            if ( true === clear ) {
+                            var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                                if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {  
+                                    editor.getContainer().setAttribute('qsm_search', '');
+                                }
+                            }
+                            editor.qsmShowAutocomplete = false;
+                        }
+                    
+                        //on keydowm inside editor
+                        editor.on('keydown', function(e) {
+                            
+                            if (e.keyCode === 191 && e.ctrlKey === false && e.altKey === false && e.shiftKey === false) {
+                              // "/" key pressed, trigger autocomplete
+                              showAutocomplete( editor, true );
+                            } else if ( 'undefined' !== typeof editor.qsmShowAutocomplete && null !== editor.qsmShowAutocomplete && true === editor.qsmShowAutocomplete ) {
+                             //Prepare search word if autocomplete modal is visible
+                              var keyCode = e.keyCode;
+                              var isAlphanumeric = (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122);
+                               if (  isAlphanumeric || 8 == keyCode ) {
+                                    var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                                    if ( 'undefined' === typeof qsm_search || null === qsm_search ) {
+                                        qsm_search = '';
+                                    }
+                                    //Remove autocomplete modal if press backspace to remove slash
+                                    if ( '' == qsm_search && 8 == keyCode ) {
+                                        removeAutocomplete( editor );
+                                    } else {
+                                        if ( 8 == keyCode ) {
+                                            //backspace remove last character
+                                            qsm_search = qsm_search.slice(0, -1);
+                                        } else {
+                                            qsm_search += e.key;
+                                        }
+                                         editor.getContainer().setAttribute('qsm_search', qsm_search);
+                                        
+                                        showAutocomplete(editor);
+                                    }
+                                    
+                               }
+                            }
+                            
+                        });
+                    });
+                }
+            }
+            addTinyMceAutoSuggestion();
+        }
+    }
+}(jQuery));
+
 // QSM - Admin Stats Page
 (function ($) {
     if (jQuery('body').hasClass('qsm_page_qmn_stats')) {
@@ -1583,6 +1717,7 @@ var QSMContact;
                         var settings = {
                             mediaButtons: true,
                             tinymce: {
+                                plugins: ["qsmslashcommands"],
                                 forced_root_block: '',
                                 toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
                                 toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
@@ -3598,6 +3733,7 @@ var import_button;
                     var settings = {
                         mediaButtons: true,
                         tinymce: {
+                            plugins: ["qsmslashcommands"],
                             forced_root_block: '',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
