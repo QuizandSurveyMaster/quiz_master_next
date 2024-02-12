@@ -326,7 +326,6 @@ class QSM_Install {
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
 		/* ===== Generat tab end ======== */
 		/* ===== Submission tab start ======== */
 		$field_array = array(
