@@ -1895,18 +1895,76 @@ jQuery(document).on( 'click', '.qsm-quiz-container', function() {
     jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
     jQuery(this).addClass('qsm-recently-active');
 });
-jQuery(document).keydown(function (e) {
-	if ( jQuery('.qsm-quiz-container.qsm-recently-active').length ) {
-		if (39 === e.keyCode) {
-			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
-		}
-		if (37 === e.keyCode) {
-			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
-		}
-		if (13 === e.keyCode && 0 === jQuery('textarea:focus').length) {
-			jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
-			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
-		}
-	}
+jQuery(document).keydown(function(event) {
+	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
+		jQuery(document).trigger('qsm_keyboard_quiz_action_start', event);
+
+        if ([39, 37, 13, 9].includes(event.keyCode)) {
+            event.preventDefault();
+        }
+        if (event.keyCode === 39) {
+            jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+        }
+        if (event.keyCode === 37) {
+            jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
+        }
+        if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {
+            jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
+            jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+        }
+        if (event.keyCode === 40 && jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers:not(.qsm_multiple_grid_answers)').length) {
+            event.preventDefault();
+            let checkedInputs = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers .qmn_mc_answer_wrap input:checked, .qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers .mlw_horizontal_choice input:checked');
+            if (checkedInputs.length === 0) {
+                jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers').find('input:first').click();
+            } else {
+                let nextInput = checkedInputs.closest('.qmn_mc_answer_wrap, .mlw_horizontal_choice').next('.qmn_mc_answer_wrap, .mlw_horizontal_choice').find('input[type="radio"]');
+                if (nextInput.length) {
+                    nextInput.click();
+                } else {
+                    jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers').find('input:first').click();
+                }
+            }
+        }
+        if (event.keyCode === 38 && jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers:not(.qsm_multiple_grid_answers)').length) {
+            event.preventDefault();
+            let checkedInputs = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers .qmn_mc_answer_wrap input:checked, .qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers .mlw_horizontal_choice input:checked');
+            if (checkedInputs.length === 0) {
+                jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers').find('.qmn_mc_answer_wrap input:last, .mlw_horizontal_choice input:last').click();
+            } else {
+                let prevInput = checkedInputs.closest('.qmn_mc_answer_wrap, .mlw_horizontal_choice').prev('.qmn_mc_answer_wrap, .mlw_horizontal_choice').find('input[type="radio"]');
+                if (prevInput.length) {
+                    prevInput.click();
+                } else {
+                    jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question .qmn_radio_answers').find('.qmn_mc_answer_wrap input:last, .mlw_horizontal_choice input:last').click();
+                }
+            }
+        }
+        if (event.shiftKey && event.keyCode === 9) {
+            let active_question = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question');
+            if (active_question.length) {
+                jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
+                active_question.prev('.qsm-question-wrapper:visible').addClass("qsm-active-question");
+            } else {
+                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question");
+            }
+        } else if (event.keyCode === 9) {
+            let active_question = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question');
+            if (active_question.length) {
+                jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
+                active_question.next('.qsm-question-wrapper:visible').addClass("qsm-active-question");
+            } else {
+                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question");
+            }
+        }
+        if (event.keyCode === 9) {
+            let active_question = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question');
+            if (active_question.length) {
+                jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question input:first').focus();
+            }
+        }
+		jQuery(document).trigger('qsm_keyboard_quiz_action_end', event);
+    }
 });
+
 

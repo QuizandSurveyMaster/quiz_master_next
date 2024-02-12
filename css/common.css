@@ -637,3 +637,6 @@ body .ui-tooltip.ui-widget-content {
     border-radius: 0.25rem;
     margin-bottom: 1rem;
 }
+.qsm-question-wrapper.qsm-active-question{
+	zoom: 105%;
+}
