@@ -1016,7 +1016,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	} elseif ( ! empty( $answer[0] ) ) {
 		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
-	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>' : $question_description;
+	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . htmlspecialchars_decode(  $question_description, ENT_QUOTES ) . '</span>' : $question_description;
 	$question_numbering   = '';
 	if ( isset( $quiz_options->question_numbering ) && 1 == $quiz_options->question_numbering && 6 != $answer['question_type'] ) {
 		$qmn_total_questions += 1;
