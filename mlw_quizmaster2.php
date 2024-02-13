@@ -123,6 +123,14 @@ class MLWQuizMasterNext {
 	 * @var object
 	 * @since 7.3.8
 	 */
+	public $qsm_api;
+
+	/**
+	 * Holds quiz_data
+	 *
+	 * @var object
+	 * @since 7.3.8
+	 */
 	public $quiz = array();
 
 	/*
@@ -232,6 +240,8 @@ class MLWQuizMasterNext {
 
 
 		include_once 'php/rest-api.php';
+		include_once 'php/classes/class-qsm-quiz-api.php';
+		$this->qsm_api = new QSMQuizApi();
 	}
 
 	/**

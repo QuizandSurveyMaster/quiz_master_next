@@ -563,13 +563,18 @@ class QMNGlobalSettingsPage {
 		if ( isset( $_GET['tab'] ) ) {
 			if ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qmn_global_settings' ) {
 				$active_tab = 'qmn_global_settings';
+			} elseif ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qsm_api_settings' ) {
+				$active_tab = 'qsm_api_settings';
 			} else {
 				$active_tab = 'quiz-default-options';
 			}
 		}
-		$g_class = $d_class = '';
+		$a_class = $g_class = $d_class = '';
 		if ( 'qmn_global_settings' === $active_tab ) {
 			$g_class = 'nav-tab-active';
+		}
+		if ( 'qsm_api_settings' === $active_tab ) {
+			$a_class = 'nav-tab-active';
 		}
 		if ( 'quiz-default-options' === $active_tab ) {
 			$d_class = 'nav-tab-active';
@@ -581,56 +586,62 @@ class QMNGlobalSettingsPage {
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo esc_attr( $g_class ); ?> "><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo esc_attr( $d_class ); ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
+				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $a_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
 			</h2>
-			<form action="options.php" method="POST" class="qsm_global_settings">
-				<?php
-				if ( isset( $_GET['settings-updated'] ) ) {
-					flush_rewrite_rules( true );
-					echo '<div class="updated" style="padding: 10px;">';
-						echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
-					echo '</div>';
-				}
-				if ( 'qmn_global_settings' === $active_tab ) {
-					settings_fields( 'qmn-settings-group' );
-					do_settings_sections( 'qmn_global_settings' );
-				}
-				if ( 'quiz-default-options' === $active_tab ) {
-					settings_fields( 'qsm-quiz-settings-group' );
-					?>
-					<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
-						<ul class="subsubsub">
-							<li>
-								<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
-							</li>
-							<li>
-								<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
-							</li>
-						</ul>
-					</div>
-
-					<div id="qsm_general" class="quiz_style_tab_content">
-						<?php do_settings_sections( 'qsm_default_global_option_general' ); ?>
-					</div>
-					<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
-						<?php do_settings_sections( 'qsm_default_global_option_quiz_submission' ); ?>
-					</div>
-					<div id="display" class="quiz_style_tab_content" style="display:none">
-						<?php do_settings_sections( 'qsm_default_global_option_display' ); ?>
-					</div>
-					<div id="contact_form" class="quiz_style_tab_content" style="display:none">
-						<?php do_settings_sections( 'qsm_default_global_option_contact' ); ?>
-					</div>
+			<?php 
+			if ( 'qsm_api_settings' === $active_tab ) {
+				$mlwQuizMasterNext->qsm_api->load_form_field();
+			} else { ?>
+				<form action="options.php" method="POST" class="qsm_global_settings">
 					<?php
-				}
-				?>
-				<?php submit_button(); ?>
-			</form>
+					if ( isset( $_GET['settings-updated'] ) ) {
+						flush_rewrite_rules( true );
+						echo '<div class="updated" style="padding: 10px;">';
+							echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
+						echo '</div>';
+					}
+					if ( 'qmn_global_settings' === $active_tab ) {
+						settings_fields( 'qmn-settings-group' );
+						do_settings_sections( 'qmn_global_settings' );
+					}
+					if ( 'quiz-default-options' === $active_tab ) {
+						settings_fields( 'qsm-quiz-settings-group' );
+						?>
+						<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
+							<ul class="subsubsub">
+								<li>
+									<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
+								</li>
+							</ul>
+						</div>
+
+						<div id="qsm_general" class="quiz_style_tab_content">
+							<?php do_settings_sections( 'qsm_default_global_option_general' ); ?>
+						</div>
+						<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
+							<?php do_settings_sections( 'qsm_default_global_option_quiz_submission' ); ?>
+						</div>
+						<div id="display" class="quiz_style_tab_content" style="display:none">
+							<?php do_settings_sections( 'qsm_default_global_option_display' ); ?>
+						</div>
+						<div id="contact_form" class="quiz_style_tab_content" style="display:none">
+							<?php do_settings_sections( 'qsm_default_global_option_contact' ); ?>
+						</div>
+						<?php
+					}
+					?>
+					<?php submit_button(); ?>
+				</form>
+			<?php } ?>
 		</div>
 		<?php
 	}

@@ -3306,3 +3306,7 @@ input#preferred-date-format-custom {
 .wp-core-ui .button-danger:hover {
 	color: #ca1010; border-color: #ca1010;
 }
+
+.qsm-api-keys-options .qsm-api-keys-option {
+	margin: 0 0 10px 0;
+}

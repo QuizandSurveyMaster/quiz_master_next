@@ -3583,4 +3583,25 @@ var import_button;
             });
         }
     }
+    
+    $(document).on('click', '.qsm-api-settings-form .qsm-generate-api-key', function (event) {
+        event.preventDefault();
+        if (!$(this).hasClass('confirmation') || confirm(qsm_api_object.confirmation_message)) {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: 'regenerate_api_key',
+                    nonce: qsm_api_object.nonce
+                },
+                success: function (response) {
+                    $("#qsm_api_key").val(response.data);
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        } 
+    });        
+
 }(jQuery));
