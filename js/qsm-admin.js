@@ -1200,6 +1200,8 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             function addTinyMceAutoSuggestion() {
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
+                        //Add stylesheet
+                        //editor.settings.content_css += ',' + qsm_admin_messages.tinymce_stylesheet_url;
                         //Auto complete commands
                         var commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
@@ -1228,43 +1230,56 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             var autocomplete = document.createElement('div');
                             autocomplete.className = 'qsm-autocomplete';
                             var newCommand = commands;
+                            //Get search
                             var qsm_search =  editor.getContainer().getAttribute('qsm_search');
                             if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {
                                 if ( false === clear ) {
+                                    qsm_search = qsm_search.toLowerCase();
                                     newCommand = commands.filter(suggestion =>
-                                        suggestion.name.toLowerCase().startsWith(qsm_search.toLowerCase())
+                                        suggestion.name.toLowerCase().startsWith( qsm_search ) || ( -1 < suggestion.description.toLowerCase().indexOf( qsm_search ) )
                                     );
                                 }
                             } else {
                                 qsm_search = '';
                             }
-                            let var_group = [];
-                            let item_index = 1;
-                            newCommand.forEach( function( command ) {
-                                if ( -1 == var_group.indexOf( command.group ) ) {
-                                    var_group.push( command.group );
-                                    let item_group = document.createElement('div');
-                                    item_group.className = 'qsm-autocomplete-item-group';
-                                    item_group.textContent = command.group;
-                                    autocomplete.appendChild(item_group);
-                                }   
-                                var item = document.createElement('div');
-                                item.className = 'qsm-autocomplete-item';
-                               
-                                item.textContent = command.name;
-                                item.onclick = function() {
-                                    for (let i = 0; i <= qsm_search.length; i++) {
-                                        editor.execCommand('Delete');
-                                    }
-                                    //editor.insertContent( command.description );
-                                    editor.execCommand('mceInsertContent', false, command.value);
-                                    //editor.execCommand(command.name);
-                                    autocomplete.remove();
-                                    editor.getContainer().setAttribute('qsm_search', '');
-                                    editor.qsmShowAutocomplete = false;
-                                };
-                                autocomplete.appendChild(item);
-                            });
+                            
+                            if ( 0 < newCommand.length ) {
+                                let var_group = [];
+                                newCommand.forEach( function( command ) {
+                                    //Add Group Name
+                                    if ( -1 == var_group.indexOf( command.group ) ) {
+                                        var_group.push( command.group );
+                                        let item_group = document.createElement('div');
+                                        item_group.className = 'qsm-autocomplete-item-group';
+                                        item_group.textContent = command.group;
+                                        autocomplete.appendChild(item_group);
+                                    }   
+                                    //Add Item
+                                    var item = document.createElement('div');
+                                    item.className = 'qsm-autocomplete-item';
+                                    item.title = command.description;
+                                    item.textContent = command.name;
+                                    item.onclick = function() {
+                                        for (let i = 0; i <= qsm_search.length; i++) {
+                                            editor.execCommand('Delete');
+                                        }
+                                        //editor.insertContent( command.description );
+                                        editor.execCommand('mceInsertContent', false, '<span class="qsm-var-wrapper" >'+command.value+'</span> ' );
+                                        
+                                        autocomplete.remove();
+                                        editor.getContainer().setAttribute('qsm_search', '');
+                                        editor.qsmShowAutocomplete = false;
+                                    };
+                                    autocomplete.appendChild(item);
+                                });
+                            } else {
+                                //No Variable Found
+                                let item_group = document.createElement('div');
+                                item_group.className = 'qsm-autocomplete-no-item';
+                                item_group.textContent = 'No Variable Found';
+                                autocomplete.appendChild(item_group);
+                            }
+                            //Add autocomplete modal
                             editor.getContainer().appendChild(autocomplete);
                             editor.qsmShowAutocomplete = true;
                         }
