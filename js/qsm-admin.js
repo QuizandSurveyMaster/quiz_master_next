@@ -1240,7 +1240,7 @@ var QSMContact;
                     }
                 },
                 addField: function (fieldArray) {
-                    var template = wp.template('qsm-contact-form-field');
+                    let template = wp.template('qsm-contact-form-field');
 
                     $('.contact-form').append(template(fieldArray));
 
@@ -1253,18 +1253,18 @@ var QSMContact;
                     $('.qsm-contact-form-field').removeClass('new');
                 },
                 duplicateField: function (linkClicked) {
-                    var fieldArray = QSMContact.prepareFieldData(linkClicked.parents('.qsm-contact-form-field'));
+                    let fieldArray = QSMContact.prepareFieldData(linkClicked.parents('.qsm-contact-form-field'));
                     QSMContact.addField(fieldArray);
                 },
                 deleteField: function (field) {
-                    var parent = field.parents('.qsm-contact-form-field');
+                    let parent = field.parents('.qsm-contact-form-field');
                     parent.addClass('deleting');
                     setTimeout(function () {
                         parent.remove();
                     }, 250);
                 },
                 newField: function () {
-                    var fieldArray = {
+                    let fieldArray = {
                         label: '',
                         type: 'text',
                         answers: [],
@@ -1301,7 +1301,7 @@ var QSMContact;
                 },
                 save: function () {
                     QSMContact.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
-                    var contactFields = $('.qsm-contact-form-field');
+                    let contactFields = $('.qsm-contact-form-field');
                     var contactForm = [];
                     var contactEach;
                     $.each(contactFields, function (i, val) {
@@ -1416,7 +1416,7 @@ var QSMContact;
                 });
                 $('.contact-form').on('click', '.settings-field', function (event) {
                     event.preventDefault();
-                    var target = $(this).parents('.qsm-contact-form-field').find('.qsm-contact-form-field-settings');
+                    let target = $(this).parents('.qsm-contact-form-field').find('.qsm-contact-form-field-settings');
                     $('.qsm-contact-form-field-settings').not(target).hide();
                     target.toggle();
                 });
