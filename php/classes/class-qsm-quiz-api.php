@@ -159,7 +159,7 @@ class QSMQuizApi {
 	 * @param string $api_key The API key parameter received in the request.
 	 * @return array The response containing success status and message.
 	 */
-	function qsm_verify_api_key_settings( $api_key, $type ) {
+	protected function qsm_verify_api_key_settings( $api_key, $type ) {
 		$response = array(
 			'success' => false,
 			'message' => '',
@@ -170,7 +170,7 @@ class QSMQuizApi {
 		if ( $qsm_api_settings_serialized ) {
 			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized); 
 
-			if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[$type]) && "1" == $qsm_api_settings[$type]) ) {
+			if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
 				$response['success'] = true;
 			} else {
 				if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
@@ -179,7 +179,7 @@ class QSMQuizApi {
 					$response['message'] = __('Please provide an API key.', 'quiz-master-next');
 				} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
 					$response['message'] = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
-				} elseif( !isset($qsm_api_settings[$type]) || "" == $qsm_api_settings[$type]) {
+				} elseif ( ! isset($qsm_api_settings[ $type ]) || "" == $qsm_api_settings[ $type ] ) {
 					$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
 				}
 			}
@@ -498,7 +498,7 @@ class QSMQuizApi {
 		return $response;
 	}
 	
-	function qsm_api_quiz_submit( $request ) {
+	public function qsm_api_quiz_submit( $request ) {
 
 		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
 		$api_key = $request->get_param('api_key');
@@ -590,7 +590,7 @@ class QSMQuizApi {
 					$message = __('Please provide an API key.', 'quiz-master-next');
 				} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
 					$message = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
-				} elseif( !isset($qsm_api_settings['allow_submit_quiz']) || "" == $qsm_api_settings['allow_submit_quiz']) {
+				} elseif ( ! isset($qsm_api_settings['allow_submit_quiz']) || "" == $qsm_api_settings['allow_submit_quiz'] ) {
 					$message = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
 				}
 

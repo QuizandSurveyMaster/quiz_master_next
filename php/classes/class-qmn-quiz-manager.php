@@ -1738,13 +1738,13 @@ class QMNQuizManager {
 				if ( 'name' === $field['use'] ) {
 					$qmn_array_for_variables['user_name'] = $field['value'];
 				}
-				if ( 'comp' === $field['use'] ) {
+				elseif ( 'comp' === $field['use'] ) {
 					$qmn_array_for_variables['user_business'] = $field['value'];
 				}
-				if ( 'email' === $field['use'] ) {
+				elseif ( 'email' === $field['use'] ) {
 					$qmn_array_for_variables['user_email'] = $field['value'];
 				}
-				if ( 'phone' === $field['use'] ) {
+				elseif ( 'phone' === $field['use'] ) {
 					$qmn_array_for_variables['user_phone'] = $field['value'];
 				}
 			}
