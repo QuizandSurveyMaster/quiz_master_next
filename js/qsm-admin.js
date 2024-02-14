@@ -1240,24 +1240,24 @@ var QSMContact;
                     }
                 },
                 addField: function (fieldArray) {
-                    var template = wp.template('contact-form-field');
+                    var template = wp.template('qsm-contact-form-field');
 
                     $('.contact-form').append(template(fieldArray));
 
-                    $('.contact-form-field').each(function () {
+                    $('.qsm-contact-form-field').each(function () {
                         QSMContact.hideShowSettings($(this));
                     });
                     setTimeout(QSMContact.removeNew, 250);
                 },
                 removeNew: function () {
-                    $('.contact-form-field').removeClass('new');
+                    $('.qsm-contact-form-field').removeClass('new');
                 },
                 duplicateField: function (linkClicked) {
-                    var fieldArray = QSMContact.prepareFieldData(linkClicked.parents('.contact-form-field'));
+                    var fieldArray = QSMContact.prepareFieldData(linkClicked.parents('.qsm-contact-form-field'));
                     QSMContact.addField(fieldArray);
                 },
                 deleteField: function (field) {
-                    var parent = field.parents('.contact-form-field');
+                    var parent = field.parents('.qsm-contact-form-field');
                     parent.addClass('deleting');
                     setTimeout(function () {
                         parent.remove();
@@ -1269,6 +1269,7 @@ var QSMContact;
                         type: 'text',
                         answers: [],
                         required: false,
+                        hide_label: false,
                         use: '',
                         enable: true,
                         is_default: false
@@ -1280,14 +1281,15 @@ var QSMContact;
                     var fieldArray = {
                         label: field.find('.label-control').val(),
                         type: field.find('.type-control').val(),
-                        required: field.find('.required-control').prop('checked'),
+                        required: field.find('.qsm-required-control').prop('checked'),
+                        hide_label: field.find('.qsm-hide-label-control').prop('checked'),
                         use: field.find('.use-control').val(),
                         enable: field.find('.enable-control').prop('checked'),
                     };
                     /**
                      * Store Other settings
                      */
-                    field.find('.contact-form-field-settings :input').each(function () {
+                    field.find('.qsm-contact-form-field-settings :input').each(function () {
                         var inputName = $(this).attr('name');
                         var inputVal = $(this).val();
                         if ('checkbox' == $(this).attr('type')) {
@@ -1299,7 +1301,7 @@ var QSMContact;
                 },
                 save: function () {
                     QSMContact.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
-                    var contactFields = $('.contact-form-field');
+                    var contactFields = $('.qsm-contact-form-field');
                     var contactForm = [];
                     var contactEach;
                     $.each(contactFields, function (i, val) {
@@ -1357,7 +1359,7 @@ var QSMContact;
                 },
                 hideShowSettings: function (field) {
                     var type = field.find('.type-control').val();
-                    if (field.find('.required-control').prop('checked')) {
+                    if (field.find('.qsm-required-control').prop('checked')) {
                         field.find('.field-required-flag').show();
                     }
                     if (!field.find('.enable-control').prop('checked')) {
@@ -1366,27 +1368,33 @@ var QSMContact;
                             field.addClass('hidden-field');
                         }
                     }
-                    field.find('.contact-form-field-settings .contact-form-group:not(.required-option)').hide();
-                    if ('text' == type || 'number' == type) {
-                        field.find('.contact-form-field-settings .min-max-option').show();
+                    field.find('.qsm-contact-form-field-settings .qsm-contact-form-group:not(.qsm-required-option, .qsm-hide-label-option)').hide();
+                    if (['text', 'number'].includes(type)) {
+                        field.find('.qsm-contact-form-field-settings .qsm-min-max-option').show();
                     }
                     if ('email' == type) {
-                        field.find('.contact-form-field-settings .email-option').show();
+                        field.find('.qsm-contact-form-field-settings .qsm-email-option').show();
                     }
-                    if ('radio' == type || 'select' == type) {
-                        field.find('.contact-form-field-settings .field-options').show();
+                    if (['radio', 'select'].includes(type)) {
+                        field.find('.qsm-contact-form-field-settings .qsm-field-options').show();
+                    }
+                    if (['text', 'number', 'url', 'email'].includes(type)) {
+                        field.find('.qsm-contact-form-field-settings .qsm-placeholder-option').show();
+                    }
+                    if (['checkbox', 'radio', 'select', 'date'].includes(type)) {
+                        field.find('.qsm-contact-form-field-settings .qsm-hide-label-option').hide();
                     }
                     jQuery(document).trigger('qsm_contact_field_hide_show_settings', [field, type]);
                 }
             };
             $(function () {
                 QSMContact.load();
-                if ($('.contact-form > .contact-form-field').length === 0) {
+                if ($('.contact-form > .qsm-contact-form-field').length === 0) {
                     $('.save-contact').hide();
                 }
                 $('.add-contact-field').on('click', function () {
                     QSMContact.newField();
-                    if ($('.contact-form > .contact-form-field').length === 0) {
+                    if ($('.contact-form > .qsm-contact-form-field').length === 0) {
                         $('.save-contact').hide();
                     } else {
                         $('.save-contact').show();
@@ -1408,37 +1416,37 @@ var QSMContact;
                 });
                 $('.contact-form').on('click', '.settings-field', function (event) {
                     event.preventDefault();
-                    var target = $(this).parents('.contact-form-field').find('.contact-form-field-settings');
-                    $('.contact-form-field-settings').not(target).hide();
+                    var target = $(this).parents('.qsm-contact-form-field').find('.qsm-contact-form-field-settings');
+                    $('.qsm-contact-form-field-settings').not(target).hide();
                     target.toggle();
                 });
                 $('.contact-form').on('change', '.type-control', function (event) {
                     event.preventDefault();
-                    QSMContact.hideShowSettings($(this).parents('.contact-form-field'));
+                    QSMContact.hideShowSettings($(this).parents('.qsm-contact-form-field'));
                 });
-                $('.contact-form').on('change', '.required-control', function (event) {
+                $('.contact-form').on('change', '.qsm-required-control', function (event) {
                     event.preventDefault();
-                    $(this).parents('.contact-form-field').find('.field-required-flag').hide();
+                    $(this).parents('.qsm-contact-form-field').find('.field-required-flag').hide();
                     if ($(this).is(':checked')) {
-                        $(this).parents('.contact-form-field').find('.field-required-flag').show();
+                        $(this).parents('.qsm-contact-form-field').find('.field-required-flag').show();
                     }
                 });
                 $('.contact-form').on('change', '.enable-control', function (event) {
                     event.preventDefault();
-                    $(this).parents('.contact-form-field').addClass('disabled-field');
+                    $(this).parents('.qsm-contact-form-field').addClass('disabled-field');
                     if ($(this).is(':checked')) {
-                        $(this).parents('.contact-form-field').removeClass('disabled-field');
+                        $(this).parents('.qsm-contact-form-field').removeClass('disabled-field');
                     }
-                    QSMContact.hideShowSettings($(this).parents('.contact-form-field'));
+                    QSMContact.hideShowSettings($(this).parents('.qsm-contact-form-field'));
                 });
                 $(document).on('change', '.show-disabled-fields', function (event) {
                     event.preventDefault();
                     var is_show = $(this).prop('checked');
                     jQuery.post(ajaxurl, { action: 'qsm_show_disabled_contact_fields', show: is_show, 'nonce': qsmContactObject.saveNonce, 'quiz_id': qsmContactObject.quizID });
                     if (is_show) {
-                        $('.contact-form-field').removeClass('hidden-field');
+                        $('.qsm-contact-form-field').removeClass('hidden-field');
                     } else {
-                        $('.contact-form-field.disabled-field').addClass('hidden-field');
+                        $('.qsm-contact-form-field.disabled-field').addClass('hidden-field');
                     }
                 });
                 $('.contact-form').sortable({

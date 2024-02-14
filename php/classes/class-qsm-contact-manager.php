@@ -349,8 +349,10 @@ class QSM_Contact_Manager {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i ++ ) {
 				$label       = $is_not_allow_html ? $fields[ $i ]['label'] : sanitize_text_field( wp_unslash( $fields[ $i ]['label'] ), $allowed_html );
+				$placeholder = ! empty( $fields[ $i ]['placeholder'] ) ? sanitize_text_field( wp_unslash( $fields[ $i ]['placeholder'] ) ) : '';
 				$fields[ $i ]['label']  = $label;
 				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $label, "quiz_contact_field_text-{$i}-{$quiz_id}" );
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $placeholder, "quiz_contact_field_placeholder-{$i}-{$quiz_id}" );
 				if ( ! empty( $fields[ $i ]['options'] ) ) {
 					$options = sanitize_text_field( wp_unslash( $fields[ $i ]['options'] ) );
 					$fields[ $i ]['options']  = $options;
@@ -380,6 +382,7 @@ class QSM_Contact_Manager {
 			$fields_hidden = true;
 		}
 		$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['label'], "quiz_contact_field_text-{$index}-{$quiz_options->quiz_id}" );
+		$field_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['placeholder'], "quiz_contact_field_placeholder-{$index}-{$quiz_options->quiz_id}" );
 		$fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
@@ -427,10 +430,12 @@ class QSM_Contact_Manager {
 					$class       .= ' mlwMaxLength ';
 				}
 
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
 				$class       = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -447,9 +452,11 @@ class QSM_Contact_Manager {
 					$fieldAttr       .= " data-domains='" . implode( ',', array_filter( $allowdomains ) ) . "' ";
 				}
 				$class       = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
-				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
+					?>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -486,9 +493,11 @@ class QSM_Contact_Manager {
 					$fieldAttr .= " autocomplete='off' ";
 				}
 				$class       = apply_filters( 'qsm_contact_url_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
-				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
+					?>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -515,9 +524,11 @@ class QSM_Contact_Manager {
 					$class .= ' mlwMaxLength ';
 				}
 				$class       = apply_filters( 'qsm_contact_number_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
 				break;
