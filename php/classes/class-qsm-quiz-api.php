@@ -191,8 +191,8 @@ class QSMQuizApi {
 	}
 
 	public function qsm_get_quiz_result_info( WP_REST_Request $request ) {
-
-		$api_key_param = $request->get_param('api_key');
+		
+		$api_key_param = $request->get_header('authorization');
 		$verification = $this->qsm_verify_api_key_settings($api_key_param, 'get_result');
 		if ( $verification['success'] ) {
 			if ( $request->get_param('result_id') ) {
@@ -291,7 +291,7 @@ class QSMQuizApi {
 	}
 		
 	public function qsm_get_quiz_info( WP_REST_Request $request ) {
-		$api_key_param = $request->get_param('api_key');
+		$api_key_param = $request->get_header('authorization');
 		$verification = $this->qsm_verify_api_key_settings($api_key_param, 'get_quiz');
 		if ( $verification['success'] ) {
 			if ( $request->get_param('quizId') ) {
@@ -417,7 +417,7 @@ class QSMQuizApi {
 	}
 
 	public function qsm_get_quiz_questions( WP_REST_Request $request ) {
-		$api_key_param = $request->get_param('api_key');
+		$api_key_param = $request->get_header('authorization');
 		$verification = $this->qsm_verify_api_key_settings($api_key_param, 'get_questions');
 		if ( $verification['success'] ) {
 			if ( $request->get_param('question_id') ) {
@@ -499,9 +499,9 @@ class QSMQuizApi {
 	}
 	
 	public function qsm_api_quiz_submit( $request ) {
-
+		
 		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
-		$api_key = $request->get_param('api_key');
+		$api_key = $request->get_header('authorization');
 		if ( $qsm_api_settings_serialized ) {
 			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized); 
 	
