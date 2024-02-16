@@ -1216,6 +1216,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                                 value:qsm_var_item,
                                                 description:qsm_admin_messages.qsm_variables[qsm_var_group][qsm_var_item],
                                                 group: qsm_var_group,
+                                                is_core: qsm_var_group.qsm_extra_variable_class == 'Core' ? 1 : 0,
 
                                             }
                                         )
@@ -1250,15 +1251,19 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                     if ( -1 == var_group.indexOf( command.group ) ) {
                                         var_group.push( command.group );
                                         let item_group = document.createElement('div');
-                                        item_group.className = 'qsm-autocomplete-item-group';
+                                        console.log(command.is_core)
+                                        newclassnametoadd = command.is_core == 1 ? '' : 'upgrade';
+                                        item_group.className = 'qsm-autocomplete-item-group ' + newclassnametoadd;
                                         item_group.textContent = command.group;
                                         autocomplete.appendChild(item_group);
                                     }   
                                     //Add Item
                                     var item = document.createElement('div');
                                     item.className = 'qsm-autocomplete-item';
-                                    item.title = command.description;
                                     item.textContent = command.name;
+                                    var spanElement = document.createElement('span');
+                                    spanElement.textContent = command.description;
+                                    item.appendChild(spanElement);
                                     item.onclick = function() {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');

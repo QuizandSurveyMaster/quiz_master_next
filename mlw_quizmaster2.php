@@ -374,6 +374,8 @@ class MLWQuizMasterNext {
 		wp_enqueue_style( 'jquer-multiselect-css', QSM_PLUGIN_CSS_URL . '/jquery.multiselect.min.css', array(), $this->version );
 		wp_enqueue_script( 'qsm-jquery-multiselect-js', QSM_PLUGIN_JS_URL . '/jquery.multiselect.min.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+		$variable_list                             = qsm_text_template_variable_list();
+		$variable_list = qsm_extra_template_and_leaderboard($variable_list);
 		$qsm_admin_messages = array(
 			'error'                      => __('Error', 'quiz-master-next'),
 			'success'                    => __('Success', 'quiz-master-next'),
@@ -449,7 +451,9 @@ class MLWQuizMasterNext {
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
 			'add_more'                   => __("Add", 'quiz-master-next'),
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
-			'qsm_variables' => function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : ''
+			'qsm_variables' 			 => $variable_list,
+			'qsm_extra_variable_class'   => ! class_exists( 'QSM_Extra_Variables' ) ? 0 : 1,
+			'qsm_widget_al_class'   	 => ! class_exists( 'Mlw_Qmn_Al_Widget' ) ? 0 : 1,
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );

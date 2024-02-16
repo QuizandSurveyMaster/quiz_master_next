@@ -1381,7 +1381,7 @@ td.scheduled_time_start {
 	width: auto;
 	height: auto;
 }
-.qsm-tooltips-icon .qsm-tooltips {
+.qsm-tooltips-icon .qsm-tooltips, .qsm-autocomplete-item span {
 	background-color: #333;
 	border-radius: 3px;
 	color: #ffffff;
@@ -1402,7 +1402,7 @@ td.scheduled_time_start {
 .qsm-tooltips-icon .qsm-tooltips a {
 	color: #fff;
 }
-.qsm-tooltips-icon .qsm-tooltips:before {
+.qsm-tooltips-icon .qsm-tooltips:before, .qsm-autocomplete-item span:before {
 	border-color: #333 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
 	border-style: solid;
 	border-width: 8px 7px 0;
@@ -1413,10 +1413,16 @@ td.scheduled_time_start {
 	position: absolute;
 }
 .qsm-tooltips-icon:hover .qsm-tooltips,
- .qsm-tooltips:hover {
+ .qsm-tooltips:hover,
+ .qsm-autocomplete-item:hover span {
 	display: block;
 	opacity: 1;
-	z-index: 9999;
+	z-index: 999;
+}
+.qsm-autocomplete-item span {
+	left: calc(100% - 120px);
+	bottom: 32px;
+	text-wrap: wrap;
 }
 .qsm-tab-btns a {
 	margin: 0 10px;
@@ -3360,8 +3366,13 @@ padding: 5px;
 font-size: 0.85rem;
 cursor: pointer;
 text-wrap: wrap;
+border: 1px solid #def0ff;
+color: #2271b1;
+position: relative;
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item:hover {
-background-color: #f0f0f0;
+background-color: #def0ff;
+border-color: #a1c1d8;
+border-style: dashed;
 }
 /*TinyMCE Text-editor : end */
