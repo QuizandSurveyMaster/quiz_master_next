@@ -219,7 +219,7 @@ function qsm_options_emails_tab_template() {
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
 		<div class="qsm-email-condition-mode">
-			<span class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</span>
+			<label class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</label>
 			<select class="email-condition-category">
 				<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
 					<?php if ( ! empty( $categories ) ) {

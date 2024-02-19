@@ -51,7 +51,7 @@ class QSM_Emails {
 				 * be sent.
 				 */
 				$show = true;
-				if ( isset( $email['default_mark'] ) && $index + 1 == $page['default_mark'] ) {
+				if ( isset( $email['default_mark'] ) && $index + 1 == $email['default_mark'] ) {
 					$default_email_content = $email_content;
 					$default_email_subject = $email_subject;
 					$default_email_to = $email['to'];
