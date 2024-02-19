@@ -172,9 +172,15 @@ function qsm_options_emails_tab_template() {
 		<header class="qsm-email-header">
 			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 			<div class="qsm-template-btn-group">
-				<button class="qsm-delete-email-button"><span class="dashicons dashicons-trash"></span></button>
-				<button class="qsm-duplicate-email-template-button"><span class="dashicons dashicons-admin-page"></span></button>
-				<button class="qsm-toggle-email-template-button"><span class="dashicons dashicons-arrow-down-alt2"></span></button>
+				<label class="qsm-template-mark-as-default">
+					<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+					<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+				</label>
+				<div class="qsm-actions-link-box">
+					<a href="javascript:void(0)" class="qsm-delete-email-button"><span class="dashicons dashicons-trash"></span></a>
+					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><span class="dashicons dashicons-admin-page"></span></a>
+					<a href="javascript:void(0)" class="qsm-toggle-email-template-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
+				<div>
 			<div>
 		</header>
 		<main class="qsm-email-content">
@@ -186,7 +192,7 @@ function qsm_options_emails_tab_template() {
 				<div class="email-when-conditions">
 					<!-- Conditions go here. Review template below. -->
 				</div>
-				<a class="new-condition" href="javascript:void(0);"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+				<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+<?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 			</div>
 			<div class="email-show">
 				<div class="email-content-header">
@@ -213,7 +219,7 @@ function qsm_options_emails_tab_template() {
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
 		<div class="qsm-email-condition-mode">
-			<span class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</span>
+			<label class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</label>
 			<select class="email-condition-category">
 				<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
 					<?php if ( ! empty( $categories ) ) {

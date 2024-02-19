@@ -512,20 +512,23 @@ span.qsm-quiz-name {
     background: #F8F9F9;
 	padding: 10px;
 	position: relative;
+	border: 1px solid #dfd4d4;
 }
 .qsm-result-condition-title,
 .qsm-email-condition-title {
     font-size: 16px;
+	display: block;
+    margin-bottom: 7px;
 }
 .qsm-result-condition-mode,
 .qsm-email-condition-mode {
     margin-bottom: 15px;
 }
-.results-page-condition .qsm-result-condition-container select, .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], .email-condition .qsm-email-condition-container select, .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"] {
+.results-page-condition select, .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], .email-condition select, .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"] {
 	min-width: auto;
 	width: 100%;
 	border-radius: 4px;
-	border-color: #1e1e1e;
+	border-color: #ccc;
 }
 .results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container {
     display: flex;
@@ -538,7 +541,8 @@ span.qsm-quiz-name {
 	transition-duration: 200ms;
 	position: absolute;
 	right: 0;
-    top: 10px;
+    top: 8px;
+	color: #d63638;
 }
 .delete-condition-button:hover {
 	transform: scale(1.1);

@@ -202,9 +202,15 @@ function qsm_options_results_tab_template(){
 				<header class="results-page-header">
 					<strong><?php esc_html_e( 'Result Page ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 					<div class="qsm-template-btn-group">
-						<button class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></button>
-						<button class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></button>
-						<button class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></button>
+						<label class="qsm-template-mark-as-default">
+							<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+							<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+						</label>
+						<div class="qsm-actions-link-box">
+							<a href="javascript:void(0)" class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></a>
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></a>
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
+						<div>
 					<div>
 				</header>
 				<main class="results-page-content">
@@ -216,7 +222,7 @@ function qsm_options_results_tab_template(){
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<a class="new-condition" href="javascript:void(0);"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
@@ -236,7 +242,7 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
 			<div class="qsm-result-condition-mode">
-				<span class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</span>
+				<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</label>
 				<select class="results-page-condition-category">
 					<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
 					<?php if ( ! empty( $categories ) ) {
