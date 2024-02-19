@@ -1223,7 +1223,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                 }
                             }
                          }
-                       
+
                         //Show autocomplete modal
                         function showAutocomplete( editor, clear =false ) {
                             removeAutocomplete( editor, clear );
@@ -1242,7 +1242,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             } else {
                                 qsm_search = '';
                             }
-                            
+
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
                                 newCommand.forEach( function( command ) {
@@ -1253,7 +1253,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                         item_group.className = 'qsm-autocomplete-item-group';
                                         item_group.textContent = command.group;
                                         autocomplete.appendChild(item_group);
-                                    }   
+                                    }
                                     //Add Item
                                     var item = document.createElement('div');
                                     item.className = 'qsm-autocomplete-item';
@@ -1265,7 +1265,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                         }
                                         //editor.insertContent( command.description );
                                         editor.execCommand('mceInsertContent', false, '<span class="qsm-var-wrapper" >'+command.value+'</span> ' );
-                                        
+
                                         autocomplete.remove();
                                         editor.getContainer().setAttribute('qsm_search', '');
                                         editor.qsmShowAutocomplete = false;
@@ -1293,16 +1293,16 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             }
                             if ( true === clear ) {
                             var qsm_search =  editor.getContainer().getAttribute('qsm_search');
-                                if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {  
+                                if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {
                                     editor.getContainer().setAttribute('qsm_search', '');
                                 }
                             }
                             editor.qsmShowAutocomplete = false;
                         }
-                    
+
                         //on keydowm inside editor
                         editor.on('keydown', function(e) {
-                            
+
                             if (e.keyCode === 191 && e.ctrlKey === false && e.altKey === false && e.shiftKey === false) {
                               // "/" key pressed, trigger autocomplete
                               showAutocomplete( editor, true );
@@ -1326,13 +1326,13 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                             qsm_search += e.key;
                                         }
                                          editor.getContainer().setAttribute('qsm_search', qsm_search);
-                                        
+
                                         showAutocomplete(editor);
                                     }
-                                    
+
                                }
                             }
-                            
+
                         });
                     });
                 }
@@ -1630,12 +1630,14 @@ var QSMContact;
                         } else {
                             email_content = $(this).find('.email-template').val()
                         }
+                        let default_mark = $(this).find('.qsm-mark-as-default:checked').length ? $(this).find('.qsm-mark-as-default:checked').val() : false;
                         email = {
                             'conditions': [],
                             'to': $(this).find('.qsm-to-email').val(),
                             'subject': $(this).find('.qsm-email-subject').val(),
                             'content': email_content,
                             'replyTo': $(this).find('.reply-to').prop('checked'),
+                            'default_mark': default_mark,
                         };
                         $(this).find('.email-condition').each(function () {
                             email.conditions.push({
@@ -1687,7 +1689,7 @@ var QSMContact;
                         .done(function (emails) {
                             $('#qsm_emails').find('.qsm-spinner-loader').remove();
                             emails.forEach(function (email, i, emails) {
-                                QSMAdminEmails.addEmail(email.conditions, email.to, email.subject, email.content, email.replyTo);
+                                QSMAdminEmails.addEmail(email.conditions, email.to, email.subject, email.content, email.replyTo, email.default_mark);
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -1722,10 +1724,10 @@ var QSMContact;
                 newCondition: function ($email) {
                     QSMAdminEmails.addCondition($email, 'quiz', '', 'score', 'equal', 0);
                 },
-                addEmail: function (conditions, to, subject, content, replyTo) {
+                addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) {
                     QSMAdminEmails.total += 1;
                     var template = wp.template('email');
-                    $('#qsm_emails').append(template({ id: QSMAdminEmails.total, to: to, subject: subject, content: content, replyTo: replyTo }));
+                    $('#qsm_emails').append(template({ id: QSMAdminEmails.total, to: to, subject: subject, content: content, replyTo: replyTo, default_mark: default_mark }));
                     conditions.forEach(function (condition, i, conditions) {
                         QSMAdminEmails.addCondition(
                             $('.qsm-email:last-child'),
@@ -1803,7 +1805,7 @@ var QSMContact;
                     event.preventDefault();
                     QSMAdminEmails.saveEmails();
                 });
-                $('#qsm_emails').on('click', '.new-condition', function (event) {
+                $('#qsm_emails').on('click', '.qsm-new-condition', function (event) {
                     event.preventDefault();
                     $page = $(this).closest('.qsm-email');
                     QSMAdminEmails.newCondition($page);
@@ -3644,11 +3646,14 @@ var import_button;
                     var pages = [];
                     var page = {};
                     var redirect_value = '';
+                    let default_mark = false;
                     $('.results-page').each(function () {
+                        default_mark = $(this).find('.qsm-mark-as-default:checked').length ? $(this).find('.qsm-mark-as-default:checked').val() : false;
                         page = {
                             'conditions': [],
                             'page': wp.editor.getContent($(this).find('.results-page-template').attr('id')),
                             'redirect': false,
+                            default_mark: default_mark,
                         };
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
@@ -3703,7 +3708,7 @@ var import_button;
                         .done(function (pages) {
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
-                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect);
+                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark);
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -3739,10 +3744,10 @@ var import_button;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
-                addResultsPage: function (conditions, page, redirect) {
+                addResultsPage: function (conditions, page, redirect, default_mark = false) {
                     QSMAdminResults.total += 1;
                     var template = wp.template('results-page');
-                    $('#results-pages').append(template({ id: QSMAdminResults.total, page: page, redirect: redirect }));
+                    $('#results-pages').append(template({ id: QSMAdminResults.total, page: page, redirect: redirect, default_mark: default_mark }));
                     conditions.forEach(function (condition, i, conditions) {
                         QSMAdminResults.addCondition(
                             $('.results-page:last-child'),
@@ -3790,7 +3795,7 @@ var import_button;
                     let result_page = jQuery(this).closest("header").next("main");
                     let conditions = [];
                     let redirect_value = result_page.find('.results-page-redirect').val();
-                    let page = wp.editor.getContent( result_page.find('.results-page-template').attr('id') );
+                    let page = wp.editor.getContent(result_page.find('.results-page-template').attr('id'));
                     result_page.find('.results-page-condition').each(function () {
                         conditions.push({
                             'category': $(this).find('.results-page-condition-category').val(),
@@ -3807,7 +3812,7 @@ var import_button;
                     event.preventDefault();
                     QSMAdminResults.saveResults();
                 });
-                $('#results-pages').on('click', '.new-condition', function (event) {
+                $('#results-pages').on('click', '.qsm-new-condition', function (event) {
                     event.preventDefault();
                     $page = $(this).closest('.results-page');
                     QSMAdminResults.newCondition($page);
@@ -3826,6 +3831,9 @@ var import_button;
             });
         }
     }
+    jQuery(document).on('click', '.qsm-mark-as-default', function () {
+        jQuery('.qsm-mark-as-default').not(jQuery(this)).prop('checked', false);
+    })
     function qsmHandleConditionChange(containerClass, extraCategoryClass, operatorClass, criteriaClass, defaultValueClass) {
         jQuery(document).on('change', '.' + containerClass + '-category', function () {
             let container = jQuery(this).closest('.' + containerClass);

@@ -31,13 +31,11 @@ class QSM_Results_Pages {
 		$default_redirect = false;
 		ob_start();
 		?>
-<div class="qsm-results-page">
-	<?php
+		<div class="qsm-results-page"><?php
 			do_action( 'qsm_before_results_page' );
 			$page_index = 0;
 			// Cycles through each possible page.
 			foreach ( $pages as $index => $page ) {
-
 				$page_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" );
 				// Checks if any conditions are present. Else, set it as the default.
 				if ( ! empty( $page['conditions'] ) ) {
@@ -156,6 +154,9 @@ class QSM_Results_Pages {
 							$redirect = $page['redirect'];
 						}
 					}
+					if ( isset( $page['default_mark'] ) && $index + 1 == $page['default_mark'] ) {
+						$default = $page_content;
+					}
 				} else {
 					$default = $page_content;
 					if ( $page['redirect'] ) {
@@ -184,8 +185,7 @@ class QSM_Results_Pages {
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page', $response_data, $page_index );
 			?>
-</div>
-<?php
+		</div><?php
 		return array(
 			'display'  => do_shortcode( ob_get_clean() ),
 			'redirect' => $redirect,
@@ -371,6 +371,8 @@ class QSM_Results_Pages {
 				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
 
 			}
+			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
+
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
 

@@ -449,7 +449,7 @@ class MLWQuizMasterNext {
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
 			'add_more'                   => __("Add", 'quiz-master-next'),
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
-			'qsm_variables' => function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : ''
+			'qsm_variables'              => function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : '',
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
