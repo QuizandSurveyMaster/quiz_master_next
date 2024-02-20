@@ -1343,6 +1343,8 @@ function qmnInitPagination(quiz_id) {
 	jQuery(document).trigger('qsm_init_pagination_after', [quiz_id, qmn_quiz_data]);
 }
 jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after', function(event, quiz_id) {
+	jQuery(document).trigger('qsm_before_iframe_section',[quiz_id]);
+
 	let video_sections = jQuery('.qsm-quiz-container-' + quiz_id + '.qmn_quiz_container').find('video');
 	let iframeVideos = jQuery('.qsm-quiz-container-' + quiz_id + '.qmn_quiz_container .qsm-page, .qsm-quiz-container-' + quiz_id + '.qmn_quiz_container .qsm-auto-page-row').find('iframe');
 	let audio_sections = jQuery('.qsm-quiz-container-' + quiz_id + '.qmn_quiz_container').find('audio');
@@ -1360,6 +1362,8 @@ jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after
 			this.pause();
 		}
 	});
+	
+	jQuery(document).trigger('qsm_after_iframe_section',[quiz_id]);
 });
 function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
 	var sTop = window.screen.height / 2 - (218);
