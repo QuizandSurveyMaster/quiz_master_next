@@ -125,7 +125,7 @@ function qsm_generate_dashboard_page() {
 					<?php
 					$classname = "";
 				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
-					$classes = explode(",",$classname);
+					$classes = ! empty($classname) ? explode(",",$classname) : array();
 					$classesname1 = "";
 					if ( isset($classes[0]) ) {
 						$classesname1 = $classes[0];
