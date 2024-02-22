@@ -382,7 +382,11 @@ class QSM_Contact_Manager {
 			$fields_hidden = true;
 		}
 		$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['label'], "quiz_contact_field_text-{$index}-{$quiz_options->quiz_id}" );
-		$field_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['placeholder'], "quiz_contact_field_placeholder-{$index}-{$quiz_options->quiz_id}" );
+		if ( ! empty( $field['placeholder'] ) ) {
+			$field_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['placeholder'], "quiz_contact_field_placeholder-{$index}-{$quiz_options->quiz_id}" );
+		}else {
+			$field_placeholder = $field_label;
+		}
 		$fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {

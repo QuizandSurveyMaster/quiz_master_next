@@ -528,7 +528,10 @@ a.import-button.button.disable_import::before {
 }
 .answers-single .correct-answer {
 	margin-right: 0;
-	vertical-align: -webkit-baseline-middle;
+	line-height: 25px;
+}
+.answers-single .correct-answer .answer-correct{
+	margin-top: -2px;
 }
 .questionElements #postbox-container-1 select {
 	border: 1px solid #dddddd;

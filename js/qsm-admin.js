@@ -1201,7 +1201,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
                         //Add stylesheet
-                        //editor.settings.content_css += ',' + qsm_admin_messages.tinymce_stylesheet_url;
+                        editor.settings.content_style = '.qsm-highlight-variables { color: #4B88BA; background: #E9F8FF; padding: 2px 5px; border-radius: 2px; }';
                         //Auto complete commands
                         var commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
@@ -1209,11 +1209,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                 for (let qsm_var_item in qsm_admin_messages.qsm_variables[qsm_var_group]) {
                                     if ( qsm_admin_messages.qsm_variables[qsm_var_group].hasOwnProperty( qsm_var_item ) ) {
                                         let cname = qsm_var_item.replace(/\W/g, '');
-                                        cname = cname.replace(/_/g, ' ');
+                                        cname = cname.replace(/_/g, ' ').toLowerCase();
                                         commands.push(
                                             {
                                                 name:cname,
-                                                value:qsm_var_item,
+                                                value: qsm_var_item,
                                                 description:qsm_admin_messages.qsm_variables[qsm_var_group][qsm_var_item],
                                                 group: qsm_var_group,
 
@@ -1236,7 +1236,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                 if ( false === clear ) {
                                     qsm_search = qsm_search.toLowerCase();
                                     newCommand = commands.filter(suggestion =>
-                                        suggestion.name.toLowerCase().startsWith( qsm_search ) || ( -1 < suggestion.description.toLowerCase().indexOf( qsm_search ) )
+                                        suggestion.name.toLowerCase().startsWith( qsm_search )
                                     );
                                 }
                             } else {
@@ -1256,15 +1256,15 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                     }
                                     //Add Item
                                     var item = document.createElement('div');
-                                    item.className = 'qsm-autocomplete-item';
-                                    item.title = command.description;
-                                    item.textContent = command.name;
+                                    item.classList.add('qsm-autocomplete-item');
+                                    item.setAttribute('title', command.description);
+                                    item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
                                     item.onclick = function() {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
                                         }
                                         //editor.insertContent( command.description );
-                                        editor.execCommand('mceInsertContent', false, '<span class="qsm-var-wrapper" >'+command.value+'</span> ' );
+                                        editor.execCommand('mceInsertContent', false, '<span class="qsm-highlight-variables">'+ command.value.replace(/%/g, '') +'</span> ' );
 
                                         autocomplete.remove();
                                         editor.getContainer().setAttribute('qsm_search', '');
@@ -1276,7 +1276,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                 //No Variable Found
                                 let item_group = document.createElement('div');
                                 item_group.className = 'qsm-autocomplete-no-item';
-                                item_group.textContent = 'No Variable Found';
+                                item_group.textContent = qsm_admin_messages.no_variables;
                                 autocomplete.appendChild(item_group);
                             }
                             //Add autocomplete modal
@@ -1707,16 +1707,16 @@ var QSMContact;
                     $email.find('.email-condition').each(function () {
                         let extraCategory = jQuery(this).find('.email-extra-condition-category');
                         if ('quiz' == jQuery(this).find('.email-condition-category').val() || '' == jQuery(this).find('.email-condition-category').val()) {
-                            extraCategory.hide();
-                            jQuery(this).find('.email-condition-operator').show();
-                            jQuery(this).find('option.qsm-questions-criteria').show();
-                            jQuery(this).find('option.qsm-score-criteria').show()
+                            extraCategory.closest('.email-extra-condition-category-container').hide();
+                            jQuery(this).find('.email-condition-operator-container').show();
+                            jQuery(this).find('option.qsm-questions-criteria-container').show();
+                            jQuery(this).find('option.qsm-score-criteria-container').show()
                         } else if ('category' == jQuery(this).find('.email-condition-category').val()) {
                             jQuery(this).find('.option.qsm-questions-criteria').hide();
                             extraCategory.find('option').hide();
-                            extraCategory.find('.qsm-condition-category').show();
-                            jQuery(this).find('option.qsm-score-criteria').show()
-                            jQuery(this).find('.email-condition-operator').show();
+                            extraCategory.find('.qsm-condition-category-container').show();
+                            jQuery(this).find('option.qsm-score-criteria-container').show()
+                            jQuery(this).find('.email-condition-operator-container').show();
                         }
                     });
                     jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, extra_condition, criteria, operator, value]);
@@ -3727,16 +3727,16 @@ var import_button;
                     $page.find('.results-page-condition').each(function () {
                         let extraCategory = jQuery(this).find('.results-page-extra-condition-category');
                         if ('quiz' == jQuery(this).find('.results-page-condition-category').val() || '' == jQuery(this).find('.results-page-condition-category').val()) {
-                            extraCategory.hide();
+                            extraCategory.closest('.results-page-extra-condition-category-container').hide();
                             jQuery(this).find('.results-page-condition-operator').show();
                             jQuery(this).find('option.qsm-questions-criteria').show();
                             jQuery(this).find('option.qsm-score-criteria').show()
                         } else if ('category' == jQuery(this).find('.results-page-condition-category').val()) {
                             jQuery(this).find('.option.qsm-questions-criteria').hide();
                             extraCategory.find('option').hide();
-                            extraCategory.find('.qsm-condition-category').show();
-                            jQuery(this).find('option.qsm-score-criteria').show()
-                            jQuery(this).find('.results-page-condition-operator').show();
+                            extraCategory.find('.qsm-condition-category-container').show();
+                            jQuery(this).find('option.qsm-score-criteria-container').show()
+                            jQuery(this).find('.results-page-condition-operator-container').show();
                         }
                     });
                     jQuery(document).trigger('qsm_after_add_result_condition', [$page, category, extra_condition, criteria, operator, value]);
@@ -3840,21 +3840,23 @@ var import_button;
             let extraCategory = container.find('.' + extraCategoryClass);
 
             if ('quiz' == jQuery(this).val() || '' == jQuery(this).val()) {
-                extraCategory.hide();
-                container.find('.' + operatorClass).show();
-                container.find('.' + criteriaClass).show();
-                container.find('.' + defaultValueClass).show();
+                extraCategory.closest('.' + extraCategoryClass + '-container').hide();
+                container.find('.' + operatorClass).closest('.' + operatorClass + '-container').show();
+                container.find('.' + operatorClass).prev('label').text(qsm_admin_messages.condition);
+                container.find('.' + criteriaClass).closest('.' + criteriaClass + '-container').show();
+                container.find('.' + defaultValueClass).closest('.' + defaultValueClass + '-container').show();
                 container.find('.' + operatorClass + ' option').hide().prop("selected", false);
                 container.find('.' + operatorClass + ' option.default_operator').show().prop("selected", true);
                 container.find('option.qsm-score-criteria').show();
                 container.find('.' + criteriaClass + ' option.qsm-points-criteria').prop("selected", true);
             } else if ('category' == jQuery(this).val()) {
-                extraCategory.show();
-                container.find('.' + criteriaClass).show();
-                container.find('.' + operatorClass).show();
+                extraCategory.closest('.' + extraCategoryClass + '-container').show();
+                container.find('.' + criteriaClass).closest('.' + criteriaClass + '-container').show();
+                container.find('.' + operatorClass).prev('label').text(qsm_admin_messages.condition);
+                container.find('.' + operatorClass).closest('.' + operatorClass + '-container').show();
                 extraCategory.find('option').prop("selected", false).hide();
                 extraCategory.find('.qsm-condition-category').show();
-                container.find('.' + defaultValueClass).show();
+                container.find('.' + defaultValueClass).closest('.' + defaultValueClass + '-container').show();
                 container.find('.' + criteriaClass + ' option.qsm-points-criteria').prop("selected", true);
                 extraCategory.find('option:visible:first').prop("selected", true);
                 container.find('.' + operatorClass + ' option').hide().prop("selected", true);
@@ -3868,7 +3870,7 @@ var import_button;
         jQuery(document).on('change', '.' + containerClass + '-operator', function () {
             let selectedOption = jQuery(this).find('option:selected');
             if (selectedOption.hasClass('default_operator')) {
-                jQuery(this).closest('.' + containerClass).find('.' + defaultValueClass).show();
+                jQuery(this).closest('.' + containerClass).find('.' + defaultValueClass + '-container').show();
             }
         });
     }
