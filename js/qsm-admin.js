@@ -3763,6 +3763,7 @@ var import_button;
                         tinymce: {
                             plugins: ["qsmslashcommands"],
                             forced_root_block: '',
+                            encoding: 'xml',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                         },
