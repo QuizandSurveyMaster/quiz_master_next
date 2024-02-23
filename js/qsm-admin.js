@@ -1334,6 +1334,89 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             }
 
                         });
+
+                        function sanitizeHtml(content) {
+
+                            // Remove non empty p tag
+                            //content = content.replace(/<p([^>]*)>(?!\s*<\/p>)(.*?)<\/p>/gi, '$2');
+
+                            // Replace br with /n
+                            //content = content.replace(/<br \/>/gi, '\n');
+                            
+                            // Decode HTML
+                            // var txt = document.createElement("textarea");
+                            // txt.innerHTML = content;
+                            // content = txt.value;
+                            
+                            // Match <img> tags with src attributes
+                            content = content.replace(/<img\s+[^>]*src\s*=\s*['"]([^'"]+)['"][^>]*>/gi, function(match, src) {
+                                src = ( 'undefined' === typeof src || null === src ) ? '': src.split('?')[0];
+                                // Check if the src URL is valid (ends with .jpg, .jpeg, .png, or .gif)
+                                if (src.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                                    return match; // Valid src, keep the <img> tag
+                                } else {
+                                    return ''; // Invalid src, remove the <img> tag
+                                }
+                            });
+
+                            // Remove style attribute
+                            content = content.replace(/style\s*=\s*(['"])(.*?)\1/gi, '')
+                            // Remove 'javascript:' injection, alert, prompt, confirm
+                            content = content.replace(/javascript:/gi, '');
+                            content = content.replace(/alert\(/gi, '');
+                            content = content.replace(/prompt\(/gi, '');
+                            content = content.replace(/confirm\(/gi, '');
+                    
+                            // Remove unwanted HTML tags like script, svg, title, meta, input etc.
+                            content = content.replace(/<script\b[^>]*>.*?<\/script>/gi, '');
+                            content = content.replace(/<svg\b[^>]*>.*?<\/svg>/gi, '');
+                            content = content.replace(/<title\b[^>]*>.*?<\/title>/gi, '');
+                            content = content.replace(/<meta\b[^>]*>/gi, '');
+                            content = content.replace(/<input\b[^>]*>/gi, '');
+                            content = content.replace(/<link\b[^>]*>/gi, '');
+                    
+                            // Remove any on event attributes
+                            content = content.replace(/\s*on\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/gi, '');
+                    
+                            // Remove any javascript: URLs
+                            content = content.replace(/<[^>]+?\s+[^>]*?=\s*["']?\s*javascript:.*?\s*["']?[^>]*>/gi, '');
+                    
+                            // Encode Html
+                            // txt = document.createElement('textarea');
+                            // txt.innerText = content;
+                            // content = txt.innerHTML;
+                            // Decode empty QSM variable
+                            // content = content.replace(/&lt;span class=&quot;qsm-highlight-variables&quot;&gt;([^&]+)&lt;\/span&gt;/gi, '<span class="qsm-highlight-variables">$1</span>');
+                            // content = content.replace(/&lt;span class="qsm-highlight-variables"&gt;([^&]+)&lt;\/span&gt;/gi, '<span class="qsm-highlight-variables">$1</span>');
+
+                            // Decode empty br tag
+                            // content = content.replace(/&lt;br \/&gt;/gi, '<br />');
+                            // content = content.replace(/&lt;br  \/&gt;/gi, '<br />');
+                            // content = content.replace(/\n/gi, '<br />');
+                            // Decode empty p tag
+                           // content = content.replace(/&lt;p&gt;&nbsp;&lt;\/p&gt;/gi, '<p> </p>');
+                            
+                            return content;
+                        }
+
+                        // On change : sanitize content
+                        editor.on('change', function(e) {
+                            
+                            //Only for result template
+                            if ( -1 != editor.id.indexOf('results-page') ) {
+                                
+                                var content = editor.getContent();
+                                var newContent = sanitizeHtml( content );
+                                //if sanitize string and content are not same 
+                                if ( content != newContent ) {
+                                    //Set content
+                                    editor.setContent( newContent );
+                                    // Move the cursor to the end
+                                    editor.selection.select(editor.getBody(), true);
+                                    editor.selection.collapse(false);
+                                }
+                            }
+                        });
                     });
                 }
             }
@@ -3763,7 +3846,6 @@ var import_button;
                         tinymce: {
                             plugins: ["qsmslashcommands"],
                             forced_root_block: '',
-                            encoding: 'xml',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                         },
