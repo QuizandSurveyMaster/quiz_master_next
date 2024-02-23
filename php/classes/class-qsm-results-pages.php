@@ -322,9 +322,15 @@ class QSM_Results_Pages {
 	}
 
 	public static function sanitize_html( $html = '' ) {
-    
+		
+		//Decode Html
+		$html = htmlspecialchars_decode( $html, ENT_QUOTES );
+
 		// Remove unwanted html tags
 		$html = preg_replace('/<(script|form|textarea|div|body|title|svg|link|meta)[^>]*>.*?<\/\1>/is', '', $html);
+
+		// Remove styles attributes
+		$html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);
 
 		// Remove input tags
 		$html = preg_replace('/<input\b[^>]*>/i', '', $html);
