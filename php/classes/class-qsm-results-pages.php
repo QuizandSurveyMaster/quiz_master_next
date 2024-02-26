@@ -332,6 +332,9 @@ class QSM_Results_Pages {
 		// Remove styles attributes
 		$html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);
 
+		// Remove background attributes
+		$html = preg_replace('/(<[^>]+) background=".*?"/i', '$1', $html);
+
 		// Remove input tags
 		$html = preg_replace('/<input\b[^>]*>/i', '', $html);
 
@@ -354,7 +357,7 @@ class QSM_Results_Pages {
 			if (in_array(strtolower($file_extension), $valid_image_types) &&
 				isset($url_parts['scheme']) && in_array(strtolower($url_parts['scheme']), array('http', 'https')) &&
 				empty($url_parts['query'])) {
-				return '<img src="' . esc_url( $src ) . '">';
+					return $matches[0];
 			} else {
 				return '';
 			}

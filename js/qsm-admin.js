@@ -1336,20 +1336,9 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         });
 
                         function sanitizeHtml(content) {
-
-                            // Remove non empty p tag
-                            //content = content.replace(/<p([^>]*)>(?!\s*<\/p>)(.*?)<\/p>/gi, '$2');
-
-                            // Replace br with /n
-                            //content = content.replace(/<br \/>/gi, '\n');
-                            
-                            // Decode HTML
-                            // var txt = document.createElement("textarea");
-                            // txt.innerHTML = content;
-                            // content = txt.value;
                             
                             // Match <img> tags with src attributes
-                            content = content.replace(/<img\s+[^>]*src\s*=\s*['"]([^'"]+)['"][^>]*>/gi, function(match, src) {
+                            content = content.replace(/<img\b.*?src\s*=\s*['"]([^'"]+)['"].*?>/gi, function(match, src) {
                                 src = ( 'undefined' === typeof src || null === src ) ? '': src.split('?')[0];
                                 // Check if the src URL is valid (ends with .jpg, .jpeg, .png, or .gif)
                                 if (src.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
@@ -1360,7 +1349,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             });
 
                             // Remove style attribute
-                            content = content.replace(/style\s*=\s*(['"])(.*?)\1/gi, '')
+                            content = content.replace(/style\s*=\s*(['"])(.*?)\1/gi, '');
+
+                            // Remove background attribute
+                            content = content.replace(/background\s*=\s*(['"])(.*?)\1/gi, '');
+
                             // Remove 'javascript:' injection, alert, prompt, confirm
                             content = content.replace(/javascript:/gi, '');
                             content = content.replace(/alert\(/gi, '');
@@ -1376,26 +1369,8 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             content = content.replace(/<link\b[^>]*>/gi, '');
                     
                             // Remove any on event attributes
-                            content = content.replace(/\s*on\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/gi, '');
-                    
-                            // Remove any javascript: URLs
-                            content = content.replace(/<[^>]+?\s+[^>]*?=\s*["']?\s*javascript:.*?\s*["']?[^>]*>/gi, '');
-                    
-                            // Encode Html
-                            // txt = document.createElement('textarea');
-                            // txt.innerText = content;
-                            // content = txt.innerHTML;
-                            // Decode empty QSM variable
-                            // content = content.replace(/&lt;span class=&quot;qsm-highlight-variables&quot;&gt;([^&]+)&lt;\/span&gt;/gi, '<span class="qsm-highlight-variables">$1</span>');
-                            // content = content.replace(/&lt;span class="qsm-highlight-variables"&gt;([^&]+)&lt;\/span&gt;/gi, '<span class="qsm-highlight-variables">$1</span>');
+                            content = content.replace(/on\w+\s*=\s*(['"][^'"]*['"]|[^>\s]+)/gi, '');
 
-                            // Decode empty br tag
-                            // content = content.replace(/&lt;br \/&gt;/gi, '<br />');
-                            // content = content.replace(/&lt;br  \/&gt;/gi, '<br />');
-                            // content = content.replace(/\n/gi, '<br />');
-                            // Decode empty p tag
-                           // content = content.replace(/&lt;p&gt;&nbsp;&lt;\/p&gt;/gi, '<p> </p>');
-                            
                             return content;
                         }
 
