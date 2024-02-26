@@ -1334,6 +1334,64 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             }
 
                         });
+
+                        function sanitizeHtml(content) {
+                            
+                            // Match <img> tags with src attributes
+                            content = content.replace(/<img\b.*?src\s*=\s*['"]([^'"]+)['"].*?>/gi, function(match, src) {
+                                src = ( 'undefined' === typeof src || null === src ) ? '': src.split('?')[0];
+                                // Check if the src URL is valid (ends with .jpg, .jpeg, .png, or .gif)
+                                if (src.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                                    return match; // Valid src, keep the <img> tag
+                                } else {
+                                    return ''; // Invalid src, remove the <img> tag
+                                }
+                            });
+
+                            // Remove style attribute
+                            content = content.replace(/style\s*=\s*(['"])(.*?)\1/gi, '');
+
+                            // Remove background attribute
+                            content = content.replace(/background\s*=\s*(['"])(.*?)\1/gi, '');
+
+                            // Remove 'javascript:' injection, alert, prompt, confirm
+                            content = content.replace(/javascript:/gi, '');
+                            content = content.replace(/alert\(/gi, '');
+                            content = content.replace(/prompt\(/gi, '');
+                            content = content.replace(/confirm\(/gi, '');
+                    
+                            // Remove unwanted HTML tags like script, svg, title, meta, input etc.
+                            content = content.replace(/<script\b[^>]*>.*?<\/script>/gi, '');
+                            content = content.replace(/<svg\b[^>]*>.*?<\/svg>/gi, '');
+                            content = content.replace(/<title\b[^>]*>.*?<\/title>/gi, '');
+                            content = content.replace(/<meta\b[^>]*>/gi, '');
+                            content = content.replace(/<input\b[^>]*>/gi, '');
+                            content = content.replace(/<link\b[^>]*>/gi, '');
+                    
+                            // Remove any on event attributes
+                            content = content.replace(/on\w+\s*=\s*(['"][^'"]*['"]|[^>\s]+)/gi, '');
+
+                            return content;
+                        }
+
+                        // On change : sanitize content
+                        editor.on('change', function(e) {
+                            
+                            //Only for result template
+                            if ( -1 != editor.id.indexOf('results-page') ) {
+                                
+                                var content = editor.getContent();
+                                var newContent = sanitizeHtml( content );
+                                //if sanitize string and content are not same 
+                                if ( content != newContent ) {
+                                    //Set content
+                                    editor.setContent( newContent );
+                                    // Move the cursor to the end
+                                    editor.selection.select(editor.getBody(), true);
+                                    editor.selection.collapse(false);
+                                }
+                            }
+                        });
                     });
                 }
             }
