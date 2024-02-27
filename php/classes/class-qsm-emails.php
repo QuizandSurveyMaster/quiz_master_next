@@ -500,7 +500,7 @@ class QSM_Emails {
 				$emails[ $i ]['replyTo'] = false;
 			}
 			if ( isset( $emails[ $i ]['content'] ) ) {
-				$emails[ $i ]['content'] = wp_kses_post( preg_replace( '/<span class="qsm-highlight-variables">([^<]+)<\/span>/', strip_tags('%$1%'), $emails[ $i ]['content'] ) );
+				$emails[ $i ]['content'] = wp_kses_post( preg_replace( '/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/', strip_tags('%$1%'), $emails[ $i ]['content'] ) );
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );

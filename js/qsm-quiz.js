@@ -842,10 +842,10 @@ function getFormData($form) {
 	return indexed_array;
 }
 
-function qmnFormSubmit(quiz_form_id) {
+function qmnFormSubmit(quiz_form_id, $this) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
-	var $container = jQuery('#' + quiz_form_id).closest('.qmn_quiz_container');
-	var result = qmnValidation('#' + quiz_form_id + ' *', quiz_form_id);
+	var $container = jQuery($this).closest('.qmn_quiz_container');
+	var result = qmnValidation( $container.find('*'), quiz_form_id);
 	if (!result) { return result; }
 
 	/**
@@ -1413,12 +1413,13 @@ jQuery(function () {
 
 	jQuery(document).on('click', ".qsm-submit-btn", function (event) {
 		event.preventDefault();
+		let $this = jQuery(this);
 		let quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		let form_id = "quizForm"+quiz_id;
 		jQuery(document).trigger('qsm_quiz_submit_trigger', [quiz_id]);
 		let recaptcha = jQuery('#' + form_id).find("#qsm_grecaptcha_v3");
 		if (!recaptcha.length) {
-			qmnFormSubmit(form_id);
+			qmnFormSubmit(form_id, $this);
 			return false;
 		}
 
@@ -1428,7 +1429,7 @@ jQuery(function () {
 		grecaptcha.ready(function () {
 			grecaptcha.execute(site_key, { action: submit_action }).then(function (token) {
 				jQuery('#' + form_id).find("#qsm_grecaptcha_v3_response").val(token);
-				qmnFormSubmit(form_id);
+				qmnFormSubmit(form_id, $this);
 			});
 		});
 	});

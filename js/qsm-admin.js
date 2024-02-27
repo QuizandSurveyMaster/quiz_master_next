@@ -1201,7 +1201,17 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
                         //Add stylesheet
-                        editor.settings.content_style = '.qsm-highlight-variables { color: #4B88BA; background: #E9F8FF; padding: 2px 5px; border-radius: 2px; }';
+                        editor.settings.extended_valid_elements = 'qsmvariabletag';
+                        editor.settings.custom_elements = '~qsmvariabletag';
+                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 2px 5px; border-radius: 2px; }';
+                        editor.addButton('qsm_slash_command', {
+                            text: '/' +qsm_admin_messages.slash_command,
+                            tooltip: qsm_admin_messages.insert_variable,
+                            onclick: function () {
+                                editor.insertContent('/');
+                                showAutocomplete( editor, true );
+                            }
+                          });
                         //Auto complete commands
                         var commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
@@ -1264,7 +1274,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                             editor.execCommand('Delete');
                                         }
                                         //editor.insertContent( command.description );
-                                        editor.execCommand('mceInsertContent', false, '<span class="qsm-highlight-variables">'+ command.value.replace(/%/g, '') +'</span> ' );
+                                        editor.execCommand('mceInsertContent', false, '<qsmvariabletag>'+ command.value.replace(/%/g, '') +'</qsmvariabletag>&nbsp;' );
 
                                         autocomplete.remove();
                                         editor.getContainer().setAttribute('qsm_search', '');
@@ -1301,7 +1311,32 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         }
 
                         //on keydowm inside editor
-                        editor.on('keydown', function(e) {
+                        editor.on('keydown', function (e) {
+
+                            // let $content = editor.getContent();
+                            // let newcontent = $content.replace(/<qsmvariabletag>(.*?)<\/qsmvariabletag>/g, function(match, innerContent) {
+                            //     if (/<.*?>/.test(innerContent)) {
+                            //         return innerContent;
+                            //     } else {
+                            //         return match;
+                            //     }
+                            // });
+
+                            // newcontent = newcontent.replace(/<qsmvariabletag>(.*?)<qsmvariabletag>(.*?)<\/qsmvariabletag>(.*?)<\/qsmvariabletag>/g, function(match, firstContent, nestedContent, secondContent) {
+                            //     return "<qsmvariabletag>" + firstContent + "</qsmvariabletag> <qsmvariabletag>" + nestedContent + "</qsmvariabletag>" + secondContent;
+                            // });
+
+                            // newcontent = newcontent.replace(/( *)<qsmvariabletag>/g, "<qsmvariabletag>");
+
+                            // newcontent = newcontent.replace(/<qsmvariabletag>(.*?) +<\/qsmvariabletag>/g, function(match, innerContent) {
+                            //     return "<qsmvariabletag>" + innerContent.trim() + " </qsmvariabletag>";
+                            // });
+
+                            // if (newcontent != $content) {
+                            //     editor.setContent(newcontent);
+                            //     e.preventDefault();
+                            //     return;
+                            // }
 
                             if (e.keyCode === 191 && e.ctrlKey === false && e.altKey === false && e.shiftKey === false) {
                               // "/" key pressed, trigger autocomplete
@@ -1744,8 +1779,11 @@ var QSMContact;
                             tinymce: {
                                 plugins: ["qsmslashcommands"],
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code',
+                                setup: function (editor) {
+
+                                }
                             },
                             quicktags: true,
                         };
@@ -3763,7 +3801,7 @@ var import_button;
                         tinymce: {
                             plugins: ["qsmslashcommands"],
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv',
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
                         },
                         quicktags: true,
@@ -3827,6 +3865,7 @@ var import_button;
                 });
                 jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
                     jQuery(this).closest("header").next("main").slideToggle();
+                    jQuery(this).find('.dashicons-arrow-up-alt2, .dashicons-arrow-down-alt2').toggleClass('dashicons-arrow-up-alt2 dashicons-arrow-down-alt2');
                 });
             });
         }
@@ -3838,7 +3877,7 @@ var import_button;
         jQuery(document).on('change', '.' + containerClass + '-category', function () {
             let container = jQuery(this).closest('.' + containerClass);
             let extraCategory = container.find('.' + extraCategoryClass);
-
+            container.find('.' + extraCategoryClass + '-container .qsm-extra-condition-label').html( container.find('.' + containerClass + '-category option:selected' ).text());
             if ('quiz' == jQuery(this).val() || '' == jQuery(this).val()) {
                 extraCategory.closest('.' + extraCategoryClass + '-container').hide();
                 container.find('.' + operatorClass).closest('.' + operatorClass + '-container').show();

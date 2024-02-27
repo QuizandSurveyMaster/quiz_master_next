@@ -367,7 +367,7 @@ class QSM_Results_Pages {
 
 			// Sanitize template data
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
-				$pages[ $i ]['page'] = wp_kses_post( preg_replace( '/<span class="qsm-highlight-variables">([^<]+)<\/span>/', '%$1%', $pages[ $i ]['page'] ) );
+				$pages[ $i ]['page'] = wp_kses_post( preg_replace( '/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/', '%$1%', $pages[ $i ]['page'] ) );
 
 			}
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
