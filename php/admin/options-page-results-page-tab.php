@@ -217,7 +217,7 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Set conditions for when this page should be shown.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'the following conditions are met...', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
@@ -227,9 +227,10 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-show">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Create the results page that should be shown when the conditions are met.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
-						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page.replace(/%([^%]+)%/g, '<span class="qsm-highlight-variables">$1</span>') }}}</textarea>
+						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>') }}}</textarea>
+						<span><?php esc_html_e( 'Type / to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
@@ -243,7 +244,7 @@ function qsm_options_results_tab_template(){
 		<div class="results-page-condition">
 			<div class="qsm-result-condition-mode qsm-result-condition-container">
 				<div class="results-page-condition-category-container qsm-result-condition-container-inner">
-					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?>:</label>
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Mode', 'quiz-master-next' ); ?></label>
 					<select class="results-page-condition-category">
 						<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
 						<?php if ( ! empty( $categories ) ) {
@@ -263,7 +264,7 @@ function qsm_options_results_tab_template(){
 					</select>
 				</div>
 				<div class="results-page-extra-condition-category-container qsm-result-condition-container-inner">
-					<label class="qsm-result-condition-title"><?php esc_html_e( 'List', 'quiz-master-next' ); ?></label>
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?> <span class="qsm-extra-condition-label"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></span></label>
 					<select class="results-page-extra-condition-category">
 						<?php if ( ! empty( $categories ) ) { ?>
 							<?php foreach ( $categories as $cat ) { ?>
@@ -279,7 +280,7 @@ function qsm_options_results_tab_template(){
 			</div>
 			<div class="qsm-result-condition-container">
 				<div class="results-page-condition-criteria-container qsm-result-condition-container-inner">
-					<label class="qsm-result-condition-title"><?php esc_html_e( 'Method', 'quiz-master-next' ); ?></label>
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Calculation Type', 'quiz-master-next' ); ?></label>
 					<select class="results-page-condition-criteria">
 						<option value="points" class="qsm-points-criteria" <# if (data.criteria == 'points' || data.category == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points', 'quiz-master-next' ); ?></option>
 						<option value="score" class="qsm-score-criteria" <# if (data.criteria == 'score' || data.category == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct percentage', 'quiz-master-next' ); ?></option>
@@ -288,7 +289,7 @@ function qsm_options_results_tab_template(){
 				</div>
 				<?php do_action( 'qsm_results_page_extra_condition_fields' ); ?>
 				<div class="results-page-condition-operator-container qsm-result-condition-container-inner">
-					<label class="qsm-result-condition-title"><?php esc_html_e( 'Condition', 'quiz-master-next' ); ?></label>
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Condition', 'quiz-master-next' ); ?></label>
 					<select class="results-page-condition-operator">
 						<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
 						<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>

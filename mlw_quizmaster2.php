@@ -378,7 +378,7 @@ class MLWQuizMasterNext {
 			'error'                      => __('Error', 'quiz-master-next'),
 			'success'                    => __('Success', 'quiz-master-next'),
 			'category'                   => __('Category', 'quiz-master-next'),
-			'condition'                  => __('Condition', 'quiz-master-next'),
+			'condition'                  => __('Select Condition', 'quiz-master-next'),
 			'list'                       => __('List', 'quiz-master-next'),
 			'question'                   => __('Question', 'quiz-master-next'),
 			'try_again'                  => __('Please try again', 'quiz-master-next'),
@@ -454,6 +454,8 @@ class MLWQuizMasterNext {
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
 			'qsm_variables'              => function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : '',
 			'no_variables'               => __("No Variable Found", 'quiz-master-next'),
+			'slash_command'              => __("slash command", 'quiz-master-next'),
+			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
