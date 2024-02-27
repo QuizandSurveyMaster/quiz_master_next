@@ -844,8 +844,8 @@ function getFormData($form) {
 
 function qmnFormSubmit(quiz_form_id, $this) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
-	var $container = jQuery($this).closest('.qmn_quiz_container');
-	var result = qmnValidation( $container.find('*'), quiz_form_id);
+	let $container = jQuery($this).closest('.qmn_quiz_container');
+	let result = qmnValidation( $container.find('*'), quiz_form_id);
 	if (!result) { return result; }
 
 	/**
@@ -1362,7 +1362,7 @@ jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after
 			this.pause();
 		}
 	});
-	
+
 	jQuery(document).trigger('qsm_after_iframe_section',[quiz_id]);
 });
 function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {

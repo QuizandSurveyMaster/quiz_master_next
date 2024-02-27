@@ -1313,31 +1313,6 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         //on keydowm inside editor
                         editor.on('keydown', function (e) {
 
-                            // let $content = editor.getContent();
-                            // let newcontent = $content.replace(/<qsmvariabletag>(.*?)<\/qsmvariabletag>/g, function(match, innerContent) {
-                            //     if (/<.*?>/.test(innerContent)) {
-                            //         return innerContent;
-                            //     } else {
-                            //         return match;
-                            //     }
-                            // });
-
-                            // newcontent = newcontent.replace(/<qsmvariabletag>(.*?)<qsmvariabletag>(.*?)<\/qsmvariabletag>(.*?)<\/qsmvariabletag>/g, function(match, firstContent, nestedContent, secondContent) {
-                            //     return "<qsmvariabletag>" + firstContent + "</qsmvariabletag> <qsmvariabletag>" + nestedContent + "</qsmvariabletag>" + secondContent;
-                            // });
-
-                            // newcontent = newcontent.replace(/( *)<qsmvariabletag>/g, "<qsmvariabletag>");
-
-                            // newcontent = newcontent.replace(/<qsmvariabletag>(.*?) +<\/qsmvariabletag>/g, function(match, innerContent) {
-                            //     return "<qsmvariabletag>" + innerContent.trim() + " </qsmvariabletag>";
-                            // });
-
-                            // if (newcontent != $content) {
-                            //     editor.setContent(newcontent);
-                            //     e.preventDefault();
-                            //     return;
-                            // }
-
                             if (e.keyCode === 191 && e.ctrlKey === false && e.altKey === false && e.shiftKey === false) {
                               // "/" key pressed, trigger autocomplete
                               showAutocomplete( editor, true );
@@ -1371,7 +1346,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         });
 
                         function sanitizeHtml(content) {
-                            
+
                             // Match <img> tags with src attributes
                             content = content.replace(/<img\b.*?src\s*=\s*['"]([^'"]+)['"].*?>/gi, function(match, src) {
                                 src = ( 'undefined' === typeof src || null === src ) ? '': src.split('?')[0];
@@ -1394,7 +1369,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             content = content.replace(/alert\(/gi, '');
                             content = content.replace(/prompt\(/gi, '');
                             content = content.replace(/confirm\(/gi, '');
-                    
+
                             // Remove unwanted HTML tags like script, svg, title, meta, input etc.
                             content = content.replace(/<script\b[^>]*>.*?<\/script>/gi, '');
                             content = content.replace(/<svg\b[^>]*>.*?<\/svg>/gi, '');
@@ -1402,7 +1377,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                             content = content.replace(/<meta\b[^>]*>/gi, '');
                             content = content.replace(/<input\b[^>]*>/gi, '');
                             content = content.replace(/<link\b[^>]*>/gi, '');
-                    
+
                             // Remove any on event attributes
                             content = content.replace(/on\w+\s*=\s*(['"][^'"]*['"]|[^>\s]+)/gi, '');
 
@@ -1411,13 +1386,13 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 
                         // On change : sanitize content
                         editor.on('change', function(e) {
-                            
+
                             //Only for result template
                             if ( -1 != editor.id.indexOf('results-page') ) {
-                                
+
                                 var content = editor.getContent();
                                 var newContent = sanitizeHtml( content );
-                                //if sanitize string and content are not same 
+                                //if sanitize string and content are not same
                                 if ( content != newContent ) {
                                     //Set content
                                     editor.setContent( newContent );
