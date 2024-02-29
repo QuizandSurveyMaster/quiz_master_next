@@ -40,7 +40,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_question',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
 		)
 	);
 	register_rest_route(
@@ -67,7 +69,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_results',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
 		)
 	);
 	register_rest_route(

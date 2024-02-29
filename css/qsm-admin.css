@@ -456,7 +456,7 @@ span.qsm-quiz-name {
 	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
 }
 .results-page .results-page-content, #qsm_emails .qsm-email .qsm-email-content {
-	background: #fff;
+	background: #f8f9f9;
 	padding-right: 15px;
 	padding-left: 15px;
 	width: 100%;
@@ -465,34 +465,33 @@ span.qsm-quiz-name {
 .results-page-header, #qsm_emails .qsm-email-header {
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: space-between;
 	background-color: #fff;
-	padding: 10px 35px;
+	padding: 10px;
 	border-bottom: 1px solid #dfd4d4;
 }
-#qsm_emails .delete-email-button {
+.qsm-delete-email-button,
+.qsm-duplicate-email-template-button,
+.qsm-toggle-email-template-button,
+.qsm-delete-result-button,
+.qsm-duplicate-result-page-button,
+.qsm-toggle-result-page-button{
 	background: none;
 	border: none;
-	color: #dc3232;
-	cursor: pointer;
 	transition-duration: 200ms;
-}
-#qsm_emails .delete-email-button:hover {
-	transform: scale(1.2);
+	cursor: pointer;
 }
 .results-page-content, .qsm-email-content {
 	display: flex;
 	flex-direction: column;
 }
 .results-page-when, .results-page-show, .email-when, .email-show {
-	padding: 10px;
-	background-color: #f1f1f1;
-	border: 1px solid #dfd4d4;
-	margin: 15px 0;
+	padding: 15px;
 	min-width: 60%;
 }
 .results-page-when, .email-when {
 	margin-right: 15px;
+	border-right: 1px solid #dfd4d4;
 }
 .results-page-content-header, .email-content-header {
 	margin-bottom: 10px;
@@ -501,25 +500,55 @@ span.qsm-quiz-name {
 	margin-bottom: 5px;
 	display: block;
 }
-.results-page-content-header h4, .results-page-content-header p, .email-content-header h4, .email-content-header p {
-	margin: 0;
+.results-page-content-header h4,
+ .email-content-header h4{
+	font-size: 20px;
+	margin: 5px 0 15px;
+	font-weight: 400;
 }
 .results-page-condition, .email-condition {
-	display: flex;
-	flex-direction: column;
 	margin-bottom: 15px;
+    border-radius: 2px;
+    background: #fff;
+    padding: 15px;
+    position: relative;
+    border: 1px solid #dfd4d4;
 }
-.results-page-condition>select, .results-page-condition>input, .email-condition>select, .email-condition>input {
-	min-width: auto !important;
-	max-width: 100%;
+.qsm-result-condition-title,
+.qsm-email-condition-title {
+    font-size: 14px;
+	display: block;
+	font-weight: 500;
+    margin-bottom: 3px;
+}
+.qsm-result-condition-mode,
+.qsm-email-condition-mode {
+    margin-bottom: 25px;
+}
+.results-page-condition select, .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], .email-condition select, .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"] {
+	min-width: auto;
+	width: 100%;
+	border-radius: 4px;
+	border-color: #ccc;
+}
+.results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container, .qsm-result-condition-mode, .qsm-email-condition-mode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+	align-items: flex-end;
+}
+.qsm-email-condition-container-inner,
+.qsm-result-condition-container-inner{
+	width: 33.33%;
 }
 .delete-condition-button {
 	background: none;
-	border: 1px solid #1dd969;
-	color: #dc3232;
 	cursor: pointer;
 	transition-duration: 200ms;
-	padding: 6px;
+	position: absolute;
+	right: 0;
+    top: 8px;
+	color: #d63638;
 }
 .delete-condition-button:hover {
 	transform: scale(1.1);
@@ -527,9 +556,14 @@ span.qsm-quiz-name {
 .email-show .label {
 	display: block;
 }
-.results-page-show textarea, .to-email, .subject, .email-template {
+.results-page-show textarea, .email-show .qsm-email-reply-to, .qsm_tab_content input[type="text"].qsm-email-subject, .email-template, .qsm-to-email, .qsm_tab_content input[type="text"].results-page-redirect {
 	width: 100%;
 	margin-bottom: 10px;
+}
+.qsm_tab_content input[type="text"].qsm-email-subject,
+.qsm_tab_content input[type="text"].results-page-redirect{
+	border-radius: 3px;
+	border-color: #8C8FAC;
 }
 @media screen and (min-width: 760px) {
 	.results-page-content, .qsm-email-content {
@@ -540,12 +574,8 @@ span.qsm-quiz-name {
 		width: calc(50% - 15px);
 		min-width: unset;
 	}
-	.results-page-condition, .email-condition {
-		align-items: center;
-		flex-direction: row;
-	}
-	.results-page-condition>select, .results-page-condition>input, .email-condition>select, .email-condition>input {
-		max-width: 23%;
+	.results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container, .qsm-result-condition-mode, .qsm-email-condition-mode {
+		flex-wrap: nowrap;
 	}
 	.delete-condition-button {
 		border: none;
@@ -735,7 +765,8 @@ ul.changelog li.update div.two:before {
 .admin_page_mlw_quiz_options .update-nag {
 	display: none;
 }
-.admin_page_mlw_quiz_options #wpwrap {
+.admin_page_mlw_quiz_options #wpwrap,
+#qsm-export-settings-options button {
 	overflow: hidden;
 }
 .admin_page_mlw_quiz_options .qsm-info-widget {
@@ -882,6 +913,7 @@ ul.changelog li.update div.two:before {
 	padding: 10px 6px;
 	width: 100%;
 }
+.qsm-sub-tab-menu a,
 .qsm_tab_content a {
 	cursor: pointer;
 	text-decoration: none;
@@ -889,11 +921,11 @@ ul.changelog li.update div.two:before {
 	display: inline-block;
 	box-sizing: border-box;
 }
-.qsm_tab_content .subsubsub li:first-child {
+.qsm-sub-tab-menu .subsubsub li:first-child {
 	border-left: 0;
 	padding-left: 0;
 }
-.qsm_tab_content .subsubsub li a {
+.qsm-sub-tab-menu .subsubsub li a {
 	font-size: 14px;
 	line-height: 1.2;
 	padding: 10px;
@@ -904,7 +936,7 @@ ul.changelog li.update div.two:before {
 	text-decoration: none;
 	box-shadow: none;
 }
-.qsm_tab_content .subsubsub li a.current{
+.qsm-sub-tab-menu .subsubsub li a.current{
 	border-bottom: 3px solid #00BEE9;
 }
 /* Popup */
@@ -1152,10 +1184,10 @@ h3.addon_category_name {
 .qsm_tab_content input[type="number"],
 .qsm_tab_content input[type="url"],
 .qsm_global_settings input[type="text"],
-.qsm_global_settings input[type="number"],
 .qsm_global_settings input[type="email"],
 .qsm_global_settings input[type="url"],
 .qsm-addon-setting-wrap input[type="email"],
+.qsm-addon-setting-wrap input[type="password"],
 .qsm-addon-setting-wrap input[type="text"],
 .qsm-addon-setting-wrap input[type="url"],
 .qsm-addon-setting-wrap input[type="number"] {
@@ -1329,11 +1361,12 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
-body:not(.qsm_page_qmn_global_settings) .form-table td fieldset label {
+.form-table td fieldset label {
 	margin-right: 20px !important;
 	width: 100%;
 }
-#correct_answer_logic {
+#correct_answer_logic,
+.qsm-p-b-10 {
     padding-bottom: 10px;
 }
 .qsm-font-light {
@@ -1801,6 +1834,7 @@ td.scheduled_time_start {
 .qsm-quiz-email-tab, .qsm-quiz-result-tab {
 	max-width: 1200px;
 	width: 100%;
+	margin-bottom: 200px;
 }
 .popup-template-span-wrap .popup-copied-des {
 	color: green;
@@ -2221,7 +2255,7 @@ td.scheduled_time_start {
 		width: 100%;
 		float: left;
 	}
-	.contact-form-label {
+	.qsm-contact-form-label {
 		display: inline-block;
 	}
 	.template_variable {
@@ -2680,7 +2714,7 @@ input#duplicate_questions {
 	margin: -30px 0 0;
 	font-size: 16px;
 }
-.contact-form-field {
+.qsm-contact-form-field {
 	display: flex;
 	padding: 12px 5px;
 	margin: 0 0 10px;
@@ -2690,31 +2724,31 @@ input#duplicate_questions {
 	align-items: center;
 	position: relative;
 }
-.contact-form-field.new {
+.qsm-contact-form-field.new {
 	background: #f1f1f1;
 }
-.contact-form-field.deleting {
+.qsm-contact-form-field.deleting {
 	background: #ff6666;
 }
-.contact-form-field.disabled-field {
+.qsm-contact-form-field.disabled-field {
 	background: #f5f5f5;
 }
-.contact-form-field.hidden-field {
+.qsm-contact-form-field.hidden-field {
 	display: none;
 }
-.contact-form-field .contact-form-group {
+.qsm-contact-form-field .qsm-contact-form-group {
 	padding: 0 15px;
 	vertical-align: middle;
 }
-.contact-form-field .contact-form-inputs,
-.contact-form-field .contact-form-actions {
+.qsm-contact-form-field .contact-form-inputs,
+.qsm-contact-form-field .contact-form-actions {
 	min-width: 150px;
 }
-.contact-form-field .sortable-handle {
+.qsm-contact-form-field .sortable-handle {
 	width: 25px;
 	padding: 0 0 0 15px;
 }
-.contact-form-field .field-required-flag {
+.qsm-contact-form-field .field-required-flag {
 	display: none;
 	position: absolute;
 	top: 5px;
@@ -2723,25 +2757,25 @@ input#duplicate_questions {
 	font-weight: bold;
 	color: red;
 }
-.contact-form-field .sortable-handle a.move-field {
+.qsm-contact-form-field .sortable-handle a.move-field {
 	display: inline-block;
 	box-sizing: border-box;
 	text-decoration: none;
 	color: #3c434a;
 	cursor: move;
 }
-.contact-form-field .sortable-handle a.move-field span {
+.qsm-contact-form-field .sortable-handle a.move-field span {
 	color: #a6abaf;
 	font-size: 22px;
 }
-.contact-form-field .contact-form-group .contact-form-label {
+.qsm-contact-form-field .qsm-contact-form-group .qsm-contact-form-label {
 	display: block;
 	font-weight: bold;
 	margin: 0 0 5px;
 }
-.contact-form-field .contact-form-group .contact-form-control,
-.contact-form-field .contact-form-group select.contact-form-control,
-.contact-form-field .contact-form-group input[type="text"].contact-form-control {
+.qsm-contact-form-field .qsm-contact-form-group .qsm-contact-form-control,
+.qsm-contact-form-field .qsm-contact-form-group select.qsm-contact-form-control,
+.qsm-contact-form-field .qsm-contact-form-group input[type="text"].qsm-contact-form-control {
 	display: block;
 	font-size: 14px;
 	line-height: 1.4;
@@ -2752,7 +2786,7 @@ input#duplicate_questions {
 	padding: 5px 8px;
 }
 /* Settings style */
-.contact-form-field-settings {
+.qsm-contact-form-field-settings {
 	position: absolute;
 	right: 0;
 	top: 100%;
@@ -2765,8 +2799,8 @@ input#duplicate_questions {
 	border: 1px solid #dfd4d4;
 	box-shadow: 0 0 6px 2px #ddd;
 }
-.contact-form-field-settings:after,
-.contact-form-field-settings:before {
+.qsm-contact-form-field-settings:after,
+.qsm-contact-form-field-settings:before {
 	border: solid transparent;
 	content: " ";
 	display: block;
@@ -2778,20 +2812,20 @@ input#duplicate_questions {
 	border-width: 15px;
 	border-color: rgba(255, 255, 255, 0);
 }
-.contact-form-field-settings:after {
+.qsm-contact-form-field-settings:after {
 	border-bottom-color: #fff;
 	top: -28px;
 }
-.contact-form-field-settings:before {
+.qsm-contact-form-field-settings:before {
 	border-bottom-color: #dfd4d4;
 	top: -30px;
 }
-.contact-form-field-settings h3 {
+.qsm-contact-form-field-settings h3 {
 	margin-top: 0;
 	padding: 0 0 10px;
 	border-bottom: 1px solid #ccc;
 }
-.contact-form-field-settings .contact-form-group {
+.qsm-contact-form-field-settings .qsm-contact-form-group {
 	display: inline-block;
 	width: 100%;
 	box-sizing: border-box;
@@ -2799,7 +2833,7 @@ input#duplicate_questions {
 	margin: 5px 0 10px;
 }
 /* Switch style*/
-.contact-form-field label.qsm-switch {
+.qsm-contact-form-field label.qsm-switch {
 	display: inline-block;
 	box-sizing: border-box;
 	position: relative;
@@ -2807,7 +2841,7 @@ input#duplicate_questions {
 	height: 25px;
 	margin: 0 5px;
 }
-.contact-form-field label.qsm-switch .switch-slider:before {
+.qsm-contact-form-field label.qsm-switch .switch-slider:before {
 	height: 15px;
 	width: 15px;
 	left: 5px;
@@ -3210,13 +3244,13 @@ input#duplicate_questions {
 		max-width: initial;
 		width: 100%;
 	}
-	.contact-form-field {
+	.qsm-contact-form-field {
 		flex-direction: column;
 		align-items: initial;
 		font-size: 12px;
 		padding-bottom: 0;
 	}
-	.contact-form-field > div {
+	.qsm-contact-form-field > div {
 		margin: 2px 0;
 	}
 	.contact-tab-content {
@@ -3224,16 +3258,16 @@ input#duplicate_questions {
 		max-width: initial;
 		margin-right: 0;
 	}
-	.contact-form-field  .contact-form-switch {
+	.qsm-contact-form-field  .contact-form-switch {
 		position: relative;
 		bottom: 35px;
 		left: 70%;
 	}
-	.contact-form-field .contact-form-actions,
-	.contact-form-field  .contact-form-switch {
+	.qsm-contact-form-field .contact-form-actions,
+	.qsm-contact-form-field  .contact-form-switch {
 		margin-top: 5px;
 	}
-	.wp-core-ui .contact-form-field  select {
+	.wp-core-ui .qsm-contact-form-field  select {
 		max-width: initial;
 	}
 	.qsm_tab_content .qsm-page-subheading {
@@ -3307,6 +3341,51 @@ input#preferred-date-format-custom {
 	color: #ca1010; border-color: #ca1010;
 }
 
+
 .qsm-api-keys-options .qsm-api-keys-option {
 	margin: 0 0 10px 0;
 }
+
+/*TinyMCE Text-editor : start */
+.mce-container .qsm-autocomplete {
+	position: absolute !important;
+    z-index: 1000;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    width: 100%;
+    max-height: 270px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px #00000029;
+    overflow-y: auto;
+    top: calc( 100% - 18px);
+}
+.mce-container .qsm-autocomplete .qsm-autocomplete-item-group {
+	font-weight: 600;
+    padding: 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+    background: #2271b1;
+    color: #fff;
+}
+.mce-container .qsm-autocomplete .qsm-autocomplete-item {
+	padding: 10px 15px;
+    cursor: pointer;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 20px;
+}
+.mce-container .qsm-autocomplete .qsm-autocomplete-item:hover {
+	background-color: #f0f0f0;
+}
+.mce-container .qsm-autocomplete .qsm-autocomplete-item .qsm-autocomplete-item-description {
+	color: #808992;
+    margin-top: 4px;
+    font-size: 11px;
+    font-style: italic;
+    text-transform: none;
+    float: right;
+}
+/*TinyMCE Text-editor : end */

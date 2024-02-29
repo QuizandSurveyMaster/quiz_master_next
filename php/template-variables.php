@@ -1011,10 +1011,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
 	$question_title       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", 'QSM Questions' );
 	$question_description = '';
-	if ( ! empty( $answer[0] ) ) {
+	if ( 14 == $answer['question_type'] ) {
+		$question_description = ! empty($answer[0]) ? $answer[0] : '';
+	} elseif ( ! empty( $answer[0] ) ) {
 		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
-	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>' : $question_description;
+	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . htmlspecialchars_decode(  $question_description, ENT_QUOTES ) . '</span>' : $question_description;
 	$question_numbering   = '';
 	if ( isset( $quiz_options->question_numbering ) && 1 == $quiz_options->question_numbering && 6 != $answer['question_type'] ) {
 		$qmn_total_questions += 1;
@@ -1129,10 +1131,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$is_answer_correct = 0;
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
 								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
-								$decode_single_user_answer = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
+								$decode_single_user_answer = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
 							} else {
 								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-								$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
+								$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
 
 							if ( $decode_show_user_answer == $decode_single_user_answer ) {
@@ -1147,16 +1149,16 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 							}
 						}
 					} else {
 						$options        = array();
 						foreach ( $total_answers as $key => $single_answer ) {
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
+								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
 							} else {
-								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
+								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
 						}
 

@@ -191,7 +191,7 @@ function qsm_options_results_tab_template(){
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && 'cancelled' !== $enabled ) {
-		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+		$query = $wpdb->prepare( "SELECT name, term_id FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
 	} else {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
@@ -200,25 +200,37 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
 				<header class="results-page-header">
-					<div><button class="delete-page-button"><span class="dashicons dashicons-trash"></span></button></div>
+					<strong><?php esc_html_e( 'Result Page ', 'quiz-master-next' ); ?> {{data.id}}</strong>
+					<div class="qsm-template-btn-group">
+						<label class="qsm-template-mark-as-default">
+							<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+							<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+						</label>
+						<div class="qsm-actions-link-box">
+							<a href="javascript:void(0)" class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></a>
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></a>
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
+						<div>
+					<div>
 				</header>
 				<main class="results-page-content">
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Set conditions for when this page should be shown. Leave empty to set this as the default page.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'the following conditions are met...', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Create the results page that should be shown when the conditions are met.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
-						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
+						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>') }}}</textarea>
+						<span><?php esc_html_e( 'Type / to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
@@ -230,40 +242,70 @@ function qsm_options_results_tab_template(){
 
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
-				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-				<select class="results-page-condition-category">
-					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-					<optgroup label="<?php esc_html_e( 'Question Categories', 'quiz-master-next' ); ?>">
-					<?php if ( ! empty( $categories ) ) { ?>
-						<?php foreach ( $categories as $cat ) { ?>
-						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+			<div class="qsm-result-condition-mode qsm-result-condition-container">
+				<div class="results-page-condition-category-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Mode', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-category">
+						<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+						<?php if ( ! empty( $categories ) ) {
+							$category_names = array_map(function( $category ) {
+								return $category[0];
+							}, $categories);
+						?>
+						<#
+						let categories = '<?php echo wp_json_encode($category_names); ?>';
+						let categories_array = JSON.parse(categories);
+						#>
+							<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
+						<?php } else { ?>
+							<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
 						<?php } ?>
-					<?php } else { ?>
-						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-					<?php } ?>
-					</optgroup>
-					<?php do_action( 'qsm_results_page_condition_category' ); ?>
-				</select>
-
-				<select class="results-page-condition-criteria">
-					<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
-					<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
-					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
-				</select>
+						<?php do_action( 'qsm_results_page_condition_category' ); ?>
+					</select>
+				</div>
+				<div class="results-page-extra-condition-category-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?> <span class="qsm-extra-condition-label"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></span></label>
+					<select class="results-page-extra-condition-category">
+						<?php if ( ! empty( $categories ) ) { ?>
+							<?php foreach ( $categories as $cat ) { ?>
+							<option class="qsm-condition-category" value="<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>' || data.extra_condition == '<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+							<?php } ?>
+						<?php } else { ?>
+							<option class="qsm-condition-category" value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+						<?php } ?>
+						<?php do_action( 'qsm_results_page_extra_condition_category' ); ?>
+					</select>
+				</div>
+				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+			</div>
+			<div class="qsm-result-condition-container">
+				<div class="results-page-condition-criteria-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Calculation Type', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-criteria">
+						<option value="points" class="qsm-points-criteria" <# if (data.criteria == 'points' || data.category == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points', 'quiz-master-next' ); ?></option>
+						<option value="score" class="qsm-score-criteria" <# if (data.criteria == 'score' || data.category == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct percentage', 'quiz-master-next' ); ?></option>
+						<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
+					</select>
+				</div>
 				<?php do_action( 'qsm_results_page_extra_condition_fields' ); ?>
-				<select class="results-page-condition-operator">
-					<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
-					<?php do_action( 'qsm_results_page_condition_operator' ); ?>
-				</select>
-				<input type="text" class="results-page-condition-value condition-default-value" value="{{ data.value }}">
+				<div class="results-page-condition-operator-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Condition', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-operator">
+						<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
+						<?php do_action( 'qsm_results_page_condition_operator' ); ?>
+					</select>
+				</div>
+				<div class="condition-default-value-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Value', 'quiz-master-next' ); ?></label>
+					<input type="text" class="results-page-condition-value condition-default-value" value="{{ data.value }}">
+				</div>
 				<?php do_action( 'qsm_results_page_condition_value' ); ?>
 			</div>
-		</script>
-	<?php
-}
-?>
+		</div>
+	</script>
+<?php } ?>

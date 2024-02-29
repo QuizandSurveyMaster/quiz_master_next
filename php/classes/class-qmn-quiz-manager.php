@@ -1362,7 +1362,7 @@ class QMNQuizManager {
 		$question_id_list       = '';
 		$animation_effect       = isset( $qmn_quiz_options->quiz_animation ) && '' !== $qmn_quiz_options->quiz_animation ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $qmn_quiz_options->enable_pagination_quiz ) && $qmn_quiz_options->enable_pagination_quiz ? $qmn_quiz_options->enable_pagination_quiz : 0;
-		$pagination_option      = $qmn_quiz_options->pagination;
+		$pagination_option      = intval( $qmn_quiz_options->pagination );
 		$total_pagination       = $total_pages_count  = 1;
 		if ( $enable_pagination_quiz && $pagination_option ) {
 			$total_pages_count = count( $qmn_quiz_questions );
@@ -1804,6 +1804,7 @@ class QMNQuizManager {
 			$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
 			$results_array['minimum_possible_points']   = $qmn_array_for_variables['minimum_possible_points'];
 			$results_array['quiz_start_date']           = $qmn_array_for_variables['quiz_start_date'];
+			$qmn_array_for_variables = apply_filters( 'qsm_array_for_variables_before_db_query', $qmn_array_for_variables );
 			// If the store responses in database option is set to Yes.
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
 				// Inserts the responses in the database.
@@ -1894,6 +1895,7 @@ class QMNQuizManager {
 			$qmn_array_for_variables['result_id']        = $results_id;
 			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 			setcookie("question_ids_".$qmn_array_for_variables['quiz_id'], "", time() - 36000, "/");
+			$qmn_array_for_variables = apply_filters( 'qsm_array_for_variables_after_db_query', $qmn_array_for_variables, $qmn_quiz_options );
 			// Converts date to the preferred format
 			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format( $qmn_array_for_variables );
 

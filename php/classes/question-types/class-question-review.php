@@ -11,6 +11,7 @@ abstract class QSM_Question_Review {
 	public $answer_status        = 'incorrect';
 	public $points               = 0;
 	public $question_description = '';
+	public $question_type        = 0;
 	public $input_field          = '';
 	public $form_type            = 0;
 	public $grading_system       = 0;
