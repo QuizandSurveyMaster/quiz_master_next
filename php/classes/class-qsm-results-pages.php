@@ -348,15 +348,15 @@ class QSM_Results_Pages {
 		$html = preg_replace('/javascript:/i', '', $html);
 
 		// Filter image src for possible image types, safe URL, and no $_GET parameters
-		$html = preg_replace_callback('/<img\s+src\s*=\s*["\']([^"\']+?)["\'][^>]*>/i', function($matches) {
+		$html = preg_replace_callback('/<img\s+src\s*=\s*["\']([^"\']+?)["\'][^>]*>/i', function( $matches ) {
 			$src = $matches[1];
-			$valid_image_types = array('jpg', 'jpeg', 'png', 'gif', 'webp' );
+			$valid_image_types = array( 'jpg', 'jpeg', 'png', 'gif', 'webp' );
 			$file_extension = pathinfo($src, PATHINFO_EXTENSION);
 			$url_parts = parse_url($src);
 
-			if (in_array(strtolower($file_extension), $valid_image_types) &&
-				isset($url_parts['scheme']) && in_array(strtolower($url_parts['scheme']), array('http', 'https')) &&
-				empty($url_parts['query'])) {
+			if ( in_array(strtolower($file_extension), $valid_image_types) &&
+				isset($url_parts['scheme']) && in_array(strtolower($url_parts['scheme']), array( 'http', 'https' )) &&
+				empty($url_parts['query']) ) {
 					return $matches[0];
 			} else {
 				return '';
