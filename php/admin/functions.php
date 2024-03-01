@@ -973,8 +973,6 @@ function qsm_text_template_variable_list() {
 			'%CATEGORY_AVERAGE_POINTS%'   => __( 'The average points from all categories.', 'quiz-master-next' ),
 			'%CATEGORY_AVERAGE_SCORE%'    => __( 'The average score from all categories.', 'quiz-master-next' ),
 			'%QUESTION_MAX_POINTS%'       => __( 'Maximum points of the question', 'quiz-master-next' ),
-			'%FACEBOOK_SHARE%'            => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-			'%TWITTER_SHARE%'             => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
 			'%RESULT_LINK%'               => __( 'The link of the result page.', 'quiz-master-next' ),
 			'%CONTACT_X%'                 => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
@@ -982,6 +980,7 @@ function qsm_text_template_variable_list() {
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS_EMAIL%'   => __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list   = apply_filters( 'qsm_text_variable_list', $variable_list );

@@ -247,7 +247,7 @@ function qsm_generate_results_details_tab() {
             $template .= '<div class="response-inner-wrap">';
             $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('Responses','quiz-master-next').'</span></h2>';
             $template .= '<div class="inside check">';
-            $template .= '%QUESTIONS_ANSWERS%';
+            $template .= '%QUESTIONS_ANSWERS% ';
             $template .= '</div>';
             $template .= '</div>';
             $template .= '</div>';

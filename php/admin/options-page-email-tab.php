@@ -80,9 +80,6 @@ function qsm_options_emails_tab_content() {
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
 				$variable_list                                      = qsm_text_template_variable_list();
-				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
-				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
-				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
 				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
 				// filter to add or remove variables from variable list for email tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
@@ -209,7 +206,27 @@ function qsm_options_emails_tab_template() {
 				<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
 				<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
-				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>') }}}</textarea>
+				<textarea id="email-template-{{ data.id }}" class="email-template">
+				{{{ data.content.replace(/%([^%]+)%/g, function(match, capturedValue) {
+					let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+					for (let qsm_variable in qsm_admin_messages.qsm_variables_name) {
+						variable_name = qsm_admin_messages.qsm_variables_name[qsm_variable];
+						if( variable_name.includes('%%') ){
+							var arrayValues = variable_name.split("%%");
+							qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+						};
+						if( variable_name.includes('_X%') ){
+							qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+						}
+					}
+					if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+						return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+					}else{
+						return match;
+					}
+				}) }}}
+				</textarea>
+				<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
 				<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
 			</div>
 		</main>
