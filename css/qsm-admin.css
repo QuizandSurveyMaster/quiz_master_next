@@ -3383,4 +3383,11 @@ input#preferred-date-format-custom {
     text-transform: none;
     float: right;
 }
+.qsm-hightlight-text{
+	color: #ffffff;
+    background: #187FFA;
+    padding: 1px 3px 4px 5px;
+    border-radius: 2px;
+	margin-right: 2px;
+}
 /*TinyMCE Text-editor : end */
