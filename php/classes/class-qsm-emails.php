@@ -506,8 +506,9 @@ class QSM_Emails {
 							$content = '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
 							return $content;
 						},
-						wp_kses_post( $emails[ $i ]['content'] )
+						$emails[ $i ]['content']
 				);
+				$emails[ $i ]['content'] = wp_kses_post( $emails[ $i ]['content'] );
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
