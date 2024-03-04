@@ -68,6 +68,7 @@ class QSMQuizApi {
 			wp_send_json_error( 'Invalid nonce.' );
 		}
 		$api_key = bin2hex(random_bytes(16));
+		$api_key = password_hash($api_key, PASSWORD_BCRYPT);
 		wp_send_json_success( $api_key );
 	}
 
