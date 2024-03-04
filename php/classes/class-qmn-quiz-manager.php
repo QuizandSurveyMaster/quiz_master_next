@@ -1979,7 +1979,7 @@ class QMNQuizManager {
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'quizExpired'   => false,
-			'display'       => htmlspecialchars_decode( $result_display ),
+			'display'       => $result_display,
 			'redirect'      => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 			'result_status' => array(
 				'save_response' => $qmn_array_for_variables['response_saved'],

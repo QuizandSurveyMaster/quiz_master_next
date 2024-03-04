@@ -374,8 +374,9 @@ class QSM_Results_Pages {
 							$content = '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
 							return $content;
 						},
-						wp_kses_post( $pages[ $i ]['page'] )
+						$pages[ $i ]['page']
 				);
+				$pages[ $i ]['page']  = wp_kses_post( $pages[ $i ]['page'] );
 			}
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
 
