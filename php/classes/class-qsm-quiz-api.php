@@ -67,25 +67,21 @@ class QSMQuizApi {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'regenerate_api_key_nonce' ) ) {
 			wp_send_json_error( 'Invalid nonce.' );
 		}
-		$api_key = md5( site_url() . time() );
+		$api_key = bin2hex(random_bytes(16));
 		wp_send_json_success( $api_key );
 	}
 
 	public function load_form_field() {
 	
-		if ( isset($_POST['qsm_api_form_nonce']) && wp_verify_nonce($_POST['qsm_api_form_nonce'], 'qsm_api_form') ) {
-			
-			if ( isset($_POST['qsm_api_settings']) ) {
-				
-				$qsm_api_settings = maybe_serialize($_POST['qsm_api_settings']); 
-        		update_option('qsm_quiz_api_settings', $qsm_api_settings);
-			}
+		if ( isset($_POST['qsm_api_form_nonce']) && wp_verify_nonce($_POST['qsm_api_form_nonce'], 'qsm_api_form') && isset($_POST['qsm_api_settings']) ) {
+			$qsm_api_settings = maybe_serialize($_POST['qsm_api_settings']); 
+			update_option('qsm_quiz_api_settings', $qsm_api_settings);
 		}
 		
 		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
 
 		if ( $qsm_api_settings_serialized ) {
-			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized); 
+			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized);
 		} else {
 			
 			$default_api_settings = array(
@@ -168,7 +164,7 @@ class QSMQuizApi {
 		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
 
 		if ( $qsm_api_settings_serialized ) {
-			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized); 
+			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized);
 
 			if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
 				$response['success'] = true;
@@ -183,7 +179,7 @@ class QSMQuizApi {
 					$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
 				}
 			}
-		} else { 
+		} else {
 			$response['message'] = __('The API key settings are not configured.', 'quiz-master-next');
 		}
 
@@ -197,7 +193,6 @@ class QSMQuizApi {
 		if ( $verification['success'] ) {
 			if ( $request->get_param('result_id') ) {
 				global $wpdb;
-				$results_table_name = $wpdb->prefix . 'mlw_results';
 				$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
 		
 				if ( $results_data ) {
@@ -211,7 +206,7 @@ class QSMQuizApi {
 						'success' => false,
 						'message' => __('Quiz result not found based on this result id.', 'quiz-master-next'),
 					);
-				}       
+				}
 			} else {
 				global $wpdb;
 				$limit = $request->get_param('limit');
@@ -279,7 +274,7 @@ class QSMQuizApi {
 					} else {
 						$response['message'] = __('No results found for the specified criteria', 'quiz-master-next');
 					}
-				}    
+				}
 			}
 		} else {
 			$response = array(
@@ -345,7 +340,7 @@ class QSMQuizApi {
 						'success' => false,
 						'message' => "",
 					);
-				}       
+				}
 
 				if ( ! $results ) {
 					if ( empty($quiz_name) && ! $request->get_param('from_date') ) {
@@ -374,7 +369,7 @@ class QSMQuizApi {
 			if ( $key === 'message_after' || $key === 'user_email_template' || $key === 'quiz_settings' ) {
 				$apiFormat[ $key ] = maybe_unserialize($value);
 				if ( $key === 'quiz_settings' ) {
-					$apiFormat[ $key ] = $this->qsm_unserialize_to_api_format($apiFormat[ $key ]); 
+					$apiFormat[ $key ] = $this->qsm_unserialize_to_api_format($apiFormat[ $key ]);
 				}
 			} elseif ( is_array($value) || is_object($value) ) {
 				$apiFormat[ $key ] = $this->qsm_convert_to_api_format($value); 
@@ -425,8 +420,8 @@ class QSMQuizApi {
 				$question_id = $request->get_param('question_id' );
 				$results = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $question_id ) );
 				if ( $results ) {
-					$results->answer_array = maybe_unserialize( $results->answer_array );   
-					$results->question_settings = maybe_unserialize( $results->question_settings ); 
+					$results->answer_array = maybe_unserialize( $results->answer_array );
+					$results->question_settings = maybe_unserialize( $results->question_settings );
 					$response = array(
 						'success' => true,
 						'data'    => $results,
@@ -437,7 +432,7 @@ class QSMQuizApi {
 						'message' => __('No question found in this given question id.', 'quiz-master-next'),
 					);
 				}
-			} else { 
+			} else {
 				$data = [];
 				global $wpdb;
 				$question_name = $request->get_param('question_name' );
@@ -460,8 +455,8 @@ class QSMQuizApi {
 				if ( $results ) {
 		
 					foreach ( $results as $key => $result ) {
-						$result->answer_array = maybe_unserialize( $result->answer_array ); 
-						$result->question_settings = maybe_unserialize( $result->question_settings );   
+						$result->answer_array = maybe_unserialize( $result->answer_array );
+						$result->question_settings = maybe_unserialize( $result->question_settings );
 						$data[] = $result;
 					}
 				
@@ -475,7 +470,7 @@ class QSMQuizApi {
 						'success' => false,
 						'message' => "",
 					);
-				}   
+				}
 		
 				if ( ! $results ) {
 					if ( ! $request->get_param('quizId') && ! $request->get_param('question_name') ) {
@@ -557,7 +552,6 @@ class QSMQuizApi {
 				$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 				$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
 				$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
-				$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
 				$post_status = false;
 				
 				if ( 0 != $options->limit_total_entries ) {
@@ -602,7 +596,7 @@ class QSMQuizApi {
 					),
 				);
 			}
-		} else { 
+		} else {
 			$response = array(
 				'display'       => __('API settings are not configured.', 'quiz-master-next'),
 				'redirect'      => false,

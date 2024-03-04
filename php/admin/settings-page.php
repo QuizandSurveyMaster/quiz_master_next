@@ -545,17 +545,10 @@ class QMNGlobalSettingsPage {
 				$active_tab = 'quiz-default-options';
 			}
 		}
-		$a_class = $g_class = $d_class = '';
-		if ( 'qmn_global_settings' === $active_tab ) {
-			$g_class = 'nav-tab-active';
-		}
+		$api_tab_class = '';
 		if ( 'qsm_api_settings' === $active_tab ) {
-			$a_class = 'nav-tab-active';
+			$api_tab_class = 'nav-tab-active';
 		}
-		if ( 'quiz-default-options' === $active_tab ) {
-			$d_class = 'nav-tab-active';
-		}
-
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
@@ -564,7 +557,7 @@ class QMNGlobalSettingsPage {
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
-				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $a_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
+				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $api_tab_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
 			</h2>
 			<?php 
 			if ( 'qsm_api_settings' === $active_tab ) {
