@@ -465,6 +465,7 @@ class MLWQuizMasterNext {
 			'qsm_variables_name'         => $qsm_variables_name,
 			'no_variables'               => __("No Variable Found", 'quiz-master-next'),
 			'slash_command'              => __("slash command", 'quiz-master-next'),
+			'variables'                  => __("Variables", 'quiz-master-next'),
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
