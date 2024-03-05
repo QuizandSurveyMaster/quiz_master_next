@@ -1187,10 +1187,11 @@ function qsm_is_substring_in_array( text, array ) {
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag';
                         editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 2px 5px; border-radius: 2px; }';
+                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 5px 8px; border-radius: 2px;font-family: Arial, Helvetica, sans-serif;font-size: 12px; font-weight: 600; }';
                         editor.addButton('qsm_slash_command', {
-                            text: '/' +qsm_admin_messages.slash_command,
+                            text: '/ ' +qsm_admin_messages.variables,
                             tooltip: qsm_admin_messages.insert_variable,
+                            classes: 'qsm-variables-editor-btn',
                             onclick: function () {
                                 editor.insertContent('/');
                                 showAutocomplete( editor, true );
@@ -1239,7 +1240,8 @@ function qsm_is_substring_in_array( text, array ) {
 
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
-                                newCommand.forEach( function( command ) {
+                                newCommand.forEach(function (command, key) {
+                                    console.log(key);
                                     //Add Group Name
                                     if ( -1 == var_group.indexOf( command.group ) ) {
                                         var_group.push( command.group );
@@ -1250,6 +1252,9 @@ function qsm_is_substring_in_array( text, array ) {
                                     }
                                     //Add Item
                                     var item = document.createElement('div');
+                                    if (0 == key) {
+                                        item.classList.add('qsm-autocomplete-item-active');
+                                    }
                                     item.classList.add('qsm-autocomplete-item');
                                     item.setAttribute('title', command.description);
                                     item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
@@ -1337,8 +1342,34 @@ function qsm_is_substring_in_array( text, array ) {
 
                                         showAutocomplete(editor);
                                     }
+                                }
+                                if (40 === e.keyCode) {
+                                    let active_item = jQuery('.qsm-autocomplete-item-active');
+                                    jQuery('.qsm-autocomplete-item').removeClass('qsm-autocomplete-item-active');
+                                    if (active_item.length) {
+                                        active_item.next('.qsm-autocomplete-item').addClass('qsm-autocomplete-item-active');
+                                    } else {
+                                        jQuery('.qsm-autocomplete-item:first').addClass('qsm-autocomplete-item-active');
+                                    }
+                                    e.preventDefault();
+                                }
 
-                               }
+                                if (38 === e.keyCode) {
+                                    let active_item = jQuery('.qsm-autocomplete-item-active');
+                                    jQuery('.qsm-autocomplete-item').removeClass('qsm-autocomplete-item-active');
+                                    if (active_item.length) {
+                                        active_item.prev('.qsm-autocomplete-item').addClass('qsm-autocomplete-item-active');
+                                    } else {
+                                        jQuery('.qsm-autocomplete-item:last').addClass('qsm-autocomplete-item-active');
+                                    }
+                                    e.preventDefault();
+                                }
+                                if ( 13 == e.keyCode ) {
+                                    if (jQuery('.qsm-autocomplete-item-active').length) {
+                                        jQuery('.qsm-autocomplete-item-active').click();
+                                        e.preventDefault();
+                                    }
+                                }
                             }
 
                         });
@@ -1762,13 +1793,10 @@ var QSMContact;
                         var settings = {
                             mediaButtons: true,
                             tinymce: {
-                                plugins: ["qsmslashcommands"],
+                                plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code',
-                                setup: function (editor) {
-
-                                }
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                             },
                             quicktags: true,
                         };
@@ -3784,10 +3812,10 @@ var import_button;
                     var settings = {
                         mediaButtons: true,
                         tinymce: {
-                            plugins: ["qsmslashcommands"],
+                            plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
-                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                         },
                         quicktags: true,
                     };

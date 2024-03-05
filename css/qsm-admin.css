@@ -510,7 +510,7 @@ span.qsm-quiz-name {
 	margin-bottom: 15px;
     border-radius: 2px;
     background: #fff;
-    padding: 15px;
+    padding: 25px 20px;
     position: relative;
     border: 1px solid #dfd4d4;
 }
@@ -520,6 +520,7 @@ span.qsm-quiz-name {
 	display: block;
 	font-weight: 500;
     margin-bottom: 3px;
+	color: #959494;
 }
 .qsm-result-condition-mode,
 .qsm-email-condition-mode {
@@ -3355,12 +3356,12 @@ input#preferred-date-format-custom {
     top: calc( 100% - 18px);
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item-group {
-	font-weight: 600;
+	font-weight: 500;
     padding: 10px;
-    font-size: 14px;
+    font-size: 11px;
     text-transform: uppercase;
-    background: #2271b1;
-    color: #fff;
+    color: #a2a2a2;
+    border-top: 1px solid #dfd4d4;
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item {
 	padding: 10px 15px;
@@ -3372,7 +3373,8 @@ input#preferred-date-format-custom {
     justify-content: space-between;
     column-gap: 20px;
 }
-.mce-container .qsm-autocomplete .qsm-autocomplete-item:hover {
+.mce-container .qsm-autocomplete .qsm-autocomplete-item:hover,
+.mce-container .qsm-autocomplete .qsm-autocomplete-item-active {
 	background-color: #f0f0f0;
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item .qsm-autocomplete-item-description {
@@ -3384,10 +3386,20 @@ input#preferred-date-format-custom {
     float: right;
 }
 .qsm-hightlight-text{
-	color: #ffffff;
+    font-size: 11px;
+    margin-right: 2px;
+}
+.qsm-hightlight-text,
+.mce-qsm-variables-editor-btn button{
     background: #187FFA;
-    padding: 1px 3px 4px 5px;
     border-radius: 2px;
-	margin-right: 2px;
+    display: inline-block;
+    text-align: center;
+	border: none;
+}
+.qsm-hightlight-text,
+.mce-qsm-variables-editor-btn button span.mce-txt{
+	color: #ffffff;
+    padding: 0px 7px;
 }
 /*TinyMCE Text-editor : end */
