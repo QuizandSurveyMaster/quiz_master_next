@@ -2651,7 +2651,7 @@ var import_button;
                     //Get file upload limit
                     var get_limit_fu = question.get('file_upload_limit');
                     if (get_limit_fu === null || typeof get_limit_fu === "undefined") {
-                        get_limit_fu = '0';
+                        get_limit_fu = '4';
                     }
                     //Get checked question type
                     var multicategories = question.get('multicategories');
@@ -2671,8 +2671,8 @@ var import_button;
                     }
                     //Get checked question type
                     var get_file_upload_type = question.get('file_upload_type');
-                    $("input[name='file_upload_type[]']:checkbox").attr("checked", false);
                     if (get_file_upload_type === null || typeof get_file_upload_type === "undefined") { } else {
+                        $("input[name='file_upload_type[]']:checkbox").attr("checked", false);
                         var fut_arr = get_file_upload_type.split(",");
                         $.each(fut_arr, function (i) {
                             $("input[name='file_upload_type[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true");
