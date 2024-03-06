@@ -535,12 +535,12 @@ function qsm_generate_question_option( $key, $single_option ) {
 
 				case 'multi_checkbox':
 					$parent_key  = $key;
-					$default     = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					$default     = isset( $single_option['default'] ) ? explode( ',', $single_option['default'] ) : '';
 					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 						foreach ( $single_option['options'] as $key => $value ) {
 							?>
 							<label>
-								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo in_array( $key, $default ) ? 'checked' : ''; ?> />
 								<?php echo esc_attr( $value ); ?>
 							</label>
 							<br />
