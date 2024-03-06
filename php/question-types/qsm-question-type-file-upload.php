@@ -36,7 +36,7 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 				<div class="qsm-file-upload-message">
 					<?php esc_html_e( 'Drag and Drop File Here or ', 'quiz-master-next' ); ?>
 					<a class="qsm-file-upload-link" href="#">
-						<?php esc_html_e( ' Browse', 'quiz-master-next' ); ?> 
+						<?php esc_html_e( ' Browse', 'quiz-master-next' ); ?>
 					</a>
 				</div>
 				<div class="qsm-file-upload-name"></div>

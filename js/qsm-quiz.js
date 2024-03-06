@@ -1645,7 +1645,6 @@ jQuery(function () {
 		function (e) {
 			jQuery(this).removeClass('file-hover');
 			jQuery(this).find('.qsm-file-upload-name').html(e.originalEvent.dataTransfer.files[0].name).fadeIn();
-			// jQuery(this).find('.qsm-file-upload-error').fadeOut();
 			if (e.originalEvent.dataTransfer) {
 				if (e.originalEvent.dataTransfer.files.length) {
 					e.preventDefault();
