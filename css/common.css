@@ -372,7 +372,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	border-radius: 50%;
 	position: relative;
     left: 345px;
-    bottom: 90px;
+    bottom: 150px;
 }
 .quiz_section .loading-uploaded-file {
 	width: 20px;
