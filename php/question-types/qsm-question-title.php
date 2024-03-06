@@ -18,11 +18,14 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$deselect_answer  = '';
 	if ( isset( $qmn_quiz_options->enable_deselect_option ) && 1 == $qmn_quiz_options->enable_deselect_option && ( 'multiple_choice' === $question_type || 'horizontal_multiple_choice' === $question_type ) ) {
-		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'.__( 'Deselect Answer', 'quiz-master-next' ).'</a>';
+		$default_texts = QMNPluginHelper::get_default_texts();
+		$deselect_answer_text = ! empty( $qmn_quiz_options->deselect_answer_text ) ? $qmn_quiz_options->deselect_answer_text : $default_texts['deselect_answer_text'];
+		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'. $mlwQuizMasterNext->pluginHelper->qsm_language_support( $deselect_answer_text, "deselect_answer_text-{$qmn_quiz_options->quiz_id}" ) .'</a>';
 	}
-	do_action('qsm_question_title_func_before',$question, $question_type, $new_question_title, $question_id );
+	do_action('qsm_question_title_function_before',$question, $question_type, $new_question_title, $question_id );
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
+		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
 		?>
 		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
 		<?php
@@ -36,7 +39,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 			<?php
 		}
 	}
-	if ( ! empty( $question_title ) ) {
+	if ( ! empty( $question_title ) && 'fill_in_blank' !== $question_type ) {
 		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question_title, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 	}
 	?>
@@ -48,8 +51,15 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$allow_html['input']['class'] = 1;
 		$allow_html['input']['id'] = 1;
 		$allow_html['input']['maxlength'] = 1;
+		$allow_html = apply_filters( 'qsm_allow_html_question_title_after', $allow_html, $question_id );
+		$pattern = '/<code>(.*?)<\/code>/s';
+		$question_description = preg_replace_callback($pattern, function ( $matches ) {
+			return preg_replace([ '/<(?!(\/?code|br)[ >])/', '/>(?!(\/?code|br)[ \/>])/' ], [ '&lt;', '&gt;' ], $matches[0]);
+		}, $question_title);
+		$question_description = str_replace([ 'code&gt;', 'br /&gt;' ],[ 'code/>', 'br />' ], $question_description );
+		$question_description = apply_filters( 'qsm_question_description_before', $question_description, $question_type, $question_id );
 	?>
-	<p><?php echo do_shortcode( wp_kses( $question_title . $deselect_answer, $allow_html ) ); ?></p>
+	<p><?php echo do_shortcode( wp_kses( $question_description . $deselect_answer, $allow_html ) ); ?></p>
 	</div>
 	<?php
 	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );

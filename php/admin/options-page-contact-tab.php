@@ -120,26 +120,26 @@ add_action( 'wp_ajax_qsm_show_disabled_contact_fields', 'qsm_show_disabled_conta
 function qsm_show_disabled_contact_fields() {
 	global $wpdb, $mlwQuizMasterNext;
 	$user_id = get_current_user_id();
-	if ( isset( $_POST['show'] ) ) {
+	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) && isset( $_POST['show'] ) ) {
 		update_user_meta( $user_id, 'qsm_show_disabled_contact_fields', sanitize_text_field( wp_unslash( $_POST['show'] ) ) );
 	}
 	// Sends posted form data to Contact Manager to sanitize and save.
-	echo '1';
-	die();
+	wp_send_json_success();
 }
 
 function qsm_options_contact_tab_template() {
 	?>
 	<!-- View for question in question bank -->
-	<script type="text/template" id="tmpl-contact-form-field">
-		<div class="contact-form-field new">
+	<script type="text/template" id="tmpl-qsm-contact-form-field">
+		<div class="qsm-contact-form-field new">
 			<div class="field-required-flag">*</div>
-			<div class="contact-form-group sortable-handle">
+			<div class="qsm-contact-form-group sortable-handle">
 				<a href="javascript:void(0)" class="move-field" title="<?php esc_html_e('Move', 'quiz-master-next');?>"><span class="dashicons dashicons-move"></span></a>
 			</div>
-			<div class="contact-form-group contact-form-inputs">
-				<label class="contact-form-label"><?php esc_html_e('Type', 'quiz-master-next');?></label>
-				<select class="contact-form-control type-control" <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>>
+			<div class="qsm-contact-form-group contact-form-inputs">
+				<label class="qsm-contact-form-label"><?php esc_html_e('Type', 'quiz-master-next');?></label>
+				<select class="qsm-contact-form-control type-control" <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>>
 					<option value="none" <# if (data.type == '') { #>selected<# } #> ><?php esc_html_e('Select a type...', 'quiz-master-next');?></option>
 					<option value="text" <# if (data.type == 'text') { #>selected<# } #> ><?php esc_html_e('Text', 'quiz-master-next');?></option>
 					<option value="email" <# if (data.type == 'email') { #>selected<# } #> ><?php esc_html_e('Email', 'quiz-master-next');?></option>
@@ -152,41 +152,48 @@ function qsm_options_contact_tab_template() {
 					<?php do_action('qsm_extra_contact_form_field_type'); ?>
 				</select>
 			</div>
-			<div class="contact-form-group contact-form-inputs">
-				<label class="contact-form-label"><?php esc_html_e('Label', 'quiz-master-next');?></label>
-				<input type="text" class="contact-form-control label-control" value="{{data.label}}">
+			<div class="qsm-contact-form-group contact-form-inputs">
+				<label class="qsm-contact-form-label"><?php esc_html_e('Label', 'quiz-master-next');?></label>
+				<input type="text" class="qsm-contact-form-control label-control" value="{{data.label}}">
 				<input type="hidden" class="use-control" value="{{data.use}}">
 			</div>
-			<div class="contact-form-group contact-form-actions">
+			<div class="qsm-contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
 					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
 					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-page"></span></a>
 					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><span class="dashicons dashicons-trash"></span></a>
 				</div>
 			</div>
-			<div class="contact-form-group contact-form-switch">
+			<div class="qsm-contact-form-group contact-form-switch">
 				<label class="qsm-switch" title="<?php esc_html_e('Enable / Disable Field', 'quiz-master-next');?>"><input type="checkbox" class="enable-control" <# if ( "true" == data.enable || true == data.enable ) { #>checked<# } #> ><span class="switch-slider"></span></label>
 			</div>
-			<div class="contact-form-field-settings arrow-left" style="display:none;">
+			<div class="qsm-contact-form-field-settings arrow-left" style="display:none;">
 				<h3><?php esc_html_e('Settings', 'quiz-master-next');?></h3>
-				<div class="contact-form-group required-option">
-					<label class="contact-form-label"><input type="checkbox" name="required" class="required-control" <# if ( "true" == data.required || true == data.required ) { #>checked<# } #> ><span><?php esc_html_e('Required?', 'quiz-master-next');?></span></label>
+				<div class="qsm-contact-form-group qsm-required-option">
+					<label class="qsm-contact-form-label"><input type="checkbox" name="required" class="qsm-required-control" <# if ( "true" == data.required || true == data.required ) { #>checked<# } #> ><span><?php esc_html_e('Required?', 'quiz-master-next');?></span></label>
 				</div>
-				<div class="contact-form-group field-options">
-					<label class="contact-form-label"><?php esc_html_e('Options', 'quiz-master-next');?></label>
-					<textarea title="<?php esc_html_e('Use comma seperated values.', 'quiz-master-next');?>" class="contact-form-control" placeholder="<?php esc_html_e('Option-1, Option-2, Option-3', 'quiz-master-next');?>" name="options" cols="30" rows="5">{{data.options}}</textarea>
+				<div class="qsm-contact-form-group qsm-hide-label-option">
+					<label class="qsm-contact-form-label"><input type="checkbox" name="hide_label" class="qsm-hide-label-control" <# if ( "true" == data.hide_label || true == data.hide_label ) { #>checked<# } #> ><span><?php esc_html_e('Hide Label?', 'quiz-master-next');?></span></label>
 				</div>
-				<div class="contact-form-group min-max-option">
-					<label class="contact-form-label"><?php esc_html_e('Min Length', 'quiz-master-next');?></label>
-					<input type="number" class="contact-form-control" name="minlength" value="{{data.minlength}}">
+				<div class="qsm-contact-form-group qsm-placeholder-option">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Placeholder', 'quiz-master-next');?></label>
+					<input type="text" class="qsm-contact-form-control" name="placeholder" value="{{data.placeholder}}">
 				</div>
-				<div class="contact-form-group min-max-option">
-					<label class="contact-form-label"><?php esc_html_e('Max Length', 'quiz-master-next');?></label>
-					<input type="number" class="contact-form-control" name="maxlength" value="{{data.maxlength}}">
+				<div class="qsm-contact-form-group qsm-field-options">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Options', 'quiz-master-next');?></label>
+					<textarea title="<?php esc_html_e('Use comma seperated values.', 'quiz-master-next');?>" class="qsm-contact-form-control" placeholder="<?php esc_html_e('Option-1, Option-2, Option-3', 'quiz-master-next');?>" name="options" cols="30" rows="5">{{data.options}}</textarea>
 				</div>
-				<div class="contact-form-group email-option">
-					<label class="contact-form-label"><?php esc_html_e('Allow Domains', 'quiz-master-next');?></label>
-					<textarea class="contact-form-control" name="allowdomains">{{data.allowdomains}}</textarea>
+				<div class="qsm-contact-form-group qsm-min-max-option">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Min Length', 'quiz-master-next');?></label>
+					<input type="number" class="qsm-contact-form-control" name="minlength" value="{{data.minlength}}">
+				</div>
+				<div class="qsm-contact-form-group qsm-min-max-option">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Max Length', 'quiz-master-next');?></label>
+					<input type="number" class="qsm-contact-form-control" name="maxlength" value="{{data.maxlength}}">
+				</div>
+				<div class="qsm-contact-form-group qsm-email-option">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Allow Domains', 'quiz-master-next');?></label>
+					<textarea class="qsm-contact-form-control" name="allowdomains">{{data.allowdomains}}</textarea>
 					<em><?php esc_html_e('Leave blank to allow all domains. ', 'quiz-master-next');?></em><br/>
 					<em><?php esc_html_e('Comma separated list of domains. (i.e. example.com,abc.com)', 'quiz-master-next');?></em>
 				</div>

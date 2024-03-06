@@ -146,7 +146,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
 					}
 				}else {
-					$answerstr .= implode(",",$answers['user_answer']);
+					$answerstr .= implode(", ",$answers['user_answer']);
 				}
 
 
@@ -167,8 +167,10 @@ return $content;
  * @return string $content
  */
 function qsm_variable_total_possible_points( $content, $mlw_quiz_array ) {
-	if ( isset( $mlw_quiz_array['total_possible_points'] ) ) {
-		$content = str_replace( '%MAXIMUM_POINTS%', $mlw_quiz_array['total_possible_points'], $content );
+	if ( isset( $mlw_quiz_array['total_possible_points'] ) && qsm_is_allow_score_roundoff() ) {
+		$content = str_replace( '%MAXIMUM_POINTS%', round( $mlw_quiz_array['total_possible_points'] ), $content );
+	} elseif ( isset( $mlw_quiz_array['total_possible_points'] ) ) {
+		$content = str_replace( '%MAXIMUM_POINTS%', round( $mlw_quiz_array['total_possible_points'], 2 ), $content );
 	}
 	return $content;
 }
@@ -325,6 +327,8 @@ function mlw_qmn_variable_point_score( $content, $mlw_quiz_array ) {
 	$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff' );
 	if ( $score_roundoff && isset( $mlw_quiz_array['total_points'] ) ) {
 		$mlw_quiz_array['total_points'] = round( $mlw_quiz_array['total_points'] );
+	} elseif ( isset( $mlw_quiz_array['total_points'] ) ) {
+		$mlw_quiz_array['total_points'] = round( $mlw_quiz_array['total_points'], 2 );
 	}
 	$content = str_replace( '%POINT_SCORE%', ( isset( $mlw_quiz_array['total_points'] ) ? $mlw_quiz_array['total_points'] : '' ), $content );
 	return $content;
@@ -377,7 +381,7 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 	global $wp_current_filter;
-	if ( 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+	if ( ! empty( $wp_current_filter[1] ) && 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
@@ -392,7 +396,9 @@ function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_correct_score( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%CORRECT_SCORE%', ( isset( $mlw_quiz_array['total_score'] ) ? round( $mlw_quiz_array['total_score'] ) : '' ), $content );
+	$correct_score = isset( $mlw_quiz_array['total_score'] ) ? $mlw_quiz_array['total_score'] : '';
+	$correct_score = qsm_is_allow_score_roundoff() ? round( $correct_score ) : round( $correct_score, 2 );
+	$content = str_replace( '%CORRECT_SCORE%', $correct_score, $content );
 	return $content;
 }
 
@@ -679,6 +685,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			$return_points = 0;
 		}
 		$return_points = apply_filters( 'qsm_category_points', $return_points, $category_name, $mlw_quiz_array );
+		$return_points = qsm_is_allow_score_roundoff() ? round( $return_points ) : round( $return_points, 2 );
 		$content       = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
 	}
 	return $content;
@@ -860,6 +867,7 @@ function qmn_variable_category_average_points( $content, $mlw_quiz_array ) {
 			$total_categories += 1;
 		}
 		$return_score = $total_points / $total_categories;
+		$return_score = qsm_is_allow_score_roundoff() ? round( $return_score ) : round( $return_score, 2 );
 		$content      = str_replace( '%CATEGORY_AVERAGE_POINTS%', $return_score, $content );
 	}
 	return $content;
@@ -1011,10 +1019,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
 	$question_title       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", 'QSM Questions' );
 	$question_description = '';
-	if ( ! empty( $answer[0] ) ) {
+	if ( 14 == $answer['question_type'] ) {
+		$question_description = ! empty($answer[0]) ? $answer[0] : '';
+	} elseif ( ! empty( $answer[0] ) ) {
 		$question_description = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", 'QSM Questions' );
 	}
-	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . $question_description . '</span>' : $question_description;
+	$question_description = ! empty( $question_description ) ? '<span class="qsm-result-question-description">' . htmlspecialchars_decode(  $question_description, ENT_QUOTES ) . '</span>' : $question_description;
 	$question_numbering   = '';
 	if ( isset( $quiz_options->question_numbering ) && 1 == $quiz_options->question_numbering && 6 != $answer['question_type'] ) {
 		$qmn_total_questions += 1;
@@ -1054,20 +1064,21 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			12,
 			5,
 			7,
-		// 14,
 		);
 		$form_type   = isset( $mlw_quiz_array['form_type'] ) ? $mlw_quiz_array['form_type'] : 0;
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers             = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-			if ( ! empty($_COOKIE[ 'answer_ids_'.$answer['id'] ]) ) {
-				$answer_ids = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ 'answer_ids_'.$answer['id'] ] ) ) );
+			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
-				foreach ( $answer_ids as $key ) {
-					$answers_random[ $key ] = $total_answers[ $key ];
+				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
+				$quiz_answer_random_ids = maybe_unserialize( $quiz_answer_random_ids );
+				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
+					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
+						$answers_random[ $key ] = $total_answers[ $key ];
+					}
 				}
 				$total_answers = $answers_random;
-				setcookie('answer_ids_'.$answer['id'], "", time() - 36000, "/");
 			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
@@ -1098,10 +1109,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					if ( $do_show_wrong ) {
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $user_given_answer . '</span>';
-							foreach ( $total_answers as $single_answer ) {
+							foreach ( $total_answers as $single_answer_key => $single_answer ) {
+								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );
 								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && 1 != $hide_correct_answer ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $questionid . '-' . $single_answer_key, 'QSM Answers' ) . '</span>';
 									break;
 								}
 							}
@@ -1127,10 +1139,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$is_answer_correct = 0;
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
 								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
-								$decode_single_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
+								$decode_single_user_answer = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
 							} else {
 								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-								$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
+								$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
 
 							if ( $decode_show_user_answer == $decode_single_user_answer ) {
@@ -1145,16 +1157,16 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 							}
 						}
 					} else {
 						$options        = array();
 						foreach ( $total_answers as $key => $single_answer ) {
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES );
+								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
 							} else {
-								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
+								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
 						}
 
@@ -1421,16 +1433,7 @@ function qsm_get_question_maximum_points( $question = array() ) {
  */
 function qsm_is_allow_score_roundoff() {
 	global $mlwQuizMasterNext;
-	$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'score_roundoff' );
-	$form_type      = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-	$system         = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
-
-	// check if  quiz type Quiz and Geading system Correct/Incorrect Or Both Type
-	if ( $score_roundoff && 0 == $form_type && ( 0 == $system || 3 == $system ) ) {
-		return 1;
-	} else {
-		return 0;
-	}
+	return $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'score_roundoff' );
 }
 /**
  * Display Polor Question on Result page
@@ -1570,7 +1573,9 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
  */
 function qsm_variable_minimum_points( $content, $mlw_quiz_array ) {
 	if ( isset( $mlw_quiz_array['minimum_possible_points'] ) ) {
-		$content = str_replace( '%MINIMUM_POINTS%', $mlw_quiz_array['minimum_possible_points'], $content );
+		$min_points = $mlw_quiz_array['minimum_possible_points'];
+		$min_points = qsm_is_allow_score_roundoff() ? round( $min_points ) : round( $min_points, 2 );
+		$content = str_replace( '%MINIMUM_POINTS%', $min_points, $content );
 	}
 	return $content;
 }

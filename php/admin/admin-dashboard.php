@@ -125,7 +125,7 @@ function qsm_generate_dashboard_page() {
 					<?php
 					$classname = "";
 				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
-					$classes = explode(",",$classname);
+					$classes = ! empty($classname) ? explode(",",$classname) : array();
 					$classesname1 = "";
 					if ( isset($classes[0]) ) {
 						$classesname1 = $classes[0];
@@ -276,55 +276,6 @@ function qsm_generate_dashboard_page() {
 	 */
 	qsm_create_new_quiz_wizard();
 }
-
-/**
- * @since 7.0
- * @global Obj $mlwQuizMasterNext
- * Generate the post settings and required plugin in popup
- */
-function qsm_wizard_template_quiz_options() {
-	global $mlwQuizMasterNext;
-	$settings              = isset( $_POST['settings'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$addons                = isset( $_POST['addons'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['addons'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$all_settings          = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-	$recommended_addon_str = '';
-	if ( $settings ) {
-		foreach ( $settings as $key => $single_setting ) {
-			$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
-			$field            = $all_settings[ $key ];
-			$field['label']   = $single_setting['option_name'];
-			$field['default'] = $single_setting['value'];
-			QSM_Fields::generate_field( $field, $single_setting['value'] );
-		}
-	} else {
-		esc_html_e( 'No settings are found!', 'quiz-master-next' );
-	}
-	echo '=====';
-	if ( $addons ) {
-		$recommended_addon_str .= '<ul>';
-		foreach ( $addons as $single_addon ) {
-			$recommended_addon_str .= '<li>';
-			if ( isset( $single_addon['attribute'] ) && '' !== $single_addon['attribute'] ) {
-				$attr                   = $single_addon['attribute'];
-				$recommended_addon_str .= '<span class="ra-attr qra-att-' . $attr . '">' . $attr . '</span>';
-			}
-			$link                   = isset( $single_addon['link'] ) ? $single_addon['link'] : '';
-			$recommended_addon_str .= '<a target="_blank" href="' . $link . '">';
-			if ( isset( $single_addon['img'] ) && '' !== $single_addon['img'] ) {
-				$img                    = $single_addon['img'];
-				$recommended_addon_str .= '<img src="' . $img . '"/>';
-			}
-			$recommended_addon_str .= '</a>';
-			$recommended_addon_str .= '</li>';
-		}
-		$recommended_addon_str .= '</ul>';
-	} else {
-		$recommended_addon_str .= __( 'No addons are found!', 'quiz-master-next' );
-	}
-	echo wp_kses_post( $recommended_addon_str );
-	exit;
-}
-add_action( 'wp_ajax_qsm_wizard_template_quiz_options', 'qsm_wizard_template_quiz_options' );
 
 /**
  * @since 7.0
@@ -616,14 +567,14 @@ function qsm_create_new_quiz_from_wizard() {
 		$quiz_options    = array(
 			'quiz_name'              => $quiz_name,
 			'quiz_featured_image'    => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
-			'form_type'              => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
-			'system'                 => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
-			'timer_limit'            => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
-			'pagination'             => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
+			'form_type'              => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : 0,
+			'system'                 => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : 3,
+			'timer_limit'            => ! empty( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : 0,
+			'pagination'             => ! empty( $_POST['pagination'] ) ? intval( $_POST['pagination'] ) : 0,
 			'enable_pagination_quiz' => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : 0,
 			'progress_bar'           => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : 0,
-			'require_log_in'         => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
-			'disable_first_page'     => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
+			'require_log_in'         => ! empty( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : 0,
+			'disable_first_page'     => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : 0,
 			'comment_section'        => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
 		);
 		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();

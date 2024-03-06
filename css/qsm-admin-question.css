@@ -136,13 +136,14 @@
 .page-header-buttons {
 	text-align: right;
 }
-.question, .question-bank-question {
+.qsm-question-container, .question-bank-question {
 	box-sizing: border-box;
 	background: #ffffff;
 	border: 1px solid #dfd4d4;
 	border-radius: 3px;
 	padding: 6px 5px;
-	margin: 10px 20px 0;
+	margin: 10px 20px 0 35px;
+	position: relative;
 }
 .question a {
 	text-decoration: none;
@@ -193,6 +194,16 @@
 	font-weight: normal;
 	font-style: italic;
 	margin: 3px 0;
+}
+.qsm-admin-select-question-input {
+    position: absolute;
+    top: calc(50% - 3px);
+	left: -25px;
+    visibility: hidden;
+}
+.question:hover .qsm-admin-select-question-input,
+.qsm-admin-select-question-input:checked {
+    visibility: visible;
 }
 .question-content>div {
 	margin: 0 10px;
@@ -277,8 +288,12 @@
 }
 .answers-single>div.answer-correct-div {
 	min-width: auto;
-	width: 70px;
+	width: 80px;
+	height: 26px;
 	padding: 5px 0;
+	background: #fff;
+    border: 1px solid #bdbdbd7a;
+    border-radius: 4px;
 }
 .answers-single>div.answer-text-div {
 	width: 560px;
@@ -472,7 +487,7 @@ a.import-button.button.disable_import::before {
 	padding: 15px 10px;
 	background-color: #fafafa;
 	border: 1px solid #cbcbcb;
-	margin: 0 20px 0;
+	margin: 0 20px 0 35px;
 	box-sizing: border-box;
 	border-top: medium none;
 }
@@ -513,7 +528,10 @@ a.import-button.button.disable_import::before {
 }
 .answers-single .correct-answer {
 	margin-right: 0;
-	vertical-align: -webkit-baseline-middle;
+	line-height: 25px;
+}
+.answers-single .correct-answer .answer-correct{
+	margin-top: -2px;
 }
 .questionElements #postbox-container-1 select {
 	border: 1px solid #dddddd;
@@ -619,6 +637,21 @@ a#qsm-category-add-toggle {
 }
 .question_info_tag {
 	float: right;
+}
+.qsm-admin-bulk-actions{
+	margin-top: 10px;
+	text-align: right;
+	display: none;
+}
+input.qsm-admin-select-page-question {
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+}
+.qsm-admin-select-page-question-label{
+	color: #a6abaf;
+	font-size: 16px;
+	display: none;
 }
 @media (min-width: 783px) and (max-width: 1199px) {
 	#poststuff #post-body.columns-2 #side-sortables {

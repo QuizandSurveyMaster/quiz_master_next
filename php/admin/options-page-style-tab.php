@@ -39,7 +39,7 @@ function qsm_options_styling_tab_content() {
 
 		$style_quiz_id = isset( $_POST['style_quiz_id'] ) ? intval( $_POST['style_quiz_id'] ) : '';
 		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
-		$quiz_style    = isset( $_POST['quiz_css'] ) ? htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ), ENT_QUOTES ) : '';
+		$quiz_style    = isset( $_POST['quiz_css'] ) ? htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ), ENT_QUOTES, 'UTF-8', false) : '';
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
@@ -231,7 +231,7 @@ function qsm_options_styling_tab_content() {
 		<table class="form-table">
 			<tr>
 				<td><textarea style="width: 100%; height: 700px;" id="quiz_css"
-						name="quiz_css"><?php echo esc_textarea( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $mlw_quiz_options->quiz_stye ) ); ?></textarea></td>
+						name="quiz_css"><?php echo esc_textarea( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_quiz_options->quiz_stye, ENT_QUOTES) ) ); ?></textarea></td>
 			</tr>
 		</table>
 		<?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
@@ -329,7 +329,7 @@ function qsm_options_styling_tab_content() {
 add_action( 'admin_menu', 'qsm_register_theme_setting_submenu_page' );
 
 function qsm_register_theme_setting_submenu_page() {
-	add_submenu_page( null, __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );
+	add_submenu_page( 'options.php', __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );
 }
 
 function qsm_display_theme_settings() {

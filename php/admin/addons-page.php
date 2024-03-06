@@ -22,15 +22,12 @@ function qmn_addons_page() {
 <div class="wrap qsm-addon-setting-wrap">
 	<h2>
 		<?php
-		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
-			?>
-		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
-				class="dashicons dashicons-arrow-left-alt"></span>
-			<?php esc_html_e( 'Back to list', 'quiz-master-next' ); ?></a>
-		<?php
+		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+			$key = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column($tab_array, 'slug'), true );
+    		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
+			echo esc_html__( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title ) . esc_html__( ' Addon', 'quiz-master-next' );
 		}
 		?>
-		<?php esc_html_e( 'Extend QSM With Addons', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -94,7 +91,7 @@ function qsm_generate_featured_addons() {
 				<div class="installed_addon">
 					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
 					<span class="installed_addon_link">
-						<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
+						<a target="_blank" rel="noopener" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 								class="dashicons dashicons-admin-generic"></span>
 							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
 					</span>
@@ -121,6 +118,9 @@ function qsm_generate_featured_addons() {
 					<?php
 					if ( $all_addons ) {
 						foreach ( $all_addons as $key => $single_arr ) {
+							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) ) {
+								continue;
+							}
 							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 							?>
 							<div class="custom-addon-sub-div">
@@ -157,7 +157,7 @@ function qsm_generate_featured_addons() {
 				// $count For dynamic class
 				$count = 0;
 					foreach ( $bundles as $key => $bundles_arr ) {
-						$bundle_link = qsm_get_utm_link( $bundles_arr['link'], 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
+						$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
 						?>
 						<div class="qsm-bundles-widget">
 							<div class="qsm-bundles-top">

@@ -4,10 +4,10 @@
 .qsm-toggle-box .toggle-indicator{float: left;}
 .contact-tab-content{margin-right: 0;margin-left: 40px;}
 .contact-tab-content .hide-control{float: left;}
-.contact-form-field-settings{left: 0;right: auto;}
-.contact-form-field-settings:after, .contact-form-field-settings:before{right: 28%;left: auto;}
+.qsm-contact-form-field-settings{left: 0;right: auto;}
+.qsm-contact-form-field-settings:after, .qsm-contact-form-field-settings:before{right: 28%;left: auto;}
 .contact-tab-sidebar .inside .inside-row input[type=checkbox]{margin: -0.25rem 0 0 8px;}
-.contact-form-field .sortable-handle{padding: 0 15px 0 0;}
+.qsm-contact-form-field .sortable-handle{padding: 0 15px 0 0;}
 .qsm_tab_content label{margin-left:5px;margin-right: 0;}
 .form-table .qsm-opt-tr{padding-left: 24px;padding-right: 0;}
 .qsm-quiz-email-tab .qsm-show-all-variable-text, .qsm-quiz-result-tab .qsm-show-all-variable-text{left: 25px;right: auto;}
@@ -20,3 +20,5 @@
 div.qsm_icon_wrap{left:0;right:auto;}
 .text-right{text-align: left !important;}
 .text-left{text-align: right !important;}
+.wp-core-ui .button-danger { color: #DC3232; border-color: #DC3232; }
+.wp-core-ui .button-danger:hover { color: #ca1010; border-color: #ca1010; }

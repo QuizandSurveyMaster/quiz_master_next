@@ -23,6 +23,9 @@ class QSM_Migrate {
 	 * @return void
 	 */
 	public function enable_multiple_categories() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) ) {
+			wp_send_json_error();
+		}
 		global $wpdb;
 		global $mlwQuizMasterNext;
 		$value = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
@@ -51,30 +54,21 @@ class QSM_Migrate {
 					$result          = $wpdb->query( $insert_query );
 					if ( $result > 0 ) {
 						update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
-						$response    = array(
-							'status' => true,
-							'count'  => $result,
-						);
 						$update      = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
 						$updated     = $wpdb->query( $update );
+						wp_send_json_success();
 					} else {
-						$response = array(
-							'status' => false,
-						);
+						wp_send_json_error();
 					}
 				} else {
-					$response    = array(
-						'status' => true,
-						'count'  => 0,
-					);
 					update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 				}
-				echo wp_json_encode( $response );
+				wp_send_json_success();
 				break;
 
 			case 'cancel':
 				update_option( 'qsm_multiple_category_enabled', 'cancelled' );
-				return true;
+				wp_send_json_success();
 				break;
 		}
 		exit;
