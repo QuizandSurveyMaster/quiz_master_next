@@ -389,7 +389,7 @@ class QSMQuizApi {
 			return maybe_unserialize($data);
 		}
 
-		if(is_array($data) || is_object($data)){
+		if ( is_array($data) || is_object($data) ) {
 			foreach ( $data as $key => $value ) {
 				if ( is_serialized($value) ) {
 					$result[ $key ] = $this->qsm_unserialize_recursive_loop($value);
