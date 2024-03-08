@@ -71,11 +71,27 @@ export const qsmAddObjToFormData = ( formKey, valueObj, data = new FormData() ) 
 	return data;
 }
 
+//Generate random number
+export const qsmGenerateRandomKey = (length) => {
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let key = "";
+
+    // Generate random bytes
+    const values = new Uint8Array(length);
+    window.crypto.getRandomValues(values);
+
+    for (let i = 0; i < length; i++) {
+        // Use the random byte to index into the charset
+        key += charset[values[i] % charset.length];
+    }
+
+    return key;
+}
+
 //generate uiniq id
 export const qsmUniqid = (prefix = "", random = false) => {
-    const sec = Date.now() * 1000 + Math.floor( Math.random() * 1000 );
-    const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
-    return `${prefix}${id}${random ? `.${Math.floor(Math.random() * 100000000)}`:""}`;
+    const id = qsmGenerateRandomKey(14);
+    return `${prefix}${id}${random ? `.${ qsmGenerateRandomKey(8) }`:""}`;
 };
 
 //return data if not empty otherwise default value

@@ -613,10 +613,6 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name )  ) {
 					//update quiz name
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
-					
-					if ( false === $update_status ) {
-						$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', '', 0, 'error' );
-					}
 				}
 			}
 			
