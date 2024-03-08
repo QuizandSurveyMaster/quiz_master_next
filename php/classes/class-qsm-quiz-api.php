@@ -551,7 +551,6 @@ class QSMQuizApi {
 				
 				$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 				$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
-				$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 				$post_status = false;
 				
 				if ( 0 != $options->limit_total_entries ) {
