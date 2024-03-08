@@ -3342,6 +3342,11 @@ input#preferred-date-format-custom {
 	color: #ca1010; border-color: #ca1010;
 }
 
+
+.qsm-api-keys-options .qsm-api-keys-option {
+	margin: 0 0 10px 0;
+}
+
 /*TinyMCE Text-editor : start */
 .mce-container .qsm-autocomplete {
 	position: absolute !important;

@@ -534,16 +534,38 @@ class QMNGlobalSettingsPage {
 	 */
 	public static function display_page() {
 		global $mlwQuizMasterNext;
+
+		$active_tab = 'qmn_global_settings';
+		if ( isset( $_GET['tab'] ) ) {
+			if ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qmn_global_settings' ) {
+				$active_tab = 'qmn_global_settings';
+			} elseif ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qsm_api_settings' ) {
+				$active_tab = 'qsm_api_settings';
+			} else {
+				$active_tab = 'quiz-default-options';
+			}
+		}
+		$api_tab_class = '';
+		if ( 'qsm_api_settings' === $active_tab ) {
+			$api_tab_class = 'nav-tab-active';
+		}
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
 			<h2 class="nav-tab-wrapper">
+				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
+				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $api_tab_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
 			</h2>
+			<?php 
+			if ( 'qsm_api_settings' === $active_tab ) {
+				$mlwQuizMasterNext->qsm_api->load_form_field();
+			}  ?>
 
 			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] ) { ?>
+
 				<form action="options.php" method="POST" class="qsm_global_settings">
 					<?php
 					if ( isset( $_GET['settings-updated'] ) ) {
@@ -552,6 +574,7 @@ class QMNGlobalSettingsPage {
 							echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
 						echo '</div>';
 					}
+
 					if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ) {
 						settings_fields( 'qmn-settings-group' );
 						do_settings_sections( 'qmn_global_settings' );
@@ -561,10 +584,18 @@ class QMNGlobalSettingsPage {
 						?>
 						<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 							<ul class="subsubsub">
-								<li><a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a></li>
-								<li><a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a></li>
-								<li><a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a></li>
-								<li><a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a></li>
+								<li>
+									<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab"><?php esc_html_e( 'General', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab"><?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
+								</li>
 							</ul>
 						</div>
 

@@ -3883,6 +3883,27 @@ var import_button;
             });
         }
     }
+
+    $(document).on('click', '.qsm-api-settings-form .qsm-generate-api-key', function (event) {
+        event.preventDefault();
+        if (!$(this).hasClass('confirmation') || confirm(qsm_api_object.confirmation_message)) {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+                    action: 'regenerate_api_key',
+                    nonce: qsm_api_object.nonce
+                },
+                success: function (response) {
+                    $("#qsm_api_key").val(response.data);
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        } 
+    });        
+
     jQuery(document).on('click', '.qsm-mark-as-default', function () {
         jQuery('.qsm-mark-as-default').not(jQuery(this)).prop('checked', false);
     })
@@ -3932,4 +3953,5 @@ var import_button;
     qsmHandleOperatorChange('results-page-condition', 'condition-default-value');
     qsmHandleConditionChange('email-condition', 'email-extra-condition-category', 'email-condition-operator', 'email-condition-criteria', 'condition-default-value');
     qsmHandleOperatorChange('email-condition', 'condition-default-value');
+
 }(jQuery));

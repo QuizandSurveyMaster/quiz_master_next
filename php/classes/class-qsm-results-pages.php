@@ -320,7 +320,6 @@ class QSM_Results_Pages {
 
 		return $pages;
 	}
-
 	/**
 	 * Saves the results pages for a quiz.
 	 *
