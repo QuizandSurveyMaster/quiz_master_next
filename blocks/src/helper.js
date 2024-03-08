@@ -90,8 +90,8 @@ export const qsmGenerateRandomKey = (length) => {
 
 //generate uiniq id
 export const qsmUniqid = (prefix = "", random = false) => {
-    const id = qsmGenerateRandomKey(14);
-    return `${prefix}${id}${random ? `.${ qsmGenerateRandomKey(8) }`:""}`;
+    const id = qsmGenerateRandomKey(8);
+    return `${prefix}${id}${random ? `.${ qsmGenerateRandomKey(7) }`:""}`;
 };
 
 //return data if not empty otherwise default value

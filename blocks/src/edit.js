@@ -473,10 +473,11 @@ export default function Edit( props ) {
 				// 	post_id: 111
 				//page data
 				quizDataToSave.pages.push( questions );
+				
 				quizDataToSave.qpages.push( {
 					'id': pageID,
 					'quizID': quizAttr.quiz_id,
-					'pagekey': block.attributes.pageKey,
+					'pagekey': qsmIsEmpty( block.attributes.pageKey ) ? qsmUniqid() :block.attributes.pageKey,
 					'hide_prevbtn':block.attributes.hidePrevBtn,
 					'questions': questions
 				} );
