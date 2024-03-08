@@ -411,27 +411,13 @@ var QSMAdmin;
         // form_type (0, 1, 2).
         function hide_show_quiz_options(form_type) {
             if (0 == form_type) {
-                $('#score_roundoff').parents('tr').show();
                 $('#correct_answer_logic').show();
             } else {
-                $('#score_roundoff').parents('tr').hide();
                 $('#correct_answer_logic').hide();
             }
         }
 
-        $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
-            var value = $(this).val();
-            $('#correct_answer_logic, #score_roundoff').hide();
-            if (value == 0 || value == 3) {
-                $('#correct_answer_logic, #score_roundoff').show();
-            }
-        });
         $(document).ready(function () {
-            var system_option = $("input[type=radio][name='system']:checked").val();
-            $('#correct_answer_logic, #score_roundoff').hide();
-            if (system_option == 0 || system_option == 3) {
-                $('#correct_answer_logic, #score_roundoff').show();
-            }
             hide_show_quiz_options($("input[name='form_type']:checked").val());
             if (jQuery('.qsm-date-picker').length) {
                 jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
@@ -608,20 +594,16 @@ var QSMAdmin;
         $(document).on('change', '.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]', function () {
             if ( 0 == $(this).val() ) {
                 $('.global_setting_system').parents('tr').show();
-                $('#qsm-score-roundoff').parents('label').show();
                 $("#qsm-correct-answer-logic").show();
             } else {
                 $('.global_setting_system').parents('tr').hide();
-                $('#qsm-score-roundoff').parents('label').hide();
                 $("#qsm-correct-answer-logic").hide();
             }
         });
         $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {
             if ( 1 != $(this).val() && 0 == $('.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]:checked').val() ) {
-                $('#qsm-score-roundoff').parents('label').show();
                 $("#qsm-correct-answer-logic").show();
             } else {
-                $('#qsm-score-roundoff').parents('label').hide();
                 $("#qsm-correct-answer-logic").hide();
             }
         });
@@ -756,7 +738,6 @@ var QSMAdmin;
             container.removeClass('opened');
         }
     });
-
 }(jQuery));
 
 // result page
@@ -995,8 +976,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     }
 }(jQuery));
 
-// QSM - Quiz Wizard
-
+function qsm_is_substring_in_array( text, array ) {
+    return array.some(function(item) {
+        return text.includes(item);
+    });
+}
 (function ($) {
     if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')) {
         $('#create-quiz-button').on('click', function (event) {
@@ -1203,10 +1187,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag';
                         editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 2px 5px; border-radius: 2px; }';
+                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 5px 8px; border-radius: 2px;font-family: Arial, Helvetica, sans-serif;font-size: 12px; font-weight: 600; }';
                         editor.addButton('qsm_slash_command', {
-                            text: '/' +qsm_admin_messages.slash_command,
+                            text: '/ ' +qsm_admin_messages.variables,
                             tooltip: qsm_admin_messages.insert_variable,
+                            classes: 'qsm-variables-editor-btn',
                             onclick: function () {
                                 editor.insertContent('/');
                                 showAutocomplete( editor, true );
@@ -1255,7 +1240,8 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
-                                newCommand.forEach( function( command ) {
+                                newCommand.forEach(function (command, key) {
+                                    console.log(key);
                                     //Add Group Name
                                     if ( -1 == var_group.indexOf( command.group ) ) {
                                         var_group.push( command.group );
@@ -1266,6 +1252,9 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                     }
                                     //Add Item
                                     var item = document.createElement('div');
+                                    if (0 == key) {
+                                        item.classList.add('qsm-autocomplete-item-active');
+                                    }
                                     item.classList.add('qsm-autocomplete-item');
                                     item.setAttribute('title', command.description);
                                     item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
@@ -1274,7 +1263,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                             editor.execCommand('Delete');
                                         }
                                         //editor.insertContent( command.description );
-                                        editor.execCommand('mceInsertContent', false, '<qsmvariabletag>'+ command.value.replace(/%/g, '') +'</qsmvariabletag>&nbsp;' );
+                                        editor.execCommand('mceInsertContent', false, command.value.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
 
                                         autocomplete.remove();
                                         editor.getContainer().setAttribute('qsm_search', '');
@@ -1313,6 +1302,20 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         //on keydowm inside editor
                         editor.on('keydown', function (e) {
 
+                            if (e.keyCode === 13) {
+                                let selection = editor.selection;
+                                let range = selection.getRng();
+                                let tagText = range.startContainer.parentNode.textContent;
+                                if ( 'qsmvariabletag' === range.startContainer.parentNode.nodeName.toLowerCase() && range.startOffset === tagText.length ) {
+                                  let newParagraph = editor.dom.create('p');
+                                  editor.dom.insertAfter(newParagraph, range.startContainer.parentNode);
+                                  range.setStartAfter(newParagraph);
+                                  range.collapse(true);
+                                  selection.setRng(range);
+                                  e.preventDefault();
+                                }
+                            }
+
                             if (e.keyCode === 191 && e.ctrlKey === false && e.altKey === false && e.shiftKey === false) {
                               // "/" key pressed, trigger autocomplete
                               showAutocomplete( editor, true );
@@ -1339,67 +1342,47 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 
                                         showAutocomplete(editor);
                                     }
+                                }
+                                if (40 === e.keyCode) {
+                                    let active_item = jQuery('.qsm-autocomplete-item-active');
+                                    jQuery('.qsm-autocomplete-item').removeClass('qsm-autocomplete-item-active');
+                                    if (active_item.length) {
+                                        active_item.next('.qsm-autocomplete-item').addClass('qsm-autocomplete-item-active');
+                                    } else {
+                                        jQuery('.qsm-autocomplete-item:first').addClass('qsm-autocomplete-item-active');
+                                    }
+                                    e.preventDefault();
+                                }
 
-                               }
+                                if (38 === e.keyCode) {
+                                    let active_item = jQuery('.qsm-autocomplete-item-active');
+                                    jQuery('.qsm-autocomplete-item').removeClass('qsm-autocomplete-item-active');
+                                    if (active_item.length) {
+                                        active_item.prev('.qsm-autocomplete-item').addClass('qsm-autocomplete-item-active');
+                                    } else {
+                                        jQuery('.qsm-autocomplete-item:last').addClass('qsm-autocomplete-item-active');
+                                    }
+                                    e.preventDefault();
+                                }
+                                if ( 13 == e.keyCode ) {
+                                    if (jQuery('.qsm-autocomplete-item-active').length) {
+                                        jQuery('.qsm-autocomplete-item-active').click();
+                                        e.preventDefault();
+                                    }
+                                }
                             }
 
                         });
 
-                        function sanitizeHtml(content) {
-
-                            // Match <img> tags with src attributes
-                            content = content.replace(/<img\b.*?src\s*=\s*['"]([^'"]+)['"].*?>/gi, function(match, src) {
-                                src = ( 'undefined' === typeof src || null === src ) ? '': src.split('?')[0];
-                                // Check if the src URL is valid (ends with .jpg, .jpeg, .png, or .gif)
-                                if (src.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                                    return match; // Valid src, keep the <img> tag
-                                } else {
-                                    return ''; // Invalid src, remove the <img> tag
-                                }
+                        editor.on('paste', function (event) {
+                            let clipboardData = (event.originalEvent || event).clipboardData;
+                            let pastedValue = clipboardData.getData('text');
+                            var variables = commands.map(function(item) {
+                                return item.value;
                             });
-
-                            // Remove style attribute
-                            content = content.replace(/style\s*=\s*(['"])(.*?)\1/gi, '');
-
-                            // Remove background attribute
-                            content = content.replace(/background\s*=\s*(['"])(.*?)\1/gi, '');
-
-                            // Remove 'javascript:' injection, alert, prompt, confirm
-                            content = content.replace(/javascript:/gi, '');
-                            content = content.replace(/alert\(/gi, '');
-                            content = content.replace(/prompt\(/gi, '');
-                            content = content.replace(/confirm\(/gi, '');
-
-                            // Remove unwanted HTML tags like script, svg, title, meta, input etc.
-                            content = content.replace(/<script\b[^>]*>.*?<\/script>/gi, '');
-                            content = content.replace(/<svg\b[^>]*>.*?<\/svg>/gi, '');
-                            content = content.replace(/<title\b[^>]*>.*?<\/title>/gi, '');
-                            content = content.replace(/<meta\b[^>]*>/gi, '');
-                            content = content.replace(/<input\b[^>]*>/gi, '');
-                            content = content.replace(/<link\b[^>]*>/gi, '');
-
-                            // Remove any on event attributes
-                            content = content.replace(/on\w+\s*=\s*(['"][^'"]*['"]|[^>\s]+)/gi, '');
-
-                            return content;
-                        }
-
-                        // On change : sanitize content
-                        editor.on('change', function(e) {
-
-                            //Only for result template
-                            if ( -1 != editor.id.indexOf('results-page') ) {
-
-                                var content = editor.getContent();
-                                var newContent = sanitizeHtml( content );
-                                //if sanitize string and content are not same
-                                if ( content != newContent ) {
-                                    //Set content
-                                    editor.setContent( newContent );
-                                    // Move the cursor to the end
-                                    editor.selection.select(editor.getBody(), true);
-                                    editor.selection.collapse(false);
-                                }
+                            if (variables.includes(pastedValue)) {
+                                event.preventDefault();
+                                editor.execCommand('mceInsertContent', false, pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
                             }
                         });
                     });
@@ -1810,13 +1793,10 @@ var QSMContact;
                         var settings = {
                             mediaButtons: true,
                             tinymce: {
-                                plugins: ["qsmslashcommands"],
+                                plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code',
-                                setup: function (editor) {
-
-                                }
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                             },
                             quicktags: true,
                         };
@@ -2671,7 +2651,7 @@ var import_button;
                     //Get file upload limit
                     var get_limit_fu = question.get('file_upload_limit');
                     if (get_limit_fu === null || typeof get_limit_fu === "undefined") {
-                        get_limit_fu = '0';
+                        get_limit_fu = '4';
                     }
                     //Get checked question type
                     var multicategories = question.get('multicategories');
@@ -2691,8 +2671,8 @@ var import_button;
                     }
                     //Get checked question type
                     var get_file_upload_type = question.get('file_upload_type');
-                    $("input[name='file_upload_type[]']:checkbox").attr("checked", false);
                     if (get_file_upload_type === null || typeof get_file_upload_type === "undefined") { } else {
+                        $("input[name='file_upload_type[]']:checkbox").attr("checked", false);
                         var fut_arr = get_file_upload_type.split(",");
                         $.each(fut_arr, function (i) {
                             $("input[name='file_upload_type[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true");
@@ -3832,10 +3812,10 @@ var import_button;
                     var settings = {
                         mediaButtons: true,
                         tinymce: {
-                            plugins: ["qsmslashcommands"],
+                            plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,fullscreen,wp_adv, qsm_slash_command',
-                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                            toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                         },
                         quicktags: true,
                     };
@@ -3851,7 +3831,7 @@ var import_button;
                         'operator': 'greater',
                         'value': '0'
                     }];
-                    var page = '%QUESTIONS_ANSWERS%';
+                    var page = '%QUESTIONS_ANSWERS% ';
                     QSMAdminResults.addResultsPage(conditions, page);
                 }
             };

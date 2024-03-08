@@ -229,8 +229,27 @@ function qsm_options_results_tab_template(){
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
 							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
-						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>') }}}</textarea>
-						<span><?php esc_html_e( 'Type / to insert template variables', 'quiz-master-next' ); ?></p>
+						<textarea id="results-page-{{ data.id }}" class="results-page-template">
+						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
+							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+							for (let qsm_variable in qsm_varaible_list) {
+								variable_name = qsm_varaible_list[qsm_variable];
+								if( variable_name.includes('%%') ){
+									var arrayValues = variable_name.split("%%");
+									qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+								};
+								if( variable_name.includes('_X%') ){
+									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+								}
+							}
+							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+							}else{
+								return match;
+							}
+						}) }}}
+						</textarea>
+						<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
@@ -244,7 +263,7 @@ function qsm_options_results_tab_template(){
 		<div class="results-page-condition">
 			<div class="qsm-result-condition-mode qsm-result-condition-container">
 				<div class="results-page-condition-category-container qsm-result-condition-container-inner">
-					<label class="qsm-result-condition-title"><?php esc_html_e( 'Mode', 'quiz-master-next' ); ?></label>
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?></label>
 					<select class="results-page-condition-category">
 						<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
 						<?php if ( ! empty( $categories ) ) {
