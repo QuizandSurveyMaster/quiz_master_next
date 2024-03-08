@@ -15,18 +15,16 @@ import { store as editorStore } from '@wordpress/editor';
 import {
 	PanelBody,
 	Button,
-	PanelRow,
 	TextControl,
 	ToggleControl,
-	RangeControl,
-	RadioControl,
 	SelectControl,
 	Placeholder,
-	Icon,
+	ExternalLink,
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import './editor.scss';
 import { qsmIsEmpty, qsmFormData, qsmUniqid, qsmValueOrDefault, qsmDecodeHtml } from './helper';
+import { qsmBlockIcon } from './component/icon';
 export default function Edit( props ) {
 	//check for QSM initialize data
 	if ( 'undefined' === typeof qsmBlockData ) {
@@ -39,6 +37,7 @@ export default function Edit( props ) {
 	const globalQuizsetting = qsmBlockData.globalQuizsetting;
 	const {
 		quizID,
+		postID,
 		quizAttr = globalQuizsetting
 	} = attributes;
 
@@ -81,7 +80,26 @@ export default function Edit( props ) {
 			}
 			//initialize QSM block
 			if ( ! qsmIsEmpty( quizID ) && 0 < quizID ) {
-				initializeQuizAttributes( quizID );
+				//Check if quiz exists
+				let hasQuiz = false;
+				quizList.forEach( quizElement => {
+					if ( quizID == quizElement.value ) {
+						hasQuiz = true;
+						return true;
+					}
+				});
+				if ( hasQuiz ) {
+					initializeQuizAttributes( quizID );
+				} else {
+					setAttributes({
+						quizID : undefined
+					});
+					setQuizMessage( {
+						error: true,
+						msg: __( 'Quiz not found. Please select an existing quiz or create a new one.', 'quiz-master-next' )
+					} );
+				}
+				
 			}
 		}
 		
@@ -120,11 +138,16 @@ export default function Edit( props ) {
 				method: 'POST',
 				data: { quizID: quiz_id },
 			} ).then( ( res ) => {
-				//console.log( "quiz render data", res );
+				
 				if ( 'success' == res.status ) {
+					setQuizMessage( {
+						error: false,
+						msg: ''
+					} );
 					let result = res.result;
 					setAttributes( { 
 						quizID: parseInt( quiz_id ),
+						postID: result.post_id,
 						quizAttr: { ...quizAttr, ...result }
 					} );
 					if ( ! qsmIsEmpty( result.qpages ) ) {
@@ -181,7 +204,7 @@ export default function Edit( props ) {
 									}
 								});
 							}
-							//console.log("page",page);
+							
 							quizTemp.push(
 								[
 									'qsm/quiz-page',
@@ -197,11 +220,7 @@ export default function Edit( props ) {
 						});
 						setQuizTemplate( quizTemp );
 					}
-					// QSM_QUIZ = [
-					// 	[
-
-					// 	]
-					// ];
+					
 				} else {
 					console.log( "error "+ res.msg );
 				}
@@ -213,16 +232,6 @@ export default function Edit( props ) {
 			
 		}
 	}
-	/**
-	 * vault dash Icon
-	 * @returns vault dash Icon
-	 */
-	const feedbackIcon = () => (
-	<Icon 
-			icon="vault"
-			size="36"
-	/>
-	);
 
 	/**
 	 * 
@@ -231,7 +240,8 @@ export default function Edit( props ) {
 	const quizPlaceholder = ( ) => {
 		return (
 			<Placeholder
-				icon={ feedbackIcon }
+				className='qsm-placeholder-wrapper'
+				icon={ qsmBlockIcon }
 				label={ __( 'Quiz And Survey Master', 'quiz-master-next' ) }
 				instructions={ __( 'Easily and quickly add quizzes and surveys inside the block editor.', 'quiz-master-next' ) }
 			>
@@ -339,6 +349,11 @@ export default function Edit( props ) {
 						</Button>
 					</VStack>
 	                }
+					{
+						quizMessage.error && (
+							<p className='qsm-error-text'>{ quizMessage.msg }</p>
+						)
+					}
 					</>
 				}
 			</Placeholder>
@@ -365,7 +380,7 @@ export default function Edit( props ) {
 		if ( qsmIsEmpty( blocks ) ) {
 			return false;
 		}
-		//console.log( "blocks", blocks);
+		
 		blocks = blocks.innerBlocks;
 		let quizDataToSave = {
 			quiz_id: quizAttr.quiz_id,
@@ -435,11 +450,14 @@ export default function Edit( props ) {
 								"hint": qsmValueOrDefault( questionAttr?.hint ),
 								"category": qsmValueOrDefault( questionAttr?.category ),
 								"multicategories": qsmValueOrDefault( questionAttr?.multicategories, [] ),
-								"required": qsmValueOrDefault( questionAttr?.required, 1 ),
+								"required": qsmValueOrDefault( questionAttr?.required, 0 ),
 								"answers": answers,
 								"featureImageID":qsmValueOrDefault( questionAttr?.featureImageID ),
 								"featureImageSrc":qsmValueOrDefault( questionAttr?.featureImageSrc ),
-								"page": pageSNo
+								"page": pageSNo,
+								"other_settings": {
+									"required": qsmValueOrDefault( questionAttr?.required, 0 )
+								}
 							});
 						}
 						
@@ -498,7 +516,6 @@ export default function Edit( props ) {
 	useEffect( () => {
 		if ( isSavingPage ) {
 			let quizData =  getQuizDataToSave();
-			//console.log( "quizData", quizData);
 			//save quiz status
 			setSaveQuiz( true );
 			
@@ -568,7 +585,6 @@ export default function Edit( props ) {
 			method: 'POST',
 			body: quizData
 		} ).then( ( res ) => {
-			//console.log( res );
 			//save quiz status
 			setSaveQuiz( false );
 			if ( 'success' == res.status ) {
@@ -594,7 +610,7 @@ export default function Edit( props ) {
 					method: 'POST',
 					body: newQuestion
 				} ).then( ( response ) => {
-					//console.log("question response", response);
+					
 					if ( 'success' == response.status ) {
 						let question_id = response.id;
 
@@ -627,7 +643,7 @@ export default function Edit( props ) {
 							method: 'POST',
 							body: newPage
 						} ).then( ( pageResponse ) => {
-							//console.log("pageResponse", pageResponse);
+							
 							if ( 'success' == pageResponse.status ) {
 								//set new quiz
 								initializeQuizAttributes( res.quizID );
@@ -681,12 +697,30 @@ export default function Edit( props ) {
 	<>
 	<InspectorControls>
 		<PanelBody title={ __( 'Quiz settings', 'quiz-master-next' ) } initialOpen={ true }>
+		<label className="qsm-inspector-label">
+			{ __( 'Status', 'quiz-master-next' )+':' }
+			<span className="qsm-inspector-label-value" >
+				{ quizAttr.post_status }
+			</span>
+		</label>
+		
 		<TextControl
 			label={ __( 'Quiz Name *', 'quiz-master-next' ) }
 			help={ __( 'Enter a name for this Quiz', 'quiz-master-next' ) }
 			value={ quizAttr?.quiz_name || '' }
 			onChange={ ( val ) => setQuizAttributes( val, 'quiz_name') }
+			className='qsm-no-mb'
 		/>
+		{
+			( ! qsmIsEmpty( quizID ) || '0' != quizID ) && 
+			<p>
+				<ExternalLink 
+				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
+				>
+					{ __( 'Advance Quiz Settings', 'quiz-master-next' ) }
+				</ExternalLink>
+			</p>
+		}
 		</PanelBody>
 	</InspectorControls>
 	{ ( qsmIsEmpty( quizID ) || '0' == quizID ) ? 

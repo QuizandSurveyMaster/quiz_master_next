@@ -35,7 +35,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_scripts' ) );
 			
 			add_action( 'rest_api_init', array( $this, 'register_editor_rest_routes' ) );
-			//$this->get_post_id_from_quiz_id( 98 );
+			
 		}
 
 		/**
@@ -183,6 +183,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				'qsmBlockData',
 				array(
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
+					'quiz_settings_url'   => admin_url( 'admin.php?page=mlw_quiz_options' ),
 					'save_pages_action'	  => 'qsm_save_pages',
 					'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),// save page
 					'nonce'               => wp_create_nonce( 'qsm_block_quiz' ),
@@ -249,11 +250,18 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		 * @param array $attributes The attributes that were set on the block.
 		 */
 		public function qsm_block_render( $attributes, $content, $block ) {
-			global $qmnQuizManager;
-			if ( ! empty( $attributes ) && ! empty( $attributes['quizID'] ) ) {
-				$attributes['quiz'] = intval( $attributes['quizID'] );
+			global $qmnQuizManager, $mlwQuizMasterNext;
+			$post_status = true;
+			if ( ! empty( $attributes ) ) {
+				if ( ! empty( $attributes['quizID'] ) ) {
+					$attributes['quiz'] = intval( $attributes['quizID'] );
+				}
+				if ( ! empty( $mlwQuizMasterNext ) && ! $mlwQuizMasterNext->qsm_is_admin( 'edit_posts' ) && ! empty( $attributes['postID'] ) && function_exists('get_post_status') ) {
+					$post_status = get_post_status( intval( $attributes['postID'] ) );
+					$post_status = 'publish' === $post_status;
+				}
 			}
-			return $qmnQuizManager->display_shortcode( $attributes );
+			return $post_status ? $qmnQuizManager->display_shortcode( $attributes ) : '';
 		}
 
 		/**
@@ -385,8 +393,6 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				),
 			) );
 			wp_reset_postdata();
-			// echo "quis id $quiz_id <br> ";
-			// print_r( $post_ids );exit;
 			return ( empty( $post_ids ) || ! is_array( $post_ids ) )? 0 : $post_ids[0];
 		}
 
@@ -425,6 +431,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				//nonce to save question
 				$quiz_data[0]['rest_nonce'] = $this->get_rest_nonce( $quiz_id );
 				$quiz_data[0]['post_id'] = $this->get_post_id_from_quiz_id( intval( $quiz_id ) );
+				$quiz_data[0]['post_status'] = get_post_status( intval( $quiz_data[0]['post_id'] ) );
 				// Cycle through each quiz and retrieve all of quiz's questions.
 				foreach ( $quiz_data as $key => $quiz ) {
 					
@@ -584,30 +591,28 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			global $mlwQuizMasterNext;
 			//Save Questions
 			if ( ! empty( $_POST['quizData']['questions'] ) ) {
+				//$params = $request->get_params();
+				//$params = ( empty( $params ) || ! is_array( $params ) ) ? array() : $params;
 				//nonce to save question
-				$request[ 'rest_nonce' ] = $this->get_rest_nonce( $quiz_id );
+				$request->set_param( 'rest_nonce', $this->get_rest_nonce( $quiz_id ) );
+				//$params['rest_nonce'] = $this->get_rest_nonce( $quiz_id );
+				//$request[ 'rest_nonce' ] = $this->get_rest_nonce( $quiz_id );
 				
 				foreach ( $_POST['quizData']['questions'] as $question ) {
 					foreach ($question as $qkey => $qvalue) {
-						$request[ $qkey ] = $qvalue;
+						$request->set_param( $qkey, $qvalue );
+						//$params[ $qkey ] = $qvalue;
 					}
 					qsm_rest_save_question( $request );
 				}
 			}
 			
-			//save quiz name and publish quiz
+			//save quiz name
 			if ( ! empty(  $_POST['quizData']['quiz'] ) && ! empty(  $_POST['quizData']['quiz']['quiz_name'] )  ) {
 				$quiz_name = sanitize_key( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
 				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name )  ) {
 					//update quiz name
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
-
-					//publish quiz
-					$update_status = wp_update_post( array(
-						'ID'          => $post_id,
-						'post_status' => 'publish',
-					) );
-					$update_status = wp_update_post( $arg_post_arr );
 					
 					if ( false === $update_status ) {
 						$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', '', 0, 'error' );

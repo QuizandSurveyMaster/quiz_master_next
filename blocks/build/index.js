@@ -1,1 +1,1131 @@
-!function(){"use strict";var e,t={775:function(e,t,n){var i=window.wp.blocks,a=window.wp.element,s=window.wp.i18n,r=window.wp.apiFetch,o=n.n(r),l=window.wp.htmlEntities,u=window.wp.blockEditor,c=window.wp.notices,m=window.wp.data,p=window.wp.editor,q=window.wp.components;const d=e=>null==e||""===e,_=e=>{var t=document.createElement("textarea");return t.innerHTML=e,t.value},g=(e=!1)=>{let t=new FormData;if(t.append("qsm_block_api_call","1"),!1!==e)for(let n in e)e.hasOwnProperty(n)&&t.append(n,e[n]);return t},h=(e,t="")=>d(e)?t:e;(0,i.registerBlockType)("qsm/quiz",{icon:()=>(0,a.createElement)(q.Icon,{icon:()=>(0,a.createElement)("svg",{width:"24",height:"24",viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg"},(0,a.createElement)("rect",{width:"24",height:"24",rx:"3",fill:"#EEEEEE"}),(0,a.createElement)("path",{d:"M9.00508 11.5025C9.00508 9.5736 7.44162 8 5.50254 8C3.56345 8 2 9.56345 2 11.5025C2 13.269 3.29949 14.731 5.00508 14.9645V14.132C3.7665 13.8985 2.83249 12.8122 2.83249 11.5025C2.82234 10.0203 4.0203 8.82233 5.50254 8.82233C6.98477 8.82233 8.18274 10.0203 8.18274 11.5025C8.18274 12.6599 7.45178 13.6447 6.4264 14.0102V13.1675H5.51269V16H6.4264V14.8629C7.90863 14.4569 9.01523 13.1066 9.01523 11.4924L9.00508 11.5025Z",fill:"black",stroke:"black",strokeWidth:"0.5"}),(0,a.createElement)("path",{d:"M15.3097 9.13702L14.995 15.1878H15.8681L16.0711 11.2487C16.1016 10.599 16.1117 10.1319 16.1016 9.83753C16.0001 9.49235 15.6041 9.14718 15.3097 9.13702Z",fill:"black",stroke:"black",strokeWidth:"0.5"}),(0,a.createElement)("path",{d:"M21.9593 8.30451C21.472 8.06085 20.9847 8.20298 20.7309 8.33496L19.2385 12.2842C19.1471 12.5279 19.0659 12.7614 18.9948 12.9644C18.9238 13.1675 18.8629 13.3502 18.8121 13.5126C18.7512 13.6954 18.7004 13.8578 18.6598 14.0202H18.6395C18.5887 13.868 18.538 13.6954 18.4669 13.5126C18.4162 13.3502 18.3451 13.1675 18.274 12.9644C18.203 12.7512 18.1217 12.5279 18.0304 12.2842L16.6903 8.64968C16.3857 8.16238 15.8679 8.0304 15.604 8.0304H15.3603H11.8172C11.8172 8.0304 11.7563 8.0304 11.7156 8.0304C11.3908 8.0507 11.1065 8.09131 10.8629 8.17253C10.5786 8.27405 10.3451 8.40603 10.1623 8.56847C9.98976 8.7309 9.85778 8.9238 9.78671 9.12684C9.71564 9.32989 9.67503 9.55324 9.67503 9.76644C9.67503 10.1421 9.76641 10.4568 9.93899 10.7106C10.1217 10.9644 10.3451 11.1776 10.609 11.3603C10.873 11.5431 11.1674 11.7055 11.4821 11.8477C11.807 11.9898 12.1014 12.1421 12.3755 12.2944C12.6598 12.4466 12.873 12.6091 13.0354 12.7715C13.208 12.9339 13.2994 13.1471 13.2994 13.4111C13.2994 13.5837 13.2486 13.736 13.1573 13.8578C13.0659 13.9796 12.9441 14.0812 12.7816 14.1522C12.6192 14.2233 12.4263 14.2842 12.203 14.3147C12.142 14.3147 12.0913 14.335 12.0304 14.335L8.24356 14.3248C7.96945 14.5989 7.34001 15.1471 7.01514 15.1471H12.0202C12.1319 15.1471 12.2537 15.137 12.3654 15.1167C12.6903 15.0659 12.9745 14.9746 13.2486 14.8426C13.5126 14.7106 13.7359 14.5177 13.8984 14.2741C14.071 14.0304 14.1623 13.7055 14.1623 13.2994C14.1623 12.9543 14.071 12.6598 13.8882 12.4162C13.7156 12.1725 13.4923 11.9593 13.2283 11.7867C12.9644 11.604 12.67 11.4416 12.3451 11.3096C12.0304 11.1675 11.7461 11.0253 11.472 10.8832C11.208 10.7309 10.9847 10.5685 10.8121 10.406C10.6395 10.2334 10.538 10.0101 10.538 9.76644C10.538 9.44156 10.6497 9.20806 10.8629 9.06593C11.0456 8.93395 11.3502 8.86288 11.7461 8.84258H15.3197C15.7766 8.88319 16.0202 9.1776 16.1116 9.35019C16.1116 9.38065 16.1319 9.42126 16.142 9.45172C16.1725 9.54309 16.203 9.65476 16.2436 9.77659C16.2943 9.92887 16.3654 10.1319 16.4466 10.3756C16.5278 10.6091 16.6293 10.9035 16.7613 11.2385L18.2131 15.1776H19.0862L20.5278 11.2385C20.6497 10.8933 20.7512 10.6091 20.8324 10.3654C20.9238 10.1218 20.9948 9.91872 21.0456 9.76644C21.1065 9.5837 21.1573 9.44156 21.1979 9.34004H21.2182V9.77659C21.2182 9.92887 21.2182 10.1218 21.2283 10.3654C21.2283 10.5989 21.2486 10.8933 21.2588 11.2385L21.4314 15.1776H22.3045L21.9593 8.30451Z",fill:"black",stroke:"black",strokeWidth:"0.5"}))}),edit:function(e){if("undefined"==typeof qsmBlockData)return null;const{className:t,attributes:n,setAttributes:i,isSelected:r,clientId:f}=e,{createNotice:z}=(0,m.useDispatch)(c.store),C=qsmBlockData.globalQuizsetting,{quizID:w,quizAttr:b=C}=n,[v,y]=(0,a.useState)(qsmBlockData.QSMQuizList),[k,E]=(0,a.useState)({error:!1,msg:""}),[D,I]=(0,a.useState)(!1),[B,x]=(0,a.useState)(!1),[S,O]=(0,a.useState)(!1),[P,H]=(0,a.useState)([]),M=qsmBlockData.quizOptions,T=(0,m.useSelect)((e=>{const{isAutosavingPost:t,isSavingPost:n}=e(p.store);return n()&&!t()}),[]),{getBlock:A}=(0,m.useSelect)(u.store);(0,a.useEffect)((()=>{let e=!0;return e&&("0"==qsmBlockData.is_pro_activated&&setTimeout((()=>{L()}),100),!d(w)&&0<w&&N(w)),()=>{e=!1}}),[]);const L=()=>{let e=document.getElementById("modal-advanced-question-type");d(e)&&o()({path:"/quiz-survey-master/v1/quiz/advance-ques-type-upgrade-popup",method:"POST"}).then((e=>{let t=document.getElementById("wpbody-content");d(t)||"success"!=e.status||t.insertAdjacentHTML("afterbegin",e.result)})).catch((e=>{console.log("error",e)}))},N=e=>{!d(e)&&0<e&&o()({path:"/quiz-survey-master/v1/quiz/structure",method:"POST",data:{quizID:e}}).then((t=>{if("success"==t.status){let n=t.result;if(i({quizID:parseInt(e),quizAttr:{...b,...n}}),!d(n.qpages)){let e=[];n.qpages.forEach((t=>{let n=[];d(t.question_arr)||t.question_arr.forEach((e=>{if(!d(e)){let t=[];!d(e.answers)&&0<e.answers.length&&e.answers.forEach(((e,n)=>{t.push(["qsm/quiz-answer-option",{optionID:n,content:e[0],points:e[1],isCorrect:e[2],caption:h(e[3])}])})),n.push(["qsm/quiz-question",{questionID:e.question_id,type:e.question_type_new,answerEditor:e.settings.answerEditor,title:e.settings.question_title,description:e.question_name,required:e.settings.required,hint:e.hints,answers:e.answers,correctAnswerInfo:e.question_answer_info,category:e.category,multicategories:e.multicategories,commentBox:e.comments,matchAnswer:e.settings.matchAnswer,featureImageID:e.settings.featureImageID,featureImageSrc:e.settings.featureImageSrc,settings:e.settings},t])}})),e.push(["qsm/quiz-page",{pageID:t.id,pageKey:t.pagekey,hidePrevBtn:t.hide_prevbtn,quizID:t.quizID},n])})),H(e)}}else console.log("error "+t.msg)})).catch((e=>{console.log("error",e)}))},Q=(e,t)=>{let n=b;n[t]=e,i({quizAttr:{...n}})};(0,a.useEffect)((()=>{if(T){let e=(()=>{let e=A(f);if(d(e))return!1;e=e.innerBlocks;let t={quiz_id:b.quiz_id,post_id:b.post_id,quiz:{},pages:[],qpages:[],questions:[]},n=0;return e.forEach((e=>{if("qsm/quiz-page"===e.name){let i=e.attributes.pageID,a=[];!d(e.innerBlocks)&&0<e.innerBlocks.length&&e.innerBlocks.forEach((e=>{if("qsm/quiz-question"!==e.name)return!0;let i=e.attributes,s=h(i?.answerEditor,"text"),r=[];!d(e.innerBlocks)&&0<e.innerBlocks.length&&e.innerBlocks.forEach((e=>{if("qsm/quiz-answer-option"!==e.name)return!0;let t=e.attributes,n=h(t?.content);d(i?.answerEditor)||"rich"!==i.answerEditor||(n=_((0,l.decodeEntities)(n)));let a=[n,h(t?.points),h(t?.isCorrect)];"image"!==s||d(t?.caption)||a.push(t?.caption),r.push(a)})),a.push(i.questionID),i.isChanged&&t.questions.push({id:i.questionID,quizID:b.quiz_id,postID:b.post_id,answerEditor:s,type:h(i?.type,"0"),name:_(h(i?.description)),question_title:h(i?.title),answerInfo:_(h(i?.correctAnswerInfo)),comments:h(i?.commentBox,"1"),hint:h(i?.hint),category:h(i?.category),multicategories:h(i?.multicategories,[]),required:h(i?.required,1),answers:r,featureImageID:h(i?.featureImageID),featureImageSrc:h(i?.featureImageSrc),page:n})})),t.pages.push(a),t.qpages.push({id:i,quizID:b.quiz_id,pagekey:e.attributes.pageKey,hide_prevbtn:e.attributes.hidePrevBtn,questions:a}),n++}})),t.quiz={quiz_name:b.quiz_name,quiz_id:b.quiz_id,post_id:b.post_id},S&&["form_type","system","timer_limit","pagination","enable_contact_form","enable_pagination_quiz","show_question_featured_image_in_result","progress_bar","require_log_in","disable_first_page","comment_section"].forEach((e=>{void 0!==b[e]&&null!==b[e]&&(t.quiz[e]=b[e])})),t})();x(!0),e=g({save_entire_quiz:"1",quizData:JSON.stringify(e),qsm_block_quiz_nonce:qsmBlockData.nonce,nonce:qsmBlockData.saveNonce}),o()({path:"/quiz-survey-master/v1/quiz/save_quiz",method:"POST",body:e}).then((e=>{z(e.status,e.msg,{isDismissible:!0,type:"snackbar"})})).catch((e=>{console.log("error",e),z("error",e.message,{isDismissible:!0,type:"snackbar"})}))}}),[T]);const j=(0,u.useBlockProps)(),V=(0,u.useInnerBlocksProps)(j,{template:P,allowedBlocks:["qsm/quiz-page"]});return(0,a.createElement)(a.Fragment,null,(0,a.createElement)(u.InspectorControls,null,(0,a.createElement)(q.PanelBody,{title:(0,s.__)("Quiz settings","quiz-master-next"),initialOpen:!0},(0,a.createElement)(q.TextControl,{label:(0,s.__)("Quiz Name *","quiz-master-next"),help:(0,s.__)("Enter a name for this Quiz","quiz-master-next"),value:b?.quiz_name||"",onChange:e=>Q(e,"quiz_name")}))),d(w)||"0"==w?(0,a.createElement)(q.Placeholder,{icon:()=>(0,a.createElement)(q.Icon,{icon:"vault",size:"36"}),label:(0,s.__)("Quiz And Survey Master","quiz-master-next"),instructions:(0,s.__)("Easily and quickly add quizzes and surveys inside the block editor.","quiz-master-next")},(0,a.createElement)(a.Fragment,null,!d(v)&&0<v.length&&(0,a.createElement)("div",{className:"qsm-placeholder-select-create-quiz"},(0,a.createElement)(q.SelectControl,{label:(0,s.__)("","quiz-master-next"),value:w,options:v,onChange:e=>N(e),disabled:D,__nextHasNoMarginBottom:!0}),(0,a.createElement)("span",null,(0,s.__)("OR","quiz-master-next")),(0,a.createElement)(q.Button,{variant:"link",onClick:()=>I(!D)},(0,s.__)("Add New","quiz-master-next"))),(d(v)||D)&&(0,a.createElement)(q.__experimentalVStack,{spacing:"3",className:"qsm-placeholder-quiz-create-form"},(0,a.createElement)(q.TextControl,{label:(0,s.__)("Quiz Name *","quiz-master-next"),help:(0,s.__)("Enter a name for this Quiz","quiz-master-next"),value:b?.quiz_name||"",onChange:e=>Q(e,"quiz_name")}),(0,a.createElement)(q.Button,{variant:"link",onClick:()=>O(!S)},(0,s.__)("Advance options","quiz-master-next")),S&&(0,a.createElement)(a.Fragment,null,(0,a.createElement)(q.SelectControl,{label:M?.form_type?.label,value:b?.form_type,options:M?.form_type?.options,onChange:e=>Q(e,"form_type"),__nextHasNoMarginBottom:!0}),(0,a.createElement)(q.SelectControl,{label:M?.system?.label,value:b?.system,options:M?.system?.options,onChange:e=>Q(e,"system"),help:M?.system?.help,__nextHasNoMarginBottom:!0}),["timer_limit","pagination"].map((e=>(0,a.createElement)(q.TextControl,{key:"quiz-create-text-"+e,type:"number",label:M?.[e]?.label,help:M?.[e]?.help,value:d(b[e])?0:b[e],onChange:t=>Q(t,e)}))),["enable_contact_form","enable_pagination_quiz","show_question_featured_image_in_result","progress_bar","require_log_in","disable_first_page","comment_section"].map((e=>(0,a.createElement)(q.ToggleControl,{key:"quiz-create-toggle-"+e,label:M?.[e]?.label,help:M?.[e]?.help,checked:!d(b[e])&&"1"==b[e],onChange:()=>Q(d(b[e])||"1"!=b[e]?1:0,e)})))),(0,a.createElement)(q.Button,{variant:"primary",disabled:B||d(b.quiz_name),onClick:()=>(()=>{if(d(b.quiz_name))return void console.log("empty quiz_name");x(!0);let e=g({quiz_name:b.quiz_name,qsm_new_quiz_nonce:qsmBlockData.qsm_new_quiz_nonce});["form_type","system","timer_limit","pagination","enable_contact_form","enable_pagination_quiz","show_question_featured_image_in_result","progress_bar","require_log_in","disable_first_page","comment_section"].forEach((t=>void 0===b[t]||null===b[t]?"":e.append(t,b[t]))),o()({path:"/quiz-survey-master/v1/quiz/create_quiz",method:"POST",body:e}).then((e=>{if(x(!1),"success"==e.status){let t=g({id:null,quizID:e.quizID,answerEditor:"text",type:"0",name:"",question_title:"",answerInfo:"",comments:"1",hint:"",category:"",required:1,answers:[],page:0});o()({path:"/quiz-survey-master/v1/questions",method:"POST",body:t}).then((t=>{if("success"==t.status){let n=t.id,i=g({action:qsmBlockData.save_pages_action,quiz_id:e.quizID,nonce:qsmBlockData.saveNonce,post_id:e.quizPostID});i.append("pages[0][]",n),i.append("qpages[0][id]",1),i.append("qpages[0][quizID]",e.quizID),i.append("qpages[0][pagekey]",((e="",t=!1)=>`${e}${(1e3*Date.now()+1e3*Math.random()).toString(16).replace(/\./g,"").padEnd(8,"0")}${t?`.${Math.trunc(1e8*Math.random())}`:""}`)()),i.append("qpages[0][hide_prevbtn]",0),i.append("qpages[0][questions][]",n),o()({url:qsmBlockData.ajax_url,method:"POST",body:i}).then((t=>{"success"==t.status&&N(e.quizID)}))}})).catch((e=>{console.log("error",e),z("error",e.message,{isDismissible:!0,type:"snackbar"})}))}z(e.status,e.msg,{isDismissible:!0,type:"snackbar"})})).catch((e=>{console.log("error",e),z("error",e.message,{isDismissible:!0,type:"snackbar"})}))})()},(0,s.__)("Create Quiz","quiz-master-next"))))):(0,a.createElement)("div",{...V}))},save:e=>null})}},n={};function i(e){var a=n[e];if(void 0!==a)return a.exports;var s=n[e]={exports:{}};return t[e](s,s.exports,i),s.exports}i.m=t,e=[],i.O=function(t,n,a,s){if(!n){var r=1/0;for(c=0;c<e.length;c++){n=e[c][0],a=e[c][1],s=e[c][2];for(var o=!0,l=0;l<n.length;l++)(!1&s||r>=s)&&Object.keys(i.O).every((function(e){return i.O[e](n[l])}))?n.splice(l--,1):(o=!1,s<r&&(r=s));if(o){e.splice(c--,1);var u=a();void 0!==u&&(t=u)}}return t}s=s||0;for(var c=e.length;c>0&&e[c-1][2]>s;c--)e[c]=e[c-1];e[c]=[n,a,s]},i.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(t,{a:t}),t},i.d=function(e,t){for(var n in t)i.o(t,n)&&!i.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},i.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},function(){var e={826:0,431:0};i.O.j=function(t){return 0===e[t]};var t=function(t,n){var a,s,r=n[0],o=n[1],l=n[2],u=0;if(r.some((function(t){return 0!==e[t]}))){for(a in o)i.o(o,a)&&(i.m[a]=o[a]);if(l)var c=l(i)}for(t&&t(n);u<r.length;u++)s=r[u],i.o(e,s)&&e[s]&&e[s][0](),e[s]=0;return i.O(c)},n=self.webpackChunkqsm=self.webpackChunkqsm||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))}();var a=i.O(void 0,[431],(function(){return i(775)}));a=i.O(a)}();
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/component/icon.js":
+/*!*******************************!*\
+  !*** ./src/component/icon.js ***!
+  \*******************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   answerOptionBlockIcon: function() { return /* binding */ answerOptionBlockIcon; },
+/* harmony export */   qsmBlockIcon: function() { return /* binding */ qsmBlockIcon; },
+/* harmony export */   questionBlockIcon: function() { return /* binding */ questionBlockIcon; }
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+
+
+//QSM Quiz Block
+const qsmBlockIcon = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Icon, {
+  icon: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("rect", {
+    width: "24",
+    height: "24",
+    rx: "3",
+    fill: "black"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M17.8146 17.8349C19.3188 16.3426 20.25 14.2793 20.25 12C20.2485 7.44425 16.5267 3.75 11.9348 3.75C7.34282 3.75 3.62109 7.44425 3.62109 12C3.62109 16.5558 7.34282 20.25 11.9348 20.25H18.9988C19.4682 20.25 19.7074 19.7112 19.3813 19.3885L17.8146 17.8334V17.8349ZM11.8753 17.5195C8.72666 17.5195 6.17388 15.0737 6.17388 12.0569C6.17388 9.04022 8.72666 6.59442 11.8753 6.59442C15.024 6.59442 17.5768 9.04022 17.5768 12.0569C17.5768 15.0737 15.024 17.5195 11.8753 17.5195Z",
+    fill: "white"
+  }))
+});
+
+//Question Block
+const questionBlockIcon = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Icon, {
+  icon: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    width: "25",
+    height: "25",
+    viewBox: "0 0 25 25",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("rect", {
+    x: "0.102539",
+    y: "0.101562",
+    width: "24",
+    height: "24",
+    rx: "4.68852",
+    fill: "#ADADAD"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M17.0475 17.191C17.2367 17.3683 17.3313 17.5752 17.3313 17.8117C17.3313 18.06 17.2426 18.2787 17.0653 18.4679C16.8879 18.6453 16.6751 18.734 16.4268 18.734C16.1667 18.734 15.9538 18.6512 15.7883 18.4857L14.937 17.6521C13.8492 18.4088 12.5959 18.7872 11.177 18.7872C10.0301 18.7872 9.01325 18.533 8.12646 18.0245C7.2515 17.5161 6.57163 16.8126 6.08685 15.914C5.6139 15.0035 5.37742 13.9631 5.37742 12.7925C5.37742 11.5273 5.64937 10.41 6.19327 9.44044C6.74898 8.45907 7.48206 7.70234 8.3925 7.17027C9.31475 6.6382 10.308 6.37216 11.3721 6.37216C12.4481 6.37216 13.459 6.64411 14.4049 7.18801C15.3508 7.72008 16.1075 8.46498 16.6751 9.42271C17.2426 10.3804 17.5264 11.4505 17.5264 12.6329C17.5264 14.0636 17.1007 15.3287 16.2494 16.4283L17.0475 17.191ZM11.177 17.1732C12.0874 17.1732 12.9269 16.9249 13.6955 16.4283L12.5604 15.311C12.3949 15.1454 12.3121 14.9799 12.3121 14.8144C12.3121 14.6015 12.4244 14.3887 12.6491 14.1759C12.8855 13.9631 13.122 13.8566 13.3585 13.8566C13.5122 13.8566 13.6364 13.9039 13.7309 13.9985L14.9724 15.1868C15.4927 14.4183 15.7528 13.5492 15.7528 12.5797C15.7528 11.7284 15.5518 10.9539 15.1498 10.2563C14.7596 9.54686 14.2335 8.99114 13.5713 8.58913C12.9092 8.18712 12.1998 7.98611 11.443 7.98611C10.6981 7.98611 9.99462 8.18121 9.33249 8.57139C8.67036 8.94975 8.13828 9.49956 7.73627 10.2208C7.34609 10.9421 7.15099 11.7756 7.15099 12.7216C7.15099 13.6083 7.32244 14.3887 7.66533 15.0627C8.02005 15.7366 8.49891 16.2569 9.10192 16.6234C9.71676 16.99 10.4085 17.1732 11.177 17.1732Z",
+    fill: "white"
+  }))
+});
+
+//Answer option Block
+const answerOptionBlockIcon = () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Icon, {
+  icon: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("rect", {
+    width: "24",
+    height: "24",
+    rx: "4.21657",
+    fill: "#ADADAD"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M8.96182 17.2773H7.33619L10.9889 7.12707H12.7583L16.411 17.2773H14.7853L11.9157 8.97077H11.8364L8.96182 17.2773ZM9.23441 13.3025H14.5078V14.5911H9.23441V13.3025Z",
+    fill: "white"
+  }))
+});
+
+/***/ }),
+
+/***/ "./src/edit.js":
+/*!*********************!*\
+  !*** ./src/edit.js ***!
+  \*********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ Edit; }
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/html-entities */ "@wordpress/html-entities");
+/* harmony import */ var _wordpress_html_entities__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/notices */ "@wordpress/notices");
+/* harmony import */ var _wordpress_notices__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_notices__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/editor */ "@wordpress/editor");
+/* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_editor__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./helper */ "./src/helper.js");
+/* harmony import */ var _component_icon__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./component/icon */ "./src/component/icon.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Edit(props) {
+  //check for QSM initialize data
+  if ('undefined' === typeof qsmBlockData) {
+    return null;
+  }
+  const {
+    className,
+    attributes,
+    setAttributes,
+    isSelected,
+    clientId
+  } = props;
+  const {
+    createNotice
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_notices__WEBPACK_IMPORTED_MODULE_5__.store);
+  //quiz attribute
+  const globalQuizsetting = qsmBlockData.globalQuizsetting;
+  const {
+    quizID,
+    postID,
+    quizAttr = globalQuizsetting
+  } = attributes;
+
+  //quiz list
+  const [quizList, setQuizList] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(qsmBlockData.QSMQuizList);
+  //quiz list
+  const [quizMessage, setQuizMessage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    error: false,
+    msg: ''
+  });
+  //whether creating a new quiz
+  const [createQuiz, setCreateQuiz] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  //whether saving quiz
+  const [saveQuiz, setSaveQuiz] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  //whether to show advance option
+  const [showAdvanceOption, setShowAdvanceOption] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  //Quiz template on set Quiz ID
+  const [quizTemplate, setQuizTemplate] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  //Quiz Options to create attributes label, description and layout
+  const quizOptions = qsmBlockData.quizOptions;
+
+  //check if page is saving
+  const isSavingPage = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(select => {
+    const {
+      isAutosavingPost,
+      isSavingPost
+    } = select(_wordpress_editor__WEBPACK_IMPORTED_MODULE_7__.store);
+    return isSavingPost() && !isAutosavingPost();
+  }, []);
+  const {
+    getBlock
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store);
+
+  /**Initialize block from server */
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    let shouldSetQSMAttr = true;
+    if (shouldSetQSMAttr) {
+      //add upgrade modal
+      if ('0' == qsmBlockData.is_pro_activated) {
+        setTimeout(() => {
+          addUpgradePopupHtml();
+        }, 100);
+      }
+      //initialize QSM block
+      if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizID) && 0 < quizID) {
+        //Check if quiz exists
+        let hasQuiz = false;
+        quizList.forEach(quizElement => {
+          if (quizID == quizElement.value) {
+            hasQuiz = true;
+            return true;
+          }
+        });
+        if (hasQuiz) {
+          initializeQuizAttributes(quizID);
+        } else {
+          setAttributes({
+            quizID: undefined
+          });
+          setQuizMessage({
+            error: true,
+            msg: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz not found. Please select an existing quiz or create a new one.', 'quiz-master-next')
+          });
+        }
+      }
+    }
+
+    //cleanup
+    return () => {
+      shouldSetQSMAttr = false;
+    };
+  }, []);
+
+  /**Add modal advanced-question-type */
+  const addUpgradePopupHtml = () => {
+    let modalEl = document.getElementById('modal-advanced-question-type');
+    if ((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(modalEl)) {
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+        path: '/quiz-survey-master/v1/quiz/advance-ques-type-upgrade-popup',
+        method: 'POST'
+      }).then(res => {
+        let bodyEl = document.getElementById('wpbody-content');
+        if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(bodyEl) && 'success' == res.status) {
+          bodyEl.insertAdjacentHTML('afterbegin', res.result);
+        }
+      }).catch(error => {
+        console.log('error', error);
+      });
+    }
+  };
+
+  /**Initialize quiz attributes: first time render only */
+  const initializeQuizAttributes = quiz_id => {
+    if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quiz_id) && 0 < quiz_id) {
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+        path: '/quiz-survey-master/v1/quiz/structure',
+        method: 'POST',
+        data: {
+          quizID: quiz_id
+        }
+      }).then(res => {
+        if ('success' == res.status) {
+          setQuizMessage({
+            error: false,
+            msg: ''
+          });
+          let result = res.result;
+          setAttributes({
+            quizID: parseInt(quiz_id),
+            postID: result.post_id,
+            quizAttr: {
+              ...quizAttr,
+              ...result
+            }
+          });
+          if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(result.qpages)) {
+            let quizTemp = [];
+            result.qpages.forEach(page => {
+              let questions = [];
+              if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(page.question_arr)) {
+                page.question_arr.forEach(question => {
+                  if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(question)) {
+                    let answers = [];
+                    //answers options blocks
+                    if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(question.answers) && 0 < question.answers.length) {
+                      question.answers.forEach((answer, aIndex) => {
+                        answers.push(['qsm/quiz-answer-option', {
+                          optionID: aIndex,
+                          content: answer[0],
+                          points: answer[1],
+                          isCorrect: answer[2],
+                          caption: (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(answer[3])
+                        }]);
+                      });
+                    }
+                    //question blocks
+                    questions.push(['qsm/quiz-question', {
+                      questionID: question.question_id,
+                      type: question.question_type_new,
+                      answerEditor: question.settings.answerEditor,
+                      title: question.settings.question_title,
+                      description: question.question_name,
+                      required: question.settings.required,
+                      hint: question.hints,
+                      answers: question.answers,
+                      correctAnswerInfo: question.question_answer_info,
+                      category: question.category,
+                      multicategories: question.multicategories,
+                      commentBox: question.comments,
+                      matchAnswer: question.settings.matchAnswer,
+                      featureImageID: question.settings.featureImageID,
+                      featureImageSrc: question.settings.featureImageSrc,
+                      settings: question.settings
+                    }, answers]);
+                  }
+                });
+              }
+              quizTemp.push(['qsm/quiz-page', {
+                pageID: page.id,
+                pageKey: page.pagekey,
+                hidePrevBtn: page.hide_prevbtn,
+                quizID: page.quizID
+              }, questions]);
+            });
+            setQuizTemplate(quizTemp);
+          }
+        } else {
+          console.log("error " + res.msg);
+        }
+      }).catch(error => {
+        console.log('error', error);
+      });
+    }
+  };
+
+  /**
+   * 
+   * @returns Placeholder for quiz in case quiz ID is not set
+   */
+  const quizPlaceholder = () => {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.Placeholder, {
+      className: "qsm-placeholder-wrapper",
+      icon: _component_icon__WEBPACK_IMPORTED_MODULE_11__.qsmBlockIcon,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz And Survey Master', 'quiz-master-next'),
+      instructions: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Easily and quickly add quizzes and surveys inside the block editor.', 'quiz-master-next')
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizList) && 0 < quizList.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "qsm-placeholder-select-create-quiz"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.SelectControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('', 'quiz-master-next'),
+      value: quizID,
+      options: quizList,
+      onChange: quizID => initializeQuizAttributes(quizID),
+      disabled: createQuiz,
+      __nextHasNoMarginBottom: true
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('OR', 'quiz-master-next')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.Button, {
+      variant: "link",
+      onClick: () => setCreateQuiz(!createQuiz)
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add New', 'quiz-master-next'))), ((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizList) || createQuiz) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.__experimentalVStack, {
+      spacing: "3",
+      className: "qsm-placeholder-quiz-create-form"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz Name *', 'quiz-master-next'),
+      help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter a name for this Quiz', 'quiz-master-next'),
+      value: quizAttr?.quiz_name || '',
+      onChange: val => setQuizAttributes(val, 'quiz_name')
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.Button, {
+      variant: "link",
+      onClick: () => setShowAdvanceOption(!showAdvanceOption)
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Advance options', 'quiz-master-next')), showAdvanceOption && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.SelectControl, {
+      label: quizOptions?.form_type?.label,
+      value: quizAttr?.form_type,
+      options: quizOptions?.form_type?.options,
+      onChange: val => setQuizAttributes(val, 'form_type'),
+      __nextHasNoMarginBottom: true
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.SelectControl, {
+      label: quizOptions?.system?.label,
+      value: quizAttr?.system,
+      options: quizOptions?.system?.options,
+      onChange: val => setQuizAttributes(val, 'system'),
+      help: quizOptions?.system?.help,
+      __nextHasNoMarginBottom: true
+    }), ['timer_limit', 'pagination'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
+      key: 'quiz-create-text-' + item,
+      type: "number",
+      label: quizOptions?.[item]?.label,
+      help: quizOptions?.[item]?.help,
+      value: (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizAttr[item]) ? 0 : quizAttr[item],
+      onChange: val => setQuizAttributes(val, item)
+    })), ['enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.ToggleControl, {
+      key: 'quiz-create-toggle-' + item,
+      label: quizOptions?.[item]?.label,
+      help: quizOptions?.[item]?.help,
+      checked: !(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item],
+      onChange: () => setQuizAttributes(!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizAttr[item]) && '1' == quizAttr[item] ? 0 : 1, item)
+    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.Button, {
+      variant: "primary",
+      disabled: saveQuiz || (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizAttr.quiz_name),
+      onClick: () => createNewQuiz()
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Create Quiz', 'quiz-master-next'))), quizMessage.error && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "qsm-error-text"
+    }, quizMessage.msg)));
+  };
+
+  /**
+   * Set attribute value
+   * @param { any } value attribute value to set
+   * @param { string } attr_name attribute name
+   */
+  const setQuizAttributes = (value, attr_name) => {
+    let newAttr = quizAttr;
+    newAttr[attr_name] = value;
+    setAttributes({
+      quizAttr: {
+        ...newAttr
+      }
+    });
+  };
+
+  /**
+   * Prepare quiz data e.g. quiz details, questions, answers etc to save 
+   * @returns quiz data
+   */
+  const getQuizDataToSave = () => {
+    let blocks = getBlock(clientId);
+    if ((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(blocks)) {
+      return false;
+    }
+    blocks = blocks.innerBlocks;
+    let quizDataToSave = {
+      quiz_id: quizAttr.quiz_id,
+      post_id: quizAttr.post_id,
+      quiz: {},
+      pages: [],
+      qpages: [],
+      questions: []
+    };
+    let pageSNo = 0;
+    //loop through inner blocks
+    blocks.forEach(block => {
+      if ('qsm/quiz-page' === block.name) {
+        let pageID = block.attributes.pageID;
+        let questions = [];
+        if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(block.innerBlocks) && 0 < block.innerBlocks.length) {
+          let questionBlocks = block.innerBlocks;
+          //Question Blocks
+          questionBlocks.forEach(questionBlock => {
+            if ('qsm/quiz-question' !== questionBlock.name) {
+              return true;
+            }
+            let questionAttr = questionBlock.attributes;
+            let answerEditor = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.answerEditor, 'text');
+            let answers = [];
+            //Answer option blocks
+            if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(questionBlock.innerBlocks) && 0 < questionBlock.innerBlocks.length) {
+              let answerOptionBlocks = questionBlock.innerBlocks;
+              answerOptionBlocks.forEach(answerOptionBlock => {
+                if ('qsm/quiz-answer-option' !== answerOptionBlock.name) {
+                  return true;
+                }
+                let answerAttr = answerOptionBlock.attributes;
+                let answerContent = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(answerAttr?.content);
+                //if rich text
+                if (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(questionAttr?.answerEditor) && 'rich' === questionAttr.answerEditor) {
+                  answerContent = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmDecodeHtml)((0,_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_3__.decodeEntities)(answerContent));
+                }
+                let ans = [answerContent, (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(answerAttr?.points), (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(answerAttr?.isCorrect)];
+                //answer options are image type
+                if ('image' === answerEditor && !(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(answerAttr?.caption)) {
+                  ans.push(answerAttr?.caption);
+                }
+                answers.push(ans);
+              });
+            }
+
+            //questions Data
+            questions.push(questionAttr.questionID);
+            //update question only if changes occured
+            if (questionAttr.isChanged) {
+              quizDataToSave.questions.push({
+                "id": questionAttr.questionID,
+                "quizID": quizAttr.quiz_id,
+                "postID": quizAttr.post_id,
+                "answerEditor": answerEditor,
+                "type": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.type, '0'),
+                "name": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmDecodeHtml)((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.description)),
+                "question_title": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.title),
+                "answerInfo": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmDecodeHtml)((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.correctAnswerInfo)),
+                "comments": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.commentBox, '1'),
+                "hint": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.hint),
+                "category": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.category),
+                "multicategories": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.multicategories, []),
+                "required": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.required, 0),
+                "answers": answers,
+                "featureImageID": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.featureImageID),
+                "featureImageSrc": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.featureImageSrc),
+                "page": pageSNo,
+                "other_settings": {
+                  "required": (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmValueOrDefault)(questionAttr?.required, 0)
+                }
+              });
+            }
+          });
+        }
+
+        // pages[0][]: 2512
+        // 	qpages[0][id]: 2
+        // 	qpages[0][quizID]: 76
+        // 	qpages[0][pagekey]: Ipj90nNT
+        // 	qpages[0][hide_prevbtn]: 0
+        // 	qpages[0][questions][]: 2512
+        // 	post_id: 111
+        //page data
+        quizDataToSave.pages.push(questions);
+        quizDataToSave.qpages.push({
+          'id': pageID,
+          'quizID': quizAttr.quiz_id,
+          'pagekey': block.attributes.pageKey,
+          'hide_prevbtn': block.attributes.hidePrevBtn,
+          'questions': questions
+        });
+        pageSNo++;
+      }
+    });
+
+    //Quiz details
+    quizDataToSave.quiz = {
+      'quiz_name': quizAttr.quiz_name,
+      'quiz_id': quizAttr.quiz_id,
+      'post_id': quizAttr.post_id
+    };
+    if (showAdvanceOption) {
+      ['form_type', 'system', 'timer_limit', 'pagination', 'enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].forEach(item => {
+        if ('undefined' !== typeof quizAttr[item] && null !== quizAttr[item]) {
+          quizDataToSave.quiz[item] = quizAttr[item];
+        }
+      });
+    }
+    return quizDataToSave;
+  };
+
+  //saving Quiz on save page
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (isSavingPage) {
+      let quizData = getQuizDataToSave();
+      //save quiz status
+      setSaveQuiz(true);
+      quizData = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmFormData)({
+        'save_entire_quiz': '1',
+        'quizData': JSON.stringify(quizData),
+        'qsm_block_quiz_nonce': qsmBlockData.nonce,
+        "nonce": qsmBlockData.saveNonce //save pages nonce
+      });
+
+      //AJAX call
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+        path: '/quiz-survey-master/v1/quiz/save_quiz',
+        method: 'POST',
+        body: quizData
+      }).then(res => {
+        //create notice
+        createNotice(res.status, res.msg, {
+          isDismissible: true,
+          type: 'snackbar'
+        });
+      }).catch(error => {
+        console.log('error', error);
+        createNotice('error', error.message, {
+          isDismissible: true,
+          type: 'snackbar'
+        });
+      });
+    }
+  }, [isSavingPage]);
+
+  /**
+   * Create new quiz and set quiz ID
+   * 
+   */
+  const createNewQuiz = () => {
+    if ((0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizAttr.quiz_name)) {
+      console.log("empty quiz_name");
+      return;
+    }
+    //save quiz status
+    setSaveQuiz(true);
+    let quizData = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmFormData)({
+      'quiz_name': quizAttr.quiz_name,
+      'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
+    });
+    ['form_type', 'system', 'timer_limit', 'pagination', 'enable_contact_form', 'enable_pagination_quiz', 'show_question_featured_image_in_result', 'progress_bar', 'require_log_in', 'disable_first_page', 'comment_section'].forEach(item => 'undefined' === typeof quizAttr[item] || null === quizAttr[item] ? '' : quizData.append(item, quizAttr[item]));
+
+    //AJAX call
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+      path: '/quiz-survey-master/v1/quiz/create_quiz',
+      method: 'POST',
+      body: quizData
+    }).then(res => {
+      //save quiz status
+      setSaveQuiz(false);
+      if ('success' == res.status) {
+        //create a question
+        let newQuestion = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmFormData)({
+          "id": null,
+          "quizID": res.quizID,
+          "answerEditor": "text",
+          "type": "0",
+          "name": "",
+          "question_title": "",
+          "answerInfo": "",
+          "comments": "1",
+          "hint": "",
+          "category": "",
+          "required": 1,
+          "answers": [],
+          "page": 0
+        });
+        //AJAX call
+        _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+          path: '/quiz-survey-master/v1/questions',
+          method: 'POST',
+          body: newQuestion
+        }).then(response => {
+          if ('success' == response.status) {
+            let question_id = response.id;
+
+            /**Page attributes required format */
+            // pages[0][]: 2512
+            // 	qpages[0][id]: 2
+            // 	qpages[0][quizID]: 76
+            // 	qpages[0][pagekey]: Ipj90nNT
+            // 	qpages[0][hide_prevbtn]: 0
+            // 	qpages[0][questions][]: 2512
+            // 	post_id: 111
+
+            let newPage = (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmFormData)({
+              "action": qsmBlockData.save_pages_action,
+              "quiz_id": res.quizID,
+              "nonce": qsmBlockData.saveNonce,
+              "post_id": res.quizPostID
+            });
+            newPage.append('pages[0][]', question_id);
+            newPage.append('qpages[0][id]', 1);
+            newPage.append('qpages[0][quizID]', res.quizID);
+            newPage.append('qpages[0][pagekey]', (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmUniqid)());
+            newPage.append('qpages[0][hide_prevbtn]', 0);
+            newPage.append('qpages[0][questions][]', question_id);
+
+            //create a page
+            _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+              url: qsmBlockData.ajax_url,
+              method: 'POST',
+              body: newPage
+            }).then(pageResponse => {
+              if ('success' == pageResponse.status) {
+                //set new quiz
+                initializeQuizAttributes(res.quizID);
+              }
+            });
+          }
+        }).catch(error => {
+          console.log('error', error);
+          createNotice('error', error.message, {
+            isDismissible: true,
+            type: 'snackbar'
+          });
+        });
+      }
+
+      //create notice
+      createNotice(res.status, res.msg, {
+        isDismissible: true,
+        type: 'snackbar'
+      });
+    }).catch(error => {
+      console.log('error', error);
+      createNotice('error', error.message, {
+        isDismissible: true,
+        type: 'snackbar'
+      });
+    });
+  };
+
+  /**
+   * Inner Blocks
+   */
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)();
+  const innerBlocksProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useInnerBlocksProps)(blockProps, {
+    template: quizTemplate,
+    allowedBlocks: ['qsm/quiz-page']
+  });
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz settings', 'quiz-master-next'),
+    initialOpen: true
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    className: "qsm-inspector-label"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Status', 'quiz-master-next') + ':', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "qsm-inspector-label-value"
+  }, quizAttr.post_status)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Quiz Name *', 'quiz-master-next'),
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter a name for this Quiz', 'quiz-master-next'),
+    value: quizAttr?.quiz_name || '',
+    onChange: val => setQuizAttributes(val, 'quiz_name'),
+    className: "qsm-no-mb"
+  }), (!(0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizID) || '0' != quizID) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.ExternalLink, {
+    href: qsmBlockData.quiz_settings_url + '&quiz_id=' + quizID
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Advance Quiz Settings', 'quiz-master-next'))))), (0,_helper__WEBPACK_IMPORTED_MODULE_10__.qsmIsEmpty)(quizID) || '0' == quizID ? quizPlaceholder() : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ...innerBlocksProps
+  }));
+}
+
+/***/ }),
+
+/***/ "./src/helper.js":
+/*!***********************!*\
+  !*** ./src/helper.js ***!
+  \***********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   qsmAddObjToFormData: function() { return /* binding */ qsmAddObjToFormData; },
+/* harmony export */   qsmDecodeHtml: function() { return /* binding */ qsmDecodeHtml; },
+/* harmony export */   qsmFormData: function() { return /* binding */ qsmFormData; },
+/* harmony export */   qsmIsEmpty: function() { return /* binding */ qsmIsEmpty; },
+/* harmony export */   qsmSanitizeName: function() { return /* binding */ qsmSanitizeName; },
+/* harmony export */   qsmStripTags: function() { return /* binding */ qsmStripTags; },
+/* harmony export */   qsmUniqid: function() { return /* binding */ qsmUniqid; },
+/* harmony export */   qsmUniqueArray: function() { return /* binding */ qsmUniqueArray; },
+/* harmony export */   qsmValueOrDefault: function() { return /* binding */ qsmValueOrDefault; }
+/* harmony export */ });
+//Check if undefined, null, empty
+const qsmIsEmpty = data => 'undefined' === typeof data || null === data || '' === data;
+
+//Get Unique array values
+const qsmUniqueArray = arr => {
+  if (qsmIsEmpty(arr) || !Array.isArray(arr)) {
+    return arr;
+  }
+  return arr.filter((val, index, arr) => arr.indexOf(val) === index);
+};
+
+//Decode htmlspecialchars
+const qsmDecodeHtml = html => {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
+const qsmSanitizeName = name => {
+  if (qsmIsEmpty(name)) {
+    name = '';
+  } else {
+    name = name.toLowerCase().replace(/ /g, '_');
+    name = name.replace(/\W/g, '');
+  }
+  return name;
+};
+
+// Remove anchor tags from text content.
+const qsmStripTags = text => {
+  let div = document.createElement("div");
+  div.innerHTML = qsmDecodeHtml(text);
+  return div.innerText;
+};
+
+//prepare form data
+const qsmFormData = (obj = false) => {
+  let newData = new FormData();
+  //add to check if api call from editor
+  newData.append('qsm_block_api_call', '1');
+  if (false !== obj) {
+    for (let k in obj) {
+      if (obj.hasOwnProperty(k)) {
+        newData.append(k, obj[k]);
+      }
+    }
+  }
+  return newData;
+};
+
+//add objecyt to form data
+const qsmAddObjToFormData = (formKey, valueObj, data = new FormData()) => {
+  if (qsmIsEmpty(formKey) || qsmIsEmpty(valueObj) || 'object' !== typeof valueObj) {
+    return data;
+  }
+  for (let key in valueObj) {
+    if (valueObj.hasOwnProperty(key)) {
+      let value = valueObj[key];
+      if ('object' === value) {
+        qsmAddObjToFormData(formKey + '[' + key + ']', value, data);
+      } else {
+        data.append(formKey + '[' + key + ']', valueObj[key]);
+      }
+    }
+  }
+  return data;
+};
+
+//generate uiniq id
+const qsmUniqid = (prefix = "", random = false) => {
+  const sec = Date.now() * 1000 + Math.random() * 1000;
+  const id = sec.toString(16).replace(/\./g, "").padEnd(8, "0");
+  return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
+};
+
+//return data if not empty otherwise default value
+const qsmValueOrDefault = (data, defaultValue = '') => qsmIsEmpty(data) ? defaultValue : data;
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
+/* harmony import */ var _component_icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./component/icon */ "./src/component/icon.js");
+
+
+
+
+
+const save = props => null;
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_3__.name, {
+  icon: _component_icon__WEBPACK_IMPORTED_MODULE_4__.qsmBlockIcon,
+  /**
+   * @see ./edit.js
+   */
+  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+  save: save
+});
+
+/***/ }),
+
+/***/ "./src/editor.scss":
+/*!*************************!*\
+  !*** ./src/editor.scss ***!
+  \*************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/style.scss":
+/*!************************!*\
+  !*** ./src/style.scss ***!
+  \************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "@wordpress/api-fetch":
+/*!**********************************!*\
+  !*** external ["wp","apiFetch"] ***!
+  \**********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["apiFetch"];
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/editor":
+/*!********************************!*\
+  !*** external ["wp","editor"] ***!
+  \********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["editor"];
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/html-entities":
+/*!**************************************!*\
+  !*** external ["wp","htmlEntities"] ***!
+  \**************************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["htmlEntities"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "@wordpress/notices":
+/*!*********************************!*\
+  !*** external ["wp","notices"] ***!
+  \*********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["notices"];
+
+/***/ }),
+
+/***/ "./src/block.json":
+/*!************************!*\
+  !*** ./src/block.json ***!
+  \************************/
+/***/ (function(module) {
+
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"qsm/quiz","version":"0.1.0","title":"QSM","category":"widgets","keywords":["Quiz","QSM Quiz","Survey","form","Quiz Block"],"icon":"vault","description":"Easily and quickly add quizzes and surveys inside the block editor.","attributes":{"quizID":{"type":"number","default":0},"postID":{"type":"number"},"quizAttr":{"type":"object"}},"providesContext":{"quiz-master-next/quizID":"quizID","quiz-master-next/quizAttr":"quizAttr"},"example":{},"supports":{"html":false},"textdomain":"main-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	!function() {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = function(result, chunkIds, fn, priority) {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var chunkIds = deferred[i][0];
+/******/ 				var fn = deferred[i][1];
+/******/ 				var priority = deferred[i][2];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every(function(key) { return __webpack_require__.O[key](chunkIds[j]); })) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	!function() {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"index": 0,
+/******/ 			"./style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = function(chunkId) { return installedChunks[chunkId] === 0; };
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = function(parentChunkLoadingFunction, data) {
+/******/ 			var chunkIds = data[0];
+/******/ 			var moreModules = data[1];
+/******/ 			var runtime = data[2];
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some(function(id) { return installedChunks[id] !== 0; })) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkqsm"] = self["webpackChunkqsm"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["./style-index"], function() { return __webpack_require__("./src/index.js"); })
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=index.js.map

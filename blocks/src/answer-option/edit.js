@@ -99,7 +99,7 @@ onRemove } = props;
 	}, [ answerType ] );
 
 	const blockProps = useBlockProps( {
-		className: '',
+		className: isSelected ? ' is-highlighted ': '',
 	} );
 
 	const inputType = ['4','10'].includes( questionType ) ? "checkbox":"radio";

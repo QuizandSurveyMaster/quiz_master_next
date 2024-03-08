@@ -7,6 +7,28 @@
  $qsm_primary_color: #666666;
  $qsm_wp_primary_color : #1f8cbe;
 
+.block-editor-block-inspector{
+    .qsm-inspector-label{
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.4;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        padding: 0px;
+        .qsm-inspector-label-value{
+            padding-left: 0.5rem;
+        }
+    }
+    .qsm-inspector-label-value{
+        font-weight: 400; 
+        text-transform: capitalize;
+    }
+
+    .qsm-no-mb{
+        margin-bottom: 0;
+    }
+}
 .qsm-placeholder-select-create-quiz{
     display: flex;
     gap: 1rem;
@@ -23,6 +45,15 @@
 
 .qsm-error-text{
     color: #FD3E3E;
+}
+
+//Create or select quiz placeholder
+.editor-styles-wrapper {
+    .qsm-placeholder-wrapper{
+        .components-placeholder__fieldset {
+            flex-direction: column;
+        }
+    }
 }
 
 .qsm-placeholder-quiz-create-form{

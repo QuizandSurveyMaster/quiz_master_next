@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "qsm/quiz",
 	"version": "0.1.0",
-	"title": "Quiz",
+	"title": "QSM",
 	"category": "widgets",
 	"keywords": [ "Quiz", "QSM Quiz", "Survey", "form", "Quiz Block" ],
 	"icon": "vault",
@@ -12,6 +12,9 @@
 		"quizID": {
 			"type": "number",
 			"default": 0
+		},
+		"postID": {
+			"type": "number"
 		},
 		"quizAttr": {
 			"type": "object"
