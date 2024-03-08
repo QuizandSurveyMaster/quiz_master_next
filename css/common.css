@@ -300,11 +300,79 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	color: green;
 	display: block;
 }
+.quiz_section .qsm-file-upload-container {
+	border: 3px dashed rgba(84, 116, 130, 0.32);
+    padding: 15px;
+    background: #EBEEF0;
+    border-radius: 5px;
+    max-width: 300px;
+	cursor: pointer;
+}
+.quiz_section .qsm-file-upload-container.file-hover,
+.quiz_section .qsm-file-upload-container:hover {
+	border: 3px solid #229ACD;
+	padding: 15px;
+}
+
+.quiz_section .qsm-file-upload-container.file-hover {
+	background-color: lightgray;
+}
+.quiz_section .qsm-file-upload-container .qsm-file-upload-logo {
+	font-size: 45px;
+    height: 100%;
+    width: 100%;
+    color: #8FA0AA;
+}
+.quiz_section .qsm-file-upload-container .qsm-file-upload-message {
+	text-align: center;
+	font-size: 14px;
+	color: #555;
+}
+.quiz_section .qsm-file-upload-container .qsm-file-upload-message a {
+	color: #8FA0AA;
+    text-decoration: none;
+    font-weight: bold;
+}
+.quiz_section .qsm-file-upload-container .qsm-file-upload-name {
+    text-align: center;
+    font-size: 14px;
+    padding: 5px;
+    font-weight: bold;
+    color: #555;
+    overflow-wrap: anywhere;
+}
+.quiz_section .qsm-file-upload-container .qsm-file-upload-status {
+    display: none;
+    width: calc(100% + 30px);
+    margin: 0 -15px -15px;
+    position: inherit;
+    font-weight: normal;
+	text-align: center;
+	font-size: 15px;
+}
+.qsm-processing {
+	background-color: rgb(219, 218, 218);
+	color: black;
+	font-weight: 600;
+}
+.qsm-error {
+	background-color: rgb(255, 221, 221);
+	color: red;
+}
+.qsm-success {
+	background-color: rgb(221, 255, 221);
+	color: green;
+}
 .quiz_section .remove-uploaded-file {
 	color: red;
 	display: inline-block;
 	cursor: pointer;
 	margin-top: 5px;
+	border: 1px solid red;
+	border-radius: 50%;
+	position: relative;
+    left: 345px;
+    bottom: 150px;
 }
 .quiz_section .loading-uploaded-file {
 	width: 20px;

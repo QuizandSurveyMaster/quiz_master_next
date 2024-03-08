@@ -384,6 +384,15 @@ class MLWQuizMasterNext {
 		wp_enqueue_style( 'jquer-multiselect-css', QSM_PLUGIN_CSS_URL . '/jquery.multiselect.min.css', array(), $this->version );
 		wp_enqueue_script( 'qsm-jquery-multiselect-js', QSM_PLUGIN_JS_URL . '/jquery.multiselect.min.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+		$qsm_variables = function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : array();
+		$qsm_variables_name = array();
+		foreach ( $qsm_variables as $key => $value ) {
+			// Iterate over each key of the nested object
+			foreach ( $value as $nestedKey => $nestedValue ) {
+				// Add the nested key to the array
+				$qsm_variables_name[] = $nestedKey;
+			}
+		}
 		$qsm_admin_messages = array(
 			'error'                      => __('Error', 'quiz-master-next'),
 			'success'                    => __('Success', 'quiz-master-next'),
@@ -462,9 +471,11 @@ class MLWQuizMasterNext {
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
 			'add_more'                   => __("Add", 'quiz-master-next'),
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
-			'qsm_variables'              => function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : '',
+			'qsm_variables'              => $qsm_variables,
+			'qsm_variables_name'         => $qsm_variables_name,
 			'no_variables'               => __("No Variable Found", 'quiz-master-next'),
 			'slash_command'              => __("slash command", 'quiz-master-next'),
+			'variables'                  => __("Variables", 'quiz-master-next'),
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );

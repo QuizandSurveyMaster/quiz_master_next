@@ -535,12 +535,12 @@ function qsm_generate_question_option( $key, $single_option ) {
 
 				case 'multi_checkbox':
 					$parent_key  = $key;
-					$default     = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					$default     = isset( $single_option['default'] ) ? explode( ',', $single_option['default'] ) : '';
 					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 						foreach ( $single_option['options'] as $key => $value ) {
 							?>
 							<label>
-								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo in_array( $key, $default ) ? 'checked' : ''; ?> />
 								<?php echo esc_attr( $value ); ?>
 							</label>
 							<br />
@@ -973,8 +973,6 @@ function qsm_text_template_variable_list() {
 			'%CATEGORY_AVERAGE_POINTS%'   => __( 'The average points from all categories.', 'quiz-master-next' ),
 			'%CATEGORY_AVERAGE_SCORE%'    => __( 'The average score from all categories.', 'quiz-master-next' ),
 			'%QUESTION_MAX_POINTS%'       => __( 'Maximum points of the question', 'quiz-master-next' ),
-			'%FACEBOOK_SHARE%'            => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-			'%TWITTER_SHARE%'             => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
 			'%RESULT_LINK%'               => __( 'The link of the result page.', 'quiz-master-next' ),
 			'%CONTACT_X%'                 => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
@@ -982,6 +980,7 @@ function qsm_text_template_variable_list() {
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS_EMAIL%'   => __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list   = apply_filters( 'qsm_text_variable_list', $variable_list );

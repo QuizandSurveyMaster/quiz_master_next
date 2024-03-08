@@ -320,52 +320,6 @@ class QSM_Results_Pages {
 
 		return $pages;
 	}
-
-	public static function sanitize_html( $html = '' ) {
-
-		//Decode Html
-		$html = htmlspecialchars_decode( $html, ENT_QUOTES );
-
-		// Remove unwanted html tags
-		$html = preg_replace('/<(script|form|textarea|div|body|title|svg|link|meta)[^>]*>.*?<\/\1>/is', '', $html);
-
-		// Remove styles attributes
-		$html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);
-
-		// Remove background attributes
-		$html = preg_replace('/(<[^>]+) background=".*?"/i', '$1', $html);
-
-		// Remove input tags
-		$html = preg_replace('/<input\b[^>]*>/i', '', $html);
-
-		// Remove any on event attributes
-		$html = preg_replace('/\s*on\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $html);
-
-		// Remove any alert, confirm, or prompt calls
-		$html = preg_replace('/\b(alert|confirm|prompt)\s*\(\s*[^;]*\s*\)\s*;?/i', '', $html);
-
-		// Remove any javascript: URLs
-		$html = preg_replace('/javascript:/i', '', $html);
-
-		// Filter image src for possible image types, safe URL, and no $_GET parameters
-		$html = preg_replace_callback('/<img\s+src\s*=\s*["\']([^"\']+?)["\'][^>]*>/i', function( $matches ) {
-			$src = $matches[1];
-			$valid_image_types = array( 'jpg', 'jpeg', 'png', 'gif', 'webp' );
-			$file_extension = pathinfo($src, PATHINFO_EXTENSION);
-			$url_parts = parse_url($src);
-
-			if ( in_array(strtolower($file_extension), $valid_image_types) &&
-				isset($url_parts['scheme']) && in_array(strtolower($url_parts['scheme']), array( 'http', 'https' )) &&
-				empty($url_parts['query']) ) {
-					return $matches[0];
-			} else {
-				return '';
-			}
-		}, $html);
-
-		return $html;
-	}
-
 	/**
 	 * Saves the results pages for a quiz.
 	 *
@@ -413,13 +367,15 @@ class QSM_Results_Pages {
 
 			// Sanitize template data
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
-				$pages[ $i ]['page'] = QSM_Results_Pages::sanitize_html( $pages[ $i ]['page'] );
-				//Check if encoded html string given
-				if ( false === stripos( $pages[ $i ]['page'] ,'&lt;span class=&quot;qsm-highlight-variables&quot;&gt;') ) {
-					$pages[ $i ]['page'] = wp_kses_post( preg_replace( '/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/', '%$1%', $pages[ $i ]['page'] ) );
-				} else {
-					$pages[ $i ]['page'] = wp_kses_post( preg_replace('/&lt;qsmvariabletag&gt;([^&]+)&lt;\/qsmvariabletag&gt;/i', '%$1%', $pages[ $i ]['page'] ) );
-				}
+				$pages[ $i ]['page'] = preg_replace_callback(
+						'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
+						function( $matches ) {
+							$content = '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
+							return $content;
+						},
+						$pages[ $i ]['page']
+				);
+				$pages[ $i ]['page']  = wp_kses_post( $pages[ $i ]['page'] );
 			}
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
 
