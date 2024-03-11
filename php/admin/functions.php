@@ -1390,11 +1390,12 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						<?php
 		            break;
 				case 'dropdown':
-						$param = array(
-							'name'  => "settings[". $name ."]",
-							'value' => $value,
-						);
-						qsm_get_input_label_selected( $param );
+					$param = array(
+						'name'  => "settings[". $name ."]",
+						'value' => $value,
+						'default_value' => $default_value,
+					);
+					qsm_get_input_label_selected( $param );
 		            break;
 				default:
 					?>
@@ -1503,38 +1504,37 @@ function qsm_get_input_control_unit( $param ) {
 }
 
 function qsm_get_input_label_selected( $param ) {
-	if ( empty( $param['name'] ) ) {
-		return;
-	}
-	$value = '';
+    if ( empty( $param['name'] ) ) {
+        return;
+    }
+    $value = '';
+	
+    if ( ! empty( $param['value'] ) ) {
+        $value = $param['value'];
+    }
 
-	if ( ! empty( $param['value'] ) ) {
-		$value = $param['value'];
-	}
-
-	$label_options = array( 'Numbers', 'Alphabets', 'Default' );
-
-	$options = '';
-	foreach ( $label_options as $labels ) {
-		$is_selected = '';
-		if ( $value === $labels ) {
-			$is_selected = 'selected';
-		}
-		$options .= sprintf(
-			'<option value="%1$s" %2$s >%1$s</option>',
-			esc_attr( $labels ),
-			esc_attr( $is_selected )
-		);
-	}
-	$allowed_tags = array(
-		'option' => array(
-			'value'    => array(),
-			'selected' => array(),
-		),
-	);
-	echo sprintf(
-		'<select name="%1$s"> %2$s </select>',
-		esc_attr( $param['name'] ),
-		wp_kses( $options ,$allowed_tags)
-	);
+    $options = '';
+    foreach ( $value as $key => $val ) {
+        $is_selected = '';
+        if ( $key == $param['default_value'] ) {
+            $is_selected = 'selected';
+        }
+        $options .= sprintf(
+            '<option value="%1$s" %2$s >%3$s</option>',
+            esc_attr( $key ),
+            esc_attr( $is_selected ),
+            esc_attr( $val ),
+        );
+    }
+    $allowed_tags = array(
+        'option' => array(
+            'value'    => array(),
+            'selected' => array(),
+        ),
+    );
+    echo sprintf(
+        '<select name="%1$s"> %2$s </select>',
+        esc_attr( $param['name'] ),
+        wp_kses( $options ,$allowed_tags)
+    );
 }
