@@ -57,10 +57,14 @@ export default function Edit( props ) {
 	} = context['quiz-master-next/quizAttr'];
 	const pageID = context['quiz-master-next/pageID'];
 	const { createNotice } = useDispatch( noticesStore );
+
+	//Get finstion to find index of blocks
 	const { 
 		getBlockRootClientId, 
 		getBlockIndex 
 	} = useSelect( blockEditorStore );
+
+	//Get funstion to insert block
 	const {
 		insertBlock
 	} = useDispatch( blockEditorStore );
@@ -269,17 +273,34 @@ export default function Edit( props ) {
 		}
 	}
 
+	//insert new Question
 	const insertNewQuestion = () => {
 		if ( qsmIsEmpty( props?.name )) {
 			console.log("block name not found");
 			return true;
 		}
 		const blockToInsert = createBlock( props.name );
+	
 		const selectBlockOnInsert = true;
 		insertBlock(
 			blockToInsert,
 			getBlockIndex( clientId ) + 1,
 			getBlockRootClientId( clientId ),
+			selectBlockOnInsert
+		);
+	}
+
+	//insert new Question
+	const insertNewPage = () => {
+		const blockToInsert = createBlock( 'qsm/quiz-page' );
+		const currentPageClientID = getBlockRootClientId( clientId );
+		const newPageIndex = getBlockIndex( currentPageClientID ) + 1;
+		const qsmBlockClientID = getBlockRootClientId( currentPageClientID );
+		const selectBlockOnInsert = true;
+		insertBlock(
+			blockToInsert,
+			newPageIndex,
+			qsmBlockClientID,
 			selectBlockOnInsert
 		);
 	}
@@ -292,6 +313,11 @@ export default function Edit( props ) {
 					icon='plus-alt2'
 					label={ __( 'Add New Question', 'quiz-master-next' ) }
 					onClick={ () => insertNewQuestion() }
+				/>
+				<ToolbarButton
+					icon='welcome-add-page'
+					label={ __( 'Add New Page', 'quiz-master-next' ) }
+					onClick={ () => insertNewPage() }
 				/>
 			</ToolbarGroup>
 		</BlockControls>
