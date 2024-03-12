@@ -757,7 +757,7 @@ class QMNQuizManager {
 						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
+						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
@@ -903,6 +903,7 @@ class QMNQuizManager {
 		wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $mlwQuizMasterNext->version );
+		wp_enqueue_style( 'qsm_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
@@ -1549,7 +1550,7 @@ class QMNQuizManager {
 		if ( ! isset( $_REQUEST['qsm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'display'       => __( 'Nonce Validation failed!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1636,7 +1637,7 @@ class QMNQuizManager {
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
+					'display'       => __( 'Quiz Expired!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1910,7 +1911,7 @@ class QMNQuizManager {
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
 				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
 			}
-			$result_display .= $results_pages['display'];
+			$result_display .= wp_kses_post( htmlspecialchars_decode( $results_pages['display'], ENT_QUOTES) );
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
@@ -1985,7 +1986,7 @@ class QMNQuizManager {
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'quizExpired'   => false,
-			'display'       => htmlspecialchars_decode( $result_display ),
+			'display'       => $result_display,
 			'redirect'      => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 			'result_status' => array(
 				'save_response' => $qmn_array_for_variables['response_saved'],

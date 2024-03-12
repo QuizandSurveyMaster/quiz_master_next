@@ -21,7 +21,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 		$require_class = '';
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question = apply_filters( 'qsm_question_title_func_before', $question, $answers, $id );
+	$question = apply_filters( 'qsm_question_title_function_before', $question, $answers, $id );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_show_answer_drop_down', $show, $id, $question, $answers );
