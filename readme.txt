@@ -164,7 +164,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.2.3 (March 12, 2024) =
-Bug: Fixed issue while using question limit with categories
 Bug: Fixed issue with inline result while duplicating quizzes
 Bug: Patched a vulnerability related to the result page
 Enhancement: Improve contact fields UI
