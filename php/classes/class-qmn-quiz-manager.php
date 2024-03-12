@@ -705,7 +705,17 @@ class QMNQuizManager {
 					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+					$tq_ids = $wpdb->get_results(
+						"SELECT DISTINCT `term_id`, `question_id`
+						FROM `{$wpdb->prefix}mlw_question_terms`
+						JOIN `{$wpdb->prefix}mlw_questions` ON `{$wpdb->prefix}mlw_question_terms`.`question_id` = `{$wpdb->prefix}mlw_questions`.`question_id`
+						WHERE `{$wpdb->prefix}mlw_question_terms`.`question_id` IN ($question_id)
+							AND `{$wpdb->prefix}mlw_question_terms`.`term_id` IN ($term_ids)
+							AND `{$wpdb->prefix}mlw_question_terms`.`taxonomy` = 'qsm_category'
+							AND `{$wpdb->prefix}mlw_questions`.`deleted` = 0
+						",
+						ARRAY_A
+					);
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
@@ -748,7 +758,19 @@ class QMNQuizManager {
 						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
+						$tq_ids[] = $wpdb->get_results(
+							"SELECT DISTINCT q.`question_id`
+							FROM `{$wpdb->prefix}mlw_questions` AS q
+							JOIN `{$wpdb->prefix}mlw_question_terms` AS qt ON q.`question_id` = qt.`question_id`
+							WHERE qt.`quiz_id` = $quiz_id
+								AND qt.`term_id` = $category
+								AND qt.`taxonomy` = 'qsm_category'
+								AND qt.`question_id` NOT IN ($exclude_ids)
+								AND q.`deleted` = 0
+							".esc_sql( $category_order_sql )."
+							LIMIT $limit",
+							ARRAY_A
+						);
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {

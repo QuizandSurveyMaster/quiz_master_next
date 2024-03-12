@@ -177,7 +177,6 @@ class QSM_Results_Pages {
 
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
-			//$page = htmlspecialchars_decode( $content, ENT_QUOTES );
 			$page = wp_kses_post( $content );
 
 			//last chance to filter $page

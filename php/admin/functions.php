@@ -540,7 +540,7 @@ function qsm_generate_question_option( $key, $single_option ) {
 						foreach ( $single_option['options'] as $key => $value ) {
 							?>
 							<label>
-								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo in_array( $key, $default ) ? 'checked' : ''; ?> />
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo in_array( $key, $default, true ) ? 'checked' : ''; ?> />
 								<?php echo esc_attr( $value ); ?>
 							</label>
 							<br />
@@ -703,7 +703,7 @@ function qsm_create_new_quiz_wizard() {
 									'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 								),
 								'enable_contact_form'    => array(
-									'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
+									'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 									'value'       => 0,
 									'type'        => 'radio',
 									'options'     => array(
@@ -716,7 +716,6 @@ function qsm_create_new_quiz_wizard() {
 											'value' => 0,
 										),
 									),
-									'help'        => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 								),
 								'timer_limit'            => array(
 									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
@@ -1391,8 +1390,8 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 		            break;
 				case 'dropdown':
 					$param = array(
-						'name'  => "settings[". $name ."]",
-						'value' => $value,
+						'name'          => "settings[". $name ."]",
+						'value'         => $value,
 						'default_value' => $default_value,
 					);
 					qsm_get_input_label_selected( $param );
@@ -1508,7 +1507,7 @@ function qsm_get_input_label_selected( $param ) {
         return;
     }
     $value = '';
-	
+
     if ( ! empty( $param['value'] ) ) {
         $value = $param['value'];
     }
