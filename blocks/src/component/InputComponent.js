@@ -7,6 +7,7 @@ import {
 	SelectControl,
 	CheckboxControl,
 	RadioControl,
+	TextareaControl,
 } from '@wordpress/components';
 import { qsmIsEmpty, qsmStripTags } from '../helper';
 
@@ -35,11 +36,12 @@ export default function InputComponent( {
                     data.label = data.options[0].label;
                 break;
                 case 'radio':
-                    if ( 1 < data.options.length ) {
-                        data.type = 'select';
+                    if ( 1 == data.options.length ) {
+						data.label = data.options[0].label;
+						data.type = 'toggle';
                     } else {
-                        data.label = data.options[0].label;
-                    }
+						data.type = 'select';
+					}
                 break;
                 default:
                     break;
@@ -60,79 +62,72 @@ export default function InputComponent( {
         defaultvalue 
     } = newData;
 
-    const getComponent = ( ) => {
-		const key = 'quiz-create-toggle-'+id;
-		switch ( type ) {
-			case 'toggle':
-				return (
-					<ToggleControl
-						label={ label }
-						help={ help }
-						checked={ ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id]  }
-						onChange={ () => onChangeFunc( ( ( ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id] ) ? 0 : 1 ), id ) }
-					/>
-				);
-				break;
-			case 'select':
-				return (	
-					<SelectControl
-						label={ label }
-						value={ quizAttr[id] ?? defaultvalue }
-						options={ options }
-						onChange={ ( val ) => onChangeFunc( val, id) }
-						help={ help }
-						__nextHasNoMarginBottom
-					/>
-				);
-				break;
-			case 'number':
-				return (	
-					<TextControl
-						type='number'
-						label={ label }
-						value={ quizAttr[id] ?? defaultvalue }
-						onChange={ ( val ) => onChangeFunc( val, id) }
-						help={ help }
-						__nextHasNoMarginBottom
-					/>
-				);
-				break;
-			case 'text':
-				return (
-					<TextControl
-						type='text'
-						label={ label }
-						value={ quizAttr[id] ?? defaultvalue }
-						onChange={ ( val ) => onChangeFunc( val, id) }
-						help={ help }
-						__nextHasNoMarginBottom
-					/>
-				);
-			break;
-            case 'checkbox':
-				return (
-					<CheckboxControl
-						label={ label }
-						help={ help }
-						checked={ ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id]  }
-						onChange={ () => onChangeFunc( ( ( ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id] ) ? 0 : 1 ), id ) }
-					/>
-				);
-			break;
-			default:
-				return (
-					<TextControl
-						type='text'
-						label={ label }
-						value={ quizAttr[id] ?? defaultvalue }
-						onChange={ ( val ) => onChangeFunc( val, id) }
-						help={ help }
-						__nextHasNoMarginBottom
-					/>
-				);
-				break;
-		}
-	}
-
-    return getComponent();
+    return(
+		<>
+		{ 'toggle' === type && (
+			<ToggleControl
+				label={ label }
+				help={ help }
+				checked={ ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id]  }
+				onChange={ () => onChangeFunc( ( ( ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id] ) ? 0 : 1 ), id ) }
+			/>
+		)}
+		{ 'select' === type &&  (	
+			<SelectControl
+				label={ label }
+				value={ quizAttr[id] ?? defaultvalue }
+				options={ options }
+				onChange={ ( val ) => onChangeFunc( val, id) }
+				help={ help }
+				__nextHasNoMarginBottom
+			/>
+		)}
+		{ 'number' === type &&  (	
+			<TextControl
+				type='number'
+				label={ label }
+				value={ quizAttr[id] ?? defaultvalue }
+				onChange={ ( val ) => onChangeFunc( val, id) }
+				help={ help }
+				__nextHasNoMarginBottom
+			/>
+		)}
+		{ 'text' === type &&  (	
+			<TextControl
+				type='text'
+				label={ label }
+				value={ quizAttr[id] ?? defaultvalue }
+				onChange={ ( val ) => onChangeFunc( val, id) }
+				help={ help }
+				__nextHasNoMarginBottom
+			/>
+		)}
+		{ 'textarea' === type &&  (	
+			<TextareaControl
+                label={ label }
+				value={ quizAttr[id] ?? defaultvalue }
+				onChange={ ( val ) => onChangeFunc( val, id) }
+				help={ help }
+				__nextHasNoMarginBottom
+        	/>
+		)}
+		{ 'checkbox' === type &&  (	
+			<CheckboxControl
+				label={ label }
+				help={ help }
+				checked={ ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id]  }
+				onChange={ () => onChangeFunc( ( ( ! qsmIsEmpty( quizAttr[id] ) && '1' == quizAttr[id] ) ? 0 : 1 ), id ) }
+			/>
+		)}
+		{ 'radio' === type &&  (	
+			<RadioControl
+				label={ label }
+				help={ help }
+				selected={ quizAttr[id] ?? defaultvalue }
+				options={ options }
+				onChange={ ( val ) => onChangeFunc( val, id) }
+			/>
+		)}
+		</>
+	);
 }
