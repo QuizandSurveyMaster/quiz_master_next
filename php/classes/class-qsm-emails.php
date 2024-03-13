@@ -61,25 +61,38 @@ class QSM_Emails {
 				// Cycle through each condition to see if we should sent this email.
 				foreach ( $email['conditions'] as $condition ) {
 					$value    = $condition['value'];
-					$category = '';
-					if ( isset( $condition['category'] ) ) {
-						$category = $condition['category'];
+					$main_condition = '';
+					if ( isset($condition['category']) ) {
+						$main_condition = $condition['category'];
+					}
+					if ( ! empty($condition['extra_condition']) && 'category' == $main_condition ) {
+						$category = $condition['extra_condition'];
+						if ( str_contains($category, 'qsm-cat-') ) {
+							$cat_id = intval( str_replace( 'qsm-cat-', '', $category ) );
+							$term = get_term( $cat_id );
+							if ( $term ) {
+								$category = $term->name;
+							}
+						}
+					}else {
+						$category = $main_condition;
 					}
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							if ( '' !== $category ) {
-								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
-							} else {
+							if ( '' == $main_condition || 'quiz' == $main_condition ) {
 								$test = $response_data['total_score'];
+							} else {
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 							}
+
 							break;
 
 						case 'points':
-							if ( '' !== $category ) {
-								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
-							} else {
+							if ( '' == $main_condition || 'quiz' == $main_condition ) {
 								$test = $response_data['total_points'];
+							} else {
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 							}
 							break;
 

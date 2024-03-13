@@ -38,7 +38,7 @@ class QMNQuizManager {
 	public $mathjax_url                   = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
 	public $mathjax_version               = '3.2.0';
 
-	protected $qsm_background_email;
+	public $qsm_background_email;
 	/**
 	 * Main Construct Function
 	 *
@@ -705,7 +705,17 @@ class QMNQuizManager {
 					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+					$tq_ids = $wpdb->get_results(
+						"SELECT DISTINCT `term_id`, `question_id`
+						FROM `{$wpdb->prefix}mlw_question_terms`
+						JOIN `{$wpdb->prefix}mlw_questions` ON `{$wpdb->prefix}mlw_question_terms`.`question_id` = `{$wpdb->prefix}mlw_questions`.`question_id`
+						WHERE `{$wpdb->prefix}mlw_question_terms`.`question_id` IN ($question_id)
+							AND `{$wpdb->prefix}mlw_question_terms`.`term_id` IN ($term_ids)
+							AND `{$wpdb->prefix}mlw_question_terms`.`taxonomy` = 'qsm_category'
+							AND `{$wpdb->prefix}mlw_questions`.`deleted` = 0
+						",
+						ARRAY_A
+					);
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
@@ -748,7 +758,19 @@ class QMNQuizManager {
 						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
+						$tq_ids[] = $wpdb->get_results(
+							"SELECT DISTINCT q.`question_id`
+							FROM `{$wpdb->prefix}mlw_questions` AS q
+							JOIN `{$wpdb->prefix}mlw_question_terms` AS qt ON q.`question_id` = qt.`question_id`
+							WHERE qt.`quiz_id` = $quiz_id
+								AND qt.`term_id` = $category
+								AND qt.`taxonomy` = 'qsm_category'
+								AND qt.`question_id` NOT IN ($exclude_ids)
+								AND q.`deleted` = 0
+							".esc_sql( $category_order_sql )."
+							LIMIT $limit",
+							ARRAY_A
+						);
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
@@ -1541,7 +1563,7 @@ class QMNQuizManager {
 		if ( ! isset( $_REQUEST['qsm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'display'       => __( 'Nonce Validation failed!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1628,7 +1650,7 @@ class QMNQuizManager {
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
+					'display'       => __( 'Quiz Expired!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1738,13 +1760,13 @@ class QMNQuizManager {
 				if ( 'name' === $field['use'] ) {
 					$qmn_array_for_variables['user_name'] = $field['value'];
 				}
-				if ( 'comp' === $field['use'] ) {
+				elseif ( 'comp' === $field['use'] ) {
 					$qmn_array_for_variables['user_business'] = $field['value'];
 				}
-				if ( 'email' === $field['use'] ) {
+				elseif ( 'email' === $field['use'] ) {
 					$qmn_array_for_variables['user_email'] = $field['value'];
 				}
-				if ( 'phone' === $field['use'] ) {
+				elseif ( 'phone' === $field['use'] ) {
 					$qmn_array_for_variables['user_phone'] = $field['value'];
 				}
 			}
@@ -1904,7 +1926,7 @@ class QMNQuizManager {
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
 				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
 			}
-			$result_display .= $results_pages['display'];
+			$result_display .= wp_kses_post( htmlspecialchars_decode( $results_pages['display'], ENT_QUOTES) );
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
