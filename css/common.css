@@ -708,3 +708,8 @@ body .ui-tooltip.ui-widget-content {
 .qsm-question-wrapper.qsm-active-question{
 	zoom: 105%;
 }
+.qsm-quiz-container input[type=checkbox],
+.qsm-quiz-container input[type=radio] {
+	vertical-align: top;
+	margin-top: 5px;
+}
