@@ -54,10 +54,16 @@
             flex-direction: column;
         }
     }
+
+    .qsm-advance-settings{
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
 }
 
 .qsm-placeholder-quiz-create-form{
-    width: 50%;
+    width: 75%;
     .components-button{
         width: fit-content;
     }

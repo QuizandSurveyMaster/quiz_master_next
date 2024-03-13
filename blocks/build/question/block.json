@@ -41,7 +41,7 @@
     },
     "commentBox": {
       "type": "string",
-      "default": "0"
+      "default": "1"
     },
     "category": {
       "type": "number"

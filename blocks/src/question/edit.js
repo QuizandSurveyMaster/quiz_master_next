@@ -18,10 +18,13 @@ import {
 	SelectControl,
 	ToolbarGroup, 
 	ToolbarButton,
+	TextControl,
+	CheckboxControl,
+	FormTokenField,
 } from '@wordpress/components';
 import FeaturedImage from '../component/FeaturedImage';
 import SelectAddCategory from '../component/SelectAddCategory';
-import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray } from '../helper';
+import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray, qsmMatchingValueKeyArray } from '../helper';
 
 
 //check for duplicate questionID attr
@@ -86,10 +89,40 @@ export default function Edit( props ) {
 		answerEditor,
 		matchAnswer,
 		required,
+		settings={},
 	} = attributes;
 	
 	const proActivated = ( '1' == qsmBlockData.is_pro_activated );
 	const isAdvanceQuestionType = ( qtype ) => 14 < parseInt( qtype );
+
+	//Available file types
+	const fileTypes = qsmBlockData.file_upload_type.options;
+
+	//Get selected file types
+	const selectedFileTypes = () => {
+		let file_types = settings?.file_upload_type || qsmBlockData.file_upload_type.default;
+		return qsmIsEmpty( file_types ) ? [] : file_types.split(',');
+	}
+
+	//Is file type checked
+	const isCheckedFileType = ( fileType ) => selectedFileTypes().includes( fileType );
+
+	//Set file type
+	const setFileTypes = ( fileType ) => {
+		let file_types = selectedFileTypes();
+		if ( file_types.includes( fileType ) ) {
+			file_types = file_types.filter( file_type => file_type != fileType );
+		} else {
+			file_types.push( fileType );
+		}
+		file_types = file_types.join(',');
+		setAttributes({
+			settings:{
+				...settings,
+				file_upload_type: file_types
+			}
+		})
+	}
 	
 	/**Generate question id if not set or in case duplicate questionID ***/
 	useEffect( () => {
@@ -180,6 +213,7 @@ export default function Edit( props ) {
 		answerEditor,
 		matchAnswer,
 		required,
+		settings,
 	] )
 
 	//add classes
@@ -383,6 +417,35 @@ export default function Edit( props ) {
 				onChange={ () => setAttributes( { required : ( ( ! qsmIsEmpty( required ) && '1' == required ) ? 0 : 1 ) } ) }
 			/>
 			</PanelBody>
+			{/**File Upload */}
+			{ '11' == type && (
+				<PanelBody title={ __( 'File Settings', 'quiz-master-next' ) } initialOpen={ false }>
+				{/**Upload Limit */}
+				<TextControl
+					type='number'
+					label={ qsmBlockData.file_upload_limit.heading  }
+					value={ settings?.file_upload_limit ?? qsmBlockData.file_upload_limit.default }
+					onChange={ ( limit ) => setAttributes( { settings:{
+						...settings,
+						file_upload_limit: limit
+					} } ) }
+				/>
+				{/**Allowed File Type */}
+				<label className="qsm-inspector-label">
+					{ qsmBlockData.file_upload_type.heading }
+				</label>
+				{
+					Object.keys( qsmBlockData.file_upload_type.options ).map( filetype => (
+						<CheckboxControl
+							key={ 'filetype-'+filetype }
+							label={  fileTypes[filetype] }
+							checked={ isCheckedFileType( filetype ) }
+							onChange={ () => setFileTypes( filetype ) }
+						/>
+					) )
+				}
+				</PanelBody>
+			)}
 			{/**Categories */}
 			<SelectAddCategory 
 				isCategorySelected={ isCategorySelected }

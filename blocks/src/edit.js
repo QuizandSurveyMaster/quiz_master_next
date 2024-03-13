@@ -24,6 +24,7 @@ import {
 } from '@wordpress/components';
 import './editor.scss';
 import { qsmIsEmpty, qsmFormData, qsmUniqid, qsmValueOrDefault, qsmDecodeHtml } from './helper';
+import InputComponent from './component/InputComponent';
 import { qsmBlockIcon } from './component/icon';
 export default function Edit( props ) {
 	//check for QSM initialize data
@@ -285,61 +286,18 @@ export default function Edit( props ) {
 							>
 							{ __( 'Advance options', 'quiz-master-next' ) }
 						</Button>
-						{ showAdvanceOption && (<>
-							{/**Form Type */}
-							<SelectControl
-								label={ quizOptions?.form_type?.label }
-								value={ quizAttr?.form_type }
-								options={ quizOptions?.form_type?.options }
-								onChange={ ( val ) => setQuizAttributes( val, 'form_type') }
-								__nextHasNoMarginBottom
+						<div className='qsm-advance-settings'>
+						{ showAdvanceOption && quizOptions.map( qSetting => (
+							<InputComponent
+								key={ 'qsm-settings'+qSetting.id }
+								data={ qSetting }
+								quizAttr={ quizAttr }
+								setAttributes={ setAttributes }
+								onChangeFunc={ setQuizAttributes }
 							/>
-							{/**Grading Type */}
-							<SelectControl
-								label={ quizOptions?.system?.label }
-								value={ quizAttr?.system }
-								options={ quizOptions?.system?.options }
-								onChange={ ( val ) => setQuizAttributes( val, 'system') }
-								help={ quizOptions?.system?.help }
-								__nextHasNoMarginBottom
-							/>
-							{
-								[ 
-									'timer_limit', 
-									'pagination',
-								].map( ( item ) => (
-									<TextControl
-										key={ 'quiz-create-text-'+item }
-										type='number'
-										label={ quizOptions?.[item]?.label }
-										help={ quizOptions?.[item]?.help }
-										value={ qsmIsEmpty( quizAttr[item] ) ? 0 : quizAttr[item] }
-										onChange={ ( val ) => setQuizAttributes( val, item) }
-									/>
-								) )
-							}
-							{
-								[ 
-									'enable_contact_form', 
-									'enable_pagination_quiz', 
-									'show_question_featured_image_in_result',
-									'progress_bar',
-									'require_log_in',
-									'disable_first_page',
-									'comment_section'
-								].map( ( item ) => (
-								<ToggleControl
-									key={ 'quiz-create-toggle-'+item }
-									label={ quizOptions?.[item]?.label }
-									help={ quizOptions?.[item]?.help }
-									checked={ ! qsmIsEmpty( quizAttr[item] ) && '1' == quizAttr[item]  }
-									onChange={ () => setQuizAttributes( ( ( ! qsmIsEmpty( quizAttr[item] ) && '1' == quizAttr[item] ) ? 0 : 1 ), item ) }
-								/>
-								) )
-
-							}
-						</>)
+						))
 						}
+						</div>
 						<Button 
 							variant="primary"
 							disabled={ saveQuiz || qsmIsEmpty( quizAttr.quiz_name ) }
@@ -456,6 +414,7 @@ export default function Edit( props ) {
 								"featureImageSrc":qsmValueOrDefault( questionAttr?.featureImageSrc ),
 								"page": pageSNo,
 								"other_settings": {
+									...qsmValueOrDefault( questionAttr?.settings, {} ),
 									"required": qsmValueOrDefault( questionAttr?.required, 0 )
 								}
 							});
@@ -601,7 +560,7 @@ export default function Edit( props ) {
 					"comments": "1",
 					"hint": "",
 					"category": "",
-					"required": 1,
+					"required": 0,
 					"answers": [],
 					"page": 0
 				} );

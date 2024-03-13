@@ -9,6 +9,13 @@ export const qsmUniqueArray = ( arr ) => {
 	return arr.filter( ( val, index, arr ) => arr.indexOf( val ) === index );
 }
 
+//Match array of object values and return array of cooresponding matching keys 
+export const qsmMatchingValueKeyArray = ( values, obj ) => {
+	if ( qsmIsEmpty( obj ) || ! Array.isArray( values ) ) {
+		return values;
+	}
+	return values.map( ( val ) => Object.keys(obj).find( key => obj[key] == val) );
+}
 
 //Decode htmlspecialchars
 export const qsmDecodeHtml = ( html ) => {

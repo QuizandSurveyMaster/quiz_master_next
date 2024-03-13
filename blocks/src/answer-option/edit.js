@@ -140,7 +140,7 @@ onRemove } = props;
 			spacing={ 1 }
 			justify='left'
 		>
- 		<input type={ inputType }  readOnly tabIndex="-1" />
+ 		<input type={ inputType } disabled={ true }  readOnly tabIndex="-1" />
 		{ /**Text answer option*/
 			! ['rich','image'].includes( answerType ) && 
 			<RichText

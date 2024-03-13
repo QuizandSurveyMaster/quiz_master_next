@@ -134,23 +134,8 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		 */
 		public function register_block_scripts() {
 			global $globalQuizsetting, $mlwQuizMasterNext;
-			if ( empty( $globalQuizsetting ) || empty( $mlwQuizMasterNext ) || ! function_exists( 'qsm_get_plugin_link' ) ) {
+			if ( empty( $globalQuizsetting ) || empty( $mlwQuizMasterNext ) || ! function_exists( 'qsm_get_plugin_link' ) || ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				return;
-			}
-			
-			$quiz_options = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-			$quiz_options_id_details = array(
-				'enable_contact_form' => array(
-					'label' => __( 'Enable Contact Form', 'quiz-master-next' ),
-					'help'  => __( 'Display a contact form before quiz', 'quiz-master-next' ),
-				),
-			);
-			if ( ! empty( $quiz_options ) && is_array( $quiz_options ) ) {
-				foreach ( $quiz_options as  $quiz ) {
-					if ( ! empty( $quiz ) && ! empty( $quiz['id'] ) ) {
-						$quiz_options_id_details[ $quiz['id'] ] = $quiz;
-					}
-				}
 			}
 
 			$question_type = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
@@ -195,7 +180,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						)
 					),
 					'QSMQuizList' => function_exists( 'qsm_get_quizzes_list' ) ? qsm_get_quizzes_list(): array(),
-					'quizOptions' => $quiz_options_id_details,
+					'quizOptions' => qsm_settings_to_create_quiz( true ),
 					'question_type' => array(
 						'label'              => __( 'Question Type', 'quiz-master-next' ),
 						'options'            => $question_types,
@@ -231,7 +216,23 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						),
 						'default'  => '1',
 						'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'comment-box', 'quizsurvey-comment-box_doc' ),
-					)
+					),
+					'file_upload_limit' => array(
+						'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
+						'default'  => '4',
+					),
+					'file_upload_type' => array(
+						'heading'  => __( 'Allow File type', 'quiz-master-next' ),
+						'options'  => array(
+							'text/plain' => __( 'Text File', 'quiz-master-next' ),
+							'image' => __( 'Image', 'quiz-master-next' ),
+							'application/pdf' => __( 'PDF File', 'quiz-master-next' ),
+							'doc'   => __( 'Doc File', 'quiz-master-next' ),
+							'excel' => __( 'Excel File', 'quiz-master-next' ),
+							'video/mp4' => __( 'Video', 'quiz-master-next' ),
+						),
+						'default'  => 'image,application/pdf',
+					),
 				)
 			);
 		}
