@@ -696,7 +696,7 @@ class QMNQuizManager {
 				}
 			}
 			// check If we should load a specific number of question
-			if ( '' == $quiz_options->limit_category_checkbox && 0 != $quiz_options->question_per_category && $is_quiz_page ) {
+			if ( ( '' == $quiz_options->limit_category_checkbox || 0 == $quiz_options->limit_category_checkbox ) && 0 != $quiz_options->question_per_category && $is_quiz_page ) {
 				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
@@ -706,13 +706,13 @@ class QMNQuizManager {
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
 					$tq_ids = $wpdb->get_results(
-						"SELECT DISTINCT `term_id`, `question_id`
-						FROM `{$wpdb->prefix}mlw_question_terms`
-						JOIN `{$wpdb->prefix}mlw_questions` ON `{$wpdb->prefix}mlw_question_terms`.`question_id` = `{$wpdb->prefix}mlw_questions`.`question_id`
-						WHERE `{$wpdb->prefix}mlw_question_terms`.`question_id` IN ($question_id)
-							AND `{$wpdb->prefix}mlw_question_terms`.`term_id` IN ($term_ids)
-							AND `{$wpdb->prefix}mlw_question_terms`.`taxonomy` = 'qsm_category'
-							AND `{$wpdb->prefix}mlw_questions`.`deleted` = 0
+						"SELECT DISTINCT qt.term_id, qt.question_id
+						FROM {$wpdb->prefix}mlw_question_terms AS qt
+						JOIN {$wpdb->prefix}mlw_questions AS q ON qt.question_id = q.question_id
+						WHERE qt.question_id IN ($question_id)
+							AND qt.term_id IN ($term_ids)
+							AND qt.taxonomy = 'qsm_category'
+							AND q.deleted = 0
 						",
 						ARRAY_A
 					);
