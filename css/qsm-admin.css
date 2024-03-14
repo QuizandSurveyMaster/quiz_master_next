@@ -1352,6 +1352,7 @@ tr .qsm-opt-desc {
     margin-top: 5px;
     display: block;
     font-size: 14px;
+	font-weight: 400;
 }
 .form-table .send_email .qsm-opt-tr, .form-table .send_email td {
 	padding-top: 0;

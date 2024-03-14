@@ -46,38 +46,23 @@ class QSM_Install {
 		// Registers require_log_in setting
 		$field_array = array(
 			'label'      => __( 'Select Type', 'quiz-master-next' ),
-			'id'         => '',
-			'type'       => 'multiple_fields',
-			'fields'     => array(
-				'form_type'      => array(
-					'type'    => 'radio',
-					'options' => array(
-						array(
-							'label' => __( 'Quiz', 'quiz-master-next' ),
-							'value' => 0,
-						),
-						array(
-							'label' => __( 'Survey', 'quiz-master-next' ),
-							'value' => 1,
-						),
-						array(
-							'label' => __( 'Simple Form', 'quiz-master-next' ),
-							'value' => 2,
-						),
-					),
-					'default' => 0,
+			'id'         => 'form_type',
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Quiz', 'quiz-master-next' ),
+					'value' => 0,
 				),
-				'require_log_in' => array(
-					'type'    => 'checkbox',
-					'options' => array(
-						array(
-							'label' => __( 'Allow only logged-in users to access the content', 'quiz-master-next' ),
-							'value' => 1,
-						),
-					),
-					'default' => 0,
+				array(
+					'label' => __( 'Survey', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Simple Form', 'quiz-master-next' ),
+					'value' => 2,
 				),
 			),
+			'default'    => 0,
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -131,14 +116,15 @@ class QSM_Install {
 			'fields'     => array(
 				'correct_answer_logic'   => array(
 					'type'        => 'radio',
-					'prefix_text' => '<div class="qsm-mb-1">' . __( 'Correct Answer Logic:', 'quiz-master-next' ) . '</div>',
+					/* translators: %s: HTML tag */
+					'prefix_text' => '<div class="qsm-mb-1">' . __( 'Correct Answer Logic:', 'quiz-master-next' ) . '<br/><small>' . sprintf( esc_html__( 'Works with %1$sMultiple Response, Horizontal Multiple Response%2$s and %3$sFill in the Blanks%4$s Question Types.', 'quiz-master-next' ), '<b>', '</b>', '<b>', '</b>' ) . '</small></div>',
 					'options'     => array(
 						array(
-							'label' => __( 'All correct answers', 'quiz-master-next' ),
+							'label' => __( 'Accept all correct answers', 'quiz-master-next' ),
 							'value' => 1,
 						),
 						array(
-							'label' => __( 'Any correct answer', 'quiz-master-next' ),
+							'label' => __( 'Accept any correct answers', 'quiz-master-next' ),
 							'value' => 0,
 						),
 					),
@@ -169,7 +155,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Disable math formulas for mathematical & technical questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
+							'label' => __( 'Allow entering math formulas in questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -183,28 +169,27 @@ class QSM_Install {
 		// Registers randomness_order setting
 		$field_array = array(
 			'id'         => 'randomness_order',
-			'label'      => __( 'Random Questions', 'quiz-master-next' ),
+			'label'      => __( 'Randomize Question', 'quiz-master-next' ) . '<span class="qsm-opt-desc"> ' . __( 'Randomize the order of questions or answers every time the quiz loads', 'quiz-master-next' ) . ' </span>',
 			'type'       => 'radio',
 			'options'    => array(
-				array(
-					'label' => __( 'Random Questions', 'quiz-master-next' ),
-					'value' => 1,
-				),
-				array(
-					'label' => __( 'Random Questions And Answers', 'quiz-master-next' ),
-					'value' => 2,
-				),
-				array(
-					'label' => __( 'Random Answers', 'quiz-master-next' ),
-					'value' => 3,
-				),
 				array(
 					'label' => __( 'Disabled', 'quiz-master-next' ),
 					'value' => 0,
 				),
+				array(
+					'label' => __( 'Randomize question only', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Randomize answers only', 'quiz-master-next' ),
+					'value' => 3,
+				),
+				array(
+					'label' => __( 'Randomize questions and their answers', 'quiz-master-next' ),
+					'value' => 2,
+				),
 			),
 			'default'    => 0,
-			'tooltip'    => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz-master-next' ),
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -253,20 +238,20 @@ class QSM_Install {
 					'suffix_text' => __( 'Maximum question limit', 'quiz-master-next' ),
 					'default'     => 0,
 				),
-				'limit_category_checkbox' => array(
-					'type'    => 'checkbox',
-					'options' => array(
-						array(
-							'label' => __( 'Set questions limit per category', 'quiz-master-next' ),
-							'value' => 1,
-						),
-					),
-					'default' => 0,
-				),
 				'question_per_category'   => array(
 					'type'        => 'number',
 					'suffix_text' => '<span class="qsm-opt-tr">' . __( "Limit number of questions per category", "quiz-master-next" ) . '<span class="dashicons dashicons-editor-help qsm-tooltips-icon"><span class="qsm-tooltips">' . __( "Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.", "quiz-master-next" ) . '</span></span><span>',
 					'default'     => 0,
+				),
+				'limit_category_checkbox' => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Assign individual limits to each category', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
 				),
 			),
 			'container_class' => 'qsm-small-input-field',
@@ -302,15 +287,30 @@ class QSM_Install {
 		// Registers default number of answers field
 		$field_array = array(
 			'id'              => 'default_answers',
-			'label'           => __( 'Default Number of Answers', 'quiz-master-next' ),
+			'label'           => __( 'Answer Fields in Question Editor', 'quiz-master-next' ),
 			'type'            => 'number',
 			'default'         => 1,
 			'container_class' => 'qsm-small-input-field',
-			'suffix_text'     => __( 'Adds number of answer fields', 'quiz-master-next' ),
+			'prefix_text'     => __( 'Show ', 'quiz-master-next' ),
+			'suffix_text'     => __( 'Answer Field in Question Editor.', 'quiz-master-next' ),
 			'option_tab'      => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
+		// Registers require_log_in setting
+		$field_array = array(
+			'id'         => 'require_log_in',
+			'label'      => __( 'User Access', 'quiz-master-next' ),
+			'type'       => 'checkbox',
+			'options'    => array(
+				array(
+					'label' => __( 'Allow only logged-in users to access the content', 'quiz-master-next' ),
+					'value' => 1,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		// Registers comment_section setting
 		$field_array = array(
 			'id'         => 'comment_section',
@@ -318,7 +318,7 @@ class QSM_Install {
 			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Allow users to post comments after completion', 'quiz-master-next' ),
+					'label' => __( 'Allow users to post comments at the end of the form type', 'quiz-master-next' ),
 					'value' => 0,
 				),
 			),
@@ -342,7 +342,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Auto-submit upon timer expiry', 'quiz-master-next' ),
+							'label' => __( 'Submit automatically when timer ends', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -367,7 +367,7 @@ class QSM_Install {
 		$field_array = array(
 			'id'              => '',
 			'type'            => 'multiple_fields',
-			'label'           => __( 'Answer Controls', 'quiz-master-next' ),
+			'label'           => __( 'Response Settings', 'quiz-master-next' ),
 			'fields'          => array(
 				'end_quiz_if_wrong'       => array(
 					'type'        => 'number',
@@ -400,13 +400,13 @@ class QSM_Install {
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => __( 'Attempts', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set it to 0 or blank to remove the limit on attempts.', 'quiz-master-next' ) . '</label>',
+					'suffix_text' => __( 'attempts or submissions can be done by a respondent', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on attempts.', 'quiz-master-next' ) . '</label>',
 				),
 				'limit_total_entries'       => array(
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => __( 'Entries', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set it to 0 or blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
+					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
 				),
 				'enable_retake_quiz_button' => array(
 					'type'    => 'checkbox',
@@ -488,16 +488,16 @@ class QSM_Install {
 					'prefix_text' => __( "Display the correct answer information in real-time", 'quiz-master-next' ),
 					'options'     => array(
 						array(
-							'label' => __( "Don’t display correct answer info", 'quiz-master-next' ),
-							'value' => 0,
-						),
-						array(
-							'label' => __( "Display if the selected answer is correct only", 'quiz-master-next' ),
+							'label' => __( "Display only if the answer is correct", 'quiz-master-next' ),
 							'value' => 1,
 						),
 						array(
-							'label' => __( "Display if the selected answer is correct/incorrect", 'quiz-master-next' ),
+							'label' => __( "Always display", 'quiz-master-next' ),
 							'value' => 2,
+						),
+						array(
+							'label' => __( "Never Display", 'quiz-master-next' ),
+							'value' => 0,
 						),
 					),
 					'default'     => 0,
@@ -512,12 +512,13 @@ class QSM_Install {
 		$field_array = array(
 			'id'              => '',
 			'type'            => 'multiple_fields',
-			'label'           => __( 'Question Settings', 'quiz-master-next' ),
+			'label'           => __( 'Question Preferences', 'quiz-master-next' ),
 			'fields'          => array(
 				'pagination'             => array(
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
+					'prefix_text' => __( 'Show ', 'quiz-master-next' ),
 					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( "Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</label>',
 				),
 				'question_numbering'     => array(
@@ -555,7 +556,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Display an opt-in type question response on the results page', 'quiz-master-next' ),
+							'label' => __( 'Show responses to opt-in question type in results', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -565,7 +566,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Display a Text/HTML type section on the result page', 'quiz-master-next' ),
+							'label' => __( 'Show Text/HTML Section in results', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -575,7 +576,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Hide the correct answer from the result page if a user selected the incorrect answer in the quiz', 'quiz-master-next' ),
+							'label' => __( 'Hide correct answer in results if the user selected the incorrect answer', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -639,10 +640,11 @@ class QSM_Install {
 			'label'      => __( 'Advanced Settings', 'quiz-master-next' ),
 			'fields'     => array(
 				'result_page_fb_image'               => array(
+					'prefix_text'  => __( 'Set a logo for Facebook sharing', 'quiz-master-next' ),
 					'type'         => 'image',
 					'default'      => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 					'button_label' => __( 'Select Logo', 'quiz-master-next' ),
-					'suffix'       => '<label><i><small class="qsm-font-light">' . __( "If left blank, the QSM logo will be displayed", 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text'  => '<label><i><small class="qsm-font-light">' . __( "This logo will be used for Facebook sharing. If left blank, QSM's logo will appear.", 'quiz-master-next' ) . '</small></i></label>',
 				),
 				'ajax_show_correct'                  => array(
 					'type'    => 'checkbox',
@@ -658,7 +660,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Disable scroll on next and previous button click', 'quiz-master-next' ),
+							'label' => __( 'Do not scroll the page on clicking next/previous buttons', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
