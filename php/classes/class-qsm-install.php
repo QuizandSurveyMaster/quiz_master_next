@@ -650,7 +650,7 @@ class QSM_Install {
 			'label'      => __( 'Advanced Settings', 'quiz-master-next' ),
 			'fields'     => array(
 				'result_page_fb_image'  => array(
-					'prefix_text'  => '<strong>' . __( 'Set a logo for Facebook sharing', 'quiz-master-next' ) . '</strong>',
+					'prefix_text'  => '<label class="qsm-mb-1"><strong>' . __( 'Set a logo for Facebook sharing', 'quiz-master-next' ) . '</strong></label>',
 					'type'         => 'image',
 					'default'      => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 					'button_label' => __( 'Select Logo', 'quiz-master-next' ),
