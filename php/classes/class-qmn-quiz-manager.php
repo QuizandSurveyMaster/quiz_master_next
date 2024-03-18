@@ -733,7 +733,7 @@ class QMNQuizManager {
 							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 								shuffle( $tv );
 							}
-							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, $quiz_options->question_per_category ) );
+							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, intval( $quiz_options->question_per_category ) ) );
 						}
 					}
 					$question_ids = array_unique( $random );

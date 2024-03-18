@@ -768,20 +768,14 @@ class QSM_Fields {
 		$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 		$explode_cat = explode(',', $value);
 		$limit_category_checkbox = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options','limit_category_checkbox');
-		$display = "";
-		if ( ! empty($limit_category_checkbox) ) {
-			$display = "style='display:none;'";
-		} ?>
-		<tr valign="top" <?php echo esc_html( $display );?> >
+		$question_per_category = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options','question_per_category');
+		?>
+		<tr valign="top" <?php echo ! empty($limit_category_checkbox) || empty( $question_per_category ) ? 'style="display:none;"' : '';?> class="qsm-category-list-row">
 			<th scope="row" class="qsm-opt-tr">
-				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
-				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
-				</span>
-				<?php } ?>
+
 			</th>
 			<td>
+				<label for="<?php echo esc_attr( $field["id"] ); ?>"><strong><?php echo wp_kses_post( $field['label'] ); ?></strong></label>
 				<?php
 				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 				$categories_tree = (isset($categories['tree']) ? $categories['tree'] : array());
@@ -958,21 +952,14 @@ class QSM_Fields {
 		) ;
 		$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 		$limit_category_checkbox = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options','limit_category_checkbox');
-		$display = "";
-		if ( '' == $limit_category_checkbox ) {
-			$display = "style='display:none;'";
-		} ?>
-		<tr valign="top" <?php echo esc_html( $display );?> >
+		?>
+		<tr valign="top" <?php echo empty( $limit_category_checkbox ) ? 'style="display:none;"' : '';?> class="qsm-category-list-row" >
 			<th scope="row" class="qsm-opt-tr">
-				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
-				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
-				</span>
-				<?php } ?>
+
 			</th>
 			<td>
-			<div class = "select-category-question-limit-maindiv">
+				<label for="<?php echo esc_attr( $field["id"] ); ?>"><strong><?php echo wp_kses_post( $field['label'] ); ?></strong></label>
+				<div class="select-category-question-limit-maindiv">
 				<?php
 					$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 					$category_select_key = ( ! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();

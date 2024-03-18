@@ -117,7 +117,7 @@ class QSM_Install {
 				'correct_answer_logic'   => array(
 					'type'        => 'radio',
 					/* translators: %s: HTML tag */
-					'prefix_text' => '<div class="qsm-mb-1">' . __( 'Correct Answer Logic:', 'quiz-master-next' ) . '<br/><small>' . sprintf( esc_html__( 'Works with %1$sMultiple Response, Horizontal Multiple Response%2$s and %3$sFill in the Blanks%4$s Question Types.', 'quiz-master-next' ), '<b>', '</b>', '<b>', '</b>' ) . '</small></div>',
+					'prefix_text' => '<div class="qsm-mb-1"><strong>' . __( 'Correct Answer Logic:', 'quiz-master-next' ) . '</strong><br/><label class="qsm-opt-desc">' . sprintf( esc_html__( 'Works with %1$sMultiple Response, Horizontal Multiple Response%2$s and %3$sFill in the Blanks%4$s Question Types.', 'quiz-master-next' ), '<b>', '</b>', '<b>', '</b>' ) . '</label></div>',
 					'options'     => array(
 						array(
 							'label' => __( 'Accept all correct answers', 'quiz-master-next' ),
@@ -132,7 +132,7 @@ class QSM_Install {
 				),
 				'enable_deselect_option' => array(
 					'type'        => 'checkbox',
-					'prefix_text' => '<div class="qsm-mb-1">' . __( 'Other Answer Settings:', 'quiz-master-next' ) . '</div>',
+					'prefix_text' => '<div class="qsm-mb-1"><strong>' . __( 'Other Answer Settings:', 'quiz-master-next' ) . '</strong></div>',
 					'options'     => array(
 						array(
 							'label' => __( 'Allow user to deselect an answer and leave it blank. ', 'quiz-master-next' ) . $i_tag . '(' . __( 'Works with multiple choice & horizontal multiple choice questions only', 'quiz-master-next' ) . ')</i>',
@@ -155,11 +155,11 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Allow entering math formulas in questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
+							'label' => __( 'Disable entering math formulas in questions, using TeX and LaTeX notation.', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
-					'default' => 1,
+					'default' => 0,
 				),
 			),
 			'option_tab' => 'general',
@@ -240,7 +240,7 @@ class QSM_Install {
 				),
 				'question_per_category'   => array(
 					'type'        => 'number',
-					'suffix_text' => '<span class="qsm-opt-tr">' . __( "Limit number of questions per category", "quiz-master-next" ) . '<span class="dashicons dashicons-editor-help qsm-tooltips-icon"><span class="qsm-tooltips">' . __( "Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.", "quiz-master-next" ) . '</span></span><span>',
+					'suffix_text' => '<span class="qsm-opt-tr">' . __( "Limit number of questions per category", "quiz-master-next" ) . '<span class="dashicons dashicons-editor-help qsm-tooltips-icon"><span class="qsm-tooltips">' . __( "Show only limited number of category questions from your quiz. You also need to set Limit Number of questions.", "quiz-master-next" ) . '</span></span><span>',
 					'default'     => 0,
 				),
 				'limit_category_checkbox' => array(
@@ -254,7 +254,7 @@ class QSM_Install {
 					'default' => 0,
 				),
 			),
-			'container_class' => 'qsm-small-input-field',
+			'container_class' => 'qsm-small-input-field qsm-question-limit-row',
 			'tooltip'         => __( 'Show only limited number of questions from your quiz.', 'quiz-master-next' ),
 			'option_tab'      => 'general',
 		);
@@ -263,7 +263,7 @@ class QSM_Install {
 		//Registers category setting
 		$field_array = array(
 			'id'         => 'randon_category',
-			'label'      => __( 'Questions Categories', 'quiz-master-next' ),
+			'label'      => __( 'Select Category', 'quiz-master-next' ),
 			'type'       => 'category',
 			'default'    => '',
 			'help'       => __( 'Questions will load only from selected categories.', 'quiz-master-next' ),
@@ -519,7 +519,7 @@ class QSM_Install {
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
 					'prefix_text' => __( 'Show ', 'quiz-master-next' ),
-					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( "Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</label>',
+					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc"><i>' . __( "Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</i></label>',
 				),
 				'question_numbering'     => array(
 					'type'    => 'checkbox',
@@ -613,16 +613,26 @@ class QSM_Install {
 			'type'            => 'multiple_fields',
 			'label'           => __( 'Quiz Page Settings', 'quiz-master-next' ),
 			'fields'          => array(
-				'quiz_animation'         => array(
+				'quiz_animation'                     => array(
 					'type'    => 'select',
 					'options' => $mlwQuizMasterNext->pluginHelper->quiz_animation_effect(),
 					'default' => '',
 				),
-				'enable_pagination_quiz' => array(
+				'enable_pagination_quiz'             => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
 							'label' => __( 'Display current page number of the quiz', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
+				),
+				'disable_scroll_next_previous_click' => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Do not scroll the page on clicking next/previous buttons', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
@@ -639,14 +649,14 @@ class QSM_Install {
 			'type'       => 'multiple_fields',
 			'label'      => __( 'Advanced Settings', 'quiz-master-next' ),
 			'fields'     => array(
-				'result_page_fb_image'               => array(
-					'prefix_text'  => __( 'Set a logo for Facebook sharing', 'quiz-master-next' ),
+				'result_page_fb_image'  => array(
+					'prefix_text'  => '<strong>' . __( 'Set a logo for Facebook sharing', 'quiz-master-next' ) . '</strong>',
 					'type'         => 'image',
 					'default'      => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 					'button_label' => __( 'Select Logo', 'quiz-master-next' ),
-					'suffix_text'  => '<label><i><small class="qsm-font-light">' . __( "This logo will be used for Facebook sharing. If left blank, QSM's logo will appear.", 'quiz-master-next' ) . '</small></i></label>',
+					'suffix_text'  => '<label class="qsm-font-light"><i>' . __( "This logo will be used for Facebook sharing. If left blank, QSM's logo will appear.", 'quiz-master-next' ) . '</i></label>',
 				),
-				'ajax_show_correct'                  => array(
+				'ajax_show_correct'     => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
@@ -656,17 +666,7 @@ class QSM_Install {
 					),
 					'default' => 0,
 				),
-				'disable_scroll_next_previous_click' => array(
-					'type'    => 'checkbox',
-					'options' => array(
-						array(
-							'label' => __( 'Do not scroll the page on clicking next/previous buttons', 'quiz-master-next' ),
-							'value' => 1,
-						),
-					),
-					'default' => 0,
-				),
-				'preferred_date_format'              => array(
+				'preferred_date_format' => array(
 					'type'    => 'radio',
 					'prefix'  => __( 'Preferred date format:', 'quiz-master-next' ),
 					'options' => array(
