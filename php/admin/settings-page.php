@@ -793,7 +793,7 @@ class QMNGlobalSettingsPage {
 			</label>
 			<label class="qsm-option-label" for="qsm-disable-mathjax">
 				<input type="checkbox" id="qsm-disable-mathjax" name="qsm-quiz-settings[disable_mathjax]" value="1" <?php checked( $qsm_disable_mathjax, 1 ); ?>>
-				<?php esc_html_e( 'Allow entering math formulas in questions, using TeX and LaTeX notation.', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'Disable entering math formulas in questions, using TeX and LaTeX notation.', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
 		<?php
@@ -1102,7 +1102,7 @@ class QMNGlobalSettingsPage {
 			<?php esc_html_e('Show ', 'quiz-master-next'); ?>
 			<input class="small-text" type="number" placeholder="<?php esc_html_e('Set Limit', 'quiz-master-next'); ?>" step="1" min="0" name="qsm-quiz-settings[pagination]" value="<?php echo esc_attr( $qsm_pagination ); ?>">
 			<?php esc_html_e('Questions Per Page', 'quiz-master-next'); ?>
-			<label class="qsm-opt-desc"><?php esc_html_e('Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.', 'quiz-master-next'); ?></label>
+			<label class="qsm-opt-desc"><i><?php esc_html_e('Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.', 'quiz-master-next'); ?></i></label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-question-numbering">
@@ -1176,6 +1176,7 @@ class QMNGlobalSettingsPage {
 		$qsm_quiz_animation = ( isset( $globalQuizsetting['quiz_animation'] ) && '' !== $globalQuizsetting['quiz_animation'] ? $globalQuizsetting['quiz_animation'] : '' );
 		$options            = $mlwQuizMasterNext->pluginHelper->quiz_animation_effect();
 		$qsm_enable_pagination_quiz = ( isset( $globalQuizsetting['enable_pagination_quiz'] ) && '' !== $globalQuizsetting['enable_pagination_quiz'] ? $globalQuizsetting['enable_pagination_quiz'] : 0 );
+		$qsm_disable_scroll_next_previous_click = ( isset( $globalQuizsetting['disable_scroll_next_previous_click'] ) && '' !== $globalQuizsetting['disable_scroll_next_previous_click'] ? $globalQuizsetting['disable_scroll_next_previous_click'] : 0 );
 		?>
 		<select name="qsm-quiz-settings[quiz_animation]">
 		<?php foreach ( $options as $value ) { ?>
@@ -1186,6 +1187,12 @@ class QMNGlobalSettingsPage {
 			<label class="qsm-option-label" for="qsm-enable-pagination-quiz">
 				<input type="checkbox" id="qsm-enable-pagination-quiz" name="qsm-quiz-settings[enable_pagination_quiz]" <?php checked( $qsm_enable_pagination_quiz, 1 ); ?> value="1">
 				<?php esc_html_e('Display current page number of the quiz', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide" data-hide="1">
+			<label class="qsm-option-label" for="qsm-disable-scroll-next-previous-click">
+				<input type="checkbox" id="qsm-disable-scroll-next-previous-click" name="qsm-quiz-settings[disable_scroll_next_previous_click]" <?php checked( $qsm_disable_scroll_next_previous_click, 1 ); ?> value="1">
+				<?php esc_html_e('Do not scroll the page on clicking next/previous buttons', 'quiz-master-next'); ?>
 			</label>
 		</fieldset>
 		<?php
@@ -1200,27 +1207,20 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_result_page_fb_image = ( isset( $globalQuizsetting['result_page_fb_image'] ) && '' !== $globalQuizsetting['result_page_fb_image'] ? $globalQuizsetting['result_page_fb_image'] : QSM_PLUGIN_URL . 'assets/icon-200x200.png' );
 		$qsm_ajax_show_correct = ( isset( $globalQuizsetting['ajax_show_correct'] ) && '' !== $globalQuizsetting['ajax_show_correct'] ? $globalQuizsetting['ajax_show_correct'] : 0 );
-		$qsm_disable_scroll_next_previous_click = ( isset( $globalQuizsetting['disable_scroll_next_previous_click'] ) && '' !== $globalQuizsetting['disable_scroll_next_previous_click'] ? $globalQuizsetting['disable_scroll_next_previous_click'] : 0 );
 		$preferred_date_format = ( isset( $globalQuizsetting['preferred_date_format'] ) ? $globalQuizsetting['preferred_date_format'] : get_option( 'date_format' ) );
 		?>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
-			<span><?php esc_html_e('Set a logo for Facebook sharing', 'quiz-master-next'); ?></span>
+			<span><strong><?php esc_html_e('Set a logo for Facebook sharing', 'quiz-master-next'); ?></strong></span>
 			<div class="qsm-image-field">
 				<input type="text" class="qsm-image-input" name="qsm-quiz-settings[result_page_fb_image]" value="<?php echo esc_url( $qsm_result_page_fb_image ); ?>">
 				<a class="qsm-image-btn button"><span class="dashicons dashicons-format-image"></span><?php esc_html_e('Select Logo', 'quiz-master-next'); ?></a>
 			</div>
-			<label><small class="qsm-font-light"><?php esc_html_e('This logo will be used for Facebook sharing. If left blank, QSM\'s logo will appear.', 'quiz-master-next'); ?></small></label>
+			<label class="qsm-font-light"><i><?php esc_html_e('This logo will be used for Facebook sharing. If left blank, QSM\'s logo will appear.', 'quiz-master-next'); ?></i></label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-ajax-show-correct">
 				<input type="checkbox" id="qsm-ajax-show-correct" name="qsm-quiz-settings[ajax_show_correct]" <?php checked( $qsm_ajax_show_correct, 1 ); ?> value="1">
 				<?php esc_html_e('Add class for correct/incorrect answers', 'quiz-master-next'); ?>
-			</label>
-		</fieldset>
-		<fieldset class="buttonset buttonset-hide" data-hide="1">
-			<label class="qsm-option-label" for="qsm-disable-scroll-next-previous-click">
-				<input type="checkbox" id="qsm-disable-scroll-next-previous-click" name="qsm-quiz-settings[disable_scroll_next_previous_click]" <?php checked( $qsm_disable_scroll_next_previous_click, 1 ); ?> value="1">
-				<?php esc_html_e('Do not scroll the page on clicking next/previous buttons', 'quiz-master-next'); ?>
 			</label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="preferred_date_format">
