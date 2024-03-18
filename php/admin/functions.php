@@ -1413,9 +1413,13 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		$template_array = array(
 			'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
 			'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_GROUP%%/QUESTION_ANSWER_GROUP%' => __('This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
-			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
-			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_GROUP_X%'   => __('X: Answer value - This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_POINTS_X%'   => __('X: Points range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_CORRECT_X%'  => __('X: Score range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+			'%QUIZ_TIME%'                 => __('This variable displays the total time of quiz.', 'quiz-master-next'),
+			'%QUIZ_PERCENTAGE%'           => __('This variable displays the obtained percentage of quiz.', 'quiz-master-next'),
+			'%CATEGORY_PERCENTAGE_X%'     => __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
+			'%COUNT_UNATTEMPTED%'         => __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
 		);
 		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
 			$extra_variables = array(
