@@ -34,3 +34,14 @@ export const answerOptionBlockIcon = () => (
 		) }
 	/>
 );
+
+//Warning icon
+export const warningIcon = () => (
+	<Icon
+		icon={ () => (
+			<svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M27.1855 23.223V28.0626M15.1794 32.4196C14.0618 34.3554 15.4595 36.7739 17.6934 36.7739H36.6776C38.9102 36.7739 40.3079 34.3554 39.1916 32.4196L29.7008 15.9675C28.5832 14.0317 25.7878 14.0317 24.6702 15.9675L15.1794 32.4196ZM27.1855 31.9343H27.1945V31.9446H27.1855V31.9343Z" stroke="#B45309" strokeWidth="1.65929" strokeLinecap="round" strokeLinejoin="round"/>
+			</svg>
+		) }
+	/>
+);

@@ -675,7 +675,7 @@ export default function Edit( props ) {
 			( ! qsmIsEmpty( quizID ) || '0' != quizID ) && 
 			<p>
 				<ExternalLink 
-				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
+				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID+'&tab=options' }
 				>
 					{ __( 'Advance Quiz Settings', 'quiz-master-next' ) }
 				</ExternalLink>
@@ -684,7 +684,7 @@ export default function Edit( props ) {
 		</PanelBody>
 	</InspectorControls>
 	{ ( qsmIsEmpty( quizID ) || '0' == quizID ) ? 
-    quizPlaceholder() 
+    <div { ...blockProps }> { quizPlaceholder() } </div>
 	:
 	<div { ...innerBlocksProps } />
 	}

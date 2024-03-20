@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('react', 'wp-blob', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-data', 'wp-element', 'wp-escape-html', 'wp-html-entities', 'wp-i18n', 'wp-notices', 'wp-primitives', 'wp-url'), 'version' => 'f124c91015047dfda196');
+<?php return array('dependencies' => array('react', 'wp-blob', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-data', 'wp-element', 'wp-escape-html', 'wp-html-entities', 'wp-i18n', 'wp-notices', 'wp-primitives', 'wp-url'), 'version' => 'e57f925605ba8567c314');

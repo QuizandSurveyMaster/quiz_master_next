@@ -21,9 +21,13 @@ import {
 	TextControl,
 	CheckboxControl,
 	FormTokenField,
+	Button,
+	ExternalLink,
+	Modal
 } from '@wordpress/components';
 import FeaturedImage from '../component/FeaturedImage';
 import SelectAddCategory from '../component/SelectAddCategory';
+import { warningIcon } from "../component/icon";
 import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray, qsmMatchingValueKeyArray } from '../helper';
 
 
@@ -92,6 +96,11 @@ export default function Edit( props ) {
 		settings={},
 	} = attributes;
 	
+	//Variable to decide if correct answer info input field should be available 
+	const [ enableCorrectAnsInfo, setEnableCorrectAnsInfo ] = useState( ! qsmIsEmpty( correctAnswerInfo ) );
+	//Advance Question modal
+	const [ isOpenAdvanceQModal, setIsOpenAdvanceQModal ] = useState( false );
+
 	const proActivated = ( '1' == qsmBlockData.is_pro_activated );
 	const isAdvanceQuestionType = ( qtype ) => 14 < parseInt( qtype );
 
@@ -302,6 +311,8 @@ export default function Edit( props ) {
 			if ( ! qsmIsEmpty( modalEl ) ) {
 				MicroModal.show('modal-advanced-question-type');
 			}
+		} else if ( proActivated && isAdvanceQuestionType( qtype ) ) {
+			setIsOpenAdvanceQModal( true );
 		} else {
 			setAttributes( { type: qtype } );
 		}
@@ -355,6 +366,39 @@ export default function Edit( props ) {
 				/>
 			</ToolbarGroup>
 		</BlockControls>
+	{ isOpenAdvanceQModal && (
+		<Modal 
+		contentLabel={ __( 'Use QSM Editor for Advanced Question', 'quiz-master-next' ) }
+		className='qsm-advance-q-modal'
+		isDismissible={ false }
+		size='small'
+		__experimentalHideHeader={ true }
+		>
+			<div className='qsm-modal-body' >
+				<h3 className='qsm-title'>
+					{ warningIcon() }
+					<br />
+					{ __( 'Use QSM editor for Advanced Question', 'quiz-master-next' ) }
+				</h3>
+				<p className='qsm-description'>
+					{ __( "Currently, the block editor doesn't support advanced question type. We are working on it. Alternatively, you can add advanced questions from your QSM's quiz editor.", "quiz-master-next" ) }
+				</p>
+				<div className='qsm-modal-btn-wrapper'>
+					<Button variant="secondary" onClick={ () => setIsOpenAdvanceQModal( false ) }>
+						{ __( 'Cancel', 'quiz-master-next' ) }
+					</Button>
+					<Button variant="primary" onClick={ () => {} }>
+						<ExternalLink 
+							href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
+						>
+							{ __( 'Add Question from quiz editor', 'quiz-master-next' ) }
+						</ExternalLink>
+					</Button>
+				</div>
+			</div>
+			
+		</Modal>
+	) }
 	 { isAdvanceQuestionType( type ) ? (
 		<>
 			<InspectorControls>
@@ -365,6 +409,14 @@ export default function Edit( props ) {
 			</InspectorControls>	
 			<div  { ...blockProps } >
 			<h4 className={ 'qsm-question-title qsm-error-text' } >{ __( 'Advanced Question Type : ', 'quiz-master-next' ) + title }</h4>
+			<p> 
+			{ __( 'Edit question in QSM ', 'quiz-master-next' ) }
+			<ExternalLink 
+				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
+			>
+					{ __( 'editor', 'quiz-master-next' ) }
+			</ExternalLink>
+			</p>
 			</div>
 		</>
 		):(
@@ -389,7 +441,7 @@ export default function Edit( props ) {
 						{
 							qtypes.types.map( qtype => 
 								(
-								<option value={ qtype.slug } key={ "qtype"+qtype.slug } disabled={ ( proActivated && isAdvanceQuestionType( qtype.slug ) ) } >{ qtype.name }</option>
+								<option value={ qtype.slug } key={ "qtype"+qtype.slug }  >{ qtype.name }</option>
 								)
 							)
 						}
@@ -415,6 +467,11 @@ export default function Edit( props ) {
 				label={ __( 'Required', 'quiz-master-next' ) }
 				checked={ ! qsmIsEmpty( required ) && '1' == required  }
 				onChange={ () => setAttributes( { required : ( ( ! qsmIsEmpty( required ) && '1' == required ) ? 0 : 1 ) } ) }
+			/>
+			<ToggleControl
+				label={ __( 'Show Correct Answer Info', 'quiz-master-next' ) }
+				checked={ enableCorrectAnsInfo  }
+				onChange={ () => setEnableCorrectAnsInfo( ! enableCorrectAnsInfo ) }
 			/>
 			</PanelBody>
 			{/**File Upload */}
@@ -451,6 +508,26 @@ export default function Edit( props ) {
 				isCategorySelected={ isCategorySelected }
 				setUnsetCatgory={ setUnsetCatgory }
 			/>
+			{/**Hint */}
+			<PanelBody title={ __( 'Hint', 'quiz-master-next' ) } initialOpen={ false }  >
+			<TextControl
+				label=''
+				value={ hint }
+				onChange={ ( hint ) => setAttributes( { hint: qsmStripTags( hint ) } ) }
+			/>
+			</PanelBody>
+			{/**Comment Box */}
+			<PanelBody title={ qsmBlockData.commentBox.heading } initialOpen={ false } >
+			<SelectControl
+				label={ qsmBlockData.commentBox.label }
+				value={ commentBox || qsmBlockData.commentBox.default }
+				options={ qsmBlockData.commentBox.options }
+				onChange={ ( commentBox ) =>
+					setAttributes( { commentBox } )
+				}
+				__nextHasNoMarginBottom
+			/>
+			</PanelBody>
 			{/**Feature Image */}
 			<PanelBody title={ __( 'Featured image', 'quiz-master-next' ) } initialOpen={ true }>
 				<FeaturedImage 
@@ -468,18 +545,6 @@ export default function Edit( props ) {
 					});
 				}  }
 				/>
-			</PanelBody>
-			{/**Comment Box */}
-			<PanelBody title={ qsmBlockData.commentBox.heading } >
-			<SelectControl
-				label={ qsmBlockData.commentBox.label }
-				value={ commentBox || qsmBlockData.commentBox.default }
-				options={ qsmBlockData.commentBox.options }
-				onChange={ ( commentBox ) =>
-					setAttributes( { commentBox } )
-				}
-				__nextHasNoMarginBottom
-			/>
 			</PanelBody>
 		</InspectorControls>
 		<div  { ...blockProps } >
@@ -501,7 +566,7 @@ export default function Edit( props ) {
 					tagName='p'
 					title={ __( 'Question description', 'quiz-master-next' ) }
 					aria-label={ __( 'Question description', 'quiz-master-next' ) }
-					placeholder={  __( 'Description goes here', 'quiz-master-next' ) }
+					placeholder={  __( 'Description goes here... (optional)', 'quiz-master-next' ) }
 					value={ qsmDecodeHtml( description ) }
 					onChange={ ( description ) => setAttributes({ description }) }
 					className={ 'qsm-question-description' }
@@ -515,29 +580,29 @@ export default function Edit( props ) {
 						template={ QUESTION_TEMPLATE }
 					/>
 				}
-				
-				<RichText
-					tagName='p'
-					title={ __( 'Correct Answer Info', 'quiz-master-next' ) }
-					aria-label={ __( 'Correct Answer Info', 'quiz-master-next' ) }
-					placeholder={  __( 'Correct answer info goes here', 'quiz-master-next' ) }
-					value={ qsmDecodeHtml( correctAnswerInfo ) }
-					onChange={ ( correctAnswerInfo ) => setAttributes({ correctAnswerInfo }) }
-					className={ 'qsm-question-correct-answer-info' }
-					__unstableEmbedURLOnPaste
-					__unstableAllowPrefixTransformations
-				/>
-				<RichText
-					tagName='p'
-					title={ __( 'Hint', 'quiz-master-next' ) }
-					aria-label={ __( 'Hint', 'quiz-master-next' ) }
-					placeholder={  __( 'hint goes here', 'quiz-master-next' ) }
-					value={ hint }
-					onChange={ ( hint ) => setAttributes( { hint: qsmStripTags( hint ) } ) }
-					allowedFormats={ [ ] }
-					withoutInteractiveFormatting
-					className={ 'qsm-question-hint' }
-				/>
+				{
+					enableCorrectAnsInfo && (
+						<RichText
+							tagName='p'
+							title={ __( 'Correct Answer Info', 'quiz-master-next' ) }
+							aria-label={ __( 'Correct Answer Info', 'quiz-master-next' ) }
+							placeholder={  __( 'Correct answer info goes here', 'quiz-master-next' ) }
+							value={ qsmDecodeHtml( correctAnswerInfo ) }
+							onChange={ ( correctAnswerInfo ) => setAttributes({ correctAnswerInfo }) }
+							className={ 'qsm-question-correct-answer-info' }
+							__unstableEmbedURLOnPaste
+							__unstableAllowPrefixTransformations
+						/>
+					)
+				}
+				<Button 
+					icon='plus-alt2'
+					onClick={ () => insertNewQuestion() }
+					variant="secondary"
+					className='add-new-question-btn'
+				>
+					{ __( 'Add New Question', 'quiz-master-next' ) }
+				</Button>
 				</>
 			}
 		</div>

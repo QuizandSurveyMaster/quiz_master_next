@@ -81,9 +81,18 @@
     .qsm-question-correct-answer-info,
     .qsm-question-hint {
         font-size: 1rem;
+        color: $qsm_primary_color;
     }
 
     /*Question options*/
+    .wp-block-qsm-quiz-answer-option{
+        input:disabled{
+            border-color: inherit;
+        }
+        input[type="radio"]:disabled, input[type="checkbox"]:disabled{
+            opacity: 1;
+        }
+    }
     .qsm-question-answer-option{
         color: $qsm_primary_color;
         font-size: 0.9rem;
@@ -96,5 +105,27 @@
             color: $qsm_primary_color;
         }
     }
+
+    .add-new-question-btn{
+        margin-top: 2rem;
+    }
     
+}
+
+.qsm-advance-q-modal{
+    text-align: center;
+    justify-content: center;
+    max-width: 580px;
+    .qsm-title{
+        margin-top: 0;
+    }
+    .qsm-modal-btn-wrapper{
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        .components-external-link{
+            color: #ffffff;
+            text-decoration: none;
+        }
+    }
 }

@@ -93,7 +93,12 @@
   },
   "example": {},
   "supports": {
-    "html": false
+    "html": false,
+    "anchor": true,
+    "className": true,
+    "interactivity": {
+      "clientNavigation": true
+    }
   },
   "textdomain": "main-block",
   "editorScript": "file:./index.js",
