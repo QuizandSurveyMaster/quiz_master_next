@@ -2,13 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 5.4
-<<<<<<< HEAD
-Stable tag: 8.2.2
-=======
 Stable tag: 8.2.3
->>>>>>> master
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
