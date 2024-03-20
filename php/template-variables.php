@@ -1084,6 +1084,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
 					$do_show_wrong       = true;
 					$user_given_answer   = '' === $answer[1] ? $quiz_options->no_answer_text : htmlentities( $answer[1] );
+					if ( 12 == $answer['question_type'] ) {
+						$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
+						$user_given_answer = date_i18n($preferred_date_format, strtotime($user_given_answer));
+					}
 					foreach ( $total_answers as $single_answer_key => $single_answer ) {
 						$current_answer_zero = trim( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
@@ -1264,6 +1268,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
+				} elseif ( isset( $answer['question_type'] ) && 12 == $answer['question_type'] ) {
+					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
+					$user_given_answer = date_i18n($preferred_date_format, strtotime($answer[1]));
+					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . $user_given_answer . '</span>';
 				} else {
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 				}
