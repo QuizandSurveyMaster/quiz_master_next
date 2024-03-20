@@ -1926,7 +1926,7 @@ class QMNQuizManager {
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
 				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
 			}
-			$result_display .= $results_pages['display'];
+			$result_display .= wp_kses_post( htmlspecialchars_decode( $results_pages['display'], ENT_QUOTES) );
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
