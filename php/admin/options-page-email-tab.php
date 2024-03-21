@@ -99,13 +99,26 @@ function qsm_options_emails_tab_content() {
 							$upgrade_link = "";$variable = "";
 							$tooltip = '';
 							if ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) {
-								$upgrade_link = qsm_get_plugin_link( 'extra-template-variables' );
+								$upgrade_link = qsm_get_plugin_link('extra-template-variables');
 								$classname = "qsm-upgrade-popup-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+
 							}
 							if ( ( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name ) ) {
-								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-leaderboard/' );
+								$upgrade_link = qsm_get_plugin_link('downloads/advanced-leaderboard/');
 								$classname = "qsm-upgrade-popup-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+
+							}
+							if ( ( ! class_exists( 'QSM_Analysis' ) ) && ( 'Analysis' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link('downloads/results-analysis/');
+								$classname = "qsm-upgrade-popup-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+
+							}
+							if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
+								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
 							?>
@@ -115,19 +128,19 @@ function qsm_options_emails_tab_content() {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-									<?php if ( ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) || (( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name )) ) {?>
+									<?php if ( str_contains( $classname, 'qsm-upgrade-popup-variable') ) {?>
 										<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
-													<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
-												</span>
-												<?php } else { ?>
-												<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-												<span class='button click-to-copy'>Click to Copy</span>
-												<span class="temp-var-seperator">
-													<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-													<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
-													</span>
-												</span>
-											<?php } ?>
+											<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+										</span>
+									<?php } else { ?>
+										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+										<span class='button click-to-copy'>Click to Copy</span>
+										<span class="temp-var-seperator">
+											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+											<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
+											</span>
+										</span>
+									<?php } ?>
 									</span>
 								</div>
 								<?php
@@ -252,8 +265,12 @@ function qsm_options_emails_tab_template() {
 							<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
 						<?php } else { ?>
 							<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-						<?php } ?>
-					<?php do_action( 'qsm_email_page_condition_category' ); ?>
+						<?php }
+						if ( ! class_exists( 'QSM_Advanced_Assessment' ) ) { ?>
+							<option value="option-pro"><?php esc_html_e( 'Option (pro)', 'quiz-master-next' ); ?></option>
+							<option value="label-pro"><?php esc_html_e( 'Label (pro)', 'quiz-master-next' ); ?></option>
+						<?php }
+						do_action( 'qsm_email_page_condition_category' ); ?>
 				</select>
 			</div>
 			<div class="email-extra-condition-category-container qsm-email-condition-container-inner">

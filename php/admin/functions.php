@@ -1421,13 +1421,9 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%CATEGORY_PERCENTAGE_X%'     => __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
 			'%COUNT_UNATTEMPTED%'         => __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
 		);
-		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-			$extra_variables = array(
-				'Extra Template Variables' => $template_array,
-			);
-		} else {
-			$extra_variables = $template_array;
-		}
+		$extra_variables = array(
+			'Extra Template Variables' => $template_array,
+		);
 		$variable_list = array_merge($variable_list, $extra_variables);
 	}
 	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
@@ -1437,14 +1433,22 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%LEADERBOARD_POSITION_URL%' => __('Display Leaderboard URL to check position.', 'quiz-master-next'  ),
 		);
 
-		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-			$leaderboard = array(
-				'Advanced Leaderboard' => $template_array,
-			);
-		} else {
-			$extra_variables = $template_array;
-		}
+		$leaderboard = array(
+			'Advanced Leaderboard' => $template_array,
+		);
 		$variable_list = array_merge($variable_list, $leaderboard );
+	}
+	if ( ! class_exists('QSM_Advanced_Assessment') ) {
+		$template_array = array(
+			'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+		);
+		$advanced_assessment = array(
+			'Advanced Assessment' => $template_array,
+		);
+		$variable_list = array_merge( $variable_list, $advanced_assessment );
 	}
 	return $variable_list;
 }
@@ -1540,4 +1544,19 @@ function qsm_get_input_label_selected( $param ) {
         esc_attr( $param['name'] ),
         wp_kses( $options ,$allowed_tags)
     );
+}
+function qsm_advanced_assessment_quiz_page_content() {
+	$args = array(
+		"id"           => 'advanced-assessment',
+		"title"        => __( 'Advanced Assessment', 'quiz-master-next' ),
+		"description"  => __( 'Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
+		"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
+		"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
 }

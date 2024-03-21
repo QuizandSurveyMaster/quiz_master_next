@@ -3890,6 +3890,9 @@ var import_button;
     jQuery(document).on('click', '.qsm-mark-as-default', function () {
         jQuery('.qsm-mark-as-default').not(jQuery(this)).prop('checked', false);
     })
+    jQuery(document).on('click', '.qsm-upgrade-popup-advanced-assessment-variable', function () {
+        MicroModal.show('modal-advanced-assessment');
+    });
     function qsmHandleConditionChange(containerClass, extraCategoryClass, operatorClass, criteriaClass, defaultValueClass) {
         jQuery(document).on('change', '.' + containerClass + '-category', function () {
             let container = jQuery(this).closest('.' + containerClass);
@@ -3918,6 +3921,9 @@ var import_button;
                 container.find('.' + operatorClass + ' option').hide().prop("selected", true);
                 container.find('.' + operatorClass + ' option.default_operator').show().prop("selected", true);
                 container.find('option.qsm-score-criteria').show();
+            } else if ('option-pro' == jQuery(this).val() || 'label-pro' == jQuery(this).val()) {
+                jQuery(this).val('quiz');
+                MicroModal.show('modal-advanced-assessment');
             }
         });
     }
