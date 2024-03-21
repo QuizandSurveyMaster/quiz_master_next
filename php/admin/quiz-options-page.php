@@ -315,6 +315,20 @@ function qsm_generate_quiz_options() {
 			$style_tags[] = '.question[data-question-type="16"]';
 			$style_tags[] = '.question[data-question-type="17"]';
 		}
+		if ( ! class_exists('QSM_Advanced_Assessment') ) {
+			$qsm_pop_up_arguments = array(
+				"id"           => 'modal-advanced-assessment',
+				"title"        => __('Advanced Assessment', 'quiz-master-next'),
+				"description"  => __('Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next'),
+				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advance-assessment-chart.png',
+				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
+				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
+				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+			);
+			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+		}
 		if ( ! class_exists('QSM_Flashcards') ) {
 			$style_tags[] = '.question[data-question-type="18"]';
 		}
