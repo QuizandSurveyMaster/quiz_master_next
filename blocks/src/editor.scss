@@ -76,9 +76,10 @@
 
     .block-editor-block-list__insertion-point-inserter.qsm-add-new-ques-wrapper{
         position: relative;
-        bottom: -10px;
+        bottom: 25px;
         left: auto;
         z-index: 9;
+        height: 20px;
     }
     /*Question Title*/
     .qsm-question-title {
