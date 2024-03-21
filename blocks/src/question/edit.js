@@ -27,7 +27,7 @@ import {
 } from '@wordpress/components';
 import FeaturedImage from '../component/FeaturedImage';
 import SelectAddCategory from '../component/SelectAddCategory';
-import { warningIcon } from "../component/icon";
+import { warningIcon, plusIcon } from "../component/icon";
 import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray, qsmMatchingValueKeyArray } from '../helper';
 
 
@@ -227,7 +227,7 @@ export default function Edit( props ) {
 
 	//add classes
 	const blockProps = useBlockProps( {
-		className: isParentOfSelectedBlock ? ' in-editing-mode':'' ,
+		className: isParentOfSelectedBlock ? ' in-editing-mode is-highlighted ':'' ,
 	} );
 
 	const QUESTION_TEMPLATE = [
@@ -595,14 +595,22 @@ export default function Edit( props ) {
 						/>
 					)
 				}
-				<Button 
-					icon='plus-alt2'
+				{
+					isParentOfSelectedBlock && ( 
+					<div className='block-editor-block-list__insertion-point-inserter qsm-add-new-ques-wrapper'>
+					<Button 
+					icon={ plusIcon }
+					label={ __( 'Add New Question', 'quiz-master-next' ) }
+					tooltipPosition="bottom"
 					onClick={ () => insertNewQuestion() }
 					variant="secondary"
-					className='add-new-question-btn'
-				>
-					{ __( 'Add New Question', 'quiz-master-next' ) }
-				</Button>
+					className='add-new-question-btn block-editor-inserter__toggle'
+					>
+					</Button>
+					</div>
+					)
+				}
+				
 				</>
 			}
 		</div>
