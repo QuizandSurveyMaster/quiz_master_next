@@ -1951,6 +1951,10 @@ jQuery(document).on( 'click', '.qsm-quiz-container', function() {
     jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
     jQuery(this).addClass('qsm-recently-active');
 });
+if (jQuery('.qsm-quiz-container').length > 0) {
+    jQuery('body .qsm-quiz-container:first').addClass('qsm-recently-active');
+}
+
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_start', event);

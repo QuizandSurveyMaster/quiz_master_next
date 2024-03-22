@@ -557,7 +557,6 @@ class QMNGlobalSettingsPage {
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
-				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $api_tab_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
 			</h2>
 			<?php
@@ -614,8 +613,11 @@ class QMNGlobalSettingsPage {
 						</div>
 						<?php
 					}
-					submit_button();
 					?>
+					<p class="submit">
+						<a class="button-secondary" id="qsm-apply-global-settings" href="?page=qmn_global_settings&tab=quiz-apply-default-options"><?php esc_html_e( 'Apply to Quizzes', 'quiz-master-next'); ?></a>
+						<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'quiz-master-next'); ?>">
+					</p>
 				</form>
 			<?php } ?>
 
@@ -637,7 +639,7 @@ class QMNGlobalSettingsPage {
 				}
 				?>
 				<h2><?php esc_html_e( 'Apply global setting on quizzes', 'quiz-master-next' ); ?></h2>
-				<form action="" method="POST">
+				<form action="" method="POST" id="qsm-apply-global-settings-form">
 					<?php wp_nonce_field( 'qsm-apply-global-settings-nonce', 'qsm-apply-global-settings-nonce' ); ?>
 					<?php
 					$args    = array(
@@ -661,11 +663,33 @@ class QMNGlobalSettingsPage {
 						</div>
 					</div>
 					<p class="submit">
-						<input type="submit" name="apply-global-settings" class="button button-primary" value="<?php esc_html_e( 'Apply settings', 'quiz-master-next' ); ?>">
+						<a href="javascript:void(0);" class="button button-primary" id="qsm-apply-global-settings"><?php esc_html_e( 'Apply settings', 'quiz-master-next' ); ?></a>
 					</p>
 				</form>
 			<?php } ?>
 		</div>
+		<!-- set global setting popup start -->
+		<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="qsm-global-apply-default-popup" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Are you sure?', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="qsm-global-default-popup-content">
+						<p>
+							<span id="qsm-quizzes-global-count">0</span>
+							<?php esc_html_e( 'Quizzes will be affected, Do you want to continue and reset all the settings? Please note that this action is not reversible.', 'quiz-master-next' ); ?>
+						</p>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="<?php esc_html_e( 'Close this dialog window', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+						<button class="button button-primary" type="button" id="qsm-apply-global-default-btn"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		<!-- set global setting popup end -->
 		<?php
 	}
 
@@ -746,7 +770,7 @@ class QMNGlobalSettingsPage {
 			</label>
 			<label for="qsm-score-roundoff">
 				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_system, 1 ); ?>>
-				<?php esc_html_e( 'Allow Score Round-off', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'Round off all scores and points', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
 		<?php
