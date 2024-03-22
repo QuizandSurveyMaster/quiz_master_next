@@ -87,6 +87,62 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'api-key', __( 'API Key', 'quiz-master-next' ), array( $this, 'api_key_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'api-key-options', __( 'API Key Options', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
+	}
+
+	/**
+	 * Generates Setting Field For Post Archive
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function api_key_options() {
+		$settings    = (array) get_option( 'qmn-settings' );
+		$get_questions = ! empty( $settings['get_questions'] ) ? esc_attr( $settings['get_questions'] ) : '';
+		$get_quiz = ! empty( $settings['get_quiz'] ) ? esc_attr( $settings['get_quiz'] ) : '';
+		$allow_submit_quiz = ! empty( $settings['allow_submit_quiz'] ) ? esc_attr( $settings['allow_submit_quiz'] ) : '';
+		$get_result = ! empty( $settings['get_result'] ) ? esc_attr( $settings['get_result'] ) : '';
+		?>
+		<fieldset>
+			<label for="qmn-settings-get_questions">
+				<input type="checkbox" name="qmn-settings[get_questions]" id="qmn-settings-get_questions" value="1" <?php checked( $get_questions, 1, true ); ?> />
+				<?php esc_html_e( 'Enable get questions', 'quiz-master-next'); ?>
+			</label><br/>
+			<label for="qmn-settings-get_quiz">
+				<input type="checkbox" name="qmn-settings[get_quiz]" id="qmn-settings-get_quiz" value="1" <?php checked( $get_quiz, 1, true ); ?> />
+				<?php esc_html_e( 'Enable get quiz', 'quiz-master-next'); ?>
+			</label><br/>
+			<label for="qmn-settings-allow_submit_quiz">
+				<input type="checkbox" name="qmn-settings[allow_submit_quiz]" id="qmn-settings-allow_submit_quiz" value="1" <?php checked( $allow_submit_quiz, 1, true ); ?> />
+				<?php esc_html_e( 'Allow Submit Quiz', 'quiz-master-next'); ?>
+			</label><br/>
+			<label for="qmn-settings-get_result">
+				<input type="checkbox" name="qmn-settings[get_result]" id="qmn-settings-get_result" value="1" <?php checked( $get_result, 1, true ); ?> />
+				<?php esc_html_e( 'Get Result', 'quiz-master-next'); ?>
+			</label><br/>
+		</fieldset>
+		<?php
+	}
+
+	
+	public function api_key_field() {
+		$settings   = (array) get_option( 'qmn-settings' );
+		$api_key = ! empty( $settings['api_key'] ) ? esc_attr( $settings['api_key'] ) : '';
+		
+		$qpi_script_inline = array(
+			'confirmation_message' => __('Are you sure you want to regenerate the API Key? This will affect your settings when you save changes, and the old key will no longer work.', 'quiz-master-next'),
+			'nonce'                => wp_create_nonce('regenerate_api_key_nonce'),
+		);
+		wp_localize_script( 'qsm_admin_js', 'qsm_api_object', $qpi_script_inline );
+		?>
+		<input type='text' name='qmn-settings[api_key]' class="qsm-api-key-input" id='qmn-settings[api_key]' readonly value='<?php echo esc_attr( $api_key ); ?>' />
+		<?php if ( "" != $api_key ) { ?>
+			<button class="button qsm-generate-api-key confirmation" ><?php esc_html_e('Regenerate Key', 'quiz-master-next'); ?></button>
+		<?php } else { ?>
+			<button class="button qsm-generate-api-key"><?php esc_html_e('Generate Key', 'quiz-master-next'); ?></button>
+		<?php } ?>
+		<?php
 	}
 
 	/**
@@ -540,15 +596,9 @@ class QMNGlobalSettingsPage {
 		if ( isset( $_GET['tab'] ) ) {
 			if ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qmn_global_settings' ) {
 				$active_tab = 'qmn_global_settings';
-			} elseif ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qsm_api_settings' ) {
-				$active_tab = 'qsm_api_settings';
 			} else {
 				$active_tab = 'quiz-default-options';
 			}
-		}
-		$api_tab_class = '';
-		if ( 'qsm_api_settings' === $active_tab ) {
-			$api_tab_class = 'nav-tab-active';
 		}
 		?>
 		<div class="wrap">
@@ -557,12 +607,8 @@ class QMNGlobalSettingsPage {
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
-				<a href="?page=qmn_global_settings&tab=qsm_api_settings" class="nav-tab <?php echo esc_attr( $api_tab_class ); ?>"><?php esc_html_e( 'Quiz Api Options', 'quiz-master-next' ); ?></a>
+				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
 			</h2>
-			<?php
-			if ( 'qsm_api_settings' === $active_tab ) {
-				$mlwQuizMasterNext->qsm_api->load_form_field();
-			}  ?>
 
 			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] ) { ?>
 

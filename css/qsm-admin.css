@@ -3425,3 +3425,8 @@ input#preferred-date-format-custom {
     padding: 0px 7px;
 }
 /*TinyMCE Text-editor : end */
+.qsm_global_settings input[type="text"].qsm-api-key-input {
+	min-width: 520px;
+	background: #cccccc36;
+    border: 1px solid #ccc;
+}
