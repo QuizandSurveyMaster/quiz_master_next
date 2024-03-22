@@ -85,6 +85,15 @@ var QSMAdmin;
         $(document).on('click', '#qsm-blobal-settings', function () {
             MicroModal.show('qsm-global-default-popup');
         });
+        $(document).on('click', '#qsm-apply-global-settings', function () {
+            console.log($('#qsm-select-quiz-apply').multiselect('getChecked'));
+            let selectedCount = $('#qsm-select-quiz-apply').find('option:selected').length;
+            jQuery("#qsm-quizzes-global-count").text(selectedCount);
+            MicroModal.show('qsm-global-apply-default-popup');
+        });
+        $(document).on('click', '#qsm-apply-global-default-btn', function () {
+            jQuery('#qsm-apply-global-settings-form').submit();
+        });
 
         $('#qmn_check_all').change(function () {
             $('.qmn_delete_checkbox').prop('checked', jQuery('#qmn_check_all').prop('checked'));
@@ -173,12 +182,12 @@ var QSMAdmin;
             jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
         });
         if( jQuery('#qsm-select-quiz-apply').length ) {
-            jQuery('#qsm-select-quiz-apply').multiselect( {
+            $('#qsm-select-quiz-apply').multiselect({
                 columns: 1,
                 search: true,
                 selectAll: true,
-                dropdownAutoWidth: false
-            } );
+                dropdownAutoWidth: false,
+            });
         }
         jQuery(document).on('click','.add-more-category', function () {
             let original = jQuery('div.select-category-question-limit-maindiv');

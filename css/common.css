@@ -706,7 +706,7 @@ body .ui-tooltip.ui-widget-content {
     margin-bottom: 1rem;
 }
 .qsm-question-wrapper.qsm-active-question{
-	zoom: 105%;
+	border: 1px dotted #828282d1;
 }
 .qsm-quiz-container input[type=checkbox],
 .qsm-quiz-container input[type=radio] {
