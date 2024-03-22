@@ -96,7 +96,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Allow Score Round-off', 'quiz-master-next' ),
+							'label' => __( 'Round off all scores and points for this quiz', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
