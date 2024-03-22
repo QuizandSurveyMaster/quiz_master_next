@@ -72,84 +72,6 @@ class QSMQuizApi {
 		wp_send_json_success( $api_key );
 	}
 
-	public function load_form_field() {
-	
-		if ( isset($_POST['qsm_api_form_nonce']) && wp_verify_nonce($_POST['qsm_api_form_nonce'], 'qsm_api_form') && isset($_POST['qsm_api_settings']) ) {
-			$qsm_api_settings = maybe_serialize($_POST['qsm_api_settings']); 
-			update_option('qsm_quiz_api_settings', $qsm_api_settings);
-		}
-		
-		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
-
-		if ( $qsm_api_settings_serialized ) {
-			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized);
-		} else {
-			
-			$default_api_settings = array(
-				'api_key'           => '',
-				'get_questions'     => '',
-				'get_quiz'          => '',
-				'allow_submit_quiz' => '',
-				'get_result'        => '',
-			);
-
-			$qsm_api_settings = $default_api_settings;
-		}
-
-		$qsm_api_settings['api_key'] = sanitize_text_field($qsm_api_settings['api_key']);
-		$qsm_api_settings['get_questions'] = isset($qsm_api_settings['get_questions']) ? sanitize_text_field($qsm_api_settings['get_questions']) : '';
-		$qsm_api_settings['get_quiz'] = isset($qsm_api_settings['get_quiz']) ? sanitize_text_field($qsm_api_settings['get_quiz']) : '';
-		$qsm_api_settings['allow_submit_quiz'] = isset($qsm_api_settings['allow_submit_quiz']) ? sanitize_text_field($qsm_api_settings['allow_submit_quiz']) : '';
-		$qsm_api_settings['get_result'] = isset($qsm_api_settings['get_result']) ? sanitize_text_field($qsm_api_settings['get_result']) : '';
-
-		$qpi_script_inline = array(
-			'confirmation_message' => __('Are you sure you want to regenerate the API Key? This will affect your settings when you save changes, and the old key will no longer work.', 'quiz-master-next'),
-			'nonce'                => wp_create_nonce('regenerate_api_key_nonce'),
-		);
-		wp_localize_script( 'qsm_admin_js', 'qsm_api_object', $qpi_script_inline );
-		?>
-		<form action="" method="post" class="qsm-api-settings-form">
-			<table class="form-table">
-				<tr valign="top">
-					<th scope="row"><label for="qsm_api_key"><?php esc_html_e('API Key', 'quiz-master-next'); ?></label></th>
-					<td><input type="text" id="qsm_api_key" class="regular-text" name="qsm_api_settings[api_key]" readonly value='<?php echo esc_attr($qsm_api_settings['api_key']); ?>' />
-					<?php if ( "" != $qsm_api_settings['api_key'] ) { ?>
-						<button class="button qsm-generate-api-key confirmation" ><?php esc_html_e('Regenerate Key', 'quiz-master-next'); ?></button>
-					<?php } else { ?>
-						<button class="button qsm-generate-api-key"><?php esc_html_e('Generate Key', 'quiz-master-next'); ?></button>
-					<?php } ?>
-				</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><label for="api_key_options"><?php esc_html_e('API Key Options', 'quiz-master-next'); ?></label></th>
-					<td>
-						<div class="qsm-api-keys-options">
-							<div class="qsm-api-keys-option">
-								<input type="checkbox" id="get_questions" name="qsm_api_settings[get_questions]" value="1" <?php checked($qsm_api_settings['get_questions'], '1'); ?>>
-								<label for="get_questions"><?php esc_html_e('Enable get questions', 'quiz-master-next'); ?></label>
-							</div>
-							<div class="qsm-api-keys-option">
-								<input type="checkbox" id="get_quiz" name="qsm_api_settings[get_quiz]" value="1" <?php checked($qsm_api_settings['get_quiz'], '1'); ?>>
-								<label for="get_quiz"><?php esc_html_e('Enable get quiz', 'quiz-master-next'); ?></label>
-							</div>
-							<div class="qsm-api-keys-option">
-								<input type="checkbox" id="allow_submit_quiz" name="qsm_api_settings[allow_submit_quiz]" value="1" <?php checked($qsm_api_settings['allow_submit_quiz'], '1'); ?>>
-								<label for="allow_submit_quiz"><?php esc_html_e('Allow Submit Quiz', 'quiz-master-next'); ?></label>
-							</div>
-							<div class="qsm-api-keys-option">
-								<input type="checkbox" id="get_result" name="qsm_api_settings[get_result]" value="1" <?php checked($qsm_api_settings['get_result'], '1'); ?>>
-								<label for="get_result"><?php esc_html_e('Get Result', 'quiz-master-next'); ?></label>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<?php wp_nonce_field('qsm_api_form', 'qsm_api_form_nonce'); ?>
-			<button type="submit" name="qsm_api_submit" class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
-		</form>
-		<?php 
-	}
-
 	/**
 	 * Verify API key settings before performing an action.
 	 *
@@ -162,26 +84,19 @@ class QSMQuizApi {
 			'message' => '',
 		);
 
-		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
-
-		if ( $qsm_api_settings_serialized ) {
-			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized);
-
-			if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
-				$response['success'] = true;
-			} else {
-				if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
-					$response['message'] = __('The API key is not configured.', 'quiz-master-next');
-				} elseif ( ! $api_key ) {
-					$response['message'] = __('Please provide an API key.', 'quiz-master-next');
-				} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
-					$response['message'] = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
-				} elseif ( ! isset($qsm_api_settings[ $type ]) || "" == $qsm_api_settings[ $type ] ) {
-					$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
-				}
-			}
+		$qsm_api_settings = (array) get_option( 'qmn-settings' );
+		if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
+			$response['success'] = true;
 		} else {
-			$response['message'] = __('The API key settings are not configured.', 'quiz-master-next');
+			if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
+				$response['message'] = __('The API key is not configured.', 'quiz-master-next');
+			} elseif ( ! $api_key ) {
+				$response['message'] = __('Please provide an API key.', 'quiz-master-next');
+			} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
+				$response['message'] = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
+			} elseif ( ! isset($qsm_api_settings[ $type ]) || "" == $qsm_api_settings[ $type ] ) {
+				$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
+			}
 		}
 
 		return $response;
@@ -498,108 +413,96 @@ class QSMQuizApi {
 	
 	public function qsm_api_quiz_submit( $request ) {
 		
-		$qsm_api_settings_serialized = get_option('qsm_quiz_api_settings');
 		$api_key = $request->get_header('authorization');
-		if ( $qsm_api_settings_serialized ) {
-			$qsm_api_settings = maybe_unserialize($qsm_api_settings_serialized); 
-	
-			if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && isset($qsm_api_settings['allow_submit_quiz']) && "1" == $qsm_api_settings['allow_submit_quiz'] ) {
-				
-				$quiz_id = ! empty( $_POST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) : 0 ;
+		$qsm_api_settings = (array) get_option( 'qmn-settings' );
+		if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && isset($qsm_api_settings['allow_submit_quiz']) && "1" == $qsm_api_settings['allow_submit_quiz'] ) {
 			
-				global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb, $qmnQuizManager;
-				$qmn_allowed_visit = true;
-				$qmnQuizManager = new QMNQuizManager();
-				include_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
-				$qmnQuizManager->qsm_background_email = new QSM_Background_Request();
-				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-				$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-				$post_ids = get_posts(array(
-					'post_type'   => 'qsm_quiz', // Replace with the post type you're working with
-					'meta_key'    => 'quiz_id',
-					'meta_value'  => intval( $quiz_id ),
-					'fields'      => 'ids',
-					'numberposts' => 1,
-				));
-			
-				if ( ! empty( $post_ids[0] ) ) {
-					$post_status = get_post_status( $post_ids[0] );
-				}
-			
-				if ( is_null( $options ) || 1 == $options->deleted ) {
-					echo wp_json_encode(
-						array(
-							'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
-							'redirect'      => false,
-							'result_status' => array(
-								'save_response' => false,
-							),
-						)
-					);
-					wp_die();
-				}
-				if ( 'publish' !== $post_status ) {
-					echo wp_json_encode(
-						array(
-							'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
-							'redirect'      => false,
-							'result_status' => array(
-								'save_response' => false,
-							),
-						)
-					);
-					wp_die();
-				}
-				
-				$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
-				$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
-				$post_status = false;
-				
-				if ( 0 != $options->limit_total_entries ) {
-					$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
-					if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
-						echo wp_json_encode(
-							array(
-								'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
-								'redirect'      => false,
-								'result_status' => array(
-									'save_response' => false,
-								),
-							)
-						);
-						wp_die();
-					}
-				}
-				$data      = array(
-					'quiz_id'         => $options->quiz_id,
-					'quiz_name'       => $options->quiz_name,
-					'quiz_system'     => $options->system,
-					'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
-				);
-				return rest_ensure_response($qmnQuizManager->submit_results( $options, $data ));
-			} else {
-
-				if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
-					$message = __('The API key is not configured.', 'quiz-master-next');
-				} elseif ( ! $api_key ) {
-					$message = __('Please provide an API key.', 'quiz-master-next');
-				} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
-					$message = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
-				} elseif ( ! isset($qsm_api_settings['allow_submit_quiz']) || "" == $qsm_api_settings['allow_submit_quiz'] ) {
-					$message = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
-				}
-
-				$response = array(
-					'display'       => $message,
-					'redirect'      => false,
-					'result_status' => array(
-						'save_response' => false,
-					),
-				);
+			$quiz_id = ! empty( $_POST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) : 0 ;
+		
+			global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb, $qmnQuizManager;
+			$qmn_allowed_visit = true;
+			$qmnQuizManager = new QMNQuizManager();
+			include_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
+			$qmnQuizManager->qsm_background_email = new QSM_Background_Request();
+			$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+			$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			$post_ids = get_posts(array(
+				'post_type'   => 'qsm_quiz', // Replace with the post type you're working with
+				'meta_key'    => 'quiz_id',
+				'meta_value'  => intval( $quiz_id ),
+				'fields'      => 'ids',
+				'numberposts' => 1,
+			));
+		
+			if ( ! empty( $post_ids[0] ) ) {
+				$post_status = get_post_status( $post_ids[0] );
 			}
+		
+			if ( is_null( $options ) || 1 == $options->deleted ) {
+				echo wp_json_encode(
+					array(
+						'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				wp_die();
+			}
+			if ( 'publish' !== $post_status ) {
+				echo wp_json_encode(
+					array(
+						'display'       => __( 'This quiz is in draft mode and is not recording your responses. Please publish the quiz to start recording your responses.', 'quiz-master-next' ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				wp_die();
+			}
+			
+			$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
+			$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
+			$post_status = false;
+			
+			if ( 0 != $options->limit_total_entries ) {
+				$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
+				if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
+					echo wp_json_encode(
+						array(
+							'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$options->quiz_id}" ),
+							'redirect'      => false,
+							'result_status' => array(
+								'save_response' => false,
+							),
+						)
+					);
+					wp_die();
+				}
+			}
+			$data      = array(
+				'quiz_id'         => $options->quiz_id,
+				'quiz_name'       => $options->quiz_name,
+				'quiz_system'     => $options->system,
+				'quiz_payment_id' => isset( $_POST['main_payment_id'] ) ? sanitize_text_field( wp_unslash( $_POST['main_payment_id'] ) ) : '',
+			);
+			return rest_ensure_response($qmnQuizManager->submit_results( $options, $data ));
 		} else {
+
+			if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
+				$message = __('The API key is not configured.', 'quiz-master-next');
+			} elseif ( ! $api_key ) {
+				$message = __('Please provide an API key.', 'quiz-master-next');
+			} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
+				$message = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
+			} elseif ( ! isset($qsm_api_settings['allow_submit_quiz']) || "" == $qsm_api_settings['allow_submit_quiz'] ) {
+				$message = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
+			}
+
 			$response = array(
-				'display'       => __('API settings are not configured.', 'quiz-master-next'),
+				'display'       => $message,
 				'redirect'      => false,
 				'result_status' => array(
 					'save_response' => false,

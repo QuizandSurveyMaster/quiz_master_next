@@ -3884,7 +3884,7 @@ var import_button;
         }
     }
 
-    $(document).on('click', '.qsm-api-settings-form .qsm-generate-api-key', function (event) {
+    $(document).on('click', '.qsm_global_settings .qsm-generate-api-key', function (event) {
         event.preventDefault();
         if (!$(this).hasClass('confirmation') || confirm(qsm_api_object.confirmation_message)) {
             $.ajax({
@@ -3895,7 +3895,7 @@ var import_button;
                     nonce: qsm_api_object.nonce
                 },
                 success: function (response) {
-                    $("#qsm_api_key").val(response.data);
+                    $(".qsm_global_settings .qsm-api-key-input").val(response.data);
                 },
                 error: function (xhr, status, error) {
                     alert("Error: " + error);
