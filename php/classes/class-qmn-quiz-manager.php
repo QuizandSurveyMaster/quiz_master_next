@@ -696,7 +696,7 @@ class QMNQuizManager {
 				}
 			}
 			// check If we should load a specific number of question
-			if ( '' == $quiz_options->limit_category_checkbox && 0 != $quiz_options->question_per_category && $is_quiz_page ) {
+			if ( ( '' == $quiz_options->limit_category_checkbox || 0 == $quiz_options->limit_category_checkbox ) && 0 != $quiz_options->question_per_category && $is_quiz_page ) {
 				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
@@ -705,7 +705,17 @@ class QMNQuizManager {
 					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
 					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-					$tq_ids = $wpdb->get_results( "SELECT DISTINCT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+					$tq_ids = $wpdb->get_results(
+						"SELECT DISTINCT qt.term_id, qt.question_id
+						FROM {$wpdb->prefix}mlw_question_terms AS qt
+						JOIN {$wpdb->prefix}mlw_questions AS q ON qt.question_id = q.question_id
+						WHERE qt.question_id IN ($question_id)
+							AND qt.term_id IN ($term_ids)
+							AND qt.taxonomy = 'qsm_category'
+							AND q.deleted = 0
+						",
+						ARRAY_A
+					);
 					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
@@ -723,7 +733,7 @@ class QMNQuizManager {
 							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 								shuffle( $tv );
 							}
-							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, $quiz_options->question_per_category ) );
+							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, intval( $quiz_options->question_per_category ) ) );
 						}
 					}
 					$question_ids = array_unique( $random );
@@ -748,7 +758,19 @@ class QMNQuizManager {
 						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
-						$tq_ids[] = $wpdb->get_results( "SELECT DISTINCT `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id` = $quiz_id AND `term_id` = $category  AND `taxonomy`='qsm_category' AND question_id NOT IN ($exclude_ids) ".esc_sql( $category_order_sql )." LIMIT $limit", ARRAY_A );
+						$tq_ids[] = $wpdb->get_results(
+							"SELECT DISTINCT q.`question_id`
+							FROM `{$wpdb->prefix}mlw_questions` AS q
+							JOIN `{$wpdb->prefix}mlw_question_terms` AS qt ON q.`question_id` = qt.`question_id`
+							WHERE qt.`quiz_id` = $quiz_id
+								AND qt.`term_id` = $category
+								AND qt.`taxonomy` = 'qsm_category'
+								AND qt.`question_id` NOT IN ($exclude_ids)
+								AND q.`deleted` = 0
+							".esc_sql( $category_order_sql )."
+							LIMIT $limit",
+							ARRAY_A
+						);
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
 					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
@@ -1541,7 +1563,7 @@ class QMNQuizManager {
 		if ( ! isset( $_REQUEST['qsm_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'display'       => __( 'Nonce Validation failed!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1628,7 +1650,7 @@ class QMNQuizManager {
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
 			echo wp_json_encode(
 				array(
-					'display'       => htmlspecialchars_decode( 'Quiz Expired!' ),
+					'display'       => __( 'Quiz Expired!', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,

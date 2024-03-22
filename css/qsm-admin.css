@@ -1352,6 +1352,10 @@ tr .qsm-opt-desc {
     margin-top: 5px;
     display: block;
     font-size: 14px;
+	font-weight: 400;
+}
+.qsm-image-input{
+	margin-right: 5px;
 }
 .form-table .send_email .qsm-opt-tr, .form-table .send_email td {
 	padding-top: 0;
@@ -3310,6 +3314,16 @@ body .qsm_tab_content .qsm-small-input-field input[type="text"] {
     padding: 3px 10px;
     min-width: 100px;
     background-color: #fff;
+	width: 157px;
+}
+.qsm-option-label input:disabled {
+    border-color: #3c434a;
+}
+.qsm-category-list-row td {
+    padding-top: 0;
+}
+.qsm-question-limit-row td{
+	padding-bottom: 0;
 }
 .qsm-quiz-dates fieldset#scheduled_time_start, .qsm-quiz-dates fieldset#scheduled_time_end {
     display: inline-block;
