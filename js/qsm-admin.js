@@ -85,6 +85,15 @@ var QSMAdmin;
         $(document).on('click', '#qsm-blobal-settings', function () {
             MicroModal.show('qsm-global-default-popup');
         });
+        $(document).on('click', '#qsm-apply-global-settings', function () {
+            console.log($('#qsm-select-quiz-apply').multiselect('getChecked'));
+            let selectedCount = $('#qsm-select-quiz-apply').find('option:selected').length;
+            jQuery("#qsm-quizzes-global-count").text(selectedCount);
+            MicroModal.show('qsm-global-apply-default-popup');
+        });
+        $(document).on('click', '#qsm-apply-global-default-btn', function () {
+            jQuery('#qsm-apply-global-settings-form').submit();
+        });
 
         $('#qmn_check_all').change(function () {
             $('.qmn_delete_checkbox').prop('checked', jQuery('#qmn_check_all').prop('checked'));
@@ -173,12 +182,12 @@ var QSMAdmin;
             jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
         });
         if( jQuery('#qsm-select-quiz-apply').length ) {
-            jQuery('#qsm-select-quiz-apply').multiselect( {
+            $('#qsm-select-quiz-apply').multiselect({
                 columns: 1,
                 search: true,
                 selectAll: true,
-                dropdownAutoWidth: false
-            } );
+                dropdownAutoWidth: false,
+            });
         }
         jQuery(document).on('click','.add-more-category', function () {
             let original = jQuery('div.select-category-question-limit-maindiv');
@@ -3867,7 +3876,7 @@ var import_button;
         }
     }
 
-    $(document).on('click', '.qsm-api-settings-form .qsm-generate-api-key', function (event) {
+    $(document).on('click', '.qsm_global_settings .qsm-generate-api-key', function (event) {
         event.preventDefault();
         if (!$(this).hasClass('confirmation') || confirm(qsm_api_object.confirmation_message)) {
             $.ajax({
@@ -3878,7 +3887,7 @@ var import_button;
                     nonce: qsm_api_object.nonce
                 },
                 success: function (response) {
-                    $("#qsm_api_key").val(response.data);
+                    $(".qsm_global_settings .qsm-api-key-input").val(response.data);
                 },
                 error: function (xhr, status, error) {
                     alert("Error: " + error);
@@ -3890,6 +3899,9 @@ var import_button;
     jQuery(document).on('click', '.qsm-mark-as-default', function () {
         jQuery('.qsm-mark-as-default').not(jQuery(this)).prop('checked', false);
     })
+    jQuery(document).on('click', '.qsm-upgrade-popup-advanced-assessment-variable', function () {
+        MicroModal.show('modal-advanced-assessment');
+    });
     function qsmHandleConditionChange(containerClass, extraCategoryClass, operatorClass, criteriaClass, defaultValueClass) {
         jQuery(document).on('change', '.' + containerClass + '-category', function () {
             let container = jQuery(this).closest('.' + containerClass);
@@ -3918,6 +3930,9 @@ var import_button;
                 container.find('.' + operatorClass + ' option').hide().prop("selected", true);
                 container.find('.' + operatorClass + ' option.default_operator').show().prop("selected", true);
                 container.find('option.qsm-score-criteria').show();
+            } else if ('option-pro' == jQuery(this).val() || 'label-pro' == jQuery(this).val()) {
+                jQuery(this).val('quiz');
+                MicroModal.show('modal-advanced-assessment');
             }
         });
     }

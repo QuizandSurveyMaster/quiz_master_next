@@ -770,6 +770,9 @@ ul.changelog li.update div.two:before {
 #qsm-export-settings-options button {
 	overflow: hidden;
 }
+#qsm-export-settings-options .select2-container{
+	max-width: 430px;
+}
 .admin_page_mlw_quiz_options .qsm-info-widget {
 	background: #fff;
 	margin: 0 0 20px 0;
@@ -3422,3 +3425,8 @@ input#preferred-date-format-custom {
     padding: 0px 7px;
 }
 /*TinyMCE Text-editor : end */
+.qsm_global_settings input[type="text"].qsm-api-key-input {
+	min-width: 520px;
+	background: #cccccc36;
+    border: 1px solid #ccc;
+}

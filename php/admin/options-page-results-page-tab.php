@@ -73,35 +73,41 @@ function qsm_options_results_tab_content() {
 				$variable_list['Core']['%RESULT_ID%']      = __( 'Show result id', 'quiz-master-next' );
 				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
 				if ( ! class_exists('QSM_Analysis') ) {
-				global $mlwQuizMasterNext;
-				$template_array = array(
-					'%QSM_PIECHART_RESULT_X%' => __( 'X: Question ID, Display the answers piechart.', 'quiz-master-next' ),
-				);
-				if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+					$template_array = array(
+						'%QSM_PIECHART_RESULT_X%'    => __( 'X: Question ID, Display the answers piechart.', 'quiz-master-next' ),
+						'%QSM_BARCHART_RESULT_X%'    => __( 'X: Question ID, Display the answers barchart.', 'quiz-master-next' ),
+						'%CATEGORY_POINTS_PIECHART%' => __( 'Display the point based category piechart.', 'quiz-master-next' ),
+						'%CATEGORY_POINTS_BARCHART%' => __( 'Display the point based category barchart.', 'quiz-master-next' ),
+					);
 					$analysis = array(
 						'Analysis' => $template_array,
 					);
-				} else {
-					$analysis = $template_array;
+					$variable_list = array_merge( $variable_list, $analysis );
 				}
-				$variable_list = array_merge( $variable_list, $analysis );
+				if ( ! class_exists('QSM_Advanced_Assessment') ) {
+					$template_array = array(
+						'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+					);
+					if ( ! empty( $_GET['tab'] ) && 'results-pages' === $_GET['tab'] ) {
+						$template_array['%ANSWER_LABEL_POINTS_PIE_CHART%'] = __( 'Display piechart based on points.', 'quiz-master-next' );
+						$template_array['%ANSWER_LABEL_COUNTS_PIE_CHART%'] = __( 'Display piechart based on counts.', 'quiz-master-next' );
+					}
+					$advanced_assessment = array(
+						'Advanced Assessment' => $template_array,
+					);
+					$variable_list = array_merge( $variable_list, $advanced_assessment );
 				}
 				if ( ! class_exists('QSM_Exporting') ) {
-				global $mlwQuizMasterNext;
-				$template_array = array(
-					'%PDF_BUTTON%' => __( 'Displays download button on the results page.', 'quiz-master-next' ),
-				);
-				$download_results = array(
-					'Export Results' => $template_array,
-				);
-				if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+					$template_array = array(
+						'%PDF_BUTTON%' => __( 'Displays download button on the results page.', 'quiz-master-next' ),
+					);
 					$download_results = array(
 						'Export Results' => $template_array,
 					);
-				} else {
-					$download_results = $template_array ;
-				}
-				$variable_list = array_merge($variable_list, $download_results);
+					$variable_list = array_merge($variable_list, $download_results);
 				}
 				//filter to add or remove variables from variable list for pdf tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
@@ -142,6 +148,11 @@ function qsm_options_results_tab_content() {
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 
 							}
+							if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
+								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
 							?>
 							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
 							<?php
@@ -149,19 +160,19 @@ function qsm_options_results_tab_content() {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-											<?php if ( ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) || (( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name )) || ( ( ! class_exists( 'QSM_Exporting' ) ) && ( 'Export Results' == $category_name) ) || ( ( ! class_exists( 'QSM_Analysis' ) ) && ( 'Analysis' == $category_name ) ) ) {?>
-												<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
-													<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+									<?php if ( str_contains( $classname, 'qsm-upgrade-popup-variable') ) {?>
+										<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
+											<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+										</span>
+										<?php } else { ?>
+										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+											<span class='button click-to-copy'>Click to Copy</span>
+											<span class="temp-var-seperator">
+												<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+												<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
 												</span>
-												<?php } else { ?>
-												<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-													<span class='button click-to-copy'>Click to Copy</span>
-													<span class="temp-var-seperator">
-														<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-														<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
-														</span>
-													</span>
-													<?php } ?>
+											</span>
+									<?php } ?>
 									</span>
 								</div>
 							<?php
@@ -278,8 +289,12 @@ function qsm_options_results_tab_template(){
 							<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
 						<?php } else { ?>
 							<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-						<?php } ?>
-						<?php do_action( 'qsm_results_page_condition_category' ); ?>
+						<?php }
+						if ( ! class_exists( 'QSM_Advanced_Assessment' ) ) { ?>
+							<option value="option-pro"><?php esc_html_e( 'Option (pro)', 'quiz-master-next' ); ?></option>
+							<option value="label-pro"><?php esc_html_e( 'Label (pro)', 'quiz-master-next' ); ?></option>
+						<?php }
+						do_action( 'qsm_results_page_condition_category' ); ?>
 					</select>
 				</div>
 				<div class="results-page-extra-condition-category-container qsm-result-condition-container-inner">
