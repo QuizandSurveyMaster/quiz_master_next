@@ -908,6 +908,7 @@ class QMNQuizManager {
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
 		echo apply_filters( 'qmn_begin_quiz', '', $options, $quiz_data );
+		$options = apply_filters( 'qmn_begin_quiz_options', $options, $quiz_data );
 		if ( ! $qmn_allowed_visit ) {
 			return;
 		}
