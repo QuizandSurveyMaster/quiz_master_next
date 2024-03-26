@@ -812,7 +812,7 @@ class QMNGlobalSettingsPage {
 				<?php esc_html_e( 'Both', 'quiz-master-next' ); ?>
 			</label>
 			<label for="qsm-score-roundoff">
-				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_system, 1 ); ?>>
+				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_score_roundoff, 1 ); ?>>
 				<?php esc_html_e( 'Round off all scores and points', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
