@@ -163,10 +163,26 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 9.0.0 (March 26, 2024) =
+* Feature: Implemented a minimum length requirement for text-based question types
+* Feature: Introduced a placeholder option for contact fields
+* Feature: Added option to set default setting to multiple quizzes
+* Feature: Added keyboard navigation functionality to quizzes
+* Feature: Implemented support for rounding off points-based variables
+* Feature: Integrated APIs for submitting and accessing quizzes and results
+* Feature: Added option to duplicate result and email templates
+* Bug: Fixed multiple option contact fields translation issue
+* Bug: Fixed fill in the blanks question type translation issue
+* Bug: Fixed an issue related to quiz submission when using the same quiz twice on the same page
+* Bug: Fixed issue with limit questions categorized incorrectly
+* Enhancement: Enhanced the user interface of option tabs for improved usability
+* Enhancement: Improved the user interface of the upload files question type
+* Enhancement: Improve result and email page UI
+
 = 8.2.3 (March 12, 2024) =
-Bug: Fixed issue with inline result while duplicating quizzes
-Bug: Patched a vulnerability related to the result page
-Enhancement: Improve contact fields UI
+* Bug: Fixed issue with inline result while duplicating quizzes
+* Bug: Patched a vulnerability related to the result page
+* Enhancement: Improve contact fields UI
 
 = 8.2.2 (January 18, 2024) =
 * Feature: Added an option to mark texts as code snippets in the question description

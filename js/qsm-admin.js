@@ -86,13 +86,7 @@ var QSMAdmin;
             MicroModal.show('qsm-global-default-popup');
         });
         $(document).on('click', '#qsm-apply-global-settings', function () {
-            console.log($('#qsm-select-quiz-apply').multiselect('getChecked'));
-            let selectedCount = $('#qsm-select-quiz-apply').find('option:selected').length;
-            jQuery("#qsm-quizzes-global-count").text(selectedCount);
             MicroModal.show('qsm-global-apply-default-popup');
-        });
-        $(document).on('click', '#qsm-apply-global-default-btn', function () {
-            jQuery('#qsm-apply-global-settings-form').submit();
         });
 
         $('#qmn_check_all').change(function () {
@@ -184,6 +178,7 @@ var QSMAdmin;
         if( jQuery('#qsm-select-quiz-apply').length ) {
             $('#qsm-select-quiz-apply').multiselect({
                 columns: 1,
+                placeholder: qsm_admin_messages.select,
                 search: true,
                 selectAll: true,
                 dropdownAutoWidth: false,

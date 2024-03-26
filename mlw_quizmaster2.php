@@ -478,6 +478,7 @@ class MLWQuizMasterNext {
 			'variables'                  => __("Variables", 'quiz-master-next'),
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 			'select_all'                 => __("Select All", 'quiz-master-next'),
+			'select'                     => __("Select", 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
