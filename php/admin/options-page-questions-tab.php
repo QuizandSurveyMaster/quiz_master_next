@@ -290,48 +290,7 @@ function qsm_options_questions_tab_content() {
 								</div>
 								<div class="qsm-row" style="margin-bottom: 0;">
 									<?php
-									$description_arr = array(
-										array(
-											'question_type_id' => 11,
-											'description' => __( 'For this question type, users will see a file upload field on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '14',
-											'description' => __( 'Use %BLANK% variable in the description field to display input boxes.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '12',
-											'description' => __( 'For this question type, users will see a date input field on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '3',
-											'description' => __( 'For this question type, users will see a standard input box on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '5',
-											'description' => __( 'For this question type, users will see a standard textarea input box on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '6',
-											'description' => __( 'Displays a simple section on front end. Description is mandatory. ', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '7',
-											'description' => __( 'For this question type, users will see an input box which accepts only number values on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '8',
-											'description' => __( "For this question type, users will see a checkbox on front end. The text in description field will act like it's label.", 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '9',
-											'description' => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
-										),
-										// array(
-										// 'question_type_id' => '13',
-										// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
-										// ),
-									);
+									$description_arr = $mlwQuizMasterNext->pluginHelper->description_array();
 									foreach ( $question_types as $type ) {
 										if ( isset( $type['options']['description'] ) && null !== $type['options']['description'] ) {
 											$description = array(
@@ -952,6 +911,9 @@ function qsm_ajax_save_pages() {
 			'post_modified' => $datetime,
 		);
 		wp_update_post( $update );
+	}
+	if ( is_qsm_block_api_call( 'save_entire_quiz' ) ) {
+		return true;
 	}
 	echo wp_json_encode( $json );
 	wp_die();

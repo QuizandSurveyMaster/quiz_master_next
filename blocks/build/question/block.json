@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qsm/quiz-question",
+  "version": "0.1.0",
+  "title": "Question",
+  "category": "widgets",
+  "parent": [
+    "qsm/quiz-page"
+  ],
+  "icon": "move",
+  "description": "QSM Quiz Question",
+  "attributes": {
+    "isChanged": {
+      "type": "string",
+      "default": false
+    },
+    "questionID": {
+      "type": "string",
+      "default": "0"
+    },
+    "type": {
+      "type": "string",
+      "default": "0"
+    },
+    "description": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "correctAnswerInfo": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "commentBox": {
+      "type": "string",
+      "default": "1"
+    },
+    "category": {
+      "type": "number"
+    },
+    "multicategories": {
+      "type": "array"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "featureImageID": {
+      "type": "number"
+    },
+    "featureImageSrc": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "array"
+    },
+    "answerEditor": {
+      "type": "string",
+      "default": "text"
+    },
+    "matchAnswer": {
+      "type": "string",
+      "default": "random"
+    },
+    "required": {
+      "type": "string",
+      "default": "0"
+    },
+    "media": {
+      "type": "object"
+    },
+    "settings": {
+      "type": "object"
+    }
+  },
+  "usesContext": [
+    "quiz-master-next/quizID",
+    "quiz-master-next/pageID",
+    "quiz-master-next/quizAttr"
+  ],
+  "providesContext": {
+    "quiz-master-next/questionID": "questionID",
+    "quiz-master-next/questionType": "type",
+    "quiz-master-next/answerType": "answerEditor",
+    "quiz-master-next/questionChanged": "isChanged"
+  },
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "className": true,
+    "interactivity": {
+      "clientNavigation": true
+    }
+  },
+  "textdomain": "main-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

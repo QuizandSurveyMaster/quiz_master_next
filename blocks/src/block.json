@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "qsm/quiz",
+	"version": "0.1.0",
+	"title": "QSM",
+	"category": "widgets",
+	"keywords": [ "Quiz", "QSM Quiz", "Survey", "form", "Quiz Block" ],
+	"icon": "vault",
+	"description": "Easily and quickly add quizzes and surveys inside the block editor.",
+	"attributes": {
+		"quizID": {
+			"type": "number",
+			"default": 0
+		},
+		"postID": {
+			"type": "number"
+		},
+		"quizAttr": {
+			"type": "object"
+		}
+	},
+	"providesContext": {
+		"quiz-master-next/quizID": "quizID",
+		"quiz-master-next/quizAttr": "quizAttr"
+	},
+	"usesContext": [ "postId", "postStatus" ],
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "main-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
