@@ -87,8 +87,8 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'api-key-options', __( 'Enable APIs', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key', __( 'API Key', 'quiz-master-next' ), array( $this, 'api_key_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'api-key-options', __( 'API Key Options', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	/**
@@ -107,15 +107,15 @@ class QMNGlobalSettingsPage {
 		<fieldset>
 			<label for="qmn-settings-get_questions">
 				<input type="checkbox" name="qmn-settings[get_questions]" id="qmn-settings-get_questions" value="1" <?php checked( $get_questions, 1, true ); ?> />
-				<?php esc_html_e( 'Enable get questions', 'quiz-master-next'); ?>
+				<?php esc_html_e( 'Get Questions', 'quiz-master-next'); ?>
 			</label><br/>
 			<label for="qmn-settings-get_quiz">
 				<input type="checkbox" name="qmn-settings[get_quiz]" id="qmn-settings-get_quiz" value="1" <?php checked( $get_quiz, 1, true ); ?> />
-				<?php esc_html_e( 'Enable get quiz', 'quiz-master-next'); ?>
+				<?php esc_html_e( 'Get Quiz', 'quiz-master-next'); ?>
 			</label><br/>
 			<label for="qmn-settings-allow_submit_quiz">
 				<input type="checkbox" name="qmn-settings[allow_submit_quiz]" id="qmn-settings-allow_submit_quiz" value="1" <?php checked( $allow_submit_quiz, 1, true ); ?> />
-				<?php esc_html_e( 'Allow Submit Quiz', 'quiz-master-next'); ?>
+				<?php esc_html_e( 'Submit Quiz', 'quiz-master-next'); ?>
 			</label><br/>
 			<label for="qmn-settings-get_result">
 				<input type="checkbox" name="qmn-settings[get_result]" id="qmn-settings-get_result" value="1" <?php checked( $get_result, 1, true ); ?> />
@@ -125,11 +125,11 @@ class QMNGlobalSettingsPage {
 		<?php
 	}
 
-	
+
 	public function api_key_field() {
 		$settings   = (array) get_option( 'qmn-settings' );
 		$api_key = ! empty( $settings['api_key'] ) ? esc_attr( $settings['api_key'] ) : '';
-		
+
 		$qpi_script_inline = array(
 			'confirmation_message' => __('Are you sure you want to regenerate the API Key? This will affect your settings when you save changes, and the old key will no longer work.', 'quiz-master-next'),
 			'nonce'                => wp_create_nonce('regenerate_api_key_nonce'),
@@ -607,7 +607,6 @@ class QMNGlobalSettingsPage {
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
-				<a href="?page=qmn_global_settings&tab=quiz-apply-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Apply Default Options', 'quiz-master-next' ); ?></a>
 			</h2>
 
 			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] ) { ?>
@@ -660,15 +659,15 @@ class QMNGlobalSettingsPage {
 						<?php
 					}
 					?>
-					<p class="submit">
-						<a class="button-secondary" id="qsm-apply-global-settings" href="?page=qmn_global_settings&tab=quiz-apply-default-options"><?php esc_html_e( 'Apply to Quizzes', 'quiz-master-next'); ?></a>
-						<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'quiz-master-next'); ?>">
-					</p>
+					<div class="option-page-option-tab-footer">
+						<p></p>
+						<div>
+							<a class="qsm-btn-link-global-settings" id="qsm-apply-global-settings" href="javascript:void(0);"><?php esc_html_e( 'Apply to multiple quizzes', 'quiz-master-next'); ?></a>
+							<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'quiz-master-next'); ?>">
+						</div>
+					</div>
 				</form>
-			<?php } ?>
-
-			<?php if ( ! empty( $_GET['tab'] ) && 'quiz-apply-default-options' === $_GET['tab'] ) { ?>
-				<?php
+			<?php }
 				if ( isset( $_POST['qsm-apply-global-settings-nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm-apply-global-settings-nonce'] ) ), 'qsm-apply-global-settings-nonce' ) && ! empty( $_POST['qsm-select-quiz'] ) ) {
 					global $mlwQuizMasterNext;
 					$quizzes = qsm_sanitize_rec_array( wp_unslash( $_POST['qsm-select-quiz'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -684,54 +683,52 @@ class QMNGlobalSettingsPage {
 					echo '</div>';
 				}
 				?>
-				<h2><?php esc_html_e( 'Apply global setting on quizzes', 'quiz-master-next' ); ?></h2>
-				<form action="" method="POST" id="qsm-apply-global-settings-form">
-					<?php wp_nonce_field( 'qsm-apply-global-settings-nonce', 'qsm-apply-global-settings-nonce' ); ?>
-					<?php
-					$args    = array(
-						'post_type'      => 'qsm_quiz',
-						'posts_per_page' => -1,
-						'post_status'    => 'publish',
-					);
-					$quizzes = get_posts( $args );
-					?>
-					<div class="qsm-field-row">
-						<label class="qsm-label"><?php esc_html_e( 'Select Quizzes', 'quiz-master-next' ); ?></label>
-						<div id="qsm-export-settings-options">
-							<select name="qsm-select-quiz[]" multiple="multiple" id="qsm-select-quiz-apply" required>
-								<?php if ( $quizzes ) : ?>
-									<?php foreach ( $quizzes as $quiz ) : ?>
-										<?php $quiz_id = get_post_meta( $quiz->ID, 'quiz_id', true ); ?>
-										<option value="<?php echo esc_attr( $quiz_id ); ?>" id="<?php echo esc_attr( $quiz_id ); ?>"><?php echo esc_html( $quiz->post_title ); ?></option>
-									<?php endforeach; ?>
-								<?php endif; ?>
-							</select>
-						</div>
-					</div>
-					<p class="submit">
-						<a href="javascript:void(0);" class="button button-primary" id="qsm-apply-global-settings"><?php esc_html_e( 'Apply settings', 'quiz-master-next' ); ?></a>
-					</p>
-				</form>
-			<?php } ?>
 		</div>
 		<!-- set global setting popup start -->
 		<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="qsm-global-apply-default-popup" aria-hidden="true">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-					<header class="qsm-popup__header">
-						<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Are you sure?', 'quiz-master-next' ); ?></h2>
-						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-					</header>
-					<main class="qsm-popup__content" id="qsm-global-default-popup-content">
-						<p>
-							<span id="qsm-quizzes-global-count">0</span>
-							<?php esc_html_e( 'Quizzes will be affected, Do you want to continue and reset all the settings? Please note that this action is not reversible.', 'quiz-master-next' ); ?>
-						</p>
-					</main>
-					<footer class="qsm-popup__footer">
-						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="<?php esc_html_e( 'Close this dialog window', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-						<button class="button button-primary" type="button" id="qsm-apply-global-default-btn"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
-					</footer>
+					<form action="" method="POST" id="qsm-apply-global-settings-form">
+						<header class="qsm-popup__header">
+							<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Apply default settings to form', 'quiz-master-next' ); ?></h2>
+							<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+						</header>
+						<main class="qsm-popup__content" id="qsm-global-default-popup-content">
+							<?php wp_nonce_field( 'qsm-apply-global-settings-nonce', 'qsm-apply-global-settings-nonce' ); ?>
+							<?php
+							$args    = array(
+								'post_type'      => 'qsm_quiz',
+								'posts_per_page' => -1,
+								'post_status'    => 'publish',
+							);
+							$quizzes = get_posts( $args );
+							?>
+							<div class="qsm-field-row">
+								<label class="qsm-label"><strong><?php esc_html_e( 'Apply the default settings to selected form type', 'quiz-master-next' ); ?></strong></label>
+								<div id="qsm-export-settings-options">
+									<select name="qsm-select-quiz[]" multiple="multiple" id="qsm-select-quiz-apply" required>
+										<?php if ( $quizzes ) : ?>
+											<?php foreach ( $quizzes as $quiz ) : ?>
+												<?php $quiz_id = get_post_meta( $quiz->ID, 'quiz_id', true ); ?>
+												<option value="<?php echo esc_attr( $quiz_id ); ?>" id="<?php echo esc_attr( $quiz_id ); ?>"><?php echo esc_html( $quiz->post_title ); ?></option>
+											<?php endforeach; ?>
+										<?php endif; ?>
+									</select>
+								</div>
+							</div>
+							<div class="qsm-popup-upgrade-warning" style="margin-top: 15px;background:#FFDEDD;border-color:#AD0000;color:#AD0000">
+								<span class="dashicons dashicons-info" style=" font-size: 35px; line-height: 20px; margin-right: 20px; "></span>
+								<span>
+									<?php esc_html_e( 'Do you want to continue and reset all the settings?', 'quiz-master-next' ); ?>
+									<br/><strong> <?php esc_html_e( 'Please note that this action is not reversible.', 'quiz-master-next' ); ?></strong>
+								</span>
+							</div>
+						</main>
+						<footer class="qsm-popup__footer">
+							<button class="qsm-popup__btn" data-micromodal-close="" aria-label="<?php esc_html_e( 'Close this dialog window', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<button class="button button-primary" type="submit" id="qsm-apply-global-default-btn"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
+						</footer>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -815,7 +812,7 @@ class QMNGlobalSettingsPage {
 				<?php esc_html_e( 'Both', 'quiz-master-next' ); ?>
 			</label>
 			<label for="qsm-score-roundoff">
-				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_system, 1 ); ?>>
+				<input type="checkbox" id="qsm-score-roundoff" name="qsm-quiz-settings[score_roundoff]"  value="1" <?php checked( $qsm_score_roundoff, 1 ); ?>>
 				<?php esc_html_e( 'Round off all scores and points', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>

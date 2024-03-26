@@ -251,9 +251,8 @@ class QMNQuizCreator {
 			if ( is_numeric( $new_quiz ) && is_numeric( $quiz_post_id ) ) {
 				$this->set_id( $new_quiz );
 				$this->set_quiz_post_id( $quiz_post_id );
-			}
-
-		} else {
+			}       
+} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0001', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}

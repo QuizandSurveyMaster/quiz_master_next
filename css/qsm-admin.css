@@ -773,6 +773,14 @@ ul.changelog li.update div.two:before {
 #qsm-export-settings-options .select2-container{
 	max-width: 430px;
 }
+.qsm-btn-link-global-settings {
+    line-height: 27px;
+    margin-right: 10px;
+}
+#qsm-export-settings-options .ms-options-wrap>.ms-options>.ms-search input{
+	max-width: 100% !important;
+    border: 1px solid #dcdccfd4;
+}
 .admin_page_mlw_quiz_options .qsm-info-widget {
 	background: #fff;
 	margin: 0 0 20px 0;

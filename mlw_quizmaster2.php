@@ -226,7 +226,7 @@ class MLWQuizMasterNext {
 		include_once 'php/adverts-generate.php';
 		include_once 'php/question-types.php';
 		include_once 'php/default-templates.php';
-		include_once 'php/shortcodes.php';		
+		include_once 'php/shortcodes.php';      
 
 		include_once 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();
@@ -487,6 +487,7 @@ class MLWQuizMasterNext {
 			'variables'                  => __("Variables", 'quiz-master-next'),
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 			'select_all'                 => __("Select All", 'quiz-master-next'),
+			'select'                     => __("Select", 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
@@ -587,7 +588,7 @@ class MLWQuizMasterNext {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'show_in_nav_menus' => true,
-			'show_in_rest' 		=> true,
+			'show_in_rest'      => true,
 			'show_tagcloud'     => false,
 			'rewrite'           => false,
 		);

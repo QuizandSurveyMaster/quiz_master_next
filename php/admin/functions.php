@@ -588,7 +588,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 		global $globalQuizsetting, $mlwQuizMasterNext, $themes_data;
 		
 		$quiz_setting_option = array(
-			'form_type'              => array(
+			'form_type'                              => array(
 				'option_name' => __( 'Form Type', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['form_type'],
 				'default'     => 0,
@@ -608,7 +608,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 			),
-			'system'                 => array(
+			'system'                                 => array(
 				'option_name' => __( 'Grading System', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['system'],
 				'default'     => 0,
@@ -629,7 +629,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 				'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 			),
-			'enable_contact_form'    => array(
+			'enable_contact_form'                    => array(
 				'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 				'value'       => 0,
 				'type'        => 'radio',
@@ -644,21 +644,21 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 			),
-			'timer_limit'            => array(
+			'timer_limit'                            => array(
 				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['timer_limit'],
 				'type'        => 'number',
 				'default'     => 0,
 				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
 			),
-			'pagination'             => array(
+			'pagination'                             => array(
 				'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['pagination'],
 				'type'        => 'number',
 				'default'     => 0,
 				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
 			),
-			'enable_pagination_quiz' => array(
+			'enable_pagination_quiz'                 => array(
 				'option_name' => __( 'Show current page number', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['enable_pagination_quiz'],
 				'options'     => array(
@@ -689,7 +689,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 				'default'     => 0,
 			),
-			'progress_bar'           => array(
+			'progress_bar'                           => array(
 				'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['enable_pagination_quiz'],
 				'type'        => 'radio',
@@ -705,7 +705,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 				'default'     => 0,
 			),
-			'require_log_in'         => array(
+			'require_log_in'                         => array(
 				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['require_log_in'],
 				'type'        => 'radio',
@@ -722,7 +722,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				'default'     => 0,
 				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
 			),
-			'disable_first_page'     => array(
+			'disable_first_page'                     => array(
 				'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['disable_first_page'],
 				'type'        => 'radio',
@@ -738,7 +738,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 				'default'     => 0,
 			),
-			'comment_section'        => array(
+			'comment_section'                        => array(
 				'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['comment_section'],
 				'type'        => 'radio',
