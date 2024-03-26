@@ -24,6 +24,15 @@ class QMNQuizCreator {
 	 */
 	private $quiz_id;
 
+
+	/**
+	 * QMN POST ID of quiz
+	 *
+	 * @var   integer
+	 * @since 8.1.17
+	 */
+	private $quiz_post_id;
+
 	/**
 	 * If the quiz ID is set, store it as the class quiz ID
 	 *
@@ -56,6 +65,32 @@ class QMNQuizCreator {
 	public function get_id() {
 		if ( $this->quiz_id ) {
 			return intval( $this->quiz_id );
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Sets quiz post ID
+	 *
+	 * @since  8.1.17
+	 * @param  int $quiz_post_id The post ID of the quiz.
+	 * @access public
+	 * @return void
+	 */
+	public function set_quiz_post_id( $quiz_post_id ) {
+		$this->quiz_post_id = intval( $quiz_post_id );
+	}
+
+	/**
+	 * Gets the quiz post ID stored 
+	 *
+	 * @since  8.1.17
+	 * @return int|false The post ID of the quiz stored or false
+	 */
+	public function get_quiz_post_id() {
+		if ( $this->quiz_post_id ) {
+			return intval( $this->quiz_post_id );
 		} else {
 			return false;
 		}
@@ -211,7 +246,13 @@ class QMNQuizCreator {
 
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
-		} else {
+
+			//set quiz id
+			if ( is_numeric( $new_quiz ) && is_numeric( $quiz_post_id ) ) {
+				$this->set_id( $new_quiz );
+				$this->set_quiz_post_id( $quiz_post_id );
+			}       
+} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0001', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}

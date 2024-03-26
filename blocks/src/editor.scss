@@ -1,0 +1,151 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+ $qsm_primary_color: #666666;
+ $qsm_wp_primary_color : #1f8cbe;
+
+.block-editor-block-inspector{
+    .qsm-inspector-label{
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.4;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        padding: 0px;
+        .qsm-inspector-label-value{
+            padding-left: 0.5rem;
+        }
+    }
+    .qsm-inspector-label-value{
+        font-weight: 400; 
+        text-transform: capitalize;
+    }
+
+    .qsm-no-mb{
+        margin-bottom: 0;
+    }
+}
+.qsm-placeholder-select-create-quiz{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    .components-base-control{
+        max-width: 50%;
+    }
+}
+
+.qsm-ptb-1{
+    padding: 1rem 0;
+}
+
+.qsm-error-text{
+    color: #FD3E3E;
+}
+
+//Create or select quiz placeholder
+.editor-styles-wrapper {
+    .qsm-placeholder-wrapper{
+        .components-placeholder__fieldset {
+            flex-direction: column;
+        }
+    }
+
+    .qsm-advance-settings{
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+.qsm-placeholder-quiz-create-form{
+    width: 75%;
+    .components-button{
+        width: fit-content;
+    }
+}
+
+.wp-block-qsm-quiz-question {
+    &.is-highlighted{
+        padding: 0 1rem;
+    }
+
+    .block-editor-block-list__insertion-point-inserter.qsm-add-new-ques-wrapper{
+        position: relative;
+        bottom: 25px;
+        left: auto;
+        z-index: 9;
+        height: 20px;
+    }
+    /*Question Title*/
+    .qsm-question-title {
+        color: $qsm_wp_primary_color;
+        font-size: 1.38rem;
+        padding-top: 0.8rem;
+    }
+
+    /*Question description*/
+    .qsm-question-description, 
+    .qsm-question-correct-answer-info,
+    .qsm-question-hint {
+        font-size: 1rem;
+        color: $qsm_primary_color;
+    }
+
+    /*Question options*/
+    .wp-block-qsm-quiz-answer-option{
+        padding-left: 0.8rem;
+        &.block-editor-block-list__block.is-highlighted:after{
+            box-shadow: none;
+            border: 2px dotted #c3c5cc;
+        }
+        input:disabled{
+            border-color: inherit;
+        }
+        input[type="radio"]:disabled, input[type="checkbox"]:disabled{
+            opacity: 1;
+        }
+        .qsm-question-answer-option.rich-text{
+            margin-left: 5px;
+        }
+    }
+    .qsm-question-answer-option{
+        color: $qsm_primary_color;
+        font-size: 0.9rem;
+        margin-left: 1rem;
+    }
+
+    /*Question block in editing mode*/
+    &.in-editing-mode{
+        .qsm-question-title{
+            color: $qsm_primary_color;
+        }
+    }
+
+    .add-new-question-btn{
+        margin-top: 2rem;
+    }
+    
+}
+
+.qsm-advance-q-modal{
+    text-align: center;
+    justify-content: center;
+    max-width: 580px;
+    .qsm-title{
+        margin-top: 0;
+    }
+    .qsm-modal-btn-wrapper{
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        .components-external-link{
+            color: #ffffff;
+            text-decoration: none;
+        }
+    }
+}

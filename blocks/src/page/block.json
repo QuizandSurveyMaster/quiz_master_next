@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "qsm/quiz-page",
+	"version": "0.1.0",
+	"title": "Page",
+	"category": "widgets",
+	"parent": [ "qsm/quiz" ],
+	"icon": "text-page",
+	"description": "QSM Quiz Page",
+	"attributes": {
+		"pageID": {
+			"type": "string",
+			"default": "0"
+		},
+		"pageKey": {
+			"type": "string",
+			"default": ""
+		},
+		"hidePrevBtn": {
+			"type": "string",
+			"default": "0"
+		}
+	},
+	"usesContext": [ "quiz-master-next/quizID", "quiz-master-next/quizAttr" ],
+	"providesContext": {
+		"quiz-master-next/pageID": "pageID"
+	},
+	"example": {},
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"textdomain": "main-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

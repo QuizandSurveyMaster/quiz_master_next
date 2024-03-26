@@ -1131,4 +1131,49 @@ class QMNPluginHelper {
 		$question_type_categorized = array_merge( $question_type_categorized, $question_type_uncategorized );
 		return $question_type_categorized;
 	}
+
+	public function description_array() {
+		return array(
+			array(
+				'question_type_id' => 11,
+				'description'      => __( 'For this question type, users will see a file upload field on front end.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '14',
+				'description'      => __( 'Use %BLANK% variable in the description field to display input boxes.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '12',
+				'description'      => __( 'For this question type, users will see a date input field on front end.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '3',
+				'description'      => __( 'For this question type, users will see a standard input box on front end.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '5',
+				'description'      => __( 'For this question type, users will see a standard textarea input box on front end.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '6',
+				'description'      => __( 'Displays a simple section on front end. Description is mandatory. ', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '7',
+				'description'      => __( 'For this question type, users will see an input box which accepts only number values on front end.', 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '8',
+				'description'      => __( "For this question type, users will see a checkbox on front end. The text in description field will act like it's label.", 'quiz-master-next' ),
+			),
+			array(
+				'question_type_id' => '9',
+				'description'      => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
+			),
+			// array(
+			// 'question_type_id' => '13',
+			// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+			// ),
+		);
+	}
 }
