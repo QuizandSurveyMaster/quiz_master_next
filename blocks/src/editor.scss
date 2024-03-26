@@ -98,11 +98,19 @@
 
     /*Question options*/
     .wp-block-qsm-quiz-answer-option{
+        padding-left: 0.8rem;
+        &.block-editor-block-list__block.is-highlighted:after{
+            box-shadow: none;
+            border: 2px dotted #c3c5cc;
+        }
         input:disabled{
             border-color: inherit;
         }
         input[type="radio"]:disabled, input[type="checkbox"]:disabled{
             opacity: 1;
+        }
+        .qsm-question-answer-option.rich-text{
+            margin-left: 5px;
         }
     }
     .qsm-question-answer-option{

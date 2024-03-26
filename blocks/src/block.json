@@ -24,6 +24,7 @@
 		"quiz-master-next/quizID": "quizID",
 		"quiz-master-next/quizAttr": "quizAttr"
 	},
+	"usesContext": [ "postId", "postStatus" ],
 	"example": {},
 	"supports": {
 		"html": false

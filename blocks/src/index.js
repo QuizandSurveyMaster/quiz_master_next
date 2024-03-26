@@ -14,26 +14,3 @@ registerBlockType( metadata.name, {
 	edit: Edit,
 	save: save,
 } );
-
-
-const withMyPluginControls = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
-		const { name, className, attributes, setAttributes, isSelected, clientId, context } = props;
-		if ( 'core/group' !== name ) {
-			return <BlockEdit key="edit" { ...props } />;
-		}
-
-		console.log("props",props);
-		return (
-			<>
-				<BlockEdit key="edit" { ...props } />
-			</>
-		);
-	};
-}, 'withMyPluginControls' );
-
-wp.hooks.addFilter(
-	'editor.BlockEdit',
-	'my-plugin/with-inspector-controls',
-	withMyPluginControls
-);

@@ -32,7 +32,9 @@ export default function Edit( props ) {
 		return null;
 	}
 
-	const { className, attributes, setAttributes, isSelected, clientId } = props;
+	const { className, attributes, setAttributes, isSelected, clientId, context } = props;
+	
+	const page_post_id = context['postId'];
 	const { createNotice } = useDispatch( noticesStore );
 	//quiz attribute
 	const globalQuizsetting = qsmBlockData.globalQuizsetting;
@@ -67,6 +69,10 @@ export default function Edit( props ) {
 		return isSavingPost() && ! isAutosavingPost();
 	}, [] );
 
+	const editorSelectors = useSelect( ( select ) => {
+		return select( 'core/editor' );
+	}, [] );
+	
 	const { getBlock } = useSelect( blockEditorStore );
 
 	/**Initialize block from server */
@@ -478,11 +484,22 @@ export default function Edit( props ) {
 			let quizData =  getQuizDataToSave();
 			//save quiz status
 			setSaveQuiz( true );
+
+			//post status
+			let post_status = 'publish';
+			if ( ! qsmIsEmpty( editorSelectors ) ) {
+				post_status = editorSelectors.getEditedPostAttribute( 'status' );
+			} 
+			if ( qsmIsEmpty( post_status ) ) {
+				post_status = 'publish';
+			}
 			
 			quizData = qsmFormData({
 				'save_entire_quiz': '1',
 				'quizData': JSON.stringify( quizData ),
 				'qsm_block_quiz_nonce' : qsmBlockData.nonce,
+				'page_post_id' : qsmIsEmpty( page_post_id ) ? 0: page_post_id ,
+				'post_status' : post_status,
 				"nonce": qsmBlockData.saveNonce,//save pages nonce
 			});
 

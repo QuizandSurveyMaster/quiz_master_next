@@ -616,6 +616,26 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
 				}
 			}
+
+			//Update status
+			if ( ! empty( $quiz_id ) && ! empty( $post_id ) ) {
+				
+				//Default post status
+				$post_status = 'publish';
+				
+				//page status which conatin quiz
+				if ( ! empty( $_POST['post_status'] )) {
+					$post_status = sanitize_key( wp_unslash( $_POST['post_status'] ) );
+				}
+
+				//Update quiz status
+				if ( 'publish' === $post_status ) {
+					wp_update_post( array(
+						'ID'          => $post_id,
+						'post_status' => 'publish',
+					) );
+				}
+			}
 			
 			//Save Pages
 			if ( ! empty( $_POST['quizData']['pages'] ) ) {
