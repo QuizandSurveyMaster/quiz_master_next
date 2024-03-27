@@ -586,9 +586,11 @@ class QSM_Contact_Manager {
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
-					<option value=''>
-						<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
-					</option>
+					<?php if ( ! isset( $field['use_default_option'] ) || 'true' != $field['use_default_option'] ) { ?>
+						<option value=''>
+							<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
+						</option>
+					<?php } ?>
 				<?php
 					$option_values = explode( ",", $field['options'] );
 				// Iterating over comma separeted values to populate option tag

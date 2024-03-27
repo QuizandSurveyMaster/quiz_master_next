@@ -1463,6 +1463,7 @@ var QSMContact;
                         answers: [],
                         required: false,
                         hide_label: false,
+                        use_default_option: false,
                         use: '',
                         enable: true,
                         is_default: false
@@ -1476,6 +1477,7 @@ var QSMContact;
                         type: field.find('.type-control').val(),
                         required: field.find('.qsm-required-control').prop('checked'),
                         hide_label: field.find('.qsm-hide-label-control').prop('checked'),
+                        use_default_option: field.find('.qsm-use-default-control').prop('checked'),
                         use: field.find('.use-control').val(),
                         enable: field.find('.enable-control').prop('checked'),
                     };
@@ -1576,6 +1578,9 @@ var QSMContact;
                     }
                     if (['checkbox', 'radio', 'select', 'date'].includes(type)) {
                         field.find('.qsm-contact-form-field-settings .qsm-hide-label-option').hide();
+                    }
+                    if ( 'select' == type ) {
+                        field.find('.qsm-contact-form-field-settings .qsm-use-default-option').show();
                     }
                     jQuery(document).trigger('qsm_contact_field_hide_show_settings', [field, type]);
                 }
