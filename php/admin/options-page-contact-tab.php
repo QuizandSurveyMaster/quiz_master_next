@@ -175,6 +175,9 @@ function qsm_options_contact_tab_template() {
 				<div class="qsm-contact-form-group qsm-hide-label-option">
 					<label class="qsm-contact-form-label"><input type="checkbox" name="hide_label" class="qsm-hide-label-control" <# if ( "true" == data.hide_label || true == data.hide_label ) { #>checked<# } #> ><span><?php esc_html_e('Hide Label?', 'quiz-master-next');?></span></label>
 				</div>
+				<div class="qsm-contact-form-group qsm-use-default-option">
+					<label class="qsm-contact-form-label"><input type="checkbox" name="use_default_option" class="qsm-use-default-control" <# if ( "true" == data.use_default_option || true == data.use_default_option ) { #>checked<# } #> ><span><?php esc_html_e('Make the first option default selection?', 'quiz-master-next');?></span></label>
+				</div>
 				<div class="qsm-contact-form-group qsm-placeholder-option">
 					<label class="qsm-contact-form-label"><?php esc_html_e('Placeholder', 'quiz-master-next');?></label>
 					<input type="text" class="qsm-contact-form-control" name="placeholder" value="{{data.placeholder}}">

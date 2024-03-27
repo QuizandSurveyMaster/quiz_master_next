@@ -101,7 +101,10 @@ class QMNQuizManager {
 		$user = get_user_by('login', $username);
 
 		if ( ! $user ) {
-			wp_send_json_error( array( 'message' => __( 'User not found! Please try again.', 'quiz-master-next' ) ) );
+			$user = get_user_by('email', $username);
+			if ( ! $user ) {
+				wp_send_json_error( array( 'message' => __( 'User not found! Please try again.', 'quiz-master-next' ) ) );
+			}
 		}
 
 		$user_id = $user->ID;
