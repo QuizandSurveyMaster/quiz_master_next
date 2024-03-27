@@ -396,7 +396,13 @@ var QSMAdmin;
         if ( !jQuery('.category_selection_random').length ) {
             jQuery('#limit_category_checkbox,  #question_per_category').hide();
         }
-        //Hide/show tr based on selection
+        jQuery(document).on('change', '#qsm-quiz-options-form_type input', function () {
+            if (0 == jQuery(this).val()) {
+                jQuery('#qsm-quiz-options-system').show();
+            } else {
+                jQuery('#qsm-quiz-options-system').hide();
+            }
+        });
         $('.qsm_tab_content .qsm-opt-tr select').each(function () {
             var name = $(this).attr('name');
             var value = $(this).val();

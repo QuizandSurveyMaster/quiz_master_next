@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 9.0.0 (March 26, 2024) =
+= 9.0.0 (March 27, 2024) =
 * Feature: Implemented a minimum length requirement for text-based question types
 * Feature: Introduced a placeholder option for contact fields
 * Feature: Added option to set default setting to multiple quizzes
