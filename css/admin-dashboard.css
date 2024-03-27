@@ -775,6 +775,7 @@ h2.hndle.ui-sortable-handle {
 #model-wizard #qsm_span .quiz_featured_image {
 	width: 100%;
 	margin-bottom: 10px;
+	height: 30px;
 }
 
 #model-wizard .empty-market-place {

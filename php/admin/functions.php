@@ -581,12 +581,12 @@ function qsm_generate_question_option( $key, $single_option ) {
 
 /**
  * @since 8.2.3
- * Settings to create Quiz 
+ * Settings to create Quiz
  */
 if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 	function qsm_settings_to_create_quiz( $require_field = false ) {
 		global $globalQuizsetting, $mlwQuizMasterNext, $themes_data;
-		
+
 		$quiz_setting_option = array(
 			'form_type'                              => array(
 				'option_name' => __( 'Form Type', 'quiz-master-next' ),
@@ -782,7 +782,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			}
 
 			if ( true != $require_field ) {
-				echo '<div class="input-group">';
+				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
 				QSM_Fields::generate_field( $field, $single_setting['value'] );
 				echo '</div>';
 			} else {
@@ -874,6 +874,15 @@ function qsm_create_new_quiz_wizard() {
 								</label>
 								<input type="text" class="quiz_name" name="quiz_name" value="" required="" placeholder="<?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?>">
 							</div>
+							<div class="input-group qsm-quiz-options-featured_image">
+								<label for="quiz_name"><?php esc_html_e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
+								</label>
+								<span id="qsm_span">
+									<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
+									<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
+								</span>
+								<span class="qsm-opt-desc"><?php esc_html_e( 'Enter an external URL or Choose from Media Library. Can be changed further from style tab', 'quiz-master-next' ); ?></span>
+							</div>
 							<?php  qsm_settings_to_create_quiz(); ?>
 						</div>
 						<div id="select_themes" class="qsm-new-menu-elements">
@@ -881,10 +890,12 @@ function qsm_create_new_quiz_wizard() {
 								<div class="themes wp-clearfix">
 									<ul class="theme-sub-menu">
 										<li class="active">
-											<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a></li>
+											<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
+										</li>
 										<?php if ( ! empty( $themes_data ) ) { ?>
 											<li>
-												<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
+												<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a>
+											</li>
 										<?php } ?>
 									</ul>
 									<div class="theme-wrap" id="browse_themes" style="display: none;">
