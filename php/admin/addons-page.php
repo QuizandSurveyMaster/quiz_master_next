@@ -72,7 +72,7 @@ function qsm_generate_featured_addons() {
 	?>
 	<div class="wrap custom-addon-upper">
 		<ul class="subsubsub">
-			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons); ?>)</span></a> |</li>
+			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons) - 6; ?>)</span></a> |</li>
 			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ) - 1; ?>)</span></a></li>
 		</ul>
 	</div>
