@@ -73,35 +73,41 @@ function qsm_options_results_tab_content() {
 				$variable_list['Core']['%RESULT_ID%']      = __( 'Show result id', 'quiz-master-next' );
 				$variable_list = qsm_extra_template_and_leaderboard($variable_list);
 				if ( ! class_exists('QSM_Analysis') ) {
-				global $mlwQuizMasterNext;
-				$template_array = array(
-					'%QSM_PIECHART_RESULT_X%' => __( 'X: Question ID, Display the answers piechart.', 'quiz-master-next' ),
-				);
-				if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+					$template_array = array(
+						'%QSM_PIECHART_RESULT_X%'    => __( 'X: Question ID, Display the answers piechart.', 'quiz-master-next' ),
+						'%QSM_BARCHART_RESULT_X%'    => __( 'X: Question ID, Display the answers barchart.', 'quiz-master-next' ),
+						'%CATEGORY_POINTS_PIECHART%' => __( 'Display the point based category piechart.', 'quiz-master-next' ),
+						'%CATEGORY_POINTS_BARCHART%' => __( 'Display the point based category barchart.', 'quiz-master-next' ),
+					);
 					$analysis = array(
 						'Analysis' => $template_array,
 					);
-				} else {
-					$analysis = $template_array;
+					$variable_list = array_merge( $variable_list, $analysis );
 				}
-				$variable_list = array_merge( $variable_list, $analysis );
+				if ( ! class_exists('QSM_Advanced_Assessment') ) {
+					$template_array = array(
+						'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+					);
+					if ( ! empty( $_GET['tab'] ) && 'results-pages' === $_GET['tab'] ) {
+						$template_array['%ANSWER_LABEL_POINTS_PIE_CHART%'] = __( 'Display piechart based on points.', 'quiz-master-next' );
+						$template_array['%ANSWER_LABEL_COUNTS_PIE_CHART%'] = __( 'Display piechart based on counts.', 'quiz-master-next' );
+					}
+					$advanced_assessment = array(
+						'Advanced Assessment' => $template_array,
+					);
+					$variable_list = array_merge( $variable_list, $advanced_assessment );
 				}
 				if ( ! class_exists('QSM_Exporting') ) {
-				global $mlwQuizMasterNext;
-				$template_array = array(
-					'%PDF_BUTTON%' => __( 'Displays download button on the results page.', 'quiz-master-next' ),
-				);
-				$download_results = array(
-					'Export Results' => $template_array,
-				);
-				if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
+					$template_array = array(
+						'%PDF_BUTTON%' => __( 'Displays download button on the results page.', 'quiz-master-next' ),
+					);
 					$download_results = array(
 						'Export Results' => $template_array,
 					);
-				} else {
-					$download_results = $template_array ;
-				}
-				$variable_list = array_merge($variable_list, $download_results);
+					$variable_list = array_merge($variable_list, $download_results);
 				}
 				//filter to add or remove variables from variable list for pdf tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
@@ -142,6 +148,11 @@ function qsm_options_results_tab_content() {
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 
 							}
+							if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
+								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
 							?>
 							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
 							<?php
@@ -149,19 +160,19 @@ function qsm_options_results_tab_content() {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-											<?php if ( ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) || (( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name )) || ( ( ! class_exists( 'QSM_Exporting' ) ) && ( 'Export Results' == $category_name) ) || ( ( ! class_exists( 'QSM_Analysis' ) ) && ( 'Analysis' == $category_name ) ) ) {?>
-												<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
-													<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+									<?php if ( str_contains( $classname, 'qsm-upgrade-popup-variable') ) {?>
+										<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
+											<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+										</span>
+										<?php } else { ?>
+										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+											<span class='button click-to-copy'>Click to Copy</span>
+											<span class="temp-var-seperator">
+												<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+												<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
 												</span>
-												<?php } else { ?>
-												<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-													<span class='button click-to-copy'>Click to Copy</span>
-													<span class="temp-var-seperator">
-														<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-														<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
-														</span>
-													</span>
-													<?php } ?>
+											</span>
+									<?php } ?>
 									</span>
 								</div>
 							<?php
@@ -191,7 +202,7 @@ function qsm_options_results_tab_template(){
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && 'cancelled' !== $enabled ) {
-		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+		$query = $wpdb->prepare( "SELECT name, term_id FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
 	} else {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
@@ -200,25 +211,56 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
 				<header class="results-page-header">
-					<div><button class="delete-page-button"><span class="dashicons dashicons-trash"></span></button></div>
+					<strong><?php esc_html_e( 'Result Page ', 'quiz-master-next' ); ?> {{data.id}}</strong>
+					<div class="qsm-template-btn-group">
+						<label class="qsm-template-mark-as-default">
+							<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+							<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+						</label>
+						<div class="qsm-actions-link-box">
+							<a href="javascript:void(0)" class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></a>
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></a>
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
+						<div>
+					<div>
 				</header>
 				<main class="results-page-content">
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Set conditions for when this page should be shown. Leave empty to set this as the default page.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'the following conditions are met...', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Create the results page that should be shown when the conditions are met.', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
-						<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
+						<textarea id="results-page-{{ data.id }}" class="results-page-template">
+						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
+							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+							for (let qsm_variable in qsm_varaible_list) {
+								variable_name = qsm_varaible_list[qsm_variable];
+								if( variable_name.includes('%%') ){
+									var arrayValues = variable_name.split("%%");
+									qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+								};
+								if( variable_name.includes('_X%') ){
+									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+								}
+							}
+							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+							}else{
+								return match;
+							}
+						}) }}}
+						</textarea>
+						<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
@@ -230,40 +272,74 @@ function qsm_options_results_tab_template(){
 
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
-				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-				<select class="results-page-condition-category">
-					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-					<optgroup label="<?php esc_html_e( 'Question Categories', 'quiz-master-next' ); ?>">
-					<?php if ( ! empty( $categories ) ) { ?>
-						<?php foreach ( $categories as $cat ) { ?>
-						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+			<div class="qsm-result-condition-mode qsm-result-condition-container">
+				<div class="results-page-condition-category-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-category">
+						<option value="quiz" <# if (data.category == 'quiz' || data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+						<?php if ( ! empty( $categories ) ) {
+							$category_names = array_map(function( $category ) {
+								return $category[0];
+							}, $categories);
+						?>
+						<#
+						let categories = '<?php echo wp_json_encode($category_names); ?>';
+						let categories_array = JSON.parse(categories);
+						#>
+							<option value="category" <# if (data.category == 'category' || jQuery.inArray(data.category, categories_array) !== -1 ) { #>selected<# } #>><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></option>
+						<?php } else { ?>
+							<option disabled value=""><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+						<?php }
+						if ( ! class_exists( 'QSM_Advanced_Assessment' ) ) { ?>
+							<option value="option-pro"><?php esc_html_e( 'Option (pro)', 'quiz-master-next' ); ?></option>
+							<option value="label-pro"><?php esc_html_e( 'Label (pro)', 'quiz-master-next' ); ?></option>
+						<?php }
+						do_action( 'qsm_results_page_condition_category' ); ?>
+					</select>
+				</div>
+				<div class="results-page-extra-condition-category-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?> <span class="qsm-extra-condition-label"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></span></label>
+					<select class="results-page-extra-condition-category">
+						<?php if ( ! empty( $categories ) ) { ?>
+							<?php foreach ( $categories as $cat ) { ?>
+							<option class="qsm-condition-category" value="<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>' || data.extra_condition == '<?php echo esc_attr( ! empty( $cat[1] ) ? 'qsm-cat-' . $cat[1] : $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+							<?php } ?>
+						<?php } else { ?>
+							<option class="qsm-condition-category" value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
 						<?php } ?>
-					<?php } else { ?>
-						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
-					<?php } ?>
-					</optgroup>
-					<?php do_action( 'qsm_results_page_condition_category' ); ?>
-				</select>
-
-				<select class="results-page-condition-criteria">
-					<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
-					<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
-					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
-				</select>
+						<?php do_action( 'qsm_results_page_extra_condition_category' ); ?>
+					</select>
+				</div>
+				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+			</div>
+			<div class="qsm-result-condition-container">
+				<div class="results-page-condition-criteria-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Calculation Type', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-criteria">
+						<option value="points" class="qsm-points-criteria" <# if (data.criteria == 'points' || data.category == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points', 'quiz-master-next' ); ?></option>
+						<option value="score" class="qsm-score-criteria" <# if (data.criteria == 'score' || data.category == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct percentage', 'quiz-master-next' ); ?></option>
+						<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
+					</select>
+				</div>
 				<?php do_action( 'qsm_results_page_extra_condition_fields' ); ?>
-				<select class="results-page-condition-operator">
-					<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
-					<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
-					<?php do_action( 'qsm_results_page_condition_operator' ); ?>
-				</select>
-				<input type="text" class="results-page-condition-value condition-default-value" value="{{ data.value }}">
+				<div class="results-page-condition-operator-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Condition', 'quiz-master-next' ); ?></label>
+					<select class="results-page-condition-operator">
+						<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
+						<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
+						<?php do_action( 'qsm_results_page_condition_operator' ); ?>
+					</select>
+				</div>
+				<div class="condition-default-value-container qsm-result-condition-container-inner">
+					<label class="qsm-result-condition-title"><?php esc_html_e( 'Value', 'quiz-master-next' ); ?></label>
+					<input type="text" class="results-page-condition-value condition-default-value" value="{{ data.value }}">
+				</div>
 				<?php do_action( 'qsm_results_page_condition_value' ); ?>
 			</div>
-		</script>
-	<?php
-}
-?>
+		</div>
+	</script>
+<?php } ?>

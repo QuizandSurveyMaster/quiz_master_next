@@ -40,7 +40,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_question',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
 		)
 	);
 	register_rest_route(
@@ -67,7 +69,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_results',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
 		)
 	);
 	register_rest_route(
@@ -100,6 +104,7 @@ function qsm_register_rest_routes() {
 				'permission_callback' => '__return_true',
 			)
 		);
+
 		// Register rest api to get result of quiz
 		register_rest_route(
 			'qsm',
@@ -165,11 +170,11 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		if ( $enabled && 'cancelled' !== $enabled ) {
 			$migrated = true;
 		}
+		$question_ids = array();
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
 				$query        = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
 				$term_ids     = $wpdb->get_results( $query, 'ARRAY_A' );
-				$question_ids = array();
 				foreach ( $term_ids as $term_id ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
@@ -196,13 +201,6 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
-				$query        = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
-				$term_ids     = $wpdb->get_results( $query, 'ARRAY_A' );
-				$question_ids = array();
-				foreach ( $term_ids as $term_id ) {
-					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
-				}
-				$question_ids = array_unique( $question_ids );
 				$query_result = array();
 				foreach ( $question_ids as $question_id ) {
 					$query         = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND quiz_id LIKE %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $question_id, $quiz_filter, '%' . $search . '%', $offset, $limit );

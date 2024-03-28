@@ -31,13 +31,11 @@ class QSM_Results_Pages {
 		$default_redirect = false;
 		ob_start();
 		?>
-<div class="qsm-results-page">
-	<?php
+		<div class="qsm-results-page"><?php
 			do_action( 'qsm_before_results_page' );
 			$page_index = 0;
 			// Cycles through each possible page.
 			foreach ( $pages as $index => $page ) {
-
 				$page_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" );
 				// Checks if any conditions are present. Else, set it as the default.
 				if ( ! empty( $page['conditions'] ) ) {
@@ -53,26 +51,38 @@ class QSM_Results_Pages {
 					// Cycle through each condition to see if we should show this page.
 					foreach ( $page['conditions'] as $condition ) {
 						$value = $condition['value'];
-						$category = '';
+						$main_condition = '';
 						if ( isset($condition['category']) ) {
-							$category = $condition['category'];
+							$main_condition = $condition['category'];
+						}
+						if ( ! empty($condition['extra_condition']) && 'category' == $main_condition ) {
+							$category = $condition['extra_condition'];
+							if ( str_contains($category, 'qsm-cat-') ) {
+								$cat_id = intval( str_replace( 'qsm-cat-', '', $category ) );
+								$term = get_term( $cat_id );
+								if ( $term ) {
+									$category = $term->name;
+								}
+							}
+						}else {
+							$category = $main_condition;
 						}
 						// First, determine which value we need to test.
 						switch ( $condition['criteria'] ) {
 							case 'score':
-								if ( '' !== $category ) {
-									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
-								} else {
+								if ( '' == $main_condition || 'quiz' == $main_condition ) {
 									$test = $response_data['total_score'];
+								} else {
+									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 								}
 
 								break;
 
 							case 'points':
-								if ( '' !== $category ) {
-									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
-								} else {
+								if ( '' == $main_condition || 'quiz' == $main_condition ) {
 									$test = $response_data['total_points'];
+								} else {
+									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 								}
 								break;
 
@@ -144,6 +154,9 @@ class QSM_Results_Pages {
 							$redirect = $page['redirect'];
 						}
 					}
+					if ( isset( $page['default_mark'] ) && $index + 1 == $page['default_mark'] ) {
+						$default = $page_content;
+					}
 				} else {
 					$default = $page_content;
 					if ( $page['redirect'] ) {
@@ -164,7 +177,7 @@ class QSM_Results_Pages {
 
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
-			$page = wp_kses_post($content);
+			$page = wp_kses_post( htmlspecialchars_decode( $content, ENT_QUOTES) );
 
 			//last chance to filter $page
 			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
@@ -172,8 +185,7 @@ class QSM_Results_Pages {
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page', $response_data, $page_index );
 			?>
-</div>
-<?php
+		</div><?php
 		return array(
 			'display'  => do_shortcode( ob_get_clean() ),
 			'redirect' => $redirect,
@@ -307,7 +319,6 @@ class QSM_Results_Pages {
 
 		return $pages;
 	}
-
 	/**
 	 * Saves the results pages for a quiz.
 	 *
@@ -355,10 +366,17 @@ class QSM_Results_Pages {
 
 			// Sanitize template data
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
-				// Sanitizes the conditions.
-				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
-
+				$pages[ $i ]['page'] = preg_replace_callback(
+						'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
+						function( $matches ) {
+							return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
+						},
+						$pages[ $i ]['page']
+				);
+				$pages[ $i ]['page']  = wp_kses_post( $pages[ $i ]['page'] );
 			}
+			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
+
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
 

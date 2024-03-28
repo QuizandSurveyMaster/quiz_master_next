@@ -22,15 +22,12 @@ function qmn_addons_page() {
 <div class="wrap qsm-addon-setting-wrap">
 	<h2>
 		<?php
-		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
-			?>
-		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
-				class="dashicons dashicons-arrow-left-alt"></span>
-			<?php esc_html_e( 'Back to list', 'quiz-master-next' ); ?></a>
-		<?php
+		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+			$key = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column($tab_array, 'slug'), true );
+    		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
+			echo esc_html__( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title ) . esc_html__( ' Addon', 'quiz-master-next' );
 		}
 		?>
-		<?php esc_html_e( 'Extend QSM With Addons', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -75,7 +72,7 @@ function qsm_generate_featured_addons() {
 	?>
 	<div class="wrap custom-addon-upper">
 		<ul class="subsubsub">
-			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons); ?>)</span></a> |</li>
+			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons) - 6; ?>)</span></a> |</li>
 			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ) - 1; ?>)</span></a></li>
 		</ul>
 	</div>
@@ -94,7 +91,7 @@ function qsm_generate_featured_addons() {
 				<div class="installed_addon">
 					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
 					<span class="installed_addon_link">
-						<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
+						<a target="_blank" rel="noopener" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 								class="dashicons dashicons-admin-generic"></span>
 							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
 					</span>

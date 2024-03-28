@@ -725,6 +725,9 @@ h2.hndle.ui-sortable-handle {
 	display: flex;
     flex-wrap: wrap;
 }
+#model-wizard .qsm-new-menu-elements .input-group label {
+    display: block;
+}
 
 #model-wizard .qsm-new-menu-elements .input-group .qsm-tooltips-icon {
 	display: none;
@@ -733,8 +736,8 @@ h2.hndle.ui-sortable-handle {
 #model-wizard .qsm-new-menu-elements .input-group .qsm-opt-desc {
 	color: #666;
 	font-size: 12px;
-	display: block;
-	text-align: left;
+	margin-left: calc(33% + 4px);
+    margin-top: 5px;
 }
 
 #model-wizard .qsm-new-menu-elements .input-group>label {
@@ -772,6 +775,7 @@ h2.hndle.ui-sortable-handle {
 #model-wizard #qsm_span .quiz_featured_image {
 	width: 100%;
 	margin-bottom: 10px;
+	height: 30px;
 }
 
 #model-wizard .empty-market-place {

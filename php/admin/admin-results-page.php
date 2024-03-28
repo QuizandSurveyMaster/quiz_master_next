@@ -345,7 +345,7 @@ function qsm_results_overview_tab_content() {
 			'ip'               => __( 'IP Address', 'quiz-master-next' ),
 			'page_name'        => __( 'Page Name', 'quiz-master-next' ),
 			'page_url'         => __( 'Page URL', 'quiz-master-next' ),
-			'view_result_page' => __( 'Result Page', 'quiz-master-next'),
+			'view_result_page' => __( 'Result Page', 'quiz-master-next' ),
 		) );
 
 		$values      = $quiz_infos   = [];

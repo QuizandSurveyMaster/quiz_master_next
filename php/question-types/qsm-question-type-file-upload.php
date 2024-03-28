@@ -12,8 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 6.3.7
  */
 function qmn_file_upload_display( $id, $question, $answers ) {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $wpdb;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
+	$quiz_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $id ) );
+	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
+	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
+	$is_theme_active = array_filter($active_themes, function( $subarray ) use ( $theme_id ) {
+		return $subarray['id'] == $theme_id;
+	});
+	$hide = $is_theme_active ? true : false;
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredFileUpload';
 	} else {
@@ -21,9 +28,23 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
+	?> <div></div>
+		<input style="display: none;" type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
+		<?php if ( ! $hide ) : ?>
+			<div class="qsm-file-upload-container">
+				<span class="dashicons dashicons-cloud-upload qsm-file-upload-logo"></span>
+				<div class="qsm-file-upload-message">
+					<?php esc_html_e( 'Drag and Drop File Here or ', 'quiz-master-next' ); ?>
+					<a class="qsm-file-upload-link" href="#">
+						<?php esc_html_e( ' Browse', 'quiz-master-next' ); ?>
+					</a>
+				</div>
+				<div class="qsm-file-upload-name"></div>
+				<div class="qsm-file-upload-status"></div>
+			</div>
+		<?php endif; ?>
 		<img style="display: none;" class="loading-uploaded-file" alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif' ); ?>">
-		<span  style="display: none;"  class="dashicons dashicons-trash remove-uploaded-file"></span>
+		<span title="<?php esc_html_e( 'Remove', 'quiz-master-next' ); ?>" style="display: none;"  class="dashicons dashicons-no-alt remove-uploaded-file"></span>
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
 		<input class="mlw_file_upload_hidden_path" type="hidden" value="" />
 		<input class="mlw_file_upload_hidden_nonce" type="hidden" value="" />

@@ -235,7 +235,7 @@ function qsm_options_questions_tab_content() {
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
 						<div class="qsm-question-bank-select">
-							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> <?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
+							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 						</div>
 						<div class="qsm-question-bank-search">
 							<form action="" method="post" id="question-bank-search-form">
@@ -290,48 +290,7 @@ function qsm_options_questions_tab_content() {
 								</div>
 								<div class="qsm-row" style="margin-bottom: 0;">
 									<?php
-									$description_arr = array(
-										array(
-											'question_type_id' => 11,
-											'description' => __( 'For this question type, users will see a file upload field on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '14',
-											'description' => __( 'Use %BLANK% variable in the description field to display input boxes.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '12',
-											'description' => __( 'For this question type, users will see a date input field on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '3',
-											'description' => __( 'For this question type, users will see a standard input box on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '5',
-											'description' => __( 'For this question type, users will see a standard textarea input box on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '6',
-											'description' => __( 'Displays a simple section on front end. Description is mandatory. ', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '7',
-											'description' => __( 'For this question type, users will see an input box which accepts only number values on front end.', 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '8',
-											'description' => __( "For this question type, users will see a checkbox on front end. The text in description field will act like it's label.", 'quiz-master-next' ),
-										),
-										array(
-											'question_type_id' => '9',
-											'description' => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
-										),
-										// array(
-										// 'question_type_id' => '13',
-										// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
-										// ),
-									);
+									$description_arr = $mlwQuizMasterNext->pluginHelper->description_array();
 									foreach ( $question_types as $type ) {
 										if ( isset( $type['options']['description'] ) && null !== $type['options']['description'] ) {
 											$description = array(
@@ -485,6 +444,15 @@ function qsm_options_questions_tab_content() {
 											'show'     => '3, 5, 7, 14' . $show_limit_text,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'limit_text', 'quizsurvey-limit_text_doc' ),
 										),
+										'min_text_length'  => array(
+											'heading'  => __( 'Minimum Characters', 'quiz-master-next' ),
+											'label'    => __( 'Minimum number of characters required', 'quiz-master-next' ),
+											'type'     => 'text',
+											'priority' => '11',
+											'default'  => '',
+											'show'     => '3, 5, 7, 14',
+											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'min_text_length', 'quizsurvey-min_text_length_doc' ),
+										),
 										'limit_multiple_response' => array(
 											'heading'  => __( 'Limit Multiple choice', 'quiz-master-next' ),
 											'label'    => __( 'Maximum number of choice selection allowed', 'quiz-master-next' ),
@@ -498,7 +466,7 @@ function qsm_options_questions_tab_content() {
 											'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
 											'type'     => 'number',
 											'priority' => '9',
-											'default'  => '',
+											'default'  => '4',
 											'show'     => '11' . $show_file_upload_limit,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'file_upload_limit', 'quizsurvey-file_upload_limit_doc' ),
 										),
@@ -514,7 +482,7 @@ function qsm_options_questions_tab_content() {
 												'excel' => __( 'Excel File', 'quiz-master-next' ),
 												'video/mp4' => __( 'Video', 'quiz-master-next' ),
 											),
-											'default'  => 'image',
+											'default'  => 'image,application/pdf',
 											'show'     => '11' . $show_file_upload_type,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'file_upload_type', 'quizsurvey-file_upload_type_doc' ),
 										),
@@ -720,32 +688,32 @@ function qsm_options_questions_tab_content() {
 							<span class="qsm-page-setting-span"><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
 						</div>
 						<?php if ( "yes" == $display_advance ) { ?>
-							<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr($background); ?>">
-								<div class="qsm-page-setting-top ">
-									<div class="qsm-page-setting-left">
-										<span class="qsm-page-setting-label"><?php esc_html_e( 'Page Timer', 'quiz-master-next' ); ?></span>
-									</div>
-									<div class="qsm-page-setting-right">
-										<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
-											<label><?php esc_html_e( 'How many minutes does the user have to finish the page?', 'quiz-master-next' ); ?></label>
-											<span><?php esc_html_e( 'Set a time limit to complete this page in ', 'quiz-master-next' ); ?></span><input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" id="pagetimer" name="pagetimer" value="0" placeholder="<?php esc_attr_e( 'MM', 'quiz-master-next' ); ?>"> : <input type="number" <?php echo esc_html($read_only); ?> step="1" class="small-text" min="0" id="pagetimer_second" name="pagetimer_second" value="0" placeholder="<?php esc_attr_e( 'SS', 'quiz-master-next' ); ?>">
-										</div>
-										<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
-											<input <?php echo esc_html($read_only); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
-											<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> :
-											<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
-										</div>
-									</div>
+						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr($background); ?>">
+							<div class="qsm-page-setting-top ">
+								<div class="qsm-page-setting-left">
+									<span class="qsm-page-setting-label"><?php esc_html_e( 'Page Timer', 'quiz-master-next' ); ?></span>
 								</div>
-								<div class="qsm-page-setting-bottom ">
-									<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
-									<div class="qsm-popup-upgrade-warning">
-										<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
-										<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+								<div class="qsm-page-setting-right">
+									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
+										<label><?php esc_html_e( 'How many minutes does the user have to finish the page?', 'quiz-master-next' ); ?></label>
+										<span><?php esc_html_e( 'Set a time limit to complete this page in ', 'quiz-master-next' ); ?></span><input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" id="pagetimer" name="pagetimer" value="0" placeholder="<?php esc_attr_e( 'MM', 'quiz-master-next' ); ?>"> : <input type="number" <?php echo esc_html($read_only); ?> step="1" class="small-text" min="0" id="pagetimer_second" name="pagetimer_second" value="0" placeholder="<?php esc_attr_e( 'SS', 'quiz-master-next' ); ?>">
 									</div>
-								<?php } ?>
+									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
+										<input <?php echo esc_html($read_only); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
+										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> :
+										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
+									</div>
 								</div>
 							</div>
+							<div class="qsm-page-setting-bottom ">
+								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
+								<div class="qsm-popup-upgrade-warning">
+									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
+									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+								</div>
+							<?php } ?>
+							</div>
+						</div>
 						<?php } ?>
 						<?php do_action( 'qsm_action_quiz_page_attributes_fields' ); ?>
 					</div>
@@ -943,6 +911,9 @@ function qsm_ajax_save_pages() {
 			'post_modified' => $datetime,
 		);
 		wp_update_post( $update );
+	}
+	if ( is_qsm_block_api_call( 'save_entire_quiz' ) ) {
+		return true;
 	}
 	echo wp_json_encode( $json );
 	wp_die();

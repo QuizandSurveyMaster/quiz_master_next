@@ -331,10 +331,6 @@ class QSM_Contact_Manager {
 			return true;
 		}
 
-		if ( ! is_array( $fields ) || empty( $fields ) ) {
-			//return false;
-		}
-
 		$quiz_id = intval( $quiz_id );
 		if ( 0 === $quiz_id ) {
 			return false;
@@ -352,9 +348,19 @@ class QSM_Contact_Manager {
 		if ( ! empty( $fields ) ) {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i ++ ) {
-				$label       = $is_not_allow_html ? $fields[ $i ]['label'] : wp_kses( wp_unslash( $fields[ $i ]['label'] ), $allowed_html );
+				$label       = $is_not_allow_html ? $fields[ $i ]['label'] : sanitize_text_field( wp_unslash( $fields[ $i ]['label'] ), $allowed_html );
+				$placeholder = ! empty( $fields[ $i ]['placeholder'] ) ? sanitize_text_field( wp_unslash( $fields[ $i ]['placeholder'] ) ) : '';
 				$fields[ $i ]['label']  = $label;
 				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $label, "quiz_contact_field_text-{$i}-{$quiz_id}" );
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $placeholder, "quiz_contact_field_placeholder-{$i}-{$quiz_id}" );
+				if ( ! empty( $fields[ $i ]['options'] ) ) {
+					$options = sanitize_text_field( wp_unslash( $fields[ $i ]['options'] ) );
+					$fields[ $i ]['options']  = $options;
+					$option_values  = explode(",", $options);
+					foreach ( $option_values as $option_key => $option ) {
+						$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $option, "quiz_contact_field_text-{$i}-{$option_key}-{$quiz_id}" );
+					}
+				}
 			}
 		}
 
@@ -376,6 +382,11 @@ class QSM_Contact_Manager {
 			$fields_hidden = true;
 		}
 		$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['label'], "quiz_contact_field_text-{$index}-{$quiz_options->quiz_id}" );
+		if ( ! empty( $field['placeholder'] ) ) {
+			$field_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['placeholder'], "quiz_contact_field_placeholder-{$index}-{$quiz_options->quiz_id}" );
+		}else {
+			$field_placeholder = $field_label;
+		}
 		$fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
 		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
@@ -423,10 +434,12 @@ class QSM_Contact_Manager {
 					$class       .= ' mlwMaxLength ';
 				}
 
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
 				$class       = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -443,9 +456,11 @@ class QSM_Contact_Manager {
 					$fieldAttr       .= " data-domains='" . implode( ',', array_filter( $allowdomains ) ) . "' ";
 				}
 				$class       = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
-				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
+					?>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -482,9 +497,11 @@ class QSM_Contact_Manager {
 					$fieldAttr .= " autocomplete='off' ";
 				}
 				$class       = apply_filters( 'qsm_contact_url_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
-				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
+					?>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
 				break;
@@ -511,9 +528,11 @@ class QSM_Contact_Manager {
 					$class .= ' mlwMaxLength ';
 				}
 				$class       = apply_filters( 'qsm_contact_number_field_class', $class, $field['use'] );
-				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
+				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<?php } ?>
 				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
 				break;
@@ -535,19 +554,20 @@ class QSM_Contact_Manager {
 				<div class='qmn_radio_answers <?php echo esc_attr( $class ); ?>'>
 				<?php
 					$option_values  = explode(",", $field['options']);
-					for ( $i = 0; $i < count($option_values); $i++ ) {
+					foreach ( $option_values as $option_key => $option ) {
 						?>
-					<div class='qmn_mc_answer_wrap'>
-						<input
-							type='radio'
-							class='qmn_quiz_radio'
-							name='contact_field_<?php echo esc_attr( $index ); ?>'
-							value='<?php echo esc_attr( $option_values[ $i ] ); ?>'
-						/>
-						<label class='qsm_input_label' for='<?php echo esc_attr( $field_label ); ?>'>
-							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
-						</label>
-					</div>
+						<div class="qmn_mc_answer_wrap">
+							<input
+								type="radio"
+								class="qmn_quiz_radio"
+								name="contact_field_<?php echo esc_attr( $index ); ?>"
+								id="contact_field_<?php echo esc_attr( $index . '-' . $option_key ); ?>"
+								value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( trim( $option ), "quiz_contact_field_text-{$index}-{$option_key}-{$quiz_options->quiz_id}" ) ); ?>"
+							/>
+							<label class="qsm_input_label"  for="contact_field_<?php echo esc_attr( $index . '-' . $option_key ); ?>">
+								<?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( trim( $option ), "quiz_contact_field_text-{$index}-{$option_key}-{$quiz_options->quiz_id}" ) ); ?>
+							</label>
+						</div>
 						<?php
 					}
 				}
@@ -566,16 +586,18 @@ class QSM_Contact_Manager {
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
-					<option value=''>
-						<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
-					</option>
+					<?php if ( ! isset( $field['use_default_option'] ) || 'true' != $field['use_default_option'] ) { ?>
+						<option value=''>
+							<?php echo esc_html( __('Choose ', 'quiz-master-next').$field_label ); ?>
+						</option>
+					<?php } ?>
 				<?php
 					$option_values = explode( ",", $field['options'] );
 				// Iterating over comma separeted values to populate option tag
-					for ( $i = 0; $i < count($option_values); $i++ ) {
+					foreach ( $option_values as $option_key => $option ) {
 						?>
-						<option value='<?php echo esc_attr( trim($option_values[ $i ]) ); ?>'>
-							<?php echo esc_html( trim($option_values[ $i ]) ); ?>
+						<option value='<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( trim( $option ), "quiz_contact_field_text-{$index}-{$option_key}-{$quiz_options->quiz_id}" ) ); ?>'>
+							<?php echo esc_html($mlwQuizMasterNext->pluginHelper->qsm_language_support( trim( $option ), "quiz_contact_field_text-{$index}-{$option_key}-{$quiz_options->quiz_id}" ) ); ?>
 						</option>
 						<?php
 					}

@@ -34,7 +34,8 @@ class QSM_Emails {
 		}
 
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
-
+		$email_send = 0;
+		$default_email_content = '';
 		// Cycles through each possible email.
 		foreach ( $emails as $index => $email ) {
 
@@ -50,29 +51,48 @@ class QSM_Emails {
 				 * be sent.
 				 */
 				$show = true;
-
+				if ( isset( $email['default_mark'] ) && $index + 1 == $email['default_mark'] ) {
+					$default_email_content = $email_content;
+					$default_email_subject = $email_subject;
+					$default_email_to = $email['to'];
+					$default_email_reply_to = $email['replyTo'];
+					$default_index = $index;
+				}
 				// Cycle through each condition to see if we should sent this email.
 				foreach ( $email['conditions'] as $condition ) {
 					$value    = $condition['value'];
-					$category = '';
-					if ( isset( $condition['category'] ) ) {
-						$category = $condition['category'];
+					$main_condition = '';
+					if ( isset($condition['category']) ) {
+						$main_condition = $condition['category'];
+					}
+					if ( ! empty($condition['extra_condition']) && 'category' == $main_condition ) {
+						$category = $condition['extra_condition'];
+						if ( str_contains($category, 'qsm-cat-') ) {
+							$cat_id = intval( str_replace( 'qsm-cat-', '', $category ) );
+							$term = get_term( $cat_id );
+							if ( $term ) {
+								$category = $term->name;
+							}
+						}
+					}else {
+						$category = $main_condition;
 					}
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							if ( '' !== $category ) {
-								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
-							} else {
+							if ( '' == $main_condition || 'quiz' == $main_condition ) {
 								$test = $response_data['total_score'];
+							} else {
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 							}
+
 							break;
 
 						case 'points':
-							if ( '' !== $category ) {
-								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
-							} else {
+							if ( '' == $main_condition || 'quiz' == $main_condition ) {
 								$test = $response_data['total_points'];
+							} else {
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 							}
 							break;
 
@@ -136,14 +156,18 @@ class QSM_Emails {
 						break;
 					}
 				}
-
 				if ( $show ) {
 					do_action( 'qsm_send_result_email_before', $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
 					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
+					$email_send++;
 				}
 			} else {
 				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
+				$email_send++;
 			}
+		}
+		if ( 0 == $email_send && ! empty( $default_email_content ) ) {
+			self::send_results_email( $response_data, $default_email_to, $default_email_subject, $default_email_content, $default_email_reply_to, $default_index );
 		}
 
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
@@ -464,8 +488,9 @@ class QSM_Emails {
 		// Sanitizes data in emails.
 		$total = count( $emails );
 		for ( $i = 0; $i < $total; $i++ ) {
-			$emails[ $i ]['to']      = sanitize_text_field( $emails[ $i ]['to'] );
-			$emails[ $i ]['subject'] = sanitize_text_field( $emails[ $i ]['subject'] );
+			$emails[ $i ]['to']           = sanitize_text_field( $emails[ $i ]['to'] );
+			$emails[ $i ]['subject']      = sanitize_text_field( $emails[ $i ]['subject'] );
+			$emails[ $i ]['default_mark'] = sanitize_text_field( $emails[ $i ]['default_mark'] );
 
 			/**
 			 * The jQuery AJAX function won't send the conditions key
@@ -486,6 +511,16 @@ class QSM_Emails {
 				$emails[ $i ]['replyTo'] = true;
 			} else {
 				$emails[ $i ]['replyTo'] = false;
+			}
+			if ( isset( $emails[ $i ]['content'] ) ) {
+				$emails[ $i ]['content'] = preg_replace_callback(
+					'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
+						function( $matches ) {
+							return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
+						},
+						$emails[ $i ]['content']
+				);
+				$emails[ $i ]['content'] = wp_kses_post( $emails[ $i ]['content'] );
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );

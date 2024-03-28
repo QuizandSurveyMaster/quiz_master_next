@@ -11,7 +11,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		$user_answer_keys  = ! empty( $user_answer_array ) ? array_keys( $user_answer_array ) : array();
 		$is_answer_correct = false;
 		$is_user_answer    = false;
-		if ( 1 === intval( $single_answer[2] ) ) {
+		if ( 1 === intval($single_answer[2]) ) {
 			$is_answer_correct = true;
 		}
 		$is_answer_correct = apply_filters( 'qsm_is_answer_correct_choice_before', $is_answer_correct, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );

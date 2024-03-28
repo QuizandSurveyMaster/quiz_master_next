@@ -299,21 +299,24 @@ function qsm_generate_quiz_options() {
 	<?php
 	$style_tags = array();
 		if ( ! class_exists('QSM_Advance_Question') ) {
-			$qsm_pop_up_arguments = array(
-				"id"           => 'modal-advanced-question-type',
-				"title"        => __('Advanced Question Types', 'quiz-master-next'),
-				"description"  => __('Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, and Checkbox Grid questions in your quizzes and surveys.', 'quiz-master-next'),
-				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
-				"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
-				"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
-				"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
-				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'advance-question_type', 'advance-question-upsell_upgrade', 'qsm_plugin_upsell' ),
-				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
-			);
-			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+			qsm_advance_question_type_upgrade_popup();
 			$style_tags[] = '.question[data-question-type="15"]';
 			$style_tags[] = '.question[data-question-type="16"]';
 			$style_tags[] = '.question[data-question-type="17"]';
+		}
+		if ( ! class_exists('QSM_Advanced_Assessment') ) {
+			$qsm_pop_up_arguments = array(
+				"id"           => 'modal-advanced-assessment',
+				"title"        => __('Advanced Assessment', 'quiz-master-next'),
+				"description"  => __('Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next'),
+				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advance-assessment-chart.png',
+				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
+				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
+				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+			);
+			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 		}
 		if ( ! class_exists('QSM_Flashcards') ) {
 			$style_tags[] = '.question[data-question-type="18"]';
@@ -338,7 +341,7 @@ function qsm_generate_quiz_options() {
 function qsm_quiz_options_notice_template() {
 	?>
 	<!-- View for Notices -->
-	<script type="text/template" id="tmpl-notice">		
+	<script type="text/template" id="tmpl-notice">
 		<div class="notice notice-large notice-{{data.type}}">
 			<p>{{data.message}}</p>
 		</div>

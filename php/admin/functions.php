@@ -26,10 +26,12 @@ add_action( 'qmn_quiz_created', 'qsm_redirect_to_edit_page', 10, 1 );
  * @param int $quiz_id Quiz id.
  */
 function qsm_redirect_to_edit_page( $quiz_id ) {
-	link_featured_image( $quiz_id );
-	$url = admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id );
-	wp_safe_redirect( $url );
-	exit;
+	if ( ! is_qsm_block_api_call() ) {
+		link_featured_image( $quiz_id );
+		$url = admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id );
+		wp_safe_redirect( $url );
+		exit;
+	}
 }
 
 /**
@@ -535,12 +537,12 @@ function qsm_generate_question_option( $key, $single_option ) {
 
 				case 'multi_checkbox':
 					$parent_key  = $key;
-					$default     = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					$default     = isset( $single_option['default'] ) ? explode( ',', $single_option['default'] ) : '';
 					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 						foreach ( $single_option['options'] as $key => $value ) {
 							?>
 							<label>
-								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo in_array( $key, $default, true ) ? 'checked' : ''; ?> />
 								<?php echo esc_attr( $value ); ?>
 							</label>
 							<br />
@@ -577,6 +579,221 @@ function qsm_generate_question_option( $key, $single_option ) {
 	<?php
 }
 
+/**
+ * @since 8.2.3
+ * Settings to create Quiz
+ */
+if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
+	function qsm_settings_to_create_quiz( $require_field = false ) {
+		global $globalQuizsetting, $mlwQuizMasterNext, $themes_data;
+
+		$quiz_setting_option = array(
+			'form_type'                              => array(
+				'option_name' => __( 'Form Type', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['form_type'],
+				'default'     => 0,
+				'type'        => 'select',
+				'options'     => array(
+					array(
+						'label' => __( 'Quiz', 'quiz-master-next' ),
+						'value' => 0,
+					),
+					array(
+						'label' => __( 'Survey', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'Simple Form', 'quiz-master-next' ),
+						'value' => 2,
+					),
+				),
+			),
+			'system'                                 => array(
+				'option_name' => __( 'Grading System', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['system'],
+				'default'     => 0,
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Correct/Incorrect', 'quiz-master-next' ),
+						'value' => 0,
+					),
+					array(
+						'label' => __( 'Points', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'Both', 'quiz-master-next' ),
+						'value' => 3,
+					),
+				),
+				'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
+			),
+			'enable_contact_form'                    => array(
+				'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+				'value'       => 0,
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+			),
+			'timer_limit'                            => array(
+				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['timer_limit'],
+				'type'        => 'number',
+				'default'     => 0,
+				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
+			),
+			'pagination'                             => array(
+				'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['pagination'],
+				'type'        => 'number',
+				'default'     => 0,
+				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
+			),
+			'enable_pagination_quiz'                 => array(
+				'option_name' => __( 'Show current page number', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['enable_pagination_quiz'],
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+			),
+			'show_question_featured_image_in_result' => array(
+				'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+			),
+			'progress_bar'                           => array(
+				'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['enable_pagination_quiz'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+			),
+			'require_log_in'                         => array(
+				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['require_log_in'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
+			),
+			'disable_first_page'                     => array(
+				'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['disable_first_page'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+			),
+			'comment_section'                        => array(
+				'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['comment_section'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 0,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 1,
+					),
+				),
+				'default'     => 1,
+				'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
+			),
+		);
+		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+
+		if ( true != $require_field && empty( $quiz_setting_option ) ) {
+			esc_html_e( 'No settings found!', 'quiz-master-next' );
+		}
+
+		$fields = array();
+		$all_settings  = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
+		foreach ( $quiz_setting_option as $key => $single_setting ) {
+			$index = array_search( $key, array_column( $all_settings, 'id' ), true );
+			if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
+				$field               = $all_settings[ $index ];
+				$field['label']      = $single_setting['option_name'];
+				$field['default']    = $single_setting['value'];
+			} else {
+				$field = array(
+					'id'      => $key,
+					'label'   => $single_setting['option_name'],
+					'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
+					'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
+					'default' => $single_setting['value'],
+					'help'    => isset( $single_setting['help'] ) ? $single_setting['help'] : "",
+				);
+			}
+
+			if ( true != $require_field ) {
+				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
+				QSM_Fields::generate_field( $field, $single_setting['value'] );
+				echo '</div>';
+			} else {
+				$fields[] = $field;
+			}
+		}
+		if ( true === $require_field ) {
+			return $fields;
+		}
+	}
+}
 /**
  * @since 7.0
  * New quiz popup
@@ -654,118 +871,31 @@ function qsm_create_new_quiz_wizard() {
 							<div class="input-group">
 								<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
 									<span style="color:red">*</span>
-									<span
-										class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 								</label>
-								<input type="text" class="quiz_name" name="quiz_name" value="" required="">
+								<input type="text" class="quiz_name" name="quiz_name" value="" required="" placeholder="<?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?>">
 							</div>
-							<div class="input-group featured_image">
+							<div class="input-group qsm-quiz-options-featured_image">
 								<label for="quiz_name"><?php esc_html_e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
-									<span class="qsm-opt-desc">
-										<?php esc_html_e( 'Enter an external URL or Choose from Media Library.', 'quiz-master-next' ); ?>
-										<?php esc_html_e( 'Can be changed further from style tab', 'quiz-master-next' ); ?>
-									</span>
 								</label>
 								<span id="qsm_span">
 									<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
 									<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
 								</span>
+								<span class="qsm-opt-desc"><?php esc_html_e( 'Enter an external URL or Choose from Media Library. Can be changed further from style tab', 'quiz-master-next' ); ?></span>
 							</div>
-							<?php
-							$all_settings        = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-							global $globalQuizsetting;
-							$quiz_setting_option = array(
-								'form_type'              => array(
-									'option_name' => __( 'Form Type', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['form_type'],
-								),
-								'system'                 => array(
-									'option_name' => __( 'Grading System', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['system'],
-								),
-								'enable_contact_form'    => array(
-									'option_name' => __( 'Enable Contact Form', 'quiz-master-next' ),
-									'value'       => 0,
-									'options'     => array(
-										array(
-											'label' => __( 'Yes', 'quiz-master-next' ),
-											'value' => 1,
-										),
-										array(
-											'label' => __( 'No', 'quiz-master-next' ),
-											'value' => 0,
-										),
-									),
-								),
-								'timer_limit'            => array(
-									'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['timer_limit'],
-								),
-								'pagination'             => array(
-									'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['pagination'],
-								),
-								'enable_pagination_quiz' => array(
-									'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['enable_pagination_quiz'],
-								),
-								'show_question_featured_image_in_result' => array(
-									'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
-								),
-								'progress_bar'           => array(
-									'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['enable_pagination_quiz'],
-								),
-								'require_log_in'         => array(
-									'option_name' => __( 'Require User Login', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['require_log_in'],
-								),
-								'disable_first_page'     => array(
-									'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['disable_first_page'],
-								),
-								'comment_section'        => array(
-									'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
-									'value'       => $globalQuizsetting['comment_section'],
-								),
-							);
-							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
-							if ( $quiz_setting_option ) {
-								foreach ( $quiz_setting_option as $key => $single_setting ) {
-									$index = array_search( $key, array_column( $all_settings, 'id' ), true );
-									if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
-										$field               = $all_settings[ $index ];
-										$field['label']      = $single_setting['option_name'];
-										$field['default']    = $single_setting['value'];
-									} else {
-										$field = array(
-											'id'      => $key,
-											'label'   => $single_setting['option_name'],
-											'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
-											'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
-											'default' => $single_setting['value'],
-											'help'    => __( 'Display a contact form before quiz', 'quiz-master-next' ),
-										);
-									}
-									echo '<div class="input-group">';
-									QSM_Fields::generate_field( $field, $single_setting['value'] );
-									echo '</div>';
-								}
-							} else {
-								esc_html_e( 'No settings found!', 'quiz-master-next' );
-							}
-							?>
+							<?php  qsm_settings_to_create_quiz(); ?>
 						</div>
 						<div id="select_themes" class="qsm-new-menu-elements">
 							<div class="theme-browser rendered">
 								<div class="themes wp-clearfix">
 									<ul class="theme-sub-menu">
 										<li class="active">
-											<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a></li>
+											<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
+										</li>
 										<?php if ( ! empty( $themes_data ) ) { ?>
 											<li>
-												<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
+												<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a>
+											</li>
 										<?php } ?>
 									</ul>
 									<div class="theme-wrap" id="browse_themes" style="display: none;">
@@ -873,8 +1003,6 @@ function qsm_text_template_variable_list() {
 			'%CATEGORY_AVERAGE_POINTS%'   => __( 'The average points from all categories.', 'quiz-master-next' ),
 			'%CATEGORY_AVERAGE_SCORE%'    => __( 'The average score from all categories.', 'quiz-master-next' ),
 			'%QUESTION_MAX_POINTS%'       => __( 'Maximum points of the question', 'quiz-master-next' ),
-			'%FACEBOOK_SHARE%'            => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-			'%TWITTER_SHARE%'             => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
 			'%RESULT_LINK%'               => __( 'The link of the result page.', 'quiz-master-next' ),
 			'%CONTACT_X%'                 => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
@@ -882,6 +1010,7 @@ function qsm_text_template_variable_list() {
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS_EMAIL%'   => __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list   = apply_filters( 'qsm_text_variable_list', $variable_list );
@@ -1153,6 +1282,21 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
 	return $array;
 }
 
+function qsm_advance_question_type_upgrade_popup() {
+	$qsm_pop_up_arguments = array(
+		"id"           => 'modal-advanced-question-type',
+		"title"        => __('Advanced Question Types', 'quiz-master-next'),
+		"description"  => __('Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, and Checkbox Grid questions in your quizzes and surveys.', 'quiz-master-next'),
+		"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
+		"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
+		"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
+		"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'advance-question_type', 'advance-question-upsell_upgrade', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+}
+
 function qsm_admin_upgrade_popup( $args = array() ) {
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">
@@ -1291,11 +1435,12 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 						<?php
 		            break;
 				case 'dropdown':
-						$param = array(
-							'name'  => "settings[". $name ."]",
-							'value' => $value,
-						);
-						qsm_get_input_label_selected( $param );
+					$param = array(
+						'name'          => "settings[". $name ."]",
+						'value'         => $value,
+						'default_value' => $default_value,
+					);
+					qsm_get_input_label_selected( $param );
 		            break;
 				default:
 					?>
@@ -1314,17 +1459,17 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		$template_array = array(
 			'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
 			'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_GROUP%%/QUESTION_ANSWER_GROUP%' => __('This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
-			'%CUSTOM_MESSAGE_POINTS%%/CUSTOM_MESSAGE_POINTS%' => __('Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
-			'%CUSTOM_MESSAGE_CORRECT%%/CUSTOM_MESSAGE_CORRECT%' => __('Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_GROUP_X%'   => __('X: Answer value - This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_POINTS_X%'   => __('X: Points range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_CORRECT_X%'  => __('X: Score range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+			'%QUIZ_TIME%'                 => __('This variable displays the total time of quiz.', 'quiz-master-next'),
+			'%QUIZ_PERCENTAGE%'           => __('This variable displays the obtained percentage of quiz.', 'quiz-master-next'),
+			'%CATEGORY_PERCENTAGE_X%'     => __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
+			'%COUNT_UNATTEMPTED%'         => __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
 		);
-		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-			$extra_variables = array(
-				'Extra Template Variables' => $template_array,
-			);
-		} else {
-			$extra_variables = $template_array;
-		}
+		$extra_variables = array(
+			'Extra Template Variables' => $template_array,
+		);
 		$variable_list = array_merge($variable_list, $extra_variables);
 	}
 	if ( ! class_exists('Mlw_Qmn_Al_Widget') ) {
@@ -1334,14 +1479,22 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%LEADERBOARD_POSITION_URL%' => __('Display Leaderboard URL to check position.', 'quiz-master-next'  ),
 		);
 
-		if ( version_compare( $mlwQuizMasterNext->version, '7.3.4', '>' ) ) {
-			$leaderboard = array(
-				'Advanced Leaderboard' => $template_array,
-			);
-		} else {
-			$extra_variables = $template_array;
-		}
+		$leaderboard = array(
+			'Advanced Leaderboard' => $template_array,
+		);
 		$variable_list = array_merge($variable_list, $leaderboard );
+	}
+	if ( ! class_exists('QSM_Advanced_Assessment') ) {
+		$template_array = array(
+			'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+		);
+		$advanced_assessment = array(
+			'Advanced Assessment' => $template_array,
+		);
+		$variable_list = array_merge( $variable_list, $advanced_assessment );
 	}
 	return $variable_list;
 }
@@ -1404,38 +1557,52 @@ function qsm_get_input_control_unit( $param ) {
 }
 
 function qsm_get_input_label_selected( $param ) {
-	if ( empty( $param['name'] ) ) {
-		return;
-	}
-	$value = '';
+    if ( empty( $param['name'] ) ) {
+        return;
+    }
+    $value = '';
 
-	if ( ! empty( $param['value'] ) ) {
-		$value = $param['value'];
-	}
+    if ( ! empty( $param['value'] ) ) {
+        $value = $param['value'];
+    }
 
-	$label_options = array( 'Numbers', 'Alphabets', 'Default' );
-
-	$options = '';
-	foreach ( $label_options as $labels ) {
-		$is_selected = '';
-		if ( $value === $labels ) {
-			$is_selected = 'selected';
-		}
-		$options .= sprintf(
-			'<option value="%1$s" %2$s >%1$s</option>',
-			esc_attr( $labels ),
-			esc_attr( $is_selected )
-		);
-	}
-	$allowed_tags = array(
-		'option' => array(
-			'value'    => array(),
-			'selected' => array(),
-		),
+    $options = '';
+    foreach ( $value as $key => $val ) {
+        $is_selected = '';
+        if ( $key == $param['default_value'] ) {
+            $is_selected = 'selected';
+        }
+        $options .= sprintf(
+            '<option value="%1$s" %2$s >%3$s</option>',
+            esc_attr( $key ),
+            esc_attr( $is_selected ),
+            esc_attr( $val ),
+        );
+    }
+    $allowed_tags = array(
+        'option' => array(
+            'value'    => array(),
+            'selected' => array(),
+        ),
+    );
+    echo sprintf(
+        '<select name="%1$s"> %2$s </select>',
+        esc_attr( $param['name'] ),
+        wp_kses( $options ,$allowed_tags)
+    );
+}
+function qsm_advanced_assessment_quiz_page_content() {
+	$args = array(
+		"id"           => 'advanced-assessment',
+		"title"        => __( 'Advanced Assessment', 'quiz-master-next' ),
+		"description"  => __( 'Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
+		"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
+		"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 	);
-	echo sprintf(
-		'<select name="%1$s"> %2$s </select>',
-		esc_attr( $param['name'] ),
-		wp_kses( $options ,$allowed_tags)
-	);
+	qsm_admin_upgrade_content( $args, 'page' );
 }
