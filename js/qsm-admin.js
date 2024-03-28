@@ -1767,6 +1767,7 @@ var QSMContact;
                             jQuery(this).find('option.qsm-score-criteria-container').show()
                             jQuery(this).find('.email-condition-operator-container').show();
                         }
+                        jQuery(this).find('.email-extra-condition-category-container .qsm-extra-condition-label').html( jQuery(this).find('.email-condition-category option:selected' ).text());
                     });
                     jQuery(document).trigger('qsm_after_add_email_condition', [$email, category, extra_condition, criteria, operator, value]);
                 },
@@ -3787,6 +3788,7 @@ var import_button;
                             jQuery(this).find('option.qsm-score-criteria-container').show()
                             jQuery(this).find('.results-page-condition-operator-container').show();
                         }
+                        jQuery(this).find('.results-page-extra-condition-category-container .qsm-extra-condition-label').html( jQuery(this).find('.results-page-condition-category option:selected' ).text());
                     });
                     jQuery(document).trigger('qsm_after_add_result_condition', [$page, category, extra_condition, criteria, operator, value]);
                 },
