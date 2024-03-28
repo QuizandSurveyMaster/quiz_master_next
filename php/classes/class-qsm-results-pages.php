@@ -369,8 +369,7 @@ class QSM_Results_Pages {
 				$pages[ $i ]['page'] = preg_replace_callback(
 						'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
 						function( $matches ) {
-							$content = '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
-							return $content;
+							return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
 						},
 						$pages[ $i ]['page']
 				);

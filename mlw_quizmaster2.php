@@ -163,11 +163,11 @@ class MLWQuizMasterNext {
 
 	//Check admin capabilities
 	public function qsm_is_admin( $check_permission = 'manage_options' ) {
-		if ( ! function_exists( 'wp_get_current_user' ) && file_exists( ABSPATH . "wp-includes/pluggable.php" ) ) { 
-			require_once( ABSPATH . "wp-includes/pluggable.php" ); 
+		if ( ! function_exists( 'wp_get_current_user' ) && file_exists( ABSPATH . "wp-includes/pluggable.php" ) ) {
+			require_once( ABSPATH . "wp-includes/pluggable.php" );
 		}
-		if ( ! function_exists( 'current_user_can' ) && file_exists( ABSPATH . "wp-includes/capabilities.php" ) ) { 
-			require_once( ABSPATH . "wp-includes/capabilities.php" ); 
+		if ( ! function_exists( 'current_user_can' ) && file_exists( ABSPATH . "wp-includes/capabilities.php" ) ) {
+			require_once( ABSPATH . "wp-includes/capabilities.php" );
 		}
 		return ( function_exists( 'wp_get_current_user' ) && function_exists( 'current_user_can' ) && current_user_can( $check_permission ) );
 	}
@@ -181,7 +181,7 @@ class MLWQuizMasterNext {
 	private function load_dependencies() {
 
 		include_once 'blocks/block.php';
-		
+
 		include_once 'php/classes/class-qsm-install.php';
 		include_once 'php/classes/class-qsm-fields.php';
 
@@ -226,7 +226,7 @@ class MLWQuizMasterNext {
 		include_once 'php/adverts-generate.php';
 		include_once 'php/question-types.php';
 		include_once 'php/default-templates.php';
-		include_once 'php/shortcodes.php';      
+		include_once 'php/shortcodes.php';
 
 		include_once 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();
