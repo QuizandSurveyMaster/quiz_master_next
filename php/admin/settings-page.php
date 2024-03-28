@@ -591,15 +591,6 @@ class QMNGlobalSettingsPage {
 	 */
 	public static function display_page() {
 		global $mlwQuizMasterNext;
-
-		$active_tab = 'qmn_global_settings';
-		if ( isset( $_GET['tab'] ) ) {
-			if ( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) == 'qmn_global_settings' ) {
-				$active_tab = 'qmn_global_settings';
-			} else {
-				$active_tab = 'quiz-default-options';
-			}
-		}
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
@@ -704,7 +695,7 @@ class QMNGlobalSettingsPage {
 							$quizzes = get_posts( $args );
 							?>
 							<div class="qsm-field-row">
-								<label class="qsm-label"><strong><?php esc_html_e( 'Apply the default settings to selected form type', 'quiz-master-next' ); ?></strong></label>
+								<label class="qsm-label" for="qsm-select-quiz-apply"><strong><?php esc_html_e( 'Apply the default settings to selected form type', 'quiz-master-next' ); ?></strong></label>
 								<div id="qsm-export-settings-options">
 									<select name="qsm-select-quiz[]" multiple="multiple" id="qsm-select-quiz-apply" required>
 										<?php if ( $quizzes ) : ?>
@@ -1069,14 +1060,14 @@ class QMNGlobalSettingsPage {
 		$qsm_enable_retake_quiz_button = ( isset( $globalQuizsetting['enable_retake_quiz_button'] ) && '' !== $globalQuizsetting['enable_retake_quiz_button'] ? $globalQuizsetting['enable_retake_quiz_button'] : '0' );
 		?>
 		<fieldset class="buttonset buttonset-hide">
-			<input class="small-text" type="number" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[total_user_tries]" value="<?php echo esc_attr( $qsm_total_user_tries ); ?>">
+			<input class="small-text" id="qsm-global-setting-total-user-tries" type="number" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[total_user_tries]" value="<?php echo esc_attr( $qsm_total_user_tries ); ?>">
 			<?php esc_html_e( 'attempts or submissions can be done by a respondent', 'quiz-master-next'); ?>
-			<label class="qsm-opt-desc"><?php esc_html_e( 'Set the limit to 0 or leave it blank to remove the limit on attempts.', 'quiz-master-next'); ?></label>
+			<label class="qsm-opt-desc" for="qsm-global-setting-total-user-tries"><?php esc_html_e( 'Set the limit to 0 or leave it blank to remove the limit on attempts.', 'quiz-master-next'); ?></label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide">
-			<input class="small-text" type="number" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[limit_total_entries]" value="<?php echo esc_attr( $qsm_limit_total_entries ); ?>">
+			<input class="small-text" type="number" id="qsm-global-setting-total-limit-entries" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[limit_total_entries]" value="<?php echo esc_attr( $qsm_limit_total_entries ); ?>">
 			<?php esc_html_e( 'users can respond to this form type', 'quiz-master-next'); ?>
-			<label class="qsm-opt-desc"><?php esc_html_e( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next'); ?></label>
+			<label class="qsm-opt-desc" for="qsm-global-setting-total-limit-entries"><?php esc_html_e( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next'); ?></label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide">
 			<label class="qsm-option-label" for="qsm-enable-retake-quiz-button">

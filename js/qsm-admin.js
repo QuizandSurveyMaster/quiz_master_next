@@ -1191,7 +1191,7 @@ function qsm_is_substring_in_array( text, array ) {
                             }
                           });
                         //Auto complete commands
-                        var commands = [];
+                        let commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
                             if ( qsm_admin_messages.qsm_variables.hasOwnProperty( qsm_var_group ) ) {
                                 for (let qsm_var_item in qsm_admin_messages.qsm_variables[qsm_var_group]) {
@@ -1215,11 +1215,11 @@ function qsm_is_substring_in_array( text, array ) {
                         //Show autocomplete modal
                         function showAutocomplete( editor, clear =false ) {
                             removeAutocomplete( editor, clear );
-                            var autocomplete = document.createElement('div');
+                            let autocomplete = document.createElement('div');
                             autocomplete.className = 'qsm-autocomplete';
-                            var newCommand = commands;
+                            let newCommand = commands;
                             //Get search
-                            var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                            let qsm_search =  editor.getContainer().getAttribute('qsm_search');
                             if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {
                                 if ( false === clear ) {
                                     qsm_search = qsm_search.toLowerCase();
@@ -1255,7 +1255,6 @@ function qsm_is_substring_in_array( text, array ) {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
                                         }
-                                        //editor.insertContent( command.description );
                                         editor.execCommand('mceInsertContent', false, command.value.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
 
                                         autocomplete.remove();
@@ -1279,12 +1278,12 @@ function qsm_is_substring_in_array( text, array ) {
                         //Remove autocomplete modal
                         function removeAutocomplete( editor, clear = true ) {
                             //Remove auto complete
-                            var autocomplete =  editor.getContainer().querySelector('.qsm-autocomplete');
+                            let autocomplete =  editor.getContainer().querySelector('.qsm-autocomplete');
                             if ( 'undefined' !== typeof autocomplete && null !== autocomplete  ) {
                                 autocomplete.remove();
                             }
                             if ( true === clear ) {
-                            var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                            let qsm_search =  editor.getContainer().getAttribute('qsm_search');
                                 if ( 'undefined' !== typeof qsm_search && null !== qsm_search && '' !== qsm_search ) {
                                     editor.getContainer().setAttribute('qsm_search', '');
                                 }
@@ -1314,10 +1313,10 @@ function qsm_is_substring_in_array( text, array ) {
                               showAutocomplete( editor, true );
                             } else if ( 'undefined' !== typeof editor.qsmShowAutocomplete && null !== editor.qsmShowAutocomplete && true === editor.qsmShowAutocomplete ) {
                              //Prepare search word if autocomplete modal is visible
-                              var keyCode = e.keyCode;
-                              var isAlphanumeric = (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122);
+                              let keyCode = e.keyCode;
+                              let isAlphanumeric = (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122);
                                if (  isAlphanumeric || 8 == keyCode ) {
-                                    var qsm_search =  editor.getContainer().getAttribute('qsm_search');
+                                    let qsm_search =  editor.getContainer().getAttribute('qsm_search');
                                     if ( 'undefined' === typeof qsm_search || null === qsm_search ) {
                                         qsm_search = '';
                                     }
@@ -1370,7 +1369,7 @@ function qsm_is_substring_in_array( text, array ) {
                         editor.on('paste', function (event) {
                             let clipboardData = (event.originalEvent || event).clipboardData;
                             let pastedValue = clipboardData.getData('text');
-                            var variables = commands.map(function(item) {
+                            let variables = commands.map(function(item) {
                                 return item.value;
                             });
                             if (variables.includes(pastedValue)) {
@@ -3769,7 +3768,6 @@ var import_button;
                     $page.find('.results-page-when-conditions').append(template({
                         'category': category,
                         'extra_condition': extra_condition,
-                        'criteria': criteria,
                         'criteria': criteria,
                         'operator': operator,
                         'value': value

@@ -775,7 +775,7 @@ class QSM_Fields {
 
 			</th>
 			<td>
-				<label for="<?php echo esc_attr( $field["id"] ); ?>"><strong><?php echo wp_kses_post( $field['label'] ); ?></strong></label>
+				<label for="qsm-option-<?php echo esc_attr( $field["id"] ); ?>"><strong><?php echo wp_kses_post( $field['label'] ); ?></strong></label>
 				<?php
 				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 				$categories_tree = (isset($categories['tree']) ? $categories['tree'] : array());
@@ -796,7 +796,7 @@ class QSM_Fields {
 					$cat_array = array_unique( $cat_array );
 					if ( $cat_array || $categories_tree ) {
 						?>
-						<select class="category_selection_random" multiple="">
+						<select class="category_selection_random" multiple="" id="qsm-option-<?php echo esc_attr( $field["id"] ); ?>">
 							<?php
 							if ( $multiple_category_system ) {
 								echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
