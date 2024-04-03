@@ -191,7 +191,8 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-audit.php';
 		$this->audit_manager = new QSM_Audit();
 
-		if ( is_admin() ) {
+		// In block editor api call is_admin return false so use qsm_is_admin.
+		if ( is_admin() || ( ! empty( $_POST['qsm_block_api_call'] ) && $this->qsm_is_admin() ) ) {
 			include_once 'php/admin/functions.php';
 			include_once 'php/admin/stats-page.php';
 			include_once 'php/admin/quizzes-page.php';
