@@ -396,7 +396,7 @@ function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_correct_score( $content, $mlw_quiz_array ) {
-	$correct_score = isset( $mlw_quiz_array['total_score'] ) ? $mlw_quiz_array['total_score'] : '';
+	$correct_score = isset( $mlw_quiz_array['total_score'] ) ? $mlw_quiz_array['total_score'] : 0;
 	$correct_score = qsm_is_allow_score_roundoff() ? round( $correct_score ) : round( $correct_score, 2 );
 	$content = str_replace( '%CORRECT_SCORE%', $correct_score, $content );
 	return $content;
