@@ -123,6 +123,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
 
 function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext,$wpdb;
+	$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
@@ -136,14 +137,18 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 			if ( isset($answers['user_answer']) ) {
 				if ( 13 === intval( $answers['question_type'] ) ) {
 					$answerstr .= $answers['points'];
+				}elseif ( 12 === intval( $answers['question_type'] ) ) {
+					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
+					foreach ( $answers['user_answer'] as $answer ) {
+						$answerstr = date_i18n( $preferred_date_format, strtotime( $answer ) );
+					}
 				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-					$answerstr .= htmlspecialchars_decode($answer);
+						$answerstr .= htmlspecialchars_decode($answer);
 					}
-				}
-				elseif ( 'image' === $question_settings['answerEditor'] ) {
+				}elseif ( 'image' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+						$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
 					}
 				}else {
 					$answerstr .= implode(", ",$answers['user_answer']);

@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.5
 Requires PHP: 5.4
-Stable tag: 9.0.0
+Stable tag: 9.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 9.0.1 (April 08, 2024) =
+* Bug: Fixed date formate with %ANSWER_X% variable
+* Bug: Fixed PHP warning with Quiz Block editor
+* Enhancement: Checked compatibility with WordPress 6.5
+
 = 9.0.0 (March 27, 2024) =
 * Feature: Implemented a minimum length requirement for text-based question types
 * Feature: Introduced a placeholder option for contact fields
