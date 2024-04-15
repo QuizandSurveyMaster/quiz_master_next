@@ -140,7 +140,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 				}elseif ( 12 === intval( $answers['question_type'] ) ) {
 					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr = date_i18n( $preferred_date_format, strtotime( $answer ) );
+						$answerstr = ! empty( $answer ) && strtotime( $answer ) ? date_i18n( $preferred_date_format, strtotime( $answer ) ) : $answer;
 					}
 				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
@@ -1089,7 +1089,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
 					$do_show_wrong       = true;
 					$user_given_answer   = '' === $answer[1] ? $quiz_options->no_answer_text : htmlentities( $answer[1] );
-					if ( 12 == $answer['question_type'] ) {
+					if ( 12 == $answer['question_type'] && ! empty( $answer[1] ) && strtotime( $user_given_answer ) ) {
 						$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 						$user_given_answer = date_i18n($preferred_date_format, strtotime($user_given_answer));
 					}
@@ -1273,7 +1273,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
-				} elseif ( isset( $answer['question_type'] ) && 12 == $answer['question_type'] ) {
+				} elseif ( isset( $answer['question_type'] ) && 12 == $answer['question_type'] && ! empty( $answer[1] ) && strtotime( $answer[1] ) ) {
 					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 					$user_given_answer = date_i18n($preferred_date_format, strtotime($answer[1]));
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . $user_given_answer . '</span>';
