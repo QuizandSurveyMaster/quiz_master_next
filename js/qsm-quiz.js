@@ -1790,6 +1790,7 @@ function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, 
 		MathJax.typesetPromise();
 	}
 	jQuery('.qsm-spinner-loader').remove();
+	jQuery(document).trigger('qsm_show_inline_result_after', [quizID, question_id, value, $this, answer_type, $i_this, index]);
 }
 function addSpinnerLoader($this,$i_this) {
 	if ($this.find('.mlw_answer_open_text').length) {
