@@ -2537,9 +2537,9 @@ var import_button;
                     }
                     if (qsmQuestionSettings.form_type == 0) {
                         if (questionType == 14) {
-                            $('.correct-answer').hide();
+                            $('.answer-correct-div').hide();
                         } else {
-                            $('.correct-answer').show();
+                            $('.answer-correct-div').show();
                         }
                     }
 
@@ -3409,9 +3409,9 @@ var import_button;
                         }
                     }
                     if (14 == question_val) {
-                        $('.correct-answer').hide();
+                        $('.answer-correct-div').hide();
                     } else {
-                        $('.correct-answer').show();
+                        $('.answer-correct-div').show();
                     }
                     if (15 == question_val || 16 == question_val || 17 == question_val) {
                         MicroModal.show('modal-advanced-question-type');
