@@ -1576,7 +1576,7 @@ function qsm_get_input_label_selected( $param ) {
             '<option value="%1$s" %2$s >%3$s</option>',
             esc_attr( $key ),
             esc_attr( $is_selected ),
-            esc_attr( $val ),
+            esc_attr( $val )
         );
     }
     $allowed_tags = array(
