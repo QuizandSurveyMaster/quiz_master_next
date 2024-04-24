@@ -215,6 +215,38 @@ function qsm_add_author_column_in_db() {
 			}
 		}
 	}
+
+	/**
+	 * Add new column in the results table
+	 *
+	 * @since 9.0.1
+	 */
+	if ( get_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', '' ) != 1 ) {
+		global $wpdb;
+
+		$tables_to_convert = array(
+			"{$wpdb->prefix}mlw_qm_audit_trail",
+			"{$wpdb->prefix}mlw_questions",
+			"{$wpdb->prefix}mlw_quizzes",
+			"{$wpdb->prefix}mlw_results",
+		);
+
+		$success = true;
+
+		foreach ( $tables_to_convert as $table ) {
+			$query = "ALTER TABLE $table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+			$result = $wpdb->query($query);
+
+			if ( $result === false ) {
+				$success = false;
+				$mlwQuizMasterNext->log_manager->add( 'Error updating column charset utf8mb4_unicode_ci', "Tried $query but got {$wpdb->last_error}.", 0, 'error' );
+			}
+		}
+
+		if ( $success ) {
+			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
+		}
+	}
 }
 
 add_action( 'admin_init', 'qsm_change_the_post_type' );
