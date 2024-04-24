@@ -3314,9 +3314,6 @@ var import_button;
                     if (pageKey.replace(/^\s+|\s+$/g, "").length == 0) {
                         alert(qsm_admin_messages.page_name_required);
                         return false;
-                    } else if (null == pageKey.match(/^[ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñA-Za-z0-9\-\s]+$/)) {
-                        alert(qsm_admin_messages.page_name_validation);
-                        return false;
                     } else {
                         QSMQuestion.updateQPage(pageID);
                         QSMQuestion.savePages();
