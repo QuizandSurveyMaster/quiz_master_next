@@ -237,7 +237,7 @@ function qsm_add_author_column_in_db() {
 			$query = "ALTER TABLE $table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
 			$result = $wpdb->query($query);
 
-			if ( $result === false ) {
+			if ( ! $result ) {
 				$success = false;
 				$mlwQuizMasterNext->log_manager->add( 'Error updating column charset utf8mb4_unicode_ci', "Tried $query but got {$wpdb->last_error}.", 0, 'error' );
 			}
