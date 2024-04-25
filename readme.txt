@@ -163,10 +163,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 9.0.1 (April 08, 2024) =
-* Bug: Fixed date formate with %ANSWER_X% variable
-* Bug: Fixed PHP warning with Quiz Block editor
-* Enhancement: Checked compatibility with WordPress 6.5
+= 9.0.1 (April 25, 2024) =
+* Bug: Fixed date format in %ANSWER_X% variable
+* Bug: Resolved PHP warning in Quiz Block editor
+* Bug: Fixed an issue in showing the correct answers in a quiz while using random answers
+* Enhancement: Improved text feature to accept other language characters in quiz page names
+* Enhancement: Added support for using emojis in quiz questions, result pages, and email templates
 
 = 9.0.0 (March 27, 2024) =
 * Feature: Implemented a minimum length requirement for text-based question types
