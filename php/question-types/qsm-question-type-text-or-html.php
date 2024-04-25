@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qmn_text_block_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
-	$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question, ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
-    $question = apply_filters( 'qmn_text_block_display_front', $question, $id, $answers);
-	echo do_shortcode( wp_kses_post( $question ) );
+    $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
+    qsm_question_title_func( $question, '', $new_question_title, $id );
+	echo apply_filters( 'qmn_text_block_display_front', '', $id, $question, $answers );
 }

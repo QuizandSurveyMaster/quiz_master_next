@@ -1951,10 +1951,10 @@ class QSM_Install {
 			}
 
 			// Update 2.6.1
-			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;' );
-			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci' );
-			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci' );
-			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci' );
+			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' );
+			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_questions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
+			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
+			$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
 
 			global $wpdb;
 			$table_name  = $wpdb->prefix . 'mlw_results';
