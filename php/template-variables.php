@@ -123,6 +123,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
 
 function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext,$wpdb;
+	$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
@@ -136,14 +137,18 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 			if ( isset($answers['user_answer']) ) {
 				if ( 13 === intval( $answers['question_type'] ) ) {
 					$answerstr .= $answers['points'];
+				}elseif ( 12 === intval( $answers['question_type'] ) ) {
+					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
+					foreach ( $answers['user_answer'] as $answer ) {
+						$answerstr = ! empty( $answer ) && strtotime( $answer ) ? date_i18n( $preferred_date_format, strtotime( $answer ) ) : $answer;
+					}
 				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-					$answerstr .= htmlspecialchars_decode($answer);
+						$answerstr .= htmlspecialchars_decode($answer);
 					}
-				}
-				elseif ( 'image' === $question_settings['answerEditor'] ) {
+				}elseif ( 'image' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-					$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+						$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
 					}
 				}else {
 					$answerstr .= implode(", ",$answers['user_answer']);
@@ -396,7 +401,7 @@ function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_correct_score( $content, $mlw_quiz_array ) {
-	$correct_score = isset( $mlw_quiz_array['total_score'] ) ? $mlw_quiz_array['total_score'] : '';
+	$correct_score = isset( $mlw_quiz_array['total_score'] ) ? $mlw_quiz_array['total_score'] : 0;
 	$correct_score = qsm_is_allow_score_roundoff() ? round( $correct_score ) : round( $correct_score, 2 );
 	$content = str_replace( '%CORRECT_SCORE%', $correct_score, $content );
 	return $content;
@@ -1084,7 +1089,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
 					$do_show_wrong       = true;
 					$user_given_answer   = '' === $answer[1] ? $quiz_options->no_answer_text : htmlentities( $answer[1] );
-					if ( 12 == $answer['question_type'] ) {
+					if ( 12 == $answer['question_type'] && ! empty( $answer[1] ) && strtotime( $user_given_answer ) ) {
 						$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 						$user_given_answer = date_i18n($preferred_date_format, strtotime($user_given_answer));
 					}
@@ -1268,7 +1273,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
-				} elseif ( isset( $answer['question_type'] ) && 12 == $answer['question_type'] ) {
+				} elseif ( isset( $answer['question_type'] ) && 12 == $answer['question_type'] && ! empty( $answer[1] ) && strtotime( $answer[1] ) ) {
 					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 					$user_given_answer = date_i18n($preferred_date_format, strtotime($answer[1]));
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . $user_given_answer . '</span>';
