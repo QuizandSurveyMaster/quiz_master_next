@@ -163,6 +163,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 9.0.2 ( Beta ) =
+* Bug: Fixed display shortcode php buffer due to invalid quiz id
+
 = 9.0.1 (April 25, 2024) =
 * Bug: Fixed date format in %ANSWER_X% variable
 * Bug: Resolved PHP warning in Quiz Block editor
