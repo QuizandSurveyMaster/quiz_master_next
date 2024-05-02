@@ -3717,6 +3717,7 @@ var import_button;
                                 'value': $(this).find('.results-page-condition-value').val()
                             });
                         });
+                        jQuery(document).trigger('qsm_save_result_page_before', [this, page]);
                         pages.push(page);
                     });
                     let _X_validation = false;
