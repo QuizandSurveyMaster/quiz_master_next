@@ -108,25 +108,25 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		 * Get hierarchical qsm_category
 		 */
 		private function hierarchical_qsm_category( $cat = 0 ) {
-		  $category = [];
-		  $next = get_categories( array(
-			  'taxonomy'     => 'qsm_category',
-			  'hide_empty'   => false,
-			  'hierarchical' => true,
-			  'orderby'      => 'name',
-			  'order'        => 'ASC',
-			  'parent'       => $cat,
-		  ) );
+			$category = [];
+			$next = get_categories( array(
+				'taxonomy'     => 'qsm_category',
+				'hide_empty'   => false,
+				'hierarchical' => true,
+				'orderby'      => 'name',
+				'order'        => 'ASC',
+				'parent'       => $cat,
+			) );
 
-		  if ( $next ) {
-			foreach ( $next as $cat ) {
-				$cat->name = $cat->cat_name;
-				$cat->id = $cat->term_id;
-				$cat->children = $this->hierarchical_qsm_category( $cat->term_id );
-				$category[] = $cat;
+			if ( $next ) {
+				foreach ( $next as $cat ) {
+					$cat->name = $cat->cat_name;
+					$cat->id = $cat->term_id;
+					$cat->children = $this->hierarchical_qsm_category( $cat->term_id );
+					$category[] = $cat;
+				}
 			}
-		  }
-		  return $category;
+		  	return $category;
 		}
 
 		/**

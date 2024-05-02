@@ -89,6 +89,72 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Calls all class functions to check if quiz is setup properly
+	 *
+	 * @param  int $quiz_id The ID of the quiz or survey to load.
+	 * @return array An array which contains boolean result of has_proper_quiz, message and/or qmn_quiz_options
+	 */
+	public function has_proper_quiz( $quiz_id ) {
+		if ( empty( $quiz_id ) ) {
+			return array(
+				'res'     => false,
+				'message' => __( 'Empty Quiz ID.', 'quiz-master-next' ),
+			);
+		}
+
+		$quiz_id = intval( $quiz_id );
+
+		// Tries to load quiz name to ensure this is a valid ID.
+		global $mlwQuizMasterNext, $qmn_allowed_visit, $qmn_json_data;
+		$qmn_json_data     = array();
+		$qmn_allowed_visit = true;
+		if ( false === $this->prepare_quiz( $quiz_id ) ) {
+			return array(
+				'res'     => false,
+				'message' => __( 'It appears that this quiz is not set up correctly.', 'quiz-master-next' ),
+			);
+		}
+
+		$has_result_id = ( ! isset( $_GET['result_id'] ) || '' === $_GET['result_id'] );
+
+		if ( $has_result_id ) {
+			global $mlw_qmn_quiz;
+			$mlw_qmn_quiz = $quiz_id;
+		}
+
+		$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+
+		if ( $has_result_id ) {
+			/**
+			 * Filter Quiz Options before Quiz Display
+			 */
+			$qmn_quiz_options = apply_filters( 'qsm_shortcode_quiz_options', $qmn_quiz_options );
+		}
+
+		// If quiz options isn't found, stop function.
+		if ( is_null( $qmn_quiz_options ) || ( ! empty( $qmn_quiz_options->deleted ) && 1 == $qmn_quiz_options->deleted ) ) {
+			return array(
+				'res'     => false,
+				'message' => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+			);
+		}
+
+		// If quiz options isn't found, stop function.
+		if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
+			return array(
+				'res'     => false,
+				'message' => __( 'It appears that this quiz is not set up correctly.', 'quiz-master-next' ),
+			);
+		}
+
+		return array(
+			'res'              => true,
+			'message'          => __( 'Quiz is setup properly.', 'quiz-master-next' ),
+			'qmn_quiz_options' => $qmn_quiz_options,
+		);
+	}
+
+	/**
 	 * Calls all class functions to initialize quiz
 	 *
 	 * @param  int $quiz_id The ID of the quiz or survey to load.

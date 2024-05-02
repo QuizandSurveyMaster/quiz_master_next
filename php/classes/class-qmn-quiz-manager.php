@@ -331,6 +331,7 @@ class QMNQuizManager {
 	 * @return string The content for the shortcode
 	 */
 	public function display_shortcode( $atts ) {
+		global $wpdb, $mlwQuizMasterNext;
 		$shortcode_args  = shortcode_atts(
 			array(
 				'quiz'            => 0,
@@ -338,22 +339,25 @@ class QMNQuizManager {
 			),
 			$atts
 		);
+
+		// Quiz ID.
 		$quiz            = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );
 
+		// Check, if quiz is setup properly.
+		$has_proper_quiz = $mlwQuizMasterNext->pluginHelper->has_proper_quiz( $quiz );
+		if ( false === $has_proper_quiz['res'] ) {
+			return $has_proper_quiz['message'];
+		}
+
+		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
+		$return_display = '';
+		
 		ob_start();
-		global $wpdb, $mlwQuizMasterNext;
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			$result           = $wpdb->get_row( $wpdb->prepare( "SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id ), ARRAY_A );
 			if ( ! empty( $result ) && isset( $result['result_id'] ) ) {
-				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $result['quiz_id'] );
-				$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-
-				// If quiz options isn't found, stop function.
-				if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
-					return __( 'This quiz is no longer available.', 'quiz-master-next' );
-				}
 
 				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
@@ -376,35 +380,8 @@ class QMNQuizManager {
 			}
 			$return_display .= ob_get_clean();
 		} else {
-			global $qmn_allowed_visit;
-			global $qmn_json_data;
-			$qmn_json_data     = array();
-			$qmn_allowed_visit = true;
-			$success           = $mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
-			if ( false === $success ) {
-				return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
-			}
-
-			global $mlw_qmn_quiz;
-			$mlw_qmn_quiz = $quiz;
-			$return_display   = '';
-			$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-			// Legacy variable.
-			/**
-			 * Filter Quiz Options before Quiz Display
-			 */
-			$qmn_quiz_options = apply_filters( 'qsm_shortcode_quiz_options', $qmn_quiz_options );
-
-			// If quiz options isn't found, stop function.
-			if ( is_null( $qmn_quiz_options ) || 1 == $qmn_quiz_options->deleted ) {
-				return __( 'This quiz is no longer available.', 'quiz-master-next' );
-			}
-
-			// If quiz options isn't found, stop function.
-			if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
-				return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
-			}
-
+			global $qmn_allowed_visit, $qmn_json_data, $mlw_qmn_quiz;
+			
 			// Loads Quiz Template.
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL . '/animate.css', array(), $mlwQuizMasterNext->version );
 			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
