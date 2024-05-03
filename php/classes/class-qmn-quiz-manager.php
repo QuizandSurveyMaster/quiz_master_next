@@ -1912,6 +1912,7 @@ class QMNQuizManager {
 
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display  = apply_filters( 'qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$qmn_quiz_options  = apply_filters( 'qmn_retake_quiz_button_before', $qmn_quiz_options );
 			if ( 1 == $qmn_quiz_options->enable_retake_quiz_button ) {
 				$result_display .= '<form method="POST">';
 				$result_display .= '<input type="hidden" value="' . $qmn_array_for_variables['quiz_id'] . '" name="qsm_retake_quiz_id" />';
