@@ -66,6 +66,7 @@ function qsm_options_contact_tab_content() {
 					<div class="inside-row">
 						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php esc_html_e('Disable autofill entries', 'quiz-master-next');?></span></label>
 					</div>
+					<?php do_action( 'qsm_contact_form_settings_options_after', $quiz_options ) ?>
 				</div>
 			</div>
 			<a class="save-contact button-primary qsm-block-btn" style="padding: 4px;"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
