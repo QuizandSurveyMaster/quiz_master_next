@@ -163,6 +163,7 @@ class QSM_Fields {
 				<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
 					<table class="form-table" style="width: 100%;">
 						<?php
+						$settings = apply_filters( 'qsm_quiz_submission_section_before', $settings, $fields );
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
 							// Generate the field
