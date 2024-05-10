@@ -1607,6 +1607,8 @@ jQuery(function () {
 					$this.parent('.quiz_section').find('.qsm-file-upload-status').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.qsm-file-upload-status').show();
 				}
+				// triggers after file remove
+				jQuery(document).trigger('qsm_after_file_remove', [$this.parent(), obj]);
 			}
 		});
 		return false;
