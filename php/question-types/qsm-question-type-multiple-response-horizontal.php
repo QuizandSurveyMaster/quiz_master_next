@@ -30,6 +30,8 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
+	<fieldset>
+		<legend></legend>
 	<div class="qmn_check_answers qmn_multiple_horizontal_check <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
@@ -85,6 +87,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 		}
 		?>
 	</div>
+	</fieldset>
 	<?php
 	echo apply_filters( 'qmn_horizontal_multiple_response_display_front', '', $id, $question, $answers );
 }
