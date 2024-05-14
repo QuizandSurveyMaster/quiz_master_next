@@ -46,12 +46,14 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
 				$mlw_answer_total++;
+				$other_option_class = '';
+				$other_option_class = apply_filters( 'qsm_multiple_choice_other_option_classes', $other_option_class, $mlw_answer_total, $id, $answers );
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class.' '.$mrq_checkbox_class ); ?>">
-						<input type="radio" class="qmn_quiz_radio qmn-multiple-choice-input" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+						<input type="radio" class="qmn_quiz_radio qmn-multiple-choice-input <?php echo esc_attr( $other_option_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
@@ -110,6 +112,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
  */
 function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
+	$current_question 				= apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer( 'single_response' );
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '';

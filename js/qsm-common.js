@@ -175,6 +175,7 @@
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.right-polar-title img').css('opacity', "0.8");
 		}
+		jQuery(document).trigger('qsm_polar_slider_change_after', [ui,questionID, answer1, answer2, value , isReverse]);
 	}
 
 	function qsmPolarSliderQuestionCreate(questionID){
@@ -187,5 +188,6 @@
 			'.right-polar-title').css('font-weight', '400');
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s img').find(
 			'.right-polar-title img').css('opacity', "0.5");
+		jQuery(document).trigger('qsm_polar_slider_create_after', [questionID]);
 	}
 }(jQuery));

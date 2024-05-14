@@ -43,6 +43,8 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
 				$mlw_answer_total++;
+				$other_option_class = '';
+				$other_option_class = apply_filters( 'qsm_multiple_choice_other_option_classes', $other_option_class, $mlw_answer_total, $id, $answers );
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					if ( 'rich' === $answerEditor ) {
@@ -59,7 +61,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						<?php
 					}
 					?>
-					<input type='radio' class='qmn_quiz_radio qmn-multiple-choice-input' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+					<input type='radio' class='qmn_quiz_radio qmn-multiple-choice-input <?php echo esc_attr( $other_option_class ); ?>' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
 					<?php
 					if ( 'image' === $answerEditor ) {
@@ -95,6 +97,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 				}
 				//}
 			}
+			echo apply_filters( 'qsm_multiple_choice_display_after_loop', ' ', $id, $question, $answers );
 			?>
 			<label style="display: none;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php echo esc_attr( 'question' . $id ); ?></label>
 			<input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" />
@@ -118,6 +121,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
  */
 function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
+	$current_question 				= apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_answer']    = $user_text_array;
