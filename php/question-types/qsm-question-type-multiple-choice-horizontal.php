@@ -32,6 +32,8 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
 	?>
+	<fieldset>
+		<legend></legend>
 	<div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
@@ -86,11 +88,13 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 			}
 			echo apply_filters( 'qmn_horizontal_multiple_choice_question_display', '', $id, $question, $answers );
 			?>
+			<label style="display: none;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php echo esc_attr( 'question' . $id ); ?></label>
 			<input type="radio" style="display: none;" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>_none" checked="checked" value="" />
 			<?php
 		}
 		?>
 	</div>
+	</fieldset>
 	<?php
 	echo apply_filters( 'qmn_horizontal_multiple_choice_display_front', '', $id, $question, $answers );
 }

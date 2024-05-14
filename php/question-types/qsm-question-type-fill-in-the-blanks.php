@@ -25,7 +25,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		'name'         => true,
 		'pattern'      => true,
 		'placeholder'  => true,
-		'readony'      => true,
+		'readonly'     => true,
 		'required'     => true,
 		'size'         => true,
 		'step'         => true,
