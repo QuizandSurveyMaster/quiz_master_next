@@ -713,3 +713,14 @@ body .ui-tooltip.ui-widget-content {
 	vertical-align: top;
 	margin-top: 5px;
 }
+.quiz_section fieldset {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+.mlw_qmn_hint_link {
+	text-decoration: none;
+}
+.qsm_accessibility_label {
+	color: transparent;
+}

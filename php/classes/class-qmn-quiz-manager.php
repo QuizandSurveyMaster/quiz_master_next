@@ -1400,11 +1400,13 @@ class QMNQuizManager {
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 				if ( 0 == $mlw_question->comments ) {
 					?>
+					<label class="qsm_accessibility_label" for="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>"><?php echo esc_attr( "Comment" ); ?></label>
 					<input type="text" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" /><br />
 					<?php
 				}
 				if ( 2 == $mlw_question->comments ) {
 					?>
+					<label class="qsm_accessibility_label" for="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>"><?php echo esc_attr( "Comment" ); ?></label>
 					<textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)"></textarea><br />
 					<?php
 				}
