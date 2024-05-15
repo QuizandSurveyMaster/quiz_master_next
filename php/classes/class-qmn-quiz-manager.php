@@ -1703,6 +1703,106 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Add quiz result
+	 * 
+	 * @since  9.0.2
+	 * @param  array $data required data ( i.e. qmn_array_for_variables, results_array, unique_id, http_referer, form_type )  for adding quiz result
+	 * 
+	 * @return boolean results added or not
+	 */
+	private function add_quiz_results( $data ) {
+		global $wpdb;
+		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] )  ) {
+			return false;
+		}
+
+		// Inserts the responses in the database.
+		$table_name = $wpdb->prefix . 'mlw_results';
+		return $wpdb->insert(
+			$table_name,
+			array(
+				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
+				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
+				'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
+				'point_score'     => $data['qmn_array_for_variables']['total_points'],
+				'correct_score'   => $data['qmn_array_for_variables']['total_score'],
+				'correct'         => $data['qmn_array_for_variables']['total_correct'],
+				'total'           => $data['qmn_array_for_variables']['total_questions'],
+				'name'            => $data['qmn_array_for_variables']['user_name'],
+				'business'        => $data['qmn_array_for_variables']['user_business'],
+				'email'           => $data['qmn_array_for_variables']['user_email'],
+				'phone'           => $data['qmn_array_for_variables']['user_phone'],
+				'user'            => $data['qmn_array_for_variables']['user_id'],
+				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
+				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
+				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
+				'quiz_results'    => maybe_serialize( $data['results_array'] ),
+				'deleted'         => 0,
+				'unique_id'       => $data['unique_id'],
+				'form_type'       => $data['form_type'],
+				'page_url'        => $data['http_referer'],
+				'page_name'       => url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '',
+			),
+			array(
+				'%d',
+				'%s',
+				'%d',
+				'%f',
+				'%d',
+				'%d',
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%s',
+				'%d',
+				'%s',
+				'%s',
+			)
+		);
+	}
+
+	/**
+	 * Retrieve results from error log
+	 * 
+	 * @since  9.0.2
+	 * 
+	 * @return boolean results retrieved or not
+	 */
+	public function retrieve_results_from_error_log(){
+		$meta_key = '_qmn_log_result_insert_data';
+		$posts = get_posts(
+			array(
+				'post_type'      => 'qmn_log',
+				'meta_key'       => $meta_key,
+				'fields'         => 'ids',
+				'posts_per_page' => -1    
+			)
+		);
+		if ( empty( $posts ) ) {
+			return;
+		}
+		foreach ( $posts as $postID ) {
+			$data = get_post_meta( $postID, $meta_key, true );
+			if ( empty( $data ) ) {
+				continue;
+			}
+			$data = maybe_unserialize( $data );
+			$data = $this->add_quiz_results( $data );
+			if ( false != $data ) {
+				
+			}
+		}
+	}
+
+	/**
 	 * Perform The Quiz/Survey Submission
 	 *
 	 * Prepares and save the results, prepares and send emails, prepare results page
@@ -1837,59 +1937,26 @@ class QMNQuizManager {
 						$results_array['page_url'] = $http_referer;
 						$http_referer = substr($http_referer, 0, 254);
 					}
-					$results_insert = $wpdb->insert(
-						$table_name,
-						array(
-							'quiz_id'         => $qmn_array_for_variables['quiz_id'],
-							'quiz_name'       => $qmn_array_for_variables['quiz_name'],
-							'quiz_system'     => $qmn_array_for_variables['quiz_system'],
-							'point_score'     => $qmn_array_for_variables['total_points'],
-							'correct_score'   => $qmn_array_for_variables['total_score'],
-							'correct'         => $qmn_array_for_variables['total_correct'],
-							'total'           => $qmn_array_for_variables['total_questions'],
-							'name'            => $qmn_array_for_variables['user_name'],
-							'business'        => $qmn_array_for_variables['user_business'],
-							'email'           => $qmn_array_for_variables['user_email'],
-							'phone'           => $qmn_array_for_variables['user_phone'],
-							'user'            => $qmn_array_for_variables['user_id'],
-							'user_ip'         => $qmn_array_for_variables['user_ip'],
-							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => maybe_serialize( $results_array ),
-							'deleted'         => 0,
-							'unique_id'       => $unique_id,
-							'form_type'       => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-							'page_url'        => $http_referer,
-							'page_name'       => url_to_postid( $http_referer ) ? get_the_title( url_to_postid( $http_referer ) ) : '',
-						),
-						array(
-							'%d',
-							'%s',
-							'%d',
-							'%f',
-							'%d',
-							'%d',
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%s',
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%s',
-							'%d',
-							'%s',
-							'%d',
-							'%s',
-							'%s',
-						)
+					$insert_data = array(
+						'qmn_array_for_variables' => $qmn_array_for_variables,
+						'results_array' => $results_array,
+						'unique_id' => $unique_id,
+						'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+						'http_referer' => $http_referer,
 					);
+					$results_insert = $this->add_quiz_results( $insert_data );
 					$results_id     = $wpdb->insert_id;
 					if ( false === $results_insert ) {
 						$quiz_submitted_data = qsm_printTableRows($qmn_array_for_variables);
-						$mlwQuizMasterNext->log_manager->add( __('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], '<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+						$mlwQuizMasterNext->log_manager->add( 
+							__('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], 
+							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 
+							0, 
+							'error', 
+							array(
+								'result_insert_data' => maybe_serialize( $insert_data ),
+							)
+						 );
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
 					}
 				}

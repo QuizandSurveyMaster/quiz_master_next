@@ -161,7 +161,14 @@ class MLWQuizMasterNext {
 		$this->add_hooks();
 	}
 
-	//Check admin capabilities
+	/**
+	 * Check admin capabilities.
+	 *
+	 * @since 9.0.0
+	 * @param string $check_permission permission type
+	 * 
+	 * @return boolean current user has permission
+	 */
 	public function qsm_is_admin( $check_permission = 'manage_options' ) {
 		if ( ! function_exists( 'wp_get_current_user' ) && file_exists( ABSPATH . "wp-includes/pluggable.php" ) ) {
 			require_once( ABSPATH . "wp-includes/pluggable.php" );
@@ -170,6 +177,63 @@ class MLWQuizMasterNext {
 			require_once( ABSPATH . "wp-includes/capabilities.php" );
 		}
 		return ( function_exists( 'wp_get_current_user' ) && function_exists( 'current_user_can' ) && current_user_can( $check_permission ) );
+	}
+
+	/**
+	 * Get failed alter qmn table query list.
+	 *
+	 * @since 9.0.2
+	 * @return array  alter qmn table query list
+	 */
+	private function get_failed_alter_table_queries() {
+		$failed_queries = get_option( 'qmn_failed_alter_table_queries', array() );
+		return is_array( $failed_queries ) ? $failed_queries: array();
+	}
+
+	/**
+	 * Execute WP db query and save query if failed to execute
+	 *
+	 * @since 9.0.2
+	 * @param string $query SQL Query
+	 * 
+	 * @return boolean query executed or not
+	 */
+	public function wpdb_alter_table_query( $query ) {
+		// Check if admin or empty query.
+		if ( empty( $query ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+			return false;
+		}
+
+		global $wpdb;
+		$query = trim( $query );
+
+		// check if a query for qsm tables alter only.
+		if ( empty( $wpdb ) || 0 != stripos( $query, 'ALTER TABLE' ) || false === stripos( $query, 'mlw_' ) ) {
+			return false;
+		}
+
+		// Execute query.
+		$res = $wpdb->query( $query );
+
+		// Get failed alter table query list.
+		$failed_queries = $this->get_failed_alter_table_queries();
+
+		if ( ! empty( $res ) ) {
+			if ( ! empty( $failed_queries ) && in_array( $query, $failed_queries ) ) {
+				// Remove failed query from list.
+				$failed_queries = array_diff( $failed_queries, array( $query ) );
+				// Update failed queries list.
+				update_option( 'qmn_failed_alter_table_queries', $failed_queries );
+			}
+			return true;
+		} else if ( empty( $failed_queries ) || ! in_array( $query, $failed_queries ) ) {
+			// Add query to the list.
+			$failed_queries[] =  $query;
+			// Update failed queries list.
+			update_option( 'qmn_failed_alter_table_queries', $failed_queries );
+		}
+
+		return false;
 	}
 
 	/**
@@ -740,6 +804,17 @@ class MLWQuizMasterNext {
 			</div>
 			<?php
 		}
+
+		// Get failed alter table query list.
+		$failed_queries = $this->get_failed_alter_table_queries();
+		if ( ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
+			?>
+			<div class="notice notice-warning qmn-database-user-incorrect-permission">
+				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?></p>
+			</div>
+			<?php
+		}
+
 	}
 
 
