@@ -512,7 +512,7 @@ class QMNPluginHelper {
 					if ( ! empty( $categories['category_name'] ) ) {
 						$cat_name = implode( ',', $categories['category_name'] );
 						?>
-						<div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div>
+						<div class="quiz-cat"><?php echo esc_html( $cat_name ); ?></div>
 						<?php
 					}
 				}

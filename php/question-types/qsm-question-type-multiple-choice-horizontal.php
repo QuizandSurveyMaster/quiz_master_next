@@ -108,7 +108,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
  */
 function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
-	$current_question 				= apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
+	$current_question               = apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer( 'single_response' );
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( ', ', $user_text_array ) : '';
