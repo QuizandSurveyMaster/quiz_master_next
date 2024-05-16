@@ -336,6 +336,28 @@ class MLWQuizMasterNext {
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+		add_action( 'admin_init', array( $this, 'has_alter_table_issue_solved' ), 999 );
+	}
+
+	/**
+	 * Check if alter table issue has been solved by trying failed alter table query
+	 * 
+	 * @since 9.0.2
+	 * 
+	 * @return void
+	 */
+	public function has_alter_table_issue_solved() {
+		// Get failed alter table query list.
+		$failed_queries = $this->get_failed_alter_table_queries();
+		if ( ! empty( $failed_queries ) ) {
+			foreach ( $failed_queries as $failed_query ) {
+				$failed_query = $this->wpdb_alter_table_query( $failed_query );
+				// exit loop if query failed to execute
+				if ( false === $failed_query ) {
+					break;
+				}
+			}
+		}
 	}
 
 	/**
