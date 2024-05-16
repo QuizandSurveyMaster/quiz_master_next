@@ -165,6 +165,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 = 9.0.2 ( Beta ) =
 * Bug: Fixed display shortcode php buffer due to invalid quiz id
+* Feature: Added Failed submission list in QSM menu
+* Feature: Added retrieve or delete failed submission
+* Enhancement: Added admin notification if database user does not have proper permission.
 
 = 9.0.1 (April 25, 2024) =
 * Bug: Fixed date format in %ANSWER_X% variable
