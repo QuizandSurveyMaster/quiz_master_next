@@ -104,10 +104,7 @@ class QMN_Log_Manager
 			'log_type'     => $type,
 		);
 		$settings = (array) get_option( 'qmn-settings' );
-        if ( ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'] ) {
-			return $this->insert_log( $log_data, $log_meta );
-		}
-		return false;
+		return $this->insert_log( $log_data, $log_meta );
 	}
 
 	/**

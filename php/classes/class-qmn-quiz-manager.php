@@ -111,11 +111,11 @@ class QMNQuizManager {
 		if ( ! empty( $_REQUEST['post_id'] ) && ! empty( $_REQUEST['action'] ) && function_exists('is_admin') && is_admin() && ! empty( $_REQUEST['qmnnonce'] ) && wp_verify_nonce( wp_unslash( $_REQUEST['qmnnonce'] ), 'qmn_failed_submission' )  ) {
 			
 			$post_ids = wp_unslash( $_REQUEST['post_id'] );
-			$post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : sanitize_key( $post_ids );
+			$post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
 			$action = wp_unslash( sanitize_key( $_REQUEST['action'] ) );
 			if ( ! empty( $post_ids ) ) {
 				foreach ( $post_ids as $postID) {
-
+					
 					$postID = intval( $postID );
 
 					// Continue if postID not valid
@@ -175,6 +175,11 @@ class QMNQuizManager {
 			$data['deleted'] = 1;
 			// Delete submission data
 			update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
+			// Change Error log post status to trash
+			wp_update_post( array(
+				'ID'          => $postID,
+				'post_status' => 'trash',
+			) );
 		}
 	}
 

@@ -56,6 +56,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				array(
 					'post_type'      => 'qmn_log',
 					'meta_key'       => $this->meta_key,
+					'post_status'	 => 'publish',
 					'fields'         => 'ids',
 					'posts_per_page' => -1,
 				)
@@ -63,14 +64,12 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 			$posts    = empty( $posts ) ? array() : $posts;
 			$per_page = 20;
-			// Total rows.
-			$this->total_rows = count( $posts );
 			if ( ! empty( $posts ) ) {
 				$current_page       = intval( $this->get_pagenum() ) - 1;
 				$post_start_postion = $per_page * $current_page;
 
 				foreach ( $posts as $index => $postID ) {
-					if ( $post_start_postion > $index || $index > ( $post_start_postion + $per_page ) ) {
+					if ( $post_start_postion > $index || $index >= ( $post_start_postion + $per_page ) ) {
 						continue;
 					}
 					$data = get_post_meta( $postID, $this->meta_key, true );
@@ -89,7 +88,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			// pagination.
 			$this->set_pagination_args(
 				array(
-					'total_items' => $this->total_rows,
+					'total_items' =>  count( $posts ),
 					'per_page'    => $per_page,
 				)
 			);
@@ -101,6 +100,8 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			$this->_column_headers = array(
 				$this->get_columns(),
 				$this->get_hidden_columns(),
+				array(), // Sortable column
+				'cb', // Primary column
 			);
 		}
 

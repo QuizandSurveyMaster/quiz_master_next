@@ -853,7 +853,7 @@ class MLWQuizMasterNext {
 
 		// Get failed alter table query list.
 		$failed_queries = $this->get_failed_alter_table_queries();
-		if ( ! empty( $failed_queries ) && is_array( $failed_queries )  && 0 < count( $failed_queries ) ) {
+		if ( ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
 			?>
 			<div class="notice notice-warning is-dismissible qmn-database-user-incorrect-permission">
 				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?></p>
