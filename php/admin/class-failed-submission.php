@@ -205,7 +205,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 *
 		 * @since 9.0.2
 		 *
-		 * @param object|array $item The current item
+		 * @param object|array $submission The current item
+		 * 
+		 * @return void
 		 */
 		public function single_row( $submission ) {
 			echo '<tr id="qsm-submission-row-' . esc_attr( $submission['post_id'] ) . '" >';
