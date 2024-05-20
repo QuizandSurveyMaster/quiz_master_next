@@ -84,6 +84,10 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 		/**
 		 * Prepares the list of items for displaying.
+		 * 
+		 *  @since 9.0.2
+		 * 
+		 *  @return void
 		 */
 		public function prepare_items() {
 			// QMN Error log.
@@ -146,8 +150,10 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 		/**
 		 * Gets a list of columns.
-		 *
-		 * @return array
+		 * 
+		 * @since 9.0.2
+		 * 
+		 * @return array columns list
 		 */
 		public function get_columns() {
 			$columns = array(
@@ -171,7 +177,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		/**
 		 * Gets the list of views available on this table.
 		 *
-		 * @return array
+		 * @since 9.0.2
+		 * 
+		 * @return array tabs link
 		 */
 		protected function get_views() {
 			$views = array(
@@ -208,7 +216,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		/**
 		 * Gets a list of hidden columns.
 		 *
-		 * @return array
+		 * @since 9.0.2
+		 * 
+		 * @return array hidden column name
 		 */
 		public function get_hidden_columns() {
 			return array(
@@ -216,6 +226,13 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			);
 		}
 
+		/**
+		 * Checkbox to select submissions.
+		 *
+		 * @since 9.0.2
+		 * 
+		 * @return html input checkbox 
+		 */
 		public function column_cb( $submission ) {
 			return sprintf(
 				'<input type="checkbox" name="post_id[]" value="%d" /> ',
@@ -223,6 +240,13 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			);
 		}
 
+		/**
+		 * Column value
+		 *
+		 * @since 9.0.2
+		 * 
+		 * @return string specific column value 
+		 */
 		public function column_default( $submission, $column_name ) {
 			$column_value = '';
 			switch ( $column_name ) {
@@ -260,6 +284,13 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			return $column_value;
 		}
 
+		/**
+		 * Bulk action
+		 *
+		 * @since 9.0.2
+		 * 
+		 * @return array actions
+		 */
 		public function get_bulk_actions() {
 			return array(
 				'retrieve' => __( 'Retrieve', 'quiz-master-next' ),
@@ -270,7 +301,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		/**
 		 * Render page with this table
 		 *
-		 * @param class $store
+		 * @since 9.0.2
+		 * 
+		 * @return HTML failed submission page
 		 */
 		public function render_list_table() {
 
