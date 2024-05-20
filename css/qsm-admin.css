@@ -3437,3 +3437,11 @@ input#preferred-date-format-custom {
 	background: #cccccc36;
     border: 1px solid #ccc;
 }
+
+.qsm-pointer-events-none {
+	pointer-events: none;
+}
+
+.display-none-notice {
+	display: none;
+}
