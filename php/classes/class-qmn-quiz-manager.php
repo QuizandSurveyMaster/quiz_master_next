@@ -96,59 +96,107 @@ class QMNQuizManager {
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action('wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
-		add_action( 'admin_init', array($this, 'process_action_failed_submission_table') );
-
+		// Failed submission resubmit or trash 
+		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
 	}
 
 	/**
 	 * Process Bulk action for failed submission table
-	 * 
+	 *
 	 * @since 9.0.2
 	 * @return void
-	 * 
 	 */
-	public function process_action_failed_submission_table() {
-		if ( ! empty( $_REQUEST['post_id'] ) && ! empty( $_REQUEST['action'] ) && function_exists('is_admin') && is_admin() && ! empty( $_REQUEST['qmnnonce'] ) && wp_verify_nonce( wp_unslash( $_REQUEST['qmnnonce'] ), 'qmn_failed_submission' )  ) {
-			
-			$post_ids = wp_unslash( $_REQUEST['post_id'] );
-			$post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
-			$action = wp_unslash( sanitize_key( $_REQUEST['action'] ) );
-			if ( ! empty( $post_ids ) ) {
-				foreach ( $post_ids as $postID) {
-					
-					$postID = intval( $postID );
+    public function process_action_failed_submission_table() {
 
-					// Continue if postID not valid
-					if ( 0 >= $postID ) {
-						continue;
-					}
+        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_failed_submission' ) ) {
+            wp_send_json_error(
+                array(
+                    'status'  => 'error',
+                    'message' => __( 'Missing or incorrect input', 'quiz-master-next' ),
+                )
+            );
+        }
+        $post_ids = wp_unslash( $_POST['post_id'] );
+        $post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
+        $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
+        if ( ! empty( $post_ids ) ) {
+            foreach ( $post_ids as $postID ) {
 
-					// Retrieve action.
-					if ( 'retrieve' === $action ) {
-						$data = get_post_meta( $postID, $this->meta_key, true );
-						if ( ! empty( $data ) ) {
-							$data = maybe_unserialize( $data );
-							if ( false !== $this->add_quiz_results( $data ) ) {
-								$this->delete_failed_submission( $postID, $data );
-							}
-						}
-					} else if ( 'trash' === $action ) {
-						// Delete action
-						$this->delete_failed_submission( $postID, $data );
-					}
-				}
-			}
+                $postID = intval( $postID );
 
-			wp_safe_redirect(
-				add_query_arg(
-					array(
-						'page' => 'mlw_quiz_failed_submission',
-					),
-					admin_url( 'admin.php' )
-				)
-			);
-		}
-	}
+                // Continue if postID not valid
+                if ( 0 >= $postID ) {
+                    continue;
+                }
+
+                $data = get_post_meta( $postID, $this->meta_key, true );
+
+                if ( empty( $data ) ) {
+                    wp_send_json_error(
+                        array(
+                            'status'  => 'error',
+                            'message' => __( 'Details not found', 'quiz-master-next' ),
+                            'data'    => $data,
+                        )
+                    );
+                }
+
+                $data = maybe_unserialize( $data );
+
+                // Retrieve action.
+                if ( 'retrieve' === $action ) {
+                    $res = $this->add_quiz_results( $data );
+                    if ( false !== $res ) {
+                        $data['processed'] = 1;
+                        // Mark submission processed.
+                        update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
+
+                        // return success message.
+                        wp_send_json_success(
+                            array(
+                                'res'     => $res,
+                                'status'  => 'success',
+                                'message' => __( 'Quiz resubmitted successfully.', 'quiz-master-next' ),
+                            )
+                        );
+                    } else {
+                        // return error details.
+                        global $wpdb;
+                        wp_send_json_error(
+                            array(
+                                'status'  => 'error',
+                                'message' => $wpdb->last_error,
+                            )
+                        );
+                    }
+                } elseif ( 'trash' === $action ) {
+
+                    // Change Error log post status to trash. Error log contain failed submission data as a post meta
+                    wp_update_post(
+                        array(
+                            'ID'          => $postID,
+                            'post_status' => 'trash',
+                        )
+                    );
+
+                    // return success message.
+                    wp_send_json_success(
+                        array(
+                            'status'  => 'success',
+                            'message' => __( 'Quiz deleted successfully.', 'quiz-master-next' ),
+                        )
+                    );
+                }
+            }
+        }
+
+        wp_send_json_error(
+            array(
+                'status'  => 'error',
+                'message' => __( 'Missing input', 'quiz-master-next' ),
+            )
+        );
+    }
 
 	/**
 	 * Delete failed submission log
@@ -1799,69 +1847,85 @@ class QMNQuizManager {
 
 	/**
 	 * Add quiz result
-	 * 
+	 *
 	 * @since  9.0.2
 	 * @param  array $data required data ( i.e. qmn_array_for_variables, results_array, unique_id, http_referer, form_type )  for adding quiz result
-	 * 
+	 *
 	 * @return boolean results added or not
 	 */
 	private function add_quiz_results( $data ) {
 		global $wpdb;
-		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] )  ) {
+		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
 		}
 
 		// Inserts the responses in the database.
 		$table_name = $wpdb->prefix . 'mlw_results';
-		return $wpdb->insert(
-			$table_name,
-			array(
-				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
-				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
-				'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
-				'point_score'     => $data['qmn_array_for_variables']['total_points'],
-				'correct_score'   => $data['qmn_array_for_variables']['total_score'],
-				'correct'         => $data['qmn_array_for_variables']['total_correct'],
-				'total'           => $data['qmn_array_for_variables']['total_questions'],
-				'name'            => $data['qmn_array_for_variables']['user_name'],
-				'business'        => $data['qmn_array_for_variables']['user_business'],
-				'email'           => $data['qmn_array_for_variables']['user_email'],
-				'phone'           => $data['qmn_array_for_variables']['user_phone'],
-				'user'            => $data['qmn_array_for_variables']['user_id'],
-				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
-				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
-				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
-				'quiz_results'    => maybe_serialize( $data['results_array'] ),
-				'deleted'         => 0,
-				'unique_id'       => $data['unique_id'],
-				'form_type'       => $data['form_type'],
-				'page_url'        => $data['http_referer'],
-				'page_name'       => url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '',
-			),
-			array(
-				'%d',
-				'%s',
-				'%d',
-				'%f',
-				'%d',
-				'%d',
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-				'%d',
-				'%s',
-				'%s',
-			)
-		);
+
+		// Temporarily suppress error reporting
+		$wpdb->suppress_errors();
+
+		try {
+			$res = $wpdb->insert(
+				$table_name,
+				array(
+					'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
+					'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
+					'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
+					'point_score'     => $data['qmn_array_for_variables']['total_points'],
+					'correct_score'   => $data['qmn_array_for_variables']['total_score'],
+					'correct'         => $data['qmn_array_for_variables']['total_correct'],
+					'total'           => $data['qmn_array_for_variables']['total_questions'],
+					'name'            => $data['qmn_array_for_variables']['user_name'],
+					'business'        => $data['qmn_array_for_variables']['user_business'],
+					'email'           => $data['qmn_array_for_variables']['user_email'],
+					'phone'           => $data['qmn_array_for_variables']['user_phone'],
+					'user'            => $data['qmn_array_for_variables']['user_id'],
+					'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
+					'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
+					'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
+					'quiz_results'    => maybe_serialize( $data['results_array'] ),
+					'deleted'         => 0,
+					'unique_id'       => $data['unique_id'],
+					'form_type'       => $data['form_type'],
+					'page_url'        => $data['http_referer'],
+					'page_name'       => url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '',
+				),
+				array(
+					'%d',
+					'%s',
+					'%d',
+					'%f',
+					'%d',
+					'%d',
+					'%d',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%d',
+					'%s',
+					'%s',
+				)
+			);
+			if ( false === $res ) {
+				// Throw exception
+				throw new Exception( 'Database insert failed.' );
+			}
+			// If insert is successful, return response
+			return $res;
+		} catch ( Exception $e ) {
+			return false;
+		}
+
+		return false;
 	}
 
 	/**

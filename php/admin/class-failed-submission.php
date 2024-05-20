@@ -22,7 +22,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 	class QmnFailedSubmissions extends WP_List_Table {
 
 		/**
-		 * Holds meta_key name
+		 * meta_key name which contain failed submission data
 		 *
 		 * @var object
 		 * @since 9.0.2
@@ -30,21 +30,56 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		public $meta_key = '_qmn_log_result_insert_data';
 
 		/**
-		 * Holds table_data
+		 * Variable to check if ip is enable
+		 *
+		 * @var object
+		 * @since 9.0.2
+		 */
+		public $ip_enabled = false;
+
+		/**
+		 * table_data
 		 *
 		 * @var object
 		 * @since 9.0.2
 		 */
 		private $table_data = array();
 
+
+		/**
+		 * Error log post ids
+		 *
+		 * @var object
+		 * @since 9.0.2
+		 */
+		private $posts = array();
+
+		/**
+		 * Current Tab
+		 *
+		 * @var object
+		 * @since 9.0.2
+		 */
+		private $current_tab = array();
+
+
 		public function __construct() {
 			parent::__construct(
 				array(
 					'plural'   => 'submissions',
 					'singular' => 'submission',
-					'ajax'     => false,
+					'ajax'     => true,
 				)
 			);
+			$this->current_tab = ( empty( $_GET['tab'] ) || 'retrieve' == sanitize_key( $_GET['tab'] ) ) ? 'retrieve' : 'processed';
+
+			// Get settings.
+			$settings = (array) get_option( 'qmn-settings' );
+
+			// ip_collection value 1 means it's disabled.
+			if ( empty( $settings ) || ! isset( $settings['ip_collection'] ) || '1' != $settings['ip_collection'] ) {
+				$this->ip_enabled = true;
+			}
 		}
 
 		/**
@@ -52,34 +87,38 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 */
 		public function prepare_items() {
 			// QMN Error log.
-			$posts = get_posts(
+			$this->posts = get_posts(
 				array(
 					'post_type'      => 'qmn_log',
 					'meta_key'       => $this->meta_key,
-					'post_status'	 => 'publish',
+					'post_status'    => 'publish',
 					'fields'         => 'ids',
 					'posts_per_page' => -1,
 				)
 			);
 
-			$posts    = empty( $posts ) ? array() : $posts;
-			$per_page = 20;
-			if ( ! empty( $posts ) ) {
+			$this->posts = empty( $this->posts ) ? array() : $this->posts;
+			$per_page    = 20;
+			if ( ! empty( $this->posts ) ) {
 				$current_page       = intval( $this->get_pagenum() ) - 1;
 				$post_start_postion = $per_page * $current_page;
 
-				foreach ( $posts as $index => $postID ) {
+				foreach ( $this->posts as $index => $postID ) {
+
 					if ( $post_start_postion > $index || $index >= ( $post_start_postion + $per_page ) ) {
 						continue;
 					}
+
 					$data = get_post_meta( $postID, $this->meta_key, true );
 					if ( empty( $data ) ) {
 						continue;
 					}
+
 					$data = maybe_unserialize( $data );
-					if ( ! is_array( $data ) || ! empty( $data['deleted'] ) || empty( $data['qmn_array_for_variables'] ) ) {
+					if ( ! is_array( $data ) || ( 'processed' == $this->current_tab && empty( $data['processed'] ) ) || ( 'retrieve' == $this->current_tab && ! empty( $data['processed'] ) ) || empty( $data['qmn_array_for_variables'] ) ) {
 						continue;
 					}
+
 					$data['qmn_array_for_variables']['post_id'] = $postID;
 					$this->table_data[]                         = $data['qmn_array_for_variables'];
 				}
@@ -88,7 +127,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			// pagination.
 			$this->set_pagination_args(
 				array(
-					'total_items' =>  count( $posts ),
+					'total_items' => count( $this->posts ),
 					'per_page'    => $per_page,
 				)
 			);
@@ -111,14 +150,59 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * @return array
 		 */
 		public function get_columns() {
-			return array(
-				'cb'                => '<input type="checkbox" />',
-				'post_id'           => __( 'ID', 'quiz-master-next' ),
-				'quiz_name'         => __( 'Quiz Name', 'quiz-master-next' ),
-				'user_name'         => __( 'Name', 'quiz-master-next' ),
-				'user_email'        => __( 'Email', 'quiz-master-next' ),
-				'submission_action' => __( 'Action', 'quiz-master-next' ),
+			$columns = array(
+				'cb'         => '<input type="checkbox" />',
+				'post_id'    => __( 'ID', 'quiz-master-next' ),
+				'quiz_name'  => __( 'Quiz Name', 'quiz-master-next' ),
+				'quiz_time'  => __( 'Time', 'quiz-master-next' ),
+				'user_name'  => __( 'Name', 'quiz-master-next' ),
+				'user_email' => __( 'Email', 'quiz-master-next' ),
 			);
+
+			if ( $this->ip_enabled ) {
+				$columns['user_ip'] = __( 'IP Address', 'quiz-master-next' );
+			}
+
+			$columns['submission_action'] = __( 'Action', 'quiz-master-next' );
+
+			return $columns;
+		}
+
+		/**
+		 * Gets the list of views available on this table.
+		 *
+		 * @return array
+		 */
+		protected function get_views() {
+			$views = array(
+				'retrieve'  => array(
+					'label' => __( 'Resubmit', 'quiz-master-next' ),
+				),
+				'processed' => array(
+					'label' => __( 'Processed', 'quiz-master-next' ),
+				),
+			);
+
+			$view_links = array();
+
+			foreach ( $views as $view_id => $view ) {
+				$view_links[ $view_id ] = '<a href="' . esc_url( admin_url( 'admin.php?page=mlw_quiz_failed_submission&tab=' . $view_id ) ) . '" class="' . ( ( $view_id === $this->current_tab ) ? 'current' : '' ) . '" >' . esc_html( $view['label'] ) . '</a>';
+			}
+
+			return $view_links;
+		}
+
+		/**
+		 * Generates content for a single row of the table.
+		 *
+		 * @since 9.0.2
+		 *
+		 * @param object|array $item The current item
+		 */
+		public function single_row( $submission ) {
+			echo '<tr id="qsm-submission-row-' . esc_attr( $submission['post_id'] ) . '" >';
+			$this->single_row_columns( $submission );
+			echo '</tr>';
 		}
 
 		/**
@@ -148,14 +232,26 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				case 'quiz_name':
 					$column_value = $submission['quiz_name'];
 					break;
+				case 'quiz_time':
+					$column_value = gmdate( 'd-m-Y', strtotime( $submission['time_taken'] ) );
+					break;
 				case 'user_name':
 					$column_value = $submission['user_name'];
 					break;
 				case 'user_email':
 					$column_value = $submission['user_email'];
 					break;
+				case 'user_ip':
+					$column_value = $submission['user_ip'];
+					break;
 				case 'submission_action':
-					$column_value = '<a href="' . esc_url( admin_url( 'admin.php?action=retrieve&post_id=' . esc_attr( $submission['post_id'] ) . '&qmnnonce=' . wp_create_nonce( 'qmn_failed_submission' ) ) ) . '" class="qmn-delete-failed-submission" >' . __( 'Retrieve', 'quiz-master-next' ) . '</a>';
+					$column_value = '<span id="action-link-' . esc_attr( $submission['post_id'] ) . '">';
+					if ( 'processed' == $this->current_tab ) {
+						$column_value .= '<span class="dashicons dashicons-yes-alt"></span>';
+					} else {
+						$column_value .= '<a href="#"  post-id="' . esc_attr( $submission['post_id'] ) . '" class="qmn-retrieve-failed-submission-link" >' . __( 'Resubmit', 'quiz-master-next' ) . '</a>';
+					}
+					$column_value .= '</span>';
 					break;
 				default:
 					break;
@@ -179,21 +275,30 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		public function render_list_table() {
 
 			$this->prepare_items();
-			// header.
-			echo '<div class="qmn-failed-submission wrap">';
-			// heading.
-			echo '<h2 id="result_details" >' . esc_html__( 'Failed Submissions', 'quiz-master-next' ) . '</h2>';
-			// body.
-			echo '<div class="qmn-body">';
-			echo "<form method='post' name='search_form' action='" . esc_url( admin_url( 'admin.php?page=mlw_quiz_failed_submission' ) ) . "'>";
-			echo '<div class="submission-filter-wrapper" >';
-			$this->views();
-			echo '</div>';
-			echo '<input type="hidden" name="qmnnonce" value="' . wp_create_nonce( 'qmn_failed_submission' ) . '" />';
-			$this->display();
-			echo '</form>';
-			echo '</div>';
-			echo '</div>';
+			?>
+			<!-- header. -->
+			<div class="qmn-failed-submission wrap" id="qmn-failed-submission-conatiner" >
+				<!-- heading. -->
+				<h2 id="result_details" > <?php esc_html_e( 'Failed Submissions', 'quiz-master-next' ); ?></h2>
+				<!-- body -->
+				<div class="qmn-body">
+				<!-- Action response notice -->
+				<div id="qmn-failed-submission-table-message" class="notice display-none-notice" >
+				</div>
+				<form method='post' id='failed-submission-action-form' action=''>
+					<div class="submission-filter-wrapper" >
+						<?php
+							$this->views(); // render bulk action and pagination
+						?>
+					</div>
+					<input type="hidden" name="qmnnonce" value="<?php echo wp_create_nonce( 'qmn_failed_submission' ); ?>" />
+					<?php
+						$this->display(); // render table
+					?>
+				</form>
+				</div>
+			</div>
+			<?php
 		}
 	}
 }
