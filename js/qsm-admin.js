@@ -4081,8 +4081,8 @@ var import_button;
         } );
     } );
 
-     // On click retrieve link
-     $( document ).on( 'click', '.notice.qmn-database-user-incorrect-permission .check-db-fix-btn', function( e ) {
+    // Run failed ALTER TABLE query via ajax on notification button click
+    $( document ).on( 'click', '.notice.qmn-database-user-incorrect-permission .check-db-fix-btn', function( e ) {
         e.preventDefault();
         let dbFixBtn = $( this );
         let formData = {
