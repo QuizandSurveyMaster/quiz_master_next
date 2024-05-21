@@ -98,6 +98,72 @@ class QMNQuizManager {
 
 		// Failed submission resubmit or trash 
 		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
+		
+		// Run failed ALTER TABLE query via ajax on notification button click
+		add_action( 'wp_ajax_qsm_check_fix_db', array( $this, 'has_alter_table_issue_solved' ) );
+	}
+
+	/**
+	 * Check if alter table issue has been solved by trying failed alter table query
+	 *
+	 * @since 9.0.2
+	 *
+	 * @return void
+	 */
+	public function has_alter_table_issue_solved() {
+		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+			wp_send_json_error(
+				array(
+					'status'  => 'error',
+					'message' => __( 'Unauthorized!', 'quiz-master-next' ),
+				)
+			);
+		} else {
+			global $mlwQuizMasterNext, $wpdb;
+			$wperror = '';
+			// Failed Query has been saved in wrong order sometimes due to order of execution. So run twice
+			for ( $i = 0; $i < 2; $i++ ) {
+				// Get failed alter table query list.
+				$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
+				if ( ! empty( $failed_queries ) ) {
+
+					if ( 0 === $i ) {
+						$failed_queries = array_reverse( $failed_queries );
+					}
+
+					foreach ( $failed_queries as $failed_query ) {
+						$result = $mlwQuizMasterNext->wpdb_alter_table_query( $failed_query );
+						// exit loop if query failed to execute
+						if ( false === $result ) {
+							$wperror = $wpdb->last_error;
+							if ( false !== stripos( $wperror, 'Duplicate' ) ) {
+								// Remove failed query from list.
+								$failed_queries = array_diff( $failed_queries, array( $failed_query ) );
+								// Update failed queries list.
+								update_option( 'qmn_failed_alter_table_queries', $failed_queries );
+							}
+						}
+					}
+				}
+			}
+
+			$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
+			if ( ! empty( $failed_queries ) ) {
+				wp_send_json_error(
+					array(
+						'status'  => 'error',
+						'message' => $wperror,
+					)
+				);
+			} else {
+				wp_send_json_success(
+					array(
+						'status'  => 'success',
+						'message' => __( 'Fixed!', 'quiz-master-next' ),
+					)
+				);
+			}
+		}
 	}
 
 	/**
