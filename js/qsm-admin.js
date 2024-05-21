@@ -3972,11 +3972,10 @@ var import_button;
             let remove_notice_type_class = 'success' === res.status ? 'notice-error' : 'notice-success';
             noticeEl.removeClass( remove_notice_type_class );
             noticeEl.addClass( 'notice-'+res.status );
-            noticeEl.html(
-                '<p>'+res.message+'</p>'
+            noticeEl.find( '.notice-message' ).text(
+                res.message
             );
-            noticeEl.show();
-            noticeEl.fadeOut( 9999 );
+            noticeEl.removeClass( 'display-none-notice' );
        }
     }
 
@@ -4019,7 +4018,7 @@ var import_button;
                     if ( response.success ) {
                         action_link_wrap.html( '<span class="dashicons dashicons-yes-alt"></span>' );
                     } else {
-                        action_link_wrap.html( action_link_html );
+                        action_link_wrap.html( 'Failed' );
                     }
 
                     // Remove row if trashed
@@ -4065,6 +4064,12 @@ var import_button;
          submit_failed_submission_action_form( formData );
     } );
 
+    // Dismiss notification
+    $( document ).on( 'click', '#qmn-failed-submission-table-message .notice-dismiss', function( e ) {
+        e.preventDefault();
+        $(this).parent().addClass( 'display-none-notice' );
+    });
+
     // On click retrieve link
     $( document ).on( 'click', '.qmn-retrieve-failed-submission-link', function( e ) {
         e.preventDefault();
@@ -4075,4 +4080,31 @@ var import_button;
             quiz_action:'retrieve'
         } );
     } );
+
+     // On click retrieve link
+     $( document ).on( 'click', '.notice.qmn-database-user-incorrect-permission .check-db-fix-btn', function( e ) {
+        e.preventDefault();
+        let dbFixBtn = $( this );
+        let formData = {
+            action: 'qsm_check_fix_db',
+            qmnnonce: $( this ).attr( 'qmnnonce' ),
+        };
+        dbFixBtn.text("processing...");
+        dbFixBtn.removeClass( 'check-db-fix-btn' );
+        dbFixBtn.removeClass( 'button-primary' );
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: formData,
+            success: function (response) {
+                if ( undefined !== response.data ) {
+                    dbFixBtn.text( response.data.message );   
+                }
+            },
+            error: function ( jqXHR, textStatus, errorThrown ) {
+                console.log( "error", errorThrown );
+            }
+        });
+    } );
+    
 }(jQuery));

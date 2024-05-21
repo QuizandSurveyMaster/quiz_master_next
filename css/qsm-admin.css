@@ -3445,3 +3445,8 @@ input#preferred-date-format-custom {
 .display-none-notice {
 	display: none;
 }
+
+#qmn-failed-submission-table-message {
+	padding-right: 38px;
+    position: relative;
+}

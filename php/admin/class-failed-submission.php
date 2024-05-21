@@ -295,7 +295,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 */
 		public function get_bulk_actions() {
 			return array(
-				'retrieve' => __( 'Retrieve', 'quiz-master-next' ),
+				'retrieve' => __( 'Resubmit', 'quiz-master-next' ),
 				'trash'    => __( 'Delete', 'quiz-master-next' ),
 			);
 		}
@@ -314,11 +314,13 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			<!-- header. -->
 			<div class="qmn-failed-submission wrap" id="qmn-failed-submission-conatiner" >
 				<!-- heading. -->
-				<h2 id="result_details" > <?php esc_html_e( 'Failed Submissions', 'quiz-master-next' ); ?></h2>
+				<h2 id="result_details" > <?php esc_html_e( 'Failed Submissions', 'quiz-master-next' ); ?> </h2>
 				<!-- body -->
 				<div class="qmn-body">
 				<!-- Action response notice -->
 				<div id="qmn-failed-submission-table-message" class="notice display-none-notice" >
+				<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
+				<p class="notice-message" ></p>
 				</div>
 				<form method='post' id='failed-submission-action-form' action=''>
 					<div class="submission-filter-wrapper" >
