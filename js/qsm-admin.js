@@ -4075,4 +4075,31 @@ var import_button;
             quiz_action:'retrieve'
         } );
     } );
+
+     // On click retrieve link
+     $( document ).on( 'click', '.notice.qmn-database-user-incorrect-permission .check-db-fix-btn', function( e ) {
+        e.preventDefault();
+        let dbFixBtn = $( this );
+        let formData = {
+            action: 'qsm_check_fix_db',
+            qmnnonce: $( this ).attr( 'qmnnonce' ),
+        };
+        dbFixBtn.text("processing...");
+        dbFixBtn.removeClass( 'check-db-fix-btn' );
+        dbFixBtn.removeClass( 'button-primary' );
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: formData,
+            success: function (response) {
+                if ( undefined !== response.data ) {
+                    dbFixBtn.text( response.data.message );   
+                }
+            },
+            error: function ( jqXHR, textStatus, errorThrown ) {
+                console.log( "error", errorThrown );
+            }
+        });
+    } );
+    
 }(jQuery));
