@@ -1486,8 +1486,16 @@ jQuery(function () {
 		let $i_this = jQuery(this);
 		let quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		let question_id = $i_this.attr('name').split('question')[1];
-		let value = $i_this.val();
 		let $this = $i_this.parents('.quiz_section');
+		let value;
+		if ($i_this.hasClass('qmn_fill_blank')) {
+			value = $this.find('.qmn_fill_blank').map(function() {
+				let val = jQuery(this).val();
+				return val ? val : null;
+			}).get().filter(function(v) { return v !== null; });
+		} else {
+			value = $i_this.val();
+		}
 		clearTimeout(qsm_inline_result_timer);
 		qsm_inline_result_timer = setTimeout(() => {
 			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
