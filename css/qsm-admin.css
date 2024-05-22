@@ -3437,3 +3437,16 @@ input#preferred-date-format-custom {
 	background: #cccccc36;
     border: 1px solid #ccc;
 }
+
+.qsm-pointer-events-none {
+	pointer-events: none;
+}
+
+.display-none-notice {
+	display: none;
+}
+
+#qmn-failed-submission-table-message {
+	padding-right: 38px;
+    position: relative;
+}

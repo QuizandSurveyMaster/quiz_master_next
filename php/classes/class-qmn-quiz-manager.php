@@ -38,6 +38,14 @@ class QMNQuizManager {
 	public $mathjax_url                   = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
 	public $mathjax_version               = '3.2.0';
 
+	/**
+	 * Holds failed submission meta_key name
+	 *
+	 * @var object
+	 * @since 9.0.2
+	 */
+	public $meta_key = '_qmn_log_result_insert_data';
+	
 	public $qsm_background_email;
 	/**
 	 * Main Construct Function
@@ -88,6 +96,205 @@ class QMNQuizManager {
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action('wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
+		// Failed submission resubmit or trash 
+		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
+		
+		// Run failed ALTER TABLE query via ajax on notification button click
+		add_action( 'wp_ajax_qsm_check_fix_db', array( $this, 'has_alter_table_issue_solved' ) );
+	}
+
+	/**
+	 * Check if alter table issue has been solved by trying failed alter table query
+	 *
+	 * @since 9.0.2
+	 *
+	 * @return void
+	 */
+	public function has_alter_table_issue_solved() {
+		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+			wp_send_json_error(
+				array(
+					'status'  => 'error',
+					'message' => __( 'Unauthorized!', 'quiz-master-next' ),
+				)
+			);
+		} else {
+			global $mlwQuizMasterNext, $wpdb;
+			$wperror = '';
+			// Failed Query has been saved in wrong order sometimes due to order of execution. So run twice
+			for ( $i = 0; $i < 2; $i++ ) {
+				// Get failed alter table query list.
+				$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
+				if ( ! empty( $failed_queries ) ) {
+
+					if ( 0 === $i ) {
+						$failed_queries = array_reverse( $failed_queries );
+					}
+
+					foreach ( $failed_queries as $failed_query ) {
+						$result = $mlwQuizMasterNext->wpdb_alter_table_query( $failed_query );
+						// exit loop if query failed to execute
+						if ( false === $result ) {
+							$wperror = $wpdb->last_error;
+							if ( false !== stripos( $wperror, 'Duplicate' ) ) {
+								// Remove failed query from list.
+								$failed_queries = array_diff( $failed_queries, array( $failed_query ) );
+								// Update failed queries list.
+								update_option( 'qmn_failed_alter_table_queries', $failed_queries );
+							}
+						}
+					}
+				}
+			}
+
+			$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
+			if ( ! empty( $failed_queries ) ) {
+				wp_send_json_error(
+					array(
+						'status'  => 'error',
+						'message' => $wperror,
+					)
+				);
+			} else {
+				wp_send_json_success(
+					array(
+						'status'  => 'success',
+						'message' => __( 'Fixed!', 'quiz-master-next' ),
+					)
+				);
+			}
+		}
+	}
+
+	/**
+	 * Process Bulk action for failed submission table
+	 *
+	 * @since 9.0.2
+	 * @return void
+	 */
+    public function process_action_failed_submission_table() {
+
+        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_failed_submission' ) ) {
+            wp_send_json_error(
+                array(
+                    'status'  => 'error',
+                    'message' => __( 'Missing or incorrect input', 'quiz-master-next' ),
+                )
+            );
+        }
+        $post_ids = wp_unslash( $_POST['post_id'] );
+        $post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
+        $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
+        if ( ! empty( $post_ids ) ) {
+            foreach ( $post_ids as $postID ) {
+
+                $postID = intval( $postID );
+
+                // Continue if postID not valid
+                if ( 0 >= $postID ) {
+                    continue;
+                }
+
+                $data = get_post_meta( $postID, $this->meta_key, true );
+
+                if ( empty( $data ) ) {
+                    wp_send_json_error(
+                        array(
+                            'status'  => 'error',
+                            'message' => __( 'Details not found', 'quiz-master-next' ),
+                            'data'    => $data,
+                        )
+                    );
+                }
+
+                $data = maybe_unserialize( $data );
+
+                // Retrieve action.
+                if ( 'retrieve' === $action ) {
+                    $res = $this->add_quiz_results( $data );
+                    if ( false !== $res ) {
+                        $data['processed'] = 1;
+                        // Mark submission processed.
+                        update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
+
+                        // return success message.
+                        wp_send_json_success(
+                            array(
+                                'res'     => $res,
+                                'status'  => 'success',
+                                'message' => __( 'Quiz resubmitted successfully.', 'quiz-master-next' ),
+                            )
+                        );
+                    } else {
+                        // return error details.
+                        global $wpdb;
+                        wp_send_json_error(
+                            array(
+                                'status'  => 'error',
+                                'message' => $wpdb->last_error,
+                            )
+                        );
+                    }
+                } elseif ( 'trash' === $action ) {
+
+                    // Change Error log post status to trash. Error log contain failed submission data as a post meta
+                    wp_update_post(
+                        array(
+                            'ID'          => $postID,
+                            'post_status' => 'trash',
+                        )
+                    );
+
+                    // return success message.
+                    wp_send_json_success(
+                        array(
+                            'status'  => 'success',
+                            'message' => __( 'Quiz deleted successfully.', 'quiz-master-next' ),
+                        )
+                    );
+                }
+            }
+        }
+
+        wp_send_json_error(
+            array(
+                'status'  => 'error',
+                'message' => __( 'Missing input', 'quiz-master-next' ),
+            )
+        );
+    }
+
+	/**
+	 * Delete failed submission log
+	 * 
+	 * @param integer $postID post id
+	 * @param array $data meta data
+	 * 
+	 * @return void
+	 */
+	private function delete_failed_submission( $postID, $data = null ) {
+		if ( empty( $postID ) || 0 >= $postID ) {
+			return;
+		}
+
+		// Get data if empty
+		if ( empty( $data ) ) {
+			$data = get_post_meta( $postID, $this->meta_key, true );
+			if ( ! empty( $data ) ) {
+				$data = maybe_unserialize( $data );
+			}
+		}
+		
+		if ( ! empty( $data ) ) {
+			$data['deleted'] = 1;
+			// Delete submission data
+			update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
+			// Change Error log post status to trash
+			wp_update_post( array(
+				'ID'          => $postID,
+				'post_status' => 'trash',
+			) );
+		}
 	}
 
 	/**
@@ -1400,11 +1607,13 @@ class QMNQuizManager {
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 				if ( 0 == $mlw_question->comments ) {
 					?>
+					<label class="qsm_accessibility_label" for="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>"><?php echo esc_attr( "Comment" ); ?></label>
 					<input type="text" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" /><br />
 					<?php
 				}
 				if ( 2 == $mlw_question->comments ) {
 					?>
+					<label class="qsm_accessibility_label" for="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>"><?php echo esc_attr( "Comment" ); ?></label>
 					<textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)"></textarea><br />
 					<?php
 				}
@@ -1703,6 +1912,89 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Add quiz result
+	 *
+	 * @since  9.0.2
+	 * @param  array $data required data ( i.e. qmn_array_for_variables, results_array, unique_id, http_referer, form_type )  for adding quiz result
+	 *
+	 * @return boolean results added or not
+	 */
+	private function add_quiz_results( $data ) {
+		global $wpdb;
+		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
+			return false;
+		}
+
+		// Inserts the responses in the database.
+		$table_name = $wpdb->prefix . 'mlw_results';
+
+		// Temporarily suppress error reporting
+		$wpdb->suppress_errors();
+
+		try {
+			$res = $wpdb->insert(
+				$table_name,
+				array(
+					'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
+					'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
+					'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
+					'point_score'     => $data['qmn_array_for_variables']['total_points'],
+					'correct_score'   => $data['qmn_array_for_variables']['total_score'],
+					'correct'         => $data['qmn_array_for_variables']['total_correct'],
+					'total'           => $data['qmn_array_for_variables']['total_questions'],
+					'name'            => $data['qmn_array_for_variables']['user_name'],
+					'business'        => $data['qmn_array_for_variables']['user_business'],
+					'email'           => $data['qmn_array_for_variables']['user_email'],
+					'phone'           => $data['qmn_array_for_variables']['user_phone'],
+					'user'            => $data['qmn_array_for_variables']['user_id'],
+					'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
+					'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
+					'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
+					'quiz_results'    => maybe_serialize( $data['results_array'] ),
+					'deleted'         => 0,
+					'unique_id'       => $data['unique_id'],
+					'form_type'       => $data['form_type'],
+					'page_url'        => $data['http_referer'],
+					'page_name'       => url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '',
+				),
+				array(
+					'%d',
+					'%s',
+					'%d',
+					'%f',
+					'%d',
+					'%d',
+					'%d',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%d',
+					'%s',
+					'%s',
+				)
+			);
+			if ( false === $res ) {
+				// Throw exception
+				throw new Exception( 'Database insert failed.' );
+			}
+			// If insert is successful, return response
+			return $res;
+		} catch ( Exception $e ) {
+			return false;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Perform The Quiz/Survey Submission
 	 *
 	 * Prepares and save the results, prepares and send emails, prepare results page
@@ -1781,6 +2073,7 @@ class QMNQuizManager {
 		}
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
+		$error_details = "";
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
 			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $qsm_check_answers_return );
@@ -1829,7 +2122,8 @@ class QMNQuizManager {
 						array( 'result_id' => $results_id )
 					);
 					if ( false === $results_update ) {
-						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+						$error_details = $wpdb->last_error;
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' from ' . $wpdb->last_query, 0, 'error' );
 					}
 				} else {
 					$http_referer   = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
@@ -1837,59 +2131,27 @@ class QMNQuizManager {
 						$results_array['page_url'] = $http_referer;
 						$http_referer = substr($http_referer, 0, 254);
 					}
-					$results_insert = $wpdb->insert(
-						$table_name,
-						array(
-							'quiz_id'         => $qmn_array_for_variables['quiz_id'],
-							'quiz_name'       => $qmn_array_for_variables['quiz_name'],
-							'quiz_system'     => $qmn_array_for_variables['quiz_system'],
-							'point_score'     => $qmn_array_for_variables['total_points'],
-							'correct_score'   => $qmn_array_for_variables['total_score'],
-							'correct'         => $qmn_array_for_variables['total_correct'],
-							'total'           => $qmn_array_for_variables['total_questions'],
-							'name'            => $qmn_array_for_variables['user_name'],
-							'business'        => $qmn_array_for_variables['user_business'],
-							'email'           => $qmn_array_for_variables['user_email'],
-							'phone'           => $qmn_array_for_variables['user_phone'],
-							'user'            => $qmn_array_for_variables['user_id'],
-							'user_ip'         => $qmn_array_for_variables['user_ip'],
-							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => maybe_serialize( $results_array ),
-							'deleted'         => 0,
-							'unique_id'       => $unique_id,
-							'form_type'       => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-							'page_url'        => $http_referer,
-							'page_name'       => url_to_postid( $http_referer ) ? get_the_title( url_to_postid( $http_referer ) ) : '',
-						),
-						array(
-							'%d',
-							'%s',
-							'%d',
-							'%f',
-							'%d',
-							'%d',
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%s',
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%s',
-							'%d',
-							'%s',
-							'%d',
-							'%s',
-							'%s',
-						)
+					$insert_data = array(
+						'qmn_array_for_variables' => $qmn_array_for_variables,
+						'results_array' => $results_array,
+						'unique_id' => $unique_id,
+						'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+						'http_referer' => $http_referer,
 					);
+					$results_insert = $this->add_quiz_results( $insert_data );
 					$results_id     = $wpdb->insert_id;
 					if ( false === $results_insert ) {
 						$quiz_submitted_data = qsm_printTableRows($qmn_array_for_variables);
-						$mlwQuizMasterNext->log_manager->add( __('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], '<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+						$error_details = $wpdb->last_error;
+						$mlwQuizMasterNext->log_manager->add( 
+							__('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], 
+							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $error_details . ' from ' . $wpdb->last_query, 
+							0, 
+							'error', 
+							array(
+								'result_insert_data' => maybe_serialize( $insert_data ),
+							)
+						 );
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
 					}
 				}
@@ -1905,7 +2167,7 @@ class QMNQuizManager {
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) && ! $qmn_array_for_variables['response_saved'] ) {
-				$result_display .= '<div class="qsm-result-page-warning">' . __('Your responses are not being saved in the database due to a technical issue. Please contact the website administrator for assistance.', 'quiz-master-next') . '</div>';
+				$result_display .= '<div class="qsm-result-page-warning">' . __("Sorry, there's an issue in saving your responses. Please let the website admin know about it.", "quiz-master-next") . '</div>';
 			}
 			$result_display .= $results_pages['display'];
 			$result_display  = apply_filters( 'qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -1988,6 +2250,7 @@ class QMNQuizManager {
 			'result_status' => array(
 				'save_response' => $qmn_array_for_variables['response_saved'],
 				'id'            => $qmn_array_for_variables['result_unique_id'],
+				'error_details' => substr( $error_details, 0, 15 ),
 			),
 		);
 		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );

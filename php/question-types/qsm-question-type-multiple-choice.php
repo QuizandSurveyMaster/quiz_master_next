@@ -29,6 +29,8 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
 	?>
+	<fieldset>
+		<legend></legend>
 	<div class='qmn_radio_answers <?php echo esc_attr( $mlw_class ); ?>'>
 		<?php
 		if ( is_array( $answers ) ) {
@@ -97,11 +99,13 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 			}
 			echo apply_filters( 'qsm_multiple_choice_display_after_loop', ' ', $id, $question, $answers );
 			?>
+			<label style="display: none;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php echo esc_attr( 'question' . $id ); ?></label>
 			<input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" />
 			<?php
 		}
 		?>
 	</div>
+	</fieldset>
 	<?php
 	echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );
 }
@@ -117,7 +121,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
  */
 function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
-	$current_question 				= apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
+	$current_question               = apply_filters( 'qmn_multiple_choice_review_before', $current_question, $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_answer']    = $user_text_array;
