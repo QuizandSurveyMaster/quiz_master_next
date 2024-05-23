@@ -51,8 +51,10 @@
 	function qsmPolarSlider(page , polarQuestions){
 		polarQuestions.each( function(){
 			let polarQuestion = jQuery(this).find('.slider-main-wrapper div');
-			let questionID    = polarQuestion.attr('id').replace('slider-','');
-			qsmPolarSliderEach(polarQuestion,questionID,page);
+			if(polarQuestion.length > 0){
+				let questionID    = polarQuestion.attr('id').replace('slider-','');
+				qsmPolarSliderEach(polarQuestion,questionID,page);
+			}
 		});
 	}
 

@@ -41,9 +41,12 @@ function qmn_polar_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-
+	$show = true;
+	$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $id );
 	?>
 	<span class="mlw_qmn_question question-type-polar-s">
+	<?php echo apply_filters( 'qmn_polar_display_front_before', $id, $question, $answers );
+		if ( $show ) : ?>
 		<div class='left-polar-title'> <?php
 		if ( 'image' === $answerEditor ) {
 			$size_style = '';
@@ -98,6 +101,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 			echo do_shortcode( wp_kses_post( $right_title ) );
 		}
 		?></div>
+		<?php endif; ?>
 	</span>
 	<?php
 	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
@@ -141,5 +145,5 @@ function qmn_polar_review( $id, $question, $answers ) {
 	/**
 	 * Hook to filter answers array
 	*/
-	return apply_filters( 'qmn_polar_review', $return_array, $answers );
+	return apply_filters( 'qmn_polar_review', $return_array, $id, $question, $answers );
 }
