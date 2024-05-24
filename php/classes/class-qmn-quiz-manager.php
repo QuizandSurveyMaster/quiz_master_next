@@ -231,7 +231,7 @@ class QMNQuizManager {
                         wp_send_json_error(
                             array(
                                 'status'  => 'error',
-                                'message' => $wpdb->last_error,
+                                'message' => __( 'The system generated following error while resubmitting the result:', 'quiz-master-next' ) . $wpdb->last_error,
                             )
                         );
                     }
