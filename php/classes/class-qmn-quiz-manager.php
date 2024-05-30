@@ -1286,7 +1286,7 @@ class QMNQuizManager {
 			<?php
 			$editor_text = $wp_embed->run_shortcode( $message_before );
 			$editor_text = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
-			echo do_shortcode( wp_kses_post( $editor_text ) );
+			echo wp_kses_post( do_shortcode( $editor_text ) );
 			?>
 					</div>
 			<?php
@@ -1315,7 +1315,7 @@ class QMNQuizManager {
 				<?php
 				$editor_text = $wp_embed->run_shortcode( $message_before );
 				$editor_text = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
-				echo do_shortcode( wp_kses_post( $editor_text ) );
+				echo wp_kses_post( do_shortcode( $editor_text ) );
 				?>
 						</div>
 				<?php
@@ -1374,7 +1374,7 @@ class QMNQuizManager {
 						<div class='qsm-after-message mlw_qmn_message_end'>
 							<?php
 							$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data );
-							echo do_shortcode( wp_kses_post( $message_after ) );
+							echo wp_kses_post( do_shortcode( $message_after ) );
 							?>
 						</div>
 				<?php
@@ -1469,7 +1469,7 @@ class QMNQuizManager {
 					<div class='qsm-after-message mlw_qmn_message_end'>
 						<?php
 						$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data );
-						echo do_shortcode( wp_kses_post( $message_after ) );
+						echo wp_kses_post( do_shortcode( $message_after ) );
 						?>
 					</div>
 					<?php
@@ -1537,7 +1537,7 @@ class QMNQuizManager {
 				?>
 				<div class='mlw_qmn_message_before'>
 					<?php
-					echo do_shortcode( wp_kses_post( $editor_text ) );
+					echo wp_kses_post( do_shortcode( $editor_text ) );
 					?>
 				</div>
 					<?php
@@ -1673,7 +1673,7 @@ class QMNQuizManager {
 			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$qmn_quiz_options->quiz_id}" );
 			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $qmn_array_for_variables );
 			?>
-				<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo do_shortcode( wp_kses_post( $message_comments ) ); ?></label><br />
+				<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo wp_kses_post( do_shortcode( $message_comments ) ); ?></label><br />
 				<textarea cols="60" rows="10" id="mlwQuizComments" name="mlwQuizComments" class="qmn_comment_section"></textarea>
 			</div>
 			<?php
@@ -1711,7 +1711,7 @@ class QMNQuizManager {
 					<?php
 						$message_end = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$qmn_quiz_options->quiz_id}" );
 						$message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_end ), $qmn_array_for_variables );
-						echo do_shortcode( wp_kses_post( $message_end ) );
+						echo wp_kses_post( do_shortcode( $message_end ) );
 					?>
 					</span>
 					<br /><br />
