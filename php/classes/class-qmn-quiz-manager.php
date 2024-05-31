@@ -1142,6 +1142,7 @@ class QMNQuizManager {
 					</div>
 				<?php
 			}
+			do_action( 'qsm_after_welcome_page', $options, $quiz_data, 'single' );
 			foreach ( $pages[0] as $question_id ) {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
