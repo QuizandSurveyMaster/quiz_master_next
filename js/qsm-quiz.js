@@ -1950,13 +1950,14 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 	}
 }
 
-jQuery(document).on( 'click', '.qsm-quiz-container', function() {
-    jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
-    jQuery(this).addClass('qsm-recently-active');
+jQuery(document).on('click', function(event) {
+	if (jQuery(event.target).closest('.qsm-quiz-container').length) {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+		jQuery(event.target).closest('.qsm-quiz-container').addClass('qsm-recently-active');
+	} else {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+	}
 });
-if (jQuery('.qsm-quiz-container').length > 0) {
-    jQuery('body .qsm-quiz-container:first').addClass('qsm-recently-active');
-}
 
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {

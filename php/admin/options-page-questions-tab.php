@@ -709,7 +709,7 @@ function qsm_options_questions_tab_content() {
 								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
 									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
-									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
 								</div>
 							<?php } ?>
 							</div>
