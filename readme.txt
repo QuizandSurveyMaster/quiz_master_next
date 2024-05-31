@@ -169,6 +169,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Added resubmit or delete failed submission
 * Enhancement: Added admin notification if database user does not have proper permission.
 * Feature: Added button in admin database notification to check if issue has been fixed.
+* Fixed: Sqlite database ALTER QUERY.
 
 = 9.0.1 (April 25, 2024) =
 * Bug: Fixed date format in %ANSWER_X% variable

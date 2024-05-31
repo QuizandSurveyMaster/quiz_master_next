@@ -162,6 +162,17 @@ class MLWQuizMasterNext {
 	}
 
 	/**
+	 * Check if database is sql lite
+	 * 
+	 * @since 9.0.2
+	 * 
+	 * @return boolean database is sqlite or not
+	 */
+	public function is_sqlite_db() {
+		return ( ( defined( 'DATABASE_TYPE' ) && 'sqlite' === DATABASE_TYPE ) || ( defined( 'DB_ENGINE' ) && 'sqlite' === DB_ENGINE ) );
+	}
+
+	/**
 	 * Check admin capabilities.
 	 *
 	 * @since 9.0.0
@@ -200,7 +211,7 @@ class MLWQuizMasterNext {
 	 */
 	public function wpdb_alter_table_query( $query ) {
 		// Check if admin or empty query.
-		if ( empty( $query ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+		if ( empty( $query ) || ! function_exists( 'is_admin' ) || ! is_admin() || $this->is_sqlite_db() ) {
 			return false;
 		}
 
@@ -831,7 +842,7 @@ class MLWQuizMasterNext {
 
 		// Get failed alter table query list.
 		$failed_queries = $this->get_failed_alter_table_queries();
-		if ( ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
+		if ( ! $this->is_sqlite_db() && ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
 			?>
 			<div class="notice notice-warning is-dismissible qmn-database-user-incorrect-permission">
 				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?> <a href="#" qmnnonce="<?php echo wp_create_nonce( 'qmn_check_db' ); ?>" class="button button-primary check-db-fix-btn" ><?php esc_html_e( "Check If Already Fixed", "quiz-master-next" ); ?></a> </p>
