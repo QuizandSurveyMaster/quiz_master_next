@@ -73,6 +73,7 @@ function qsm_options_contact_tab_content() {
 		</div>
 	</div>
 	<?php
+	do_action( 'qsm_contact_form_settings_after' );
 	add_action( 'admin_footer', 'qsm_options_contact_tab_template' );
 }
 

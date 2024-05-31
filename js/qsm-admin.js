@@ -1173,7 +1173,7 @@ function qsm_is_substring_in_array( text, array ) {
 //TinyMCE slash command auto suggest
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
-        if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 || window.location.href.indexOf('tab=ultimate') > 0 ) {
+        if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 || window.location.href.indexOf('tab=contact') > 0 ) {
             function addTinyMceAutoSuggestion() {
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {

@@ -43,6 +43,7 @@ function qsm_options_styling_tab_content() {
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
+		do_action( 'qsm_save_style_section' );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id, "" );
@@ -64,6 +65,7 @@ function qsm_options_styling_tab_content() {
 		<li>
 			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 		</li>
+		<?php do_action( 'qsm_add_style_section' ); ?>
 		<li>
 			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?></a>
 		</li>
@@ -238,6 +240,7 @@ function qsm_options_styling_tab_content() {
 		<button id="save_styles_button"
 			class="button-primary"><?php esc_html_e( 'Save Quiz Style', 'quiz-master-next' ); ?></button>
 	</div>
+	<?php do_action( 'qsm_add_style_section_content' ); ?>
 </form>
 <div class="qsm-popup qsm-popup-slide qsm-theme-color-settings" id="qsm-theme-color-settings" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
