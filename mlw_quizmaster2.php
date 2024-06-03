@@ -219,14 +219,14 @@ class MLWQuizMasterNext {
 		$failed_queries = $this->get_failed_alter_table_queries();
 
 		if ( ! empty( $res ) ) {
-			if ( ! empty( $failed_queries ) && in_array( $query, $failed_queries ) ) {
+			if ( ! empty( $failed_queries ) && in_array( $query, $failed_queries, true ) ) {
 				// Remove failed query from list.
 				$failed_queries = array_diff( $failed_queries, array( $query ) );
 				// Update failed queries list.
 				update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 			}
 			return true;
-		} elseif ( empty( $failed_queries ) || ! in_array( $query, $failed_queries ) ) {
+		} elseif ( empty( $failed_queries ) || ! in_array( $query, $failed_queries, true ) ) {
 			// Add query to the list.
 			$failed_queries[] = $query;
 			// Update failed queries list.
@@ -834,7 +834,7 @@ class MLWQuizMasterNext {
 		if ( ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
 			?>
 			<div class="notice notice-warning is-dismissible qmn-database-user-incorrect-permission">
-				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?> <a href="#" qmnnonce="<?php echo wp_create_nonce( 'qmn_check_db' ); ?>" class="button button-primary check-db-fix-btn" ><?php esc_html_e( "Check If Already Fixed", "quiz-master-next" ); ?></a> </p>
+				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?> <a href="#" qmnnonce="<?php echo esc_attr( wp_create_nonce( 'qmn_check_db' ) ); ?>" class="button button-primary check-db-fix-btn" ><?php esc_html_e( "Check If Already Fixed", "quiz-master-next" ); ?></a> </p>
 			</div>
 			<?php
 		}
