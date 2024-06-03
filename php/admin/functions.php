@@ -97,6 +97,7 @@ function qsm_add_author_column_in_db() {
 		);
 		if ( empty( $table_result_col_obj ) ) {
 			if ( $mlwQuizMasterNext->wpdb_alter_table_query( "ALTER TABLE $result_table_name ADD form_type INT NOT NULL" ) ) {
+				update_option( 'qsm_update_result_db_column', 1 );
 			} else {
 				$mlwQuizMasterNext->log_manager->add( 'Error Creating Column form_type in' . $result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
