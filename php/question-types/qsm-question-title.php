@@ -26,7 +26,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
-		if ( in_array( get_question_type( $question_id ), [12, 7, 3, 5] ) ) {
+		if ( in_array( get_question_type( $question_id ), [ 12, 7, 3, 5 ] ) ) {
 		?>
 		<div class='mlw_qmn_new_question'><label for="question<?php echo esc_attr( $question_id ); ?>"><?php echo esc_html( $new_question_title ); ?> </label></div>
 		<?php

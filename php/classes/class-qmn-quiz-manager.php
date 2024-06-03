@@ -2134,10 +2134,10 @@ class QMNQuizManager {
 					}
 					$insert_data = array(
 						'qmn_array_for_variables' => $qmn_array_for_variables,
-						'results_array' => $results_array,
-						'unique_id' => $unique_id,
-						'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-						'http_referer' => $http_referer,
+						'results_array'           => $results_array,
+						'unique_id'               => $unique_id,
+						'form_type'               => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+						'http_referer'            => $http_referer,
 					);
 					$results_insert = $this->add_quiz_results( $insert_data );
 					$results_id     = $wpdb->insert_id;

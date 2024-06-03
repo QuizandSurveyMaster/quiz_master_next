@@ -187,7 +187,7 @@ class MLWQuizMasterNext {
 	 */
 	public function get_failed_alter_table_queries() {
 		$failed_queries = get_option( 'qmn_failed_alter_table_queries', array() );
-		return is_array( $failed_queries ) ? $failed_queries: array();
+		return is_array( $failed_queries ) ? $failed_queries : array();
 	}
 
 	/**
@@ -226,9 +226,9 @@ class MLWQuizMasterNext {
 				update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 			}
 			return true;
-		} else if ( empty( $failed_queries ) || ! in_array( $query, $failed_queries ) ) {
+		} elseif ( empty( $failed_queries ) || ! in_array( $query, $failed_queries ) ) {
 			// Add query to the list.
-			$failed_queries[] =  $query;
+			$failed_queries[] = $query;
 			// Update failed queries list.
 			update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 		}
@@ -722,7 +722,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			
 			// Failed Submission.
-			add_submenu_page( 'qsm_dashboard', __( 'Failed Submission', 'quiz-master-next' ), __( 'Failed Submission', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_failed_submission', array( $this,'admin_failed_submission_page' ) );
+			add_submenu_page( 'qsm_dashboard', __( 'Failed Submission', 'quiz-master-next' ), __( 'Failed Submission', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_failed_submission', array( $this, 'admin_failed_submission_page' ) );
 			
 			add_submenu_page( 'options.php', __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
 			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
