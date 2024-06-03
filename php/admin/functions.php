@@ -231,7 +231,7 @@ function qsm_add_author_column_in_db() {
 	 *
 	 * @since 9.0.1
 	 */
-	if ( get_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', '' ) != 1 ) {
+	if ( 1 !== intval( get_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', '' ) ) ) {
 		global $wpdb;
 
 		$tables_to_convert = array(

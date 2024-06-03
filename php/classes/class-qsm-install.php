@@ -1431,6 +1431,7 @@ class QSM_Install {
 			}
 			update_option( 'qsm_update_db_column', 1 );
 			update_option( 'qsm_update_quiz_db_column', 1 );
+			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
 		}
 
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_table_name'" ) != $question_table_name ) {
@@ -1468,6 +1469,7 @@ class QSM_Install {
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			dbDelta( $sql );
 			update_option( 'qsm_add_new_column_question_table_table', 1);
+			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
 		}
 
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$results_table_name'" ) != $results_table_name ) {
@@ -1505,6 +1507,7 @@ class QSM_Install {
 			update_option( 'qsm_update_result_db_column', 1 );
 			update_option( 'qsm_update_result_db_column_page_name', 1 );
 			update_option( 'qsm_update_result_db_column_page_url', 1 );
+			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
 		}
 
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
