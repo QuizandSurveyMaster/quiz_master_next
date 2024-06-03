@@ -111,7 +111,7 @@ class QMNQuizManager {
 	 * @return void
 	 */
 	public function has_alter_table_issue_solved() {
-		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
 			wp_send_json_error(
 				array(
 					'status'  => 'error',
@@ -174,7 +174,7 @@ class QMNQuizManager {
 	 */
     public function process_action_failed_submission_table() {
 
-        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_failed_submission' ) ) {
+        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_failed_submission' ) ) {
             wp_send_json_error(
                 array(
                     'status'  => 'error',
@@ -182,8 +182,8 @@ class QMNQuizManager {
                 )
             );
         }
-        $post_ids = wp_unslash( $_POST['post_id'] );
-        $post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
+        
+        $post_ids = is_array( $_POST['post_id'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['post_id'] ) ) : array( sanitize_key( wp_unslash( $_POST['post_id'] ) ) );
         $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
         if ( ! empty( $post_ids ) ) {
             foreach ( $post_ids as $postID ) {
