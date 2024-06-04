@@ -71,7 +71,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					'ajax'     => true,
 				)
 			);
-			$this->current_tab = ( empty( $_GET['tab'] ) || 'retrieve' == sanitize_key( $_GET['tab'] ) ) ? 'retrieve' : 'processed';
+			$this->current_tab = ( empty( $_GET['tab'] ) || 'retrieve' === sanitize_key( $_GET['tab'] ) ) ? 'retrieve' : 'processed';
 
 			// Get settings.
 			$settings = (array) get_option( 'qmn-settings' );
@@ -119,7 +119,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					}
 
 					$data = maybe_unserialize( $data );
-					if ( ! is_array( $data ) || ( 'processed' == $this->current_tab && empty( $data['processed'] ) ) || ( 'retrieve' == $this->current_tab && ! empty( $data['processed'] ) ) || empty( $data['qmn_array_for_variables'] ) ) {
+					if ( ! is_array( $data ) || ( 'processed' === $this->current_tab && empty( $data['processed'] ) ) || ( 'retrieve' === $this->current_tab && ! empty( $data['processed'] ) ) || empty( $data['qmn_array_for_variables'] ) ) {
 						continue;
 					}
 
@@ -272,7 +272,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					break;
 				case 'submission_action':
 					$column_value = '<span id="action-link-' . esc_attr( $submission['post_id'] ) . '">';
-					if ( 'processed' == $this->current_tab ) {
+					if ( 'processed' === $this->current_tab ) {
 						$column_value .= '<span class="dashicons dashicons-yes-alt"></span>';
 					} else {
 						$column_value .= '<a href="#"  post-id="' . esc_attr( $submission['post_id'] ) . '" class="qmn-retrieve-failed-submission-link" >' . __( 'Resubmit', 'quiz-master-next' ) . '</a>';
@@ -328,7 +328,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 							$this->views(); // render bulk action and pagination
 						?>
 					</div>
-					<input type="hidden" name="qmnnonce" value="<?php echo wp_create_nonce( 'qmn_failed_submission' ); ?>" />
+					<input type="hidden" name="qmnnonce" value="<?php echo esc_attr( wp_create_nonce( 'qmn_failed_submission' ) ); ?>" />
 					<?php
 						$this->display(); // render table
 					?>

@@ -45,7 +45,7 @@ class QMNQuizManager {
 	 * @since 9.0.2
 	 */
 	public $meta_key = '_qmn_log_result_insert_data';
-	
+
 	public $qsm_background_email;
 	/**
 	 * Main Construct Function
@@ -96,9 +96,9 @@ class QMNQuizManager {
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action('wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
-		// Failed submission resubmit or trash 
+		// Failed submission resubmit or trash
 		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
-		
+
 		// Run failed ALTER TABLE query via ajax on notification button click
 		add_action( 'wp_ajax_qsm_check_fix_db', array( $this, 'has_alter_table_issue_solved' ) );
 	}
@@ -111,7 +111,7 @@ class QMNQuizManager {
 	 * @return void
 	 */
 	public function has_alter_table_issue_solved() {
-		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
 			wp_send_json_error(
 				array(
 					'status'  => 'error',
@@ -174,7 +174,7 @@ class QMNQuizManager {
 	 */
     public function process_action_failed_submission_table() {
 
-        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['qmnnonce'] ), 'qmn_failed_submission' ) ) {
+        if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_failed_submission' ) ) {
             wp_send_json_error(
                 array(
                     'status'  => 'error',
@@ -182,8 +182,8 @@ class QMNQuizManager {
                 )
             );
         }
-        $post_ids = wp_unslash( $_POST['post_id'] );
-        $post_ids = is_array( $post_ids ) ? array_map( 'sanitize_key', $post_ids ) : array( sanitize_key( $post_ids ) );
+        
+        $post_ids = is_array( $_POST['post_id'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['post_id'] ) ) : array( sanitize_key( wp_unslash( $_POST['post_id'] ) ) );
         $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
         if ( ! empty( $post_ids ) ) {
             foreach ( $post_ids as $postID ) {
@@ -266,10 +266,10 @@ class QMNQuizManager {
 
 	/**
 	 * Delete failed submission log
-	 * 
+	 *
 	 * @param integer $postID post id
 	 * @param array $data meta data
-	 * 
+	 *
 	 * @return void
 	 */
 	private function delete_failed_submission( $postID, $data = null ) {
@@ -284,7 +284,7 @@ class QMNQuizManager {
 				$data = maybe_unserialize( $data );
 			}
 		}
-		
+
 		if ( ! empty( $data ) ) {
 			$data['deleted'] = 1;
 			// Delete submission data
@@ -559,7 +559,7 @@ class QMNQuizManager {
 
 		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
 		$return_display = '';
-		
+
 		ob_start();
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
@@ -588,7 +588,7 @@ class QMNQuizManager {
 			$return_display .= ob_get_clean();
 		} else {
 			global $qmn_allowed_visit, $qmn_json_data, $mlw_qmn_quiz;
-			
+
 			// Loads Quiz Template.
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL . '/animate.css', array(), $mlwQuizMasterNext->version );
 			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
@@ -1326,6 +1326,7 @@ class QMNQuizManager {
 					</div>
 				<?php
 			}
+			do_action( 'qsm_after_welcome_page', $options, $quiz_data, 'single' );
 			foreach ( $pages[0] as $question_id ) {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
@@ -2133,25 +2134,25 @@ class QMNQuizManager {
 					}
 					$insert_data = array(
 						'qmn_array_for_variables' => $qmn_array_for_variables,
-						'results_array' => $results_array,
-						'unique_id' => $unique_id,
-						'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-						'http_referer' => $http_referer,
+						'results_array'           => $results_array,
+						'unique_id'               => $unique_id,
+						'form_type'               => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+						'http_referer'            => $http_referer,
 					);
 					$results_insert = $this->add_quiz_results( $insert_data );
 					$results_id     = $wpdb->insert_id;
 					if ( false === $results_insert ) {
 						$quiz_submitted_data = qsm_printTableRows($qmn_array_for_variables);
 						$error_details = $wpdb->last_error;
-						$mlwQuizMasterNext->log_manager->add( 
-							__('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'], 
-							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $error_details . ' from ' . $wpdb->last_query, 
-							0, 
-							'error', 
+						$mlwQuizMasterNext->log_manager->add(
+							__('Error 0001 submission failed - Quiz ID:', 'quiz-master-next') . $qmn_array_for_variables['quiz_id'],
+							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $error_details . ' from ' . $wpdb->last_query,
+							0,
+							'error',
 							array(
 								'result_insert_data' => maybe_serialize( $insert_data ),
 							)
-						 );
+						);
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
 					}
 				}
