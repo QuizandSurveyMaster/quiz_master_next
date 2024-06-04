@@ -1122,13 +1122,14 @@ function qsm_bulk_delete_question_from_database() {
 	} );
 
 	$question_id = implode( ',', $question_id );
-	
+	$question_id = trim( $question_id );
+
 	if ( ! empty( $question_id ) ) {
 		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
 		if ( $results ) {
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
-			
+
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
