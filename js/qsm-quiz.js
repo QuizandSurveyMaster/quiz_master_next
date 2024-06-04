@@ -227,7 +227,7 @@ var qsmTimerInterval = [];
 		 * @param int quizID The ID of the quiz
 		 */
 		endTimer: function (quizID) {
-			localStorage.removeItem('mlw_time_quiz' + quizID);
+			localStorage.setItem('mlw_time_quiz' + quizID, 'completed');
 			localStorage.setItem('mlw_started_quiz' + quizID, 'no');
 			localStorage.removeItem('mlw_time_consumed_quiz' + quizID);
 			document.title = qsmTitleText;
@@ -712,6 +712,10 @@ function qmnValidation(element, quiz_form_id) {
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
 		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || jQuery(this).attr('class').indexOf('mlwRequiredAccept') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
+			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && jQuery.trim(this.value) === "") {
+				qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
+				show_result_validation = false;
+			}
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
@@ -1839,6 +1843,9 @@ function checkMaxLength(obj){
 let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+	let $container = jQuery($this).closest('.qmn_quiz_container');
+	let result = qmnValidation( $container.find('*'), quiz_id);
+	if (!result) { return result; }
 	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quiz_id].enable_quick_correct_answer_info,quiz_id);
 	QSM.changes(data, question_id.replace(/\D/g, ""), quiz_id);
 	if (data.success == 'incorrect' && submit_status) {
