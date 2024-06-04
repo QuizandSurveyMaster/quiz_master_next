@@ -182,7 +182,7 @@ class MLWQuizMasterNext {
 	/**
 	 * sanitize HTML data.
 	 * HTML is saved as encoded and at ouput same as decoded. encoded html may pass though most of 
-	 * the wordpress sanitization function. This function decode html first then sanitize it to remove 
+	 * the wordpress sanitization function. This function sanitize it to remove 
 	 * unfiltered HTML content
 	 * 
 	 * @since 9.0.3
