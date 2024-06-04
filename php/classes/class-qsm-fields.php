@@ -111,6 +111,7 @@ class QSM_Fields {
     	}
 		// Retrieve the settings for this section
 		$settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+		$settings = apply_filters( 'qsm_quiz_submission_section_before', $settings, $fields );
 
 		if ( isset( $settings['form_type'] ) ) {
 			$settings['form_type'] = 2 === intval( $settings['system'] ) ? 1 : $settings['form_type'];
@@ -163,7 +164,6 @@ class QSM_Fields {
 				<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
 					<table class="form-table" style="width: 100%;">
 						<?php
-						$settings = apply_filters( 'qsm_quiz_submission_section_before', $settings, $fields );
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
 							// Generate the field
@@ -235,6 +235,7 @@ class QSM_Fields {
 							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a>
 						</li>
+						<?php do_action( 'qsm_add_list_menu_text_other_tab' ); ?>
 						<li class="qsm-custom-label-left-menu">
 							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Validation Messages', 'quiz-master-next' ); ?>
@@ -310,6 +311,7 @@ class QSM_Fields {
 						?>
 						</table>
 					</div>
+					<?php do_action( 'qsm_add_list_menu_content_text_other_tab', $fields, $settings ); ?>
 				</div>
 			<?php else :
 				foreach ( $fields as  $field ) {
