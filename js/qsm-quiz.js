@@ -22,6 +22,9 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					if ( !qmn_quiz_data[quizID].hasOwnProperty('timer_limit') && null !== localStorage.getItem('mlw_time_quiz' + quizID) ) {
+						localStorage.removeItem('mlw_time_quiz' + quizID);
+					}
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
 						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
 						localStorage.setItem('mlw_time_consumed_quiz' + quizID, 1);
@@ -712,10 +715,6 @@ function qmnValidation(element, quiz_form_id) {
 	qmnResetError(quiz_form_id);
 	jQuery(element).each(function () {
 		if ( jQuery(this).attr('class') && ( jQuery(this).is(':visible') || jQuery(this).attr('class').indexOf('mlwRequiredAccept') || ( jQuery(this).attr('class').indexOf('mlwRequiredPolar') > -1 && jQuery(this).parent().is(':visible') ) ) ) {
-			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && jQuery.trim(this.value) === "") {
-				qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
-				show_result_validation = false;
-			}
 			if (jQuery(this).attr('class').indexOf('mlwEmail') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				var x = jQuery.trim(this.value);
