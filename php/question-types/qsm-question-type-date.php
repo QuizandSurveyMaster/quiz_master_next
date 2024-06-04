@@ -23,7 +23,6 @@ function qmn_date_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<label class="qsm_accessibility_label" for="question<?php echo esc_attr( $id ); ?>"><?php echo esc_attr( "Choose Date" ); ?></label>
 	<input type="date" class="mlw_answer_date <?php echo esc_attr( $mlw_require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>" value="" />
 	<?php
 	echo apply_filters( 'qmn_date_display_front', '', $id, $question, $answers );

@@ -85,7 +85,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					} else {
 						$answer_text = trim( htmlspecialchars_decode($add_label_value." ".$answer[0], ENT_QUOTES ) );
 						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
-						echo do_shortcode( wp_kses_post($answer_text ) );
+						echo wp_kses_post( do_shortcode($answer_text ) );
 					}
 					?>
 					</label>

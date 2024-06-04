@@ -187,7 +187,7 @@ class MLWQuizMasterNext {
 	 */
 	public function get_failed_alter_table_queries() {
 		$failed_queries = get_option( 'qmn_failed_alter_table_queries', array() );
-		return is_array( $failed_queries ) ? $failed_queries: array();
+		return is_array( $failed_queries ) ? $failed_queries : array();
 	}
 
 	/**
@@ -219,16 +219,16 @@ class MLWQuizMasterNext {
 		$failed_queries = $this->get_failed_alter_table_queries();
 
 		if ( ! empty( $res ) ) {
-			if ( ! empty( $failed_queries ) && in_array( $query, $failed_queries ) ) {
+			if ( ! empty( $failed_queries ) && in_array( $query, $failed_queries, true ) ) {
 				// Remove failed query from list.
 				$failed_queries = array_diff( $failed_queries, array( $query ) );
 				// Update failed queries list.
 				update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 			}
 			return true;
-		} else if ( empty( $failed_queries ) || ! in_array( $query, $failed_queries ) ) {
+		} elseif ( empty( $failed_queries ) || ! in_array( $query, $failed_queries, true ) ) {
 			// Add query to the list.
-			$failed_queries[] =  $query;
+			$failed_queries[] = $query;
 			// Update failed queries list.
 			update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 		}
@@ -722,7 +722,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			
 			// Failed Submission.
-			add_submenu_page( 'qsm_dashboard', __( 'Failed Submission', 'quiz-master-next' ), __( 'Failed Submission', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_failed_submission', array( $this,'admin_failed_submission_page' ) );
+			add_submenu_page( 'qsm_dashboard', __( 'Failed Submission', 'quiz-master-next' ), __( 'Failed Submission', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_failed_submission', array( $this, 'admin_failed_submission_page' ) );
 			
 			add_submenu_page( 'options.php', __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
 			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
@@ -834,7 +834,7 @@ class MLWQuizMasterNext {
 		if ( ! empty( $failed_queries ) && 0 < count( $failed_queries ) ) {
 			?>
 			<div class="notice notice-warning is-dismissible qmn-database-user-incorrect-permission">
-				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?> <a href="#" qmnnonce="<?php echo wp_create_nonce( 'qmn_check_db' ); ?>" class="button button-primary check-db-fix-btn" ><?php esc_html_e( "Check If Already Fixed", "quiz-master-next" ); ?></a> </p>
+				<p><?php esc_html_e( "It seems your database user doesn't have permission to ALTER TABLE. Please ensure the necessary permissions are in place or contact your hosting provider.", "quiz-master-next" ); ?> <a href="#" qmnnonce="<?php echo esc_attr( wp_create_nonce( 'qmn_check_db' ) ); ?>" class="button button-primary check-db-fix-btn" ><?php esc_html_e( "Check If Already Fixed", "quiz-master-next" ); ?></a> </p>
 			</div>
 			<?php
 		}
