@@ -227,7 +227,7 @@ var qsmTimerInterval = [];
 		 * @param int quizID The ID of the quiz
 		 */
 		endTimer: function (quizID) {
-			localStorage.setItem('mlw_time_quiz' + quizID, 'completed');
+			localStorage.removeItem('mlw_time_quiz' + quizID);
 			localStorage.setItem('mlw_started_quiz' + quizID, 'no');
 			localStorage.removeItem('mlw_time_consumed_quiz' + quizID);
 			document.title = qsmTitleText;
