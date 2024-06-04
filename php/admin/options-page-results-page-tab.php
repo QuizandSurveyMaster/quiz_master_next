@@ -36,6 +36,7 @@ function qsm_options_results_tab_content() {
 		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
+	do_action( 'qsm_options_results_tab_content_before' );
 	?>
 
 <!-- Results Page Section -->
@@ -218,6 +219,7 @@ function qsm_options_results_tab_template(){
 							<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
 						</label>
 						<div class="qsm-actions-link-box">
+							<?php do_action( 'qsm_add_action_links_before' ); ?>
 							<a href="javascript:void(0)" class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></a>
 							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></a>
 							<a href="javascript:void(0)" class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>

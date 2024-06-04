@@ -96,7 +96,7 @@ class QMN_Log_Manager
 	 * @param $type string The type of the log
 	 * @return bool|int False if error else id of the newly inserted post
 	 */
-	public function add( $title = '', $message = '', $parent = 0, $type = null ) {
+	public function add( $title = '', $message = '', $parent = 0, $type = null, $log_meta = null ) {
 		$log_data = array(
 			'post_title'   => $title,
 			'post_content' => $message,
@@ -104,10 +104,7 @@ class QMN_Log_Manager
 			'log_type'     => $type,
 		);
 		$settings = (array) get_option( 'qmn-settings' );
-        if ( ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'] ) {
-			return $this->insert_log( $log_data );
-		}
-		return false;
+		return $this->insert_log( $log_data, $log_meta );
 	}
 
 	/**
@@ -117,7 +114,7 @@ class QMN_Log_Manager
 	 * @param $log_data Array of data about the log including title, message, and type
 	 * @return bool|int False if error else id of the newly inserted post
 	 */
-  	public function insert_log( $log_data = array() ) {
+  	public function insert_log( $log_data = array(), $log_meta = null ) {
 		$defaults = array(
 			'post_type'    => 'qmn_log',
 			'post_status'  => 'publish',

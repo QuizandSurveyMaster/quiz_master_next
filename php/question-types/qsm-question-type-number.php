@@ -27,7 +27,7 @@ function qmn_number_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<input type="number" class="mlw_answer_number <?php echo esc_attr( $mlw_require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>" oninput="checkMaxLength(this)" <?php endif; ?> <?php echo esc_attr( $min_num_attr ); ?> />
+	<input type="number" class="mlw_answer_number <?php echo esc_attr( $mlw_require_class ); ?>" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>" oninput="checkMaxLength(this)" <?php endif; ?> <?php echo esc_attr( $min_num_attr ); ?> />
 	<?php
 	echo apply_filters( 'qmn_number_display_front', '', $id, $question, $answers );
 }
