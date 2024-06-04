@@ -1842,9 +1842,6 @@ function checkMaxLength(obj){
 let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-	let $container = jQuery($this).closest('.qmn_quiz_container');
-	let result = qmnValidation( $container.find('*'), quiz_id);
-	if (!result) { return result; }
 	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quiz_id].enable_quick_correct_answer_info,quiz_id);
 	QSM.changes(data, question_id.replace(/\D/g, ""), quiz_id);
 	if (data.success == 'incorrect' && submit_status) {
