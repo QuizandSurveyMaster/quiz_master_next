@@ -1094,19 +1094,47 @@ function qsm_delete_question_from_database() {
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
 
 function qsm_bulk_delete_question_from_database() {
+	// Validate nonce.
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		wp_send_json_error( __( 'Nonce verification failed!', 'quiz-master-next' ) );
 	}
-	$question_id = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
-	if ( $question_id ) {
-		global $wpdb, $mlwQuizMasterNext;
+
+	// check Quiestion ID.
+	if ( empty( $_POST['question_id'] ) ) {
+		wp_send_json_error( __( 'Missing question ID.', 'quiz-master-next' ) );
+	}
+
+	// Global variables
+	global $wpdb, $mlwQuizMasterNext;
+
+	// should have delete_published_posts capabilities.
+	if ( ! $mlwQuizMasterNext->qsm_is_admin( 'delete_published_posts' ) ) {
+		wp_send_json_error( __( 'You do not have permission to delete questions. Please contact the site administrator.', 'quiz-master-next' ) );
+	}
+
+	$question_id = sanitize_text_field( wp_unslash( $_POST['question_id'] ) );
+
+	$question_id = explode( ',', $question_id );
+	
+	// filter question ids
+	$question_id = array_filter( $question_id, function( $questionID ) {
+		return is_numeric( $questionID ) && 0 < intval( $questionID );
+	} );
+
+	$question_id = implode( ',', $question_id );
+	
+	if ( ! empty( $question_id ) ) {
 		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
 		if ( $results ) {
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
-			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
+			
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
 		}
+	} else {
+		wp_send_json_error( __( 'Question delete failed! Invalid question ID.', 'quiz-master-next' ) );
 	}
 }
 add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );
