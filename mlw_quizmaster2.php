@@ -180,6 +180,24 @@ class MLWQuizMasterNext {
 	}
 
 	/**
+	 * sanitize HTML data.
+	 * HTML is saved as encoded and at ouput same as decoded. encoded html may pass though most of 
+	 * the wordpress sanitization function. This function decode html first then sanitize it to remove 
+	 * unfiltered HTML content
+	 * 
+	 * @since 9.0.3
+	 * @param HTML $html html data
+	 * 
+	 * @return HTML sanitized HTML
+	 */
+	public function sanitize_html( $html = '', $kses = true ) {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+		return $kses ? wp_kses_post( $html ) : sanitize_text_field( $html );
+	}
+
+	/**
 	 * Get failed alter qmn table query list.
 	 *
 	 * @since 9.0.2

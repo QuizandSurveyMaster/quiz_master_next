@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { escapeAttribute } from "@wordpress/escape-html";
 import {
     Button,
 	TextControl,
@@ -47,8 +48,8 @@ export default function InputComponent( {
                     break;
             }
         }
-        data.label = qsmIsEmpty( data.label ) ? '': qsmStripTags( data.label );
-        data.help = qsmIsEmpty( data.help ) ? '': qsmStripTags( data.help );
+        data.label = qsmIsEmpty( data.label ) ? '': escapeAttribute( data.label );
+        data.help = qsmIsEmpty( data.help ) ? '': escapeAttribute( data.help );
         return data;
     }
     
