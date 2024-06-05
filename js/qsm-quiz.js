@@ -22,6 +22,9 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					if ( !qmn_quiz_data[quizID].hasOwnProperty('timer_limit') && null !== localStorage.getItem('mlw_time_quiz' + quizID) ) {
+						localStorage.removeItem('mlw_time_quiz' + quizID);
+					}
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
 						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
 						localStorage.setItem('mlw_time_consumed_quiz' + quizID, 1);
