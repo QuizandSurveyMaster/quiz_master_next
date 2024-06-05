@@ -167,6 +167,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed security vulnerability
 * Bug: Resolved an issue causing incorrect display of shortcodes due to invalid quiz IDs
 * Bug: Improved user permission checks and input validation for question deletion
+* Bug: Fixed validation issue with contact fields
 * Feature: Users can resubmit or delete failed submissions
 * Enhancement: Improved logic for handling migration queries
 * Enhancement: Improved functionality for clicking the Enter key
