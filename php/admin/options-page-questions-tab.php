@@ -709,7 +709,7 @@ function qsm_options_questions_tab_content() {
 								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
 									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
-									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), __( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
 								</div>
 							<?php } ?>
 							</div>
@@ -1094,19 +1094,58 @@ function qsm_delete_question_from_database() {
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
 
 function qsm_bulk_delete_question_from_database() {
+	// Validate nonce.
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		wp_send_json_error( __( 'Nonce verification failed!', 'quiz-master-next' ) );
 	}
-	$question_id = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
-	if ( $question_id ) {
-		global $wpdb, $mlwQuizMasterNext;
-		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
+
+	// check Quiestion ID.
+	if ( empty( $_POST['question_id'] ) ) {
+		wp_send_json_error( __( 'Missing question ID.', 'quiz-master-next' ) );
+	}
+
+	// Global variables
+	global $wpdb, $mlwQuizMasterNext;
+
+	// should have delete_published_posts capabilities.
+	if ( ! $mlwQuizMasterNext->qsm_is_admin( 'delete_published_posts' ) ) {
+		wp_send_json_error( __( 'You do not have permission to delete questions. Please contact the site administrator.', 'quiz-master-next' ) );
+	}
+
+	$question_id = sanitize_text_field( wp_unslash( $_POST['question_id'] ) );
+
+	$question_id = explode( ',', $question_id );
+
+	// filter question ids
+	$question_id = array_filter( $question_id, function( $questionID ) {
+		return is_numeric( $questionID ) && 0 < intval( $questionID );
+	} );
+
+	// Sanitize and validate the IDs
+	$question_id = array_map( 'intval', $question_id );
+
+	if ( ! empty( $question_id ) ) {
+		// Generate placeholders for each ID
+		$placeholders = array_fill( 0, count( $question_id ), '%d' );
+
+		// Construct the query with placeholders
+		$query = sprintf(
+			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
+			implode( ', ', $placeholders )
+		);
+		
+		// Prepare the query
+		$query = $wpdb->prepare( $query, $question_id );
+
+		$results = $wpdb->query( $query );
 		if ( $results ) {
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
-			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
 		}
+	} else {
+		wp_send_json_error( __( 'Question delete failed! Invalid question ID.', 'quiz-master-next' ) );
 	}
 }
 add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );

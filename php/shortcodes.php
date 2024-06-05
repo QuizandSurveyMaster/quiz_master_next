@@ -85,7 +85,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 			} elseif ( $start_date && $start_date > $now && 'no' === $include_future_quizzes ) {
 				continue;
 			} else {
-				$title   = $quiz->quiz_name;
+				$title   = esc_html( $quiz->quiz_name );
 				$id      = $quiz->quiz_id;
 				$url     = do_shortcode( "[qsm_link id='$id'] Take Quiz [/qsm_link]" );
 				$result .= "<div class='ind-quiz'>

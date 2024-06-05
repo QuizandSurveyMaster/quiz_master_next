@@ -26,9 +26,15 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	if ( '' !== $new_question_title ) {
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
+		if ( in_array( intval( get_question_type( $question_id ) ), [ 12, 7, 3, 5 ], true ) ) {
+		?>
+		<div class='mlw_qmn_new_question'><label for="question<?php echo esc_attr( $question_id ); ?>"><?php echo esc_html( $new_question_title ); ?> </label></div>
+		<?php
+		} else {
 		?>
 		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
 		<?php
+		}
 		$title_extra_classes .= ' qsm_remove_bold';
 	}
 	if ( $question_id ) {
@@ -63,4 +69,13 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	</div>
 	<?php
 	do_action('qsm_question_title_func_after',$question, $question_type, $new_question_title, $question_id );
+}
+
+function get_question_type( $question_id = 0 ) {
+	global $wpdb;
+	$question_type_new = $wpdb->get_var( $wpdb->prepare( "SELECT `question_type_new` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id`=%d", $question_id ) );
+	if ( empty( $question_type_new ) ) {
+		return false;
+	}
+	return $question_type_new;
 }
