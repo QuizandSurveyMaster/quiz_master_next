@@ -128,13 +128,13 @@ function qsm_options_emails_tab_content() {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-									<?php if ( str_contains( $classname, 'qsm-upgrade-popup-variable') ) {?>
+									<?php if ( false !== strpos( $classname, 'qsm-upgrade-popup-variable') ) {?>
 										<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
 											<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
 										</span>
 									<?php } else { ?>
 										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-										<span class='button click-to-copy'>Click to Copy</span>
+										<span class='button click-to-copy'><?php esc_html_e('Click to Copy', 'quiz-master-next'); ?></span>
 										<span class="temp-var-seperator">
 											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 											<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
