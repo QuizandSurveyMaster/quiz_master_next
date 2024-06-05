@@ -163,6 +163,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 9.0.3 ( Beta ) =
+* Bug: Fixed QSM block first question title save
+* Bug: Fixed QSM block answer option inserter button
+
 = 9.0.2 ( June 05, 2024 ) =
 * Bug: Fixed security vulnerability
 * Bug: Resolved an issue causing incorrect display of shortcodes due to invalid quiz IDs
