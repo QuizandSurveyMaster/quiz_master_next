@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.0.1
+ * Version: 9.0.2
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.0.1';
+	public $version = '9.0.2';
 
 	/**
 	 * QSM Alert Manager Object
@@ -166,7 +166,7 @@ class MLWQuizMasterNext {
 	 *
 	 * @since 9.0.0
 	 * @param string $check_permission permission type
-	 * 
+	 *
 	 * @return boolean current user has permission
 	 */
 	public function qsm_is_admin( $check_permission = 'manage_options' ) {
@@ -181,13 +181,13 @@ class MLWQuizMasterNext {
 
 	/**
 	 * sanitize HTML data.
-	 * HTML is saved as encoded and at ouput same as decoded. encoded html may pass though most of 
-	 * the wordpress sanitization function. This function sanitize it to remove 
+	 * HTML is saved as encoded and at ouput same as decoded. encoded html may pass though most of
+	 * the WordPress sanitization function. This function sanitize it to remove
 	 * unfiltered HTML content
-	 * 
+	 *
 	 * @since 9.0.3
 	 * @param HTML $html html data
-	 * 
+	 *
 	 * @return HTML sanitized HTML
 	 */
 	public function sanitize_html( $html = '', $kses = true ) {
@@ -213,7 +213,7 @@ class MLWQuizMasterNext {
 	 *
 	 * @since 9.0.2
 	 * @param string $query SQL Query
-	 * 
+	 *
 	 * @return boolean query executed or not
 	 */
 	public function wpdb_alter_table_query( $query ) {
@@ -738,10 +738,10 @@ class MLWQuizMasterNext {
 			}
 			add_submenu_page( 'options.php', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
 			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
-			
+
 			// Failed Submission.
 			add_submenu_page( 'qsm_dashboard', __( 'Failed Submission', 'quiz-master-next' ), __( 'Failed Submission', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_failed_submission', array( $this, 'admin_failed_submission_page' ) );
-			
+
 			add_submenu_page( 'options.php', __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
 			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
@@ -770,7 +770,7 @@ class MLWQuizMasterNext {
 		if ( file_exists( $file_path ) ) {
 			include_once $file_path;
 			if ( ! class_exists( 'QmnFailedSubmissions' ) ) {
-				return; 
+				return;
 			}
 			$QmnFailedSubmissions = new QmnFailedSubmissions();
 			$QmnFailedSubmissions->render_list_table();

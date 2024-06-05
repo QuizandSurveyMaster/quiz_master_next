@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, quiz maker
 Requires at least: 4.9
 Tested up to: 6.5
 Requires PHP: 5.4
-Stable tag: 9.0.1
+Stable tag: 9.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 9.0.2 ( June 04, 2024 ) =
+= 9.0.2 ( June 05, 2024 ) =
 * Feature: Users can resubmit or delete failed submissions
 * Bug: Resolved an issue causing incorrect display of shortcodes due to invalid quiz IDs
 * Bug: Improved user permission checks and input validation for question deletion
