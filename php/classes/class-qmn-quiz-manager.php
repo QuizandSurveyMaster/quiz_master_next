@@ -182,7 +182,7 @@ class QMNQuizManager {
                 )
             );
         }
-        
+
         $post_ids = is_array( $_POST['post_id'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['post_id'] ) ) : array( sanitize_key( wp_unslash( $_POST['post_id'] ) ) );
         $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
         if ( ! empty( $post_ids ) ) {
@@ -263,39 +263,6 @@ class QMNQuizManager {
             )
         );
     }
-
-	/**
-	 * Delete failed submission log
-	 *
-	 * @param integer $postID post id
-	 * @param array $data meta data
-	 *
-	 * @return void
-	 */
-	private function delete_failed_submission( $postID, $data = null ) {
-		if ( empty( $postID ) || 0 >= $postID ) {
-			return;
-		}
-
-		// Get data if empty
-		if ( empty( $data ) ) {
-			$data = get_post_meta( $postID, $this->meta_key, true );
-			if ( ! empty( $data ) ) {
-				$data = maybe_unserialize( $data );
-			}
-		}
-
-		if ( ! empty( $data ) ) {
-			$data['deleted'] = 1;
-			// Delete submission data
-			update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
-			// Change Error log post status to trash
-			wp_update_post( array(
-				'ID'          => $postID,
-				'post_status' => 'trash',
-			) );
-		}
-	}
 
 	/**
 	 * @version 8.2.0
