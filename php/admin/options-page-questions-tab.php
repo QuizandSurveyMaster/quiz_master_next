@@ -1114,18 +1114,10 @@ function qsm_bulk_delete_question_from_database() {
 
 	$question_id = sanitize_text_field( wp_unslash( $_POST['question_id'] ) );
 
-	$question_id = explode( ',', $question_id );
-	
-	// filter question ids
-	$question_id = array_filter( $question_id, function( $questionID ) {
-		return is_numeric( $questionID ) && 0 < intval( $questionID );
-	} );
-
-	$question_id = implode( ',', $question_id );
-	$question_id = trim( $question_id );
+	$question_id = esc_sql( $question_id );
 
 	if ( ! empty( $question_id ) ) {
-		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_id)" );
+		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ('$question_id')" );
 		if ( $results ) {
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {

@@ -292,7 +292,7 @@ class QSM_Questions {
 		}
 		$answers = apply_filters( 'qsm_answers_before_save', $sanitize_answers, $answers, $data, $settings );
 
-		$question_name             = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
+		$question_name             = htmlspecialchars( $mlwQuizMasterNext->sanitize_html( $data['name'] ), ENT_QUOTES );
 		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
 		if ( $trim_question_description ) {
 			$question_name = trim( preg_replace( '/\s+/', ' ', $question_name ) );
@@ -302,7 +302,7 @@ class QSM_Questions {
 			'quiz_id'              => intval( $data['quiz_id'] ),
 			'question_name'        => $question_name,
 			'answer_array'         => maybe_serialize( $answers ),
-			'question_answer_info' => wp_kses_post( $data['answer_info'] ),
+			'question_answer_info' => $mlwQuizMasterNext->sanitize_html( $data['answer_info'] ),
 			'comments'             => sanitize_text_field( $data['comments'] ),
 			'hints'                => sanitize_text_field( $data['hint'] ),
 			'question_order'       => intval( $data['order'] ),
@@ -401,12 +401,12 @@ class QSM_Questions {
 	 * @return array sanitized $answers The answers for the question.
 	 */
 	public static function sanitize_answers( $answers, $settings ) {
-
+		global $mlwQuizMasterNext;
 		foreach ( $answers as $key => $answer ) {
 			if ( isset( $settings['answerEditor'] ) && 'rich' == $settings['answerEditor'] ) {
-				$answer[0] = wp_kses_post( $answer[0] );
+				$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0] );
 			} else {
-				$answer[0] = sanitize_text_field( $answer[0] );
+				$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0], false );
 			}
 			$answers[ $key ] = $answer;
 		}

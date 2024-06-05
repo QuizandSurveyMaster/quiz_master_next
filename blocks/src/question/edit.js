@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { escapeAttribute } from "@wordpress/escape-html";
 import apiFetch from '@wordpress/api-fetch';
 import {
 	InspectorControls,
@@ -513,7 +514,7 @@ export default function Edit( props ) {
 			<TextControl
 				label=''
 				value={ hint }
-				onChange={ ( hint ) => setAttributes( { hint: qsmStripTags( hint ) } ) }
+				onChange={ ( hint ) => setAttributes( { hint: escapeAttribute( hint ) } ) }
 			/>
 			</PanelBody>
 			{/**Comment Box */}
@@ -553,8 +554,8 @@ export default function Edit( props ) {
 				title={ __( 'Question title', 'quiz-master-next' ) }
 				aria-label={ __( 'Question title', 'quiz-master-next' ) }
 				placeholder={  __( 'Type your question here', 'quiz-master-next' ) }
-				value={ title }
-				onChange={ ( title ) => setAttributes( { title: qsmStripTags( title ) } ) }
+				value={ escapeAttribute( title ) }
+				onChange={ ( title ) => setAttributes( { title: escapeAttribute( title ) } ) }
 				allowedFormats={ [ ] }
 				withoutInteractiveFormatting
 				className={ 'qsm-question-title' }

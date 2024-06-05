@@ -669,7 +669,7 @@ class QMNPluginHelper {
 			/**
 			 * Decode HTML Special characters.
 			 */
-			$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+			$translation_text = wp_kses_post( htmlspecialchars_decode( $translation_text, ENT_QUOTES ) );
 			$translation_slug    = sanitize_title( $translation_slug );
 			$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			if ( 'QSM Answers' === $domain && $new_text == $translation_text ) {
@@ -680,7 +680,7 @@ class QMNPluginHelper {
 				}
 				$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			}
-			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
+			$new_text            = wp_kses_post( htmlspecialchars_decode( $new_text, ENT_QUOTES ) );
 			/**
 			 * Return translation for non-default strings.
 			 */
@@ -701,7 +701,10 @@ class QMNPluginHelper {
 			if ( false !== $default_key && 0 === strcasecmp( $translation_text, $default_texts[ $default_key ] ) ) {
 				return apply_filters( 'wpml_translate_single_string', $translation_text, 'QSM Defaults', 'quiz_' . $default_key );
 			}
+		} else if ( ! empty( $translation_text ) ) {
+			$translation_text = wp_kses_post( $translation_text );
 		}
+		
 		return $translation_text;
 	}
 
