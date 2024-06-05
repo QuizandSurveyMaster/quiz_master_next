@@ -102,16 +102,16 @@
 			create: function (event, ui){
 				if('answer'=== page){
 					jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
-					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
-					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
+					jQuery(this).find('span').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
+					jQuery(this).find('span').html('<p style="margin:0;">'+value+'</p>');
 				} else if ( 'admin' === page ) {
-					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
-					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
+					jQuery(this).find('span').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
+					jQuery(this).find('span').html('<p style="margin:0;">'+value+'</p>');
 				} else {
 					qsmPolarSliderQuestionCreate(questionID );
 				}
 				if ( isNaN(value) ){
-					jQuery(this).find('a').hide();
+					jQuery(this).find('span').hide();
 				}
 			}
 
@@ -175,6 +175,7 @@
 			jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 				'.right-polar-title img').css('opacity', "0.8");
 		}
+		jQuery(document).trigger('qsm_polar_slider_change_after', [ui,questionID, answer1, answer2, value , isReverse]);
 	}
 
 	function qsmPolarSliderQuestionCreate(questionID){
@@ -187,5 +188,6 @@
 			'.right-polar-title').css('font-weight', '400');
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s img').find(
 			'.right-polar-title img').css('opacity', "0.5");
+		jQuery(document).trigger('qsm_polar_slider_create_after', [questionID]);
 	}
 }(jQuery));

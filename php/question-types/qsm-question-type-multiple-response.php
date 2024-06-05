@@ -31,6 +31,8 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
+	<fieldset>
+		<legend></legend>
 	<div class="qmn_check_answers <?php echo esc_attr( $mlw_class ); ?>">
 		<?php
 		if ( is_array( $answers ) ) {
@@ -72,7 +74,7 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 							} else {
 								$answer_text = trim( htmlspecialchars_decode( $add_label_value." ". $answer[0], ENT_QUOTES ) );
 								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
-								echo do_shortcode( wp_kses_post( $answer_text ) );
+								echo wp_kses_post( do_shortcode( $answer_text ) );
 							}
 							?>
 						</label>
@@ -83,6 +85,7 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 		}
 		?>
 	</div>
+	</fieldset>
 	<?php
 	echo apply_filters( 'qmn_multiple_response_display_front', '', $id, $question, $answers );
 }

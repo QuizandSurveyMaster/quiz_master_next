@@ -27,7 +27,7 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" cols="70" rows="5" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> <?php echo esc_attr( $min_length_attr ); ?> /></textarea>
+	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" cols="70" rows="5" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> <?php echo esc_attr( $min_length_attr ); ?> /></textarea>
 	<?php
 	echo apply_filters( 'qmn_large_open_display_front', '', $id, $question, $answers );
 }

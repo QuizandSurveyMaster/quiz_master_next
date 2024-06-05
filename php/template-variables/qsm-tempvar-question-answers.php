@@ -39,6 +39,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			$image_class      = '';
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $show_user_answer, 'answer-' . $answers_from_response['id'] . '-' . $single_answer_key, 'QSM Answers' );
 		}
+		$show_user_answer = apply_filters( 'qsm_show_user_answer_after', $show_user_answer, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type, $total_answers );
 		$close_span = '</span>';
 		if ( 0 == $form_type && ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) ) {
 			$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );

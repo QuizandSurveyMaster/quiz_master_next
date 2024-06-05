@@ -29,7 +29,8 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?> <div></div>
-		<input style="display: none;" type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
+		<label style="display: none;" for="question<?php echo esc_attr( $id ); ?>"><?php echo esc_attr( "Choose File" ); ?></label>
+		<input style="display: none;" type="file" id="question<?php echo esc_attr( $id ); ?>" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
 		<?php if ( ! $hide ) : ?>
 			<div class="qsm-file-upload-container">
 				<span class="dashicons dashicons-cloud-upload qsm-file-upload-logo"></span>
