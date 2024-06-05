@@ -1,6 +1,6 @@
-=== Quiz And Survey Master - Best Quiz, Exam and Survey Plugin for WordPress ===
+=== Quiz and Survey Master (QSM) - Easy Quiz and Survey Maker ===
 Contributors: quizsurvey,expresstech
-Tags: quiz, survey, test, exam, quiz maker
+Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.5
 Requires PHP: 5.4
@@ -164,10 +164,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 9.0.2 ( June 05, 2024 ) =
-* Feature: Users can resubmit or delete failed submissions
+* Bug: Fixed security vulnerability
 * Bug: Resolved an issue causing incorrect display of shortcodes due to invalid quiz IDs
 * Bug: Improved user permission checks and input validation for question deletion
-* Bug: Fixed Cross Site Scripting (XSS) vulnerability
+* Feature: Users can resubmit or delete failed submissions
 * Enhancement: Improved logic for handling migration queries
 * Enhancement: Improved functionality for clicking the Enter key
 * Enhancement: Added a Failed Submissions list to the QSM menu
@@ -195,32 +195,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: Enhanced the user interface of option tabs for improved usability
 * Enhancement: Improved the user interface of the upload files question type
 * Enhancement: Improve result and email page UI
-
-= 8.2.3 (March 12, 2024) =
-* Bug: Fixed issue with inline result while duplicating quizzes
-* Bug: Patched a vulnerability related to the result page
-* Enhancement: Improve contact fields UI
-
-= 8.2.2 (January 18, 2024) =
-* Feature: Added an option to mark texts as code snippets in the question description
-* Bug: Fixed the issue of skipping question validation after the quiz timer ends
-* Bug: Fixed issue when using apostrophe in fill-in-the-blanks questions
-* Bug: Fixed the quiz navigation problem with reCAPTCHA
-* Enhancement: Improved auto-pause logic for embedded audio when shifting pages.
-
-= 8.2.1 (January 05, 2024) =
-* Feature: Added option to delete bulk questions
-* Bug: Resolved JavaScript conflicts
-* Bug: Fixed translation issue on quiz result page
-* Enhancement: Improved logic to auto pause emabded video after changing page
-
-= 8.2.0 (December 15, 2023) =
-* Feature: Added option to change deselect answer text
-* Feature: Added option to duplicate quiz theme settings
-* Bug: Fixed issue related to limiting random questions by category
-* Bug: Fixed issue with images and video tags in the correct answer info
-* Enhancement: Improved login form validations
-* Enhancement: Improved performance by optimizing cookies
 
 ([Read Full Changelog](https://quizandsurveymaster.com/qsm-changelog/))
 
