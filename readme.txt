@@ -166,6 +166,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 9.0.3 ( Beta ) =
 * Bug: Fixed QSM block first question title save
 * Bug: Fixed QSM block answer option inserter button
+* Bug: Fixed Missing Next button in single question quiz created with text after quiz
 
 = 9.0.2 ( June 05, 2024 ) =
 * Bug: Fixed security vulnerability
