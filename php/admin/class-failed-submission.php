@@ -194,7 +194,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			$view_links = array();
 
 			foreach ( $views as $view_id => $view ) {
-				$view_links[ $view_id ] = '<a href="' . esc_url( admin_url( 'admin.php?page=qsm_quiz_failed_submission&tab=' . $view_id ) ) . '" class="' . ( ( $view_id === $this->current_tab ) ? 'current' : '' ) . '" >' . esc_html( $view['label'] ) . '</a>';
+				$view_links[ $view_id ] = '<a href="' . esc_url( admin_url( 'admin.php?page=qsm-quiz-failed-submission&tab=' . $view_id ) ) . '" class="' . ( ( $view_id === $this->current_tab ) ? 'current' : '' ) . '" >' . esc_html( $view['label'] ) . '</a>';
 			}
 
 			return $view_links;
