@@ -134,7 +134,9 @@ class QMNQuizManager {
 						)
 					);
 				}else {
-					$failed_queries = "";
+					if ( array_key_exists($query_index, $failed_queries) ) {
+						unset($failed_queries[ $query_index ]);
+					}
 					update_option( 'qmn_failed_alter_table_queries', $failed_queries );
 					wp_send_json_success(
 						array(
