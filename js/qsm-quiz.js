@@ -1049,7 +1049,12 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		container.find(".mlw_custom_next").hide();
 	}else{
 		container.find(".mlw_custom_start").hide();
-		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
+		let numberToAdd = 2;
+		// Fixed Missing Next Button in single question quiz created with text after quiz
+		if ( '3' == total_pages && 0 < jQuery('.quiz_end .mlw_qmn_message_end').length ) {
+			numberToAdd = 1;
+		}
+		if(total_pages != parseInt(page_number) + numberToAdd){ // check if not last page based on condition (1140)
 			container.find(".mlw_custom_next").show();
 			if (jQuery('.quiz_end').is(':visible')) {
 				container.find(".mlw_custom_next").hide();

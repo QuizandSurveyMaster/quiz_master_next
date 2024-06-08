@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.5
 Requires PHP: 5.4
-Stable tag: 9.0.2
+Stable tag: 9.0.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 9.0.3 ( June 08, 2024 ) =
+* Bug: Fixed issue with QSM block first question title
+* Bug: Fixed issue with next button in single question quiz
+* Enhancement: Improved notification messages for better clarity and enhanced user experience
+
 = 9.0.2 ( June 05, 2024 ) =
 * Bug: Fixed security vulnerability
 * Bug: Resolved an issue causing incorrect display of shortcodes due to invalid quiz IDs
