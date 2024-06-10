@@ -99,7 +99,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 			}
 			echo apply_filters( 'qsm_multiple_choice_display_after_loop', ' ', $id, $question, $answers );
 			?>
-			<label style="display: none;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php echo esc_attr( 'question' . $id ); ?></label>
+			<label style="display: none !important;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php esc_attr_e( 'None', 'quiz-master-next' ); ?></label>
 			<input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" />
 			<?php
 		}
