@@ -1507,7 +1507,7 @@ var QSMContact;
                     $('#contactformsettings input').each(function () {
                         if ('checkbox' == $(this).attr('type')) {
                             settings[$(this).attr('name')] = ($(this).prop('checked') ? '1' : '0');
-                        } else {
+                        } else if ('radio' == $(this).attr('type') && $(this).prop('checked')) {
                             settings[$(this).attr('name')] = $(this).val();
                         }
                     });

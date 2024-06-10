@@ -464,13 +464,27 @@ class QSM_Install {
 			'label'           => __( 'Progress Controls', 'quiz-master-next' ),
 			'fields'          => array(
 				'progress_bar'                     => array(
-					'type'    => 'checkbox',
-					'options' => array(
+					'type'    => 'radio',
+					'options'     => array(
 						array(
-							'label' => __( 'Show progress bar', 'quiz-master-next' ),
+							'label' => __( "Disable", 'quiz-master-next' ),
+							'value' => 0,
+						),
+						array(
+							'label' => __( "Progress bar based on number of pages", 'quiz-master-next' ),
 							'value' => 1,
 						),
+						array(
+							'label' => __( "Progress bar based on number of question responded", 'quiz-master-next' ),
+							'value' => 2,
+						),
 					),
+					// 'options' => array(
+					// 	array(
+					// 		'label' => __( 'Show progress bar', 'quiz-master-next' ),
+					// 		'value' => 1,
+					// 	),
+					// ),
 					'default' => 1,
 				),
 				'enable_quick_result_mc'           => array(
