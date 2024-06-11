@@ -120,48 +120,31 @@ class QMNQuizManager {
 			);
 		} else {
 			global $mlwQuizMasterNext, $wpdb;
-			$wperror = '';
-			// Failed Query has been saved in wrong order sometimes due to order of execution. So run twice
-			for ( $i = 0; $i < 2; $i++ ) {
-				// Get failed alter table query list.
-				$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
-				if ( ! empty( $failed_queries ) ) {
-
-					if ( 0 === $i ) {
-						$failed_queries = array_reverse( $failed_queries );
-					}
-
-					foreach ( $failed_queries as $failed_query ) {
-						$result = $mlwQuizMasterNext->wpdb_alter_table_query( $failed_query );
-						// exit loop if query failed to execute
-						if ( false === $result ) {
-							$wperror = $wpdb->last_error;
-							if ( false !== stripos( $wperror, 'Duplicate' ) ) {
-								// Remove failed query from list.
-								$failed_queries = array_diff( $failed_queries, array( $failed_query ) );
-								// Update failed queries list.
-								update_option( 'qmn_failed_alter_table_queries', $failed_queries );
-							}
-						}
-					}
-				}
-			}
-
+			// Get failed alter table query list.
 			$failed_queries = $mlwQuizMasterNext->get_failed_alter_table_queries();
-			if ( ! empty( $failed_queries ) ) {
-				wp_send_json_error(
-					array(
-						'status'  => 'error',
-						'message' => $wperror,
-					)
-				);
-			} else {
-				wp_send_json_success(
-					array(
-						'status'  => 'success',
-						'message' => __( 'Fixed!', 'quiz-master-next' ),
-					)
-				);
+			$query_index = ! empty( $_POST['query'] ) ? sanitize_text_field( wp_unslash( $_POST['query'] ) ) : 0;
+			if ( ! empty( $failed_queries ) && is_array( $failed_queries ) && isset( $failed_queries[ $query_index ] ) ) {
+				$result = $mlwQuizMasterNext->wpdb_alter_table_query( $failed_queries[ $query_index ] );
+				// exit loop if query failed to execute
+				if ( false === $result ) {
+					wp_send_json_error(
+						array(
+							'status'  => 'error',
+							'message' => $wpdb->last_error,
+						)
+					);
+				}else {
+					if ( array_key_exists($query_index, $failed_queries) ) {
+						unset($failed_queries[ $query_index ]);
+					}
+					update_option( 'qmn_failed_alter_table_queries', $failed_queries );
+					wp_send_json_success(
+						array(
+							'status'  => 'success',
+							'message' => __( 'Success! Database query executed successfully.', 'quiz-master-next' ),
+						)
+					);
+				}
 			}
 		}
 	}
@@ -182,7 +165,7 @@ class QMNQuizManager {
                 )
             );
         }
-        
+
         $post_ids = is_array( $_POST['post_id'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['post_id'] ) ) : array( sanitize_key( wp_unslash( $_POST['post_id'] ) ) );
         $action   = wp_unslash( sanitize_key( $_POST['quiz_action'] ) );
         if ( ! empty( $post_ids ) ) {
@@ -263,39 +246,6 @@ class QMNQuizManager {
             )
         );
     }
-
-	/**
-	 * Delete failed submission log
-	 *
-	 * @param integer $postID post id
-	 * @param array $data meta data
-	 *
-	 * @return void
-	 */
-	private function delete_failed_submission( $postID, $data = null ) {
-		if ( empty( $postID ) || 0 >= $postID ) {
-			return;
-		}
-
-		// Get data if empty
-		if ( empty( $data ) ) {
-			$data = get_post_meta( $postID, $this->meta_key, true );
-			if ( ! empty( $data ) ) {
-				$data = maybe_unserialize( $data );
-			}
-		}
-
-		if ( ! empty( $data ) ) {
-			$data['deleted'] = 1;
-			// Delete submission data
-			update_post_meta( $postID, $this->meta_key, maybe_serialize( $data ) );
-			// Change Error log post status to trash
-			wp_update_post( array(
-				'ID'          => $postID,
-				'post_status' => 'trash',
-			) );
-		}
-	}
 
 	/**
 	 * @version 8.2.0

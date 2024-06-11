@@ -701,7 +701,7 @@ class QMNPluginHelper {
 			if ( false !== $default_key && 0 === strcasecmp( $translation_text, $default_texts[ $default_key ] ) ) {
 				return apply_filters( 'wpml_translate_single_string', $translation_text, 'QSM Defaults', 'quiz_' . $default_key );
 			}
-		} else if ( ! empty( $translation_text ) ) {
+		} elseif ( ! empty( $translation_text ) ) {
 			$translation_text = wp_kses_post( $translation_text );
 		}
 		

@@ -421,7 +421,9 @@ export default function Edit( props ) {
 								"page": pageSNo,
 								"other_settings": {
 									...qsmValueOrDefault( questionAttr?.settings, {} ),
-									"required": qsmValueOrDefault( questionAttr?.required, 0 )
+									"required": qsmValueOrDefault( questionAttr?.required, 0 ),
+									"question_title": qsmValueOrDefault( questionAttr?.title ),
+									"answerEditor": answerEditor
 								}
 							});
 						}

@@ -3981,7 +3981,7 @@ var import_button;
     }
 
     function submit_failed_submission_action_form( formData, ) {
-    
+
         // check for required data
         if ( undefined === formData || null === formData || -1 == formData.quiz_action || 0 === formData.post_ids.length ) {
             submit_failed_submission_action_notice( {
@@ -3989,15 +3989,15 @@ var import_button;
                 message:"Missing form action or data"
             } );
             return false;
-        } 
+        }
 
         // quiz action
         formData.action = 'qsm_action_failed_submission_table';
-        
+
         // Disable conatiner for further any action
         let containerDiv = $("#qmn-failed-submission-conatiner");
             containerDiv.toggleClass('qsm-pointer-events-none');
-        
+
         // Actiion one by one
         formData.post_ids.forEach( post_id => {
             formData.post_id = post_id;
@@ -4011,7 +4011,7 @@ var import_button;
                 success: function (response) {
                     // notice.
                     submit_failed_submission_action_notice( response.data );
-                   
+
                     // enable click pointer
                     containerDiv.removeClass('qsm-pointer-events-none');
 
@@ -4026,15 +4026,15 @@ var import_button;
                     if ( 'trash' === formData.quiz_action ) {
                         $( '#qsm-submission-row-'+post_id ).remove();
                     }
-                    
+
                 },
                 error: function ( jqXHR, textStatus, errorThrown ) {
-                    // undo action link 
+                    // undo action link
                     action_link_wrap.html( action_link_html );
 
                     // enable click pointer
                     containerDiv.removeClass('qsm-pointer-events-none');
-                    
+
                     // error notice
                     submit_failed_submission_action_notice( {
                         status:"error",
@@ -4061,7 +4061,7 @@ var import_button;
          checkedCheckboxes.each(function() {
             formData.post_ids.push( $(this).val() );
          });
-         
+
          submit_failed_submission_action_form( formData );
     } );
 
@@ -4074,7 +4074,7 @@ var import_button;
     // On click retrieve link
     $( document ).on( 'click', '.qmn-retrieve-failed-submission-link', function( e ) {
         e.preventDefault();
-        
+
         submit_failed_submission_action_form( {
             qmnnonce: $('#failed-submission-action-form input[name="qmnnonce"]').val(),
             post_ids: [ $(this).attr('post-id') ],
@@ -4083,29 +4083,33 @@ var import_button;
     } );
 
     // Run failed ALTER TABLE query via ajax on notification button click
-    $( document ).on( 'click', '.notice.qmn-database-user-incorrect-permission .check-db-fix-btn', function( e ) {
+    $( document ).on( 'click', '.qsm-check-db-fix-btn', function( e ) {
         e.preventDefault();
         let dbFixBtn = $( this );
         let formData = {
             action: 'qsm_check_fix_db',
-            qmnnonce: $( this ).attr( 'qmnnonce' ),
+            qmnnonce: $( this ).data( 'nonce' ),
+            query: $( this ).data( 'query' ),
         };
-        dbFixBtn.text("processing...");
-        dbFixBtn.removeClass( 'check-db-fix-btn' );
-        dbFixBtn.removeClass( 'button-primary' );
+        dbFixBtn.attr( 'disabled', true );
         $.ajax({
             type: 'POST',
             url: ajaxurl,
             data: formData,
             success: function (response) {
-                if ( undefined !== response.data ) {
-                    dbFixBtn.text( response.data.message );   
+                if ( response.success ) {
+                    QSMAdmin.displayAlert(response.data.message, 'success');
+                    dbFixBtn.parents('tr').remove();
+                } else {
+                    QSMAdmin.displayAlert(response.data.message, 'error');
                 }
+                dbFixBtn.attr( 'disabled', false );
             },
-            error: function ( jqXHR, textStatus, errorThrown ) {
-                console.log( "error", errorThrown );
+            error: function (jqXHR, textStatus, errorThrown) {
+                QSMAdmin.displayAlert(jqXHR.responseText, 'error');
+                dbFixBtn.attr( 'disabled', false );
             }
         });
     } );
-    
+
 }(jQuery));

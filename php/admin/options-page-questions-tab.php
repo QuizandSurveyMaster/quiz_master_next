@@ -1114,16 +1114,34 @@ function qsm_bulk_delete_question_from_database() {
 
 	$question_id = sanitize_text_field( wp_unslash( $_POST['question_id'] ) );
 
-	$question_id = esc_sql( $question_id );
+	$question_id = explode( ',', $question_id );
+
+	// filter question ids
+	$question_id = array_filter( $question_id, function( $questionID ) {
+		return is_numeric( $questionID ) && 0 < intval( $questionID );
+	} );
+
+	// Sanitize and validate the IDs
+	$question_id = array_map( 'intval', $question_id );
 
 	if ( ! empty( $question_id ) ) {
-		$results = $wpdb->query( "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ('$question_id')" );
+		// Generate placeholders for each ID
+		$placeholders = array_fill( 0, count( $question_id ), '%d' );
+
+		// Construct the query with placeholders
+		$query = sprintf(
+			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
+			implode( ', ', $placeholders )
+		);
+		
+		// Prepare the query
+		$query = $wpdb->prepare( $query, $question_id );
+
+		$results = $wpdb->query( $query );
 		if ( $results ) {
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
-
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
 		}
 	} else {
