@@ -87,14 +87,14 @@ $.widget( "ui.slider", $.ui.mouse, {
 		}
 
 		if ( $( ".ui-slider-handle", this.element ).length === 0 ) {
-			$( "<a href='#'></a>" )
+			$( "<span></span>" )
 				.appendTo( this.element )
 				.addClass( "ui-slider-handle" );
 		}
 
 		if ( o.values && o.values.length ) {
 			while ( $(".ui-slider-handle", this.element).length < o.values.length ) {
-				$( "<a href='#'></a>" )
+				$( "<span></span>" )
 					.appendTo( this.element )
 					.addClass( "ui-slider-handle" );
 			}

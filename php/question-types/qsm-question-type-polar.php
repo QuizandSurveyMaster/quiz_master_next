@@ -69,7 +69,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 			<?php
 		} else {
 			$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $id . '-0', "QSM Answers" );
-			echo do_shortcode( wp_kses_post( $left_title ) );
+			echo wp_kses_post( do_shortcode( $left_title ) );
 		}
 		?> </div>
 		<div class='slider-main-wrapper'>
@@ -98,7 +98,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 			<?php
 		} else {
 			$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $id . '-1', "QSM Answers" );
-			echo do_shortcode( wp_kses_post( $right_title ) );
+			echo wp_kses_post( do_shortcode( $right_title ) );
 		}
 		?></div>
 		<?php endif; ?>

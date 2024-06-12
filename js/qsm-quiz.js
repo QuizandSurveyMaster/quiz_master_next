@@ -22,6 +22,9 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					if ( !qmn_quiz_data[quizID].hasOwnProperty('timer_limit') && null !== localStorage.getItem('mlw_time_quiz' + quizID) ) {
+						localStorage.removeItem('mlw_time_quiz' + quizID);
+					}
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
 						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
 						localStorage.setItem('mlw_time_consumed_quiz' + quizID, 1);
@@ -338,7 +341,7 @@ var qsmTimerInterval = [];
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);
-				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
+				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-next', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					let $quizForm = QSM.getQuizForm(quizID);
@@ -365,7 +368,7 @@ var qsmTimerInterval = [];
 					}
 					jQuery(document).trigger('qsm_next_button_click_after', [quizID]);
 				});
-				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-previous', function (event) {
+				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-previous', function (event) {
 					jQuery(document).trigger('qsm_previous_button_click_before', [quizID]);
 					event.preventDefault();
 					QSM.prevPage(quizID);
@@ -1046,7 +1049,12 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		container.find(".mlw_custom_next").hide();
 	}else{
 		container.find(".mlw_custom_start").hide();
-		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
+		let numberToAdd = 2;
+		// Fixed Missing Next Button in single question quiz created with text after quiz
+		if ( '3' == total_pages && 0 < jQuery('.quiz_end .mlw_qmn_message_end').length ) {
+			numberToAdd = 1;
+		}
+		if(total_pages != parseInt(page_number) + numberToAdd){ // check if not last page based on condition (1140)
 			container.find(".mlw_custom_next").show();
 			if (jQuery('.quiz_end').is(':visible')) {
 				container.find(".mlw_custom_next").hide();
@@ -1466,7 +1474,7 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('change', '.qmn-multiple-choice-input, .qsm_dropdown' , function (e) {
+	jQuery(document).on('change', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date ' , function (e) {
 		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm(quizID);
@@ -1607,6 +1615,8 @@ jQuery(function () {
 					$this.parent('.quiz_section').find('.qsm-file-upload-status').text('').text(obj.message);
 					$this.parent('.quiz_section').find('.qsm-file-upload-status').show();
 				}
+				// triggers after file remove
+				jQuery(document).trigger('qsm_after_file_remove', [$this.parent(), obj]);
 			}
 		});
 		return false;
@@ -1948,13 +1958,14 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 	}
 }
 
-jQuery(document).on( 'click', '.qsm-quiz-container', function() {
-    jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
-    jQuery(this).addClass('qsm-recently-active');
+jQuery(document).on('click', function(event) {
+	if (jQuery(event.target).closest('.qsm-quiz-container').length) {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+		jQuery(event.target).closest('.qsm-quiz-container').addClass('qsm-recently-active');
+	} else {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+	}
 });
-if (jQuery('.qsm-quiz-container').length > 0) {
-    jQuery('body .qsm-quiz-container:first').addClass('qsm-recently-active');
-}
 
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {

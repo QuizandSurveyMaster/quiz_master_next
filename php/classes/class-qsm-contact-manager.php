@@ -438,7 +438,7 @@ class QSM_Contact_Manager {
 				$class       = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
 				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<?php } ?>
 				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
@@ -459,7 +459,7 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
 				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 					?>
-					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<?php } ?>
 				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
@@ -483,7 +483,7 @@ class QSM_Contact_Manager {
 				}
 				$class = apply_filters( 'qsm_contact_date_field_class', $class, $field['use'] );
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<input type='date' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> value='' />
 				<?php
 				break;
@@ -500,7 +500,7 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
 				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 					?>
-					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<?php } ?>
 				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> />
 				<?php
@@ -531,7 +531,7 @@ class QSM_Contact_Manager {
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";
 				if ( ! isset( $field['hide_label'] ) || 'true' != $field['hide_label'] ) {
 				?>
-					<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+					<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<?php } ?>
 				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
@@ -584,7 +584,7 @@ class QSM_Contact_Manager {
 				// If REQUIRED is set then assigning the required class
 				if ( isset( $field['options'] ) ) {
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
+				<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
 					<?php if ( ! isset( $field['use_default_option'] ) || 'true' != $field['use_default_option'] ) { ?>
 						<option value=''>

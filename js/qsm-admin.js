@@ -3718,6 +3718,7 @@ var import_button;
                                 'value': $(this).find('.results-page-condition-value').val()
                             });
                         });
+                        jQuery(document).trigger('qsm_save_result_page_before', [this, page]);
                         pages.push(page);
                     });
                     let _X_validation = false;
@@ -3958,5 +3959,160 @@ var import_button;
     qsmHandleOperatorChange('results-page-condition', 'condition-default-value');
     qsmHandleConditionChange('email-condition', 'email-extra-condition-category', 'email-condition-operator', 'email-condition-criteria', 'condition-default-value');
     qsmHandleOperatorChange('email-condition', 'condition-default-value');
+
+}(jQuery));
+
+
+/**
+ * QSM - failed submission data table action
+ */
+(function ($) {
+    function submit_failed_submission_action_notice( res ) {
+        if ( 'object' !== typeof res || null === res || undefined === res.message  ) {
+            return false;
+        }
+       let noticeEl = $( '#qmn-failed-submission-table-message' );
+       if ( 0 < noticeEl.length ) {
+            let remove_notice_type_class = 'success' === res.status ? 'notice-error' : 'notice-success';
+            noticeEl.removeClass( remove_notice_type_class );
+            noticeEl.addClass( 'notice-'+res.status );
+            noticeEl.find( '.notice-message' ).text(
+                res.message
+            );
+            noticeEl.removeClass( 'display-none-notice' );
+       }
+    }
+
+    function submit_failed_submission_action_form( formData, ) {
+
+        // check for required data
+        if ( undefined === formData || null === formData || -1 == formData.quiz_action || 0 === formData.post_ids.length ) {
+            submit_failed_submission_action_notice( {
+                status:"error",
+                message:"Missing form action or data"
+            } );
+            return false;
+        }
+
+        // quiz action
+        formData.action = 'qsm_action_failed_submission_table';
+
+        // Disable conatiner for further any action
+        let containerDiv = $("#qmn-failed-submission-conatiner");
+            containerDiv.toggleClass('qsm-pointer-events-none');
+
+        // Actiion one by one
+        formData.post_ids.forEach( post_id => {
+            formData.post_id = post_id;
+            let action_link_wrap = $( '#action-link-'+post_id );
+            let action_link_html = action_link_wrap.html();
+            action_link_wrap.html( 'processing...');
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: formData,
+                success: function (response) {
+                    // notice.
+                    submit_failed_submission_action_notice( response.data );
+
+                    // enable click pointer
+                    containerDiv.removeClass('qsm-pointer-events-none');
+
+                    // add success icon
+                    if ( response.success ) {
+                        action_link_wrap.html( '<span class="dashicons dashicons-yes-alt"></span>' );
+                    } else {
+                        action_link_wrap.html( 'Failed' );
+                    }
+
+                    // Remove row if trashed
+                    if ( 'trash' === formData.quiz_action ) {
+                        $( '#qsm-submission-row-'+post_id ).remove();
+                    }
+
+                },
+                error: function ( jqXHR, textStatus, errorThrown ) {
+                    // undo action link
+                    action_link_wrap.html( action_link_html );
+
+                    // enable click pointer
+                    containerDiv.removeClass('qsm-pointer-events-none');
+
+                    // error notice
+                    submit_failed_submission_action_notice( {
+                        status:"error",
+                        message:errorThrown
+                    } );
+                }
+            });
+        });
+
+    }
+
+    // Submit Form.
+    $( document ).on( 'submit', '#failed-submission-action-form', function( e ) {
+        e.preventDefault();
+        let formData = {
+            qmnnonce: $('#failed-submission-action-form input[name="qmnnonce"]').val(),
+            post_ids: [],
+            quiz_action: $('#failed-submission-action-form #bulk-action-selector-top').val()
+        };
+         // Select all checkboxes with the name attribute 'post_id[]'
+         let checkedCheckboxes = $('#failed-submission-action-form input[type="checkbox"][name="post_id[]"]:checked');
+
+         // Iterate over each checked checkbox
+         checkedCheckboxes.each(function() {
+            formData.post_ids.push( $(this).val() );
+         });
+
+         submit_failed_submission_action_form( formData );
+    } );
+
+    // Dismiss notification
+    $( document ).on( 'click', '#qmn-failed-submission-table-message .notice-dismiss', function( e ) {
+        e.preventDefault();
+        $(this).parent().addClass( 'display-none-notice' );
+    });
+
+    // On click retrieve link
+    $( document ).on( 'click', '.qmn-retrieve-failed-submission-link', function( e ) {
+        e.preventDefault();
+
+        submit_failed_submission_action_form( {
+            qmnnonce: $('#failed-submission-action-form input[name="qmnnonce"]').val(),
+            post_ids: [ $(this).attr('post-id') ],
+            quiz_action:'retrieve'
+        } );
+    } );
+
+    // Run failed ALTER TABLE query via ajax on notification button click
+    $( document ).on( 'click', '.qsm-check-db-fix-btn', function( e ) {
+        e.preventDefault();
+        let dbFixBtn = $( this );
+        let formData = {
+            action: 'qsm_check_fix_db',
+            qmnnonce: $( this ).data( 'nonce' ),
+            query: $( this ).data( 'query' ),
+        };
+        dbFixBtn.attr( 'disabled', true );
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: formData,
+            success: function (response) {
+                if ( response.success ) {
+                    QSMAdmin.displayAlert(response.data.message, 'success');
+                    dbFixBtn.parents('tr').remove();
+                } else {
+                    QSMAdmin.displayAlert(response.data.message, 'error');
+                }
+                dbFixBtn.attr( 'disabled', false );
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                QSMAdmin.displayAlert(jqXHR.responseText, 'error');
+                dbFixBtn.attr( 'disabled', false );
+            }
+        });
+    } );
 
 }(jQuery));

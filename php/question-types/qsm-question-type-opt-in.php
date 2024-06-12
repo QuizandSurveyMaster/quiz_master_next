@@ -30,7 +30,7 @@ function qmn_accept_display( $id, $question, $answers ) {
 					$question = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 				}
 				$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question, ENT_QUOTES ), "question-description-{$id}", 'QSM Questions' );
-				echo do_shortcode( wp_kses_post( $question ) );
+				echo wp_kses_post( do_shortcode( $question ) );
 			?>
 			</span>
 		</label>

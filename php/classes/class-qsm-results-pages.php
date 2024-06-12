@@ -57,7 +57,7 @@ class QSM_Results_Pages {
 						}
 						if ( ! empty($condition['extra_condition']) && 'category' == $main_condition ) {
 							$category = $condition['extra_condition'];
-							if ( str_contains($category, 'qsm-cat-') ) {
+							if ( false !== strpos($category, 'qsm-cat-') ) {
 								$cat_id = intval( str_replace( 'qsm-cat-', '', $category ) );
 								$term = get_term( $cat_id );
 								if ( $term ) {
