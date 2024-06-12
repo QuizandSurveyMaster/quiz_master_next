@@ -353,6 +353,25 @@ class QSM_Contact_Manager {
 				$fields[ $i ]['label']  = $label;
 				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $label, "quiz_contact_field_text-{$i}-{$quiz_id}" );
 				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $placeholder, "quiz_contact_field_placeholder-{$i}-{$quiz_id}" );
+
+				// Validate allowed domains
+				if ( ! empty( $fields[ $i ]['allowdomains'] ) ) {
+					$allowdomains = explode( ',', $fields[ $i ]['allowdomains'] );
+					// Trim domains
+					$allowdomains = array_map( 'trim', $allowdomains );
+					// filter domain
+					$allowdomains = array_filter( $allowdomains, function( $allowdomain ) {
+						/**
+						 * full domain name may not exceed a total length of 253 ASCII characters
+						 * The domain name consists of valid labels (1-63 characters of letters, digits, 
+						 * or hyphens) followed by a dot. The domain ends with a valid TLD
+						 * (2-63 characters of letters).
+						 */
+						return preg_match( '/^([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/', $allowdomain ) && ( strlen( $allowdomain ) <= 253 );
+					} );
+
+					$fields[ $i ]['allowdomains'] = implode( ',', $allowdomains );
+				}
 				if ( ! empty( $fields[ $i ]['options'] ) ) {
 					$options = sanitize_text_field( wp_unslash( $fields[ $i ]['options'] ) );
 					$fields[ $i ]['options']  = $options;
