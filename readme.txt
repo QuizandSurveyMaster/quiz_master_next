@@ -164,8 +164,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 9.0.5 ( Beta ) =
-* Fixed: quiz contact form email allow domains validation
+* Fixed: Quiz contact form email allow domains validation
 * Fixed: wpApiSettings JS error
+* Fixed: Email subject converts & to &amp;
 
 = 9.0.4 ( June 10, 2024 ) =
 * Enhancement: Improved HTML code management on the result page
