@@ -43,10 +43,9 @@ function qmn_polar_display( $id, $question, $answers ) {
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $id );
+	if ( $show ) {
 	?>
 	<span class="mlw_qmn_question question-type-polar-s">
-	<?php echo apply_filters( 'qmn_polar_display_front_before', $id, $question, $answers );
-		if ( $show ) : ?>
 		<div class='left-polar-title'> <?php
 		if ( 'image' === $answerEditor ) {
 			$size_style = '';
@@ -101,9 +100,9 @@ function qmn_polar_display( $id, $question, $answers ) {
 			echo wp_kses_post( do_shortcode( $right_title ) );
 		}
 		?></div>
-		<?php endif; ?>
 	</span>
 	<?php
+	}
 	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
 }
 
