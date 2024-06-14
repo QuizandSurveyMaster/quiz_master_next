@@ -43,6 +43,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $id );
+	echo apply_filters( 'qmn_polar_display_front_before', '', $id, $question, $answers );
 	if ( $show ) {
 	?>
 	<span class="mlw_qmn_question question-type-polar-s">

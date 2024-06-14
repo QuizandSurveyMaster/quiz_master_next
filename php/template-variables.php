@@ -1557,7 +1557,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$input_text       .= "</div>";
 	$question          = $input_text;
 	$question_display .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
-	// return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
+	$question_display = apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
 	return apply_filters( 'qmn_polar_display_result_page', $question_display, $id, $question, $answers, $answer );
 }
 
