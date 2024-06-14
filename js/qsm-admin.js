@@ -3209,7 +3209,11 @@ var import_button;
                     var questionType = $('#question_type').val();
                     var answer_length = $('#answers').find('.answers-single').length;
                     var answerType = $('#change-answer-editor').val();
-                    if (answer_length > 1 && $('#question_type').val() == 13) {
+                    let isMultiPolar = {
+                        isActive: false,
+                    }
+                    jQuery(document).trigger('qsm_new_answer_button_before', [isMultiPolar, question_id]);
+                    if (answer_length > 1 && $('#question_type').val() == 13 && !isMultiPolar.isActive) {
                         alert(qsm_admin_messages.polar_options_validation);
                         return;
                     }
