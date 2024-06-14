@@ -145,5 +145,5 @@ function qmn_polar_review( $id, $question, $answers ) {
 	/**
 	 * Hook to filter answers array
 	*/
-	return apply_filters( 'qmn_polar_review', $return_array, $id, $question, $answers );
+	return apply_filters( 'qmn_polar_review', $return_array, $answers );
 }
