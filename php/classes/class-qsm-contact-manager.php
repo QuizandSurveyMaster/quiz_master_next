@@ -413,6 +413,8 @@ class QSM_Contact_Manager {
 				$class .= ' mlwRequiredRadio ';
 			}elseif ( 'select' === $field["type"] ) {
 				$class .= 'qsmRequiredSelect';
+			}elseif ( 'number' === $field["type"] ) {
+				$class .= 'mlwRequiredNumber';
 			}else {
 				$class .= 'mlwRequiredText qsm_required_text';
 				if ( 'checkbox' === $field["type"] ) {
@@ -552,7 +554,7 @@ class QSM_Contact_Manager {
 				?>
 					<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<?php } ?>
-				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
+				<input type='number' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
 				break;
 
@@ -567,7 +569,7 @@ class QSM_Contact_Manager {
 				/**
 				 * Add options validation
 				 */
-				if ( isset( $field['options'] ) ) {
+				if ( isset( $field['options'] ) && !empty( trim( $field['options'] ) ) ) {
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<div class='qmn_radio_answers <?php echo esc_attr( $class ); ?>'>
@@ -589,8 +591,8 @@ class QSM_Contact_Manager {
 						</div>
 						<?php
 					}
-				}
 				echo '</div>';
+			}
 				break;
 			case 'select':
 				// Filer Value
@@ -601,7 +603,7 @@ class QSM_Contact_Manager {
 					$fieldAttr .= " autocomplete='off' ";
 				}
 				// If REQUIRED is set then assigning the required class
-				if ( isset( $field['options'] ) ) {
+				if ( isset( $field['options'] ) && !empty( trim( $field['options'] ) ) ) {
 				?>
 				<span class='mlw_qmn_question qsm_question'><label for="contact_field_<?php echo esc_attr( $index ) ?>"><?php echo esc_attr( $field_label ); ?></label></span>
 				<select class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $index ); ?>' id='contact_field_<?php echo esc_attr( $index ); ?>'>
@@ -620,10 +622,8 @@ class QSM_Contact_Manager {
 						</option>
 						<?php
 					}
+				echo '</select>';
 				}
-				?>
-				</select>
-				<?php
 				break;
 			default:
 				do_action( 'qsm_extra_contact_form_field_display', $field, $quiz_options, $index,$default_value );

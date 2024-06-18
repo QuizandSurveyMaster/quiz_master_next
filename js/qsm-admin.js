@@ -4116,3 +4116,27 @@ var import_button;
     } );
 
 }(jQuery));
+
+(function ($) {
+    $(document).ready(function() {
+        var $settingsFields = $('.settings-field');
+        var $popups = $('.qsm-contact-form-field-settings');
+    
+        // Function to hide all popups
+        function hideAllPopups() {
+            $popups.hide();
+        }
+    
+        // Close popup on document click if popup is open and clicking outside
+        $(document).on('click', function(event) {
+            if (!$settingsFields.is(event.target) && $settingsFields.has(event.target).length === 0) {
+                hideAllPopups();
+            }
+        });
+    
+        // Prevent the click event from propagating to the document when clicking inside the popup
+        $popups.on('click', function(event) {
+            event.stopPropagation();
+        });
+    });    
+}(jQuery));
