@@ -4123,14 +4123,14 @@ var import_button;
         var $popups = $('.qsm-contact-form-field-settings');
     
         // Function to hide all popups
-        function hideAllPopups() {
+        function qsmHideAllPopups() {
             $popups.hide();
         }
     
         // Close popup on document click if popup is open and clicking outside
         $(document).on('click', function(event) {
             if (!$settingsFields.is(event.target) && $settingsFields.has(event.target).length === 0) {
-                hideAllPopups();
+                qsmHideAllPopups();
             }
         });
     
