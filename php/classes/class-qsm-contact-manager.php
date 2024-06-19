@@ -363,7 +363,7 @@ class QSM_Contact_Manager {
 					$allowdomains = array_filter( $allowdomains, function( $allowdomain ) {
 						/**
 						 * full domain name may not exceed a total length of 253 ASCII characters
-						 * The domain name consists of valid labels (1-63 characters of letters, digits, 
+						 * The domain name consists of valid labels (1-63 characters of letters, digits,
 						 * or hyphens) followed by a dot. The domain ends with a valid TLD
 						 * (2-63 characters of letters).
 						 */
