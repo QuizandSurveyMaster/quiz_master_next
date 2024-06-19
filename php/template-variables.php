@@ -513,22 +513,26 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	
 	$return = '';
 	if ( isset( $results['contact'] ) && ( is_array( $results['contact'] ) || is_object( $results['contact'] ) ) ) {
-		for ( $i = 0; $i < count( $results['contact'] ); $i++ ) {
-			$results_contact = $results['contact'][ $i ];
-			$options = array_filter($contact_form, function( $results_contact ) use ($label, $type) {
-				return $results_contact['label'] === $label && $results_contact['type'] === $type;
-			})['options'] ?? null;
-			if ( in_array($results['contact'][ $i ]['type'], ['radio', 'select']) && !empty(trim($options)) ) {
-				$return .= $results['contact'][ $i ]['label'] . ': ' . $results['contact'][ $i ]['value'] . '<br>';
-			} elseif ( !in_array($results['contact'][ $i ]['type'], ['radio', 'select']) ) {
-				$return .= $results['contact'][ $i ]['label'] . ': ' . $results['contact'][ $i ]['value'] . '<br>';
+		foreach ( $results['contact'] as $results_contact ) {
+			$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
+			if ( in_array($results_contact['type'], ['radio', 'select']) && !empty(trim($options)) ) {
+				$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
+			} elseif ( !in_array($results_contact['type'], ['radio', 'select']) ) {
+				$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
 			}
 		}
 	}
 	$content = str_replace( '%CONTACT_ALL%', $return, $content );
 	return $content;
 }
-
+function qsm_get_options_of_contact_fields($data, $label, $type) {
+	foreach ($data as $item) {
+	  if ($item['label'] === $label && $item['type'] === $type) {
+		return $item['options'];
+	  }
+	}
+	return null; // Option not found
+}
 /**
  * Converts the %QUESTIONS_ANSWERS% into the template
  *
