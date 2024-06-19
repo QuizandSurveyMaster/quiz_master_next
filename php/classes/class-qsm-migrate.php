@@ -123,7 +123,7 @@ class QSM_Migrate {
 		if ( ! empty( $all_quizzes ) ) {
 			foreach ( $all_quizzes as $quiz ) {
 				$quiz_id     = $quiz->quiz_id;
-				$settings    = maybe_unserialize( $quiz->quiz_settings );
+				$settings    = ! empty( $quiz->quiz_settings ) ? maybe_unserialize( $quiz->quiz_settings ) : array();
 				$pages       = isset( $settings['pages'] ) ? maybe_unserialize( $settings['pages'] ) : array();
 				$qpages      = isset( $settings['qpages'] ) ? maybe_unserialize( $settings['qpages'] ) : array();
 				if ( ! empty( $pages ) ) {
@@ -179,6 +179,7 @@ class QSM_Migrate {
 				}
 			}
 		}
+		update_option( 'fix_deleted_quiz_posts', 1 );
 	}
 
 }
