@@ -55,12 +55,12 @@ add_action( 'admin_init', 'qsm_add_author_column_in_db' );
  */
 function qsm_add_author_column_in_db() {
 	global $mlwQuizMasterNext;
-	
+
 	// return if sqlite db
 	if ( $mlwQuizMasterNext->is_sqlite_db() ) {
 		return;
 	}
-
+	
 	if ( 1 !== intval( get_option( 'qsm_update_db_column', '' ) ) ) {
 
 		global $wpdb;
@@ -84,7 +84,7 @@ function qsm_add_author_column_in_db() {
 				);
 
 				if ( empty( $table_col_obj ) ) {
-					$wpdb->query( 'ALTER TABLE ' . $table . ' ADD ' . $col_name . ' ' . $col_def );
+					$mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $table . ' ADD ' . $col_name . ' ' . $col_def );
 				}
 			}
 		}
@@ -251,7 +251,7 @@ function qsm_add_author_column_in_db() {
 
 		foreach ( $tables_to_convert as $table ) {
 			$query = "ALTER TABLE $table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
-			$result = $wpdb->query($query);
+			$result = $mlwQuizMasterNext->wpdb_alter_table_query($query);
 
 			if ( ! $result ) {
 				$success = false;
