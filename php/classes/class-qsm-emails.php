@@ -40,8 +40,8 @@ class QSM_Emails {
 		foreach ( $emails as $index => $email ) {
 
 			$email_subject = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['subject'], "quiz-email-subject-{$index}-{$response_data['quiz_id']}" );
-			
-			// kses converts ampersands to &amp; core.trac.wordpress.org/ticket/11311. 
+
+			// kses converts ampersands to &amp; core.trac.wordpress.org/ticket/11311.
 			$email_subject = str_replace( '&amp;', '&', $email_subject );
 
 			$email_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['content'], "quiz-email-content-{$index}-{$response_data['quiz_id']}" );
