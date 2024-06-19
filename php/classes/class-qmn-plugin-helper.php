@@ -1097,7 +1097,7 @@ class QMNPluginHelper {
 
 		$qsm_contact_array = $qsm_qna_array['contact'];
 		foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact ) {
-			if ( 'date' === $qsm_contact['type'] && null !== $GLOBALS['qsm_date_format'] ) {
+			if ( 'date' === $qsm_contact['type'] && '' !== $qsm_contact['value'] && null !== $GLOBALS['qsm_date_format'] ) {
 				$qsm_qna_array['contact'][ $qsm_contact_id ]['value'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime( ( $qsm_contact['value'] ) ) );
 			}
 		}

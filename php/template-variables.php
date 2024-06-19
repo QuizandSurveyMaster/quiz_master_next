@@ -508,16 +508,32 @@ function qsm_contact_field_variable( $content, $results_array ) {
  * @return string The HTML for the content
  */
 function qsm_all_contact_fields_variable( $content, $results ) {
+	global $mlwQuizMasterNext;
+	$contact_form      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' );
+	
 	$return = '';
 	if ( isset( $results['contact'] ) && ( is_array( $results['contact'] ) || is_object( $results['contact'] ) ) ) {
-		for ( $i = 0; $i < count( $results['contact'] ); $i++ ) {
-			$return .= $results['contact'][ $i ]['label'] . ': ' . $results['contact'][ $i ]['value'] . '<br>';
+		foreach ( $results['contact'] as $results_contact ) {
+			$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
+			$isRadioOrSelect = in_array($results_contact['type'], ['radio', 'select']);
+			$hasOptions = !empty(trim($options));
+
+			if (($isRadioOrSelect && $hasOptions) || !$isRadioOrSelect) {
+				$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
+			}
 		}
 	}
 	$content = str_replace( '%CONTACT_ALL%', $return, $content );
 	return $content;
 }
-
+function qsm_get_options_of_contact_fields($data, $label, $type) {
+	foreach ($data as $item) {
+	  if ($item['label'] === $label && $item['type'] === $type) {
+		return $item['options'];
+	  }
+	}
+	return null; // Option not found
+}
 /**
  * Converts the %QUESTIONS_ANSWERS% into the template
  *
@@ -1557,7 +1573,8 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$input_text       .= "</div>";
 	$question          = $input_text;
 	$question_display .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
-	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
+	$question_display = apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
+	return apply_filters( 'qmn_polar_display_result_page', $question_display, $id, $question, $answers, $answer );
 }
 
 /**
