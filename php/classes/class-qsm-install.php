@@ -2029,7 +2029,9 @@ class QSM_Install {
 			if ( ! get_option( 'fixed_duplicate_questions' ) ) {
 				QSM_Migrate::fix_duplicate_questions();
 			}
-			QSM_Migrate::fix_deleted_quiz_posts();
+			if ( ! get_option( 'fix_deleted_quiz_posts' ) ) {
+				QSM_Migrate::fix_deleted_quiz_posts();
+			}
 
 			update_option( 'mlw_quiz_master_version', $data );
 		}
