@@ -669,7 +669,7 @@ class QMNPluginHelper {
 			/**
 			 * Decode HTML Special characters.
 			 */
-			$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+			$translation_text = wp_kses_post( htmlspecialchars_decode( $translation_text, ENT_QUOTES ) );
 			$translation_slug    = sanitize_title( $translation_slug );
 			$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			if ( 'QSM Answers' === $domain && $new_text == $translation_text ) {
@@ -680,7 +680,7 @@ class QMNPluginHelper {
 				}
 				$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			}
-			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
+			$new_text            = wp_kses_post( htmlspecialchars_decode( $new_text, ENT_QUOTES ) );
 			/**
 			 * Return translation for non-default strings.
 			 */
@@ -701,7 +701,10 @@ class QMNPluginHelper {
 			if ( false !== $default_key && 0 === strcasecmp( $translation_text, $default_texts[ $default_key ] ) ) {
 				return apply_filters( 'wpml_translate_single_string', $translation_text, 'QSM Defaults', 'quiz_' . $default_key );
 			}
+		} elseif ( ! empty( $translation_text ) ) {
+			$translation_text = wp_kses_post( $translation_text );
 		}
+		
 		return $translation_text;
 	}
 
@@ -1094,7 +1097,7 @@ class QMNPluginHelper {
 
 		$qsm_contact_array = $qsm_qna_array['contact'];
 		foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact ) {
-			if ( 'date' === $qsm_contact['type'] && null !== $GLOBALS['qsm_date_format'] ) {
+			if ( 'date' === $qsm_contact['type'] && '' !== $qsm_contact['value'] && null !== $GLOBALS['qsm_date_format'] ) {
 				$qsm_qna_array['contact'][ $qsm_contact_id ]['value'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime( ( $qsm_contact['value'] ) ) );
 			}
 		}

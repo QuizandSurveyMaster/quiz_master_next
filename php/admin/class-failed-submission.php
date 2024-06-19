@@ -71,7 +71,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					'ajax'     => true,
 				)
 			);
-			$this->current_tab = ( empty( $_GET['tab'] ) || 'retrieve' == sanitize_key( $_GET['tab'] ) ) ? 'retrieve' : 'processed';
+			$this->current_tab = ( empty( $_GET['tab'] ) || 'retrieve' === sanitize_key( $_GET['tab'] ) ) ? 'retrieve' : 'processed';
 
 			// Get settings.
 			$settings = (array) get_option( 'qmn-settings' );
@@ -84,9 +84,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 		/**
 		 * Prepares the list of items for displaying.
-		 * 
+		 *
 		 *  @since 9.0.2
-		 * 
+		 *
 		 *  @return void
 		 */
 		public function prepare_items() {
@@ -119,7 +119,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					}
 
 					$data = maybe_unserialize( $data );
-					if ( ! is_array( $data ) || ( 'processed' == $this->current_tab && empty( $data['processed'] ) ) || ( 'retrieve' == $this->current_tab && ! empty( $data['processed'] ) ) || empty( $data['qmn_array_for_variables'] ) ) {
+					if ( ! is_array( $data ) || ( 'processed' === $this->current_tab && empty( $data['processed'] ) ) || ( 'retrieve' === $this->current_tab && ! empty( $data['processed'] ) ) || empty( $data['qmn_array_for_variables'] ) ) {
 						continue;
 					}
 
@@ -150,9 +150,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 		/**
 		 * Gets a list of columns.
-		 * 
+		 *
 		 * @since 9.0.2
-		 * 
+		 *
 		 * @return array columns list
 		 */
 		public function get_columns() {
@@ -178,7 +178,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Gets the list of views available on this table.
 		 *
 		 * @since 9.0.2
-		 * 
+		 *
 		 * @return array tabs link
 		 */
 		protected function get_views() {
@@ -194,7 +194,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			$view_links = array();
 
 			foreach ( $views as $view_id => $view ) {
-				$view_links[ $view_id ] = '<a href="' . esc_url( admin_url( 'admin.php?page=mlw_quiz_failed_submission&tab=' . $view_id ) ) . '" class="' . ( ( $view_id === $this->current_tab ) ? 'current' : '' ) . '" >' . esc_html( $view['label'] ) . '</a>';
+				$view_links[ $view_id ] = '<a href="' . esc_url( admin_url( 'admin.php?page=qsm-quiz-failed-submission&tab=' . $view_id ) ) . '" class="' . ( ( $view_id === $this->current_tab ) ? 'current' : '' ) . '" >' . esc_html( $view['label'] ) . '</a>';
 			}
 
 			return $view_links;
@@ -206,7 +206,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * @since 9.0.2
 		 *
 		 * @param object|array $submission The current item
-		 * 
+		 *
 		 * @return void
 		 */
 		public function single_row( $submission ) {
@@ -219,7 +219,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Gets a list of hidden columns.
 		 *
 		 * @since 9.0.2
-		 * 
+		 *
 		 * @return array hidden column name
 		 */
 		public function get_hidden_columns() {
@@ -232,8 +232,8 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Checkbox to select submissions.
 		 *
 		 * @since 9.0.2
-		 * 
-		 * @return html input checkbox 
+		 *
+		 * @return html input checkbox
 		 */
 		public function column_cb( $submission ) {
 			return sprintf(
@@ -246,8 +246,8 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Column value
 		 *
 		 * @since 9.0.2
-		 * 
-		 * @return string specific column value 
+		 *
+		 * @return string specific column value
 		 */
 		public function column_default( $submission, $column_name ) {
 			$column_value = '';
@@ -272,7 +272,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					break;
 				case 'submission_action':
 					$column_value = '<span id="action-link-' . esc_attr( $submission['post_id'] ) . '">';
-					if ( 'processed' == $this->current_tab ) {
+					if ( 'processed' === $this->current_tab ) {
 						$column_value .= '<span class="dashicons dashicons-yes-alt"></span>';
 					} else {
 						$column_value .= '<a href="#"  post-id="' . esc_attr( $submission['post_id'] ) . '" class="qmn-retrieve-failed-submission-link" >' . __( 'Resubmit', 'quiz-master-next' ) . '</a>';
@@ -290,7 +290,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Bulk action
 		 *
 		 * @since 9.0.2
-		 * 
+		 *
 		 * @return array actions
 		 */
 		public function get_bulk_actions() {
@@ -304,7 +304,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * Render page with this table
 		 *
 		 * @since 9.0.2
-		 * 
+		 *
 		 * @return HTML failed submission page
 		 */
 		public function render_list_table() {
@@ -328,7 +328,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 							$this->views(); // render bulk action and pagination
 						?>
 					</div>
-					<input type="hidden" name="qmnnonce" value="<?php echo wp_create_nonce( 'qmn_failed_submission' ); ?>" />
+					<input type="hidden" name="qmnnonce" value="<?php echo esc_attr( wp_create_nonce( 'qmn_failed_submission' ) ); ?>" />
 					<?php
 						$this->display(); // render table
 					?>

@@ -22,6 +22,9 @@ var qsmTimerInterval = [];
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					let quizID = parseInt(quiz.quiz_id);
+					if ( !qmn_quiz_data[quizID].hasOwnProperty('timer_limit') && null !== localStorage.getItem('mlw_time_quiz' + quizID) ) {
+						localStorage.removeItem('mlw_time_quiz' + quizID);
+					}
 					if ( null == localStorage.getItem('mlw_quiz_start_date' + quizID) ) {
 						localStorage.setItem('mlw_quiz_start_date' + quizID, qmn_ajax_object.start_date);
 						localStorage.setItem('mlw_time_consumed_quiz' + quizID, 1);
@@ -1046,7 +1049,12 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		container.find(".mlw_custom_next").hide();
 	}else{
 		container.find(".mlw_custom_start").hide();
-		if(total_pages != parseInt(page_number) + 2){ // check if not last page based on condition (1140)
+		let numberToAdd = 2;
+		// Fixed Missing Next Button in single question quiz created with text after quiz
+		if ( '3' == total_pages && 0 < jQuery('.quiz_end .mlw_qmn_message_end').length ) {
+			numberToAdd = 1;
+		}
+		if(total_pages != parseInt(page_number) + numberToAdd){ // check if not last page based on condition (1140)
 			container.find(".mlw_custom_next").show();
 			if (jQuery('.quiz_end').is(':visible')) {
 				container.find(".mlw_custom_next").hide();
@@ -1950,13 +1958,14 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 	}
 }
 
-jQuery(document).on( 'click', '.qsm-quiz-container', function() {
-    jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
-    jQuery(this).addClass('qsm-recently-active');
+jQuery(document).on('click', function(event) {
+	if (jQuery(event.target).closest('.qsm-quiz-container').length) {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+		jQuery(event.target).closest('.qsm-quiz-container').addClass('qsm-recently-active');
+	} else {
+		jQuery('.qsm-quiz-container').removeClass('qsm-recently-active');
+	}
 });
-if (jQuery('.qsm-quiz-container').length > 0) {
-    jQuery('body .qsm-quiz-container:first').addClass('qsm-recently-active');
-}
 
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
