@@ -3210,7 +3210,11 @@ var import_button;
                     var questionType = $('#question_type').val();
                     var answer_length = $('#answers').find('.answers-single').length;
                     var answerType = $('#change-answer-editor').val();
-                    if (answer_length > 1 && $('#question_type').val() == 13) {
+                    let isMultiPolar = {
+                        isActive: false,
+                    }
+                    jQuery(document).trigger('qsm_new_answer_button_before', [isMultiPolar, question_id]);
+                    if (answer_length > 1 && $('#question_type').val() == 13 && !isMultiPolar.isActive) {
                         alert(qsm_admin_messages.polar_options_validation);
                         return;
                     }
@@ -4112,4 +4116,28 @@ var import_button;
         });
     } );
 
+}(jQuery));
+
+(function ($) {
+    $(document).ready(function() {
+        let $settingsFields = $('.settings-field');
+        let $popups = $('.qsm-contact-form-field-settings');
+
+        // Function to hide all popups
+        function qsmHideAllPopups() {
+            $popups.hide();
+        }
+
+        // Close popup on document click if popup is open and clicking outside
+        $(document).on('click', function(event) {
+            if (!$settingsFields.is(event.target) && $settingsFields.has(event.target).length === 0) {
+                qsmHideAllPopups();
+            }
+        });
+
+        // Prevent the click event from propagating to the document when clicking inside the popup
+        $popups.on('click', function(event) {
+            event.stopPropagation();
+        });
+    });
 }(jQuery));
