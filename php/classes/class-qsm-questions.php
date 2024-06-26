@@ -487,7 +487,7 @@ class QSM_Questions {
 					$categories_names[ $tax->term_id ] = $tax->name;
 					$taxs[ $tax->parent ][]            = $tax;
 				}
-				$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+				$categories_tree = self::create_terms_tree( $taxs, isset( $taxs[0] ) ? $taxs[0] : reset( $taxs ) );
 			}
 			$categories = array(
 				'list' => $categories_names,
@@ -527,7 +527,7 @@ class QSM_Questions {
 							$categories_names[ $tax->term_id ] = $tax->name;
 							$taxs[ $tax->parent ][]            = $tax;
 						}
-						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+						$categories_tree = self::create_terms_tree( $taxs, isset( $taxs[0] ) ? $taxs[0] : reset( $taxs ) );
 
 					}
 				}
