@@ -613,6 +613,7 @@ function qsm_generate_question_option( $key, $single_option ) {
 					break;
 
 				default:
+				do_action( 'qsm_generate_question_option_after', $key, $single_option );
 				// Do nothing
 			}
 			?>
