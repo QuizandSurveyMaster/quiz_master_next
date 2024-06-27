@@ -804,55 +804,160 @@ class MLWQuizMasterNext {
 
         // List of tables and their columns
         $tables = [
-            $quiz_table_name => [
-                'quiz_id', 'quiz_name', 'message_before', 'message_after', 'message_comment', 'message_end_template',
-                'user_email_template', 'admin_email_template', 'submit_button_text', 'name_field_text', 'business_field_text',
-                'email_field_text', 'phone_field_text', 'comment_field_text', 'email_from_text', 'question_answer_template',
-                'leaderboard_template', 'quiz_system', 'randomness_order', 'loggedin_user_contact', 'show_score', 'send_user_email',
-                'send_admin_email', 'contact_info_location', 'user_name', 'user_comp', 'user_email', 'user_phone', 'admin_email',
-                'comment_section', 'question_from_total', 'total_user_tries', 'total_user_tries_text', 'certificate_template',
-                'social_media', 'social_media_text', 'pagination', 'pagination_text', 'timer_limit', 'quiz_stye', 'question_numbering',
-                'quiz_settings', 'theme_selected', 'last_activity', 'require_log_in', 'require_log_in_text', 'limit_total_entries',
-                'limit_total_entries_text', 'scheduled_timeframe', 'scheduled_timeframe_text', 'disable_answer_onselect', 'ajax_show_correct',
-                'quiz_views', 'quiz_taken', 'deleted', 'quiz_author_id'
+            $quiz_table_name                 => [
+                'quiz_id',
+				'quiz_name',
+				'message_before',
+				'message_after',
+				'message_comment',
+				'message_end_template',
+                'user_email_template',
+				'admin_email_template',
+				'submit_button_text',
+				'name_field_text',
+				'business_field_text',
+                'email_field_text',
+				'phone_field_text',
+				'comment_field_text',
+				'email_from_text',
+				'question_answer_template',
+                'leaderboard_template',
+				'quiz_system',
+				'randomness_order',
+				'loggedin_user_contact',
+				'show_score',
+				'send_user_email',
+                'send_admin_email',
+				'contact_info_location',
+				'user_name',
+				'user_comp',
+				'user_email',
+				'user_phone',
+				'admin_email',
+                'comment_section',
+				'question_from_total',
+				'total_user_tries',
+				'total_user_tries_text',
+				'certificate_template',
+                'social_media',
+				'social_media_text',
+				'pagination',
+				'pagination_text',
+				'timer_limit',
+				'quiz_stye',
+				'question_numbering',
+                'quiz_settings',
+				'theme_selected',
+				'last_activity',
+				'require_log_in',
+				'require_log_in_text',
+				'limit_total_entries',
+                'limit_total_entries_text',
+				'scheduled_timeframe',
+				'scheduled_timeframe_text',
+				'disable_answer_onselect',
+				'ajax_show_correct',
+                'quiz_views',
+				'quiz_taken',
+				'deleted',
+				'quiz_author_id',
             ],
-            $question_table_name => [
-                'question_id', 'quiz_id', 'question_name', 'answer_array', 'answer_one', 'answer_one_points', 'answer_two',
-                'answer_two_points', 'answer_three', 'answer_three_points', 'answer_four', 'answer_four_points', 'answer_five',
-                'answer_five_points', 'answer_six', 'answer_six_points', 'correct_answer', 'question_answer_info', 'comments',
-                'hints', 'question_order', 'question_type', 'question_type_new', 'question_settings', 'category', 'deleted',
-                'deleted_question_bank'
+            $question_table_name             => [
+                'question_id',
+				'quiz_id',
+				'question_name',
+				'answer_array',
+				'answer_one',
+				'answer_one_points',
+				'answer_two',
+                'answer_two_points',
+				'answer_three',
+				'answer_three_points',
+				'answer_four',
+				'answer_four_points',
+				'answer_five',
+                'answer_five_points',
+				'answer_six',
+				'answer_six_points',
+				'correct_answer',
+				'question_answer_info',
+				'comments',
+                'hints',
+				'question_order',
+				'question_type',
+				'question_type_new',
+				'question_settings',
+				'category',
+				'deleted',
+                'deleted_question_bank',
             ],
-            $results_table_name => [
-                'result_id', 'quiz_id', 'quiz_name', 'quiz_system', 'point_score', 'correct_score', 'correct', 'total', 'name',
-                'business', 'email', 'phone', 'user', 'user_ip', 'time_taken', 'time_taken_real', 'quiz_results', 'deleted',
-                'unique_id', 'form_type', 'page_name', 'page_url'
+            $results_table_name              => [
+                'result_id',
+				'quiz_id',
+				'quiz_name',
+				'quiz_system',
+				'point_score',
+				'correct_score',
+				'correct',
+				'total',
+				'name',
+                'business',
+				'email',
+				'phone',
+				'user',
+				'user_ip',
+				'time_taken',
+				'time_taken_real',
+				'quiz_results',
+				'deleted',
+                'unique_id',
+				'form_type',
+				'page_name',
+				'page_url',
             ],
-            $audit_table_name => [
-                'trail_id', 'action_user', 'action', 'quiz_id', 'quiz_name', 'form_data', 'time'
+            $audit_table_name                => [
+                'trail_id',
+				'action_user',
+				'action',
+				'quiz_id',
+				'quiz_name',
+				'form_data',
+				'time',
             ],
-            $themes_table_name => [
-                'id', 'theme', 'theme_name', 'default_settings', 'theme_active'
+            $themes_table_name               => [
+                'id',
+				'theme',
+				'theme_name',
+				'default_settings',
+				'theme_active',
             ],
             $quiz_themes_settings_table_name => [
-                'id', 'theme_id', 'quiz_id', 'quiz_theme_settings', 'active_theme'
+                'id',
+				'theme_id',
+				'quiz_id',
+				'quiz_theme_settings',
+				'active_theme',
             ],
-            $question_terms_table_name => [
-                'id', 'question_id', 'quiz_id', 'term_id', 'taxonomy'
-            ]
+            $question_terms_table_name       => [
+                'id',
+				'question_id',
+				'quiz_id',
+				'term_id',
+				'taxonomy',
+            ],
         ];
 
         // Check all tables
         $errors = [];
-        foreach ($tables as $table_name => $columns) {
+        foreach ( $tables as $table_name => $columns ) {
             $error = $this->qsm_check_table_structure($table_name, $columns);
-            if ($error) {
+            if ( $error ) {
                 $errors[] = $error;
             }
         }
 
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
+        if ( ! empty($errors) ) {
+            foreach ( $errors as $error ) {
                 echo esc_html($error) . "<br>";
             }
         } else {
@@ -869,20 +974,20 @@ class MLWQuizMasterNext {
      * @param array $expected_columns
      * @return string|null
      */
-    public function qsm_check_table_structure($table_name, $expected_columns) {
+    public function qsm_check_table_structure( $table_name, $expected_columns ) {
         global $wpdb;
         $columns = $wpdb->get_results("SHOW COLUMNS FROM $table_name");
-        if (!$columns) {
+        if ( ! $columns ) {
             return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" does not exist.", "quiz-master-next");
         }
         $existing_columns = array_column($columns, 'Field');
         $missing_columns = [];
-        foreach ($expected_columns as $column) {
-            if (!in_array($column, $existing_columns)) {
+        foreach ( $expected_columns as $column ) {
+            if ( ! in_array($column, $existing_columns, true) ) {
                 $missing_columns[] = $column;
             }
         }
-        if (!empty($missing_columns)) {
+        if ( ! empty($missing_columns) ) {
             return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" is missing columns: ", "quiz-master-next") . implode(', ', $missing_columns);
         }
         return null;
