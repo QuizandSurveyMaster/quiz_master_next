@@ -1872,7 +1872,7 @@ class QMNQuizManager {
 	 */
 	private function add_quiz_results( $data ) {
 		global $wpdb;
-		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
+		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
 		}
 
