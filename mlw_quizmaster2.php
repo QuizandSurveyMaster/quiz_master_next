@@ -348,6 +348,9 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
+		if ( empty( get_option('qsm_check_database_structure') ) || ! empty($_GET['qsm_check_database_structure']) ) {
+			add_action( 'admin_init', array( $this, 'qsm_check_database_structure' ) );
+		}
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
@@ -946,7 +949,7 @@ class MLWQuizMasterNext {
 				'taxonomy',
             ],
         ];
-
+		$response['message'] = "";
         // Check all tables
         $errors = [];
         foreach ( $tables as $table_name => $columns ) {
@@ -955,15 +958,23 @@ class MLWQuizMasterNext {
                 $errors[] = $error;
             }
         }
-
         if ( ! empty($errors) ) {
+			$response['message'] .= esc_html__("Incorrect database structure!", "quiz-master-next") . "<br/>";
             foreach ( $errors as $error ) {
-                echo esc_html($error) . "<br>";
+				$response['status'] = "error";
+                $response['message'] .= esc_html($error) . "<br>";
             }
+            update_option('qsm_check_database_structure', "error");
         } else {
-            esc_html_e("All tables have the correct structure.", "quiz-master-next");
-            update_option('qsm_check_database_structure', 1);
+            update_option('qsm_check_database_structure', "success");
+			$response['status'] = "success";
+			$response['message'] = esc_html__("All tables have the correct structure.", "quiz-master-next");
         }
+		if ( ! empty( $_GET['qsm_check_database_structure'] ) ) {
+			$this->alertManager->newAlert( $response['message'], $response['status'] );
+		}else {
+			return $response;
+		}
     }
 
     /**
