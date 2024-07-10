@@ -348,6 +348,9 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
+		if ( empty( get_option('qsm_check_database_structure') ) || ! empty($_GET['qsm_check_database_structure']) ) {
+			add_action( 'admin_init', array( $this, 'qsm_check_database_structure' ) );
+		}
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
@@ -784,6 +787,222 @@ class MLWQuizMasterNext {
 			$QmnFailedSubmissions->render_list_table();
 		}
 	}
+	/**
+     * Check database structure
+     *
+     * @since 9.0.6
+     * @return void
+     */
+    public function qsm_check_database_structure() {
+        global $wpdb;
+
+        // Define the table names
+        $quiz_table_name                 = $wpdb->prefix . 'mlw_quizzes';
+        $question_table_name             = $wpdb->prefix . 'mlw_questions';
+        $results_table_name              = $wpdb->prefix . 'mlw_results';
+        $audit_table_name                = $wpdb->prefix . 'mlw_qm_audit_trail';
+        $themes_table_name               = $wpdb->prefix . 'mlw_themes';
+        $quiz_themes_settings_table_name = $wpdb->prefix . 'mlw_quiz_theme_settings';
+        $question_terms_table_name       = $wpdb->prefix . 'mlw_question_terms';
+
+        // List of tables and their columns
+        $tables = [
+            $quiz_table_name                 => [
+                'quiz_id',
+				'quiz_name',
+				'message_before',
+				'message_after',
+				'message_comment',
+				'message_end_template',
+                'user_email_template',
+				'admin_email_template',
+				'submit_button_text',
+				'name_field_text',
+				'business_field_text',
+                'email_field_text',
+				'phone_field_text',
+				'comment_field_text',
+				'email_from_text',
+				'question_answer_template',
+                'leaderboard_template',
+				'quiz_system',
+				'randomness_order',
+				'loggedin_user_contact',
+				'show_score',
+				'send_user_email',
+                'send_admin_email',
+				'contact_info_location',
+				'user_name',
+				'user_comp',
+				'user_email',
+				'user_phone',
+				'admin_email',
+                'comment_section',
+				'question_from_total',
+				'total_user_tries',
+				'total_user_tries_text',
+				'certificate_template',
+                'social_media',
+				'social_media_text',
+				'pagination',
+				'pagination_text',
+				'timer_limit',
+				'quiz_stye',
+				'question_numbering',
+                'quiz_settings',
+				'theme_selected',
+				'last_activity',
+				'require_log_in',
+				'require_log_in_text',
+				'limit_total_entries',
+                'limit_total_entries_text',
+				'scheduled_timeframe',
+				'scheduled_timeframe_text',
+				'disable_answer_onselect',
+				'ajax_show_correct',
+                'quiz_views',
+				'quiz_taken',
+				'deleted',
+				'quiz_author_id',
+            ],
+            $question_table_name             => [
+                'question_id',
+				'quiz_id',
+				'question_name',
+				'answer_array',
+				'answer_one',
+				'answer_one_points',
+				'answer_two',
+                'answer_two_points',
+				'answer_three',
+				'answer_three_points',
+				'answer_four',
+				'answer_four_points',
+				'answer_five',
+                'answer_five_points',
+				'answer_six',
+				'answer_six_points',
+				'correct_answer',
+				'question_answer_info',
+				'comments',
+                'hints',
+				'question_order',
+				'question_type',
+				'question_type_new',
+				'question_settings',
+				'category',
+				'deleted',
+                'deleted_question_bank',
+            ],
+            $results_table_name              => [
+                'result_id',
+				'quiz_id',
+				'quiz_name',
+				'quiz_system',
+				'point_score',
+				'correct_score',
+				'correct',
+				'total',
+				'name',
+                'business',
+				'email',
+				'phone',
+				'user',
+				'user_ip',
+				'time_taken',
+				'time_taken_real',
+				'quiz_results',
+				'deleted',
+                'unique_id',
+				'form_type',
+				'page_name',
+				'page_url',
+            ],
+            $audit_table_name                => [
+                'trail_id',
+				'action_user',
+				'action',
+				'quiz_id',
+				'quiz_name',
+				'form_data',
+				'time',
+            ],
+            $themes_table_name               => [
+                'id',
+				'theme',
+				'theme_name',
+				'default_settings',
+				'theme_active',
+            ],
+            $quiz_themes_settings_table_name => [
+                'id',
+				'theme_id',
+				'quiz_id',
+				'quiz_theme_settings',
+				'active_theme',
+            ],
+            $question_terms_table_name       => [
+                'id',
+				'question_id',
+				'quiz_id',
+				'term_id',
+				'taxonomy',
+            ],
+        ];
+		$response['message'] = "";
+        // Check all tables
+        $errors = [];
+        foreach ( $tables as $table_name => $columns ) {
+            $error = $this->qsm_check_table_structure($table_name, $columns);
+            if ( $error ) {
+                $errors[] = $error;
+            }
+        }
+        if ( ! empty($errors) ) {
+			$response['message'] .= esc_html__("Incorrect database structure!", "quiz-master-next") . "<br/>";
+            foreach ( $errors as $error ) {
+				$response['status'] = "error";
+                $response['message'] .= esc_html($error) . "<br>";
+            }
+            update_option('qsm_check_database_structure', "error");
+        } else {
+            update_option('qsm_check_database_structure', "success");
+			$response['status'] = "success";
+			$response['message'] = esc_html__("All tables have the correct structure.", "quiz-master-next");
+        }
+		if ( ! empty( $_GET['qsm_check_database_structure'] ) ) {
+			$this->alertManager->newAlert( $response['message'], $response['status'] );
+		}else {
+			return $response;
+		}
+    }
+
+    /**
+     * Check if table and columns exist
+     *
+     * @since 9.0.6
+     * @param string $table_name
+     * @param array $expected_columns
+     * @return string|null
+     */
+    public function qsm_check_table_structure( $table_name, $expected_columns ) {
+        global $wpdb;
+        $columns = $wpdb->get_results("SHOW COLUMNS FROM $table_name");
+        if ( ! $columns ) {
+            return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" does not exist.", "quiz-master-next");
+        }
+        $existing_columns = array_column($columns, 'Field');
+        $missing_columns = [];
+        foreach ( $expected_columns as $column ) {
+            if ( ! in_array($column, $existing_columns, true) ) {
+                $missing_columns[] = $column;
+            }
+        }
+        if ( ! empty($missing_columns) ) {
+            return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" is missing columns: ", "quiz-master-next") . implode(', ', $missing_columns);
+        }
+        return null;
+    }
 
 	/**
 	 * Failed Database queries
