@@ -515,7 +515,7 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	if ( isset( $results['contact'] ) && ( is_array( $results['contact'] ) || is_object( $results['contact'] ) ) ) {
 		foreach ( $results['contact'] as $results_contact ) {
 			$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
-			$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ]);
+			$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
 			$hasOptions = ! empty(trim($options));
 
 			if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
@@ -528,9 +528,9 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 }
 function qsm_get_options_of_contact_fields( $data, $label, $type ) {
 	foreach ( $data as $item ) {
-	  if ( $item['label'] === $label && $item['type'] === $type ) {
-		return $item['options'];
-	  }
+	  	if ( $item['label'] === $label && $item['type'] === $type ) {
+			return $item['options'];
+	  	}
 	}
 	return null; // Option not found
 }
