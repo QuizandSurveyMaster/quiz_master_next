@@ -12,9 +12,11 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 
 == Description ==
 
+https://youtu.be/DyiCCNnDpHk?si=7nda3koRTGw7BW_J
+
 **Quiz and Survey Master** is the easiest quiz and survey maker plugin for creating quizzes, surveys, and forms on your WordPress website. Create everything from fun trivia quizzes to in-depth customer satisfaction assessments, using a user-friendly drag-and-drop interface. Go beyond basic questions with multimedia support for richer content, analyze results to gain valuable insights, and even integrate with email marketing services to capture leads. Quiz & Survey Master is a powerful tool to increase user engagement, gather valuable data, and build a stronger connection with your audience.
 
-**Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next)**
+**Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)**
 
 ### CREATE UNLIMITED QUIZZES AND QUESTIONS
 
@@ -23,6 +25,7 @@ Create without limits with QSM by crafting unlimited quizzes with endless questi
 ### DIVERSE RANGE OF QUESTIONS
 
 Create quizzes, forms, or surveys with a variety of question types tailored to your specific goals:
+
 - **Multiple Choice**: Choose one correct answer option.
 - **Multiple Response**: Select multiple correct answer options.
 - **Dropdown**: Pick one correct answer from the dropdown menu options.
@@ -37,6 +40,7 @@ Create quizzes, forms, or surveys with a variety of question types tailored to y
 - **Opt-in**: Use the checkbox selection to give permission/agree to a text.
 
 **Advanced Question Types** available in the pro plan:
+
 - **Matching Pairs**: Drag and drop answers vertically to match with the correct option.
 - **Radio Grid**: Choose one answer per row from a grid of options.
 - **Checkbox Grid**: Select multiple answers per row from a grid of options.
@@ -52,14 +56,20 @@ With the QSM plugin, effortlessly create detailed market research surveys and sh
 ### FULLY CUSTOMIZABLE
 
 Customize every aspect of your quizzes and surveys:
-- **Custom Style CSS**: Personalize the look and feel of your quizzes and surveys to match your brand and style perfectly.
-- **Custom text blocks**: Add custom text to various parts of quizzes and surveys for better communication and engagement.
-- **Button Labels**: Tailor button labels such as start, submit, or retake quiz to improve user experience and align with your quiz’s goal.
-- **Template Variables**: Use variables to generate custom messages for users and humanize their quiz experience.
+
+**Custom Style CSS**: Personalize the look and feel of your quizzes and surveys to match your brand and style perfectly.
+
+**Custom text blocks**: Add custom text to various parts of quizzes and surveys for better communication and engagement.
+
+**Button Labels**: Tailor button labels such as start, submit, or retake quiz to improve user experience and align with your quiz’s goal.
+
+**Template Variables**: Use variables to generate custom messages for users and humanize their quiz experience.
 
 ### DISPLAY SCORE-BASED CUSTOM RESULTS
 
-Create customized results based on quiz scores. Tailor multiple result pages to different score ranges, offering a unique and engaging experience for each participant.
+With the QSM plugin, you can create customized results based on quiz scores. Tailor multiple result pages to different score ranges, offering a unique and engaging experience for each participant.
+
+For example, based on a high score, display a result with a congratulatory message and additional resources, providing high-achieving participants with further learning opportunities. While for a lower score, you might display a result with encouragement and tips for improvement to help users progress.
 
 ### CUSTOM EMAIL TEMPLATES
 
@@ -92,7 +102,7 @@ Expand your customer base and nurture leads effectively with QSM’s in-built co
 - Enable comment boxes for each question
 - Enable hints for questions to assist participants.
 - Create math formulas in questions, using TeX and LaTeX notation.
-- Compatible with [WPML](https://wpml.org/) and its extensions
+- Compatible with [WPML](https://wpml.org/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm) and its extensions
 - And Much More…
 
 ### ELEVATE YOUR QUIZZES AND SURVEYS WITH QSM PRO
@@ -102,45 +112,45 @@ Advance your quiz and survey experiences with QSM Pro’s comprehensive toolkit.
 **QSM Pro’s features include:**
 
 **QSM Premium Addons**
-- [Export and Import](https://quizandsurveymaster.com/downloads/export-import/)
-- [Reporting and Analysis](https://quizandsurveymaster.com/downloads/results-analysis/)
-- [Advanced Assessment](https://quizandsurveymaster.com/downloads/advanced-assessment/)
-- [Quiz Navigator](https://quizandsurveymaster.com/downloads/quiz-navigator/)
-- [Quiz Proctor](https://quizandsurveymaster.com/downloads/quiz-proctor/)
-- [Advanced Question Types](https://quizandsurveymaster.com/downloads/advanced-question-types/)
-- [Google Sheet Connector](https://quizandsurveymaster.com/downloads/sync-with-google-sheets/)
-- [Logic](https://quizandsurveymaster.com/downloads/logic/)
-- [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/)
-- [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/)
-- [Zapier Integration](https://quizandsurveymaster.com/downloads/zapier-integration/)
+
+- [Export and Import](https://quizandsurveymaster.com/downloads/export-import/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Save time and effort by transferring your quizzes and surveys between websites using the export and import.
+- [Reporting and Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Efficiently analyze and visualize data from your surveys using various chart types and methods. Gain valuable insights to drive informed decisions.
+- [Advanced Assessment](https://quizandsurveymaster.com/downloads/advanced-assessment/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Create and analyze assessments like personality quizzes and psychometric tests with answer labels and personalized result pages.
+- [Quiz Navigator](https://quizandsurveymaster.com/downloads/quiz-navigator/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Improve user experience with an intuitive navigation bar for easy browsing through paginated quizzes and exams.
+- [Quiz Proctor](https://quizandsurveymaster.com/downloads/quiz-proctor/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Ensure virtual invigilation preventing tab switches, maintaining full-screen mode, and capturing camera snapshots.
+- [Advanced Question Types](https://quizandsurveymaster.com/downloads/advanced-question-types/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Create professional quizzes and surveys by including advanced dropdown, matching pairs, and radio grid question types.
+- [Google Sheet Connector](https://quizandsurveymaster.com/downloads/sync-with-google-sheets/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Automate the transfer of quiz and survey data directly to spreadsheets for efficient data handling.
+- [Logic](https://quizandsurveymaster.com/downloads/logic/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Adjust the quiz content for individual users by displaying questions based on their previous answers.
+- [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Show users a personalized dashboard with quiz/survey details including name, score, time taken, downloadable certificate link, and result page.
+- [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Easily gather data from your quizzes & surveys to create personalized email campaigns for data-driven marketing.
+- [Zapier Integration](https://quizandsurveymaster.com/downloads/zapier-integration/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm): Save time and optimize efficiency by automating quiz and survey results across over 700 websites and services.
 
 **QSM Themes**
-- [Fortune theme](https://themes.quizandsurveymaster.com/fortune/)
-- [Breeze theme](https://themes.quizandsurveymaster.com/breeze-qsm-theme-demo/)
-- [Pool theme](https://themes.quizandsurveymaster.com/pool-qsm-theme-demo/)
-- [Sapience theme](https://themes.quizandsurveymaster.com/sapience/)
-- [Sigma theme](https://themes.quizandsurveymaster.com/sigma/)
-- [Ivory theme](https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo/)
+
+- [Fortune theme](https://themes.quizandsurveymaster.com/fortune/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
+- [Breeze theme](https://themes.quizandsurveymaster.com/breeze-qsm-theme-demo/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
+- [Pool theme](https://themes.quizandsurveymaster.com/pool-qsm-theme-demo/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
+- [Sapience theme](https://themes.quizandsurveymaster.com/sapience/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
+- [Sigma theme](https://themes.quizandsurveymaster.com/sigma/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
+- [Ivory theme](https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)
 
 ### SUPPORT
 
-For clarity on QSM core and features, check [QSM Documentation](https://quizandsurveymaster.com/docs/). You can reach for support through our [Contact Form](https://quizandsurveymaster.com/contact-support/) or use the WordPress form for free plugin support. We're equally responsive on both platforms.
+For clarity on QSM core and features, check [QSM Documentation](https://quizandsurveymaster.com/docs/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm). You can reach for support through our [Contact Form](https://quizandsurveymaster.com/contact-support/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm) or use the WordPress form for free plugin support. We're equally responsive on both platforms.
 
 ### REACH OUT TO US
-- Join our official [FB group](https://www.facebook.com/groups/516958552587745).
-- Learn more from our tutorials on [Youtube Channel](https://www.youtube.com/@QuizAndSurveyMaster).
-- Get further insights on QSM and WordPress from our [Blogs](https://quizandsurveymaster.com/blog/).
+- Join our official [FB group](https://www.facebook.com/groups/516958552587745?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm).
+- Learn more from our tutorials on [Youtube Channel](https://www.youtube.com/@QuizAndSurveyMaster?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm).
+- Get further insights on QSM and WordPress from our [Blogs](https://quizandsurveymaster.com/blog/?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm).
 
 == Installation ==
 
 This section describes how to install the plugin and get it working.
 
-e.g.
-
-1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Use the Settings->Plugin Name screen to configure the plugin
-1. (Make your instructions match the desired user flow for activating and installing your plugin. Include any steps that might be needed for explanatory purposes)
+* Navigate to Add New Plugin page within your WordPress
+* Search for Quiz And Survey Master
+* Click Install Now link on the plugin and follow the prompts
+* Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 
