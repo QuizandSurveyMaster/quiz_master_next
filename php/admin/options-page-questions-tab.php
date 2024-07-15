@@ -433,7 +433,7 @@ function qsm_options_questions_tab_content() {
 												'1' => __( 'Yes', 'quiz-master-next' ),
 											),
 											'default'  => '0',
-											'show'     => '14' . $show_case_sensitive,
+											'show'     => '3, 5, 14' . $show_case_sensitive,
 										),
 										'limit_text'       => array(
 											'heading'  => __( 'Limit Text', 'quiz-master-next' ),

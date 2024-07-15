@@ -31,7 +31,7 @@ class QSM_Fields {
 				if ( ( isset( $_POST[ $field["id"] ] ) && 'multiple_fields' !== $field["type"] ) || 'selectinput' == $field["type"] ) {
 					switch ( $field["type"] ) {
 						case 'text':
-							$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+							$sanitized_value = esc_html( sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) );
 							break;
 
 						case 'url':

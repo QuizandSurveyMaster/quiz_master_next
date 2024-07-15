@@ -1871,9 +1871,9 @@ class QMNQuizManager {
 	 *
 	 * @return boolean results added or not
 	 */
-	private function add_quiz_results( $data ) {
+	public function add_quiz_results( $data ) {
 		global $wpdb;
-		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || empty( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
+		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
 		}
 
@@ -1884,6 +1884,9 @@ class QMNQuizManager {
 		$wpdb->suppress_errors();
 
 		try {
+			if ( empty( $data['page_name'] ) ) {
+				$data['page_name'] = url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '';
+			}
 			$res = $wpdb->insert(
 				$table_name,
 				array(
@@ -1903,11 +1906,11 @@ class QMNQuizManager {
 					'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
 					'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
 					'quiz_results'    => maybe_serialize( $data['results_array'] ),
-					'deleted'         => 0,
+					'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
 					'unique_id'       => $data['unique_id'],
 					'form_type'       => $data['form_type'],
 					'page_url'        => $data['http_referer'],
-					'page_name'       => url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '',
+					'page_name'       => sanitize_text_field( $data['page_name'] ),
 				),
 				array(
 					'%d',
