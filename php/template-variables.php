@@ -134,7 +134,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 			$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
 		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
 			$answerstr              = "";
-			if ( isset($answers['user_answer']) ) {
+			if ( isset( $answers['user_answer'] ) && is_array( $answers['user_answer'] ) ) {
 				if ( 13 === intval( $answers['question_type'] ) ) {
 					$answerstr .= $answers['points'];
 				}elseif ( 12 === intval( $answers['question_type'] ) ) {
@@ -510,15 +510,15 @@ function qsm_contact_field_variable( $content, $results_array ) {
 function qsm_all_contact_fields_variable( $content, $results ) {
 	global $mlwQuizMasterNext;
 	$contact_form      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' );
-	
+
 	$return = '';
 	if ( isset( $results['contact'] ) && ( is_array( $results['contact'] ) || is_object( $results['contact'] ) ) ) {
 		foreach ( $results['contact'] as $results_contact ) {
 			$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
-			$isRadioOrSelect = in_array($results_contact['type'], ['radio', 'select']);
-			$hasOptions = !empty(trim($options));
+			$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
+			$hasOptions = ! empty(trim($options));
 
-			if (($isRadioOrSelect && $hasOptions) || !$isRadioOrSelect) {
+			if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
 				$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
 			}
 		}
@@ -526,11 +526,11 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	$content = str_replace( '%CONTACT_ALL%', $return, $content );
 	return $content;
 }
-function qsm_get_options_of_contact_fields($data, $label, $type) {
-	foreach ($data as $item) {
-	  if ($item['label'] === $label && $item['type'] === $type) {
-		return $item['options'];
-	  }
+function qsm_get_options_of_contact_fields( $data, $label, $type ) {
+	foreach ( $data as $item ) {
+	  	if ( $item['label'] === $label && $item['type'] === $type ) {
+			return $item['options'];
+	  	}
 	}
 	return null; // Option not found
 }
