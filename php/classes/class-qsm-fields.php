@@ -235,7 +235,6 @@ class QSM_Fields {
 							<a href="javascript:void(0)" data-id="text-button" class="current quiz_text_tab_custom">
 								<?php esc_html_e( 'Buttons', 'quiz-master-next' ); ?></a>
 						</li>
-						<?php do_action( 'qsm_add_list_menu_text_other_tab' ); ?>
 						<li class="qsm-custom-label-left-menu">
 							<a href="javascript:void(0)" data-id="text-validation-messages" class="quiz_text_tab_custom">
 								<?php esc_html_e( 'Validation Messages', 'quiz-master-next' ); ?>
@@ -311,7 +310,6 @@ class QSM_Fields {
 						?>
 						</table>
 					</div>
-					<?php do_action( 'qsm_add_list_menu_content_text_other_tab', $fields, $settings ); ?>
 				</div>
 			<?php else :
 				foreach ( $fields as  $field ) {
