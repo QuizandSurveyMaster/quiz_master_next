@@ -475,17 +475,12 @@ class QSM_Install {
 							'value' => 1,
 						),
 						array(
-							'label' => __( "Progress bar based on number of question responded", 'quiz-master-next' ),
+							'label' => __( "Progress bar based on number of question responded <a id='qsm_ultimate_progress_bar'><b>(PRO)</b></a>", 'quiz-master-next' ),
 							'value' => 2,
+							'disable' => 1,
 						),
 					),
-					// 'options' => array(
-					// 	array(
-					// 		'label' => __( 'Show progress bar', 'quiz-master-next' ),
-					// 		'value' => 1,
-					// 	),
-					// ),
-					'default' => 1,
+					'default' => 0,
 				),
 				'enable_quick_result_mc'           => array(
 					'type'    => 'checkbox',

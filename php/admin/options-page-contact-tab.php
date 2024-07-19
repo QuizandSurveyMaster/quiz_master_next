@@ -147,8 +147,8 @@ function qsm_options_contact_tab_content() {
 		</table>
 	</div>
 	<?php if ( ! class_exists( 'QSM_Ultimate' ) ) : ?>
-	<div id="qsm-ultimate" class="quiz_style_tab_content" style="display:none">
-	<?php qsm_ultimate_contact_tab_upgrade_content(); ?>
+	<div id="qsm-ultimate-quiz-settings" class="quiz_style_tab_content" style="display:none">
+	<?php qsm_ultimate_addon_upgrade_content(); ?>
 	</div>
 	<?php endif; ?>
 	<div class="contact-page-tab-footer">
@@ -289,20 +289,4 @@ function qsm_options_contact_tab_template() {
 		</div>
 	</script>
 	<?php
-}
-
-function qsm_ultimate_contact_tab_upgrade_content() {
-	$args = array(
-		"id"           => 'ultimate-contact',
-		"title"        => __( 'QSM Ultimate Addon', 'quiz-master-next' ),
-		"description"  => __( 'Enhance exam fairness using QSM Ultimate Addon: Capture images, monitor tab shifts, and prevent cheating by restricting copy/paste within the quiz. Ensure focus and equity with full-screen mode.', 'quiz-master-next' ),
-		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
-		"warning"      => __( 'Missing Feature - QSM Ultimate Add-on required', 'quiz-master-next' ),
-		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Proctoring Quiz Addon separately.', 'quiz-master-next' ),
-		"buy_btn_text" => __( 'Buy QSM Ultimate Addon', 'quiz-master-next' ),
-		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
-		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
-		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
-	);
-	qsm_admin_upgrade_content( $args, 'page' );
 }

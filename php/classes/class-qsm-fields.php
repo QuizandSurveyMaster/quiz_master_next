@@ -124,6 +124,21 @@ class QSM_Fields {
 			<?php wp_nonce_field( 'save_settings','save_settings_nonce' );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 			if ( 'options' === $current_tab ) :
+				if ( ! class_exists( 'QSM_Ultimate' ) ) {
+					$args = array(
+						"id"           => 'qsm-ultimate-upgrade',
+						"title"        => __( 'QSM Ultimate Addon', 'quiz-master-next' ),
+						"description"  => __( 'Enjoy features like adding "other" options, bulk answer input, question-based progress bars, automatic page navigation, and showing detailed results after collecting contact details. Customize buttons, progress bar placement, and colors schemes and more with QSM Ultimate addon', 'quiz-master-next' ),
+						"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/ultimate_upgrade.png',
+						"warning"      => __( 'Missing Feature - QSM Ultimate Add-on required', 'quiz-master-next' ),
+						"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy QSM Ultimate Addon separately.', 'quiz-master-next' ),
+						"buy_btn_text" => __( 'Buy QSM Ultimate Addon', 'quiz-master-next' ),
+						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
+						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
+						"addon_link"   => qsm_get_plugin_link( 'downloads/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
+					);
+					qsm_admin_upgrade_popup( $args );
+				}
 			?>
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
@@ -135,9 +150,6 @@ class QSM_Fields {
 						</li>
 						<li>
 							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
 							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
@@ -185,23 +197,6 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 							// Generate the field
 							if ( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ) {
-								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
-									QSM_Fields::generate_field( $field, $settings );
-								}else {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
-							}
-						}
-						?>
-					</table>
-				</div>
-				<div id="contact_form" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ) {
 								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
 									QSM_Fields::generate_field( $field, $settings );
 								}else {
@@ -409,9 +404,10 @@ class QSM_Fields {
 								break;
 							case 'radio':
 								foreach ( $field["options"] as $option ) {
+									$isDisabled = isset( $option["disable"] ) && $option["disable"] == 1 ? ' disabled ' : '';
 									?>
 									<label class="qsm-option-label" for="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>">
-										<input type="radio" id="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
+										<input type="radio" id="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $isDisabled ); ?> <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
 										<?php
 										$allowed_tags = wp_kses_allowed_html('post');
 										$allowed_tags['input'] = array(

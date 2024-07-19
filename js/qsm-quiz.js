@@ -307,7 +307,7 @@ var qsmTimerInterval = [];
 				if ($quizForm.find('.qsm-pagination > .current_page_hidden').length == 0) {
 					$quizForm.find('.qsm-pagination').append('<input type="hidden" value="0" name="current_page" class="current_page_hidden" />');
 				}
-				if ('1' == qmn_quiz_data[quizID].progress_bar) {
+				if ('0' != qmn_quiz_data[quizID].progress_bar) {
 					jQuery(document).trigger('qsm_init_progressbar_before', [quizID, qmn_quiz_data]);
 					$('#quizForm' + quizID).find('.qsm-progress-bar').show();
 					qmn_quiz_data[quizID].bar = new ProgressBar.Line('#quizForm' + quizID + ' .qsm-progress-bar', {
@@ -432,7 +432,7 @@ var qsmTimerInterval = [];
 					$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();
 				}
 			}
-			if ('1' == qmn_quiz_data[quizID].progress_bar) {
+			if ('0' != qmn_quiz_data[quizID].progress_bar) {
 				var current_page = jQuery('#quizForm' + quizID).find('.current_page_hidden').val();
 				var total_page_length = $pages.length - 1;
 				if (qmn_quiz_data[quizID].contact_info_location == 0) {
@@ -1212,7 +1212,7 @@ function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
  * @returns Change progress bar on next and previous button click
  */
 function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
-	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
+	if ('0' != qmn_quiz_data[quiz_id].progress_bar) {
 		if ( ( !qmn_quiz_data[quiz_id].hasOwnProperty('first_page') || !qmn_quiz_data[quiz_id].first_page ) && 0 == page_number ) {
 			page_number++;
 		}
@@ -1272,7 +1272,7 @@ function qmnInitPagination(quiz_id) {
 		.append('<input type="submit" value="' + qmn_quiz_data[quiz_id].pagination.submit_quiz_text + '" class="qsm-btn qsm-submit-btn qmn_btn" style="display:none;"/>')
 		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
 
-	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
+	if ('0' != qmn_quiz_data[quiz_id].progress_bar) {
 		jQuery(document).trigger('qsm_init_progressbar_before', [quiz_id, qmn_quiz_data]);
 		jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container').find('.qsm-progress-bar').show();
 		qmn_quiz_data[quiz_id].bar = new ProgressBar.Line('#qsm_progress_bar_' + quiz_id, {
