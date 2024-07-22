@@ -596,13 +596,28 @@ function isValidDomains(email, domains) {
 	if (0 == domains.length) {
 		return true;
 	}
-	for (var i = 0; i < domains.length; i++) {
+	for (let i = 0; i < domains.length; i++) {
 		if (email.indexOf(domains[i]) != -1) {
 			return true;
 		}
 	}
 	return false;
 }
+function isBlockedDomain(email, blockdomains) {
+    if (typeof blockdomains === 'undefined') {
+        return false;
+    }
+    if (blockdomains.length === 0) {
+        return false;
+    }
+    for (let i = 0; i < blockdomains.length; i++) {
+        if (email.indexOf(blockdomains[i]) !== -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * Validates a URL.
  *
@@ -728,6 +743,16 @@ function qmnValidation(element, quiz_form_id) {
 				var domains = jQuery(this).attr('data-domains');
 				if ('undefined' != typeof domains) {
 					if (!isValidDomains(x, domains.split(","))) {
+						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
+						show_result_validation = false;
+					}
+				}
+				/**
+				 * Validate email from blocked domains.
+				 */
+				let blockdomains = jQuery(this).attr('data-blockdomains');
+				if (typeof blockdomains !== 'undefined') {
+					if (isBlockedDomain(x, blockdomains.split(","))) {
 						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
 						show_result_validation = false;
 					}

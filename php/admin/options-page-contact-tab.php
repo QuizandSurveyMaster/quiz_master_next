@@ -200,6 +200,11 @@ function qsm_options_contact_tab_template() {
 					<em><?php esc_html_e('Leave blank to allow all domains. ', 'quiz-master-next');?></em><br/>
 					<em><?php esc_html_e('Comma separated list of domains. (i.e. example.com,abc.com)', 'quiz-master-next');?></em>
 				</div>
+				<div class="qsm-contact-form-group qsm-email-option">
+					<label class="qsm-contact-form-label"><?php esc_html_e('Block Domains', 'quiz-master-next');?></label>
+					<textarea class="qsm-contact-form-control" name="blockdomains">{{data.blockdomains}}</textarea>
+					<em><?php esc_html_e('Comma separated list of domains. (i.e. example.com,abc.com)', 'quiz-master-next');?></em>
+				</div>
 			</div>
 		</div>
 	</script>
