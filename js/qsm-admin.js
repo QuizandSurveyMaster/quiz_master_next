@@ -3796,6 +3796,9 @@ var import_button;
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
                 addResultsPage: function (conditions, page, redirect, default_mark = false) {
+                    const parser = new DOMParser();
+                    let parseRedirect = parser.parseFromString(redirect, 'text/html');
+                    redirect = parseRedirect.documentElement.textContent;
                     QSMAdminResults.total += 1;
                     var template = wp.template('results-page');
                     $('#results-pages').append(template({ id: QSMAdminResults.total, page: page, redirect: redirect, default_mark: default_mark }));
