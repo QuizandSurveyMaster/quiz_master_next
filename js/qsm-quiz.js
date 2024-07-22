@@ -1995,7 +1995,12 @@ jQuery(document).on('click', function(event) {
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_start', event);
-
+		if (jQuery(event.target).is('input')) {
+			// Check if the parent div has the class 'qsm_contact_div'
+			if (jQuery(event.target).closest('div.qsm_contact_div').length > 0) {
+				return;
+			}
+		}
         if ([39, 37, 13, 9].includes(event.keyCode)) {
             event.preventDefault();
         }
@@ -2051,7 +2056,7 @@ jQuery(document).keydown(function(event) {
                 jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
                 active_question.next('.qsm-question-wrapper:visible').addClass("qsm-active-question");
             } else {
-                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question");
+                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first").addClass("qsm-active-question");
             }
         }
         if (event.keyCode === 9) {
