@@ -596,7 +596,7 @@ function isValidDomains(email, domains) {
 	if (0 == domains.length) {
 		return true;
 	}
-	for (var i = 0; i < domains.length; i++) {
+	for (let i = 0; i < domains.length; i++) {
 		if (email.indexOf(domains[i]) != -1) {
 			return true;
 		}
@@ -610,7 +610,7 @@ function isBlockedDomain(email, blockdomains) {
     if (blockdomains.length === 0) {
         return false;
     }
-    for (var i = 0; i < blockdomains.length; i++) {
+    for (let i = 0; i < blockdomains.length; i++) {
         if (email.indexOf(blockdomains[i]) !== -1) {
             return true;
         }
@@ -750,7 +750,7 @@ function qmnValidation(element, quiz_form_id) {
 				/**
 				 * Validate email from blocked domains.
 				 */
-				var blockdomains = jQuery(this).attr('data-blockdomains');
+				let blockdomains = jQuery(this).attr('data-blockdomains');
 				if (typeof blockdomains !== 'undefined') {
 					if (isBlockedDomain(x, blockdomains.split(","))) {
 						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
