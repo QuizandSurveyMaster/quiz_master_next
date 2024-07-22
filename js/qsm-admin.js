@@ -3797,7 +3797,7 @@ var import_button;
                 },
                 addResultsPage: function (conditions, page, redirect, default_mark = false) {
                     const parser = new DOMParser();
-                    parseRedirect = parser.parseFromString(redirect, 'text/html');
+                    let parseRedirect = parser.parseFromString(redirect, 'text/html');
                     redirect = parseRedirect.documentElement.textContent;
                     QSMAdminResults.total += 1;
                     var template = wp.template('results-page');
