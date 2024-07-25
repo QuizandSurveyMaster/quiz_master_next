@@ -2760,7 +2760,7 @@ var import_button;
                     if ('image' === answerEditor) {
                         $('#image_size_area').show();
                     }
-
+                    qsmConvertToHtmlSpecialChars(CurrentElement);
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
                 openEditPagePopup: function (pageID) {
@@ -3796,6 +3796,9 @@ var import_button;
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
                 addResultsPage: function (conditions, page, redirect, default_mark = false) {
+                    const parser = new DOMParser();
+                    let parseRedirect = parser.parseFromString(redirect, 'text/html');
+                    redirect = parseRedirect.documentElement.textContent;
                     QSMAdminResults.total += 1;
                     var template = wp.template('results-page');
                     $('#results-pages').append(template({ id: QSMAdminResults.total, page: page, redirect: redirect, default_mark: default_mark }));
@@ -4140,3 +4143,21 @@ var import_button;
         });
     });
 }(jQuery));
+
+function qsmConvertToHtmlSpecialChars(CurrentElement) {
+    console.log(CurrentElement)
+    let answerOptions = jQuery(document).find('.questionElements .answers-single .answer-text');
+    // Iterate over each input element in answerOptions
+    answerOptions.each(function() {
+        let originalValue = jQuery(this).val(); // Get the value of the input element
+        let convertedValue = qsmEscapeHtml(originalValue); // Convert the content
+        jQuery(this).val(convertedValue); // Set the modified value back to the input element
+    });
+}
+// Function to escape HTML special characters
+function qsmEscapeHtml(text) {
+    return text.replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+}
