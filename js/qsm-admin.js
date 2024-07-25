@@ -2760,7 +2760,7 @@ var import_button;
                     if ('image' === answerEditor) {
                         $('#image_size_area').show();
                     }
-
+                    qsmConvertToHtmlSpecialChars(CurrentElement);
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
                 openEditPagePopup: function (pageID) {
@@ -4143,3 +4143,21 @@ var import_button;
         });
     });
 }(jQuery));
+
+function qsmConvertToHtmlSpecialChars(CurrentElement) {
+    console.log(CurrentElement)
+    let answerOptions = jQuery(document).find('.questionElements .answers-single .answer-text');
+    // Iterate over each input element in answerOptions
+    answerOptions.each(function() {
+        let originalValue = jQuery(this).val(); // Get the value of the input element
+        let convertedValue = qsmEscapeHtml(originalValue); // Convert the content
+        jQuery(this).val(convertedValue); // Set the modified value back to the input element
+    });
+}
+// Function to escape HTML special characters
+function qsmEscapeHtml(text) {
+    return text.replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+}
