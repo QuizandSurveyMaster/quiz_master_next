@@ -596,13 +596,28 @@ function isValidDomains(email, domains) {
 	if (0 == domains.length) {
 		return true;
 	}
-	for (var i = 0; i < domains.length; i++) {
+	for (let i = 0; i < domains.length; i++) {
 		if (email.indexOf(domains[i]) != -1) {
 			return true;
 		}
 	}
 	return false;
 }
+function isBlockedDomain(email, blockdomains) {
+    if (typeof blockdomains === 'undefined') {
+        return false;
+    }
+    if (blockdomains.length === 0) {
+        return false;
+    }
+    for (let i = 0; i < blockdomains.length; i++) {
+        if (email.indexOf(blockdomains[i]) !== -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * Validates a URL.
  *
@@ -728,6 +743,16 @@ function qmnValidation(element, quiz_form_id) {
 				var domains = jQuery(this).attr('data-domains');
 				if ('undefined' != typeof domains) {
 					if (!isValidDomains(x, domains.split(","))) {
+						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
+						show_result_validation = false;
+					}
+				}
+				/**
+				 * Validate email from blocked domains.
+				 */
+				let blockdomains = jQuery(this).attr('data-blockdomains');
+				if (typeof blockdomains !== 'undefined') {
+					if (isBlockedDomain(x, blockdomains.split(","))) {
 						qmnDisplayError(error_messages.email_error_text, jQuery(this), quiz_form_id);
 						show_result_validation = false;
 					}
@@ -1978,7 +2003,12 @@ jQuery(document).on('click', function(event) {
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_start', event);
-
+		if (jQuery(event.target).is('input')) {
+			// Check if the parent div has the class 'qsm_contact_div'
+			if (jQuery(event.target).closest('div.qsm_contact_div').length > 0) {
+				return;
+			}
+		}
         if ([39, 37, 13, 9].includes(event.keyCode)) {
             event.preventDefault();
         }
@@ -2034,7 +2064,7 @@ jQuery(document).keydown(function(event) {
                 jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
                 active_question.next('.qsm-question-wrapper:visible').addClass("qsm-active-question");
             } else {
-                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question");
+                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first").addClass("qsm-active-question");
             }
         }
         if (event.keyCode === 9) {
