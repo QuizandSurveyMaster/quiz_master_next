@@ -176,7 +176,6 @@ function qsm_generate_featured_addons() {
 								<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
 								<a href="<?php echo esc_url( $bundle_link ); ?>" target="_blank" class="custom-addon-getnow button button-primary addon-bundle-btn qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>" rel="noopener">
 									<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>
-									$<?php echo esc_html( array_values( $bundles_arr['price'] )[0] ); ?>
 									<span class="dashicons dashicons-arrow-right-alt2"></span>
 								</a>
 							</div>
