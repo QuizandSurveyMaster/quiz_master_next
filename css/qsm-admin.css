@@ -3081,6 +3081,8 @@ input#duplicate_questions {
 }
 .qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-icon img{
 	height: 35px;
+	width: 35px;
+	object-fit: contain;
 }
 .custom-add-upper li a.current {
 	outline: none;
@@ -3090,12 +3092,15 @@ input#duplicate_questions {
 	border: none;
 }
 .qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-0{
-	background-color: #01B592;
+	background-color: #3B9A7A;
 }
 .qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-1{
-	background-color: #EC706F;
+	background-color: #01B592;
 }
 .qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-2{
+	background-color: #EC706F;
+}
+.qsm-primary-acnhor .qsm-bundles-widget .qsm-bundles-dynamic-3{
 	background-color: #2270B1;
 }
 .custom-addon-sub-div .custom-addon-details {
