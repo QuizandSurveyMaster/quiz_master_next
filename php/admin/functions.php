@@ -1319,7 +1319,7 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
     }
     foreach ( $array as $key => $value ) {
         if ( is_array( $value ) ) {
-            $array[ $key ] = qsm_sanitize_rec_array( $value, $allowhtml );
+            $array[ $key ] = qsm_sanitize_rec_array( $value, $textarea );
         } else {
 			$array[ $key ] = $textarea ? sanitize_textarea_field( $value ) : sanitize_text_field( $value );
         }
