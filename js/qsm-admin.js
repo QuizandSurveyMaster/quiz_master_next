@@ -2883,32 +2883,41 @@ var import_button;
                     $(this).parents('.question').next('.questionElements').slideUp('slow');
                     MicroModal.show('modal-10');
                     $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
-                    $("#changed_question_position, #current_question_position").val($(this).parents('.question').index() - 1);
+                    $("#changed_question_position, #current_question_position").val($(this).closest('.question').index() - 2 );
                     $("#current_question_id, #current_question_id").val($(this).parents('.question').data("question-id"));
                 });
 
                 //  Confirm move question button
                 $("#move-question-button").on('click', function (e) {
+                    e.preventDefault();
                     $(this).prop("disabled", true);
                     $("#move-question-error").html("");
-                    if ( 0 < $("#changed_question_position").val() && 0 < $("#changed_question_page_no").val()) {
-                        new_page_section = $(".qsm_tab_content .page").eq( $("#changed_question_page_no").val() - 1 );
-                        if ( 0 != new_page_section.length) {
-                            new_element = new_page_section.find(".question").eq($("#changed_question_position").val() - 1);
-                            current_page_section = $(".qsm_tab_content .page").eq( $("#current_question_page_no").val() - 1 );
-                            current_element = current_page_section.find(".question").eq($("#current_question_position").val() - 1);
-                            if ( 0 == new_element.length ) {
-                                new_page_section.append(current_element.clone());
-                            } else if ( 1 == $("#current_question_position").val() && $("#changed_question_page_no").val() == $("#current_question_page_no").val() ) {
-                                    new_element.after(current_element.clone());
+
+                    let changedQuestionPosition = $("#changed_question_position").val();
+                    let changedQuestionPageNo = $("#changed_question_page_no").val();
+                    let currentQuestionPosition = $("#current_question_position").val();
+                    let currentQuestionPageNo = $("#current_question_page_no").val();
+
+                    if (changedQuestionPosition > 0 && changedQuestionPageNo > 0) {
+                        let newPageSection = $(".qsm_tab_content .page").eq(changedQuestionPageNo - 1);
+                        if (newPageSection.length > 0) {
+                            let newElement = newPageSection.find(".question").eq(changedQuestionPosition - 1);
+                            let currentPageSection = $(".qsm_tab_content .page").eq(currentQuestionPageNo - 1);
+                            let currentElement = currentPageSection.find(".question").eq(currentQuestionPosition - 1);
+                            if (newElement.length === 0) {
+                                newPageSection.append(currentElement.clone());
+                            } else if (currentQuestionPosition == 1 && changedQuestionPageNo == currentQuestionPageNo) {
+                                newElement.after(currentElement.clone());
                             } else {
-                                new_element.before(current_element.clone());
+                                newElement.before(currentElement.clone());
                             }
-                            current_element.remove();
-                            let question_id = $("#current_question_id").val();
-                            let parent_page = $("#changed_question_page_no").val();
-                            let model = QSMQuestion.questions.get(question_id);
-                            model.set('page', parent_page-1);
+
+                            currentElement.remove();
+
+                            let questionId = $("#current_question_id").val();
+                            let parentPage = $("#changed_question_page_no").val();
+                            let model = QSMQuestion.questions.get(questionId);
+                            model.set('page', parentPage - 1);
                             QSMQuestion.savePages();
                             clear_move_form_values();
                         } else {
@@ -2917,11 +2926,13 @@ var import_button;
                     } else {
                         $("#move-question-error").html("Please enter positive numbers.");
                     }
+
                     setTimeout(function () {
                         $("#move-question-error").html("");
+                        $("#move-question-button").prop("disabled", false);
                     }, 3000);
-                    $(this).prop("disabled", false);
                 });
+
 
                 //  Cancel move question button
                 $("#cancel-question-button").on('click', function () {
@@ -3796,6 +3807,9 @@ var import_button;
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
                 addResultsPage: function (conditions, page, redirect, default_mark = false) {
+                    const parser = new DOMParser();
+                    let parseRedirect = parser.parseFromString(redirect, 'text/html');
+                    redirect = parseRedirect.documentElement.textContent;
                     QSMAdminResults.total += 1;
                     var template = wp.template('results-page');
                     $('#results-pages').append(template({ id: QSMAdminResults.total, page: page, redirect: redirect, default_mark: default_mark }));

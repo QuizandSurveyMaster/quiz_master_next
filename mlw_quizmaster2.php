@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.1.0
+ * Version: 9.1.1
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.1.0';
+	public $version = '9.1.1';
 
 	/**
 	 * QSM Alert Manager Object
@@ -485,10 +485,14 @@ class MLWQuizMasterNext {
 		$qsm_variables_name = array();
 		foreach ( $qsm_variables as $key => $value ) {
 			// Iterate over each key of the nested object
-			foreach ( $value as $nestedKey => $nestedValue ) {
+			if( is_array( $value ) && !empty($value)) {
+				
+				foreach ( $value as $nestedKey => $nestedValue ) {
 				// Add the nested key to the array
 				$qsm_variables_name[] = $nestedKey;
+			    }	
 			}
+			
 		}
 		$qsm_admin_messages = array(
 			'error'                      => __('Error', 'quiz-master-next'),

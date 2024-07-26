@@ -372,6 +372,18 @@ class QSM_Contact_Manager {
 
 					$fields[ $i ]['allowdomains'] = implode( ',', $allowdomains );
 				}
+				// Validate blocked domains
+				if ( ! empty( $fields[ $i ]['blockdomains'] ) ) {
+					$blockdomains = explode( ',', $fields[ $i ]['blockdomains'] );
+					// Trim domains
+					$blockdomains = array_map( 'trim', $blockdomains );
+					// Filter domain
+					$blockdomains = array_filter( $blockdomains, function( $blockdomain ) {
+						return preg_match( '/^([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/', $blockdomain ) && ( strlen( $blockdomain ) <= 253 );
+					} );
+
+					$fields[ $i ]['blockdomains'] = implode( ',', $blockdomains );
+				}
 				if ( ! empty( $fields[ $i ]['options'] ) ) {
 					$options = sanitize_text_field( wp_unslash( $fields[ $i ]['options'] ) );
 					$fields[ $i ]['options']  = $options;
@@ -475,6 +487,11 @@ class QSM_Contact_Manager {
 				if ( isset( $field['allowdomains'] ) && ! empty( $field['allowdomains'] ) ) {
 					$allowdomains    = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
 					$fieldAttr       .= " data-domains='" . implode( ',', array_filter( $allowdomains ) ) . "' ";
+				}
+				// Add code to block specific domains
+				if ( isset( $field['blockdomains'] ) && ! empty( $field['blockdomains'] ) ) {
+					$blockdomains = array_map( 'trim', explode( ',', $field['blockdomains'] ) );
+					$fieldAttr   .= " data-blockdomains='" . implode( ',', array_filter( $blockdomains ) ) . "' ";
 				}
 				$class       = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
 				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_placeholder ) ) . "' ";

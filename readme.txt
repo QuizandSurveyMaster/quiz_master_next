@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 9.1.0
+Stable tag: 9.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,14 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 18. Database
 
 == Changelog ==
+= 9.1.1 ( July 26, 2024 ) =
+* Feature: Added option to blacklist email domains in contact form
+* Bug: Fixed vulnerability with redirect result URL
+* Bug: Fixed issue with question sorting
+* Enhancement: Improved quiz navigation with keyboard
+* Enhancement: Checked compatibility with WordPress 6.6 and PHP 8.3
+
+
 = 9.1.0 ( July 11, 2024 ) =
 * Feature: Added case-sensitive option to paragraph and short answers question types
 * Bug: Fixed vulnerability with quiz settings
