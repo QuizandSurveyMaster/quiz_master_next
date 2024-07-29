@@ -1089,6 +1089,7 @@ class QMNGlobalSettingsPage {
 		$qsm_send_email = ( isset( $globalQuizsetting['send_email'] ) && '' !== $globalQuizsetting['send_email'] ? $globalQuizsetting['send_email'] : '' );
 		?>
 		<fieldset class="buttonset buttonset-hide">
+			<input type="hidden" name="qsm-quiz-settings[store_responses]"  value="0">
 			<label for="store_responses">
 				<input type="checkbox" id="store_responses" name="qsm-quiz-settings[store_responses]"  value="1" <?php checked( $qsm_store_responses, 1 ); ?>>
 				<?php esc_html_e('Store results permanently in database', 'quiz-master-next'); ?>
