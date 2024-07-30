@@ -763,7 +763,7 @@ class QMNGlobalSettingsPage {
 		?>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="form-type">
 			<label class="qsm-option-label" for="qsm-form-type-0">
-				<input type="radio" id="qsm-form-type-0" name="qsm-quiz-settings[form_type]" checked="checked" value="0" <?php checked( $qsm_form_type, 0 ); ?>>
+				<input type="radio" id="qsm-form-type-0" name="qsm-quiz-settings[form_type]" value="0" <?php checked( $qsm_form_type, 0 ); ?>>
 				<?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?>
 			</label>
 			<label class="qsm-option-label" for="qsm-form-type-1">
@@ -1057,7 +1057,7 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_total_user_tries = ( isset( $globalQuizsetting['total_user_tries'] ) && '' !== $globalQuizsetting['total_user_tries'] ? $globalQuizsetting['total_user_tries'] : 0 );
 		$qsm_limit_total_entries = ( isset( $globalQuizsetting['limit_total_entries'] ) && '' !== $globalQuizsetting['limit_total_entries'] ? $globalQuizsetting['limit_total_entries'] : 0 );
-		$qsm_enable_retake_quiz_button = ( isset( $globalQuizsetting['enable_retake_quiz_button'] ) && '' !== $globalQuizsetting['enable_retake_quiz_button'] ? $globalQuizsetting['enable_retake_quiz_button'] : '0' );
+		$qsm_enable_retake_quiz_button = ( isset( $globalQuizsetting['enable_retake_quiz_button'] ) && '' !== $globalQuizsetting['enable_retake_quiz_button'] ? $globalQuizsetting['enable_retake_quiz_button'] : 0 );
 		?>
 		<fieldset class="buttonset buttonset-hide">
 			<input class="small-text" id="qsm-global-setting-total-user-tries" type="number" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[total_user_tries]" value="<?php echo esc_attr( $qsm_total_user_tries ); ?>">
@@ -1070,8 +1070,9 @@ class QMNGlobalSettingsPage {
 			<label class="qsm-opt-desc" for="qsm-global-setting-total-limit-entries"><?php esc_html_e( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next'); ?></label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide">
+			<input type="hidden" name="qsm-quiz-settings[enable_retake_quiz_button]"  value="0">
 			<label class="qsm-option-label" for="qsm-enable-retake-quiz-button">
-				<input type="checkbox" id="qsm-enable-retake-quiz-button" name="qsm-quiz-settings[enable_retake_quiz_button]" checked="checked" value="1" <?php checked( $qsm_enable_retake_quiz_button, 1 ); ?>>
+				<input type="checkbox" id="qsm-enable-retake-quiz-button" name="qsm-quiz-settings[enable_retake_quiz_button]" value="1" <?php checked( $qsm_enable_retake_quiz_button, 1 ); ?>>
 				<?php esc_html_e( 'Allow users to retake the quiz', 'quiz-master-next'); ?>
 			</label>
 		</fieldset>
