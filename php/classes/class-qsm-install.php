@@ -465,7 +465,7 @@ class QSM_Install {
 			'fields'          => array(
 				'progress_bar'                     => array(
 					'type'    => 'radio',
-					'options'     => array(
+					'options' => array(
 						array(
 							'label' => __( "Disable", 'quiz-master-next' ),
 							'value' => 0,
@@ -475,8 +475,8 @@ class QSM_Install {
 							'value' => 1,
 						),
 						array(
-							'label' => __( "Progress bar based on number of question responded <a id='qsm_ultimate_progress_bar'><b>(PRO)</b></a>", 'quiz-master-next' ),
-							'value' => 2,
+							'label'   => __( "Progress bar based on number of question responded <a id='qsm_ultimate_progress_bar'><b>(PRO)</b></a>", 'quiz-master-next' ),
+							'value'   => 2,
 							'disable' => 1,
 						),
 					),
