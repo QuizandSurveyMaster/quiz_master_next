@@ -67,7 +67,7 @@ function qsm_options_contact_tab_content() {
 	<div id="contact_form_option" class="quiz_style_tab_content" style="display:none">
 		<table id="contactformsettings" class="form-table" style="width: 100%;">
 			<tbody>
-				<tr valign="top" class="">
+				<tr valign="top">
 					<th scope="row" class="qsm-opt-tr">
 						<label for="contact_info_location"><?php esc_html_e( 'Contact form position', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -88,7 +88,7 @@ function qsm_options_contact_tab_content() {
 						<span class="qsm-opt-desc"><?php esc_html_e( 'Select where to display the contact form', 'quiz-master-next' ); ?></span>
 					</td>
 				</tr>
-				<tr valign="top" class="">
+				<tr valign="top">
 					<th scope="row" class="qsm-opt-tr">
 						<label for="loggedin_user_contact"><?php esc_html_e( 'Show contact form to logged in users', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -109,7 +109,7 @@ function qsm_options_contact_tab_content() {
 						<span class="qsm-opt-desc"><?php esc_html_e( 'Logged in users can edit their contact information', 'quiz-master-next' ); ?></span>
 					</td>
 				</tr>
-				<tr valign="top" class="">
+				<tr valign="top">
 					<th scope="row" class="qsm-opt-tr">
 						<label for="contact_disable_autofill"><?php esc_html_e( 'Disable auto fill for contact input', 'quiz-master-next' ); ?></label>
 					</th>
@@ -126,7 +126,7 @@ function qsm_options_contact_tab_content() {
 						</fieldset>
 					</td>
 				</tr>
-				<tr valign="top" class="">
+				<tr valign="top">
 					<th scope="row" class="qsm-opt-tr">
 						<label for="disable_first_page"><?php esc_html_e( 'Disable first page on quiz', 'quiz-master-next' ); ?></label>
 					</th>
