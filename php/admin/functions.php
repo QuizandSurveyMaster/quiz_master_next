@@ -613,6 +613,7 @@ function qsm_generate_question_option( $key, $single_option ) {
 					break;
 
 				default:
+				do_action( 'qsm_generate_question_option_after', $key, $single_option );
 				// Do nothing
 			}
 			?>
@@ -1648,6 +1649,21 @@ function qsm_advanced_assessment_quiz_page_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+	);
+	qsm_admin_upgrade_content( $args, 'page' );
+}
+function qsm_ultimate_addon_upgrade_content() {
+	$args = array(
+		"id"           => 'qsm-ultimate-upgrade',
+		"title"        => __( 'QSM Ultimate Addon', 'quiz-master-next' ),
+		"description"  => __( 'Enjoy features like adding "other" options, bulk answer input, question-based progress bars, automatic page navigation, and showing detailed results after collecting contact details. Customize buttons, progress bar placement, and colors schemes and more with QSM Ultimate addon', 'quiz-master-next' ),
+		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/ultimate_upgrade.png',
+		"warning"      => __( 'Missing Feature - QSM Ultimate Add-on required', 'quiz-master-next' ),
+		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy QSM Ultimate Addon separately.', 'quiz-master-next' ),
+		"buy_btn_text" => __( 'Buy QSM Ultimate Addon', 'quiz-master-next' ),
+		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
+		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
+		"addon_link"   => qsm_get_plugin_link( 'downloads/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
 }

@@ -38,40 +38,125 @@ function qsm_options_contact_tab_content() {
 	) );
 	?>
 	<div class="contact-message"></div>
-	<h2 class="qsm-page-subheading" style="font-weight: 500;"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
-	<div id="poststuff" class="contact-form-builder-wrap">
-		<div class="contact-tab-content">
-			<label class="hide-control">
-				<input type="checkbox" class="show-disabled-fields" <?php echo ('true' == $show_fields && true == $show_fields) ? 'checked' : ''; ?> >
-				<span><?php esc_html_e( 'Show Disabled Fields', 'quiz-master-next' ); ?></span>
-			</label>
-			<div class="contact-form"></div>
-			<a class="add-contact-field qsm-dashed-btn qsm-block-btn">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
-		</div>
-		<div class="contact-tab-sidebar">
-			<div id="contactformsettings" class="postbox ">
-				<div class="postbox-header">
-					<h2 class="hndle"><?php esc_html_e( 'Form Options', 'quiz-master-next' ); ?></h2>
-				</div>
-				<div class="inside">
-					<div class="inside-row">
-						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php esc_html_e('Show contact form after the quiz', 'quiz-master-next');?></span></label>
-					</div>
-					<div class="inside-row">
-						<label><input type="checkbox" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], 0, true )?>><span><?php esc_html_e('Show contact form to logged in users', 'quiz-master-next');?></span></label>
-					</div>
-					<div class="inside-row">
-						<label><input type="checkbox" name="disable_first_page" value="1" <?php checked( $quiz_options['disable_first_page'], '1', true )?>><span><?php esc_html_e('Disable first page of quiz', 'quiz-master-next');?></span></label>
-					</div>
-					<div class="inside-row">
-						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php esc_html_e('Disable autofill entries', 'quiz-master-next');?></span></label>
-					</div>
-				</div>
+	<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
+		<ul class="subsubsub">
+			<li>
+				<a href="javascript:void(0)" data-id="contact_form_setup" class="current quiz_style_tab"><?php esc_html_e( 'Setup', 'quiz-master-next' ); ?></a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" data-id="contact_form_option" class="quiz_style_tab"><?php esc_html_e( 'Options', 'quiz-master-next' ); ?></a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" data-id="qsm-ultimate-quiz-settings" class="quiz_style_tab"><?php esc_html_e( 'Ultimate', 'quiz-master-next' ); ?></a>
+			</li>
+		</ul>
+	</div>
+	<div id="contact_form_setup" class="quiz_style_tab_content">
+		<h2 class="qsm-page-subheading" style="font-weight: 500;"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
+		<div id="poststuff" class="contact-form-builder-wrap">
+			<div class="contact-tab-content">
+				<label class="hide-control">
+					<input type="checkbox" class="show-disabled-fields" <?php echo ('true' == $show_fields && true == $show_fields) ? 'checked' : ''; ?> >
+					<span><?php esc_html_e( 'Show Disabled Fields', 'quiz-master-next' ); ?></span>
+				</label>
+				<div class="contact-form"></div>
+				<a class="add-contact-field qsm-dashed-btn qsm-block-btn">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
 			</div>
-			<a class="save-contact button-primary qsm-block-btn" style="padding: 4px;"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
+	<div id="contact_form_option" class="quiz_style_tab_content" style="display:none">
+		<table id="contactformsettings" class="form-table" style="width: 100%;">
+			<tbody>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="contact_info_location"><?php esc_html_e( 'Contact form position', 'quiz-master-next' ); ?></label>
+						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+							<span class="qsm-tooltips"><?php esc_html_e( 'The form can be configured in Contact tab', 'quiz-master-next' ); ?></span>
+						</span>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="contact_info_location-0">
+								<input type="radio" id="contact_info_location-0" name="contact_info_location" value="0" <?php checked( $quiz_options['contact_info_location'], '0', true )?>>
+								<?php esc_html_e( 'Show before quiz begins', 'quiz-master-next' ); ?>
+							</label>
+							<label for="contact_info_location-1">
+								<input type="radio" id="contact_info_location-1" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>>
+								<?php esc_html_e( 'Show after the quiz ends', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+						<span class="qsm-opt-desc"><?php esc_html_e( 'Select where to display the contact form', 'quiz-master-next' ); ?></span>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="loggedin_user_contact"><?php esc_html_e( 'Show contact form to logged in users', 'quiz-master-next' ); ?></label>
+						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+							<span class="qsm-tooltips"><?php esc_html_e( 'The information will still get saved if this option is disabled', 'quiz-master-next' ); ?></span>
+						</span>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="loggedin_user_contact-0">
+								<input type="radio" id="loggedin_user_contact-0" name="loggedin_user_contact" value="1" <?php checked( $quiz_options['loggedin_user_contact'], '0', true )?>>
+								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
+							</label>
+							<label for="loggedin_user_contact-1">
+								<input type="radio" id="loggedin_user_contact-1" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], '1', true )?>>
+								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+						<span class="qsm-opt-desc"><?php esc_html_e( 'Logged in users can edit their contact information', 'quiz-master-next' ); ?></span>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="contact_disable_autofill"><?php esc_html_e( 'Disable auto fill for contact input', 'quiz-master-next' ); ?></label>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="contact_disable_autofill-1">
+								<input type="radio" id="contact_disable_autofill-1" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>>
+								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
+							</label>
+							<label for="contact_disable_autofill-0">
+								<input type="radio" id="contact_disable_autofill-0" name="contact_disable_autofill" value="0" <?php checked( $quiz_options['contact_disable_autofill'], '0', true )?>>
+								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="disable_first_page"><?php esc_html_e( 'Disable first page on quiz', 'quiz-master-next' ); ?></label>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="disable_first_page-1">
+								<input type="radio" id="disable_first_page-1" name="disable_first_page" value="1" <?php checked( $quiz_options['disable_first_page'], '1', true )?>>
+								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
+							</label>
+							<label for="disable_first_page-0">
+								<input type="radio" id="disable_first_page-0" name="disable_first_page" value="0" <?php checked( $quiz_options['disable_first_page'], '0', true )?>>
+								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<?php if ( ! class_exists( 'QSM_Ultimate' ) ) : ?>
+	<div id="qsm-ultimate-quiz-settings" class="quiz_style_tab_content" style="display:none">
+	<?php qsm_ultimate_addon_upgrade_content(); ?>
+	</div>
+	<?php endif; ?>
+	<div class="contact-page-tab-footer">
+		<div class="footer-bar-notice"></div>
+    	<a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Form', 'quiz-master-next' ); ?></a>
+	</div>
 	<?php
+	do_action( 'qsm_contact_form_settings_after' );
 	add_action( 'admin_footer', 'qsm_options_contact_tab_template' );
 }
 
