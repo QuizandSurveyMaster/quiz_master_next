@@ -403,12 +403,14 @@ class QSM_Questions {
 	public static function sanitize_answers( $answers, $settings ) {
 		global $mlwQuizMasterNext;
 		foreach ( $answers as $key => $answer ) {
-			if ( isset( $settings['answerEditor'] ) && 'rich' == $settings['answerEditor'] ) {
-				$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0] );
-			} else {
-				$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0], false );
+			if ( isset($answer[0]) ) {
+				if ( isset( $settings['answerEditor'] ) && 'rich' == $settings['answerEditor'] ) {
+					$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0] );
+				} else {
+					$answer[0] = $mlwQuizMasterNext->sanitize_html( $answer[0], false );
+				}
+				$answers[ $key ] = $answer;
 			}
-			$answers[ $key ] = $answer;
 		}
 
 		return $answers;
