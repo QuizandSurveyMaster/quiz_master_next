@@ -236,6 +236,7 @@ function qsm_options_results_tab_template(){
 							<!-- Conditions go here. Review template below. -->
 						</div>
 						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+						<?php do_action( 'qsm_result_page_condition_after',  $quiz_id, $categories ); ?>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">

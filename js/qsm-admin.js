@@ -3784,7 +3784,7 @@ var import_button;
                         .done(function (pages) {
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
-                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark);
+                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark, page);
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -3820,7 +3820,7 @@ var import_button;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
-                addResultsPage: function (conditions, page, redirect, default_mark = false) {
+                addResultsPage: function (conditions, page, redirect, default_mark = false, singlePage = {}) {
                     const parser = new DOMParser();
                     let parseRedirect = parser.parseFromString(redirect, 'text/html');
                     redirect = parseRedirect.documentElement.textContent;
@@ -3849,7 +3849,7 @@ var import_button;
                     };
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
-                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total]);
+                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
                 },
                 newResultsPage: function () {
                     var conditions = [{

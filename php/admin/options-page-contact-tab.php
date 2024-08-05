@@ -46,9 +46,6 @@ function qsm_options_contact_tab_content() {
 			<li>
 				<a href="javascript:void(0)" data-id="contact_form_option" class="quiz_style_tab"><?php esc_html_e( 'Options', 'quiz-master-next' ); ?></a>
 			</li>
-			<li>
-				<a href="javascript:void(0)" data-id="qsm-ultimate-quiz-settings" class="quiz_style_tab"><?php esc_html_e( 'Ultimate', 'quiz-master-next' ); ?></a>
-			</li>
 		</ul>
 	</div>
 	<div id="contact_form_setup" class="quiz_style_tab_content">
@@ -84,6 +81,7 @@ function qsm_options_contact_tab_content() {
 								<input type="radio" id="contact_info_location-1" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>>
 								<?php esc_html_e( 'Show after the quiz ends', 'quiz-master-next' ); ?>
 							</label>
+							<?php do_action( 'qsm_contact_form_location_after', $quiz_options ); ?>
 						</fieldset>
 						<span class="qsm-opt-desc"><?php esc_html_e( 'Select where to display the contact form', 'quiz-master-next' ); ?></span>
 					</td>
@@ -146,11 +144,6 @@ function qsm_options_contact_tab_content() {
 			</tbody>
 		</table>
 	</div>
-	<?php if ( ! class_exists( 'QSM_Ultimate' ) ) : ?>
-	<div id="qsm-ultimate-quiz-settings" class="quiz_style_tab_content" style="display:none">
-	<?php qsm_ultimate_addon_upgrade_content(); ?>
-	</div>
-	<?php endif; ?>
 	<div class="contact-page-tab-footer">
 		<div class="footer-bar-notice"></div>
     	<a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Form', 'quiz-master-next' ); ?></a>

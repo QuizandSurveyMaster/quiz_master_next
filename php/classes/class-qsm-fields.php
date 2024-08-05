@@ -91,6 +91,10 @@ class QSM_Fields {
 			$quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
 			// Update the settings and show alert based on outcome
 			$settings_array = wp_parse_args( $settings_array, $settings_array_before_update );
+			$settings_array['contact_info_location'] = ! isset($settings_array['contact_info_location']) || '' == $settings_array['contact_info_location'] ? $settings_array_before_update['contact_info_location'] : $settings_array['contact_info_location'];
+			$settings_array['loggedin_user_contact'] = ! isset($settings_array['loggedin_user_contact']) || '' == $settings_array['loggedin_user_contact'] ? $settings_array_before_update['loggedin_user_contact'] : $settings_array['loggedin_user_contact'];
+			$settings_array['contact_disable_autofill'] = ! isset($settings_array['contact_disable_autofill']) || '' == $settings_array['contact_disable_autofill'] ? $settings_array_before_update['contact_disable_autofill'] : $settings_array['contact_disable_autofill'];
+			$settings_array['disable_first_page'] = ! isset($settings_array['disable_first_page']) || '' == $settings_array['disable_first_page'] ? $settings_array_before_update['disable_first_page'] : $settings_array['disable_first_page'];
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 			if ( false !== $results ) {
 				do_action( 'qsm_saved_quiz_settings', $quiz_id, $section, $settings_array );
