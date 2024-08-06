@@ -486,12 +486,12 @@ class MLWQuizMasterNext {
 		foreach ( $qsm_variables as $key => $value ) {
 			// Iterate over each key of the nested object
 			if ( is_array( $value ) && ! empty($value) ) {
-				
+
 				foreach ( $value as $nestedKey => $nestedValue ) {
 				// Add the nested key to the array
 				$qsm_variables_name[] = $nestedKey;
-			    }   
-			}       
+			    }
+			}
 }
 		$qsm_admin_messages = array(
 			'error'                      => __('Error', 'quiz-master-next'),
@@ -760,12 +760,12 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
-			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addons', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
-			add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_about', 'qsm_generate_about_page' );
 			if ( ! class_exists( 'QSM_Advanced_Assessment' ) ) {
 				add_submenu_page( 'qsm_dashboard', __( 'Answer Labels', 'quiz-master-next' ), __( 'Answer Labels', 'quiz-master-next' ), 'manage_options', 'qsm-answer-label', 'qsm_advanced_assessment_quiz_page_content', 3 );
 			}
+			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page', 33 );
+			add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Extensions', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page', 34 );
 			// Register screen option for dashboard page
 			add_action( 'screen_settings', 'qsm_dashboard_screen_options', 10, 2 );
 		}
