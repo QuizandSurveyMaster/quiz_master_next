@@ -417,11 +417,11 @@ var qsmTimerInterval = [];
 				}
 				var animate_value = current_page / total_page_length;
 				if (animate_value <= 1) {
-					if (undefined == qmn_quiz_data[quizID].bar) {
+					if (!qmn_quiz_data[quizID].bar) {
+						jQuery( '#quizForm' + quizID + ' .qsm-progress-bar svg' ).remove();
 						qmn_quiz_data[quizID].bar =  createQSMProgressBar(quizID, '#quizForm' + quizID + ' .qsm-progress-bar');
-					} else {
-						qmn_quiz_data[quizID].bar.animate(animate_value);
 					}
+					qmn_quiz_data[quizID].bar.animate(animate_value);
 					var old_text = jQuery('#quizForm' + quizID).find('.progressbar-text').text().replace(' %', '');
 					var new_text = Math.round(animate_value * 100);
 					jQuery({
@@ -620,8 +620,8 @@ function createQSMProgressBar(quizID, elementID) {
 	  svgStyle: { width: '100%', height: '100%' },
 	  text: {
 		style: {
-		  position: 'absolute',
-		  right: '10px',
+		  'position': 'absolute',
+		  'right': '10px',
 		  'font-size': '13px',
 		  'font-weight': 'bold'
 		},
