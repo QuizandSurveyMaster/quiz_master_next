@@ -952,12 +952,12 @@ function qsm_custom_wpkses_post_tags( $tags, $context ) {
 			'allowfullscreen' => true,
 		);
 		$tags['video']  = array(
-			'width'  => true,
-			'height' => true,
-			'src' => true,
+			'width'    => true,
+			'height'   => true,
+			'src'      => true,
 			'controls' => true,
 			'autoplay' => true,
-			'preload' => true,
+			'preload'  => true,
 		);
 		$tags['source'] = array(
 			'src'  => true,

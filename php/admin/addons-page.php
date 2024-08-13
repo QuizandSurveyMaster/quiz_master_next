@@ -211,7 +211,7 @@ function qsm_display_optin_page() {
 	?>
 <div class="wrap about-wrap">
 
-	<h1><?php esc_html_e( 'Get Your Free Addon!', 'quiz-master-next' ); ?></h1>
+	<h1><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1>
 
 	<div class="about-text">
 		<?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?>
