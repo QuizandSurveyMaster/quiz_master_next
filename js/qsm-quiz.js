@@ -1513,7 +1513,14 @@ jQuery(function () {
 		} else {
 			value = $i_this.val();
 		}
-		let sendValue = typeof value === 'string' ? value.trim() : value.length ? value[value.length - 1] : '';
+		let sendValue;
+		if (typeof value === 'string') {
+			sendValue = value.trim();
+		} else if (value.length) {
+			sendValue = value[value.length - 1];
+		} else {
+			sendValue = '';
+		}
 		clearTimeout(qsm_inline_result_timer);
 		qsm_inline_result_timer = setTimeout(() => {
 			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
