@@ -160,17 +160,6 @@ var QSMAdmin;
                 jQuery('.category_selection_random').parents("tr").hide();
             }
         });
-        show_hide_show_correct_answer();
-        $(document).on('change', '#enable_quick_result_mc-1', function (event) {
-            show_hide_show_correct_answer();
-        });
-        function show_hide_show_correct_answer() {
-            if (jQuery('#enable_quick_result_mc-1:checked').length > 0) {
-                jQuery('#enable_quick_correct_answer_info').css('opacity', '1');
-            } else {
-                jQuery('#enable_quick_correct_answer_info').css('opacity', '0.5');
-            }
-        }
         jQuery(document).on('change', '#preferred-date-format-custom', function() {
             let customValue = jQuery(this).val();
             jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);

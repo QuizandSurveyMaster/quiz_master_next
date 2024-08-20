@@ -494,7 +494,7 @@ class QSM_Install {
 				),
 				'enable_quick_correct_answer_info' => array(
 					'type'        => 'radio',
-					'prefix_text' => __( "Display the correct answer information in real-time", 'quiz-master-next' ),
+					'prefix_text' => '<b>' . __( "Display the correct answer information in real-time", 'quiz-master-next' ) . '</b>',
 					'options'     => array(
 						array(
 							'label' => __( "Display only if the answer is correct", 'quiz-master-next' ),
