@@ -533,7 +533,7 @@ class QMNQuizManager {
 				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
 				$return_display = str_replace( '%FB_RESULT_ID%', $result_unique_id, $return_display );
 			} else {
-				$return_display = 'Result id is wrong!';
+				$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
 			}
 			$return_display .= ob_get_clean();
 		} else {
@@ -743,7 +743,7 @@ class QMNQuizManager {
 					'result_id'              => $id,
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
-				echo wp_kses_post( htmlspecialchars_decode( $data['display'] ) );
+				return $data['display'];
 			} else {
 				esc_html_e( 'Invalid result id!', 'quiz-master-next' );
 			}
