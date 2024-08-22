@@ -1492,6 +1492,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					?>
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
 					<?php
+					do_action( 'qsm_theme_settings_field_after', $type, $label, $name, $value, $default_value, $options );
 					break;
 			} ?>
 		</td>
