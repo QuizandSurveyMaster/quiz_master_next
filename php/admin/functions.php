@@ -1433,11 +1433,18 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 * @return string $options other options array
  * @return html
  */
-function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, $options = array( 'button_text' => '' ) ) {
+function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, $options = array( 'button_text' => '' ), $helper_text = '' ) {
+	$tooltip = '';
+	if ( isset( $helper_text ) && '' !== $helper_text ) {
+		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $helper_text ) . '</span>';
+		$tooltip .= '</span>';
+	}
 	?>
 	<tr valign="top">
 		<th scope="row" class="qsm-opt-tr">
 			<label for="form_type"><?php echo esc_attr( $label ); ?></label>
+			<?php echo $tooltip; ?>
 		</th>
 		<td align ="right">
 			<?php
@@ -1492,7 +1499,6 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 					?>
 					<input name="settings[<?php echo esc_attr( $name ); ?>]" type="text" value="<?php echo esc_attr( $value ); ?>"/>
 					<?php
-					do_action( 'qsm_theme_settings_field_after', $type, $label, $name, $value, $default_value, $options );
 					break;
 			} ?>
 		</td>
