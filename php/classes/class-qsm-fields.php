@@ -408,7 +408,7 @@ class QSM_Fields {
 								break;
 							case 'radio':
 								foreach ( $field["options"] as $option ) {
-									$isDisabled = isset( $option["disable"] ) && $option["disable"] == 1 ? ' disabled ' : '';
+									$isDisabled = isset( $option["disable"] ) && 1 == $option["disable"] ? ' disabled ' : '';
 									?>
 									<label class="qsm-option-label" for="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>">
 										<input type="radio" id="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $isDisabled ); ?> <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
