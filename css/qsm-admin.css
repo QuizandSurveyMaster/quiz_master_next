@@ -3350,8 +3350,7 @@ body .qsm_tab_content .qsm-small-input-field input[type="text"] {
     padding-top: 4px;
 }
 fieldset#enable_quick_correct_answer_info {
-    margin-left: 25px;
-    margin-top: 4px;
+    margin-top: 8px;
 }
 .qsm-mb-1, .qsm_tab_content fieldset{
 	margin-bottom: .25rem;
@@ -3454,4 +3453,12 @@ input#preferred-date-format-custom {
 #qmn-failed-submission-table-message {
 	padding-right: 38px;
     position: relative;
+}
+#toplevel_page_qsm_dashboard li:nth-last-child(3) a:after {
+    border-bottom: 1px solid hsla(0, 0%, 100%, .2);
+    display: block;
+    float: left;
+    margin: 13px -15px 8px;
+    content: "";
+    width: calc(100% + 26px);
 }

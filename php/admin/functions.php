@@ -1437,6 +1437,11 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 	<tr valign="top">
 		<th scope="row" class="qsm-opt-tr">
 			<label for="form_type"><?php echo esc_attr( $label ); ?></label>
+			<?php if ( isset( $options['helper_text'] ) && '' !== $options['helper_text'] ) { ?>
+				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+					<span class="qsm-tooltips"><?php esc_html( $options['helper_text'] ); ?></span>
+				</span>
+			<?php } ?>
 		</th>
 		<td align ="right">
 			<?php
