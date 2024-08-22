@@ -1444,7 +1444,7 @@ function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, 
 	<tr valign="top">
 		<th scope="row" class="qsm-opt-tr">
 			<label for="form_type"><?php echo esc_attr( $label ); ?></label>
-			<?php echo $tooltip; ?>
+			<?php echo esc_html( $tooltip ); ?>
 		</th>
 		<td align ="right">
 			<?php
