@@ -188,6 +188,7 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 17. QSM Pool Theme
 18. Database
 
+== Changelog ==
 = 9.1.2 ( August 22, 2024 ) =
 * Bug: Resolved issue preventing global settings from being saved
 * Bug: Resolved progress bar issue in quiz popups
