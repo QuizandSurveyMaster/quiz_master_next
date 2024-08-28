@@ -310,7 +310,7 @@ var qsmTimerInterval = [];
 				if ('0' != qmn_quiz_data[quizID].progress_bar) {
 					jQuery(document).trigger('qsm_init_progressbar_before', [quizID, qmn_quiz_data]);
 					$('#quizForm' + quizID).find('.qsm-progress-bar').show();
-					qmn_quiz_data[quizID].bar =  createQSMProgressBar(quizID, '#quizForm' + quizID + ' .qsm-progress-bar');
+					qmn_quiz_data[quizID].bar = createQSMProgressBar(quizID, '#quizForm' + quizID + ' .qsm-progress-bar');
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);

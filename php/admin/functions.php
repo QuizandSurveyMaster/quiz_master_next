@@ -1434,17 +1434,15 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
  * @return html
  */
 function qsm_quiz_theme_settings( $type, $label, $name, $value, $default_value, $options = array( 'button_text' => '' ) ) {
-	$tooltip = '';
-	if ( isset( $options['helper_text'] ) && '' !== $options['helper_text'] ) {
-		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
-		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $options['helper_text'] ) . '</span>';
-		$tooltip .= '</span>';
-	}
 	?>
 	<tr valign="top">
 		<th scope="row" class="qsm-opt-tr">
 			<label for="form_type"><?php echo esc_attr( $label ); ?></label>
-			<?php echo wp_kses_post( $tooltip ); ?>
+			<?php if ( isset( $options['helper_text'] ) && '' !== $options['helper_text'] ) { ?>
+				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+					<span class="qsm-tooltips"><?php esc_html( $options['helper_text'] ); ?></span>
+				</span>
+			<?php } ?>
 		</th>
 		<td align ="right">
 			<?php

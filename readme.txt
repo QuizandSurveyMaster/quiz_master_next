@@ -202,7 +202,6 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 * Enhancement: Improved quiz navigation with keyboard
 * Enhancement: Checked compatibility with WordPress 6.6 and PHP 8.3
 
-
 = 9.1.0 ( July 11, 2024 ) =
 * Feature: Added case-sensitive option to paragraph and short answers question types
 * Bug: Fixed vulnerability with quiz settings

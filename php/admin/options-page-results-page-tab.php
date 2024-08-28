@@ -243,6 +243,30 @@ function qsm_options_results_tab_template(){
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
 							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
+						<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button">
+							<span class="qsm-slash-inside"> / </span><?php esc_html_e('Variables', 'quiz-master-next'); ?>
+						</button>
+						<?php
+						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
+							$qsm_pop_up_arguments = array(
+								"id"           => 'modal-extra-shortcodes',
+								"title"        => __('QSM Shortcode', 'quiz-master-next'),
+								"description"  => __('Wondering how to setup resultpage content with QSM conditional shortcode. Easily use conditional shortcodes and make your result page with conditional content.', 'quiz-master-next'),
+								"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
+								"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
+								"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
+								"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
+								"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_upgrade', 'qsm_plugin_upsell' ),
+								"addon_link"   => qsm_get_plugin_link( 'downloads/extra-shortcodes', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_buy_addon', 'qsm_plugin_upsell' ),
+							);
+							qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+							?>
+							<button type="button" class="button qsm-extra-shortcode-popup">
+								<span class=" dashicons dashicons-shortcode"></span>
+								<?php esc_html_e('Pro Shortcode', 'quiz-master-next'); ?>
+							</button>
+						<?php }
+						do_action( 'qsm_result_page_content_before',  $quiz_id, $categories ); ?>
 						<textarea id="results-page-{{ data.id }}" class="results-page-template">
 						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
 							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
