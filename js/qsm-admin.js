@@ -1366,10 +1366,32 @@ function qsm_is_substring_in_array( text, array ) {
                                 editor.execCommand('mceInsertContent', false, pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
                             }
                         });
+
+                        // Stop multiple times registering click event
+                        $(document).off('click', '.qsm-slashcommand-variables-button').on('click', '.qsm-slashcommand-variables-button', function(e) {
+                            e.preventDefault();
+                            var id = $(this).data('id');
+                            var editor = tinymce.get(id);
+                            var contentToInsert = '/';
+                            editor.focus();
+                            editor.selection.setContent(contentToInsert);
+                            showAutocomplete(editor, true);
+                        });
                     });
                 }
             }
             addTinyMceAutoSuggestion();
+            
+            $( document ).on( 'click', '.qsm-extra-shortcode-popup', function( e ) {
+                e.preventDefault();
+                MicroModal.show('modal-extra-shortcodes');
+            } );
+        
+            jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
+                var $matchingElement = $(`#results-page-${total}`);
+                var $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
+                $button.attr('data-id', total - 1);
+            });
         }
     }
 }(jQuery));
@@ -3817,7 +3839,7 @@ var import_button;
                         tinymce: {
                             plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                         },
                         quicktags: true,
