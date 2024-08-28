@@ -606,6 +606,11 @@ var QSMAdmin;
         MicroModal.show('modal-proctor-quiz');
     });
 
+    $(document).on('click', '.quiz_style_tab_content #qsm_ultimate_progress_bar', function (e) {
+        e.preventDefault();
+        MicroModal.show('qsm-ultimate-upgrade');
+    });
+
     jQuery(document).on('click', '#btn_export', function (e) {
         e.preventDefault();
         jQuery.ajax({
@@ -779,7 +784,15 @@ jQuery('.quiz_text_tab').click(function (e) {
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
+    if(current_id == 'qsm_button_custom_class') { 
+        jQuery("#postbox-container-1").css("display", "none");
+        if ( jQuery("#qsm_button_custom_class").find('.left-bar').length == 0 ) {
+            jQuery(".qsm-text-main-wrap #post-body-content").css("background", "transparent");
+            jQuery(".quiz_text_tab_content").css("border", "none");
+        }
+    }
     jQuery('#' + current_id).show();
+    jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
 if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
@@ -1162,7 +1175,7 @@ function qsm_is_substring_in_array( text, array ) {
 //TinyMCE slash command auto suggest
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
-        if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
+        if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 || window.location.href.indexOf('tab=contact') > 0 ) {
             function addTinyMceAutoSuggestion() {
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
@@ -1518,7 +1531,7 @@ var QSMContact;
                     $('#contactformsettings input').each(function () {
                         if ('checkbox' == $(this).attr('type')) {
                             settings[$(this).attr('name')] = ($(this).prop('checked') ? '1' : '0');
-                        } else {
+                        } else if ('radio' == $(this).attr('type') && $(this).prop('checked')) {
                             settings[$(this).attr('name')] = $(this).val();
                         }
                     });
@@ -1530,6 +1543,7 @@ var QSMContact;
                         quiz_id: qsmContactObject.quizID,
                         nonce: qsmContactObject.saveNonce,
                     };
+                    jQuery(document).trigger('qsm_contact_field_save_settings_before', [data]);
 
                     jQuery.post(ajaxurl, data, function (response) {
                         QSMContact.saved(JSON.parse(response));
@@ -3781,7 +3795,7 @@ var import_button;
                         .done(function (pages) {
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
-                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark);
+                                QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark, page);
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -3817,7 +3831,7 @@ var import_button;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
-                addResultsPage: function (conditions, page, redirect, default_mark = false) {
+                addResultsPage: function (conditions, page, redirect, default_mark = false, singlePage = {}) {
                     const parser = new DOMParser();
                     let parseRedirect = parser.parseFromString(redirect, 'text/html');
                     redirect = parseRedirect.documentElement.textContent;
@@ -3846,7 +3860,7 @@ var import_button;
                     };
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
-                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total]);
+                    jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
                 },
                 newResultsPage: function () {
                     var conditions = [{

@@ -64,7 +64,7 @@ function qsm_generate_results_details_tab() {
 	// Gets results data.
     $result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
-
+    $results_data = apply_filters( 'qsm_admin_result_page_before', $results_data );
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
@@ -84,6 +84,7 @@ function qsm_generate_results_details_tab() {
 	}
     echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
     echo '<h3 class="result-page-title">'.esc_html__('Quiz Result','quiz-master-next').' - '. esc_html( $results_data->quiz_name ) .'</h3>';
+    do_action( 'qsm_above_admin_results' );
     echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. esc_html__( 'Back to Results', 'quiz-master-next' ) .'</a>';
     if ( ! is_null( $previous_results ) && $previous_results ) {
         echo "<a class='button button-primary' title='View Previous Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" ><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
