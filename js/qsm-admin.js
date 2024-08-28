@@ -1383,9 +1383,9 @@ function qsm_is_substring_in_array( text, array ) {
                         // Stop multiple times registering click event
                         $(document).off('click', '.qsm-slashcommand-variables-button').on('click', '.qsm-slashcommand-variables-button', function(e) {
                             e.preventDefault();
-                            var id = $(this).data('id');
-                            var editor = tinymce.get(id);
-                            var contentToInsert = '/';
+                            let id = $(this).data('id');
+                            let editor = tinymce.get(id);
+                            let contentToInsert = '/';
                             editor.focus();
                             editor.selection.setContent(contentToInsert);
                             showAutocomplete(editor, true);
@@ -1401,8 +1401,8 @@ function qsm_is_substring_in_array( text, array ) {
             } );
         
             jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
-                var $matchingElement = $(`#results-page-${total}`);
-                var $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
+                let $matchingElement = $(`#results-page-${total}`);
+                let $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
                 $button.attr('data-id', total - 1);
             });
         }

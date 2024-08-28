@@ -246,7 +246,7 @@ function qsm_options_results_tab_template(){
 						<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button">
 							<span class="qsm-slash-inside"> / </span><?php esc_html_e('Variables', 'quiz-master-next'); ?>
 						</button>
-						<?php 
+						<?php
 						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
 							$qsm_pop_up_arguments = array(
 								"id"           => 'modal-extra-shortcodes',
