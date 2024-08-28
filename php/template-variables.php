@@ -527,9 +527,11 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	return $content;
 }
 function qsm_get_options_of_contact_fields( $data, $label, $type ) {
-	foreach ( $data as $item ) {
-	  	if ( $item['label'] === $label && $item['type'] === $type ) {
-			return $item['options'];
+	if( is_array( $data ) ){
+		foreach ( $data as $item ) {
+			if ( $item['label'] === $label && $item['type'] === $type ) {
+			  return $item['options'];
+			}
 	  	}
 	}
 	return null; // Option not found
