@@ -2005,7 +2005,7 @@ jQuery(document).keydown(function(event) {
 				return;
 			}
 		}
-        if ([39, 37, 13, 9].includes(event.keyCode)) {
+        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus').length === 0) {
             event.preventDefault();
         }
         if (event.keyCode === 39) {
