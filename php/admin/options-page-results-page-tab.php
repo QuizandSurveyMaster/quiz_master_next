@@ -236,6 +236,7 @@ function qsm_options_results_tab_template(){
 							<!-- Conditions go here. Review template below. -->
 						</div>
 						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+						<?php do_action( 'qsm_result_page_condition_after',  $quiz_id, $categories ); ?>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
@@ -245,7 +246,7 @@ function qsm_options_results_tab_template(){
 						<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button">
 							<span class="qsm-slash-inside"> / </span><?php esc_html_e('Variables', 'quiz-master-next'); ?>
 						</button>
-						<?php 
+						<?php
 						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
 							$qsm_pop_up_arguments = array(
 								"id"           => 'modal-extra-shortcodes',
@@ -289,7 +290,7 @@ function qsm_options_results_tab_template(){
 						<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
-						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
+						<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect) { #>{{ data.redirect }}<# } #>">
 						<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
 					</div>
 				</main>
