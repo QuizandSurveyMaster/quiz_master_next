@@ -162,7 +162,13 @@ var QSMAdmin;
         });
         jQuery(document).on('change', '#preferred-date-format-custom', function() {
             let customValue = jQuery(this).val();
-            jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+            let validDateFormat = /^[djDlmnMFYy\-\/\. ,]+$/;
+            if (validDateFormat.test(customValue)) {
+                jQuery(this).css("border-color", "");
+                jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+            } else {
+                jQuery(this).css("border-color", "#e54444");
+            }
         });
         if( jQuery('#qsm-select-quiz-apply').length ) {
             $('#qsm-select-quiz-apply').multiselect({
@@ -784,7 +790,7 @@ jQuery('.quiz_text_tab').click(function (e) {
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
-    if(current_id == 'qsm_button_custom_class') { 
+    if(current_id == 'qsm_button_custom_class') {
         jQuery("#postbox-container-1").css("display", "none");
         if ( jQuery("#qsm_button_custom_class").find('.left-bar').length == 0 ) {
             jQuery(".qsm-text-main-wrap #post-body-content").css("background", "transparent");
