@@ -347,6 +347,7 @@ function qsm_options_questions_tab_content() {
 									$show_limit_multiple_response    = '';
 									$show_file_upload_type           = '';
 									$show_file_upload_limit          = '';
+									$placeholder_text				 = '';
 									foreach ( $question_types as $type ) {
 										if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
 											$show_correct_answer_info .= ',' . $type['slug'];
@@ -368,6 +369,9 @@ function qsm_options_questions_tab_content() {
 										}
 										if ( isset( $type['options']['show_file_upload_limit'] ) && $type['options']['show_file_upload_limit'] ) {
 											$show_file_upload_limit .= ',' . $type['slug'];
+										}
+										if ( isset( $type['options']['placeholder_text'] ) && $type['options']['placeholder_text'] ) {
+											$placeholder_text .= ',' . $type['slug'];
 										}
 									}
 									$advanced_question_option    = array(
@@ -485,6 +489,13 @@ function qsm_options_questions_tab_content() {
 											'default'  => 'image,application/pdf',
 											'show'     => '11' . $show_file_upload_type,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'file_upload_type', 'quizsurvey-file_upload_type_doc' ),
+										),
+										'placeholder_text' => array(
+											'heading'  => __( 'Placeholder Text', 'quiz-master-next' ),
+											'type'     => 'text',
+											'default'  => '',
+											'priority' => '1',
+											'show'     => '3, 5, 7' ,
 										),
 									);
 									$advanced_question_option    = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );

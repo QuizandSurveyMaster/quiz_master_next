@@ -250,7 +250,7 @@ function qsm_options_results_tab_template(){
 						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
 							$qsm_pop_up_arguments = array(
 								"id"           => 'modal-extra-shortcodes',
-								"title"        => __('QSM Shortcode', 'quiz-master-next'),
+								"title"        => __('Conditional Shortcode', 'quiz-master-next'),
 								"description"  => __('Wondering how to setup resultpage content with QSM conditional shortcode. Easily use conditional shortcodes and make your result page with conditional content.', 'quiz-master-next'),
 								"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
 								"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
@@ -262,8 +262,8 @@ function qsm_options_results_tab_template(){
 							qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 							?>
 							<button type="button" class="button qsm-extra-shortcode-popup">
-								<span class=" dashicons dashicons-shortcode"></span>
-								<?php esc_html_e('Pro Shortcode', 'quiz-master-next'); ?>
+								<span class="dashicons dashicons-shortcode"></span>
+								<?php esc_html_e('Conditional Shortcode', 'quiz-master-next'); ?>
 							</button>
 						<?php }
 						do_action( 'qsm_result_page_content_before',  $quiz_id, $categories ); ?>

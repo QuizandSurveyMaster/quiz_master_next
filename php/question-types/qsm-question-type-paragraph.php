@@ -17,6 +17,7 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	$required   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
 	$min_length = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
+	$placeholder_text = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'placeholder_text' );
 	$min_length_attr    = $min_length ? "minlength=" . $min_length . "" : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
@@ -27,7 +28,7 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" cols="70" rows="5" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> <?php echo esc_attr( $min_length_attr ); ?> /></textarea>
+	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" cols="70" rows="5" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> <?php echo esc_attr( $min_length_attr ); ?> placeholder="<?php echo esc_attr( $placeholder_text ); ?>" /></textarea>
 	<?php
 	echo apply_filters( 'qmn_large_open_display_front', '', $id, $question, $answers );
 }
