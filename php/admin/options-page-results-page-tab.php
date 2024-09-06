@@ -251,7 +251,7 @@ function qsm_options_results_tab_template(){
 							$qsm_pop_up_arguments = array(
 								"id"           => 'modal-extra-shortcodes',
 								"title"        => __('Extra Shortcode', 'quiz-master-next'),
-								"description"  => __('Wondering how to setup resultpage content with QSM conditional shortcode. Easily use conditional shortcodes and make your result page with conditional content.', 'quiz-master-next'),
+								"description"  => __('Need dynamic content on your results pages? Our QSM conditional shortcode makes it easy. Create personalized experiences based on specific conditions or rules.', 'quiz-master-next'),
 								"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
 								"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
 								"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
