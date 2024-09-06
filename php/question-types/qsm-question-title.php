@@ -28,7 +28,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
 		if ( in_array( intval( get_question_type( $question_id ) ), [ 12, 7, 3, 5 ], true ) ) {
 		?>
-		<div class='mlw_qmn_new_question'><label for="question<?php echo esc_attr( $question_id ); ?>"><?php echo esc_html( $new_question_title ); ?> </label></div>
+		<div class='mlw_qmn_new_question'><label class="qsm-question-title-label" for="question<?php echo esc_attr( $question_id ); ?>"><?php echo esc_html( $new_question_title ); ?> </label></div>
 		<?php
 		} else {
 		?>
