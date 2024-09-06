@@ -833,6 +833,7 @@ ul.changelog li.update div.two:before {
 .qsm_tab_content label {
 	margin-right: 5px;
 }
+.qsm-sub-text-tab-menu,
 .qsm-sub-tab-menu {
 	display: flex;
 	flex-direction: row;
@@ -840,10 +841,10 @@ ul.changelog li.update div.two:before {
 	align-items: stretch;
 	border-bottom: 1px solid #cecece;
 }
-.qsm-sub-text-tab-menu {
+/* .qsm-sub-text-tab-menu {
 	display: inline-block;
 	width: 100%;
-}
+} */
 .save-text-changes {
 	display: flex;
 	flex-direction: row-reverse;
@@ -925,6 +926,7 @@ ul.changelog li.update div.two:before {
 	padding: 10px 6px;
 	width: 100%;
 }
+.qsm-sub-text-tab-menu a,
 .qsm-sub-tab-menu a,
 .qsm_tab_content a {
 	cursor: pointer;
@@ -933,10 +935,12 @@ ul.changelog li.update div.two:before {
 	display: inline-block;
 	box-sizing: border-box;
 }
+.qsm-sub-text-tab-menu .subsubsub li:first-child,
 .qsm-sub-tab-menu .subsubsub li:first-child {
 	border-left: 0;
 	padding-left: 0;
 }
+.qsm-sub-text-tab-menu .subsubsub li a,
 .qsm-sub-tab-menu .subsubsub li a {
 	font-size: 14px;
 	line-height: 1.2;
@@ -948,6 +952,7 @@ ul.changelog li.update div.two:before {
 	text-decoration: none;
 	box-shadow: none;
 }
+.qsm-sub-text-tab-menu .subsubsub li a.current,
 .qsm-sub-tab-menu .subsubsub li a.current{
 	border-bottom: 3px solid #00BEE9;
 }
@@ -3120,7 +3125,7 @@ input#duplicate_questions {
 .auto-fold .option-page-result-page-tab-footer {
     left: 36px;
 }
-.option-page-option-tab-footer, .option-page-result-page-tab-footer {
+.option-page-option-tab-footer, .option-page-result-page-tab-footer, .contact-page-tab-footer {
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -3132,7 +3137,7 @@ input#duplicate_questions {
 	align-items: center;
 	background: #ffffff;
     border-top: 1px solid #DADADA;
-	z-index: 9999;
+	z-index: 9998;
 	padding: 10px 30px 8px 10px;
 	min-height: 37px;
 }
@@ -3147,7 +3152,7 @@ input#duplicate_questions {
 	width: 60%;
 }
 @media screen and (min-width: 1900px) {
-	.option-page-option-tab-footer,.option-page-result-page-tab-footer {
+	.option-page-option-tab-footer,.option-page-result-page-tab-footer,.contact-page-tab-footer {
 		flex-direction: row-reverse;
 	}
 }
@@ -3190,10 +3195,12 @@ input#duplicate_questions {
 	.option-page-result-page-tab-footer {
 		left: 160px !important;
 	}
-	.folded .option-page-option-tab-footer {
+	.folded .option-page-option-tab-footer,
+	.folded .contact-page-tab-footer {
 		left: 36px !important;
 	}
-	.option-page-option-tab-footer {
+	.option-page-option-tab-footer,
+	.contact-page-tab-footer {
 		left: 160px !important;
 	}
 }
@@ -3201,7 +3208,8 @@ input#duplicate_questions {
 	.option-page-result-page-tab-footer {
 		left: 0 !important;
 	}
-	.option-page-option-tab-footer {
+	.option-page-option-tab-footer,
+	.contact-page-tab-footer {
 		left: 0 !important;
 	}
 }
@@ -3461,4 +3469,29 @@ input#preferred-date-format-custom {
     margin: 13px -15px 8px;
     content: "";
     width: calc(100% + 26px);
+}
+
+/* Extra shortcodes popup */
+button.button.qsm-extra-shortcode-popup {
+	display: flex;
+    align-items: center;
+    position: relative;
+    top: 30px;
+    left: 197px;
+    z-index: 10;
+}
+
+button.button.qsm-slashcommand-variables-button	 {
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 30px;
+    left: 110px;
+	z-index: 10;
+	margin: -30px 0;
+}
+
+button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
+	margin: 0 4px 0 -1px;
+    font-weight: 1000;
 }

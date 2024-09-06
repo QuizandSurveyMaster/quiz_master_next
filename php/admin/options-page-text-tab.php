@@ -40,6 +40,9 @@ function mlw_options_text_tab_content() {
 			<li>
 				<a href="javascript:void(0)" data-id="qsm_custom_label" class="quiz_text_tab"><?php esc_html_e( 'Labels', 'quiz-master-next' ); ?></a>
 			</li>
+			<li>
+				<a href="javascript:void(0)" data-id="qsm_button_custom_class" class="quiz_text_tab"><?php esc_html_e( 'Custom Classes', 'quiz-master-next' ); ?></a>
+			</li>
 		</ul>
 	</div>
 	<div class="qsm-text-main-wrap">
@@ -115,6 +118,12 @@ function mlw_options_text_tab_content() {
 									?>
 								</div>
 								</div>
+								<?php if ( ! class_exists( 'QSM_Ultimate' ) ) : ?>
+									<div class="quiz_text_tab_content" style="display:none;" id="qsm_button_custom_class" >
+										<?php qsm_ultimate_addon_upgrade_content(); ?>
+									</div>
+								<?php endif; ?>
+								<?php do_action( 'qsm_add_list_menu_content_text_tab_after', $text_text_arr ); ?>
 								<!-- Variable text -->
 								<div class="quiz_text_tab_content qsm_variable_text" style="display:none;" id="qsm_variable_text" >
 									<div class="left-bar">
