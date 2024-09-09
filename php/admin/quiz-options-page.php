@@ -102,7 +102,7 @@ function qsm_generate_quiz_options() {
 	}
 
 	$qsm_core_tabs = array( 'questions', 'contact', 'text', 'options', 'emails', 'results-pages', 'style' );
-	$addon_tabs    = '';
+	$addon_tabs    = 0;
 	?>
 	<div class="wrap" id="mlw_quiz_wrap">
 		<div class='mlw_quiz_options' id="mlw_quiz_options">

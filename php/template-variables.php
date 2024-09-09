@@ -527,9 +527,11 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	return $content;
 }
 function qsm_get_options_of_contact_fields( $data, $label, $type ) {
-	foreach ( $data as $item ) {
-	  	if ( $item['label'] === $label && $item['type'] === $type ) {
-			return $item['options'];
+	if ( is_array( $data ) ) {
+		foreach ( $data as $item ) {
+			if ( $item['label'] === $label && $item['type'] === $type ) {
+			  return $item['options'];
+			}
 	  	}
 	}
 	return null; // Option not found
@@ -952,12 +954,12 @@ function qsm_custom_wpkses_post_tags( $tags, $context ) {
 			'allowfullscreen' => true,
 		);
 		$tags['video']  = array(
-			'width'  => true,
-			'height' => true,
-			'src' => true,
+			'width'    => true,
+			'height'   => true,
+			'src'      => true,
 			'controls' => true,
 			'autoplay' => true,
-			'preload' => true,
+			'preload'  => true,
 		);
 		$tags['source'] = array(
 			'src'  => true,

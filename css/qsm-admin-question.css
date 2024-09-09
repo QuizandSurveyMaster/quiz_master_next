@@ -743,3 +743,6 @@ input.qsm-admin-select-page-question {
 		width: 330px;
 	}
 }
+#placeholder_text{
+	width: 100%;
+}

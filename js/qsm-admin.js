@@ -160,20 +160,15 @@ var QSMAdmin;
                 jQuery('.category_selection_random').parents("tr").hide();
             }
         });
-        show_hide_show_correct_answer();
-        $(document).on('change', '#enable_quick_result_mc-1', function (event) {
-            show_hide_show_correct_answer();
-        });
-        function show_hide_show_correct_answer() {
-            if (jQuery('#enable_quick_result_mc-1:checked').length > 0) {
-                jQuery('#enable_quick_correct_answer_info').css('opacity', '1');
-            } else {
-                jQuery('#enable_quick_correct_answer_info').css('opacity', '0.5');
-            }
-        }
         jQuery(document).on('change', '#preferred-date-format-custom', function() {
             let customValue = jQuery(this).val();
-            jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+            let validDateFormat = /^[djDlmnMFYy\-\/\. ,]+$/;
+            if (validDateFormat.test(customValue)) {
+                jQuery(this).css("border-color", "");
+                jQuery('#preferred_date_format label.qsm-option-label:last input[type="radio"]').val(customValue);
+            } else {
+                jQuery(this).css("border-color", "#e54444");
+            }
         });
         if( jQuery('#qsm-select-quiz-apply').length ) {
             $('#qsm-select-quiz-apply').multiselect({
@@ -795,7 +790,7 @@ jQuery('.quiz_text_tab').click(function (e) {
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
-    if(current_id == 'qsm_button_custom_class') { 
+    if(current_id == 'qsm_button_custom_class') {
         jQuery("#postbox-container-1").css("display", "none");
         if ( jQuery("#qsm_button_custom_class").find('.left-bar').length == 0 ) {
             jQuery(".qsm-text-main-wrap #post-body-content").css("background", "transparent");
@@ -1390,10 +1385,32 @@ function qsm_is_substring_in_array( text, array ) {
                                 editor.execCommand('mceInsertContent', false, pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
                             }
                         });
+
+                        // Stop multiple times registering click event
+                        $(document).off('click', '.qsm-slashcommand-variables-button').on('click', '.qsm-slashcommand-variables-button', function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            let editor = tinymce.get(id);
+                            let contentToInsert = '/';
+                            editor.focus();
+                            editor.selection.setContent(contentToInsert);
+                            showAutocomplete(editor, true);
+                        });
                     });
                 }
             }
             addTinyMceAutoSuggestion();
+            
+            $( document ).on( 'click', '.qsm-extra-shortcode-popup', function( e ) {
+                e.preventDefault();
+                MicroModal.show('modal-extra-shortcodes');
+            } );
+        
+            jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
+                let $matchingElement = $(`#results-page-${total}`);
+                let $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
+                $button.attr('data-id', total - 1);
+            });
         }
     }
 }(jQuery));
@@ -3842,7 +3859,7 @@ var import_button;
                         tinymce: {
                             plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                         },
                         quicktags: true,
