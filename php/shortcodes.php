@@ -203,7 +203,6 @@ function qsm_generate_fb_header_metadata() {
 			<?php
 		}
 	}
-	$quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
 }
 
 add_action( 'wp_head', 'qsm_generate_fb_header_metadata' );
