@@ -347,7 +347,7 @@ function qsm_options_questions_tab_content() {
 									$show_limit_multiple_response    = '';
 									$show_file_upload_type           = '';
 									$show_file_upload_limit          = '';
-									$placeholder_text				 = '';
+									$placeholder_text                = '';
 									foreach ( $question_types as $type ) {
 										if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
 											$show_correct_answer_info .= ',' . $type['slug'];
@@ -495,7 +495,7 @@ function qsm_options_questions_tab_content() {
 											'type'     => 'text',
 											'default'  => '',
 											'priority' => '1',
-											'show'     => '3, 5, 7' ,
+											'show'     => '3, 5, 7' . $placeholder_text,
 										),
 									);
 									$advanced_question_option    = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
@@ -1144,7 +1144,7 @@ function qsm_bulk_delete_question_from_database() {
 			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
 			implode( ', ', $placeholders )
 		);
-		
+
 		// Prepare the query
 		$query = $wpdb->prepare( $query, $question_id );
 

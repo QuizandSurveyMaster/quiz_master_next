@@ -474,11 +474,6 @@ class QSM_Install {
 							'label' => __( "Progress bar based on number of pages", 'quiz-master-next' ),
 							'value' => 1,
 						),
-						array(
-							'label'   => __( "Progress bar based on number of question responded <a id='qsm_ultimate_progress_bar'><b>(PRO)</b></a>", 'quiz-master-next' ),
-							'value'   => 2,
-							'disable' => 1,
-						),
 					),
 					'default' => 0,
 				),
