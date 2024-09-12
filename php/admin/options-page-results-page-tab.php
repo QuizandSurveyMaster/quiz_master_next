@@ -236,12 +236,37 @@ function qsm_options_results_tab_template(){
 							<!-- Conditions go here. Review template below. -->
 						</div>
 						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+						<?php do_action( 'qsm_result_page_condition_after',  $quiz_id, $categories ); ?>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
 							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
 						</div>
+						<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button">
+							<span class="qsm-slash-inside"> / </span><?php esc_html_e('Variables', 'quiz-master-next'); ?>
+						</button>
+						<?php
+						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
+							$qsm_pop_up_arguments = array(
+								"id"           => 'modal-extra-shortcodes',
+								"title"        => __('Extra Shortcode', 'quiz-master-next'),
+								"description"  => __('Need dynamic content on your results pages? Our QSM conditional shortcode makes it easy. Create personalized experiences based on specific conditions or rules.', 'quiz-master-next'),
+								"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
+								"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
+								"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
+								"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
+								"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_upgrade', 'qsm_plugin_upsell' ),
+								"addon_link"   => qsm_get_plugin_link( 'downloads/extra-shortcodes', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_buy_addon', 'qsm_plugin_upsell' ),
+							);
+							qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+							?>
+							<button type="button" class="button qsm-extra-shortcode-popup">
+								<span class="dashicons dashicons-shortcode"></span>
+								<?php esc_html_e('Conditional Output', 'quiz-master-next'); ?>
+							</button>
+						<?php }
+						do_action( 'qsm_result_page_content_before',  $quiz_id, $categories ); ?>
 						<textarea id="results-page-{{ data.id }}" class="results-page-template">
 						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
 							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
@@ -265,7 +290,7 @@ function qsm_options_results_tab_template(){
 						<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
 						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
-						<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
+						<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
 						<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
 					</div>
 				</main>

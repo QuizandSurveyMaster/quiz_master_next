@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 9.1.2
+Stable tag: 9.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,12 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 18. Database
 
 == Changelog ==
+= 9.1.3 ( September 12, 2024 ) =
+* Feature: Added placeholder customization for short answer and paragraph questions
+* Bug: Resolved vulnerability issue with question settings
+* Bug: Fixed issue with undefined page redirection
+* Bug: Enter key issue resolved in paragraph question type
+
 = 9.1.2 ( August 22, 2024 ) =
 * Bug: Resolved issue preventing global settings from being saved
 * Bug: Resolved progress bar issue in quiz popups

@@ -115,6 +115,7 @@ function mlw_options_text_tab_content() {
 									?>
 								</div>
 								</div>
+								<?php do_action( 'qsm_add_list_menu_content_text_tab_after', $text_text_arr ); ?>
 								<!-- Variable text -->
 								<div class="quiz_text_tab_content qsm_variable_text" style="display:none;" id="qsm_variable_text" >
 									<div class="left-bar">

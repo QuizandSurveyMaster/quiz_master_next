@@ -91,6 +91,10 @@ class QSM_Fields {
 			$quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
 			// Update the settings and show alert based on outcome
 			$settings_array = wp_parse_args( $settings_array, $settings_array_before_update );
+			$settings_array['contact_info_location'] = ! isset($settings_array['contact_info_location']) || '' == $settings_array['contact_info_location'] ? $settings_array_before_update['contact_info_location'] : $settings_array['contact_info_location'];
+			$settings_array['loggedin_user_contact'] = ! isset($settings_array['loggedin_user_contact']) || '' == $settings_array['loggedin_user_contact'] ? $settings_array_before_update['loggedin_user_contact'] : $settings_array['loggedin_user_contact'];
+			$settings_array['contact_disable_autofill'] = ! isset($settings_array['contact_disable_autofill']) || '' == $settings_array['contact_disable_autofill'] ? $settings_array_before_update['contact_disable_autofill'] : $settings_array['contact_disable_autofill'];
+			$settings_array['disable_first_page'] = ! isset($settings_array['disable_first_page']) || '' == $settings_array['disable_first_page'] ? $settings_array_before_update['disable_first_page'] : $settings_array['disable_first_page'];
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 			if ( false !== $results ) {
 				do_action( 'qsm_saved_quiz_settings', $quiz_id, $section, $settings_array );
@@ -111,6 +115,7 @@ class QSM_Fields {
     	}
 		// Retrieve the settings for this section
 		$settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+		$settings = apply_filters( 'qsm_quiz_submission_section_before', $settings, $fields );
 
 		if ( isset( $settings['form_type'] ) ) {
 			$settings['form_type'] = 2 === intval( $settings['system'] ) ? 1 : $settings['form_type'];
@@ -134,9 +139,6 @@ class QSM_Fields {
 						</li>
 						<li>
 							<a href="javascript:void(0)" data-id="display" class="quiz_style_tab"><?php esc_html_e( 'Display', 'quiz-master-next' ); ?></a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab"><?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?></a>
 						</li>
 						<li>
 							<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
@@ -163,7 +165,6 @@ class QSM_Fields {
 				<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
 					<table class="form-table" style="width: 100%;">
 						<?php
-						$settings = apply_filters( 'qsm_quiz_submission_section_before', $settings, $fields );
 						// Cycles through each field
 						foreach ( $fields as  $field ) {
 							// Generate the field
@@ -185,23 +186,6 @@ class QSM_Fields {
 						foreach ( $fields as  $field ) {
 							// Generate the field
 							if ( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ) {
-								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
-									QSM_Fields::generate_field( $field, $settings );
-								}else {
-									QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-								}
-							}
-						}
-						?>
-					</table>
-				</div>
-				<div id="contact_form" class="quiz_style_tab_content" style="display:none">
-					<table class="form-table" style="width: 100%;">
-						<?php
-						// Cycles through each field
-						foreach ( $fields as  $field ) {
-							// Generate the field
-							if ( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ) {
 								if ( ! empty( $field['type'] ) && 'multiple_fields' === $field['type'] ) {
 									QSM_Fields::generate_field( $field, $settings );
 								}else {
@@ -409,9 +393,10 @@ class QSM_Fields {
 								break;
 							case 'radio':
 								foreach ( $field["options"] as $option ) {
+									$isDisabled = isset( $option["disable"] ) && 1 == $option["disable"] ? ' disabled ' : '';
 									?>
 									<label class="qsm-option-label" for="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>">
-										<input type="radio" id="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
+										<input type="radio" id="<?php echo esc_attr( $key . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php echo esc_attr( $isDisabled ); ?> <?php checked( $option["value"], $value[ $key ] ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
 										<?php
 										$allowed_tags = wp_kses_allowed_html('post');
 										$allowed_tags['input'] = array(
