@@ -66,9 +66,6 @@ function qsm_options_styling_tab_content() {
 			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
-			<a href="javascript:void(0)" data-id="qsm-ultimate-default-menu" class="quiz_style_tab"><?php esc_html_e( 'Appearance', 'quiz-master-next' ); ?></a>
-		</li>
-		<li>
 			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
@@ -242,11 +239,6 @@ function qsm_options_styling_tab_content() {
 		<button id="save_styles_button"
 			class="button-primary"><?php esc_html_e( 'Save Quiz Style', 'quiz-master-next' ); ?></button>
 	</div>
-	<?php if ( ! class_exists( 'QSM_Ultimate' ) ) : ?>
-	<div id="qsm-ultimate-default-menu" class="quiz_style_tab_content" style="display: none">
-	<?php qsm_ultimate_addon_upgrade_content(); ?>
-	</div>
-	<?php endif; ?>
 	<?php do_action( 'qsm_add_style_section_content' ); ?>
 </form>
 <div class="qsm-popup qsm-popup-slide qsm-theme-color-settings" id="qsm-theme-color-settings" aria-hidden="true">
