@@ -193,6 +193,7 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 * Feature: Added placeholder customization for short answer and paragraph questions
 * Bug: Resolved vulnerability issue with question settings
 * Bug: Fixed issue with undefined page redirection
+* Bug: Enter key issue resolved in paragraph question type
 
 = 9.1.2 ( August 22, 2024 ) =
 * Bug: Resolved issue preventing global settings from being saved
