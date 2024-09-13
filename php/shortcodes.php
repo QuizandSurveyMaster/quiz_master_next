@@ -203,6 +203,11 @@ function qsm_generate_fb_header_metadata() {
 			<?php
 		}
 	}
+		$quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
+		$featured_image = get_option("quiz_featured_image_$quiz_id");
+		?>	
+		<link rel="preload" href="<?php echo esc_url($featured_image); ?>" as="image">
+		<?php
 }
 
 add_action( 'wp_head', 'qsm_generate_fb_header_metadata' );

@@ -495,7 +495,7 @@ function qsm_options_questions_tab_content() {
 											'type'     => 'text',
 											'default'  => '',
 											'priority' => '1',
-											'show'     => '3, 5, 7' . $placeholder_text,
+											'show'     => '3, 5, 7',
 										),
 									);
 									$advanced_question_option    = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
