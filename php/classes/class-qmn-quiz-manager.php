@@ -976,8 +976,7 @@ class QMNQuizManager {
 			in_array( intval( $quiz_options->randomness_order ), [ 1, 2 ], true) &&
 			! empty($questions) &&
 			is_array($questions) &&
-			! isset($_COOKIE[ 'question_ids_' . $quiz_id ]) &&
-			! empty( $quiz_options->question_from_total )
+			! isset($_COOKIE[ 'question_ids_' . $quiz_id ])
 		) {
 			$question_ids = array();
 			foreach ( $questions as $question ) {
