@@ -833,6 +833,7 @@ ul.changelog li.update div.two:before {
 .qsm_tab_content label {
 	margin-right: 5px;
 }
+.qsm-sub-text-tab-menu,
 .qsm-sub-tab-menu {
 	display: flex;
 	flex-direction: row;
