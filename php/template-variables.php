@@ -530,7 +530,7 @@ function qsm_get_options_of_contact_fields( $data, $label, $type ) {
 	if ( is_array( $data ) ) {
 		foreach ( $data as $item ) {
 			if ( $item['label'] === $label && $item['type'] === $type ) {
-			  return $item['options'];
+				return $item['options'];
 			}
 	  	}
 	}
@@ -1111,7 +1111,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
 					$do_show_wrong       = true;
 					$user_given_answer   = '' === $answer[1] ? $quiz_options->no_answer_text : htmlentities( $answer[1] );
-					$user_given_answer = str_replace( "\n" , "<br>", $user_given_answer );
+    				$user_given_answer   = str_replace( "\n" , "<br>", $user_given_answer );
 					if ( 12 == $answer['question_type'] && ! empty( $answer[1] ) && strtotime( $user_given_answer ) ) {
 						$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
 						$user_given_answer = date_i18n($preferred_date_format, strtotime($user_given_answer));

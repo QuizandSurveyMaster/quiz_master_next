@@ -128,21 +128,6 @@ class QSM_Fields {
 			<?php wp_nonce_field( 'save_settings','save_settings_nonce' );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 			if ( 'options' === $current_tab ) :
-				if ( ! class_exists( 'QSM_Ultimate' ) ) {
-					$args = array(
-						"id"           => 'qsm-ultimate-upgrade',
-						"title"        => __( 'QSM Ultimate Addon', 'quiz-master-next' ),
-						"description"  => __( 'Enjoy features like adding "other" options, bulk answer input, question-based progress bars, automatic page navigation, and showing detailed results after collecting contact details. Customize buttons, progress bar placement, and colors schemes and more with QSM Ultimate addon', 'quiz-master-next' ),
-						"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/ultimate_upgrade.png',
-						"warning"      => __( 'Missing Feature - QSM Ultimate Add-on required', 'quiz-master-next' ),
-						"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy QSM Ultimate Addon separately.', 'quiz-master-next' ),
-						"buy_btn_text" => __( 'Buy QSM Ultimate Addon', 'quiz-master-next' ),
-						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
-						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
-						"addon_link"   => qsm_get_plugin_link( 'downloads/ultimate', 'quiz-documentation', 'plugin', 'ultimate', 'qsm_plugin_upsell' ),
-					);
-					qsm_admin_upgrade_popup( $args );
-				}
 			?>
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
