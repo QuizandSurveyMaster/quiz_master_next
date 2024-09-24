@@ -929,14 +929,6 @@ class QMNQuizManager {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
 					$question_sql = implode( ',', $question_ids );
-					?>
-					<script>
-						const d = new Date();
-						d.setTime(d.getTime() + (365*24*60*60*1000));
-						let expires = "expires="+ d.toUTCString();
-						document.cookie = "question_ids_<?php echo esc_attr( $quiz_id ); ?> = <?php echo esc_attr( $question_sql ) ?>; "+expires+"; path=/";
-					</script>
-					<?php
 				}
 				$order_by_sql = 'ORDER BY FIELD(question_id,'. esc_sql( $question_sql ) .')';
 			}
@@ -979,6 +971,27 @@ class QMNQuizManager {
 			}
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
 
+		}
+		if (
+			in_array( intval( $quiz_options->randomness_order ), [ 1, 2 ], true) &&
+			! empty($questions) &&
+			is_array($questions) &&
+			! isset($_COOKIE[ 'question_ids_' . $quiz_id ])
+		) {
+			$question_ids = array();
+			foreach ( $questions as $question ) {
+				$question_ids[] = $question->question_id;
+			}
+
+			$question_sql = implode(',', array_unique($question_ids)); // Prevent duplicates
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				let expires = "expires=" + d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_js($quiz_id); ?>=" + "<?php echo esc_js($question_sql); ?>" + "; " + expires + "; path=/";
+			</script>
+			<?php
 		}
 		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 	}
