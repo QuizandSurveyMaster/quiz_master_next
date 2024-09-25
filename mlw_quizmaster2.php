@@ -759,10 +759,10 @@ class MLWQuizMasterNext {
 		}
 	
 		// Dynamically determine the capabilities to add based on the current user role.
-		$capabilities_to_add = ${$rolename . '_capabilities'};
+		$capabilities_to_add = 'subscriber' !== $rolename ? ${$rolename . '_capabilities'} : [];
 		$capabilities_to_add = apply_filters(
 			'qsm_default_user_capabilities',
-			array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ),
+			'subscriber' !== $rolename ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : [],
 			$user
 		);
 	
@@ -828,10 +828,10 @@ class MLWQuizMasterNext {
 				'view_qsm_quiz_result' 
 			);
 			
-			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), $capabilities[1], 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
+			add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), $capabilities[1], 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), $capabilities[2], 'qsm_dashboard', 'qsm_generate_dashboard_page', 0 );
 			if ( $enabled && 'cancelled' !== $enabled ) {
-				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), $capabilities[3], 'edit-tags.php?taxonomy=qsm_category' );
+				add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), $capabilities[3], 'edit-tags.php?taxonomy=qsm_category' );
 			}
 			if ( ! class_exists( 'QSM_Advanced_Assessment' ) ) {
 				add_submenu_page( 'qsm_dashboard', __( 'Answer Labels', 'quiz-master-next' ), __( 'Answer Labels', 'quiz-master-next' ), $capabilities[4], 'qsm-answer-label', 'qsm_advanced_assessment_quiz_page_content', 3 );
