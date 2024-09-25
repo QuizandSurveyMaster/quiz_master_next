@@ -710,69 +710,54 @@ class MLWQuizMasterNext {
 	}
 
 	public function qsm_add_user_capabilities() {
-		$default_capabilities = array(
-			'administrator' => array(
-				'edit_qsm_quiz',
-				'duplicate_qsm_quiz',
-				'read_qsm_quiz',
-				'delete_qsm_quiz',
-				'edit_qsm_quizzes',
-				'edit_others_qsm_quizzes',
-				'publish_qsm_quizzes',
-				'read_private_qsm_quizzes',
-				'delete_qsm_quizzes',
-				'delete_private_qsm_quizzes',
-				'delete_published_qsm_quizzes',
-				'delete_others_qsm_quizzes',
-				'edit_private_qsm_quizzes',
-				'edit_published_qsm_quizzes',
-				'create_qsm_quizzes',
-				'manage_qsm_quiz_categories',
-				'manage_qsm_quiz_answer_label',
-				'view_qsm_quiz_result'
-			),
-			'editor' => array(
-				'edit_qsm_quiz',
-				'read_qsm_quiz',
-				'edit_qsm_quizzes',
-				'publish_qsm_quizzes',
-				'edit_published_qsm_quizzes',
-				'delete_published_qsm_quizzes',
-				'delete_qsm_quiz',
-				'delete_qsm_quizzes',
-				'create_qsm_quizzes'
-			),
-			'author' => array(
-				'read_qsm_quiz',
-				'edit_qsm_quiz',
-				'edit_qsm_quizzes',
-				'create_qsm_quizzes',
-				'edit_published_qsm_quizzes',
-				'publish_qsm_quizzes'
-			),
-			'contributor' => array(
-				'read_qsm_quiz',
-				'edit_qsm_quiz',
-				'edit_qsm_quizzes',
-				'create_qsm_quizzes'
-			)
-		);
+		$qsm_common_capabilities = ['read_qsm_quiz', 'edit_qsm_quiz', 'edit_qsm_quizzes', 'create_qsm_quizzes'];
+		$administrator_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+			'duplicate_qsm_quiz',
+			'delete_qsm_quiz',
+			'edit_others_qsm_quizzes',
+			'publish_qsm_quizzes',
+			'read_private_qsm_quizzes',
+			'delete_qsm_quizzes',
+			'delete_private_qsm_quizzes',
+			'delete_published_qsm_quizzes',
+			'delete_others_qsm_quizzes',
+			'edit_private_qsm_quizzes',
+			'edit_published_qsm_quizzes',
+			'manage_qsm_quiz_categories',
+			'manage_qsm_quiz_answer_label',
+			'view_qsm_quiz_result'
+		)) );
+		$editor_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+			'publish_qsm_quizzes',
+			'edit_published_qsm_quizzes',
+			'delete_published_qsm_quizzes',
+			'delete_qsm_quiz',
+			'delete_qsm_quizzes',
+			'manage_qsm_quiz_categories',
+			'manage_qsm_quiz_answer_label',
+			'view_qsm_quiz_result'
+		)) );
+		$author_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+			'edit_published_qsm_quizzes',
+			'publish_qsm_quizzes'
+		)) );
+		$contributor_capabilities = apply_filters( 'qsm_default_user_capabilities', $qsm_common_capabilities );
 		$user = wp_get_current_user();
 		$roles = (array) $user->roles;
 		$rolename = $roles[0];
     
 		$role = get_role($rolename);
 		// Remove all capabilities first
-		foreach ($default_capabilities['administrator'] as $cap) {
+		foreach ($administrator_capabilities as $cap) {
 			$role->remove_cap($cap);
 		}
-		// Then add capabilities based on the current user role
-		if (isset($default_capabilities[$rolename])) {
-			foreach ($default_capabilities[$rolename] as $cap) {
+		// Dynamically determine the capabilities to add based on the current user role
+		$capabilities_to_add = ${$rolename . '_capabilities'};
+		if (isset($capabilities_to_add)) {
+			foreach ($capabilities_to_add as $cap) {
 				$role->add_cap($cap);
 			}
 		}
-		do_action('qsm_add_user_capabilities_after');
 	}
 
 	public function parent_file( $file_name ) {
