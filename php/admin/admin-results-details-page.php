@@ -143,10 +143,6 @@ function qsm_generate_results_details_tab() {
         'result_id'              => $result_id,
         'results'                => $results,
     ) );
-    echo '<pre>';
-    print_r($results_array);
-    echo '</pre>';
-    die;
 
     //convert to preferred date format
 	$results_array = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($results_array);
