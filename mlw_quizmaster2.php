@@ -724,7 +724,7 @@ class MLWQuizMasterNext {
 			'edit_published_qsm_quizzes',
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
-			'view_qsm_quiz_result'
+			'view_qsm_quiz_result',
 		);
 		$editor_capabilities = array(
 			'publish_qsm_quizzes',
@@ -734,33 +734,41 @@ class MLWQuizMasterNext {
 			'delete_qsm_quizzes',
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
-			'view_qsm_quiz_result'
+			'view_qsm_quiz_result',
 		);
-		$author_capabilities = [
+		$author_capabilities = array(
 			'edit_published_qsm_quizzes',
-			'publish_qsm_quizzes'
-		];
-		$contributor_capabilities = [
+			'publish_qsm_quizzes',
+		);
+		$contributor_capabilities = array(
 			'read_qsm_quiz',
 			'edit_qsm_quiz',
 			'edit_qsm_quizzes',
-			'create_qsm_quizzes'
-		];
-		$user = wp_get_current_user();
-		$roles = (array) $user->roles;
+			'create_qsm_quizzes',
+		);
+	
+		$user     = wp_get_current_user();
+		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-		
-		$role = get_role($rolename);
-		// Remove all capabilities first
-		foreach ($administrator_capabilities as $cap) {
-			$role->remove_cap($cap);
+	
+		$role = get_role( $rolename );
+	
+		// Remove all capabilities first.
+		foreach ( $administrator_capabilities as $cap ) {
+			$role->remove_cap( $cap );
 		}
-		// Dynamically determine the capabilities to add based on the current user role
+	
+		// Dynamically determine the capabilities to add based on the current user role.
 		$capabilities_to_add = ${$rolename . '_capabilities'};
-		$capabilities_to_add = apply_filters('qsm_default_user_capabilities', array_unique(array_merge($capabilities_to_add, $contributor_capabilities)));
-		if (isset($capabilities_to_add)) {
-			foreach ($capabilities_to_add as $cap) {
-				$role->add_cap($cap);
+		$capabilities_to_add = apply_filters(
+			'qsm_default_user_capabilities',
+			array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ),
+			$user
+		);
+	
+		if ( isset( $capabilities_to_add ) ) {
+			foreach ( $capabilities_to_add as $cap ) {
+				$role->add_cap( $cap );
 			}
 		}
 	}
