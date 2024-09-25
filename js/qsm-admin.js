@@ -612,11 +612,6 @@ var QSMAdmin;
         MicroModal.show('modal-proctor-quiz');
     });
 
-    $(document).on('click', '.quiz_style_tab_content #qsm_ultimate_progress_bar', function (e) {
-        e.preventDefault();
-        MicroModal.show('qsm-ultimate-upgrade');
-    });
-
     jQuery(document).on('click', '#btn_export', function (e) {
         e.preventDefault();
         jQuery.ajax({
@@ -790,13 +785,6 @@ jQuery('.quiz_text_tab').click(function (e) {
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
-    if(current_id == 'qsm_button_custom_class') {
-        jQuery("#postbox-container-1").css("display", "none");
-        if ( jQuery("#qsm_button_custom_class").find('.left-bar').length == 0 ) {
-            jQuery(".qsm-text-main-wrap #post-body-content").css("background", "transparent");
-            jQuery(".quiz_text_tab_content").css("border", "none");
-        }
-    }
     jQuery('#' + current_id).show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
@@ -1400,12 +1388,12 @@ function qsm_is_substring_in_array( text, array ) {
                 }
             }
             addTinyMceAutoSuggestion();
-            
+
             $( document ).on( 'click', '.qsm-extra-shortcode-popup', function( e ) {
                 e.preventDefault();
                 MicroModal.show('modal-extra-shortcodes');
             } );
-        
+
             jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
                 let $matchingElement = $(`#results-page-${total}`);
                 let $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
@@ -3785,6 +3773,7 @@ var import_button;
                     })
                         .done(function (results) {
                             if (results.status) {
+                                jQuery(document).trigger('qsm_after_save_results');
                                 QSMAdmin.displayAlert(qsm_admin_messages.results_page_saved, 'success');
                             } else {
                                 QSMAdmin.displayAlert( qsm_admin_messages.results_page_save_error + ' ' + qsm_admin_messages.results_page_saved, 'error');

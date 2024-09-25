@@ -841,10 +841,6 @@ ul.changelog li.update div.two:before {
 	align-items: stretch;
 	border-bottom: 1px solid #cecece;
 }
-/* .qsm-sub-text-tab-menu {
-	display: inline-block;
-	width: 100%;
-} */
 .save-text-changes {
 	display: flex;
 	flex-direction: row-reverse;
@@ -926,8 +922,8 @@ ul.changelog li.update div.two:before {
 	padding: 10px 6px;
 	width: 100%;
 }
-.qsm-sub-text-tab-menu a,
 .qsm-sub-tab-menu a,
+.qsm-sub-text-tab-menu a,
 .qsm_tab_content a {
 	cursor: pointer;
 	text-decoration: none;
@@ -3125,7 +3121,8 @@ input#duplicate_questions {
 .auto-fold .option-page-result-page-tab-footer {
     left: 36px;
 }
-.option-page-option-tab-footer, .option-page-result-page-tab-footer, .contact-page-tab-footer {
+.option-page-option-tab-footer, .option-page-result-page-tab-footer,
+.contact-page-tab-footer {
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -3152,7 +3149,9 @@ input#duplicate_questions {
 	width: 60%;
 }
 @media screen and (min-width: 1900px) {
-	.option-page-option-tab-footer,.option-page-result-page-tab-footer,.contact-page-tab-footer {
+	.option-page-option-tab-footer,
+	.option-page-result-page-tab-footer,
+	.contact-page-tab-footer {
 		flex-direction: row-reverse;
 	}
 }
@@ -3189,25 +3188,19 @@ input#duplicate_questions {
 	margin: 0 10px 0 0;
 }
 @media screen and (min-width: 961px) {
-	.folded .option-page-result-page-tab-footer {
+	.folded .option-page-result-page-tab-footer,
+	.folded .contact-page-tab-footer,
+	.folded .option-page-option-tab-footer {
 		left: 36px !important;
 	}
-	.option-page-result-page-tab-footer {
-		left: 160px !important;
-	}
-	.folded .option-page-option-tab-footer,
-	.folded .contact-page-tab-footer {
-		left: 36px !important;
-	}
-	.option-page-option-tab-footer,
-	.contact-page-tab-footer {
+	.option-page-result-page-tab-footer,
+	.contact-page-tab-footer,
+	.option-page-option-tab-footer {
 		left: 160px !important;
 	}
 }
 @media screen and (max-width: 782px) {
-	.option-page-result-page-tab-footer {
-		left: 0 !important;
-	}
+	.option-page-result-page-tab-footer,
 	.option-page-option-tab-footer,
 	.contact-page-tab-footer {
 		left: 0 !important;
@@ -3470,7 +3463,6 @@ input#preferred-date-format-custom {
     content: "";
     width: calc(100% + 26px);
 }
-
 /* Extra shortcodes popup */
 button.button.qsm-extra-shortcode-popup {
 	display: flex;
