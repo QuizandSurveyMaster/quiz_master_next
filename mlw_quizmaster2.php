@@ -759,10 +759,10 @@ class MLWQuizMasterNext {
 		}
 	
 		// Dynamically determine the capabilities to add based on the current user role.
-		$capabilities_to_add = 'subscriber' !== $rolename ? ${$rolename . '_capabilities'} : [];
+		$capabilities_to_add = isset(${$rolename . '_capabilities'}) ? ${$rolename . '_capabilities'} : array();
 		$capabilities_to_add = apply_filters(
 			'qsm_default_user_capabilities',
-			'subscriber' !== $rolename ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : [],
+			isset(${$rolename . '_capabilities'}) ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : [],
 			$user
 		);
 	
