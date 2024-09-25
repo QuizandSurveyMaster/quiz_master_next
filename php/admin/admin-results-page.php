@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_generate_admin_results_page() {
 
 	// Makes sure user has the right privledges.
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'view_qsm_quiz_result' ) ) {
 		return;
 	}
 
