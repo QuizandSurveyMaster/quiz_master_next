@@ -710,8 +710,7 @@ class MLWQuizMasterNext {
 	}
 
 	public function qsm_add_user_capabilities() {
-		$qsm_common_capabilities = ['read_qsm_quiz', 'edit_qsm_quiz', 'edit_qsm_quizzes', 'create_qsm_quizzes'];
-		$administrator_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+		$administrator_capabilities = array(
 			'duplicate_qsm_quiz',
 			'delete_qsm_quiz',
 			'edit_others_qsm_quizzes',
@@ -726,8 +725,8 @@ class MLWQuizMasterNext {
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result'
-		)) );
-		$editor_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+		);
+		$editor_capabilities = array(
 			'publish_qsm_quizzes',
 			'edit_published_qsm_quizzes',
 			'delete_published_qsm_quizzes',
@@ -736,16 +735,21 @@ class MLWQuizMasterNext {
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result'
-		)) );
-		$author_capabilities = apply_filters( 'qsm_default_user_capabilities', array_merge($qsm_common_capabilities, array(
+		);
+		$author_capabilities = [
 			'edit_published_qsm_quizzes',
 			'publish_qsm_quizzes'
-		)) );
-		$contributor_capabilities = apply_filters( 'qsm_default_user_capabilities', $qsm_common_capabilities );
+		];
+		$contributor_capabilities = [
+			'read_qsm_quiz',
+			'edit_qsm_quiz',
+			'edit_qsm_quizzes',
+			'create_qsm_quizzes'
+		];
 		$user = wp_get_current_user();
 		$roles = (array) $user->roles;
 		$rolename = $roles[0];
-    
+		
 		$role = get_role($rolename);
 		// Remove all capabilities first
 		foreach ($administrator_capabilities as $cap) {
@@ -753,6 +757,7 @@ class MLWQuizMasterNext {
 		}
 		// Dynamically determine the capabilities to add based on the current user role
 		$capabilities_to_add = ${$rolename . '_capabilities'};
+		$capabilities_to_add = apply_filters('qsm_default_user_capabilities', array_unique(array_merge($capabilities_to_add, $contributor_capabilities)));
 		if (isset($capabilities_to_add)) {
 			foreach ($capabilities_to_add as $cap) {
 				$role->add_cap($cap);
