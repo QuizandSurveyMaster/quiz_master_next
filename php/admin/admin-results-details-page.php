@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @since 4.4.0
 */
 function qsm_generate_result_details() {
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'view_qsm_quiz_result' ) ) {
 		return;
 	}
 	global $mlwQuizMasterNext;
@@ -68,6 +68,11 @@ function qsm_generate_results_details_tab() {
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+
+    $quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+    if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
+        return;
+    }
 
     //Get the data for comments
     $quiz_options = $mlwQuizMasterNext->quiz_settings->get_setting( 'quiz_options');
