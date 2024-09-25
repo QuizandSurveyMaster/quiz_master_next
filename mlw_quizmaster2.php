@@ -754,7 +754,6 @@ class MLWQuizMasterNext {
 				'read_qsm_quiz',
 				'edit_qsm_quiz',
 				'edit_qsm_quizzes',
-				'read_private_qsm_quizzes',
 				'create_qsm_quizzes'
 			)
 		);
