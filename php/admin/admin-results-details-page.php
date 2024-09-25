@@ -69,8 +69,9 @@ function qsm_generate_results_details_tab() {
 	$quiz_id = intval( $results_data->quiz_id );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
-    $quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
-    if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
+    $quiz_post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d", $quiz_id ) );
+    $post_author = get_post_field( 'post_author', $quiz_post_id );
+    if ( ( current_user_can( 'view_qsm_quiz_result' ) && $post_author == get_current_user_id() ) || ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
         return;
     }
 
