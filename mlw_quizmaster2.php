@@ -657,24 +657,24 @@ class MLWQuizMasterNext {
 			'map_meta_cap'        => true,
 		);
 		$quiz_args['capabilities'] = array(
-			'edit_post'             => 'edit_qsm_quiz',
-			'edit_post'             => 'duplicate_qsm_quiz',
-			'read_post'             => 'read_qsm_quiz',
-			'delete_post'           => 'delete_qsm_quiz',
-			'edit_posts'            => 'edit_qsm_quizzes',
-			'edit_others_posts'     => 'edit_others_qsm_quizzes',
-			'publish_posts'         => 'publish_qsm_quizzes',
-			'read_private_posts'    => 'read_private_qsm_quizzes',
-			'delete_posts'          => 'delete_qsm_quizzes',
-			'delete_private_posts'  => 'delete_private_qsm_quizzes',
-			'delete_published_posts'=> 'delete_published_qsm_quizzes',
-			'delete_others_posts'   => 'delete_others_qsm_quizzes',
-			'edit_private_posts'    => 'edit_private_qsm_quizzes',
-			'edit_published_posts'  => 'edit_published_qsm_quizzes',
-			'create_posts'          => 'create_qsm_quizzes',
-			'manage_categories'     => 'manage_qsm_quiz_categories',
-			'manage_categories'     => 'manage_qsm_quiz_answer_label',
-			'moderate_comments'     => 'view_qsm_quiz_result',
+			'edit_post'              => 'edit_qsm_quiz',
+			'edit_post'              => 'duplicate_qsm_quiz',
+			'read_post'              => 'read_qsm_quiz',
+			'delete_post'            => 'delete_qsm_quiz',
+			'edit_posts'             => 'edit_qsm_quizzes',
+			'edit_others_posts'      => 'edit_others_qsm_quizzes',
+			'publish_posts'          => 'publish_qsm_quizzes',
+			'read_private_posts'     => 'read_private_qsm_quizzes',
+			'delete_posts'           => 'delete_qsm_quizzes',
+			'delete_private_posts'   => 'delete_private_qsm_quizzes',
+			'delete_published_posts' => 'delete_published_qsm_quizzes',
+			'delete_others_posts'    => 'delete_others_qsm_quizzes',
+			'edit_private_posts'     => 'edit_private_qsm_quizzes',
+			'edit_published_posts'   => 'edit_published_qsm_quizzes',
+			'create_posts'           => 'create_qsm_quizzes',
+			'manage_categories'      => 'manage_qsm_quiz_categories',
+			'manage_categories'      => 'manage_qsm_quiz_answer_label',
+			'moderate_comments'      => 'view_qsm_quiz_result',
 		);
 
 		// Registers post type.
@@ -825,7 +825,7 @@ class MLWQuizMasterNext {
 				'delete_others_qsm_quizzes', 
 				'manage_qsm_quiz_categories', 
 				'manage_qsm_quiz_answer_label', 
-				'view_qsm_quiz_result' 
+				'view_qsm_quiz_result', 
 			);
 			
 			add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), $capabilities[1], 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
