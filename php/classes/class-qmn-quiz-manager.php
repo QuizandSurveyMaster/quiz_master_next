@@ -2566,7 +2566,7 @@ class QMNQuizManager {
 		$question_required = ( 0 === maybe_unserialize( $question['question_settings'] )['required'] );
 		$multi_response    = ( '4' === $question_type || '10' === $question_type || '14' === $question_type );
 
-		return self::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response );
+		return self::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response, $question );
 
 	}
 	/**
@@ -2579,7 +2579,7 @@ class QMNQuizManager {
 	 * @param  array $multi_response
 	 * @return string $max_min_result
 	 */
-	public static function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response ) {
+	public static function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response, $question ) {
 		$max_min_result = array(
 			'max_point' => 0,
 			'min_point' => 0,
@@ -2627,7 +2627,7 @@ class QMNQuizManager {
 			$max_min_result['max_point'] = max( $max_value_array );
 			$max_min_result['min_point'] = min( $min_value_array );
 		}
-		return $max_min_result;
+		return apply_filters( 'qsm_max_min_points_conditions_result', $max_min_result, $question_required, $question );
 	}
 
 	/**
