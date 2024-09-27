@@ -20,12 +20,12 @@ function qsm_generate_quiz_options() {
 	global $mlwQuizMasterNext;
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$quiz_post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d", $quiz_id ) );
-
+	$post_author = get_post_field( 'post_author', $quiz_post_id, true );
 	//user role addon is active
 	apply_filters( 'qsm_user_role_permission_page', true );
 
 	// Check if the current user has the capability to edit the quiz.
-	if ( ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
+	if ( ( ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) || intval($post_author) != get_current_user_id()) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
 		wp_die( 'You are not allowed to edit this quiz, You need higher permission!' );
 		return;
 	}
