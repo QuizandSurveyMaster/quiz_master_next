@@ -637,7 +637,7 @@ function mlw_qmn_variable_date( $content, $results ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_finished_time( $content, $mlw_quiz_array ) {
-	$date    = date_i18n( get_option( 'time_format' ), $mlw_quiz_array['time_taken'] );
+	$date = isset( $mlw_quiz_array['time_taken'] ) ? date_i18n( get_option( 'time_format' ), $mlw_quiz_array['time_taken'] ) : '';
 	$content = str_replace( '%TIME_FINISHED%', $date, $content );
 	return $content;
 }
