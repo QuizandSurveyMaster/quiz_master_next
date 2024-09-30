@@ -2042,11 +2042,11 @@ class QSM_Install {
 			// Update 9.1.3
 			$mlw_questions_table = $wpdb->prefix . 'mlw_questions';
 			if ( 'linked_question' != $wpdb->get_var( "SHOW COLUMNS FROM $mlw_questions_table LIKE 'linked_question'" ) ) {
-				$sql = "ALTER TABLE $mlw_questions_table ADD linked_question TEXT NULL DEFAULT '' AFTER category"; 
-				$results = $wpdb->query( $sql ); 
-				$update_sql = "UPDATE $mlw_questions_table SET linked_question = '' WHERE linked_question IS NULL";
-				$results = $wpdb->query( $update_sql );
-			}       
+				$sql = 'ALTER TABLE ' . $mlw_questions_table . ' ADD linked_question TEXT NULL DEFAULT \'\' AFTER category';
+				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
+				$update_sql = 'UPDATE ' . $mlw_questions_table . ' SET linked_question = \'\' WHERE linked_question IS NULL';
+				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $update_sql );
+			}
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );

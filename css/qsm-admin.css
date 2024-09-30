@@ -1487,10 +1487,11 @@ span.qsm-linked-list-item {
     background: #f0f0f1;
 }
 
-div.qsm-linked-list-inside a.qsm-unlink-the-question {
+div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	color: #DC3232;
 	font-weight: 500;
 	max-width: 60px;
+	cursor: pointer;
 }
 
 .qsm-linked-list-div-block p {

@@ -2803,7 +2803,6 @@ var qsm_link_button;
                             // Ensure each quizName is a valid non-empty string
                             if (quizName && typeof quizName == 'string' && quizName.trim().length > 0) {
                                 let link = $('<span></span>')
-                                    .attr('href', 'javascript:void(0)')
                                     .attr('class', 'qsm-linked-list-item')
                                     .attr('title', quizName)
                                     .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
@@ -2814,8 +2813,7 @@ var qsm_link_button;
                         });
                     
                         // Add an "Unlink" link at the end
-                        let unlink = $('<a></a>')
-                            .attr('href', 'javascript:void(0)')
+                        let unlink = $('<span></span>')
                             .attr('class', 'qsm-unlink-the-question button button-danger')
                             .attr('data-question-id', questionID)
                             .text(qsm_admin_messages.unlink_question);
@@ -3298,7 +3296,7 @@ var qsm_link_button;
                 $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                     event.preventDefault();
                     qsm_link_button = '';
-                    $(this).text('').text(qsm_admin_messages.adding_question);
+                    $(this).text(qsm_admin_messages.adding_question);
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
@@ -3308,7 +3306,7 @@ var qsm_link_button;
                 
                 $(document).on('click', '.qsm-popup-bank .link-question', function (event) {
                     event.preventDefault();
-                    $(this).text('').text(qsm_admin_messages.linking_question);
+                    $(this).text(qsm_admin_messages.linking_question);
                     qsm_link_button = $(this);
                     $('.link-question').addClass('disable_import');
                     // 1 for the linking the questions default is 0
@@ -3332,7 +3330,6 @@ var qsm_link_button;
                             nonce: qsmQuestionSettings.unlinkNonce
                         },
                         success: function (response) {
-                            console.log(response);
                             $(document).find('.qsm-linked-list-div-block').remove();
                         }
                     });

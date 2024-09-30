@@ -1275,7 +1275,7 @@ add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_q
  */
 function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
     global $wpdb; 
-    $current_linked_questions = array();
+	$all_ids = array();
     foreach ( $question_ids as $id ) {
         $sql = $wpdb->prepare(
             "SELECT linked_question FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d",
@@ -1283,13 +1283,7 @@ function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
         );
         $linked_question = $wpdb->get_var($sql);
         if ( ! empty($linked_question) ) {
-            $current_linked_questions[] = $linked_question;
-        }
-    }
-    $all_ids = array();
-    foreach ( $current_linked_questions as $linked_questions ) {
-        if ( ! empty($linked_questions) ) {
-            $all_ids = array_merge($all_ids, explode(',', $linked_questions));
+			$all_ids = array_merge($all_ids, explode(',', $linked_question));
         }
     }
     return $all_ids;
