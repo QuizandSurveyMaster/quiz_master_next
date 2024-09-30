@@ -362,9 +362,6 @@ class QSM_Questions {
 			throw new Exception( $msg );
 		}
 
-		// echo"<pre>";
-		// print_r($data);
-		// echo"</pre>";
 		$base_question_id = $question_id;
 		$quiz_questions_array = array();
 		$quiz_questions_array[ intval( $data['quiz_id'] ) ] = $question_id;

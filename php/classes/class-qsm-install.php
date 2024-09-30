@@ -2047,7 +2047,7 @@ class QSM_Install {
 				$update_sql = "UPDATE $mlw_questions_table SET linked_question = '' WHERE linked_question IS NULL";
 				$results = $wpdb->query( $update_sql );
 			}       
-}
+		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );
 		}

@@ -2048,15 +2048,16 @@ var qsm_link_button;
                 },
                 addQuestionFromQuestionBank: function (questionID, is_linking = 0) {
                     QSMAdmin.displayAlert(qsm_admin_messages.adding_question, 'info');
+                    let isLinkingData = is_linking == 1 ? questionID : 0;
                     var model = new QSMQuestion.question({
                         id: questionID,
-                        is_linking: is_linking == 1 ? questionID : 0,
+                        is_linking: isLinkingData
                     });
                     model.fetch({
                         headers: {
                             'X-WP-Nonce': qsmQuestionSettings.nonce
                         },
-                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
+                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID + '?is_linking=' + isLinkingData,
                         success: QSMQuestion.questionBankSuccess,
                         error: QSMAdmin.displayError
                     });
@@ -2249,7 +2250,6 @@ var qsm_link_button;
                     if(qsm_link_button) {
                         qsm_link_button.html('').html(qsm_admin_messages.link_question);
                     }
-                    // qsm_link_button ? qsm_link_button.html('').html(qsm_admin_messages.link_question) : "";
                     if(import_button){
                         import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
                     }
