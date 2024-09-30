@@ -453,11 +453,11 @@ input#image_size-width {
 .change-answer-editor-label>#change-answer-editor {
 	width: auto;
 }
-a.import-button.button.disable_import {
+a.import-button.button.disable_import, a.link-question.button.disable_import {
 	position: relative;
 	z-index: 0;
 }
-a.import-button.button.disable_import::before {
+a.import-button.button.disable_import::before, a.link-question.button.disable_import::before {
 	content: '';
 	background: rgba(255, 255, 255, 0.5);
 	width: 100%;
