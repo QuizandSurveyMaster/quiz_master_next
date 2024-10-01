@@ -672,8 +672,6 @@ class MLWQuizMasterNext {
 			'edit_private_posts'     => 'edit_private_qsm_quizzes',
 			'edit_published_posts'   => 'edit_published_qsm_quizzes',
 			'create_posts'           => 'create_qsm_quizzes',
-			'manage_categories'      => 'manage_qsm_quiz_categories',
-			'manage_categories'      => 'manage_qsm_quiz_answer_label',
 			'moderate_comments'      => 'view_qsm_quiz_result',
 		);
 
@@ -705,6 +703,12 @@ class MLWQuizMasterNext {
 			'show_in_rest'      => true,
 			'show_tagcloud'     => false,
 			'rewrite'           => false,
+			'capabilities'     => array(
+				'manage_terms' => 'manage_qsm_quiz_categories',
+				'edit_terms'   => 'edit_qsm_quiz_categories',
+				'delete_terms'  => 'delete_qsm_quiz_categories',
+				'assign_terms'  => 'assign_qsm_quiz_categories',
+			),
 		);
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
@@ -725,16 +729,22 @@ class MLWQuizMasterNext {
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result',
+			'edit_qsm_quiz_categories',
+			'assign_qsm_quiz_categories',
+			'delete_qsm_quiz_categories',
 		);
 		$editor_capabilities = array(
 			'publish_qsm_quizzes',
 			'edit_published_qsm_quizzes',
+			'edit_others_qsm_quizzes',
 			'delete_published_qsm_quizzes',
 			'delete_qsm_quiz',
 			'delete_qsm_quizzes',
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result',
+			'edit_qsm_quiz_categories',
+			'assign_qsm_quiz_categories',
 		);
 		$author_capabilities = array(
 			'edit_published_qsm_quizzes',
