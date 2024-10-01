@@ -729,16 +729,16 @@ class QSM_Install {
 		// Registers loggedin_user_contact setting
 		$field_array = array(
 			'id'         => 'loggedin_user_contact',
-			'label'      => __( 'Show contact form to logged in users', 'quiz-master-next' ),
+			'label'      => __( 'Hide contact form to logged in users', 'quiz-master-next' ),
 			'type'       => 'radio',
 			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
-					'value' => 0,
+					'value' => 1,
 				),
 				array(
 					'label' => __( 'No', 'quiz-master-next' ),
-					'value' => 1,
+					'value' => 0,
 				),
 			),
 			'default'    => 0,
