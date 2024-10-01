@@ -3300,7 +3300,7 @@ var qsm_link_button;
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
-                    // MicroModal.close('modal-2');
+                    MicroModal.close('modal-2');
                 });
 
                 
@@ -3311,6 +3311,7 @@ var qsm_link_button;
                     $('.link-question').addClass('disable_import');
                     // 1 for the linking the questions default is 0
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
+                    MicroModal.close('modal-2');
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-linked-list-view-button', function () {
