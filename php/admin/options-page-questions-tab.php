@@ -1173,15 +1173,19 @@ function qsm_delete_question_from_database() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
-	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
+	$base_question_id = $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
 		global $wpdb, $mlwQuizMasterNext;
+		$update_qpages_after_delete = array();
 		$dependent_question_ids = qsm_get_unique_linked_question_ids_to_remove(array( $question_id ) );
 		$question_id = array_merge($dependent_question_ids, array( $question_id ) );
 		$question_id = array_unique($question_id);
 		$question_id = array_filter($question_id);
 		$placeholders = array_fill( 0, count( $question_id ), '%d' );
-		
+		if ( ! empty($dependent_question_ids) ) {
+			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_id ] );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($dependent_question_ids);
+		}
 		// Construct the query with placeholders
 		$query = sprintf(
 			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
@@ -1192,6 +1196,13 @@ function qsm_delete_question_from_database() {
 		$query = $wpdb->prepare( $query, $question_id );
 		$results = $wpdb->query( $query );
 		if ( $results ) {
+			if ( ! empty($update_qpages_after_delete) ) {
+				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
+					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
+					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $aftervalue['pages'] );
+				}
+			}
 			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
@@ -1230,13 +1241,16 @@ function qsm_bulk_delete_question_from_database() {
 	} );
 
 	// Sanitize and validate the IDs
-	$question_id = array_map( 'intval', $question_id );
+	$base_question_ids = $question_id = array_map( 'intval', $question_id );
 	
 	if ( ! empty( $question_id ) ) {
 		global $wpdb;
-
+		$update_qpages_after_delete = array();
 		$dependent_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
-		
+		if ( ! empty($dependent_question_ids) ) {
+			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_id ] );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($dependent_question_ids);
+		}
 		$question_id = array_merge($dependent_question_ids, $question_id);
 		$question_id = array_unique($question_id); // Ensure all IDs are unique
 		$question_id = array_filter($question_id); // Remove empty values
@@ -1254,6 +1268,13 @@ function qsm_bulk_delete_question_from_database() {
 		
 		$results = $wpdb->query( $query );
 		if ( $results ) {
+			if ( ! empty($update_qpages_after_delete) ) {
+				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
+					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
+					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $aftervalue['pages'] );
+				}
+			}
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -1265,6 +1286,60 @@ function qsm_bulk_delete_question_from_database() {
 }
 add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_question_from_database' );
 
+/**
+ * returns pages and qpages for dependent question ids for update after deleting questions
+ *
+ * @param array $dependent_question_ids An array of question IDs.
+ * @since 9.1.3
+ */
+function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
+	$comma_seprated_ids = implode( ',', array_unique($dependent_question_ids) );
+	$qpages_array = array();
+	if ( ! empty($comma_seprated_ids) ) {
+		global $wpdb, $mlwQuizMasterNext; 
+		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
+		if ( ! empty($quiz_results) ) {
+			foreach ( $quiz_results as $key => $single_quiz ) {
+				$quiz_id         = $single_quiz->quiz_id;
+				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+				$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+				$clone_qpages = $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+				if ( ! empty($clone_qpages) ) {
+					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
+						if ( ! empty($clonevalue['questions']) ) {
+							if ( in_array($single_quiz->question_id, $clonevalue['questions']) ) {
+								$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
+								$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
+							}
+						}
+					}
+					$qpages = $clone_qpages;
+				}
+				//merge duplicate questions
+				$all_questions   = array();
+				foreach ( $pages as $page_key => $questions ) {
+					$page_questions  = array();
+					$questions       = array_unique( $questions );
+					foreach ( $questions as $id ) {
+						if ( ! in_array( $id, $all_questions, true ) ) {
+							$page_questions[] = $id;
+						}
+					}
+					$all_questions       = array_merge( $all_questions, $questions );
+					$pages[ $page_key ]    = $page_questions;
+					if ( isset( $qpages[ $page_key ] ) ) {
+						$qpages[ $page_key ]['questions'] = $page_questions;
+					}
+				}
+				$qpages_array[ $quiz_id ] = array(
+					'pages'  => $pages,
+					'qpages' => $qpages,
+				);
+			}
+		}
+	}
+	return $qpages_array;
+}
 
 /**
  * Get Unique Linked Question IDs
