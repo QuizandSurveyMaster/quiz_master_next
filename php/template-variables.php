@@ -69,6 +69,9 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_poin
  * Show particular question answer.
  */
 function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
+	// echo '<pre>';
+	// print_r($mlw_quiz_array);
+	// echo '</pre>';
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%QUESTION_ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%QUESTION_ANSWER_', '%' );
@@ -1366,12 +1369,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					if ( in_array( $value , $user_text_array_multiple_response, true ) ) {
 						if ( is_numeric( $key ) ) { $key = ""; }
 							$caption_name = '<span class="qsm_image_result_caption">'.$key.'</span>';
-							$images_answer .= "$open_span_tag<img src='".esc_url( $value )."'  style='" . esc_attr( $size_style ) . "'/>'".esc_html( $caption_name.$close_span_without_br );
+							$images_answer .= $open_span_tag . '<img src="'. esc_url( $value ) . '"  style="' . esc_attr( $size_style ) . '"/>' . $caption_name.$close_span_without_br;
 						}
 				}
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$images_answer", $mlw_question_answer_display );
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $images_answer, $mlw_question_answer_display );
 			} else {
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'  style='" . esc_attr( $size_style ) . "'/>'". esc_html($close_span_with_br.$caption ), $mlw_question_answer_display );
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $open_span_tag . '<img src="' . esc_url( $image_url ) . '"  style="' . esc_attr( $size_style ) . '"/>'. $close_span_with_br.$caption, $mlw_question_answer_display );
 			}
 		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
