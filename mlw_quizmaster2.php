@@ -765,7 +765,9 @@ class MLWQuizMasterNext {
 	
 		// Remove all capabilities first.
 		foreach ( $administrator_capabilities as $cap ) {
-			$role->remove_cap( $cap );
+			if ( $role->has_cap( $cap ) ) {
+                $role->remove_cap( $cap );
+            }
 		}
 	
 		// Dynamically determine the capabilities to add based on the current user role.
