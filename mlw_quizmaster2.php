@@ -345,8 +345,8 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	private function add_hooks() {
+		add_action( 'admin_menu', array( $this, 'qsm_add_user_capabilities' ) );
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'qsm_add_user_capabilities' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 		if ( empty( get_option('qsm_check_database_structure') ) || ! empty($_GET['qsm_check_database_structure']) ) {
@@ -760,7 +760,8 @@ class MLWQuizMasterNext {
 		$user     = wp_get_current_user();
 		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-	
+		// print_r($roles);
+		// die;
 		$role = get_role( $rolename );
 	
 		// Remove all capabilities first.
