@@ -760,8 +760,7 @@ class MLWQuizMasterNext {
 		$user     = wp_get_current_user();
 		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-		// print_r($roles);
-		// die;
+		
 		$role = get_role( $rolename );
 	
 		// Remove all capabilities first.
