@@ -529,7 +529,7 @@ function qsm_results_overview_tab_content() {
 								<div class="row-actions">
 									<span style="color: green; font-size: 16px;">
 									<?php
-									if ( ( current_user_can( 'view_qsm_quiz_result' ) && $quiz_infos[ $x ]->user == get_current_user_id() ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+									if ( ( current_user_can( 'view_qsm_quiz_result' ) && $quiz_infos[ $x ]->user == get_current_user_id() ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
 									?>
 										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> | 
 									<?php } ?>
