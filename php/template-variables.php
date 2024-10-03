@@ -69,9 +69,6 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_poin
  * Show particular question answer.
  */
 function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
-	// echo '<pre>';
-	// print_r($mlw_quiz_array);
-	// echo '</pre>';
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%QUESTION_ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%QUESTION_ANSWER_', '%' );
