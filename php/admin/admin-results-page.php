@@ -529,11 +529,11 @@ function qsm_results_overview_tab_content() {
 								<div class="row-actions">
 									<span style="color: green; font-size: 16px;">
 									<?php
-									if ( ( current_user_can( 'view_qsm_quiz_result' ) && $quiz_infos[ $x ]->user == get_current_user_id() ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
+									if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $quiz_infos[ $x ]->user ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
 									?>
-										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> | 
+										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
 									<?php } ?>
-										<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> | 
+										<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
 										<a class="<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_class ); ?>" href='<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_link ); ?>'><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
 									</span>
 								</div>

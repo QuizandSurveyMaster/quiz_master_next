@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.1.3
+ * Version: 9.2.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.1.3';
+	public $version = '9.2.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -703,11 +703,11 @@ class MLWQuizMasterNext {
 			'show_in_rest'      => true,
 			'show_tagcloud'     => false,
 			'rewrite'           => false,
-			'capabilities'     => array(
+			'capabilities'      => array(
 				'manage_terms' => 'manage_qsm_quiz_categories',
 				'edit_terms'   => 'edit_qsm_quiz_categories',
-				'delete_terms'  => 'delete_qsm_quiz_categories',
-				'assign_terms'  => 'assign_qsm_quiz_categories',
+				'delete_terms' => 'delete_qsm_quiz_categories',
+				'assign_terms' => 'assign_qsm_quiz_categories',
 			),
 		);
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
@@ -756,20 +756,20 @@ class MLWQuizMasterNext {
 			'edit_qsm_quizzes',
 			'create_qsm_quizzes',
 		);
-	
+
 		$user     = wp_get_current_user();
 		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-		
+
 		$role = get_role( $rolename );
-	
+
 		// Remove all capabilities first.
 		foreach ( $administrator_capabilities as $cap ) {
 			if ( $role->has_cap( $cap ) ) {
                 $role->remove_cap( $cap );
             }
 		}
-	
+
 		// Dynamically determine the capabilities to add based on the current user role.
 		$capabilities_to_add = isset(${$rolename . '_capabilities'}) ? ${$rolename . '_capabilities'} : array();
 		$capabilities_to_add = apply_filters(
@@ -777,7 +777,7 @@ class MLWQuizMasterNext {
 			isset(${$rolename . '_capabilities'}) ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : [],
 			$user
 		);
-	
+
 		if ( isset( $capabilities_to_add ) ) {
 			foreach ( $capabilities_to_add as $cap ) {
 				$role->add_cap( $cap );
@@ -830,16 +830,16 @@ class MLWQuizMasterNext {
 			$settings = (array) get_option( 'qmn-settings' );
 
 			apply_filters('qsm_user_role_menu_for_subscriber', true);
-			
-			$capabilities = array( 
-				'delete_published_qsm_quizzes', 
-				'create_qsm_quizzes', 
-				'delete_others_qsm_quizzes', 
-				'manage_qsm_quiz_categories', 
-				'manage_qsm_quiz_answer_label', 
-				'view_qsm_quiz_result', 
+
+			$capabilities = array(
+				'delete_published_qsm_quizzes',
+				'create_qsm_quizzes',
+				'delete_others_qsm_quizzes',
+				'manage_qsm_quiz_categories',
+				'manage_qsm_quiz_answer_label',
+				'view_qsm_quiz_result',
 			);
-			
+
 			add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), $capabilities[1], 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), $capabilities[2], 'qsm_dashboard', 'qsm_generate_dashboard_page', 0 );
 			if ( $enabled && 'cancelled' !== $enabled ) {
