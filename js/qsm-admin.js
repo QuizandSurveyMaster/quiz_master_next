@@ -2246,9 +2246,11 @@ var qsm_link_button;
 
                     $('.import-button, .link-question').removeClass('disable_import');
                     QSMQuestion.countTotal();
-                    import_button ? import_button.html('').html(qsm_admin_messages.add_question) : "";
+                    if(import_button){
+                        import_button.html(qsm_admin_messages.add_question);
+                    }
                     if(qsm_link_button) {
-                        qsm_link_button.html('').html(qsm_admin_messages.link_question);
+                        qsm_link_button.html(qsm_admin_messages.link_question);
                     }
                     if(import_button){
                         import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");

@@ -940,7 +940,7 @@ function qsm_process_unlink_question_from_list_by_question_id( $question_id ) {
 		$updated_linked_list = implode(',', array_filter($current_links));
 		$linked_ids = explode(',', $updated_linked_list);
 		foreach ( $linked_ids as $linked_id ) {
-			$result = $wpdb->update(
+			$wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				array( 'linked_question' => $updated_linked_list ),
 				array( 'question_id' => intval($linked_id) ),
@@ -1248,7 +1248,7 @@ function qsm_bulk_delete_question_from_database() {
 		$update_qpages_after_delete = array();
 		$dependent_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
 		if ( ! empty($dependent_question_ids) ) {
-			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_id ] );
+			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_ids ] );
 			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($dependent_question_ids);
 		}
 		$question_id = array_merge($dependent_question_ids, $question_id);
@@ -1299,18 +1299,16 @@ function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
 		global $wpdb, $mlwQuizMasterNext; 
 		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
 		if ( ! empty($quiz_results) ) {
-			foreach ( $quiz_results as $key => $single_quiz ) {
+			foreach ( $quiz_results as $single_quiz ) {
 				$quiz_id         = $single_quiz->quiz_id;
 				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 				$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 				$clone_qpages = $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 				if ( ! empty($clone_qpages) ) {
 					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
-						if ( ! empty($clonevalue['questions']) ) {
-							if ( in_array($single_quiz->question_id, $clonevalue['questions']) ) {
-								$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
-								$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
-							}
+						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions']) ) {
+							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
+							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
 						}
 					}
 					$qpages = $clone_qpages;

@@ -509,7 +509,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 				$quiz_name_by_question = array();
 				if ( ! empty($comma_seprated_ids) ) {
 					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
-					foreach ( $quiz_results as $key => $value ) {
+					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
 						$quiz_name_by_question[] = $quiz_name_in_loop;

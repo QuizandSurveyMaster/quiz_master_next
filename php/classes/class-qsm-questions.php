@@ -366,7 +366,6 @@ class QSM_Questions {
 		$quiz_questions_array = array();
 		$quiz_questions_array[ intval( $data['quiz_id'] ) ] = $question_id;
 		$linked_questions_array[] = $question_id;
-		$imploded_question_ids = $question_id;
 		if ( isset($linked_question) && "" != $linked_question ) {
 			$expolded_question_array = explode(',', $linked_question);
 			$linked_questions_array = array_merge($expolded_question_array, $linked_questions_array);
@@ -383,7 +382,7 @@ class QSM_Questions {
 		$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
 		foreach ( $quiz_questions_array as $quiz_id => $question_id_loop ) {
 			$values['quiz_id'] = intval( $quiz_id );
-			$results     = $wpdb->update(
+			$wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				$values,
 				array( 'question_id' => intval($question_id_loop) ),
