@@ -575,7 +575,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$linked_question_ids = array_filter( isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() );
 				if ( ! empty($linked_question_ids) ) {
 					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $linked_question_ids ) . ")" );
-					foreach ( $quiz_results as $key => $value ) {
+					foreach ( $quiz_results as $value ) {
 						if ( ! in_array($value->question_id, $procesed_question_ids) ) {
 							$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 							$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
