@@ -471,10 +471,10 @@ class QSM_Quiz_Settings {
 		}
 
 		$text = $this->get_setting('quiz_text');
-		if (is_array($text)) {
-			foreach ($text as $key => $value) {
-				if (!empty($value)) {
-					$quiz_options[$key] = $value;
+		if ( is_array($text) ) {
+			foreach ( $text as $key => $value ) {
+				if ( ! empty($value) ) {
+					$quiz_options[ $key ] = $value;
 				}
 			}
 		}
