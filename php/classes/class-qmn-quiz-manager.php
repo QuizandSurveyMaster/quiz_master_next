@@ -597,8 +597,7 @@ class QMNQuizManager {
 			$correct_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_answer_text, "quiz_quick_result_correct_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$wrong_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text );
 			$wrong_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz_quick_result_wrong_answer_text-{$qmn_array_for_variables['quiz_id']}" );
-			$quiz_processing_message = isset( $qmn_quiz_options->quiz_processing_message ) ? $qmn_quiz_options->quiz_processing_message : '';
-			$quiz_processing_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" );
+			$quiz_processing_message = isset( $qmn_quiz_options->quiz_processing_message ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" ) : '';
 			$quiz_limit_choice = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_limit_choice, "quiz_quiz_limit_choice-{$qmn_array_for_variables['quiz_id']}" );
 			$qmn_json_data = array(
 				'quiz_id'                            => $qmn_array_for_variables['quiz_id'],
