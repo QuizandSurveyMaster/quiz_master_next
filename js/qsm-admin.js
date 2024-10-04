@@ -1899,6 +1899,7 @@ var QSMContact;
  */
 var QSMQuestion;
 var import_button;
+var qsm_link_button;
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
         if (window.location.href.indexOf('&tab') == -1 || window.location.href.indexOf('tab=questions') > 0) {
@@ -2041,19 +2042,22 @@ var import_button;
                         type: question.type,
                         question: questionText,
                         category: question.category,
-                        quiz_name: question.quiz_name
+                        quiz_name: question.quiz_name,
+                        linked_question: question.linked_question.join(',')
                     }));
                 },
-                addQuestionFromQuestionBank: function (questionID) {
+                addQuestionFromQuestionBank: function (questionID, is_linking = 0) {
                     QSMAdmin.displayAlert(qsm_admin_messages.adding_question, 'info');
+                    let isLinkingData = is_linking == 1 ? questionID : 0;
                     var model = new QSMQuestion.question({
-                        id: questionID
+                        id: questionID,
+                        is_linking: isLinkingData
                     });
                     model.fetch({
                         headers: {
                             'X-WP-Nonce': qsmQuestionSettings.nonce
                         },
-                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
+                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID + '?is_linking=' + isLinkingData,
                         success: QSMQuestion.questionBankSuccess,
                         error: QSMAdmin.displayError
                     });
@@ -2240,11 +2244,23 @@ var import_button;
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.savePages();
 
-                    $('.import-button').removeClass('disable_import');
+                    $('.import-button, .link-question').removeClass('disable_import');
                     QSMQuestion.countTotal();
-                    import_button.html('').html(qsm_admin_messages.add_question);
-                    import_button.attr("onclick", "return confirm(" + qsm_admin_messages.confirm_message + "' '" + qsm_admin_messages.import_question_again + ")");
+                    if(import_button){
+                        import_button.html(qsm_admin_messages.add_question);
+                    }
+                    if(qsm_link_button) {
+                        qsm_link_button.html(qsm_admin_messages.link_question);
+                    }
+                    if(import_button){
+                        import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
+                    }
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
+                    console.log(qsm_link_button);
+                    if(qsm_link_button == ''){
+                        $(document).find('.qsm-linked-list-inside').hide().empty();
+                        $(document).find('.qsm-linked-list-div-block').hide();
+                    }
                     // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
@@ -2780,6 +2796,31 @@ var import_button;
                         $('#image_size_area').show();
                     }
 
+                    let link_quizzes_array = question.get('link_quizzes');
+                    
+                    $('.qsm-linked-list-inside').hide().empty();
+                    $('.qsm-linked-list-div-block').hide();
+                    if (typeof link_quizzes_array == 'object' && link_quizzes_array != null && Object.keys(link_quizzes_array).length > 0) {
+                        Object.values(link_quizzes_array).forEach(function(quizName) {
+                            // Ensure each quizName is a valid non-empty string
+                            if (quizName && typeof quizName == 'string' && quizName.trim().length > 0) {
+                                let link = $('<span></span>')
+                                    .attr('class', 'qsm-linked-list-item')
+                                    .attr('title', quizName)
+                                    .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
+                    
+                                $('.qsm-linked-list-div-block').show();
+                                $('.qsm-linked-list-inside').append(link);
+                            }
+                        });
+                    
+                        // Add an "Unlink" link at the end
+                        let unlink = $('<span></span>')
+                            .attr('class', 'qsm-unlink-the-question button button-danger')
+                            .attr('data-question-id', questionID)
+                            .text(qsm_admin_messages.unlink_question);
+                            $('.qsm-linked-list-inside').append(unlink);
+                    }
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
                 openEditPagePopup: function (pageID) {
@@ -3256,16 +3297,50 @@ var import_button;
 
                 $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                     event.preventDefault();
-                    $(this).text('').text(qsm_admin_messages.adding_question);
+                    qsm_link_button = '';
+                    $(this).text(qsm_admin_messages.adding_question);
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
                     MicroModal.close('modal-2');
                 });
 
+                
+                $(document).on('click', '.qsm-popup-bank .link-question', function (event) {
+                    event.preventDefault();
+                    $(this).text(qsm_admin_messages.linking_question);
+                    qsm_link_button = $(this);
+                    $('.link-question').addClass('disable_import');
+                    // 1 for the linking the questions default is 0
+                    QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
+                    MicroModal.close('modal-2');
+                });
+
+                jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-linked-list-view-button', function () {
+                    let $this = jQuery(this);
+                    let $inside = $this.parents('.qsm-linked-list-div-block').find('.qsm-linked-list-inside');
+                    $inside.toggle();
+                    $inside.is(':visible') ? $this.text(qsmQuestionSettings.linked_close) : $this.text(qsmQuestionSettings.linked_view);
+                });
+
+                jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
+                    $.ajax({
+                        url: ajaxurl,
+                        method: 'POST',
+                        data: {
+                            action: 'qsm_unlink_question_from_list',
+                            question_id: jQuery(this).data('question-id'),
+                            nonce: qsmQuestionSettings.unlinkNonce
+                        },
+                        success: function (response) {
+                            $(document).find('.qsm-linked-list-div-block').remove();
+                        }
+                    });
+                });
                 //Click on selected question button.
                 $('.qsm-popup-bank').on('click', '#qsm-import-selected-question', function (event) {
                     var $total_selction = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
+                    qsm_link_button = '';
                     if ($total_selction === 0) {
                         alert(qsm_admin_messages.no_question_selected);
                     } else {
