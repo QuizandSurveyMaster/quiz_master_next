@@ -345,8 +345,8 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	private function add_hooks() {
+		add_action( 'admin_menu', array( $this, 'qsm_add_user_capabilities' ) );
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'qsm_add_user_capabilities' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 		if ( empty( get_option('qsm_check_database_structure') ) || ! empty($_GET['qsm_check_database_structure']) ) {
@@ -672,8 +672,6 @@ class MLWQuizMasterNext {
 			'edit_private_posts'     => 'edit_private_qsm_quizzes',
 			'edit_published_posts'   => 'edit_published_qsm_quizzes',
 			'create_posts'           => 'create_qsm_quizzes',
-			'manage_categories'      => 'manage_qsm_quiz_categories',
-			'manage_categories'      => 'manage_qsm_quiz_answer_label',
 			'moderate_comments'      => 'view_qsm_quiz_result',
 		);
 
@@ -705,6 +703,12 @@ class MLWQuizMasterNext {
 			'show_in_rest'      => true,
 			'show_tagcloud'     => false,
 			'rewrite'           => false,
+			'capabilities'     => array(
+				'manage_terms' => 'manage_qsm_quiz_categories',
+				'edit_terms'   => 'edit_qsm_quiz_categories',
+				'delete_terms'  => 'delete_qsm_quiz_categories',
+				'assign_terms'  => 'assign_qsm_quiz_categories',
+			),
 		);
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
@@ -725,16 +729,22 @@ class MLWQuizMasterNext {
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result',
+			'edit_qsm_quiz_categories',
+			'assign_qsm_quiz_categories',
+			'delete_qsm_quiz_categories',
 		);
 		$editor_capabilities = array(
 			'publish_qsm_quizzes',
 			'edit_published_qsm_quizzes',
+			'edit_others_qsm_quizzes',
 			'delete_published_qsm_quizzes',
 			'delete_qsm_quiz',
 			'delete_qsm_quizzes',
 			'manage_qsm_quiz_categories',
 			'manage_qsm_quiz_answer_label',
 			'view_qsm_quiz_result',
+			'edit_qsm_quiz_categories',
+			'assign_qsm_quiz_categories',
 		);
 		$author_capabilities = array(
 			'edit_published_qsm_quizzes',
@@ -750,12 +760,14 @@ class MLWQuizMasterNext {
 		$user     = wp_get_current_user();
 		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-	
+		
 		$role = get_role( $rolename );
 	
 		// Remove all capabilities first.
 		foreach ( $administrator_capabilities as $cap ) {
-			$role->remove_cap( $cap );
+			if ( $role->has_cap( $cap ) ) {
+                $role->remove_cap( $cap );
+            }
 		}
 	
 		// Dynamically determine the capabilities to add based on the current user role.

@@ -180,16 +180,16 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				$quiz_id = get_post_meta( $post->ID, 'quiz_id', true );
 				if ( ! empty( $quiz_id ) ) {
 					$actions = array();
-					if ( current_user_can( 'edit_qsm_quiz', $post->ID ) ) {
+					if ( ( current_user_can( 'edit_qsm_quiz', $post->ID ) && $post->post_author == get_current_user_id() ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
 						$actions['edit'] = '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>';
 					}
-					if ( current_user_can( 'duplicate_qsm_quiz', $post->ID ) ) {
+					if ( ( current_user_can( 'duplicate_qsm_quiz', $post->ID ) && $post->post_author == get_current_user_id() ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
 						$actions['duplicate'] = '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>';
 					}
-					if ( current_user_can( 'delete_published_qsm_quizzes' ) ) {
+					if ( ( current_user_can( 'delete_qsm_quiz', $post->ID ) && $post->post_author == get_current_user_id() ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
 						$actions['delete'] = '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>';
 					}
-					if ( current_user_can( 'view_qsm_quiz_result' ) ) {
+					if ( ( current_user_can( 'view_qsm_quiz_result' ) && $post->post_author == get_current_user_id() ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
 						$actions['view_result'] = '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>';
 					}
 					if ( empty( $settings['disable_quiz_public_link'] ) ) {

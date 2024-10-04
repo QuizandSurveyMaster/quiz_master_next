@@ -637,7 +637,7 @@ function mlw_qmn_variable_date( $content, $results ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_finished_time( $content, $mlw_quiz_array ) {
-	$date    = date_i18n( get_option( 'time_format' ), $mlw_quiz_array['time_taken'] );
+	$date = isset( $mlw_quiz_array['time_taken'] ) ? date_i18n( get_option( 'time_format' ), $mlw_quiz_array['time_taken'] ) : '';
 	$content = str_replace( '%TIME_FINISHED%', $date, $content );
 	return $content;
 }
@@ -1348,7 +1348,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$caption = "";
 			if ( ! empty($single_answer[3]) ) {
 				$caption_name = array_search($image_url, $image_list, true);
-				$caption = '<span class="qsm_image_result_caption">'.$caption_name.'</span>';
+				$caption = '<span class="qsm_image_result_caption">' . esc_html( $caption_name ) . '</span>';
 			}
 			if ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) {
 				$close_span_without_br = '</span>';
@@ -1365,13 +1365,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				foreach ( $image_list as $key => $value ) {
 					if ( in_array( $value , $user_text_array_multiple_response, true ) ) {
 						if ( is_numeric( $key ) ) { $key = ""; }
-							$caption_name = '<span class="qsm_image_result_caption">'.$key.'</span>';
-							$images_answer .= "$open_span_tag<img src='".esc_url( $value )."'  style='" . esc_attr( $size_style ) . "'/>'".esc_html( $caption_name.$close_span_without_br );
+							$caption_name = '<span class="qsm_image_result_caption">' .  esc_html( $key ) . '</span>';
+							$images_answer .= $open_span_tag . '<img src="'. esc_url( $value ) . '"  style="' . esc_attr( $size_style ) . '"/>' . $caption_name . $close_span_without_br;
 						}
 				}
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$images_answer", $mlw_question_answer_display );
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $images_answer, $mlw_question_answer_display );
 			} else {
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'  style='" . esc_attr( $size_style ) . "'/>'". esc_html($close_span_with_br.$caption ), $mlw_question_answer_display );
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $open_span_tag . '<img src="' . esc_url( $image_url ) . '"  style="' . esc_attr( $size_style ) . '"/>' . $close_span_with_br . $caption, $mlw_question_answer_display );
 			}
 		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
