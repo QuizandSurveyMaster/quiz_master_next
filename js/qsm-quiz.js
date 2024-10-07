@@ -169,15 +169,15 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
+			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
-				if(secondsRemaining <= 0) {
+				if(secondsRemaining < 0) {
 					secondsRemaining = 0;
-					secondsConsumed = 0;
 				}
 			}
 			var display = QSM.secondsToTimer(secondsRemaining);
-			if(qmn_quiz_data[quizID].advanced_timer.qsm_timer_count_upwards == 1){
+			if(qsm_timer_consumed_obj.qmn_count_upward_status == true){
 				display = QSM.secondsToTimer(secondsConsumed);
 			}
 			var systemTime = new Date().getTime() / 1000;
@@ -2084,3 +2084,6 @@ jQuery(document).keydown(function(event) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_end', event);
     }
 });
+const qsm_timer_consumed_obj = {
+	qmn_count_upward_status : false
+}
