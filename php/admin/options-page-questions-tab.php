@@ -887,7 +887,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
 /**
  * Unlinks a question from all quizzes it is associated with.
  * This function checks for a valid nonce, retrieves the question ID from the request.
- * 
+ *
  * @since 9.1.3
  * @return void
  */
@@ -1242,7 +1242,7 @@ function qsm_bulk_delete_question_from_database() {
 
 	// Sanitize and validate the IDs
 	$base_question_ids = $question_id = array_map( 'intval', $question_id );
-	
+
 	if ( ! empty( $question_id ) ) {
 		global $wpdb;
 		$update_qpages_after_delete = array();
@@ -1256,7 +1256,7 @@ function qsm_bulk_delete_question_from_database() {
 		$question_id = array_filter($question_id); // Remove empty values
 
 		$placeholders = array_fill( 0, count( $question_id ), '%d' );
-		
+
 		// Construct the query with placeholders
 		$query = sprintf(
 			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
@@ -1265,7 +1265,7 @@ function qsm_bulk_delete_question_from_database() {
 
 		// Prepare the query
 		$query = $wpdb->prepare( $query, $question_id );
-		
+
 		$results = $wpdb->query( $query );
 		if ( $results ) {
 			if ( ! empty($update_qpages_after_delete) ) {
@@ -1296,7 +1296,7 @@ function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
 	$comma_seprated_ids = implode( ',', array_unique($dependent_question_ids) );
 	$qpages_array = array();
 	if ( ! empty($comma_seprated_ids) ) {
-		global $wpdb, $mlwQuizMasterNext; 
+		global $wpdb, $mlwQuizMasterNext;
 		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
 		if ( ! empty($quiz_results) ) {
 			foreach ( $quiz_results as $single_quiz ) {
@@ -1306,7 +1306,7 @@ function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
 				$clone_qpages = $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 				if ( ! empty($clone_qpages) ) {
 					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
-						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions']) ) {
+						if ( ! empty($clonevalue['questions']) && in_array( intval( $single_quiz->question_id ), $clonevalue['questions'], true) ) {
 							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
 							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
 						}
@@ -1347,7 +1347,7 @@ function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
  * @since 9.1.3
  */
 function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
-    global $wpdb; 
+    global $wpdb;
 	$all_ids = array();
     foreach ( $question_ids as $id ) {
         $sql = $wpdb->prepare(

@@ -305,7 +305,7 @@ class QSM_Questions {
 			}elseif ( 0 == $data['is_linking'] ) {
 				$linked_question = '';
 			}
-		}       
+		}
 
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
@@ -322,7 +322,7 @@ class QSM_Questions {
 			'deleted'              => 0,
 		);
 		$values = apply_filters( 'qsm_save_question_data', $values );
-		
+
 		$types = array(
 			'%d',
 			'%s',
@@ -389,11 +389,11 @@ class QSM_Questions {
 				$types,
 				array( '%d' )
 			);
-			
+
 			/**
 			 * Process Question Categories
 			 */
-			
+
 			$wpdb->delete(
 				$question_terms_table,
 				array(
@@ -420,14 +420,14 @@ class QSM_Questions {
 			/**
 			 * Hook after saving question
 			 */
-			
-			 if ( $is_creating && $base_question_id == $question_id_loop ) {
+
+			if ( $is_creating && $base_question_id == $question_id_loop ) {
 				do_action( 'qsm_question_added', $question_id_loop, $values );
 			} else {
 				do_action( 'qsm_question_updated', $question_id_loop, $values );
 			}
-			do_action( 'qsm_saved_question', $question_id_loop, $values );  
-	
+			do_action( 'qsm_saved_question', $question_id_loop, $values );
+
 		}
 		return $base_question_id;
 	}
