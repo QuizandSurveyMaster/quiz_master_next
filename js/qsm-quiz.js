@@ -171,11 +171,15 @@ var qsmTimerInterval = [];
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
-				if(secondsRemaining < 0) {
+				if(secondsRemaining <= 0) {
 					secondsRemaining = 0;
+					secondsConsumed = 0;
 				}
 			}
 			var display = QSM.secondsToTimer(secondsRemaining);
+			if(qmn_quiz_data[quizID].advanced_timer.qsm_timer_count_upwards == 1){
+				display = QSM.secondsToTimer(secondsConsumed);
+			}
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
 			if ('1' === qmn_quiz_data[quizID].not_allow_after_expired_time && systemTime > qmn_quiz_data[quizID].scheduled_time_end) {
