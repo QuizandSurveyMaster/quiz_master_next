@@ -162,6 +162,7 @@ var qsmTimerInterval = [];
 		 * @param int quizID The ID of the quiz.
 		 */
 		timer: function (quizID) {
+			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			qmn_quiz_data[quizID].timerRemaning -= 1;
 			qmn_quiz_data[quizID].timerConsumed += 1;
 			if (0 > qmn_quiz_data[quizID].timerRemaning) {
@@ -176,6 +177,9 @@ var qsmTimerInterval = [];
 				}
 			}
 			var display = QSM.secondsToTimer(secondsRemaining);
+			if(qsm_timer_consumed_obj.qmn_count_upward_status){
+				display = QSM.secondsToTimer(secondsConsumed);
+			}
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
 			if ('1' === qmn_quiz_data[quizID].not_allow_after_expired_time && systemTime > qmn_quiz_data[quizID].scheduled_time_end) {
@@ -2080,3 +2084,6 @@ jQuery(document).keydown(function(event) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_end', event);
     }
 });
+const qsm_timer_consumed_obj = {
+	qmn_count_upward_status : false
+}
