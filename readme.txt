@@ -239,7 +239,6 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 
 == Changelog ==
 = 9.2.0 ( October 07, 2024 ) =
-* Feature: Added an option to link a question to multiple quizzes
 * Bug: Resolved HTML tag issue with the %USER_ANSWER% variable
 * Bug: Fixed the issue with contact form position settings
 * Bug: Resolved warning issue in the %TIME_FINISHED% variable

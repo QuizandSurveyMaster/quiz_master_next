@@ -170,6 +170,7 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
+			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
 				if(secondsRemaining < 0) {
