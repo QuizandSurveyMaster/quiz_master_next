@@ -44,7 +44,7 @@ class QMN_Log_Manager
 		$settings = (array) get_option( 'qmn-settings' );
 		$log_args = array(
 			'labels'              => array( 'name' => 'QSM Logs' ),
-			'public'              => ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'],
+			'public'              => ! empty( $settings['enable_qsm_log'] ) && $settings['enable_qsm_log'] && current_user_can( 'switch_themes' ),
 			'query_var'           => false,
 			'publicly_queryable'  => false,
 			'rewrite'             => false,

@@ -179,18 +179,25 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				$settings    = (array) get_option( 'qmn-settings' );
 				$quiz_id = get_post_meta( $post->ID, 'quiz_id', true );
 				if ( ! empty( $quiz_id ) ) {
-					$actions = array(
-						'edit'         => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>',
-						'duplicate'    => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>',
-						'delete'       => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>',
-						'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
-					);
+					$actions = array();
+					if ( ( current_user_can( 'edit_qsm_quiz', $post->ID ) && get_current_user_id() == $post->post_author ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+						$actions['edit'] = '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>';
+					}
+					if ( ( current_user_can( 'duplicate_qsm_quiz', $post->ID ) && get_current_user_id() == $post->post_author ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+						$actions['duplicate'] = '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>';
+					}
+					if ( ( current_user_can( 'delete_qsm_quiz', $post->ID ) && get_current_user_id() == $post->post_author  ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
+						$actions['delete'] = '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>';
+					}
+					if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $post->post_author ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+						$actions['view_result'] = '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>';
+					}
 					if ( empty( $settings['disable_quiz_public_link'] ) ) {
 						$actions['view'] = '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>';
 					}
 					$actions           = apply_filters( 'qsm_quiz_actions_after', $actions, $post );
-					}
-		}
+				}
+			}
 			return $actions;
 		}
 
@@ -319,8 +326,10 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<div class="wrap qsm-quizes-page">
 					<h1>
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' );
-						$add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">'.esc_html__( 'Add New', 'quiz-master-next' ).'</a>';
-						echo apply_filters( 'qsm_add_quiz_after', $add_button ); ?>
+						if ( current_user_can( 'create_qsm_quizzes' ) ) {
+							$add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">' . esc_html__( 'Add New', 'quiz-master-next' ) . '</a>';
+						}
+						echo apply_filters( 'qsm_add_quiz_after', ! empty( $add_button ) ? $add_button : '' ); ?>
 					</h1>
 					<?php
 					if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {

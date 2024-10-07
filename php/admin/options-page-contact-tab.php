@@ -88,7 +88,7 @@ function qsm_options_contact_tab_content() {
 				</tr>
 				<tr valign="top">
 					<th scope="row" class="qsm-opt-tr">
-						<label for="loggedin_user_contact"><?php esc_html_e( 'Show contact form to logged in users', 'quiz-master-next' ); ?></label>
+						<label for="loggedin_user_contact"><?php esc_html_e( 'Hide contact form to logged in users', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 							<span class="qsm-tooltips"><?php esc_html_e( 'The information will still get saved if this option is disabled', 'quiz-master-next' ); ?></span>
 						</span>
@@ -96,11 +96,11 @@ function qsm_options_contact_tab_content() {
 					<td>
 						<fieldset class="buttonset buttonset-hide" data-hide="1">
 							<label for="loggedin_user_contact-0">
-								<input type="radio" id="loggedin_user_contact-0" name="loggedin_user_contact" value="1" <?php checked( $quiz_options['loggedin_user_contact'], '0', true )?>>
+								<input type="radio" id="loggedin_user_contact-1" name="loggedin_user_contact" value="1" <?php checked( $quiz_options['loggedin_user_contact'], '1', true )?>>
 								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
 							</label>
 							<label for="loggedin_user_contact-1">
-								<input type="radio" id="loggedin_user_contact-1" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], '1', true )?>>
+								<input type="radio" id="loggedin_user_contact-0" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], '0', true )?>>
 								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
 							</label>
 						</fieldset>
@@ -181,9 +181,6 @@ function qsm_contact_form_admin_ajax() {
 		$settings        = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		foreach ( $settings as $key => $val ) {
 			$quiz_options[ $key ] = $val;
-		}
-		if ( isset($settings['loggedin_user_contact']) ) {
-			$quiz_options['loggedin_user_contact'] = (1 == $settings['loggedin_user_contact']) ? 0 : 1;
 		}
 		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );
 	}

@@ -4,23 +4,34 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 9.1.3
+Stable tag: 9.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily create exams, generate leads, surveys and any type of quiz with our popular WordPress Quiz Plugin. Customize personalized results, emails, and create a leaderboard to enhance user engagement
+Create engaging quizzes, surveys, tests, & more, with the versatile quiz maker and survey plugin for WordPress. Perfect for gathering insights from any audience.
 
 == Description ==
 
-https://youtu.be/DyiCCNnDpHk?si=7nda3koRTGw7BW_J
-
-**Quiz and Survey Master** is the easiest quiz and survey maker plugin for creating quizzes, surveys, and forms on your WordPress website. Create everything from fun trivia quizzes to in-depth customer satisfaction assessments, using a user-friendly drag-and-drop interface. Go beyond basic questions with multimedia support for richer content, analyze results to gain valuable insights, and even integrate with email marketing services to capture leads. Quiz & Survey Master is a powerful tool to increase user engagement, gather valuable data, and build a stronger connection with your audience.
+**Quiz and Survey Master** is the easiest quiz and survey maker plugin for creating quizzes, surveys, and forms on your WordPress website. Create everything from fun trivia quizzes to in-depth customer satisfaction assessments, using a user-friendly drag-and-drop quiz maker interface. Go beyond basic questions with multimedia support for richer content, analyze results to gain valuable insights, and even integrate with email marketing services to capture leads. Quiz & Survey Master is a powerful WordPress plugin to increase user engagement, gather valuable data, and build a stronger connection with your audience.
 
 **Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)**
 
+https://youtu.be/DyiCCNnDpHk?si=7nda3koRTGw7BW_J
+
 ### CREATE UNLIMITED QUIZZES AND QUESTIONS
 
-Create without limits with QSM by crafting unlimited quizzes with endless questions in diverse formats. Utilize the built-in text editor to format text and incorporate images, audio, and video. Build forms, quizzes, and surveys that resonate with your audience, creating a fulfilling learning and engagement experience.
+Create without limits with our online quiz maker— QSM—to craft unlimited quizzes with endless questions in diverse formats. Utilize the built-in text editor to format text and incorporate images, audio, and video. Build forms, quizzes, and surveys that resonate with your audience, creating a fulfilling learning and engagement experience.
+
+This WordPress quiz maker allows you to create from lead generation quizzes, and customer satisfaction surveys, to assessments, personality tests, fun trivia quizzes, and more.
+
+### QUIZ DEMOS
+
+- [Personality Quiz](https://demo.quizandsurveymaster.com/personality-quiz/)
+- [Flashcard Demo](https://demo.quizandsurveymaster.com/flash-card-demo/)
+- [Quiz with Navigation](https://demo.quizandsurveymaster.com/quiz-with-navigation/)
+- [Science Quiz](https://demo.quizandsurveymaster.com/science-quiz/)
+- [Quiz with Leaderboard](https://demo.quizandsurveymaster.com/advanced-leaderboard-demo/)
+- [Mathematics Quiz](https://demo.quizandsurveymaster.com/interactive-maths-quiz/)
 
 ### DIVERSE RANGE OF QUESTIONS
 
@@ -39,11 +50,28 @@ Create quizzes, forms, or surveys with a variety of question types tailored to y
 - **Polar**: Answer by choosing a spot on the slider scale.
 - **Opt-in**: Use the checkbox selection to give permission/agree to a text.
 
-**Advanced Question Types** available in the pro plan:
 
-- **Matching Pairs**: Drag and drop answers vertically to match with the correct option.
-- **Radio Grid**: Choose one answer per row from a grid of options.
-- **Checkbox Grid**: Select multiple answers per row from a grid of options.
+Engage your audience effortlessly with our interactive quiz builder! Easily create tailored quizzes, forms, or surveys using diverse question types that align with your goals and make interaction fun.
+
+- **Multiple Choice**: Choose one correct answer option.
+- **Multiple Response**: Select multiple correct answer options.
+- **Dropdown**: Pick one correct answer from the dropdown menu options.
+- **Short Answer**: Provide concise written responses.
+- **Paragraph**: Write longer, detailed answers.
+- **Fill in the Blank**: Complete sentences with the correct missing words.
+- **Date**: Select a specific calendar date.
+- **File Upload**: Attach images, PDFs, and documents.
+- **Number**: Enter answers in numerical format.
+- **Captcha**: Verify identity with anti-bot check.
+- **Polar**: Answer by choosing a spot on the slider scale.
+- **Opt-in**: Use the checkbox selection to give permission/agree to a text.
+
+ADVANCED QUESTION TYPES
+QSM comes with some advanced question types in their pro plan;
+
+- **Matching Pairs** - Drag and drop answers vertically to match with the correct option.
+- **Radio Grid** - Choose one answer per row from a grid of options.
+- **Checkbox Grid** - Select multiple answers per row from a grid of options.
 
 ### CREATE QUIZ WITH BLOCK EDITOR
 
@@ -55,7 +83,7 @@ With the QSM plugin, effortlessly create detailed market research surveys and sh
 
 ### FULLY CUSTOMIZABLE
 
-Customize every aspect of your quizzes and surveys:
+Create custom quiz and survey forms by customizing every aspect of your quizzes and surveys that users interact with, using our WordPress quiz builder’s flexible features;
 
 **Custom Style CSS**: Personalize the look and feel of your quizzes and surveys to match your brand and style perfectly.
 
@@ -64,6 +92,10 @@ Customize every aspect of your quizzes and surveys:
 **Button Labels**: Tailor button labels such as start, submit, or retake quiz to improve user experience and align with your quiz’s goal.
 
 **Template Variables**: Use variables to generate custom messages for users and humanize their quiz experience.
+
+### RESPONSIVE DESIGN
+
+Quiz and Survey Master ensures that your WordPress forms, quizzes, and surveys look and perform flawlessly on any device and browser, thanks to its responsive quiz design. This WordPress quiz maker offers smooth performance, even when using its various themes. You can also create unlimited questions without lag and easily share your quizzes with an audience.
 
 ### DISPLAY SCORE-BASED CUSTOM RESULTS
 
@@ -154,6 +186,24 @@ This section describes how to install the plugin and get it working.
 
 == Frequently Asked Questions ==
 
+= How do I get started with QSM - A free quiz maker in WordPress? =
+
+The quickest way to build a quiz is using the QSM - Block Editor in WordPress. Simply navigate to a New Page or Post, select the QSM Block, and add a new quiz. Enter the quiz's name, set advanced options if required, and click Create Quiz. From there, start adding questions and options, choosing question types from the right-side panel, and Save your draft. Once ready, click Publish to post the quiz on the WordPress website.
+
+Alternatively, you can create a quiz or survey using the default method, which offers more features and settings. If you have started a quiz in the block editor, simply save the draft and go to QSM > Quizzes/Surveys to edit your existing quiz or add a new one to continue building it with full customization options.
+
+= Can this plugin be translated? =
+
+Yes, it’s completely possible! With integration to the WPML plugin, this online quiz tool enables you to translate your quizzes and surveys into multiple languages. For more information, refer to the documentation on translating the QSM WordPress plugin.
+
+= How can I get access to all advanced features? =
+
+To access advanced features, integrations, and themes, you can upgrade to the QSM All Access plan. The pro license gives you access to our 40 add-ons such as advanced assessment, flashcards, email integrations, advanced analytics, and 8 premium themes
+
+= Can I create paid quizzes and surveys? =
+
+Yes, this is achievable by our Payment Integration add-on. Using PayPal and Stripe, you can easily add payments to your online quizzes and surveys, allowing you to monetize your content easily.
+
 = Can I display different content based on user responses? =
 
 Absolutely! With QSM, you can create conditional logic-based quizzes and surveys, where specific questions or content are displayed based on the user's previous responses. This feature is particularly useful for creating personalized experiences, such as personality quizzes or branching surveys.
@@ -164,8 +214,7 @@ Yes, QSM allows you to collect and analyze user data from your quizzes and surve
 
 = Is QSM compatible with other plugins and themes? =
 
-QSM is designed to be compatible with most WordPress plugins and themes. However, in case of any conflicts or issues, our team provides comprehensive documentation, including common conflict solutions and guidelines for theme compatibility.
-
+As a WordPress quiz maker, QSM is designed to be compatible with most other plugins and themes. However, in case of any conflicts or issues, our team provides comprehensive documentation, including common conflict solutions and guidelines for theme compatibility.
 
 == Screenshots ==
 
@@ -189,11 +238,18 @@ QSM is designed to be compatible with most WordPress plugins and themes. However
 18. Database
 
 == Changelog ==
+= 9.2.0 ( October 04, 2024 ) =
+* Feature: Added an option to link a question to multiple quizzes
+* Bug: Resolved HTML tag issue with the %USER_ANSWER% variable
+* Bug: Fixed the issue with contact form position settings
+* Bug: Resolved warning issue in the %TIME_FINISHED% variable
+* Enhancement: Optimized performance for random question logic
+* Enhancement: Improved user permissions and added additional security checks
+
 = 9.1.3 ( September 12, 2024 ) =
 * Feature: Added placeholder customization for short answer and paragraph questions
 * Bug: Resolved vulnerability issue with question settings
 * Bug: Fixed issue with undefined page redirection
-* Bug: Enter key issue resolved in paragraph question type
 
 = 9.1.2 ( August 22, 2024 ) =
 * Bug: Resolved issue preventing global settings from being saved
