@@ -71,6 +71,7 @@ function qsm_options_styling_tab_content() {
 		<li>
 			<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
 		</li>
+		<?php do_action( 'qsm_add_style_sub_menu_after' ); ?>
 	</ul>
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">

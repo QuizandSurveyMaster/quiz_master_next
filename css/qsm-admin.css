@@ -1378,7 +1378,7 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
-.form-table td fieldset label {
+.qsm_tab_content .form-table td fieldset label {
 	margin-right: 20px !important;
 	width: 100%;
 }
@@ -1458,6 +1458,8 @@ td.scheduled_time_start {
 	background: #fff;
 	box-sizing: border-box;
 }
+
+
 .qsm-text-main-wrap #postbox-container-1 {
 	position: relative;
 	background: #fff;

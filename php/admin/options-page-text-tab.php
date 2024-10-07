@@ -40,6 +40,7 @@ function mlw_options_text_tab_content() {
 			<li>
 				<a href="javascript:void(0)" data-id="qsm_custom_label" class="quiz_text_tab"><?php esc_html_e( 'Labels', 'quiz-master-next' ); ?></a>
 			</li>
+			<?php do_action( 'qsm_add_list_menu_text_tab_after', $variable_list ); ?>
 		</ul>
 	</div>
 	<div class="qsm-text-main-wrap">

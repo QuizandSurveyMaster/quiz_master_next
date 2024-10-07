@@ -470,9 +470,13 @@ class QSM_Quiz_Settings {
 			$quiz_options = array_merge( $quiz_options, $options );
 		}
 
-		$text = $this->get_setting( 'quiz_text' );
-		if ( is_array( $text ) ) {
-			$quiz_options = array_merge( $quiz_options, $text );
+		$text = $this->get_setting('quiz_text');
+		if ( is_array($text) ) {
+			foreach ( $text as $key => $value ) {
+				if ( ! empty($value) ) {
+					$quiz_options[ $key ] = $value;
+				}
+			}
 		}
 
 		// Return as old object model
