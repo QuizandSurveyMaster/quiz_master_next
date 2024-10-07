@@ -2029,6 +2029,26 @@ var qsm_link_button;
                     }
                     if ( 1 > questions.length ) {
                         $('#question-bank').append('<div style="margin-top: 70px;text-align: center;" >' + qsm_admin_messages.questions_not_found + '</div>');
+                    } else {
+                        $('.question-bank-question').each(function () {
+                            let questionId = $(this).data('question-id');
+                            if (QSMQuestion.questions.some(q => q.get('id') == questionId)) {
+                                let $linkButton = $(this).find('.link-question');
+                                if ($linkButton.length) {
+                                    $linkButton.prop('disabled', true).addClass('disabled'); 
+                                }
+                            }
+                            QSMQuestion.questions.each(function (question) {
+                                let merged_questions = question.get('merged_question');
+                                let questionsArray = merged_questions ? merged_questions.split(',').map(q => q.trim()) : [];
+                                questionsArray.forEach(function (id) { 
+                                    let parentElement = $('.question-bank-question[data-question-id="' + id + '"]');
+                                    if (parentElement.length) {
+                                        parentElement.remove(); // Remove the element if it exists
+                                    }
+                                });
+                            });                            
+                        });
                     }
                 },
                 addQuestionToQuestionBank: function (question) {
@@ -3324,6 +3344,7 @@ var qsm_link_button;
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
+                    var to_be_unlink_question = jQuery(this).data('question-id');
                     $.ajax({
                         url: ajaxurl,
                         method: 'POST',
@@ -3334,6 +3355,8 @@ var qsm_link_button;
                         },
                         success: function (response) {
                             $(document).find('.qsm-linked-list-div-block').remove();
+                            let question = QSMQuestion.questions.get(to_be_unlink_question);
+                            question.set('merged_question', '');
                         }
                     });
                 });

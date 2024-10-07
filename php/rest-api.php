@@ -500,7 +500,8 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					if ( isset( $question['linked_question'] ) && '' == $question['linked_question'] ) {
 						$comma_seprated_ids = $is_linking;
 					} else {
-						$expolded_question_array = explode(',', $question['linked_question']);
+						$linked_question = isset($question['linked_question']) ? $question['linked_question'] : '';
+						$exploded_question_array = explode(',', $linked_question);
 						$expolded_question_array[] = $is_linking;
 						$comma_seprated_ids = implode( ',', array_unique($expolded_question_array) );
 					}
