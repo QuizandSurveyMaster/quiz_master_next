@@ -177,7 +177,7 @@ var qsmTimerInterval = [];
 				}
 			}
 			var display = QSM.secondsToTimer(secondsRemaining);
-			if(qsm_timer_consumed_obj.qmn_count_upward_status == true){
+			if(qsm_timer_consumed_obj.qmn_count_upward_status){
 				display = QSM.secondsToTimer(secondsConsumed);
 			}
 			var systemTime = new Date().getTime() / 1000;
