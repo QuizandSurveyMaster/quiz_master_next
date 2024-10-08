@@ -132,7 +132,7 @@ var qsmTimerInterval = [];
 			// Calculates starting time.
 			var timerTotal = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
-			var timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
+			var timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID)) || 1;
 			var timerRemaning = timerTotal - timerConsumed;
 			if ('yes' == timerStarted && 0 < timerRemaning) {
 				seconds = parseInt(timerRemaning);
@@ -162,6 +162,7 @@ var qsmTimerInterval = [];
 		 * @param int quizID The ID of the quiz.
 		 */
 		timer: function (quizID) {
+			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			qmn_quiz_data[quizID].timerRemaning -= 1;
 			qmn_quiz_data[quizID].timerConsumed += 1;
 			if (0 > qmn_quiz_data[quizID].timerRemaning) {
@@ -169,6 +170,7 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
+			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
 				if(secondsRemaining < 0) {
@@ -176,6 +178,9 @@ var qsmTimerInterval = [];
 				}
 			}
 			var display = QSM.secondsToTimer(secondsRemaining);
+			if(qsm_timer_consumed_obj.qmn_count_upward_status){
+				display = QSM.secondsToTimer(secondsConsumed);
+			}
 			var systemTime = new Date().getTime() / 1000;
 			systemTime = Math.round(systemTime);
 			if ('1' === qmn_quiz_data[quizID].not_allow_after_expired_time && systemTime > qmn_quiz_data[quizID].scheduled_time_end) {
@@ -357,7 +362,7 @@ var qsmTimerInterval = [];
 
 			// Calculates starting time.
 			let timerStarted = localStorage.getItem('mlw_started_quiz' + quizID);
-			let timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID));
+			let timerConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizID)) || 1;
 			let seconds = parseFloat(qmn_quiz_data[quizID].timer_limit) * 60;
 			let timerRemaning = seconds - timerConsumed;
 			if ('yes' == timerStarted && 0 < timerRemaning) {
@@ -2080,3 +2085,6 @@ jQuery(document).keydown(function(event) {
 		jQuery(document).trigger('qsm_keyboard_quiz_action_end', event);
     }
 });
+const qsm_timer_consumed_obj = {
+	qmn_count_upward_status : false
+}

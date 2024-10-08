@@ -274,7 +274,7 @@ class QMNQuizCreator {
 		$quizzes_table                = $wpdb->prefix . 'mlw_quizzes';
 
 		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
-		if ( empty( $quiz_post_id ) || ! current_user_can( 'delete_post', $quiz_post_id ) ) {
+		if ( ( empty( $quiz_post_id ) || ! current_user_can( 'delete_qsm_quiz', $quiz_post_id ) ) && ! current_user_can( 'administrator' ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
 			return;
 		}
@@ -397,7 +397,7 @@ class QMNQuizCreator {
 		global $wpdb;
 
 		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
-		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_post', $quiz_post_id ) ) {
+		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
 			return;
 		}

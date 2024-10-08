@@ -2240,10 +2240,14 @@ var import_button;
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.savePages();
 
-                    $('.import-button').removeClass('disable_import');
+                    $('.import-button, .link-question').removeClass('disable_import');
                     QSMQuestion.countTotal();
-                    import_button.html('').html(qsm_admin_messages.add_question);
-                    import_button.attr("onclick", "return confirm(" + qsm_admin_messages.confirm_message + "' '" + qsm_admin_messages.import_question_again + ")");
+                    if(import_button){
+                        import_button.html(qsm_admin_messages.add_question);
+                    }
+                    if(import_button){
+                        import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
+                    }
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
                     // $('#save-popup-button').trigger('click');
                 },
@@ -3256,7 +3260,7 @@ var import_button;
 
                 $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                     event.preventDefault();
-                    $(this).text('').text(qsm_admin_messages.adding_question);
+                    $(this).text(qsm_admin_messages.adding_question);
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
@@ -3773,6 +3777,7 @@ var import_button;
                     })
                         .done(function (results) {
                             if (results.status) {
+                                jQuery(document).trigger('qsm_after_save_results');
                                 QSMAdmin.displayAlert(qsm_admin_messages.results_page_saved, 'success');
                             } else {
                                 QSMAdmin.displayAlert( qsm_admin_messages.results_page_save_error + ' ' + qsm_admin_messages.results_page_saved, 'error');
