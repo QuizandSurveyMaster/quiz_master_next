@@ -77,6 +77,9 @@ class QSM_Fields {
 							case 'number':
 								$sanitized_value = isset( $_POST[ $key ] ) ? intval( $_POST[ $key ] ) : "";
 								break;
+							case 'image':
+								$sanitized_value = isset( $_POST[ $key ] ) ? esc_url_raw( wp_unslash( $_POST[ $key ] ) ) : "";
+								break;
 							default:
 								$sanitized_value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : "";
 								break;
