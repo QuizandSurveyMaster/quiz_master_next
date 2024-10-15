@@ -1194,6 +1194,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						}
 					} else {
 						$options        = array();
+						$question_correct_fill_answer_text = '';
 						foreach ( $total_answers as $key => $single_answer ) {
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
 								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
