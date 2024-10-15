@@ -756,11 +756,15 @@ class MLWQuizMasterNext {
 		);
 
 		$user     = wp_get_current_user();
+		if ( empty( $user->roles ) || ! is_array( $user->roles ) ) {
+			return;
+		}
 		$roles    = (array) $user->roles;
 		$rolename = $roles[0];
-
 		$role = get_role( $rolename );
-
+		if ( ! $role ) {
+			return;
+		}
 		// Remove all capabilities first.
 		foreach ( $administrator_capabilities as $cap ) {
 			if ( $role->has_cap( $cap ) ) {
