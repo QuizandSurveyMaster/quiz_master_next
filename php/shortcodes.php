@@ -183,12 +183,11 @@ function qsm_generate_fb_header_metadata() {
 			$sharing              = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );
 			$sharing              = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $results_array );
 			$default_fb_image     = QSM_PLUGIN_URL . 'assets/icon-200x200.png';
-			$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'result_page_fb_image', '' );
-			if ( empty( $get_fb_sharing_image ) ) {
-				$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
-			}
-			if ( '' !== $get_fb_sharing_image && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
-				$default_fb_image = $get_fb_sharing_image;
+			$fb_sharing_image_quiz_options = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'result_page_fb_image', '' );
+			$fb_sharing_image_quiz_text = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
+			$get_fb_sharing_image = ! empty($fb_sharing_image_quiz_options) ? $fb_sharing_image_quiz_options : $fb_sharing_image_quiz_text;
+			if ( ! empty($get_fb_sharing_image) && filter_var($get_fb_sharing_image, FILTER_VALIDATE_URL) ) {
+				$default_fb_image = esc_url($get_fb_sharing_image);
 			}
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
