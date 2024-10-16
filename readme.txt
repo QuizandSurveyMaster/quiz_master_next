@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 9.2.0
+Stable tag: 9.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,22 +35,6 @@ This [WordPress quiz maker](https://quizandsurveymaster.com/free-quiz-maker-word
 
 ### DIVERSE RANGE OF QUESTIONS
 
-Create quizzes, forms, or surveys with a variety of question types tailored to your specific goals:
-
-- **Multiple Choice**: Choose one correct answer option.
-- **Multiple Response**: Select multiple correct answer options.
-- **Dropdown**: Pick one correct answer from the dropdown menu options.
-- **Short Answer**: Provide concise written responses.
-- **Paragraph**: Write longer, detailed answers.
-- **Fill in the Blank**: Complete sentences with the correct missing words.
-- **Date**: Select a specific calendar date.
-- **File Upload**: Attach images, PDFs, and documents.
-- **Number**: Enter answers in numerical format.
-- **Captcha**: Verify identity with anti-bot check.
-- **Polar**: Answer by choosing a spot on the slider scale.
-- **Opt-in**: Use the checkbox selection to give permission/agree to a text.
-
-
 Engage your audience effortlessly with our **interactive quiz builder**! Easily create tailored quizzes, forms, or surveys using diverse question types that align with your goals and make interaction fun.
 
 - **Multiple Choice**: Choose one correct answer option.
@@ -66,7 +50,7 @@ Engage your audience effortlessly with our **interactive quiz builder**! Easily 
 - **Polar**: Answer by choosing a spot on the slider scale.
 - **Opt-in**: Use the checkbox selection to give permission/agree to a text.
 
-ADVANCED QUESTION TYPES
+**ADVANCED QUESTION TYPES**
 QSM comes with some advanced question types in their pro plan;
 
 - **Matching Pairs** - Drag and drop answers vertically to match with the correct option.
@@ -238,6 +222,11 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 9.2.1 ( October 16, 2024 ) =
+* Bug: Resolved vulnerability issue with question settings
+* Bug: Fixed issue with fill in the blanks question type while using random answers
+* Bug: Fixed php warning with user permission function
+
 = 9.2.0 ( October 07, 2024 ) =
 * Bug: Resolved HTML tag issue with the %USER_ANSWER% variable
 * Bug: Fixed the issue with contact form position settings
