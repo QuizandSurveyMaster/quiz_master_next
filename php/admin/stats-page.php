@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function qmn_generate_stats_page() {
-	if ( ! current_user_can('moderate_comments') ) {
+	if ( ! current_user_can('delete_others_qsm_quizzes') ) {
 		return;
 	}
 	global $mlwQuizMasterNext;
