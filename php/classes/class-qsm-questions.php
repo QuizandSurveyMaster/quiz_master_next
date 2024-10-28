@@ -66,7 +66,7 @@ class QSM_Questions {
 	 * @param  int $quiz_id The ID of the quiz.
 	 * @return array The array of questions.
 	 */
-	public static function load_questions_by_pages( $quiz_id ) {
+	public static function load_questions_by_pages( $quiz_id, $caller = '' ) {
 		// Prepares our variables.
 		global $wpdb;
 		global $mlwQuizMasterNext;
@@ -77,7 +77,7 @@ class QSM_Questions {
 
 		// Gets the pages for the quiz.
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), $caller );
 
 		// Get all question IDs needed.
 		if ( ! empty( $pages ) ) {
@@ -125,7 +125,7 @@ class QSM_Questions {
 			}
 		} else {
 			// If we do not have pages on this quiz yet, use older load_questions and add page to them.
-			$questions = self::load_questions( $quiz_id );
+			$questions = self::load_questions( $quiz_id, $caller );
 			foreach ( $questions as $key => $question ) {
 				$questions[ $key ]['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 			}
@@ -140,7 +140,7 @@ class QSM_Questions {
 	 * @param  int $quiz_id The ID of the quiz.
 	 * @return array The array of questions.
 	 */
-	public static function load_questions( $quiz_id ) {
+	public static function load_questions( $quiz_id, $caller = '' ) {
 
 		global $wpdb;
 		$question_array = array();
@@ -178,6 +178,12 @@ class QSM_Questions {
 
 			$question_array[ $question['question_id'] ] = $question;
 		}
+		$question_array = ! empty( $caller ) ? $question_array : array_filter(
+			$question_array,
+			function ( $question ) {
+				return ! isset( $question['settings']['isPublished'] ) || $question['settings']['isPublished'] !== '0';
+			}
+		);
 		return apply_filters( 'qsm_load_questions', $question_array, $quiz_id );
 	}
 

@@ -54,8 +54,8 @@ function qsm_options_questions_tab_content() {
 	$form_type       = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system     = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 	$default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
-	$pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), 'admin' );
+	$db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array(), 'admin' );
 	$qpages          = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
@@ -513,7 +513,10 @@ function qsm_options_questions_tab_content() {
 								<div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
 									<div id="submitdiv" class="postbox ">
 										<h2 class="hndle ui-sortable-handle">
-											<span><?php esc_html_e( 'Publish', 'quiz-master-next' ); ?></span>
+											<label class="qsm-checkbox-switch small-switch">
+												<input type="checkbox" name="question_status" id="qsm-question-status" value="1"><span class="qsm-switch-slider round"></span>
+											</label>
+											<span id="qsm-question-status-text"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></span>
 											<span id="qsm-question-id"></span>
 										</h2>
 										<div class="inside">

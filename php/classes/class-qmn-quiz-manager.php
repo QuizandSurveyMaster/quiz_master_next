@@ -993,6 +993,13 @@ class QMNQuizManager {
 			</script>
 			<?php
 		}
+		$questions = array_filter(
+			$questions,
+			function ($question) {
+				$question_settings = unserialize( $question->question_settings );
+				return ! isset( $question_settings['isPublished'] ) || $question_settings['isPublished'] !== '0';
+			}
+		);
 		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 	}
 
