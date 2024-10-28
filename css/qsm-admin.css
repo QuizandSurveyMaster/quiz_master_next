@@ -1244,24 +1244,24 @@ h3.addon_category_name {
 	margin-left: 15px;
 }
 /* The switch - the box around the slider */
-.switch {
+.qsm-checkbox-switch {
 	position: relative;
 	display: inline-block;
 	width: 60px;
 	height: 34px;
 }
-.switch.small-switch {
+.qsm-checkbox-switch.small-switch {
 	width: 50px;
 	height: 22px;
 }
 /* Hide default HTML checkbox */
-.switch input[type="checkbox"] {
+.qsm-checkbox-switch input[type="checkbox"] {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
 /* The slider */
-.slider {
+.qsm-switch-slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -1272,7 +1272,7 @@ h3.addon_category_name {
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
-.slider:before {
+.qsm-switch-slider:before {
 	position: absolute;
 	content: "";
 	height: 26px;
@@ -1283,27 +1283,27 @@ h3.addon_category_name {
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
-.switch.small-switch .slider:before {
+.qsm-checkbox-switch.small-switch .qsm-switch-slider:before {
 	height: 14px;
 	width: 15px;
 	left: 5px;
 }
-input:checked+.slider {
+input:checked+.qsm-switch-slider {
 	background-color: #2196f3;
 }
-input:focus+.slider {
+input:focus+.qsm-switch-slider {
 	box-shadow: 0 0 1px #2196f3;
 }
-input:checked+.slider:before {
+input:checked+.qsm-switch-slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
 /* Rounded sliders */
-.slider.round {
+.qsm-switch-slider.round {
 	border-radius: 34px;
 }
-.slider.round:before {
+.qsm-switch-slider.round:before {
 	border-radius: 50%;
 }
 input#sc-shortcode-model-text, input#sc-shortcode-model-text-link {
