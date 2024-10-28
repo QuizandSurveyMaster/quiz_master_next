@@ -1600,7 +1600,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
  * @since  7.3.3
  */
 function qmn_sanitize_input_data( $data, $strip = false ) {
-	if ( $strip ) {
+	if ( $strip && is_string( $data ) ) {
 		$data = stripslashes( $data );
 	}
 	return maybe_unserialize( $data );
