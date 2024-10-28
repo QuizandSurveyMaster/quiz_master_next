@@ -514,9 +514,9 @@ function qsm_options_questions_tab_content() {
 									<div id="submitdiv" class="postbox ">
 										<h2 class="hndle ui-sortable-handle">
 											<label class="qsm-checkbox-switch small-switch">
-												<input type="checkbox" name="question_status" id="question-status" value="1"><span class="qsm-switch-slider round"></span>
+												<input type="checkbox" name="question_status" id="qsm-question-status" value="1"><span class="qsm-switch-slider round"></span>
 											</label>
-											<span id="question-status-text"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></span>
+											<span id="qsm-question-status-text"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></span>
 											<span id="qsm-question-id"></span>
 										</h2>
 										<div class="inside">

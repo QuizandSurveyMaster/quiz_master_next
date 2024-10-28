@@ -2751,7 +2751,7 @@ var import_button;
                     //Append extra settings
                     var all_setting = question.get('settings');
                     if ((typeof all_setting === 'undefined') || (all_setting && typeof all_setting.isPublished === 'undefined')) {
-                        $('#question-status').prop('checked', true).trigger('change');
+                        $('#qsm-question-status').prop('checked', true).trigger('change');
                     }
                     if (all_setting === null || typeof all_setting === "undefined") { } else {
                         $.each(all_setting, function (index, value) {
@@ -2772,9 +2772,9 @@ var import_button;
                             }
                             if (index == 'isPublished') {
                                 if ( all_setting.isPublished == 1 ) {
-                                    $('#question-status').prop('checked', true).trigger('change');
+                                    $('#qsm-question-status').prop('checked', true).trigger('change');
                                 } else {
-                                    $('#question-status').prop('checked', false).trigger('change');
+                                    $('#qsm-question-status').prop('checked', false).trigger('change');
                                 }
                             }
                         });
@@ -3214,12 +3214,12 @@ var import_button;
                     event.preventDefault();
                     $(this).parents('.questionElements').slideUp('slow');
                 });
-                $(document).on('change', '#question-status', function (event) {
+                $(document).on('change', '#qsm-question-status', function (event) {
                     event.preventDefault();
                     if($(this).is(':checked')){
-                        $(document).find('#question-status-text').html('Published');
+                        $(document).find('#qsm-question-status-text').html('Published');
                     } else {
-                        $(document).find('#question-status-text').html('Draft');
+                        $(document).find('#qsm-question-status-text').html('Draft');
                     }
                 });
                 $(document).on('click', '#save-popup-button', function (event) {
