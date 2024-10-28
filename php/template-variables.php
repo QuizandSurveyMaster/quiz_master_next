@@ -496,7 +496,10 @@ function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
 function qsm_contact_field_variable( $content, $results_array ) {
 	preg_match_all( '~%CONTACT_(.*?)%~i', $content, $matches );
 	for ( $i = 0; $i < count( $matches[0] ); $i++ ) {
-		$content = str_replace( '%CONTACT_' . $matches[1][ $i ] . '%', $results_array['contact'][ $matches[1][ $i ] - 1 ]['value'], $content );
+		$contact_index = intval($matches[1][ $i ]) - 1;
+		if ( isset($results_array['contact'][ $contact_index ]['value']) ) {
+			$content = str_replace('%CONTACT_' . $matches[1][ $i ] . '%', $results_array['contact'][ $contact_index ]['value'], $content);
+		}
 	}
 	return $content;
 }
@@ -1194,14 +1197,16 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						}
 					} else {
 						$options        = array();
+						$question_correct_fill_answer_text = '';
 						foreach ( $total_answers as $key => $single_answer ) {
 							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
 								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
 							} else {
 								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
+							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . $key + 1 . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 						}
-
+						$is_any_incorrect = false;
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
 								if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
@@ -1212,6 +1217,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
+									$is_any_incorrect = true;
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = $quiz_options->no_answer_text;
 									}
@@ -1229,7 +1235,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
 								} else {
-
+									$is_any_incorrect = true;
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = $quiz_options->no_answer_text;
 									}
@@ -1237,6 +1243,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 							}
 						}
+						$question_with_answer_text = $is_any_incorrect ? $question_with_answer_text . $question_correct_fill_answer_text : $question_with_answer_text;
 					}
 				} else {
 					if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
@@ -1593,7 +1600,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
  * @since  7.3.3
  */
 function qmn_sanitize_input_data( $data, $strip = false ) {
-	if ( $strip ) {
+	if ( $strip && is_string( $data ) ) {
 		$data = stripslashes( $data );
 	}
 	return maybe_unserialize( $data );

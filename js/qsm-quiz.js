@@ -52,8 +52,6 @@ var qsmTimerInterval = [];
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
 						quizType = 'timer';
-					} else {
-						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
 						jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
@@ -170,9 +168,12 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
-			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
+				if(qsm_timer_consumed_obj.qmn_count_upward_status){
+				secondsConsumed = qmn_quiz_data[quizID].timerConsumed - 1;
+				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed;
+					}
 				if(secondsRemaining < 0) {
 					secondsRemaining = 0;
 				}

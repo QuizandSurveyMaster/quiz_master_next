@@ -1387,6 +1387,7 @@ tr .qsm-opt-desc {
 #quiz_settings_wrapper .qsm-opt-desc {
 	display: none !important;
 }
+.qsm_page_qmn_global_settings .form-table td fieldset label,
 .qsm_tab_content .form-table td fieldset label {
 	margin-right: 20px !important;
 	width: 100%;
