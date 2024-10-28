@@ -2346,6 +2346,7 @@ var import_button;
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
                     let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    let isPublished = $(".questionElements input[name='question_status']").is(":checked") ? 1 : 0;
                     advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
@@ -2434,6 +2435,7 @@ var import_button;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
+					model.set('is_published', isPublished);
                     jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
@@ -2748,6 +2750,9 @@ var import_button;
                     }
                     //Append extra settings
                     var all_setting = question.get('settings');
+                    if ((typeof all_setting === 'undefined') || (all_setting && typeof all_setting.isPublished === 'undefined')) {
+                        $('#question-status').prop('checked', true).trigger('change');
+                    }
                     if (all_setting === null || typeof all_setting === "undefined") { } else {
                         $.each(all_setting, function (index, value) {
                             if ($('#' + index + '_area').length > 0) {
@@ -2764,6 +2769,13 @@ var import_button;
                             }
                             if (index == 'matchAnswer') {
                                 $('#match-answer').val(value);
+                            }
+                            if (index == 'isPublished') {
+                                if ( all_setting.isPublished == 1 ) {
+                                    $('#question-status').prop('checked', true).trigger('change');
+                                } else {
+                                    $('#question-status').prop('checked', false).trigger('change');
+                                }
                             }
                         });
                         jQuery(document).trigger('qsm_all_question_setting_after', [all_setting]);
@@ -3201,6 +3213,14 @@ var import_button;
                 $(document).on('click', '#delete-action .deletion', function (event) {
                     event.preventDefault();
                     $(this).parents('.questionElements').slideUp('slow');
+                });
+                $(document).on('change', '#question-status', function (event) {
+                    event.preventDefault();
+                    if($(this).is(':checked')){
+                        $(document).find('#question-status-text').html('Published');
+                    } else {
+                        $(document).find('#question-status-text').html('Draft');
+                    }
                 });
                 $(document).on('click', '#save-popup-button', function (event) {
                     event.preventDefault();
