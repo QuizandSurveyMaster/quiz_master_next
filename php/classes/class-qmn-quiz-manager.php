@@ -995,7 +995,7 @@ class QMNQuizManager {
 		}
 		$questions = array_filter(
 			$questions,
-			function ($question) {
+			function ( $question ) {
 				$question_settings = unserialize( $question->question_settings );
 				return ! isset( $question_settings['isPublished'] ) || $question_settings['isPublished'] !== '0';
 			}
