@@ -102,7 +102,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
  */
 function qsm_generate_dashboard_page() {
 	// Only let admins and editors see this page.
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
 		return;
 	}
 	global $mlwQuizMasterNext;

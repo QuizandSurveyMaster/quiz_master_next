@@ -30,7 +30,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => 'qsm_rest_create_question',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -41,7 +41,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_question',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -70,7 +70,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_results',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -90,7 +90,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_emails',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -123,7 +123,7 @@ function qsm_register_rest_routes() {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_bank_questions',
 				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
+					return current_user_can( 'edit_qsm_quizzes' );
 				},
 			)
 		);
@@ -563,9 +563,9 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 		if ( 0 !== $current_user ) {
 			$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
 			if ( 0 !== $quiz_id ) {
-				$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
+				$questions = QSM_Questions::load_questions_by_pages( $quiz_id, 'admin' );
 			} else {
-				$questions = QSM_Questions::load_questions( 0 );
+				$questions = QSM_Questions::load_questions( 0, 'admin' );
 			}
 			global $wpdb;
 			$stored_quiz_names = $procesed_question_ids = $question_array = array();
@@ -732,6 +732,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				$settings['featureImageID']  = sanitize_text_field( $request['featureImageID'] );
 				$settings['featureImageSrc'] = sanitize_text_field( $request['featureImageSrc'] );
 				$settings['matchAnswer']     = sanitize_text_field( $request['matchAnswer'] );
+				$settings['isPublished']     = sanitize_text_field( $request['is_published'] );
 				if ( isset( $request['other_settings'] ) && is_array( $request['other_settings'] ) ) {
 					foreach ( $request['other_settings'] as $setting_key => $setting_value ) {
 						$settings[ $setting_key ] = $setting_value;

@@ -2537,6 +2537,7 @@ var QSM_Quiz_Broadcast_Channel;
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
                     let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    let isPublished = $(".questionElements input[name='question_status']").is(":checked") ? 1 : 0;
                     advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
@@ -2625,6 +2626,7 @@ var QSM_Quiz_Broadcast_Channel;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
+					model.set('is_published', isPublished);
                     jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
@@ -2939,6 +2941,9 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     //Append extra settings
                     var all_setting = question.get('settings');
+                    if ((typeof all_setting === 'undefined') || (all_setting && typeof all_setting.isPublished === 'undefined')) {
+                        $('#qsm-question-status').prop('checked', true).trigger('change');
+                    }
                     if (all_setting === null || typeof all_setting === "undefined") { } else {
                         $.each(all_setting, function (index, value) {
                             if ($('#' + index + '_area').length > 0) {
@@ -2955,6 +2960,13 @@ var QSM_Quiz_Broadcast_Channel;
                             }
                             if (index == 'matchAnswer') {
                                 $('#match-answer').val(value);
+                            }
+                            if (index == 'isPublished') {
+                                if ( all_setting.isPublished == 1 ) {
+                                    $('#qsm-question-status').prop('checked', true).trigger('change');
+                                } else {
+                                    $('#qsm-question-status').prop('checked', false).trigger('change');
+                                }
                             }
                         });
                         jQuery(document).trigger('qsm_all_question_setting_after', [all_setting]);
@@ -3422,6 +3434,14 @@ var QSM_Quiz_Broadcast_Channel;
                     event.preventDefault();
                     $(this).parents('.questionElements').slideUp('slow');
                 });
+                $(document).on('change', '#qsm-question-status', function (event) {
+                    event.preventDefault();
+                    if($(this).is(':checked')){
+                        $(document).find('#qsm-question-status-text').html('Published');
+                    } else {
+                        $(document).find('#qsm-question-status-text').html('Draft');
+                    }
+                });
                 $(document).on('click', '#save-popup-button', function (event) {
                     event.preventDefault();
                     questionElements = $(this).parents('.questionElements');
@@ -3485,7 +3505,7 @@ var QSM_Quiz_Broadcast_Channel;
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
-                    // MicroModal.close('modal-2');
+                    MicroModal.close('modal-2');
                 });
 
                 
@@ -3496,7 +3516,7 @@ var QSM_Quiz_Broadcast_Channel;
                     $('.link-question').addClass('disable_import');
                     // 1 for the linking the questions default is 0
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
-                    // MicroModal.close('modal-2');
+                    MicroModal.close('modal-2');
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-linked-list-view-button', function () {

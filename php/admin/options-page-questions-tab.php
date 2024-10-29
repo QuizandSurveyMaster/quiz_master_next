@@ -54,8 +54,8 @@ function qsm_options_questions_tab_content() {
 	$form_type       = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system     = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 	$default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
-	$pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), 'admin' );
+	$db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array(), 'admin' );
 	$qpages          = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
@@ -522,7 +522,10 @@ function qsm_options_questions_tab_content() {
 								<div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
 									<div id="submitdiv" class="postbox ">
 										<h2 class="hndle ui-sortable-handle">
-											<span><?php esc_html_e( 'Publish', 'quiz-master-next' ); ?></span>
+											<label class="qsm-checkbox-switch small-switch">
+												<input type="checkbox" name="question_status" id="qsm-question-status" value="1"><span class="qsm-switch-slider round"></span>
+											</label>
+											<span id="qsm-question-status-text"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></span>
 											<span id="qsm-question-id"></span>
 										</h2>
 										<div class="inside">
@@ -882,8 +885,6 @@ function qsm_options_questions_tab_content() {
 	<?php
 }
 
-add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
-
 /**
  * Unlinks a question from all quizzes it is associated with.
  * This function checks for a valid nonce, retrieves the question ID from the request.
@@ -957,6 +958,8 @@ function qsm_process_unlink_question_from_list_by_question_id( $question_id ) {
 		);
 	}
 }
+
+add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
 
 /**
  * Saves the pages and order from the Questions tab
@@ -1260,7 +1263,7 @@ function qsm_bulk_delete_question_from_database() {
 
 		// Prepare the query
 		$query = $wpdb->prepare( $query, $question_id );
-		
+
 		$results = $wpdb->query( $query );
 		if ( $results ) {
 			if ( ! empty($update_qpages_after_delete) ) {
@@ -1417,7 +1420,6 @@ function qsm_options_questions_tab_template() {
 						<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 					</div>
 					<div class="form-actions">
-						{{ data.id }}
 						<div class="qsm-actions-link-box">
 							<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
 							<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
