@@ -88,14 +88,11 @@ function qsm_options_questions_tab_content() {
 	$json_data   = array(
 		'quizID'                => $quiz_id,
 		'answerText'            => __( 'Answer', 'quiz-master-next' ),
-		'linked_view'           => __( 'View', 'quiz-master-next' ),
-		'linked_close'          => __( 'Close', 'quiz-master-next' ),
 		'nonce'                 => wp_create_nonce( 'wp_rest' ),
 		'pages'                 => $pages,
 		'qpages'                => $qpages,
 		'qsm_user_ve'           => get_user_meta( $user_id, 'rich_editing', true ),
 		'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),
-		'unlinkNonce'           => wp_create_nonce( 'ajax-nonce-unlink-question' ),
 		'categories'            => $question_categories,
 		'form_type'             => $form_type,
 		'quiz_system'           => $quiz_system,
@@ -283,12 +280,6 @@ function qsm_options_questions_tab_content() {
 					<div id="poststuff">
 						<div id="post-body" class="metabox-holder columns-2">
 							<div id="post-body-content" style="position: relative;">
-								<div class="qsm-linked-list-div-block">
-									<p><?php esc_attr_e( 'This question is linked with other quizzes ', 'quiz-master-next' ); ?> <span class="qsm-linked-list-view-button"><?php esc_attr_e( 'View', 'quiz-master-next' ); ?></span></p>
-									<div class="qsm-linked-list-container">
-										<div class="qsm-linked-list-inside"></div>
-									</div>
-								</div>
 								<div class="qsm-row">
 									<input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>">
 								</div>
@@ -1176,7 +1167,7 @@ function qsm_delete_question_from_database() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
-	$base_question_id = $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
+	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
 		
 		global $wpdb, $mlwQuizMasterNext;
@@ -1197,13 +1188,6 @@ function qsm_delete_question_from_database() {
 		$query = $wpdb->prepare( $query, $question_id );
 		$results = $wpdb->query( $query );
 		if ( $results ) {
-			if ( ! empty($update_qpages_after_delete) ) {
-				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
-					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
-					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $aftervalue['pages'] );
-				}
-			}
 			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
@@ -1266,13 +1250,6 @@ function qsm_bulk_delete_question_from_database() {
 
 		$results = $wpdb->query( $query );
 		if ( $results ) {
-			if ( ! empty($update_qpages_after_delete) ) {
-				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
-					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
-					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $aftervalue['pages'] );
-				}
-			}
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -1359,7 +1336,6 @@ function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
     }
     return $all_ids;
 }
-
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
@@ -1439,10 +1415,7 @@ function qsm_options_questions_tab_template() {
 				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 			</div>
 			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-			<div>
-				<a href="javascript:void(0)" class="button import-button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add', 'quiz-master-next' ); ?></a>
-				<a href="javascript:void(0)" data-questions="{{data.linked_question}}" class="button link-question" data-question-id="{{data.id}}"><?php esc_html_e( 'Link', 'quiz-master-next' ); ?></a>
-			</div>
+			<div><a href="javascript:void(0)" class="button import-button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
 		</div>
 	</script>
 

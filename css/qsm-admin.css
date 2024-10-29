@@ -1460,7 +1460,6 @@ td.scheduled_time_start {
 	width: auto;
 }
 
-
 #post-body-content .qsm-popup-upgrade-warning img {
 	width: auto;
     height: 15px;
@@ -1556,7 +1555,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	box-sizing: border-box;
 }
 
-
 .qsm-text-main-wrap #postbox-container-1 {
 	position: relative;
 	background: #fff;
@@ -1615,6 +1613,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	left: 93%;
 }
 .qsm-text-template-span .qsm-tooltips-icon {
+  
 	vertical-align: middle;
 	width: unset;
 	height: 10px;
