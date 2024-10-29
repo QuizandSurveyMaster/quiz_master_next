@@ -299,13 +299,22 @@ class QSM_Questions {
 			$question_name = trim( preg_replace( '/\s+/', ' ', $question_name ) );
 		}
 		$linked_question = sanitize_text_field( $data['linked_question'] );
-		if ( $is_creating && isset($data['is_linking']) ) {
-			if ( 1 <= $data['is_linking'] ) {
-				$linked_question = $data['is_linking'];
-			}elseif ( 0 == $data['is_linking'] ) {
-				$linked_question = '';
+		$linked_questions_array = array();
+
+		
+		if ( ($is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] || ! $is_creating ) ) {
+			// Convert the existing linked_question into an array
+			$linked_questions_array = array_filter(array_map('trim', explode(',', $linked_question)));
+			// Add the new value if it's not already in the array
+			if ( ! in_array($data['is_linking'], $linked_questions_array) ) {
+				$linked_questions_array[] = $data['is_linking'];
 			}
-		}       
+			$linked_questions_array = array_filter($linked_questions_array);
+			// Join back into a comma-separated string
+			$linked_question = implode(',', $linked_questions_array);
+		} elseif ( isset($data['is_linking']) && 0 == $data['is_linking'] ) {
+			$linked_question = '';
+		}
 
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
@@ -337,7 +346,7 @@ class QSM_Questions {
 			'%s',
 			'%d',
 		);
-
+		
 		if ( $is_creating ) {
 			$results     = $wpdb->insert(
 				$wpdb->prefix . 'mlw_questions',
@@ -367,8 +376,6 @@ class QSM_Questions {
 		$quiz_questions_array[ intval( $data['quiz_id'] ) ] = $question_id;
 		$linked_questions_array[] = $question_id;
 		if ( isset($linked_question) && "" != $linked_question ) {
-			$expolded_question_array = explode(',', $linked_question);
-			$linked_questions_array = array_merge($expolded_question_array, $linked_questions_array);
 			// preparing array for quiz question id
 			$imploded_question_ids = implode( ',', array_unique($linked_questions_array) );
 			if ( ! empty($linked_questions_array) ) {

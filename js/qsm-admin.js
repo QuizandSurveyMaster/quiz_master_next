@@ -1900,6 +1900,7 @@ var QSMContact;
 var QSMQuestion;
 var import_button;
 var qsm_link_button;
+var QSM_Quiz_Broadcast_Channel;
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
         if (window.location.href.indexOf('&tab') == -1 || window.location.href.indexOf('tab=questions') > 0) {
@@ -1907,6 +1908,142 @@ var qsm_link_button;
             $.QSMSanitize = function (input) {
                 return input.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
             };
+            QSM_Quiz_Broadcast_Channel = {
+                channel: new BroadcastChannel('qsm_quiz_data_channel'),
+                questionData: [], // Initialize as an array
+                
+                // Initialize the event listeners and set up channel
+                init: function () {
+                    this.setupChannelListener();
+                },
+
+                // Listen for messages on the channel
+                setupChannelListener: function () {
+                    this.channel.onmessage = (event) => {
+                        const receivedData = event.data;
+                        const { requestType, ...questions } = receivedData;
+                        if (requestType == 'update') {
+                            this.updateQuestionData(questions);
+                        } else if (requestType == 'unlink') {
+                            this.afterUpdateUnlinkedQuestion(questions);
+                        }
+                    };
+                },
+
+                insertQuestionToChannel: function (question) {
+                    let linkQuizzesArray = Object.values(question.get('link_quizzes'));
+                    
+                    let sendDataObject = {
+                        [question.id]: {
+                            merged_question: question.get('merged_question'),
+                            link_quizzes: linkQuizzesArray
+                        }
+                    };
+                    this.questionData.push(sendDataObject);
+                },
+                
+                // Function to send the linked question data to other tabs
+                sendQuestionData: function (questionID, mergedQuestion, linkedQuizzes = []) {
+                    let sendDataObject = {
+                        [questionID]: {
+                            merged_question: mergedQuestion,
+                            link_quizzes: linkedQuizzes
+                        },
+                        requestType: 'update'
+                    };
+                    // update channel with new question
+                    this.questionData.push(sendDataObject);
+                    this.channel.postMessage(sendDataObject);
+                },
+            
+                updateQuestionData: function (data){
+                    const receivedData = data;
+                    for (let questonId in receivedData) {
+                        const mergedQuestions = receivedData[questonId].merged_question;
+                        const receivedQuizzes = receivedData[questonId].link_quizzes;
+                        if (mergedQuestions && typeof mergedQuestions == 'string') {
+                            // Check if there's a colon and extract the part after it
+                            let idsArray = [];
+                            if (mergedQuestions) {
+                                idsArray = mergedQuestions.split(',').map(id => id.trim());
+                            }
+                            if (idsArray.length > 0) {
+                                // Loop through each ID in idsArray
+                                idsArray.forEach(eachId => {
+                                    // Loop through this.questionData to find matches
+                                    let currentquestionData = this.questionData;
+                                    currentquestionData.forEach((item, index) => {
+                                        // Check if the current item's key matches the current eachId
+                                        if (item[eachId]) {
+                                            let quizNamesToCheck = this.questionData[index][eachId].link_quizzes;
+                                            receivedQuizzes.forEach(quizName => {
+                                                if (!quizNamesToCheck.includes(quizName)) {
+                                                    quizNamesToCheck.push(quizName); // Add the quiz name to the array
+                                                }
+                                            });
+                                            quizNamesToCheck = quizNamesToCheck.filter(function(quizName) {
+                                                return quizName !== jQuery(document).find('#edit_quiz_name').val();
+                                            });
+                                            // Update channel data
+                                            this.questionData[index][eachId].link_quizzes = quizNamesToCheck;
+                                            this.questionData[index][eachId].merged_question = mergedQuestions;
+                                            // Update current quiz question data
+                                            let currentInQuizQuestion = QSMQuestion.questions.get(eachId);
+                                            currentInQuizQuestion.set('merged_question', mergedQuestions);
+                                            currentInQuizQuestion.set('link_quizzes', quizNamesToCheck);
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    }
+                    // Console log updated questionData
+                    console.log("Updated quiz data:", this.questionData);
+                },
+
+                unlinkQuestionData: function (model, currentQuestionId) {
+                    let mergedQuestionIdString = model.get('merged_question');
+                    let mergedQuestionIdArray = mergedQuestionIdString ? mergedQuestionIdString.split(',') : [];
+                    // Filter out the questionId
+                    let removedDeletedQuestionArray = mergedQuestionIdArray.filter(id => id !== String(currentQuestionId));
+                    // Create a new string from the filtered array
+                    let removedDeletedQuestionString = removedDeletedQuestionArray.join(',');
+                    // console.log(mergedQuestionIdString, mergedQuestionIdArray, removedDeletedQuestionArray, removedDeletedQuestionString);
+                    let sendDataObject = {
+                        [currentQuestionId]: {
+                            merged_question: removedDeletedQuestionString,
+                            link_quizzes: jQuery(document).find('#edit_quiz_name').val(),
+                        },
+                        requestType: 'unlink'
+                    };
+                    this.channel.postMessage(sendDataObject);
+                    model.set('merged_question', '');
+                    model.set('link_quizzes', []);
+                },
+                
+                afterUpdateUnlinkedQuestion: function (data) {
+                    const receivedData = data;
+                    for (let questonId in receivedData) {
+                        const mergedQuestions = receivedData[questonId].merged_question;
+                        const singleQuizName = receivedData[questonId].link_quizzes;
+                        this.questionData.forEach((item) => {
+                            Object.keys(item).forEach(key => {
+                                if (item[key] && item[key].merged_question && item[key].link_quizzes) {
+									if (mergedQuestions.split(',').includes(key)) {
+										item[key].merged_question = mergedQuestions;
+										item[key].link_quizzes = item[key].link_quizzes.filter(quiz => quiz != singleQuizName);
+                                        // Update current quiz question data
+                                        let currentInQuizQuestion = QSMQuestion.questions.get(key);
+                                        currentInQuizQuestion.set('merged_question', mergedQuestions);
+                                        currentInQuizQuestion.set('link_quizzes', item[key].link_quizzes.filter(quiz => quiz != singleQuizName));
+									} 
+                                }
+                            });
+                        });
+                    }
+                },
+            };            
+            
             QSMQuestion = {
                 question: Backbone.Model.extend({
                     defaults: {
@@ -2144,6 +2281,7 @@ var qsm_link_button;
                                 question = QSMQuestion.questions.get(qsmQuestionSettings.pages[i][j]);
                                 if ('undefined' !== typeof question) {
                                     QSMQuestion.addQuestionToPage(question);
+                                    QSM_Quiz_Broadcast_Channel.insertQuestionToChannel(question);
                                 }
                             }
                         }
@@ -2260,6 +2398,26 @@ var qsm_link_button;
                 addNewQuestionFromQuestionBank: function (model) {
                     var page = parseInt($('#add-question-bank-page').val(), 10);
                     model.set('page', page);
+                    if (qsm_link_button && !model.get('merged_question').split(',').includes(model.id)) {
+                        // Retrieve the current value
+                        let mergedQuestion = model.get('merged_question');
+                        // Update the merged question by adding the new ID
+                        mergedQuestion += `,${model.id}`;
+                        // Set the updated value back to the model
+                        model.set('merged_question', mergedQuestion);
+
+                        let quizId = model.get('quizID');
+                        let quizName = '';
+
+                        for (const record of qsmQuizzesObject) {
+                            if (record.quiz_id == quizId) { quizName = record.quiz_name; break; }
+                        } 
+                        const linkQuizzes = [...model.get('link_quizzes')]; // Created a shallow copy of the array
+                        if (quizName !== '') {
+                            linkQuizzes.push(quizName);
+                        }
+                        QSM_Quiz_Broadcast_Channel.sendQuestionData(model.id, model.get('merged_question'), linkQuizzes);
+                    }
                     QSMQuestion.questions.add(model);
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.savePages();
@@ -2276,7 +2434,6 @@ var qsm_link_button;
                         import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
                     }
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
-                    console.log(qsm_link_button);
                     if(qsm_link_button == ''){
                         $(document).find('.qsm-linked-list-inside').hide().empty();
                         $(document).find('.qsm-linked-list-div-block').hide();
@@ -2348,6 +2505,8 @@ var qsm_link_button;
                     var model = QSMQuestion.questions.get(questionID);
                     var newModel = _.clone(model.attributes);
                     newModel.id = null;
+                    newModel.merged_question = '';
+                    newModel.link_quizzes = '';
                     QSMQuestion.questions.create(
                         newModel, {
                         headers: {
@@ -2816,12 +2975,12 @@ var qsm_link_button;
                         $('#image_size_area').show();
                     }
 
-                    let link_quizzes_array = question.get('link_quizzes');
+                    let link_quizzes_object = question.get('link_quizzes');
                     
                     $('.qsm-linked-list-inside').hide().empty();
                     $('.qsm-linked-list-div-block').hide();
-                    if (typeof link_quizzes_array == 'object' && link_quizzes_array != null && Object.keys(link_quizzes_array).length > 0) {
-                        Object.values(link_quizzes_array).forEach(function(quizName) {
+                    if (typeof link_quizzes_object == 'object' && link_quizzes_object != null && Object.keys(link_quizzes_object).length > 0) {
+                        Object.values(link_quizzes_object).forEach(function(quizName) {
                             // Ensure each quizName is a valid non-empty string
                             if (quizName && typeof quizName == 'string' && quizName.trim().length > 0) {
                                 let link = $('<span></span>')
@@ -3116,6 +3275,8 @@ var qsm_link_button;
                                 if (response.success) {
                                     checkedValues.forEach(function (questionId) {
                                         $('.question[data-question-id="' + questionId + '"]').remove();
+                                        let model = QSMQuestion.questions.get(questionId);
+                                        QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, questionId);
                                     });
                                     jQuery('.qsm-admin-select-page-question').prop('checked',false);
                                     QSMQuestion.countTotal();
@@ -3138,6 +3299,8 @@ var qsm_link_button;
                             success: function (response) {
                                 if (response.success) {
                                     remove.parents('.question').remove();
+                                    let model = QSMQuestion.questions.get(question_id);
+                                    QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, question_id);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
                                 } else {
@@ -3322,7 +3485,7 @@ var qsm_link_button;
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
-                    MicroModal.close('modal-2');
+                    // MicroModal.close('modal-2');
                 });
 
                 
@@ -3333,7 +3496,7 @@ var qsm_link_button;
                     $('.link-question').addClass('disable_import');
                     // 1 for the linking the questions default is 0
                     QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
-                    MicroModal.close('modal-2');
+                    // MicroModal.close('modal-2');
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-linked-list-view-button', function () {
@@ -3344,7 +3507,7 @@ var qsm_link_button;
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
-                    var to_be_unlink_question = jQuery(this).data('question-id');
+                    var questionIdToUnlink = jQuery(this).data('question-id');
                     $.ajax({
                         url: ajaxurl,
                         method: 'POST',
@@ -3355,8 +3518,8 @@ var qsm_link_button;
                         },
                         success: function (response) {
                             $(document).find('.qsm-linked-list-div-block').remove();
-                            let question = QSMQuestion.questions.get(to_be_unlink_question);
-                            question.set('merged_question', '');
+                            let model = QSMQuestion.questions.get(questionIdToUnlink);
+                            QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, questionIdToUnlink);
                         }
                     });
                 });
@@ -3507,6 +3670,9 @@ var qsm_link_button;
                 if (qsmQuestionSettings.qsm_user_ve === 'true') {
                     QSMQuestion.prepareEditor();
                 }
+                
+                // Initialize the QSM_Quiz_Broadcast_Channel
+                QSM_Quiz_Broadcast_Channel.init();
                 QSMQuestion.loadQuestions();
 
                 /**

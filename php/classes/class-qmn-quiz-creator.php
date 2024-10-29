@@ -290,11 +290,13 @@ class QMNQuizCreator {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
-					'deleted' => 1,
+					'deleted'         => 1,
+					'linked_question' => '',
 				),
 				array( 'quiz_id' => $quiz_id ),
 				array(
 					'%d',
+					'%s',
 				),
 				array( '%d' )
 			);
@@ -304,11 +306,13 @@ class QMNQuizCreator {
 				$wpdb->update(
 					$wpdb->prefix . 'mlw_questions',
 					array(
-						'deleted' => $deleted,
+						'deleted'         => $deleted,
+						'linked_question' => '',
 					),
 					array( 'quiz_id' => $quiz_id ),
 					array(
 						'%d',
+						'%s',
 					),
 					array( '%d' )
 				);

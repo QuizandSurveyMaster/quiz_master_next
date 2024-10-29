@@ -495,21 +495,25 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 			$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
 			if ( ! empty( $question ) ) {
 				$is_linking = $request['is_linking'];
-				$comma_seprated_ids = '';
+				$comma_separated_ids = '';
 				if ( 1 <= $is_linking ) {
 					if ( isset( $question['linked_question'] ) && '' == $question['linked_question'] ) {
-						$comma_seprated_ids = $is_linking;
+						$comma_separated_ids = $is_linking;
 					} else {
 						$linked_question = isset($question['linked_question']) ? $question['linked_question'] : '';
 						$exploded_question_array = explode(',', $linked_question);
-						$expolded_question_array[] = $is_linking;
-						$comma_seprated_ids = implode( ',', array_unique($expolded_question_array) );
+						if ( ! empty($linked_question) ) {
+							$exploded_question_array = array_merge([ $is_linking ], $exploded_question_array);
+						} else {
+							$exploded_question_array = [ $is_linking ];
+						}
+						$comma_separated_ids = implode(',', array_unique($exploded_question_array));
 					}
 				}
-				
+
 				$quiz_name_by_question = array();
-				if ( ! empty($comma_seprated_ids) ) {
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
+				if ( ! empty($comma_separated_ids) ) {
+					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_separated_ids. ")" );
 					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
@@ -533,7 +537,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'page'            => $question['page'],
 					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 					'link_quizzes'    => $quiz_name_by_question,
-					'merged_question' => $comma_seprated_ids,
+					'merged_question' => $comma_separated_ids,
 				);
 			}
 			return $question;

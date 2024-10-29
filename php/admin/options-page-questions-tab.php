@@ -1175,16 +1175,14 @@ function qsm_delete_question_from_database() {
 	}
 	$base_question_id = $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
+		
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
-		$dependent_question_ids = qsm_get_unique_linked_question_ids_to_remove(array( $question_id ) );
-		$question_id = array_merge($dependent_question_ids, array( $question_id ) );
-		$question_id = array_unique($question_id);
-		$question_id = array_filter($question_id);
-		$placeholders = array_fill( 0, count( $question_id ), '%d' );
-		if ( ! empty($dependent_question_ids) ) {
-			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_id ] );
-			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($dependent_question_ids);
+		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove( [ $question_id ] );
+		$placeholders = array_fill( 0, count( array( $question_id ) ), '%d' );
+		if ( ! empty($connected_question_ids) ) {
+			$connected_question_ids = array_diff($connected_question_ids, [ $base_question_id ] );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
 		}
 		// Construct the query with placeholders
 		$query = sprintf(
@@ -1246,17 +1244,14 @@ function qsm_bulk_delete_question_from_database() {
 	if ( ! empty( $question_id ) ) {
 		global $wpdb;
 		$update_qpages_after_delete = array();
-		$dependent_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
-		if ( ! empty($dependent_question_ids) ) {
-			$dependent_question_ids = array_diff($dependent_question_ids, [ $base_question_ids ] );
-			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($dependent_question_ids);
-		}
-		$question_id = array_merge($dependent_question_ids, $question_id);
-		$question_id = array_unique($question_id); // Ensure all IDs are unique
-		$question_id = array_filter($question_id); // Remove empty values
+		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
 
-		$placeholders = array_fill( 0, count( $question_id ), '%d' );
+		if ( ! empty($connected_question_ids) ) {
+			$connected_question_ids = array_diff($connected_question_ids, $base_question_ids );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
+		}
 		
+		$placeholders = array_fill( 0, count( $question_id ), '%d' );
 		// Construct the query with placeholders
 		$query = sprintf(
 			"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%s)",
@@ -1289,11 +1284,11 @@ add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_q
 /**
  * returns pages and qpages for dependent question ids for update after deleting questions
  *
- * @param array $dependent_question_ids An array of question IDs.
+ * @param array $connected_question_ids An array of question IDs.
  * @since 9.1.3
  */
-function qsm_process_to_update_qpages_after_unlink( $dependent_question_ids ) {
-	$comma_seprated_ids = implode( ',', array_unique($dependent_question_ids) );
+function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
+	$comma_seprated_ids = implode( ',', array_unique($connected_question_ids) );
 	$qpages_array = array();
 	if ( ! empty($comma_seprated_ids) ) {
 		global $wpdb, $mlwQuizMasterNext; 
@@ -1422,6 +1417,7 @@ function qsm_options_questions_tab_template() {
 						<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 					</div>
 					<div class="form-actions">
+						{{ data.id }}
 						<div class="qsm-actions-link-box">
 							<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
 							<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
