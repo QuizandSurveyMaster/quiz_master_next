@@ -660,7 +660,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'category'        => $request['category'],
 					'multicategories' => $request['multicategories'],
 					'linked_question' => $request['merged_question'],
-					'is_linking'      => $request['is_linking'], 
+					'is_linking'      => $request['is_linking'],
 				);
 				$settings       = array(
 					'required'       => $request['required'],

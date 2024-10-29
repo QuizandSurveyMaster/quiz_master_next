@@ -307,7 +307,7 @@ class QSM_Questions {
 		$linked_question = sanitize_text_field( $data['linked_question'] );
 		$linked_questions_array = array();
 
-		if ( ($is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] || ! $is_creating ) ) {
+		if ( ( $is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] ) || ! $is_creating ) {
 			// Convert the existing linked_question into an array
 			$linked_questions_array = array_filter(array_map('trim', explode(',', $linked_question)));
 			// Add the new value if it's not already in the array
@@ -438,7 +438,7 @@ class QSM_Questions {
 			} else {
 				do_action( 'qsm_question_updated', $question_id_loop, $values );
 			}
-			do_action( 'qsm_saved_question', $question_id_loop, $values );  
+			do_action( 'qsm_saved_question', $question_id_loop, $values );
 	
 		}
 		return $base_question_id;

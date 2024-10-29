@@ -1964,7 +1964,7 @@ var QSM_Quiz_Broadcast_Channel;
                         if (mergedQuestions && typeof mergedQuestions == 'string') {
                             // Check if there's a colon and extract the part after it
                             let idsArray = [];
-                            if (mergedQuestions) {
+                            if (mergedQuestions && mergedQuestions != '') {
                                 idsArray = mergedQuestions.split(',').map(id => id.trim());
                             }
                             if (idsArray.length > 0) {
