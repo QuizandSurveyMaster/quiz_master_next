@@ -374,7 +374,6 @@ class QSM_Questions {
 			throw new Exception( $msg );
 		}
 
-<<<<<<< HEAD
 		$base_question_id = $question_id;
 		$quiz_questions_array = array();
 		$quiz_questions_array[ intval( $data['quiz_id'] ) ] = $question_id;
@@ -390,11 +389,6 @@ class QSM_Questions {
 			}
 			$values['linked_question'] = $imploded_question_ids;
 		}
-=======
-		/**
-		 * Process Question Categories
-		 */
->>>>>>> dev
 		$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
 		$wpdb->delete(
 			$question_terms_table,
