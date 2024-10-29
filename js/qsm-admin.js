@@ -3530,9 +3530,7 @@ var QSM_Quiz_Broadcast_Channel;
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
                     var questionIdToUnlink = jQuery(this).data('question-id');
-                    let model = QSMQuestion.questions.get(questionIdToUnlink);
-                            QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, questionIdToUnlink);
-                            return;
+
                     $.ajax({
                         url: ajaxurl,
                         method: 'POST',
