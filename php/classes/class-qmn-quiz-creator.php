@@ -676,6 +676,7 @@ class QMNQuizCreator {
 						if ( intval($page_q_id) === intval($mlw_question->question_id) ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 							$update_q_pages[ $pages_key ]['questions'][ $pages_k_q ] = $wpdb->insert_id;
+							$update_q_pages[ $pages_key ]['quizID'] = $mlw_new_id;
 						}
 					}
 				}
