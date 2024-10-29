@@ -284,8 +284,34 @@ class QMNPluginHelper {
 	 * @param  mixed  $default What we need to return if no setting exists with given $setting
 	 * @return $mixed Value set for $setting or $default if setting does not exist
 	 */
-	public function get_quiz_setting( $setting, $default = false ) {
+	public function get_quiz_setting( $setting, $default = false, $caller = '' ) {
 		global $mlwQuizMasterNext;
+		if ( ( $setting === 'pages' || $setting === 'qpages' ) && empty( $caller ) ) {
+			$pages = $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
+			$temp_pages = array();
+			foreach ( $pages as $index => $page ) {
+				$page_should_display = array();
+				$page = $setting === 'qpages' ? $page['questions'] : $page;
+				foreach ( $page as $key =>$question_id ) {
+					$isPublished = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'isPublished' );
+					if ( '' == $isPublished || ( '' != $isPublished && 1 === intval( $isPublished ) ) ) {
+						$page_should_display[]	= true;
+					} elseif ( '' != $isPublished && 0 === intval( $isPublished ) ) {
+						$page_should_display[] = false;
+						unset( $page[$key] );
+					}
+				}
+				if ( in_array( true, $page_should_display, true ) ) {
+					if ( $setting === 'qpages' ) {
+						$pages[$index]['questions'] = $page;
+						$temp_pages[] = $pages[$index];
+					} else {
+						$temp_pages[] = $page;
+					}
+				}
+			}
+			return $temp_pages;
+		}
 		return $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
 	}
 

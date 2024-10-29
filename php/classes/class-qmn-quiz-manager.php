@@ -993,6 +993,13 @@ class QMNQuizManager {
 			</script>
 			<?php
 		}
+		$questions = array_filter(
+			$questions,
+			function ($question) {
+				$question_settings = unserialize( $question->question_settings );
+				return ! isset( $question_settings['isPublished'] ) || $question_settings['isPublished'] !== '0';
+			}
+		);
 		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 	}
 
@@ -2417,8 +2424,8 @@ class QMNQuizManager {
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += (float)$results_array['points'];
-							$answer_points += (float)$results_array['points'];
+							$points_earned += isset($results_array['points']) ? (float)$results_array['points'] : 0;
+							$answer_points += isset($results_array['points']) ? (float)$results_array['points'] : 0;
 							// If the user's answer was correct.
 							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
 								$total_correct += 1;
