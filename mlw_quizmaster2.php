@@ -390,7 +390,7 @@ class MLWQuizMasterNext {
 	 * @since 7.3.5 admin scripts consolidated
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
-		global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext, $wpdb;
 
 		// admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
@@ -484,6 +484,7 @@ class MLWQuizMasterNext {
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 		$qsm_variables = function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : array();
 		$qsm_variables_name = array();
+		$qsm_quizzes = $wpdb->get_results("SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes");
 		foreach ( $qsm_variables as $key => $value ) {
 			// Iterate over each key of the nested object
 			if ( is_array( $value ) && ! empty($value) ) {
@@ -582,6 +583,7 @@ class MLWQuizMasterNext {
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 			'select_all'                 => __("Select All", 'quiz-master-next'),
 			'select'                     => __("Select", 'quiz-master-next'),
+			'qsmQuizzesObject'           => $qsm_quizzes,
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
