@@ -292,19 +292,19 @@ class QMNPluginHelper {
 			foreach ( $pages as $index => $page ) {
 				$page_should_display = array();
 				$page = $setting === 'qpages' ? $page['questions'] : $page;
-				foreach ( $page as $key =>$question_id ) {
+				foreach ( $page as $key => $question_id ) {
 					$isPublished = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'isPublished' );
 					if ( '' == $isPublished || ( '' != $isPublished && 1 === intval( $isPublished ) ) ) {
-						$page_should_display[]	= true;
+						$page_should_display[]  = true;
 					} elseif ( '' != $isPublished && 0 === intval( $isPublished ) ) {
 						$page_should_display[] = false;
-						unset( $page[$key] );
+						unset( $page[ $key ] );
 					}
 				}
 				if ( in_array( true, $page_should_display, true ) ) {
 					if ( $setting === 'qpages' ) {
-						$pages[$index]['questions'] = $page;
-						$temp_pages[] = $pages[$index];
+						$pages[ $index ]['questions'] = $page;
+						$temp_pages[] = $pages[ $index ];
 					} else {
 						$temp_pages[] = $page;
 					}
