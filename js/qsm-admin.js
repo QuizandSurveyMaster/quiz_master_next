@@ -2409,7 +2409,7 @@ var QSM_Quiz_Broadcast_Channel;
                         let quizId = model.get('quizID');
                         let quizName = '';
 
-                        for (const record of qsmQuizzesObject) {
+                        for (const record of qsm_admin_messages.qsmQuizzesObject) {
                             if (record.quiz_id == quizId) { quizName = record.quiz_name; break; }
                         } 
                         const linkQuizzes = [...model.get('link_quizzes')]; // Created a shallow copy of the array
