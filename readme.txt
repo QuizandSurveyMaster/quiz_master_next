@@ -8,7 +8,7 @@ Stable tag: 9.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create engaging quizzes, surveys, tests, & more, with the versatile quiz maker and survey plugin for WordPress. Perfect for gathering insights from any audience.
+Create quizzes, surveys, and tests easily on WordPress with this versatile plugin. Perfect for engaging any audience and gathering valuable insights!
 
 == Description ==
 
