@@ -131,6 +131,7 @@ class QSMQuizApi {
 				$email = $request->get_param('email');
 				$from_date = $request->get_param('from_date');
 				$order = $request->get_param('order');
+				$user_id = $request->get_param('user_id');
 				$s = $request->get_param('s');
 
 				$query = "SELECT * FROM {$wpdb->prefix}mlw_results WHERE 1=1";
@@ -152,6 +153,10 @@ class QSMQuizApi {
 
 				if ( ! empty($email) ) {
 					$query .= $wpdb->prepare(" AND email = %s", $email);
+				}
+
+				if ( ! empty($user_id) ) {
+					$query .= $wpdb->prepare(" AND user = %d", $user_id);
 				}
 
 				if ( ! empty($from_date) ) {
