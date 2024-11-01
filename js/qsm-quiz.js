@@ -2019,13 +2019,13 @@ jQuery(document).keydown(function(event) {
 				return;
 			}
 		}
-        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus').length === 0) {
+        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0) {
             event.preventDefault();
         }
-        if (event.keyCode === 39) {
+        if (event.keyCode === 39 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
         }
-        if (event.keyCode === 37) {
+        if (event.keyCode === 37 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
         }
         if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {

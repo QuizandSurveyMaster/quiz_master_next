@@ -4,12 +4,11 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 5.4
-Stable tag: 9.2.1
+Stable tag: 9.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create engaging quizzes, surveys, tests, & more, with the versatile quiz maker and survey plugin for WordPress. Perfect for gathering insights from any audience.
-
+Create quizzes, surveys, and tests easily on WordPress with this versatile plugin. Perfect for engaging any audience and gathering valuable insights!
 == Description ==
 
 **Quiz and Survey Master** is the easiest quiz and survey maker plugin for creating quizzes, surveys, and forms on your WordPress website. Create everything from fun trivia quizzes to in-depth customer satisfaction assessments, using a user-friendly **drag-and-drop quiz maker** interface. Go beyond basic questions with multimedia support for richer content, analyze results to gain valuable insights, and even integrate with email marketing services to capture leads. Quiz & Survey Master is a **powerful WordPress plugin** to increase user engagement, gather valuable data, and build a stronger connection with your audience.
@@ -222,6 +221,11 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 9.3.0 ( November 04, 2024 ) =
+* Feature: Added option to save question as draft
+* Feature: Added option to link question in multiple quizzes
+* Enhancement: Improved API option to get result by user id
+
 = 9.2.1 ( October 16, 2024 ) =
 * Bug: Resolved vulnerability issue with question settings
 * Bug: Fixed issue with fill in the blanks question type while using random answers
