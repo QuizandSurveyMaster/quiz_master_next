@@ -1204,7 +1204,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} else {
 								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
 							}
-							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . $key + 1 . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
+							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . ($key + 1) . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 						}
 						$is_any_incorrect = false;
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
