@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.4.0
  */
 function qmn_addons_page() {
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
 		return;
 	}
 

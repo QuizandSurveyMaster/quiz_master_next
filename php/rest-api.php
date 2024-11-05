@@ -30,7 +30,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => 'qsm_rest_create_question',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -41,7 +41,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_question',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -70,7 +70,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_results',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -90,7 +90,7 @@ function qsm_register_rest_routes() {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_emails',
 			'permission_callback' => function () {
-				return current_user_can( 'edit_posts' );
+				return current_user_can( 'edit_qsm_quizzes' );
 			},
 		)
 	);
@@ -123,7 +123,7 @@ function qsm_register_rest_routes() {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_bank_questions',
 				'permission_callback' => function () {
-					return current_user_can( 'edit_posts' );
+					return current_user_can( 'edit_qsm_quizzes' );
 				},
 			)
 		);

@@ -306,7 +306,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'hierarchical_category_list' ),
 					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
+						return current_user_can( 'edit_qsm_quizzes' );
 					},
 				)
 			);
@@ -319,7 +319,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'advance_question_type_upgrade_popup' ),
 					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
+						return current_user_can( 'edit_qsm_quizzes' );
 					},
 				)
 			);
@@ -332,7 +332,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'qsm_quiz_structure_data' ),
 					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
+						return current_user_can( 'edit_qsm_quizzes' );
 					},
 				)
 			);
@@ -345,7 +345,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'create_new_quiz_from_editor' ),
 					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
+						return current_user_can( 'edit_qsm_quizzes' );
 					},
 				)
 			);
@@ -358,7 +358,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'save_quiz' ),
 					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
+						return current_user_can( 'edit_qsm_quizzes' );
 					},
 				)
 			);

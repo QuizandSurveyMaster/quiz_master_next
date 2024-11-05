@@ -179,7 +179,7 @@ class QSM_Results_Pages {
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
 			$page = wp_kses_post( htmlspecialchars_decode( $content, ENT_QUOTES) );
-
+			$response_data['result_page_index'] = $page_index;
 			//last chance to filter $page
 			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
 

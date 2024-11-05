@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_generate_about_page() {
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
 		return;
 	}
 	$tab_array = [
