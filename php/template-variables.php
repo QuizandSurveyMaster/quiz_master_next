@@ -463,7 +463,7 @@ function mlw_qmn_variable_user_full_name( $content, $mlw_quiz_array ) {
 			if ( ! empty( $firstname ) && ! empty( $lastname ) ) {
 				$full_name = $firstname . ' ' . $lastname;
 			} else {
-				$full_name = $current_user->display_name;
+				$full_name = $user->display_name;
 			}
 		}
 
