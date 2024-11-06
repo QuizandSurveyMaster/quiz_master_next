@@ -71,6 +71,9 @@ function mlw_options_text_tab_content() {
 											<?php
 											if ( $editor_text_arr ) {
 												foreach ( $editor_text_arr as $key => $single_editor_arr ) {
+													// echo '<pre>';
+													// print_r( $single_editor_arr );
+													// echo '</pre>';
 													if ( ! strpos( $single_editor_arr['label'], '%', 1 ) ) {
 														$class_current_li    = "";
 														$class               = "";
@@ -116,7 +119,7 @@ function mlw_options_text_tab_content() {
 									?>
 								</div>
 								</div>
-								<?php do_action( 'qsm_add_list_menu_content_text_tab_after', $text_text_arr ); ?>
+								<?php do_action( 'qsm_add_list_menu_content_text_tab_after', array_merge( $editor_text_arr, $text_text_arr ) ); ?>
 								<!-- Variable text -->
 								<div class="quiz_text_tab_content qsm_variable_text" style="display:none;" id="qsm_variable_text" >
 									<div class="left-bar">
@@ -221,6 +224,7 @@ function qsm_get_question_text_message() {
 		exit;
 	} else {
 		$settings        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
+		$settings        = ! empty( $settings ) ? $settings : '';
 		$quiz_text_arr   = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
 		$key             = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
 		$allowed_text    = '';
