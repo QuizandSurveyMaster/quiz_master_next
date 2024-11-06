@@ -222,7 +222,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 9.2.2 ( November 05, 2024 ) =
+= 9.2.2 ( November 06, 2024 ) =
 * Bug: Fixed issue with text displaying before quiz options
 * Bug: Resolved issue with left/right arrow keys in the quiz input box
 * Enhancement: Updated API to retrieve results by user ID
