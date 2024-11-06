@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.2.1
+ * Version: 9.2.2
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.2.1';
+	public $version = '9.2.2';
 
 	/**
 	 * QSM Alert Manager Object
@@ -840,6 +840,7 @@ class MLWQuizMasterNext {
 				'manage_qsm_quiz_categories',
 				'manage_qsm_quiz_answer_label',
 				'view_qsm_quiz_result',
+				'manage_options',
 			);
 
 			add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), $capabilities[1], 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
@@ -862,7 +863,7 @@ class MLWQuizMasterNext {
 				add_submenu_page( 'qsm_dashboard', __( 'Failed DB Queries', 'quiz-master-next' ), __( 'Failed Database Queries', 'quiz-master-next' ), $capabilities[2], 'qsm-database-failed-queries', array( $this, 'qsm_database_failed_queries' ) );
 			}
 			add_submenu_page( 'options.php', __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), $capabilities[5], 'qsm_quiz_result_details', 'qsm_generate_result_details' );
-			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), $capabilities[2], 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
+			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), $capabilities[6], 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), $capabilities[2], 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), $capabilities[2], 'qmn_stats', 'qmn_generate_stats_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), $capabilities[2], 'qsm_quiz_about', 'qsm_generate_about_page' );

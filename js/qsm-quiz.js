@@ -52,8 +52,6 @@ var qsmTimerInterval = [];
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
 						quizType = 'timer';
-					} else {
-						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
 						jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
@@ -173,6 +171,10 @@ var qsmTimerInterval = [];
 			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
+				if(qsm_timer_consumed_obj.qmn_count_upward_status){
+					secondsConsumed = qmn_quiz_data[quizID].timerConsumed - 1;
+					secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed;
+				}
 				if(secondsRemaining < 0) {
 					secondsRemaining = 0;
 				}
@@ -2018,13 +2020,13 @@ jQuery(document).keydown(function(event) {
 				return;
 			}
 		}
-        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus').length === 0) {
+        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0) {
             event.preventDefault();
         }
-        if (event.keyCode === 39) {
+        if (event.keyCode === 39 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
         }
-        if (event.keyCode === 37) {
+        if (event.keyCode === 37 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
         }
         if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {

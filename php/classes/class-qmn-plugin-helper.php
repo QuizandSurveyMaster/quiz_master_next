@@ -704,7 +704,7 @@ class QMNPluginHelper {
 		} elseif ( ! empty( $translation_text ) ) {
 			$translation_text = wp_kses_post( $translation_text );
 		}
-		
+
 		return $translation_text;
 	}
 

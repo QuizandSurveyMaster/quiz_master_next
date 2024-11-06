@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 6.2.0
  */
 function qsm_generate_quiz_tools() {
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
 		return;
 	}
 	add_meta_box( 'qsm_restore_box', 'Restore Quiz', 'qsm_restore_function', 'quiz_wpss' );
