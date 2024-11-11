@@ -63,18 +63,18 @@ function qsm_options_styling_tab_content() {
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
 		<li>
-			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
+			<a href="javascript:void(0)" data-id="theme-featured-image" class="current quiz_style_tab"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
-			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?></a>
+			<a href="javascript:void(0)" data-id="theme-browser" class="quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 		</li>
 		<li>
-			<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab"><?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?></a>
+			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'CSS', 'quiz-master-next' ); ?></a>
 		</li>
 		<?php do_action( 'qsm_add_style_sub_menu_after' ); ?>
 	</ul>
 </div>
-<div id="qsm_themes" class="quiz_style_tab_content">
+<!-- <div id="qsm_themes" class="quiz_style_tab_content"> -->
 	<?php
 	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
@@ -139,31 +139,17 @@ function qsm_options_styling_tab_content() {
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	}
-	?>
-	<div class="wp-filter hide-if-no-js">
-		<ul class="filter-links">
-			<li>
-				<a href="javascript:void(0)" class="current" data-id="theme-browser"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
-			</li>
-			<li>
-				<?php if ( $saved_quiz_theme ) { ?>
-				<a href="javascript:void(0)" data-id="theme-featured-image"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
-				<?php } ?>
-			</li>
-			<?php do_action( 'qsm_add_filter_menu' ); ?>
-		</ul>
-	</div>
-	<?php
+	
 	echo '<form method="POST" action="">';
 	wp_nonce_field( 'quiz_theme_integration', 'quiz_theme_integration_nouce' );
 	?>
-	<div class="themes-container">
+	<!-- <div class="themes-container"> -->
 		<style>
 		.downloaded-theme-button {
 			display: none;
 		}
 		</style>
-		<div class="theme-browser rendered current">
+		<div id="theme-browser" class="theme-browser quiz_style_tab_content" style="display:none;">
 			<div class="themes wp-clearfix">
 				<?php
 				qsm_get_installed_theme( $saved_quiz_theme );
@@ -172,24 +158,24 @@ function qsm_options_styling_tab_content() {
 				?>
 			</div>
 		</div>
-		<div class="theme-featured-image" style="display:none;">
-			<input type="text" class="quiz_featured_image" name="quiz_featured_image"
-				value="<?php echo esc_url( $featured_image ); ?>" />
+		<div id="theme-featured-image" class="theme-featured-image rendered current quiz_style_tab_content">
+			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></h1>
+			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Choose themes to enhance your quizzes and surveys, ensuring they align with your brand\'s aesthetic. You can easily customize the theme to change its look and feel.', 'quiz-master-next' ); ?></p>
+			<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="<?php echo esc_url( $featured_image ); ?>" />
 			<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
 			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo esc_url( $featured_image ); ?>"><br>
-			<input type="submit" name="save_featured_image" class="button button-primary"
-				value="<?php esc_attr_e( 'Save', 'quiz-master-next' ); ?>" />
-
+			<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?>" />
 		</div>
-	</div>
+	<!-- </div> -->
 	<?php
 	echo '</form>';
 	?>
-</div>
+<!-- </div> -->
 <form action='' method='post' name='quiz_style_form'>
 	<div id="legacy" class="quiz_style_tab_content" style="display: none;">
-		<p style="font-size: 18px;"><strong><?php esc_html_e( 'Note: ', 'quiz-master-next' ); ?>
-	</strong><?php esc_html_e( 'This option will be removed in future.', 'quiz-master-next' ); ?></p>
+		<p style="font-size: 18px;">
+			<strong><?php esc_html_e( 'Note: ', 'quiz-master-next' ); ?></strong><?php esc_html_e( 'This option will be removed in future.', 'quiz-master-next' ); ?>
+		</p>
 		<input type='hidden' name='save_style_options' value='confirmation' />
 		<input type='hidden' name='style_quiz_id' value='<?php echo esc_attr( $quiz_id ); ?>' />
 		<input type='hidden' name='save_quiz_theme' id='save_quiz_theme'

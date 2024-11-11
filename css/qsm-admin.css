@@ -839,7 +839,8 @@ ul.changelog li.update div.two:before {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: stretch;
-	border-bottom: 1px solid #cecece;
+	border-bottom: 1px solid #E5E7EB;
+	margin: 20px 0;
 }
 .save-text-changes {
 	display: flex;
@@ -915,12 +916,20 @@ ul.changelog li.update div.two:before {
 .currentli_general,
 .currentli_variable {
 	border-left:4px solid #2271b1;
-	background-color: #a1cef3;
+	background-color: #E9F1F7;
 }
 .qsm-custom-label-left-menu a {
 	color:black;
-	padding: 10px 6px;
+	padding: 10px 6px 10px 8px;
 	width: 100%;
+	font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+}
+.qsm-custom-label-left-menu.currentli_general a,
+.qsm-custom-label-left-menu.currentli_variable a,
+.qsm-custom-label-left-menu.currentli a {
+	color: #2271b1;
 }
 .qsm-sub-tab-menu a,
 .qsm-sub-text-tab-menu a,
@@ -939,8 +948,13 @@ ul.changelog li.update div.two:before {
 .qsm-sub-text-tab-menu .subsubsub li a,
 .qsm-sub-tab-menu .subsubsub li a {
 	font-size: 14px;
-	line-height: 1.2;
-	padding: 10px;
+	line-height: 20px;
+	padding: 0 4px 16px 4px;
+	color: #1E1E1E;
+}
+.qsm-sub-text-tab-menu .subsubsub li,
+.qsm-sub-tab-menu .subsubsub li {
+	padding: 0 8px;
 }
 .qsm_tab_content a:hover,
 .qsm_tab_content a:focus {
@@ -950,7 +964,8 @@ ul.changelog li.update div.two:before {
 }
 .qsm-sub-text-tab-menu .subsubsub li a.current,
 .qsm-sub-tab-menu .subsubsub li a.current{
-	border-bottom: 3px solid #00BEE9;
+	border-bottom: 3px solid #2271B1;
+	color: #2271B1;
 }
 /* Popup */
 .qsm-popup {
@@ -1468,14 +1483,18 @@ td.scheduled_time_start {
 	border: 1px solid #dfd4d4;
 }
 .qsm-text-main-wrap #postbox-container-1 .qsm-text-header h5 {
-	font-size: 14px;
-	margin: 0;
-	font-weight: bold;
+	font-size: 15px;
+    margin: 0;
+    font-weight: 600;
+    line-height: 30px;
+    color: #1E1E1E;
 }
 .qsm-text-main-wrap #postbox-container-1 .qsm-text-header .description {
-	color: #666;
-	display: block;
-	font-weight: 400;
+	color: #555555;
+    display: block;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
 }
 .qsm-text-main-wrap .qsm-text-header {
 	display: flex;
@@ -2322,11 +2341,21 @@ td.scheduled_time_start {
 	min-width: 100px;
 }
 .qsm-text-template-span .button {
-	padding: 0px;
-	border: none;
-	min-height: unset;
-	font-size: 12px;
-	background: unset;
+	padding: 5px 10px;
+    border: 1px solid #2271B1;
+    min-height: unset;
+    font-size: 12px;
+    background: unset;
+    line-height: 16px;
+    font-weight: 400;
+}
+.qsm-theme-featured-image-description {
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 30px;
+	text-align: left;
+	color: #555555;
+	margin: 5px 0 30px 0;
 }
 .qsm-text-template-span .template-variable:hover {
 	background: unset;
