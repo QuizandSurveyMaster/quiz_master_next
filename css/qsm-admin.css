@@ -608,7 +608,7 @@ span.qsm-quiz-name {
 /******************** About/Credits Page *********************/
 div.qsm_icon_wrap {
 	position: absolute;
-	top: -35px;
+	top: -27px;
 	left: -30px;
 	color: #111827;
 	background-position: center 24px;
@@ -622,9 +622,12 @@ div.qsm_icon_wrap {
 	display: inline-block;
 	width: 150px;
 }
-.about-wrap img{
+.qsm-about-heading img{
 	width: 100px;
 	margin-left: -5px;
+}
+.about-wrap img{
+	margin-top: 5px;
 }
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
@@ -3658,15 +3661,23 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
     box-shadow: none;
     color: inherit; 
 }
+.about-wrap{
+	margin: 10px 0 0;
+}
+.about-wrap .qsm_icon_wrap{
+	margin-top: 0;
+}
 .about-wrap .wp-person .gravatar{
 	border-radius: 30px;
 }
-.about-wrap h1{
+.qsm-about-heading h1{
 	font-size: 18px;
 	display: inline-block;
 	position: relative;
 	font-weight: 400;
     line-height: 28px;
+	position: absolute;
+	top: 37px;
 }
 .about-wrap h2{
 	font-size: 18px;
@@ -3688,13 +3699,14 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	flex-wrap: wrap;
 }
 .help-slide div{
-	width: 330px;
-	height: 260px;
+	width: 400px;
+	height: 250px;
 	border: 1px solid #E6E6E6;
 	margin: 20px;
 	flex-direction: column;
 	display: flex;
 	padding: 20px;
+	justify-content: center;
 }
 
 .help-slide div img{

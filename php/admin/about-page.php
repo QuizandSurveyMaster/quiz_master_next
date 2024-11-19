@@ -45,15 +45,29 @@ function qsm_generate_about_page() {
 
 <?php if ( 'help' === $active_tab ) {?>
 <div class="wrap qsm-help-page">
-	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-	<?php } elseif ( 'about' === $active_tab ) {?>
-	<div class="wrap about-wrap">
+<div class="qsm-about-heading">
 		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
 		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
 		</h1>
-		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
+		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
+		</div>
+	<?php } elseif ( 'about' === $active_tab ) {?>
+	<div class="wrap about-wrap">
+		<div class="qsm-about-heading">
+		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
+		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
+		</h1>
+		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
+		</div>
+		<?php } elseif ( 'system_info' === $active_tab ){ ?>
+			<div class="wrap qsm-system-info-page">
+			<div class="qsm-about-heading">
+		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
+		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
+		</h1>
+		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
+		</div>
 		<?php } ?>
-
 		<h2 class="nav-tab-wrapper">
 			<?php
             foreach ( $tab_array as $tab ) {
