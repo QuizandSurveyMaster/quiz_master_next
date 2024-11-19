@@ -97,6 +97,7 @@ function qsm_results_overview_tab_content() {
 	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery'), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_result_page_script', 'qsm_result_page', array(
         'delete_confirm'     => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
+        'delete_alert'     => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
 	));
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
@@ -242,7 +243,7 @@ function qsm_results_overview_tab_content() {
 					?>
 					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
 					<?php
-				} else if ( $result_page == 0 ) {
+				} elseif ( $result_page == 0 ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
 					<a class="prev-page button disable" href=""><</a>
@@ -257,7 +258,7 @@ function qsm_results_overview_tab_content() {
 					?>
 					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 					<?php
-				} else if ( $results_left <= $table_limit ) {
+				} elseif ( $results_left <= $table_limit ) {
 					?>
 					<a class="next-page button disable" href="">></a>
 					<?php
@@ -275,7 +276,6 @@ function qsm_results_overview_tab_content() {
 			}
 			$qsm_search_phrase   = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) ) : '';
 			$qmn_order_by        = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qmn_order_by'] ) ) : 'default';
-			$filter_option       = ( isset( $_GET['filter_option'] ) ) ? sanitize_text_field( wp_unslash( $_GET['filter_option'] ) ) : '';
 			?>
 			<input type="hidden" name="page" value="mlw_quiz_results">
 			<p class="search-box" style="margin: 0;">

@@ -2395,9 +2395,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 		overflow: scroll;
 		width: 100%;
 	}
-	/* p.search-box {
-		bottom: -30px;
-	} */
 	.quizzes-surveys_page_qsm_quiz_help .hndle {
 		padding-left: 15px;
 		padding-bottom: 15px;
@@ -3665,15 +3662,13 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	border-radius: 30px;
 }
 .about-wrap h1{
-	font-size: 15px;
+	font-size: 18px;
 	display: inline-block;
 	position: relative;
 	font-weight: 400;
-    font-size: 18px;
     line-height: 28px;
 }
 .about-wrap h2{
-	font-family: Segoe UI;
 	font-size: 18px;
 	font-weight: 600;
 	line-height: 28px;
@@ -3713,7 +3708,6 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	border-radius: 3px;
 	width: fit-content;
 	text-decoration: none;
-	font-family: Segoe UI;
 	font-size: 14px;
 	font-weight: 600;
 	color: #000;
@@ -3725,6 +3719,14 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 .result-page-wrapper .tablenav-pages .pagination-links .disable{
 	background-color: #e6e6e6e3;
 }
-.result-page-wrapper .pagination-links .prev-page.disable:hover{
+.result-page-wrapper .pagination-links .prev-page.disable:hover,
+.result-page-wrapper .pagination-links .next-page.disable:hover{
 	background-color: #e6e6e6e3;
+}
+#theme-color-settings-content select,
+#theme-color-settings-content input {
+    border-radius: 5px;
+    border-color: #ccc;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
