@@ -608,7 +608,7 @@ span.qsm-quiz-name {
 /******************** About/Credits Page *********************/
 div.qsm_icon_wrap {
 	position: absolute;
-	top: -27px;
+	top: -24px;
 	left: -30px;
 	color: #111827;
 	background-position: center 24px;
@@ -625,9 +625,10 @@ div.qsm_icon_wrap {
 .qsm-about-heading img{
 	width: 100px;
 	margin-left: -5px;
+	margin-top: 13px;
 }
-.about-wrap img{
-	margin-top: 5px;
+.qsm-system-info-page{
+	margin-right: 0;
 }
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
@@ -3664,19 +3665,15 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 .about-wrap{
 	margin: 10px 0 0;
 }
-.about-wrap .qsm_icon_wrap{
-	margin-top: 0;
-}
 .about-wrap .wp-person .gravatar{
 	border-radius: 30px;
 }
 .qsm-about-heading h1{
 	font-size: 18px;
 	display: inline-block;
-	position: relative;
+	position: absolute;
 	font-weight: 400;
     line-height: 28px;
-	position: absolute;
 	top: 37px;
 }
 .about-wrap h2{

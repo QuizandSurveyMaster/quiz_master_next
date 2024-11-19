@@ -42,32 +42,19 @@ function qsm_generate_about_page() {
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
+	<div class="qsm-about-heading">
+            <img src="<?php echo esc_url(plugins_url('../../assets/icon-128x128.png', __FILE__)); ?>" alt="">
+            <h1><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h1>
+            <div class="qsm_icon_wrap"><?php echo esc_html($version); ?></div>
+    	</div>
 
 <?php if ( 'help' === $active_tab ) {?>
 <div class="wrap qsm-help-page">
-<div class="qsm-about-heading">
-		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
-		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
-		</h1>
-		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
-		</div>
 	<?php } elseif ( 'about' === $active_tab ) {?>
 	<div class="wrap about-wrap">
-		<div class="qsm-about-heading">
-		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
-		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
-		</h1>
-		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
-		</div>
-		<?php } elseif ( 'system_info' === $active_tab ){ ?>
-			<div class="wrap qsm-system-info-page">
-			<div class="qsm-about-heading">
-		<img src="<?php echo esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) )?> " alt="">
-		<h1><?php esc_html_e( 'Quiz And Survey Master', 'quiz-master-next' ); ?>
-		</h1>
-		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>		
-		</div>
-		<?php } ?>
+		<?php } elseif ( 'system_info' === $active_tab ) {?>
+			<div class="wrap system-info-wrap">
+				<?php }?>
 		<h2 class="nav-tab-wrapper">
 			<?php
             foreach ( $tab_array as $tab ) {
