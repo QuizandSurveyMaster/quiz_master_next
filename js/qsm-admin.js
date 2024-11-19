@@ -4458,3 +4458,29 @@ var QSM_Quiz_Broadcast_Channel;
         });
     });
 }(jQuery));
+
+jQuery(document).ready(function() {
+    const bulkActionSelect = jQuery('#qsm_bulk_action_select');
+    const applyBulkActionButton = jQuery('#qsm_apply_bulk_action');
+
+    applyBulkActionButton.on('click', function() {
+        const action = bulkActionSelect.val();
+
+        // Handle bulk delete action
+        if (action === 'bulk_delete') {
+            if (confirm(qsm_result_page.delete_confirm)) {
+                jQuery('form[name="bulk_delete_form"]').submit();
+            }
+        } 
+        // Handle permanent delete action
+        else if (action === 'bulk_permanent_delete') {
+            if (confirm(qsm_result_page.delete_confirm)) {
+                jQuery('#bulk_permanent_delete').val('1');
+                jQuery('form[name="bulk_delete_form"]').submit();
+            }
+        } 
+        else {
+            alert(qsm_result_page.delete_alert);
+        }
+    });
+});

@@ -608,9 +608,8 @@ span.qsm-quiz-name {
 /******************** About/Credits Page *********************/
 div.qsm_icon_wrap {
 	position: absolute;
-	top: -20px;
-	right: 0;
-	background-color: rgba(54, 58, 66, 1);
+	top: -35px;
+	left: -30px;
 	color: #111827;
 	background-position: center 24px;
 	background-size: 85px 85px;
@@ -622,12 +621,10 @@ div.qsm_icon_wrap {
 	height: 40px;
 	display: inline-block;
 	width: 150px;
-	text-rendering: optimizeLegibility;
-	border: 5px solid #106daa;
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-khtml-border-radius: 20px;
-	border-radius: 20px;
+}
+.about-wrap img{
+	width: 100px;
+	margin-left: -5px;
 }
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
@@ -2320,6 +2317,12 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 		display: inline-block;
 		margin-bottom: 30px;
 	}
+	.tablenav .tablenav-pages {
+		text-align: right;
+        position: relative;
+        top: 1px;
+        left: 140px
+	}
 }
 @media screen and (max-width: 782px) {
 	.form-table td fieldset label {
@@ -2335,6 +2338,11 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	.qsm-tooltips-icon .qsm-tooltips:before {
 		left: auto;
 		right: -3px;
+	}
+	.tablenav .tablenav-pages {
+        top: 61px;
+        width: 45%;
+        text-align: left;
 	}
 }
 @media screen and (max-width: 767px) {
@@ -2386,9 +2394,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	.result-page-wrapper form {
 		overflow: scroll;
 		width: 100%;
-	}
-	p.search-box {
-		bottom: -30px;
 	}
 	.quizzes-surveys_page_qsm_quiz_help .hndle {
 		padding-left: 15px;
@@ -3412,6 +3417,15 @@ input#duplicate_questions {
 		position: relative;
     	top: 10px;
 	}
+	p.search-box{
+		display: inline-grid;
+		width: auto;
+	}
+	.tablenav .tablenav-pages {
+        position: relative;
+        top: 80px;
+        width: 140px;
+    }
 }
 body .qsm_tab_content .qsm-small-input-field input[type="number"],
 body .qsm_tab_content .qsm-small-input-field input[type="text"] {
@@ -3585,4 +3599,134 @@ button.button.qsm-slashcommand-variables-button	 {
 button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	margin: 0 4px 0 -1px;
     font-weight: 1000;
+}
+
+.widefat thead th,
+.widefat tbody td {
+	border-bottom: 1px solid #ddd;
+	padding: 8px;
+}
+
+.widefat tbody td input[type="checkbox"],
+.widefat thead th input[type="checkbox"] {
+	margin: 0 auto;
+	display: block;
+}
+
+.widefat .row-actions {
+	font-size: 14px;
+}
+
+.result-page-wrapper .pagination-links{
+	border: 1px solid #8c8f94;
+	background-color: #fff;
+	padding: 6px 0;
+	border-radius: 3px;
+}
+
+.result-page-wrapper .pagination-links .next-page,
+.pagination-links .prev-page{
+	border: none;
+	background: none;
+	color: #000;
+	border-radius: none;
+}
+.result-page-wrapper .pagination-links .next-page{
+	border-left: 1px solid #b3aeae;
+}
+.result-page-wrapper .pagination-links .prev-page{
+	border-right: 1px solid #b3aeae;
+}
+.tablenav-pages .paging-input {
+    display: inline-flex;
+    align-items: center;
+}
+
+.tablenav-pages .total-pages {
+    margin-left: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+.tablenav .tablenav-pages .button{
+	padding: 0;
+	line-height: 28px;
+}
+.result-page-wrapper .pagination-links a.button:hover,
+.result-page-wrapper .pagination-links a.button:focus,
+.result-page-wrapper .pagination-links a.button:active {
+    background: none;
+    box-shadow: none;
+    color: inherit; 
+}
+.about-wrap .wp-person .gravatar{
+	border-radius: 30px;
+}
+.about-wrap h1{
+	font-size: 18px;
+	display: inline-block;
+	position: relative;
+	font-weight: 400;
+    line-height: 28px;
+}
+.about-wrap h2{
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 28px;
+	text-align: left;
+	margin: 40px 0;
+}
+.about-wrap .wp-person .web{
+	color: #000;
+	line-height: 3.5;
+}
+.about-wrap .wp-person{
+	width: 250px;
+}
+.help-slide{
+	display: flex;
+    margin: 10px;
+	flex-wrap: wrap;
+}
+.help-slide div{
+	width: 330px;
+	height: 260px;
+	border: 1px solid #E6E6E6;
+	margin: 20px;
+	flex-direction: column;
+	display: flex;
+	padding: 20px;
+}
+
+.help-slide div img{
+	width: 44px;
+	height: 44px;
+	padding: 5.5px 3.67px 2.75px 3.67px;
+}
+.help-slide div a{
+	border: 2px solid #000;
+	padding: 5px 10px;
+	border-radius: 3px;
+	width: fit-content;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 600;
+	color: #000;
+	margin-top: 10px;
+}
+.qsm-system-info-page .hide-if-no-js{
+	display: none;
+}
+.result-page-wrapper .tablenav-pages .pagination-links .disable{
+	background-color: #e6e6e6e3;
+}
+.result-page-wrapper .pagination-links .prev-page.disable:hover,
+.result-page-wrapper .pagination-links .next-page.disable:hover{
+	background-color: #e6e6e6e3;
+}
+#theme-color-settings-content select,
+#theme-color-settings-content input {
+    border-radius: 5px;
+    border-color: #ccc;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
