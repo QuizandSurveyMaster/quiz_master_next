@@ -3726,11 +3726,11 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	display: none;
 }
 .result-page-wrapper .tablenav-pages .pagination-links .disable{
-	background-color: #e6e6e6e3;
+	background-color: #f0f0f1;
 }
 .result-page-wrapper .pagination-links .prev-page.disable:hover,
 .result-page-wrapper .pagination-links .next-page.disable:hover{
-	background-color: #e6e6e6e3;
+	background-color: #f0f0f1;
 }
 #theme-color-settings-content select,
 #theme-color-settings-content input {
