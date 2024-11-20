@@ -627,9 +627,6 @@ div.qsm_icon_wrap {
 	margin-left: -5px;
 	margin-top: 13px;
 }
-.qsm-system-info-page{
-	margin-right: 0;
-}
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
 }
@@ -3605,70 +3602,67 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
     font-weight: 1000;
 }
 
-.widefat thead th,
-.widefat tbody td {
-	border-bottom: 1px solid #ddd;
-	padding: 8px;
-}
-
-.widefat tbody td input[type="checkbox"],
-.widefat thead th input[type="checkbox"] {
+.qsm_page_mlw_quiz_results .result-page-wrapper .widefat tbody td input[type="checkbox"],
+.qsm_page_mlw_quiz_results .result-page-wrapper .widefat thead th input[type="checkbox"] {
 	margin: 0 auto;
 	display: block;
 }
 
-.widefat .row-actions {
-	font-size: 14px;
-}
-
-.result-page-wrapper .pagination-links{
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links{
 	border: 1px solid #8c8f94;
 	background-color: #fff;
 	padding: 6px 0;
 	border-radius: 3px;
 }
 
-.result-page-wrapper .pagination-links .next-page,
-.pagination-links .prev-page{
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .next-page,
+.qsm_page_mlw_quiz_results .pagination-links .prev-page{
 	border: none;
 	background: none;
 	color: #000;
 	border-radius: none;
 }
-.result-page-wrapper .pagination-links .next-page{
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .next-page{
 	border-left: 1px solid #b3aeae;
 }
-.result-page-wrapper .pagination-links .prev-page{
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .prev-page{
 	border-right: 1px solid #b3aeae;
 }
-.tablenav-pages .paging-input {
+.qsm_page_mlw_quiz_results .tablenav-pages .paging-input {
     display: inline-flex;
     align-items: center;
 }
 
-.tablenav-pages .total-pages {
+.qsm_page_mlw_quiz_results .tablenav-pages .total-pages {
     margin-left: 5px;
     font-size: 0.9em;
     color: #666;
 }
-.tablenav .tablenav-pages .button{
+.qsm_page_mlw_quiz_results .tablenav .tablenav-pages .button{
 	padding: 0;
 	line-height: 28px;
 }
-.result-page-wrapper .pagination-links a.button:hover,
-.result-page-wrapper .pagination-links a.button:focus,
-.result-page-wrapper .pagination-links a.button:active {
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links a.button:hover,
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links a.button:focus,
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links a.button:active {
     background: none;
     box-shadow: none;
     color: inherit; 
 }
-.about-wrap{
+.qsm_page_mlw_quiz_results .result-page-wrapper .tablenav-pages .pagination-links .disable{
+	background-color: #f0f0f1;
+}
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .prev-page.disable:hover,
+.qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .next-page.disable:hover{
+	background-color: #f0f0f1;
+}
+.qsm_page_qsm_quiz_about .about-wrap{
 	margin: 10px 0 0;
 }
-.about-wrap .wp-person .gravatar{
+.qsm_page_qsm_quiz_about .about-wrap .wp-person .gravatar{
 	border-radius: 30px;
 }
-.qsm-about-heading h1{
+.qsm_page_qsm_quiz_about .qsm-about-heading h1{
 	font-size: 18px;
 	display: inline-block;
 	position: absolute;
@@ -3676,26 +3670,28 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
     line-height: 28px;
 	top: 37px;
 }
-.about-wrap h2{
+.qsm_page_qsm_quiz_about .about-wrap h2{
 	font-size: 18px;
 	font-weight: 600;
 	line-height: 28px;
 	text-align: left;
-	margin: 40px 0;
 }
-.about-wrap .wp-person .web{
+.qsm_page_qsm_quiz_about .about-wrap div h2{
+	margin: 50px 0 30px;
+}
+.qsm_page_qsm_quiz_about .about-wrap .wp-person .web{
 	color: #000;
 	line-height: 3.5;
 }
-.about-wrap .wp-person{
+.qsm_page_qsm_quiz_about .about-wrap .wp-person{
 	width: 250px;
 }
-.help-slide{
+.qsm_page_qsm_quiz_about .help-slide{
 	display: flex;
     margin: 10px;
 	flex-wrap: wrap;
 }
-.help-slide div{
+.qsm_page_qsm_quiz_about .help-slide div{
 	width: 400px;
 	height: 250px;
 	border: 1px solid #E6E6E6;
@@ -3706,12 +3702,12 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	justify-content: center;
 }
 
-.help-slide div img{
+.qsm_page_qsm_quiz_about .help-slide div img{
 	width: 44px;
 	height: 44px;
 	padding: 5.5px 3.67px 2.75px 3.67px;
 }
-.help-slide div a{
+.qsm_page_qsm_quiz_about .help-slide div a{
 	border: 2px solid #000;
 	padding: 5px 10px;
 	border-radius: 3px;
@@ -3722,18 +3718,15 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	color: #000;
 	margin-top: 10px;
 }
-.qsm-system-info-page .hide-if-no-js{
+.qsm_page_qsm_quiz_about .qsm-system-info-page{
+	margin-right: 0;
+	margin-top: 0;
+}
+.qsm_page_qsm_quiz_about .qsm-system-info-page .hide-if-no-js{
 	display: none;
 }
-.result-page-wrapper .tablenav-pages .pagination-links .disable{
-	background-color: #f0f0f1;
-}
-.result-page-wrapper .pagination-links .prev-page.disable:hover,
-.result-page-wrapper .pagination-links .next-page.disable:hover{
-	background-color: #f0f0f1;
-}
-#theme-color-settings-content select,
-#theme-color-settings-content input {
+.qsm-popup #theme-color-settings-content select,
+.qsm-popup #theme-color-settings-content input {
     border-radius: 5px;
     border-color: #ccc;
     padding-top: 2px;
