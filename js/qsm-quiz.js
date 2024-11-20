@@ -52,6 +52,8 @@ var qsmTimerInterval = [];
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
 						QSM.initTimer(quizID);
 						quizType = 'timer';
+					} else if (jQuery('.qsm-quiz-container-' + quizID + ' #timer').val() == 0) {
+						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
 						jQuery('.qsm-quiz-container-' + quizID + ' .qsm-quiz-comment-section').fadeIn();
