@@ -1176,7 +1176,7 @@ function qsm_is_substring_in_array( text, array ) {
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag';
                         editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 5px 8px; border-radius: 2px;font-family: Arial, Helvetica, sans-serif;font-size: 12px; font-weight: 600; }';
+                        editor.settings.content_style = 'qsmvariabletag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
                         editor.addButton('qsm_slash_command', {
                             text: '/ ' +qsm_admin_messages.variables,
                             tooltip: qsm_admin_messages.insert_variable,
@@ -1227,6 +1227,29 @@ function qsm_is_substring_in_array( text, array ) {
                                 qsm_search = '';
                             }
 
+                            // Create a container div for the input and label
+                            let inputContainer = document.createElement('div');
+                            inputContainer.className = 'qsm-autocomplete-input-container'; // Add a class for styling if needed
+
+                            // Create a label element
+                            let inputLabel = document.createElement('label');
+                            inputLabel.for = 'searchInput';
+                            inputLabel.textContent = 'Search:';
+
+                            // Create the input element
+                            let searchInput = document.createElement('input');
+                            searchInput.type = 'text';
+                            searchInput.id = 'searchInput'; // Link this id with the label
+                            searchInput.placeholder = 'Type to search...';
+                            searchInput.className = 'qsm-autocomplete-search-input'; // Add a class for styling if needed
+
+                            // Append the label and input to the container
+                            inputContainer.appendChild(inputLabel);
+                            inputContainer.appendChild(searchInput);
+
+                            // Append the container to the autocomplete div
+                            autocomplete.appendChild(inputContainer);
+
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
                                 newCommand.forEach(function (command, key) {
@@ -1246,7 +1269,8 @@ function qsm_is_substring_in_array( text, array ) {
                                     }
                                     item.classList.add('qsm-autocomplete-item');
                                     item.setAttribute('title', command.description);
-                                    item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
+                                    item.setAttribute('variable', command.name);
+                                    item.innerHTML = "<span class='qsm-autocomplete-item-title'>%" + command.name + "%</span><span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
                                     item.onclick = function() {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
@@ -1384,6 +1408,35 @@ function qsm_is_substring_in_array( text, array ) {
                             editor.selection.setContent(contentToInsert);
                             showAutocomplete(editor, true);
                         });
+                        
+                        $(document).off('input', '.qsm-autocomplete-search-input').on('input', '.qsm-autocomplete-search-input', function () {
+                            let query = $(this).val().toLowerCase(); // Get the current input value and convert to lowercase
+                            let hasResults = false;
+                        
+                            $('.qsm-autocomplete-item').each(function () {
+                                let title = $(this).attr('variable').toLowerCase(); // Get the title attribute of the current item
+                                if (title.includes(query)) {
+                                    $(this).show(); // Show items that match the query
+                                    hasResults = true; // At least one item matches
+                                } else {
+                                    $(this).hide(); // Hide items that don't match
+                                }
+                            });
+                        
+                            // Check for the "no items" message
+                            let noItemElement = $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-no-item');
+                        
+                            if (hasResults) {
+                                noItemElement.remove(); // Remove the "no items" message if results are found
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').show();
+                            } else if (noItemElement.length === 0) { // Append only if it doesn't already exist
+                                let item_group = document.createElement('div');
+                                item_group.className = 'qsm-autocomplete-no-item';
+                                item_group.textContent = qsm_admin_messages.no_variables;
+                                $(this).parents('.qsm-autocomplete').append(item_group);
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
+                            }
+                        });                    
                     });
                 }
             }
@@ -1764,7 +1817,7 @@ var QSMContact;
                 },
                 addCondition: function ($email, category, extra_condition, criteria, operator, value) {
                     var template = wp.template('email-condition');
-                    $email.find('.email-when-conditions').append(template({
+                    $email.find('.qsm-email-when-conditions').append(template({
                         'category': category,
                         'extra_condition': extra_condition,
                         'criteria': criteria,
@@ -1791,6 +1844,11 @@ var QSMContact;
                 },
                 newCondition: function ($email) {
                     QSMAdminEmails.addCondition($email, 'quiz', '', 'score', 'equal', 0);
+                },
+                updateEmailConditonCount: function ( $parent ) {
+                    $parent.find('.email-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
                 },
                 addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) {
                     QSMAdminEmails.total += 1;
@@ -1877,6 +1935,7 @@ var QSMContact;
                     event.preventDefault();
                     $page = $(this).closest('.qsm-email');
                     QSMAdminEmails.newCondition($page);
+                    QSMAdminEmails.updateEmailConditonCount($(this).parents('.qsm-email-when'));
                 });
                 $('#qsm_emails').on('click', '.qsm-delete-email-button', function (event) {
                     event.preventDefault();
@@ -1887,7 +1946,9 @@ var QSMContact;
                 });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.qsm-email-when');
                     $(this).closest('.email-condition').remove();
+                    QSMAdminEmails.updateEmailConditonCount($parent);
                 });
             });
         }
@@ -4075,6 +4136,7 @@ var QSM_Quiz_Broadcast_Channel;
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
                                 QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark, page);
+                                QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').eq(i));
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -4110,6 +4172,11 @@ var QSM_Quiz_Broadcast_Channel;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
+                updateResultConditonCount: function ( $parent ) {
+                    $parent.find('.results-page-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
+                },
                 addResultsPage: function (conditions, page, redirect, default_mark = false, singlePage = {}) {
                     const parser = new DOMParser();
                     let parseRedirect = parser.parseFromString(redirect, 'text/html');
@@ -4140,6 +4207,9 @@ var QSM_Quiz_Broadcast_Channel;
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
+                    const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
+                    const $slashCommandButton = $resultsPage.find('.qsm-slashcommand-variables-button');
+                    $resultsPage.find('.wp-media-buttons .insert-media').after($slashCommandButton);
                 },
                 newResultsPage: function () {
                     var conditions = [{
@@ -4159,6 +4229,7 @@ var QSM_Quiz_Broadcast_Channel;
                 $('.add-new-page').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminResults.newResultsPage();
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 jQuery(document).on('click', '.qsm-duplicate-result-page-button', function () {
                     let result_page = jQuery(this).closest("header").next("main");
@@ -4176,6 +4247,7 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                     QSMAdminResults.addResultsPage(conditions, page, redirect_value);
                     jQuery('html, body').animate({ scrollTop: jQuery('.results-page:last-child').offset().top - 150 }, 1000);
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 $('.save-pages').on('click', function (event) {
                     event.preventDefault();
@@ -4185,6 +4257,7 @@ var QSM_Quiz_Broadcast_Channel;
                     event.preventDefault();
                     $page = $(this).closest('.results-page');
                     QSMAdminResults.newCondition($page);
+                    QSMAdminResults.updateResultConditonCount($(this).parents('.results-page-when'));
                 });
                 $('#results-pages').on('click', '.qsm-delete-result-button', function (event) {
                     event.preventDefault();
@@ -4192,12 +4265,25 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 $('#results-pages').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.results-page-when');
+                    console.log($parent);
                     $(this).closest('.results-page-condition').remove();
+                    QSMAdminResults.updateResultConditonCount($parent);
                 });
                 jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
                     jQuery(this).closest("header").next("main").slideToggle();
                     jQuery(this).find('.dashicons-arrow-up-alt2, .dashicons-arrow-down-alt2').toggleClass('dashicons-arrow-up-alt2 dashicons-arrow-down-alt2');
                 });
+                jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
+                    jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
+                    jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
+                });                
+                jQuery(document).on('click', function (e) {
+                    // Check if the click was outside .qsm-template-btn-group
+                    if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
+                        jQuery('.qsm-settings-box-details').hide();
+                    }
+                });                                
             });
         }
     }

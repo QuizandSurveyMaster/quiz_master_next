@@ -421,9 +421,9 @@ class QSMQuizApi {
 		$api_key = $request->get_header('authorization');
 		$qsm_api_settings = (array) get_option( 'qmn-settings' );
 		if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && isset($qsm_api_settings['allow_submit_quiz']) && "1" == $qsm_api_settings['allow_submit_quiz'] ) {
-			
+
 			$quiz_id = ! empty( $_POST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) : 0 ;
-		
+
 			global $qmn_allowed_visit, $mlwQuizMasterNext, $wpdb, $qmnQuizManager;
 			$qmn_allowed_visit = true;
 			$qmnQuizManager = new QMNQuizManager();
@@ -438,11 +438,11 @@ class QSMQuizApi {
 				'fields'      => 'ids',
 				'numberposts' => 1,
 			));
-		
+
 			if ( ! empty( $post_ids[0] ) ) {
 				$post_status = get_post_status( $post_ids[0] );
 			}
-		
+
 			if ( is_null( $options ) || 1 == $options->deleted ) {
 				echo wp_json_encode(
 					array(
@@ -467,11 +467,11 @@ class QSMQuizApi {
 				);
 				wp_die();
 			}
-			
+
 			$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 			$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 			$post_status = false;
-			
+
 			if ( 0 != $options->limit_total_entries ) {
 				$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );
 				if ( $mlw_qmn_entries_count >= $options->limit_total_entries ) {
