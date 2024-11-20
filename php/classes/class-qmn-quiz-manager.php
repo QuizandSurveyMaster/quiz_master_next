@@ -496,7 +496,6 @@ class QMNQuizManager {
 			),
 			$atts
 		);
-
 		// Quiz ID.
 		$quiz            = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );

@@ -1,3 +1,6 @@
+:root {
+	--qsm-primary-button: #2272B1;
+}  
 /******************** Quizzes/Surveys Page *********************/
 @-moz-keyframes qsm-spinner-loader {
 	0% {
@@ -240,6 +243,7 @@ span.qsm-quiz-name {
 	margin-bottom: 15px;
 	font-size: 14px;
 	font-style: normal;
+	border: 1px solid #555555;
 }
 .qsm_popular_addons div.popuar-addon-ul>div img {
 	max-width: 100%;
@@ -456,11 +460,29 @@ span.qsm-quiz-name {
 	box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
 }
 .results-page .results-page-content, #qsm_emails .qsm-email .qsm-email-content {
-	background: #f8f9f9;
-	padding-right: 15px;
-	padding-left: 15px;
-	width: 100%;
-	box-sizing: border-box;
+	background: #fff;
+    padding-right: 10px;
+    padding-left: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.results-page-condition .qsm-condition-collection-wrap p, .email-condition .qsm-condition-collection-wrap p {
+	margin-top: 0;
+    font-weight: 600;
+}
+
+.results-page-header .qsm-settings-box-details, 
+.qsm-email-header .qsm-settings-box-details {
+	display: none;
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #dfd4d4;
+    margin: 3px 0 0px 25px;
+    max-width: 200px;
+    right: 45px;
 }
 .results-page-header, #qsm_emails .qsm-email-header {
 	display: flex;
@@ -485,11 +507,11 @@ span.qsm-quiz-name {
 	display: flex;
 	flex-direction: column;
 }
-.results-page-when, .results-page-show, .email-when, .email-show {
+.results-page-when, .results-page-show, .qsm-email-when, .email-show {
 	padding: 15px;
 	min-width: 60%;
 }
-.results-page-when, .email-when {
+.results-page-when, .qsm-email-when {
 	margin-right: 15px;
 	border-right: 1px solid #dfd4d4;
 }
@@ -504,20 +526,21 @@ span.qsm-quiz-name {
  .email-content-header h4{
 	font-size: 20px;
 	margin: 5px 0 15px;
-	font-weight: 400;
+	font-weight: 600;
+	color: #1E1E1E;
 }
 .results-page-condition, .email-condition {
 	margin-bottom: 15px;
     border-radius: 2px;
-    background: #fff;
+    background: #F8F9F9;
     padding: 25px 20px;
     position: relative;
-    border: 1px solid #dfd4d4;
+	border-radius: 10px;
 }
 .qsm-result-condition-title,
 .qsm-email-condition-title {
     font-size: 14px;
-	display: block;
+	display: none;
 	font-weight: 500;
     margin-bottom: 3px;
 	color: #959494;
@@ -526,22 +549,43 @@ span.qsm-quiz-name {
 .qsm-email-condition-mode {
     margin-bottom: 25px;
 }
-.results-page-condition select, .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], .email-condition select, .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"] {
+.results-page-condition select, 
+.qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], 
+.email-condition select, 
+.qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"],
+.results-page-show .qsm-result-page-common-section select, 
+.results-page-show .qsm-result-page-common-section input[type="text"],
+.qsm-email-content .qsm-email-page-common-section select, 
+.qsm-email-content .qsm-email-page-common-section input[type="text"]
+ {
 	min-width: auto;
 	width: 100%;
-	border-radius: 4px;
+	border-radius: 5px;
 	border-color: #ccc;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 .results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container, .qsm-result-condition-mode, .qsm-email-condition-mode {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 10px;
 	align-items: flex-end;
 }
+
+.email-show .ms-options-wrap>button, .email-show .ms-options-wrap>button:focus,
+.results-page-show .ms-options-wrap>button, .results-page-show .ms-options-wrap>button:focus{
+	width: 100%;
+}
+
 .qsm-email-condition-container-inner,
 .qsm-result-condition-container-inner{
-	width: 33.33%;
+	width: 50%;
 }
+
+.results-page-content label, .results-page-content p, .qsm-email-content label, .qsm-email-content p {
+    color: #1E1E1E;
+}
+
 .delete-condition-button {
 	background: none;
 	cursor: pointer;
@@ -571,7 +615,7 @@ span.qsm-quiz-name {
 		flex-direction: row;
 		justify-content: space-around;
 	}
-	.results-page-when, .results-page-show, .email-when, .email-show {
+	.results-page-when, .results-page-show, .qsm-email-when, .email-show {
 		width: calc(50% - 15px);
 		min-width: unset;
 	}
@@ -2560,9 +2604,9 @@ input#duplicate_questions {
 	display: inline-flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	box-shadow: 0 0 5px 0px #ddd;
 	border-radius: 5px;
 	margin: 0 5px;
+	border: 1px solid #dfd4d4;
 }
 .qsm-actions-link-box a:first-child {
 	border-radius: 5px 0 0 5px;
@@ -2571,9 +2615,8 @@ input#duplicate_questions {
 	border-radius: 0 5px 5px 0;
 }
 .qsm-actions-link-box a {
-	padding: 9px;
+	padding: 4px 8px;
 	color: #3c434a;
-	border: 1px solid #ddd;
 	cursor: pointer;
 }
 .qsm-actions-link-box a.disabled {
@@ -2583,6 +2626,22 @@ input#duplicate_questions {
 	outline: none;
 	box-shadow: none;
 	background: #eee;
+}
+.qsm-actions-link-box a:not(:first-child) {
+	border-left: 1px solid #d6d6d6;
+}
+a.qsm-toggle-result-page-button, a.qsm-toggle-email-template-button {
+    height: 35px;
+    display: flex;
+    align-items: center;
+	justify-content: center;
+}
+.qsm-actions-link-box a.qsm-settings-box-result-button:focus {
+	background-color: #ebf4fc;
+}
+.results-page-when .qsm-new-condition, .qsm-email-when .qsm-new-condition{
+	width: 121px;
+    font-weight: 600;
 }
 .qsm-actions-link-box a span {
 	font-size: 16px;
@@ -3384,7 +3443,7 @@ input#preferred-date-format-custom {
 	position: absolute !important;
     z-index: 1000;
     background-color: #ffffff;
-    border: 1px solid #cccccc;
+    border: 1px solid #dfd4d4;
     width: 100%;
     max-height: 270px;
     border-radius: 6px;
@@ -3412,7 +3471,7 @@ input#preferred-date-format-custom {
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item:hover,
 .mce-container .qsm-autocomplete .qsm-autocomplete-item-active {
-	background-color: #f0f0f0;
+	background-color: #E8E8E8;
 }
 .mce-container .qsm-autocomplete .qsm-autocomplete-item .qsm-autocomplete-item-description {
 	color: #808992;
@@ -3428,15 +3487,16 @@ input#preferred-date-format-custom {
 }
 .qsm-hightlight-text,
 .mce-qsm-variables-editor-btn button{
-    background: #187FFA;
+    background: #DCEDFA;
     border-radius: 2px;
     display: inline-block;
     text-align: center;
 	border: none;
+	color: #1E1E1E;
 }
 .qsm-hightlight-text,
 .mce-qsm-variables-editor-btn button span.mce-txt{
-	color: #ffffff;
+	color: #1E1E1E;
     padding: 0px 7px;
 }
 /*TinyMCE Text-editor : end */
@@ -3476,17 +3536,50 @@ button.button.qsm-extra-shortcode-popup {
     z-index: 10;
 }
 
-button.button.qsm-slashcommand-variables-button	 {
-    display: flex;
-    align-items: center;
-    position: relative;
-    top: 30px;
-    left: 110px;
-	z-index: 10;
-	margin: -30px 0;
-}
-
 button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	margin: 0 4px 0 -1px;
     font-weight: 1000;
+}
+
+@media screen and (max-width: 782px) {
+	button.button.qsm-extra-shortcode-resultpage-button {
+		display: flex;
+		align-items: center;
+		position: relative;
+		top: 3px;
+		left: 0px;
+		z-index: 10;
+	}
+
+	.qsm-email-condition-container-inner, .qsm-result-condition-container-inner {
+		width: 100%;
+	}
+}
+
+.mce-container .qsm-autocomplete .qsm-autocomplete-item-title,
+.mce-container .qsm-autocomplete .qsm-autocomplete-item-title{
+	color: #1E1E1E;
+    background: #DCEDFA;
+    padding: 7px;
+    font-size: 12px;
+}
+
+.mce-container .qsm-autocomplete .qsm-autocomplete-item:hover .qsm-autocomplete-item-title,
+.mce-container .qsm-autocomplete .qsm-autocomplete-item-active .qsm-autocomplete-item-title {
+	background-color: #FFFFFF;
+}
+
+.mce-container .qsm-autocomplete .qsm-autocomplete-no-item {
+	color: #1E1E1E;
+    padding: 10px 8px;
+    font-size: 12px;
+}
+.mce-container .qsm-autocomplete .qsm-autocomplete-input-container {
+	display: flex;
+	align-items: center;
+	padding: 5px 15px;
+}
+.mce-container .qsm-autocomplete input.qsm-autocomplete-search-input{
+	width: calc(100% - 85px);
+	margin-left: 15px;
 }
