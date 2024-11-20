@@ -652,9 +652,8 @@ span.qsm-quiz-name {
 /******************** About/Credits Page *********************/
 div.qsm_icon_wrap {
 	position: absolute;
-	top: -20px;
-	right: 0;
-	background-color: rgba(54, 58, 66, 1);
+	top: -24px;
+	left: -30px;
 	color: #111827;
 	background-position: center 24px;
 	background-size: 85px 85px;
@@ -666,12 +665,14 @@ div.qsm_icon_wrap {
 	height: 40px;
 	display: inline-block;
 	width: 150px;
-	text-rendering: optimizeLegibility;
-	border: 5px solid #106daa;
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-khtml-border-radius: 20px;
-	border-radius: 20px;
+}
+.qsm-about-heading img{
+	width: 100px;
+	margin-left: -5px;
+	margin-top: 13px;
+}
+.qsm-system-info-page{
+	margin-right: 0;
 }
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
@@ -1288,20 +1289,24 @@ h3.addon_category_name {
 	margin-left: 15px;
 }
 /* The switch - the box around the slider */
-.switch {
+.qsm-checkbox-switch {
 	position: relative;
 	display: inline-block;
 	width: 60px;
 	height: 34px;
 }
+.qsm-checkbox-switch.small-switch {
+	width: 50px;
+	height: 22px;
+}
 /* Hide default HTML checkbox */
-.switch input[type="checkbox"] {
+.qsm-checkbox-switch input[type="checkbox"] {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
 /* The slider */
-.slider {
+.qsm-switch-slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -1312,7 +1317,7 @@ h3.addon_category_name {
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
-.slider:before {
+.qsm-switch-slider:before {
 	position: absolute;
 	content: "";
 	height: 26px;
@@ -1323,22 +1328,27 @@ h3.addon_category_name {
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
-input:checked+.slider {
+.qsm-checkbox-switch.small-switch .qsm-switch-slider:before {
+	height: 14px;
+	width: 15px;
+	left: 5px;
+}
+input:checked+.qsm-switch-slider {
 	background-color: #2196f3;
 }
-input:focus+.slider {
+input:focus+.qsm-switch-slider {
 	box-shadow: 0 0 1px #2196f3;
 }
-input:checked+.slider:before {
+input:checked+.qsm-switch-slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
 /* Rounded sliders */
-.slider.round {
+.qsm-switch-slider.round {
 	border-radius: 34px;
 }
-.slider.round:before {
+.qsm-switch-slider.round:before {
 	border-radius: 50%;
 }
 input#sc-shortcode-model-text, input#sc-shortcode-model-text-link {
@@ -1494,6 +1504,93 @@ td.scheduled_time_start {
 	margin: 0 10px;
 	width: auto;
 }
+
+
+#post-body-content .qsm-popup-upgrade-warning img {
+	width: auto;
+    height: 15px;
+    margin-right: 8px;
+}
+
+.qsm-linked-list-div-block {
+	padding: 4px;
+	margin: 5px 0;
+	margin-top: -20px;
+	width: max-content;
+	background-color: #ffe684;
+	border-radius: 2px;
+}
+
+span.qsm-linked-list-view-button {
+    cursor: pointer;
+    color: #135e96;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+span.qsm-linked-list-item {
+	margin: 0 0 5px 0;
+    padding: 5px;
+    background: #f0f0f1;
+}
+
+div.qsm-linked-list-inside span.qsm-unlink-the-question {
+	color: #DC3232;
+	font-weight: 500;
+	max-width: 60px;
+	cursor: pointer;
+}
+
+.qsm-linked-list-div-block p {
+	margin: 0;
+	font-size: 13px;
+	color: #856404;
+}
+
+.qsm-linked-list-container {
+    position: absolute;
+}
+
+.qsm-linked-list-div-block .qsm-linked-list-inside {
+    position: relative;
+    right: -155px;
+    top: 20px;
+    z-index: 999;
+    width: 350px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid #dfd4d4; 
+    box-shadow: 0 0 6px 2px #ddd;
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.qsm-linked-list-div-block .qsm-linked-list-inside:before {
+    content: " ";
+    position: absolute;
+    top: -24px; 
+    left: 28%;
+    margin-left: -12px; 
+    border-width: 12px; 
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent; 
+    z-index: 1; 
+}
+
+.qsm-linked-list-div-block .qsm-linked-list-inside:after {
+    content: " ";
+    position: absolute;
+    top: -26px; 
+    left: 28%;
+    margin-left: -12px; 
+    border-width: 12px; 
+    border-style: solid;
+    border-color: transparent transparent #dfd4d4 transparent; 
+    z-index: 0; 
+}
+
 /** * Text Tab design */
 .qsm-text-main-wrap {
 	display: inline-block;
@@ -2268,6 +2365,12 @@ td.scheduled_time_start {
 		display: inline-block;
 		margin-bottom: 30px;
 	}
+	.tablenav .tablenav-pages {
+		text-align: right;
+        position: relative;
+        top: 1px;
+        left: 140px
+	}
 }
 @media screen and (max-width: 782px) {
 	.form-table td fieldset label {
@@ -2283,6 +2386,11 @@ td.scheduled_time_start {
 	.qsm-tooltips-icon .qsm-tooltips:before {
 		left: auto;
 		right: -3px;
+	}
+	.tablenav .tablenav-pages {
+        top: 61px;
+        width: 45%;
+        text-align: left;
 	}
 }
 @media screen and (max-width: 767px) {
@@ -2334,9 +2442,6 @@ td.scheduled_time_start {
 	.result-page-wrapper form {
 		overflow: scroll;
 		width: 100%;
-	}
-	p.search-box {
-		bottom: -30px;
 	}
 	.quizzes-surveys_page_qsm_quiz_help .hndle {
 		padding-left: 15px;
@@ -3375,6 +3480,15 @@ a.qsm-toggle-result-page-button, a.qsm-toggle-email-template-button {
 		position: relative;
     	top: 10px;
 	}
+	p.search-box{
+		display: inline-grid;
+		width: auto;
+	}
+	.tablenav .tablenav-pages {
+        position: relative;
+        top: 80px;
+        width: 140px;
+    }
 }
 body .qsm_tab_content .qsm-small-input-field input[type="number"],
 body .qsm_tab_content .qsm-small-input-field input[type="text"] {
@@ -3582,4 +3696,138 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 .mce-container .qsm-autocomplete input.qsm-autocomplete-search-input{
 	width: calc(100% - 85px);
 	margin-left: 15px;
+}
+.widefat thead th,
+.widefat tbody td {
+	border-bottom: 1px solid #ddd;
+	padding: 8px;
+}
+
+.widefat tbody td input[type="checkbox"],
+.widefat thead th input[type="checkbox"] {
+	margin: 0 auto;
+	display: block;
+}
+
+.widefat .row-actions {
+	font-size: 14px;
+}
+
+.result-page-wrapper .pagination-links{
+	border: 1px solid #8c8f94;
+	background-color: #fff;
+	padding: 6px 0;
+	border-radius: 3px;
+}
+
+.result-page-wrapper .pagination-links .next-page,
+.pagination-links .prev-page{
+	border: none;
+	background: none;
+	color: #000;
+	border-radius: none;
+}
+.result-page-wrapper .pagination-links .next-page{
+	border-left: 1px solid #b3aeae;
+}
+.result-page-wrapper .pagination-links .prev-page{
+	border-right: 1px solid #b3aeae;
+}
+.tablenav-pages .paging-input {
+    display: inline-flex;
+    align-items: center;
+}
+
+.tablenav-pages .total-pages {
+    margin-left: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+.tablenav .tablenav-pages .button{
+	padding: 0;
+	line-height: 28px;
+}
+.result-page-wrapper .pagination-links a.button:hover,
+.result-page-wrapper .pagination-links a.button:focus,
+.result-page-wrapper .pagination-links a.button:active {
+    background: none;
+    box-shadow: none;
+    color: inherit; 
+}
+.about-wrap{
+	margin: 10px 0 0;
+}
+.about-wrap .wp-person .gravatar{
+	border-radius: 30px;
+}
+.qsm-about-heading h1{
+	font-size: 18px;
+	display: inline-block;
+	position: absolute;
+	font-weight: 400;
+    line-height: 28px;
+	top: 37px;
+}
+.about-wrap h2{
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 28px;
+	text-align: left;
+	margin: 40px 0;
+}
+.about-wrap .wp-person .web{
+	color: #000;
+	line-height: 3.5;
+}
+.about-wrap .wp-person{
+	width: 250px;
+}
+.help-slide{
+	display: flex;
+    margin: 10px;
+	flex-wrap: wrap;
+}
+.help-slide div{
+	width: 400px;
+	height: 250px;
+	border: 1px solid #E6E6E6;
+	margin: 20px;
+	flex-direction: column;
+	display: flex;
+	padding: 20px;
+	justify-content: center;
+}
+
+.help-slide div img{
+	width: 44px;
+	height: 44px;
+	padding: 5.5px 3.67px 2.75px 3.67px;
+}
+.help-slide div a{
+	border: 2px solid #000;
+	padding: 5px 10px;
+	border-radius: 3px;
+	width: fit-content;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 600;
+	color: #000;
+	margin-top: 10px;
+}
+.qsm-system-info-page .hide-if-no-js{
+	display: none;
+}
+.result-page-wrapper .tablenav-pages .pagination-links .disable{
+	background-color: #f0f0f1;
+}
+.result-page-wrapper .pagination-links .prev-page.disable:hover,
+.result-page-wrapper .pagination-links .next-page.disable:hover{
+	background-color: #f0f0f1;
+}
+#theme-color-settings-content select,
+#theme-color-settings-content input {
+    border-radius: 5px;
+    border-color: #ccc;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }

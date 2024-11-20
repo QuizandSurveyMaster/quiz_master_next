@@ -474,7 +474,6 @@ class QSM_Quiz_Settings {
 			unset( $options['quiz_name'] );
 			$quiz_options = array_merge( $quiz_options, $options );
 		}
-
 		// Return as old object model
 		return (object) $quiz_options;
 	}
