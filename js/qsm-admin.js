@@ -1429,14 +1429,12 @@ function qsm_is_substring_in_array( text, array ) {
                             if (hasResults) {
                                 noItemElement.remove(); // Remove the "no items" message if results are found
                                 $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').show();
-                            } else {
-                                if (noItemElement.length === 0) { // Append only if it doesn't already exist
-                                    let item_group = document.createElement('div');
-                                    item_group.className = 'qsm-autocomplete-no-item';
-                                    item_group.textContent = qsm_admin_messages.no_variables;
-                                    $(this).parents('.qsm-autocomplete').append(item_group);
-                                    $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
-                                }
+                            } else if (noItemElement.length === 0) { // Append only if it doesn't already exist
+                                let item_group = document.createElement('div');
+                                item_group.className = 'qsm-autocomplete-no-item';
+                                item_group.textContent = qsm_admin_messages.no_variables;
+                                $(this).parents('.qsm-autocomplete').append(item_group);
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
                             }
                         });                    
                     });

@@ -531,7 +531,6 @@ span.qsm-quiz-name {
 }
 .results-page-condition, .email-condition {
 	margin-bottom: 15px;
-    border-radius: 2px;
     background: #F8F9F9;
     padding: 25px 20px;
     position: relative;
@@ -3670,7 +3669,6 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	}
 }
 
-.mce-container .qsm-autocomplete .qsm-autocomplete-item-title,
 .mce-container .qsm-autocomplete .qsm-autocomplete-item-title{
 	color: #1E1E1E;
     background: #DCEDFA;
