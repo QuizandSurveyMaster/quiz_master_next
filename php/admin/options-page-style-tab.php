@@ -216,7 +216,7 @@ function qsm_options_styling_tab_content() {
 			),
 			"use_cases"    => array(
 				'briefing' => __( 'Ideal for educational programs, marketing surveys, and detailed feedback collection.', 'quiz-master-next' ),
-				'list_items'  => array( 
+				'list_items'  => array(
 					__( 'Custom progress tracking for employee training.', 'quiz-master-next' ),
 					__( 'Collect emails for lead generation.', 'quiz-master-next' ),
 					__( 'Manage instructor permissions for online courses.', 'quiz-master-next' ),
