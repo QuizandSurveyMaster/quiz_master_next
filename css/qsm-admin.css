@@ -631,7 +631,6 @@ span.qsm-quiz-name {
 	flex-direction: column;
 }
 .qsm_featured_image_preview {
-	/* max-height: 200px; */
 	max-width: 80%;
 	margin: 5px 0;
 	border-radius: 3px;
@@ -2423,8 +2422,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 }
 .qsm-popup__container .qsm-popup__content .qsm-upgrade-box .qsm-upgrade-buttons a,
 .qsm-upgrade-box .qsm-upgrade-buttons.qsm-page-upgrade-buttons a {
-	font-weight: 500;
-	font-size: 14px;
 	padding: 10px 20px;
 	min-width: 450px;
 	min-height: 46px;

@@ -655,7 +655,7 @@ function qsm_export_results_tabs_content() {
 		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
 		"benefits"     => array(
 			'briefing' => '',
-			'list_items'  => array( 
+			'list_items'  => array(
 				__( 'Export quiz results to CSV for detailed analysis.', 'quiz-master-next' ),
 				__( 'Generate personalized PDF reports for users.', 'quiz-master-next' ),
 				__( 'Filter exports by quizzes, dates, or data fields.', 'quiz-master-next' ),
@@ -667,7 +667,7 @@ function qsm_export_results_tabs_content() {
 		),
 		"use_cases"    => array(
 			'briefing' => '',
-			'list_items'  => array( 
+			'list_items'  => array(
 				__( 'Track student performance in educational settings.', 'quiz-master-next' ),
 				__( 'Measure training effectiveness for employees.', 'quiz-master-next' ),
 				__( 'Gather insights from consumer surveys.', 'quiz-master-next' ),
@@ -709,7 +709,7 @@ function qsm_proctor_quiz_tabs_content() {
 		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"benefits"     => array(
 			'briefing' => '',
-			'list_items'  => array( 
+			'list_items'  => array(
 				__( 'Provides feedback using violation reports.', 'quiz-master-next' ),
 				__( 'Ensures fair results with controlled retakes.', 'quiz-master-next' ),
 				__( 'Improves quiz design by analyzing violations.', 'quiz-master-next' ),
@@ -719,7 +719,7 @@ function qsm_proctor_quiz_tabs_content() {
 		),
 		"use_cases"    => array(
 			'briefing' => '',
-			'list_items'  => array( 
+			'list_items'  => array(
 				__( 'Ensures fair testing in online exams.', 'quiz-master-next' ),
 				__( 'Validates employee training assessments.', 'quiz-master-next' ),
 				__( 'Maintains credibility in certification tests.', 'quiz-master-next' ),

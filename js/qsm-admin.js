@@ -793,7 +793,7 @@ jQuery('.quiz_text_tab').click(function (e) {
 });
 jQuery('.qsm-upgrade-tab').click(function (e) {
     e.preventDefault();
-    var current_id = jQuery(this).attr('data-id');
+    let current_id = jQuery(this).attr('data-id');
     jQuery('.qsm-upgrade-tab').removeClass('current');
     jQuery(this).addClass('current');
     jQuery('.qsm-upgrade-tab-content').hide();

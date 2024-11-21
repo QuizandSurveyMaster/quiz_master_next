@@ -1354,8 +1354,8 @@ function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
 		</div>
 		<a href="#" id="qsm-upgrade-popup-opener" data-popup="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
 	</div>
-	<?php 
-	} 
+	<?php
+	}
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -1442,7 +1442,7 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 						foreach ( $args['benefits']['list_items'] as $item ) {
 							?>
 							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
-							<?php	
+							<?php
 						}
 						?>
 					</ul>
@@ -1459,7 +1459,7 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 						foreach ( $args['use_cases']['list_items'] as $item ) {
 							?>
 							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
-							<?php	
+							<?php
 						}
 						?>
 					</ul>
