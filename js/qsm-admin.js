@@ -229,6 +229,9 @@ var QSMAdmin;
         jQuery('.load-quiz-wizard').click(function (e) {
             e.preventDefault();
             MicroModal.show('model-wizard');
+            if ( jQuery(this).attr('data-formType') == 1 ) {
+                jQuery(document).find('.qsm-popup input[name="form_type"][value="1"]').prop('checked', true).change();
+            }
             var height = jQuery(".qsm-wizard-template-section").css("height");
             jQuery(".qsm-wizard-setting-section").css("height", height);
             if (jQuery("#accordion").length > 0) {
@@ -788,6 +791,15 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('#' + current_id).show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
+jQuery('.qsm-upgrade-tab').click(function (e) {
+    e.preventDefault();
+    let current_id = jQuery(this).attr('data-id');
+    jQuery('.qsm-upgrade-tab').removeClass('current');
+    jQuery(this).addClass('current');
+    jQuery('.qsm-upgrade-tab-content').hide();
+    jQuery('#' + current_id).show();
+    jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
+});
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
 if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if (window.location.href.indexOf('tab=style') > 0) {
@@ -804,7 +816,10 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             jQuery(document).on('input', '.quiz_featured_image', function () {
                 jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
             });
-
+            jQuery(document).on('click', '.qsm-theme-featured-image-change', function (e) {
+                e.preventDefault();
+                jQuery('.qsm-theme-featured-image-update').toggle();
+            });
             jQuery(document).on('click', '.filter-links a', function () {
                 let current_id = jQuery(this).attr('data-id');
                 jQuery(this).parents('.filter-links').find('li a').each(function () {
@@ -843,6 +858,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 //QSM - Quizzes/Surveys Page
 
 (function ($) {
+    $('#qsm-upgrade-popup-opener').on( 'click', function (event) {
+        event.preventDefault();
+        let modalName = $(this).data('popup');
+        MicroModal.show( modalName );
+    });
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {
