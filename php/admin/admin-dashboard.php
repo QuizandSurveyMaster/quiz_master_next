@@ -110,70 +110,83 @@ function qsm_generate_dashboard_page() {
 <div class="wrap">
 	<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="qsm_dashboard_page postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
-		<div class="qsm-welcome-panel-close">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
-			<p class="current_version"><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
-		</div>
-		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)"
-			aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
+		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)" aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
+		<ul class="welcome-panel-menu">
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
+		</ul>
+		
 		<div class="welcome-panel-content">
-			<h2><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h2>
-			<p class="about-description"><?php esc_html_e( 'Formerly Quiz Master Next', 'quiz-master-next' ); ?></p>
-			<div class="welcome-panel-column-container">
-				<div class="welcome-panel-column">
-					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
-					<?php
-					$classname = "";
-				    $classname = apply_filters( 'qsm_create_quiz_after', $classname);
-					$classes = ! empty($classname) ? explode(",",$classname) : array();
-					$classesname1 = "";
-					if ( isset($classes[0]) ) {
-						$classesname1 = $classes[0];
-					}
-					$classesname2 = "";
-					if ( isset($classes[1]) ) {
-						$classesname2 = $classes[1];
-					}
-					?>
-						<div class="<?php echo esc_attr( $classesname1 );?>"><a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize <?php echo esc_attr( $classesname2 );?>"
-						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' )?></a></div>
-					<p class="hide-if-no-customize">
-						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'View all quizzes', 'quiz-master-next' )?></a>
-					</p>
-				</div>
-				<div class="welcome-panel-column">
-					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>
-					<ul>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon">
-								<span class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?>
-							</a>
-						</li>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://demo.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_see_demo') )?>" class="welcome-icon">
-								<span class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php esc_html_e( 'See demos', 'quiz-master-next' ); ?>
-							</a>
-						</li>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('pricing', 'dashboard', 'next_steps', 'dashboard_pricing') )?>" class="welcome-icon">
-								<span class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php esc_html_e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?>
-							</a>
-						</li>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://themes.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_themes') )?>" class="welcome-icon">
-								<span class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php esc_html_e( 'Explore QSM Themes', 'quiz-master-next' ); ?>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="welcome-panel-column welcome-panel-last">
-					<h3><?php esc_html_e( 'Useful Links', 'quiz-master-next' ); ?></h3>
-					<ul>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a></li>
-						<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
-						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a></li>
-						<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><span class="dashicons dashicons-feedback"></span>&nbsp;&nbsp;<?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
-					</ul>
-				</div>
+			<div class="qsm-welcome-panel-content">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
+			</div>
+			<div class="qsm-welcome-panel-content">
+				<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
+				<p><?php esc_html_e( 'Best WordPress Quiz and Survey Maker Plugin', 'quiz-master-next' ); ?></p>
 			</div>
 		</div>
 		<?php do_action( 'qsm_welcome_panel' ); ?>
+	</div>
+	<?php
+	$classname = "";
+	$classname = apply_filters( 'qsm_create_quiz_after', $classname);
+	$classes = ! empty($classname) ? explode(",",$classname) : array();
+	$classesname1 = "";
+	if ( isset($classes[0]) ) {
+		$classesname1 = $classes[0];
+	}
+	$classesname2 = "";
+	if ( isset($classes[1]) ) {
+		$classesname2 = $classes[1];
+	}
+	?>
+	<div class="qsm-dashboard-cards-container">
+		<div class="qsm-dashboard-card">
+			<div class="qsm-dashboard-card-icon">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/create_quiz.png' ); ?>" alt="Create Quiz">
+			</div>
+			<div class="qsm-dashboard-card-content">
+				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ); ?></h4>
+				<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Unleash your creativity and engage your audience by designing interactive quizzes with QSM.', 'quiz-master-next' ); ?></p>
+				<div class="qsm-dashboard-card-buttons">
+					<a class="button button-secondary load-quiz-wizard hide-if-no-customize <?php echo esc_attr( $classesname2 );?>" href="javascript:void(0)" data-formType="0"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ) ?></a>
+				</div>
+			</div>
+		</div>
+		<div class="qsm-dashboard-card">
+			<div class="qsm-dashboard-card-icon">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/create_survey.png' ); ?>" alt="Create Survey">
+			</div>
+			<div class="qsm-dashboard-card-content">
+				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Survey', 'quiz-master-next' ); ?></h4>
+				<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Create amazing surveys, QSM plugin allows you to design and implement engaging surveys effortlessly.', 'quiz-master-next' ); ?></p>
+				<div class="qsm-dashboard-card-buttons">
+					<a class="button button-secondary load-quiz-wizard hide-if-no-customize" href="javascript:void(0)" data-formType="1"><?php esc_html_e( 'Create a Survey', 'quiz-master-next' ) ?></a>
+				</div>
+			</div>
+		</div>
+		<div class="qsm-dashboard-card">
+			<div class="qsm-dashboard-card-icon">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/addons_themes.png' ); ?>" alt="Addons and Themes">
+			</div>
+			<div class="qsm-dashboard-card-content">
+				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Add-ons and Themes', 'quiz-master-next' ); ?></h4>
+				<p class="qsm-dashboard-card-description">
+					<?php esc_html_e( 'Enhance your QSM experience with powerful', 'quiz-master-next' ); ?>
+					<a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('addons', 'dashboard', 'next_steps', 'dashboard_pricing') )?>" class="welcome-icon"><?php esc_html_e( ' Add-ons', 'quiz-master-next' ); ?></a>
+					<?php esc_html_e( ' and choose from', 'quiz-master-next' ); ?>
+					<a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://themes.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_themes') )?>" class="welcome-icon"><?php esc_html_e( ' Themes', 'quiz-master-next' ); ?></a>
+					<?php esc_html_e( ' to make your quizzes and surveys visually appealing.', 'quiz-master-next' ); ?>
+				</p>
+				<div class="qsm-dashboard-card-buttons">
+					<a target="_blank" class="button button-secondary" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://demo.quizandsurveymaster.com', 'dashboard', 'next_steps', 'dashboard_see_demo') )?>" class="welcome-icon"><?php esc_html_e( 'Demos', 'quiz-master-next' ); ?></a>
+					<a target="_blank" class="button button-secondary" rel="noopener" href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_addons' ) )?>" class="welcome-icon"><?php esc_html_e( 'Installed Add-ons', 'quiz-master-next' ); ?></a>
+				</div>
+			</div>
+		</div>
 	</div>
 	<?php
 		$qsm_dashboard_widget = array(

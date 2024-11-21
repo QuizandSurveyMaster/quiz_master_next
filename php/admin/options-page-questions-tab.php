@@ -333,8 +333,11 @@ function qsm_options_questions_tab_content() {
 									<div class="answers" id="answers">
 
 									</div>
-									<div class="new-answer-button">
-										<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+									<div class="qsm-wrap-add-new-answer">
+										<div class="new-answer-button">
+											<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+										</div>
+										<?php do_action( 'qsm_question_editor_button_section_after' ); ?>
 									</div>
 									<?php do_action( 'qsm_after_options' ); ?>
 								</div>
