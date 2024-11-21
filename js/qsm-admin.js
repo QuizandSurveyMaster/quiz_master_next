@@ -1196,7 +1196,7 @@ function qsm_is_substring_in_array( text, array ) {
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag';
                         editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 5px 8px; border-radius: 2px;font-family: Arial, Helvetica, sans-serif;font-size: 12px; font-weight: 600; }';
+                        editor.settings.content_style = 'qsmvariabletag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
                         editor.addButton('qsm_slash_command', {
                             text: '/ ' +qsm_admin_messages.variables,
                             tooltip: qsm_admin_messages.insert_variable,
@@ -1247,6 +1247,29 @@ function qsm_is_substring_in_array( text, array ) {
                                 qsm_search = '';
                             }
 
+                            // Create a container div for the input and label
+                            let inputContainer = document.createElement('div');
+                            inputContainer.className = 'qsm-autocomplete-input-container'; // Add a class for styling if needed
+
+                            // Create a label element
+                            let inputLabel = document.createElement('label');
+                            inputLabel.for = 'searchInput';
+                            inputLabel.textContent = 'Search:';
+
+                            // Create the input element
+                            let searchInput = document.createElement('input');
+                            searchInput.type = 'text';
+                            searchInput.id = 'searchInput'; // Link this id with the label
+                            searchInput.placeholder = 'Type to search...';
+                            searchInput.className = 'qsm-autocomplete-search-input'; // Add a class for styling if needed
+
+                            // Append the label and input to the container
+                            inputContainer.appendChild(inputLabel);
+                            inputContainer.appendChild(searchInput);
+
+                            // Append the container to the autocomplete div
+                            autocomplete.appendChild(inputContainer);
+
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
                                 newCommand.forEach(function (command, key) {
@@ -1266,7 +1289,8 @@ function qsm_is_substring_in_array( text, array ) {
                                     }
                                     item.classList.add('qsm-autocomplete-item');
                                     item.setAttribute('title', command.description);
-                                    item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
+                                    item.setAttribute('variable', command.name);
+                                    item.innerHTML = "<span class='qsm-autocomplete-item-title'>%" + command.name + "%</span><span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
                                     item.onclick = function() {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
@@ -1404,6 +1428,35 @@ function qsm_is_substring_in_array( text, array ) {
                             editor.selection.setContent(contentToInsert);
                             showAutocomplete(editor, true);
                         });
+                        
+                        $(document).off('input', '.qsm-autocomplete-search-input').on('input', '.qsm-autocomplete-search-input', function () {
+                            let query = $(this).val().toLowerCase(); // Get the current input value and convert to lowercase
+                            let hasResults = false;
+                        
+                            $('.qsm-autocomplete-item').each(function () {
+                                let title = $(this).attr('variable').toLowerCase(); // Get the title attribute of the current item
+                                if (title.includes(query)) {
+                                    $(this).show(); // Show items that match the query
+                                    hasResults = true; // At least one item matches
+                                } else {
+                                    $(this).hide(); // Hide items that don't match
+                                }
+                            });
+                        
+                            // Check for the "no items" message
+                            let noItemElement = $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-no-item');
+                        
+                            if (hasResults) {
+                                noItemElement.remove(); // Remove the "no items" message if results are found
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').show();
+                            } else if (noItemElement.length === 0) { // Append only if it doesn't already exist
+                                let item_group = document.createElement('div');
+                                item_group.className = 'qsm-autocomplete-no-item';
+                                item_group.textContent = qsm_admin_messages.no_variables;
+                                $(this).parents('.qsm-autocomplete').append(item_group);
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
+                            }
+                        });                    
                     });
                 }
             }
@@ -1784,7 +1837,7 @@ var QSMContact;
                 },
                 addCondition: function ($email, category, extra_condition, criteria, operator, value) {
                     var template = wp.template('email-condition');
-                    $email.find('.email-when-conditions').append(template({
+                    $email.find('.qsm-email-when-conditions').append(template({
                         'category': category,
                         'extra_condition': extra_condition,
                         'criteria': criteria,
@@ -1811,6 +1864,11 @@ var QSMContact;
                 },
                 newCondition: function ($email) {
                     QSMAdminEmails.addCondition($email, 'quiz', '', 'score', 'equal', 0);
+                },
+                updateEmailConditonCount: function ( $parent ) {
+                    $parent.find('.email-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
                 },
                 addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) {
                     QSMAdminEmails.total += 1;
@@ -1897,6 +1955,7 @@ var QSMContact;
                     event.preventDefault();
                     $page = $(this).closest('.qsm-email');
                     QSMAdminEmails.newCondition($page);
+                    QSMAdminEmails.updateEmailConditonCount($(this).parents('.qsm-email-when'));
                 });
                 $('#qsm_emails').on('click', '.qsm-delete-email-button', function (event) {
                     event.preventDefault();
@@ -1907,7 +1966,9 @@ var QSMContact;
                 });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.qsm-email-when');
                     $(this).closest('.email-condition').remove();
+                    QSMAdminEmails.updateEmailConditonCount($parent);
                 });
             });
         }
@@ -1919,6 +1980,8 @@ var QSMContact;
  */
 var QSMQuestion;
 var import_button;
+var qsm_link_button;
+var QSM_Quiz_Broadcast_Channel;
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
         if (window.location.href.indexOf('&tab') == -1 || window.location.href.indexOf('tab=questions') > 0) {
@@ -1926,6 +1989,142 @@ var import_button;
             $.QSMSanitize = function (input) {
                 return input.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
             };
+            QSM_Quiz_Broadcast_Channel = {
+                channel: new BroadcastChannel('qsm_quiz_data_channel'),
+                questionData: [], // Initialize as an array
+                
+                // Initialize the event listeners and set up channel
+                init: function () {
+                    this.setupChannelListener();
+                },
+
+                // Listen for messages on the channel
+                setupChannelListener: function () {
+                    this.channel.onmessage = (event) => {
+                        const receivedData = event.data;
+                        const { requestType, ...questions } = receivedData;
+                        if (requestType == 'update') {
+                            this.updateQuestionData(questions);
+                        } else if (requestType == 'unlink') {
+                            this.afterUpdateUnlinkedQuestion(questions);
+                        }
+                    };
+                },
+
+                insertQuestionToChannel: function (question) {
+                    let linkQuizzesArray = Object.values(question.get('link_quizzes'));
+                    
+                    let sendDataObject = {
+                        [question.id]: {
+                            merged_question: question.get('merged_question'),
+                            link_quizzes: linkQuizzesArray
+                        }
+                    };
+                    this.questionData.push(sendDataObject);
+                },
+                
+                // Function to send the linked question data to other tabs
+                sendQuestionData: function (questionID, mergedQuestion, linkedQuizzes = []) {
+                    let sendDataObject = {
+                        [questionID]: {
+                            merged_question: mergedQuestion,
+                            link_quizzes: linkedQuizzes
+                        },
+                        requestType: 'update'
+                    };
+                    // update channel with new question
+                    this.questionData.push(sendDataObject);
+                    this.channel.postMessage(sendDataObject);
+                },
+            
+                updateQuestionData: function (data){
+                    const receivedData = data;
+                    for (let questonId in receivedData) {
+                        const mergedQuestions = receivedData[questonId].merged_question;
+                        const receivedQuizzes = receivedData[questonId].link_quizzes;
+                        if (mergedQuestions && typeof mergedQuestions == 'string') {
+                            // Check if there's a colon and extract the part after it
+                            let idsArray = [];
+                            if (mergedQuestions && mergedQuestions != '') {
+                                idsArray = mergedQuestions.split(',').map(id => id.trim());
+                            }
+                            if (idsArray.length > 0) {
+                                // Loop through each ID in idsArray
+                                idsArray.forEach(eachId => {
+                                    // Loop through this.questionData to find matches
+                                    let currentquestionData = this.questionData;
+                                    currentquestionData.forEach((item, index) => {
+                                        // Check if the current item's key matches the current eachId
+                                        if (item[eachId]) {
+                                            let quizNamesToCheck = this.questionData[index][eachId].link_quizzes;
+                                            receivedQuizzes.forEach(quizName => {
+                                                if (!quizNamesToCheck.includes(quizName)) {
+                                                    quizNamesToCheck.push(quizName); // Add the quiz name to the array
+                                                }
+                                            });
+                                            quizNamesToCheck = quizNamesToCheck.filter(function(quizName) {
+                                                return quizName !== jQuery(document).find('#edit_quiz_name').val();
+                                            });
+                                            // Update channel data
+                                            this.questionData[index][eachId].link_quizzes = quizNamesToCheck;
+                                            this.questionData[index][eachId].merged_question = mergedQuestions;
+                                            // Update current quiz question data
+                                            let currentInQuizQuestion = QSMQuestion.questions.get(eachId);
+                                            currentInQuizQuestion.set('merged_question', mergedQuestions);
+                                            currentInQuizQuestion.set('link_quizzes', quizNamesToCheck);
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    }
+                    // Console log updated questionData
+                    console.log("Updated quiz data:", this.questionData);
+                },
+
+                unlinkQuestionData: function (model, currentQuestionId) {
+                    let mergedQuestionIdString = model.get('merged_question');
+                    let mergedQuestionIdArray = mergedQuestionIdString ? mergedQuestionIdString.split(',') : [];
+                    // Filter out the questionId
+                    let removedDeletedQuestionArray = mergedQuestionIdArray.filter(id => id !== String(currentQuestionId));
+                    // Create a new string from the filtered array
+                    let removedDeletedQuestionString = removedDeletedQuestionArray.join(',');
+                    // console.log(mergedQuestionIdString, mergedQuestionIdArray, removedDeletedQuestionArray, removedDeletedQuestionString);
+                    let sendDataObject = {
+                        [currentQuestionId]: {
+                            merged_question: removedDeletedQuestionString,
+                            link_quizzes: jQuery(document).find('#edit_quiz_name').val(),
+                        },
+                        requestType: 'unlink'
+                    };
+                    this.channel.postMessage(sendDataObject);
+                    model.set('merged_question', '');
+                    model.set('link_quizzes', []);
+                },
+                
+                afterUpdateUnlinkedQuestion: function (data) {
+                    const receivedData = data;
+                    for (let questonId in receivedData) {
+                        const mergedQuestions = receivedData[questonId].merged_question;
+                        const singleQuizName = receivedData[questonId].link_quizzes;
+                        this.questionData.forEach((item) => {
+                            Object.keys(item).forEach(key => {
+                                if (item[key] && item[key].merged_question && item[key].link_quizzes) {
+									if (mergedQuestions.split(',').includes(key)) {
+										item[key].merged_question = mergedQuestions;
+										item[key].link_quizzes = item[key].link_quizzes.filter(quiz => quiz != singleQuizName);
+                                        // Update current quiz question data
+                                        let currentInQuizQuestion = QSMQuestion.questions.get(key);
+                                        currentInQuizQuestion.set('merged_question', mergedQuestions);
+                                        currentInQuizQuestion.set('link_quizzes', item[key].link_quizzes.filter(quiz => quiz != singleQuizName));
+									} 
+                                }
+                            });
+                        });
+                    }
+                },
+            };            
+            
             QSMQuestion = {
                 question: Backbone.Model.extend({
                     defaults: {
@@ -2048,6 +2247,26 @@ var import_button;
                     }
                     if ( 1 > questions.length ) {
                         $('#question-bank').append('<div style="margin-top: 70px;text-align: center;" >' + qsm_admin_messages.questions_not_found + '</div>');
+                    } else {
+                        $('.question-bank-question').each(function () {
+                            let questionId = $(this).data('question-id');
+                            if (QSMQuestion.questions.some(q => q.get('id') == questionId)) {
+                                let $linkButton = $(this).find('.link-question');
+                                if ($linkButton.length) {
+                                    $linkButton.prop('disabled', true).addClass('disabled'); 
+                                }
+                            }
+                            QSMQuestion.questions.each(function (question) {
+                                let merged_questions = question.get('merged_question');
+                                let questionsArray = merged_questions ? merged_questions.split(',').map(q => q.trim()) : [];
+                                questionsArray.forEach(function (id) { 
+                                    let parentElement = $('.question-bank-question[data-question-id="' + id + '"]');
+                                    if (parentElement.length) {
+                                        parentElement.remove(); // Remove the element if it exists
+                                    }
+                                });
+                            });                            
+                        });
                     }
                 },
                 addQuestionToQuestionBank: function (question) {
@@ -2061,19 +2280,22 @@ var import_button;
                         type: question.type,
                         question: questionText,
                         category: question.category,
-                        quiz_name: question.quiz_name
+                        quiz_name: question.quiz_name,
+                        linked_question: question.linked_question.join(',')
                     }));
                 },
-                addQuestionFromQuestionBank: function (questionID) {
+                addQuestionFromQuestionBank: function (questionID, is_linking = 0) {
                     QSMAdmin.displayAlert(qsm_admin_messages.adding_question, 'info');
+                    let isLinkingData = is_linking == 1 ? questionID : 0;
                     var model = new QSMQuestion.question({
-                        id: questionID
+                        id: questionID,
+                        is_linking: isLinkingData
                     });
                     model.fetch({
                         headers: {
                             'X-WP-Nonce': qsmQuestionSettings.nonce
                         },
-                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
+                        url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID + '?is_linking=' + isLinkingData,
                         success: QSMQuestion.questionBankSuccess,
                         error: QSMAdmin.displayError
                     });
@@ -2140,6 +2362,7 @@ var import_button;
                                 question = QSMQuestion.questions.get(qsmQuestionSettings.pages[i][j]);
                                 if ('undefined' !== typeof question) {
                                     QSMQuestion.addQuestionToPage(question);
+                                    QSM_Quiz_Broadcast_Channel.insertQuestionToChannel(question);
                                 }
                             }
                         }
@@ -2256,6 +2479,26 @@ var import_button;
                 addNewQuestionFromQuestionBank: function (model) {
                     var page = parseInt($('#add-question-bank-page').val(), 10);
                     model.set('page', page);
+                    if (qsm_link_button && !model.get('merged_question').split(',').includes(model.id)) {
+                        // Retrieve the current value
+                        let mergedQuestion = model.get('merged_question');
+                        // Update the merged question by adding the new ID
+                        mergedQuestion += `,${model.id}`;
+                        // Set the updated value back to the model
+                        model.set('merged_question', mergedQuestion);
+
+                        let quizId = model.get('quizID');
+                        let quizName = '';
+
+                        for (const record of qsm_admin_messages.qsmQuizzesObject) {
+                            if (record.quiz_id == quizId) { quizName = record.quiz_name; break; }
+                        } 
+                        const linkQuizzes = [...model.get('link_quizzes')]; // Created a shallow copy of the array
+                        if (quizName !== '') {
+                            linkQuizzes.push(quizName);
+                        }
+                        QSM_Quiz_Broadcast_Channel.sendQuestionData(model.id, model.get('merged_question'), linkQuizzes);
+                    }
                     QSMQuestion.questions.add(model);
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.savePages();
@@ -2265,10 +2508,17 @@ var import_button;
                     if(import_button){
                         import_button.html(qsm_admin_messages.add_question);
                     }
+                    if(qsm_link_button) {
+                        qsm_link_button.html(qsm_admin_messages.link_question);
+                    }
                     if(import_button){
                         import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
                     }
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
+                    if(qsm_link_button == ''){
+                        $(document).find('.qsm-linked-list-inside').hide().empty();
+                        $(document).find('.qsm-linked-list-div-block').hide();
+                    }
                     // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
@@ -2336,6 +2586,8 @@ var import_button;
                     var model = QSMQuestion.questions.get(questionID);
                     var newModel = _.clone(model.attributes);
                     newModel.id = null;
+                    newModel.merged_question = '';
+                    newModel.link_quizzes = '';
                     QSMQuestion.questions.create(
                         newModel, {
                         headers: {
@@ -2366,6 +2618,7 @@ var import_button;
                     var type = $("#question_type").val();
                     var comments = $("#comments").val();
                     let required = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
+                    let isPublished = $(".questionElements input[name='question_status']").is(":checked") ? 1 : 0;
                     advanced_option['required'] = required;
                     var category = $(".category-radio:checked").val();
                     var type_arr = [];
@@ -2454,6 +2707,7 @@ var import_button;
                     });
 					model.set('answers', answers);
 					model.set('required', required);
+					model.set('is_published', isPublished);
                     jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
@@ -2768,6 +3022,9 @@ var import_button;
                     }
                     //Append extra settings
                     var all_setting = question.get('settings');
+                    if ((typeof all_setting === 'undefined') || (all_setting && typeof all_setting.isPublished === 'undefined')) {
+                        $('#qsm-question-status').prop('checked', true).trigger('change');
+                    }
                     if (all_setting === null || typeof all_setting === "undefined") { } else {
                         $.each(all_setting, function (index, value) {
                             if ($('#' + index + '_area').length > 0) {
@@ -2784,6 +3041,13 @@ var import_button;
                             }
                             if (index == 'matchAnswer') {
                                 $('#match-answer').val(value);
+                            }
+                            if (index == 'isPublished') {
+                                if ( all_setting.isPublished == 1 ) {
+                                    $('#qsm-question-status').prop('checked', true).trigger('change');
+                                } else {
+                                    $('#qsm-question-status').prop('checked', false).trigger('change');
+                                }
                             }
                         });
                         jQuery(document).trigger('qsm_all_question_setting_after', [all_setting]);
@@ -2804,6 +3068,31 @@ var import_button;
                         $('#image_size_area').show();
                     }
 
+                    let link_quizzes_object = question.get('link_quizzes');
+                    
+                    $('.qsm-linked-list-inside').hide().empty();
+                    $('.qsm-linked-list-div-block').hide();
+                    if (typeof link_quizzes_object == 'object' && link_quizzes_object != null && Object.keys(link_quizzes_object).length > 0) {
+                        Object.values(link_quizzes_object).forEach(function(quizName) {
+                            // Ensure each quizName is a valid non-empty string
+                            if (quizName && typeof quizName == 'string' && quizName.trim().length > 0) {
+                                let link = $('<span></span>')
+                                    .attr('class', 'qsm-linked-list-item')
+                                    .attr('title', quizName)
+                                    .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
+                    
+                                $('.qsm-linked-list-div-block').show();
+                                $('.qsm-linked-list-inside').append(link);
+                            }
+                        });
+                    
+                        // Add an "Unlink" link at the end
+                        let unlink = $('<span></span>')
+                            .attr('class', 'qsm-unlink-the-question button button-danger')
+                            .attr('data-question-id', questionID)
+                            .text(qsm_admin_messages.unlink_question);
+                            $('.qsm-linked-list-inside').append(unlink);
+                    }
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
                 openEditPagePopup: function (pageID) {
@@ -3079,6 +3368,8 @@ var import_button;
                                 if (response.success) {
                                     checkedValues.forEach(function (questionId) {
                                         $('.question[data-question-id="' + questionId + '"]').remove();
+                                        let model = QSMQuestion.questions.get(questionId);
+                                        QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, questionId);
                                     });
                                     jQuery('.qsm-admin-select-page-question').prop('checked',false);
                                     QSMQuestion.countTotal();
@@ -3101,6 +3392,8 @@ var import_button;
                             success: function (response) {
                                 if (response.success) {
                                     remove.parents('.question').remove();
+                                    let model = QSMQuestion.questions.get(question_id);
+                                    QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, question_id);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
                                 } else {
@@ -3222,6 +3515,14 @@ var import_button;
                     event.preventDefault();
                     $(this).parents('.questionElements').slideUp('slow');
                 });
+                $(document).on('change', '#qsm-question-status', function (event) {
+                    event.preventDefault();
+                    if($(this).is(':checked')){
+                        $(document).find('#qsm-question-status-text').html('Published');
+                    } else {
+                        $(document).find('#qsm-question-status-text').html('Draft');
+                    }
+                });
                 $(document).on('click', '#save-popup-button', function (event) {
                     event.preventDefault();
                     questionElements = $(this).parents('.questionElements');
@@ -3280,6 +3581,7 @@ var import_button;
 
                 $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                     event.preventDefault();
+                    qsm_link_button = '';
                     $(this).text(qsm_admin_messages.adding_question);
                     import_button = $(this);
                     $('.import-button').addClass('disable_import');
@@ -3287,9 +3589,45 @@ var import_button;
                     MicroModal.close('modal-2');
                 });
 
+                
+                $(document).on('click', '.qsm-popup-bank .link-question', function (event) {
+                    event.preventDefault();
+                    $(this).text(qsm_admin_messages.linking_question);
+                    qsm_link_button = $(this);
+                    $('.link-question').addClass('disable_import');
+                    // 1 for the linking the questions default is 0
+                    QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
+                    MicroModal.close('modal-2');
+                });
+
+                jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-linked-list-view-button', function () {
+                    let $this = jQuery(this);
+                    let $inside = $this.parents('.qsm-linked-list-div-block').find('.qsm-linked-list-inside');
+                    $inside.toggle();
+                    $inside.is(':visible') ? $this.text(qsmQuestionSettings.linked_close) : $this.text(qsmQuestionSettings.linked_view);
+                });
+
+                jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
+                    var questionIdToUnlink = jQuery(this).data('question-id');
+                    $.ajax({
+                        url: ajaxurl,
+                        method: 'POST',
+                        data: {
+                            action: 'qsm_unlink_question_from_list',
+                            question_id: jQuery(this).data('question-id'),
+                            nonce: qsmQuestionSettings.unlinkNonce
+                        },
+                        success: function (response) {
+                            $(document).find('.qsm-linked-list-div-block').remove();
+                            let model = QSMQuestion.questions.get(questionIdToUnlink);
+                            QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, questionIdToUnlink);
+                        }
+                    });
+                });
                 //Click on selected question button.
                 $('.qsm-popup-bank').on('click', '#qsm-import-selected-question', function (event) {
                     var $total_selction = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
+                    qsm_link_button = '';
                     if ($total_selction === 0) {
                         alert(qsm_admin_messages.no_question_selected);
                     } else {
@@ -3433,6 +3771,9 @@ var import_button;
                 if (qsmQuestionSettings.qsm_user_ve === 'true') {
                     QSMQuestion.prepareEditor();
                 }
+                
+                // Initialize the QSM_Quiz_Broadcast_Channel
+                QSM_Quiz_Broadcast_Channel.init();
                 QSMQuestion.loadQuestions();
 
                 /**
@@ -3815,6 +4156,7 @@ var import_button;
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
                                 QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark, page);
+                                QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').eq(i));
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -3850,6 +4192,11 @@ var import_button;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
+                updateResultConditonCount: function ( $parent ) {
+                    $parent.find('.results-page-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
+                },
                 addResultsPage: function (conditions, page, redirect, default_mark = false, singlePage = {}) {
                     const parser = new DOMParser();
                     let parseRedirect = parser.parseFromString(redirect, 'text/html');
@@ -3880,6 +4227,9 @@ var import_button;
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
+                    const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
+                    const $slashCommandButton = $resultsPage.find('.qsm-slashcommand-variables-button');
+                    $resultsPage.find('.wp-media-buttons .insert-media').after($slashCommandButton);
                 },
                 newResultsPage: function () {
                     var conditions = [{
@@ -3899,6 +4249,7 @@ var import_button;
                 $('.add-new-page').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminResults.newResultsPage();
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 jQuery(document).on('click', '.qsm-duplicate-result-page-button', function () {
                     let result_page = jQuery(this).closest("header").next("main");
@@ -3916,6 +4267,7 @@ var import_button;
                     });
                     QSMAdminResults.addResultsPage(conditions, page, redirect_value);
                     jQuery('html, body').animate({ scrollTop: jQuery('.results-page:last-child').offset().top - 150 }, 1000);
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 $('.save-pages').on('click', function (event) {
                     event.preventDefault();
@@ -3925,6 +4277,7 @@ var import_button;
                     event.preventDefault();
                     $page = $(this).closest('.results-page');
                     QSMAdminResults.newCondition($page);
+                    QSMAdminResults.updateResultConditonCount($(this).parents('.results-page-when'));
                 });
                 $('#results-pages').on('click', '.qsm-delete-result-button', function (event) {
                     event.preventDefault();
@@ -3932,12 +4285,25 @@ var import_button;
                 });
                 $('#results-pages').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.results-page-when');
+                    console.log($parent);
                     $(this).closest('.results-page-condition').remove();
+                    QSMAdminResults.updateResultConditonCount($parent);
                 });
                 jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
                     jQuery(this).closest("header").next("main").slideToggle();
                     jQuery(this).find('.dashicons-arrow-up-alt2, .dashicons-arrow-down-alt2').toggleClass('dashicons-arrow-up-alt2 dashicons-arrow-down-alt2');
                 });
+                jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
+                    jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
+                    jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
+                });                
+                jQuery(document).on('click', function (e) {
+                    // Check if the click was outside .qsm-template-btn-group
+                    if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
+                        jQuery('.qsm-settings-box-details').hide();
+                    }
+                });                                
             });
         }
     }
@@ -4198,3 +4564,29 @@ var import_button;
         });
     });
 }(jQuery));
+
+jQuery(document).ready(function() {
+    const bulkActionSelect = jQuery('#qsm_bulk_action_select');
+    const applyBulkActionButton = jQuery('#qsm_apply_bulk_action');
+
+    applyBulkActionButton.on('click', function() {
+        const action = bulkActionSelect.val();
+
+        // Handle bulk delete action
+        if (action === 'bulk_delete') {
+            if (confirm(qsm_result_page.delete_confirm)) {
+                jQuery('form[name="bulk_delete_form"]').submit();
+            }
+        } 
+        // Handle permanent delete action
+        else if (action === 'bulk_permanent_delete') {
+            if (confirm(qsm_result_page.delete_confirm)) {
+                jQuery('#bulk_permanent_delete').val('1');
+                jQuery('form[name="bulk_delete_form"]').submit();
+            }
+        } 
+        else {
+            alert(qsm_result_page.delete_alert);
+        }
+    });
+});

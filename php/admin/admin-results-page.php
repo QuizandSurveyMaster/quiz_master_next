@@ -93,7 +93,12 @@ function qsm_results_overview_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-
+	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery'), $mlwQuizMasterNext->version );
+	wp_localize_script( 'qsm_result_page_script', 'qsm_result_page', array(
+        'delete_confirm'     => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
+        'delete_alert'     => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
+	));
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
 
@@ -206,21 +211,19 @@ function qsm_results_overview_tab_content() {
 	?>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">
-			<a id="result_bulkaction" href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) { document.bulk_delete_form.submit(); }" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
-			<a href="javascript: void(0);" onclick="if ( confirm( 'Are you sure?' ) ) { document.getElementById( 'bulk_permanent_delete' ).value = '1'; document.bulk_delete_form.submit(); }" class="button action">Bulk Permanent Delete</a>
+			<select id="qsm_bulk_action_select" class="postform">
+				<option value=""><?php esc_html_e( 'Bulk Actions', 'quiz-master-next' ); ?></option>
+				<option value="bulk_delete"><?php esc_html_e( 'Bulk Delete', 'quiz-master-next' ); ?></option>
+				<option value="bulk_permanent_delete"><?php esc_html_e( 'Bulk Permanent Delete', 'quiz-master-next' ); ?></option>
+			</select>
+				<button type="button" id="qsm_apply_bulk_action" class="button action"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
 		</div>
 		<div class="tablenav-pages">
-			<span class="displaying-num">
-				<?php
-				/* translators: %s: Result Count */
-				echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) );
-				?>
-			</span>
 			<span class="pagination-links">
 				<?php
-				$mlw_qmn_previous_page   = 0;
-				$mlw_current_page        = $result_page + 1;
-				$mlw_total_pages         = ceil( $qsm_results_count / $table_limit );
+				$mlw_qmn_previous_page = 0;
+				$mlw_current_page = $result_page + 1;
+				$mlw_total_pages = ceil( $qsm_results_count / $table_limit );
 
 				$url_query_string = '';
 				if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
@@ -239,29 +242,28 @@ function qsm_results_overview_tab_content() {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
 					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
-					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php
-					if ( $results_left > $table_limit ) {
-						?>
-						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
-						<?php
-					}
-				} elseif ( 0 === intval( $result_page ) ) {
-					if ( $results_left > $table_limit ) {
-						?>
-						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
-						<?php
-					}
-				} elseif ( $results_left < $table_limit ) {
+				} elseif ( $result_page == 0 ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
-					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><< /a>
-						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
-						<?php
-					}
+					<a class="prev-page button disable" href=""><</a>
+					<?php
+				}
+				?>
+				<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> - <?php echo esc_html( $mlw_total_pages ); ?>&nbsp
+					<span class="total-entries"> of <?php echo esc_html( $qsm_results_count ); ?></span>
+				</span>
+				<?php
+				if ( $results_left > $table_limit ) {
 					?>
+					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+					<?php
+				} elseif ( $results_left <= $table_limit ) {
+					?>
+					<a class="next-page button disable" href="">></a>
+					<?php
+				}
+				?>
 			</span>
 			<br class="clear">
 		</div>
@@ -276,9 +278,7 @@ function qsm_results_overview_tab_content() {
 			$qmn_order_by        = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( wp_unslash( $_GET['qmn_order_by'] ) ) : 'default';
 			?>
 			<input type="hidden" name="page" value="mlw_quiz_results">
-			<p class="search-box">
-				<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-				<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo esc_attr( $qsm_search_phrase ); ?>">
+			<p class="search-box" style="margin: 0;">
 				<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
 				<select id="qmn_order_by" name="qmn_order_by">
 					<option value="default" <?php selected( $qmn_order_by, 'default' ); ?>><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
@@ -287,10 +287,12 @@ function qsm_results_overview_tab_content() {
 					<option value="point_score" <?php selected( $qmn_order_by, 'point_score' ); ?>><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
 					<option value="correct_score" <?php selected( $qmn_order_by, 'correct_score' ); ?>><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
 				</select>
+				<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
+				<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo esc_attr( $qsm_search_phrase ); ?>">
 				<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
 			</p>
 		</form>
-	</div>
+		</div>
 	<?php
 	//process screen options
 	$user_id             = get_current_user_id();
@@ -505,7 +507,7 @@ function qsm_results_overview_tab_content() {
 		<table class="widefat" aria-label="<?php esc_html_e( 'Results Table', 'quiz-master-next' ); ?>">
 			<thead>
 				<tr>
-					<th><input type="checkbox" id="qmn_check_all" /></th>
+					<th style="text-align: center;"><input type="checkbox" id="qmn_check_all" /></th>
 					<th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
 					<?php
 					foreach ( $values as $k => $v ) {
@@ -523,7 +525,9 @@ function qsm_results_overview_tab_content() {
 					for ( $x = 0; $x < $co; $x++ ) {
 						?>
 						<tr>
-							<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" /></td>
+							<td style="text-align: center;">
+								<input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" />
+							</td>
 							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class', '', $quiz_infos[ $x ]->result_id ); ?>">
 								<span style="font-size: 16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span>
 								<div class="row-actions">
