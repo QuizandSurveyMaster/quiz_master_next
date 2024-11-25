@@ -45,10 +45,45 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
 	$allowed_tags = apply_filters( 'qsm_quiz_link_allowed_tags', array(
-		'span'   => array(),
+		'span'   => array(
+			'class' => true,
+			'id'    => true,
+			'style' => true,
+		),
+		'a'      => array(
+			'href'   => true, 
+			'target' => true, 
+			'class'  => true, 
+			'id'     => true, 
+			'rel'    => true, 
+		),
+		'img'    => array(
+			'src'    => true, 
+			'alt'    => true, 
+			'width'  => true, 
+			'height' => true, 
+			'class'  => true, 
+			'id'     => true, 
+		),
+		'div'    => array(
+			'class' => true,
+			'id'    => true,
+			'style' => true,
+		),
+		'h1'     => array( 'class' => true ),
+		'h2'     => array( 'class' => true ),
+		'h3'     => array( 'class' => true ),
+		'h4'     => array( 'class' => true ),
+		'h5'     => array( 'class' => true ),
+		'h6'     => array( 'class' => true ),
+		'p'      => array(),
+		'br'     => array(),
 		'b'      => array(),
 		'strong' => array(),
-	) );
+		'i'      => array(),
+		'em'     => array(),
+		'u'      => array(),
+	) );    
 	
 	if ( ! empty( $target ) ) {
 		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . wp_kses( $content, $allowed_tags ) . '</a>';
