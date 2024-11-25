@@ -182,42 +182,52 @@ function qsm_options_emails_tab_template() {
 		<header class="qsm-email-header">
 			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 			<div class="qsm-template-btn-group">
-				<label class="qsm-template-mark-as-default">
-					<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
-					<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
-				</label>
 				<div class="qsm-actions-link-box">
-					<a href="javascript:void(0)" class="qsm-delete-email-button"><span class="dashicons dashicons-trash"></span></a>
-					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><span class="dashicons dashicons-admin-page"></span></a>
+					<a href="javascript:void(0)" class="qsm-delete-email-button"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/></a>
+					
+					<a href="javascript:void(0)" class="qsm-settings-box-result-button">
+								<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.png'); ?>" alt="gear.png"/>
+							</a>
+					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.png'); ?>" alt="copy.png"/></a>
 					<a href="javascript:void(0)" class="qsm-toggle-email-template-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
 				<div>
+				<div class="qsm-settings-box-details">
+					<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
+					<label class="qsm-template-mark-as-default">
+						<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+						<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+					</label>
+					<?php do_action( 'qsm_result_page_settings_box_after' ); ?>
+				</div> <!-- Closing qsm-settings-box-details -->
 			<div>
 		</header>
 		<main class="qsm-email-content">
-			<div class="email-when">
+			<div class="qsm-email-when">
 				<div class="email-content-header">
 					<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
 					<p><?php esc_html_e( 'the following conditions are met...', 'quiz-master-next' ); ?></p>
 				</div>
-				<div class="email-when-conditions">
+				<div class="qsm-email-when-conditions">
 					<!-- Conditions go here. Review template below. -->
 				</div>
-				<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+<?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+				<a class="qsm-new-condition qsm-block-btn button" href="javascript:void(0);"><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 			</div>
 			<div class="email-show">
 				<div class="email-content-header">
 					<h4><?php esc_html_e( '...Send', 'quiz-master-next' ); ?></h4>
 					<p><?php esc_html_e( 'Send following email template.', 'quiz-master-next' ); ?></p>
 				</div>
-				<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
-				<?php do_action( 'qsm_after_send_email_label' ); ?>
-				<input type="email" class="qsm-to-email" value="{{ data.to }}">
-				<label class="qsm-email-reply-to">
-					<input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>
-					<?php esc_html_e( 'Add user email as Reply-To', 'quiz-master-next' ); ?>
-				</label>
-				<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
-				<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
+				<div class="qsm-email-page-common-section">
+					<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
+					<?php do_action( 'qsm_after_send_email_label' ); ?>
+					<input type="email" class="qsm-to-email" value="{{ data.to }}">
+					<label class="qsm-email-reply-to">
+						<input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>
+						<?php esc_html_e( 'Add user email as Reply-To', 'quiz-master-next' ); ?>
+					</label>
+					<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
+					<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
+				</div>
 				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
 				<textarea id="email-template-{{ data.id }}" class="email-template">
 				{{{ data.content.replace(/%([^%]+)%/g, function(match, capturedValue) {
@@ -239,8 +249,10 @@ function qsm_options_emails_tab_template() {
 					}
 				}) }}}
 				</textarea>
-				<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
-				<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
+				<div class="qsm-email-page-common-section">
+					<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
+					<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
+				</div>
 			</div>
 		</main>
 	</div>
@@ -248,6 +260,9 @@ function qsm_options_emails_tab_template() {
 
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
+		<div class="qsm-condition-collection-wrap">
+			<p><?php echo esc_html( 'Condition Collection ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
+		</div>
 		<div class="qsm-email-condition-mode">
 			<div class="email-condition-category-container qsm-email-condition-container-inner">
 				<label class="qsm-email-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?></label>
@@ -286,7 +301,9 @@ function qsm_options_emails_tab_template() {
 					<?php do_action( 'qsm_email_extra_condition_category' ); ?>
 				</select>
 			</div>
-			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+			<button class="delete-condition-button">
+				<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/>
+			</button>
 		</div>
 		<div class="qsm-email-condition-container">
 			<div class="email-condition-criteria-container qsm-email-condition-container-inner">
