@@ -1073,6 +1073,30 @@ h2.hndle.ui-sortable-handle {
     padding: 25px;
 }
 
+@media (max-width: 768px) {
+    .qsm-dashboard-cards-container .qsm-dashboard-card {
+        width: 100%;
+    }
+	.qsm-dashboard-cards-container .qsm-dashboard-card:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 770px) and (max-width: 1280px) {
+    .qsm-dashboard-cards-container .qsm-dashboard-card {
+        width: calc(50% - 20px);
+    }
+	.qsm-dashboard-cards-container .qsm-dashboard-card:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1441px) {
+    .qsm-dashboard-cards-container .qsm-dashboard-card {
+        width: 32%;
+    }
+}
+
 .qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content {
 	display: flex;
 	flex-direction: column;
