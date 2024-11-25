@@ -122,7 +122,7 @@ function qsm_generate_dashboard_page() {
 		<div class="welcome-panel-content">
 			<div class="qsm-welcome-panel-content">
 				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
-				<p class="current_version"><?php esc_html_e( 'Version: ', 'quiz-master-next' ); ?><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
+				<p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p>
 			</div>
 			<div class="qsm-welcome-panel-content">
 				<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
