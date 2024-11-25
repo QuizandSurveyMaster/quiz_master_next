@@ -45,9 +45,9 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
 	if ( ! empty( $target ) ) {
-		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
+		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . wp_kses_post( $content ) . '</a>';
 	} else {
-		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
+		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . wp_kses_post( $content ) . '</a>';
 	}
 }
 
