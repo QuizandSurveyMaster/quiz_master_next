@@ -205,8 +205,8 @@ function qsm_options_styling_tab_content() {
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'ultimate', 'result-ultimate-upsell_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			"benefits"     => array(
-				'briefing' => __( 'The QSM Ultimate Add-On boosts quiz flexibility and control, making quiz creation and management smoother and more user-friendly.', 'quiz-master-next' ),
-				'list_items'  => array(
+				'briefing'   => __( 'The QSM Ultimate Add-On boosts quiz flexibility and control, making quiz creation and management smoother and more user-friendly.', 'quiz-master-next' ),
+				'list_items' => array(
 					__( 'Advanced customization for themes, progress bars, and buttons.', 'quiz-master-next' ),
 					__( 'Streamlined retakes by focusing on incorrect answers.', 'quiz-master-next' ),
 					__( 'Role management for assigning user-specific quiz permissions.', 'quiz-master-next' ),
@@ -215,8 +215,8 @@ function qsm_options_styling_tab_content() {
 				),
 			),
 			"use_cases"    => array(
-				'briefing' => __( 'Ideal for educational programs, marketing surveys, and detailed feedback collection.', 'quiz-master-next' ),
-				'list_items'  => array(
+				'briefing'   => __( 'Ideal for educational programs, marketing surveys, and detailed feedback collection.', 'quiz-master-next' ),
+				'list_items' => array(
 					__( 'Custom progress tracking for employee training.', 'quiz-master-next' ),
 					__( 'Collect emails for lead generation.', 'quiz-master-next' ),
 					__( 'Manage instructor permissions for online courses.', 'quiz-master-next' ),
@@ -230,7 +230,7 @@ function qsm_options_styling_tab_content() {
 		<div id="qsm-ultimate-upgrade" class="quiz_style_tab_content" style="display: none;">
 			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Appearance', 'quiz-master-next' ); ?></h1>
 			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Don\'t have a theme? Don\'t worry, Now you can easily customize the appearance of your quizzes and surveys using our Ultimate Addon', 'quiz-master-next' ); ?></p>
-			<?php qsm_admin_upgrade_popup( $ultimate_args, 'page' );	?>
+			<?php qsm_admin_upgrade_popup( $ultimate_args, 'page' );    ?>
 		</div>
 		<?php
 	}

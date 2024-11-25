@@ -4227,9 +4227,9 @@ var QSM_Quiz_Broadcast_Channel;
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
-                    const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
-                    const $slashCommandButton = $resultsPage.find('.qsm-slashcommand-variables-button');
-                    $resultsPage.find('.wp-media-buttons .insert-media').after($slashCommandButton);
+                    // const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
+                    // const $slashCommandButton = $resultsPage.find('.qsm-slashcommand-variables-button');
+                    // $resultsPage.find('.wp-media-buttons .insert-media').after($slashCommandButton);
                 },
                 newResultsPage: function () {
                     var conditions = [{

@@ -564,6 +564,9 @@ span.qsm-quiz-name {
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
+.results-page-show .mce-path.mce-flow-layout-item.mce-first{
+	display: none;
+}
 .results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container, .qsm-result-condition-mode, .qsm-email-condition-mode {
     display: flex;
     flex-wrap: wrap;
@@ -2876,6 +2879,10 @@ input#duplicate_questions {
 	padding: 4px 8px;
 	color: #3c434a;
 	cursor: pointer;
+	min-height: 35px;
+}
+.qsm-actions-link-box a img {
+	vertical-align: -webkit-baseline-middle;
 }
 .qsm-actions-link-box a.disabled {
 	cursor: not-allowed;
@@ -3010,6 +3017,9 @@ a.qsm-toggle-result-page-button, a.qsm-toggle-email-template-button {
 	display: inline-block;
 	box-sizing: border-box;
 	text-decoration: none;
+}
+.contact-form-builder-wrap a img{
+	vertical-align: -webkit-baseline-middle;
 }
 .contact-tab-content {
 	width: 750px;
@@ -3795,17 +3805,30 @@ input#preferred-date-format-custom {
 }
 /* Extra shortcodes popup */
 button.button.qsm-extra-shortcode-popup {
-	display: flex;
+	display: inline-flex;
     align-items: center;
-    position: relative;
-    top: 30px;
-    left: 197px;
-    z-index: 10;
+}
+
+button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
+	margin-right: 4px;
 }
 
 button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	margin: 0 4px 0 -1px;
     font-weight: 1000;
+    border: 1px solid #2271B1;
+    padding: 0px 4px 0px 4px;
+    font-size: 10px;
+    vertical-align: text-bottom;
+    display: inline-flex;
+    align-items: center;
+    height: 13px;
+    justify-content: center;
+}
+
+.results-page-show button.button.insert-media.add_media{
+	border: 1px solid #2271B1;
+	font-weight: 500;
 }
 
 @media screen and (max-width: 782px) {
@@ -3848,6 +3871,25 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 .mce-container .qsm-autocomplete input.qsm-autocomplete-search-input{
 	width: calc(100% - 85px);
 	margin-left: 15px;
+}
+.qsm-result-page-content-buttons {
+    margin-top: 5px;
+}
+
+.results-page-show .qsm-result-page-content-buttons button.button:not(:first-child) {
+	margin-left: 7px;
+}
+
+.results-page-show .qsm-result-page-content-buttons button.button {
+    border-color: #2271B1;
+	font-weight: 500;
+}
+.results-page-show .quicktags-toolbar input[type="button"]{
+	border-color: #2271B1;
+}
+p.qsm-insert-template-variable-text {
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 .qsm_page_mlw_quiz_results .widefat tbody td input[type="checkbox"],
