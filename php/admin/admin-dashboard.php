@@ -153,7 +153,7 @@ function qsm_generate_dashboard_page() {
 				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ); ?></h4>
 				<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Unleash your creativity and engage your audience by designing interactive quizzes with QSM.', 'quiz-master-next' ); ?></p>
 				<div class="qsm-dashboard-card-buttons">
-					<a class="button button-secondary load-quiz-wizard hide-if-no-customize <?php echo esc_attr( $classesname2 );?>" href="javascript:void(0)" data-formType="0"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ) ?></a>
+					<a class="button button-secondary load-quiz-wizard <?php echo esc_attr( $classesname2 );?>" href="javascript:void(0)" data-formType="0"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ) ?></a>
 				</div>
 			</div>
 		</div>
@@ -165,7 +165,7 @@ function qsm_generate_dashboard_page() {
 				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Survey', 'quiz-master-next' ); ?></h4>
 				<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Create amazing surveys, QSM plugin allows you to design and implement engaging surveys effortlessly.', 'quiz-master-next' ); ?></p>
 				<div class="qsm-dashboard-card-buttons">
-					<a class="button button-secondary load-quiz-wizard hide-if-no-customize" href="javascript:void(0)" data-formType="1"><?php esc_html_e( 'Create a Survey', 'quiz-master-next' ) ?></a>
+					<a class="button button-secondary load-quiz-wizard <?php echo esc_attr( $classesname2 );?>" href="javascript:void(0)" data-formType="1"><?php esc_html_e( 'Create a Survey', 'quiz-master-next' ) ?></a>
 				</div>
 			</div>
 		</div>
