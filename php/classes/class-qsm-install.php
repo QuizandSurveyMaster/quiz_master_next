@@ -1966,12 +1966,6 @@ class QSM_Install {
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
 			}
 
-			// Update 2.6.1
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_questions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-
 			global $wpdb;
 			$table_name  = $wpdb->prefix . 'mlw_results';
 			$audit_table = $wpdb->prefix . 'mlw_qm_audit_trail';
@@ -2038,6 +2032,15 @@ class QSM_Install {
 			}
 
 			update_option( 'mlw_quiz_master_version', $data );
+
+			// Update 9.1.3
+			$mlw_questions_table = $wpdb->prefix . 'mlw_questions';
+			if ( 'linked_question' != $wpdb->get_var( "SHOW COLUMNS FROM $mlw_questions_table LIKE 'linked_question'" ) ) {
+				$sql = 'ALTER TABLE ' . $mlw_questions_table . ' ADD linked_question TEXT NULL DEFAULT \'\' AFTER category';
+				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
+				$update_sql = 'UPDATE ' . $mlw_questions_table . ' SET linked_question = \'\' WHERE linked_question IS NULL';
+				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $update_sql );
+			}
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );

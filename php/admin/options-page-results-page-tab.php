@@ -214,17 +214,30 @@ function qsm_options_results_tab_template(){
 				<header class="results-page-header">
 					<strong><?php esc_html_e( 'Result Page ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 					<div class="qsm-template-btn-group">
-						<label class="qsm-template-mark-as-default">
-							<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
-							<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
-						</label>
 						<div class="qsm-actions-link-box">
 							<?php do_action( 'qsm_add_action_links_before' ); ?>
-							<a href="javascript:void(0)" class="qsm-delete-result-button"><span class="dashicons dashicons-trash"></span></a>
-							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button"><span class="dashicons dashicons-admin-page"></span></a>
-							<a href="javascript:void(0)" class="qsm-toggle-result-page-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
-						<div>
-					<div>
+							<a href="javascript:void(0)" class="qsm-delete-result-button">
+								<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/>
+							</a>
+							<a href="javascript:void(0)" class="qsm-settings-box-result-button">
+								<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.png'); ?>" alt="gear.png"/>
+							</a>
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button">
+								<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.png'); ?>" alt="copy.png"/>
+							</a>
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button">
+								<span class="dashicons dashicons-arrow-down-alt2"></span>
+							</a>
+						</div> <!-- Closing qsm-actions-link-box -->
+						<div class="qsm-settings-box-details">
+							<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
+							<label class="qsm-template-mark-as-default">
+								<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
+								<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
+							</label>
+							<?php do_action( 'qsm_result_page_settings_box_after' ); ?>
+						</div> <!-- Closing qsm-settings-box-details -->
+					</div> <!-- Closing qsm-template-btn-group -->
 				</header>
 				<main class="results-page-content">
 					<div class="results-page-when">
@@ -235,7 +248,7 @@ function qsm_options_results_tab_template(){
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<a class="qsm-new-condition qsm-block-btn qsm-dashed-btn" href="javascript:void(0);">+ <?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+						<a class="qsm-new-condition qsm-block-btn button" href="javascript:void(0);"><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
 						<?php do_action( 'qsm_result_page_condition_after',  $quiz_id, $categories ); ?>
 					</div>
 					<div class="results-page-show">
@@ -265,8 +278,10 @@ function qsm_options_results_tab_template(){
 								<span class="dashicons dashicons-shortcode"></span>
 								<?php esc_html_e('Conditional Output', 'quiz-master-next'); ?>
 							</button>
-						<?php }
-						do_action( 'qsm_result_page_content_before',  $quiz_id, $categories ); ?>
+						<?php } ?>
+						<div class="qsm-result-page-common-section">
+						<?php do_action( 'qsm_result_page_content_before',  $quiz_id, $categories ); ?>
+						</div>
 						<textarea id="results-page-{{ data.id }}" class="results-page-template">
 						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
 							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
@@ -287,11 +302,13 @@ function qsm_options_results_tab_template(){
 							}
 						}) }}}
 						</textarea>
-						<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
-						<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
-						<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
-						<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
-						<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
+						<div class="qsm-result-page-common-section">
+							<p><?php esc_html_e( 'Type', 'quiz-master-next' );?> <span class="qsm-hightlight-text"> / </span>  <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></p>
+							<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
+							<p><?php esc_html_e( 'Or, redirect the user by entering the URL below:', 'quiz-master-next' ); ?></p>
+							<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
+							<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
+						</div>
 					</div>
 				</main>
 			</div>
@@ -299,6 +316,9 @@ function qsm_options_results_tab_template(){
 
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
+			<div class="qsm-condition-collection-wrap">
+				<p><?php echo esc_html( 'Condition Collection ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
+			</div>
 			<div class="qsm-result-condition-mode qsm-result-condition-container">
 				<div class="results-page-condition-category-container qsm-result-condition-container-inner">
 					<label class="qsm-result-condition-title"><?php esc_html_e( 'Select Mode', 'quiz-master-next' ); ?></label>
@@ -337,7 +357,9 @@ function qsm_options_results_tab_template(){
 						<?php do_action( 'qsm_results_page_extra_condition_category' ); ?>
 					</select>
 				</div>
-				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+				<button class="delete-condition-button">
+					<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/>
+				</button>
 			</div>
 			<div class="qsm-result-condition-container">
 				<div class="results-page-condition-criteria-container qsm-result-condition-container-inner">
