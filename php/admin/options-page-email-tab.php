@@ -183,21 +183,20 @@ function qsm_options_emails_tab_template() {
 			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 			<div class="qsm-template-btn-group">
 				<div class="qsm-actions-link-box">
-					<a href="javascript:void(0)" class="qsm-delete-email-button"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/></a>
-					
+					<a href="javascript:void(0)" class="qsm-delete-email-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
 					<a href="javascript:void(0)" class="qsm-settings-box-result-button">
-								<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.png'); ?>" alt="gear.png"/>
-							</a>
-					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.png'); ?>" alt="copy.png"/></a>
-					<a href="javascript:void(0)" class="qsm-toggle-email-template-button"><span class="dashicons dashicons-arrow-down-alt2"></span></a>
-				<div>
+						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/>
+					</a>
+					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
+					<a href="javascript:void(0)" class="qsm-toggle-email-template-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/></a>
+				</div>
 				<div class="qsm-settings-box-details">
-					<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
+					<?php do_action( 'qsm_email_page_settings_box_before' ); ?>
 					<label class="qsm-template-mark-as-default">
 						<input type="checkbox" name="qsm_mark_as_default" value="{{data.id}}" <# if( undefined != data.default_mark && data.default_mark == data.id ) { #> checked <# } #> class="qsm-mark-as-default"/>
 						<?php esc_html_e( 'Mark as default', 'quiz-master-next' ); ?>
 					</label>
-					<?php do_action( 'qsm_result_page_settings_box_after' ); ?>
+					<?php do_action( 'qsm_email_page_settings_box_after' ); ?>
 				</div> <!-- Closing qsm-settings-box-details -->
 			<div>
 		</header>
@@ -210,7 +209,7 @@ function qsm_options_emails_tab_template() {
 				<div class="qsm-email-when-conditions">
 					<!-- Conditions go here. Review template below. -->
 				</div>
-				<a class="qsm-new-condition qsm-block-btn button" href="javascript:void(0);"><?php esc_html_e( 'Add condition', 'quiz-master-next' ); ?></a>
+				<a class="qsm-new-condition qsm-block-btn" href="javascript:void(0);"><?php esc_html_e( '+ Add condition', 'quiz-master-next' ); ?></a>
 			</div>
 			<div class="email-show">
 				<div class="email-content-header">
@@ -261,7 +260,7 @@ function qsm_options_emails_tab_template() {
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
 		<div class="qsm-condition-collection-wrap">
-			<p><?php echo esc_html( 'Condition Collection ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
+			<p><?php echo esc_html( 'Condition ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
 		</div>
 		<div class="qsm-email-condition-mode">
 			<div class="email-condition-category-container qsm-email-condition-container-inner">
@@ -302,7 +301,7 @@ function qsm_options_emails_tab_template() {
 				</select>
 			</div>
 			<button class="delete-condition-button">
-				<img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/>
+				<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/>
 			</button>
 		</div>
 		<div class="qsm-email-condition-container">

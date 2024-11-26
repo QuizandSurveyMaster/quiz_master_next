@@ -1961,9 +1961,6 @@ var QSMContact;
                     event.preventDefault();
                     $(this).closest('.qsm-email').remove();
                 });
-                jQuery(document).on('click', '.qsm-toggle-email-template-button', function () {
-                    jQuery(this).closest("header").next("main").slideToggle();
-                });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
                     let $parent = $(this).parents('.qsm-email-when');
@@ -4227,9 +4224,9 @@ var QSM_Quiz_Broadcast_Channel;
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
-                    // const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
-                    // const $slashCommandButton = $resultsPage.find('.qsm-slashcommand-variables-button');
-                    // $resultsPage.find('.wp-media-buttons .insert-media').after($slashCommandButton);
+                    const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
+                    const $conditionalButton = $resultsPage.find('.qsm-extra-shortcode-conditional-button');
+                    $resultsPage.find('.wp-media-buttons .insert-media').after($conditionalButton);
                 },
                 newResultsPage: function () {
                     var conditions = [{
@@ -4289,24 +4286,35 @@ var QSM_Quiz_Broadcast_Channel;
                     console.log($parent);
                     $(this).closest('.results-page-condition').remove();
                     QSMAdminResults.updateResultConditonCount($parent);
-                });
-                jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
-                    jQuery(this).closest("header").next("main").slideToggle();
-                    jQuery(this).find('.dashicons-arrow-up-alt2, .dashicons-arrow-down-alt2').toggleClass('dashicons-arrow-up-alt2 dashicons-arrow-down-alt2');
-                });
-                jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
-                    jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
-                    jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
-                });                
-                jQuery(document).on('click', function (e) {
-                    // Check if the click was outside .qsm-template-btn-group
-                    if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
-                        jQuery('.qsm-settings-box-details').hide();
-                    }
-                });                                
+                });                               
             });
         }
     }
+    
+    jQuery(document).on('click', '.qsm-toggle-result-page-button, .qsm-toggle-email-template-button', function () {
+        jQuery(this).closest("header").next("main").slideToggle();
+        let $img = jQuery(this).find('img');
+        let currentSrc = $img.attr('src');
+        let arrowUpImage = qsm_admin_messages.arrow_up_image;
+        let arrowDownImage = qsm_admin_messages.arrow_down_image;
+
+        // Toggle the image 
+        if (currentSrc === arrowUpImage) {
+            $img.attr('src', arrowDownImage);
+        } else {
+            $img.attr('src', arrowUpImage);
+        }
+    }); 
+    jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
+        jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
+        jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
+    });                
+    jQuery(document).on('click', function (e) {
+        // Check if the click was outside .qsm-template-btn-group
+        if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
+            jQuery('.qsm-settings-box-details').hide();
+        }
+    });
 
     $(document).on('click', '.qsm_global_settings .qsm-generate-api-key', function (event) {
         event.preventDefault();
