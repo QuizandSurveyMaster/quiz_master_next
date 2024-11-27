@@ -234,9 +234,9 @@ function qsm_options_contact_tab_template() {
 			</div>
 			<div class="qsm-contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
-					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.png'); ?>" alt="gear.png"/></a>
-					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.png'); ?>" alt="copy.png"/></a>
-					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.png'); ?>" alt="trash.png"/></a>
+					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/></a>
+					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
+					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
 				</div>
 			</div>
 			<div class="qsm-contact-form-group contact-form-switch">

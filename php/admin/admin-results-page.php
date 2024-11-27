@@ -94,10 +94,10 @@ function qsm_results_overview_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery'), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_result_page_script', 'qsm_result_page', array(
-        'delete_confirm'     => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
-        'delete_alert'     => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
+        'delete_confirm' => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
+        'delete_alert'   => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
 	));
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
@@ -654,8 +654,8 @@ function qsm_export_results_tabs_content() {
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'export_results', 'result-exportresults-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
 		"benefits"     => array(
-			'briefing' => '',
-			'list_items'  => array(
+			'briefing'   => '',
+			'list_items' => array(
 				__( 'Export quiz results to CSV for detailed analysis.', 'quiz-master-next' ),
 				__( 'Generate personalized PDF reports for users.', 'quiz-master-next' ),
 				__( 'Filter exports by quizzes, dates, or data fields.', 'quiz-master-next' ),
@@ -666,8 +666,8 @@ function qsm_export_results_tabs_content() {
 			),
 		),
 		"use_cases"    => array(
-			'briefing' => '',
-			'list_items'  => array(
+			'briefing'   => '',
+			'list_items' => array(
 				__( 'Track student performance in educational settings.', 'quiz-master-next' ),
 				__( 'Measure training effectiveness for employees.', 'quiz-master-next' ),
 				__( 'Gather insights from consumer surveys.', 'quiz-master-next' ),
@@ -708,8 +708,8 @@ function qsm_proctor_quiz_tabs_content() {
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"benefits"     => array(
-			'briefing' => '',
-			'list_items'  => array(
+			'briefing'   => '',
+			'list_items' => array(
 				__( 'Provides feedback using violation reports.', 'quiz-master-next' ),
 				__( 'Ensures fair results with controlled retakes.', 'quiz-master-next' ),
 				__( 'Improves quiz design by analyzing violations.', 'quiz-master-next' ),
@@ -718,8 +718,8 @@ function qsm_proctor_quiz_tabs_content() {
 			),
 		),
 		"use_cases"    => array(
-			'briefing' => '',
-			'list_items'  => array(
+			'briefing'   => '',
+			'list_items' => array(
 				__( 'Ensures fair testing in online exams.', 'quiz-master-next' ),
 				__( 'Validates employee training assessments.', 'quiz-master-next' ),
 				__( 'Maintains credibility in certification tests.', 'quiz-master-next' ),
