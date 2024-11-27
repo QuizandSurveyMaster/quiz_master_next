@@ -2888,7 +2888,7 @@ input#duplicate_questions {
 .qsm-actions-link-box a {
 	padding: 0 6px 4px 6px;
 	color: #3c434a;
-	cursor: pointer;;
+	cursor: pointer;
 }
 .qsm-actions-link-box a.disabled {
 	cursor: not-allowed;
