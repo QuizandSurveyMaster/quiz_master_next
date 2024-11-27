@@ -1394,6 +1394,11 @@ function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id
 			"&" + "link=" + pageUrlEncoded + "&" + "name=" + encodeURIComponent(mlw_qmn_social_text) +
 			"&" + "description=";
 	}
+    if (network === 'linkedin') {
+        url = "https://www.linkedin.com/sharing/share-offsite?url=" + pageUrlEncoded;
+        window.open(url, "Share", sqShareOptions);
+        return false;
+    }
 	if (network == 'twitter') {
 		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
 	}
@@ -1755,6 +1760,9 @@ jQuery(function () {
 		}
 		if (network == 'twitter') {
 			url = "https://twitter.com/intent/tweet?text=" + social_text;
+		}
+		if (network == 'linkedin') {
+			url = "https://www.linkedin.com/feed/?text=" + social_text;
 		}
 		var sTop = window.screen.height / 2 - (218);
 		var sLeft = window.screen.width / 2 - (313);

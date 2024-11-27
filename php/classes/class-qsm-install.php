@@ -806,7 +806,7 @@ class QSM_Install {
 			),
 			'default'    => 0,
 			/* translators: %FACEBOOK_SHARE%: Facebook share link, %TWITTER_SHARE%: Twitter share link */
-			'tooltip'    => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ),
+			'tooltip'    => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE% %LINKEDIN_SHARE%', 'quiz-master-next' ),
 			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1056,6 +1056,27 @@ class QSM_Install {
 		$field_array = array(
 			'id'        => 'twitter_sharing_text',
 			'label'     => __( 'Twitter Sharing Text', 'quiz-master-next' ),
+			'type'      => 'editor',
+			'default'   => 0,
+			'variables' => array(
+				'%POINT_SCORE%',
+				'%AVERAGE_POINT%',
+				'%AMOUNT_CORRECT%',
+				'%TOTAL_QUESTIONS%',
+				'%CORRECT_SCORE%',
+				'%QUIZ_NAME%',
+				'%QUIZ_LINK%',
+				'%RESULT_LINK%',
+				'%TIMER%',
+				'%CURRENT_DATE%',
+			),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers linkedin_sharing_text setting
+		$field_array = array(
+			'id'        => 'linkedin_sharing_text',
+			'label'     => __( 'Linkedin Sharing Text', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
