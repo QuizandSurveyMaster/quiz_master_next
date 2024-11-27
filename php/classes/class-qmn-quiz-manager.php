@@ -2650,11 +2650,13 @@ class QMNQuizManager {
 				$qmn_social_media_text = array(
 					'twitter'  => $qmn_quiz_options->social_media_text,
 					'facebook' => $qmn_quiz_options->social_media_text,
+					'linkedin' => $qmn_quiz_options->social_media_text,
 				);
 			}
 			$qmn_social_media_text['twitter']  = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text['twitter'], $qmn_array_for_variables );
 			$qmn_social_media_text['facebook'] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text['facebook'], $qmn_array_for_variables );
-			$social_display                   .= "<br /><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $qmn_social_media_text['facebook'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "', '" . esc_js( $facebook_app_id ) . "');\">Facebook</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $qmn_social_media_text['twitter'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "');\">Twitter</a><br />";
+			$qmn_social_media_text['linkedin'] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text['linkedin'], $qmn_array_for_variables );
+			$social_display                   .= "<br /><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $qmn_social_media_text['facebook'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "', '" . esc_js( $facebook_app_id ) . "');\">Facebook</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $qmn_social_media_text['twitter'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "');\">Twitter</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('linkedin', '" . esc_js( $qmn_social_media_text['linkedin'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "');\">Linkedin</a><br />";
 		}
 		return apply_filters( 'qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables );
 	}

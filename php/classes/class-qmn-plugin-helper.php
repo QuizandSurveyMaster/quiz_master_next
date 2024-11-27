@@ -642,6 +642,7 @@ class QMNPluginHelper {
 			'scheduled_timeframe_text'         => '',
 			'twitter_sharing_text'             => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'facebook_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
+			'linkedin_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'submit_button_text'               => __('Submit', 'quiz-master-next'),
 			'retake_quiz_button_text'          => __('Retake Quiz', 'quiz-master-next'),
 			'previous_button_text'             => __('Previous', 'quiz-master-next'),
