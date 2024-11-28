@@ -317,7 +317,7 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'linkedin_sharing_text', '%QUIZ_NAME%' );
 		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_linkedin_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
-		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('linkedin', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "', '$page_link');\"><img src='" . $ln_image . "' alt='" . __( 'Linkedin Share', 'quiz-master-next' ) . "' /></a>";
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('linkedin', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "', '', '$page_link');\"><img src='" . $ln_image . "' alt='" . __( 'Linkedin Share', 'quiz-master-next' ) . "' /></a>";
 		$content        = str_replace( '%LINKEDIN_SHARE%', $social_display, $content );
 	}
 	return $content;
