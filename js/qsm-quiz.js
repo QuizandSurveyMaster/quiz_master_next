@@ -1875,14 +1875,19 @@ jQuery(document).ready(function () {
 			var rnum = Math.floor(Math.random() * mlw_chars.length);
 			mlw_code += mlw_chars.substring(rnum, rnum + 1);
 		}
-		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
-    	mlw_captchaCTX.direction = 'rtl'; 
+		var captchaCanvas = document.getElementById('mlw_captcha');
+        var mlw_captchaCTX = captchaCanvas.getContext('2d');
+        var containerDirection = window.getComputedStyle(captchaCanvas).direction || 'ltr'; 
         mlw_captchaCTX.font = 'normal 24px Verdana';
-        mlw_captchaCTX.strokeStyle = '#000000';        
-        mlw_captchaCTX.clearRect(0, 0, 100, 50);
-        mlw_captchaCTX.textAlign = 'right'; 
-        mlw_captchaCTX.textBaseline = 'middle';
-        mlw_captchaCTX.strokeText(mlw_code, 90, 25);
+        mlw_captchaCTX.strokeStyle = '#000000';
+        mlw_captchaCTX.clearRect(0, 0, captchaCanvas.width, captchaCanvas.height);
+        if (containerDirection === 'rtl') {
+            mlw_captchaCTX.textAlign = 'right';
+            mlw_captchaCTX.strokeText(mlw_code, captchaCanvas.width - 10, captchaCanvas.height / 2); 
+        } else {
+            mlw_captchaCTX.textAlign = 'left';
+            mlw_captchaCTX.strokeText(mlw_code, 10, captchaCanvas.height / 2); 
+        }
         document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
 });
