@@ -1347,7 +1347,7 @@ function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
 		<div class="qsm-upgrade-box-base-title">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="">
 			<p><?php echo esc_html( $args['title'] ) . __( ' is required.', 'quiz-master-next' ); ?></p>
-			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="button button-small" rel="noopener"><?php esc_html_e( 'Purchase', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm-upgrade-button" rel="noopener"><?php esc_html_e( 'Purchase', 'quiz-master-next' ); ?></a>
 		</div>
 		<a href="#" id="qsm-upgrade-popup-opener" data-popup="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
 	</div>
