@@ -1395,7 +1395,7 @@ function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id
 			"&" + "description=";
 	}
     if (network === 'linkedin') {
-        url = "https://www.linkedin.com/sharing/share-offsite?url=" + encodeURIComponent(mlw_qmn_social_text);
+        url = "https://www.linkedin.com/sharing/share-offsite/?url=" + pageUrlEncoded;
     }
 	if (network == 'twitter') {
 		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
