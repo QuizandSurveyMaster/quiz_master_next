@@ -1876,12 +1876,14 @@ jQuery(document).ready(function () {
 			mlw_code += mlw_chars.substring(rnum, rnum + 1);
 		}
 		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
-		mlw_captchaCTX.font = 'normal 24px Verdana';
-		mlw_captchaCTX.strokeStyle = '#000000';
-		mlw_captchaCTX.clearRect(0, 0, 100, 50);
-		mlw_captchaCTX.strokeText(mlw_code, 10, 30, 70);
-		mlw_captchaCTX.textBaseline = 'middle';
-		document.getElementById('mlw_code_captcha').value = mlw_code;
+    	mlw_captchaCTX.direction = 'rtl'; 
+        mlw_captchaCTX.font = 'normal 24px Verdana';
+        mlw_captchaCTX.strokeStyle = '#000000';        
+        mlw_captchaCTX.clearRect(0, 0, 100, 50);
+        mlw_captchaCTX.textAlign = 'right'; 
+        mlw_captchaCTX.textBaseline = 'middle';
+        mlw_captchaCTX.strokeText(mlw_code, 90, 25);
+        document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
 });
 
