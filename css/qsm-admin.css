@@ -2282,7 +2282,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 }
 .qsm-upgrade-box .qsm-upgrade-read-icon a {
 	text-decoration: none;
-	font-weight: bold;
 	display: inline-flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
