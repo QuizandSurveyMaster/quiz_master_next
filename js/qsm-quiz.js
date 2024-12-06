@@ -1495,16 +1495,22 @@ jQuery(function () {
 		let value = jQuery(this).val();
 		let $this = jQuery(this).parents('.quiz_section');
 		let question_id = $i_this.attr('name').split('question')[1];
+		let inputType;
+		if ($i_this.hasClass('mlw_answer_date')) {
+			inputType = 'input';
+		} else {
+			inputType = 'radio';
+		}
 		if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-			qsm_show_inline_result(quizID, question_id, value, $this, 'radio', $i_this)
+			qsm_show_inline_result(quizID, question_id, value, $this, inputType, $i_this)
 		} else if (qmn_quiz_data[quizID].enable_quick_correct_answer_info != 0) {
-			let data = qsm_question_quick_result_js(question_id, value, 'radio', qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
+			let data = qsm_question_quick_result_js(question_id, value, inputType, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
 			$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
 			if ( 0 < value.length && data.success != '') {
 				$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 			}
 		}
-		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, 'radio']);
+		jQuery(document).trigger('qsm_after_select_answer', [quizID, question_id, value, $this, inputType]);
 		if (qmn_quiz_data[quizID].end_quiz_if_wrong > 0 && !jQuery(this).parents('.qsm-quiz-container').find('.mlw_next:visible').length ) {
 			qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm);
 		}
@@ -1537,7 +1543,7 @@ jQuery(function () {
 			if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
 				qsm_show_inline_result(quizID, question_id, sendValue, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
 			} else if (qmn_quiz_data[quizID].enable_quick_correct_answer_info != 0) {
-				let data = qsm_question_quick_result_js(question_id, sendValue, 'input', qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
+				let data = qsm_question_quick_result_js(question_id, sendValue, 'input', qmn_quiz_data[quizID].enable_quick_correct_answer_info, quizID, $this.find('.qmn_fill_blank').index($i_this));
 				$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
 				if ( 0 < value.length && data.success != '') {
 					$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
@@ -1836,7 +1842,7 @@ function qsm_check_shortcode(message = null) {
 function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
 	jQuery('.qsm-spinner-loader').remove();
 	addSpinnerLoader($this,$i_this);
-	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID);
+	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID, index);
 	$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
 	$this.find('.qmn_radio_answers').children().removeClass('data-correct-answer');
 	if ( 0 < value.length && data.success == 'correct') {
@@ -1916,7 +1922,7 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 	}
 }
 
-function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='') {
+function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='', ans_index=null) {
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
