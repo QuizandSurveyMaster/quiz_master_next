@@ -1390,9 +1390,8 @@ function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id
 	var pageUrlEncoded = encodeURIComponent(share_url);
 	var url = '';
 	if (network == 'facebook') {
-		url = "https://www.facebook.com/dialog/feed?" + "display=popup&" + "app_id=" + facebook_id +
-			"&" + "link=" + pageUrlEncoded + "&" + "name=" + encodeURIComponent(mlw_qmn_social_text) +
-			"&" + "description=";
+		url = "https://www.facebook.com/dialog/share?" + "app_id=" + facebook_id + "&display=popup" +
+			"&hashtag=" + encodeURIComponent(mlw_qmn_social_text) + "&href=" + pageUrlEncoded;
 	}
     if (network === 'linkedin') {
         url = "https://www.linkedin.com/sharing/share-offsite/?text=" + encodeURIComponent(mlw_qmn_social_text) + "&url=" + pageUrlEncoded;
