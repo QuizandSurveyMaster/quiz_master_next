@@ -450,6 +450,16 @@ class QSM_Install {
 					),
 					'default' => 1,
 				),
+				'check_already_sent_email'      => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Not send email if already sent', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
+				),
 			),
 			'help'       => '',
 			'option_tab' => 'quiz_submission',
