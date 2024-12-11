@@ -173,7 +173,7 @@ class QSM_Emails {
 		if ( 0 == $email_send && ! empty( $default_email_content ) ) {
 			self::send_results_email( $response_data, $default_email_to, $default_email_subject, $default_email_content, $default_email_reply_to, $default_index );
 		}
-
+		delete_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'] );
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 	}
 
