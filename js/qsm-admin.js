@@ -4394,11 +4394,24 @@ var QSM_Quiz_Broadcast_Channel;
 
 }(jQuery));
 
-
+function qsm_check_email_sent_option() {
+    if (jQuery('input[name="send_email"]').prop('checked') === true) {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', false );
+        jQuery('#check_already_sent_email').show();
+    } else {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', true );
+        jQuery('#check_already_sent_email').hide();
+    }
+}
 /**
  * QSM - failed submission data table action
  */
 (function ($) {
+    qsm_check_email_sent_option();
+    $(document).on('change', 'input[name="send_email"]', function (event) {
+        event.preventDefault();
+        qsm_check_email_sent_option();
+    });
     function submit_failed_submission_action_notice( res ) {
         if ( 'object' !== typeof res || null === res || undefined === res.message  ) {
             return false;
