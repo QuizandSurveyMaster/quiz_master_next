@@ -480,9 +480,8 @@ span.qsm-quiz-name {
     border-radius: 5px;
     background: #fff;
     border: 1px solid #dfd4d4;
-    margin: 3px 0 0px 25px;
+    margin: 3px 0 0px 5px;
     max-width: 200px;
-    right: 45px;
 }
 .results-page-header, #qsm_emails .qsm-email-header {
 	display: flex;
@@ -565,12 +564,9 @@ span.qsm-quiz-name {
 	min-width: auto;
 	width: 100%;
 	border-radius: 5px;
-	border-color: #555555;
+	border-color:#8a8a8a;
 	padding-top: 2px;
 	padding-bottom: 2px;
-}
-.results-page-show .mce-path.mce-flow-layout-item.mce-first{
-	display: none;
 }
 .results-page-condition .qsm-result-condition-container, .email-condition .qsm-email-condition-container, .qsm-result-condition-mode, .qsm-email-condition-mode {
     display: flex;
@@ -590,10 +586,10 @@ span.qsm-quiz-name {
 }
 
 .results-page-content label, .results-page-content p, .qsm-email-content label, .qsm-email-content p {
-    color: #1E1E1E;
+    color: #555555;
 }
 .qsm-common-svg-image-class {
-	height: 18px;
+	height: 16px;
 	padding: 2px;
 	vertical-align: -webkit-baseline-middle;
 }
@@ -2877,7 +2873,7 @@ input#duplicate_questions {
 	flex-wrap: nowrap;
 	border-radius: 5px;
 	margin: 0 5px;
-	border: 1px solid #1E1E1E;
+	border: 1px solid #8a8a8a;
 }
 .qsm-actions-link-box a:first-child {
 	border-radius: 5px 0 0 5px;
@@ -2907,10 +2903,13 @@ input#duplicate_questions {
 .results-page-when .qsm-new-condition, .qsm-email-when .qsm-new-condition,
 .results-page-when .qsm-new-condition:active, .qsm-email-when .qsm-new-condition:active,
 .results-page-when .qsm-new-condition:focus, .qsm-email-when .qsm-new-condition:focus {
-	width: auto;
-    padding: 0;
-	color: #2271B1;
+	color: #555555;
 	font-size: 14px;
+	margin-bottom: 5px;
+    background: #F8F9F9;
+    padding: 9px 10px;
+    position: relative;
+    border-radius: 10px;
 }
 .qsm-actions-link-box a span {
 	font-size: 16px;
@@ -3521,6 +3520,304 @@ input#duplicate_questions {
 .option-page-result-page-tab-footer .result-tab-footer-buttons .qsm-show-all-variable-text {
 	margin: 0 10px 0 0;
 }
+
+.qsm-result-page-content-buttons button.button,
+.results-page-show .wp-media-buttons button.button,
+.qsm-email-content .wp-media-buttons button.button,
+.qsm-row .right-bar .insert-media, .qsm-common-button-styles {
+	border: 1px solid #2271B1;
+    font-weight: 500;
+}
+
+
+.results-page-when .qsm-new-condition span, .qsm-email-when .qsm-new-condition span {
+	font-size: 20px;
+}
+
+.qsm-quiz-result-tab .qsm-edit-result-view-options {
+	display: grid;
+    margin: 0 0 20px 0;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 20px;
+}
+
+.qsm-edit-result-view-options label.qsm-edit-result-input-label {
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.qsm-quiz-result-tab .qsm-result-page-then-box-styles,
+.qsm-quiz-email-tab .qsm-email-page-then-box-styles {
+	margin-bottom: 15px;
+    background: #F8F9F9;
+    padding: 20px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.qsm-email-page-common-section.qsm-email-page-then-box-styles > div {
+	margin-top: 0;
+}
+
+.qsm-email-page-common-section.qsm-email-page-then-box-styles > div:not(:last-child) {
+	margin-bottom: 30px;
+}
+
+.qsm-result-page-template-buttons button.button.qsm-common-button-styles,
+.qsm-email-page-template-buttons button.button.qsm-common-button-styles {
+	width: 100%;
+	height: 34px;
+	max-width: 150px;
+}
+
+.qsm-result-page-template-buttons,
+.qsm-email-page-template-buttons {
+	display: flex;
+    grid-gap: 20px;
+    padding: 20px 40px;
+    justify-content: center;
+}
+
+.qsm-result-page-template-options.qsm-result-page-then-box-styles,
+.qsm-email-page-template-options.qsm-email-page-then-box-styles {
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 140px;
+    padding-bottom: 10px;
+}
+
+.qsm-result-page-template-learn-more,
+.qsm-email-page-template-learn-more {
+    display: grid;
+    justify-content: center;
+}
+
+.qsm-result-page-template-learn-more a,
+.qsm-email-page-template-learn-more a {
+    color: #1E1E1E;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: #2271B1;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px; 
+}
+.qsm-edit-result-view-options .qsm-edit-result-input-option label {
+	vertical-align: baseline;
+	cursor: pointer;
+}
+.qsm-edit-result-view-options .qsm-edit-result-input-option.active label {
+	font-weight: 600;
+} 
+
+.qsm-result-page-template-container, .qsm-result-my-template-container,
+.qsm-email-page-template-container, .qsm-email-my-template-container {
+	display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 0 25px;
+	min-height: 75vh;
+	min-width: 75vw;
+}
+
+.qsm-result-page-template-card,
+.qsm-email-page-template-card {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    transition: background-color 0.3s ease;
+    max-width: 230px;
+}
+
+.qsm-result-page-template-card-content,
+.qsm-email-page-template-card-content {
+    transition: background-color 0.3s ease; /* Transition on the child */
+}
+
+.qsm-result-page-template-card .qsm-result-page-template-card-content:hover,
+.qsm-email-page-template-card .qsm-email-page-template-card-content:hover {
+    background-color: #717171; /* Change background color on hover */
+}
+
+.qsm-result-page-template-card-content,
+.qsm-email-page-template-card-content {
+	cursor: pointer;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	gap: 10px;
+	height: 230px;
+    min-width: 230px;
+    background: #D9D9D9;
+}
+
+.qsm-result-page-template-button,
+.qsm-email-page-template-button {
+	background-color: #FFFFFF;
+	color: #0056b3;
+}
+
+.qsm-result-page-template-template-name,
+.qsm-email-page-template-template-name {
+	margin: 16px 0;
+	font-size: 14px;
+	color: #333;
+}
+
+.qsm-result-page-template-pro,
+.qsm-email-page-template-pro {
+	position: relative;
+}
+
+.qsm-result-page-template-pro::after,
+.qsm-email-page-template-pro::after {
+	content: "PRO";
+	position: absolute;
+	top: 8px;
+	right: 8%;
+	background-color: #FFEDF3;
+	color: white;
+	font-size: 11px;
+	font-weight: bold;
+	padding: 4px 8px;
+	border-radius: 10px;
+	color: #BD2457;
+}
+  
+#qsm-result-page-templates .qsm-popup__container,
+#qsm-email-page-templates .qsm-popup__container {
+	max-width: initial;
+	padding: 0;
+	max-height: 80vh;
+	border-radius: 0;
+}
+
+#qsm-result-page-templates .qsm-popup__close,
+#qsm-email-page-templates .qsm-popup__close {
+	color: #1E1E1E;
+	font-weight: 600;
+}
+
+#qsm-result-page-templates .qsm-result-page-template-card-buttons,
+#qsm-email-page-templates .qsm-email-page-template-card-buttons {
+	max-width: 100px;
+	display: none;
+}
+
+.qsm-result-page-template-card-buttons img.qsm-common-svg-image-class,
+.qsm-email-page-template-card-buttons img.qsm-common-svg-image-class {
+	position: relative;
+	bottom: 4px;
+	padding-right: 3px;
+}
+
+.qsm-result-page-template-header-tabs,
+.qsm-email-page-template-header-tabs {
+	display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#qsm-result-page-templates .qsm-popup__header,
+#qsm-email-page-templates .qsm-popup__header {
+	display: grid;
+    grid-template-columns: 1.3fr 2fr;
+	border-bottom: 1px solid rgba(30, 30, 30, 0.1);
+	padding: 0 10px;
+}
+
+#qsm-result-page-templates .qsm-popup__header .qsm-result-page-template-header-image,
+#qsm-email-page-templates .qsm-popup__header .qsm-email-page-template-header-image {
+	max-height: 55px;
+}
+
+.qsm-result-page-template-header-tabs .qsm-result-page-tmpl-header-links {
+    color: #1E1E1E;
+}
+
+.qsm-result-page-template-header-left,
+.qsm-email-page-template-header-left {
+    display: flex;
+    align-items: center;
+}
+
+h2#qsm-result-page-templates-title,
+h2#qsm-email-page-templates-title {
+    color: #1E1E1E;
+    font-size: 15px;
+    font-weight: 400;
+    padding-top: 4px;
+}
+.qsm-result-page-template-header-right,
+.qsm-email-page-template-header-right {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.qsm-result-page-template-header-tabs .qsm-result-page-tmpl-header-links.active,
+.qsm-email-page-template-header-tabs .qsm-email-page-tmpl-header-links.active {
+	color: #1D4ED8;
+	font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: #1D4ED8;
+    text-underline-offset: 10px;
+}
+
+
+.qsm-actions-link-box a.qsm-delete-email-button:hover, .qsm-actions-link-box a.qsm-delete-result-button:hover {
+	background-color: #ffd4d4;
+}
+.results-page-show .wp-media-buttons, .email-show .wp-media-buttons {
+    margin-bottom: 10px;
+}
+
+.results-page-show .wp-editor-tabs, .email-show .wp-editor-tabs {
+    margin-top: 10px;
+}
+
+.results-page-show .qsm-result-page-content-buttons, .email-show .qsm-email-page-content-buttons {
+    margin-top: 15px;
+}
+
+.qsm-result-page-template-card-buttons button.button,
+.qsm-email-page-template-card-buttons button.button {
+	width: 100px;
+    border: none;
+    margin: 2px 0px 3px 0px;
+}
+button.qsm-result-page-template-preview-button.button img,
+button.qsm-email-page-template-preview-button.button img {
+	height: 18px;
+}
+
+.qsm-preview-result-page-template-container img.qsm-preview-template-image,
+.qsm-preview-email-page-template-container img.qsm-preview-template-image {
+	width: 100%;
+}
+
+#qsm-preview-result-page-templates .qsm-popup__container,
+#qsm-preview-email-page-templates .qsm-popup__container {
+	max-height: 85vh;
+    max-width: 85vw;
+    padding: 0;
+}
+
+#qsm-preview-result-page-templates .qsm-popup__container >*,
+#qsm-preview-email-page-templates .qsm-popup__container >* {
+	padding: 15px 20px;
+}
+
+#qsm-preview-result-page-templates .qsm-popup__header,
+#qsm-preview-email-page-templates .qsm-popup__header {
+    border-bottom: 1px solid rgba(30, 30, 30, 0.1);
+}
+
+#qsm-preview-result-page-templates .qsm-popup__content,
+#qsm-preview-email-page-templates .qsm-popup__content {
+	margin: 0;
+}
 @media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer,
 	.folded .contact-page-tab-footer,
@@ -3817,11 +4114,6 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 	margin-right: 4px;
 }
 
-.results-page-show .wp-media-buttons button.button {
-	border: 1px solid #2271B1;
-	font-weight: 500;
-}
-
 .qsm-quiz-result-tab button.add-new-page,
 .qsm-quiz-email-tab button.add-new-email {
     border: 1px solid #2271B1;
@@ -3830,7 +4122,7 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 
 .qsm-extra-shortcode-conditional-button img.qsm-common-svg-image-class {
     vertical-align: text-top;
-    padding: 0 1px 0 0;
+    padding: 1px 1px 0 0;
 }
 
 .contact-form-actions .contact-form-actions-box a.disabled {
@@ -3869,9 +4161,6 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 	width: calc(100% - 85px);
 	margin-left: 15px;
 }
-.qsm-result-page-content-buttons {
-    margin-top: 5px;
-}
 
 .results-page-show .qsm-result-page-content-buttons button.button:not(:first-child) {
 	margin-left: 7px;
@@ -3887,12 +4176,12 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 span.qsm-insert-template-variable-text {
 	line-height: 2;
     margin-left: 7px;
-    color: #1E1E1E;
+    color: #555555;
 }
 
 .qsm-quiz-result-tab p.qsm-result-redirect-text {
 	margin-bottom: 5px;
-	margin-top: 20px;
+	margin-top: 0;
 }
 
 .qsm_page_mlw_quiz_results .widefat tbody td input[type="checkbox"],

@@ -376,6 +376,13 @@ class QSM_Results_Pages {
 						},
 						$pages[ $i ]['page']
 				);
+				$pages[ $i ]['page'] = preg_replace_callback(
+					'/<qsmextrashortcodetag>([^<]+)<\/qsmextrashortcodetag>/u',
+					function( $matches ) {
+						return wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) );
+					},
+					$pages[ $i ]['page']
+				);
 				$pages[ $i ]['page']  = wp_kses_post( $pages[ $i ]['page'] );
 			}
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );

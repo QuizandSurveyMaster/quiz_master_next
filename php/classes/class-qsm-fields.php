@@ -309,9 +309,9 @@ class QSM_Fields {
 				</div>
 				<div class="result-tab-footer-buttons">
 					<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
-						<a class="button-secondary" id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
+						<a class="button-secondary qsm-common-button-styles" id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
 					<?php } ?>
-					<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+					<button class="button-primary qsm-common-button-styles" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 				</div>
 			</div>
 		</form>

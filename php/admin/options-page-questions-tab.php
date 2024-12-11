@@ -219,7 +219,7 @@ function qsm_options_questions_tab_content() {
 	</div>
 	<div class="question-create-page">
 		<div>
-			<button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span>
+			<button class="new-page-button button button-primary qsm-common-button-styles"><span class="dashicons dashicons-plus-alt2"></span>
 				<?php esc_html_e( 'Create New Page', 'quiz-master-next' ); ?></button>
 			<button style="display: none;"
 				class="save-page-button button button-primary"><?php esc_html_e( 'Save Questions and Pages', 'quiz-master-next' ); ?></button>
@@ -1400,15 +1400,15 @@ function qsm_options_questions_tab_template() {
 				<div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
 				<div>
 					<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a>
-					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
-					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
 			<label for="qsm-admin-select-page-question-{{data.id}}" class="qsm-admin-select-page-question-label"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select All', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
 				<div class="page-header-buttons">
-					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
-					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
 		</div>

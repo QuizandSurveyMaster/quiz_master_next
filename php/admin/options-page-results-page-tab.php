@@ -30,10 +30,95 @@ function qsm_options_results_tab_content() {
 	global $mlwQuizMasterNext;
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '';
 	$user_id = get_current_user_id();
+	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
+	$temlate_sql = "SELECT unique_id, template_content FROM {$table_name}";
+	$mlw_quiz_output_templates_results = $wpdb->get_results($temlate_sql);
+	$unique_ids = array_column($mlw_quiz_output_templates_results, 'unique_id');
+	$template_contents = array_column($mlw_quiz_output_templates_results, 'template_content');
+	// Combine into an associative array where unique_id is the key
+	$my_tmpl_data = array_combine($unique_ids, $template_contents);
+
+	// Use array_column to extract the unique_id column
+	$existing_unique_ids = array_column($mlw_quiz_output_templates_results, 'unique_id');
+	$qsm_quiz_output_templates_results = [
+		(object) [
+			'id'               => 1,
+			'unique_id'        => 'UID101',
+			'template_name'    => 'Template 1',
+			'template_type'    => 'result',
+			'template_content' => 'Your score: %POINT_SCORE% out of %MAXIMUM_POINTS%. You scored %AMOUNT_CORRECT% correct answers out of %TOTAL_QUESTIONS%.',
+			'is_free'          => true,
+		],
+		(object) [
+			'id'               => 2,
+			'unique_id'        => 'UID102',
+			'template_name'    => 'Template 2',
+			'template_type'    => 'result',
+			'template_content' => 'Congratulations %USER_NAME%! You answered %AMOUNT_CORRECT% out of %TOTAL_QUESTIONS% correctly. Your result: %POINT_SCORE%. 
+			[qsm_conditions type="points" condition="equal" value="10"]You scored exactly 10 points! Well done![/qsm_conditions]
+			[qsm_conditions type="points" condition="greater" value="20"]Excellent! You scored more than 20 points![/qsm_conditions]',
+			'is_free'          => false,
+		],
+		(object) [
+			'id'               => 3,
+			'unique_id'        => 'UID103',
+			'template_name'    => 'Template 3',
+			'template_type'    => 'result',
+			'template_content' => 'Great job, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% correct answers out of %TOTAL_QUESTIONS%.',
+			'is_free'          => true,
+		],
+		(object) [
+			'id'               => 4,
+			'unique_id'        => 'UID104',
+			'template_name'    => 'Template 4',
+			'template_type'    => 'result',
+			'template_content' => 'Quiz complete! %USER_NAME%, your score is %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% correct answers!
+			[qsm_conditions type="points" condition="lessthan" value="5"]Oops! You scored less than 5 points. Better luck next time![/qsm_conditions]',
+			'is_free'          => false,
+		],
+		(object) [
+			'id'               => 5,
+			'unique_id'        => 'UID105',
+			'template_name'    => 'Template 5',
+			'template_type'    => 'result',
+			'template_content' => 'Your quiz result: %POINT_SCORE% out of %MAXIMUM_POINTS%. Correct answers: %AMOUNT_CORRECT%.',
+			'is_free'          => true,
+		],
+		(object) [
+			'id'               => 6,
+			'unique_id'        => 'UID106',
+			'template_name'    => 'Template 6',
+			'template_type'    => 'result',
+			'template_content' => 'Well done, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. Correct answers: %AMOUNT_CORRECT%.',
+			'is_free'          => false,
+		],
+		(object) [
+			'id'               => 7,
+			'unique_id'        => 'UID107',
+			'template_name'    => 'Template 7',
+			'template_type'    => 'result',
+			'template_content' => 'Awesome, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% answers correct out of %TOTAL_QUESTIONS%. 
+			[qsm_conditions type="points" condition="greater" value="15"]Excellent! You scored over 15 points![/qsm_conditions]',
+			'is_free'          => true,
+		],
+	];  
+	
+	$new_templates_uid = array_column($qsm_quiz_output_templates_results, 'unique_id');
+	$new_template_contents = array_column($qsm_quiz_output_templates_results, 'template_content');
+	// Combine into an associative array where unique_id is the key
+	$new_tmpl_data = array_combine($new_templates_uid, $new_template_contents);
+
+	// Filter the incoming data to only include templates that have not been inserted
+	$new_templates = array_filter($qsm_quiz_output_templates_results, function( $template ) use ( $existing_unique_ids ) {
+		return ! in_array($template->unique_id, $existing_unique_ids);
+	});
+
 	$js_data = array(
 		'quizID'          => $quiz_id,
 		'nonce'           => wp_create_nonce( 'wp_rest' ),
 		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'my_tmpl_data'    => $my_tmpl_data,
+		'new_tmpl_data'   => $new_tmpl_data,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
 	do_action( 'qsm_options_results_tab_content_before' );
@@ -48,8 +133,8 @@ function qsm_options_results_tab_content() {
 	<div class="option-page-result-page-tab-footer">
 		<div class="footer-bar-notice"></div>
 		<div class="result-tab-footer-buttons">
-			<a class="button-secondary qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
-			<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+			<a class="button-secondary qsm-show-all-variable-text qsm-common-button-styles" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+			<button class="save-pages button-primary qsm-common-button-styles"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
 		</div>
 	</div>
 </section>
@@ -190,6 +275,104 @@ function qsm_options_results_tab_content() {
 		</div>
 	</div>
 </div>
+
+<div class="qsm-popup qsm-popup-slide" id="qsm-result-page-templates" aria-hidden="false" style="display:none;">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-result-page-templates-title">
+			<header class="qsm-popup__header">
+				<div class="qsm-result-page-template-header-left">
+					<img class="qsm-result-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
+					<h2 class="qsm-popup__title" id="qsm-result-page-templates-title">
+						<?php esc_html_e( 'Templates', 'qsm-webhooks' ); ?>
+					</h2>
+				</div>	
+				<div class="qsm-result-page-template-header-right">
+					<div class="qsm-result-page-template-header">
+						<div class="qsm-result-page-template-header-tabs">
+							<a class="qsm-result-page-tmpl-header-links active" data-tab="page" href="javascript:void(0)"><?php esc_html_e( 'QSM Templates', 'quiz-master-next' ); ?></a>
+							<a class="qsm-result-page-tmpl-header-links" data-tab="my" href="javascript:void(0)"><?php esc_html_e( 'My Templates', 'quiz-master-next' ); ?></a>
+						</div>
+					</div>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</div>	
+			</header>
+			<main class="qsm-popup__content" id="qsm-result-page-templates-content" data-result-page="">
+			<div class="qsm-result-page-template-container qsm-result-page-template-common">
+				<?php
+					foreach ( $new_templates as $row ) { 
+						if ( 'result' == $row->template_type ) {
+							?>
+							<div class="qsm-result-page-template-card <?php echo $row->is_free ? 'qsm-result-page-template-pro' : ''; ?>" data-unique-id="<?php echo esc_html($row->unique_id); ?>" >
+								<div class="qsm-result-page-template-card-content">
+									<div class="qsm-result-page-template-card-buttons">
+										<button class="qsm-result-page-template-preview-button button">
+											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
+											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
+										</button>
+										<button class="qsm-result-page-template-insert-button button" data-unique-id="<?php echo esc_html($row->unique_id); ?>">
+											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.png'); ?>" alt="download-line-blue.png" />
+											<?php esc_html_e( 'Insert', 'quiz-master-next' ); ?>
+										</button>
+									</div>
+								</div>
+								<p class="qsm-result-page-template-template-name"><?php echo esc_html($row->template_name); ?></p>
+							</div>
+							<?php
+						}
+					}
+				?>
+			</div>
+			<div class="qsm-result-my-template-container qsm-result-page-template-common">
+				<?php
+				$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
+				$sql = "SELECT * FROM {$table_name}";
+				$mlw_quiz_output_templates_results = $wpdb->get_results($sql);
+				if ( $mlw_quiz_output_templates_results ) { 
+					foreach ( $mlw_quiz_output_templates_results as $row ) { 
+						if ( 'result' == $row->template_type ) {
+							?>
+							<div class="qsm-result-page-template-card" data-id="<?php echo esc_html($row->id); ?>">
+								<div class="qsm-result-page-template-card-content">
+									<div class="qsm-result-page-template-card-buttons">
+										<button class="qsm-result-page-template-preview-button button">
+											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
+											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
+										</button>
+										<button class="qsm-result-page-template-use-button button" data-unique-id="<?php echo esc_html($row->unique_id); ?>">
+										<?php esc_html_e( 'Use Template', 'quiz-master-next' ); ?>
+										</button>
+									</div>
+								</div>
+								<p class="qsm-result-page-template-template-name"><?php echo esc_html($row->template_name); ?></p>
+							</div>
+							<?php
+						}
+					}
+				} ?>
+			</div>
+			</main>
+		</div>
+	</div>
+</div>
+
+
+<div class="qsm-popup qsm-popup-slide" id="qsm-preview-result-page-templates" aria-hidden="false" style="display:none;">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-preview-result-page-templates-title">
+			<header class="qsm-popup__header">
+				<h2 class="qsm-popup__title" id="qsm-preview-result-page-templates-title">
+					<?php esc_html_e( 'Template Preview', 'qsm-webhooks' ); ?>
+				</h2>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+			</header>
+			<main class="qsm-popup__content" id="qsm-preview-result-page-templates-content">
+				<div class="qsm-preview-result-page-template-container ">
+					<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
+				</div>
+			</main>
+		</div>
+	</div>
+</div>
 <?php
 }
 /**
@@ -242,71 +425,86 @@ function qsm_options_results_tab_template(){
 				<main class="results-page-content">
 					<div class="results-page-when">
 						<div class="results-page-content-header">
-							<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'the following conditions are met...', 'quiz-master-next' ); ?></p>
+							<h4><?php esc_html_e( 'When..', 'quiz-master-next' ); ?></h4>
+							<p><?php esc_html_e( 'Condition for displaying result', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
 						</div>
-						<a class="qsm-new-condition qsm-block-btn" href="javascript:void(0);"><?php esc_html_e( '+ Add condition', 'quiz-master-next' ); ?></a>
+						<a class="qsm-new-condition qsm-block-btn" href="javascript:void(0);"><span>+</span><?php esc_html_e( ' Add Condition', 'quiz-master-next' ); ?></a>
 						<?php do_action( 'qsm_result_page_condition_after',  $quiz_id, $categories ); ?>
 					</div>
 					<div class="results-page-show">
 						<div class="results-page-content-header">
-							<h4><?php esc_html_e( '...Show', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'The following result page.', 'quiz-master-next' ); ?></p>
+							<h4><?php esc_html_e( '..Then', 'quiz-master-next' ); ?></h4>
 						</div>
-						<div class="qsm-result-page-common-section">
-						<?php do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
-						if ( ! class_exists('QSM_Extra_Shortcodes') ) {
-							$qsm_pop_up_arguments = array(
-								"id"           => 'modal-extra-shortcodes',
-								"title"        => __('Extra Shortcode', 'quiz-master-next'),
-								"description"  => __('Need dynamic content on your results pages? Our QSM conditional shortcode makes it easy. Create personalized experiences based on specific conditions or rules.', 'quiz-master-next'),
-								"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
-								"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
-								"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
-								"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
-								"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_upgrade', 'qsm_plugin_upsell' ),
-								"addon_link"   => qsm_get_plugin_link( 'downloads/extra-shortcodes', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_buy_addon', 'qsm_plugin_upsell' ),
-							);
-							qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+						<div class="qsm-result-page-common-section"><?php do_action( 'qsm_result_page_view_options_before',  $quiz_id, $categories ); ?></div>
+						<div class="qsm-edit-result-view-options" data-result-page="{{ data.id }}" >
+							<div class="qsm-edit-result-input-option">
+								<input type="radio" name="qsm_then_show_result_option_{{ data.id }}" id="qsm-then-show-result-{{ data.id }}" class="qsm-then-show-result" value="1" checked>
+								<label for="qsm-then-show-result-{{ data.id }}"><?php esc_html_e( 'Show following page', 'quiz-master-next' ); ?></label>
+							</div>
+							<div class="qsm-edit-result-input-option">
+								<input type="radio" name="qsm_then_show_result_option_{{ data.id }}" id="qsm-then-redirect-to-url-{{ data.id }}" class="qsm-then-redirect-to-url"  value="2">
+								<label for="qsm-then-redirect-to-url-{{ data.id }}"><?php esc_html_e( 'Redirect URL', 'quiz-master-next' ); ?></label>
+							</div>
+						</div>
+						
+						<div class="qsm-result-page-template-options qsm-result-page-then-box-styles">
+							<div class="qsm-result-page-template-buttons">
+								<button class="button qsm-common-button-styles qsm-start-with-template" data-result-page="{{ data.id }}"><?php esc_html_e( 'Start with a Template', 'quiz-master-next' );?></button>
+								<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+							</div>
+							<div class="qsm-result-page-template-learn-more">
+								<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
+									<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
+								</p>
+							</div>
+						</div>
+						<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">
+							<?php 
+								do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
+								qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); 
 							?>
-							<button type="button" class="button qsm-extra-shortcode-popup qsm-extra-shortcode-conditional-button">
-								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/mind-map.svg'); ?>" alt="mind-map.svg"/>
-								<?php esc_html_e('Output Rules', 'quiz-master-next'); ?>
-							</button>
-						<?php } ?>
-						</div>
-						<textarea id="results-page-{{ data.id }}" class="results-page-template">
-						{{{ data.page.replace(/%([^%]+)%/g, function(match, capturedValue) {
-							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
-							for (let qsm_variable in qsm_varaible_list) {
-								variable_name = qsm_varaible_list[qsm_variable];
-								if( variable_name.includes('%%') ){
-									var arrayValues = variable_name.split("%%");
-									qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
-								};
-								if( variable_name.includes('_X%') ){
-									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+							<textarea id="results-page-{{ data.id }}" class="results-page-template">
+							{{{ data.page.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
+								let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+								for (let qsm_variable in qsm_varaible_list) {
+									variable_name = qsm_varaible_list[qsm_variable];
+									if( variable_name.includes('%%') ){
+										var arrayValues = variable_name.split("%%");
+										qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+									}
+									if( variable_name.includes('_X%') ){
+										qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+									}
 								}
-							}
-							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
-								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
-							}else{
-								return match;
-							}
-						}) }}}
-						</textarea>
-						<div class="qsm-result-page-content-buttons">
-							<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
-							<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+								if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+									return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+								} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
+									return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, content) {
+										const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0]; 
+										const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0]; 
+										return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${content}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
+									});
+								} else {
+									return match;
+								}
+							}) }}}
+							</textarea>
+							<div class="qsm-result-page-content-buttons">
+								<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
+								<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+							</div>
 							<?php do_action( 'qsm_result_page_content_buttons_after',  $quiz_id, $categories ); ?>
 						</div>
-						<div class="qsm-result-page-common-section">
-							<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
+						<div class="qsm-result-page-redirect-options qsm-result-page-then-box-styles">
 							<p class="qsm-result-redirect-text"><?php esc_html_e( 'Redirecting the user by entering the URL below:', 'quiz-master-next' ); ?></p>
 							<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
+						</div>
+						<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
+							<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
+							<!-- NOTE: Previously redirect input displayed here -->
 							<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
 						</div>
 					</div>

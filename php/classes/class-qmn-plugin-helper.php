@@ -642,6 +642,7 @@ class QMNPluginHelper {
 			'scheduled_timeframe_text'         => '',
 			'twitter_sharing_text'             => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'facebook_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
+			'linkedin_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'submit_button_text'               => __('Submit', 'quiz-master-next'),
 			'retake_quiz_button_text'          => __('Retake Quiz', 'quiz-master-next'),
 			'previous_button_text'             => __('Previous', 'quiz-master-next'),
@@ -1123,7 +1124,7 @@ class QMNPluginHelper {
 
 		$qsm_contact_array = $qsm_qna_array['contact'];
 		foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact ) {
-			if ( 'date' === $qsm_contact['type'] && '' !== $qsm_contact['value'] && null !== $GLOBALS['qsm_date_format'] ) {
+			if ( ( isset($qsm_contact['type']) && 'date' === $qsm_contact['type'] ) && ( isset($qsm_contact['value']) && '' !== $qsm_contact['value'] ) && null !== $GLOBALS['qsm_date_format'] ) {
 				$qsm_qna_array['contact'][ $qsm_contact_id ]['value'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime( ( $qsm_contact['value'] ) ) );
 			}
 		}

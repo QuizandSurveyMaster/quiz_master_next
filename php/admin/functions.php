@@ -251,9 +251,6 @@ function qsm_add_author_column_in_db() {
 				$success = false;
 				$mlwQuizMasterNext->log_manager->add( 'Error updating column charset utf8mb4_unicode_ci', "Tried $query but got {$wpdb->last_error}.", 0, 'error' );
 			}
-		}
-
-		if ( $success ) {
 			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
 		}
 	}
@@ -1717,4 +1714,71 @@ function qsm_advanced_assessment_quiz_page_content() {
 		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
+}
+
+function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
+	if ( ! class_exists('QSM_Extra_Shortcodes') ) {
+		$qsm_pop_up_arguments = array(
+			"id"           => 'modal-extra-shortcodes',
+			"title"        => __('Extra Shortcode', 'quiz-master-next'),
+			"description"  => __('Need dynamic content on your results pages? Our QSM conditional shortcode makes it easy. Create personalized experiences based on specific conditions or rules.', 'quiz-master-next'),
+			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
+			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
+			"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
+			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
+			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_upgrade', 'qsm_plugin_upsell' ),
+			"addon_link"   => qsm_get_plugin_link( 'downloads/extra-shortcodes', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_buy_addon', 'qsm_plugin_upsell' ),
+		);
+		qsm_admin_upgrade_popup($qsm_pop_up_arguments);
+		?>
+		<button type="button" class="button qsm-extra-shortcode-popup qsm-extra-shortcode-conditional-button">
+			<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/mind-map.svg'); ?>" alt="mind-map.svg"/>
+			<?php esc_html_e('Output Rules', 'quiz-master-next'); ?>
+		</button>
+	<?php }
+}
+
+// Hook into WordPress' AJAX action
+add_action('wp_ajax_qsm_insert_quiz_template', 'qsm_insert_quiz_template_callback');
+add_action('wp_ajax_nopriv_qsm_insert_quiz_template', 'qsm_insert_quiz_template_callback'); // For non-logged-in users if needed
+
+function qsm_insert_quiz_template_callback() {
+	global $wpdb;
+    // Check if all necessary data is present
+    if ( ! isset($_POST['unique_id']) || ! isset($_POST['template_name']) || ! isset($_POST['template_type']) || ! isset($_POST['template_content']) || ! isset($_POST['is_free']) ) {
+        wp_send_json_error(array( 'message' => 'Missing required data.' ));
+    }
+
+    // Sanitize the incoming data
+    $unique_id = sanitize_text_field($_POST['unique_id']);
+    $template_name = sanitize_text_field($_POST['template_name']);
+    $template_type = sanitize_text_field($_POST['template_type']);
+    $template_content = sanitize_textarea_field($_POST['template_content']);
+    $is_free = sanitize_text_field($_POST['is_free']);
+
+    $table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
+
+    // Insert the template into the database
+    $wpdb->insert(
+        $table_name,
+        array(
+            'unique_id'        => $unique_id,
+            'template_name'    => $template_name,
+            'template_type'    => $template_type,  // Default type can be set as 'result'
+            'template_content' => $template_content,
+            'is_free'          => $is_free,
+            'created_at'       => current_time('mysql'),
+        ),
+        array( '%s', '%s', '%s', '%s', '%s', '%s' ) // Format of the inserted data
+    );
+
+    // Get the inserted record's ID and other details
+    $inserted_id = $wpdb->insert_id;
+
+    // Prepare the response with the inserted data
+    wp_send_json_success(array(
+        'id'            => $inserted_id,
+        'template_name' => $template_name,
+        'preview_url'   => QSM_PLUGIN_URL . 'assets/eye-line-blue.png', // You can change this to a real preview image
+    ));
 }

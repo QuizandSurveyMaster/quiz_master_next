@@ -806,7 +806,7 @@ class QSM_Install {
 			),
 			'default'    => 0,
 			/* translators: %FACEBOOK_SHARE%: Facebook share link, %TWITTER_SHARE%: Twitter share link */
-			'tooltip'    => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ),
+			'tooltip'    => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE% %LINKEDIN_SHARE%', 'quiz-master-next' ),
 			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1056,6 +1056,27 @@ class QSM_Install {
 		$field_array = array(
 			'id'        => 'twitter_sharing_text',
 			'label'     => __( 'Twitter Sharing Text', 'quiz-master-next' ),
+			'type'      => 'editor',
+			'default'   => 0,
+			'variables' => array(
+				'%POINT_SCORE%',
+				'%AVERAGE_POINT%',
+				'%AMOUNT_CORRECT%',
+				'%TOTAL_QUESTIONS%',
+				'%CORRECT_SCORE%',
+				'%QUIZ_NAME%',
+				'%QUIZ_LINK%',
+				'%RESULT_LINK%',
+				'%TIMER%',
+				'%CURRENT_DATE%',
+			),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers linkedin_sharing_text setting
+		$field_array = array(
+			'id'        => 'linkedin_sharing_text',
+			'label'     => __( 'Linkedin Sharing Text', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
@@ -1953,8 +1974,8 @@ class QSM_Install {
 			}
 
 			// Update 7.1.11
-			$user_email_template_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'user_email_template'" );
-			if ( 'text' === $user_email_template_data->Type ) {
+			$user_email_my_tmpl_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'user_email_template'" );
+			if ( 'text' === $user_email_my_tmpl_data->Type ) {
 				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  MODIFY user_email_template LONGTEXT';
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
 			}
@@ -1965,12 +1986,6 @@ class QSM_Install {
 				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes MODIFY message_after LONGTEXT';
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
 			}
-
-			// Update 2.6.1
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_questions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
 
 			global $wpdb;
 			$table_name  = $wpdb->prefix . 'mlw_results';
@@ -2036,9 +2051,6 @@ class QSM_Install {
 			if ( ! get_option( 'fix_deleted_quiz_posts' ) ) {
 				QSM_Migrate::fix_deleted_quiz_posts();
 			}
-
-			update_option( 'mlw_quiz_master_version', $data );
-			
 			// Update 9.1.3
 			$mlw_questions_table = $wpdb->prefix . 'mlw_questions';
 			if ( 'linked_question' != $wpdb->get_var( "SHOW COLUMNS FROM $mlw_questions_table LIKE 'linked_question'" ) ) {
@@ -2047,6 +2059,29 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $mlw_questions_table . ' SET linked_question = \'\' WHERE linked_question IS NULL';
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $update_sql );
 			}
+
+			$quiz_templates_table_name       = $wpdb->prefix . 'mlw_quiz_output_templates';
+			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$quiz_templates_table_name}'" ) != $quiz_templates_table_name ) {
+				// SQL to create the table
+				$charset_collate = $wpdb->get_charset_collate();
+				$sql = "CREATE TABLE {$quiz_templates_table_name} (
+					id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+					unique_id VARCHAR(20) DEFAULT NULL,
+					template_name VARCHAR(255) DEFAULT NULL,
+					template_type VARCHAR(50) DEFAULT 'result',
+					template_content LONGTEXT DEFAULT NULL,
+					is_free VARCHAR(10) DEFAULT 'free',
+					PRIMARY KEY (id),
+					created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+				) $charset_collate;";
+			
+				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			
+				dbDelta( $sql );
+			}   
+
+			// Update QSM versoin at last
+			update_option( 'mlw_quiz_master_version', $data );
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );
