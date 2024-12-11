@@ -251,9 +251,6 @@ function qsm_add_author_column_in_db() {
 				$success = false;
 				$mlwQuizMasterNext->log_manager->add( 'Error updating column charset utf8mb4_unicode_ci', "Tried $query but got {$wpdb->last_error}.", 0, 'error' );
 			}
-		}
-
-		if ( $success ) {
 			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );
 		}
 	}
@@ -1343,15 +1340,27 @@ function qsm_advance_question_type_upgrade_popup() {
 	qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 }
 
-function qsm_admin_upgrade_popup( $args = array() ) {
+function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
+	if ( 'page' == $type ) {
+	?>
+	<div class="qsm-upgrade-box-base">
+		<div class="qsm-upgrade-box-base-title">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="">
+			<p><?php echo esc_html( $args['title'] ) . __( ' is required.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm-upgrade-button" rel="noopener"><?php esc_html_e( 'Purchase', 'quiz-master-next' ); ?></a>
+		</div>
+		<a href="#" id="qsm-upgrade-popup-opener" data-popup="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+	</div>
+	<?php
+	}
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true">
 				<header class="qsm-popup__header qsm-question-bank-header">
-					<div class="qsm-popup__title" id="modal-2-title">
+					<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title">
+						<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/qsm-upgrade.png' ); ?>" alt="read">
 						<?php echo esc_html( $args['title'] ); ?>
-						<h5 class="title-tag"><?php esc_html_e( 'PREMIUM', 'quiz-master-next' ); ?></h5>
 					</div>
 					<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
@@ -1376,46 +1385,95 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons', 'qsm', 'upgrade-box', 'read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm', 'upgrade-box', 'upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'addons', 'qsm', 'upgrade-box', 'buy_addon', 'qsm_plugin_upsell' ),
+		"benefits"     => array(),
+		"use_cases"    => array(),
 	);
+	/* Benefits and Use Cases parameter structure
+	 * array(
+	 *   'briefing' => 'Something which will be displayed above the list.',
+	 *   'list_items'  => array( 'Item 1', 'Item 2', 'Item 3' ),
+	 * )
+	*/
 	$args        = wp_parse_args( $args, $defaults );
 	?>
 	<div class="qsm-upgrade-box">
 		<?php
-		if ( ! empty( $args['warning'] ) ) {
-			?><div class="qsm-popup-upgrade-warning">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
-				<span><?php echo esc_html( $args['warning'] ) ?></span>
-			</div><?php
-		}
 		if ( ! empty( $args['title'] ) && 'popup' != $type ) {
-			?><h2><?php echo esc_html( $args['title'] ); ?></h2><?php
+			?>
+			<div class="qsm-upgrade-box-title">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/upgrade.png' ); ?>" alt="read">
+				<h2><?php echo esc_html( $args['title'] ); ?></h2>
+			</div>
+			<?php
 		}
-		if ( ! empty( $args['description'] ) ) {
-			?><div class="qsm-upgrade-text qsm-popup-upgrade-text"><?php echo esc_html( $args['description'] ); ?></div><?php
-		}
+		?>
+		<div class="qsm-upgrade-tabs">
+			<ul class="subsubsub">
+				<li>
+					<a href="javascript:void(0)" data-id="qsm-upgrade-overview" class="current qsm-upgrade-tab"><?php esc_html_e( 'Overview', 'quiz-master-next' ); ?></a>
+				</li>
+				<?php if ( ! empty( $args['benefits'] ) ) { ?>
+				<li>
+					<a href="javascript:void(0)" data-id="qsm-upgrade-benefits" class="qsm-upgrade-tab"><?php esc_html_e( 'Benefits', 'quiz-master-next' ); ?></a>
+				</li>
+				<?php } ?>
+				<?php if ( ! empty( $args['use_cases'] ) ) { ?>
+				<li>
+					<a href="javascript:void(0)" data-id="qsm-upgrade-use-cases" class="qsm-upgrade-tab"><?php esc_html_e( 'Use Cases', 'quiz-master-next' ); ?></a>
+				</li>
+				<?php } ?>
+			</ul>
+		</div>
+		<div class="qsm-upgrade-tab-content-container">
+			<div id="qsm-upgrade-overview" class="qsm-upgrade-tab-content">
+				<p class="qsm-upgrade-description"><?php echo esc_html( $args['description'] ); ?></p>
+			</div>
+			<?php if ( ! empty( $args['benefits'] ) ) { ?>
+			<div id="qsm-upgrade-benefits" class="qsm-upgrade-tab-content" style="display: none;">
+				<?php if ( ! empty( $args['benefits']['briefing'] ) ) { ?>
+					<p class="qsm-upgrade-briefing"><?php echo esc_html( $args['benefits']['briefing'] ); ?></p>
+				<?php } ?>
+				<?php if ( ! empty( $args['benefits']['list_items'] ) ) { ?>
+					<ul>
+						<?php
+						foreach ( $args['benefits']['list_items'] as $item ) {
+							?>
+							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
+							<?php
+						}
+						?>
+					</ul>
+				<?php } ?>
+			</div>
+			<?php } ?>
+			<div id="qsm-upgrade-use-cases" class="qsm-upgrade-tab-content" style="display: none;">
+				<?php if ( ! empty( $args['use_cases']['briefing'] ) ) { ?>
+					<p class="qsm-upgrade-briefing"><?php echo esc_html( $args['use_cases']['briefing'] ); ?></p>
+				<?php } ?>
+				<?php if ( ! empty( $args['use_cases']['list_items'] ) ) { ?>
+					<ul>
+						<?php
+						foreach ( $args['use_cases']['list_items'] as $item ) {
+							?>
+							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
+							<?php
+						}
+						?>
+					</ul>
+				<?php } ?>
+			</div>
+		</div>
+		<?php
 		if ( ! empty( $args['doc_link'] ) ) {
 			?><span class="qsm-upgrade-read-icon">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/read_icon.png' ); ?>" alt="read">
 				<a href="<?php echo esc_url( $args['doc_link'] ); ?>" target="_blank" rel="noopener" >
-					<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
+					<?php esc_html_e( 'Visit website for more details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
 				</a>
 			</span><?php
 		}
-		if ( ! empty( $args['chart_image'] ) ) {
-			?><div class="qsm-upgrade-chart"><img src="<?php echo esc_url( $args['chart_image'] ); ?>" alt="chart"></div><?php
-		}
-		if ( ! empty( $args['information'] ) ) {
-			?><div class="qsm-popup-upgrade-info">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="information">
-				<span><?php echo esc_html( $args['information'] ); ?></span>
-			</div><?php
-		}
 		?>
 		<div class="qsm-upgrade-buttons qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
-			<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to QSM Pro', 'quiz-master-next' ); ?></a>
-			<?php if ( ! empty( $args['addon_link'] ) ) : ?>
-				<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm_export_import"  rel="noopener" ><?php echo esc_html( $args['buy_btn_text'] ); ?></a>
-			<?php endif; ?>
+			<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="button button-hero qsm_bundle" rel="noopener"><?php esc_html_e( 'Grab the QSM Bundle & Save 90%', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
