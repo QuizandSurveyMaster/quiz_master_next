@@ -266,7 +266,7 @@ class QSM_Emails {
 			$attachments = apply_filters( 'qsm_admin_email_attachments', $attachments, $response_data );
 		}
 
-		$quiz_options = maybe_unserialize( $response_data['quiz_settings']['quiz_options'] ); 
+		$quiz_options = maybe_unserialize( $response_data['quiz_settings']['quiz_options'] );
 		// Check if email has already been sent to the user for this quiz
 		if ( isset( $quiz_options['check_already_sent_email'] ) && 1 == $quiz_options['check_already_sent_email'] ) {
 			$already_sent_emails = get_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'] );
