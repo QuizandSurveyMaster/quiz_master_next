@@ -1680,7 +1680,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	display: inline-block;
 	position: relative;
 	text-align: center;
-	padding: 0 5px;
+	padding: 0;
 }
 #show-all-variable-content .popup-template-span-wrap {
 	margin-bottom: 20px;
@@ -1707,6 +1707,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 }
  .qsm-text-template-span.qsm-upgrade-popup-variable .qsm-tooltips-icon {
 	display: block;
+	border: none;
  }
  .qsm-text-template-span.qsm-upgrade-popup-variable .qsm-tooltips-icon:before {
 	display: none;
@@ -2631,9 +2632,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	.result-page-title {
 		margin-bottom: 10px;
 	}
-}
-.qsm-text-template-span {
-	min-width: 100px;
 }
 .qsm-text-template-span .button {
 	padding: 5px 10px;
