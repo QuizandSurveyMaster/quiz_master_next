@@ -1864,15 +1864,15 @@ jQuery(document).ready(function () {
 	let captchaElement = jQuery('#mlw_code_captcha');
 	if (captchaElement.length !== 0) {
 		mlw_code = '';
-		var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-		var mlw_code_length = 5;
-		for (var i = 0; i < mlw_code_length; i++) {
-			var rnum = Math.floor(Math.random() * mlw_chars.length);
+		let mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+		let mlw_code_length = 5;
+		for (let i = 0; i < mlw_code_length; i++) {
+			let rnum = Math.floor(Math.random() * mlw_chars.length);
 			mlw_code += mlw_chars.substring(rnum, rnum + 1);
 		}
-		var captchaCanvas = document.getElementById('mlw_captcha');
-        var mlw_captchaCTX = captchaCanvas.getContext('2d');
-        var containerDirection = window.getComputedStyle(captchaCanvas).direction || 'ltr';
+		let captchaCanvas = document.getElementById('mlw_captcha');
+        let mlw_captchaCTX = captchaCanvas.getContext('2d');
+        let containerDirection = window.getComputedStyle(captchaCanvas).direction || 'ltr';
         mlw_captchaCTX.font = 'normal 24px Verdana';
         mlw_captchaCTX.strokeStyle = '#000000';
         mlw_captchaCTX.clearRect(0, 0, captchaCanvas.width, captchaCanvas.height);
