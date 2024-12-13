@@ -229,6 +229,7 @@ var qsmTimerInterval = [];
 					$('.qsm-quiz-container-' + quizID).find('.stoptimer-p').hide();
 					MicroModal.show('modal-3');
 				}
+				jQuery(document).trigger('qsm_timer_ended', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 				return;
 			}
 		},
