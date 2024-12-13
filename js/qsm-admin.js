@@ -2249,7 +2249,6 @@ var import_button;
                         import_button.attr("onclick", "return confirm('" + qsm_admin_messages.confirm_message + " " + qsm_admin_messages.import_question_again + "');");
                     }
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
-                    // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
                     var default_answers = parseInt(qsmQuestionSettings.default_answers);
@@ -2498,13 +2497,13 @@ var import_button;
                     }
                     var category = [];
                     var multicategories = model.get('multicategories');
-                    if (multicategories === null || typeof multicategories === "undefined") {
-                        //No Action Require
-                    } else {
-                        $.each(multicategories, function (i, val) {
-                            category.push($(".qsm-popup__content #qsm_category-" + val + " label:first-child")[0].textContent);
+                    if (multicategories) {
+                        multicategories.forEach(val => {
+                            const categoryLabel = $(".qsm-popup__content #in-qsm_category-" + val + "-1 > label").text();
+                            if (categoryLabel) {
+                                category.push(categoryLabel);
+                            }
                         });
-                        category = category.filter(item => item);
                     }
                     $('.question[data-question-id=' + model.id + ']').replaceWith(template({
                         id: model.id,
@@ -2770,7 +2769,6 @@ var import_button;
                     }
                     CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     $('#modal-1-content').html(questionElements);
-                    //MicroModal.show( 'modal-1' );
                     $('.questions').sortable('disable');
                     $('.page').sortable('disable');
 
@@ -3786,7 +3784,6 @@ var import_button;
                         .fail(QSMAdmin.displayjQueryError);
                 },
                 loadResults: function () {
-                    //QSMAdmin.displayAlert( 'Loading results pages...', 'info' );
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
                         headers: { 'X-WP-Nonce': qsmResultsObject.nonce },

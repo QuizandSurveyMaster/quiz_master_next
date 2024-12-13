@@ -221,7 +221,7 @@ function qsm_get_question_text_message() {
 		exit;
 	} else {
 		$settings        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
-		$settings 		 = ! empty( $settings ) ? $settings : '';
+		$settings        = ! empty( $settings ) ? $settings : '';
 		$quiz_text_arr   = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
 		$key             = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
 		$allowed_text    = '';
