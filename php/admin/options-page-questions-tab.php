@@ -342,8 +342,11 @@ function qsm_options_questions_tab_content() {
 									<div class="answers" id="answers">
 
 									</div>
-									<div class="new-answer-button">
-										<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+									<div class="qsm-wrap-add-new-answer">
+										<div class="new-answer-button">
+											<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+										</div>
+										<?php do_action( 'qsm_question_editor_button_section_after' ); ?>
 									</div>
 									<?php do_action( 'qsm_after_options' ); ?>
 								</div>
@@ -1426,10 +1429,10 @@ function qsm_options_questions_tab_template() {
 					</div>
 					<div class="form-actions">
 						<div class="qsm-actions-link-box">
-							<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
-							<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
-							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><span class="dashicons dashicons-sort"></span></a>
-							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+							<a href="#" title="Edit Question" class="edit-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/edit-pencil.svg'); ?>" alt="edit-pencil.svg"/></a>
+							<a href="#" title="Clone Question" class="duplicate-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
+							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-down-fill.svg'); ?>" alt="arrow-up-down-fill.svg"/></a>
+							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
 						</div>
 					</div>
 				</div>

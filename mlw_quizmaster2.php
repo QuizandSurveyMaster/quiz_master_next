@@ -584,6 +584,8 @@ class MLWQuizMasterNext {
 			'select_all'                 => __("Select All", 'quiz-master-next'),
 			'select'                     => __("Select", 'quiz-master-next'),
 			'qsmQuizzesObject'           => $qsm_quizzes,
+			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
+			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
@@ -770,12 +772,6 @@ class MLWQuizMasterNext {
 		$role = get_role( $rolename );
 		if ( ! $role ) {
 			return;
-		}
-		// Remove all capabilities first.
-		foreach ( $administrator_capabilities as $cap ) {
-			if ( $role->has_cap( $cap ) ) {
-                $role->remove_cap( $cap );
-            }
 		}
 
 		// Dynamically determine the capabilities to add based on the current user role.

@@ -229,6 +229,9 @@ var QSMAdmin;
         jQuery('.load-quiz-wizard').click(function (e) {
             e.preventDefault();
             MicroModal.show('model-wizard');
+            if ( jQuery(this).attr('data-formType') == 1 ) {
+                jQuery(document).find('.qsm-popup input[name="form_type"][value="1"]').prop('checked', true).change();
+            }
             var height = jQuery(".qsm-wizard-template-section").css("height");
             jQuery(".qsm-wizard-setting-section").css("height", height);
             if (jQuery("#accordion").length > 0) {
@@ -788,6 +791,15 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('#' + current_id).show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
+jQuery('.qsm-upgrade-tab').click(function (e) {
+    e.preventDefault();
+    let current_id = jQuery(this).attr('data-id');
+    jQuery('.qsm-upgrade-tab').removeClass('current');
+    jQuery(this).addClass('current');
+    jQuery('.qsm-upgrade-tab-content').hide();
+    jQuery('#' + current_id).show();
+    jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
+});
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
 if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if (window.location.href.indexOf('tab=style') > 0) {
@@ -804,7 +816,10 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             jQuery(document).on('input', '.quiz_featured_image', function () {
                 jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
             });
-
+            jQuery(document).on('click', '.qsm-theme-featured-image-change', function (e) {
+                e.preventDefault();
+                jQuery('.qsm-theme-featured-image-update').toggle();
+            });
             jQuery(document).on('click', '.filter-links a', function () {
                 let current_id = jQuery(this).attr('data-id');
                 jQuery(this).parents('.filter-links').find('li a').each(function () {
@@ -843,6 +858,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
 //QSM - Quizzes/Surveys Page
 
 (function ($) {
+    $('#qsm-upgrade-popup-opener').on( 'click', function (event) {
+        event.preventDefault();
+        let modalName = $(this).data('popup');
+        MicroModal.show( modalName );
+    });
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {
@@ -1176,7 +1196,7 @@ function qsm_is_substring_in_array( text, array ) {
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag';
                         editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #ffffff; background: #187FFA; padding: 5px 8px; border-radius: 2px;font-family: Arial, Helvetica, sans-serif;font-size: 12px; font-weight: 600; }';
+                        editor.settings.content_style = 'qsmvariabletag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
                         editor.addButton('qsm_slash_command', {
                             text: '/ ' +qsm_admin_messages.variables,
                             tooltip: qsm_admin_messages.insert_variable,
@@ -1227,6 +1247,29 @@ function qsm_is_substring_in_array( text, array ) {
                                 qsm_search = '';
                             }
 
+                            // Create a container div for the input and label
+                            let inputContainer = document.createElement('div');
+                            inputContainer.className = 'qsm-autocomplete-input-container'; // Add a class for styling if needed
+
+                            // Create a label element
+                            let inputLabel = document.createElement('label');
+                            inputLabel.for = 'searchInput';
+                            inputLabel.textContent = 'Search:';
+
+                            // Create the input element
+                            let searchInput = document.createElement('input');
+                            searchInput.type = 'text';
+                            searchInput.id = 'searchInput'; // Link this id with the label
+                            searchInput.placeholder = 'Type to search...';
+                            searchInput.className = 'qsm-autocomplete-search-input'; // Add a class for styling if needed
+
+                            // Append the label and input to the container
+                            inputContainer.appendChild(inputLabel);
+                            inputContainer.appendChild(searchInput);
+
+                            // Append the container to the autocomplete div
+                            autocomplete.appendChild(inputContainer);
+
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
                                 newCommand.forEach(function (command, key) {
@@ -1246,7 +1289,8 @@ function qsm_is_substring_in_array( text, array ) {
                                     }
                                     item.classList.add('qsm-autocomplete-item');
                                     item.setAttribute('title', command.description);
-                                    item.innerHTML = "/" + command.name + "<span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
+                                    item.setAttribute('variable', command.name);
+                                    item.innerHTML = "<span class='qsm-autocomplete-item-title'>%" + command.name + "%</span><span class='qsm-autocomplete-item-description'>" + command.description + "</span>";
                                     item.onclick = function() {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
@@ -1383,6 +1427,35 @@ function qsm_is_substring_in_array( text, array ) {
                             editor.focus();
                             editor.selection.setContent(contentToInsert);
                             showAutocomplete(editor, true);
+                        });
+
+                        $(document).off('input', '.qsm-autocomplete-search-input').on('input', '.qsm-autocomplete-search-input', function () {
+                            let query = $(this).val().toLowerCase(); // Get the current input value and convert to lowercase
+                            let hasResults = false;
+
+                            $('.qsm-autocomplete-item').each(function () {
+                                let title = $(this).attr('variable').toLowerCase(); // Get the title attribute of the current item
+                                if (title.includes(query)) {
+                                    $(this).show(); // Show items that match the query
+                                    hasResults = true; // At least one item matches
+                                } else {
+                                    $(this).hide(); // Hide items that don't match
+                                }
+                            });
+
+                            // Check for the "no items" message
+                            let noItemElement = $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-no-item');
+
+                            if (hasResults) {
+                                noItemElement.remove(); // Remove the "no items" message if results are found
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').show();
+                            } else if (noItemElement.length === 0) { // Append only if it doesn't already exist
+                                let item_group = document.createElement('div');
+                                item_group.className = 'qsm-autocomplete-no-item';
+                                item_group.textContent = qsm_admin_messages.no_variables;
+                                $(this).parents('.qsm-autocomplete').append(item_group);
+                                $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
+                            }
                         });
                     });
                 }
@@ -1764,7 +1837,7 @@ var QSMContact;
                 },
                 addCondition: function ($email, category, extra_condition, criteria, operator, value) {
                     var template = wp.template('email-condition');
-                    $email.find('.email-when-conditions').append(template({
+                    $email.find('.qsm-email-when-conditions').append(template({
                         'category': category,
                         'extra_condition': extra_condition,
                         'criteria': criteria,
@@ -1791,6 +1864,11 @@ var QSMContact;
                 },
                 newCondition: function ($email) {
                     QSMAdminEmails.addCondition($email, 'quiz', '', 'score', 'equal', 0);
+                },
+                updateEmailConditonCount: function ( $parent ) {
+                    $parent.find('.email-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
                 },
                 addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) {
                     QSMAdminEmails.total += 1;
@@ -1877,17 +1955,17 @@ var QSMContact;
                     event.preventDefault();
                     $page = $(this).closest('.qsm-email');
                     QSMAdminEmails.newCondition($page);
+                    QSMAdminEmails.updateEmailConditonCount($(this).parents('.qsm-email-when'));
                 });
                 $('#qsm_emails').on('click', '.qsm-delete-email-button', function (event) {
                     event.preventDefault();
                     $(this).closest('.qsm-email').remove();
                 });
-                jQuery(document).on('click', '.qsm-toggle-email-template-button', function () {
-                    jQuery(this).closest("header").next("main").slideToggle();
-                });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.qsm-email-when');
                     $(this).closest('.email-condition').remove();
+                    QSMAdminEmails.updateEmailConditonCount($parent);
                 });
             });
         }
@@ -1911,7 +1989,7 @@ var QSM_Quiz_Broadcast_Channel;
             QSM_Quiz_Broadcast_Channel = {
                 channel: new BroadcastChannel('qsm_quiz_data_channel'),
                 questionData: [], // Initialize as an array
-                
+
                 // Initialize the event listeners and set up channel
                 init: function () {
                     this.setupChannelListener();
@@ -1932,7 +2010,7 @@ var QSM_Quiz_Broadcast_Channel;
 
                 insertQuestionToChannel: function (question) {
                     let linkQuizzesArray = Object.values(question.get('link_quizzes'));
-                    
+
                     let sendDataObject = {
                         [question.id]: {
                             merged_question: question.get('merged_question'),
@@ -1941,7 +2019,7 @@ var QSM_Quiz_Broadcast_Channel;
                     };
                     this.questionData.push(sendDataObject);
                 },
-                
+
                 // Function to send the linked question data to other tabs
                 sendQuestionData: function (questionID, mergedQuestion, linkedQuizzes = []) {
                     let sendDataObject = {
@@ -1955,7 +2033,7 @@ var QSM_Quiz_Broadcast_Channel;
                     this.questionData.push(sendDataObject);
                     this.channel.postMessage(sendDataObject);
                 },
-            
+
                 updateQuestionData: function (data){
                     const receivedData = data;
                     for (let questonId in receivedData) {
@@ -2020,7 +2098,7 @@ var QSM_Quiz_Broadcast_Channel;
                     model.set('merged_question', '');
                     model.set('link_quizzes', []);
                 },
-                
+
                 afterUpdateUnlinkedQuestion: function (data) {
                     const receivedData = data;
                     for (let questonId in receivedData) {
@@ -2036,14 +2114,14 @@ var QSM_Quiz_Broadcast_Channel;
                                         let currentInQuizQuestion = QSMQuestion.questions.get(key);
                                         currentInQuizQuestion.set('merged_question', mergedQuestions);
                                         currentInQuizQuestion.set('link_quizzes', item[key].link_quizzes.filter(quiz => quiz != singleQuizName));
-									} 
+									}
                                 }
                             });
                         });
                     }
                 },
-            };            
-            
+            };
+
             QSMQuestion = {
                 question: Backbone.Model.extend({
                     defaults: {
@@ -2172,19 +2250,19 @@ var QSM_Quiz_Broadcast_Channel;
                             if (QSMQuestion.questions.some(q => q.get('id') == questionId)) {
                                 let $linkButton = $(this).find('.link-question');
                                 if ($linkButton.length) {
-                                    $linkButton.prop('disabled', true).addClass('disabled'); 
+                                    $linkButton.prop('disabled', true).addClass('disabled');
                                 }
                             }
                             QSMQuestion.questions.each(function (question) {
                                 let merged_questions = question.get('merged_question');
                                 let questionsArray = merged_questions ? merged_questions.split(',').map(q => q.trim()) : [];
-                                questionsArray.forEach(function (id) { 
+                                questionsArray.forEach(function (id) {
                                     let parentElement = $('.question-bank-question[data-question-id="' + id + '"]');
                                     if (parentElement.length) {
                                         parentElement.remove(); // Remove the element if it exists
                                     }
                                 });
-                            });                            
+                            });
                         });
                     }
                 },
@@ -2411,7 +2489,7 @@ var QSM_Quiz_Broadcast_Channel;
 
                         for (const record of qsm_admin_messages.qsmQuizzesObject) {
                             if (record.quiz_id == quizId) { quizName = record.quiz_name; break; }
-                        } 
+                        }
                         const linkQuizzes = [...model.get('link_quizzes')]; // Created a shallow copy of the array
                         if (quizName !== '') {
                             linkQuizzes.push(quizName);
@@ -2691,13 +2769,13 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     var category = [];
                     var multicategories = model.get('multicategories');
-                    if (multicategories === null || typeof multicategories === "undefined") {
-                        //No Action Require
-                    } else {
-                        $.each(multicategories, function (i, val) {
-                            category.push($(".qsm-popup__content #qsm_category-" + val + " label:first-child")[0].textContent);
+                    if (multicategories) {
+                        multicategories.forEach(val => {
+                            const categoryLabel = $(".qsm-popup__content #in-qsm_category-" + val + "-1 > label").text();
+                            if (categoryLabel) {
+                                category.push(categoryLabel);
+                            }
                         });
-                        category = category.filter(item => item);
                     }
                     $('.question[data-question-id=' + model.id + ']').replaceWith(template({
                         id: model.id,
@@ -2988,7 +3066,7 @@ var QSM_Quiz_Broadcast_Channel;
                     }
 
                     let link_quizzes_object = question.get('link_quizzes');
-                    
+
                     $('.qsm-linked-list-inside').hide().empty();
                     $('.qsm-linked-list-div-block').hide();
                     if (typeof link_quizzes_object == 'object' && link_quizzes_object != null && Object.keys(link_quizzes_object).length > 0) {
@@ -2999,12 +3077,12 @@ var QSM_Quiz_Broadcast_Channel;
                                     .attr('class', 'qsm-linked-list-item')
                                     .attr('title', quizName)
                                     .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
-                    
+
                                 $('.qsm-linked-list-div-block').show();
                                 $('.qsm-linked-list-inside').append(link);
                             }
                         });
-                    
+
                         // Add an "Unlink" link at the end
                         let unlink = $('<span></span>')
                             .attr('class', 'qsm-unlink-the-question button button-danger')
@@ -3508,7 +3586,7 @@ var QSM_Quiz_Broadcast_Channel;
                     MicroModal.close('modal-2');
                 });
 
-                
+
                 $(document).on('click', '.qsm-popup-bank .link-question', function (event) {
                     event.preventDefault();
                     $(this).text(qsm_admin_messages.linking_question);
@@ -3690,7 +3768,7 @@ var QSM_Quiz_Broadcast_Channel;
                 if (qsmQuestionSettings.qsm_user_ve === 'true') {
                     QSMQuestion.prepareEditor();
                 }
-                
+
                 // Initialize the QSM_Quiz_Broadcast_Channel
                 QSM_Quiz_Broadcast_Channel.init();
                 QSMQuestion.loadQuestions();
@@ -4075,6 +4153,7 @@ var QSM_Quiz_Broadcast_Channel;
                             $('#results-pages').find('.qsm-spinner-loader').remove();
                             pages.forEach(function (page, i, pages) {
                                 QSMAdminResults.addResultsPage(page.conditions, page.page, page.redirect, page.default_mark, page);
+                                QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').eq(i));
                             });
                             QSMAdmin.clearAlerts();
                         })
@@ -4110,6 +4189,11 @@ var QSM_Quiz_Broadcast_Channel;
                 newCondition: function ($page) {
                     QSMAdminResults.addCondition($page, 'quiz', '', 'score', 'equal', 0);
                 },
+                updateResultConditonCount: function ( $parent ) {
+                    $parent.find('.results-page-condition').each(function (index) {
+                        jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
+                    });
+                },
                 addResultsPage: function (conditions, page, redirect, default_mark = false, singlePage = {}) {
                     const parser = new DOMParser();
                     let parseRedirect = parser.parseFromString(redirect, 'text/html');
@@ -4140,6 +4224,9 @@ var QSM_Quiz_Broadcast_Channel;
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
+                    const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
+                    const $conditionalButton = $resultsPage.find('.qsm-extra-shortcode-conditional-button');
+                    $resultsPage.find('.wp-media-buttons .insert-media').after($conditionalButton);
                 },
                 newResultsPage: function () {
                     var conditions = [{
@@ -4159,6 +4246,7 @@ var QSM_Quiz_Broadcast_Channel;
                 $('.add-new-page').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminResults.newResultsPage();
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 jQuery(document).on('click', '.qsm-duplicate-result-page-button', function () {
                     let result_page = jQuery(this).closest("header").next("main");
@@ -4176,6 +4264,7 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                     QSMAdminResults.addResultsPage(conditions, page, redirect_value);
                     jQuery('html, body').animate({ scrollTop: jQuery('.results-page:last-child').offset().top - 150 }, 1000);
+                    QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').last());
                 });
                 $('.save-pages').on('click', function (event) {
                     event.preventDefault();
@@ -4185,6 +4274,7 @@ var QSM_Quiz_Broadcast_Channel;
                     event.preventDefault();
                     $page = $(this).closest('.results-page');
                     QSMAdminResults.newCondition($page);
+                    QSMAdminResults.updateResultConditonCount($(this).parents('.results-page-when'));
                 });
                 $('#results-pages').on('click', '.qsm-delete-result-button', function (event) {
                     event.preventDefault();
@@ -4192,15 +4282,39 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 $('#results-pages').on('click', '.delete-condition-button', function (event) {
                     event.preventDefault();
+                    let $parent = $(this).parents('.results-page-when');
+                    console.log($parent);
                     $(this).closest('.results-page-condition').remove();
-                });
-                jQuery(document).on('click', '.qsm-toggle-result-page-button', function () {
-                    jQuery(this).closest("header").next("main").slideToggle();
-                    jQuery(this).find('.dashicons-arrow-up-alt2, .dashicons-arrow-down-alt2').toggleClass('dashicons-arrow-up-alt2 dashicons-arrow-down-alt2');
+                    QSMAdminResults.updateResultConditonCount($parent);
                 });
             });
         }
     }
+
+    jQuery(document).on('click', '.qsm-toggle-result-page-button, .qsm-toggle-email-template-button', function () {
+        jQuery(this).closest("header").next("main").slideToggle();
+        let $img = jQuery(this).find('img');
+        let currentSrc = $img.attr('src');
+        let arrowUpImage = qsm_admin_messages.arrow_up_image;
+        let arrowDownImage = qsm_admin_messages.arrow_down_image;
+
+        // Toggle the image
+        if (currentSrc === arrowUpImage) {
+            $img.attr('src', arrowDownImage);
+        } else {
+            $img.attr('src', arrowUpImage);
+        }
+    });
+    jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
+        jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
+        jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
+    });
+    jQuery(document).on('click', function (e) {
+        // Check if the click was outside .qsm-template-btn-group
+        if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
+            jQuery('.qsm-settings-box-details').hide();
+        }
+    });
 
     $(document).on('click', '.qsm_global_settings .qsm-generate-api-key', function (event) {
         event.preventDefault();
@@ -4280,11 +4394,24 @@ var QSM_Quiz_Broadcast_Channel;
 
 }(jQuery));
 
-
+function qsm_check_email_sent_option() {
+    if (jQuery('input[name="send_email"]').prop('checked') === true) {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', false );
+        jQuery('#check_already_sent_email').show();
+    } else {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', true );
+        jQuery('#check_already_sent_email').hide();
+    }
+}
 /**
  * QSM - failed submission data table action
  */
 (function ($) {
+    qsm_check_email_sent_option();
+    $(document).on('change', 'input[name="send_email"]', function (event) {
+        event.preventDefault();
+        qsm_check_email_sent_option();
+    });
     function submit_failed_submission_action_notice( res ) {
         if ( 'object' !== typeof res || null === res || undefined === res.message  ) {
             return false;
@@ -4471,14 +4598,14 @@ jQuery(document).ready(function() {
             if (confirm(qsm_result_page.delete_confirm)) {
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
-        } 
+        }
         // Handle permanent delete action
         else if (action === 'bulk_permanent_delete') {
             if (confirm(qsm_result_page.delete_confirm)) {
                 jQuery('#bulk_permanent_delete').val('1');
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
-        } 
+        }
         else {
             alert(qsm_result_page.delete_alert);
         }
