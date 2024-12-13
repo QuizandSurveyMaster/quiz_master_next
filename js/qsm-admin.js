@@ -2498,13 +2498,13 @@ var import_button;
                     }
                     var category = [];
                     var multicategories = model.get('multicategories');
-                    if (multicategories === null || typeof multicategories === "undefined") {
-                        //No Action Require
-                    } else {
-                        $.each(multicategories, function (i, val) {
-                            category.push($(".qsm-popup__content #qsm_category-" + val + " label:first-child")[0].textContent);
+                    if (multicategories) {
+                        multicategories.forEach(val => {
+                            const categoryLabel = $(".qsm-popup__content #in-qsm_category-" + val + "-1 > label").text();
+                            if (categoryLabel) {
+                                category.push(categoryLabel);
+                            }
                         });
-                        category = category.filter(item => item);
                     }
                     $('.question[data-question-id=' + model.id + ']').replaceWith(template({
                         id: model.id,

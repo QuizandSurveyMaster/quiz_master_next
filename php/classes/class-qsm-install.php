@@ -1966,12 +1966,6 @@ class QSM_Install {
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
 			}
 
-			// Update 2.6.1
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_questions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-			$results = $mlwQuizMasterNext->wpdb_alter_table_query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci' );
-
 			global $wpdb;
 			$table_name  = $wpdb->prefix . 'mlw_results';
 			$audit_table = $wpdb->prefix . 'mlw_qm_audit_trail';

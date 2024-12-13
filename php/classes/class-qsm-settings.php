@@ -464,15 +464,15 @@ class QSM_Quiz_Settings {
 			$quiz_options = array_merge( $quiz_options, $leaderboards );
 		}
 
+		$text = $this->get_setting('quiz_text');
+		if ( is_array($text) ) {
+			$quiz_options = array_merge( $quiz_options, $text );
+		}
+
 		$options = $this->get_setting( 'quiz_options' );
 		if ( is_array( $options ) ) {
 			unset( $options['quiz_name'] );
 			$quiz_options = array_merge( $quiz_options, $options );
-		}
-
-		$text = $this->get_setting('quiz_text');
-		if ( is_array($text) ) {
-			$quiz_options = array_merge( $quiz_options, $text );
 		}
 
 		// Return as old object model

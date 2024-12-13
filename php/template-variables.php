@@ -496,7 +496,18 @@ function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
 function qsm_contact_field_variable( $content, $results_array ) {
 	preg_match_all( '~%CONTACT_(.*?)%~i', $content, $matches );
 	for ( $i = 0; $i < count( $matches[0] ); $i++ ) {
-		$content = str_replace( '%CONTACT_' . $matches[1][ $i ] . '%', $results_array['contact'][ $matches[1][ $i ] - 1 ]['value'], $content );
+		$contact_key = $matches[1][ $i ];
+		if ( is_numeric( $contact_key ) && intval( $contact_key ) > 0 ) {
+			$contact_index = intval( $contact_key ) - 1;
+
+			if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
+				$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
+			} else {
+				$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
+			}
+		} else {
+			$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
+		}
 	}
 	return $content;
 }
