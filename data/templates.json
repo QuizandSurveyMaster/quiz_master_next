@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "template_name": "Basic Result Overview",
+    "template_type": "result",
+    "template_content": "<h3>Quiz Name: %QUIZ_NAME%</h3>\n<p><strong>Participant Name:</strong> %FULL_NAME%</p>\n<p><strong>Business:</strong> %USER_BUSINESS%</p>\n<p><strong>Email:</strong> %USER_EMAIL%</p>\n<p><strong>Phone:</strong> %USER_PHONE%</p>\n<hr>\n<h4>Your Score:</h4>\n<p>You scored <strong>%POINT_SCORE%</strong> out of a possible <strong>%MAXIMUM_POINTS%</strong>.</p>\n<ul>\n  <li><strong>Questions Attempted:</strong> %AMOUNT_ATTEMPTED%</li>\n  <li><strong>Correct Answers:</strong> %AMOUNT_CORRECT%</li>\n  <li><strong>Incorrect Answers:</strong> %AMOUNT_INCORRECT%</li>\n  <li><strong>Average Score:</strong> %AVERAGE_POINT%</li>\n</ul>\n<hr>\n<h4>Time Taken:</h4>\n<ul>\n  <li><strong>Total Time:</strong> %TIMER%</li>\n  <li><strong>Minutes:</strong> %TIMER_MINUTES%</li>\n  <li><strong>Seconds:</strong> %TIMER_SECONDS%</li>\n</ul>"
+  },
+  {
+    "id": 2,
+    "template_name": "Detailed Score Breakdown",
+    "template_type": "result",
+    "template_content": "<h3>Quiz Results:</h3>\n<p>You scored <strong>%POINT_SCORE%</strong> out of <strong>%MAXIMUM_POINTS%</strong>.</p>\n<ul>\n  <li><strong>Your Correct Score:</strong> %CORRECT_SCORE%</li>\n  <li><strong>Total Questions:</strong> %TOTAL_QUESTIONS%</li>\n</ul>\n<hr>\n<h4>Category Breakdown:</h4>\n<p>%CATEGORY_POINTS_X%:</p>\n<ul>\n  <li><strong>Category Points:</strong> %CATEGORY_POINTS_X%</li>\n  <li><strong>Category Average Score:</strong> %CATEGORY_AVERAGE_SCORE%</li>\n  <li><strong>Category Average Points:</strong> %CATEGORY_AVERAGE_POINTS%</li>\n</ul>\n<hr>\n<h4>Question Performance:</h4>\n<p>Below is a summary of your performance on individual questions:</p>\n<p>%QUESTIONS_ANSWERS%</p>\n<hr>\n<p><strong>Quiz Link:</strong><br />\n<a href=\"%QUIZ_LINK%\">View your quiz results</a></p>"
+  },
+  {
+    "id": 3,
+    "template_name": "Results with Comments Section",
+    "template_type": "email",
+    "template_content": "<h3>Your Quiz Result:</h3>\n<p>Congratulations, <strong>%FULL_NAME%</strong>! You scored <strong>%POINT_SCORE%</strong> out of <strong>%MAXIMUM_POINTS%</strong>.</p>\n<hr>\n<ul>\n  <li><strong>Total Questions:</strong> %TOTAL_QUESTIONS%</li>\n  <li><strong>Correct Answers:</strong> %AMOUNT_CORRECT%</li>\n  <li><strong>Incorrect Answers:</strong> %AMOUNT_INCORRECT%</li>\n</ul>\n<hr>\n<h4>Timer Details:</h4>\n<ul>\n  <li><strong>Time Finished:</strong> %TIME_FINISHED%</li>\n  <li><strong>Timer (Minutes):</strong> %TIMER_MINUTES%</li>\n  <li><strong>Timer (Seconds):</strong> %TIMER_SECONDS%</li>\n</ul>\n<hr>\n<h4>Quiz Results Breakdown:</h4>\n<p>%QUESTIONS_ANSWERS%</p>\n<hr>\n<h4>Feedback and Comments:</h4>\n<p>Your feedback is valuable! Please leave your comments below:</p>\n<p>%COMMENT_SECTION%</p>"
+  },
+  {
+    "id": 4,
+    "template_name": "Detailed Performance with Results Link",
+    "template_type": "email",
+    "template_content": "<h3>Quiz Result Overview:</h3>\n<p><strong>%USER_NAME%</strong>, you completed the quiz titled <strong>%QUIZ_NAME%</strong> and scored <strong>%POINT_SCORE%</strong> out of <strong>%MAXIMUM_POINTS%</strong>.</p>\n<hr>\n<ul>\n  <li><strong>Correct Answers:</strong> %AMOUNT_CORRECT%</li>\n  <li><strong>Incorrect Answers:</strong> %AMOUNT_INCORRECT%</li>\n  <li><strong>Questions Attempted:</strong> %AMOUNT_ATTEMPTED%</li>\n</ul>\n<hr>\n<h4>Category Breakdown:</h4>\n<p><strong>Category %CATEGORY_SCORE_X%:</strong></p>\n<ul>\n  <li><strong>Points:</strong> %CATEGORY_POINTS_X%</li>\n  <li><strong>Average Score:</strong> %CATEGORY_AVERAGE_SCORE%</li>\n  <li><strong>Average Points:</strong> %CATEGORY_AVERAGE_POINTS%</li>\n</ul>\n<hr>\n<h4>Question-by-Question Performance:</h4>\n<p>Below you will find a breakdown of each question’s performance:</p>\n<p>%QUESTIONS_ANSWERS_EMAIL%</p>\n<hr>\n<p><a href=\"%RESULT_LINK%\">Click here to review your full results</a></p>"
+  },
+  {
+    "id": 5,
+    "template_name": "Summary with Contact Info",
+    "template_type": "result",
+    "template_content": "<h3>Quiz Results Summary:</h3>\n<p>Your results for <strong>%QUIZ_NAME%</strong> are as follows:</p>\n<ul>\n  <li><strong>Total Points:</strong> %POINT_SCORE%</li>\n  <li><strong>Maximum Points:</strong> %MAXIMUM_POINTS%</li>\n  <li><strong>Total Correct Answers:</strong> %AMOUNT_CORRECT%</li>\n  <li><strong>Total Incorrect Answers:</strong> %AMOUNT_INCORRECT%</li>\n  <li><strong>Average Points:</strong> %AVERAGE_POINT%</li>\n</ul>\n<hr>\n<h4>Performance by Category:</h4>\n<ul>\n  <li><strong>Category %CATEGORY_SCORE_X%:</strong></li>\n  <li><strong>Points:</strong> %CATEGORY_POINTS_X%</li>\n  <li><strong>Average Score:</strong> %CATEGORY_AVERAGE_SCORE%</li>\n  <li><strong>Average Points:</strong> %CATEGORY_AVERAGE_POINTS%</li>\n</ul>\n<hr>\n<h4>Timer Information:</h4>\n<ul>\n  <li><strong>Total Time Spent:</strong> %TIMER%</li>\n  <li><strong>Minutes:</strong> %TIMER_MINUTES%</li>\n  <li><strong>Seconds:</strong> %TIMER_SECONDS%</li>\n</ul>\n<hr>\n<h4>Need Assistance?</h4>\n<p>If you have any questions or need help, feel free to reach out:</p>\n<ul>\n  <li><strong>Email:</strong> %USER_EMAIL%</li>\n  <li><strong>Phone:</strong> %USER_PHONE%</li>\n  <li><strong>Business:</strong> %USER_BUSINESS%</li>\n</ul>"
+  },
+  {
+    "id": 6,
+    "template_name": "Success with Final Score",
+    "template_type": "result",
+    "template_content": "<h3>Well Done, %FULL_NAME%!</h3>\n<p>You’ve successfully completed the quiz <strong>%QUIZ_NAME%</strong>!</p>\n<p><strong>Your Final Score:</strong> %POINT_SCORE% out of %MAXIMUM_POINTS%</p>\n<p><strong>Total Correct Answers:</strong> %AMOUNT_CORRECT%</p>\n<p><strong>Total Incorrect Answers:</strong> %AMOUNT_INCORRECT%</p>\n<hr>\n<h4>Time Taken:</h4>\n<ul>\n  <li><strong>Total Time:</strong> %TIMER%</li>\n  <li><strong>Time in Minutes:</strong> %TIMER_MINUTES%</li>\n  <li><strong>Time in Seconds:</strong> %TIMER_SECONDS%</li>\n</ul>\n<hr>\n<p><a href=\"%QUIZ_LINK%\">Review Your Full Results</a></p>"
+  },
+  {
+    "id": 7,
+    "template_name": "Category Performance Overview",
+    "template_type": "email",
+    "template_content": "<h3>Quiz Result Summary</h3>\n<p><strong>%FULL_NAME%</strong>, here’s a detailed breakdown of your performance in <strong>%QUIZ_NAME%</strong>.</p>\n<p><strong>Total Score:</strong> %POINT_SCORE% out of %MAXIMUM_POINTS%</p>\n<p><strong>Total Correct Answers:</strong> %AMOUNT_CORRECT%</p>\n<p><strong>Total Incorrect Answers:</strong> %AMOUNT_INCORRECT%</p>\n<hr>\n<h4>Category Breakdown:</h4>\n<p><strong>%CATEGORY_SCORE_X%:</strong></p>\n<ul>\n  <li><strong>Points:</strong> %CATEGORY_POINTS_X%</li>\n  <li><strong>Average Score:</strong> %CATEGORY_AVERAGE_SCORE%</li>\n  <li><strong>Average Points:</strong> %CATEGORY_AVERAGE_POINTS%</li>\n</ul>\n<hr>\n<p>For more details on your individual questions, click below.</p>\n<p><a href=\"%QUIZ_LINK%\">View Full Results</a></p>"
+  },
+  {
+    "id": 8,
+    "template_name": "Summary with Questions and Answers",
+    "template_type": "email",
+    "template_content": "<h3>Quiz Results for %QUIZ_NAME%</h3>\n<p>Congratulations, <strong>%FULL_NAME%</strong>! You’ve completed the quiz.</p>\n<p><strong>Your Total Score:</strong> %POINT_SCORE% out of %MAXIMUM_POINTS%</p>\n<p><strong>Total Correct Answers:</strong> %AMOUNT_CORRECT%</p>\n<p><strong>Total Incorrect Answers:</strong> %AMOUNT_INCORRECT%</p>\n<hr>\n<h4>Question-by-Question Performance:</h4>\n<p>%QUESTIONS_ANSWERS%</p>\n<hr>\n<h4>Quiz Details:</h4>\n<ul>\n  <li><strong>Average Score:</strong> %AVERAGE_POINT%</li>\n  <li><strong>Total Questions:</strong> %TOTAL_QUESTIONS%</li>\n  <li><strong>Time Taken:</strong> %TIMER%</li>\n</ul>\n<hr>\n<p><a href=\"%QUIZ_LINK%\">View Results Again</a></p>"
+  },
+  {
+    "id": 9,
+    "template_name": "Quick Performance Snapshot",
+    "template_type": "result",
+    "template_content": "<h3>Quick Results for %QUIZ_NAME%</h3>\n<p><strong>%FULL_NAME%</strong>, you finished the quiz!</p>\n<p><strong>Your Score:</strong> %POINT_SCORE% / %MAXIMUM_POINTS%</p>\n<p><strong>Correct Answers:</strong> %AMOUNT_CORRECT%</p>\n<p><strong>Incorrect Answers:</strong> %AMOUNT_INCORRECT%</p>\n<hr>\n<h4>Quiz Performance Summary:</h4>\n<p><strong>Average Score:</strong> %AVERAGE_POINT%</p>\n<p><strong>Total Time Spent:</strong> %TIMER%</p>\n<hr>\n<p>Review all your results by following the link below.</p>\n<p><a href=\"%QUIZ_LINK%\">Click to View Full Results</a></p>"
+  },
+  {
+    "id": 10,
+    "template_name": "Result with User Feedback",
+    "template_type": "email",
+    "template_content": "<h3>%QUIZ_NAME% - Results</h3>\n<p>Thank you for taking the quiz, <strong>%FULL_NAME%</strong>!</p>\n<p><strong>Your Score:</strong> %POINT_SCORE% out of %MAXIMUM_POINTS%</p>\n<p><strong>Correct Answers:</strong> %AMOUNT_CORRECT% | <strong>Incorrect Answers:</strong> %AMOUNT_INCORRECT%</p>\n<hr>\n<h4>Time and Performance Summary:</h4>\n<ul>\n  <li><strong>Time Taken:</strong> %TIMER%</li>\n  <li><strong>Average Score:</strong> %AVERAGE_POINT%</li>\n</ul>\n<hr>\n<h4>Your Feedback:</h4>\n<p>We would love to hear your feedback on the quiz. Please leave your comments below:</p>\n<p>%COMMENT_SECTION%</p>\n<hr>\n<p><a href=\"%QUIZ_LINK%\">Review Your Full Results</a></p>"
+  }
+]

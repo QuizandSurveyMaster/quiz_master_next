@@ -2060,25 +2060,21 @@ class QSM_Install {
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query( $update_sql );
 			}
 
-			$quiz_templates_table_name       = $wpdb->prefix . 'mlw_quiz_output_templates';
+			$quiz_templates_table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$quiz_templates_table_name}'" ) != $quiz_templates_table_name ) {
 				// SQL to create the table
 				$charset_collate = $wpdb->get_charset_collate();
 				$sql = "CREATE TABLE {$quiz_templates_table_name} (
 					id BIGINT(20) UNSIGNED AUTO_INCREMENT,
-					unique_id VARCHAR(20) DEFAULT NULL,
 					template_name VARCHAR(255) DEFAULT NULL,
 					template_type VARCHAR(50) DEFAULT 'result',
 					template_content LONGTEXT DEFAULT NULL,
-					is_free VARCHAR(10) DEFAULT 'free',
-					PRIMARY KEY (id),
-					created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+					created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+					PRIMARY KEY (id)
 				) $charset_collate;";
-			
 				require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			
 				dbDelta( $sql );
-			}   
+			}
 
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );

@@ -556,8 +556,9 @@ span.qsm-quiz-name {
 .qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], 
 .email-condition select, 
 .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"],
-.qsm_tab_content .results-page-show .qsm-result-page-common-section select, 
-.qsm_tab_content .results-page-show .qsm-result-page-common-section input[type="text"],
+.results-page-content .qsm-result-page-common-section select, 
+.results-page-content .qsm-result-page-common-section input[type="text"],
+.results-page-content .qsm-result-page-redirect-options input[type="text"],
 .qsm-email-content .qsm-email-page-common-section select, 
 .qsm-email-content .qsm-email-page-common-section input[type="text"],
 .qsm-email-content .qsm-email-page-common-section input[type="email"] {
@@ -2897,7 +2898,9 @@ input#duplicate_questions {
 .qsm-actions-link-box a:not(:first-child) {
 	border-left: 1px solid #d6d6d6;
 }
-.qsm-actions-link-box a.qsm-settings-box-result-button:focus {
+.qsm-actions-link-box a.qsm-settings-box-result-button:focus, 
+.qsm-actions-link-box a.qsm-settings-box-email-button:focus, 
+.qsm-actions-link-box a.qsm-insert-page-template-anchor:focus {
 	background-color: #ebf4fc;
 }
 .results-page-when .qsm-new-condition, .qsm-email-when .qsm-new-condition,
@@ -3610,14 +3613,20 @@ input#duplicate_questions {
 	font-weight: 600;
 } 
 
-.qsm-result-page-template-container, .qsm-result-my-template-container,
-.qsm-email-page-template-container, .qsm-email-my-template-container {
+.qsm-result-page-template-container,
+.qsm-email-page-template-container {
 	display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
+}
+
+.qsm-result-page-template-container, .qsm-result-my-template-container,
+.qsm-email-page-template-container, .qsm-email-my-template-container {
     padding: 0 25px;
-	min-height: 75vh;
-	min-width: 75vw;
+	height: 75vh;
+	width: 75vw;
+	max-height: 75vh;
+	max-width: 75vw;
 }
 
 .qsm-result-page-template-card,
@@ -3664,27 +3673,7 @@ input#duplicate_questions {
 	font-size: 14px;
 	color: #333;
 }
-
-.qsm-result-page-template-pro,
-.qsm-email-page-template-pro {
-	position: relative;
-}
-
-.qsm-result-page-template-pro::after,
-.qsm-email-page-template-pro::after {
-	content: "PRO";
-	position: absolute;
-	top: 8px;
-	right: 8%;
-	background-color: #FFEDF3;
-	color: white;
-	font-size: 11px;
-	font-weight: bold;
-	padding: 4px 8px;
-	border-radius: 10px;
-	color: #BD2457;
-}
-  
+ 
 #qsm-result-page-templates .qsm-popup__container,
 #qsm-email-page-templates .qsm-popup__container {
 	max-width: initial;
@@ -3722,7 +3711,7 @@ input#duplicate_questions {
 #qsm-result-page-templates .qsm-popup__header,
 #qsm-email-page-templates .qsm-popup__header {
 	display: grid;
-    grid-template-columns: 1.3fr 2fr;
+    grid-template-columns: 1.4fr 2fr;
 	border-bottom: 1px solid rgba(30, 30, 30, 0.1);
 	padding: 0 10px;
 }
@@ -3766,7 +3755,7 @@ h2#qsm-email-page-templates-title {
 }
 
 
-.qsm-actions-link-box a.qsm-delete-email-button:hover, .qsm-actions-link-box a.qsm-delete-result-button:hover {
+.qsm-actions-link-box a.qsm-delete-email-button:hover, .qsm-actions-link-box a.qsm-delete-result-button:hover, .qsm-my-template-rows-actions a.qsm-result-page-template-remove-button:hover, .qsm-my-template-rows-actions a.qsm-email-page-template-remove-button:hover  {
 	background-color: #ffd4d4;
 }
 .results-page-show .wp-media-buttons, .email-show .wp-media-buttons {
@@ -3818,6 +3807,114 @@ button.qsm-email-page-template-preview-button.button img {
 #qsm-preview-email-page-templates .qsm-popup__content {
 	margin: 0;
 }
+
+.qsm-actions-link-box .qsm-insert-page-template-anchor {
+	position: relative;
+}
+
+.qsm-actions-link-box .qsm-insert-template-wrap {
+    position: absolute;
+    display: none;
+    left: -205px;
+    width: 300px;
+    top: 45px;
+    z-index: 100;
+    padding: 10px;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid #dfd4d4;
+    cursor: initial;
+    box-shadow: 0 0 6px 2px #ddd;
+	max-width: 300px;
+}
+.qsm_tab_content .qsm-insert-template-wrap input[type="text"]qsm-insert-page-template-title {
+	min-width: 240px;
+	width: 240px;
+}
+
+.qsm-insert-template-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.qsm-insert-template-left:before {
+    content: " ";
+    position: absolute;
+    top: -22px;
+    left: 69%;
+    margin-left: -12px;
+    border-width: 12px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+    z-index: 1;
+}
+
+.qsm-insert-template-left:after {
+    content: " ";
+    position: absolute;
+    top: -24px;
+    left: 69%;
+    margin-left: -12px;
+    border-width: 12px;
+    border-style: solid;
+    border-color: transparent transparent #dfd4d4 transparent;
+    z-index: 0;
+}
+
+.qsm-insert-template-wrap span.qsm-insert-template-response {
+	display: block;
+    font-size: 12px;
+}
+.results-page-show a.qsm-view-templates-list, 
+.email-show a.qsm-view-templates-list {
+	position: absolute;
+    right: 20px;
+    top: 9px;
+    font-weight: bold;
+    padding: 0;
+    color: #1D4EDD;
+}
+.qsm-my-templates-table-body .qsm-my-template-rows-actions {
+	display: flex;
+	align-items: center;
+}
+
+.qsm-my-templates-table-body .qsm-my-template-rows-actions a { 
+    padding: 5px;
+    color: #3c434a;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    background: #eee;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+.qsm-my-template-rows-actions a:hover, .qsm-my-template-rows-actions a:focus {
+    background: #f8f8f8;
+    color: #000000;
+    border: 1px solid #ddd;
+}
+.qsm-my-templates-table-body .qsm-my-template-rows-actions a:first-child {
+	border-radius: 5px 0 0 5px; 
+}
+.qsm-my-templates-table-body .qsm-my-template-rows-actions .qsm-result-page-template-remove-button,
+.qsm-my-templates-table-body .qsm-my-template-rows-actions .qsm-email-page-template-remove-button {
+	border-radius: 0 5px 5px 0px;
+	border-left: 0;
+}
+.qsm-my-templates-table-body .qsm-my-template-rows-actions img {
+    height: 18px;
+    padding: 0;
+}
+
+.qsm-my-templates-table-body .qsm-my-template-rows-actions .qsm-spinner-loader {
+	font-size: 6px;
+}
+.widefat .qsm-my-templates-table-body td, .widefat .qsm-my-templates-table-body th {
+	vertical-align: middle;
+}
+
 @media screen and (min-width: 961px) {
 	.folded .option-page-result-page-tab-footer,
 	.folded .contact-page-tab-footer,

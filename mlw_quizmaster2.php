@@ -586,6 +586,12 @@ class MLWQuizMasterNext {
 			'qsmQuizzesObject'           => $qsm_quizzes,
 			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
 			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
+			'add_process'                => __('Adding...', 'quiz-master-next'),
+			'empty_template_name'        => __('Template name cannot be empty.', 'quiz-master-next'),
+			'empty_template_content'     => __('Template content cannot be empty.', 'quiz-master-next'),
+			'template_added'             => __('Template added successfully!', 'quiz-master-next'),
+			'template_save_error'        => __('There was an error when saving the template.', 'quiz-master-next'),
+			'confirmDeleteText'          => esc_html__( 'Are you sure you want to delete this template?', 'quiz-master-next' ),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );

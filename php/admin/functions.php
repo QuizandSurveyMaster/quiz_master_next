@@ -1744,41 +1744,172 @@ add_action('wp_ajax_nopriv_qsm_insert_quiz_template', 'qsm_insert_quiz_template_
 
 function qsm_insert_quiz_template_callback() {
 	global $wpdb;
-    // Check if all necessary data is present
-    if ( ! isset($_POST['unique_id']) || ! isset($_POST['template_name']) || ! isset($_POST['template_type']) || ! isset($_POST['template_content']) || ! isset($_POST['is_free']) ) {
-        wp_send_json_error(array( 'message' => 'Missing required data.' ));
-    }
-
+    
     // Sanitize the incoming data
-    $unique_id = sanitize_text_field($_POST['unique_id']);
-    $template_name = sanitize_text_field($_POST['template_name']);
-    $template_type = sanitize_text_field($_POST['template_type']);
-    $template_content = sanitize_textarea_field($_POST['template_content']);
-    $is_free = sanitize_text_field($_POST['is_free']);
-
+    $template_name = isset($_POST['template_name']) ? sanitize_text_field(wp_unslash( $_POST['template_name'] )) : "";
+    $template_type = isset($_POST['template_type']) ? sanitize_text_field(wp_unslash( $_POST['template_type'] )) : "";
+    $template_content = wp_unslash( $_POST['template_content'] );
+	$filtered_content = preg_replace_callback(
+		'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
+			function( $matches ) {
+				return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
+			},
+			$template_content
+	);
+	$filtered_content = preg_replace_callback(
+		'/<qsmextrashortcodetag>([^<]+)<\/qsmextrashortcodetag>/u',
+		function( $matches ) {
+			return wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) );
+		},
+		$filtered_content
+	);
+	
     $table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-
+	$template_data = array(
+		'template_name'    => $template_name,
+		'template_type'    => $template_type,
+		'template_content' => $filtered_content,
+		'created_at'       => current_time('mysql'),
+	);
     // Insert the template into the database
     $wpdb->insert(
         $table_name,
-        array(
-            'unique_id'        => $unique_id,
-            'template_name'    => $template_name,
-            'template_type'    => $template_type,  // Default type can be set as 'result'
-            'template_content' => $template_content,
-            'is_free'          => $is_free,
-            'created_at'       => current_time('mysql'),
-        ),
-        array( '%s', '%s', '%s', '%s', '%s', '%s' ) // Format of the inserted data
+        $template_data,
+        array( '%s', '%s', '%s', '%s' ) // Format of the inserted data
     );
 
     // Get the inserted record's ID and other details
-    $inserted_id = $wpdb->insert_id;
-
+	$template_data['id'] = $wpdb->insert_id;
     // Prepare the response with the inserted data
-    wp_send_json_success(array(
-        'id'            => $inserted_id,
-        'template_name' => $template_name,
-        'preview_url'   => QSM_PLUGIN_URL . 'assets/eye-line-blue.png', // You can change this to a real preview image
-    ));
+    wp_send_json_success($template_data);
+}
+
+add_action( 'wp_ajax_qsm_remove_my_templates', 'qsm_remove_my_templates_handler' );
+
+function qsm_remove_my_templates_handler() {
+    global $wpdb;
+	if ( ! isset( $_POST['nonce'] ) || 
+        ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' ) 
+    ) {
+        wp_send_json_error( [ 'message' => __( 'Invalid nonce. Action not authorized.', 'quiz-master-next' ) ] );
+        wp_die();
+    }
+
+    if ( ! isset( $_POST['id'] ) || ! absint( wp_unslash( $_POST['id'] ) ) ) {
+        wp_send_json_error( [ 'message' => __( 'Invalid template ID.', 'quiz-master-next' ) ] );
+        wp_die();
+    }
+
+    $template_id = absint( wp_unslash( $_POST['id'] ) );
+    $table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
+    $result = $wpdb->delete( $table_name, [ 'id' => $template_id ], [ '%d' ] );
+    if ( $result ) {
+        wp_send_json_success( [ 'message' => __( 'Template removed successfully.', 'quiz-master-next' ) ] );
+    } else {
+        wp_send_json_error( [ 'message' => __( 'Failed to remove the template.', 'quiz-master-next' ) ] );
+    }
+    wp_die();
+}
+
+
+function qsm_result_and_email_popups_for_templates( $template_from_script, $my_templates, $type ) {
+	?>
+	<div class="qsm-popup qsm-popup-slide" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates" aria-hidden="false" style="display:none;">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
+				<header class="qsm-popup__header">
+					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-left">
+						<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
+						<h2 class="qsm-popup__title" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
+							<?php esc_html_e( 'Templates', 'qsm-webhooks' ); ?>
+						</h2>
+					</div>	
+					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-right">
+						<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header">
+							<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-tabs">
+								<a class="qsm-<?php echo esc_attr( $type ); ?>-page-tmpl-header-links active" data-tab="page" href="javascript:void(0)"><?php esc_html_e( 'QSM Templates', 'quiz-master-next' ); ?></a>
+								<a class="qsm-<?php echo esc_attr( $type ); ?>-page-tmpl-header-links" data-tab="my" href="javascript:void(0)"><?php esc_html_e( 'My Templates', 'quiz-master-next' ); ?></a>
+							</div>
+						</div>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</div>	
+				</header>
+				<main class="qsm-popup__content" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-content" data-type="<?php echo esc_attr( $type ); ?>" data-<?php echo esc_attr( $type ); ?>-page="">
+				<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
+					<?php
+						foreach ( $template_from_script as $key => $single_template ) {
+							if ( $type == $single_template['template_type'] ) {
+								?>
+								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card " data-id="<?php echo esc_html($key); ?>" >
+									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content">
+										<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
+											<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button">
+												<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
+												<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
+											</button>
+											<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">
+												<?php esc_html_e( 'Use Template', 'quiz-master-next' ); ?>
+											</button>
+										</div>
+									</div>
+									<p class="qsm-<?php echo esc_attr( $type ); ?>-page-template-template-name"><?php echo esc_html($single_template['template_name']); ?></p>
+								</div>
+								<?php
+							}
+						}
+					?>
+				</div>
+				<div class="qsm-<?php echo esc_attr( $type ); ?>-my-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
+				<table class="qsm-my-templates-table wp-list-table widefat fixed striped">	
+					<tbody class="qsm-my-templates-table-body">
+					<?php if ( ! empty($my_templates) ) { ?>
+						<tr>
+						<th width="60%"><?php echo esc_html__( 'Template Name', 'quiz-master-next' ); ?></th>
+						<th><?php echo esc_html__( 'Created At', 'quiz-master-next' ); ?></th>
+						<th><?php echo esc_html__( 'Actions', 'quiz-master-next' ); ?></th>
+						</tr>
+					<?php } else { ?>					
+						<tr class="qsm-no-templates-row"><td colspan="3" class="qsm-no-templates-message"> <?php echo esc_html__( sprintf( 'No %s templates found.', esc_html( $type ) ), 'quiz-master-next' ); ?></td></tr>
+					<?php } ?>
+					</tbody></table>
+				</div>
+				</main>
+			</div>
+		</div>
+	</div>
+
+	<div class="qsm-popup qsm-popup-slide" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates" aria-hidden="false" style="display:none;">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-title">
+						<?php esc_html_e( 'Template Preview', 'qsm-webhooks' ); ?>
+					</h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-content">
+					<div class="qsm-preview-<?php echo esc_attr( $type ); ?>-page-template-container ">
+						<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
+					</div>
+				</main>
+			</div>
+		</div>
+	</div>
+	<?php 
+}
+
+function qsm_result_and_email_row_templates(){
+	?>
+	<script type="text/template" id="tmpl-qsm-my-template-rows">
+		<tr>
+			<td>{{data.template_name}}</td>
+			<td>{{data.created_at}}</td>
+			<td class="qsm-my-template-rows-actions">
+				<a class="qsm-{{data.template_type}}-page-template-use-button"  data-structure="custom" data-indexid="{{data.indexid}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/share-forward-box-fill.svg'); ?>" alt="share-forward-box-fill.svg"/></a>
+				<a class="qsm-{{data.template_type}}-page-template-remove-button" data-type="{{data.template_type}}" data-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
+				<span class="qsm-my-template-action-response"></span>
+			</td>
+		</tr>
+	</script>
+	<?php 
 }

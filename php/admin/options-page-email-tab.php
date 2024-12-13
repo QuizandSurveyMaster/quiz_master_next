@@ -29,99 +29,24 @@ add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
  */
 function qsm_options_emails_tab_content() {
 	global $mlwQuizMasterNext, $wpdb;
+	
+	$template_from_script = wp_remote_get( QSM_PLUGIN_URL . 'data/templates.json', [ 'sslverify' => false ] );
+	$template_from_script = json_decode( wp_remote_retrieve_body( $template_from_script ), true );
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$user_id = get_current_user_id();
-
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-	$temlate_sql = "SELECT unique_id, template_content FROM {$table_name}";
-	$mlw_quiz_output_templates_results = $wpdb->get_results($temlate_sql);
-	$unique_ids = array_column($mlw_quiz_output_templates_results, 'unique_id');
-	$template_contents = array_column($mlw_quiz_output_templates_results, 'template_content');
-	// Combine into an associative array where unique_id is the key
-	$my_tmpl_data = array_combine($unique_ids, $template_contents);
-
-	// Use array_column to extract the unique_id column
-	$existing_unique_ids = array_column($mlw_quiz_output_templates_results, 'unique_id');
-	$qsm_quiz_output_templates_results = [
-		(object) [
-			'id'               => 1,
-			'unique_id'        => 'UID101',
-			'template_name'    => 'Template 1',
-			'template_type'    => 'email',
-			'template_content' => 'Your score: %POINT_SCORE% out of %MAXIMUM_POINTS%. You scored %AMOUNT_CORRECT% correct answers out of %TOTAL_QUESTIONS%.',
-			'is_free'          => true,
-		],
-		(object) [
-			'id'               => 2,
-			'unique_id'        => 'UID102',
-			'template_name'    => 'Template 2',
-			'template_type'    => 'email',
-			'template_content' => 'Congratulations %USER_NAME%! You answered %AMOUNT_CORRECT% out of %TOTAL_QUESTIONS% correctly. Your result: %POINT_SCORE%. 
-			[qsm_conditions type="points" condition="equal" value="10"]You scored exactly 10 points! Well done![/qsm_conditions]
-			[qsm_conditions type="points" condition="greater" value="20"]Excellent! You scored more than 20 points![/qsm_conditions]',
-			'is_free'          => false,
-		],
-		(object) [
-			'id'               => 3,
-			'unique_id'        => 'UID103',
-			'template_name'    => 'Template 3',
-			'template_type'    => 'email',
-			'template_content' => 'Great job, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% correct answers out of %TOTAL_QUESTIONS%.',
-			'is_free'          => true,
-		],
-		(object) [
-			'id'               => 4,
-			'unique_id'        => 'UID104',
-			'template_name'    => 'Template 4',
-			'template_type'    => 'email',
-			'template_content' => 'Quiz complete! %USER_NAME%, your score is %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% correct answers!
-			[qsm_conditions type="points" condition="lessthan" value="5"]Oops! You scored less than 5 points. Better luck next time![/qsm_conditions]',
-			'is_free'          => false,
-		],
-		(object) [
-			'id'               => 5,
-			'unique_id'        => 'UID105',
-			'template_name'    => 'Template 5',
-			'template_type'    => 'email',
-			'template_content' => 'Your quiz result: %POINT_SCORE% out of %MAXIMUM_POINTS%. Correct answers: %AMOUNT_CORRECT%.',
-			'is_free'          => true,
-		],
-		(object) [
-			'id'               => 6,
-			'unique_id'        => 'UID106',
-			'template_name'    => 'Template 6',
-			'template_type'    => 'email',
-			'template_content' => 'Well done, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. Correct answers: %AMOUNT_CORRECT%.',
-			'is_free'          => false,
-		],
-		(object) [
-			'id'               => 7,
-			'unique_id'        => 'UID107',
-			'template_name'    => 'Template 7',
-			'template_type'    => 'email',
-			'template_content' => 'Awesome, %USER_NAME%! You scored %POINT_SCORE%/%MAXIMUM_POINTS%. %AMOUNT_CORRECT% answers correct out of %TOTAL_QUESTIONS%. 
-			[qsm_conditions type="points" condition="greater" value="15"]Excellent! You scored over 15 points![/qsm_conditions]',
-			'is_free'          => true,
-		],
-	];  
+	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
+	$my_email_templates = $wpdb->get_results($temlpate_sql);
 	
-	$new_templates_uid = array_column($qsm_quiz_output_templates_results, 'unique_id');
-	$new_template_contents = array_column($qsm_quiz_output_templates_results, 'template_content');
-	// Combine into an associative array where unique_id is the key
-	$new_tmpl_data = array_combine($new_templates_uid, $new_template_contents);
-
-	// Filter the incoming data to only include templates that have not been inserted
-	$new_templates = array_filter($qsm_quiz_output_templates_results, function( $template ) use ( $existing_unique_ids ) {
-		return ! in_array($template->unique_id, $existing_unique_ids);
-	});
-
 	$js_data = array(
-		'quizID'          => $quiz_id,
-		'nonce'           => wp_create_nonce( 'wp_rest' ),
-		'qsm_user_ve'     => get_user_meta( $user_id, 'rich_editing', true ),
-		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
-		'my_tmpl_data'    => $my_tmpl_data,
-		'new_tmpl_data'   => $new_tmpl_data,
+		'quizID'            => $quiz_id,
+		'nonce'             => wp_create_nonce( 'wp_rest' ),
+		'qsm_user_ve'       => get_user_meta( $user_id, 'rich_editing', true ),
+		'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'my_tmpl_data'      => $my_email_templates,
+		'script_tmpl'       => $template_from_script,
+		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
+		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 	do_action( 'qsm_options_email_tab_content_before' );
@@ -243,105 +168,8 @@ function qsm_options_emails_tab_content() {
 		</div>
 	</div>
 </div>
-
-<div class="qsm-popup qsm-popup-slide" id="qsm-email-page-templates" aria-hidden="false" style="display:none;">
-	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-email-page-templates-title">
-			<header class="qsm-popup__header">
-				<div class="qsm-email-page-template-header-left">
-					<img class="qsm-email-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
-					<h2 class="qsm-popup__title" id="qsm-email-page-templates-title">
-						<?php esc_html_e( 'Templates', 'qsm-webhooks' ); ?>
-					</h2>
-				</div>	
-				<div class="qsm-email-page-template-header-right">
-					<div class="qsm-email-page-template-header">
-						<div class="qsm-email-page-template-header-tabs">
-							<a class="qsm-email-page-tmpl-header-links active" data-tab="page" href="javascript:void(0)"><?php esc_html_e( 'QSM Templates', 'quiz-master-next' ); ?></a>
-							<a class="qsm-email-page-tmpl-header-links" data-tab="my" href="javascript:void(0)"><?php esc_html_e( 'My Templates', 'quiz-master-next' ); ?></a>
-						</div>
-					</div>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-				</div>	
-			</header>
-			<main class="qsm-popup__content" id="qsm-email-page-templates-content" data-email-page="">
-			<div class="qsm-email-page-template-container qsm-email-page-template-common">
-				<?php
-					foreach ( $new_templates as $row ) { 
-						if ( 'email' == $row->template_type ) {
-							?>
-							<div class="qsm-email-page-template-card <?php echo $row->is_free ? 'qsm-email-page-template-pro' : ''; ?>" data-unique-id="<?php echo esc_html($row->unique_id); ?>" >
-								<div class="qsm-email-page-template-card-content">
-									<div class="qsm-email-page-template-card-buttons">
-										<button class="qsm-email-page-template-preview-button button">
-											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
-											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
-										</button>
-										<button class="qsm-email-page-template-insert-button button" data-unique-id="<?php echo esc_html($row->unique_id); ?>">
-											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.png'); ?>" alt="download-line-blue.png" />
-											<?php esc_html_e( 'Insert', 'quiz-master-next' ); ?>
-										</button>
-									</div>
-								</div>
-								<p class="qsm-email-page-template-template-name"><?php echo esc_html($row->template_name); ?></p>
-							</div>
-							<?php
-						}
-					}
-				?>
-			</div>
-			<div class="qsm-email-my-template-container qsm-email-page-template-common">
-				<?php
-				$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-				$sql = "SELECT * FROM {$table_name}";
-				$mlw_quiz_output_templates_results = $wpdb->get_results($sql);
-				if ( $mlw_quiz_output_templates_results ) { 
-					foreach ( $mlw_quiz_output_templates_results as $row ) { 
-						if ( 'email' == $row->template_type ) {
-							?>
-							<div class="qsm-email-page-template-card" data-id="<?php echo esc_html($row->id); ?>">
-								<div class="qsm-email-page-template-card-content">
-									<div class="qsm-email-page-template-card-buttons">
-										<button class="qsm-email-page-template-preview-button button">
-											<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
-											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
-										</button>
-										<button class="qsm-email-page-template-use-button button" data-unique-id="<?php echo esc_html($row->unique_id); ?>">
-										<?php esc_html_e( 'Use Template', 'quiz-master-next' ); ?>
-										</button>
-									</div>
-								</div>
-								<p class="qsm-email-page-template-template-name"><?php echo esc_html($row->template_name); ?></p>
-							</div>
-							<?php
-						}
-					}
-				} ?>
-			</div>
-			</main>
-		</div>
-	</div>
-</div>
-
-
-<div class="qsm-popup qsm-popup-slide" id="qsm-preview-email-page-templates" aria-hidden="false" style="display:none;">
-	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-preview-email-page-templates-title">
-			<header class="qsm-popup__header">
-				<h2 class="qsm-popup__title" id="qsm-preview-email-page-templates-title">
-					<?php esc_html_e( 'Template Preview', 'qsm-webhooks' ); ?>
-				</h2>
-				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-			</header>
-			<main class="qsm-popup__content" id="qsm-preview-email-page-templates-content">
-				<div class="qsm-preview-email-page-template-container ">
-					<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
-				</div>
-			</main>
-		</div>
-	</div>
-</div>
 	<?php
+	qsm_result_and_email_popups_for_templates( $template_from_script, $my_email_templates, 'email');
 }
 
 /**
@@ -367,12 +195,32 @@ function qsm_options_emails_tab_template() {
 			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 			<div class="qsm-template-btn-group">
 				<div class="qsm-actions-link-box">
-					<a href="javascript:void(0)" class="qsm-delete-email-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
-					<a href="javascript:void(0)" class="qsm-settings-box-result-button">
+					<a href="javascript:void(0)" class="qsm-delete-email-button">
+						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/>
+					</a>
+					<a href="javascript:void(0)" class="qsm-settings-box-email-button">
 						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/>
 					</a>
-					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
-					<a href="javascript:void(0)" class="qsm-toggle-email-template-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/></a>
+					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button">
+						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/>
+					</a>
+					<a href="javascript:void(0)" data-template-type="email" class="qsm-insert-page-template-anchor">
+						<div class="qsm-insert-template-wrap">
+							<div class="qsm-insert-template-container">
+								<div class="qsm-insert-template-left">
+									<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text" class="qsm-insert-page-template-title">
+									<span class="qsm-insert-template-response"></span>
+								</div>
+								<div class="qsm-insert-template-right">
+									<button data-id="{{data.id}}" class="qsm-insert-page-template-button button"><?php esc_attr_e( 'Add', 'quiz-master-next' ); ?></button>
+								</div>
+							</div>
+						</div>
+						<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/add-large-fill.svg'); ?>" alt="add-large-fill.svg"/>
+					</a>
+					<a href="javascript:void(0)" class="qsm-toggle-email-template-button">
+						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
+					</a>
 				</div>
 				<div class="qsm-settings-box-details">
 					<?php do_action( 'qsm_email_page_settings_box_before' ); ?>
@@ -395,14 +243,14 @@ function qsm_options_emails_tab_template() {
 				</div>	
 				<a class="qsm-new-condition qsm-block-btn" href="javascript:void(0);"><span>+</span><?php esc_html_e( ' Add Condition', 'quiz-master-next' ); ?></a>
 			</div>
-			<div class="email-show">
+			<div class="email-show" data-email-page="{{ data.id }}">
 				<div class="email-content-header">
 					<h4><?php esc_html_e( '..Then', 'quiz-master-next' ); ?></h4>
 					<!-- <p><?php esc_html_e( 'Send following email template.', 'quiz-master-next' ); ?></p> -->
 				</div>
 				<div class="qsm-email-page-template-options qsm-email-page-then-box-styles">
 					<div class="qsm-email-page-template-buttons">
-						<button class="button qsm-common-button-styles qsm-start-with-template" data-email-page="{{ data.id }}"><?php esc_html_e( 'Start with a Template', 'quiz-master-next' );?></button>
+						<button class="button qsm-common-button-styles qsm-start-with-template" data-email-page="{{ data.id }}"><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
 						<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
 					</div>
 					<div class="qsm-email-page-template-learn-more">
@@ -427,6 +275,7 @@ function qsm_options_emails_tab_template() {
 					<?php
 					do_action( 'qsm_email_page_content_before',  $quiz_id, $categories );
 					qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); ?>
+					<a href="javascript:void(0)" data-type="email" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a>
 					<textarea id="email-template-{{ data.id }}" class="email-template">
 					{{{ data.content.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
 						let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
@@ -547,5 +396,6 @@ function qsm_options_emails_tab_template() {
 </script>
 
 	<?php
+	qsm_result_and_email_row_templates();
 }
 ?>
