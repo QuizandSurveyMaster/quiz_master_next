@@ -3829,6 +3829,12 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 	font-weight: 500;
 }
 
+.qsm_page_mlw_quiz_results .result-page-wrapper .widefat tbody td input[type="checkbox"],
+.qsm_page_mlw_quiz_results .result-page-wrapper .widefat thead th input[type="checkbox"] {
+	margin: 0 auto;
+	display: block;
+}
+
 .qsm-quiz-result-tab button.add-new-page,
 .qsm-quiz-email-tab button.add-new-email {
     border: 1px solid #2271B1;
