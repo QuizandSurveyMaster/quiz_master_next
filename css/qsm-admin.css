@@ -3815,7 +3815,7 @@ button.qsm-email-page-template-preview-button.button img {
 .qsm-actions-link-box .qsm-insert-template-wrap {
     position: absolute;
     display: none;
-    left: -205px;
+    left: -245px;
     width: 300px;
     top: 45px;
     z-index: 100;
@@ -3825,9 +3825,9 @@ button.qsm-email-page-template-preview-button.button img {
     border: 1px solid #dfd4d4;
     cursor: initial;
     box-shadow: 0 0 6px 2px #ddd;
-	max-width: 300px;
+    max-width: 300px;
 }
-.qsm_tab_content .qsm-insert-template-wrap input[type="text"]qsm-insert-page-template-title {
+.qsm_tab_content .qsm-insert-template-wrap input[type="text"].qsm-insert-page-template-title {
 	min-width: 240px;
 	width: 240px;
 }
@@ -3842,7 +3842,7 @@ button.qsm-email-page-template-preview-button.button img {
     content: " ";
     position: absolute;
     top: -22px;
-    left: 69%;
+    left: 82%;
     margin-left: -12px;
     border-width: 12px;
     border-style: solid;
@@ -3854,7 +3854,7 @@ button.qsm-email-page-template-preview-button.button img {
     content: " ";
     position: absolute;
     top: -24px;
-    left: 69%;
+    left: 82%;
     margin-left: -12px;
     border-width: 12px;
     border-style: solid;
@@ -4259,15 +4259,17 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 	margin-left: 15px;
 }
 
-.results-page-show .qsm-result-page-content-buttons button.button:not(:first-child) {
+.results-page-show .qsm-result-page-content-buttons button.button:not(:first-child), 
+.email-show .qsm-email-page-content-buttons button.button:not(:first-child) {
 	margin-left: 7px;
 }
 
-.results-page-show .qsm-result-page-content-buttons button.button {
+.email-show .qsm-email-page-content-buttons button.button {
     border-color: #2271B1;
 	font-weight: 500;
 }
-.results-page-show .quicktags-toolbar input[type="button"]{
+.results-page-show .quicktags-toolbar input[type="button"],
+.email-show .quicktags-toolbar input[type="button"] {
 	border-color: #2271B1;
 }
 span.qsm-insert-template-variable-text {

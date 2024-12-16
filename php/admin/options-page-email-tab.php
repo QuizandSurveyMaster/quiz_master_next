@@ -304,7 +304,7 @@ function qsm_options_emails_tab_template() {
 					</textarea>
 					
 					<div class="qsm-email-page-content-buttons ">
-						<button type="button" class="button qsm-slashcommand-variables-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
+						<button type="button" class="button qsm-slashcommand-variables-button qsm-email-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
 						<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
 					</div>
 					<?php do_action( 'qsm_email_page_content_buttons_after',  $quiz_id, $categories ); ?>

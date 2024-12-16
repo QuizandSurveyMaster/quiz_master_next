@@ -1645,6 +1645,13 @@ function qsmConvertContentToShortcode( contentToConvert ){
                 let $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
                 $button.attr('data-id', total - 1);
             });
+
+            jQuery(document).on('qsm_after_add_email_block', function(event, conditions, to, subject, content, replyTo, total) {
+                let $matchingElement = $(`#email-template-${total}`);
+                console.log($matchingElement);
+                let $button = $matchingElement.parents('.email-show').find('.qsm-email-editor-custom-button');
+                $button.attr('data-id', total - 1);
+            });
         }
     }
 }(jQuery));
