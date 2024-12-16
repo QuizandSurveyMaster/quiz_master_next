@@ -3051,7 +3051,6 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     $('#modal-1-content').html(questionElements);
-                    //MicroModal.show( 'modal-1' );
                     $('.questions').sortable('disable');
                     $('.page').sortable('disable');
 
@@ -4144,7 +4143,6 @@ var QSM_Quiz_Broadcast_Channel;
                         .fail(QSMAdmin.displayjQueryError);
                 },
                 loadResults: function () {
-                    //QSMAdmin.displayAlert( 'Loading results pages...', 'info' );
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
                         headers: { 'X-WP-Nonce': qsmResultsObject.nonce },

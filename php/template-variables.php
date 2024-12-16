@@ -394,13 +394,20 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 	global $wp_current_filter;
-	if ( ! empty( $wp_current_filter[1] ) && 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+	if ( is_array( $wp_current_filter ) && ! empty( $wp_current_filter ) && in_array( 'mlw_qmn_template_variable_quiz_page', $wp_current_filter, true ) ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$quiz_settings = maybe_unserialize($quiz_data->quiz_settings);
 		$quiz_questions = ! empty( $quiz_settings['pages'] ) ? maybe_unserialize( $quiz_settings['pages'] ) : array();
-		$total_questions = isset( $quiz_questions[0] ) ? count( $quiz_questions[0] ) : 0;
+		$total_questions = 0;
+		if ( ! empty( $quiz_questions ) && isset( $quiz_questions[0] ) ) {
+			foreach ( $quiz_questions as $sub_questions ) {
+				if ( is_array( $sub_questions ) ) {
+					$total_questions += count( $sub_questions );
+				}
+			}
+		}
 		$content = str_replace( '%TOTAL_QUESTIONS%', $total_questions, $content );
 		return $content;
 	}
