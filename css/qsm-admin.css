@@ -4038,3 +4038,6 @@ span.qsm-insert-template-variable-text {
     padding-top: 2px;
     padding-bottom: 2px;
 }
+.qsm-global-settings-theme-browser {
+	padding: 20px 5px;
+}

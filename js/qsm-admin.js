@@ -835,25 +835,29 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 });
             })
         });
-
-        jQuery(document).ready(function () {
-            jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
-                e.preventDefault();
-                MicroModal.show('qsm-theme-color-settings');
-                if (jQuery('.qsm-color-field').length > 0) {
-                    jQuery('.qsm-color-field').wpColorPicker();
-                    jQuery('.qsm-color-field').each(function () {
-                        if (jQuery(this).attr('data-label')) {
-                            jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
-                        }
-                    });
-
-                }
-            });
-        });
     }
 }
 
+jQuery(document).ready(function () {
+    jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
+        e.preventDefault();
+        let modalId = jQuery(this).data('modal-id');
+        if ( modalId == undefined ) {
+            MicroModal.show('qsm-theme-color-settings');
+        } else {
+            MicroModal.show('qsm-theme-color-settings-' + modalId);
+        }
+        if (jQuery('.qsm-color-field').length > 0) {
+            jQuery('.qsm-color-field').wpColorPicker();
+            jQuery('.qsm-color-field').each(function () {
+                if (jQuery(this).attr('data-label')) {
+                    jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
+                }
+            });
+
+        }
+    });
+});
 
 //QSM - Quizzes/Surveys Page
 
