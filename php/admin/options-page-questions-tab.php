@@ -1095,6 +1095,7 @@ function qsm_delete_question_from_database() {
 		global $wpdb, $mlwQuizMasterNext;
 		$results = $wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
 		if ( $results ) {
+			do_action('qmn_question_deleted',$question_id);
 			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
@@ -1150,6 +1151,7 @@ function qsm_bulk_delete_question_from_database() {
 
 		$results = $wpdb->query( $query );
 		if ( $results ) {
+			do_action('qmn_question_deleted',$question_id);
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
 		}else {
 			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
