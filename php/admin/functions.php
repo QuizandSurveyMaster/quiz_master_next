@@ -1135,7 +1135,7 @@ function qsm_fetch_theme_data() {
 	$themes_data = qsm_get_widget_data( 'themes' );
 }
 
-function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
+function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '', $caller = '' ) {
 	global $mlwQuizMasterNext;
 	global $pro_themes;
 	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
@@ -1148,6 +1148,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			}
 		}
 	}
+	if ( 'qsm_theme_defaults' !== $caller ) {
 	?>
 	<div class="theme-wrapper qsm-default-theme theme <?php echo '' == $saved_quiz_theme || 0 == $saved_quiz_theme ? 'active' : ''; ?>">
 		<input style="display: none" type="radio" name="quiz_theme_id" value="0" <?php checked( $saved_quiz_theme, '0', true ); ?>>
@@ -1166,12 +1167,16 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			</div>
 		</div>
 	</div>
-	<?php do_action( 'qsm_add_after_default_theme' ); ?>
+	<?php } do_action( 'qsm_add_after_default_theme' ); ?>
 	<?php
 	if ( $theme_folders ) {
 		foreach ( $theme_folders as $key => $theme ) {
 			$theme_name  = $theme['theme'];
 			$theme_id    = $theme['id'];
+			$default_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
+			if ( 'qsm_theme_defaults' === $caller && ! in_array( $theme['theme_name'], $default_themes, true ) ) {
+				continue;
+			}
 			?>
 			<div class="theme-wrapper <?php echo esc_attr( $theme_name ); ?> theme <?php echo $theme_id == $saved_quiz_theme ? 'active' : ''; ?>">
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>" <?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
@@ -1187,8 +1192,12 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 					<div class="theme-actions">
 						<?php
 						$button = "";
-						if ( $saved_quiz_theme === $theme_id ) {
-							$button = '<a class="button button-primary qsm-customize-color-settings" href="javascript:void(0)">' . esc_html__( 'Customize', 'quiz-master-next' ) .' </a>';
+						if ( $saved_quiz_theme === $theme_id || 'qsm_theme_defaults' === $caller ) {
+							if ( 'qsm_theme_defaults' === $caller ) {
+								$button = '<a class="button button-primary qsm-customize-color-settings" data-modal-id="' . esc_attr( $theme_id ) . '" href="javascript:void(0)">' . esc_html__( 'Customize', 'quiz-master-next' ) .' </a>';
+							} else {
+								$button = '<a class="button button-primary qsm-customize-color-settings" href="javascript:void(0)">' . esc_html__( 'Customize', 'quiz-master-next' ) .' </a>';
+							}
 						}elseif ( 'wizard_theme_list' !== $wizard_theme_list ) {
 							$button = '<button class="button qsm-activate-theme"> ' . esc_html__( 'Activate', 'quiz-master-next' ) . '</button>';
 						}
@@ -1715,3 +1724,108 @@ function qsm_advanced_assessment_quiz_page_content() {
 	);
 	qsm_admin_upgrade_content( $args, 'page' );
 }
+
+function qsm_create_theme_defaults_tab() {
+	global $mlwQuizMasterNext, $wpdb;
+    $themes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_themes", ARRAY_A );
+	if ( empty( $themes ) ) {
+		return;
+	}
+    ?>
+	<a href="?page=qmn_global_settings&tab=qsm-theme-defaults" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'qsm-theme-defaults' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Theme Defaults', 'quiz-master-next' ); ?></a>
+    <?php
+}
+add_action( 'qsm_global_settings_page_add_tab_after', 'qsm_create_theme_defaults_tab' );
+
+/**
+ * Generates the content for the theme defaults tab in the global settings page.
+ * 
+ * This function handles the saving of theme default settings and displays the theme settings form popup.
+ * If the save settings form is submitted, it updates the theme default settings in the database.
+ * It also displays a list of installed themes with their default settings, allowing the admin to modify them.
+ */
+function qsm_create_theme_defaults_tab_content() {
+    global $mlwQuizMasterNext, $wpdb;
+
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'wp-color-picker' );
+
+    if ( isset( $_POST['save_theme_default_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_default_settings_nonce'] ) ), 'save_theme_default_settings' ) ) {
+        unset( $_POST['save_theme_default_settings_nonce'] );
+        unset( $_POST['_wp_http_referer'] );
+        $settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) );
+        $theme_id = sanitize_text_field( wp_unslash( $_POST['qsm_theme_id'] ) );
+        $results = $wpdb->update(
+            $wpdb->prefix . 'mlw_themes',
+            array(
+                'default_settings' => serialize( $settings_array ),
+            ),
+            array(
+                'id' => $theme_id,
+            ),
+            array('%s'),
+            array('%d')
+        );
+        $mlwQuizMasterNext->alertManager->newAlert(
+            __( 'The theme default settings saved successfully.', 'quiz-master-next' ),
+            'success'
+        );
+        $mlwQuizMasterNext->audit_manager->new_audit( "Default theme settings have been saved", '', '' );
+    }
+
+    if ( ! empty( $_GET['tab'] ) && 'qsm-theme-defaults' === $_GET['tab'] ) {
+        $themes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_themes", ARRAY_A );
+        ?>
+        <div class="theme-browser qsm-global-settings-theme-browser">
+            <div class="themes wp-clearfix">
+                <?php
+                qsm_get_installed_theme( 0, '', 'qsm_theme_defaults' );
+                ?>
+            </div>
+        </div>
+        <?php
+        if ( ! empty( $themes ) ) {
+            foreach ( $themes as $theme ) {
+				$default_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
+				if ( ! in_array( $theme['theme_name'], $default_themes, true ) ) {
+					continue;
+				}
+                ?>
+                <div class="qsm-popup qsm-popup-slide qsm-theme-color-settings qsm-theme-color-settings-<?php echo esc_attr( $theme['id'] ); ?>" id="qsm-theme-color-settings-<?php echo esc_attr( $theme['id'] ); ?>" aria-hidden="true">
+                    <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+                        <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+                            <form action="" method="post" class="qsm-theme-settings-frm">
+                                <header class="qsm-popup__header">
+                                    <h2 class="qsm-popup__title" id="modal-2-title">
+                                        <?php esc_html_e( 'Theme Settings', 'quiz-master-next' ); ?>
+                                    </h2>
+                                    <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+                                </header>
+                                <main class="qsm-popup__content" id="theme-color-settings-content">
+                                    <?php wp_nonce_field( 'save_theme_default_settings', 'save_theme_default_settings_nonce' ); ?>
+                                    <table class="form-table" style="width: 100%;">
+                                        <?php
+                                        $get_theme_default_settings = maybe_unserialize( $theme['default_settings'] );
+                                        ?>
+                                    </table>
+                                	<?php do_action( 'qsm_theme_option_' . strtolower( $theme['theme_name'] ), '', '', $get_theme_default_settings, $get_theme_default_settings ); ?>
+                                    <input type="hidden" name="qsm_theme_id" value="<?php echo esc_attr( $theme['id'] ); ?>">
+                                </main>
+                                <footer class="qsm-popup__footer">
+                                    <button type="submit" id="qsm-save-theme-settings"
+                                        class="button button-primary"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
+                                    <button class="button" data-micromodal-close
+                                        aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+                                </footer>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+        ?>
+        <?php
+    }
+}
+add_action( 'qsm_global_settings_page_added_tab_content', 'qsm_create_theme_defaults_tab_content' );
