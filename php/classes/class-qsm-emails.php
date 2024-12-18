@@ -173,7 +173,7 @@ class QSM_Emails {
 		if ( 0 == $email_send && ! empty( $default_email_content ) ) {
 			self::send_results_email( $response_data, $default_email_to, $default_email_subject, $default_email_content, $default_email_reply_to, $default_index );
 		}
-
+		delete_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'] );
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 	}
 
@@ -266,13 +266,25 @@ class QSM_Emails {
 			$attachments = apply_filters( 'qsm_admin_email_attachments', $attachments, $response_data );
 		}
 
+		$quiz_options = maybe_unserialize( $response_data['quiz_settings']['quiz_options'] );
+		// Check if email has already been sent to the user for this quiz
+		if ( isset( $quiz_options['check_already_sent_email'] ) && 1 == $quiz_options['check_already_sent_email'] ) {
+			$already_sent_emails = get_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'] );
+		}
+		$already_sent_emails = ! empty( $already_sent_emails ) ? $already_sent_emails : array();
+
 		// Cycle through each to email address and send the email.
 		foreach ( $to_array as $to_email ) {
-			if ( is_email( $to_email ) ) {
+			if ( is_email( $to_email ) && ! in_array( $to_email, $already_sent_emails ) ) {
 				$mailResult = wp_mail( $to_email, $subject, $content, $headers, $attachments );
 				if ( $mailResult ) {
 					do_action( 'qsm_after_sending_email', $response_data, $to_email, $subject );
-				}else {
+					// Add the email to the list of already sent emails for this quiz
+					if ( isset( $quiz_options['check_already_sent_email'] ) && 1 == $quiz_options['check_already_sent_email'] ) {
+						$already_sent_emails[] = $to_email;
+						set_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'], $already_sent_emails, 3600 );
+					}
+				} else {
 					$mlwQuizMasterNext->log_manager->add( 'There has been an error in wp_mail. Please check SMTP details mail not sending. Error Code: 0001', 0, 'error' );
 				}
 			}
