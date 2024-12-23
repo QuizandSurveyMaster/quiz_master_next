@@ -1509,6 +1509,7 @@ class QMNQuizManager {
 					if ( 0 == $qmn_quiz_options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 					}
+					do_action( 'qsm_after_begin_message', $qmn_quiz_options, $qmn_array_for_variables );
 					?>
 				</div>
 			<?php
