@@ -1495,7 +1495,7 @@ var QSMContact;
                         required: field.find('.qsm-required-control').prop('checked'),
                         hide_label: field.find('.qsm-hide-label-control').prop('checked'),
                         use_default_option: field.find('.qsm-use-default-control').prop('checked'),
-                        use: field.find('.use-control').val(),
+                        use: field.find('.use-control').val() || field.find('.label-control').val().toLowerCase(),
                         enable: field.find('.enable-control').prop('checked'),
                     };
                     /**
