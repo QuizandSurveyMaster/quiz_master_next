@@ -739,6 +739,7 @@ class QMNQuizManager {
 					'total_questions'        => $result_data['total'],
 					'question_answers_array' => $quiz_result[1],
 					'comments'               => '',
+					'result_id' 			 => $id,
 					'total_possible_points'    => $quiz_result['total_possible_points'],
 					'minimum_possible_points'  => $quiz_result['minimum_possible_points'],
 					'total_attempted_questions' => $quiz_result['total_attempted_questions'],
