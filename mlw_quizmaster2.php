@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.2.3
+ * Version: 9.3.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.2.3';
+	public $version = '9.3.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -390,7 +390,7 @@ class MLWQuizMasterNext {
 	 * @since 7.3.5 admin scripts consolidated
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
-		global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext, $wpdb;
 
 		// admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
@@ -484,6 +484,7 @@ class MLWQuizMasterNext {
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 		$qsm_variables = function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : array();
 		$qsm_variables_name = array();
+		$qsm_quizzes = $wpdb->get_results("SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes");
 		foreach ( $qsm_variables as $key => $value ) {
 			// Iterate over each key of the nested object
 			if ( is_array( $value ) && ! empty($value) ) {
@@ -528,7 +529,11 @@ class MLWQuizMasterNext {
 			'question_created'           => __('Question created!', 'quiz-master-next'),
 			'new_question'               => __('Your new question!', 'quiz-master-next'),
 			'creating_question'          => __('Creating question...', 'quiz-master-next'),
+			'unlink_question'            => __('Unlink', 'quiz-master-next'),
 			'duplicating_question'       => __('Duplicating question...', 'quiz-master-next'),
+			'linking_question'           => __('Linking...', 'quiz-master-next'),
+			'link_question'              => __('Link', 'quiz-master-next'),
+			'creating_question'          => __('Creating question...', 'quiz-master-next'),
 			'saving_question'            => __('Saving question...', 'quiz-master-next'),
 			'question_saved'             => __('Question was saved!', 'quiz-master-next'),
 			'load_more_quetions'         => __('Load more questions', 'quiz-master-next'),
@@ -578,6 +583,9 @@ class MLWQuizMasterNext {
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 			'select_all'                 => __("Select All", 'quiz-master-next'),
 			'select'                     => __("Select", 'quiz-master-next'),
+			'qsmQuizzesObject'           => $qsm_quizzes,
+			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
+			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );

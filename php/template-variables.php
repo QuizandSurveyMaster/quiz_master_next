@@ -312,6 +312,14 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "');\"><img src='" . $tw_image . "' alt='" . __( 'Twitter Share', 'quiz-master-next' ) . "' /></a>";
 		$content        = str_replace( '%TWITTER_SHARE%', $social_display, $content );
 	}
+	if ( false !== strpos( $content, '%LINKEDIN_SHARE%' ) ) {
+		$ln_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/linkedin.png';
+		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'linkedin_sharing_text', '%QUIZ_NAME%' );
+		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_linkedin_sharing_text-{$mlw_quiz_array['quiz_id']}" );
+		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('linkedin', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "', '', '$page_link');\"><img src='" . $ln_image . "' alt='" . __( 'Linkedin Share', 'quiz-master-next' ) . "' /></a>";
+		$content        = str_replace( '%LINKEDIN_SHARE%', $social_display, $content );
+	}
 	return $content;
 }
 
@@ -386,13 +394,20 @@ function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_total_questions( $content, $mlw_quiz_array ) {
 	global $wp_current_filter;
-	if ( ! empty( $wp_current_filter[1] ) && 'mlw_qmn_template_variable_quiz_page' == $wp_current_filter[1] ) {
+	if ( is_array( $wp_current_filter ) && ! empty( $wp_current_filter ) && in_array( 'mlw_qmn_template_variable_quiz_page', $wp_current_filter, true ) ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mlw_quizzes';
 		$quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$quiz_settings = maybe_unserialize($quiz_data->quiz_settings);
 		$quiz_questions = ! empty( $quiz_settings['pages'] ) ? maybe_unserialize( $quiz_settings['pages'] ) : array();
-		$total_questions = isset( $quiz_questions[0] ) ? count( $quiz_questions[0] ) : 0;
+		$total_questions = 0;
+		if ( ! empty( $quiz_questions ) && isset( $quiz_questions[0] ) ) {
+			foreach ( $quiz_questions as $sub_questions ) {
+				if ( is_array( $sub_questions ) ) {
+					$total_questions += count( $sub_questions );
+				}
+			}
+		}
 		$content = str_replace( '%TOTAL_QUESTIONS%', $total_questions, $content );
 		return $content;
 	}
@@ -494,23 +509,23 @@ function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
  * @return string The HTML for the content
  */
 function qsm_contact_field_variable( $content, $results_array ) {
-	preg_match_all( '~%CONTACT_(.*?)%~i', $content, $matches );
-	for ( $i = 0; $i < count( $matches[0] ); $i++ ) {
-		$contact_key = $matches[1][ $i ];
-		if ( is_numeric( $contact_key ) && intval( $contact_key ) > 0 ) {
-			$contact_index = intval( $contact_key ) - 1;
-
-			if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
-				$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
+		preg_match_all( '~%CONTACT_(.*?)%~i', $content, $matches );
+		for ( $i = 0; $i < count( $matches[0] ); $i++ ) {
+			$contact_key = $matches[1][ $i ];
+			if ( is_numeric( $contact_key ) && intval( $contact_key ) > 0 ) {
+				$contact_index = intval( $contact_key ) - 1;
+				
+				if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
+					$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
+				} else {
+					$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
+				}
 			} else {
 				$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
 			}
-		} else {
-			$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
 		}
+		return $content;
 	}
-	return $content;
-}
 
 /**
  * Returns user values for all contact fields
@@ -525,12 +540,14 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	$return = '';
 	if ( isset( $results['contact'] ) && ( is_array( $results['contact'] ) || is_object( $results['contact'] ) ) ) {
 		foreach ( $results['contact'] as $results_contact ) {
-			$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
-			$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
-			$hasOptions = ! empty(trim($options));
+			if ( isset( $results_contact['label'] ) && isset( $results_contact['type'] ) && isset( $results_contact['value'] ) ) {
+				$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
+				$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
+				$hasOptions = ! empty(trim($options));
 
-			if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
-				$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
+				if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
+					$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';
+				}
 			}
 		}
 	}
