@@ -720,27 +720,30 @@ class QMNQuizManager {
 				wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
 				$response_data = array(
-					'quiz_id'                => $result_data['quiz_id'],
-					'quiz_name'              => $result_data['quiz_name'],
-					'quiz_system'            => $result_data['quiz_system'],
-					'form_type'              => $result_data['form_type'],
-					'quiz_payment_id'        => '',
-					'user_ip'                => $result_data['user_ip'],
-					'user_name'              => $result_data['name'],
-					'user_business'          => $result_data['business'],
-					'user_email'             => $result_data['email'],
-					'user_phone'             => $result_data['phone'],
-					'user_id'                => $result_data['user'],
-					'timer'                  => 0,
-					'time_taken'             => $result_data['time_taken'],
-					'contact'                => $quiz_result['contact'],
-					'total_points'           => $result_data['point_score'],
-					'total_score'            => $result_data['correct_score'],
-					'total_correct'          => $result_data['correct'],
-					'total_questions'        => $result_data['total'],
-					'question_answers_array' => $quiz_result[1],
-					'comments'               => '',
-					'result_id'              => $id,
+					'quiz_id'                   => $result_data['quiz_id'],
+					'quiz_name'                 => $result_data['quiz_name'],
+					'quiz_system'               => $result_data['quiz_system'],
+					'form_type'                 => $result_data['form_type'],
+					'quiz_payment_id'           => '',
+					'user_ip'                   => $result_data['user_ip'],
+					'user_name'                 => $result_data['name'],
+					'user_business'             => $result_data['business'],
+					'user_email'                => $result_data['email'],
+					'user_phone'                => $result_data['phone'],
+					'user_id'                   => $result_data['user'],
+					'timer'                     => 0,
+					'time_taken'                => $result_data['time_taken'],
+					'contact'                   => $quiz_result['contact'],
+					'total_points'              => $result_data['point_score'],
+					'total_score'               => $result_data['correct_score'],
+					'total_correct'             => $result_data['correct'],
+					'total_questions'           => $result_data['total'],
+					'question_answers_array'    => $quiz_result[1],
+					'comments'                  => '',
+					'result_id'                 => $id,
+					'total_possible_points'     => $quiz_result['total_possible_points'],
+					'minimum_possible_points'   => $quiz_result['minimum_possible_points'],
+					'total_attempted_questions' => $quiz_result['total_attempted_questions'],
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
 				return $data['display'];
@@ -926,7 +929,6 @@ class QMNQuizManager {
 						$question_sql = implode( ',', $question_ids );
 					}
 				}else {
-					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
 					$question_sql = implode( ',', $question_ids );
 				}
@@ -1502,13 +1504,22 @@ class QMNQuizManager {
 				?>
 				<div class='mlw_qmn_message_before'>
 					<?php
-					echo wp_kses_post( do_shortcode( $editor_text ) );
+					$allowed_html = wp_kses_allowed_html('post');
+					$allowed_html['input'] = array(
+						'type'  => array(),
+						'name'  => array(),
+						'value' => array(),
+						'class' => array(), // Optional: Allow the class attribute
+						'id'    => array(), // Optional: Allow the id attribute
+					);
+					echo wp_kses( do_shortcode( $editor_text ), $allowed_html );
 					?>
 				</div>
 					<?php
 					if ( 0 == $qmn_quiz_options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 					}
+					do_action( 'qsm_after_begin_message', $qmn_quiz_options, $qmn_array_for_variables );
 					?>
 				</div>
 			<?php

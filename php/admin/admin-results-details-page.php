@@ -196,7 +196,9 @@ function qsm_generate_results_details_tab() {
 
             //Timer design
             $template .= '<div class="overview-inner-wrap">';
-            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('Time Taken','quiz-master-next').'</span></h2>';
+            $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>'.__('Time Taken','quiz-master-next').'</span>';
+            $template .= apply_filters( 'qsm_admin_results_details_timer_after', '', $mlw_qmn_results_array );
+            $template .= '</h2>';
             $template .= '<div class="inside">';
             $template .= '<div class="timer-div-wrapper">';
 
