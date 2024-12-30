@@ -1288,6 +1288,7 @@ function qmnUpdatePageNumber(amount, quiz_form_id) {
 }
 
 function qmnInitPagination(quiz_id) {
+	jQuery(document).trigger('qsm_init_pagination_before', [quiz_id, qmn_quiz_data]);
 	var qmn_section_total = +qmn_quiz_data[quiz_id].pagination.total_questions;
 	var qmn_total_questions = jQuery('#quizForm' + quiz_id).find('#qmn_all_questions_count').val();
 	var qmn_total_pages = Math.ceil(qmn_total_questions / +qmn_quiz_data[quiz_id].pagination.amount);
