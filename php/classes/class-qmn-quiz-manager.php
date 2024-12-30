@@ -1488,7 +1488,15 @@ class QMNQuizManager {
 				?>
 				<div class='mlw_qmn_message_before'>
 					<?php
-					echo wp_kses_post( do_shortcode( $editor_text ) );
+					$allowed_html = wp_kses_allowed_html('post');
+					$allowed_html['input'] = array(
+						'type'  => array(),
+						'name'  => array(),
+						'value' => array(),
+						'class' => array(), // Optional: Allow the class attribute
+						'id'    => array(), // Optional: Allow the id attribute
+					);
+					echo wp_kses( do_shortcode( $editor_text ), $allowed_html );
 					?>
 				</div>
 					<?php
