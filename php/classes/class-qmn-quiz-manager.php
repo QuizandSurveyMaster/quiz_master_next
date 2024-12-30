@@ -1129,6 +1129,29 @@ class QMNQuizManager {
 		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
 		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
+			// Get quiz post based on quiz id
+			$args      = array(
+				'posts_per_page' => 1,
+				'post_type'      => 'qsm_quiz',
+				'meta_query'     => array(
+					array(
+						'key'     => 'quiz_id',
+						'value'   => $quiz_data['quiz_id'],
+						'compare' => '=',
+					),
+				),
+			);
+			$the_query = new WP_Query( $args );
+
+			// The Loop
+			if ( $the_query->have_posts() ) {
+				while ( $the_query->have_posts() ) {
+					$the_query->the_post();
+					echo get_the_post_thumbnail( get_the_ID(), 'full' );
+				}
+				/* Restore original Post Data */
+				wp_reset_postdata();
+			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
 			$quiz_form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			?>
