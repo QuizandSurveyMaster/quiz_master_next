@@ -1288,6 +1288,7 @@ function qmnUpdatePageNumber(amount, quiz_form_id) {
 }
 
 function qmnInitPagination(quiz_id) {
+	jQuery(document).trigger('qsm_init_pagination_before', [quiz_id, qmn_quiz_data]);
 	var qmn_section_total = +qmn_quiz_data[quiz_id].pagination.total_questions;
 	var qmn_total_questions = jQuery('#quizForm' + quiz_id).find('#qmn_all_questions_count').val();
 	var qmn_total_pages = Math.ceil(qmn_total_questions / +qmn_quiz_data[quiz_id].pagination.amount);
@@ -1883,16 +1884,16 @@ jQuery(document).ready(function () {
 		}
 		var captchaCanvas = document.getElementById('mlw_captcha');
         var mlw_captchaCTX = captchaCanvas.getContext('2d');
-        var containerDirection = window.getComputedStyle(captchaCanvas).direction || 'ltr'; 
+        var containerDirection = window.getComputedStyle(captchaCanvas).direction || 'ltr';
         mlw_captchaCTX.font = 'normal 24px Verdana';
         mlw_captchaCTX.strokeStyle = '#000000';
         mlw_captchaCTX.clearRect(0, 0, captchaCanvas.width, captchaCanvas.height);
         if (containerDirection === 'rtl') {
             mlw_captchaCTX.textAlign = 'right';
-            mlw_captchaCTX.strokeText(mlw_code, captchaCanvas.width - 10, captchaCanvas.height / 2); 
+            mlw_captchaCTX.strokeText(mlw_code, captchaCanvas.width - 10, captchaCanvas.height / 2);
         } else {
             mlw_captchaCTX.textAlign = 'left';
-            mlw_captchaCTX.strokeText(mlw_code, 10, captchaCanvas.height / 2); 
+            mlw_captchaCTX.strokeText(mlw_code, 10, captchaCanvas.height / 2);
         }
         document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
