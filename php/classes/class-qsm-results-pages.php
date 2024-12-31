@@ -370,11 +370,11 @@ class QSM_Results_Pages {
 			// Sanitize template data
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
 				$pages[ $i ]['page'] = preg_replace_callback(
-						'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
-						function( $matches ) {
-							return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
-						},
-						$pages[ $i ]['page']
+					'/(?:<|&lt;)qsmvariabletag(?:>|&gt;)([^<]+)(?:<\/|&lt;\/)qsmvariabletag(?:>|&gt;)/u',
+					function( $matches ) {
+						return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
+					},
+					$pages[ $i ]['page']
 				);
 				$pages[ $i ]['page'] = preg_replace_callback(
 					'/<qsmextrashortcodetag>([^<]+)<\/qsmextrashortcodetag>/u',

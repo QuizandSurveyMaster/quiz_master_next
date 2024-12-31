@@ -28,14 +28,16 @@ add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
 function qsm_options_results_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-
-	$template_from_script = wp_remote_get( QSM_PLUGIN_URL . 'data/templates.json', [ 'sslverify' => false ] );
-	$template_from_script = json_decode( wp_remote_retrieve_body( $template_from_script ), true );
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '';
 	$user_id = get_current_user_id();
+	$template_from_script = wp_remote_get( QSM_PLUGIN_URL . 'data/templates.json', [ 'sslverify' => false ] );
+	$template_from_script = json_decode( wp_remote_retrieve_body( $template_from_script ), true );
+	$template_from_script = apply_filters( 'qsm_result_templates_list_before', $template_from_script, $quiz_id );
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='result'";
 	$my_result_templates = $wpdb->get_results($temlpate_sql);
+	
+	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 
 	$js_data = array(
 		'quizID'            => $quiz_id,
@@ -45,6 +47,7 @@ function qsm_options_results_tab_content() {
 		'script_tmpl'       => $template_from_script,
 		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
 		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
+		'dependency'        => $qsm_dependency_list,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
 	do_action( 'qsm_options_results_tab_content_before' );
@@ -52,6 +55,7 @@ function qsm_options_results_tab_content() {
 
 <!-- Results Page Section -->
 <section class="qsm-quiz-result-tab" style="margin-top: 15px;">
+<div class="qsm-response-toaster" id="qsm-response-toaster"></div>
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
@@ -229,33 +233,60 @@ function qsm_options_results_tab_template(){
 					<div class="qsm-template-btn-group">
 						<div class="qsm-actions-link-box">
 							<?php do_action( 'qsm_add_action_links_before' ); ?>
-							<a href="javascript:void(0)" class="qsm-delete-result-button">
-								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/>
-							</a>
-							<a href="javascript:void(0)" class="qsm-settings-box-result-button">
+							<a href="javascript:void(0)" class="qsm-settings-box-result-button" title="<?php echo esc_attr( 'Quick Settings', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/>
 							</a>
-							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button">
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button" title="<?php echo esc_attr( 'Duplicate Page', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/>
 							</a>
-							<a href="javascript:void(0)" data-template-type="result" class="qsm-insert-page-template-anchor">
+							<a href="javascript:void(0)" data-template-type="result" class="qsm-insert-page-template-anchor" title="<?php echo esc_attr( 'Add Template', 'quiz-master-next' ); ?>" >
 								<div class="qsm-insert-template-wrap">
+									<div class="qsm-insert-template-options">
+										<label>
+											<input type="radio" name="qsm-template-action" value="new" class="qsm-insert-template-action" checked="checked">
+											<?php esc_attr_e( 'New', 'quiz-master-next' ); ?>
+										</label>
+										<label>
+											<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action"> 
+											<?php esc_attr_e( 'Replace', 'quiz-master-next' ); ?>
+										</label>
+									</div>
 									<div class="qsm-insert-template-container">
 										<div class="qsm-insert-template-left">
-											<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text" class="qsm-insert-page-template-title">
-											<span class="qsm-insert-template-response"></span>
+											<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text" id="qsm-insert-page-template-title-{{data.id}}" class="qsm-insert-page-template-title">
+											<div style="display: none;" class="qsm-to-replace-page-template-wrap">
+												<select class="qsm-to-replace-page-template"></select>
+											</div>
+											<div class="qsm-insert-template-response"></div>
 										</div>
 										<div class="qsm-insert-template-right">
-											<button data-id="{{data.id}}" class="qsm-insert-page-template-button button"><?php esc_attr_e( 'Add', 'quiz-master-next' ); ?></button>
+											<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_attr_e( 'Save', 'quiz-master-next' ); ?></button>
 										</div>
 									</div>
 								</div>
-								<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/add-large-fill.svg'); ?>" alt="add-large-fill.svg"/>
+								<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/save-3-line.svg'); ?>" alt="save-3-line.svg"/>
 							</a>
-							<a href="javascript:void(0)" class="qsm-toggle-result-page-button">
-								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
+							<a href="javascript:void(0)" class="qsm-more-settings-box-result-button" title="<?php echo esc_attr( 'More Options', 'quiz-master-next' ); ?>" >
+								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/more-2-fill.svg'); ?>" alt="more-2-fill.svg"/>
 							</a>
 						</div> <!-- Closing qsm-actions-link-box -->
+						<div class="qsm-actions-link-box qsm-toggle-action-wrapper">
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button" title="<?php echo esc_attr( 'Toggle', 'quiz-master-next' ); ?>" >
+								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
+							</a>
+						</div> 
+						<div class="qsm-more-settings-box-details">
+							<?php do_action( 'qsm_result_page_more_settings_box_before' ); ?>
+							<a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list" title="<?php echo esc_attr( 'Change Template', 'quiz-master-next' ); ?>" >
+							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/refresh-line.svg'); ?>" alt="refresh-line.svg"/>
+							<span><?php esc_html_e( 'Change Template', 'quiz-master-next' ); ?></span>
+							</a>
+							<a href="javascript:void(0)" class="qsm-delete-result-button" title="<?php echo esc_attr( 'Delete Page', 'quiz-master-next' ); ?>" >
+							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/><span><?php esc_html_e( 'Delete Page ', 'quiz-master-next' ); ?></span>
+							</a>
+							<?php do_action( 'qsm_result_page_more_settings_box_after' ); ?>
+						</div>	
+						
 						<div class="qsm-settings-box-details">
 							<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
 							<label class="qsm-template-mark-as-default">
@@ -270,7 +301,7 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When..', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Condition for displaying result', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'Following conditions are met', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
@@ -289,7 +320,7 @@ function qsm_options_results_tab_template(){
 								<label for="qsm-then-show-result-{{ data.id }}"><?php esc_html_e( 'Show following page', 'quiz-master-next' ); ?></label>
 							</div>
 							<div class="qsm-edit-result-input-option">
-								<input type="radio" name="qsm_then_show_result_option_{{ data.id }}" id="qsm-then-redirect-to-url-{{ data.id }}" class="qsm-then-redirect-to-url"  value="2">
+								<input placeholder="<?php esc_attr_e( 'http://example.com/', 'quiz-master-next' ); ?>" type="radio" name="qsm_then_show_result_option_{{ data.id }}" id="qsm-then-redirect-to-url-{{ data.id }}" class="qsm-then-redirect-to-url"  value="2">
 								<label for="qsm-then-redirect-to-url-{{ data.id }}"><?php esc_html_e( 'Redirect URL', 'quiz-master-next' ); ?></label>
 							</div>
 						</div>
@@ -309,7 +340,7 @@ function qsm_options_results_tab_template(){
 								do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
 								qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); 
 							?>
-							<a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a>
+							<!-- <a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a> -->
 							<textarea id="results-page-{{ data.id }}" class="results-page-template">
 							{{{ data.page.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
 								let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
@@ -344,7 +375,7 @@ function qsm_options_results_tab_template(){
 						</div>
 						<div class="qsm-result-page-redirect-options qsm-result-page-then-box-styles">
 							<p class="qsm-result-redirect-text"><?php esc_html_e( 'Redirecting the user by entering the URL below:', 'quiz-master-next' ); ?></p>
-							<input type="text" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
+							<input type="text"  placeholder="<?php esc_attr_e( 'http://example.com/', 'quiz-master-next' ); ?>" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
 						</div>
 						<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
 							<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>

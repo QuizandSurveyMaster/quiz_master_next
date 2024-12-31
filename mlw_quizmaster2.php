@@ -470,6 +470,18 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-effects-explode' );
 					wp_enqueue_media();
 					break;
+				case 'results-pages':
+					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
+					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+					break;
+				case 'emails':
+					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
+					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+					break;
 				default:
 					wp_enqueue_editor();
 					wp_enqueue_media();
@@ -573,7 +585,7 @@ class MLWQuizMasterNext {
 			),
 			'select_category'            => __("Select Category", 'quiz-master-next'),
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
-			'add_more'                   => __("Add", 'quiz-master-next'),
+			'add_more'                   => __("Save", 'quiz-master-next'),
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
 			'qsm_variables'              => $qsm_variables,
 			'qsm_variables_name'         => $qsm_variables_name,
@@ -586,12 +598,19 @@ class MLWQuizMasterNext {
 			'qsmQuizzesObject'           => $qsm_quizzes,
 			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
 			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
-			'add_process'                => __('Adding...', 'quiz-master-next'),
+			'add_process'                => __('Saving..', 'quiz-master-next'),
 			'empty_template_name'        => __('Template name cannot be empty.', 'quiz-master-next'),
+			'no_template_selected'       => __('Please selecte a template.', 'quiz-master-next'),
 			'empty_template_content'     => __('Template content cannot be empty.', 'quiz-master-next'),
 			'template_added'             => __('Template added successfully!', 'quiz-master-next'),
+			'template_updated'           => __('Template replaced successfully!', 'quiz-master-next'),
 			'template_save_error'        => __('There was an error when saving the template.', 'quiz-master-next'),
-			'confirmDeleteText'          => esc_html__( 'Are you sure you want to delete this template?', 'quiz-master-next' ),
+			'confirmDeleteTemplate'      => esc_html__( 'Are you sure you want to delete this template?', 'quiz-master-next' ),
+			'confirmRemovePage'          => esc_html__( 'Are you sure you want to remove this page?', 'quiz-master-next' ),
+			'confirmReplaceTemplate'     => esc_html__( 'This will replace your current template. Continue?', 'quiz-master-next' ),
+			'select_template'            => __('Select Template', 'quiz-master-next'),
+			'required_addons'            => __('Required Add-ons', 'quiz-master-next'),
+			'used_addons'                => __('Used Add-ons', 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
