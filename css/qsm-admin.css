@@ -3657,9 +3657,9 @@ input#duplicate_questions {
 }
 img.qsm-result-page-template-card-image,
 img.qsm-email-page-template-card-image {
-    position: absolute;
-    max-width: calc(100% - 15px);
-    max-height: calc(100% - 15px);
+	position: absolute;
+    max-width: calc(100% - 10px);
+    top: 5px;
 }
 .qsm-result-page-template-card-content:hover::before,
 .qsm-email-page-template-card-content:hover::before {
