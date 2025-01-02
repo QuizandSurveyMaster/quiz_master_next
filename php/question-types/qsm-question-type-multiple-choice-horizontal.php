@@ -25,6 +25,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	if ( 0 == $required ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
+	$answers = apply_filters( 'qsm_horizontal_multiple_choice_display_before', $answers, $id, $question );
 	$mlw_class = apply_filters( 'qsm_horizontal_multiple_choice_classes', $mlw_class, $id );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );

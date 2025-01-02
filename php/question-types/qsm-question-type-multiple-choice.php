@@ -25,6 +25,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	if ( 0 == $required ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
+	$answers = apply_filters( 'qsm_multiple_choice_display_before', $answers, $id, $question );
 	$mlw_class = apply_filters( 'qsm_multiple_choice_classes', $mlw_class, $id );
 	// $question_title = apply_filters('the_content', $question);
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
