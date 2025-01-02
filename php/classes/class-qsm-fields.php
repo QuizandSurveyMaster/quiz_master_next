@@ -304,7 +304,7 @@ class QSM_Fields {
 				}
 			endif; ?>
 			<div class="option-page-option-tab-footer">
-				<div class="footer-bar-notice">
+				<div id="footer-bar-notice" class="footer-bar-notice">
 					<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
 				</div>
 				<div class="result-tab-footer-buttons">

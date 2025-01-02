@@ -7,6 +7,7 @@ var QSMAdminResultsAndEmail;
 (function ($) {
 
     QSMAdmin = {
+        toasterTimeout: null,
         /**
          * Catches an error from a jQuery function (i.e. $.ajax())
          */
@@ -27,26 +28,33 @@ var QSMAdminResultsAndEmail;
          */
         displayAlert: function (message, type) {
             QSMAdmin.clearAlerts();
-            var template = wp.template('notice');
-            var data = {
-                message: message,
-                type: type,
-                dismissible: true
-            };
-            $('.qsm-alerts').append(template(data));
-            $('.footer-bar-notice').append(template(data));
+            // var template = wp.template('notice');
+            // var data = {
+            //     message: message,
+            //     type: type,
+            //     dismissible: true
+            // };
+            // $('.qsm-alerts').append(template(data));
+            // $('.footer-bar-notice').append(template(data));
 
-            if ($('.footer-bar-notice').find('.notice-success').length > 0) {
-                $('.footer-bar-notice').css('color', 'green');
-            }
+            // if ($('.footer-bar-notice').find('.notice-success').length > 0) {
+            //     $('.footer-bar-notice').css('color', 'green');
+            // }
 
-            if ($('.footer-bar-notice').find('.notice-error').length > 0) {
-                $('.footer-bar-notice').css('color', 'red');
-            }
+            // if ($('.footer-bar-notice').find('.notice-error').length > 0) {
+            //     $('.footer-bar-notice').css('color', 'red');
+            // }
+
+            const $toaster = jQuery('#footer-bar-notice');
+            $toaster.text(message).removeClass().addClass(`footer-bar-notice qsm-response-${type} show`);
+            this.toasterTimeout = setTimeout(() => {
+                $toaster.removeClass('show');
+            }, 4000);
         },
         clearAlerts: function () {
             $('.qsm-alerts').empty();
-            $('.footer-bar-notice').empty();
+            // $('.footer-bar-notice').empty();
+            clearTimeout(this.toasterTimeout);
         },
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
@@ -68,18 +76,18 @@ var QSMAdminResultsAndEmail;
         });
 
         $(document).ready(function(){
-            if ($('.footer-bar-notice').find('.updated').length > 0) {
-                $('.footer-bar-notice').css('color', 'green');
-            }
+            // if ($('.footer-bar-notice').find('.updated').length > 0) {
+            //     $('.footer-bar-notice').css('color', 'green');
+            // }
 
-            if ($('.footer-bar-notice').find('.error').length > 0) {
-                $('.footer-bar-notice').css('color', 'red');
-            }
+            // if ($('.footer-bar-notice').find('.error').length > 0) {
+            //     $('.footer-bar-notice').css('color', 'red');
+            // }
         });
 
         $(document).on('click', '#close', function (e) {
             e.preventDefault();
-            $('.footer-bar-notice').empty();
+            // $('.footer-bar-notice').empty();
         });
 
         //show set global default potion popup
@@ -855,15 +863,6 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     }
     if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
         QSMAdminResultsAndEmail = {
-            toasterTimeout: null,
-            showToast: function(message, type) {
-                const $toaster = jQuery('#qsm-response-toaster');
-                clearTimeout(this.toasterTimeout);
-                $toaster.text(message).removeClass().addClass(`qsm-response-toaster qsm-response-${type} show`);
-                this.toasterTimeout = setTimeout(() => {
-                    $toaster.removeClass('show');
-                }, 4000);
-            },
             insertTemplate: async function (button, data) {
                 try { 
                     button.prop('disabled', true);
@@ -949,18 +948,18 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             
                 // Validation
                 if (isReplace && !selectedTemplateId) {
-                    QSMAdminResultsAndEmail.showToast(qsm_admin_messages.no_template_selected, 'error');
+                    QSMAdmin.displayAlert(qsm_admin_messages.no_template_selected, 'error');
                     return;
                 }
             
                 if (!isReplace && !templateName) { 
-                    QSMAdminResultsAndEmail.showToast(qsm_admin_messages.empty_template_name, 'error');
+                    QSMAdmin.displayAlert(qsm_admin_messages.empty_template_name, 'error');
                     return;
                 }
             
                 if (!templateContent) {
                     console.log(qsm_admin_messages.empty_template_content);
-                    QSMAdminResultsAndEmail.showToast(qsm_admin_messages.empty_template_content, 'error');
+                    QSMAdmin.displayAlert(qsm_admin_messages.empty_template_content, 'error');
                     return;
                 }
             
@@ -989,7 +988,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                     }
                                 });
                             }
-                            QSMAdminResultsAndEmail.showToast(qsm_admin_messages.template_updated, 'success');
+                            QSMAdmin.displayAlert(qsm_admin_messages.template_updated, 'success');
                         } else {
                             let response_data = response.data;
                             if (templateType == 'result') {
@@ -1003,13 +1002,13 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                                 response_data.indexid = qsmEmailsObject.my_tmpl_data.length == 0 ? 0 : qsmEmailsObject.my_tmpl_data.length - 1;
                                 QSMAdminResultsAndEmail.addTemplateRow(response_data);
                             }
-                            QSMAdminResultsAndEmail.showToast(qsm_admin_messages.template_added, 'success');
+                            QSMAdmin.displayAlert(qsm_admin_messages.template_added, 'success');
                             templateWrap.find('.qsm-insert-page-template-title').val('');
                         }
                     }
                 } catch (error) {
                     console.error('An error occurred during template saving:', error.message);
-                    QSMAdminResultsAndEmail.showToast(qsm_admin_messages.template_save_error, 'success');
+                    QSMAdmin.displayAlert(qsm_admin_messages.template_save_error, 'success');
                 }
             });
             
@@ -1830,7 +1829,7 @@ var QSMContact;
                     return fieldArray;
                 },
                 save: function () {
-                    QSMContact.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
+                    QSMAdmin.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
                     let contactFields = $('.qsm-contact-form-field');
                     var contactForm = [];
                     var contactEach;
@@ -1863,9 +1862,9 @@ var QSMContact;
                 },
                 saved: function (response) {
                     if (response.status) {
-                        QSMContact.displayAlert('<strong>' + qsm_admin_messages.success + '</strong> ' + qsm_admin_messages.contact_fields_saved, 'success');
+                        QSMAdmin.displayAlert(qsm_admin_messages.contact_fields_saved, 'success');
                     } else {
-                        QSMContact.displayAlert('<strong>' + qsm_admin_messages.error + '</strong> ' + qsm_admin_messages.contact_fields_save_error + ' ' + qsm_admin_messages.try_again, 'error');
+                        QSMAdmin.displayAlert(qsm_admin_messages.contact_fields_save_error + ' ' + qsm_admin_messages.try_again, 'error');
                     }
                 },
                 displayAlert: function (message, type) {

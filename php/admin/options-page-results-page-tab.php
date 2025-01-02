@@ -55,13 +55,13 @@ function qsm_options_results_tab_content() {
 
 <!-- Results Page Section -->
 <section class="qsm-quiz-result-tab" style="margin-top: 15px;">
-<div class="qsm-response-toaster" id="qsm-response-toaster"></div>
+<!-- <div class="qsm-response-toaster" id="qsm-response-toaster"></div> -->
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
 	<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
 	<div class="option-page-result-page-tab-footer">
-		<div class="footer-bar-notice"></div>
+		<div id="footer-bar-notice" class="footer-bar-notice"></div>
 		<div class="result-tab-footer-buttons">
 			<a class="button-secondary qsm-show-all-variable-text qsm-common-button-styles" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
 			<button class="save-pages button-primary qsm-common-button-styles"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>

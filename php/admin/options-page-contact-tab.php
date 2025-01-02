@@ -145,7 +145,7 @@ function qsm_options_contact_tab_content() {
 		</table>
 	</div>
 	<div class="contact-page-tab-footer">
-		<div class="footer-bar-notice"></div>
+		<div id="footer-bar-notice" class="footer-bar-notice"></div>
     	<a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Form', 'quiz-master-next' ); ?></a>
 	</div>
 	<?php
