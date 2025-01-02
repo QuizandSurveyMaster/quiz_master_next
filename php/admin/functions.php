@@ -1763,8 +1763,8 @@ function qsm_create_theme_defaults_tab_content() {
             array(
                 'id' => $theme_id,
             ),
-            array('%s'),
-            array('%d')
+            array( '%s' ),
+            array( '%d' )
         );
         $mlwQuizMasterNext->alertManager->newAlert(
             __( 'The theme default settings saved successfully.', 'quiz-master-next' ),
