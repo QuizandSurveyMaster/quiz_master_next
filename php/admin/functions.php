@@ -669,54 +669,25 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 				'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 			),
-			'enable_contact_form'                    => array(
-				'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
-				'value'       => 0,
-				'type'        => 'radio',
-				'options'     => array(
-					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
-						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
-				),
-			),
-			'timer_limit'                            => array(
-				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['timer_limit'],
-				'type'        => 'number',
-				'default'     => 0,
-				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
-			),
-			'pagination'                             => array(
-				'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['pagination'],
-				'type'        => 'number',
-				'default'     => 0,
-				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
-			),
-			'enable_pagination_quiz'                 => array(
-				'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['enable_pagination_quiz'],
-				'options'     => array(
-					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
-						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
-				),
-				'default'     => 0,
-			),
 			'show_question_featured_image_in_result' => array(
 				'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
 				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+			),
+			'enable_pagination_quiz'                 => array(
+				'option_name' => __( 'Show current page number', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['enable_pagination_quiz'],
 				'options'     => array(
 					array(
 						'label' => __( 'Yes', 'quiz-master-next' ),
@@ -744,6 +715,52 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 				'default'     => 0,
+			),
+			'comment_section'                        => array(
+				'option_name' => __( 'Allow users to post comments at the end of the form type', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['comment_section'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 0,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 1,
+					),
+				),
+				'default'     => 1,
+				'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
+			),
+			'timer_limit'                            => array(
+				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['timer_limit'],
+				'type'        => 'number',
+				'default'     => 0,
+				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
+			),
+			'pagination'                             => array(
+				'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['pagination'],
+				'type'        => 'number',
+				'default'     => 0,
+				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
+			),
+			'enable_contact_form'                    => array(
+				'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+				'value'       => 0,
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
 			),
 			'require_log_in'                         => array(
 				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
@@ -777,24 +794,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 				'default'     => 0,
-			),
-			'comment_section'                        => array(
-				'option_name' => __( 'Enable Comment box', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['comment_section'],
-				'type'        => 'radio',
-				'options'     => array(
-					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
-						'value' => 0,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 1,
-					),
-				),
-				'default'     => 1,
-				'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
-			),
+			)
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 
@@ -2020,26 +2020,4 @@ function qsm_get_dependency_plugin_list() {
 	}, $all_addons);
 	
 	return array_merge($theme_data, $addon_data);
-
-	foreach ( $merged_data as $item_key => $item_value ) {
-		if ( in_array( $item_value['id'], $required_dependencies ) ) {
-			if ( is_plugin_active( $item_value['path'] ) ) {
-				$dependency_array[] = array(
-					'status'      => 'activated',
-					'plugin_name' => $item_value['name'],
-				);
-			} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $item_value['path'] ) ) {
-				$dependency_array[] = array(
-					'status'      => 'installed',
-					'plugin_name' => $item_value['name'],
-				);
-			} else {
-				$dependency_array[] = array(
-					'status'      => 'not_installed',
-					'plugin_name' => $item_value['name'],
-				);
-			}
-		}
-	}
-	return $dependency_array;
 }

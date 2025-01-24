@@ -2076,51 +2076,6 @@ class QSM_Install {
 				dbDelta( $sql );
 			}
 
-			
-			$dependency_list = json_encode([
-				[
-					"name" => "Advanced Assessment",
-					"path" => "qsm-advanced-assessment/qsm-advanced-assessment.php",
-				],
-				[
-					"name" => "Quiz Navigator",
-					"path" => "qsm-quiz-navigator/qsm-quiz-navigator.php",
-				],
-				[
-					"name" => "Quiz Proctor",
-					"path" => "qsm-quiz-proctor/qsm-quiz-proctor.php",
-				],
-				[
-					"name" => "WooCommerce Integration",
-					"path" => "qsm-woocommerce-integration/qsm-woocommerce-integration.php",
-				],
-				[
-					"name" => "Advanced Question Types",
-					"path" => "qsm-advanced-question-types/qsm-advanced-question-types.php",
-				],
-				[
-					"name" => "Advanced Timer",
-					"path" => "qsm-wordpress-quiz-timer-advanced/qsm-wordpress-quiz-timer-advanced.php",
-				],
-				[
-					"name" => "Flashcards",
-					"path" => "qsm-flashcards/qsm-flashcards.php",
-				],
-				[
-					"name" => "Logic",
-					"path" => "qsm-logic/qsm-logic.php",
-				],
-				[
-					"name" => "Extra Template Variables",
-					"path" => "qsm-extra-template-variables/qsm-extra-template-variables.php",
-				],
-			]);
-			$dependency_option = 'qsm_dependency_plugin_list';
-			if ( get_option($dependency_option) === false ) {
-				$list_array = json_decode($dependency_list, true);
-				add_option($dependency_option, $list_array);
-			}
-
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
 		}

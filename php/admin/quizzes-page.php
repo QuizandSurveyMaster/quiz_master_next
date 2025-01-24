@@ -327,7 +327,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					<h1>
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' );
 						if ( current_user_can( 'create_qsm_quizzes' ) ) {
-							$add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">' . esc_html__( 'Add New', 'quiz-master-next' ) . '</a>';
+							$add_button = '<a href="' . esc_url(admin_url('admin.php?page=qsm_create_quiz_page')) . '" class="add-new-h2">' . esc_html__('Add New', 'quiz-master-next') . '</a>';
 						}
 						echo apply_filters( 'qsm_add_quiz_after', ! empty( $add_button ) ? $add_button : '' ); ?>
 					</h1>

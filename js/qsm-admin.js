@@ -3,6 +3,7 @@
  */
 
 var QSMAdmin;
+var QSMAdminDashboard;
 var QSMAdminResultsAndEmail;
 (function ($) {
 
@@ -1224,7 +1225,7 @@ function qsm_is_substring_in_array( text, array ) {
     });
 }
 (function ($) {
-    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')) {
+    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard') || jQuery('body').hasClass('qsm_page_qsm_create_quiz_page')) {
         $('#create-quiz-button').on('click', function (event) {
             event.preventDefault();
             if ($('#new-quiz-form').find('.quiz_name').val() === '') {
@@ -1358,6 +1359,250 @@ function qsm_is_substring_in_array( text, array ) {
 
         $(document).find('#select_themes .theme-actions').remove();
 
+        QSMAdminDashboard = {
+            currentPage: 1,
+            totalPages: 0,
+        
+            init: function () {
+                this.totalPages = jQuery('.qsm-dashboard-container-pages').length;
+                this.showPage(this.currentPage, true);
+
+                // Hide Form Type on load
+                jQuery('.input-group#qsm-quiz-options-form_type').hide();
+
+                // Find all unique radio groups by name within the parent
+                const parentElement = jQuery("#new-quiz-form");
+                const uniqueRadioGroups = parentElement.find('input[type="radio"]').map(function () {
+                    return this.name;
+                }).get().filter((name, index, self) => self.indexOf(name) === index); // Remove duplicates
+                // Log the selected value for each radio group
+                uniqueRadioGroups.forEach(name => {
+                    const selectedRadio = parentElement.find(`input[type="radio"][name="${name}"]:checked`);
+                    selectedRadio.parents('label').addClass('qsm-dashboard-button-selected')
+                });
+                parentElement.find('.qsm-dashboard-buy-theme-button').each(function(){
+                    console.log(jQuery(this).parents('.qsm-installer-container').find('.qsm-installer-left').addClass('disable'));
+                });
+            },
+
+            showPage: function (pageNo, onload = false) {
+                const $pages = jQuery('.qsm-dashboard-container-pages');
+                $pages.hide();
+                $pages.filter(`[data-page-no="${pageNo}"]`).show();
+
+                if (pageNo === 1) {
+                    jQuery('.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step-proceed').hide();
+                } else {
+                    jQuery('.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step-proceed').show();
+                }
+        
+                if (pageNo === this.totalPages) {
+                    jQuery('.qsm-dashboard-journy-next-step, .qsm-dashboard-journy-next-step-proceed').hide();
+                    jQuery('.qsm-dashboard-journy-create-quiz').show();
+                    
+                } else {
+                    jQuery('.qsm-dashboard-journy-next-step').show();
+                    jQuery('.qsm-dashboard-journy-create-quiz').hide();
+                }
+            },
+
+            nextPage: function(){
+                if (QSMAdminDashboard.currentPage < QSMAdminDashboard.totalPages) {
+                    QSMAdminDashboard.currentPage++;
+                    QSMAdminDashboard.showPage(QSMAdminDashboard.currentPage);
+                }
+            },
+
+            previousPage: function(){
+                if (QSMAdminDashboard.currentPage > 1) {
+                    QSMAdminDashboard.currentPage--;
+                    QSMAdminDashboard.showPage(QSMAdminDashboard.currentPage);
+                }
+            }
+        };
+        
+        jQuery(document).ready(function ($) {
+            QSMAdminDashboard.init();
+
+            jQuery(document).on('click', '.qsm-popular-themes .qsm-installer-left', function (e) { 
+                e.preventDefault();
+                // qsm-dashboard-buy-theme-button
+                if (jQuery(e.target).closest('.qsm-dashboard-theme-demo-link').length > 0 || jQuery(this).hasClass('disable')) {
+                    return;
+                }
+                let $parent = $(this).parents('.qsm-installer-container');
+                jQuery('.qsm-installer-container, .qsm-dashboard-theme-select-circle').removeClass('active');
+                $parent.addClass('active');
+                $parent.find('.qsm-dashboard-theme-select-circle').addClass('active');
+                $parent.find('input[name=quiz_theme_id]').prop("checked", true);
+                QSMAdminDashboard.nextPage();
+            });
+
+            jQuery(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+                // Check if the request contains the specific action
+                if (ajaxOptions.data && ajaxOptions.data.includes('action=qsm_handle_ajax_install')) {
+                    console.log('AJAX request with action: qsm_handle_ajax_install detected!');
+                    
+                }
+            });
+            
+            jQuery(document).on('click', '.qsm-dashboard-theme-demo-link a', function (e) {
+                e.stopPropagation(); 
+            });
+
+            $(document).on('click', '.qsm-dashboard-journy-previous-step', function (e) {
+                QSMAdminDashboard.previousPage();
+            });
+    
+            $(document).on('click', '.qsm-dashboard-journy-next-step, .qsm-dashboard-journy-next-step-proceed', function (e) {
+                QSMAdminDashboard.nextPage();
+            });
+            
+            $(document).on('click', '.qsm-dashboard-quiz-form .input-group input[type="radio"]', function (e) {
+                jQuery(this).parents('.input-group').find('fieldset label').removeClass('qsm-dashboard-button-selected');
+                jQuery(this).parents('label').addClass('qsm-dashboard-button-selected');
+            });
+
+            $(document).on('click', '.qsm-dashboard-quiz-form .input-group input[type="checkbox"]', function (e) {
+                jQuery(this).parents('.input-group').find('fieldset label').removeClass('qsm-dashboard-button-selected');
+                if (jQuery(this).prop('checked')) {
+                    jQuery(this).parents('label').addClass('qsm-dashboard-button-selected');
+                }
+            });
+
+            $(document).on('click', '.qsm-dashboard-page-item', function (e) {
+                var $parent = $(this).parents('.qsm-dashboard-choose-quiz-type-wrap');
+                var selectedType = $(this).data('type');
+                $parent.find('.qsm-dashboard-page-item').removeClass('qsm-dashboard-page-items-active');
+                $(this).addClass('qsm-dashboard-page-items-active');
+
+                jQuery('.input-group input[name="form_type"]').parents('label').removeClass('qsm-dashboard-button-selected');
+                // form_type
+                if (selectedType === 'survey') {
+                    jQuery(`#new-quiz-form input[name="form_type"][value="1"]`).parents('label')[0].click();
+                } else if (selectedType === 'form') {
+                    jQuery(`#new-quiz-form input[name="form_type"][value="2"]`).parents('label')[0].click();
+                } else {
+                    jQuery(`#new-quiz-form input[name="form_type"][value="0"]`).parents('label')[0].click();
+                }
+
+                // Hide recommendetions
+                $('.qsm-dashboard-theme-recommended, .qsm-dashboard-addon-recommended').hide();
+
+                // Show More Buttons for addons and themes
+                $('.qsm-dashboard-see-more-addons, .qsm-dashboard-see-more-themes').show();
+            
+                
+                var suggestedThemeIds = [];
+
+                qsm_admin_dashboard_suggestions.themes.forEach(function (themeGroup) {
+                    if (themeGroup.key === selectedType) {
+                        suggestedThemeIds = themeGroup.id;
+                    }
+                });
+
+                var $themeItemsParent = $('#qsm-popular-themes .qsm-card-group');
+                var $themeItems = $themeItemsParent.children('.qsm-card-single');
+
+                var $themeItemsParent = $('#qsm-popular-themes .qsm-card-group');
+                var $themeItems = $themeItemsParent.children('.qsm-card-single');
+                var suggestedThemes = [];
+                var remainingThemes = [];
+                $themeItems.show();
+                $themeItems.each(function () {
+                    var themeId = $(this).data('id');
+                    if (suggestedThemeIds.includes(themeId)) {
+                        suggestedThemes.push($(this));
+                        $(this).find('.qsm-dashboard-theme-recommended').show();
+                    } else {
+                        remainingThemes.push($(this));
+                    }
+                });
+
+                $themeItemsParent.empty();
+                suggestedThemes.forEach(function ($item) {
+                    $themeItemsParent.append($item);
+                });
+                remainingThemes.forEach(function ($item) {
+                    $themeItemsParent.append($item);
+                });
+
+                // show only first four
+                $themeItemsParent.children(":gt(3)").hide();
+
+                var suggestedAddonIds = [];
+                qsm_admin_dashboard_suggestions.addons.forEach(function (addonGroup) {
+                    if (addonGroup.key === selectedType) {
+                        suggestedAddonIds = addonGroup.id;
+                    }
+                });
+
+                var $addonItemsParent = $('#qsm-popular-addons .qsm-card-group');
+                var $addonItems = $addonItemsParent.children('.qsm-card-single');
+                
+                var suggestedAddons = [];
+                var remainingAddons = [];
+                $addonItems.show();
+                $addonItems.each(function () {
+                    var addonId = $(this).data('id');
+                    if (suggestedAddonIds.includes(addonId)) {
+                        suggestedAddons.push($(this));
+                        $(this).find('.qsm-dashboard-addon-recommended').show();
+                    } else {
+                        remainingAddons.push($(this));
+                    }
+                });
+
+                $addonItemsParent.empty();
+                suggestedAddons.forEach(function ($item) {
+                    $addonItemsParent.append($item);
+                });
+                remainingAddons.forEach(function ($item) {
+                    $addonItemsParent.append($item);
+                });
+
+                // show only first four
+                $addonItemsParent.children(":gt(3)").hide();
+                
+                QSMAdminDashboard.nextPage();
+            });
+
+            
+            $('#show-more-button').on('click', function (e) {
+                e.preventDefault();
+                var contentDiv = $('#qsm-settings-content');
+                if (contentDiv.is(':visible')) {
+                    contentDiv.slideUp(); // Hide the content
+                    $(this).text('More Settings'); // Update button text
+                } else {
+                    contentDiv.slideDown(); // Show the content
+                    $(this).text('Show Less'); // Update button text
+                }
+                $('html, body').animate({
+                    scrollTop: contentDiv.offset().top
+                }, 500); // 500ms duration for the scroll
+            });
+            
+            
+            jQuery(document).on('mouseenter', '.qsm-dashboard-container-pages .qsm-installer-top', function () {
+                jQuery(this).find('.qsm-dashboard-theme-demo-link').show();
+            });
+            
+            jQuery(document).on('mouseleave', '.qsm-dashboard-container-pages .qsm-installer-top', function () {
+                jQuery(this).find('.qsm-dashboard-theme-demo-link').hide();
+            });
+
+            $(document).on('click', '.qsm-dashboard-see-more-themes', function (e) {
+                $('#qsm-popular-themes .qsm-card-group').children('.qsm-card-single').show();
+                $(this).hide();
+            });
+            
+            $(document).on('click', '.qsm-dashboard-see-more-addons', function (e) {
+                $(this).hide();
+                $('#qsm-popular-addons .qsm-card-group').children('.qsm-card-single').show();
+            });
+
+        });
     }
 }(jQuery));
 

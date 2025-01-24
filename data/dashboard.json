@@ -1,0 +1,377 @@
+{
+  "quizoptions": [
+    {
+      "title": "Quiz",
+      "description": "Choose this option to create a fun and interactive quiz for your visitors!",
+      "type": "quiz"
+    },
+    {
+      "title": "Survey",
+      "description": "Select this option to gather valuable insights from your audience.",
+      "type": "survey"
+    },
+    {
+      "title": "Exams",
+      "description": "Pick this option to design professional exams or assessments.",
+      "type": "exam"
+    },
+    {
+      "title": "Personality Assessment",
+      "description": "Create a personality assessment quiz to help users discover themselves!",
+      "type": "personality"
+    },
+    {
+      "title": "Kids Trivia Games",
+      "description": "Create Exciting Kids Trivia Games and Challenge Young Minds!",
+      "type": "trivia"
+    }
+  ],
+  "suggested_themes": [
+    {
+      "key": "quiz",
+      "id": [302299, 300658]
+    },
+    {
+      "key": "survey",
+      "id": [300513, 557086]
+    },
+    {
+      "key": "exam",
+      "id": [302297, 551027]
+    },
+    {
+      "key": "personality",
+      "id": [547794, 551029]
+    },
+    {
+      "key": "trivia",
+      "id": [302297, 300513]
+    }
+  ],
+  "suggested_addons": [
+    {
+      "key": "quiz",
+      "id": [572582, 591232]
+    },
+    {
+      "key": "survey",
+      "id": [35421, 109654]
+    },
+    {
+      "key": "exam",
+      "id": [567390, 560278]
+    },
+    {
+      "key": "personality",
+      "id": [567900, 17226]
+    },
+    {
+      "key": "trivia",
+      "id": [591232, 560278]
+    }
+  ],
+  "themes": {
+		"557086": {
+			"path": "qsm-theme-sapience/qsm_theme_sapience.php",
+			"slug": "sapience",
+      "settings_tab": "Sapience",
+			"option": "qsm_addon_theme_sapience_settings"
+		},
+		"551029": {
+			"path": "qsm-theme-pixel/qsm_theme_pixel.php",
+			"slug": "pixel",
+      "settings_tab": "Pixel",
+			"option": "qsm_addon_theme_pixel_settings"
+		},
+		"551027": {
+			"path": "qsm-theme-sigma/qsm_theme_sigma.php",
+			"slug": "sigma",
+      "settings_tab": "Sigma",
+			"option": "qsm_addon_theme_sigma_settings"
+		},
+		"547794": {
+			"path": "qsm-theme-fortune/qsm_theme_fortune.php",
+			"slug": "fortune",
+      "settings_tab": "Fortune",
+			"option": "qsm_addon_theme_fortune_settings"
+		},
+		"302299": {
+			"path": "qsm-theme-pool/qsm_theme_pool.php",
+			"slug": "pool",
+      "settings_tab": "Pool",
+			"option": "qsm_addon_theme_pool_settings"
+		},
+		"302297": {
+			"path": "qsm-theme-ivory/qsm_theme_ivory.php",
+			"slug": "ivory",
+      "settings_tab": "Ivory",
+			"option": "qsm_addon_theme_ivory_settings"
+		},
+		"300658": {
+			"path": "qsm-theme-fragrance/qsm_theme_fragrance.php",
+			"slug": "fragrance",
+      "settings_tab": "Fragrance",
+			"option": "qsm_addon_theme_fragrance_settings"
+		},
+		"300513": {
+			"path": "qsm-theme-breeze/qsm_theme_breeze.php",
+			"slug": "breeze",
+      "settings_tab": "Breeze",
+			"option": "qsm_addon_theme_breeze_settings"
+		}
+	},
+  "addons": {
+    "591232": {
+      "path": "qsm-gamify/qsm-gamify.php",
+      "slug": "gamify",
+      "settings_tab": "Gamify",
+      "option": "qsm_addon_gamify_settings"
+    },
+    "591230": {
+      "path": "qsm-webhooks/qsm-webhooks.php",
+      "slug": "webhooks",
+      "settings_tab": "Webhooks",
+      "option": "qsm_addon_webhooks_settings"
+    },
+    "572582": {
+      "path": "qsm-advanced-assessment/qsm-advance-assessment.php",
+      "slug": "advanced-assessment",
+      "settings_tab": "Advanced Assessment",
+      "option": "qsm_addon_advance_assessment_settings"
+    },
+    "567900": {
+      "path": "qsm-quiz-navigator/qsm-quiz-navigator.php",
+      "slug": "quiz-navigator",
+      "settings_tab": "Quiz Navigator",
+      "option": "qsm_quiz_navigator_settings"
+    },
+    "567390": {
+      "path": "qsm-mailerlite-integration/qsm-mailerlite-integration.php",
+      "slug": "mailerlite-integration",
+      "settings_tab": "MailerLite",
+      "option": "qsm_addon_mailerlite_settings"
+    },
+    "563494": {
+      "path": "qsm-proctoring-quiz/qsm-proctoring-quiz.php",
+      "slug": "quiz-proctor",
+      "settings_tab": "Proctoring Quiz Settings",
+      "option": "mlw_qmn_proctoring_quiz_option"
+    },
+    "560278": {
+      "path": "qsm-woocommerce-integration/qsm_woocommerce_addon.php",
+      "slug": "woocommerce-integration",
+      "settings_tab": "QSM Addon Woocommerce",
+      "option": "qsm_addon_woocommerce_settings"
+    },
+    "429053": {
+      "path": "qsm-advance-question/qsm-advance-question.php",
+      "slug": "advanced-question-types",
+      "settings_tab": "Advance Question Type",
+      "option": "qsm_addon_advance_question_settings"
+    },
+    "141594": {
+      "path": "qsm-activecampaign-integration/qsm-activecampaign-integration.php",
+      "slug": "activecampaign-integration",
+      "settings_tab": "ActiveCampaign",
+      "option": "qsm_addon_activecampaign_settings"
+    },
+    "109654": {
+      "path": "qsm-advanced-timer/qsm-advanced-timer.php",
+      "slug": "wordpress-quiz-timer-advanced",
+      "settings_tab": "Advanced Timer",
+      "option": "qsm_addon_advanced_timer_settings"
+    },
+    "83375": {
+      "path": "qsm-google-sheets/qsm-google-sheet.php",
+      "slug": "sync-with-google-sheets",
+      "settings_tab": "Google Sheet Connector",
+      "option": "qsm_addon_gs_connector_settings"
+    },
+    "63522": {
+      "path": "qsm-payment-integration/qsm-payment-integration.php",
+      "slug": "paypal-and-stripe-payment-integration",
+      "settings_tab": "Payment Integration",
+      "option": "qsm_addon_payment_settings"
+    },
+    "63518": {
+      "path": "qsm-save-resume/qsm-save-resume.php",
+      "slug": "save-and-resume",
+      "settings_tab": "Save And Resume",
+      "option": "qsm_addon_save_resume_settings"
+    },
+    "63024": {
+      "path": "qsm-recaptcha/qsm-recaptcha.php",
+      "slug": "recaptcha",
+      "settings_tab": "reCaptcha",
+      "option": "qsm_addon_recaptcha_settings"
+    },
+    "47868": {
+      "path": "qsm-url-parameters/qsm-url-parameters.php",
+      "slug": "url-parameters",
+      "settings_tab": "URL Parameters",
+      "option": "qsm_addon_url_parameters_settings"
+    },
+    "38572": {
+      "path": "qsm-simple-popups/qsm-simple-popups.php",
+      "slug": "simple-popups",
+      "settings_tab": "Simple Popups",
+      "option": "qsm_addon_simple_popups_settings"
+    },
+    "35421": {
+      "path": "qsm-flashcards/qsm-flashcards.php",
+      "slug": "flashcards",
+      "settings_tab": "Flashcards",
+      "option": "qsm_addon_flashcard_settings"
+    },
+    "34421": {
+      "path": "qsm-google-analytics/qsm-google-analytics.php",
+      "slug": "google-analytics-tracking",
+      "settings_tab": "Google Analytics",
+      "option": "qsm_addon_google_analytics_settings"
+    },
+    "27164": {
+      "path": "qsm-leaderboards/qsm-leaderboards.php",
+      "slug": "leaderboards",
+      "settings_tab": "Leaderboards",
+      "option": "qsm_addon_leaderboards_settings"
+    },
+    "17226": {
+      "path": "qsm-export-import/qsm-export-import.php",
+      "slug": "export-import",
+      "settings_tab": "Export And Import",
+      "option": "qsm_addon_export_import_settings"
+    },
+    "16141": {
+      "path": "qsm-summary/qsm-summary.php",
+      "slug": "summary-emails",
+      "settings_tab": "Summary Emails",
+      "option": "qsm_addon_summary_emails_settings"
+    },
+    "8241": {
+      "path": "qsm-quiz-certificate/qsm-quiz-certificate.php",
+      "slug": "quiz-certificate",
+      "settings_tab": "Certificate",
+      "option": "qsm_addon_certificate_settings"
+    },
+    "8071": {
+      "path": "qsm-logic/qsm-logic.php",
+      "slug": "logic",
+      "settings_tab": "Logic",
+      "option": "qsm_addon_logic_settings"
+    },
+    "6784": {
+      "path": "qsm-drip-integration/qsm-drip-integration.php",
+      "slug": "drip-integration",
+      "settings_tab": "Drip Integration",
+      "option": "qsm_addon_drip_integration_settings"
+    },
+    "4315": {
+      "path": "qsm-landing-page/qsm-landing-page.php",
+      "slug": "landing-page",
+      "settings_tab": "Landing Page",
+      "option": "qsm_addon_landing_page_settings"
+    },
+    "4021": {
+      "path": "qsm-convertkit-integration/qsm-convertkit-integration.php",
+      "slug": "convertkit-integration",
+      "settings_tab": "ConvertKit Integration",
+      "option": "qsm_addon_convertkit_integration_settings"
+    },
+    "3785": {
+      "path": "qsm-edd-integration/qsm-edd-integration.php",
+      "slug": "easy-digital-downloads-integration",
+      "settings_tab": "EDD Integration",
+      "option": "qsm_addon_edd_integration_settings"
+    },
+    "3437": {
+      "path": "qsm-analysis/qsm-analysis.php",
+      "slug": "results-analysis",
+      "settings_tab": "Reporting and Analysis",
+      "option": "qsm_addon_analysis_settings"
+    },
+    "3284": {
+      "path": "qsm-get-response-integration/qsm-get-response-integration.php",
+      "slug": "get-response-integration",
+      "settings_tab": "Get Response",
+      "option": "qsm_addon_get_response_integration_settings"
+    },
+    "3002": {
+      "path": "qsm-campaign-monitor/qsm-campaign-monitor.php",
+      "slug": "campaign-monitor-integration",
+      "settings_tab": "Campaign Monitor Integration",
+      "option": "qsm_addon_campaign_monitor_integration_settings"
+    },
+    "2809": {
+      "path": "qsm-zapier-integration/qsm-zapier-integration.php",
+      "slug": "zapier-integration",
+      "settings_tab": "Zapier",
+      "option": "qsm_addon_zapier_settings"
+    },
+    "2289": {
+      "path": "qsm-slack-integration/qsm-slack-integration.php",
+      "slug": "slack-integration",
+      "settings_tab": "Slack Integration",
+      "option": "qsm_addon_slack_integration_settings"
+    },
+    "1830": {
+      "path": "qsm-gradebook/qsm-gradebook.php",
+      "slug": "gradebook",
+      "settings_tab": "Gradebook",
+      "option": "qsm_addon_gradebook_settings"
+    },
+    "1732": {
+      "path": "qsm-daily-limit/qsm-daily-limit.php",
+      "slug": "daily-limit",
+      "settings_tab": "Daily Limit",
+      "option": "qsm_addon_daily_limit_settings"
+    },
+    "1893": {
+      "path": "qsm-extra-variables/qsm-extra-variables.php",
+      "slug": "extra-template-variables",
+      "settings_tab": "Extra Variables",
+      "option": "qsm_addon_extra_variables_settings"
+    },
+    "1894": {
+      "path": "qsm-aweber-integration/qsm-aweber-integration.php",
+      "slug": "aweber-integration",
+      "settings_tab": "Aweber Integration",
+      "option": "qsm_addon_aweber_integration_settings"
+    },
+    "1898": {
+      "path": "qsm-extra-shortcodes/qsm-extra-shortcodes.php",
+      "slug": "extra-shortcodes",
+      "settings_tab": "Extra Shortcodes",
+      "option": "qsm_addon_extra_shortcodes_settings"
+    },
+    "1899": {
+      "path": "qsm-export-results/qmn_export_results.php",
+      "slug": "export-results",
+      "settings_tab": "Export Results",
+      "option": "qsm_addon_export_license_key"
+    },
+    "1900": {
+      "path": "qsm-user-dashboard/qsm-user-dashboard.php",
+      "slug": "user-dashboard",
+      "settings_tab": "User Dashboard Settings",
+      "option": "mlw_qmn_dashboard_option"
+    },
+    "1901": {
+      "path": "qsm-mailchimp-integration/qsm-mailchimp-integration.php",
+      "slug": "mailchimp-integration",
+      "settings_tab": "MailChimp",
+      "option": "qsm_addon_mailchimp_settings"
+    },
+    "71": {
+      "path": "qsm-mailpoet-integration/qsm-mailpoet.php",
+      "slug": "mailpoet-integration",
+      "settings_tab": "MailPoet",
+      "option": "qsm_addon_mailpoet_integration_settings"
+    },
+    "1903": {
+      "path": "qsm-advanced-leaderboard/mlw_advanced_leaderboard.php",
+      "slug": "advanced-leaderboard",
+      "settings_tab": "Advanced Leaderboard",
+      "option": "qsm_addon_advanced_leaderboard_settings"
+    }
+  }
+}

@@ -153,7 +153,7 @@ function qsm_generate_dashboard_page() {
 				<h4 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ); ?></h4>
 				<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Unleash your creativity and engage your audience by designing interactive quizzes with QSM.', 'quiz-master-next' ); ?></p>
 				<div class="qsm-dashboard-card-buttons">
-					<a class="button button-secondary load-quiz-wizard <?php echo esc_attr( $classesname2 );?>" href="javascript:void(0)" data-formType="0"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ) ?></a>
+					<a class="button button-secondary <?php echo esc_attr( $classesname2 );?>"  href="<?php echo esc_url(admin_url('admin.php?page=qsm_create_quiz_page')); ?>" data-formType="0"><?php esc_html_e( 'Create a Quiz', 'quiz-master-next' ) ?></a>
 				</div>
 			</div>
 		</div>
@@ -288,7 +288,7 @@ function qsm_generate_dashboard_page() {
 	/**
 	 * Popup for new wizard
 	 */
-	qsm_create_new_quiz_wizard();
+	// qsm_create_new_quiz_wizard();
 }
 
 /**
