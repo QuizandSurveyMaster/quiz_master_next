@@ -111,24 +111,28 @@ function qsm_generate_dashboard_page() {
 	<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="qsm_dashboard_page postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)" aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
-		<ul class="welcome-panel-menu">
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
-		</ul>
+		<div class="qsm-dashboard-welcome-panel-wrap">
 		
-		<div class="welcome-panel-content">
-			<div class="qsm-welcome-panel-content">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
-				<p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p>
-			</div>
-			<div class="qsm-welcome-panel-content">
-				<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
-				<p><?php esc_html_e( 'Best WordPress Quiz and Survey Maker Plugin', 'quiz-master-next' ); ?></p>
-			</div>
+			<div class="welcome-panel-content">
+				<div class="qsm-welcome-panel-content">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
+					<p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p>
+				</div>
+				<div class="qsm-welcome-panel-content">
+					<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
+					<p><?php esc_html_e( 'Best WordPress Quiz and Survey Maker Plugin', 'quiz-master-next' ); ?></p>
+				</div>
+			</div>	
+			<ul class="welcome-panel-menu">
+				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
+				<!-- <li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li> -->
+				<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
+				<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
+				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
+			</ul>
 		</div>
+
+
 		<?php do_action( 'qsm_welcome_panel' ); ?>
 	</div>
 	<?php

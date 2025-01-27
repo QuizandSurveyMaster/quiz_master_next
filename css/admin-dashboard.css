@@ -992,36 +992,39 @@ h2.hndle.ui-sortable-handle {
 .qsm_dashboard_page.postbox a{
 	color: #fff;
 }
+.qsm-dashboard-welcome-panel-wrap {
+	display: flex;
+	justify-content: space-between;
+}
 
 .qsm_dashboard_page .welcome-panel-menu {
     display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: end;
 	min-width: 360px;
-	align-self: flex-end;
     margin: 0;
 }
 .qsm_dashboard_page .welcome-panel-menu li {
 	position: relative;
+	margin-left: 30px;
 }
 .qsm_dashboard_page .welcome-panel-menu li a {
 	text-decoration: underline;
 }
 .qsm_dashboard_page .welcome-panel-menu li:not(:first-child)::before {
 	content: '.';
-	color: #fff;
-	text-decoration: none;
-	position: absolute;
-    bottom: 4px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
     left: -15px;
+    top: -2px;
 }
 .qsm_dashboard_page .welcome-panel-content {
-    min-height: 180px;
+    min-height: 80px;
     display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
-	padding: 20px 0 45px 0;
 	box-sizing: border-box;
 }
 .qsm-welcome-panel-content {
