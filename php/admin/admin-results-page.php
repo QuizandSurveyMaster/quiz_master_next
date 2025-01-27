@@ -89,6 +89,25 @@ add_action( 'plugins_loaded', 'qsm_results_overview_tab' );
  * @since 5.0.0
  * @return void
  */
+function qsm_delete_results_attachments( $rows_before_update ) {
+    // Loop through each row in the results
+    foreach ( $rows_before_update as $row ) {
+        // Unserialize the quiz results
+        $mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
+        // Ensure the results array exists and has the expected structure
+		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
+			// Check if the question type is 11 and user answer is not empty
+			if ( $value['question_type'] == 11 && !empty( $value['user_answer'] ) ) {
+				// Check if the user answer has a file_id
+				if ( isset( $value['user_answer']['file_id'] ) ) {
+					$attachment_id = $value['user_answer']['file_id'];
+					// Delete the attachment
+					wp_delete_attachment( $attachment_id, true );
+				}
+			}
+		}
+    }
+}
 function qsm_results_overview_tab_content() {
 
 	global $wpdb;
@@ -102,7 +121,14 @@ function qsm_results_overview_tab_content() {
 		do_action( 'qsm_before_delete_result', $mlw_delete_results_id );
 		// Updates table to mark results as deleted.
 		$results                 = $wpdb->update( $wpdb->prefix . 'mlw_results', array( 'deleted' => 1 ), array( 'result_id' => $mlw_delete_results_id ), array( '%d' ), array( '%d' ) );
-
+		// Get the row before the update
+		$row_before_update = $wpdb->get_results( 
+			$wpdb->prepare( 
+				"SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", 
+				$mlw_delete_results_id 
+			) 
+		);
+		
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -112,6 +138,7 @@ function qsm_results_overview_tab_content() {
 			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There was an error when deleting this result. Error from WordPress: %s', 'quiz-master-next' ), $error ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
+			qsm_delete_results_attachments($row_before_update);
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From:", $mlw_delete_results_name, "" );
 		}
@@ -123,7 +150,14 @@ function qsm_results_overview_tab_content() {
 		// Ensure the POST variable is an array
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
-
+			$table_name = $wpdb->prefix . 'mlw_results';
+			$placeholders = implode(',', array_fill(0, count($delete_results), '%d'));
+			$query = $wpdb->prepare(
+				"SELECT * FROM $table_name WHERE result_id IN ($placeholders)",
+				$delete_results
+			);
+			$row_before_update = $wpdb->get_results($query);
+			
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
 			foreach ( $delete_results as $result ) {
 
@@ -139,7 +173,7 @@ function qsm_results_overview_tab_content() {
 					);
 				}
 			}
-
+			qsm_delete_results_attachments($row_before_update);
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", "", "" );
 		}
 	}

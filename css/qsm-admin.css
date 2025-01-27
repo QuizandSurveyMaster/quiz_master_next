@@ -3490,3 +3490,16 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	margin: 0 4px 0 -1px;
     font-weight: 1000;
 }
+
+.qsm-deleted-question-options-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+.qsm-deleted-question-options-forms {
+	display: flex;
+}
+.qsm-deleted-question-options-forms > * {
+	margin-left: 10px;
+}
