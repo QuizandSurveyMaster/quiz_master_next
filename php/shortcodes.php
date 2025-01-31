@@ -253,6 +253,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="'. __( 'Close this dialog window', 'quiz-master-next' ) .'">'. apply_filters( 'qsm_timer_up_cancel_button_text_after', __( 'Cancel', 'quiz-master-next' ) ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'. apply_filters( 'qsm_timer_up_submit_button_text_after', __( 'Submit Quiz', 'quiz-master-next' ) ).'</button></footer>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
+		$return_display .= '</div>';
 	}
 	return $return_display;
 }

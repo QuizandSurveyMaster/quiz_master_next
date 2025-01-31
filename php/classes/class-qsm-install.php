@@ -430,7 +430,7 @@ class QSM_Install {
 			'type'       => 'multiple_fields',
 			'label'      => __( 'Submit Actions', 'quiz-master-next' ),
 			'fields'     => array(
-				'store_responses' => array(
+				'store_responses'          => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
@@ -440,7 +440,7 @@ class QSM_Install {
 					),
 					'default' => 1,
 				),
-				'send_email'      => array(
+				'send_email'               => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
@@ -449,6 +449,16 @@ class QSM_Install {
 						),
 					),
 					'default' => 1,
+				),
+				'check_already_sent_email' => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Not send email if already sent', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
 				),
 			),
 			'help'       => '',

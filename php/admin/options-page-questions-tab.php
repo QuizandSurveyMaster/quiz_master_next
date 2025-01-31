@@ -1189,6 +1189,8 @@ function qsm_delete_question_from_database() {
 		$question_ids_to_delete = array_unique( $question_ids_to_delete );
 		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
 
+		do_action('qsm_question_deleted',$question_id);
+
 		if ( ! empty($connected_question_ids) ) {
 			$connected_question_ids = array_diff($connected_question_ids, [ $base_question_id ] );
 			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
@@ -1258,6 +1260,9 @@ function qsm_bulk_delete_question_from_database() {
 		$question_ids_to_delete = array_merge($connected_question_ids, $question_id);
 		$question_ids_to_delete = array_unique( $question_ids_to_delete );
 		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
+
+		do_action('qsm_question_deleted',$question_id);
+		
 		if ( ! empty($connected_question_ids) ) {
 			$connected_question_ids = array_diff($connected_question_ids, $base_question_ids );
 			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);

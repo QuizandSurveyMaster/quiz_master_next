@@ -844,22 +844,6 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 });
             })
         });
-
-        jQuery(document).ready(function () {
-            jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
-                e.preventDefault();
-                MicroModal.show('qsm-theme-color-settings');
-                if (jQuery('.qsm-color-field').length > 0) {
-                    jQuery('.qsm-color-field').wpColorPicker();
-                    jQuery('.qsm-color-field').each(function () {
-                        if (jQuery(this).attr('data-label')) {
-                            jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
-                        }
-                    });
-
-                }
-            });
-        });
     }
     if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
         QSMAdminResultsAndEmail = {
@@ -1093,6 +1077,26 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     }
 }
 
+jQuery(document).ready(function () {
+    jQuery(document).on('click', '.qsm-customize-color-settings', function (e) {
+        e.preventDefault();
+        let modalId = jQuery(this).data('modal-id');
+        if ( modalId == undefined ) {
+            MicroModal.show('qsm-theme-color-settings');
+        } else {
+            MicroModal.show('qsm-theme-color-settings-' + modalId);
+        }
+        if (jQuery('.qsm-color-field').length > 0) {
+            jQuery('.qsm-color-field').wpColorPicker();
+            jQuery('.qsm-color-field').each(function () {
+                if (jQuery(this).attr('data-label')) {
+                    jQuery(this).parents('.wp-picker-container').find('.wp-color-result-text').html( jQuery(this).attr('data-label') );
+                }
+            });
+
+        }
+    });
+});
 
 //QSM - Quizzes/Surveys Page
 
@@ -1672,11 +1676,11 @@ function qsmConvertContentToShortcode( contentToConvert ){
                             editor.selection.setContent(contentToInsert);
                             showAutocomplete(editor, true);
                         });
-                        
+
                         $(document).off('input', '.qsm-autocomplete-search-input').on('input', '.qsm-autocomplete-search-input', function () {
                             let query = $(this).val().toLowerCase(); // Get the current input value and convert to lowercase
                             let hasResults = false;
-                        
+
                             $('.qsm-autocomplete-item').each(function () {
                                 let title = $(this).attr('variable').toLowerCase(); // Get the title attribute of the current item
                                 if (title.includes(query)) {
@@ -1686,10 +1690,10 @@ function qsmConvertContentToShortcode( contentToConvert ){
                                     $(this).hide(); // Hide items that don't match
                                 }
                             });
-                        
+
                             // Check for the "no items" message
                             let noItemElement = $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-no-item');
-                        
+
                             if (hasResults) {
                                 noItemElement.remove(); // Remove the "no items" message if results are found
                                 $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').show();
@@ -1700,7 +1704,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                                 $(this).parents('.qsm-autocomplete').append(item_group);
                                 $(this).parents('.qsm-autocomplete').find('.qsm-autocomplete-item-group').hide();
                             }
-                        });                    
+                        });
                     });
                 }
             }
@@ -1818,7 +1822,7 @@ var QSMContact;
                         required: field.find('.qsm-required-control').prop('checked'),
                         hide_label: field.find('.qsm-hide-label-control').prop('checked'),
                         use_default_option: field.find('.qsm-use-default-control').prop('checked'),
-                        use: field.find('.use-control').val(),
+                        use: field.find('.use-control').val() || field.find('.label-control').val().toLowerCase(),
                         enable: field.find('.enable-control').prop('checked'),
                     };
                     /**
@@ -2334,7 +2338,7 @@ var QSM_Quiz_Broadcast_Channel;
             QSM_Quiz_Broadcast_Channel = {
                 channel: new BroadcastChannel('qsm_quiz_data_channel'),
                 questionData: [], // Initialize as an array
-                
+
                 // Initialize the event listeners and set up channel
                 init: function () {
                     this.setupChannelListener();
@@ -2355,7 +2359,7 @@ var QSM_Quiz_Broadcast_Channel;
 
                 insertQuestionToChannel: function (question) {
                     let linkQuizzesArray = Object.values(question.get('link_quizzes'));
-                    
+
                     let sendDataObject = {
                         [question.id]: {
                             merged_question: question.get('merged_question'),
@@ -2364,7 +2368,7 @@ var QSM_Quiz_Broadcast_Channel;
                     };
                     this.questionData.push(sendDataObject);
                 },
-                
+
                 // Function to send the linked question data to other tabs
                 sendQuestionData: function (questionID, mergedQuestion, linkedQuizzes = []) {
                     let sendDataObject = {
@@ -2378,7 +2382,7 @@ var QSM_Quiz_Broadcast_Channel;
                     this.questionData.push(sendDataObject);
                     this.channel.postMessage(sendDataObject);
                 },
-            
+
                 updateQuestionData: function (data){
                     const receivedData = data;
                     for (let questonId in receivedData) {
@@ -2443,7 +2447,7 @@ var QSM_Quiz_Broadcast_Channel;
                     model.set('merged_question', '');
                     model.set('link_quizzes', []);
                 },
-                
+
                 afterUpdateUnlinkedQuestion: function (data) {
                     const receivedData = data;
                     for (let questonId in receivedData) {
@@ -2459,14 +2463,14 @@ var QSM_Quiz_Broadcast_Channel;
                                         let currentInQuizQuestion = QSMQuestion.questions.get(key);
                                         currentInQuizQuestion.set('merged_question', mergedQuestions);
                                         currentInQuizQuestion.set('link_quizzes', item[key].link_quizzes.filter(quiz => quiz != singleQuizName));
-									} 
+									}
                                 }
                             });
                         });
                     }
                 },
-            };            
-            
+            };
+
             QSMQuestion = {
                 question: Backbone.Model.extend({
                     defaults: {
@@ -2595,19 +2599,19 @@ var QSM_Quiz_Broadcast_Channel;
                             if (QSMQuestion.questions.some(q => q.get('id') == questionId)) {
                                 let $linkButton = $(this).find('.link-question');
                                 if ($linkButton.length) {
-                                    $linkButton.prop('disabled', true).addClass('disabled'); 
+                                    $linkButton.prop('disabled', true).addClass('disabled');
                                 }
                             }
                             QSMQuestion.questions.each(function (question) {
                                 let merged_questions = question.get('merged_question');
                                 let questionsArray = merged_questions ? merged_questions.split(',').map(q => q.trim()) : [];
-                                questionsArray.forEach(function (id) { 
+                                questionsArray.forEach(function (id) {
                                     let parentElement = $('.question-bank-question[data-question-id="' + id + '"]');
                                     if (parentElement.length) {
                                         parentElement.remove(); // Remove the element if it exists
                                     }
                                 });
-                            });                            
+                            });
                         });
                     }
                 },
@@ -2834,7 +2838,7 @@ var QSM_Quiz_Broadcast_Channel;
 
                         for (const record of qsm_admin_messages.qsmQuizzesObject) {
                             if (record.quiz_id == quizId) { quizName = record.quiz_name; break; }
-                        } 
+                        }
                         const linkQuizzes = [...model.get('link_quizzes')]; // Created a shallow copy of the array
                         if (quizName !== '') {
                             linkQuizzes.push(quizName);
@@ -3410,7 +3414,7 @@ var QSM_Quiz_Broadcast_Channel;
                     }
 
                     let link_quizzes_object = question.get('link_quizzes');
-                    
+
                     $('.qsm-linked-list-inside').hide().empty();
                     $('.qsm-linked-list-div-block').hide();
                     if (typeof link_quizzes_object == 'object' && link_quizzes_object != null && Object.keys(link_quizzes_object).length > 0) {
@@ -3421,12 +3425,12 @@ var QSM_Quiz_Broadcast_Channel;
                                     .attr('class', 'qsm-linked-list-item')
                                     .attr('title', quizName)
                                     .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
-                    
+
                                 $('.qsm-linked-list-div-block').show();
                                 $('.qsm-linked-list-inside').append(link);
                             }
                         });
-                    
+
                         // Add an "Unlink" link at the end
                         let unlink = $('<span></span>')
                             .attr('class', 'qsm-unlink-the-question button button-danger')
@@ -3930,7 +3934,7 @@ var QSM_Quiz_Broadcast_Channel;
                     MicroModal.close('modal-2');
                 });
 
-                
+
                 $(document).on('click', '.qsm-popup-bank .link-question', function (event) {
                     event.preventDefault();
                     $(this).text(qsm_admin_messages.linking_question);
@@ -4112,7 +4116,7 @@ var QSM_Quiz_Broadcast_Channel;
                 if (qsmQuestionSettings.qsm_user_ve === 'true') {
                     QSMQuestion.prepareEditor();
                 }
-                
+
                 // Initialize the QSM_Quiz_Broadcast_Channel
                 QSM_Quiz_Broadcast_Channel.init();
                 QSMQuestion.loadQuestions();
@@ -4800,11 +4804,11 @@ var QSM_Quiz_Broadcast_Channel;
                     console.log($parent);
                     $(this).closest('.results-page-condition').remove();
                     QSMAdminResults.updateResultConditonCount($parent);
-                });                               
+                });
             });
         }
     }
-    
+
     jQuery(document).on('click', '.qsm-toggle-result-page-button, .qsm-toggle-email-template-button', function () {
         jQuery(this).closest("header").next("main").slideToggle();
         let $img = jQuery(this).find('img');
@@ -4812,6 +4816,7 @@ var QSM_Quiz_Broadcast_Channel;
         let arrowUpImage = qsm_admin_messages.arrow_up_image;
         let arrowDownImage = qsm_admin_messages.arrow_down_image;
 
+        // Toggle the image
         if (currentSrc === arrowUpImage) {
             $img.attr('src', arrowDownImage);
         } else {
@@ -4919,11 +4924,24 @@ var QSM_Quiz_Broadcast_Channel;
 
 }(jQuery));
 
-
+function qsm_check_email_sent_option() {
+    if (jQuery('input[name="send_email"]').prop('checked') === true) {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', false );
+        jQuery('#check_already_sent_email').show();
+    } else {
+        jQuery('#check_already_sent_email input[name="check_already_sent_email"]').prop( 'disabled', true );
+        jQuery('#check_already_sent_email').hide();
+    }
+}
 /**
  * QSM - failed submission data table action
  */
 (function ($) {
+    qsm_check_email_sent_option();
+    $(document).on('change', 'input[name="send_email"]', function (event) {
+        event.preventDefault();
+        qsm_check_email_sent_option();
+    });
     function submit_failed_submission_action_notice( res ) {
         if ( 'object' !== typeof res || null === res || undefined === res.message  ) {
             return false;
@@ -5110,14 +5128,14 @@ jQuery(document).ready(function() {
             if (confirm(qsm_result_page.delete_confirm)) {
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
-        } 
+        }
         // Handle permanent delete action
         else if (action === 'bulk_permanent_delete') {
             if (confirm(qsm_result_page.delete_confirm)) {
                 jQuery('#bulk_permanent_delete').val('1');
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
-        } 
+        }
         else {
             alert(qsm_result_page.delete_alert);
         }
