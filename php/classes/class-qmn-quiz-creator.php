@@ -113,7 +113,7 @@ class QMNQuizCreator {
 			array(
 				'quiz_name'                => $quiz_name,
 				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-				'message_after'            => __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
+				'message_after'            => '',
 				'message_comment'          => isset( $default_texts['message_comment'] ) ? $default_texts['message_comment'] : __( 'Please fill in the comment box below.', 'quiz-master-next' ),
 				'message_end_template'     => '',
 				'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',
@@ -300,15 +300,18 @@ class QMNQuizCreator {
 			);
 			$deleted    = 0;
 			if ( $qsm_delete_questions_from_qb ) {
+				
 				$deleted = 1;
 				$wpdb->update(
 					$wpdb->prefix . 'mlw_questions',
 					array(
-						'deleted' => $deleted,
+						'deleted'         => $deleted,
+						'linked_question' => '',
 					),
 					array( 'quiz_id' => $quiz_id ),
 					array(
 						'%d',
+						'%s',
 					),
 					array( '%d' )
 				);
@@ -320,6 +323,12 @@ class QMNQuizCreator {
 		}
 
 		if ( $qsm_delete ) {
+			$question_results = $wpdb->get_results( "SELECT `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id` = 60" );
+			// Loop through each result and unlink question by its ID
+			foreach ( $question_results as $result ) {
+				$question_id = $result->question_id;
+				qsm_process_unlink_question_from_list_by_question_id( $question_id );
+			}
 			if ( ! empty( $quiz_post_id ) ) {
 				if ( $qsm_delete_from_db ) {
 					wp_delete_post( $quiz_post_id, true );
@@ -676,6 +685,7 @@ class QMNQuizCreator {
 						if ( intval($page_q_id) === intval($mlw_question->question_id) ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 							$update_q_pages[ $pages_key ]['questions'][ $pages_k_q ] = $wpdb->insert_id;
+							$update_q_pages[ $pages_key ]['quizID'] = $mlw_new_id;
 						}
 					}
 				}

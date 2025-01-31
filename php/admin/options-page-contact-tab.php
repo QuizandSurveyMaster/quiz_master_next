@@ -145,7 +145,7 @@ function qsm_options_contact_tab_content() {
 		</table>
 	</div>
 	<div class="contact-page-tab-footer">
-		<div class="footer-bar-notice"></div>
+		<div id="footer-bar-notice" class="footer-bar-notice"></div>
     	<a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Form', 'quiz-master-next' ); ?></a>
 	</div>
 	<?php
@@ -234,9 +234,9 @@ function qsm_options_contact_tab_template() {
 			</div>
 			<div class="qsm-contact-form-group contact-form-actions">
 				<div class="qsm-actions-link-box contact-form-actions-box">
-					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
-					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-page"></span></a>
-					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><span class="dashicons dashicons-trash"></span></a>
+					<a href="javascript:void(0)" class="settings-field" title="<?php esc_html_e('Settings', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/></a>
+					<a href="javascript:void(0)" class="copy-field" title="<?php esc_html_e('Duplicate', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
+					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php esc_html_e('Delete', 'quiz-master-next');?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
 				</div>
 			</div>
 			<div class="qsm-contact-form-group contact-form-switch">

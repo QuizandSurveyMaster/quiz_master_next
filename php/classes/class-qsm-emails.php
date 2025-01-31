@@ -524,6 +524,13 @@ class QSM_Emails {
 						},
 						$emails[ $i ]['content']
 				);
+				$emails[ $i ]['content'] = preg_replace_callback(
+					'/<qsmextrashortcodetag>([^<]+)<\/qsmextrashortcodetag>/u',
+						function( $matches ) {
+							return wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) );
+						},
+						$emails[ $i ]['content']
+				);
 				$emails[ $i ]['content'] = wp_kses_post( $emails[ $i ]['content'] );
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );

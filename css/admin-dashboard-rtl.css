@@ -1,11 +1,3 @@
-.welcome-panel-column .dashicons {
-	color: #606a73;
-	font-size: 23px;
-	margin-left: 5px;
-	position: relative;
-	top: unset!important;
-}
-
 .welcome-panel .qsm-welcome-panel-close {
 	position: absolute;
 	top: -20px;
@@ -375,10 +367,6 @@
 	border-bottom: 1px solid #dfd4d4;
 	padding-left: 20px;
 	outline: 0 !important;
-}
-
-#model-wizard .qsm-quiz-page-addon.qsm-addon-page-list {
-	width: 100%;
 }
 
 #model-wizard .qsm-addon-browse-addons {

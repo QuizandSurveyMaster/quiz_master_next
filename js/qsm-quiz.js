@@ -170,13 +170,12 @@ var qsmTimerInterval = [];
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var secondsConsumed = qmn_quiz_data[quizID].timerConsumed;
-			jQuery(document).trigger('qmn_timer_consumed_seconds', [quizID, qmn_quiz_data, qsm_timer_consumed_obj]);
 			if (localStorage.getItem('mlw_time_quiz' + quizID) != null ) {
 				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed + 1;
 				if(qsm_timer_consumed_obj.qmn_count_upward_status){
-					secondsConsumed = qmn_quiz_data[quizID].timerConsumed - 1;
-					secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed;
-				}
+				secondsConsumed = qmn_quiz_data[quizID].timerConsumed - 1;
+				secondsRemaining = (parseFloat(qmn_quiz_data[quizID].timer_limit) * 60) - secondsConsumed;
+					}
 				if(secondsRemaining < 0) {
 					secondsRemaining = 0;
 				}
@@ -1397,6 +1396,9 @@ function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id
 			"&" + "link=" + pageUrlEncoded + "&" + "name=" + encodeURIComponent(mlw_qmn_social_text) +
 			"&" + "description=";
 	}
+    if (network === 'linkedin') {
+        url = "https://www.linkedin.com/sharing/share-offsite?url=" + encodeURIComponent(mlw_qmn_social_text);
+    }
 	if (network == 'twitter') {
 		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
 	}
@@ -1758,6 +1760,9 @@ jQuery(function () {
 		}
 		if (network == 'twitter') {
 			url = "https://twitter.com/intent/tweet?text=" + social_text;
+		}
+		if (network == 'linkedin') {
+			url = "https://www.linkedin.com/feed/?text=" + social_text;
 		}
 		var sTop = window.screen.height / 2 - (218);
 		var sLeft = window.screen.width / 2 - (313);
