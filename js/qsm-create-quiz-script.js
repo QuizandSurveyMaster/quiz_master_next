@@ -179,7 +179,7 @@ jQuery(function ($) {
                             qsm_admin_new_quiz.activated = [];
                         }
                         qsm_admin_new_quiz.activated.push(path);
-                        QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton);
+                        if(isButton) { QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton); }
                         $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.available);
                         if(isToggle){
                             $element.prop('checked', true).prop('disabled', false);
