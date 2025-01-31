@@ -616,6 +616,16 @@ class QSM_Install {
 					),
 					'default' => 0,
 				),
+				'disable_scroll_on_result'          	=> array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Do not scroll the quiz result page', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
+				),
 			),
 			'container_class' => 'qsm-small-input-field',
 			'option_tab'      => 'display',
