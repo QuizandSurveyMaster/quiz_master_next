@@ -301,7 +301,7 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When..', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Following conditions are met', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'Condition for displaying result', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
@@ -324,63 +324,67 @@ function qsm_options_results_tab_template(){
 								<label for="qsm-then-redirect-to-url-{{ data.id }}"><?php esc_html_e( 'Redirect URL', 'quiz-master-next' ); ?></label>
 							</div>
 						</div>
-						<div class="qsm-result-page-template-options qsm-result-page-then-box-styles" >
-							<div class="qsm-result-page-template-buttons">
-								<button class="button qsm-common-button-styles qsm-start-with-template" ><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
-								<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+						<div class="qsm-result-page-then-box-styles-wrap">
+							
+							<div class="qsm-result-page-template-options qsm-result-page-then-box-styles" >
+								<div class="qsm-result-page-template-buttons">
+									<button class="button qsm-common-button-styles qsm-start-with-template" ><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
+									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+								</div>
+								<div class="qsm-result-page-template-learn-more">
+									<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
+										<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
+									</p>
+								</div>
 							</div>
-							<div class="qsm-result-page-template-learn-more">
-								<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
-									<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
-								</p>
-							</div>
-						</div>
-						<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">
-							<?php 
-								do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
-								qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); 
-							?>
-							<!-- <a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a> -->
-							<textarea id="results-page-{{ data.id }}" class="results-page-template">
-							{{{ data.page.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
-								let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
-								for (let qsm_variable in qsm_varaible_list) {
-									variable_name = qsm_varaible_list[qsm_variable];
-									if( variable_name.includes('%%') ){
-										var arrayValues = variable_name.split("%%");
-										qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+							<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">
+								<?php 
+									do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
+									qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); 
+								?>
+								<!-- <a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a> -->
+								<textarea id="results-page-{{ data.id }}" class="results-page-template">
+								{{{ data.page.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
+									let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+									for (let qsm_variable in qsm_varaible_list) {
+										variable_name = qsm_varaible_list[qsm_variable];
+										if( variable_name.includes('%%') ){
+											var arrayValues = variable_name.split("%%");
+											qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+										}
+										if( variable_name.includes('_X%') ){
+											qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+										}
 									}
-									if( variable_name.includes('_X%') ){
-										qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+									if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+										return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+									} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
+										return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, content) {
+											const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0]; 
+											const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0]; 
+											return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${content}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
+										});
+									} else {
+										return match;
 									}
-								}
-								if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
-									return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
-								} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
-									return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, content) {
-										const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0]; 
-										const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0]; 
-										return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${content}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
-									});
-								} else {
-									return match;
-								}
-							}) }}}
-							</textarea>
-							<div class="qsm-result-page-content-buttons">
-								<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
-								<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+								}) }}}
+								</textarea>
+								<div class="qsm-result-page-content-buttons">
+									<button type="button" class="button qsm-slashcommand-variables-button qsm-result-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
+									<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+								</div>
+								<?php do_action( 'qsm_result_page_content_buttons_after',  $quiz_id, $categories ); ?>
 							</div>
-							<?php do_action( 'qsm_result_page_content_buttons_after',  $quiz_id, $categories ); ?>
-						</div>
-						<div class="qsm-result-page-redirect-options qsm-result-page-then-box-styles">
-							<p class="qsm-result-redirect-text"><?php esc_html_e( 'Redirecting the user by entering the URL below:', 'quiz-master-next' ); ?></p>
-							<input type="text"  placeholder="<?php esc_attr_e( 'http://example.com/', 'quiz-master-next' ); ?>" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
-						</div>
-						<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
-							<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
-							<!-- NOTE: Previously redirect input displayed here -->
-							<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
+							<div class="qsm-result-page-redirect-options qsm-result-page-then-box-styles">
+								<p class="qsm-result-redirect-text"><?php esc_html_e( 'Redirecting the user by entering the URL below:', 'quiz-master-next' ); ?></p>
+								<input type="text"  placeholder="<?php esc_attr_e( 'http://example.com/', 'quiz-master-next' ); ?>" class="results-page-redirect" value="<# if ( data.redirect && 'undefined' !==  data.redirect && 'false' !== data.redirect ) { #>{{ data.redirect }}<# } #>">
+							</div>
+							<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
+								<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
+								<!-- NOTE: Previously redirect input displayed here -->
+								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
+							</div>
+
 						</div>
 					</div>
 				</main>

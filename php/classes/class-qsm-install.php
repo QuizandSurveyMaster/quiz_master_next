@@ -303,7 +303,7 @@ class QSM_Install {
 			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Allow only logged-in users to access the content', 'quiz-master-next' ),
+					// 'label' => __( 'Allow only logged-in users to access the content', 'quiz-master-next' ),
 					'value' => 1,
 				),
 			),

@@ -733,6 +733,23 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				'default'     => 1,
 				'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
 			),
+			'require_log_in'                         => array(
+				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
+				'value'       => $globalQuizsetting['require_log_in'],
+				'type'        => 'radio',
+				'options'     => array(
+					array(
+						'label' => __( 'Yes', 'quiz-master-next' ),
+						'value' => 1,
+					),
+					array(
+						'label' => __( 'No', 'quiz-master-next' ),
+						'value' => 0,
+					),
+				),
+				'default'     => 0,
+				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
+			),
 			'timer_limit'                            => array(
 				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['timer_limit'],
@@ -762,23 +779,6 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 			),
-			'require_log_in'                         => array(
-				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['require_log_in'],
-				'type'        => 'radio',
-				'options'     => array(
-					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
-						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
-				),
-				'default'     => 0,
-				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
-			),
 			'disable_first_page'                     => array(
 				'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['disable_first_page'],
@@ -794,7 +794,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 					),
 				),
 				'default'     => 0,
-			)
+			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 
@@ -1889,20 +1889,18 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 									$image_url = QSM_PLUGIN_URL . 'assets/'.$single_template['template_preview'];
 								}
 								?>
-								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card ">
-									<div data-url="<?php echo esc_url( $image_url ); ?>" class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" >
+								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card " data-url="<?php echo esc_url( $image_url ); ?>" >
+									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" >
 										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>">
-										<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
-											<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>">
-												<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line-blue.png'); ?>" alt="eye-line-blue.png" />
-												<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
-											</button>
-											<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">
-												<?php esc_html_e( 'Use Template', 'quiz-master-next' ); ?>
-											</button>
-										</div>
 									</div>
-									<p class="qsm-<?php echo esc_attr( $type ); ?>-page-template-template-name"><?php echo esc_html($single_template['template_name']); ?></p>
+									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">
+										<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-white.svg'); ?>" alt="download-line-white.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?>
+										</button>	
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>">
+											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
+										</button>
+									</div>
 								</div>
 								<?php
 							}
@@ -1923,10 +1921,21 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					<?php } ?>
 					</tbody></table>
 				</div>
+				<div class="qsm-preview-<?php echo esc_attr( $type ); ?>-page-template-container " style="display: none;">
+					<div class="qsm-<?php echo esc_attr( $type ); ?>-template-dependency-addons">
+						<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-purple">Dependency name if install or activated/span> -->
+						<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-orange">dependency name if not inagllesrd</span> -->
+					</div>
+					<div class="qsm-preview-template-image-wrapper">
+						<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
+					</div>
+					<div class="qsm-preview-template-image-close" data-type="<?php echo esc_attr( $type ); ?>"><?php esc_html_e( 'Close Preview', 'quiz-master-next' ); ?><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/wrong.png'); ?>" alt="wrong.png"/></div>
+				</div>
 				</main>
 			</div>
 		</div>
 	</div>
+	<?php /*
 
 	<div class="qsm-popup qsm-popup-slide" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates" aria-hidden="true" style="display:none;">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -1954,6 +1963,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 			</div>
 		</div>
 	</div>
+	*/ ?>
 	<?php 
 }
 /**

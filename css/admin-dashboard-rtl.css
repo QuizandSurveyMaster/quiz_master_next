@@ -369,10 +369,6 @@
 	outline: 0 !important;
 }
 
-#model-wizard .qsm-quiz-page-addon.qsm-addon-page-list {
-	width: 100%;
-}
-
 #model-wizard .qsm-addon-browse-addons {
 	min-height: 60px;
 }
