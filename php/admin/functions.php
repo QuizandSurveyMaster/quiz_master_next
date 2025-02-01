@@ -1877,7 +1877,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 						<h2 class="qsm-popup__title" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
 							<?php esc_html_e( 'Templates', 'qsm-webhooks' ); ?>
 						</h2>
-					</div>	
+					</div>
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-right">
 						<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header">
 							<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-tabs">
@@ -1917,7 +1917,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					?>
 				</div>
 				<div class="qsm-<?php echo esc_attr( $type ); ?>-my-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
-				<table class="qsm-my-templates-table wp-list-table widefat fixed striped">	
+				<table class="qsm-my-templates-table wp-list-table widefat fixed striped">
 					<tbody class="qsm-my-templates-table-body">
 					<?php if ( ! empty($my_templates) ) { ?>
 						<tr>
@@ -1925,15 +1925,13 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 						<th><?php echo esc_html__( 'Created At', 'quiz-master-next' ); ?></th>
 						<th><?php echo esc_html__( 'Actions', 'quiz-master-next' ); ?></th>
 						</tr>
-					<?php } else { ?>					
+					<?php } else { ?>
 						<tr class="qsm-no-templates-row"><td colspan="3" class="qsm-no-templates-message"> <?php echo esc_html__( sprintf( 'No %s templates found.', esc_html( $type ) ), 'quiz-master-next' ); ?></td></tr>
 					<?php } ?>
 					</tbody></table>
 				</div>
 				<div class="qsm-preview-<?php echo esc_attr( $type ); ?>-page-template-container " style="display: none;">
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-template-dependency-addons">
-						<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-purple">Dependency name if install or activated/span> -->
-						<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-orange">dependency name if not inagllesrd</span> -->
 					</div>
 					<div class="qsm-preview-template-image-wrapper">
 						<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
@@ -1944,41 +1942,12 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 			</div>
 		</div>
 	</div>
-	<?php /*
-
-	<div class="qsm-popup qsm-popup-slide" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates" aria-hidden="true" style="display:none;">
-		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-title">
-				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-title">
-						<?php esc_html_e( 'Template Preview', 'qsm-webhooks' ); ?>
-					</h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-				</header>
-				<main class="qsm-popup__content" id="qsm-preview-<?php echo esc_attr( $type ); ?>-page-templates-content">
-					<div class="qsm-preview-<?php echo esc_attr( $type ); ?>-page-template-container ">
-						<div class="qsm-result-template-dependency-addons">
-							<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-purple">Dependency name if install or activated/span> -->
-							<!-- <span class="qsm-result-template-dependency-addon qsm-result-template-dependency-addon-orange">dependency name if not inagllesrd</span> -->
-						</div>
-						<div class="qsm-preview-template-image-wrapper">
-							<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
-						</div>
-					</div>
-				</main>
-				<footer class="qsm-popup__footer">
-					<button data-structure="default" data-indexid="" class="button qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button" ><?php esc_html_e( 'Use Template', 'quiz-master-next' ); ?></button>
-				</footer>
-			</div>
-		</div>
-	</div>
-	*/ ?>
-	<?php 
+	<?php
 }
 /**
  * Outputs a JavaScript template for rendering rows in the QSM Result and Email template table.
  * This function generates an HTML `<script>` tag containing a Handlebars-style template
- * 
+ *
  * @return void
  */
 function qsm_result_and_email_row_templates(){
@@ -1994,7 +1963,7 @@ function qsm_result_and_email_row_templates(){
 			</td>
 		</tr>
 	</script>
-	<?php 
+	<?php
 }
 
 function qsm_get_plugin_status_by_path( $path ) {
@@ -2054,7 +2023,7 @@ add_action( 'qsm_global_settings_page_add_tab_after', 'qsm_create_theme_defaults
 
 /**
  * Generates the content for the theme defaults tab in the global settings page.
- * 
+ *
  * This function handles the saving of theme default settings and displays the theme settings form popup.
  * If the save settings form is submitted, it updates the theme default settings in the database.
  * It also displays a list of installed themes with their default settings, allowing the admin to modify them.

@@ -472,11 +472,6 @@ class MLWQuizMasterNext {
 					wp_enqueue_media();
 					break;
 				case 'results-pages':
-					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
-					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
-					wp_enqueue_editor();
-					wp_enqueue_media();
-					break;
 				case 'emails':
 					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
 					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );

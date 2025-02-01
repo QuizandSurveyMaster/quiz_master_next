@@ -361,8 +361,6 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     z-index: 5;
 }
 
-/*  */
-
 /* quiz settings page */
 .qsm-dashboard-quiz-name-label {
     margin-bottom: 10px;

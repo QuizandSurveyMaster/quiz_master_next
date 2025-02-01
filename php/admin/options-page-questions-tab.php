@@ -898,27 +898,18 @@ function qsm_options_questions_tab_content() {
 function qsm_ajax_unlink_question_from_list() {
     if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-unlink-question' ) ) {
         wp_send_json_error( array(
-			'message' => __(
-				'Nonce verification failed.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Nonce verification failed.', 'quiz-master-next'),
 		));
     }
     $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
     if ( $question_id > 0 ) {
 		qsm_process_unlink_question_from_list_by_question_id($question_id);
 		wp_send_json_success( array(
-			'message' => __(
-				'Question is unlinked from all quizzes.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Question is unlinked from all quizzes.', 'quiz-master-next' ),
 		));
     } else {
 		wp_send_json_error( array(
-			'message' => __(
-				'Invalid question ID.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Invalid question ID.', 'quiz-master-next' ),
 		));
     }
 }
@@ -1358,7 +1349,7 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
  * @since 9.1.3
  */
 function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
-    global $wpdb; 
+    global $wpdb;
 	$all_ids = array();
     foreach ( $question_ids as $id ) {
         $sql = $wpdb->prepare(

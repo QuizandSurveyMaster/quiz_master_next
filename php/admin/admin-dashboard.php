@@ -203,12 +203,12 @@ function qsm_dashboard_display_need_help_section(){
 			<?php endforeach; ?>
 		</div>
 	</div>
-	<?php 
+	<?php
 }
 
 function qsm_dashboard_display_popular_addon_section( $all_addons_parameter ) {
 	// Define the card data.
-	foreach ( $all_addons_parameter as $key => $addon_value ) {
+	foreach ( $all_addons_parameter as $addon_value ) {
 		if ( ! empty( $addon_value['tags'] ) && in_array( 831, array_column( $addon_value['tags'], 'term_id' ), true ) || in_array( $addon_value['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
 			continue;
 		}
@@ -244,12 +244,8 @@ function qsm_dashboard_display_popular_addon_section( $all_addons_parameter ) {
 				<div class="qsm-dashboard-help-center-card">
 					<div class="qsm-dashboard-help-center-card-icon">
 						<div class="qsm-dashboard-help-icon-wrap">
-							<img class="qsm-dashboard-help-image" 
-								src="<?php echo esc_url( $feature['icon'] ); ?>" 
-								alt="<?php echo esc_attr( $feature['title'] ); ?> Icon" />
-							<img class="qsm-dashboard-help-arrow" 
-								src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/cross-right-arrow.png' ); ?>" 
-								alt="<?php esc_attr_e( 'Arrow Icon', 'quiz-master-next' ); ?>" />
+							<img class="qsm-dashboard-help-image" src="<?php echo esc_url( $feature['icon'] ); ?>" alt="<?php echo esc_attr( $feature['title'] ); ?> Icon" />
+							<img class="qsm-dashboard-help-arrow" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/cross-right-arrow.png' ); ?>"  alt="<?php esc_attr_e( 'Arrow Icon', 'quiz-master-next' ); ?>" />
 						</div>
 					</div>
 					<h3 class="qsm-dashboard-help-center-card-title">
@@ -267,7 +263,7 @@ function qsm_dashboard_display_popular_addon_section( $all_addons_parameter ) {
 
 
 function qsm_dashboard_display_popular_theme_section( $themes ) {
-	$themes = array_slice($themes, 0, 4); 
+	$themes = array_slice($themes, 0, 4);
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Popular Themes', 'quiz-master-next'); ?></h3>
@@ -279,13 +275,13 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 					</div>
 					<div class="qsm-dashboard-themes-details-wrapper">
 						<h3><?php echo esc_html($single_theme['name']); ?></h3>
-						<a class="button button-secondary" href="<?php echo esc_url($single_theme['demo']); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'your-text-domain'); ?></a>
+						<a class="button button-secondary" href="<?php echo esc_url($single_theme['demo']); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'quiz-master-next'); ?></a>
 					</div>
 				</div>
 			<?php } ?>
 		</div>
 	</div>
-<?php 
+<?php
 }
 /**
  * @since 7.0
@@ -316,7 +312,7 @@ function qsm_generate_dashboard_page() {
 			</div>	
 			<ul class="welcome-panel-menu">
 				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
-				<!-- <li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li> -->
+				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
 				<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
 				<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
 				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
@@ -446,10 +442,6 @@ function qsm_generate_dashboard_page() {
 	<?php */ ?>
 </div>
 <?php
-	/**
-	 * Popup for new wizard
-	 */
-	// qsm_create_new_quiz_wizard();
 }
 
 /**

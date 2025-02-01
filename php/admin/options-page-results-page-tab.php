@@ -55,7 +55,6 @@ function qsm_options_results_tab_content() {
 
 <!-- Results Page Section -->
 <section class="qsm-quiz-result-tab" style="margin-top: 15px;">
-<!-- <div class="qsm-response-toaster" id="qsm-response-toaster"></div> -->
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
@@ -247,7 +246,7 @@ function qsm_options_results_tab_template(){
 											<?php esc_attr_e( 'New', 'quiz-master-next' ); ?>
 										</label>
 										<label>
-											<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action"> 
+											<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action">
 											<?php esc_attr_e( 'Replace', 'quiz-master-next' ); ?>
 										</label>
 									</div>
@@ -274,7 +273,7 @@ function qsm_options_results_tab_template(){
 							<a href="javascript:void(0)" class="qsm-toggle-result-page-button" title="<?php echo esc_attr( 'Toggle', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
 							</a>
-						</div> 
+						</div>
 						<div class="qsm-more-settings-box-details">
 							<?php do_action( 'qsm_result_page_more_settings_box_before' ); ?>
 							<a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list" title="<?php echo esc_attr( 'Change Template', 'quiz-master-next' ); ?>" >
@@ -285,7 +284,7 @@ function qsm_options_results_tab_template(){
 							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/><span><?php esc_html_e( 'Delete Page ', 'quiz-master-next' ); ?></span>
 							</a>
 							<?php do_action( 'qsm_result_page_more_settings_box_after' ); ?>
-						</div>	
+						</div>
 						
 						<div class="qsm-settings-box-details">
 							<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
@@ -338,11 +337,10 @@ function qsm_options_results_tab_template(){
 								</div>
 							</div>
 							<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">
-								<?php 
+								<?php
 									do_action( 'qsm_result_page_content_before',  $quiz_id, $categories );
-									qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); 
+									qsm_extra_shortcode_popup_window_button( $quiz_id, $categories );
 								?>
-								<!-- <a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a> -->
 								<textarea id="results-page-{{ data.id }}" class="results-page-template">
 								{{{ data.page.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
 									let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
@@ -360,8 +358,8 @@ function qsm_options_results_tab_template(){
 										return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
 									} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
 										return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, content) {
-											const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0]; 
-											const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0]; 
+											const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
+											const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
 											return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${content}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
 										});
 									} else {
@@ -468,6 +466,6 @@ function qsm_options_results_tab_template(){
 			</div>
 		</div>
 	</script>
-<?php 
+<?php
 qsm_result_and_email_row_templates();
 } ?>

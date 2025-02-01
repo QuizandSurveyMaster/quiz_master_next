@@ -28,23 +28,6 @@ var QSMAdminResultsAndEmail;
          */
         displayAlert: function (message, type) {
             QSMAdmin.clearAlerts();
-            // var template = wp.template('notice');
-            // var data = {
-            //     message: message,
-            //     type: type,
-            //     dismissible: true
-            // };
-            // $('.qsm-alerts').append(template(data));
-            // $('.footer-bar-notice').append(template(data));
-
-            // if ($('.footer-bar-notice').find('.notice-success').length > 0) {
-            //     $('.footer-bar-notice').css('color', 'green');
-            // }
-
-            // if ($('.footer-bar-notice').find('.notice-error').length > 0) {
-            //     $('.footer-bar-notice').css('color', 'red');
-            // }
-
             const $toaster = jQuery('#footer-bar-notice');
             $toaster.text(message).removeClass().addClass(`footer-bar-notice qsm-response-${type} show`);
             this.toasterTimeout = setTimeout(() => {
@@ -53,7 +36,6 @@ var QSMAdminResultsAndEmail;
         },
         clearAlerts: function () {
             $('.qsm-alerts').empty();
-            // $('.footer-bar-notice').empty();
             clearTimeout(this.toasterTimeout);
         },
         selectTab: function (tab) {
@@ -877,8 +859,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 jQuery(document).find('.qsm-'+templateType+'-page-template-common').hide();
                 jQuery(document).find('.qsm-'+templateType+'-'+link.data('tab')+'-template-container').show();
             },
-            addTemplateRow: function ( data ) {
-                // console.log(data)
+            addTemplateRow: function ( data ) { 
                 var template = wp.template('qsm-my-template-rows');
                 jQuery('.qsm-my-templates-table-body').append(template(data));
             },
@@ -2391,7 +2372,7 @@ var QSM_Quiz_Broadcast_Channel;
                         if (mergedQuestions && typeof mergedQuestions == 'string') {
                             // Check if there's a colon and extract the part after it
                             let idsArray = [];
-                            if (mergedQuestions && mergedQuestions != '') {
+                            if (mergedQuestions != '') {
                                 idsArray = mergedQuestions.split(',').map(id => id.trim());
                             }
                             if (idsArray.length > 0) {
@@ -4840,7 +4821,7 @@ var QSM_Quiz_Broadcast_Channel;
         if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
             jQuery('.qsm-settings-box-details, .qsm-more-settings-box-details, .qsm-insert-template-wrap').hide();
         }
-        if (!$(event.target).closest('.email-show').length) {
+        if (!$(e.target).closest('.email-show').length) {
             let autocomplete =  jQuery(document).find('.qsm-autocomplete');
             autocomplete.remove();
         } 

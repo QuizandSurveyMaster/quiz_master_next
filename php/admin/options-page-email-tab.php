@@ -209,7 +209,7 @@ function qsm_options_emails_tab_template() {
 									<?php esc_attr_e( 'New', 'quiz-master-next' ); ?>
 								</label>
 								<label>
-									<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action"> 
+									<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action">
 									<?php esc_attr_e( 'Replace', 'quiz-master-next' ); ?>
 								</label>
 							</div>
@@ -300,7 +300,6 @@ function qsm_options_emails_tab_template() {
 					<?php
 					do_action( 'qsm_email_page_content_before',  $quiz_id, $categories );
 					qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); ?>
-					<!-- <a href="javascript:void(0)" data-type="email" class="qsm-view-templates-list"><?php esc_html_e( 'View Templates', 'quiz-master-next' );?></a> -->
 					<textarea id="email-template-{{ data.id }}" class="email-template">
 					{{{ data.content.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
 						let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;

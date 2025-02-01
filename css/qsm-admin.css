@@ -144,7 +144,6 @@
 	display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
     background: #FFFFFF;
     padding: 15px;
 	margin-top: 15px;
@@ -399,8 +398,7 @@ span.qsm-quiz-name {
 .qsm_popular_addons div.popuar-addon-ul>div img {
 	max-width: 100%;
 }
-.qsm-quiz-page-addon.qsm-addon-page-list {
-	/* width: 75%; */
+.qsm-quiz-page-addon.qsm-addon-page-list { 
 	float: left;
 	margin-top: 0;
 	clear: both;
@@ -3682,9 +3680,8 @@ input#duplicate_questions {
 }
 
 .qsm-quiz-result-tab .qsm-edit-result-view-options {
-	display: grid;
+	display: flex;
     margin: 0 0 20px 0;
-    grid-template-columns: 1fr 2fr;
     grid-gap: 20px;
 }
 
@@ -3988,12 +3985,11 @@ button.qsm-email-page-template-preview-button.button img {
 	color: white;
 	padding: 10px 20px;
 	border-radius: 5px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.09);
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(-20px) scale(0.5);
 	transition: opacity 0.5s, transform 0.5s, visibility 0.5s;
-	box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.09);
 	z-index: 99;
 }
 
