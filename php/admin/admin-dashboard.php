@@ -159,24 +159,28 @@ function qsm_dashboard_display_need_help_section(){
 			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/contact.png',
 			'alt'         => 'contact.png',
+			'link'        => qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document'),
 		],
 		[
 			'title'       => __('Tutorials', 'quiz-master-next'),
 			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/camera.png',
 			'alt'         => 'camera.png',
+			'link'        => 'https://demo.quizandsurveymaster.com/',
 		],
 		[
 			'title'       => __('FAQ', 'quiz-master-next'),
 			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/faq.png',
 			'alt'         => 'faq.png',
+			'link'        => 'https://quizandsurveymaster.com/#:~:text=Frequently%20asked%20questions',
 		],
 		[
 			'title'       => __('Contact Support', 'quiz-master-next'),
 			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/dashboard-support.png',
 			'alt'         => 'dashboard-support.png',
+			'link'        => qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support'),
 		],
 	];
 	?>
@@ -188,8 +192,8 @@ function qsm_dashboard_display_need_help_section(){
 				<div class="qsm-dashboard-help-center-card">
 					<div class="qsm-dashboard-help-center-card-icon">
 						<div class="qsm-dashboard-help-icon-wrap">
-							<img class="qsm-dashboard-help-image" src="<?php echo esc_url($section['image']); ?>" alt="<?php echo esc_attr($section['alt']); ?>"/>
-							<img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png"/>
+						<img class="qsm-dashboard-help-image" src="<?php echo esc_url($section['image']); ?>" alt="<?php echo esc_attr($section['alt']); ?>"/>
+							<a target="_blank" rel="noopener" href="<?php echo esc_url( $section['link'] )?>" class="welcome-icon"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png"/></a>
 						</div>
 					</div>
 					<h3 class="qsm-dashboard-help-center-card-title">
@@ -294,14 +298,13 @@ function qsm_generate_dashboard_page() {
 	global $mlwQuizMasterNext;
 ?>
 <div class="wrap">
-	<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="qsm_dashboard_page postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)" aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
 		<div class="qsm-dashboard-welcome-panel-wrap">
 			<div class="welcome-panel-content">
 				<div class="qsm-welcome-panel-content">
 					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
-					<!-- <p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p> -->
+					<p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p>
 				</div>
 				<div class="qsm-welcome-panel-content">
 					<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>

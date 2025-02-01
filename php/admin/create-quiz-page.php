@@ -123,7 +123,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 			<?php
 			if ( ! empty( $all_themes ) && is_array( $all_themes ) ) { ?>
 				<div class="qsm-quiz-theme-steps-container qsm-dashboard-page-common-style">
-					<div class="qsm-quiz-steps-card qsm-quiz-steps-default-theme" data-id="" data-slug="">
+					<div class="qsm-quiz-steps-card qsm-quiz-steps-default-theme qsm-quiz-theme-activated" data-id="" data-slug="">
 						<div class="qsm-quiz-steps-image">
 							<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
 						</div>
@@ -132,11 +132,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 								<h3 class="qsm-quiz-steps-title"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h3>
 								<p class="qsm-dashboard-addon-status"><?php echo esc_html_e( 'Select', 'quiz-master-next' ); ?></p>
 							</div>
-							<div class="qsm-quiz-steps-action-buttons">
-								<a href="#" class="button button-secondary demo" >
-									<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
-								</a>
-							</div>
+							<div class="qsm-quiz-steps-action-buttons"></div>
 						</div>
 					</div>
 					<?php 
@@ -164,8 +160,9 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						$is_installed = array_key_exists( $theme_path, $installed_plugins );
 						$is_activated = in_array( $theme_path, $activated_plugins, true );
 						$theme_status = ( true === $is_installed ) ? esc_html__( 'Available', 'quiz-master-next' ) : esc_html__( 'Not Available', 'quiz-master-next' );
+						$card_class = $is_activated ? "qsm-quiz-theme-activated" : "";
 						?>
-						<div class="qsm-quiz-steps-card "  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
+						<div class="qsm-quiz-steps-card <?php echo esc_attr($card_class); ?>"  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
 							<div class="qsm-quiz-steps-image">
 								<img src="<?php echo esc_url($theme_screenshot); ?>" alt="<?php echo esc_attr( $theme_name ); ?>">
 							</div>
