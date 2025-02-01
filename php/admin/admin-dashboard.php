@@ -112,8 +112,7 @@ function qsm_dashboard_display_change_log_section(){
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</h3>
-		<div class="qsm-dashboard-page-common-style qsm-dashboard-page-changelog">
-		
+		<div class="qsm-dashboard-page-common-style qsm-dashboard-page-changelog">		
 			<div class="main">
 				<?php if ( $change_log ) : ?>
 					<ul class="changelog-ul">
@@ -249,10 +248,10 @@ function qsm_dashboard_display_popular_addon_section( $all_addons_parameter ) {
 						</div>
 					</div>
 					<h3 class="qsm-dashboard-help-center-card-title">
-						<?php echo $feature['title']; ?>
+						<?php echo esc_html($feature['title']); ?>
 					</h3>
 					<p class="qsm-dashboard-help-center-card-description">
-						<?php echo $feature['description']; ?>
+						<?php echo esc_html($feature['description']); ?>
 					</p>
 				</div>
 			<?php endforeach; ?>
@@ -299,7 +298,6 @@ function qsm_generate_dashboard_page() {
 	<div id="welcome_panel" class="qsm_dashboard_page postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)" aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
 		<div class="qsm-dashboard-welcome-panel-wrap">
-		
 			<div class="welcome-panel-content">
 				<div class="qsm-welcome-panel-content">
 					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
@@ -342,7 +340,6 @@ function qsm_generate_dashboard_page() {
 			?>
 		</div>
 	</div>
-		
 	<?php
 	/*
 		$qsm_dashboard_widget = array(

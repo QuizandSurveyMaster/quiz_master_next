@@ -243,11 +243,11 @@ function qsm_options_results_tab_template(){
 									<div class="qsm-insert-template-options">
 										<label>
 											<input type="radio" name="qsm-template-action" value="new" class="qsm-insert-template-action" checked="checked">
-											<?php esc_attr_e( 'New', 'quiz-master-next' ); ?>
+											<?php esc_html_e( 'New', 'quiz-master-next' ); ?>
 										</label>
 										<label>
 											<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action">
-											<?php esc_attr_e( 'Replace', 'quiz-master-next' ); ?>
+											<?php esc_html_e( 'Replace', 'quiz-master-next' ); ?>
 										</label>
 									</div>
 									<div class="qsm-insert-template-container">
@@ -259,7 +259,7 @@ function qsm_options_results_tab_template(){
 											<div class="qsm-insert-template-response"></div>
 										</div>
 										<div class="qsm-insert-template-right">
-											<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_attr_e( 'Save', 'quiz-master-next' ); ?></button>
+											<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 										</div>
 									</div>
 								</div>
@@ -284,8 +284,7 @@ function qsm_options_results_tab_template(){
 							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/><span><?php esc_html_e( 'Delete Page ', 'quiz-master-next' ); ?></span>
 							</a>
 							<?php do_action( 'qsm_result_page_more_settings_box_after' ); ?>
-						</div>
-						
+						</div>						
 						<div class="qsm-settings-box-details">
 							<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
 							<label class="qsm-template-mark-as-default">
@@ -324,7 +323,6 @@ function qsm_options_results_tab_template(){
 							</div>
 						</div>
 						<div class="qsm-result-page-then-box-styles-wrap">
-							
 							<div class="qsm-result-page-template-options qsm-result-page-then-box-styles" >
 								<div class="qsm-result-page-template-buttons">
 									<button class="button qsm-common-button-styles qsm-start-with-template" ><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
@@ -382,7 +380,6 @@ function qsm_options_results_tab_template(){
 								<!-- NOTE: Previously redirect input displayed here -->
 								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); ?>
 							</div>
-
 						</div>
 					</div>
 				</main>
@@ -392,7 +389,7 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
 			<div class="qsm-condition-collection-wrap">
-				<p><?php echo esc_html( 'Condition ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
+				<p><?php echo esc_html__( 'Condition ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
 			</div>
 			<div class="qsm-result-condition-mode qsm-result-condition-container">
 				<div class="results-page-condition-category-container qsm-result-condition-container-inner">

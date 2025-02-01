@@ -87,8 +87,8 @@ function qsm_dashboard_display_quizoptions_section( $quizoptions_boxes ) {
 					$first = false;
 					?>
 						<div class="qsm-dashboard-page-common-style qsm-dashboard-page-item <?php echo esc_attr($active_class); ?>" data-type="<?php echo esc_attr( $page['type'] ); ?>" data-id="<?php echo esc_attr( $page['id'] ); ?>" >
-							<h3><?php echo $page['title']; ?></h3>
-							<p><?php echo $page['description']; ?></p>
+							<h3><?php echo esc_html($page['title']); ?></h3>
+							<p><?php echo esc_html($page['description']); ?></p>
 						</div>
 					<?php
 				}
@@ -167,7 +167,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						?>
 						<div class="qsm-quiz-steps-card "  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
 							<div class="qsm-quiz-steps-image">
-								<img src="<?php echo esc_url($theme_screenshot); ?>" alt="<?php echo $theme_name; ?>">
+								<img src="<?php echo esc_url($theme_screenshot); ?>" alt="<?php echo esc_attr( $theme_name ); ?>">
 							</div>
 							<div class="qsm-quiz-steps-content">
 								<div class="qsm-quiz-steps-info">
@@ -196,7 +196,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle']))))
 										) && false == $is_activated
 									) { ?>
-										<a href="<?php echo $theme_link; ?>" class="button button-secondary" target="_blank">
+										<a href="<?php echo esc_url($theme_link); ?>" class="button button-secondary" target="_blank">
 											<?php echo esc_html__( 'Buy', 'quiz-master-next' ); ?>
 										</a>
 									<?php } else { ?>
@@ -204,7 +204,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											<?php echo esc_html__( 'Use', 'quiz-master-next' ); ?>
 										</a>
 									<?php }?>
-									<a href="<?php echo $theme_demo; ?>" class="button button-secondary demo" target="_blank">
+									<a href="<?php echo esc_url($theme_demo); ?>" class="button button-secondary demo" target="_blank">
 										<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
 									</a>
 								</div>
@@ -277,7 +277,8 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 						</div>
 						<div class="qsm-quiz-addon-steps-info">
 							<h3 class="qsm-quiz-addon-steps-title"><?php echo esc_html($addon_name); ?></h3>
-							<p class="qsm-quiz-addon-steps-status"><?php echo esc_html(mb_strlen($d = $addon_description) > 110 ? mb_substr($d, 0, 110) . '...' : $d); ?></p>
+							<?php  $display_text = mb_strlen($addon_description) > 110 ? mb_substr($addon_description, 0, 110) . '...' : $addon_description; ?>
+							<p class="qsm-quiz-addon-steps-status"><?php echo esc_html($display_text); ?></p>
 						</div>
 						<div class="qsm-quiz-addon-steps-button">
 							<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>

@@ -433,7 +433,7 @@ class QSM_Questions {
 			 * Hook after saving question
 			 */
 			
-			 if ( $is_creating && $base_question_id == $question_id_loop ) {
+			if ( $is_creating && $base_question_id == $question_id_loop ) {
 				do_action( 'qsm_question_added', $question_id_loop, $values );
 			} else {
 				do_action( 'qsm_question_updated', $question_id_loop, $values );

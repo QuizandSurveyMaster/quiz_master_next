@@ -206,11 +206,11 @@ function qsm_options_emails_tab_template() {
 							<div class="qsm-insert-template-options">
 								<label>
 									<input type="radio" name="qsm-template-action" value="new" class="qsm-insert-template-action" checked="checked">
-									<?php esc_attr_e( 'New', 'quiz-master-next' ); ?>
+									<?php esc_html_e( 'New', 'quiz-master-next' ); ?>
 								</label>
 								<label>
 									<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action">
-									<?php esc_attr_e( 'Replace', 'quiz-master-next' ); ?>
+									<?php esc_html_e( 'Replace', 'quiz-master-next' ); ?>
 								</label>
 							</div>
 							<div class="qsm-insert-template-container">
@@ -222,7 +222,7 @@ function qsm_options_emails_tab_template() {
 									<p class="qsm-insert-template-response"></p>
 								</div>
 								<div class="qsm-insert-template-right">
-									<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_attr_e( 'Save', 'quiz-master-next' ); ?></button>
+									<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 								</div>
 							</div>
 						</div>
@@ -325,8 +325,7 @@ function qsm_options_emails_tab_template() {
 							return match;
 						}
 					}) }}}
-					</textarea>
-					
+					</textarea>					
 					<div class="qsm-email-page-content-buttons ">
 						<button type="button" class="button qsm-slashcommand-variables-button qsm-email-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
 						<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
@@ -344,7 +343,7 @@ function qsm_options_emails_tab_template() {
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
 		<div class="qsm-condition-collection-wrap">
-			<p><?php echo esc_html( 'Condition ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
+			<p><?php echo esc_html__( 'Condition ', 'quiz-master-next' ); ?> <span class="qsm-condition-collection-count"></span></p>
 		</div>
 		<div class="qsm-email-condition-mode">
 			<div class="email-condition-category-container qsm-email-condition-container-inner">

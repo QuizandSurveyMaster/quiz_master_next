@@ -1794,7 +1794,7 @@ function qsm_insert_quiz_template_callback() {
             array( '%d' )
         );
 
-        if ( $updated !== false ) {
+        if ( false !== $updated ) {
             $template_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $template_id), ARRAY_A);
             wp_send_json_success($template_data);
         } else {
@@ -1875,7 +1875,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-left">
 						<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
 						<h2 class="qsm-popup__title" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
-							<?php esc_html_e( 'Templates', 'qsm-webhooks' ); ?>
+							<?php esc_html_e( 'Templates', 'quiz-master-next' ); ?>
 						</h2>
 					</div>
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-right">
@@ -1925,9 +1925,15 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 						<th><?php echo esc_html__( 'Created At', 'quiz-master-next' ); ?></th>
 						<th><?php echo esc_html__( 'Actions', 'quiz-master-next' ); ?></th>
 						</tr>
-					<?php } else { ?>
-						<tr class="qsm-no-templates-row"><td colspan="3" class="qsm-no-templates-message"> <?php echo esc_html__( sprintf( 'No %s templates found.', esc_html( $type ) ), 'quiz-master-next' ); ?></td></tr>
-					<?php } ?>
+					<?php } else { 
+							// translators: %s is the template type.
+							$no_templates_message = sprintf( __( 'No %s templates found.', 'quiz-master-next' ), esc_html( $type ) );?>
+						<tr class="qsm-no-templates-row">
+							<td colspan="3" class="qsm-no-templates-message">
+								<?php echo esc_html( $no_templates_message ); ?>
+							</td>
+						</tr>
+						<?php } ?>
 					</tbody></table>
 				</div>
 				<div class="qsm-preview-<?php echo esc_attr( $type ); ?>-page-template-container " style="display: none;">
@@ -1957,7 +1963,7 @@ function qsm_result_and_email_row_templates(){
 			<td>{{data.template_name}}</td>
 			<td>{{data.created_at}}</td>
 			<td class="qsm-my-template-rows-actions">
-				<a title="<?php echo esc_attr( 'Use Template', 'quiz-master-next' ); ?>" class="qsm-{{data.template_type}}-page-template-use-button" data-structure="custom" data-indexid="{{data.indexid}}"><?php echo esc_attr( 'Use Template', 'quiz-master-next' ); ?></a>
+				<a title="<?php echo esc_attr( 'Use Template', 'quiz-master-next' ); ?>" class="qsm-{{data.template_type}}-page-template-use-button" data-structure="custom" data-indexid="{{data.indexid}}"><?php echo esc_html__( 'Use Template', 'quiz-master-next' ); ?></a>
 				<a class="qsm-{{data.template_type}}-page-template-remove-button" data-type="{{data.template_type}}" data-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash-light.svg'); ?>" alt="trash-light.svg"/></a>
 				<span class="qsm-my-template-action-response"></span>
 			</td>
