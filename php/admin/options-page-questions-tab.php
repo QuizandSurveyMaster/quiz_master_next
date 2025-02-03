@@ -206,6 +206,7 @@ function qsm_options_questions_tab_content() {
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
+			<?php do_action('qsm_question_controls_head'); ?>
 		</p>
 	</div>
 	<div class="qsm-admin-bulk-actions">
@@ -891,7 +892,7 @@ function qsm_options_questions_tab_content() {
 /**
  * Unlinks a question from all quizzes it is associated with.
  * This function checks for a valid nonce, retrieves the question ID from the request.
- * 
+ *
  * @since 9.1.3
  * @return void
  */
@@ -1181,7 +1182,7 @@ function qsm_delete_question_from_database() {
 	}
 	$base_question_id = $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
-		
+
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
 		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove( [ $question_id ] );
@@ -1252,9 +1253,9 @@ function qsm_bulk_delete_question_from_database() {
 
 	// Sanitize and validate the IDs
 	$base_question_ids = $question_id = array_map( 'intval', $question_id );
-	
+
 	if ( ! empty( $question_id ) ) {
-		
+
 		$update_qpages_after_delete = array();
 		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
 		$question_ids_to_delete = array_merge($connected_question_ids, $question_id);
@@ -1262,7 +1263,7 @@ function qsm_bulk_delete_question_from_database() {
 		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
 
 		do_action('qsm_question_deleted',$question_id);
-		
+
 		if ( ! empty($connected_question_ids) ) {
 			$connected_question_ids = array_diff($connected_question_ids, $base_question_ids );
 			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
@@ -1307,7 +1308,7 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
 	$comma_seprated_ids = implode( ',', array_unique($connected_question_ids) );
 	$qpages_array = array();
 	if ( ! empty($comma_seprated_ids) ) {
-		global $wpdb, $mlwQuizMasterNext; 
+		global $wpdb, $mlwQuizMasterNext;
 		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
 		if ( ! empty($quiz_results) ) {
 			foreach ( $quiz_results as $single_quiz ) {
@@ -1358,7 +1359,7 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
  * @since 9.1.3
  */
 function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
-    global $wpdb; 
+    global $wpdb;
 	$all_ids = array();
     foreach ( $question_ids as $id ) {
         $sql = $wpdb->prepare(

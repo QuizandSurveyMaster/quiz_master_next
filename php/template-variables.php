@@ -273,7 +273,7 @@ function qsm_find_key_from_array( $search_value, $array ) {
 	if ( $array ) {
 		$search_value = htmlspecialchars_decode( $search_value, ENT_QUOTES );
 		foreach ( $array as $key => $value ) {
-			$value_val = $value[0];
+			$value_val = isset( $value[0] ) ? $value[0] : null;
 			if ( $value_val == $search_value ) {
 				return true;
 			}
@@ -514,7 +514,7 @@ function qsm_contact_field_variable( $content, $results_array ) {
 			$contact_key = $matches[1][ $i ];
 			if ( is_numeric( $contact_key ) && intval( $contact_key ) > 0 ) {
 				$contact_index = intval( $contact_key ) - 1;
-				
+
 				if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
 					$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
 				} else {
