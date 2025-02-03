@@ -1229,7 +1229,7 @@ class QMNGlobalSettingsPage {
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-disable-scroll-on-result">
 				<input type="checkbox" id="qsm-disable-scroll-on-result" name="qsm-quiz-settings[disable_scroll_on_result]" <?php checked( $qsm_disable_scroll_on_result, 1 ); ?> value="1">
-				<?php esc_html_e('Disable scroll on quiz result page', 'quiz-master-next'); ?>
+				<?php esc_html_e('Disable scrolling while submitting quizzes and displaying results', 'quiz-master-next'); ?>
 			</label>
 		</fieldset>
 		<?php

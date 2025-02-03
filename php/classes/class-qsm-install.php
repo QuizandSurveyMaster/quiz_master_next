@@ -620,7 +620,7 @@ class QSM_Install {
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
-							'label' => __( 'Do not scroll the quiz result page', 'quiz-master-next' ),
+							'label' => __( 'Disable scrolling while submitting quizzes and displaying results', 'quiz-master-next' ),
 							'value' => 1,
 						),
 					),
