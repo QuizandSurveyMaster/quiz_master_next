@@ -928,6 +928,12 @@ function qmnFormSubmit(quiz_form_id, $this) {
 	jQuery(document).trigger('qsm_before_quiz_submit', [quiz_form_id]);
 	jQuery('#' + quiz_form_id + ' input[type=submit]').attr('disabled', 'disabled');
 	qsmDisplayLoading($container, quiz_id);
+
+	let disableScroll = qmn_quiz_data[quiz_id].disable_scroll_on_result == '1';
+	if (disableScroll) {
+		jQuery('body').css('overflow', 'hidden');
+	}
+
 	jQuery.ajax({
 		url: qmn_ajax_object.ajaxurl,
 		data: fd,
@@ -955,12 +961,18 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				}
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
+				if (disableScroll) {
+					jQuery('body').css('overflow', 'auto');
+				}
 			}
 		},
 		error: function (errorThrown) {
 			let response = { display: errorThrown.responseText + "<br/> Error:" + errorThrown.statusText};
 			qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 			console.log(errorThrown);
+			if (disableScroll) {
+				jQuery('body').css('overflow', 'auto');
+			}
 		}
 	});
 
