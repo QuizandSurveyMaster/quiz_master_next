@@ -25,7 +25,7 @@ function qsm_activate_plugin_ajax_activate_plugin() {
 add_action('wp_ajax_qsm_get_activated_themes', 'qsm_get_activated_themes_ajax');
 
 function qsm_get_activated_themes_ajax() {
-    
+
     check_ajax_referer('qsm_installer_nonce', 'nonce');
     $theme_slug = isset($_POST['slug']) ? sanitize_text_field(wp_unslash( $_POST['slug'] ) ) : "";
 	$theme_slug = 'qsm-theme-'.$theme_slug;
@@ -135,10 +135,10 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 							<div class="qsm-quiz-steps-action-buttons"></div>
 						</div>
 					</div>
-					<?php 
+					<?php
 					foreach ( $all_themes as $theme_value ) {
 						$theme_name = $theme_value['name'];
-						
+
 						// Find matching theme details in $filtered_themes by theme_name
 						$matching_theme = array_filter($filtered_themes, function ( $filtered_theme ) use ( $theme_name ) {
 							return isset($filtered_theme['theme_name']) && $filtered_theme['theme_name'] == $theme_name;
@@ -175,22 +175,22 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 									<?php
 									if (
 										// Case 1: Addon is activated but expired
-										((1 == $installer_activated && 1 == $invalid_and_expired) 
-										
+										((1 == $installer_activated && 1 == $invalid_and_expired)
+
 										// Case 2: Addon is activated and valid, but user lacks the required bundle
 										|| (1 == $installer_activated && 0 == $invalid_and_expired
 											&& ! empty($addon_lookup)
 											&& isset($addon_lookup[ $theme_slug ])
-											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])))) 
-										
+											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])), true))
+
 										// Case 3: Addon is not installed and is not activated
 										|| (false == $is_installed && 0 == $installer_activated)
-										
+
 										// Case 4: Addon is not installed but activated, valid license, but user lacks the required bundle
 										|| (false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired
 											&& ! empty($addon_lookup)
 											&& isset($addon_lookup[ $theme_slug ])
-											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle']))))
+											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])), true))
 										) && false == $is_activated
 									) { ?>
 										<a href="<?php echo esc_url($theme_link); ?>" class="button button-secondary" target="_blank">
@@ -220,7 +220,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 	<div class="qsm-dashboard-see-more-types-wrap">
 		<a href="javascript:void(0)" class="button qsm-dashboard-see-more-themes"><?php echo esc_html__('See More Themes', 'quiz-master-next'); ?></a>
 	</div>
-	<?php 
+	<?php
 }
 
 function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer_option, $invalid_and_expired, $addonBundleArray, $installer_activated, $installer_script ) {
@@ -229,7 +229,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 	$activated_plugins = get_option('active_plugins');
 	$selected_bundle = "";
 	if ( 1 == $installer_activated ) {
-		$addon_lookup = array_column($installer_script, null, 'slug'); 
+		$addon_lookup = array_column($installer_script, null, 'slug');
 		$selected_bundle = isset($installer_option['bundle']) && "" != $installer_option['bundle'] ? $installer_option['bundle'] : "";
 	}
 	?>
@@ -240,7 +240,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 				<p><?php echo esc_html__('Enhance your quiz with additional features using addons', 'quiz-master-next'); ?></p>
 			</div>
 			<div class="qsm-quiz-addon-steps-grid">
-			<?php 
+			<?php
 				foreach ( $all_addons_parameter as $addon_value ) {
 					if ( ! empty( $addon_value['tags'] ) && in_array( 831, array_column( $addon_value['tags'], 'term_id' ), true ) || in_array( $addon_value['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
 						continue;
@@ -279,25 +279,25 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 						</div>
 						<div class="qsm-quiz-addon-steps-button">
 							<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
-							<?php 
+							<?php
 							if (
 								// Case 1: Addon is activated but expired
-								((1 == $installer_activated && 1 == $invalid_and_expired) 
-								
+								((1 == $installer_activated && 1 == $invalid_and_expired)
+
 								// Case 2: Addon is activated and valid, but user lacks the required bundle
-								|| (1 == $installer_activated && 0 == $invalid_and_expired 
-									&& ! empty($addon_lookup) 
-									&& isset($addon_lookup[ $addon_slug ]) 
-									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])))) 
-								
+								|| (1 == $installer_activated && 0 == $invalid_and_expired
+									&& ! empty($addon_lookup)
+									&& isset($addon_lookup[ $addon_slug ])
+									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])), true))
+
 								// Case 3: Addon is not installed and is not activated
-								|| (false === $is_installed && 0 == $installer_activated) 
-								
+								|| (false === $is_installed && 0 == $installer_activated)
+
 								// Case 4: Addon is not installed but activated, valid license, but user lacks the required bundle
-								|| (false === $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired 
-									&& ! empty($addon_lookup) 
-									&& isset($addon_lookup[ $addon_slug ]) 
-									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])))) 
+								|| (false === $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired
+									&& ! empty($addon_lookup)
+									&& isset($addon_lookup[ $addon_slug ])
+									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])), true))
 								) && false == $is_activated
 							) {
 								?>
@@ -306,8 +306,8 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 								</a>
 							<?php } else { ?>
 								<label class="qsm-dashboard-addon-switch">
-									<input type="checkbox" class="qsm-dashboard-addon-toggle" 
-										<?php checked(esc_attr($is_activated)); ?> 
+									<input type="checkbox" class="qsm-dashboard-addon-toggle"
+										<?php checked(esc_attr($is_activated)); ?>
 										<?php disabled(esc_attr($is_activated)); ?>>
 									<span class="qsm-dashboard-addon-slider">
 										<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
@@ -353,17 +353,17 @@ function qsm_dashboard_display_quizform_section() {
 				</label>
 			</div>
 		</div>
-	<?php 
+	<?php
 }
 
 
 function qsm_create_quiz_page_callback() {
 	global $mlwQuizMasterNext;
-	
+
 	wp_enqueue_script( 'qsm-create-quiz-script',  QSM_PLUGIN_JS_URL.'/qsm-create-quiz-script.js', array( 'jquery' ), $mlwQuizMasterNext->version,true);
 	wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array(), $mlwQuizMasterNext->version );
-	
-    
+
+
 	$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
 	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
 
@@ -378,7 +378,7 @@ function qsm_create_quiz_page_callback() {
 	$installer_script = $installer_option = array();
 	$invalid_and_expired = 1;
 	$installer_activated = 0;
-	if ( class_exists('QSM_Installer') ) { 
+	if ( class_exists('QSM_Installer') ) {
 		$installer_activated = 1;
 		$installer_option = QSM_Installer::get_installer_option();
 		$installer_script = QSM_Installer::qsm_get_addon_data();
@@ -386,7 +386,7 @@ function qsm_create_quiz_page_callback() {
 			$invalid_and_expired = 0;
 		}
 	}
-	
+
 	wp_localize_script( 'qsm-create-quiz-script', 'qsm_admin_new_quiz', array(
 		'quizoptions'         => $quizoptions_boxes,
 		'installed'           => $installed_plugins,
@@ -421,10 +421,10 @@ function qsm_create_quiz_page_callback() {
 				<form action="" method="post" id="new-quiz-form">
 					<div class="qsm-form-inside-container" id="qsm-add-installer">
 						<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' );
-						
+
 						$all_addons = $qsm_admin_dd['all_addons'];
 						$all_themes = $qsm_admin_dd['themes'];
-						
+
 						$dashboard_pages = [
 							[
 								'page_no'  => 1,

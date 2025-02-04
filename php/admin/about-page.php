@@ -79,8 +79,8 @@ function qsm_generate_about_page() {
                 } elseif ( 'about' === $active_tab ) {
 					?>
 					<div>
-						<h3><?php echo __('About us', 'quiz-master-next'); ?></h3>
-						<p><?php echo __('Quiz And Survey Master is a leading WordPress plugin developed by a dedicated team of developers and educational experts. Our mission is to help individuals and organizations create engaging and effective quizzes and surveys that enhance learning and gather valuable insights. With a focus on user experience and flexibility, our plugin is designed to meet the needs of educators, marketers, and businesses alike. Quiz And Survey Master is a powerful and intuitive WordPress plugin that allows users to create a wide range of quizzes and surveys effortlessly.', 'quiz-master-next'); ?></p>
+						<h3><?php esc_html_e('About us', 'quiz-master-next'); ?></h3>
+						<p><?php esc_html_e('Quiz And Survey Master is a leading WordPress plugin developed by a dedicated team of developers and educational experts. Our mission is to help individuals and organizations create engaging and effective quizzes and surveys that enhance learning and gather valuable insights. With a focus on user experience and flexibility, our plugin is designed to meet the needs of educators, marketers, and businesses alike. Quiz And Survey Master is a powerful and intuitive WordPress plugin that allows users to create a wide range of quizzes and surveys effortlessly.', 'quiz-master-next'); ?></p>
 					</div>
 			<div class="qsm-tab-content tab-3">
 				<h2 class="text-left" style="font-weight: 500;">GitHub Contributors</h2>

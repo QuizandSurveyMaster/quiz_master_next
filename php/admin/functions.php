@@ -1355,7 +1355,7 @@ function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
 	<div class="qsm-upgrade-box-base">
 		<div class="qsm-upgrade-box-base-title">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info.png' ); ?>" alt="">
-			<p><?php echo esc_html( $args['title'] ) . __( ' is required.', 'quiz-master-next' ); ?></p>
+			<p><?php echo esc_html( $args['title'] ) . esc_html__( ' is required.', 'quiz-master-next' ); ?></p>
 			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm-upgrade-button" rel="noopener"><?php esc_html_e( 'Purchase', 'quiz-master-next' ); ?></a>
 		</div>
 		<a href="#" id="qsm-upgrade-popup-opener" data-popup="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
@@ -1761,7 +1761,7 @@ function qsm_insert_quiz_template_callback() {
     $template_id = isset($_POST['template_id']) ? intval($_POST['template_id']) : null;
     $template_name = isset($_POST['template_name']) ? sanitize_text_field(wp_unslash($_POST['template_name'])) : "";
     $template_type = isset($_POST['template_type']) ? sanitize_text_field(wp_unslash($_POST['template_type'])) : "";
-    $template_content = wp_unslash($_POST['template_content']);
+    $template_content = isset($_POST['template_content']) ? wp_unslash($_POST['template_content']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
     $filtered_content = preg_replace_callback(
         '/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
         function ( $matches ) {
@@ -1834,8 +1834,8 @@ add_action( 'wp_ajax_qsm_remove_my_templates', 'qsm_remove_my_templates_handler'
  */
 function qsm_remove_my_templates_handler() {
     global $wpdb;
-	if ( ! isset( $_POST['nonce'] ) || 
-        ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' ) 
+	if ( ! isset( $_POST['nonce'] ) ||
+        ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' )
     ) {
         wp_send_json_error( [ 'message' => __( 'Invalid nonce. Action not authorized.', 'quiz-master-next' ) ] );
         wp_die();
@@ -1886,7 +1886,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 							</div>
 						</div>
 						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-					</div>	
+					</div>
 				</header>
 				<main class="qsm-popup__content" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-content" data-type="<?php echo esc_attr( $type ); ?>" data-<?php echo esc_attr( $type ); ?>-page="">
 				<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
@@ -1905,7 +1905,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">
 										<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-white.svg'); ?>" alt="download-line-white.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?>
-										</button>	
+										</button>
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>">
 											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
 										</button>
@@ -1925,7 +1925,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 						<th><?php echo esc_html__( 'Created At', 'quiz-master-next' ); ?></th>
 						<th><?php echo esc_html__( 'Actions', 'quiz-master-next' ); ?></th>
 						</tr>
-					<?php } else { 
+					<?php } else {
 							// translators: %s is the template type.
 							$no_templates_message = sprintf( __( 'No %s templates found.', 'quiz-master-next' ), esc_html( $type ) );?>
 						<tr class="qsm-no-templates-row">
@@ -1963,7 +1963,7 @@ function qsm_result_and_email_row_templates(){
 			<td>{{data.template_name}}</td>
 			<td>{{data.created_at}}</td>
 			<td class="qsm-my-template-rows-actions">
-				<a title="<?php echo esc_attr( 'Use Template', 'quiz-master-next' ); ?>" class="qsm-{{data.template_type}}-page-template-use-button" data-structure="custom" data-indexid="{{data.indexid}}"><?php echo esc_html__( 'Use Template', 'quiz-master-next' ); ?></a>
+				<a title="<?php esc_attr_e( 'Use Template', 'quiz-master-next' ); ?>" class="qsm-{{data.template_type}}-page-template-use-button" data-structure="custom" data-indexid="{{data.indexid}}"><?php echo esc_html__( 'Use Template', 'quiz-master-next' ); ?></a>
 				<a class="qsm-{{data.template_type}}-page-template-remove-button" data-type="{{data.template_type}}" data-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash-light.svg'); ?>" alt="trash-light.svg"/></a>
 				<span class="qsm-my-template-action-response"></span>
 			</td>
@@ -1993,8 +1993,8 @@ function qsm_get_dependency_plugin_list() {
 	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
 	$all_themes = $qsm_admin_dd['themes'];
 	$all_addons = $qsm_admin_dd['all_addons'];
-	
-	
+
+
 	$theme_data = array_map(function( $theme ) {
 		$path = "qsm-theme-{$theme['name']}/qsm_theme_{$theme['name']}.php";
 		return [
@@ -2003,7 +2003,7 @@ function qsm_get_dependency_plugin_list() {
 			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
 		];
 	}, $all_themes);
-	
+
 	$addon_data = array_map(function( $addon ) {
 		$path = $addon['path'] ?? '';
 		return [
@@ -2012,7 +2012,7 @@ function qsm_get_dependency_plugin_list() {
 			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
 		];
 	}, $all_addons);
-	
+
 	return array_merge($theme_data, $addon_data);
 }
 function qsm_create_theme_defaults_tab() {
@@ -2043,12 +2043,12 @@ function qsm_create_theme_defaults_tab_content() {
     if ( isset( $_POST['save_theme_default_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_default_settings_nonce'] ) ), 'save_theme_default_settings' ) ) {
         unset( $_POST['save_theme_default_settings_nonce'] );
         unset( $_POST['_wp_http_referer'] );
-        $settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) );
-        $theme_id = sanitize_text_field( wp_unslash( $_POST['qsm_theme_id'] ) );
+        $settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $theme_id = isset( $_POST['qsm_theme_id'] ) ? sanitize_text_field( wp_unslash( $_POST['qsm_theme_id'] ) ) : 0;
         $results = $wpdb->update(
             $wpdb->prefix . 'mlw_themes',
             array(
-                'default_settings' => serialize( $settings_array ),
+                'default_settings' => maybe_serialize( $settings_array ),
             ),
             array(
                 'id' => $theme_id,

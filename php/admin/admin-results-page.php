@@ -94,7 +94,7 @@ function qsm_results_overview_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_result_page_script', 'qsm_result_page', array(
         'delete_confirm' => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
         'delete_alert'   => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),

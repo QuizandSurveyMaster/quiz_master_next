@@ -112,7 +112,7 @@ function qsm_dashboard_display_change_log_section(){
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</h3>
-		<div class="qsm-dashboard-page-common-style qsm-dashboard-page-changelog">		
+		<div class="qsm-dashboard-page-common-style qsm-dashboard-page-changelog">
 			<div class="main">
 				<?php if ( $change_log ) : ?>
 					<ul class="changelog-ul">
@@ -304,13 +304,18 @@ function qsm_generate_dashboard_page() {
 			<div class="welcome-panel-content">
 				<div class="qsm-welcome-panel-content">
 					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
-					<p class="current_version"><?php echo esc_html( sprintf( __( 'Version: %s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) ); ?></p>
+					<p class="current_version">
+						<?php
+						/* translators: %1$s: The current version of the Quiz Master Next plugin. */
+						echo esc_html( sprintf( __( 'Version: %1$s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) );
+						?>
+					</p>
 				</div>
 				<div class="qsm-welcome-panel-content">
 					<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
 					<p><?php esc_html_e( 'Best WordPress Quiz and Survey Maker Plugin', 'quiz-master-next' ); ?></p>
 				</div>
-			</div>	
+			</div>
 			<ul class="welcome-panel-menu">
 				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
 				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
@@ -333,7 +338,7 @@ function qsm_generate_dashboard_page() {
 				</div>
 			</div>
 
-			<?php 
+			<?php
 			$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
 			$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
 				qsm_dashboard_display_popular_addon_section($qsm_admin_dd['all_addons']);

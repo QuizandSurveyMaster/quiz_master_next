@@ -36,7 +36,7 @@ function qsm_options_results_tab_content() {
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='result'";
 	$my_result_templates = $wpdb->get_results($temlpate_sql);
-	
+
 	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 
 	$js_data = array(
@@ -205,7 +205,7 @@ function qsm_options_results_tab_content() {
 	</div>
 </div>
 
-<?php 
+<?php
 qsm_result_and_email_popups_for_templates( $template_from_script, $my_result_templates, 'result');
 }
 /**
@@ -232,13 +232,13 @@ function qsm_options_results_tab_template(){
 					<div class="qsm-template-btn-group">
 						<div class="qsm-actions-link-box">
 							<?php do_action( 'qsm_add_action_links_before' ); ?>
-							<a href="javascript:void(0)" class="qsm-settings-box-result-button" title="<?php echo esc_attr( 'Quick Settings', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" class="qsm-settings-box-result-button" title="<?php esc_attr_e( 'Quick Settings', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/>
 							</a>
-							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button" title="<?php echo esc_attr( 'Duplicate Page', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" class="qsm-duplicate-result-page-button" title="<?php esc_attr_e( 'Duplicate Page', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/>
 							</a>
-							<a href="javascript:void(0)" data-template-type="result" class="qsm-insert-page-template-anchor" title="<?php echo esc_attr( 'Add Template', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" data-template-type="result" class="qsm-insert-page-template-anchor" title="<?php esc_attr_e( 'Add Template', 'quiz-master-next' ); ?>" >
 								<div class="qsm-insert-template-wrap">
 									<div class="qsm-insert-template-options">
 										<label>
@@ -265,26 +265,26 @@ function qsm_options_results_tab_template(){
 								</div>
 								<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/save-3-line.svg'); ?>" alt="save-3-line.svg"/>
 							</a>
-							<a href="javascript:void(0)" class="qsm-more-settings-box-result-button" title="<?php echo esc_attr( 'More Options', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" class="qsm-more-settings-box-result-button" title="<?php esc_attr_e( 'More Options', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/more-2-fill.svg'); ?>" alt="more-2-fill.svg"/>
 							</a>
 						</div> <!-- Closing qsm-actions-link-box -->
 						<div class="qsm-actions-link-box qsm-toggle-action-wrapper">
-							<a href="javascript:void(0)" class="qsm-toggle-result-page-button" title="<?php echo esc_attr( 'Toggle', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" class="qsm-toggle-result-page-button" title="<?php esc_attr_e( 'Toggle', 'quiz-master-next' ); ?>" >
 								<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
 							</a>
 						</div>
 						<div class="qsm-more-settings-box-details">
 							<?php do_action( 'qsm_result_page_more_settings_box_before' ); ?>
-							<a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list" title="<?php echo esc_attr( 'Change Template', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" data-type="result" class="qsm-view-templates-list" title="<?php esc_attr_e( 'Change Template', 'quiz-master-next' ); ?>" >
 							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/refresh-line.svg'); ?>" alt="refresh-line.svg"/>
 							<span><?php esc_html_e( 'Change Template', 'quiz-master-next' ); ?></span>
 							</a>
-							<a href="javascript:void(0)" class="qsm-delete-result-button" title="<?php echo esc_attr( 'Delete Page', 'quiz-master-next' ); ?>" >
+							<a href="javascript:void(0)" class="qsm-delete-result-button" title="<?php esc_attr_e( 'Delete Page', 'quiz-master-next' ); ?>" >
 							<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/><span><?php esc_html_e( 'Delete Page ', 'quiz-master-next' ); ?></span>
 							</a>
 							<?php do_action( 'qsm_result_page_more_settings_box_after' ); ?>
-						</div>						
+						</div>
 						<div class="qsm-settings-box-details">
 							<?php do_action( 'qsm_result_page_settings_box_before' ); ?>
 							<label class="qsm-template-mark-as-default">

@@ -37,7 +37,7 @@ function qsm_options_emails_tab_content() {
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
 	$my_email_templates = $wpdb->get_results($temlpate_sql);
-	
+
 	$js_data = array(
 		'quizID'            => $quiz_id,
 		'nonce'             => wp_create_nonce( 'wp_rest' ),
@@ -195,13 +195,13 @@ function qsm_options_emails_tab_template() {
 			<strong><?php esc_html_e( 'Email Template ', 'quiz-master-next' ); ?> {{data.id}}</strong>
 			<div class="qsm-template-btn-group">
 				<div class="qsm-actions-link-box">
-					<a href="javascript:void(0)" class="qsm-settings-box-email-button" title="<?php echo esc_attr( 'Quick Settings', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" class="qsm-settings-box-email-button" title="<?php esc_attr_e( 'Quick Settings', 'quiz-master-next' ); ?>" >
 						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/>
 					</a>
-					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button" title="<?php echo esc_attr( 'Duplicate Page', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" class="qsm-duplicate-email-template-button" title="<?php esc_attr_e( 'Duplicate Page', 'quiz-master-next' ); ?>" >
 						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/>
 					</a>
-					<a href="javascript:void(0)" data-template-type="email" class="qsm-insert-page-template-anchor" title="<?php echo esc_attr( 'Add Template', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" data-template-type="email" class="qsm-insert-page-template-anchor" title="<?php esc_attr_e( 'Add Template', 'quiz-master-next' ); ?>" >
 						<div class="qsm-insert-template-wrap">
 							<div class="qsm-insert-template-options">
 								<label>
@@ -228,7 +228,7 @@ function qsm_options_emails_tab_template() {
 						</div>
 						<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/save-3-line.svg'); ?>" alt="save-3-line.svg"/>
 					</a>
-					<a href="javascript:void(0)" class="qsm-more-settings-box-email-button" title="<?php echo esc_attr( 'More Options', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" class="qsm-more-settings-box-email-button" title="<?php esc_attr_e( 'More Options', 'quiz-master-next' ); ?>" >
 						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/more-2-fill.svg'); ?>" alt="more-2-fill.svg"/>
 					</a>
 				</div>
@@ -236,18 +236,18 @@ function qsm_options_emails_tab_template() {
 					<a href="javascript:void(0)" class="qsm-toggle-email-template-button">
 						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'); ?>" alt="arrow-down-s-line.svg"/>
 					</a>
-				</div> 
+				</div>
 				<div class="qsm-more-settings-box-details">
 					<?php do_action( 'qsm_email_page_more_settings_box_before' ); ?>
-					<a href="javascript:void(0)" data-type="email" class="qsm-view-templates-list" title="<?php echo esc_attr( 'Change Template', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" data-type="email" class="qsm-view-templates-list" title="<?php esc_attr_e( 'Change Template', 'quiz-master-next' ); ?>" >
 					<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/refresh-line.svg'); ?>" alt="refresh-line.svg"/>
 					<span><?php esc_html_e( 'Change Template', 'quiz-master-next' ); ?></span>
 					</a>
-					<a href="javascript:void(0)" class="qsm-delete-email-button" title="<?php echo esc_attr( 'Delete Page', 'quiz-master-next' ); ?>" >
+					<a href="javascript:void(0)" class="qsm-delete-email-button" title="<?php esc_attr_e( 'Delete Page', 'quiz-master-next' ); ?>" >
 					<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/><span><?php esc_html_e( 'Delete Page ', 'quiz-master-next' ); ?></span>
 					</a>
 					<?php do_action( 'qsm_email_page_more_settings_box_after' ); ?>
-				</div>	
+				</div>
 				<div class="qsm-settings-box-details">
 					<?php do_action( 'qsm_email_page_settings_box_before' ); ?>
 					<label class="qsm-template-mark-as-default">
@@ -266,7 +266,7 @@ function qsm_options_emails_tab_template() {
 				</div>
 				<div class="qsm-email-when-conditions">
 					<!-- Conditions go here. Review template below. -->
-				</div>	
+				</div>
 				<a class="qsm-new-condition qsm-block-btn" href="javascript:void(0);"><span>+</span><?php esc_html_e( ' Add Condition', 'quiz-master-next' ); ?></a>
 			</div>
 			<div class="email-show" data-email-page="{{ data.id }}">
@@ -317,15 +317,15 @@ function qsm_options_emails_tab_template() {
 							return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
 						} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
 							return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, emailcontent) {
-								const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0]; 
-								const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0]; 
+								const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
+								const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
 								return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${emailcontent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
 							});
 						} else {
 							return match;
 						}
 					}) }}}
-					</textarea>					
+					</textarea>
 					<div class="qsm-email-page-content-buttons ">
 						<button type="button" class="button qsm-slashcommand-variables-button qsm-email-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
 						<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>

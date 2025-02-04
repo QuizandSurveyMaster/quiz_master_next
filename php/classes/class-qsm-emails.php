@@ -275,7 +275,7 @@ class QSM_Emails {
 
 		// Cycle through each to email address and send the email.
 		foreach ( $to_array as $to_email ) {
-			if ( is_email( $to_email ) && ! in_array( $to_email, $already_sent_emails ) ) {
+			if ( is_email( $to_email ) && ! in_array( $to_email, $already_sent_emails, true ) ) {
 				$mailResult = wp_mail( $to_email, $subject, $content, $headers, $attachments );
 				if ( $mailResult ) {
 					do_action( 'qsm_after_sending_email', $response_data, $to_email, $subject );
