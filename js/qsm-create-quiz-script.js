@@ -147,6 +147,9 @@ jQuery(function ($) {
                         if (isButton) { QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton); }
                         jQuery('.qsm-quiz-steps-card').removeClass('qsm-quiz-steps-default-theme-active');
                         $parent.addClass('qsm-quiz-steps-default-theme-active');
+                        if ($element.hasClass('qsm-theme-action-btn')) {
+                            $element.remove();
+                        }
                     } else {
                         $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.retry);
                         if (isToggle) { $element.prop('checked', false).prop('disabled', false); }
@@ -186,6 +189,9 @@ jQuery(function ($) {
                             $element.prop('checked', true).prop('disabled', false);
                         }
                         $element.prop('disabled', false);
+                        if ($element.hasClass('qsm-theme-action-btn')) {
+                            $element.remove();
+                        }
                     } else {
                         $parent.find('.qsm-dashboard-addon-status').text(response.data.message);
                         if (isToggle) { $element.prop('checked', false).prop('disabled', false); }

@@ -925,6 +925,59 @@ class QSM_Fields {
 	}
 
 	/**
+	 * Generates toggle inputs
+	 *
+	 * @since 10.0.0
+	 * @param array $field The array that contains the data for the input field
+	 * @param mixed $value The current value of the setting
+	 */
+	public static function generate_toggle_field( $field, $value ) {
+		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+		$checked_value = isset( $field['checked_value'] ) ? $field['checked_value'] : 1;
+		global $mlwQuizMasterNext;
+		$class = "";
+		if ( 'form_type_1' != $show_option ) {
+			$class = $show_option ? $show_option . ' hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem' : '';
+		}
+		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
+		?>
+		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
+			<th scope="row" class="qsm-opt-tr">
+				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
+				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
+				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
+				</span>
+				<?php } ?>
+			</th>
+			<td>
+				<fieldset class="buttonset buttonset-hide" data-hide='1'>
+					<?php if ( isset($field['ph_text']) && '' !== $field['ph_text'] ) { ?>
+						<span><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
+					<?php } ?>
+					<?php
+					foreach ( $field["options"] as $option ) {
+						?>
+						<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>" class="qsm-create-quiz-switch-label">
+							<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
+								name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], 1 ); ?>
+								value="<?php echo esc_attr( $option["value"] ); ?>" />
+							<span class="qsm-create-quiz-slider"></span>
+							<?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?>
+						</label>
+					<?php
+					}
+					?>
+				</fieldset>
+				<?php if ( isset($field['help']) && '' !== $field['help'] ) { ?>
+				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
+				<?php } ?>
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
 	 * Generates checkbox inputs
 	 *
 	 * @since 7.1.10

@@ -51,7 +51,7 @@
 
 .qsm-dashboard-page-item.qsm-dashboard-page-items-active {
 	border: 2px solid #2271B1;
-} 
+}
 
 .qsm-dashboard-journy-next-step, a.qsm-dashboard-journy-create-quiz.button-primary, a.qsm-dashboard-journy-next-step-proceed.button-primary {
     margin: 0 0 0 auto;
@@ -77,7 +77,7 @@ a.qsm-dashboard-journy-create-quiz.button-primary {
 	display: flex;
 }
 
-a.qsm-dashboard-journy-next-step-proceed.button-primary a.qsm-dashboard-journy-previous-step { 
+a.qsm-dashboard-journy-next-step-proceed.button-primary a.qsm-dashboard-journy-previous-step {
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -101,7 +101,7 @@ a.qsm-dashboard-journy-previous-step {
     height: 20px;
 }
 
-.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step, .qsm-dashboard-journy-previous-step:hover, .qsm-dashboard-journy-next-step:hover, .qsm-dashboard-journy-previous-step:focus, .qsm-dashboard-journy-next-step:focus { 
+.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step, .qsm-dashboard-journy-previous-step:hover, .qsm-dashboard-journy-next-step:hover, .qsm-dashboard-journy-previous-step:focus, .qsm-dashboard-journy-next-step:focus {
     padding: 4px 8px;
     border-radius: 3px;
     border: 1px solid #1E1E1E;
@@ -324,7 +324,7 @@ img.qsm-quiz-addon-steps-icon {
     align-items: center;
     padding: 0 5px;
     justify-content: space-between;
-    border: 2px solid #2271B1;
+    border: 2px solid #D1D5DB;
 }
 
 .qsm-dashboard-addon-slider:before {
@@ -368,7 +368,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
 .qsm-dashboard-addon-switch input.qsm-dashboard-addon-toggle:not(:checked) + .qsm-dashboard-addon-slider::before {
     content: "";
     display: block;
-    background-color: #2271B1;
+    background-color: #D1D5DB;
     border-radius: 25px;
 }
 
@@ -384,7 +384,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     padding: 17px 25px;
     border-radius: 8px;
     background: #ffffff;
-    box-shadow: 0px 1px 2px 0px #0000000D !important; 
+    box-shadow: 0px 1px 2px 0px #0000000D !important;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -419,7 +419,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     gap: 10px;
 }
 
-.qsm-dashboard-quiz-form .input-group .buttonset label {
+.qsm-dashboard-quiz-form .input-group .buttonset label:not(.qsm-create-quiz-switch-label) {
 	border: 1px solid #D1D5DB;
 	border-radius: 6px;
 	padding: 7px 17px;
@@ -435,7 +435,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     border-color: #007bff;
 }
 
-.qsm-dashboard-quiz-form .input-group .buttonset label.qsm-dashboard-button-selected {
+.qsm-dashboard-quiz-form .input-group .buttonset label.qsm-dashboard-button-selected:not(.qsm-create-quiz-switch-label) {
 	border: 1px solid #0073aa;
 }
 
@@ -500,7 +500,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     right: 0;
     bottom: 0;
     transition: 0.4s;
-    border: 2px solid #2271B1;
+    border: 2px solid #D1D5DB;
     border-radius: 20px;
 }
 
@@ -512,7 +512,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     left: 3px;
     bottom: 2px;
     transition: 0.4s;
-    background: #2271B1;
+    background: #D1D5DB;
     border-radius: 50%;
 }
 
@@ -520,11 +520,15 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
     transform: translateX(20px);
 }
 
-.qsm-create-quiz-switch-label input.qsm-create-quiz-show-more-settings:checked + .qsm-create-quiz-slider::before {
+.qsm-create-quiz-switch-label input:checked + .qsm-create-quiz-slider {
+    border-color: #2271B1;
+}
+
+.qsm-create-quiz-switch-label input:checked + .qsm-create-quiz-slider::before {
     background-color: #2271B1;
 }
 
-.qsm-create-quiz-switch-label input.qsm-create-quiz-show-more-settings:checked + .qsm-create-quiz-slider {
+.qsm-create-quiz-switch-label input:checked + .qsm-create-quiz-slider {
     background-color: #FFFFFF;
 }
 

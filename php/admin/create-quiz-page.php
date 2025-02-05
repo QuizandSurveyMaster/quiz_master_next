@@ -94,9 +94,6 @@ function qsm_dashboard_display_quizoptions_section( $quizoptions_boxes ) {
 				}
 				?>
 			</div>
-			<div class="qsm-dashboard-see-more-types-wrap">
-				<a href="javascript:void(0)" class="button"><?php echo esc_html__('See More Types', 'quiz-master-next'); ?></a>
-			</div>
 		</div>
 	</div> <!-- qsm-dashboard-choose-quiz-type-wrap  -->
 	<?php
@@ -196,7 +193,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 										<a href="<?php echo esc_url($theme_link); ?>" class="button button-secondary" target="_blank">
 											<?php echo esc_html__( 'Buy', 'quiz-master-next' ); ?>
 										</a>
-									<?php } else { ?>
+									<?php } else if( false == $is_activated ) { ?>
 										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
 											<?php echo esc_html__( 'Use', 'quiz-master-next' ); ?>
 										</a>

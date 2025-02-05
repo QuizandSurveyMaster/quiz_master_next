@@ -894,9 +894,6 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Extensions Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qmn_addons', 'qmn_addons_page', 34 );
 			add_submenu_page( 'qsm_dashboard', __( 'Free Add-ons', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Add-ons', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qsm-free-addon', 'qsm_display_optin_page', 90 );
 			add_submenu_page( 'qsm_dashboard', __( 'Create Quiz Page', 'quiz-master-next' ), '', $capabilities[6], 'qsm_create_quiz_page', 'qsm_create_quiz_page_callback' );
-			
-			// Register screen option for dashboard page
-			add_action( 'screen_settings', 'qsm_dashboard_screen_options', 10, 2 );
 		}
 	}
 

@@ -1008,10 +1008,11 @@ h2.hndle.ui-sortable-handle {
 }
 
 .qsm_dashboard_page.postbox {
-	padding: 10px 10px 10px 20px;
+	padding: 15px 15px 15px 20px;
     display: flex;
     flex-direction: column;
     background: #1D4ED8;
+    margin: -15px -20px -15px -25px;
 }
 
 .qsm_dashboard_page.postbox h1,

@@ -629,7 +629,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 
 		$quiz_setting_option = array(
 			'form_type'                              => array(
-				'option_name' => __( 'Form Type', 'quiz-master-next' ),
+				'label' => __( 'Form Type', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['form_type'],
 				'default'     => 0,
 				'type'        => 'select',
@@ -649,7 +649,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 			),
 			'system'                                 => array(
-				'option_name' => __( 'Grading System', 'quiz-master-next' ),
+				'label' => __( 'Grading System', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['system'],
 				'default'     => 0,
 				'type'        => 'radio',
@@ -670,344 +670,95 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 			),
 			'show_question_featured_image_in_result' => array(
-				'option_name' => __( 'Show question featured image in results page', 'quiz-master-next' ),
+				'label' => __( 'Show question featured image in results page', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
-				'type'        => 'radio',
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 				'default'     => 0,
 			),
 			'enable_pagination_quiz'                 => array(
-				'option_name' => __( 'Show current page number', 'quiz-master-next' ),
+				'label' => __( 'Show current page number', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['enable_pagination_quiz'],
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 				'default'     => 0,
 			),
 			'progress_bar'                           => array(
-				'option_name' => __( 'Show progress bar', 'quiz-master-next' ),
+				'label' => __( 'Show progress bar', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['enable_pagination_quiz'],
-				'type'        => 'radio',
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 				'default'     => 0,
 			),
-			'comment_section'                        => array(
-				'option_name' => __( 'Allow users to post comments at the end of the form type', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['comment_section'],
-				'type'        => 'radio',
-				'options'     => array(
-					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
-						'value' => 0,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 1,
-					),
-				),
-				'default'     => 1,
-				'help'        => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
-			),
 			'require_log_in'                         => array(
-				'option_name' => __( 'Require User Login', 'quiz-master-next' ),
+				'label' => __( 'Require User Login', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['require_log_in'],
-				'type'        => 'radio',
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 				'default'     => 0,
 				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
 			),
 			'timer_limit'                            => array(
-				'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
+				'label' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['timer_limit'],
 				'type'        => 'number',
 				'default'     => 0,
 				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
 			),
 			'pagination'                             => array(
-				'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
+				'label' => __( 'Questions Per Page', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['pagination'],
 				'type'        => 'number',
 				'default'     => 0,
 				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
 			),
 			'enable_contact_form'                    => array(
-				'option_name' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+				'label' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
 				'value'       => 0,
-				'type'        => 'radio',
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 			),
 			'disable_first_page'                     => array(
-				'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
+				'label' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 				'value'       => $globalQuizsetting['disable_first_page'],
-				'type'        => 'radio',
+				'type'        => 'toggle',
 				'options'     => array(
 					array(
-						'label' => __( 'Yes', 'quiz-master-next' ),
 						'value' => 1,
-					),
-					array(
-						'label' => __( 'No', 'quiz-master-next' ),
-						'value' => 0,
-					),
+					)
 				),
 				'default'     => 0,
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 
-		if ( true != $require_field && empty( $quiz_setting_option ) ) {
-			esc_html_e( 'No settings found!', 'quiz-master-next' );
-		}
-
-		$fields = array();
-		$all_settings  = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 		foreach ( $quiz_setting_option as $key => $single_setting ) {
-			$index = array_search( $key, array_column( $all_settings, 'id' ), true );
-			if ( is_int( $index ) && isset( $all_settings[ $index ] ) ) {
-				$field               = $all_settings[ $index ];
-				$field['label']      = $single_setting['option_name'];
-				$field['default']    = $single_setting['value'];
-			} else {
-				$field = array(
-					'id'      => $key,
-					'label'   => $single_setting['option_name'],
-					'type'    => isset( $single_setting['type'] ) ? $single_setting['type'] : 'radio',
-					'options' => isset( $single_setting['options'] ) ? $single_setting['options'] : array(),
-					'default' => $single_setting['value'],
-					'help'    => isset( $single_setting['help'] ) ? $single_setting['help'] : "",
-				);
-			}
-
-			if ( true != $require_field ) {
-				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
-				QSM_Fields::generate_field( $field, $single_setting['value'] );
-				echo '</div>';
-			} else {
-				$fields[] = $field;
-			}
-		}
-		if ( true === $require_field ) {
-			return $fields;
+			$single_setting['id'] = $key;
+			echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
+			QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
+			echo '</div>';
 		}
 	}
-}
-/**
- * @since 7.0
- * New quiz popup
- */
-function qsm_create_new_quiz_wizard() {
-	global $mlwQuizMasterNext;
-	global $themes_data;
-	qsm_fetch_theme_data();
-	?>
-	<div class="qsm-popup qsm-popup-slide" id="model-wizard" aria-hidden="true">
-		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
-				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-2-title">
-						<?php esc_html_e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-				</header>
-				<form action="" method="post" id="new-quiz-form">
-					<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
-					<main class="qsm-popup__content" id="modal-2-content">
-						<div class="qsm-wizard-menu">
-							<div class="qsm-logo"><img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ); ?>/assets/icon-128x128.png">
-							</div>
-							<div class="qsm-wizard-wrap active" data-show="select_themes">
-								<span
-									class="qsm-wizard-step-text"><?php esc_html_e( 'Select theme', 'quiz-master-next' ); ?></span>
-							</div>
-							<div class="qsm-wizard-wrap" data-show="quiz_settings">
-								<span
-									class="qsm-wizard-step-text"><?php esc_html_e( 'Quiz Settings', 'quiz-master-next' ); ?></span>
-							</div>
-							<div class="qsm-wizard-wrap" data-show="addons_list">
-								<span class="qsm-wizard-step-text"><?php esc_html_e( 'Addons', 'quiz-master-next' ); ?></span>
-							</div>
-							<span class="qsm-wizard-step-text-optional">
-								<?php esc_html_e( '(Optional)', 'quiz-master-next' ); ?>
-							</span>
-						</div>
-						<ul style="display: none;" class="qsm-new_menu_tab_items">
-							<li class="qsm-new_menu_tab_li active" data-show="quiz_settings">
-								<a href="javascript:void(0)">
-									<div class="nav-item-label">
-										<span class="nav-item-label-icon dashicons dashicons-admin-generic "></span>
-										<div class="nav-item-label-content">
-											<h4><?php esc_html_e( 'Quiz Setting', 'quiz-master-next' ); ?></h4>
-											<span><?php esc_html_e( 'Fill quiz settings as per preferences', 'quiz-master-next' ); ?></span>
-										</div>
-									</div>
-								</a>
-							</li>
-							<li class="qsm-new_menu_tab_li" data-show="select_themes">
-								<a href="javascript:void(0)">
-									<div class="nav-item-label">
-										<span class="nav-item-label-icon dashicons dashicons-layout"></span>
-										<div class="nav-item-label-content">
-											<h4><?php esc_html_e( 'Select Themes', 'quiz-master-next' ); ?></h4>
-											<span><?php esc_html_e( 'Use pre-made theme to speed up the things.', 'quiz-master-next' ); ?></span>
-										</div>
-									</div>
-								</a>
-							</li>
-							<li class="qsm-new_menu_tab_li" data-show="addons_list">
-								<a href="javascript:void(0)">
-									<div class="nav-item-label">
-										<span class="nav-item-label-icon dashicons dashicons-welcome-add-page"></span>
-										<div class="nav-item-label-content">
-											<h4><?php esc_html_e( 'Addons', 'quiz-master-next' ); ?></h4>
-											<span><?php esc_html_e( 'Use 40+ addons to customize the quiz.', 'quiz-master-next' ); ?></span>
-										</div>
-									</div>
-								</a>
-							</li>
-						</ul>
-						<div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
-							<div class="input-group">
-								<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
-									<span style="color:red">*</span>
-								</label>
-								<input type="text" class="quiz_name" name="quiz_name" value="" required="" placeholder="<?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?>">
-							</div>
-							<div class="input-group qsm-quiz-options-featured_image">
-								<label for="quiz_name"><?php esc_html_e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
-								</label>
-								<span id="qsm_span">
-									<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
-									<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
-								</span>
-								<span class="qsm-opt-desc"><?php esc_html_e( 'Enter an external URL or Choose from Media Library. Can be changed further from style tab', 'quiz-master-next' ); ?></span>
-							</div>
-							<?php  qsm_settings_to_create_quiz(); ?>
-						</div>
-						<div id="select_themes" class="qsm-new-menu-elements">
-							<div class="theme-browser rendered">
-								<div class="themes wp-clearfix">
-									<ul class="theme-sub-menu">
-										<li class="active">
-											<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
-										</li>
-										<?php if ( ! empty( $themes_data ) ) { ?>
-											<li>
-												<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a>
-											</li>
-										<?php } ?>
-									</ul>
-									<div class="theme-wrap" id="browse_themes" style="display: none;">
-										<?php qsm_get_market_themes(); ?>
-									</div>
-									<div class="theme-wrap" id="downloaded_theme">
-										<?php
-										qsm_get_installed_theme( 0, 'wizard_theme_list' );
-										qsm_get_default_wizard_themes();
-										?>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="addons_list" class="qsm-new-menu-elements" style="display: none;">
-							<div class="qsm-addon-setting-wrap">
-								<div id="qsm_add_addons" class="qsm-primary-acnhor">
-									<div class="qsm-quiz-page-addon qsm-addon-page-list">
-										<?php
-										$popular_addons = qsm_get_widget_data( 'popular_products' );
-										?>
-										<div class="qsm_popular_addons" id="qsm_popular_addons">
-											<div class="popuar-addon-ul">
-												<?php
-												if ( $popular_addons ) {
-													foreach ( $popular_addons as $key => $single_arr ) {
-														$link = qsm_get_utm_link( $single_arr['link'], 'new_quiz', 'addons', 'quizsurvey_' . sanitize_title( $single_arr['name'] ) );
-														?>
-														<div>
-															<a href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
-																<span class="addon-itd-wrap">
-																	<img alt="" src="<?php echo esc_url( $single_arr['img'] ); ?>" />
-																</span>
-															</a>
-															<a class="addon-get-link" href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener">
-																<?php esc_html_e( 'View Details', 'quiz-master-next' ); ?>
-															</a>
-														</div>
-														<?php
-													}
-												}
-												?>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="qsm-addon-list-right">
-									<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
-									<a style="text-decoration: none; font-size: 15px;" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link( 'addons', 'new_quiz', 'addons', 'quizsurvey_all_addons' ) ) ?>" target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
-								</div>
-							</div>
-						</div>
-					</main>
-				</form>
-				<footer class="qsm-popup__footer">
-					<button id="prev-theme-button"
-							class="button qsm-wizard-borderless"><?php esc_html_e( 'Back', 'quiz-master-next' ); ?></button>
-					<button id="prev-quiz-button"
-							class="button qsm-wizard-borderless"></span><?php esc_html_e( 'Back', 'quiz-master-next' ); ?></button>
-					<button class="button qsm-wizard-borderless" data-micromodal-close
-							aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-					<button id="next-quiz-button"
-							class="button button-primary"><?php esc_html_e( 'Next', 'quiz-master-next' ); ?></button>
-					<button id="choose-addons-button"
-							class="button button-primary"><?php esc_html_e( 'Next', 'quiz-master-next' ); ?></button>
-					<button id="create-quiz-button"
-							class="button button-primary"><?php esc_html_e( 'Create Quiz', 'quiz-master-next' ); ?></button>
-				</footer>
-			</div>
-		</div>
-	</div>
-	<?php
 }
 
 /**
