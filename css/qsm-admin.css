@@ -3801,11 +3801,6 @@ input#duplicate_questions {
 
 .qsm-result-page-template-card-content,
 .qsm-email-page-template-card-content {
-    transition: background-color 0.3s ease; /* Transition on the child */
-}
-
-.qsm-result-page-template-card-content,
-.qsm-email-page-template-card-content {
 	position: relative;
     cursor: pointer;
     display: flex;
@@ -3816,6 +3811,7 @@ input#duplicate_questions {
     min-width: 230px;
     overflow: hidden;
 	background: #fff;
+	transition: background-color 0.3s ease;
 }
 
 .qsm-result-page-template-card-content::before,

@@ -57,21 +57,6 @@ var QSMAdminResultsAndEmail;
             QSMAdmin.selectTab($(this));
         });
 
-        $(document).ready(function(){
-            // if ($('.footer-bar-notice').find('.updated').length > 0) {
-            //     $('.footer-bar-notice').css('color', 'green');
-            // }
-
-            // if ($('.footer-bar-notice').find('.error').length > 0) {
-            //     $('.footer-bar-notice').css('color', 'red');
-            // }
-        });
-
-        $(document).on('click', '#close', function (e) {
-            e.preventDefault();
-            // $('.footer-bar-notice').empty();
-        });
-
         //show set global default potion popup
         $(document).on('click', '#qsm-blobal-settings', function () {
             MicroModal.show('qsm-global-default-popup');

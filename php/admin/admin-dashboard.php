@@ -174,7 +174,7 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 		<div class="qsm-dashboard-help-center-grid qsm-dashboard-page-common-style">
 			<?php foreach ( array_slice($popular_addons, 0, 4) as $addon ) :
 				$addon_link = qsm_get_utm_link( $addon['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $addon['name'] ) );
-				$addon_icon = isset($addon_script['icon']) && "" != $addon_script['icon'] ? $addon_script['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
+				$addon_icon = isset($addon['icon']) && "" != $addon['icon'] ? $addon['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
 				?>
 				<div class="qsm-dashboard-help-center-card">
 					<div class="qsm-dashboard-help-center-card-icon">

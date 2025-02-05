@@ -889,7 +889,7 @@ class QSM_Fields {
 		}
 		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
 		?>
-		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
+		<tr class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
@@ -933,7 +933,6 @@ class QSM_Fields {
 	 */
 	public static function generate_toggle_field( $field, $value ) {
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
-		$checked_value = isset( $field['checked_value'] ) ? $field['checked_value'] : 1;
 		global $mlwQuizMasterNext;
 		$class = "";
 		if ( 'form_type_1' != $show_option ) {
@@ -941,7 +940,7 @@ class QSM_Fields {
 		}
 		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
 		?>
-		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
+		<tr class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
