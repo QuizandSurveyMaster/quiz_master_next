@@ -791,7 +791,7 @@ class QMNQuizManager {
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 			$order_by_sql = 'ORDER BY rand()';
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
-			if ( $categories ) {
+			if ( $categories && !empty( $quiz_options->question_per_category ) ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
 				if ( ! $multiple_category_system ) {
 					$cat_str   = "'" . implode( "', '", $exploded_arr ) . "'";
