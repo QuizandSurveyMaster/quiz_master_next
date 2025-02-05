@@ -193,7 +193,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 										<a href="<?php echo esc_url($theme_link); ?>" class="button button-secondary" target="_blank">
 											<?php echo esc_html__( 'Buy', 'quiz-master-next' ); ?>
 										</a>
-									<?php } else if( false == $is_activated ) { ?>
+									<?php } elseif ( false == $is_activated ) { ?>
 										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
 											<?php echo esc_html__( 'Use', 'quiz-master-next' ); ?>
 										</a>
@@ -403,7 +403,7 @@ function qsm_create_quiz_page_callback() {
 
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
+		<h1></h1>
 		<div class="qsm-new-quiz-wrapper">
 			<div class="qsm-dashboard-header">
 				<div class="qsm-dashboard-header-pagination">

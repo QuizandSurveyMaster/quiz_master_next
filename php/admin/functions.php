@@ -629,11 +629,11 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 
 		$quiz_setting_option = array(
 			'form_type'                              => array(
-				'label' => __( 'Form Type', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['form_type'],
-				'default'     => 0,
-				'type'        => 'select',
-				'options'     => array(
+				'label'   => __( 'Form Type', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['form_type'],
+				'default' => 0,
+				'type'    => 'select',
+				'options' => array(
 					array(
 						'label' => __( 'Quiz', 'quiz-master-next' ),
 						'value' => 0,
@@ -649,11 +649,11 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				),
 			),
 			'system'                                 => array(
-				'label' => __( 'Grading System', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['system'],
-				'default'     => 0,
-				'type'        => 'radio',
-				'options'     => array(
+				'label'   => __( 'Grading System', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['system'],
+				'default' => 0,
+				'type'    => 'radio',
+				'options' => array(
 					array(
 						'label' => __( 'Correct/Incorrect', 'quiz-master-next' ),
 						'value' => 0,
@@ -667,87 +667,87 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 						'value' => 3,
 					),
 				),
-				'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
+				'help'    => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 			),
 			'show_question_featured_image_in_result' => array(
-				'label' => __( 'Show question featured image in results page', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['show_question_featured_image_in_result'],
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Show question featured image in results page', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['show_question_featured_image_in_result'],
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
-				'default'     => 0,
+				'default' => 0,
 			),
 			'enable_pagination_quiz'                 => array(
-				'label' => __( 'Show current page number', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['enable_pagination_quiz'],
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Show current page number', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['enable_pagination_quiz'],
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
-				'default'     => 0,
+				'default' => 0,
 			),
 			'progress_bar'                           => array(
-				'label' => __( 'Show progress bar', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['enable_pagination_quiz'],
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Show progress bar', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['enable_pagination_quiz'],
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
-				'default'     => 0,
+				'default' => 0,
 			),
 			'require_log_in'                         => array(
-				'label' => __( 'Require User Login', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['require_log_in'],
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Require User Login', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['require_log_in'],
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
-				'default'     => 0,
-				'help'        => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
+				'default' => 0,
+				'help'    => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
 			),
 			'timer_limit'                            => array(
-				'label' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['timer_limit'],
-				'type'        => 'number',
-				'default'     => 0,
-				'help'        => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
+				'label'   => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['timer_limit'],
+				'type'    => 'number',
+				'default' => 0,
+				'help'    => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
 			),
 			'pagination'                             => array(
-				'label' => __( 'Questions Per Page', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['pagination'],
-				'type'        => 'number',
-				'default'     => 0,
-				'help'        => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
+				'label'   => __( 'Questions Per Page', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['pagination'],
+				'type'    => 'number',
+				'default' => 0,
+				'help'    => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
 			),
 			'enable_contact_form'                    => array(
-				'label' => __( 'Display a contact form before quiz', 'quiz-master-next' ),
-				'value'       => 0,
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Display a contact form before quiz', 'quiz-master-next' ),
+				'value'   => 0,
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
 			),
 			'disable_first_page'                     => array(
-				'label' => __( 'Disable first page on quiz', 'quiz-master-next' ),
-				'value'       => $globalQuizsetting['disable_first_page'],
-				'type'        => 'toggle',
-				'options'     => array(
+				'label'   => __( 'Disable first page on quiz', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['disable_first_page'],
+				'type'    => 'toggle',
+				'options' => array(
 					array(
 						'value' => 1,
-					)
+					),
 				),
-				'default'     => 0,
+				'default' => 0,
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
@@ -1497,6 +1497,44 @@ function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
 		</button>
 	<?php }
 }
+
+function qsm_webhooks_popup_window_section() {
+	if ( ! class_exists('QSM_Webhooks') ) {
+		$args = array(
+			"id"           => 'modal-qsm-webhooks',
+			"title"        => __( 'Webhooks Addon', 'quiz-master-next' ),
+			"description"  => __( 'Connecting your quiz data to other systems is as simple as adding a webhook URL and choosing how you want the information to be sent. Choose your webhook type and data format, map your quiz or survey fields, and preview everything in real time. No technical expertise is needed—just configure, save, and let the add-on handle the rest.', 'quiz-master-next' ),
+			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
+			"warning"      => __( 'Missing Feature - webhook Add-on required', 'quiz-master-next' ),
+			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Webhooks Addon separately.', 'quiz-master-next' ),
+			"buy_btn_text" => __( 'Buy Webhooks Addon', 'quiz-master-next' ),
+			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/qsm-webhooks', 'qsm_list', 'webhooks_button', 'webhooks_read_documentation', 'qsm_plugin_upsell' ),
+			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'webhooks_button', 'webhooks_upgrade', 'qsm_plugin_upsell' ),
+			"addon_link"   => qsm_get_plugin_link( 'downloads/webhooks', 'qsm_list', 'webhooks_button', 'webhooks_buy_addon', 'qsm_plugin_upsell' ),
+			"benefits"     => array(
+				'briefing'   => '',
+				'list_items' => array(
+					__( 'Supports JSON, XML, Form Data, and Array formats.', 'quiz-master-next' ),
+					__( 'Triggers instant data dispatch on quiz submission.', 'quiz-master-next' ),
+					__( 'Customizes payload fields for tailored data integration.', 'quiz-master-next' ),
+					__( 'Uses Nested Objects for structured data organization.', 'quiz-master-next' ),
+				),
+			),
+			"use_cases"    => array(
+				'briefing'   => '',
+				'list_items' => array(
+					__( 'Sends quiz results to external applications instantly.', 'quiz-master-next' ),
+					__( 'Integrates with CRM or automation platforms.', 'quiz-master-next' ),
+					__( 'Triggers actions based on specific quiz outcomes.', 'quiz-master-next' ),
+					__( 'Monitors webhook logs with status and response details.', 'quiz-master-next' ),
+				),
+			),
+
+		);
+		qsm_admin_upgrade_popup( $args );
+	}
+}
+
 
 // Hook into WordPress' AJAX action
 add_action('wp_ajax_qsm_insert_quiz_template', 'qsm_insert_quiz_template_callback');

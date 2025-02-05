@@ -1,6 +1,9 @@
 :root {
 	--qsm-primary-button: #2272B1;
 }  
+.toplevel_page_qsm_dashboard #wpbody-content > div.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap > div.error {
+	display: none;
+}
 /******************** Quizzes/Surveys Page *********************/
 @-moz-keyframes qsm-spinner-loader {
 	0% {

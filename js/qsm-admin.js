@@ -784,11 +784,12 @@ jQuery('.quiz_text_tab').click(function (e) {
 });
 jQuery('.qsm-upgrade-tab').click(function (e) {
     e.preventDefault();
-    let current_id = jQuery(this).attr('data-id');
+    let $this = jQuery(this);
+    let current_id = $this.attr('data-id');
     jQuery('.qsm-upgrade-tab').removeClass('current');
-    jQuery(this).addClass('current');
-    jQuery('.qsm-upgrade-tab-content').hide();
-    jQuery('#' + current_id).show();
+    $this.addClass('current');
+    $this.parents('.qsm-upgrade-box').find('.qsm-upgrade-tab-content').hide();
+    $this.parents('.qsm-upgrade-box').find('#' + current_id).show();
     jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
@@ -1694,6 +1695,11 @@ function qsmConvertContentToShortcode( contentToConvert ){
             $( document ).on( 'click', '.qsm-extra-shortcode-popup', function( e ) {
                 e.preventDefault();
                 MicroModal.show('modal-extra-shortcodes');
+            } );
+            
+            $( document ).on( 'click', '.qsm-webhooks-pricing-popup', function( e ) {
+                e.preventDefault();
+                MicroModal.show('modal-qsm-webhooks');
             } );
 
             jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
