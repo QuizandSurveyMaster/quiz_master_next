@@ -176,7 +176,7 @@ function qsm_options_styling_tab_content() {
 				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Save Image', 'quiz-master-next' ); ?>" />
 			</div>
 			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo esc_url( $featured_image ); ?>"><br>
-			<button class="button button-secondary qsm-theme-featured-image-change"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
+			<button class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
 		</div>
 	<?php
 	echo '</form>';
@@ -187,7 +187,7 @@ function qsm_options_styling_tab_content() {
 		<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Now you can easily customize the appearance', 'quiz-master-next' ); ?></p>
 		<textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo esc_textarea( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_quiz_options->quiz_stye, ENT_QUOTES) ) ); ?></textarea></td>
 		<?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
-		<button id="save_styles_button" class="button-primary"><?php esc_html_e( 'Save Quiz Style', 'quiz-master-next' ); ?></button>
+		<button id="save_styles_button" class="button-primary qsm-common-button-styles"><?php esc_html_e( 'Save Quiz Style', 'quiz-master-next' ); ?></button>
 	</div>
 	<?php do_action( 'qsm_add_style_section_content' ); ?>
 </form>
