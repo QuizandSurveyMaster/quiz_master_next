@@ -286,12 +286,12 @@ class QMNPluginHelper {
 	 */
 	public function get_quiz_setting( $setting, $default = false, $caller = '' ) {
 		global $mlwQuizMasterNext;
-		if ( ( $setting === 'pages' || $setting === 'qpages' ) && empty( $caller ) ) {
+		if ( ( 'pages' == $setting || 'qpages' == $setting ) && empty( $caller ) ) {
 			$pages = $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
 			$temp_pages = array();
 			foreach ( $pages as $index => $page ) {
 				$page_should_display = array();
-				$page = $setting === 'qpages' ? $page['questions'] : $page;
+				$page = 'qpages' == $setting ? $page['questions'] : $page;
 				foreach ( $page as $key => $question_id ) {
 					$isPublished = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'isPublished' );
 					if ( '' == $isPublished || ( '' != $isPublished && 1 === intval( $isPublished ) ) ) {
@@ -302,7 +302,7 @@ class QMNPluginHelper {
 					}
 				}
 				if ( in_array( true, $page_should_display, true ) ) {
-					if ( $setting === 'qpages' ) {
+					if ( 'qpages' == $setting ) {
 						$pages[ $index ]['questions'] = $page;
 						$temp_pages[] = $pages[ $index ];
 					} else {

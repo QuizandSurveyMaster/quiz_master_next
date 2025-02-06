@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 9.2.4
+ * Version: 9.3.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '9.2.4';
+	public $version = '9.3.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -277,6 +277,7 @@ class MLWQuizMasterNext {
 		if ( is_admin() || ( ! empty( $_POST['qsm_block_api_call'] ) && $this->qsm_is_admin() ) ) {
 			include_once 'php/admin/functions.php';
 			include_once 'php/admin/stats-page.php';
+			include_once 'php/admin/create-quiz-page.php';
 			include_once 'php/admin/quizzes-page.php';
 			include_once 'php/admin/admin-dashboard.php';
 			include_once 'php/admin/quiz-options-page.php';
@@ -470,6 +471,13 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-effects-explode' );
 					wp_enqueue_media();
 					break;
+				case 'results-pages':
+				case 'emails':
+					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
+					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+					break;
 				default:
 					wp_enqueue_editor();
 					wp_enqueue_media();
@@ -573,7 +581,7 @@ class MLWQuizMasterNext {
 			),
 			'select_category'            => __("Select Category", 'quiz-master-next'),
 			'questions_not_found'        => __("Question not found!", 'quiz-master-next'),
-			'add_more'                   => __("Add", 'quiz-master-next'),
+			'add_more'                   => __("Save", 'quiz-master-next'),
 			'_X_validation_fails'        => __("Please enter an appropriate value for 'X'", 'quiz-master-next'),
 			'qsm_variables'              => $qsm_variables,
 			'qsm_variables_name'         => $qsm_variables_name,
@@ -586,6 +594,19 @@ class MLWQuizMasterNext {
 			'qsmQuizzesObject'           => $qsm_quizzes,
 			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
 			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
+			'add_process'                => __('Saving..', 'quiz-master-next'),
+			'empty_template_name'        => __('Template name cannot be empty.', 'quiz-master-next'),
+			'no_template_selected'       => __('Please selecte a template.', 'quiz-master-next'),
+			'empty_template_content'     => __('Template content cannot be empty.', 'quiz-master-next'),
+			'template_added'             => __('Template added successfully!', 'quiz-master-next'),
+			'template_updated'           => __('Template replaced successfully!', 'quiz-master-next'),
+			'template_save_error'        => __('There was an error when saving the template.', 'quiz-master-next'),
+			'confirmDeleteTemplate'      => esc_html__( 'Are you sure you want to delete this template?', 'quiz-master-next' ),
+			'confirmRemovePage'          => esc_html__( 'Are you sure you want to remove this page?', 'quiz-master-next' ),
+			'confirmReplaceTemplate'     => esc_html__( 'This will replace your current template. Continue?', 'quiz-master-next' ),
+			'select_template'            => __('Select Template', 'quiz-master-next'),
+			'required_addons'            => __('Required Add-ons', 'quiz-master-next'),
+			'used_addons'                => __('Used Add-ons', 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
@@ -872,8 +893,7 @@ class MLWQuizMasterNext {
 
 			add_submenu_page( 'qsm_dashboard', __( 'Extensions Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qmn_addons', 'qmn_addons_page', 34 );
 			add_submenu_page( 'qsm_dashboard', __( 'Free Add-ons', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Add-ons', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qsm-free-addon', 'qsm_display_optin_page', 90 );
-			// Register screen option for dashboard page
-			add_action( 'screen_settings', 'qsm_dashboard_screen_options', 10, 2 );
+			add_submenu_page( 'qsm_dashboard', __( 'Create Quiz Page', 'quiz-master-next' ), '', $capabilities[6], 'qsm_create_quiz_page', 'qsm_create_quiz_page_callback' );
 		}
 	}
 

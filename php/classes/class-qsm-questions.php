@@ -181,7 +181,7 @@ class QSM_Questions {
 		$question_array = ! empty( $caller ) ? $question_array : array_filter(
 			$question_array,
 			function ( $question ) {
-				return ! isset( $question['settings']['isPublished'] ) || $question['settings']['isPublished'] !== '0';
+				return ! isset( $question['settings']['isPublished'] ) || 0 == $question['settings']['isPublished'];
 			}
 		);
 		return apply_filters( 'qsm_load_questions', $question_array, $quiz_id );
@@ -311,7 +311,7 @@ class QSM_Questions {
 			// Convert the existing linked_question into an array
 			$linked_questions_array = array_filter(array_map('trim', explode(',', $linked_question)));
 			// Add the new value if it's not already in the array
-			if ( isset($data['is_linking'] ) && ! in_array($data['is_linking'], $linked_questions_array) ) {
+			if ( isset($data['is_linking'] ) && ! in_array($data['is_linking'], $linked_questions_array, true) ) {
 				$linked_questions_array[] = $data['is_linking'];
 			}
 			$linked_questions_array = array_filter($linked_questions_array);
@@ -336,7 +336,7 @@ class QSM_Questions {
 			'deleted'              => 0,
 		);
 		$values = apply_filters( 'qsm_save_question_data', $values );
-		
+
 		$types = array(
 			'%d',
 			'%s',
@@ -351,7 +351,7 @@ class QSM_Questions {
 			'%s',
 			'%d',
 		);
-		
+
 		if ( $is_creating ) {
 			$results     = $wpdb->insert(
 				$wpdb->prefix . 'mlw_questions',
@@ -401,11 +401,11 @@ class QSM_Questions {
 				$types,
 				array( '%d' )
 			);
-			
+
 			/**
 			 * Process Question Categories
 			 */
-			
+
 			$wpdb->delete(
 				$question_terms_table,
 				array(
@@ -432,14 +432,14 @@ class QSM_Questions {
 			/**
 			 * Hook after saving question
 			 */
-			
-			 if ( $is_creating && $base_question_id == $question_id_loop ) {
+
+			if ( $is_creating && $base_question_id == $question_id_loop ) {
 				do_action( 'qsm_question_added', $question_id_loop, $values );
 			} else {
 				do_action( 'qsm_question_updated', $question_id_loop, $values );
 			}
 			do_action( 'qsm_saved_question', $question_id_loop, $values );
-	
+
 		}
 		return $base_question_id;
 	}

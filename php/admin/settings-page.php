@@ -188,6 +188,7 @@ class QMNGlobalSettingsPage {
 			'enable_deselect_option'                 => 0,
 			'disable_description_on_result'          => 0,
 			'disable_scroll_next_previous_click'     => 0,
+			'disable_scroll_on_result'     			 => 0,
 			'disable_first_page'                     => 0,
 			'disable_mathjax'                        => 0,
 			'quiz_animation'                         => '',
@@ -1193,6 +1194,7 @@ class QMNGlobalSettingsPage {
 		$qsm_hide_correct_answer = ( isset( $globalQuizsetting['hide_correct_answer'] ) && '' !== $globalQuizsetting['hide_correct_answer'] ? $globalQuizsetting['hide_correct_answer'] : 0 );
 		$qsm_show_question_featured_image_in_result = ( isset( $globalQuizsetting['show_question_featured_image_in_result'] ) && '' !== $globalQuizsetting['show_question_featured_image_in_result'] ? $globalQuizsetting['show_question_featured_image_in_result'] : 0 );
 		$qsm_disable_description_on_result = ( isset( $globalQuizsetting['disable_description_on_result'] ) && '' !== $globalQuizsetting['disable_description_on_result'] ? $globalQuizsetting['disable_description_on_result'] : '0' );
+		$qsm_disable_scroll_on_result = ( isset( $globalQuizsetting['disable_scroll_on_result'] ) && '' !== $globalQuizsetting['disable_scroll_on_result'] ? $globalQuizsetting['disable_scroll_on_result'] : '0' );
 		?>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-show-optin">
@@ -1222,6 +1224,12 @@ class QMNGlobalSettingsPage {
 			<label class="qsm-option-label" for="qsm-disable-description-on-result">
 				<input type="checkbox" id="qsm-disable-description-on-result" name="qsm-quiz-settings[disable_description_on_result]" <?php checked( $qsm_disable_description_on_result, 1 ); ?> value="1">
 				<?php esc_html_e('Disable description on quiz result page', 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide" data-hide="1">
+			<label class="qsm-option-label" for="qsm-disable-scroll-on-result">
+				<input type="checkbox" id="qsm-disable-scroll-on-result" name="qsm-quiz-settings[disable_scroll_on_result]" <?php checked( $qsm_disable_scroll_on_result, 1 ); ?> value="1">
+				<?php esc_html_e('Disable scrolling while submitting quizzes and displaying results', 'quiz-master-next'); ?>
 			</label>
 		</fieldset>
 		<?php

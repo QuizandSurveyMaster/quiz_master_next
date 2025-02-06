@@ -8,8 +8,8 @@
 
 .welcome-panel .qsm-welcome-panel-dismiss {
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
+	bottom: 0;
+	right: 0;
 	padding: 10px 15px 10px 21px;
 	font-size: 13px;
 	line-height: 1.23076923;
@@ -19,7 +19,7 @@
 
 .welcome-panel .qsm-welcome-panel-dismiss:before {
 	background: 0 0;
-	color: #72777c;
+	color: #FFFFFF;
 	content: "\f153";
 	display: block;
 	font: normal 16px/20px dashicons;
@@ -105,9 +105,9 @@ ul.popuar-addon-ul::after {
 }
 
 .pa-all-addon a {
-	text-decoration: none;
 	font-size: 14px;
-	font-weight: bold;
+	color: #6B7280;
+	margin-right: 20px;
 }
 
 .what-new-ul li {
@@ -146,8 +146,10 @@ ul.popuar-addon-ul::after {
 
 .changelog-ul li {
 	border-bottom: 1px solid #ede8e8;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    padding-top: 5px;
 }
 
 .changelog-ul li:last-child {
@@ -157,22 +159,52 @@ ul.popuar-addon-ul::after {
 }
 
 .changelog-ul li span {
-	padding: 3px 5px;
-	border-radius: 5px;
-	display: inline-block;
-	color: #fff;
+	padding: 3px 10px;
+    border-radius: 25px;
+    display: inline-block;
+    color: #fff;
 }
 
+.changelog-ul li span:before {
+	content: " ";
+    margin-right: 7px;
+    vertical-align: initial;
+    height: 1px;
+    width: 1px;
+    padding: 3px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #d3d3d3;
+}
 .changelog-ul li .enhancement {
-	background: #feb325;
+	background: #FEF3C7;
+	color: #92400E;
 }
 
 .changelog-ul li .bug {
-	background: #fe2525;
+	background: #FCE7F3;
+	color: #92400E;
 }
 
 .changelog-ul li .feature {
-	background: #25bdfe;
+	background: #D1FAE5;
+    color: #065F46;
+}
+
+.changelog-ul li span.bug:before {
+	background: #9D174D;
+}
+
+.changelog-ul li span.enhancement:before {
+	background: #FBBF24;
+}
+
+.changelog-ul li span.feature:before {
+	background: #34D399;
+}
+
+.qsm-dashboard-page-changelog.qsm-dashboard-page-common-style {
+	padding: 0;
 }
 
 .recently-taken-quiz-ul li {
@@ -976,10 +1008,11 @@ h2.hndle.ui-sortable-handle {
 }
 
 .qsm_dashboard_page.postbox {
-    padding: 10px 10px 10px 40px;
-	display: flex;
+	padding: 15px 15px 15px 20px;
+    display: flex;
     flex-direction: column;
-	background: #1D4ED8;
+    background: #1D4ED8;
+    margin: -15px -20px -15px -25px;
 }
 
 .qsm_dashboard_page.postbox h1,
@@ -992,55 +1025,60 @@ h2.hndle.ui-sortable-handle {
 .qsm_dashboard_page.postbox a{
 	color: #fff;
 }
+.qsm-dashboard-welcome-panel-wrap {
+	display: flex;
+	justify-content: space-between;
+}
 
 .qsm_dashboard_page .welcome-panel-menu {
     display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: end;
 	min-width: 360px;
-	align-self: flex-end;
     margin: 0;
 }
 .qsm_dashboard_page .welcome-panel-menu li {
 	position: relative;
+	margin-left: 30px;
 }
 .qsm_dashboard_page .welcome-panel-menu li a {
 	text-decoration: underline;
 }
 .qsm_dashboard_page .welcome-panel-menu li:not(:first-child)::before {
 	content: '.';
-	color: #fff;
-	text-decoration: none;
-	position: absolute;
-    bottom: 4px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
     left: -15px;
+    top: -2px;
 }
 .qsm_dashboard_page .welcome-panel-content {
-    min-height: 180px;
+    min-height: 80px;
     display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
-	padding: 20px 0 45px 0;
 	box-sizing: border-box;
 }
 .qsm-welcome-panel-content {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 0 0 0 25px;
+}
+.qsm-welcome-panel-content:not(:first-child) {
+	padding-left: 20px;
 }
 .qsm-welcome-panel-content img {
-	height: 40px;
+	height: 35px;
 }
 .qsm-welcome-panel-content p {
-	margin: 7px 0;
+	margin: 0;
 	font-size: 14px;
 	line-height: 28px;
 	font-weight: 400;
 }
 .qsm-welcome-panel-content h3 {
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 600;
 	line-height: 31.92px;
 	letter-spacing: -0.01em;
@@ -1048,80 +1086,13 @@ h2.hndle.ui-sortable-handle {
 	text-underline-position: from-font;
 	text-decoration-skip-ink: none;
 }
-.qsm-dashboard-cards-container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
-	padding: 15px 0;
-}
 
-.qsm-dashboard-cards-container .qsm-dashboard-card {
-	min-width: 400px;
-    width: 400px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: #fff;
-    box-sizing: border-box;
-    padding: 25px;
-}
-
-@media (max-width: 768px) {
-    .qsm-dashboard-cards-container .qsm-dashboard-card {
-        width: 100%;
-    }
-	.qsm-dashboard-cards-container .qsm-dashboard-card:not(:last-child) {
-        margin-bottom: 10px;
-    }
-}
-
-@media (min-width: 770px) and (max-width: 1280px) {
-    .qsm-dashboard-cards-container .qsm-dashboard-card {
-        width: calc(50% - 20px);
-    }
-	.qsm-dashboard-cards-container .qsm-dashboard-card:not(:last-child) {
-        margin-bottom: 10px;
-    }
-}
-
-@media (min-width: 1441px) {
-    .qsm-dashboard-cards-container .qsm-dashboard-card {
-        width: 32%;
-    }
-}
-
-.qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: flex-start;
-	padding: 0 0 0 20px;
-}
-
-.qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content .qsm-dashboard-card-buttons {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: flex-start;
-	padding: 10px 0;
-	width: 80%;
-}
-
-.qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content a {
-	color: #1e1e1e;
-}
-
-.qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content .button-secondary {
-	border: 2px solid #1e1e1e;
-	border-radius: 5px;
-	background: transparent;
-}
-
-.qsm-dashboard-cards-container .qsm-dashboard-card .qsm-dashboard-card-content h4 {
-	margin: 0;
+.qsm-dashboard-create-quiz-section {
+	display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    align-items: center;
+	margin-top: 30px;
 }
 
 .qsm_dashboard_page p.about-description {

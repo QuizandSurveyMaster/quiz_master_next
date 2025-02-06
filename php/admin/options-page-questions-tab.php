@@ -220,7 +220,7 @@ function qsm_options_questions_tab_content() {
 	</div>
 	<div class="question-create-page">
 		<div>
-			<button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span>
+			<button class="new-page-button button button-primary qsm-common-button-styles"><span class="dashicons dashicons-plus-alt2"></span>
 				<?php esc_html_e( 'Create New Page', 'quiz-master-next' ); ?></button>
 			<button style="display: none;"
 				class="save-page-button button button-primary"><?php esc_html_e( 'Save Questions and Pages', 'quiz-master-next' ); ?></button>
@@ -899,27 +899,18 @@ function qsm_options_questions_tab_content() {
 function qsm_ajax_unlink_question_from_list() {
     if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-unlink-question' ) ) {
         wp_send_json_error( array(
-			'message' => __(
-				'Nonce verification failed.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Nonce verification failed.', 'quiz-master-next'),
 		));
     }
     $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
     if ( $question_id > 0 ) {
 		qsm_process_unlink_question_from_list_by_question_id($question_id);
 		wp_send_json_success( array(
-			'message' => __(
-				'Question is unlinked from all quizzes.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Question is unlinked from all quizzes.', 'quiz-master-next' ),
 		));
     } else {
 		wp_send_json_error( array(
-			'message' => __(
-				'Invalid question ID.',
-				'quiz-master-next'
-			),
+			'message' => __( 'Invalid question ID.', 'quiz-master-next' ),
 		));
     }
 }
@@ -1318,7 +1309,7 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
 				$clone_qpages = $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 				if ( ! empty($clone_qpages) ) {
 					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
-						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions']) ) {
+						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions'], true) ) {
 							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
 							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
 						}
@@ -1406,15 +1397,15 @@ function qsm_options_questions_tab_template() {
 				<div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
 				<div>
 					<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a>
-					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
-					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
 			<label for="qsm-admin-select-page-question-{{data.id}}" class="qsm-admin-select-page-question-label"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select All', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
 				<div class="page-header-buttons">
-					<a href="javascript:void(0)" class="add-question-bank-button button button-primary"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
-					<a href="javascript:void(0)" class="new-question-button button button-primary"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
+					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
 		</div>

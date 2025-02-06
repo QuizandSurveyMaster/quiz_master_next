@@ -3,9 +3,11 @@
  */
 
 var QSMAdmin;
+var QSMAdminResultsAndEmail;
 (function ($) {
 
     QSMAdmin = {
+        toasterTimeout: null,
         /**
          * Catches an error from a jQuery function (i.e. $.ajax())
          */
@@ -26,26 +28,15 @@ var QSMAdmin;
          */
         displayAlert: function (message, type) {
             QSMAdmin.clearAlerts();
-            var template = wp.template('notice');
-            var data = {
-                message: message,
-                type: type,
-                dismissible: true
-            };
-            $('.qsm-alerts').append(template(data));
-            $('.footer-bar-notice').append(template(data));
-
-            if ($('.footer-bar-notice').find('.notice-success').length > 0) {
-                $('.footer-bar-notice').css('color', 'green');
-            }
-
-            if ($('.footer-bar-notice').find('.notice-error').length > 0) {
-                $('.footer-bar-notice').css('color', 'red');
-            }
+            const $toaster = jQuery('#footer-bar-notice');
+            $toaster.text(message).removeClass().addClass(`footer-bar-notice qsm-response-${type} show`);
+            this.toasterTimeout = setTimeout(() => {
+                $toaster.removeClass('show');
+            }, 4000);
         },
         clearAlerts: function () {
             $('.qsm-alerts').empty();
-            $('.footer-bar-notice').empty();
+            clearTimeout(this.toasterTimeout);
         },
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
@@ -64,21 +55,6 @@ var QSMAdmin;
         $('.qsm-tab').on('click', function (event) {
             event.preventDefault();
             QSMAdmin.selectTab($(this));
-        });
-
-        $(document).ready(function(){
-            if ($('.footer-bar-notice').find('.updated').length > 0) {
-                $('.footer-bar-notice').css('color', 'green');
-            }
-
-            if ($('.footer-bar-notice').find('.error').length > 0) {
-                $('.footer-bar-notice').css('color', 'red');
-            }
-        });
-
-        $(document).on('click', '#close', function (e) {
-            e.preventDefault();
-            $('.footer-bar-notice').empty();
         });
 
         //show set global default potion popup
@@ -793,11 +769,12 @@ jQuery('.quiz_text_tab').click(function (e) {
 });
 jQuery('.qsm-upgrade-tab').click(function (e) {
     e.preventDefault();
-    let current_id = jQuery(this).attr('data-id');
+    let $this = jQuery(this);
+    let current_id = $this.attr('data-id');
     jQuery('.qsm-upgrade-tab').removeClass('current');
-    jQuery(this).addClass('current');
-    jQuery('.qsm-upgrade-tab-content').hide();
-    jQuery('#' + current_id).show();
+    $this.addClass('current');
+    $this.parents('.qsm-upgrade-box').find('.qsm-upgrade-tab-content').hide();
+    $this.parents('.qsm-upgrade-box').find('#' + current_id).show();
     jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
@@ -834,6 +811,235 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                     }
                 });
             })
+        });
+    }
+    if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
+        QSMAdminResultsAndEmail = {
+            insertTemplate: async function (button, data) {
+                try { 
+                    button.prop('disabled', true);
+                    const response = await jQuery.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: data,
+                        beforeSend: function () {
+                            button.text(qsm_admin_messages.add_process);
+                        }
+                    });
+                    jQuery(document).find('.qsm-no-templates-row').remove();
+                    if (response.success) {
+                        return response;
+                    } else {
+                        return { success: false, message: response.message || 'Unknown error' };
+                    }
+                } catch (error) {
+                    return { success: false, message: error.message };
+                } finally {
+                    button.prop('disabled', false);
+                    button.text(qsm_admin_messages.add_more);
+                }
+            },
+            headerLinks: function ( link, templateType ) {
+                jQuery(document).find('.qsm-'+templateType+'-page-tmpl-header-links').removeClass('active');
+                link.addClass("active");
+                jQuery(document).find('.qsm-'+templateType+'-page-template-common').hide();
+                jQuery(document).find('.qsm-'+templateType+'-'+link.data('tab')+'-template-container').show();
+            },
+            addTemplateRow: function ( data ) { 
+                let template = wp.template('qsm-my-template-rows');
+                jQuery('.qsm-my-templates-table-body').append(template(data));
+            },
+            loadMyTemplates: function ( type ) {
+                if(type == 'result'){
+                    if (Array.isArray(qsmResultsObject.my_tmpl_data)) {
+                        qsmResultsObject.my_tmpl_data.forEach(function (filteredRow, key) {
+                            filteredRow.indexid = key;
+                            QSMAdminResultsAndEmail.addTemplateRow(filteredRow);
+                        });
+                    }
+                } else if(type == 'email'){
+                    if (Array.isArray(qsmEmailsObject.my_tmpl_data)) {
+                        qsmEmailsObject.my_tmpl_data.forEach(function (filteredRow, key) {
+                            filteredRow.indexid = key;
+                            QSMAdminResultsAndEmail.addTemplateRow(filteredRow);
+                        });
+                    }
+                }
+            },
+            updateMyTemplateOptions: function( newTemplate ) {
+                const $selectBox = jQuery('.qsm-to-replace-page-template');
+                $selectBox.append(
+                    jQuery('<option>', {
+                        value: newTemplate.id,
+                        text: newTemplate.template_name
+                    })
+                );
+            },
+            closePreviewModel: function ( popupId ){
+                MicroModal.close(popupId);
+                jQuery('#'+popupId).removeClass('is-open');
+                jQuery('#'+popupId).attr('aria-hidden', true);
+            },
+
+        };
+        
+        jQuery(document).ready(function () {
+
+            jQuery(document).on('click', '.qsm-save-page-template-button', async function (e) {
+                e.preventDefault();
+                const button = jQuery(this);
+                const templateWrap = button.parents('.qsm-insert-template-wrap');
+                const templateName = templateWrap.find('.qsm-insert-page-template-title').val().trim();
+                const selectedTemplateId = templateWrap.find('.qsm-to-replace-page-template').val();
+                const uniqueId = button.data('id');
+                const editor = tinymce.get(uniqueId - 1);
+                const templateType = button.parents('.qsm-insert-page-template-anchor').data('template-type');
+                const templateContent = editor.getContent().trim();
+                const isReplace = jQuery('input[name="qsm-template-action"]:checked').val() === 'replace';
+            
+                // Validation
+                if (isReplace && !selectedTemplateId) {
+                    QSMAdmin.displayAlert(qsm_admin_messages.no_template_selected, 'error');
+                    return;
+                }
+            
+                if (!isReplace && !templateName) { 
+                    QSMAdmin.displayAlert(qsm_admin_messages.empty_template_name, 'error');
+                    return;
+                }
+            
+                if (!templateContent) {
+                    console.log(qsm_admin_messages.empty_template_content);
+                    QSMAdmin.displayAlert(qsm_admin_messages.empty_template_content, 'error');
+                    return;
+                }
+            
+                const data = {
+                    action: 'qsm_insert_quiz_template',
+                    template_name: isReplace ? '' : templateName,
+                    template_id: isReplace ? selectedTemplateId : null,
+                    template_type: templateType,
+                    template_content: templateContent,
+                };
+            
+                try {
+                    const response = await QSMAdminResultsAndEmail.insertTemplate(button, data);
+                    if (response.success) {
+                        if (isReplace) {
+                            if (templateType == 'result') {
+                                qsmResultsObject.my_tmpl_data.forEach((tmpl, index) => {
+                                    if (tmpl.id == selectedTemplateId) { 
+                                        qsmResultsObject.my_tmpl_data[index] = response.data;
+                                    }
+                                });
+                            } else if (templateType == 'email') {
+                                qsmEmailsObject.my_tmpl_data.forEach((tmpl, index) => {
+                                    if (tmpl.id == selectedTemplateId) {
+                                        qsmEmailsObject.my_tmpl_data[index] = response.data;
+                                    }
+                                });
+                            }
+                            QSMAdmin.displayAlert(qsm_admin_messages.template_updated, 'success');
+                        } else {
+                            let response_data = response.data;
+                            if (templateType == 'result') {
+                                qsmResultsObject.my_tmpl_data.push(response_data);
+                                QSMAdminResultsAndEmail.updateMyTemplateOptions(response_data);
+                                response_data.indexid = qsmResultsObject.my_tmpl_data.length == 0 ? 0 : qsmResultsObject.my_tmpl_data.length;
+                                QSMAdminResultsAndEmail.addTemplateRow(response_data);
+                            } else if (templateType == 'email') {
+                                qsmEmailsObject.my_tmpl_data.push(response_data);
+                                QSMAdminResultsAndEmail.updateMyTemplateOptions(response_data);
+                                response_data.indexid = qsmEmailsObject.my_tmpl_data.length == 0 ? 0 : qsmEmailsObject.my_tmpl_data.length - 1;
+                                QSMAdminResultsAndEmail.addTemplateRow(response_data);
+                            }
+                            QSMAdmin.displayAlert(qsm_admin_messages.template_added, 'success');
+                            templateWrap.find('.qsm-insert-page-template-title').val('');
+                        }
+                    }
+                } catch (error) {
+                    console.error('An error occurred during template saving:', error.message);
+                    QSMAdmin.displayAlert(qsm_admin_messages.template_save_error, 'success');
+                }
+            });
+            
+            jQuery(document).on('change', '.qsm-insert-template-action', function () {
+                const isReplace = jQuery(this).val() === 'replace';
+                jQuery('.qsm-insert-page-template-title').toggle(!isReplace);
+                jQuery('.qsm-to-replace-page-template-wrap').toggle(isReplace);
+                jQuery('.qsm-insert-template-response').text('');
+            });
+            jQuery(document).on('click', '.qsm-insert-page-template-anchor', function (e) {
+                let templateWrap = jQuery(this).find('.qsm-insert-template-wrap');
+                jQuery('.qsm-settings-box-details, .qsm-more-settings-box-details').hide();
+                if (!templateWrap.is(':visible')) {
+                    templateWrap.show();
+                }
+            });
+            
+            jQuery(document).on('click', 'a.qsm-view-templates-list', function (e) {
+                e.preventDefault();
+                let templateType = jQuery(this).data('type');
+                if(templateType == 'result') {
+                    let resultPageIndex = jQuery(this).parents('.qsm-template-btn-group').parents('.results-page').find('.results-page-show').data('result-page');
+                    jQuery("#qsm-result-page-templates-content").attr('data-result-page', resultPageIndex);
+                } else if(templateType == 'email') {
+                    let emailPageValue = jQuery(this).parents('.qsm-template-btn-group').parents('.qsm-email').find('.email-show').data('email-page');
+                    jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
+                }
+                MicroModal.show('qsm-'+templateType+'-page-templates');
+            });
+
+            jQuery(document).on('click', '.qsm-preview-template-image-close', function (e) {
+                let type = jQuery(this).data('type');
+                jQuery('.qsm-preview-'+type+'-page-template-container').hide();
+                jQuery('.qsm-'+type+'-page-template-container').show();
+            });
+
+            jQuery(document).on('click', 'a.qsm-result-page-template-remove-button, a.qsm-email-page-template-remove-button', async function (e) {
+                e.preventDefault();
+                if (!confirm(qsm_admin_messages.confirmDeleteTemplate)) {
+                    return;
+                }
+                const button = jQuery(this);
+                const templateId = button.data('id');
+                const type = button.data('type');
+                let nonce;
+                if (type === 'result') { nonce = qsmResultsObject.remove_tmpl_nonce; } 
+                else if (type === 'email') { nonce = qsmEmailsObject.remove_tmpl_nonce; } else {
+                    console.error("Unknown template type.");
+                    return;
+                }
+                button.prop('disabled', true);
+                const loader = jQuery('<div class="qsm-spinner-loader"></div>');
+                button.after(loader);
+                try {
+                    const response = await jQuery.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'qsm_remove_my_templates',
+                            id: templateId,
+                            nonce: nonce,
+                        }
+                    });
+                    if (response.success) {
+                        console.log(response.data.message);
+                        setTimeout(function () {
+                            button.closest('tr').fadeOut('slow', function () {
+                                jQuery(this).remove();
+                            });
+                        }, 1000);
+                    } else {
+                        console.error(response.data.message || "Failed to remove the template.");
+                    }
+                } catch (error) {
+                    console.error("AJAX request failed:", error);
+                } finally { 
+                    loader.remove();
+                    button.prop('disabled', false);
+                }
+            });            
         });
     }
 }
@@ -995,7 +1201,7 @@ function qsm_is_substring_in_array( text, array ) {
     });
 }
 (function ($) {
-    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')) {
+    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard') || jQuery('body').hasClass('qsm_page_qsm_create_quiz_page')) {
         $('#create-quiz-button').on('click', function (event) {
             event.preventDefault();
             if ($('#new-quiz-form').find('.quiz_name').val() === '') {
@@ -1190,6 +1396,14 @@ function qsm_is_substring_in_array( text, array ) {
     $('.multiple-category-notice').show();
 }(jQuery));
 
+
+function qsmConvertContentToShortcode( contentToConvert ){
+    let updatedContent = contentToConvert
+    .replace(/\[qsm([^\]]*)\](.*?)\[\/qsm([^\]]*)\]/gs, function(match, attributes, content, closingAttributes) {
+        return `<qsmextrashortcodetag>[qsm${attributes}]</qsmextrashortcodetag>&nbsp;${content}<qsmextrashortcodetag>[\/qsm${closingAttributes}]</qsmextrashortcodetag>&nbsp;`;
+    });
+    return updatedContent;
+}
 //TinyMCE slash command auto suggest
 (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
@@ -1198,18 +1412,9 @@ function qsm_is_substring_in_array( text, array ) {
                 if ( 'undefined' !== typeof tinymce && null !== tinymce && 'undefined' !== typeof qsm_admin_messages &&  null !== qsm_admin_messages ) {
                     tinymce.PluginManager.add('qsmslashcommands', function(editor) {
                         //Add stylesheet
-                        editor.settings.extended_valid_elements = 'qsmvariabletag';
-                        editor.settings.custom_elements = '~qsmvariabletag';
-                        editor.settings.content_style = 'qsmvariabletag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
-                        editor.addButton('qsm_slash_command', {
-                            text: '/ ' +qsm_admin_messages.variables,
-                            tooltip: qsm_admin_messages.insert_variable,
-                            classes: 'qsm-variables-editor-btn',
-                            onclick: function () {
-                                editor.insertContent('/');
-                                showAutocomplete( editor, true );
-                            }
-                          });
+                        editor.settings.extended_valid_elements = 'qsmvariabletag,qsmextrashortcodetag';
+                        editor.settings.custom_elements = '~qsmvariabletag,~qsmextrashortcodetag';
+                        editor.settings.content_style = 'qsmvariabletag, qsmextrashortcodetag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover, qsmextrashortcodetag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
                         //Auto complete commands
                         let commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {
@@ -1299,8 +1504,10 @@ function qsm_is_substring_in_array( text, array ) {
                                         for (let i = 0; i <= qsm_search.length; i++) {
                                             editor.execCommand('Delete');
                                         }
-                                        editor.execCommand('mceInsertContent', false, command.value.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
-
+                                        editor.execCommand('mceInsertContent', false, command.value
+                                            .replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;')
+                                            .replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, '<qsmextrashortcodetag>$1</qsmextrashortcodetag>&nbsp;')
+                                        );
                                         autocomplete.remove();
                                         editor.getContainer().setAttribute('qsm_search', '');
                                         editor.qsmShowAutocomplete = false;
@@ -1342,7 +1549,8 @@ function qsm_is_substring_in_array( text, array ) {
                                 let selection = editor.selection;
                                 let range = selection.getRng();
                                 let tagText = range.startContainer.parentNode.textContent;
-                                if ( 'qsmvariabletag' === range.startContainer.parentNode.nodeName.toLowerCase() && range.startOffset === tagText.length ) {
+                                let nodeName = range.startContainer.parentNode.nodeName.toLowerCase();
+                                if ( (nodeName === 'qsmvariabletag' || nodeName === 'qsmextrashortcodetag') && range.startOffset === tagText.length ) {
                                   let newParagraph = editor.dom.create('p');
                                   editor.dom.insertAfter(newParagraph, range.startContainer.parentNode);
                                   range.setStartAfter(newParagraph);
@@ -1416,9 +1624,12 @@ function qsm_is_substring_in_array( text, array ) {
                             let variables = commands.map(function(item) {
                                 return item.value;
                             });
-                            if (variables.includes(pastedValue)) {
+                            if (variables.includes(pastedValue) || /\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(pastedValue)) {
                                 event.preventDefault();
-                                editor.execCommand('mceInsertContent', false, pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;') );
+                                // Replace the variable tags and qsm shortcodes correctly
+                                let updatedContent = pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');  // Handle %variable%
+                                updatedContent = qsmConvertContentToShortcode(updatedContent);
+                                editor.execCommand('mceInsertContent', false, updatedContent);
                             }
                         });
 
@@ -1470,10 +1681,21 @@ function qsm_is_substring_in_array( text, array ) {
                 e.preventDefault();
                 MicroModal.show('modal-extra-shortcodes');
             } );
+            
+            $( document ).on( 'click', '.qsm-webhooks-pricing-popup', function( e ) {
+                e.preventDefault();
+                MicroModal.show('modal-qsm-webhooks');
+            } );
 
             jQuery(document).on('qsm_after_add_result_block', function(event, conditions, page, redirect, total) {
                 let $matchingElement = $(`#results-page-${total}`);
                 let $button = $matchingElement.parents('.results-page-show').find('.qsm-result-editor-custom-button');
+                $button.attr('data-id', total - 1);
+            });
+
+            jQuery(document).on('qsm_after_add_email_block', function(event, conditions, to, subject, content, replyTo, total) {
+                let $matchingElement = $(`#email-template-${total}`);
+                let $button = $matchingElement.parents('.email-show').find('.qsm-email-editor-custom-button');
                 $button.attr('data-id', total - 1);
             });
         }
@@ -1589,7 +1811,7 @@ var QSMContact;
                     return fieldArray;
                 },
                 save: function () {
-                    QSMContact.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
+                    QSMAdmin.displayAlert(qsm_admin_messages.saving_contact_fields, 'info');
                     let contactFields = $('.qsm-contact-form-field');
                     var contactForm = [];
                     var contactEach;
@@ -1622,9 +1844,9 @@ var QSMContact;
                 },
                 saved: function (response) {
                     if (response.status) {
-                        QSMContact.displayAlert('<strong>' + qsm_admin_messages.success + '</strong> ' + qsm_admin_messages.contact_fields_saved, 'success');
+                        QSMAdmin.displayAlert(qsm_admin_messages.contact_fields_saved, 'success');
                     } else {
-                        QSMContact.displayAlert('<strong>' + qsm_admin_messages.error + '</strong> ' + qsm_admin_messages.contact_fields_save_error + ' ' + qsm_admin_messages.try_again, 'error');
+                        QSMAdmin.displayAlert(qsm_admin_messages.contact_fields_save_error + ' ' + qsm_admin_messages.try_again, 'error');
                     }
                 },
                 displayAlert: function (message, type) {
@@ -1836,6 +2058,7 @@ var QSMContact;
                                 QSMAdminEmails.addEmail(email.conditions, email.to, email.subject, email.content, email.replyTo, email.default_mark);
                             });
                             QSMAdmin.clearAlerts();
+                            jQuery(document).find('.qsm-email-my-template-container').hide();
                         })
                         .fail(QSMAdmin.displayjQueryError);
                 },
@@ -1874,7 +2097,7 @@ var QSMContact;
                         jQuery(this).find('.qsm-condition-collection-count').text(index + 1);
                     });
                 },
-                addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) {
+                addEmail: function (conditions, to, subject, content, replyTo, default_mark = false) { 
                     QSMAdminEmails.total += 1;
                     var template = wp.template('email');
                     $('#qsm_emails').append(template({ id: QSMAdminEmails.total, to: to, subject: subject, content: content, replyTo: replyTo, default_mark: default_mark }));
@@ -1894,15 +2117,37 @@ var QSMContact;
                             tinymce: {
                                 plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,qsm_slash_command,wp_adv',
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                                 toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
+                                height: 200,
                             },
                             quicktags: true,
                         };
                         jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
+                    const $emailBlock = jQuery(`#email-template-${QSMAdminEmails.total}`).closest('.email-show');
+                    const $conditionalButton = $emailBlock.find('.qsm-extra-shortcode-conditional-button');
+                    $emailBlock.find('.wp-media-buttons .insert-media').after($conditionalButton);
+                    QSMAdminEmails.displayEmailEditor( $emailBlock );
+                    QSMAdminEmails.addMyTemplateOptions($emailBlock);
                     jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo, QSMAdminEmails.total]);
+                },
+                addMyTemplateOptions: function ($emailBlock) {
+                    var $selectBox = $emailBlock.parents('.qsm-email').find('.qsm-to-replace-page-template');
+                    $selectBox.empty();
+                    $selectBox.append('<option value="">'+qsm_admin_messages.select_template+'</option>');
+                    $.each(qsmEmailsObject.my_tmpl_data, function(key, value) {
+                        $selectBox.append($('<option>', {
+                            value: value.id,
+                            text: value.template_name
+                        }));
+                    });
+                    $selectBox.select2({
+                        placeholder: qsm_admin_messages.select_template,
+                        allowClear: true,
+                        initSelection: function(e, cb) { }
+                    });
                 },
                 newEmail: function () {
                     var conditions = [{
@@ -1914,16 +2159,86 @@ var QSMContact;
                     }];
                     var to = '%USER_EMAIL%';
                     var subject = 'Quiz Results For %QUIZ_NAME%';
-                    var content = '%QUESTIONS_ANSWERS_EMAIL%';
+                    let content = '';
                     var replyTo = false;
                     QSMAdminEmails.addEmail(conditions, to, subject, content, replyTo);
+                },
+                displayEmailEditor: function ( $emailBlock ){
+                    $emailBlock.find('.qsm-email-page-template-options').hide();
+                    $emailBlock.find('.qsm-email-page-editor-options').show();
+                    $emailBlock.find('.qsm-email-page-common-section').each(function () {
+                        let section = $(this);
+                        if (section.children().length > 0) {
+                            if (!section.is(':visible')) {
+                                section.show();
+                            }
+                        } else {
+                            section.hide();
+                        }
+                    });
                 }
             };
             $(function () {
                 QSMAdminEmails.loadEmails();
+                QSMAdminResultsAndEmail.loadMyTemplates( 'email' );
+                jQuery(document).on('click', '.qsm-start-with-template', function (e) {
+                    e.preventDefault();
+                    let emailPageValue = jQuery(this).parents('.email-show').data('result-page');
+                    jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
+                    MicroModal.show('qsm-email-page-templates');
+                });
+
+                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) {
+                    e.preventDefault();
+                    const $emailBlock = jQuery(this).parents('.email-show');
+                    console.log($emailBlock)
+                    let email_page = $emailBlock.data('email-page');
+                    let editor = tinymce.get(email_page - 1);
+                    let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');                    
+                    editor.setContent('');
+                    editor.execCommand('mceInsertContent', false, updatedContent);
+                    QSMAdminEmails.displayEmailEditor( $emailBlock );
+                    MicroModal.close('qsm-email-page-templates');
+                });
+                
+                jQuery(document).on('click', '.qsm-email-page-template-preview-button', function (e) {
+                    e.preventDefault();
+                    jQuery('.qsm-email-page-template-container').hide();
+                    jQuery('.qsm-preview-email-page-template-container').show();
+                    let backgroundImage = jQuery(this).parents('.qsm-email-page-template-card').data('url'); 
+                    jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
+                });
+
+                jQuery(document).on('click', '.qsm-email-page-template-header .qsm-email-page-tmpl-header-links', function (e) {
+                    QSMAdminResultsAndEmail.headerLinks( jQuery(this), 'email' );
+                });
+
+                jQuery(document).on('click', '.qsm-email-page-template-use-button', function (e) { 
+                    let structure = jQuery(this).data('structure');
+                    let templateValue;
+                    if (structure == 'default') {
+                        templateValue = qsmEmailsObject.script_tmpl[jQuery(this).data('indexid')].template_content;
+                    } else if (structure == 'custom') {
+                        templateValue = qsmEmailsObject.my_tmpl_data[jQuery(this).data('indexid')].template_content;
+                    }
+                    let email_page = jQuery("#qsm-email-page-templates-content").data('email-page');
+                    let editor = tinymce.get(email_page -1);
+                    let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');                    
+                    editor.setContent('');
+                    editor.execCommand('mceInsertContent', false, updatedContent);
+                    MicroModal.close('qsm-email-page-templates');
+                    const $emailBlock = jQuery(`#email-template-`+email_page).closest('.email-show');
+                    QSMAdminEmails.displayEmailEditor( $emailBlock );
+                });
+                
                 $('.add-new-email').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminEmails.newEmail();
+                    let $lastEmailPage = jQuery(document).find('#qsm_emails').children().last();
+                    $lastEmailPage.find(".email-show > div:not(.email-content-header):not(.qsm-email-page-template-options)").hide();
+                    $lastEmailPage.find('.qsm-email-page-template-options').show();
                 });
                 jQuery(document).on('click', '.qsm-duplicate-email-template-button', function () {
                     let template = jQuery(this).closest("header").next("main");
@@ -1963,6 +2278,9 @@ var QSMContact;
                 });
                 $('#qsm_emails').on('click', '.qsm-delete-email-button', function (event) {
                     event.preventDefault();
+                    if (!confirm(qsm_admin_messages.confirmRemovePage)) {
+                        return;
+                    }
                     $(this).closest('.qsm-email').remove();
                 });
                 $('#qsm_emails').on('click', '.delete-condition-button', function (event) {
@@ -2046,7 +2364,7 @@ var QSM_Quiz_Broadcast_Channel;
                         if (mergedQuestions && typeof mergedQuestions == 'string') {
                             // Check if there's a colon and extract the part after it
                             let idsArray = [];
-                            if (mergedQuestions && mergedQuestions != '') {
+                            if (mergedQuestions != '') {
                                 idsArray = mergedQuestions.split(',').map(id => id.trim());
                             }
                             if (idsArray.length > 0) {
@@ -4158,6 +4476,7 @@ var QSM_Quiz_Broadcast_Channel;
                                 QSMAdminResults.updateResultConditonCount(jQuery('.results-page-when').eq(i));
                             });
                             QSMAdmin.clearAlerts();
+                            jQuery(document).find('.qsm-result-my-template-container').hide();
                         })
                         .fail(QSMAdmin.displayjQueryError);
                 },
@@ -4220,6 +4539,7 @@ var QSM_Quiz_Broadcast_Channel;
                             forced_root_block: '',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
+                            height: 200,
                         },
                         quicktags: true,
                     };
@@ -4229,22 +4549,189 @@ var QSM_Quiz_Broadcast_Channel;
                     const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
                     const $conditionalButton = $resultsPage.find('.qsm-extra-shortcode-conditional-button');
                     $resultsPage.find('.wp-media-buttons .insert-media').after($conditionalButton);
+                    if (
+                        singlePage &&
+                        typeof singlePage === 'object' &&
+                        singlePage.hasOwnProperty('redirect') &&
+                        singlePage.redirect !== false &&
+                        singlePage.redirect !== ''
+                    ){
+                        $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div:not(.results-page-content-header):not(.qsm-edit-result-view-options):not(.qsm-result-page-redirect-options)").hide();
+                        $resultsPage.find('.qsm-then-redirect-to-url').prop('checked', true);
+                        $resultsPage.find('.qsm-result-page-template-options').hide();
+                        QSMAdminResults.hideShowResultPageSection($resultsPage);
+                    } else {
+                        
+                        if(typeof singlePage.redirect === 'undefined' || page == '') {
+                            // New Result Page
+                            $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div:not(.results-page-content-header):not(.qsm-edit-result-view-options)").hide();
+                            $resultsPage.find('.qsm-result-page-template-options').show();
+                        } else {
+                            // Default Loading Result Page
+                            $resultsPage.find('.qsm-result-page-redirect-options').hide();
+                            $resultsPage.find('.qsm-result-page-template-options').hide();
+                        }
+                    }
+                    $resultsPage.find(".qsm-edit-result-input-option").removeClass("active");
+                    $resultsPage.find('input[name="qsm_then_show_result_option_'+QSMAdminResults.total+'"]:checked').closest(".qsm-edit-result-input-option").addClass("active");
+                    QSMAdminResults.addMyTemplateOptions($resultsPage);
+                },
+                addMyTemplateOptions: function ($resultsPage) {
+                    var $selectBox = $resultsPage.parents('.results-page').find('.qsm-to-replace-page-template');
+                    $selectBox.empty();
+                    $selectBox.append('<option value="">'+qsm_admin_messages.select_template+'</option>');
+                    $.each(qsmResultsObject.my_tmpl_data, function(key, value) {
+                        $selectBox.append($('<option>', {
+                            value: value.id,
+                            text: value.template_name
+                        }));
+                    });
+                    $selectBox.select2({
+                        placeholder: qsm_admin_messages.select_template,
+                        allowClear: true,
+                        initSelection: function(e, cb) { }
+                    });
                 },
                 newResultsPage: function () {
-                    var conditions = [{
-                        'category': 'quiz',
-                        'extra-condition': '',
-                        'criteria': 'score',
-                        'operator': 'greater',
-                        'value': '0'
-                    }];
-                    var page = '%QUESTIONS_ANSWERS% ';
-                    QSMAdminResults.addResultsPage(conditions, page);
+                    QSMAdminResults.addResultsPage([], '');
+                },
+                displayResultEditor: function ( $resultsPage ){
+                    $resultsPage.find(".qsm-result-page-editor-options").show();
+                    $resultsPage.find('.qsm-result-page-redirect-options').hide();
+                    $resultsPage.find('.qsm-result-page-template-options').hide();
+                    QSMAdminResults.hideShowResultPageSection($resultsPage);
+                },
+                hideShowResultPageSection: function ( $resultsPage ) {
+                    $resultsPage.find('.qsm-result-page-common-section').each(function () {
+                        let section = $(this);
+                        if (section.children().length > 0) {
+                            if (!section.is(':visible')) {
+                                section.show();
+                            }
+                        }
+                    });
                 }
             };
             $(function () {
                 QSMAdminResults.loadResults();
+                QSMAdminResultsAndEmail.loadMyTemplates( 'result' );
+                jQuery(document).on('click', '.qsm-start-with-template', function (e) {
+                    e.preventDefault();
+                    let resultPageIndex = jQuery(this).parents('.results-page-show').data('result-page');
+                    jQuery("#qsm-result-page-templates-content").attr('data-result-page', resultPageIndex);
+                    MicroModal.show('qsm-result-page-templates',{
+                        onClose: function () {
+                            jQuery("#qsm-result-page-templates-content").attr('data-result-page', '');
+                        }
+                    });
+                });
 
+                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) {
+                    e.preventDefault();
+                    let $resultsPage = jQuery(this).parents('.results-page-show');
+                    let resultPageIndex = $resultsPage.data('result-page');
+                    let editor = tinymce.get(resultPageIndex - 1);
+                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    editor.execCommand('mceInsertContent', false, updatedContent);
+                    QSMAdminResults.displayResultEditor( $resultsPage );
+                });
+
+                jQuery(document).on('click', '.qsm-result-page-template-preview-button', function (e) {
+                    e.preventDefault();
+                    let indexId = jQuery(this).data('indexid');
+                    jQuery('.qsm-result-page-template-container').hide();
+                    jQuery('.qsm-preview-result-page-template-container').show();
+                    let backgroundImage = jQuery(this).parents('.qsm-result-page-template-card').data('url'); 
+                    jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
+                    let scriptTemplate = qsmResultsObject.script_tmpl[indexId];
+                    let all_dependency = qsmResultsObject.dependency;
+                    let $container = $('.qsm-result-template-dependency-addons');
+                    $container.empty();
+                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                        let templateDependency = scriptTemplate.dependency;
+                        if (templateDependency.trim() !== '') {
+                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let $requiredAddonsDiv = $('<div>').addClass('qsm-required-addons');
+                            let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
+                            $requiredAddonsDiv.append($('<h3>').text('Required Add-ons'));
+                            $usedAddonsDiv.append($('<h3>').text('Used Add-ons'));
+                            let hasRequiredAddons = false;
+                            let hasUsedAddons = false;
+                            $.each(all_dependency, function(_, dependency) {
+                                if (dependencyIds.includes(dependency.id)) {
+                                    let $span = $('<span>').addClass('qsm-result-template-dependency-addon');
+                                    if (dependency.status == 'activated' || dependency.status == 'installed') {
+                                        $span.addClass('qsm-result-template-dependency-addon-purple').text(dependency.name);
+                                        $usedAddonsDiv.append($span);
+                                        hasUsedAddons = true;
+                                    } else {
+                                        $span.addClass('qsm-result-template-dependency-addon-orange').text(dependency.name);
+                                        $requiredAddonsDiv.append($span);
+                                        hasRequiredAddons = true;
+                                    }
+                                }
+                            });
+                            if (hasUsedAddons) {
+                                $container.append($usedAddonsDiv);
+                            }
+                            if (hasRequiredAddons) {
+                                $container.append($requiredAddonsDiv);
+                            }
+                        }
+                    }
+                });
+
+                jQuery(document).on('click', '.qsm-result-page-template-header .qsm-result-page-tmpl-header-links', function (e) {
+                    QSMAdminResultsAndEmail.headerLinks( jQuery(this), 'result' );
+                });               
+                
+                jQuery(document).on('click', '.qsm-result-page-template-use-button', function (e) { 
+                    let structure = jQuery(this).data('structure');
+                    let result_index = jQuery("#qsm-result-page-templates-content").attr('data-result-page');
+                    let editor = tinymce.get('results-page-' + (result_index));
+                    let templateValue;
+                    if (structure == 'default') {
+                        templateValue = qsmResultsObject.script_tmpl[jQuery(this).attr('data-indexid')].template_content;
+                    } else if (structure == 'custom') {
+                        templateValue = qsmResultsObject.my_tmpl_data[jQuery(this).attr('data-indexid')].template_content;
+                    }
+                    let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
+                    editor.setContent('');
+                    editor.execCommand('mceInsertContent', false, updatedContent);
+                    const $resultsPage = jQuery(`#results-page-${result_index}`).closest('.results-page-show');
+                    QSMAdminResults.displayResultEditor( $resultsPage );
+                    QSMAdminResultsAndEmail.closePreviewModel('qsm-result-page-templates');
+                });
+
+                jQuery(document).on('change', '.results-page-show .qsm-then-show-result, .results-page-show .qsm-then-redirect-to-url', function () {
+                    // Show/Hide content
+                    let $this = jQuery(this);
+                    let $parent = $this.parents('.results-page-show');
+                    
+                    if ($this.val() === "1") {
+                        let editor = tinymce.get($parent.data('result-page') - 1);
+                        let content = editor.getContent().trim();
+                        if (content === "") {
+                            console.log("Content is empty.");
+                            $parent.find(".qsm-result-page-template-options").show();
+                        } else {
+                            $parent.find(".qsm-result-page-template-options").hide();
+                            $parent.find(".qsm-result-page-editor-options").show();
+                        }
+                        
+                        $parent.find(".qsm-result-page-redirect-options").hide();
+                    } else if ($this.val() === "2") {
+                        $parent.find(".qsm-result-page-template-options").hide();
+                        $parent.find(".qsm-result-page-editor-options").hide();
+                        $parent.find(".qsm-result-page-redirect-options").show();
+                    }
+
+                    QSMAdminResults.hideShowResultPageSection($parent);
+
+                    $parent.find(".qsm-edit-result-input-option").removeClass("active");
+                    $this.closest(".qsm-edit-result-input-option").addClass("active");
+                });
                 $('.add-new-page').on('click', function (event) {
                     event.preventDefault();
                     QSMAdminResults.newResultsPage();
@@ -4280,6 +4767,9 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 $('#results-pages').on('click', '.qsm-delete-result-button', function (event) {
                     event.preventDefault();
+                    if (!confirm(qsm_admin_messages.confirmRemovePage)) {
+                        return;
+                    }
                     $(this).closest('.results-page').remove();
                 });
                 $('#results-pages').on('click', '.delete-condition-button', function (event) {
@@ -4306,16 +4796,28 @@ var QSM_Quiz_Broadcast_Channel;
         } else {
             $img.attr('src', arrowUpImage);
         }
-    });
-    jQuery(document).on('click', '.qsm-settings-box-result-button', function () {
+    }); 
+    jQuery(document).on('click', '.qsm-settings-box-result-button, .qsm-settings-box-email-button', function () {
+        jQuery('.qsm-more-settings-box-details, .qsm-insert-template-wrap').hide();
         jQuery('.qsm-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details')).hide();
         jQuery(this).parents('.qsm-template-btn-group').find('.qsm-settings-box-details').toggle();
     });
+
+    jQuery(document).on('click', '.qsm-more-settings-box-result-button, .qsm-more-settings-box-email-button', function () {
+        jQuery('.qsm-settings-box-details, .qsm-insert-template-wrap').hide();
+        jQuery('.qsm-more-settings-box-details').not(jQuery(this).parents('.qsm-template-btn-group').find('.qsm-more-settings-box-details')).hide();
+        jQuery(this).parents('.qsm-template-btn-group').find('.qsm-more-settings-box-details').toggle();
+    });
+
     jQuery(document).on('click', function (e) {
         // Check if the click was outside .qsm-template-btn-group
         if (!jQuery(e.target).closest('.qsm-template-btn-group').length) {
-            jQuery('.qsm-settings-box-details').hide();
+            jQuery('.qsm-settings-box-details, .qsm-more-settings-box-details, .qsm-insert-template-wrap').hide();
         }
+        if (!$(e.target).closest('.email-show').length) {
+            let autocomplete =  jQuery(document).find('.qsm-autocomplete');
+            autocomplete.remove();
+        } 
     });
 
     $(document).on('click', '.qsm_global_settings .qsm-generate-api-key', function (event) {

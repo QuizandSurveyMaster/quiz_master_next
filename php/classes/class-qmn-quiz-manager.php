@@ -609,6 +609,7 @@ class QMNQuizManager {
 				'skip_validation_time_expire'        => $qmn_quiz_options->skip_validation_time_expire,
 				'timer_limit_val'                    => $qmn_quiz_options->timer_limit,
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
+				'disable_scroll_on_result' 			 => $qmn_quiz_options->disable_scroll_on_result,
 				'disable_first_page'                 => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
@@ -790,7 +791,7 @@ class QMNQuizManager {
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 			$order_by_sql = 'ORDER BY rand()';
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
-			if ( $categories ) {
+			if ( $categories && !empty( $quiz_options->question_per_category ) ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
 				if ( ! $multiple_category_system ) {
 					$cat_str   = "'" . implode( "', '", $exploded_arr ) . "'";
@@ -997,8 +998,8 @@ class QMNQuizManager {
 		$questions = array_filter(
 			$questions,
 			function ( $question ) {
-				$question_settings = unserialize( $question->question_settings );
-				return ! isset( $question_settings['isPublished'] ) || $question_settings['isPublished'] !== '0';
+				$question_settings = maybe_unserialize( $question->question_settings );
+				return ! isset( $question_settings['isPublished'] ) || 0 !== intval( $question_settings['isPublished'] );
 			}
 		);
 		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
@@ -1128,29 +1129,6 @@ class QMNQuizManager {
 		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
 		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
-			// Get quiz post based on quiz id
-			$args      = array(
-				'posts_per_page' => 1,
-				'post_type'      => 'qsm_quiz',
-				'meta_query'     => array(
-					array(
-						'key'     => 'quiz_id',
-						'value'   => $quiz_data['quiz_id'],
-						'compare' => '=',
-					),
-				),
-			);
-			$the_query = new WP_Query( $args );
-
-			// The Loop
-			if ( $the_query->have_posts() ) {
-				while ( $the_query->have_posts() ) {
-					$the_query->the_post();
-					echo get_the_post_thumbnail( get_the_ID(), 'full' );
-				}
-				/* Restore original Post Data */
-				wp_reset_postdata();
-			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
 			$quiz_form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			?>
