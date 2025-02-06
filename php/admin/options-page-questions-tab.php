@@ -206,6 +206,7 @@ function qsm_options_questions_tab_content() {
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
+			<?php do_action('qsm_question_controls_head'); ?>
 		</p>
 	</div>
 	<div class="qsm-admin-bulk-actions">

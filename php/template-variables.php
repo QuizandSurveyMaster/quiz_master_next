@@ -129,11 +129,11 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
 		$question_answers_array = isset( $mlw_quiz_array['question_answers_array'] ) ? $mlw_quiz_array['question_answers_array'] : array();
 		$key                    = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
+		$answerstr              = "";
 		if ( isset( $question_answers_array[ $key ] ) ) {
 			$answers = $question_answers_array[ $key ];
 			$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
 		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
-			$answerstr              = "";
 			if ( isset( $answers['user_answer'] ) && is_array( $answers['user_answer'] ) ) {
 				if ( 13 === intval( $answers['question_type'] ) ) {
 					$answerstr .= $answers['points'];
@@ -153,14 +153,11 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 				}else {
 					$answerstr .= implode(", ",$answers['user_answer']);
 				}
-
-
-				$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
-
+			}
 		}
+		$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
 	}
-	}
-return $content;
+	return $content;
 }
 /**
  * Replace total_possible_points variable with actual points
@@ -514,7 +511,7 @@ function qsm_contact_field_variable( $content, $results_array ) {
 		$contact_key = $matches[1][ $i ];
 		if ( is_numeric( $contact_key ) && intval( $contact_key ) > 0 ) {
 			$contact_index = intval( $contact_key ) - 1;
-			
+
 			if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
 				$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
 			} else {
