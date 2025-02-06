@@ -64,13 +64,13 @@ jQuery(function ($) {
 
         showDependentAddons: function () {
             let $quiz_type = jQuery(document).find('.qsm-dashboard-page-item.qsm-dashboard-page-items-active');
-            var $dependency = qsm_admin_new_quiz.quizoptions[$quiz_type.data('id')];
+            let $dependency = qsm_admin_new_quiz.quizoptions[$quiz_type.data('id')];
 
-            var $themeItemsParent = $('.qsm-quiz-theme-steps-container');
-            var $themeItems = $themeItemsParent.children('.qsm-quiz-steps-card');
+            let $themeItemsParent = $('.qsm-quiz-theme-steps-container');
+            let $themeItems = $themeItemsParent.children('.qsm-quiz-steps-card');
 
-            var suggestedThemes = [];
-            var remainingThemes = [];
+            let suggestedThemes = [];
+            let remainingThemes = [];
             $themeItems.show();
             $themeItems.each(function () {
                 var themeId = $(this).data('id');
@@ -96,11 +96,11 @@ jQuery(function ($) {
                 $themeItemsParent.children(":gt(3)").hide();
             }
 
-            var $addonItemsParent = $('.qsm-quiz-addon-steps-grid');
-            var $addonItems = $addonItemsParent.children('.qsm-quiz-addon-steps-card');
+            let $addonItemsParent = $('.qsm-quiz-addon-steps-grid');
+            let $addonItems = $addonItemsParent.children('.qsm-quiz-addon-steps-card');
 
-            var suggestedAddons = [];
-            var remainingAddons = [];
+            let suggestedAddons = [];
+            let remainingAddons = [];
             $addonItems.show();
             $addonItems.each(function () {
                 var addonId = $(this).data('id');
@@ -321,20 +321,20 @@ jQuery(function ($) {
         });
 
         $(document).on('click', '.qsm-dashboard-page-item', function (e) {
-            var $parent = $(this).parents('.qsm-dashboard-choose-quiz-type-wrap');
-            var selectedType = $(this).data('type');
+            let $parent = $(this).parents('.qsm-dashboard-choose-quiz-type-wrap');
+            let selectedType = $(this).data('type');
             $parent.find('.qsm-dashboard-page-item').removeClass('qsm-dashboard-page-items-active');
             $(this).addClass('qsm-dashboard-page-items-active');
 
             jQuery('.input-group input[name="form_type"]').parents('label').removeClass('qsm-dashboard-button-selected');
             // form_type
+            let form_type = 0;
             if (selectedType === 'survey') {
-                jQuery(`#new-quiz-form input[name="form_type"][value="1"]`).parents('label')[0].click();
+                form_type = 1;
             } else if (selectedType === 'form') {
-                jQuery(`#new-quiz-form input[name="form_type"][value="2"]`).parents('label')[0].click();
-            } else {
-                jQuery(`#new-quiz-form input[name="form_type"][value="0"]`).parents('label')[0].click();
+                form_type = 2;
             }
+            jQuery(`.qsm-create-quiz-more-settings select[name="form_type"]`).val(form_type);
 
             // Hide recommendetions
             $('.qsm-dashboard-theme-recommended, .qsm-dashboard-addon-recommended').hide();
@@ -343,8 +343,8 @@ jQuery(function ($) {
         });
 
         $('.qsm-create-quiz-show-more-settings').on('change', function () {
-            var contentDiv = $('.qsm-create-quiz-more-settings');
-            var toggleLabel = $('.qsm-create-quiz-toggle-label');
+            let contentDiv = $('.qsm-create-quiz-more-settings');
+            let toggleLabel = $('.qsm-create-quiz-toggle-label');
 
             if ($(this).is(':checked')) {
                 contentDiv.slideDown(); // Show the content

@@ -846,7 +846,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 jQuery(document).find('.qsm-'+templateType+'-'+link.data('tab')+'-template-container').show();
             },
             addTemplateRow: function ( data ) { 
-                var template = wp.template('qsm-my-template-rows');
+                let template = wp.template('qsm-my-template-rows');
                 jQuery('.qsm-my-templates-table-body').append(template(data));
             },
             loadMyTemplates: function ( type ) {
@@ -970,7 +970,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 jQuery('.qsm-insert-template-response').text('');
             });
             jQuery(document).on('click', '.qsm-insert-page-template-anchor', function (e) {
-                var templateWrap = jQuery(this).find('.qsm-insert-template-wrap');
+                let templateWrap = jQuery(this).find('.qsm-insert-template-wrap');
                 jQuery('.qsm-settings-box-details, .qsm-more-settings-box-details').hide();
                 if (!templateWrap.is(':visible')) {
                     templateWrap.show();
@@ -981,10 +981,10 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 e.preventDefault();
                 let templateType = jQuery(this).data('type');
                 if(templateType == 'result') {
-                    var resultPageIndex = jQuery(this).parents('.qsm-template-btn-group').parents('.results-page').find('.results-page-show').data('result-page');
+                    let resultPageIndex = jQuery(this).parents('.qsm-template-btn-group').parents('.results-page').find('.results-page-show').data('result-page');
                     jQuery("#qsm-result-page-templates-content").attr('data-result-page', resultPageIndex);
                 } else if(templateType == 'email') {
-                    var emailPageValue = jQuery(this).parents('.qsm-template-btn-group').parents('.qsm-email').find('.email-show').data('email-page');
+                    let emailPageValue = jQuery(this).parents('.qsm-template-btn-group').parents('.qsm-email').find('.email-show').data('email-page');
                     jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
                 }
                 MicroModal.show('qsm-'+templateType+'-page-templates');
@@ -2119,6 +2119,7 @@ var QSMContact;
                                 forced_root_block: '',
                                 toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                                 toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
+                                height: 200,
                             },
                             quicktags: true,
                         };
@@ -2158,7 +2159,7 @@ var QSMContact;
                     }];
                     var to = '%USER_EMAIL%';
                     var subject = 'Quiz Results For %QUIZ_NAME%';
-                    var content = '';
+                    let content = '';
                     var replyTo = false;
                     QSMAdminEmails.addEmail(conditions, to, subject, content, replyTo);
                 },
@@ -2166,7 +2167,7 @@ var QSMContact;
                     $emailBlock.find('.qsm-email-page-template-options').hide();
                     $emailBlock.find('.qsm-email-page-editor-options').show();
                     $emailBlock.find('.qsm-email-page-common-section').each(function () {
-                        var section = $(this);
+                        let section = $(this);
                         if (section.children().length > 0) {
                             if (!section.is(':visible')) {
                                 section.show();
@@ -2182,7 +2183,7 @@ var QSMContact;
                 QSMAdminResultsAndEmail.loadMyTemplates( 'email' );
                 jQuery(document).on('click', '.qsm-start-with-template', function (e) {
                     e.preventDefault();
-                    var emailPageValue = jQuery(this).parents('.email-show').data('result-page');
+                    let emailPageValue = jQuery(this).parents('.email-show').data('result-page');
                     jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
                     MicroModal.show('qsm-email-page-templates');
                 });
@@ -2205,7 +2206,7 @@ var QSMContact;
                     e.preventDefault();
                     jQuery('.qsm-email-page-template-container').hide();
                     jQuery('.qsm-preview-email-page-template-container').show();
-                    var backgroundImage = jQuery(this).parents('.qsm-email-page-template-card').data('url'); 
+                    let backgroundImage = jQuery(this).parents('.qsm-email-page-template-card').data('url'); 
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
                 });
 
@@ -4538,6 +4539,7 @@ var QSM_Quiz_Broadcast_Channel;
                             forced_root_block: '',
                             toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
+                            height: 200,
                         },
                         quicktags: true,
                     };
@@ -4601,7 +4603,7 @@ var QSM_Quiz_Broadcast_Channel;
                 },
                 hideShowResultPageSection: function ( $resultsPage ) {
                     $resultsPage.find('.qsm-result-page-common-section').each(function () {
-                        var section = $(this); // `this` refers to the current section in the loop
+                        let section = $(this);
                         if (section.children().length > 0) {
                             if (!section.is(':visible')) {
                                 section.show();
@@ -4615,7 +4617,7 @@ var QSM_Quiz_Broadcast_Channel;
                 QSMAdminResultsAndEmail.loadMyTemplates( 'result' );
                 jQuery(document).on('click', '.qsm-start-with-template', function (e) {
                     e.preventDefault();
-                    var resultPageIndex = jQuery(this).parents('.results-page-show').data('result-page');
+                    let resultPageIndex = jQuery(this).parents('.results-page-show').data('result-page');
                     jQuery("#qsm-result-page-templates-content").attr('data-result-page', resultPageIndex);
                     MicroModal.show('qsm-result-page-templates',{
                         onClose: function () {
@@ -4639,7 +4641,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-result-page-template-container').hide();
                     jQuery('.qsm-preview-result-page-template-container').show();
-                    var backgroundImage = jQuery(this).parents('.qsm-result-page-template-card').data('url'); 
+                    let backgroundImage = jQuery(this).parents('.qsm-result-page-template-card').data('url'); 
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
                     let scriptTemplate = qsmResultsObject.script_tmpl[indexId];
                     let all_dependency = qsmResultsObject.dependency;

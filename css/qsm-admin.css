@@ -1,7 +1,7 @@
 :root {
 	--qsm-primary-button: #2272B1;
-}  
-.toplevel_page_qsm_dashboard #wpbody-content > div.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap > div.error {
+}
+.toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error {
 	display: none;
 }
 /******************** Quizzes/Surveys Page *********************/
@@ -768,6 +768,7 @@ span.qsm-quiz-name {
 .qsm_tab_content input[type="text"].results-page-redirect{
 	border-radius: 3px;
 	border-color: #555555;
+	margin-bottom: 0;
 }
 @media screen and (min-width: 760px) {
 	.results-page-content, .qsm-email-content {
@@ -3703,15 +3704,20 @@ input#duplicate_questions {
 }
 
 /* ---------- */
-.qsm-quiz-result-tab .qsm-result-page-then-box-styles-wrap > div {
+.qsm-quiz-result-tab .qsm-result-page-then-box-styles-wrap > div, .qsm-quiz-email-tab .qsm-email-page-then-box-styles-wrap > div {
 	padding: 15px 0 25px 0;
 }
 
-.qsm-quiz-result-tab .qsm-result-page-then-box-styles-wrap > div:not(:last-child) {
+.qsm-quiz-result-tab .qsm-result-page-then-box-styles-wrap > div:not(:last-child), .qsm-quiz-email-tab .qsm-email-page-then-box-styles-wrap > div:not(:last-child) {
 	border-bottom: 1px solid #1e1e1e18;
 }
 .results-page-content .qsm-result-page-redirect-options input[type="text"] {
     min-width: 100%;
+}
+.qsm-upgrade-box-base.qsm-webhooks-upgrade-button {
+    margin-top: 0;
+    width: initial;
+    padding: 0px 15px;
 }
 /* ---------- */
 .qsm-email-page-common-section.qsm-email-page-then-box-styles > div {
@@ -4036,12 +4042,12 @@ button.qsm-email-page-template-preview-button.button img {
 .qsm-preview-template-image-wrapper .qsm-preview-template-image {
 	width: 100%;
 }
-.results-page-show .mce-tinymce.mce-container.mce-fullscreen {
+/* .results-page-show .mce-tinymce.mce-container.mce-fullscreen {
     z-index: 9999;
     max-width: calc(100% - 160px);
     margin-left: 160px;
     padding: 30px 0 0 0;
-}
+} */
 .results-page-show .wp-editor-tools {
 	position: initial;
 }

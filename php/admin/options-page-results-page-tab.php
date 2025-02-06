@@ -379,11 +379,15 @@ function qsm_options_results_tab_template(){
 							<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
 								<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 								<!-- NOTE: Previously redirect input displayed here -->
-								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories );
+								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); 
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
-										<button type="button" class="button qsm-webhooks-pricing-popup">
-											<?php esc_html_e('Add Webhook', 'quiz-master-next'); ?>
-										</button>
+										<div class="qsm-upgrade-box-base qsm-webhooks-upgrade-button">
+											<div class="qsm-upgrade-box-base-title">
+												<img src="http://test.local/wp-content/plugins/quiz-master-next/php/images/info.png" alt="">
+												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
+											</div>
+											<a href="#" class="qsm-webhooks-pricing-popup"><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+										</div>
 									<?php }
 								?>
 							</div>

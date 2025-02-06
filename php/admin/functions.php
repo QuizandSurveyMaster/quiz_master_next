@@ -1681,7 +1681,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 				<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
 					<?php
 						foreach ( $template_from_script as $key => $single_template ) {
-							if ( $type == $single_template['template_type'] ) {
+							if ( $type == $single_template['template_type'] || 'both' == $single_template['template_type'] ) {
 								$image_url = QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png';
 								if ( '' != $single_template['template_preview'] ) {
 									$image_url = QSM_PLUGIN_URL . 'assets/'.$single_template['template_preview'];
@@ -1689,7 +1689,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 								?>
 								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card " data-url="<?php echo esc_url( $image_url ); ?>" >
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" >
-										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card-image">
+										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card">
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">

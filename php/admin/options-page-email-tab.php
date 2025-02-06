@@ -284,56 +284,58 @@ function qsm_options_emails_tab_template() {
 						</p>
 					</div>
 				</div>
-				<div class="qsm-email-page-common-section qsm-email-page-then-box-styles" >
-					<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
-					<?php do_action( 'qsm_after_send_email_label' ); ?>
-					<input type="email" class="qsm-to-email" value="{{ data.to }}">
-					<label class="qsm-email-reply-to">
-						<input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>
-						<?php esc_html_e( 'Add user email as Reply-To', 'quiz-master-next' ); ?>
-					</label>
-					<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
-					<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
-				</div>
-				<div class="qsm-email-page-editor-options qsm-email-page-then-box-styles" >
-					<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
-					<?php
-					do_action( 'qsm_email_page_content_before',  $quiz_id, $categories );
-					qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); ?>
-					<textarea id="email-template-{{ data.id }}" class="email-template">
-					{{{ data.content.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
-						let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
-						for (let qsm_variable in qsm_admin_messages.qsm_variables_name) {
-							variable_name = qsm_admin_messages.qsm_variables_name[qsm_variable];
-							if( variable_name.includes('%%') ){
-								var arrayValues = variable_name.split("%%");
-								qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
-							};
-							if( variable_name.includes('_X%') ){
-								qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
-							}
-						}
-						if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
-							return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
-						} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
-							return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, emailcontent) {
-								const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
-								const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
-								return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${emailcontent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
-							});
-						} else {
-							return match;
-						}
-					}) }}}
-					</textarea>
-					<div class="qsm-email-page-content-buttons ">
-						<button type="button" class="button qsm-slashcommand-variables-button qsm-email-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
-						<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+				<div class="qsm-email-page-then-box-styles-wrap">
+					<div class="qsm-email-page-common-section qsm-email-page-then-box-styles" >
+						<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
+						<?php do_action( 'qsm_after_send_email_label' ); ?>
+						<input type="email" class="qsm-to-email" value="{{ data.to }}">
+						<label class="qsm-email-reply-to">
+							<input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>
+							<?php esc_html_e( 'Add user email as Reply-To', 'quiz-master-next' ); ?>
+						</label>
+						<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
+						<input type="text" class="qsm-email-subject" value="{{ data.subject }}">
 					</div>
-					<?php do_action( 'qsm_email_page_content_buttons_after',  $quiz_id, $categories ); ?>
-				</div>
-				<div class="qsm-email-page-common-section qsm-email-page-then-box-styles">
-					<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
+					<div class="qsm-email-page-editor-options qsm-email-page-then-box-styles" >
+						<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
+						<?php
+						do_action( 'qsm_email_page_content_before',  $quiz_id, $categories );
+						qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ); ?>
+						<textarea id="email-template-{{ data.id }}" class="email-template">
+						{{{ data.content.replace(/%([^%]+)%|\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(match, capturedValue) {
+							let qsm_varaible_list = qsm_admin_messages.qsm_variables_name;
+							for (let qsm_variable in qsm_admin_messages.qsm_variables_name) {
+								variable_name = qsm_admin_messages.qsm_variables_name[qsm_variable];
+								if( variable_name.includes('%%') ){
+									var arrayValues = variable_name.split("%%");
+									qsm_varaible_list = jQuery.merge(jQuery.merge([], arrayValues), qsm_varaible_list);
+								};
+								if( variable_name.includes('_X%') ){
+									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
+								}
+							}
+							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
+							} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
+								return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, emailcontent) {
+									const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
+									const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
+									return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${emailcontent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
+								});
+							} else {
+								return match;
+							}
+						}) }}}
+						</textarea>
+						<div class="qsm-email-page-content-buttons ">
+							<button type="button" class="button qsm-slashcommand-variables-button qsm-email-editor-custom-button"><?php esc_html_e('Add Variables', 'quiz-master-next'); ?></button>
+							<span class="qsm-insert-template-variable-text"><?php esc_html_e( 'Or, Type', 'quiz-master-next' );?> / <?php esc_html_e( ' to insert template variables', 'quiz-master-next' ); ?></span>
+						</div>
+						<?php do_action( 'qsm_email_page_content_buttons_after',  $quiz_id, $categories ); ?>
+					</div>
+					<div class="qsm-email-page-common-section qsm-email-page-then-box-styles">
+						<?php do_action( 'qsm_email_page_after',  $quiz_id, $categories ); ?>
+					</div>
 				</div>
 			</div>
 		</main>
