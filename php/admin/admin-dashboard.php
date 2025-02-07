@@ -231,35 +231,28 @@ function qsm_generate_dashboard_page() {
 	}
 	global $mlwQuizMasterNext;
 ?>
-<div class="wrap">
-	<div id="welcome_panel" class="qsm_dashboard_page postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
-		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)" aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
-		<div class="qsm-dashboard-welcome-panel-wrap">
-			<div class="welcome-panel-content">
-				<div class="qsm-welcome-panel-content">
-					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/logo.png' ); ?>" alt="Welcome Logo">
-					<p class="current_version">
-						<?php
-						/* translators: %1$s: The current version of the Quiz Master Next plugin. */
-						echo esc_html( sprintf( __( 'Version: %1$s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) );
-						?>
-					</p>
-				</div>
-				<div class="qsm-welcome-panel-content">
-					<h3><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h3>
-					<p><?php esc_html_e( 'Best WordPress Quiz and Survey Maker Plugin', 'quiz-master-next' ); ?></p>
-				</div>
-			</div>
-			<ul class="welcome-panel-menu">
-				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
-				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
-				<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
-				<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
-				<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
-			</ul>
+<div id="welcome_panel" class=" <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
+	<div class="qsm-dashboard-welcome-panel-wrap">
+		<div class="qsm-welcome-panel-content">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
+			<p class="current_version">
+				<?php
+				/* translators: %1$s: The current version of the Quiz Master Next plugin. */
+				echo esc_html( sprintf( __( 'Version: %1$s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) );
+				?>
+			</p>
 		</div>
-		<?php do_action( 'qsm_welcome_panel' ); ?>
+		<ul class="qsm-welcome-panel-menu">
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><span class="dashicons dashicons-media-document"></span><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-networking"></span><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook-alt"></span><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><span class="dashicons dashicons-bell"></span><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
+		</ul>
 	</div>
+	<?php do_action( 'qsm_welcome_panel' ); ?>
+</div>
+<div class="wrap">
 	<div class="qsm-dashboard-wrapper">
 		<div class="qsm-dashboard-container">
 			<div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style">
@@ -361,7 +354,6 @@ function qsm_create_new_quiz_from_wizard() {
 		global $mlwQuizMasterNext;
 		$quiz_name = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
 		$quiz_name = htmlspecialchars( $quiz_name, ENT_QUOTES );
-
 		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );

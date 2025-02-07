@@ -381,12 +381,12 @@ function qsm_options_results_tab_template(){
 								<!-- NOTE: Previously redirect input displayed here -->
 								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); 
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
-										<div class="qsm-upgrade-box-base qsm-webhooks-upgrade-button">
+										<div class="qsm-webhooks-pricing-popup qsm-upgrade-box-base qsm-webhooks-upgrade-button">
 											<div class="qsm-upgrade-box-base-title">
 												<img src="http://test.local/wp-content/plugins/quiz-master-next/php/images/info.png" alt="">
 												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
 											</div>
-											<a href="#" class="qsm-webhooks-pricing-popup"><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+											<a class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
 										</div>
 									<?php }
 								?>

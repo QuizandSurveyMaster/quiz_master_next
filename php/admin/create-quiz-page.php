@@ -259,15 +259,13 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					if ( true === $is_installed && true === $is_activated ) {
 						$addon_status .= __('Available', 'quiz-master-next');
 					} elseif ( true === $is_installed ) {
-						$addon_status .= __('Activate this Addon', 'quiz-master-next');
-					} else {
-						$addon_status .= __('Not Available', 'quiz-master-next');
+						$addon_status .= __('Activate', 'quiz-master-next');
 					}
 					?>
 					<div class="qsm-quiz-addon-steps-card" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
 						<div class="qsm-quiz-addon-steps-images">
 							<img class="qsm-quiz-addon-steps-icon" alt="Addon" src="<?php echo esc_url($addon_icon); ?>">
-							<a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png" /></a>
+							<!-- <a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png" /></a> -->
 						</div>
 						<div class="qsm-quiz-addon-steps-info">
 							<h3 class="qsm-quiz-addon-steps-title"><?php echo esc_html($addon_name); ?></h3>
@@ -298,7 +296,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 								) && false == $is_activated
 							) {
 								?>
-								<a href="<?php echo esc_url($addon_link); ?>" class="button button-secondary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
+								<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
 									<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
 								</a>
 							<?php } else { ?>
@@ -383,7 +381,6 @@ function qsm_create_quiz_page_callback() {
 			$invalid_and_expired = 0;
 		}
 	}
-
 	wp_localize_script( 'qsm-create-quiz-script', 'qsm_admin_new_quiz', array(
 		'quizoptions'         => $quizoptions_boxes,
 		'installed'           => $installed_plugins,
@@ -400,19 +397,19 @@ function qsm_create_quiz_page_callback() {
 		'more_settings'       => __('Additional Form Settings', 'quiz-master-next'),
 		'less_settings'       => __('Hide Additional Settings', 'quiz-master-next'),
 	) );
-
 	?>
+	<div class="qsm-new-quiz-header">
+		<img class="qsm-new-quiz-header-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
+	</div>
 	<div class="wrap">
-		<h1></h1>
 		<div class="qsm-new-quiz-wrapper">
-			<div class="qsm-dashboard-header">
-				<div class="qsm-dashboard-header-pagination">
-					<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
-					<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>
-					<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
-					<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Let’s Start Building your Quiz', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
-				</div>
-				<div class="qsm-dashboard-header-info"></div>
+			<div class="qsm-dashboard-header-pagination">
+			<?php $last_visited_page = ! empty($_SERVER['HTTP_REFERER']) ? esc_url($_SERVER['HTTP_REFERER']) : esc_url(admin_url('admin.php?page=qsm_dashboard')); ?>
+				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" ><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
+				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Let’s Start Building your Quiz', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
 			</div>
 			<div class="qsm-new-quiz-container">
 				<form action="" method="post" id="new-quiz-form">
@@ -455,6 +452,13 @@ function qsm_create_quiz_page_callback() {
 							echo '</div>';
 						}
 						?>
+					</div>
+					<div class="qsm-create-quiz-bottom-right-button" style="display: none;">
+						<button class="qsm-create-quiz-bundle-button">
+							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/cube.png' ); ?>" alt="cube.png">
+							<span> <?php echo esc_html__('Grab the Bundle & Save 90%', 'quiz-master-next'); ?></span>
+						</button>
+						<small><?php echo esc_html__('*This bundle includes all themes and add-ons', 'quiz-master-next'); ?></small>
 					</div>
 				</form>
 			</div><!-- qsm-new-quiz-container -->

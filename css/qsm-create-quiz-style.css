@@ -1,10 +1,12 @@
 .qsm-new-quiz-wrapper {
 	display: grid;
     justify-content: center;
+    margin-top: 30px;
 }
 
 .qsm-dashboard-page-items {
     min-width: 600px;
+    margin-top: 30px;
 }
 
 .qsm-dashboard-page-items .qsm-dashboard-page-item {
@@ -37,7 +39,9 @@
     margin-top: 24px;
     transition: all .5s;
 }
-
+.qsm-dashboard-container-pages>div {
+    margin: 26px 0 26px 0px;
+}
 .qsm-dashboard-see-more-types-wrap {
 	margin-top: 15px;
     display: flex;
@@ -67,11 +71,16 @@
 a.qsm-dashboard-journy-create-quiz.button-primary {
     padding: 3px 30px;
     font-size: 15px;
+    height: 38px;
+    width: 268px;
+    border-radius: 3px;
+    box-shadow: 0px 4px 4px 0px #00000014;
 }
 
 .qsm-dashboard-header-pagination {
 	display: flex;
 	margin-bottom: 10px;
+    align-items: end;
 }
 .qsm-dashboard-header-pagination > a {
 	display: flex;
@@ -84,24 +93,29 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary a.qsm-dashboard-journy-p
 
 a.qsm-dashboard-journy-next-step-proceed .qsm-dashboard-help-image {
     position: relative;
-    top: 4px;
     left: 4px;
     width: 18px;
 }
 
 a.qsm-dashboard-journy-next-step-proceed.button-primary {
-    padding: 3px 30px;
     font-size: 15px;
+    height: 38px;
+    width: 116px;
+    padding: 0px 18px 2px 18px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-a.qsm-dashboard-journy-previous-step .qsm-dashboard-help-image {
+a.qsm-dashboard-journy-previous-step .qsm-dashboard-help-image, a.qsm-dashboard-journy-previous-dashboard .qsm-dashboard-help-image {
     padding-right: 3px;
 }
-a.qsm-dashboard-journy-previous-step {
+a.qsm-dashboard-journy-previous-step, a.qsm-dashboard-journy-previous-dashboard {
     height: 20px;
 }
 
-.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step, .qsm-dashboard-journy-previous-step:hover, .qsm-dashboard-journy-next-step:hover, .qsm-dashboard-journy-previous-step:focus, .qsm-dashboard-journy-next-step:focus {
+.qsm-dashboard-journy-previous-step, .qsm-dashboard-journy-next-step, .qsm-dashboard-journy-previous-step:hover, .qsm-dashboard-journy-next-step:hover, .qsm-dashboard-journy-previous-step:focus, .qsm-dashboard-journy-next-step:focus, .qsm-dashboard-journy-previous-dashboard, .qsm-dashboard-journy-previous-dashboard:focus {
     padding: 4px 8px;
     border-radius: 3px;
     border: 1px solid #1E1E1E;
@@ -120,7 +134,7 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary:focus, a.qsm-dashboard-j
     grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
     display: grid;
     gap: 1em;
-    margin-top: 24px;
+    margin-top: 30px;
     transition: all .5s;
     padding: 25px;
 }
@@ -168,6 +182,13 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary:focus, a.qsm-dashboard-j
     border: 1px solid #D1D5DB;
 }
 
+.qsm-quiz-addon-steps-grid {
+    grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
+    display: grid;
+    margin-top: 30px;
+    transition: all .5s;
+}
+
 .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(even) {
     border: 1px solid #E5E7EB;
     border-top: none;
@@ -203,20 +224,19 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary:focus, a.qsm-dashboard-j
 .qsm-dashboard-addon-recommended, .qsm-dashboard-theme-recommended {
     position: absolute;
     top: 20px;
-    left: 90px;
-    background: #ffffff;
+    right: 20px;
+    background: #FFD74B;
     padding: 4px;
     border-radius: 5px;
     display: none;
     z-index: 50;
     cursor: pointer;
-    border: 1px solid #1E1E1E;
     font-size: 13px;
 }
 
 .qsm-dashboard-theme-recommended {
     top: 10px;
-    left: 10px;
+    right: 10px;
 }
 /* Flex container for content */
 .qsm-quiz-steps-content {
@@ -274,13 +294,6 @@ img.qsm-quiz-addon-steps-icon {
     display: grid;
     padding: 25px;
     background: #FFF;
-}
-
-.qsm-quiz-addon-steps-grid {
-    grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
-    display: grid;
-    margin-top: 24px;
-    transition: all .5s;
 }
 
 .qsm-quiz-addon-steps-button {
@@ -392,7 +405,7 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
 }
 
 .qsm-dashboard-quiz-form .qsm-dashboard-page-header h3 {
-    margin: 15px 0;
+    margin: 0px 0 15px 0;
 }
 
 .qsm-dashboard-quiz-form .input-group > label {
@@ -471,12 +484,10 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
 
 /* quiz settings page over */
 
-
-
-
 .qsm-create-quiz-switch {
     display: inline-block;
     position: relative;
+    margin-top: 15px;
 }
 
 .qsm-create-quiz-switch-label {
@@ -535,4 +546,5 @@ input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider .qsm-dash
 span.qsm-create-quiz-toggle-label {
     color: #1E1E1E;
     font-size: 14px;
+    margin-right: 17px;
 }

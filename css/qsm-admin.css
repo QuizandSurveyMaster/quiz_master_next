@@ -50,15 +50,6 @@
 	max-width: 610px;
 }
 
-.qsm-dashboard-page-common-style { 
-    margin-bottom: 20px;
-    border: 1px solid #D1D5DB;
-    padding: 17px 25px;
-    border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0px 1px 2px 0px #0000000D;
-}
-
 .qsm-dashboard-page-header h3 { 
     font-size: 25px;
     font-weight: 400;
@@ -66,6 +57,7 @@
     text-align: left; 
     text-decoration-skip-ink: none;
     margin: 0;
+	color: #1E1E1E;
 }
 .qsm-dashboard-page-header p { 
 	font-size: 14px;
@@ -73,7 +65,7 @@
     line-height: 30px;
     text-align: left;
     text-decoration-skip-ink: none;
-    margin: 0px 0 10px 0;
+    margin: 0;
     color: #555555;
 }
 .qsm-dashboard-help-icon-wrap {
@@ -82,13 +74,22 @@
 }
 
 .qsm-dashboard-help-center {
-	margin-top: 50px;
+	margin-top: 60px;
 }
 
 .qsm-dashboard-help-center-title {
 	font-size: 24px;
 	color: #1E1E1E;
 	font-weight: 400;
+}
+
+.qsm-dashboard-page-common-style { 
+    margin-bottom: 16px;
+    border: 1px solid #D1D5DB;
+    padding: 17px 25px;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0px 1px 2px 0px #0000000D;
 }
 
 .qsm-dashboard-help-center-grid {
@@ -1976,7 +1977,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 .qsm-help-tab-dropdown-list a.qsm-help-tab-item .dashicons {
 	display: inline-block;
 }
-.qsm-help-tab-dropdown-list .qsm-help-tab-icon {
+.qsm-help-tab-dropdown-list .qsm-help-tab-icon, .qsm-welcome-panel-menu .qsm-help-tab-icon {
 	display: inline-block;
 	height: 20px;
 	width: auto;
@@ -2870,6 +2871,59 @@ input#question_search::-webkit-search-cancel-button {
 	outline: none;
 	appearance: none;
 }
+.qsm-new-quiz-header {
+	position: relative;
+    display: flex;
+    align-items: center;
+	justify-content: space-between;
+    background-color: #ffffff;
+    opacity: 1;
+    transition: all .3s ease-in-out;
+    z-index: 999;
+    margin-left: -20px;
+    min-height: 51px;
+	box-shadow: 0px 2px 10px 0px #0000000F;
+}
+img.qsm-new-quiz-header-image { 
+	margin-left: 10px;
+}
+.qsm-create-quiz-bottom-right-button {
+	position: fixed;
+	bottom: 30px;
+	right: 20px;
+	z-index: 1000;
+	display: grid;
+}
+  
+.qsm-create-quiz-bundle-button {
+	padding: 7px 18px;
+    background-color: #2271B1;
+    color: #ffffff;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.qsm-create-quiz-bundle-button img {
+	margin-right: 5px;
+    margin-top: 2px;
+}
+.qsm-create-quiz-bundle-button:hover {
+	background-color: #1a5b8d;
+}
+  
+.qsm-create-quiz-bottom-right-button small {
+	margin-top: 5px;
+	font-size: 12px;
+	font-weight: normal;
+	color: #1E1E1E;
+}
 .mlw_quiz_options .qsm-quiz-nav-bar {
 	display: flex;
 	justify-content: space-between;
@@ -2929,11 +2983,25 @@ input#question_search::-webkit-search-cancel-button {
 	color: #1f8cbe;
 	border-bottom: 3px solid #1f8cbe;
 }
-.qsm-quiz-nav-bar .qsm-quiz-top-nav-links .dashicons {
+.qsm-quiz-nav-bar .qsm-quiz-top-nav-links .dashicons, ul.qsm-welcome-panel-menu li a .dashicons {
 	display: block;
 	margin: 0 auto;
 	color: inherit;
 	font-size: 20px;
+}
+ul.qsm-welcome-panel-menu li a {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+    color: #757575;
+    box-shadow: none;
+    border-bottom: 3px solid transparent;
+    outline: none;
+}
+ul.qsm-welcome-panel-menu li:hover a, ul.qsm-welcome-panel-menu li:focus a{
+	color: #1f8cbe;
+	border-bottom: 3px solid #1f8cbe;
 }
 #result_details {
 	font-size: 2em;
@@ -3718,6 +3786,7 @@ input#duplicate_questions {
     margin-top: 0;
     width: initial;
     padding: 0px 15px;
+	cursor: pointer;
 }
 /* ---------- */
 .qsm-email-page-common-section.qsm-email-page-then-box-styles > div {
@@ -3767,10 +3836,6 @@ input#duplicate_questions {
 	vertical-align: baseline;
 	cursor: pointer;
 }
-.qsm-edit-result-view-options .qsm-edit-result-input-option.active label {
-	font-weight: 600;
-} 
-
 .qsm-result-page-template-container, .qsm-result-my-template-container,
 .qsm-email-page-template-container, .qsm-email-my-template-container {
 	padding: 5px 15px;

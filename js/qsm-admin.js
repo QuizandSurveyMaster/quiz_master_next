@@ -224,13 +224,6 @@ var QSMAdminResultsAndEmail;
             }
         });
 
-        //Dismiss the welcome panel
-        jQuery('.qsm-welcome-panel-dismiss').click(function (e) {
-            e.preventDefault();
-            jQuery('#welcome_panel').addClass('hidden');
-            jQuery('#screen-options-wrap').find('#welcome_panel-hide').prop('checked', false);
-            postboxes.save_state('toplevel_page_qsm_dashboard');
-        });
         //Get the message in text tab general
         jQuery(document).on('click', '.quiz_text_tab_message', function () {
             var text_id = jQuery(this).attr('data-id');
@@ -1683,6 +1676,9 @@ function qsmConvertContentToShortcode( contentToConvert ){
             } );
             
             $( document ).on( 'click', '.qsm-webhooks-pricing-popup', function( e ) {
+                if ( $(e.target).closest('.qsm-webhooks-pricing-popup-details').length ) {
+                    return; // Allow default link behavior
+                }
                 e.preventDefault();
                 MicroModal.show('modal-qsm-webhooks');
             } );

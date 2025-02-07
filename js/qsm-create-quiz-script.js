@@ -49,6 +49,7 @@ jQuery(function ($) {
                 QSMAdminDashboard.showPage(QSMAdminDashboard.currentPage);
             }
             QSMAdminDashboard.showDependentAddons();
+            QSMAdminDashboard.nexPagePreviousPageAfter();
             // Always at last
             if (jQuery('.qsm-quiz-steps-default-theme-active').length === 0) {
                 jQuery('.qsm-quiz-theme-steps-container').children('.qsm-quiz-steps-card').first().addClass('qsm-quiz-steps-default-theme-active'); // Add the class
@@ -60,6 +61,14 @@ jQuery(function ($) {
                 QSMAdminDashboard.currentPage--;
                 QSMAdminDashboard.showPage(QSMAdminDashboard.currentPage);
             }
+            QSMAdminDashboard.nexPagePreviousPageAfter();
+        },
+
+        nexPagePreviousPageAfter: function () {
+            let $dashboardButton = jQuery('.qsm-dashboard-journy-previous-dashboard');
+            let $upgradeButton = jQuery('.qsm-create-quiz-bottom-right-button');
+            QSMAdminDashboard.currentPage == 2 || QSMAdminDashboard.currentPage == 3 ? $upgradeButton.show() : $upgradeButton.hide();
+            QSMAdminDashboard.currentPage == 1 ? $dashboardButton.show() : $dashboardButton.hide();
         },
 
         showDependentAddons: function () {
@@ -144,12 +153,17 @@ jQuery(function ($) {
                             qsm_admin_new_quiz.installed = [];
                         }
                         qsm_admin_new_quiz.installed.push(path);
+                        if (!Array.isArray(qsm_admin_new_quiz.activated)) {
+                            qsm_admin_new_quiz.activated = [];
+                        }
+                        qsm_admin_new_quiz.activated.push(path);
                         if (isButton) { QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton); }
                         jQuery('.qsm-quiz-steps-card').removeClass('qsm-quiz-steps-default-theme-active');
                         $parent.addClass('qsm-quiz-steps-default-theme-active');
                         if ($element.hasClass('qsm-theme-action-btn')) {
                             $element.remove();
                         }
+                        $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.available);
                     } else {
                         $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.retry);
                         if (isToggle) { $element.prop('checked', false).prop('disabled', false); }
@@ -236,12 +250,8 @@ jQuery(function ($) {
             }
             return response;
         },
-    };
-    jQuery(document).ready(function ($) {
-        QSMAdminDashboard.init();
-        console.log('ready')
-        jQuery(document).on('click change', '.qsm-theme-action-btn, .qsm-dashboard-addon-toggle', function () {
-            let $element = $(this);
+
+        processPluginRequest: function ( $element ) {
             let isToggle = $element.hasClass('qsm-dashboard-addon-toggle');
             let isButton = $element.hasClass('qsm-theme-action-btn');
             if (isToggle) {
@@ -289,6 +299,16 @@ jQuery(function ($) {
             } else {
                 QSMAdminDashboard.installPlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton);
             }
+        }
+    };
+    jQuery(document).ready(function ($) {
+        QSMAdminDashboard.init();
+        jQuery(document).on('change', '.qsm-dashboard-addon-toggle', function () {
+            QSMAdminDashboard.processPluginRequest($(this));
+        });
+
+        jQuery(document).on('click', '.qsm-theme-action-btn', function () {
+            QSMAdminDashboard.processPluginRequest($(this));
         });
         jQuery(document).on('click', '.qsm-quiz-theme-steps-container .qsm-quiz-steps-image', function (e) {
             e.preventDefault();
