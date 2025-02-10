@@ -2113,7 +2113,7 @@ var QSMContact;
                             tinymce: {
                                 plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                                 forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
+                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,fullscreen,wp_adv',
                                 toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                                 height: 200,
                             },
@@ -4533,7 +4533,7 @@ var QSM_Quiz_Broadcast_Channel;
                         tinymce: {
                             plugins: "qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress",
                             forced_root_block: '',
-                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_adv',
+                            toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,fullscreen,wp_adv',
                             toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code,fullscreen',
                             height: 200,
                         },
@@ -4552,16 +4552,17 @@ var QSM_Quiz_Broadcast_Channel;
                         singlePage.redirect !== false &&
                         singlePage.redirect !== ''
                     ){
-                        $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div:not(.results-page-content-header):not(.qsm-edit-result-view-options):not(.qsm-result-page-redirect-options)").hide();
+                        $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div:not(.qsm-edit-result-view-options):not(.qsm-result-page-redirect-options)").hide();
                         $resultsPage.find('.qsm-then-redirect-to-url').prop('checked', true);
                         $resultsPage.find('.qsm-result-page-template-options').hide();
                         QSMAdminResults.hideShowResultPageSection($resultsPage);
                     } else {
-                        
+                        console.log('jhsdakj')
                         if(typeof singlePage.redirect === 'undefined' || page == '') {
                             // New Result Page
-                            $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div:not(.results-page-content-header):not(.qsm-edit-result-view-options)").hide();
+                            $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div").hide();
                             $resultsPage.find('.qsm-result-page-template-options').show();
+                            console.log('jhsdakj')
                         } else {
                             // Default Loading Result Page
                             $resultsPage.find('.qsm-result-page-redirect-options').hide();
@@ -4606,6 +4607,9 @@ var QSM_Quiz_Broadcast_Channel;
                             }
                         }
                     });
+                    if($resultsPage.find('.qsm-result-page-template-options').is(":visible")) {
+                        $resultsPage.find('.qsm-result-page-common-section').hide();
+                    }
                 }
             };
             $(function () {

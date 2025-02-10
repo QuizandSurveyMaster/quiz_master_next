@@ -1692,12 +1692,8 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card">
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>">
-										<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-white.svg'); ?>" alt="download-line-white.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?>
-										</button>
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>">
-											<?php esc_html_e( 'Preview', 'quiz-master-next' ); ?>
-										</button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line.png'); ?>" alt="eye-line.png" /><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-white.svg'); ?>" alt="download-line-white.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
 									</div>
 								</div>
 								<?php
@@ -1908,3 +1904,38 @@ function qsm_create_theme_defaults_tab_content() {
     }
 }
 add_action( 'qsm_global_settings_page_added_tab_content', 'qsm_create_theme_defaults_tab_content' );
+
+function qsm_display_header_section_links(){
+	global $mlwQuizMasterNext;
+	?>
+		<div id="welcome_panel" class=" <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
+			<div class="qsm-dashboard-welcome-panel-wrap">
+				<div class="qsm-welcome-panel-content">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
+					<p class="current_version">
+						<?php
+						/* translators: %1$s: The current version of the Quiz Master Next plugin. */
+						echo esc_html( sprintf( __( 'Version: %1$s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) );
+						?>
+					</p>
+				</div>
+				<ul class="qsm-welcome-panel-menu">
+					<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
+					<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><span class="dashicons dashicons-media-document"></span><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
+					<?php do_action( 'qsm_welcome_panel_links' ); ?>
+				</ul>
+			</div>
+		</div>
+	<?php
+}
+
+
+function qsm_display_promotion_links_section() {
+	?>
+		<ul class="qsm-display-footer-promotion-links">
+			<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a><span>/</span></li>
+			<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a><span>/</span></li>
+			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
+		</ul>
+	<?php
+}

@@ -127,7 +127,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						<div class="qsm-quiz-steps-content">
 							<div class="qsm-quiz-steps-info">
 								<h3 class="qsm-quiz-steps-title"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h3>
-								<p class="qsm-dashboard-addon-status"><?php echo esc_html_e( 'Select', 'quiz-master-next' ); ?></p>
+								<p class="qsm-dashboard-addon-status"><?php esc_html_e( 'Selected', 'quiz-master-next' ); ?></p>
 							</div>
 							<div class="qsm-quiz-steps-action-buttons"></div>
 						</div>
@@ -154,9 +154,17 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						$theme_demo = qsm_get_utm_link($theme_value['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title($theme_name));
 						$theme_path = isset($theme_script['path']) ? $theme_script['path'] : '';
 						$theme_slug = isset($theme_script['slug']) ? $theme_script['slug'] : '';
-						$is_installed = array_key_exists( $theme_path, $installed_plugins );
 						$is_activated = in_array( $theme_path, $activated_plugins, true );
-						$theme_status = ( true === $is_installed ) ? esc_html__( 'Available', 'quiz-master-next' ) : esc_html__( 'Not Available', 'quiz-master-next' );
+						$is_installed = array_key_exists( $theme_path, $installed_plugins );
+						if ( true == $is_activated ) {
+							$theme_status = esc_html__( 'Select', 'quiz-master-next' );
+						} elseif ( true == $is_installed ) {
+							$theme_status = esc_html__( 'Installed', 'quiz-master-next' );
+						} elseif ( false == $is_activated && false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired && 'allaccess' == $selected_bundle ) {
+							$theme_status = esc_html__( 'Install & Activate', 'quiz-master-next' );
+						} else {
+							$theme_status = esc_html__( 'Upgrade', 'quiz-master-next' );
+						}
 						$card_class = $is_activated ? "qsm-quiz-theme-activated" : "";
 						?>
 						<div class="qsm-quiz-steps-card <?php echo esc_attr($card_class); ?>"  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
@@ -190,12 +198,12 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])), true))
 										) && false == $is_activated
 									) { ?>
-										<a href="<?php echo esc_url($theme_link); ?>" class="button button-secondary" target="_blank">
-											<?php echo esc_html__( 'Buy', 'quiz-master-next' ); ?>
+										<a href="<?php echo esc_url($theme_link); ?>" class="button button-primary" target="_blank">
+											<?php echo esc_html__( 'Upgrade', 'quiz-master-next' ); ?>
 										</a>
-									<?php } elseif ( false == $is_activated ) { ?>
+									<?php } elseif ( true == $is_activated || true == $is_installed || (false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired && 'allaccess' == $selected_bundle) ) { ?>
 										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
-											<?php echo esc_html__( 'Use', 'quiz-master-next' ); ?>
+											<?php echo esc_html__( 'Select', 'quiz-master-next' ); ?>
 										</a>
 									<?php }?>
 									<a href="<?php echo esc_url($theme_demo); ?>" class="button button-secondary demo" target="_blank">
@@ -256,10 +264,10 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					$is_installed = array_key_exists($addon_path, $installed_plugins);
 					$is_activated = in_array($addon_path, $activated_plugins, true);
 					$addon_status = '';
-					if ( true === $is_installed && true === $is_activated ) {
-						$addon_status .= __('Available', 'quiz-master-next');
-					} elseif ( true === $is_installed ) {
-						$addon_status .= __('Activate', 'quiz-master-next');
+					if ( true == $is_activated ) {
+						$addon_status = esc_html__( 'Activated', 'quiz-master-next' );
+					} elseif ( true == $is_installed ) {
+						$addon_status = esc_html__( 'Installed', 'quiz-master-next' );
 					}
 					?>
 					<div class="qsm-quiz-addon-steps-card" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
@@ -273,7 +281,6 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 							<p class="qsm-quiz-addon-steps-status"><?php echo esc_html($display_text); ?></p>
 						</div>
 						<div class="qsm-quiz-addon-steps-button">
-							<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
 							<?php
 							if (
 								// Case 1: Addon is activated but expired
@@ -296,10 +303,12 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 								) && false == $is_activated
 							) {
 								?>
+								<p class="qsm-dashboard-addon-status"><?php echo esc_html__('Upgrade', 'quiz-master-next'); ?></p>
 								<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
 									<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
 								</a>
 							<?php } else { ?>
+								<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
 								<label class="qsm-dashboard-addon-switch">
 									<input type="checkbox" class="qsm-dashboard-addon-toggle"
 										<?php checked(esc_attr($is_activated)); ?>
@@ -392,15 +401,16 @@ function qsm_create_quiz_page_callback() {
 		'invalid_and_expired' => $invalid_and_expired,
 		'installer_script'    => $installer_script,
 		'process'             => __('Processing...', 'quiz-master-next'),
-		'available'           => __('Available', 'quiz-master-next'),
+		'activated_text'      => __('Activated', 'quiz-master-next'),
+		'select'              => __('Select', 'quiz-master-next'),
+		'selected'            => __('Selected', 'quiz-master-next'),
 		'retry'               => __('Retry', 'quiz-master-next'),
 		'more_settings'       => __('Additional Form Settings', 'quiz-master-next'),
 		'less_settings'       => __('Hide Additional Settings', 'quiz-master-next'),
 	) );
+
+	qsm_display_header_section_links();
 	?>
-	<div class="qsm-new-quiz-header">
-		<img class="qsm-new-quiz-header-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
-	</div>
 	<div class="wrap">
 		<div class="qsm-new-quiz-wrapper">
 			<div class="qsm-dashboard-header-pagination">
@@ -454,10 +464,11 @@ function qsm_create_quiz_page_callback() {
 						?>
 					</div>
 					<div class="qsm-create-quiz-bottom-right-button" style="display: none;">
-						<button class="qsm-create-quiz-bundle-button">
+						<?php $bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'bundles', 'new-quiz-steps' ); ?>
+						<a href="<?php echo esc_url( $bundle_link ); ?>" target="_blank" class="qsm-create-quiz-bundle-button">
 							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/cube.png' ); ?>" alt="cube.png">
 							<span> <?php echo esc_html__('Grab the Bundle & Save 90%', 'quiz-master-next'); ?></span>
-						</button>
+						</a>
 						<small><?php echo esc_html__('*This bundle includes all themes and add-ons', 'quiz-master-next'); ?></small>
 					</div>
 				</form>
