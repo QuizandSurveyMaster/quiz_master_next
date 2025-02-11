@@ -3892,6 +3892,10 @@ input#duplicate_questions {
     gap: 1em;
 }
 
+.qsm-result-my-template-container, .qsm-email-page-template-container { 
+	margin-top: 20px;
+}
+
 .qsm-result-page-template-card,
 .qsm-email-page-template-card {
 	display: flex;
@@ -3899,9 +3903,6 @@ input#duplicate_questions {
     align-items: center;
     height: auto;
     transition: background-color 0.3s ease;
-    background: #F8FAFF;
-    padding: 10px 10px;
-    border: 1px solid #E2EAFF;
 }
 
 .qsm-result-page-template-card-content,
@@ -3910,33 +3911,20 @@ input#duplicate_questions {
     cursor: pointer;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-	height: 230px;
-    min-width: 230px;
+    height: 230px;
+    max-width: 250px;
     overflow: hidden;
-	background: #fff;
-	transition: background-color 0.3s ease;
+    background: #D9E6FE;
+    transition: background-color 0.3s ease;
+    padding: 15px 15px 0 15px;
 }
 
-.qsm-result-page-template-card-content::before,
-.qsm-email-page-template-card-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
 img.qsm-result-page-template-card-image,
 img.qsm-email-page-template-card-image {
-	position: absolute;
-    max-width: calc(100% - 10px);
-    top: 5px;
+	max-width: calc(100% - 0px);
+	top: 5px;
 }
 .qsm-result-page-template-card-content:hover::before,
 .qsm-email-page-template-card-content:hover::before {
@@ -3972,23 +3960,11 @@ img.qsm-email-page-template-card-image {
 #qsm-email-page-templates .qsm-email-page-template-card-buttons {
 	display: flex;
     justify-content: space-between;
-    width: 100%;
-	padding-top: 10px;
+    width: -webkit-fill-available;
+    padding: 10px;
+    background: #ffffff;
+    border-top: 1px solid #DADADA;
 }
-button.qsm-result-page-template-use-button.button, button.qsm-result-page-template-use-button.button:hover,
-button.qsm-email-page-template-use-button.button, button.qsm-email-page-template-use-button.button:hover {
-	background: rgba(0, 0, 0, 0.5);
-    color: #FFF;
-}
-
-button.qsm-result-page-template-preview-button.button, button.qsm-result-page-template-preview-button.button:hover,
-button.qsm-email-page-template-preview-button.button, button.qsm-email-page-template-preview-button.button:hover {
-	border: 1px solid #1E1E1E !important;
-    background-color: #F8FAFF;
-    color: #1E1E1E;
-    font-weight: 400;
-}
-
 .qsm-result-page-template-card-buttons img.qsm-common-svg-image-class,
 .qsm-email-page-template-card-buttons img.qsm-common-svg-image-class {
 	position: relative;
@@ -4074,13 +4050,8 @@ h2#qsm-email-page-templates-title {
 }
 
 .qsm-result-page-template-card-buttons button.button,
-.qsm-email-page-template-card-buttons button.button {
-    border: none;
+.qsm-email-page-template-card-buttons button.button { 
     margin: 2px 0px 3px 0px;
-}
-button.qsm-result-page-template-preview-button.button img,
-button.qsm-email-page-template-preview-button.button img {
-	height: 18px;
 }
 .qsm-response-toaster, .footer-bar-notice {
 	position: fixed;
@@ -4120,23 +4091,27 @@ button.qsm-email-page-template-preview-button.button img {
 	background-color: #2196F3;
 }
 .qsm-preview-result-page-template-container, .qsm-preview-email-page-template-container {
-	padding: 15px;
+	padding: 0 15px;
 	position: relative;
 }
-.qsm-preview-template-image-close {
-	position: absolute;
-    top: -20px;
-    right: 15px;
-    border: 1px solid #d63638;
-    padding: 3px;
-    border-radius: 7px;
-    cursor: pointer;
+.qsm-email-page-template-header-close, .qsm-result-page-template-header-close {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+a.qsm-preview-template-image-close.button.button-secondary {
+    border-radius: 3px;
+    border: 1px solid #1E1E1E;
+    color: #1E1E1E;
+    background: #F6F7F7;
+    text-decoration: none;
+    box-shadow: none;
 }
 .qsm-preview-template-image-close img {
 	width: 15px;
     position: relative;
     top: 3px;
-    padding-left: 5px;
+    right: 4px;
 }
 .qsm-preview-template-image-wrapper .qsm-preview-template-image {
 	width: 100%;
@@ -4178,27 +4153,26 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 	min-width: 300px;
 	width: 300px;
 }
-.qsm-result-template-dependency-addons > div {
+.qsm-result-template-dependency-addons > div, .qsm-email-template-dependency-addons > div {
 	display: flex;
     gap: 5px 15px;
     flex-wrap: wrap;
 }
-.qsm-result-template-dependency-addons > div h3 {
-    margin: 0 0 5px 0;
-	width: 100%;
+.qsm-result-template-dependency-addons > div h3, .qsm-email-template-dependency-addons > div h3 {
+    margin: 0;
 }
-.qsm-result-template-dependency-addons {
+.qsm-result-template-dependency-addons, .qsm-email-template-dependency-addons {
 	display: grid;
-    grid-template-columns: 1fr 1fr;
     align-items: flex-start;
     grid-gap: 20px;
-    margin: 0px 0 20px 0px;
+    margin: 0px 0 10px 0px;
 	border: 1px solid rgba(30, 30, 30, 0.1);
     padding: 10px;
-    border-radius: 6PX;
+	background-color: #ffffff;
+    border-radius: 6px;
 }
 
-.qsm-result-template-dependency-addon {
+.qsm-result-template-dependency-addon, .qsm-email-template-dependency-addon {
     font-size: 12px;
 	line-height: 15px;
 	font-weight: 500;
@@ -4207,13 +4181,18 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 	padding: 6px 10px;
 	border-radius: 15px;
 }
-
-.qsm-result-template-dependency-addon-purple { 
+.qsm-result-template-dependency-addon-purple, .qsm-email-template-dependency-addon-purple { 
 	background-color: #F0ECFE;
 }
 
-.qsm-result-template-dependency-addon-orange {
+.qsm-result-template-dependency-addon-orange, .qsm-email-template-dependency-addon-orange {
     background-color: #FFECE4; 
+}
+
+#qsm-result-page-templates-content.qsm-popup__content, #qsm-email-page-templates-content.qsm-popup__content { 
+    background: #f0f0f1;
+    margin: 0;
+    padding: 20px 10px;
 }
 
 .qsm-insert-template-left:before {

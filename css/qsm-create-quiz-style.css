@@ -277,7 +277,7 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary:hover {
 }
 
 .qsm-quiz-steps-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     margin: 0 0 5px;
 }
@@ -455,7 +455,15 @@ input.qsm-dashboard-addon-toggle:checked+.qsm-dashboard-addon-slider .qsm-dashbo
     display: flex;
     gap: 10px;
 }
+.qsm-quiz-steps-action-buttons {
+    display: flex;
+    gap: 5px;
+}
 
+.qsm-quiz-steps-card .qsm-quiz-steps-content .qsm-quiz-steps-action-buttons>a {
+    font-size: 11px;
+    padding-top: 2px;
+}
 .qsm-dashboard-quiz-form .input-group .buttonset label:not(.qsm-create-quiz-switch-label) {
     border: 1px solid #D1D5DB;
     border-radius: 6px;

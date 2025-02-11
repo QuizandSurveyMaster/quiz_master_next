@@ -605,8 +605,6 @@ class MLWQuizMasterNext {
 			'confirmRemovePage'          => esc_html__( 'Are you sure you want to remove this page?', 'quiz-master-next' ),
 			'confirmReplaceTemplate'     => esc_html__( 'This will replace your current template. Continue?', 'quiz-master-next' ),
 			'select_template'            => __('Select Template', 'quiz-master-next'),
-			'required_addons'            => __('Required Add-ons', 'quiz-master-next'),
-			'used_addons'                => __('Used Add-ons', 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );

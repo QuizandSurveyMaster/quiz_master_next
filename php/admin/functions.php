@@ -1674,7 +1674,10 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 								<a class="qsm-<?php echo esc_attr( $type ); ?>-page-tmpl-header-links" data-tab="my" href="javascript:void(0)"><?php esc_html_e( 'My Templates', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
-						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+						<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-close">
+							<a style="display: none;" class="qsm-preview-template-image-close button button-secondary" data-type="<?php echo esc_attr( $type ); ?>" href="javascript:void(0)"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php esc_html_e( 'Back', 'quiz-master-next' ); ?></a>
+							<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+						</div>
 					</div>
 				</header>
 				<main class="qsm-popup__content" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-content" data-type="<?php echo esc_attr( $type ); ?>" data-<?php echo esc_attr( $type ); ?>-page="">
@@ -1692,8 +1695,8 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card">
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/eye-line.png'); ?>" alt="eye-line.png" /><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-white.svg'); ?>" alt="download-line-white.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button button-secondary" data-indexid="<?php echo esc_html($key); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button button-secondary" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Use', 'quiz-master-next' ); ?></button>
 									</div>
 								</div>
 								<?php
@@ -1727,7 +1730,6 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					<div class="qsm-preview-template-image-wrapper">
 						<img class="qsm-preview-template-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png'); ?>" alt="screenshot-default-theme.png"/>
 					</div>
-					<div class="qsm-preview-template-image-close" data-type="<?php echo esc_attr( $type ); ?>"><?php esc_html_e( 'Close Preview', 'quiz-master-next' ); ?><img src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/wrong.png'); ?>" alt="wrong.png"/></div>
 				</div>
 				</main>
 			</div>
@@ -1757,10 +1759,10 @@ function qsm_result_and_email_row_templates(){
 	<?php
 }
 
-function qsm_get_plugin_status_by_path( $path ) {
+function qsm_get_plugin_status_by_path( $path ) { 
 	if ( is_plugin_active($path) ) {
 		return 'activated';
-	} elseif ( file_exists(WP_PLUGIN_DIR . '/' . $path) ) {
+	} elseif ( '' != $path && file_exists(WP_PLUGIN_DIR . '/' . $path) ) {
 		return 'installed';
 	} else {
 		return 'not_installed';

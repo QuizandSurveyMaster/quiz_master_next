@@ -987,6 +987,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 let type = jQuery(this).data('type');
                 jQuery('.qsm-preview-'+type+'-page-template-container').hide();
                 jQuery('.qsm-'+type+'-page-template-container').show();
+                jQuery(this).hide();
             });
 
             jQuery(document).on('click', 'a.qsm-result-page-template-remove-button, a.qsm-email-page-template-remove-button', async function (e) {
@@ -2200,10 +2201,42 @@ var QSMContact;
                 
                 jQuery(document).on('click', '.qsm-email-page-template-preview-button', function (e) {
                     e.preventDefault();
+                    let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-email-page-template-container').hide();
                     jQuery('.qsm-preview-email-page-template-container').show();
+                    jQuery('.qsm-preview-template-image-close').show();
                     let backgroundImage = jQuery(this).parents('.qsm-email-page-template-card').data('url'); 
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
+                    let scriptTemplate = qsmEmailsObject.script_tmpl[indexId];
+                    let all_dependency = qsmEmailsObject.dependency;
+                    let $container = $('.qsm-email-template-dependency-addons');
+                    $container.empty();
+                    console.log(scriptTemplate);
+                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                        let templateDependency = scriptTemplate.dependency;
+                        if (templateDependency.trim() !== '') {
+                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
+                            $usedAddonsDiv.append($('<h3>').text(qsmEmailsObject.used_addons));
+                            let hasUsedAddons = false;
+                            $.each(all_dependency, function(_, dependency) {
+                                if (dependencyIds.includes(dependency.id)) {
+                                    let $span = $('<span>').addClass('qsm-email-template-dependency-addon');
+                                    hasUsedAddons = true;
+                                    if (dependency.status == 'activated' || dependency.status == 'installed') {
+                                        $span.addClass('qsm-email-template-dependency-addon-purple').text(dependency.name);
+                                    } else {
+                                        $span.addClass('qsm-email-template-dependency-addon-orange').text(dependency.name);
+                                    }
+                                    $usedAddonsDiv.append($span);
+                                }
+                            });
+                            if (hasUsedAddons) {
+                                $container.append($usedAddonsDiv);
+                            }
+                        }
+                    }
+                    $container.children().length > 0 ? $container.show() : $container.hide();
                 });
 
                 jQuery(document).on('click', '.qsm-email-page-template-header .qsm-email-page-tmpl-header-links', function (e) {
@@ -4641,6 +4674,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-result-page-template-container').hide();
                     jQuery('.qsm-preview-result-page-template-container').show();
+                    jQuery('.qsm-preview-template-image-close').show();
                     let backgroundImage = jQuery(this).parents('.qsm-result-page-template-card').data('url'); 
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
                     let scriptTemplate = qsmResultsObject.script_tmpl[indexId];
@@ -4651,34 +4685,27 @@ var QSM_Quiz_Broadcast_Channel;
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
                             let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
-                            let $requiredAddonsDiv = $('<div>').addClass('qsm-required-addons');
                             let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
-                            $requiredAddonsDiv.append($('<h3>').text('Required Add-ons'));
-                            $usedAddonsDiv.append($('<h3>').text('Used Add-ons'));
-                            let hasRequiredAddons = false;
+                            $usedAddonsDiv.append($('<h3>').text(qsmResultsObject.used_addons));
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
                                 if (dependencyIds.includes(dependency.id)) {
                                     let $span = $('<span>').addClass('qsm-result-template-dependency-addon');
+                                    hasUsedAddons = true;
                                     if (dependency.status == 'activated' || dependency.status == 'installed') {
                                         $span.addClass('qsm-result-template-dependency-addon-purple').text(dependency.name);
-                                        $usedAddonsDiv.append($span);
-                                        hasUsedAddons = true;
                                     } else {
                                         $span.addClass('qsm-result-template-dependency-addon-orange').text(dependency.name);
-                                        $requiredAddonsDiv.append($span);
-                                        hasRequiredAddons = true;
                                     }
+                                    $usedAddonsDiv.append($span);
                                 }
                             });
                             if (hasUsedAddons) {
                                 $container.append($usedAddonsDiv);
                             }
-                            if (hasRequiredAddons) {
-                                $container.append($requiredAddonsDiv);
-                            }
                         }
                     }
+                    $container.children().length > 0 ? $container.show() : $container.hide();
                 });
 
                 jQuery(document).on('click', '.qsm-result-page-template-header .qsm-result-page-tmpl-header-links', function (e) {
