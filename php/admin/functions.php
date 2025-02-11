@@ -1365,6 +1365,16 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		);
 		$variable_list = array_merge( $variable_list, $advanced_assessment );
 	}
+	if ( ! class_exists( 'QSM_Advance_Certificate' ) ) {
+		global $mlwQuizMasterNext;
+		$template_array = array(
+			'%CERTIFICATE_ATTACHMENT_X%'	=> __( 'Attach and send the certificate via email in PDF, JPG, JPEG, or PNG format.', 'quiz-master-next' ),
+		);
+		$advance_certificate = array(
+			'Advance Certificate' => $template_array,
+		);
+		$variable_list = array_merge( $variable_list, $advance_certificate );
+	}
 	return $variable_list;
 }
 /**
