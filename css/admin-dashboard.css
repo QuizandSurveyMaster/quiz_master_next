@@ -932,40 +932,6 @@ h2.hndle.ui-sortable-handle {
 #quiz_settings .input-group {
 	box-shadow: 0 0 3px rgba(10, 10, 10, 0.2);
 }
-
-.qsm-dashboard-welcome-panel-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
-    opacity: 1;
-    transition: all .3s ease-in-out;
-    z-index: 999;
-    margin-left: -20px;
-    min-height: 51px;
-    box-shadow: 0px 2px 10px 0px #0000000F;
-}
-
-ul.qsm-welcome-panel-menu {
-    display: flex;
-	margin: 0;
-}
-
-ul.qsm-welcome-panel-menu li {
-	text-align: center;
-	min-width: 75px;
-	min-height: 51px;
-	margin-bottom: 0;
-	display: grid;
-}
-.qsm-welcome-panel-content {
-	display: flex;
-	gap: 20px;
-}
-.qsm-welcome-panel-content img{
-	margin-left: 20px;
-}
 .qsm-dashboard-create-quiz-section {
 	display: grid;
     grid-template-columns: 2fr 1fr;

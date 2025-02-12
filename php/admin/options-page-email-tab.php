@@ -37,7 +37,7 @@ function qsm_options_emails_tab_content() {
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
 	$my_email_templates = $wpdb->get_results($temlpate_sql);
-
+	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 	$js_data = array(
 		'quizID'            => $quiz_id,
 		'nonce'             => wp_create_nonce( 'wp_rest' ),
@@ -47,6 +47,9 @@ function qsm_options_emails_tab_content() {
 		'script_tmpl'       => $template_from_script,
 		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
 		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
+		'dependency'        => $qsm_dependency_list,
+		'required_addons'   => __('Required Add-ons', 'quiz-master-next'),
+		'used_addons'       => __('Used Add-ons', 'quiz-master-next'),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 	do_action( 'qsm_options_email_tab_content_before' );

@@ -114,28 +114,28 @@ function qsm_dashboard_display_need_help_section(){
 	$sections = [
 		[
 			'title'       => __('Documentation', 'quiz-master-next'),
-			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
+			'description' => __('Find detailed guides and step-by-step instructions to help you explore and utilize all the features of the QSM plugin effectively.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/contact.png',
 			'alt'         => 'contact.png',
 			'link'        => qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document'),
 		],
 		[
-			'title'       => __('Tutorials', 'quiz-master-next'),
-			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
+			'title'       => __('Demos', 'quiz-master-next'),
+			'description' => __('Explore live examples of quizzes and surveys built with QSM to see its features in action.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/camera.png',
 			'alt'         => 'camera.png',
 			'link'        => 'https://demo.quizandsurveymaster.com/',
 		],
 		[
 			'title'       => __('FAQ', 'quiz-master-next'),
-			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
+			'description' => __('Get quick answers to commonly asked questions about QSM, covering troubleshooting, setup, and best practices.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/faq.png',
 			'alt'         => 'faq.png',
 			'link'        => 'https://quizandsurveymaster.com/#:~:text=Frequently%20asked%20questions',
 		],
 		[
 			'title'       => __('Contact Support', 'quiz-master-next'),
-			'description' => __('Comprehensive guides to help you understand and use all features of QSM Plugin.', 'quiz-master-next'),
+			'description' => __('Need further assistance? Reach out to our support team for personalized help with any issues or queries related to QSM.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/dashboard-support.png',
 			'alt'         => 'dashboard-support.png',
 			'link'        => qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support'),
@@ -144,18 +144,17 @@ function qsm_dashboard_display_need_help_section(){
 	?>
 
 	<div class="qsm-dashboard-help-center">
-		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Need Help?', 'quiz-master-next'); ?></h3>
+	<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Need Help?', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-help-center-grid qsm-dashboard-page-common-style">
 			<?php foreach ( $sections as $section ) : ?>
 				<div class="qsm-dashboard-help-center-card">
 					<div class="qsm-dashboard-help-center-card-icon">
 						<div class="qsm-dashboard-help-icon-wrap">
 						<img class="qsm-dashboard-help-image" src="<?php echo esc_url($section['image']); ?>" alt="<?php echo esc_attr($section['alt']); ?>"/>
-							<a target="_blank" rel="noopener" href="<?php echo esc_url( $section['link'] )?>" class="welcome-icon"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png"/></a>
 						</div>
 					</div>
 					<h3 class="qsm-dashboard-help-center-card-title">
-						<?php echo esc_html($section['title']); ?>
+					<a target="_blank" rel="noopener" href="<?php echo esc_url( $section['link'] )?>" class="welcome-icon"><?php echo esc_html($section['title']); ?></a>
 					</h3>
 					<p class="qsm-dashboard-help-center-card-description">
 						<?php echo esc_html($section['description']); ?>
@@ -170,7 +169,7 @@ function qsm_dashboard_display_need_help_section(){
 function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 	?>
 	<div class="qsm-dashboard-help-center">
-		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Popular Addons', 'quiz-master-next'); ?></h3>
+		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Explore Addons', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-help-center-grid qsm-dashboard-page-common-style">
 			<?php foreach ( array_slice($popular_addons, 0, 4) as $addon ) :
 				$addon_link = qsm_get_utm_link( $addon['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $addon['name'] ) );
@@ -180,16 +179,15 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 					<div class="qsm-dashboard-help-center-card-icon">
 						<div class="qsm-dashboard-help-icon-wrap">
 							<img class="qsm-dashboard-help-image" src="<?php echo esc_url( $addon_icon ); ?>" alt="<?php echo esc_attr( $addon['name'] ); ?> Icon" />
-							<a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>">
-								<img class="qsm-dashboard-help-arrow" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/cross-right-arrow.png' ); ?>"  alt="<?php esc_attr_e( 'Arrow Icon', 'quiz-master-next' ); ?>" />
-							</a>
 						</div>
 					</div>
 					<h3 class="qsm-dashboard-help-center-card-title">
-						<?php echo esc_html($addon['name']); ?>
+					<a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>"><?php echo esc_html($addon['name']); ?></a>
 					</h3>
 					<p class="qsm-dashboard-help-center-card-description">
-						<?php echo esc_html($addon['description']); ?>
+						<?php  $display_text = mb_strlen($addon['description']) > 110 ? mb_substr($addon['description'], 0, 110) . '...' : $addon['description'];
+						echo esc_html($display_text); 
+					?>
 					</p>
 				</div>
 			<?php endforeach; ?>
@@ -230,28 +228,8 @@ function qsm_generate_dashboard_page() {
 		return;
 	}
 	global $mlwQuizMasterNext;
+	qsm_display_header_section_links();
 ?>
-<div id="welcome_panel" class=" <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
-	<div class="qsm-dashboard-welcome-panel-wrap">
-		<div class="qsm-welcome-panel-content">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
-			<p class="current_version">
-				<?php
-				/* translators: %1$s: The current version of the Quiz Master Next plugin. */
-				echo esc_html( sprintf( __( 'Version: %1$s', 'quiz-master-next' ), $mlwQuizMasterNext->version ) );
-				?>
-			</p>
-		</div>
-		<ul class="qsm-welcome-panel-menu">
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support') )?>" class="welcome-icon"><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"><?php esc_html_e( 'Support', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document') )?>" class="welcome-icon"><span class="dashicons dashicons-media-document"></span><?php esc_html_e( 'Docs', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-networking"></span><?php esc_html_e( 'Github', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745" class="welcome-icon"><span class="dashicons dashicons-facebook-alt"></span><?php esc_html_e( 'Facebook', 'quiz-master-next' ); ?></a></li>
-			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><span class="dashicons dashicons-bell"></span><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
-		</ul>
-	</div>
-	<?php do_action( 'qsm_welcome_panel' ); ?>
-</div>
 <div class="wrap">
 	<div class="qsm-dashboard-wrapper">
 		<div class="qsm-dashboard-container">
@@ -269,13 +247,14 @@ function qsm_generate_dashboard_page() {
 			$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
 			$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
 			$popular_addons = qsm_get_widget_data( 'popular_products' );
+				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($qsm_admin_dd['themes']);
-				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_change_log_section();
 			?>
 		</div>
 	</div>
+	<?php qsm_display_promotion_links_section(); ?>
 </div>
 <?php
 }

@@ -44,6 +44,7 @@
 .qsm-dashboard-wrapper {
 	display: grid;
     justify-content: center;
+	padding-bottom: 200px;
 }
 .qsm-new-quiz-container, .qsm-dashboard-container {
 	min-width: 610px;
@@ -132,8 +133,10 @@
 }
 .qsm-dashboard-help-center-card-title {
 	font-size: 18px;
-    color: #1E1E1E;
-    font-weight: 400;
+}
+
+.qsm-dashboard-help-center-card-title a {
+	text-decoration: none;
 }
 
 .qsm-dashboard-themes-card .qsm-dashboard-themes-image-wrapper img {
@@ -2871,22 +2874,52 @@ input#question_search::-webkit-search-cancel-button {
 	outline: none;
 	appearance: none;
 }
-.qsm-new-quiz-header {
-	position: relative;
+.qsm-dashboard-welcome-panel-wrap {
+    position: relative;
     display: flex;
     align-items: center;
-	justify-content: space-between;
+    justify-content: space-between;
     background-color: #ffffff;
     opacity: 1;
     transition: all .3s ease-in-out;
     z-index: 999;
     margin-left: -20px;
     min-height: 51px;
-	box-shadow: 0px 2px 10px 0px #0000000F;
+    box-shadow: 0px 2px 10px 0px #0000000F;
 }
-img.qsm-new-quiz-header-image { 
-	margin-left: 10px;
+
+.qsm-welcome-panel-content {
+	display: flex;
+	gap: 20px;
 }
+
+.qsm-welcome-panel-content img{
+	margin-left: 20px;
+}
+.qsm-display-footer-promotion-links {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.qsm-display-footer-promotion-links li span {
+	color: #c3c4c7;
+    padding: 0 7px;
+}
+
+ul.qsm-welcome-panel-menu {
+    display: flex;
+	margin: 0;
+}
+
+ul.qsm-welcome-panel-menu li {
+	text-align: center;
+	min-width: 75px;
+	min-height: 51px;
+	margin-bottom: 0;
+	display: grid;
+}
+
 .qsm-create-quiz-bottom-right-button {
 	position: fixed;
 	bottom: 30px;
@@ -2909,6 +2942,7 @@ img.qsm-new-quiz-header-image {
     display: flex;
     justify-content: space-between;
     align-items: center;
+	text-decoration: none;
 }
 .qsm-create-quiz-bundle-button img {
 	margin-right: 5px;
@@ -2916,8 +2950,8 @@ img.qsm-new-quiz-header-image {
 }
 .qsm-create-quiz-bundle-button:hover {
 	background-color: #1a5b8d;
+	color: #ffffff;
 }
-  
 .qsm-create-quiz-bottom-right-button small {
 	margin-top: 5px;
 	font-size: 12px;
@@ -2986,7 +3020,7 @@ img.qsm-new-quiz-header-image {
 .qsm-quiz-nav-bar .qsm-quiz-top-nav-links .dashicons, ul.qsm-welcome-panel-menu li a .dashicons {
 	display: block;
 	margin: 0 auto;
-	color: inherit;
+	color: #448AB9;
 	font-size: 20px;
 }
 ul.qsm-welcome-panel-menu li a {
@@ -3858,6 +3892,10 @@ input#duplicate_questions {
     gap: 1em;
 }
 
+.qsm-result-my-template-container, .qsm-email-page-template-container { 
+	margin-top: 20px;
+}
+
 .qsm-result-page-template-card,
 .qsm-email-page-template-card {
 	display: flex;
@@ -3865,9 +3903,6 @@ input#duplicate_questions {
     align-items: center;
     height: auto;
     transition: background-color 0.3s ease;
-    background: #F8FAFF;
-    padding: 10px 10px;
-    border: 1px solid #E2EAFF;
 }
 
 .qsm-result-page-template-card-content,
@@ -3876,33 +3911,20 @@ input#duplicate_questions {
     cursor: pointer;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-	height: 230px;
-    min-width: 230px;
+    height: 230px;
+    max-width: 250px;
     overflow: hidden;
-	background: #fff;
-	transition: background-color 0.3s ease;
+    background: #D9E6FE;
+    transition: background-color 0.3s ease;
+    padding: 15px 15px 0 15px;
 }
 
-.qsm-result-page-template-card-content::before,
-.qsm-email-page-template-card-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
 img.qsm-result-page-template-card-image,
 img.qsm-email-page-template-card-image {
-	position: absolute;
-    max-width: calc(100% - 10px);
-    top: 5px;
+	max-width: calc(100% - 0px);
+	top: 5px;
 }
 .qsm-result-page-template-card-content:hover::before,
 .qsm-email-page-template-card-content:hover::before {
@@ -3938,23 +3960,11 @@ img.qsm-email-page-template-card-image {
 #qsm-email-page-templates .qsm-email-page-template-card-buttons {
 	display: flex;
     justify-content: space-between;
-    width: 100%;
-	padding-top: 10px;
+    width: -webkit-fill-available;
+    padding: 10px;
+    background: #ffffff;
+    border-top: 1px solid #DADADA;
 }
-button.qsm-result-page-template-use-button.button, button.qsm-result-page-template-use-button.button:hover,
-button.qsm-email-page-template-use-button.button, button.qsm-email-page-template-use-button.button:hover {
-    background: #1E1E1E;
-    color: #FFF;
-}
-
-button.qsm-result-page-template-preview-button.button, button.qsm-result-page-template-preview-button.button:hover,
-button.qsm-email-page-template-preview-button.button, button.qsm-email-page-template-preview-button.button:hover {
-	border: 1px solid #1E1E1E !important;
-    background-color: #F8FAFF;
-    color: #1E1E1E;
-    font-weight: 400;
-}
-
 .qsm-result-page-template-card-buttons img.qsm-common-svg-image-class,
 .qsm-email-page-template-card-buttons img.qsm-common-svg-image-class {
 	position: relative;
@@ -4040,13 +4050,8 @@ h2#qsm-email-page-templates-title {
 }
 
 .qsm-result-page-template-card-buttons button.button,
-.qsm-email-page-template-card-buttons button.button {
-    border: none;
+.qsm-email-page-template-card-buttons button.button { 
     margin: 2px 0px 3px 0px;
-}
-button.qsm-result-page-template-preview-button.button img,
-button.qsm-email-page-template-preview-button.button img {
-	height: 18px;
 }
 .qsm-response-toaster, .footer-bar-notice {
 	position: fixed;
@@ -4086,34 +4091,42 @@ button.qsm-email-page-template-preview-button.button img {
 	background-color: #2196F3;
 }
 .qsm-preview-result-page-template-container, .qsm-preview-email-page-template-container {
-	padding: 15px;
+	padding: 0 15px;
 	position: relative;
 }
-.qsm-preview-template-image-close {
-	position: absolute;
-    top: -20px;
-    right: 15px;
-    border: 1px solid #d63638;
-    padding: 3px;
-    border-radius: 7px;
-    cursor: pointer;
+.qsm-email-page-template-header-close, .qsm-result-page-template-header-close {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+a.qsm-preview-template-image-close.button.button-secondary {
+    border-radius: 3px;
+    border: 1px solid #1E1E1E;
+    color: #1E1E1E;
+    background: #F6F7F7;
+    text-decoration: none;
+    box-shadow: none;
 }
 .qsm-preview-template-image-close img {
 	width: 15px;
     position: relative;
     top: 3px;
-    padding-left: 5px;
+    right: 4px;
 }
 .qsm-preview-template-image-wrapper .qsm-preview-template-image {
 	width: 100%;
 }
-/* .results-page-show .mce-tinymce.mce-container.mce-fullscreen {
+.results-page-show .mce-tinymce.mce-container.mce-fullscreen, .email-show .mce-tinymce.mce-container.mce-fullscreen {
     z-index: 9999;
     max-width: calc(100% - 160px);
     margin-left: 160px;
     padding: 30px 0 0 0;
-} */
-.results-page-show .wp-editor-tools {
+}
+body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.folded .email-show .mce-tinymce.mce-container.mce-fullscreen {
+	margin-left: 36px;
+	max-width: calc(100% - 36px);
+}
+.results-page-show .wp-editor-tools, .email-show .wp-editor-tools {
 	position: initial;
 }
 
@@ -4140,27 +4153,26 @@ button.qsm-email-page-template-preview-button.button img {
 	min-width: 300px;
 	width: 300px;
 }
-.qsm-result-template-dependency-addons > div {
+.qsm-result-template-dependency-addons > div, .qsm-email-template-dependency-addons > div {
 	display: flex;
     gap: 5px 15px;
     flex-wrap: wrap;
 }
-.qsm-result-template-dependency-addons > div h3 {
-    margin: 0 0 5px 0;
-	width: 100%;
+.qsm-result-template-dependency-addons > div h3, .qsm-email-template-dependency-addons > div h3 {
+    margin: 0;
 }
-.qsm-result-template-dependency-addons {
+.qsm-result-template-dependency-addons, .qsm-email-template-dependency-addons {
 	display: grid;
-    grid-template-columns: 1fr 1fr;
     align-items: flex-start;
     grid-gap: 20px;
-    margin: 0px 0 20px 0px;
+    margin: 0px 0 10px 0px;
 	border: 1px solid rgba(30, 30, 30, 0.1);
     padding: 10px;
-    border-radius: 6PX;
+	background-color: #ffffff;
+    border-radius: 6px;
 }
 
-.qsm-result-template-dependency-addon {
+.qsm-result-template-dependency-addon, .qsm-email-template-dependency-addon {
     font-size: 12px;
 	line-height: 15px;
 	font-weight: 500;
@@ -4169,13 +4181,18 @@ button.qsm-email-page-template-preview-button.button img {
 	padding: 6px 10px;
 	border-radius: 15px;
 }
-
-.qsm-result-template-dependency-addon-purple { 
+.qsm-result-template-dependency-addon-purple, .qsm-email-template-dependency-addon-purple { 
 	background-color: #F0ECFE;
 }
 
-.qsm-result-template-dependency-addon-orange {
+.qsm-result-template-dependency-addon-orange, .qsm-email-template-dependency-addon-orange {
     background-color: #FFECE4; 
+}
+
+#qsm-result-page-templates-content.qsm-popup__content, #qsm-email-page-templates-content.qsm-popup__content { 
+    background: #f0f0f1;
+    margin: 0;
+    padding: 20px 10px;
 }
 
 .qsm-insert-template-left:before {

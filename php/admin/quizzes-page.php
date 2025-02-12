@@ -390,9 +390,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						</div>
 					</div>
 				</div>
-				<!-- Popup for new quiz -->
-				<?php qsm_create_new_quiz_wizard(); ?>
-				<!-- Popup for duplicate quiz -->
 				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-4" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
