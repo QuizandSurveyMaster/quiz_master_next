@@ -181,7 +181,7 @@ class QSM_Questions {
 		$question_array = ! empty( $caller ) ? $question_array : array_filter(
 			$question_array,
 			function ( $question ) {
-				return ! isset( $question['settings']['isPublished'] ) || 0 == $question['settings']['isPublished'];
+				return ! isset( $question['settings']['isPublished'] ) || 0 !== intval( $question['settings']['isPublished'] );
 			}
 		);
 		return apply_filters( 'qsm_load_questions', $question_array, $quiz_id );
