@@ -188,7 +188,7 @@ class QMNGlobalSettingsPage {
 			'enable_deselect_option'                 => 0,
 			'disable_description_on_result'          => 0,
 			'disable_scroll_next_previous_click'     => 0,
-			'disable_scroll_on_result'     			 => 0,
+			'disable_scroll_on_result'               => 0,
 			'disable_first_page'                     => 0,
 			'disable_mathjax'                        => 0,
 			'quiz_animation'                         => '',

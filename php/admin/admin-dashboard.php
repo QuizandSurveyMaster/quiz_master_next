@@ -167,11 +167,11 @@ function qsm_dashboard_display_need_help_section(){
 }
 
 function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
-	$desiredOrder = [572582, 591230, 567900, 3437];
+	$desiredOrder = [ 572582, 591230, 567900, 3437 ];
 	$sortedAddons = [];
-	foreach ($desiredOrder as $id) {
-		foreach ($popular_addons as $addon) {
-			if ($addon['id'] == $id) {
+	foreach ( $desiredOrder as $id ) {
+		foreach ( $popular_addons as $addon ) {
+			if ( $addon['id'] == $id ) {
 				$sortedAddons[] = $addon;
 			}
 		}
@@ -207,11 +207,11 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 
 
 function qsm_dashboard_display_popular_theme_section( $themes ) {
-	$desiredOrder = [547794, 557086, 551027, 302299];
+	$desiredOrder = [ 547794, 557086, 551027, 302299 ];
 	$sortedThemes = [];
-	foreach ($desiredOrder as $id) {
-		foreach ($themes as $theme) {
-			if ($theme['id'] == $id) {
+	foreach ( $desiredOrder as $id ) {
+		foreach ( $themes as $theme ) {
+			if ( $theme['id'] == $id ) {
 				$sortedThemes[] = $theme;
 			}
 		}
@@ -227,7 +227,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 					</div>
 					<div class="qsm-dashboard-themes-details-wrapper">
 						<h3><?php echo esc_html($single_theme['name']); ?></h3>
-						<a class="button button-secondary" href="<?php echo esc_url($single_theme['demo']); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'quiz-master-next'); ?></a>
+						<a class="button button-secondary" target="_blank" href="<?php echo esc_url($single_theme['demo']); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'quiz-master-next'); ?></a>
 					</div>
 				</div>
 			<?php } ?>

@@ -99,6 +99,48 @@
 	padding: 0;
 }
 
+/* Adjustments for mobile devices */
+@media (max-width: 620px) {
+
+	.qsm-new-quiz-container, .qsm-dashboard-container {
+		min-width: 100%;
+		max-width: 100%;
+	}
+
+	.qsm-dashboard-help-center-grid div:nth-child(even) {
+		border-left: initial;
+	}
+
+	.qsm-dashboard-help-center-card:last-child {
+		border-top: 1px solid #E5E7EB;
+	}
+
+    .qsm-dashboard-help-center-grid, .qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+	.qsm-dashboard-page-items {
+		min-width: initial !important;
+	}
+
+	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:first-child, .qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(2) {
+		border-top: initial;
+	}
+
+	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(odd) {
+		border: initial;
+		border-top: 1px solid #E5E7EB;
+	}
+
+	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(even) {
+		border: initial;
+	}
+
+	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(2) {
+		border-top-right-radius: initial;
+	}
+}
+
 .qsm-dashboard-help-center-card {
     padding: 25px;
 }
@@ -3262,7 +3304,7 @@ input#duplicate_questions {
 	text-align: center;
 }
 /** Quiz Contact Tab Style **/
-.contact-form-builder-wrap {
+.qsm-contact-form-builder-wrap {
 	display: flex;
 	width: 100%;
 	flex-direction: row;
@@ -3271,12 +3313,12 @@ input#duplicate_questions {
 	align-content: flex-start;
 	margin-bottom: 375px;
 }
-.contact-form-builder-wrap a {
+.qsm-contact-form-builder-wrap a {
 	display: inline-block;
 	box-sizing: border-box;
 	text-decoration: none;
 }
-.contact-form-builder-wrap a img{
+.qsm-contact-form-builder-wrap a img{
 	vertical-align: -webkit-baseline-middle;
 }
 .contact-tab-content {
@@ -3286,6 +3328,9 @@ input#duplicate_questions {
 }
 .contact-tab-sidebar {
 	max-width: 25%;
+}
+#contact_form_setup.quiz_style_tab_content {
+	margin-bottom: 300px;
 }
 .contact-tab-sidebar .postbox {
 	min-width: 300px;
@@ -4406,7 +4451,7 @@ select.qsm-to-replace-page-template {
 		font-size: 12px;
 		min-height: 35px;
 	}
-	.contact-form-builder-wrap {
+	.qsm-contact-form-builder-wrap {
 		flex-direction: column;
 	}
 	.contact-tab-sidebar {
