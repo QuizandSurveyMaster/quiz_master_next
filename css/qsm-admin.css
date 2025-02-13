@@ -1,7 +1,7 @@
 :root {
 	--qsm-primary-button: #2272B1;
 }
-.toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error {
+.toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content div.updated, .toplevel_page_qsm_dashboard #wpbody-content div.updated {
 	display: none;
 }
 /******************** Quizzes/Surveys Page *********************/
