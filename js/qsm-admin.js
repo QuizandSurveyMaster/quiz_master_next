@@ -2185,17 +2185,7 @@ var QSMContact;
                     MicroModal.show('qsm-email-page-templates');
                 });
 
-                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) {
-/*
-                    e.preventDefault();
-                    let $resultsPage = jQuery(this).parents('.results-page-show');
-                    let resultPageIndex = $resultsPage.data('result-page');
-                    let editor = tinymce.get(resultPageIndex - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
-                    editor.execCommand('mceInsertContent', false, updatedContent);
-                    QSMAdminResults.displayResultEditor( $resultsPage );
-                    
-                    */
+                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) { 
                     e.preventDefault();
                     const $emailBlock = jQuery(this).parents('.email-show');
                     console.log($emailBlock)
