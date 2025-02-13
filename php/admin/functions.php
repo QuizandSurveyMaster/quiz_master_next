@@ -729,8 +729,8 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				'help'    => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
 			),
 			'enable_contact_form'                    => array(
-				'label'   => __( 'Display a contact form before quiz', 'quiz-master-next' ),
-				'value'   => 0,
+				'label'   => __( 'Display a contact form after quiz', 'quiz-master-next' ),
+				'value'   => $globalQuizsetting['contact_info_location'],
 				'type'    => 'toggle',
 				'options' => array(
 					array(
@@ -1706,7 +1706,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button button-secondary" data-indexid="<?php echo esc_html($key); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button button-secondary" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Use', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button button-secondary" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
 									</div>
 								</div>
 								<?php
@@ -1769,7 +1769,7 @@ function qsm_result_and_email_row_templates(){
 	<?php
 }
 
-function qsm_get_plugin_status_by_path( $path ) { 
+function qsm_get_plugin_status_by_path( $path ) {
 	if ( is_plugin_active($path) ) {
 		return 'activated';
 	} elseif ( '' != $path && file_exists(WP_PLUGIN_DIR . '/' . $path) ) {

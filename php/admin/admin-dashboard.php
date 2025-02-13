@@ -167,11 +167,20 @@ function qsm_dashboard_display_need_help_section(){
 }
 
 function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
+	$desiredOrder = [572582, 591230, 567900, 3437];
+	$sortedAddons = [];
+	foreach ($desiredOrder as $id) {
+		foreach ($popular_addons as $addon) {
+			if ($addon['id'] == $id) {
+				$sortedAddons[] = $addon;
+			}
+		}
+	}
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Explore Addons', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-help-center-grid qsm-dashboard-page-common-style">
-			<?php foreach ( array_slice($popular_addons, 0, 4) as $addon ) :
+			<?php foreach ( array_slice($sortedAddons, 0, 4) as $addon ) :
 				$addon_link = qsm_get_utm_link( $addon['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $addon['name'] ) );
 				$addon_icon = isset($addon['icon']) && "" != $addon['icon'] ? $addon['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
 				?>
@@ -186,7 +195,7 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 					</h3>
 					<p class="qsm-dashboard-help-center-card-description">
 						<?php  $display_text = mb_strlen($addon['description']) > 110 ? mb_substr($addon['description'], 0, 110) . '...' : $addon['description'];
-						echo esc_html($display_text); 
+						echo esc_html($display_text);
 					?>
 					</p>
 				</div>
@@ -198,12 +207,20 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 
 
 function qsm_dashboard_display_popular_theme_section( $themes ) {
-	$themes = array_slice($themes, 0, 4);
+	$desiredOrder = [547794, 557086, 551027, 302299];
+	$sortedThemes = [];
+	foreach ($desiredOrder as $id) {
+		foreach ($themes as $theme) {
+			if ($theme['id'] == $id) {
+				$sortedThemes[] = $theme;
+			}
+		}
+	}
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Popular Themes', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-themes-container qsm-dashboard-page-common-style">
-			<?php foreach ( $themes as $single_theme ) { ?>
+			<?php foreach ( $sortedThemes as $single_theme ) { ?>
 				<div class="qsm-dashboard-themes-card">
 					<div class="qsm-dashboard-themes-image-wrapper">
 						<img src="<?php echo esc_url($single_theme['img']); ?>" alt="<?php echo esc_attr($single_theme['name']); ?>">

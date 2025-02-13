@@ -158,7 +158,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 								<p class="qsm-dashboard-addon-status"></p>
 							</div>
 							<div class="qsm-quiz-steps-action-buttons">
-								<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary"><?php echo esc_html__( 'Selected', 'quiz-master-next' ); ?></a>
+								<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary" disabled="disabled"><?php echo esc_html__( 'Selected', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 					</div>
@@ -196,10 +196,10 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 								<div class="qsm-quiz-steps-info">
 									<h3 class="qsm-quiz-steps-title"><?php echo esc_html($theme_name); ?></h3>
 									<p class="qsm-dashboard-addon-status">
-									<?php 
+									<?php
 									if ( true == $is_activated || true == $is_installed ) {
 										echo esc_html__( 'Version: ', 'quiz-master-next' ). $all_plugins[ $theme_path ]['Version'];
-									} 
+									}
 									?>
 									</p>
 								</div>
@@ -231,11 +231,11 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 									<?php } elseif ( true == $is_activated || true == $is_installed || (false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired && 'allaccess' == $selected_bundle) ) { ?>
 										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
 											<?php if ( true == $is_activated ) {
-												echo esc_html__( 'Select', 'quiz-master-next' ); 
+												echo esc_html__( 'Select', 'quiz-master-next' );
 											 } elseif ( true == $is_installed ) {
-												echo esc_html__( 'Activate', 'quiz-master-next' ); 
+												echo esc_html__( 'Activate', 'quiz-master-next' );
 											 } elseif ( false == $is_activated && false == $is_installed ) {
-												echo esc_html__( 'Install & Activate', 'quiz-master-next' ); 
+												echo esc_html__( 'Install & Activate', 'quiz-master-next' );
 											 }
 											 ?>
 										</a>
@@ -372,7 +372,7 @@ function qsm_dashboard_display_quizform_section() {
 	?>
 		<div id="quiz_settings" class="qsm-new-menu-elements qsm-dashboard-quiz-form" >
 			<div class="qsm-dashboard-page-header">
-				<h3><?php echo esc_html__('Set up your quiz settings before we begin!', 'quiz-master-next'); ?></h3>
+				<h3><?php echo esc_html__('Give Your Quiz a Name to Get Started!', 'quiz-master-next'); ?></h3>
 			</div>
 			<div class="input-group">
 				<label for="quiz_name" class="qsm-dashboard-quiz-name-label"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
@@ -456,7 +456,7 @@ function qsm_create_quiz_page_callback() {
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
-				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Let’s Start Building your Quiz', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
+				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Continue to Quiz Builder', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
 			</div>
 			<div class="qsm-new-quiz-container">
 				<form action="" method="post" id="new-quiz-form">

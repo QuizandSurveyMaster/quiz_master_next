@@ -959,7 +959,7 @@ class QSM_Fields {
 						?>
 						<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>" class="qsm-create-quiz-switch-label">
 							<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
-								name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], 1 ); ?>
+								name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $value, 1 ); ?>
 								value="<?php echo esc_attr( $option["value"] ); ?>" />
 							<span class="qsm-create-quiz-slider"></span>
 							<?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?>
