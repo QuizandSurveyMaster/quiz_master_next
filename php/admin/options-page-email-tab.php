@@ -288,7 +288,7 @@ function qsm_options_emails_tab_template() {
 					</div>
 					<div class="qsm-email-page-template-learn-more">
 						<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
-							<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
+							<a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-email-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "'Learn more", 'quiz-master-next' ); ?></a>
 						</p>
 					</div>
 				</div>

@@ -2180,7 +2180,7 @@ var QSMContact;
                 QSMAdminResultsAndEmail.loadMyTemplates( 'email' );
                 jQuery(document).on('click', '.qsm-start-with-template', function (e) {
                     e.preventDefault();
-                    let emailPageValue = jQuery(this).parents('.email-show').data('result-page');
+                    let emailPageValue = jQuery(this).parents('.email-show').data('email-page');
                     jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
                     MicroModal.show('qsm-email-page-templates');
                 });
