@@ -2162,7 +2162,7 @@ var QSMContact;
                 },
                 displayEmailEditor: function ( $emailBlock ){
                     $emailBlock.find('.qsm-email-page-template-options').hide();
-                    $emailBlock.find('.qsm-email-page-editor-options').show();
+                    $emailBlock.find('.qsm-email-page-then-box-styles-wrap').show();
                     $emailBlock.find('.qsm-email-page-common-section').each(function () {
                         let section = $(this);
                         if (section.children().length > 0) {
@@ -2186,6 +2186,16 @@ var QSMContact;
                 });
 
                 jQuery(document).on('click', '.qsm-start-with-canvas', function (e) {
+/*
+                    e.preventDefault();
+                    let $resultsPage = jQuery(this).parents('.results-page-show');
+                    let resultPageIndex = $resultsPage.data('result-page');
+                    let editor = tinymce.get(resultPageIndex - 1);
+                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    editor.execCommand('mceInsertContent', false, updatedContent);
+                    QSMAdminResults.displayResultEditor( $resultsPage );
+                    
+                    */
                     e.preventDefault();
                     const $emailBlock = jQuery(this).parents('.email-show');
                     console.log($emailBlock)
@@ -2193,10 +2203,8 @@ var QSMContact;
                     let editor = tinymce.get(email_page - 1);
                     let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
-                    editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
-                    MicroModal.close('qsm-email-page-templates');
                 });
 
                 jQuery(document).on('click', '.qsm-email-page-template-preview-button', function (e) {
