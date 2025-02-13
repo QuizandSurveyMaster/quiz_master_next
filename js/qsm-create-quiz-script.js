@@ -1,7 +1,7 @@
 var QSMAdminDashboard;
 jQuery(function ($) {
 
-    console.log('load')
+    
     // Install Plugin - Working
     QSMAdminDashboard = {
         currentPage: 1,
@@ -23,6 +23,8 @@ jQuery(function ($) {
                 const selectedRadio = parentElement.find(`input[type="radio"][name="${name}"]:checked`);
                 selectedRadio.parents('label').addClass('qsm-dashboard-button-selected')
             });
+            console.log('load')
+            QSMAdminDashboard.showDependentAddons();
         },
 
         showPage: function (pageNo, onload = false) {
@@ -83,7 +85,7 @@ jQuery(function ($) {
             $themeItems.show();
             $themeItems.each(function () {
                 var themeId = $(this).data('id');
-                if ($dependency.themes.includes(themeId)) {
+                if ($dependency.themes.some(id => id == themeId)) {
                     suggestedThemes.push($(this));
                     $(this).find('.qsm-dashboard-theme-recommended').show();
                 } else {
@@ -113,7 +115,7 @@ jQuery(function ($) {
             $addonItems.show();
             $addonItems.each(function () {
                 var addonId = $(this).data('id');
-                if ($dependency.addons.includes(addonId)) {
+                if ($dependency.addons.some(id => id == addonId)) {
                     suggestedAddons.push($(this));
                     $(this).find('.qsm-dashboard-addon-recommended').show();
                 } else {

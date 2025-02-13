@@ -616,7 +616,7 @@ class QSM_Install {
 					),
 					'default' => 0,
 				),
-				'disable_scroll_on_result'          	=> array(
+				'disable_scroll_on_result'               => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(

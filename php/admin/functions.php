@@ -1368,7 +1368,7 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 	if ( ! class_exists( 'QSM_Advance_Certificate' ) ) {
 		global $mlwQuizMasterNext;
 		$template_array = array(
-			'%CERTIFICATE_ATTACHMENT_X%'	=> __( 'Attach and send the certificate via email in PDF, JPG, JPEG, or PNG format.', 'quiz-master-next' ),
+			'%CERTIFICATE_ATTACHMENT_X%' => __( 'Attach and send the certificate via email in PDF, JPG, JPEG, or PNG format.', 'quiz-master-next' ),
 		);
 		$advance_certificate = array(
 			'Advance Certificate' => $template_array,
@@ -1791,26 +1791,19 @@ function qsm_get_dependency_plugin_list() {
 	$all_themes = $qsm_admin_dd['themes'];
 	$all_addons = $qsm_admin_dd['all_addons'];
 
+	$dependency_array = array();
 
-	$theme_data = array_map(function( $theme ) {
-		$path = "qsm-theme-{$theme['name']}/qsm_theme_{$theme['name']}.php";
-		return [
-			'id'     => $theme['id'],
-			'name'   => $theme['name'],
-			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
-		];
-	}, $all_themes);
-
-	$addon_data = array_map(function( $addon ) {
+	foreach ( $all_addons as $key => $addon ) {
 		$path = $addon['path'] ?? '';
-		return [
+		$dependency_array[] = [
 			'id'     => $addon['id'],
 			'name'   => $addon['name'],
+			'link'   => $addon['link'],
 			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
 		];
-	}, $all_addons);
+	}
 
-	return array_merge($theme_data, $addon_data);
+	return $dependency_array;
 }
 function qsm_create_theme_defaults_tab() {
 	global $mlwQuizMasterNext, $wpdb;
