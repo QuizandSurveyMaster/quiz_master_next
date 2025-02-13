@@ -51,16 +51,16 @@
 	max-width: 610px;
 }
 
-.qsm-dashboard-page-header h3 { 
+.qsm-dashboard-page-header h3 {
     font-size: 25px;
     font-weight: 400;
     line-height: 42.56px;
-    text-align: left; 
+    text-align: left;
     text-decoration-skip-ink: none;
     margin: 0;
 	color: #1E1E1E;
 }
-.qsm-dashboard-page-header p { 
+.qsm-dashboard-page-header p {
 	font-size: 14px;
     font-weight: 400;
     line-height: 30px;
@@ -84,7 +84,7 @@
 	font-weight: 400;
 }
 
-.qsm-dashboard-page-common-style { 
+.qsm-dashboard-page-common-style {
     margin-bottom: 16px;
     border: 1px solid #D1D5DB;
     padding: 17px 25px;
@@ -99,7 +99,7 @@
 	padding: 0;
 }
 
-.qsm-dashboard-help-center-card { 
+.qsm-dashboard-help-center-card {
     padding: 25px;
 }
 
@@ -108,7 +108,7 @@
 }
 
 .qsm-dashboard-help-center-grid div.qsm-dashboard-help-center-card:nth-child(1), .qsm-dashboard-help-center-grid div.qsm-dashboard-help-center-card:nth-child(2) {
-  border-bottom: 1px solid #E5E7EB; 
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .qsm-dashboard-help-center-card-icon {
@@ -405,7 +405,7 @@ span.qsm-quiz-name {
 .qsm_popular_addons div.popuar-addon-ul>div img {
 	max-width: 100%;
 }
-.qsm-quiz-page-addon.qsm-addon-page-list { 
+.qsm-quiz-page-addon.qsm-addon-page-list {
 	float: left;
 	margin-top: 0;
 	clear: both;
@@ -628,7 +628,7 @@ span.qsm-quiz-name {
 
 .results-page-header .qsm-more-settings-box-details,
 .qsm-email-header .qsm-more-settings-box-details,
-.results-page-header .qsm-settings-box-details, 
+.results-page-header .qsm-settings-box-details,
 .qsm-email-header .qsm-settings-box-details {
 	display: none;
     position: absolute;
@@ -670,7 +670,7 @@ span.qsm-quiz-name {
 .results-page-show input[type="email"], .email-show input[type="email"] {
 	max-width: 25rem;
 }
-.results-page-when, .qsm-email-when { 
+.results-page-when, .qsm-email-when {
 	border-right: 1px solid #dfd4d4;
 }
 .results-page-content-header, .email-content-header {
@@ -706,14 +706,14 @@ span.qsm-quiz-name {
 .qsm-email-condition-mode {
     margin-bottom: 25px;
 }
-.results-page-condition select, 
-.qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"], 
-.email-condition select, 
+.results-page-condition select,
+.qsm_tab_content .results-page-condition .qsm-result-condition-container input[type="text"],
+.email-condition select,
 .qsm_tab_content .email-condition .qsm-email-condition-container input[type="text"],
-.results-page-content .qsm-result-page-common-section select, 
+.results-page-content .qsm-result-page-common-section select,
 .results-page-content .qsm-result-page-common-section input[type="text"],
 .results-page-content .qsm-result-page-redirect-options input[type="text"],
-.qsm-email-content .qsm-email-page-common-section select, 
+.qsm-email-content .qsm-email-page-common-section select,
 .qsm-email-content .qsm-email-page-common-section input[type="text"],
 .qsm-email-content .qsm-email-page-common-section input[type="email"] {
 	min-width: auto;
@@ -1740,7 +1740,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     box-sizing: border-box;
     border-radius: 4px;
     background: #ffffff;
-    border: 1px solid #dfd4d4; 
+    border: 1px solid #dfd4d4;
     box-shadow: 0 0 6px 2px #ddd;
 	display: grid;
 	grid-template-columns: 1fr;
@@ -1749,25 +1749,25 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 .qsm-linked-list-div-block .qsm-linked-list-inside:before {
     content: " ";
     position: absolute;
-    top: -24px; 
+    top: -24px;
     left: 28%;
-    margin-left: -12px; 
-    border-width: 12px; 
+    margin-left: -12px;
+    border-width: 12px;
     border-style: solid;
-    border-color: transparent transparent #ffffff transparent; 
-    z-index: 1; 
+    border-color: transparent transparent #ffffff transparent;
+    z-index: 1;
 }
 
 .qsm-linked-list-div-block .qsm-linked-list-inside:after {
     content: " ";
     position: absolute;
-    top: -26px; 
+    top: -26px;
     left: 28%;
-    margin-left: -12px; 
-    border-width: 12px; 
+    margin-left: -12px;
+    border-width: 12px;
     border-style: solid;
-    border-color: transparent transparent #dfd4d4 transparent; 
-    z-index: 0; 
+    border-color: transparent transparent #dfd4d4 transparent;
+    z-index: 0;
 }
 
 /** * Text Tab design */
@@ -2927,7 +2927,7 @@ ul.qsm-welcome-panel-menu li {
 	z-index: 1000;
 	display: grid;
 }
-  
+
 .qsm-create-quiz-bundle-button {
 	padding: 7px 18px;
     background-color: #2271B1;
@@ -3835,7 +3835,7 @@ input#duplicate_questions {
 .qsm-email-page-template-buttons button.button.qsm-common-button-styles {
 	width: 100%;
 	height: 34px;
-	max-width: 150px;
+	max-width: 160px;
 }
 
 .qsm-result-page-template-buttons,
@@ -3862,7 +3862,7 @@ input#duplicate_questions {
 }
 
 .qsm-result-page-template-learn-more a,
-.qsm-email-page-template-learn-more a { 
+.qsm-email-page-template-learn-more a {
     font-weight: 500;
     text-decoration: underline;
 }
@@ -3892,7 +3892,7 @@ input#duplicate_questions {
     gap: 1em;
 }
 
-.qsm-result-my-template-container, .qsm-email-page-template-container { 
+.qsm-result-my-template-container, .qsm-email-page-template-container {
 	margin-top: 20px;
 }
 
@@ -4050,7 +4050,7 @@ h2#qsm-email-page-templates-title {
 }
 
 .qsm-result-page-template-card-buttons button.button,
-.qsm-email-page-template-card-buttons button.button { 
+.qsm-email-page-template-card-buttons button.button {
     margin: 2px 0px 3px 0px;
 }
 .qsm-response-toaster, .footer-bar-notice {
@@ -4181,18 +4181,18 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 	padding: 6px 10px;
 	border-radius: 15px;
 }
-.qsm-result-template-dependency-addon-purple, .qsm-email-template-dependency-addon-purple { 
+.qsm-result-template-dependency-addon-purple, .qsm-email-template-dependency-addon-purple {
 	background-color: #F0ECFE;
 }
 
 .qsm-result-template-dependency-addon-orange, .qsm-email-template-dependency-addon-orange {
-    background-color: #FFECE4; 
+    background-color: #FFECE4;
 }
 
-#qsm-result-page-templates-content.qsm-popup__content, #qsm-email-page-templates-content.qsm-popup__content { 
+#qsm-result-page-templates-content.qsm-popup__content, #qsm-email-page-templates-content.qsm-popup__content {
     background: #f0f0f1;
     margin: 0;
-    padding: 20px 10px;
+    padding: 10px;
 }
 
 .qsm-insert-template-left:before {
@@ -4229,7 +4229,7 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 	align-items: center;
 }
 
-.qsm-my-templates-table-body .qsm-my-template-rows-actions a { 
+.qsm-my-templates-table-body .qsm-my-template-rows-actions a {
     padding: 5px;
     color: #3c434a;
     border: 1px solid #ddd;
@@ -4272,7 +4272,7 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
     border-radius: 5px;
 }
 
-.results-page-header .qsm-settings-box-details p, 
+.results-page-header .qsm-settings-box-details p,
 .qsm-email-header .qsm-settings-box-details p {
 	margin: 0;
 	margin-top: 5px;
@@ -4534,6 +4534,12 @@ input#preferred-date-format-custom {
 }
 
 /*TinyMCE Text-editor : start */
+.mce-container .mce-btn.mce-active button,
+.mce-container .mce-btn.mce-active:hover button,
+.mce-container .mce-btn.mce-active i,
+.mce-container .mce-btn.mce-active:hover i {
+    color: #50575e;
+}
 .mce-container .qsm-autocomplete {
 	position: absolute !important;
     z-index: 1000;
@@ -4673,7 +4679,7 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 	margin-left: 15px;
 }
 
-.results-page-show .qsm-result-page-content-buttons button.button:not(:first-child), 
+.results-page-show .qsm-result-page-content-buttons button.button:not(:first-child),
 .email-show .qsm-email-page-content-buttons button.button:not(:first-child) {
 	margin-left: 7px;
 }
@@ -4742,7 +4748,7 @@ span.qsm-insert-template-variable-text {
 .qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links a.button:active {
     background: none;
     box-shadow: none;
-    color: inherit; 
+    color: inherit;
 }
 .qsm_page_mlw_quiz_results .result-page-wrapper .tablenav-pages .pagination-links .disable{
 	background-color: #f0f0f1;

@@ -398,6 +398,7 @@ input.qsm-dashboard-addon-toggle:checked+.qsm-dashboard-addon-slider .qsm-dashbo
     left: calc(100% - 16px);
     color: #2271B1;
     z-index: 5;
+    transition: 0.4s;
 }
 
 .qsm-dashboard-addon-switch input.qsm-dashboard-addon-toggle:not(:checked)+.qsm-dashboard-addon-slider::before {
@@ -446,7 +447,7 @@ input.qsm-dashboard-addon-toggle:checked+.qsm-dashboard-addon-slider .qsm-dashbo
 .qsm-dashboard-quiz-form span.qsm-opt-desc {
     flex: 0 0 100%;
     align-self: flex-end;
-    text-align: right;
+    text-align: left;
     color: #555555;
     font-size: 11px;
 }
