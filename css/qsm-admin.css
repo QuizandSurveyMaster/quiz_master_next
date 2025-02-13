@@ -107,38 +107,18 @@
 		max-width: 100%;
 	}
 
-	.qsm-dashboard-help-center-grid div:nth-child(even) {
-		border-left: initial;
-	}
-
 	.qsm-dashboard-help-center-card:last-child {
 		border-top: 1px solid #E5E7EB;
 	}
 
-    .qsm-dashboard-help-center-grid, .qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid {
+    .qsm-dashboard-help-center-grid {
         grid-template-columns: 1fr;
     }
 
-	.qsm-dashboard-page-items {
-		min-width: initial !important;
+	.qsm-dashboard-help-center .qsm-dashboard-help-center-grid div:nth-child(even) {
+		border-left: initial;
 	}
 
-	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:first-child, .qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(2) {
-		border-top: initial;
-	}
-
-	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(odd) {
-		border: initial;
-		border-top: 1px solid #E5E7EB;
-	}
-
-	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(even) {
-		border: initial;
-	}
-
-	.qsm-dashboard-choose-addon .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-child(2) {
-		border-top-right-radius: initial;
-	}
 }
 
 .qsm-dashboard-help-center-card {

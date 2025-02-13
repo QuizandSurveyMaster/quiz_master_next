@@ -333,6 +333,7 @@ function qsm_options_results_tab_template(){
 								</div>
 								<div class="qsm-result-page-template-learn-more">
 									<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
+										<a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-result-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "'Learn more", 'quiz-master-next' ); ?></a>
 										<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
 									</p>
 								</div>
@@ -385,7 +386,7 @@ function qsm_options_results_tab_template(){
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
 										<div class="qsm-webhooks-pricing-popup qsm-upgrade-box-base qsm-webhooks-upgrade-button">
 											<div class="qsm-upgrade-box-base-title">
-												<img src="http://test.local/wp-content/plugins/quiz-master-next/php/images/info.png" alt="">
+											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/info.png' ); ?>" alt="info.png">
 												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
 											</div>
 											<a class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
