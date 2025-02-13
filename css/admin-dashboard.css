@@ -88,7 +88,6 @@ ul.popuar-addon-ul::after {
 .changelog-ul li {
 	border-bottom: 1px solid #ede8e8;
     margin-bottom: 0;
-    padding-left: 20px;
     padding: 19px 0 19px 24px;
 }
 
