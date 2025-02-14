@@ -388,7 +388,7 @@ function qsm_options_results_tab_template(){
 											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/info.png' ); ?>" alt="info.png">
 												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
 											</div>
-											<a class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+											<a target="_blank" class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
 										</div>
 									<?php }
 								?>
