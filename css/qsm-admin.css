@@ -813,7 +813,7 @@ span.qsm-quiz-name {
 	flex-direction: column;
 }
 .qsm_featured_image_preview {
-	max-width: 80%;
+	max-width: 30%;
 	margin: 5px 0;
 	border-radius: 3px;
 }
