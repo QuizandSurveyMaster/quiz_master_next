@@ -63,13 +63,7 @@ function qsm_options_styling_tab_content() {
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
 		<li>
-			<a href="javascript:void(0)" data-id="theme-featured-image" class="current quiz_style_tab"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" data-id="theme-browser" class="quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
-		</li>
-		<li>
-			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'CSS', 'quiz-master-next' ); ?></a>
+			<a href="javascript:void(0)" data-id="theme-browser" class="current quiz_style_tab"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 		</li>
 		<?php
 		if ( ! class_exists( 'QSM_Ultimate' ) ) {
@@ -81,6 +75,12 @@ function qsm_options_styling_tab_content() {
 		}
 		?>
 		<?php do_action( 'qsm_add_style_sub_menu_after' ); ?>
+		<li>
+			<a href="javascript:void(0)" data-id="theme-featured-image" class="quiz_style_tab"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
+		</li>
+		<li>
+			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab"><?php esc_html_e( 'CSS', 'quiz-master-next' ); ?></a>
+		</li>
 	</ul>
 </div>
 	<?php
@@ -156,7 +156,7 @@ function qsm_options_styling_tab_content() {
 			display: none;
 		}
 		</style>
-		<div id="theme-browser" class="theme-browser quiz_style_tab_content" style="display:none;">
+		<div id="theme-browser" class="theme-browser quiz_style_tab_content current">
 		<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></h1>
 		<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Choose themes to enhance your quizzes and surveys, ensuring they align with your brand\'s aesthetic. You can easily customize the theme to change its look and feel.', 'quiz-master-next' ); ?></p>
 			<div class="themes wp-clearfix">
@@ -167,15 +167,14 @@ function qsm_options_styling_tab_content() {
 				?>
 			</div>
 		</div>
-		<div id="theme-featured-image" class="theme-featured-image rendered current quiz_style_tab_content">
+		<div id="theme-featured-image" class="theme-featured-image rendered quiz_style_tab_content" style="display:none;">
 			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></h1>
-			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Choose themes to enhance your quizzes and surveys, ensuring they align with your brand\'s aesthetic. You can easily customize the theme to change its look and feel.', 'quiz-master-next' ); ?></p>
+			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Add a featured image to enhance your quiz\'s visual appeal and align it with your brand\'s style.', 'quiz-master-next' ); ?></p>
 			<div class="qsm-theme-featured-image-update" style="display: none;">
 				<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="<?php echo esc_url( $featured_image ); ?>" />
-				<a id="set_featured_image" class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
-				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Save Image', 'quiz-master-next' ); ?>" />
+				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Upload Image', 'quiz-master-next' ); ?>" />
 			</div>
-			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo esc_url( $featured_image ); ?>"><br>
+			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo ! empty( $featured_image ) ? esc_url( $featured_image ) : QSM_PLUGIN_URL . 'assets/placeholder.png'; ?>"><br>
 			<button class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
 		</div>
 	<?php
@@ -229,7 +228,7 @@ function qsm_options_styling_tab_content() {
 		?>
 		<div id="qsm-ultimate-upgrade" class="quiz_style_tab_content" style="display: none;">
 			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Appearance', 'quiz-master-next' ); ?></h1>
-			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Don\'t have a theme? Don\'t worry, Now you can easily customize the appearance of your quizzes and surveys using our Ultimate Addon', 'quiz-master-next' ); ?></p>
+			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Easily customize the appearance of your quizzes and surveys.', 'quiz-master-next' ); ?></p>
 			<?php qsm_admin_upgrade_popup( $ultimate_args, 'page' );    ?>
 		</div>
 		<?php
