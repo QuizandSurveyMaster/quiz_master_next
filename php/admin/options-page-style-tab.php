@@ -150,7 +150,7 @@ function qsm_options_styling_tab_content() {
 	
 	echo '<form method="POST" action="">';
 	wp_nonce_field( 'quiz_theme_integration', 'quiz_theme_integration_nouce' );
-	?>
+	?><div class="themes-container">
 		<style>
 		.downloaded-theme-button {
 			display: none;
@@ -177,6 +177,7 @@ function qsm_options_styling_tab_content() {
 			</div>
 			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo esc_url( $featured_image ); ?>"><br>
 			<button class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
+		</div>
 		</div>
 	<?php
 	echo '</form>';

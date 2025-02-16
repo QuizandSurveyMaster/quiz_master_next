@@ -1499,7 +1499,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                                             editor.execCommand('Delete');
                                         }
                                         editor.execCommand('mceInsertContent', false, command.value
-                                            .replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;')
+                                            .replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;')
                                             .replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, '<qsmextrashortcodetag>$1</qsmextrashortcodetag>&nbsp;')
                                         );
                                         autocomplete.remove();
@@ -1621,7 +1621,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                             if (variables.includes(pastedValue) || /\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(pastedValue)) {
                                 event.preventDefault();
                                 // Replace the variable tags and qsm shortcodes correctly
-                                let updatedContent = pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');  // Handle %variable%
+                                let updatedContent = pastedValue.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');  // Handle %variable%
                                 updatedContent = qsmConvertContentToShortcode(updatedContent);
                                 editor.execCommand('mceInsertContent', false, updatedContent);
                             }
@@ -2191,7 +2191,7 @@ var QSMContact;
                     console.log($emailBlock)
                     let email_page = $emailBlock.data('email-page');
                     let editor = tinymce.get(email_page - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
@@ -4439,6 +4439,8 @@ var QSM_Quiz_Broadcast_Channel;
                     let default_mark = false;
                     $('.results-page').each(function () {
                         default_mark = $(this).find('.qsm-mark-as-default:checked').length ? $(this).find('.qsm-mark-as-default:checked').val() : false;
+
+                        
                         page = {
                             'conditions': [],
                             'page': wp.editor.getContent($(this).find('.results-page-template').attr('id')),
@@ -4448,7 +4450,9 @@ var QSM_Quiz_Broadcast_Channel;
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
                             page.redirect = redirect_value;
+                            // page.result_or_redirect = $(this).find('.qsm-edit-result-view-options input[type="radio"]:checked').val();
                         }
+                        
                         $(this).find('.results-page-condition').each(function () {
                             page.conditions.push({
                                 'category': $(this).find('.results-page-condition-category').val(),
@@ -4576,6 +4580,7 @@ var QSM_Quiz_Broadcast_Channel;
                     const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
                     const $conditionalButton = $resultsPage.find('.qsm-extra-shortcode-conditional-button');
                     $resultsPage.find('.wp-media-buttons .insert-media').after($conditionalButton);
+                    console.log(singlePage.default_mark)
                     if (
                         singlePage &&
                         typeof singlePage === 'object' &&
@@ -4588,7 +4593,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $resultsPage.find('.qsm-result-page-template-options').hide();
                         QSMAdminResults.hideShowResultPageSection($resultsPage);
                     } else {
-                        if(typeof singlePage.redirect === 'undefined' || page == '') {
+                        if(typeof singlePage.redirect === 'undefined' || page == '' || !singlePage.hasOwnProperty('default_mark')) {
                             // New Result Page
                             $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div").hide();
                             $resultsPage.find('.qsm-result-page-template-options').show();
@@ -4660,7 +4665,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let $resultsPage = jQuery(this).parents('.results-page-show');
                     let resultPageIndex = $resultsPage.data('result-page');
                     let editor = tinymce.get(resultPageIndex - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminResults.displayResultEditor( $resultsPage );
                 });

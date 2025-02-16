@@ -1001,6 +1001,7 @@ function qsm_get_default_wizard_themes() {
 		unset( $themes_data[ $key ] );
 	}
 	if ( ! empty( $default_themes_data ) ) {
+		?><div class="themes-container"><?php
 		foreach ( $default_themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
 			$theme_screenshot    = $theme['img'];
@@ -1025,12 +1026,14 @@ function qsm_get_default_wizard_themes() {
 			</div>
 			<?php
 		}
+		?></div><?php
 	}
 }
 
 function qsm_get_market_themes() {
 	global $themes_data, $pro_themes;
 	if ( ! empty( $themes_data ) ) {
+		?><div class="themes-container"><?php
 		foreach ( $themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
 			$theme_screenshot    = $theme['img'];
@@ -1056,6 +1059,7 @@ function qsm_get_market_themes() {
 			</div>
 			<?php
 		}
+		?></div><?php
 	} else {
 		?>
 		<div class="empty-market-place">
