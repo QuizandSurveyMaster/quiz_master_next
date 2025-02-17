@@ -3303,7 +3303,7 @@ var QSM_Quiz_Broadcast_Channel;
                         //No Action Require
                     } else {
                         $.each(multicategories, function (i, val) {
-                            $("input[name='tax_input[qsm_category][]']:checkbox[value='" + val + "']").attr("checked", "true");
+                            $("input[name='tax_input[qsm_category][]'][value='" + val + "']").prop("checked", true);
                         });
                     }
                     //Get featured image
