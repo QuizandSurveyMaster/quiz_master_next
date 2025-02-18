@@ -391,7 +391,7 @@ function qsm_options_results_tab_template(){
 												</select>
 											</div>
 											<a href="javascript:void(0)" class="qsm-webhooks-upgrade-link">
-											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/lock.png' ); ?>" alt="lock.png"><span class="qsm-webhooks-anchor-text"><?php esc_html_e( 'Upgrade', 'quiz-master-next' ); ?></span>
+											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png"><span class="qsm-webhooks-anchor-text"><?php esc_html_e( 'Upgrade', 'quiz-master-next' ); ?></span>
 											</a>
 										</div>
 									<?php }

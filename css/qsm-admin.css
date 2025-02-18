@@ -2456,6 +2456,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	border-radius: 6px;
 	text-decoration: none;
 	transition: 0.3s;
+	border: 1px solid #AED2FF;
 }
 
 .qsm-webhooks-upgrade-link img {
