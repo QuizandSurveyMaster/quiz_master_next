@@ -284,7 +284,7 @@ function qsm_options_emails_tab_template() {
 				<div class="qsm-email-page-template-options qsm-email-page-then-box-styles">
 					<div class="qsm-email-page-template-buttons">
 						<button class="button qsm-common-button-styles qsm-start-with-template" data-email-page="{{ data.id }}"><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
-						<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+						<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Default Template', 'quiz-master-next' );?></button>
 					</div>
 					<div class="qsm-email-page-template-learn-more">
 						<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>

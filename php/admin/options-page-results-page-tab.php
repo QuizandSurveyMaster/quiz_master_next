@@ -329,7 +329,7 @@ function qsm_options_results_tab_template(){
 							<div class="qsm-result-page-template-options qsm-result-page-then-box-styles" >
 								<div class="qsm-result-page-template-buttons">
 									<button class="button qsm-common-button-styles qsm-start-with-template" ><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
-									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Default Template', 'quiz-master-next' );?></button>
 								</div>
 								<div class="qsm-result-page-template-learn-more">
 									<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
