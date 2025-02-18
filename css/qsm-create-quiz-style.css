@@ -623,3 +623,44 @@ span.qsm-create-quiz-toggle-label {
     font-size: 14px;
     margin-right: 17px;
 }
+
+.qsm-create-quiz-tooltip {
+    background-color: #333;
+    border-radius: 3px;
+    color: #ffffff;
+    display: block;
+    font-size: 12px;
+    padding: 10px 5px;
+    line-height: 1.5;
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    width: 200px;
+    transform: translateX(-50%);
+    text-align: center;
+    transition: opacity 0.3s ease-in-out;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    pointer-events: none; /* Prevents tooltip from interfering with hover */
+    z-index: 9999;
+}
+
+
+.qsm-create-quiz-tooltip::before{
+	border-color: #333 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+    border-style: solid;
+    border-width: 8px 7px 0;
+    bottom: -8px;
+    content: "";
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+}
+/* Show tooltip when hovering over parent */
+.qsm-quiz-addon-steps-button:hover .qsm-create-quiz-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+}
+.qsm-dashboard-addon-switch.qsm-create-quiz-no-activated-tooltip {
+    pointer-events: none;
+}

@@ -383,12 +383,16 @@ function qsm_options_results_tab_template(){
 								<!-- NOTE: Previously redirect input displayed here -->
 								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); 
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
-										<div class="qsm-webhooks-pricing-popup qsm-upgrade-box-base qsm-webhooks-upgrade-button">
-											<div class="qsm-upgrade-box-base-title">
-											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/info.png' ); ?>" alt="info.png">
-												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
+										<div class="qsm-webhooks-pricing-popup qsm-webhooks-upgrade-button">
+											<div class="qsm-webhooks-upgrade-upper">
+												<label class="qsm-webhooks-label"><?php esc_html_e( 'Assign Webhook', 'quiz-master-next' ); ?></label>
+												<select class="qsm-webhooks-select">
+													<option><?php esc_html_e('Select Webhook', 'quiz-master-next'); ?></option>
+												</select>
 											</div>
-											<a target="_blank" class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+											<a href="javascript:void(0)" class="qsm-webhooks-upgrade-link">
+											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/lock.png' ); ?>" alt="lock.png"><span class="qsm-webhooks-anchor-text"><?php esc_html_e( 'Upgrade', 'quiz-master-next' ); ?></span>
+											</a>
 										</div>
 									<?php }
 								?>

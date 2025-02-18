@@ -760,16 +760,6 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('#' + current_id).show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
-jQuery('.qsm-upgrade-tab').click(function (e) {
-    e.preventDefault();
-    let $this = jQuery(this);
-    let current_id = $this.attr('data-id');
-    jQuery('.qsm-upgrade-tab').removeClass('current');
-    $this.addClass('current');
-    $this.parents('.qsm-upgrade-box').find('.qsm-upgrade-tab-content').hide();
-    $this.parents('.qsm-upgrade-box').find('#' + current_id).show();
-    jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
-});
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
 if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if (window.location.href.indexOf('tab=style') > 0) {

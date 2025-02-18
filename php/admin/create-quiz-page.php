@@ -347,15 +347,21 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 								<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
 									<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
 								</a>
-							<?php } else { ?>
+							<?php } else {
+								$is_woocommerce_activated = 'woocommerce-integration' == $addon_slug && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ? 'qsm-create-quiz-no-activated-tooltip' : '';
+								?>
 								<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
-								<label class="qsm-dashboard-addon-switch">
+								<label class="qsm-dashboard-addon-switch <?php echo esc_attr($is_woocommerce_activated); ?>">
 									<input type="checkbox" class="qsm-dashboard-addon-toggle"
 										<?php checked(esc_attr($is_activated)); ?>
 										<?php disabled(esc_attr($is_activated)); ?>>
 									<span class="qsm-dashboard-addon-slider">
 										<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
 									</span>
+									<?php 
+									if ( "" != $is_woocommerce_activated ) { ?>
+										<span class="qsm-create-quiz-tooltip"><?php esc_html_e('Please activate the WooCommerce plugin to proceed.', 'quiz-master-next'); ?></span>
+									<?php } ?>
 								</label>
 							<?php } ?>
 						</div>

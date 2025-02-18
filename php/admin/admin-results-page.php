@@ -653,29 +653,6 @@ function qsm_export_results_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'export_results', 'result-exportresults-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
-		"benefits"     => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Export quiz results to CSV for detailed analysis.', 'quiz-master-next' ),
-				__( 'Generate personalized PDF reports for users.', 'quiz-master-next' ),
-				__( 'Filter exports by quizzes, dates, or data fields.', 'quiz-master-next' ),
-				__( 'Save time with quick, multi-quiz exports.', 'quiz-master-next' ),
-				__( 'Share results easily without database access.', 'quiz-master-next' ),
-				__( 'Analyze responses, scores, and timestamps.', 'quiz-master-next' ),
-				__( 'Ideal for diverse needs like education, training, and research.', 'quiz-master-next' ),
-			),
-		),
-		"use_cases"    => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Track student performance in educational settings.', 'quiz-master-next' ),
-				__( 'Measure training effectiveness for employees.', 'quiz-master-next' ),
-				__( 'Gather insights from consumer surveys.', 'quiz-master-next' ),
-				__( 'Collect feedback to improve future events.', 'quiz-master-next' ),
-				__( 'Evaluate candidates through recruitment quizzes.', 'quiz-master-next' ),
-				__( 'Analyze usability data for product improvement.', 'quiz-master-next' ),
-			),
-		),
 	);
 	qsm_admin_upgrade_popup( $args, 'page' );
 }
@@ -707,27 +684,6 @@ function qsm_proctor_quiz_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
-		"benefits"     => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Provides feedback using violation reports.', 'quiz-master-next' ),
-				__( 'Ensures fair results with controlled retakes.', 'quiz-master-next' ),
-				__( 'Improves quiz design by analyzing violations.', 'quiz-master-next' ),
-				__( 'Automates monitoring to save time.', 'quiz-master-next' ),
-				__( 'Enhances fairness in online assessments.', 'quiz-master-next' ),
-			),
-		),
-		"use_cases"    => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Ensures fair testing in online exams.', 'quiz-master-next' ),
-				__( 'Validates employee training assessments.', 'quiz-master-next' ),
-				__( 'Maintains credibility in certification tests.', 'quiz-master-next' ),
-				__( 'Supports students with violation feedback.', 'quiz-master-next' ),
-				__( 'Enforces honesty in compliance quizzes.', 'quiz-master-next' ),
-				__( 'Detects unusual patterns in surveys.', 'quiz-master-next' ),
-			),
-		),
 	);
 	qsm_admin_upgrade_popup( $args, 'page' );
 }

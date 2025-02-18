@@ -490,26 +490,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'qsm_list', 'importexport_button', 'import-export-upsell_read_documentation', 'qsm_plugin_upsell' ),
 						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'importexport_button', 'import-export-upsell_upgrade', 'qsm_plugin_upsell' ),
 						"addon_link"   => qsm_get_plugin_link( 'downloads/export-import', 'qsm_list', 'importexport_button', 'import-export-upsell_buy_addon', 'qsm_plugin_upsell' ),
-						"benefits"     => array(
-							'briefing'   => '',
-							'list_items' => array(
-								__( 'Saves time by quickly transferring quizzes and surveys between sites.', 'quiz-master-next' ),
-								__( 'Supports flexible export formats like JSON and CSV for easy editing.', 'quiz-master-next' ),
-								__( 'Allows customizable imports for full quizzes, questions, or settings.', 'quiz-master-next' ),
-								__( 'Enables bulk editing and uploading of questions via CSV.', 'quiz-master-next' ),
-								__( 'Offers a user-friendly interface for seamless data transfer.', 'quiz-master-next' ),
-							),
-						),
-						"use_cases"    => array(
-							'briefing'   => '',
-							'list_items' => array(
-								__( 'Facilitates site migration by moving quizzes between staging and live sites.', 'quiz-master-next' ),
-								__( 'Simplifies data transfer during website redesigns.', 'quiz-master-next' ),
-								__( 'Allows sharing quizzes across multiple websites.', 'quiz-master-next' ),
-								__( 'Supports bulk updates by editing and importing questions.', 'quiz-master-next' ),
-								__( 'Enables exporting for backups and quick data recovery.', 'quiz-master-next' ),
-							),
-						),
 					);
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
