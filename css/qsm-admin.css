@@ -2335,8 +2335,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     margin-top: 36px;
 }
 
-.qsm-popup__content .qsm-upgrade-buttons-links a {
-	font-family: Segoe UI;
+.qsm-popup__content .qsm-upgrade-buttons-links a { 
     font-size: 12px;
     line-height: 20px;
     text-align: center;
@@ -2419,8 +2418,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     gap: 22px;
     align-items: center;
 }
-.qsm-upgrade-buttons-links a{
-	font-family: Segoe UI;
+.qsm-upgrade-buttons-links a{ 
     font-size: 12px;
     line-height: 20px;
     text-align: center;
@@ -2470,8 +2468,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     font-size: 14px;
 }
 .qsm-upgrade-box .qsm-upgrade-briefing,
-.qsm-upgrade-box .qsm-upgrade-description {
-	font-family: Segoe UI;
+.qsm-upgrade-box .qsm-upgrade-description { 
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 20px;
@@ -2533,8 +2530,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	border:none;
 	padding:0px;
 }
-.qsm-upgrade-box h2 {
-	font-family: Segoe UI;
+.qsm-upgrade-box h2 { 
     font-weight: 600;
     font-size: 20px;
     line-height: 26.6px;
@@ -4095,15 +4091,13 @@ img.qsm-email-page-template-card-image {
 	display: flex;
     justify-content: space-between;
     width: -webkit-fill-available;
-    padding: 10px;
+    padding: 10px 15px;
     background: #ffffff;
     border-top: 1px solid #DADADA;
 }
 .qsm-result-page-template-card-buttons img.qsm-common-svg-image-class,
 .qsm-email-page-template-card-buttons img.qsm-common-svg-image-class {
-	position: relative;
-	bottom: 4px;
-	padding-right: 3px;
+	height: 14px;
 }
 
 .qsm-result-page-template-header-tabs,
@@ -4185,12 +4179,18 @@ h2#qsm-email-page-templates-title {
 
 .qsm-result-page-template-card-buttons button.button,
 .qsm-email-page-template-card-buttons button.button {
-    margin: 2px 0px 3px 0px;
+	margin: 2px 0px 3px 0px;
+    min-height: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 0 8px;
 }
 .qsm-response-toaster, .footer-bar-notice {
 	position: fixed;
 	top: 40px;
-	left: 50%;
+	left: calc(50% - 80px);
 	color: white;
 	padding: 10px 20px;
 	border-radius: 5px;
@@ -4773,7 +4773,7 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 
 .qsm-extra-shortcode-conditional-button img.qsm-common-svg-image-class {
     vertical-align: text-top;
-    padding: 1px 1px 0 0;
+    padding: 1px 5px 0 0;
 }
 
 .contact-form-actions .contact-form-actions-box a.disabled {

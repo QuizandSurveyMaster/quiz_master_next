@@ -463,11 +463,11 @@ function qsm_create_quiz_page_callback() {
 		<div class="qsm-new-quiz-wrapper">
 			<div class="qsm-dashboard-header-pagination">
 			<?php $last_visited_page = ! empty($_SERVER['HTTP_REFERER']) ? esc_url($_SERVER['HTTP_REFERER']) : esc_url(admin_url('admin.php?page=qsm_dashboard')); ?>
-				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" ><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
-				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" >← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;">← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>
-				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
-				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Continue to Quiz Builder', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?> →</a>
+				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Start Adding Questions', 'quiz-master-next'); ?> →</a>
 			</div>
 			<div class="qsm-new-quiz-container">
 				<form action="" method="post" id="new-quiz-form">

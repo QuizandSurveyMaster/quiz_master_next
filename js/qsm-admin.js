@@ -4660,7 +4660,7 @@ var QSM_Quiz_Broadcast_Channel;
                     QSMAdminResults.displayResultEditor( $resultsPage );
                 });
 
-                jQuery(document).on('click', '.qsm-result-page-template-preview-button', function (e) {
+                jQuery(document).on('click', '.qsm-result-page-template-preview-button, .qsm-result-page-template-card-content', function (e) {
                     e.preventDefault();
                     let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-result-page-template-container').hide();

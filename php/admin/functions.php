@@ -1475,7 +1475,7 @@ function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
 		?>
 		<button type="button" class="button qsm-extra-shortcode-popup qsm-extra-shortcode-conditional-button">
 			<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/flow-chart.svg'); ?>" alt="flow-chart.svg"/>
-			<?php esc_html_e('Add Output Rule', 'quiz-master-next'); ?>
+			<?php esc_html_e('Output Rules', 'quiz-master-next'); ?>
 		</button>
 	<?php }
 }
@@ -1654,7 +1654,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 								}
 								?>
 								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card " data-url="<?php echo esc_url( $image_url ); ?>" >
-									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" >
+									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" data-indexid="<?php echo esc_html($key); ?>">
 										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card">
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
