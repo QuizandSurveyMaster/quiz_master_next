@@ -347,15 +347,21 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 								<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
 									<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
 								</a>
-							<?php } else { ?>
+							<?php } else {
+								$is_woocommerce_activated = 'woocommerce-integration' == $addon_slug && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ? 'qsm-create-quiz-no-activated-tooltip' : '';
+								?>
 								<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
-								<label class="qsm-dashboard-addon-switch">
+								<label class="qsm-dashboard-addon-switch <?php echo esc_attr($is_woocommerce_activated); ?>">
 									<input type="checkbox" class="qsm-dashboard-addon-toggle"
 										<?php checked(esc_attr($is_activated)); ?>
 										<?php disabled(esc_attr($is_activated)); ?>>
 									<span class="qsm-dashboard-addon-slider">
 										<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
 									</span>
+									<?php 
+									if ( "" != $is_woocommerce_activated ) { ?>
+										<span class="qsm-create-quiz-tooltip"><?php esc_html_e('Please activate the WooCommerce plugin to proceed.', 'quiz-master-next'); ?></span>
+									<?php } ?>
 								</label>
 							<?php } ?>
 						</div>
@@ -457,11 +463,11 @@ function qsm_create_quiz_page_callback() {
 		<div class="qsm-new-quiz-wrapper">
 			<div class="qsm-dashboard-header-pagination">
 			<?php $last_visited_page = ! empty($_SERVER['HTTP_REFERER']) ? esc_url($_SERVER['HTTP_REFERER']) : esc_url(admin_url('admin.php?page=qsm_dashboard')); ?>
-				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" ><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
-				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;"><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/left-arrow.png'); ?>" alt="left-arrow.png"/><?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" >← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;">← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>
-				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
-				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Continue to Quiz Builder', 'quiz-master-next'); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/right-arrow.png'); ?>" alt="right-arrow.png"/></a>
+				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step-proceed button-primary"><?php echo esc_html__('Proceed', 'quiz-master-next'); ?> →</a>
+				<a style="display: none;" id="create-quiz-button" href="javascript:void(0)" class="qsm-dashboard-journy-create-quiz button-primary"><?php echo esc_html__('Start Adding Questions', 'quiz-master-next'); ?> →</a>
 			</div>
 			<div class="qsm-new-quiz-container">
 				<form action="" method="post" id="new-quiz-form">

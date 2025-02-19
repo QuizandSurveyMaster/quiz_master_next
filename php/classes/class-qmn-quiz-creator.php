@@ -113,7 +113,7 @@ class QMNQuizCreator {
 			array(
 				'quiz_name'                => $quiz_name,
 				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-				'message_after'            => '',
+				'message_after'            => '%QUESTIONS_ANSWERS%',
 				'message_comment'          => isset( $default_texts['message_comment'] ) ? $default_texts['message_comment'] : __( 'Please fill in the comment box below.', 'quiz-master-next' ),
 				'message_end_template'     => '',
 				'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',

@@ -1001,6 +1001,7 @@ function qsm_get_default_wizard_themes() {
 		unset( $themes_data[ $key ] );
 	}
 	if ( ! empty( $default_themes_data ) ) {
+		?><div class="themes-container"><?php
 		foreach ( $default_themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
 			$theme_screenshot    = $theme['img'];
@@ -1025,12 +1026,14 @@ function qsm_get_default_wizard_themes() {
 			</div>
 			<?php
 		}
+		?></div><?php
 	}
 }
 
 function qsm_get_market_themes() {
 	global $themes_data, $pro_themes;
 	if ( ! empty( $themes_data ) ) {
+		?><div class="themes-container"><?php
 		foreach ( $themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
 			$theme_screenshot    = $theme['img'];
@@ -1056,6 +1059,7 @@ function qsm_get_market_themes() {
 			</div>
 			<?php
 		}
+		?></div><?php
 	} else {
 		?>
 		<div class="empty-market-place">
@@ -1103,25 +1107,40 @@ function qsm_advance_question_type_upgrade_popup() {
 function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
 	if ( 'page' == $type ) {
 	?>
-	<div class="qsm-upgrade-box-base">
-		<div class="qsm-upgrade-box-base-title">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/info.png' ); ?>" alt="info.png">
-			<p><?php echo esc_html( $args['title'] ) . esc_html__( ' is required.', 'quiz-master-next' ); ?></p>
-			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" class="qsm-upgrade-button" rel="noopener"><?php esc_html_e( 'Purchase', 'quiz-master-next' ); ?></a>
+	<div class="qsm-upgrade-page-content">
+		<div class="qsm-upgrade-page-content-upper">
+			<div class="qsm-upgrade-page-lock-image">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
+			</div>
+			<div class="qsm-upgrade-page-tite">
+				<h2><?php echo esc_html( $args['title'] ); ?> <?php esc_html_e( ' is a Premium Feature', 'quiz-master-next' ); ?></h2>
+			</div>
+			<div class="qsm-upgrade-page-description">
+				<p class="qsm-upgrade-description"><?php esc_html_e( 'This Addon is required to customize your Quiz appearance.', 'quiz-master-next' ); ?></p>
+			</div>
+			<div class="qsm-upgrade-page-button qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
+				<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="button button-hero qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to Premium', 'quiz-master-next' ); ?></a>
+			</div>
 		</div>
-		<a href="#" id="qsm-upgrade-popup-opener" data-popup="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+		<div class="qsm-upgrade-buttons-links">
+		<?php
+		if ( ! empty( $args['doc_link'] ) ) {
+			?>
+			<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" rel="noopener" ><?php esc_html_e( 'Learn more', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( $args['doc_link'] ); ?>" target="_blank" rel="noopener" ><?php esc_html_e( 'How it works?', 'quiz-master-next' ); ?></a>
+			<?php
+		}
+		?>
+		</div>
 	</div>
 	<?php
 	}
 	?>
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-upgrade qsm-updated-upgrade-popup" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="false"  style="display:none">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true">
 				<header class="qsm-popup__header qsm-question-bank-header">
-					<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title">
-						<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/qsm-upgrade.png' ); ?>" alt="read">
-						<?php echo esc_html( $args['title'] ); ?>
-					</div>
+					<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title"></div>
 					<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-2-content">
@@ -1157,83 +1176,27 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 	$args        = wp_parse_args( $args, $defaults );
 	?>
 	<div class="qsm-upgrade-box">
-		<?php
-		if ( ! empty( $args['title'] ) && 'popup' != $type ) {
-			?>
-			<div class="qsm-upgrade-box-title">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/upgrade.png' ); ?>" alt="read">
-				<h2><?php echo esc_html( $args['title'] ); ?></h2>
+
+		<div class="qsm-upgrade-box-content">
+			<div class="qsm-upgrade-box-lock-image">
+				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
 			</div>
-			<?php
-		}
-		?>
-		<div class="qsm-upgrade-tabs">
-			<ul class="subsubsub">
-				<li>
-					<a href="javascript:void(0)" data-id="qsm-upgrade-overview" class="current qsm-upgrade-tab"><?php esc_html_e( 'Overview', 'quiz-master-next' ); ?></a>
-				</li>
-				<?php if ( ! empty( $args['benefits'] ) ) { ?>
-				<li>
-					<a href="javascript:void(0)" data-id="qsm-upgrade-benefits" class="qsm-upgrade-tab"><?php esc_html_e( 'Benefits', 'quiz-master-next' ); ?></a>
-				</li>
-				<?php } ?>
-				<?php if ( ! empty( $args['use_cases'] ) ) { ?>
-				<li>
-					<a href="javascript:void(0)" data-id="qsm-upgrade-use-cases" class="qsm-upgrade-tab"><?php esc_html_e( 'Use Cases', 'quiz-master-next' ); ?></a>
-				</li>
-				<?php } ?>
-			</ul>
-		</div>
-		<div class="qsm-upgrade-tab-content-container">
-			<div id="qsm-upgrade-overview" class="qsm-upgrade-tab-content">
+			<div class="qsm-upgrade-box-tite">
+				<h2><?php echo esc_html( $args['title'] ); ?> <?php esc_html_e( ' is a Premium Feature', 'quiz-master-next' ); ?></h2>
+			</div>
+			<div class="qsm-upgrade-box-description">
 				<p class="qsm-upgrade-description"><?php echo esc_html( $args['description'] ); ?></p>
 			</div>
-			<?php if ( ! empty( $args['benefits'] ) ) { ?>
-			<div id="qsm-upgrade-benefits" class="qsm-upgrade-tab-content" style="display: none;">
-				<?php if ( ! empty( $args['benefits']['briefing'] ) ) { ?>
-					<p class="qsm-upgrade-briefing"><?php echo esc_html( $args['benefits']['briefing'] ); ?></p>
-				<?php } ?>
-				<?php if ( ! empty( $args['benefits']['list_items'] ) ) { ?>
-					<ul>
-						<?php
-						foreach ( $args['benefits']['list_items'] as $item ) {
-							?>
-							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
-							<?php
-						}
-						?>
-					</ul>
-				<?php } ?>
+
+			<div class="">
+				<div class="qsm-upgrade-box-button qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
+					<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="button button-hero qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to Premium', 'quiz-master-next' ); ?></a>
+				</div>
+				<div class="qsm-upgrade-buttons-links">
+					<a href="<?php echo esc_url( $args['addon_link'] ); ?>" target="_blank" rel="noopener" ><?php esc_html_e( 'Learn more', 'quiz-master-next' ); ?></a>
+					<a href="<?php echo esc_url( $args['doc_link'] ); ?>" target="_blank" rel="noopener" ><?php esc_html_e( 'How it works?', 'quiz-master-next' ); ?></a>
+				</div>
 			</div>
-			<?php } ?>
-			<div id="qsm-upgrade-use-cases" class="qsm-upgrade-tab-content" style="display: none;">
-				<?php if ( ! empty( $args['use_cases']['briefing'] ) ) { ?>
-					<p class="qsm-upgrade-briefing"><?php echo esc_html( $args['use_cases']['briefing'] ); ?></p>
-				<?php } ?>
-				<?php if ( ! empty( $args['use_cases']['list_items'] ) ) { ?>
-					<ul>
-						<?php
-						foreach ( $args['use_cases']['list_items'] as $item ) {
-							?>
-							<li class="qsm-upgrade-list-item"><span class="dashicons dashicons-yes"></span><?php echo esc_html( $item ); ?></li>
-							<?php
-						}
-						?>
-					</ul>
-				<?php } ?>
-			</div>
-		</div>
-		<?php
-		if ( ! empty( $args['doc_link'] ) ) {
-			?><span class="qsm-upgrade-read-icon">
-				<a href="<?php echo esc_url( $args['doc_link'] ); ?>" target="_blank" rel="noopener" >
-					<?php esc_html_e( 'Visit website for more details', 'quiz-master-next' ); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow" ></span>
-				</a>
-			</span><?php
-		}
-		?>
-		<div class="qsm-upgrade-buttons qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
-			<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="button button-hero qsm_bundle" rel="noopener"><?php esc_html_e( 'Grab the QSM Bundle & Save 90%', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
@@ -1471,19 +1434,28 @@ function qsm_get_input_label_selected( $param ) {
     );
 }
 function qsm_advanced_assessment_quiz_page_content() {
-	$args = array(
-		"id"           => 'advanced-assessment',
-		"title"        => __( 'Advanced Assessment', 'quiz-master-next' ),
-		"description"  => __( 'Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next' ),
-		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
-		"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
-		"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
-		"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
-		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
-		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
-		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
-	);
-	qsm_admin_upgrade_content( $args, 'page' );
+	?>
+	<div class="wrap qsm-answer-labels-page">
+		<h1>
+			<?php esc_html_e( 'Answer Labels', 'quiz-master-next' ); ?>
+		</h1>
+		<?php 
+			$args = array(
+				"id"           => 'advanced-assessment',
+				"title"        => __( 'Advanced Assessment', 'quiz-master-next' ),
+				"description"  => __( 'Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next' ),
+				"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
+				"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
+				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
+				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
+				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+			);
+			qsm_admin_upgrade_popup( $args, 'page' );
+		?>
+	</div>
+	<?php 
 }
 
 function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
@@ -1503,7 +1475,7 @@ function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
 		?>
 		<button type="button" class="button qsm-extra-shortcode-popup qsm-extra-shortcode-conditional-button">
 			<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/flow-chart.svg'); ?>" alt="flow-chart.svg"/>
-			<?php esc_html_e('Add Output Rule', 'quiz-master-next'); ?>
+			<?php esc_html_e('Output Rules', 'quiz-master-next'); ?>
 		</button>
 	<?php }
 }
@@ -1521,25 +1493,6 @@ function qsm_webhooks_popup_window_section() {
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/qsm-webhooks', 'qsm_list', 'webhooks_button', 'webhooks_read_documentation', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'webhooks_button', 'webhooks_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/webhooks', 'qsm_list', 'webhooks_button', 'webhooks_buy_addon', 'qsm_plugin_upsell' ),
-			"benefits"     => array(
-				'briefing'   => '',
-				'list_items' => array(
-					__( 'Supports JSON, XML, Form Data, and Array formats.', 'quiz-master-next' ),
-					__( 'Triggers instant data dispatch on quiz submission.', 'quiz-master-next' ),
-					__( 'Customizes payload fields for tailored data integration.', 'quiz-master-next' ),
-					__( 'Uses Nested Objects for structured data organization.', 'quiz-master-next' ),
-				),
-			),
-			"use_cases"    => array(
-				'briefing'   => '',
-				'list_items' => array(
-					__( 'Sends quiz results to external applications instantly.', 'quiz-master-next' ),
-					__( 'Integrates with CRM or automation platforms.', 'quiz-master-next' ),
-					__( 'Triggers actions based on specific quiz outcomes.', 'quiz-master-next' ),
-					__( 'Monitors webhook logs with status and response details.', 'quiz-master-next' ),
-				),
-			),
-
 		);
 		qsm_admin_upgrade_popup( $args );
 	}
@@ -1701,7 +1654,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 								}
 								?>
 								<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card " data-url="<?php echo esc_url( $image_url ); ?>" >
-									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" >
+									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-content" data-indexid="<?php echo esc_html($key); ?>">
 										<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-image" src="<?php echo esc_url( $image_url ); ?>" alt="page-template-card">
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">

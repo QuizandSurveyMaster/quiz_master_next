@@ -150,7 +150,7 @@ function qsm_options_styling_tab_content() {
 	
 	echo '<form method="POST" action="">';
 	wp_nonce_field( 'quiz_theme_integration', 'quiz_theme_integration_nouce' );
-	?>
+	?><div class="themes-container">
 		<style>
 		.downloaded-theme-button {
 			display: none;
@@ -176,6 +176,7 @@ function qsm_options_styling_tab_content() {
 			</div>
 			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo ! empty( $featured_image ) ? esc_url( $featured_image ) : QSM_PLUGIN_URL . 'assets/placeholder.png'; ?>"><br>
 			<button class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
+		</div>
 		</div>
 	<?php
 	echo '</form>';
@@ -203,27 +204,6 @@ function qsm_options_styling_tab_content() {
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_read_documentation', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'ultimate', 'result-ultimate-upsell_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_buy_addon', 'qsm_plugin_upsell' ),
-			"benefits"     => array(
-				'briefing'   => __( 'The QSM Ultimate Add-On boosts quiz flexibility and control, making quiz creation and management smoother and more user-friendly.', 'quiz-master-next' ),
-				'list_items' => array(
-					__( 'Advanced customization for themes, progress bars, and buttons.', 'quiz-master-next' ),
-					__( 'Streamlined retakes by focusing on incorrect answers.', 'quiz-master-next' ),
-					__( 'Role management for assigning user-specific quiz permissions.', 'quiz-master-next' ),
-					__( 'Lead capture by collecting emails before results are displayed.', 'quiz-master-next' ),
-					__( 'Efficient setup with bulk uploads and auto-advance features.', 'quiz-master-next' ),
-				),
-			),
-			"use_cases"    => array(
-				'briefing'   => __( 'Ideal for educational programs, marketing surveys, and detailed feedback collection.', 'quiz-master-next' ),
-				'list_items' => array(
-					__( 'Custom progress tracking for employee training.', 'quiz-master-next' ),
-					__( 'Collect emails for lead generation.', 'quiz-master-next' ),
-					__( 'Manage instructor permissions for online courses.', 'quiz-master-next' ),
-					__( 'Add “Other” options for customer feedback.', 'quiz-master-next' ),
-					__( 'Auto-advance pages for smooth certification tests.', 'quiz-master-next' ),
-					__( 'Track user interactions with custom button classes.', 'quiz-master-next' ),
-				),
-			),
 		);
 		?>
 		<div id="qsm-ultimate-upgrade" class="quiz_style_tab_content" style="display: none;">

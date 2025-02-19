@@ -283,6 +283,7 @@ function qsm_generate_quiz_options() {
 			</div>
 		</div>
 		<!-- set global setting popup end -->
+		<div id="footer-bar-notice" class="footer-bar-notice"></div>
 	</div><!-- Backbone Views -->
 	<script type="text/javascript">jQuery(document).ready(function(){jQuery(".qsm-alerts-placeholder").length>0&&jQuery(".qsm-alerts").length>0&&jQuery(".qsm-alerts-placeholder").replaceWith(jQuery(".qsm-alerts"))});</script>
 	<?php
