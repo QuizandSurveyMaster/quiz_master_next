@@ -212,11 +212,12 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 }
 
 .mlw_qmn_question span.qsm-text-wrong-option::before {
+	display: inline-block;
 	content: "\f335";
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: 8px;
+	right: -8px;
 }
 
 .mlw_qmn_question .qsm-text-correct-option {
@@ -227,11 +228,12 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 }
 
 .mlw_qmn_question .qsm-text-correct-option:before {
+	display: inline-block;
 	content: "\f159";
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: 8px;
+	right: -8px;
 }
 
 .mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:before {
@@ -274,11 +276,12 @@ div .qsm-results-page .qmn_image_option {
 }
 
 .mlw_qmn_question .qsm-text-simple-option:before {
+	display: inline-block;
 	content: "\f159";
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: 8px;
+	right: -8px;
 }
 
 .qsm-results-page .qmn_question_answer.qsm-add-border-bottom {
