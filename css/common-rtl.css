@@ -211,6 +211,15 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	padding-right: 10px;
 }
 
+.mlw_qmn_question span.qsm-text-wrong-option::before {
+	display: inline-block;
+	content: "\f335";
+	font-family: dashicons;
+	position: relative;
+	top: 3px;
+	right: -8px;
+}
+
 .mlw_qmn_question .qsm-text-correct-option {
 	display: flex;
 	color: green;
@@ -218,9 +227,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	padding-right: 10px;
 }
 
-.mlw_qmn_question .qsm-text-correct-option:before,
-.mlw_qmn_question .qsm-text-simple-option:before,
-.mlw_qmn_question span.qsm-text-wrong-option::before {
+.mlw_qmn_question .qsm-text-correct-option:before {
 	display: inline-block;
 	content: "\f159";
 	font-family: dashicons;
@@ -266,6 +273,15 @@ div .qsm-results-page .qmn_image_option {
 	margin-bottom: 5px;
 	color: #808080;
 	padding-right: 10px;
+}
+
+.mlw_qmn_question .qsm-text-simple-option:before {
+	display: inline-block;
+	content: "\f159";
+	font-family: dashicons;
+	position: relative;
+	top: 3px;
+	right: -8px;
 }
 
 .qsm-results-page .qmn_question_answer.qsm-add-border-bottom {
