@@ -482,14 +482,19 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				if ( ! class_exists( 'QSM_Export_Import' ) ) {
 					$qsm_pop_up_arguments = array(
 						"id"           => 'modal-export-import',
-						"title"        => __( 'Export & Import Addon', 'quiz-master-next' ),
-						"description"  => __( 'Effortlessly transfer your quizzes and surveys between websites with the QSM Export Import Addon. In just a few clicks, export your quizzes and surveys, including questions and settings, from one site and import them into another. The intuitive process lets you select the quiz, hit the export button, and choose from three types of import/export for seamless data migration.', 'quiz-master-next' ),
+						"title"        => __( 'Easily Export Quiz Data', 'quiz-master-next' ),
+						"description"  => __( 'Move quizzes effortlessly with the Export & Import Addon.', 'quiz-master-next' ),
 						"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/export_import_chart.png',
 						"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next' ),
 						"buy_btn_text" => __( 'Buy Export & Import Addon', 'quiz-master-next' ),
 						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'qsm_list', 'importexport_button', 'import-export-upsell_read_documentation', 'qsm_plugin_upsell' ),
 						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'importexport_button', 'import-export-upsell_upgrade', 'qsm_plugin_upsell' ),
 						"addon_link"   => qsm_get_plugin_link( 'downloads/export-import', 'qsm_list', 'importexport_button', 'import-export-upsell_buy_addon', 'qsm_plugin_upsell' ),
+						"list_items"   => array(
+							__("Export quizzes and settings in a single click", "quiz-master-next"),
+							__("Import quizzes seamlessly across sites", "quiz-master-next"),
+							__("Save time when migrating or backing up quizzes", "quiz-master-next"),
+						),
 					);
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
