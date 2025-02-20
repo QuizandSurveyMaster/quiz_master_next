@@ -216,7 +216,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: -8px;
+	right: 0;
 }
 
 .mlw_qmn_question .qsm-text-correct-option {
@@ -231,7 +231,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: -10px;
+	right: 0;
 }
 
 .mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:before {
@@ -278,7 +278,7 @@ div .qsm-results-page .qmn_image_option {
 	font-family: dashicons;
 	position: relative;
 	top: 3px;
-	right: -8px;
+	right: 0;
 }
 
 .qsm-results-page .qmn_question_answer.qsm-add-border-bottom {
