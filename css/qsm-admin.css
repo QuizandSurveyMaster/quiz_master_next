@@ -4978,7 +4978,6 @@ span.qsm-insert-template-variable-text {
 .qsm_page_qsm_quiz_about .help-slide{
 	display: flex;
     margin: 10px;
-	flex-wrap: wrap;
 }
 .qsm_page_qsm_quiz_about .help-slide div{
 	width: 400px;
