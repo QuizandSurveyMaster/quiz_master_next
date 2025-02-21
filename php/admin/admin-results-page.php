@@ -556,14 +556,27 @@ function qsm_results_overview_tab_content() {
 		</table>
 	</form>
 
-	<div id="delete_dialog" title="Delete Results?" style="display:none;">
-		<h3><b><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></b></h3>
-		<form action='' method='post'>
-			<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
-			<input type='hidden' id='result_id' name='result_id' value='' />
-			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary' value='<?php esc_html_e( 'Delete Results', 'quiz-master-next' ); ?>' /></p>
-		</form>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup " id="qsm-delete-result-page-popup" aria-hidden="false"  style="display:none">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true">
+				<form action='' method='post'>
+					<header class="qsm-popup__header qsm-delete-result-page-popup-header">
+						<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title"></div>
+						<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-2-content">
+						<div class="qsm-result-page-delete-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
+							<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
+							<input type='hidden' id='result_id' name='result_id' value='' />
+							<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+					</main>
+					<footer class="qsm-popup__footer">
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+						<button type="submit" class="qsm-popup__btn qsm-delete-result-popup-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete Result', 'quiz-master-next' ); ?></button>
+					</footer>
+				</form>
+			</div>
+		</div>
 	</div>
 
 	<!-- Popup for screen options -->

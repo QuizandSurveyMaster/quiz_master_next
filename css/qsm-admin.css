@@ -3416,10 +3416,10 @@ input#duplicate_questions {
 	border-radius: 10px;
 	padding: 0 10px;
 }
-.themes-container .market-theme:hover .market-theme-url {
+#theme-browser .market-theme:hover .market-theme-url {
 	opacity: 1;
 }
-.themes-container .market-theme .market-theme-url {
+#theme-browser .market-theme .market-theme-url {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -3427,6 +3427,8 @@ input#duplicate_questions {
 	opacity: 0;
 	transition: all 200ms ease-in-out;
 	text-align: center;
+    display: flex;
+    gap: 10px;
 }
 /** Quiz Contact Tab Style **/
 .qsm-contact-form-builder-wrap {
@@ -4024,6 +4026,14 @@ input#duplicate_questions {
     justify-content: space-between;
     min-height: 140px;
     padding-bottom: 10px;
+}
+
+.qsm-email-page-template-options.qsm-email-page-then-box-styles {
+	margin-bottom: 15px;
+    background: #F8F9F9;
+    padding: 20px;
+    position: relative;
+    border-radius: 10px;
 }
 
 .qsm-result-page-template-learn-more,
@@ -4794,6 +4804,11 @@ input#preferred-date-format-custom {
 	background: #cccccc36;
     border: 1px solid #ccc;
 }
+.qsm_global_settings .qsm-sub-tab-menu .subsubsub li a {
+	outline: none;
+    text-decoration: none;
+    box-shadow: none;
+}
 
 .qsm-pointer-events-none {
 	pointer-events: none;
@@ -5023,4 +5038,31 @@ span.qsm-insert-template-variable-text {
 }
 .qsm-global-settings-theme-browser {
 	padding: 20px 5px;
+}
+#qsm-delete-result-page-popup.qsm-standard-popup .qsm-popup__header .qsm-popup__title {
+	padding: 0;
+	color: #2271b1;
+}
+
+#qsm-delete-result-page-popup .qsm-popup__footer {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#qsm-delete-result-page-popup .qsm-delete-result-popup-btn {
+	background-color: #dc3232;
+    display: flex;
+    margin: 0 5px;
+    align-items: center;
+    flex-wrap: nowrap;
+    color: #FfffFF;
+    gap: 5px;
+    align-items: center;
+}
+
+.qsm-result-page-delete-message {
+    display: flex;
+    justify-content: center;
+    font-size: 17px;
 }

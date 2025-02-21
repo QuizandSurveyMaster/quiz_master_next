@@ -608,6 +608,7 @@ class MLWQuizMasterNext {
 			'feature_img_placeholder'    => QSM_PLUGIN_URL . 'assets/placeholder.png',
 			'delete_confirm'             => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
         	'delete_alert'               => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
+			'result_template'            => __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
