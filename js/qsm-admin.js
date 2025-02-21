@@ -44,6 +44,7 @@ var QSMAdminResultsAndEmail;
         },
         
         clearAlerts: function () {
+            jQuery('#footer-bar-notice').removeClass('show');
             $('.qsm-alerts').empty();
             clearTimeout(this.toasterTimeout);
         },
@@ -1881,6 +1882,7 @@ var QSMContact;
                     $('.contact-message').append('<p>' + message + '</p>');
                 },
                 clearAlerts: function () {
+                    jQuery('#footer-bar-notice').removeClass('show');
                     $('.contact-message').empty().removeClass().addClass('contact-message');
                 },
                 hideShowSettings: function (field) {
@@ -2714,7 +2716,6 @@ var QSM_Quiz_Broadcast_Channel;
                 },
                 loadSuccess: function () {
                     QSMAdmin.clearAlerts();
-                    jQuery('#footer-bar-notice').removeClass('show');
                     $('.qsm-showing-loader').remove();
                     var question;
                     _.each(qsmQuestionSettings.qpages, function (page) {
@@ -4175,9 +4176,9 @@ var QSM_Quiz_Broadcast_Channel;
                     if (15 == question_val || 16 == question_val || 17 == question_val) {
                         if (document.getElementById('modal-advanced-question-type')) {
                             MicroModal.show('modal-advanced-question-type');
+                            $('#question_type').val(previous_question_val);
+                            return false;
                         }
-                        $('#question_type').val(previous_question_val);
-                        return false;
                     }
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
