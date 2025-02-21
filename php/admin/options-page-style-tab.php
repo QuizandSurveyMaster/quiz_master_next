@@ -43,7 +43,6 @@ function qsm_options_styling_tab_content() {
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
-		do_action( 'qsm_save_style_section' );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id, "" );
@@ -52,6 +51,7 @@ function qsm_options_styling_tab_content() {
 			$mlwQuizMasterNext->log_manager->add( 'Error saving styles', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
+	do_action( 'qsm_save_style_section' );
 
 	if ( isset( $_GET['quiz_id'] ) ) {
 		$quiz_id = intval( $_GET['quiz_id'] );
