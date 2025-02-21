@@ -223,7 +223,7 @@ function qsm_options_emails_tab_template() {
 							</div>
 							<div class="qsm-insert-template-container">
 								<div class="qsm-insert-template-left">
-									<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text" class="qsm-insert-page-template-title">
+									<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text"  id="qsm-insert-page-template-title-{{data.id}}" class="qsm-insert-page-template-title">
 									<div style="display: none;" class="qsm-to-replace-page-template-wrap">
 										<select class="qsm-to-replace-page-template"></select>
 									</div>
@@ -287,9 +287,7 @@ function qsm_options_emails_tab_template() {
 						<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Default Template', 'quiz-master-next' );?></button>
 					</div>
 					<div class="qsm-email-page-template-learn-more">
-						<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
-							<a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-email-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Learn more", 'quiz-master-next' ); ?></a>
-						</p>
+						<p><a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-email-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Learn More About Templates", 'quiz-master-next' ); ?></a></p>
 					</div>
 				</div>
 				<div class="qsm-email-page-then-box-styles-wrap">

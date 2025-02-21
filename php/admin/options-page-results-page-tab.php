@@ -259,7 +259,7 @@ function qsm_options_results_tab_template(){
 											<div style="display: none;" class="qsm-to-replace-page-template-wrap">
 												<select class="qsm-to-replace-page-template"></select>
 											</div>
-											<div class="qsm-insert-template-response"></div>
+											<p class="qsm-insert-template-response"></p>
 										</div>
 										<div class="qsm-insert-template-right">
 											<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
@@ -302,7 +302,7 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When..', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Condition for displaying result', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'Following conditions are met', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
@@ -332,9 +332,7 @@ function qsm_options_results_tab_template(){
 									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Default Template', 'quiz-master-next' );?></button>
 								</div>
 								<div class="qsm-result-page-template-learn-more">
-									<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
-										<a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-result-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Learn more", 'quiz-master-next' ); ?></a>
-									</p>
+									<p><a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-result-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Learn More About Templates", 'quiz-master-next' ); ?></a></p>
 								</div>
 							</div>
 							<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">

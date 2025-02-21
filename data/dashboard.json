@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Quiz",
-      "description": "Choose this option to create a fun and interactive quiz for your visitors!",
+      "description": "Create an engaging and interactive quiz for your audience.",
       "type": "quiz",
       "themes": [551027, 547794],
       "addons": [591232, 591230]
@@ -11,7 +11,7 @@
     {
       "id": 2,
       "title": "Survey",
-      "description": "Select this option to gather valuable insights from your audience.",
+      "description": "Gather valuable insights from your audience through surveys.",
       "type": "survey",
       "themes": [300513, 557086],
       "addons": [1900, 109654]
@@ -19,7 +19,7 @@
     {
       "id": 3,
       "title": "Exams",
-      "description": "Pick this option to design professional exams or assessments.",
+      "description": "Create professional exams or assessments with ease.",
       "type": "quiz",
       "themes": [302297, 551027],
       "addons": [1903, 563494]
@@ -27,7 +27,7 @@
     {
       "id": 4,
       "title": "Personality Assessment",
-      "description": "Create a personality assessment quiz to help users discover themselves!",
+      "description": "Help users discover their personality through an engaging assessment quiz.",
       "type": "survey",
       "themes": [547794, 551029],
       "addons": [572582, 3437]
@@ -35,7 +35,7 @@
     {
       "id": 5,
       "title": "Poll",
-      "description": "Engage your audience with quick opinion polls and see what they think in real-time!",
+      "description": "Run quick opinion polls and view real-time results.",
       "type": "quiz",
       "themes": [302297, 300513],
       "addons": [567900, 1898]

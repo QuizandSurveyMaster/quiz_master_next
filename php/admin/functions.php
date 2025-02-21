@@ -1092,14 +1092,19 @@ function qsm_sanitize_rec_array( $array, $textarea = false ) {
 function qsm_advance_question_type_upgrade_popup() {
 	$qsm_pop_up_arguments = array(
 		"id"           => 'modal-advanced-question-type',
-		"title"        => __('Advanced Question Types', 'quiz-master-next'),
-		"description"  => __('Create better quizzes and surveys with the Advanced Questions addon. Incorporate precise question types like Matching Pairs, Radio Grid, and Checkbox Grid questions in your quizzes and surveys.', 'quiz-master-next'),
+		"title"        => __('Go Beyond Standard Questions', 'quiz-master-next'),
+		"description"  => __('Make your quizzes more engaging with the Advanced Question Types Addon.', 'quiz-master-next'),
 		"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
 		"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
 		"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
 		"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'advance-question_type', 'advance-question-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_buy_addon', 'qsm_plugin_upsell' ),
+		"list_items"   => array(
+			__("Use Matching Pairs for interactive learning", "quiz-master-next"),
+			__("Add Radio Grid & Checkbox Grid for structured responses", "quiz-master-next"),
+			__("Enhance user experience with flexible question formats", "quiz-master-next"),
+		),
 	);
 	qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 }
@@ -1109,14 +1114,23 @@ function qsm_admin_upgrade_popup( $args = array(), $type = 'popup' ) {
 	?>
 	<div class="qsm-upgrade-page-content">
 		<div class="qsm-upgrade-page-content-upper">
-			<div class="qsm-upgrade-page-lock-image">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
-			</div>
-			<div class="qsm-upgrade-page-tite">
-				<h2><?php echo esc_html( $args['title'] ); ?> <?php esc_html_e( ' is a Premium Feature', 'quiz-master-next' ); ?></h2>
+			<div class="qsm-upgrade-page-lock-image-wrap">
+				<div class="qsm-upgrade-page-lock-image">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
+				</div>
+				<h2><?php echo esc_html( $args['title'] ); ?></h2>
 			</div>
 			<div class="qsm-upgrade-page-description">
-				<p class="qsm-upgrade-description"><?php esc_html_e( 'This Addon is required to customize your Quiz appearance.', 'quiz-master-next' ); ?></p>
+				<p class="qsm-upgrade-description"><?php echo esc_html( $args['description'] ); ?></p>
+				<?php if ( ! empty($args['list_items']) ) : ?>
+					<div class="qsm-upgrade-list-items">
+						<ul>
+							<?php foreach ( $args['list_items'] as $item_description ) : ?>
+								<li><span class="dashicons dashicons-yes"></span> <?php echo esc_html($item_description); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="qsm-upgrade-page-button qsm-<?php echo esc_attr( $type ); ?>-upgrade-buttons">
 				<a href="<?php echo esc_url( $args['upgrade_link'] ); ?>" target="_blank" class="button button-hero qsm_bundle" rel="noopener"><?php esc_html_e( 'Upgrade to Premium', 'quiz-master-next' ); ?></a>
@@ -1178,14 +1192,23 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 	<div class="qsm-upgrade-box">
 
 		<div class="qsm-upgrade-box-content">
-			<div class="qsm-upgrade-box-lock-image">
-				<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
-			</div>
-			<div class="qsm-upgrade-box-tite">
-				<h2><?php echo esc_html( $args['title'] ); ?> <?php esc_html_e( ' is a Premium Feature', 'quiz-master-next' ); ?></h2>
+			<div class="qsm-upgrade-box-lock-image-wrap">
+				<div class="qsm-upgrade-box-lock-image">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png">
+				</div>
+				<h2><?php echo esc_html( $args['title'] ); ?></h2>
 			</div>
 			<div class="qsm-upgrade-box-description">
 				<p class="qsm-upgrade-description"><?php echo esc_html( $args['description'] ); ?></p>
+				<?php if ( ! empty($args['list_items']) ) : ?>
+					<div class="qsm-upgrade-list-items">
+						<ul>
+							<?php foreach ( $args['list_items'] as $item_description ) : ?>
+								<li><span class="dashicons dashicons-yes"></span> <?php echo esc_html($item_description); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="">
@@ -1442,8 +1465,8 @@ function qsm_advanced_assessment_quiz_page_content() {
 		<?php 
 			$args = array(
 				"id"           => 'advanced-assessment',
-				"title"        => __( 'Advanced Assessment', 'quiz-master-next' ),
-				"description"  => __( 'Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next' ),
+				"title"        => __( 'Advanced Assessment, Smarter Results', 'quiz-master-next' ),
+				"description"  => __( 'Unlock Personalized Quiz Experiences with the Advanced Assessment Addon.', 'quiz-master-next' ),
 				"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
 				"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
 				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
@@ -1451,6 +1474,11 @@ function qsm_advanced_assessment_quiz_page_content() {
 				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"list_items"   => array(
+					__("Assign custom labels to answers", "quiz-master-next"),
+					__("Customize result pages based on quiz performance", "quiz-master-next"),
+					__("Analyse quiz results using charts and tables", "quiz-master-next"),
+				),
 			);
 			qsm_admin_upgrade_popup( $args, 'page' );
 		?>
@@ -1462,14 +1490,19 @@ function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
 	if ( ! class_exists('QSM_Extra_Shortcodes') ) {
 		$qsm_pop_up_arguments = array(
 			"id"           => 'modal-extra-shortcodes',
-			"title"        => __('Extra Shortcode', 'quiz-master-next'),
-			"description"  => __('Need dynamic content on your results pages? Our QSM conditional shortcode makes it easy. Create personalized experiences based on specific conditions or rules.', 'quiz-master-next'),
+			"title"        => __('Unlock More Customization with Extra Shortcodes', 'quiz-master-next'),
+			"description"  => __('Enhance quiz display and functionality with the Extra Shortcodes Addon.', 'quiz-master-next'),
 			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
 			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
 			"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/extra-shortcodes', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_buy_addon', 'qsm_plugin_upsell' ),
+			"list_items"   => array(
+				__("Show user scores dynamically anywhere", "quiz-master-next"),
+				__("Display quiz rankings, leaderboards & results", "quiz-master-next"),
+				__("Personalize quiz pages with flexible shortcode options", "quiz-master-next"),
+			),
 		);
 		qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 		?>
@@ -1484,8 +1517,8 @@ function qsm_webhooks_popup_window_section() {
 	if ( ! class_exists('QSM_Webhooks') ) {
 		$args = array(
 			"id"           => 'modal-qsm-webhooks',
-			"title"        => __( 'Webhooks Addon', 'quiz-master-next' ),
-			"description"  => __( 'Connecting your quiz data to other systems is as simple as adding a webhook URL and choosing how you want the information to be sent. Choose your webhook type and data format, map your quiz or survey fields, and preview everything in real time. No technical expertise is needed—just configure, save, and let the add-on handle the rest.', 'quiz-master-next' ),
+			"title"        => __( 'Automate Your Workflow with QSM Webhooks', 'quiz-master-next' ),
+			"description"  => __( 'Enhance your quizzes with seamless integrations using the QSM Webhooks Addon.', 'quiz-master-next' ),
 			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
 			"warning"      => __( 'Missing Feature - webhook Add-on required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Webhooks Addon separately.', 'quiz-master-next' ),
@@ -1493,6 +1526,11 @@ function qsm_webhooks_popup_window_section() {
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/qsm-webhooks', 'qsm_list', 'webhooks_button', 'webhooks_read_documentation', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'webhooks_button', 'webhooks_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/webhooks', 'qsm_list', 'webhooks_button', 'webhooks_buy_addon', 'qsm_plugin_upsell' ),
+			"list_items"   => array(
+				__("Automatically send quiz results to any system in real-time.", "quiz-master-next"),
+				__("Format data as JSON, XML, or Form Data to fit your needs.", "quiz-master-next"),
+				__("Connect effortlessly with CRMs, email platforms, analytics tools, and more.", "quiz-master-next"),
+			),
 		);
 		qsm_admin_upgrade_popup( $args );
 	}

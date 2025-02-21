@@ -170,12 +170,12 @@ function qsm_options_styling_tab_content() {
 		<div id="theme-featured-image" class="theme-featured-image rendered quiz_style_tab_content" style="display:none;">
 			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></h1>
 			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Add a featured image to enhance your quiz\'s visual appeal and align it with your brand\'s style.', 'quiz-master-next' ); ?></p>
-			<div class="qsm-theme-featured-image-update" style="display: none;">
+			<div class="qsm-theme-featured-image-update">
 				<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="<?php echo esc_url( $featured_image ); ?>" />
-				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Upload Image', 'quiz-master-next' ); ?>" />
+				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Save Image', 'quiz-master-next' ); ?>" />
 			</div>
 			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo ! empty( $featured_image ) ? esc_url( $featured_image ) : QSM_PLUGIN_URL . 'assets/placeholder.png'; ?>"><br>
-			<button class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Change Image', 'quiz-master-next' ); ?></button>
+			<button id="qsm-set-theme-feature-image" class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Upload Image', 'quiz-master-next' ); ?></button>
 		</div>
 		</div>
 	<?php
@@ -195,8 +195,8 @@ function qsm_options_styling_tab_content() {
 	if ( ! class_exists( 'QSM_Ultimate' ) ) {
 		$ultimate_args = array(
 			"id"           => 'qsm-ultimate',
-			"title"        => __( 'Ultimate Addon', 'quiz-master-next' ),
-			"description"  => __( 'Quiz And Survey Master is a leading WordPress plugin developed by a dedicated team of developers and educational experts. Our mission is to help individuals and organizations create engaging and effective quizzes and surveys that enhance learning and gather valuable insights. With a focus on user experience and flexibility, our plugin is designed to meet the needs of educators, marketers, and businesses alike.', 'quiz-master-next' ),
+			"title"        => __( 'Go Beyond Standard Quizzes', 'quiz-master-next' ),
+			"description"  => __( 'Transform your quizzes with the QSM Ultimate Add-On.', 'quiz-master-next' ),
 			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/Ultimate.png',
 			"warning"      => __( 'Ultimate Addon required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Ultimate Addon separately.', 'quiz-master-next' ),
@@ -204,11 +204,16 @@ function qsm_options_styling_tab_content() {
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_read_documentation', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'ultimate', 'result-ultimate-upsell_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_buy_addon', 'qsm_plugin_upsell' ),
+			"list_items"   => array(
+				__("Dynamic Progress Tracking for better engagement", "quiz-master-next"),
+				__("Smart Quiz Retakes to focus on missed questions", "quiz-master-next"),
+				__("Auto-Advance Navigation for a seamless experience", "quiz-master-next"),
+			),
 		);
 		?>
 		<div id="qsm-ultimate-upgrade" class="quiz_style_tab_content" style="display: none;">
-			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Appearance', 'quiz-master-next' ); ?></h1>
-			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Easily customize the appearance of your quizzes and surveys.', 'quiz-master-next' ); ?></p>
+			<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Customize Quiz Appearance', 'quiz-master-next' ); ?></h1>
+			<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Personalize the look and feel of your quizzes and surveys effortlessly.', 'quiz-master-next' ); ?></p>
 			<?php qsm_admin_upgrade_popup( $ultimate_args, 'page' );    ?>
 		</div>
 		<?php
