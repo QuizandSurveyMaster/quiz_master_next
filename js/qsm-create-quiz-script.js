@@ -84,7 +84,7 @@ jQuery(function ($) {
             let remainingThemes = [];
             $themeItems.show();
             $themeItems.each(function () {
-                var themeId = $(this).data('id');
+                let themeId = $(this).data('id');
                 if ($dependency.themes.some(id => id == themeId)) {
                     suggestedThemes.push($(this));
                     $(this).find('.qsm-dashboard-theme-recommended').show();
@@ -114,7 +114,7 @@ jQuery(function ($) {
             let remainingAddons = [];
             $addonItems.show();
             $addonItems.each(function () {
-                var addonId = $(this).data('id');
+                let addonId = $(this).data('id');
                 if ($dependency.addons.some(id => id == addonId)) {
                     suggestedAddons.push($(this));
                     $(this).find('.qsm-dashboard-addon-recommended').show();

@@ -57,7 +57,6 @@ function qsm_options_styling_tab_content() {
 		$quiz_id = intval( $_GET['quiz_id'] );
 		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
-	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>
 
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">

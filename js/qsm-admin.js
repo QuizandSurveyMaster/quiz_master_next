@@ -498,7 +498,7 @@ var QSMAdminResultsAndEmail;
                 },
                 multiple: false
             }).on('select', function () { // it also has "open" and "close" events
-                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.parents('.quiz_style_tab_content').find('.quiz_featured_image').val(attachment.url).trigger('input');
             }).open();
         });
@@ -815,12 +815,12 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 });
             })
 
-            var $themeBrowser = jQuery(".quiz_style_tab_content#theme-browser");
+            let $themeBrowser = jQuery(".quiz_style_tab_content#theme-browser");
             if ($themeBrowser.length) {
-                var $themesContainer = $themeBrowser.find(".themes-container");
+                let $themesContainer = $themeBrowser.find(".themes-container");
                 if ($themesContainer.length) {
-                    var $themesWrapper = $themesContainer.children();
-                    var $themesTarget = $themeBrowser.find(".themes.wp-clearfix");
+                    let $themesWrapper = $themesContainer.children();
+                    let $themesTarget = $themeBrowser.find(".themes.wp-clearfix");
                     if ($themesTarget.length) {
                         $themesWrapper.appendTo($themesTarget); // Moves instead of appending
                     }
@@ -2232,7 +2232,6 @@ var QSMContact;
                     let all_dependency = qsmEmailsObject.dependency;
                     let $container = $('.qsm-email-template-dependency-addons');
                     $container.empty();
-                    console.log(scriptTemplate);
                     if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
@@ -2459,7 +2458,6 @@ var QSM_Quiz_Broadcast_Channel;
                     let removedDeletedQuestionArray = mergedQuestionIdArray.filter(id => id !== String(currentQuestionId));
                     // Create a new string from the filtered array
                     let removedDeletedQuestionString = removedDeletedQuestionArray.join(',');
-                    // console.log(mergedQuestionIdString, mergedQuestionIdArray, removedDeletedQuestionArray, removedDeletedQuestionString);
                     let sendDataObject = {
                         [currentQuestionId]: {
                             merged_question: removedDeletedQuestionString,
@@ -2889,7 +2887,6 @@ var QSM_Quiz_Broadcast_Channel;
                         $(document).find('.qsm-linked-list-inside').hide().empty();
                         $(document).find('.qsm-linked-list-div-block').hide();
                     }
-                    // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
                     var default_answers = parseInt(qsmQuestionSettings.default_answers);
@@ -4476,7 +4473,6 @@ var QSM_Quiz_Broadcast_Channel;
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
                             page.redirect = redirect_value;
-                            // page.result_or_redirect = $(this).find('.qsm-edit-result-view-options input[type="radio"]:checked').val();
                         }
                         
                         $(this).find('.results-page-condition').each(function () {

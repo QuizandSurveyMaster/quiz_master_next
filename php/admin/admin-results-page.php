@@ -239,7 +239,6 @@ function qsm_results_overview_tab_content() {
 					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
 					<?php
 				} elseif ( 0 == $result_page ) {
-					$mlw_qmn_previous_page = $result_page - 2;
 					?>
 					<a class="prev-page button disable" href=""><</a>
 					<?php

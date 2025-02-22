@@ -113,9 +113,9 @@ class QMNQuizCreator {
 			array(
 				'quiz_name'                => $quiz_name,
 				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-				'message_after'            => '%QUESTIONS_ANSWERS%',
+				'message_after'            => __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
 				'message_comment'          => isset( $default_texts['message_comment'] ) ? $default_texts['message_comment'] : __( 'Please fill in the comment box below.', 'quiz-master-next' ),
-				'message_end_template'     => __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
+				'message_end_template'     => '',
 				'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',
 				'admin_email_template'     => '%QUESTIONS_ANSWERS_EMAIL%',
 				'submit_button_text'       => isset( $default_texts['submit_button_text'] ) ? $default_texts['submit_button_text'] : __( 'Submit', 'quiz-master-next' ),
