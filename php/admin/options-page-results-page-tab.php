@@ -226,7 +226,7 @@ function qsm_options_results_tab_template(){
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
 	$categories = $wpdb->get_results( $query, ARRAY_N );
-	qsm_webhooks_popup_window_section( $quiz_id, $categories );
+	qsm_webhooks_popup_window_section();
 	?>
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
@@ -379,7 +379,7 @@ function qsm_options_results_tab_template(){
 							<div class="qsm-result-page-common-section qsm-result-page-then-box-styles">
 								<?php do_action( 'qsm_result_page_before_redirect_input',  $quiz_id, $categories ); ?>
 								<!-- NOTE: Previously redirect input displayed here -->
-								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); 
+								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories );
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
 										<div class="qsm-webhooks-pricing-popup qsm-webhooks-upgrade-button">
 											<div class="qsm-webhooks-upgrade-upper">

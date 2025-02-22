@@ -101,7 +101,7 @@ function qsm_dashboard_display_change_log_section(){
 					</ul>
 				<?php endif; ?>
 				<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
-					<a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank" rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+					<a href="<?php echo esc_url(qsm_get_utm_link('https://quizandsurveymaster.com/qsm-changelog', 'dashboard', 'useful_links', 'dashboard_changelog')); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -124,7 +124,8 @@ function qsm_dashboard_display_need_help_section(){
 			'description' => __('Explore live examples of quizzes and surveys built with QSM to see its features in action.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/camera.png',
 			'alt'         => 'camera.png',
-			'link'        => 'https://demo.quizandsurveymaster.com/',
+			'link'        => qsm_get_utm_link('https://demo.quizandsurveymaster.com/', 'demos', 'dashboard', 'useful_links', 'dashboard_demos'),
+
 		],
 		[
 			'title'       => __('FAQ', 'quiz-master-next'),
@@ -220,14 +221,16 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Popular Themes', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-themes-container qsm-dashboard-page-common-style">
-			<?php foreach ( $sortedThemes as $single_theme ) { ?>
+			<?php foreach ( $sortedThemes as $single_theme ) {
+				$theme_demo          = qsm_get_utm_link( $theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $single_theme['name'] ) );
+				?>
 				<div class="qsm-dashboard-themes-card">
 					<div class="qsm-dashboard-themes-image-wrapper">
 						<img src="<?php echo esc_url($single_theme['img']); ?>" alt="<?php echo esc_attr($single_theme['name']); ?>">
 					</div>
 					<div class="qsm-dashboard-themes-details-wrapper">
 						<h3><?php echo esc_html($single_theme['name']); ?></h3>
-						<a class="button button-secondary" target="_blank" href="<?php echo esc_url($single_theme['demo']); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'quiz-master-next'); ?></a>
+						<a class="button button-secondary" target="_blank" href="<?php echo esc_url($theme_demo); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__('Demo', 'quiz-master-next'); ?></a>
 					</div>
 				</div>
 			<?php } ?>
@@ -369,6 +372,7 @@ function qsm_create_new_quiz_from_wizard() {
 			'require_log_in'         => ! empty( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : 0,
 			'disable_first_page'     => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : 0,
 			'comment_section'        => isset( $_POST['comment_section'] ) ? sanitize_text_field( wp_unslash( $_POST['comment_section'] ) ) : 1,
+			'contact_info_location'  => isset( $_POST['enable_contact_form'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_contact_form'] ) ) : 0,
 		);
 		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();
 		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {

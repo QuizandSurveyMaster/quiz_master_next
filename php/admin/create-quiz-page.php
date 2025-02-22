@@ -173,8 +173,8 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						});
 
 						$matching_theme = ! empty($matching_theme) ? array_shift($matching_theme) : array();
-						foreach ( $all_addons as $addon ) { 
-							if ( $addon['id'] == $theme_value['id'] ) { 
+						foreach ( $all_addons as $addon ) {
+							if ( $addon['id'] == $theme_value['id'] ) {
 								// Merge the additional keys into the theme array
 								$theme_value = array_merge($theme_value, [
 									'path'         => $addon['path'],
@@ -358,7 +358,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 									<span class="qsm-dashboard-addon-slider">
 										<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
 									</span>
-									<?php 
+									<?php
 									if ( "" != $is_woocommerce_activated ) { ?>
 										<span class="qsm-create-quiz-tooltip"><?php esc_html_e('Please activate the WooCommerce plugin to proceed.', 'quiz-master-next'); ?></span>
 									<?php } ?>
