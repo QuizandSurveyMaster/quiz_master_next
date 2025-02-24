@@ -23,7 +23,10 @@ jQuery(function ($) {
                 const selectedRadio = parentElement.find(`input[type="radio"][name="${name}"]:checked`);
                 selectedRadio.parents('label').addClass('qsm-dashboard-button-selected')
             });
-            console.log('load')
+            if ($(document).find('.qsm-dashboard-error-content').length) {
+                jQuery(document).find('.qsm-dashboard-header-pagination > a').hide();
+                jQuery('.qsm-dashboard-journy-create-quiz').show();
+            } 
             QSMAdminDashboard.showDependentAddons();
         },
 

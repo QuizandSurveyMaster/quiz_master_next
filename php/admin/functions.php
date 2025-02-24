@@ -1665,7 +1665,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-left">
 						<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
 						<h2 class="qsm-popup__title" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
-							<?php echo ucfirst(esc_html( $type )); esc_html_e( ' Templates', 'quiz-master-next' ); ?>
+							<?php echo esc_html( ucfirst( $type ) ) . esc_html__( ' Templates', 'quiz-master-next' ); ?>
 						</h2>
 					</div>
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-right">
@@ -1934,4 +1934,38 @@ function qsm_display_promotion_links_section() {
 			<li><a target="_blank" rel="noopener" href="<?php echo esc_url( qsm_get_utm_link('https://next.expresstech.io/qsm', 'dashboard', 'next_steps', 'dashboard_roadmap') )?>" class="welcome-icon"><?php esc_html_e( 'Roadmap', 'quiz-master-next' ); ?></a></li>
 		</ul>
 	<?php
+}
+
+function qsm_get_parsing_script_data( $file_name = 'parsing_script.json' ) {
+    global $wp_filesystem;
+    if ( empty($wp_filesystem) ) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        WP_Filesystem();
+    }
+    $file_path = QSM_PLUGIN_PATH . 'data/'.$file_name;
+    if ( ! $wp_filesystem->exists($file_path) ) {
+        return false; // File not found
+    }
+    $json_data = $wp_filesystem->get_contents($file_path);
+    $decoded_data = json_decode($json_data, true);
+    return $decoded_data ?: false;
+}
+
+function qsm_display_fullscreen_error() {
+    $support_link = qsm_get_plugin_link('contact-support', 'dashboard-error', 'useful_links', 'dashboard_support');
+    ?>
+    <div id="qsm-dashboard-error-container">
+        <div class="qsm-dashboard-error-content">
+            <h2><?php esc_html_e('Unable To Load Required Data', 'quiz-master-next'); ?></h2>
+            <p><?php esc_html_e('We couldn\'t load the required data, contact our support team for assistance, or you can still create a quiz.', 'quiz-master-next'); ?></p>
+            <ul>
+                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
+                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('If the issue persists, contact our support team for assistance.', 'quiz-master-next'); ?></li>
+            </ul>
+            <a href="<?php echo esc_url($support_link); ?>" class="qsm-dashboard-error-btn" target="_blank">
+                <?php esc_html_e('Troubleshoot Now', 'quiz-master-next'); ?>
+            </a>
+        </div>
+    </div>
+    <?php
 }
