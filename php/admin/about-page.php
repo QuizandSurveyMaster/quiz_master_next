@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_generate_about_page() {
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	if ( ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
 		return;
 	}
@@ -42,14 +41,17 @@ function qsm_generate_about_page() {
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
+
+<div class="wrap ">
+	<h1></h1>
 	<div class="qsm-about-heading">
-            <img src="<?php echo esc_url(plugins_url('../../assets/icon-128x128.png', __FILE__)); ?>" alt="">
-            <h1><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h1>
-            <div class="qsm_icon_wrap"><?php echo esc_html($version); ?></div>
+		<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
+            <h3><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h3>
+            <div class="qsm_icon_wrap"><?php esc_html_e('Version: ', 'quiz-master-next'); echo esc_html($version); ?></div>
     	</div>
 
 <?php if ( 'help' === $active_tab ) {?>
-<div class="wrap qsm-help-page">
+<div class="qsm-help-page">
 	<?php } elseif ( 'about' === $active_tab ) {?>
 	<div class="wrap about-wrap">
 		<?php } elseif ( 'system_info' === $active_tab ) {?>
@@ -97,7 +99,7 @@ function qsm_generate_about_page() {
 
 					if ( is_array( $contributors ) & ! empty( $contributors ) ) {
 						set_transient( 'qmn_contributors', $contributors, 3600 );
-						$contributor_list = '<ul class="wp-people-group">';
+						$contributor_list = '<ul class="qsm-wp-contributor wp-people-group">';
 						foreach ( $contributors as $contributor ) {
 							$contributor_list .= '<li class="wp-person">';
 							$contributor_list .= sprintf( '<a href="%s" title="%s">',
@@ -126,6 +128,7 @@ function qsm_generate_about_page() {
 				<?php } ?>
 		</div>
 	</div>
+</div><!-- Wrap -->
 	<?php
 }
 
@@ -141,23 +144,23 @@ function qsm_documentation_meta_box_content() {
 	?>
 	<div class="help-slide">
 		<div>
-		<img src="<?php echo esc_url( plugins_url( '../../assets/support.png', __FILE__ ) )?> " alt="">
-		<h3><?php esc_html_e( 'Support & Pre-Sales Questions', 'quiz-master-next' ); ?></h3>
-		<p><?php esc_html_e( 'Get expert answers to your questions about features, pricing, or installation of Quiz and Survey Master.', 'quiz-master-next' ); ?></p>
-		<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/support.png' )?> " alt="support">
+			<h3><?php esc_html_e( 'Support & Pre-Sales Questions', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Get expert answers to your questions about features, pricing, or installation of Quiz and Survey Master.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
 		</div>
 		<div>
-		<img src="<?php echo esc_url( plugins_url( '../../assets/setup.png', __FILE__ ) )?> " alt="">
-		<h3><?php esc_html_e( 'Need help with QSM Setup?', 'quiz-master-next' ); ?></h3>
-		<p><?php esc_html_e( 'Access step-by-step guidance and troubleshooting to ensure your quizzes and surveys are up and running smoothly.', 'quiz-master-next' ); ?></p>
-		<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
-	</div>
-	<div>
-		<img src="<?php echo esc_url( plugins_url( '../../assets/services.png', __FILE__ ) )?> " alt="">
-		<h3><?php esc_html_e( 'Need Customization Service?', 'quiz-master-next' ); ?></h3>
-		<p><?php esc_html_e( 'Tailor Quiz and Survey Master to your specific needs with our professional customization services for unique functionality.', 'quiz-master-next' ); ?></p>
-		<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Documentation', 'quiz-master-next' ); ?></a>
-	</div>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/setup.png' )?> " alt="setup">
+			<h3><?php esc_html_e( 'Need help with QSM Setup?', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Access step-by-step guidance and troubleshooting to ensure your quizzes and surveys are up and running smoothly.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
+		</div>
+		<div>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/services.png' )?> " alt="services">
+			<h3><?php esc_html_e( 'Need Customization Service?', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Tailor Quiz and Survey Master to your specific needs with our professional customization services for unique functionality.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Documentation', 'quiz-master-next' ); ?></a>
+		</div>
 	</div>
 	<?php
 }

@@ -49,7 +49,7 @@ function qsm_options_emails_tab_content() {
 		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
 		'dependency'        => $qsm_dependency_list,
 		'required_addons'   => __('Required Add-ons', 'quiz-master-next'),
-		'used_addons'       => __('Used Add-ons', 'quiz-master-next'),
+		'used_addons'       => __('Addons :', 'quiz-master-next'),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 	do_action( 'qsm_options_email_tab_content_before' );

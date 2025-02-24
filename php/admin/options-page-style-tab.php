@@ -195,7 +195,7 @@ function qsm_options_styling_tab_content() {
 		$ultimate_args = array(
 			"id"           => 'qsm-ultimate',
 			"title"        => __( 'Go Beyond Standard Quizzes', 'quiz-master-next' ),
-			"description"  => __( 'Transform your quizzes with the QSM Ultimate Add-On.', 'quiz-master-next' ),
+			"description"  => __( 'Take full control over quiz customization and User Experience with QSM Ultimate Add-On.', 'quiz-master-next' ),
 			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/Ultimate.png',
 			"warning"      => __( 'Ultimate Addon required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Ultimate Addon separately.', 'quiz-master-next' ),
@@ -204,9 +204,9 @@ function qsm_options_styling_tab_content() {
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'ultimate', 'result-ultimate-upsell_upgrade', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/Ultimate', 'result_page', 'ultimate', 'result-ultimate-upsell_buy_addon', 'qsm_plugin_upsell' ),
 			"list_items"   => array(
-				__("Dynamic Progress Tracking for better engagement", "quiz-master-next"),
-				__("Smart Quiz Retakes to focus on missed questions", "quiz-master-next"),
-				__("Auto-Advance Navigation for a seamless experience", "quiz-master-next"),
+				__("Adjust backgrounds, fonts, colors, and borders.", "quiz-master-next"),
+				__("Customize buttons, answer choices, timers, and progress bars.", "quiz-master-next"),
+				__("Control layout, positioning, and label displays.", "quiz-master-next"),
 			),
 		);
 		?>
