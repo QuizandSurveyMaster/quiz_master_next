@@ -270,8 +270,7 @@ function qsm_find_key_from_array( $search_value, $array ) {
 	if ( $array ) {
 		$search_value = htmlspecialchars_decode( $search_value, ENT_QUOTES );
 		foreach ( $array as $key => $value ) {
-			$value_val = $value[0];
-			if ( $value_val == $search_value ) {
+			if ( isset( $value[0] ) && $value[0] == $search_value ) {
 				return true;
 			}
 		}
