@@ -608,6 +608,7 @@ class MLWQuizMasterNext {
 			'feature_img_placeholder'    => QSM_PLUGIN_URL . 'assets/placeholder.png',
 			'delete_confirm'             => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
         	'delete_alert'               => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
+			'result_template'            => __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
@@ -894,7 +895,7 @@ class MLWQuizMasterNext {
 
 			add_submenu_page( 'qsm_dashboard', __( 'Extensions Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qmn_addons', 'qmn_addons_page', 34 );
 			add_submenu_page( 'qsm_dashboard', __( 'Free Add-ons', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Add-ons', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qsm-free-addon', 'qsm_display_optin_page', 90 );
-			add_submenu_page( 'qsm_dashboard', __( 'Create Quiz Page', 'quiz-master-next' ), '', $capabilities[6], 'qsm_create_quiz_page', 'qsm_create_quiz_page_callback' );
+			add_submenu_page( 'qsm_dashboard', __( 'Create Quiz Page', 'quiz-master-next' ), '', $capabilities[1], 'qsm_create_quiz_page', 'qsm_create_quiz_page_callback' );
 		}
 	}
 

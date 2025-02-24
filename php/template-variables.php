@@ -429,6 +429,9 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 	if ( false !== strpos( $content, '%QUIZ_LINK%' ) ) {
 		$content = str_replace( '%QUIZ_LINK%', $quiz_link, $content );
 	}
+	if ( false !== strpos( $content, '<qsmvariabletag>QUIZ_LINK</qsmvariabletag>' ) ) {
+		$content = str_replace( '<qsmvariabletag>QUIZ_LINK</qsmvariabletag>', $quiz_link, $content );
+	}
 	if ( false !== strpos( $content, '%RESULT_LINK%' ) ) {
 		$result_link = $quiz_link;
 		if ( isset( $mlw_quiz_array['result_id'] ) ) {

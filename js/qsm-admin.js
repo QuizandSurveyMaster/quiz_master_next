@@ -498,7 +498,7 @@ var QSMAdminResultsAndEmail;
                 },
                 multiple: false
             }).on('select', function () { // it also has "open" and "close" events
-                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                let attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.parents('.quiz_style_tab_content').find('.quiz_featured_image').val(attachment.url).trigger('input');
             }).open();
         });
@@ -739,15 +739,7 @@ jQuery('#save-results-screen-option-button').on('click', function (event) {
     jQuery('#results-screen-option-form').submit();
 });
 function deleteResults(id, quizName) {
-    jQuery("#delete_dialog").dialog({
-        autoOpen: false,
-        buttons: {
-            Cancel: function () {
-                $jQuery(this).dialog('close');
-            }
-        }
-    });
-    jQuery("#delete_dialog").dialog('open');
+    MicroModal.show('qsm-delete-result-page-popup');
     var idHidden = document.getElementById("result_id");
     var idHiddenName = document.getElementById("delete_quiz_name");
     idHidden.value = id;
@@ -822,6 +814,19 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                     }
                 });
             })
+
+            let $themeBrowser = jQuery(".quiz_style_tab_content#theme-browser");
+            if ($themeBrowser.length) {
+                let $themesContainer = $themeBrowser.find(".themes-container");
+                if ($themesContainer.length) {
+                    let $themesWrapper = $themesContainer.children();
+                    let $themesTarget = $themeBrowser.find(".themes.wp-clearfix");
+                    if ($themesTarget.length) {
+                        $themesWrapper.appendTo($themesTarget); // Moves instead of appending
+                    }
+                    $themesContainer.remove();
+                }
+            }
         });
     }
     if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 ) {
@@ -903,7 +908,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 const templateName = templateWrap.find('.qsm-insert-page-template-title').val().trim();
                 const selectedTemplateId = templateWrap.find('.qsm-to-replace-page-template').val();
                 const uniqueId = button.data('id');
-                const editor = tinymce.get(uniqueId - 1);
+                const editor = tinymce.get('results-page-' + (uniqueId));
                 const templateType = button.parents('.qsm-insert-page-template-anchor').data('template-type');
                 const templateContent = editor.getContent().trim();
                 const isReplace = jQuery('input[name="qsm-template-action"]:checked').val() === 'replace';
@@ -2207,16 +2212,15 @@ var QSMContact;
                 jQuery(document).on('click', '.qsm-start-with-canvas', function (e) { 
                     e.preventDefault();
                     const $emailBlock = jQuery(this).parents('.email-show');
-                    console.log($emailBlock)
                     let email_page = $emailBlock.data('email-page');
-                    let editor = tinymce.get(email_page - 1);
+                    let editor = tinymce.get('email-template-' + (email_page));
                     let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
                 });
 
-                jQuery(document).on('click', '.qsm-email-page-template-preview-button', function (e) {
+                jQuery(document).on('click', '.qsm-email-page-template-preview-button, .qsm-email-page-template-card-content', function (e) {
                     e.preventDefault();
                     let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-email-page-template-container').hide();
@@ -2228,7 +2232,6 @@ var QSMContact;
                     let all_dependency = qsmEmailsObject.dependency;
                     let $container = $('.qsm-email-template-dependency-addons');
                     $container.empty();
-                    console.log(scriptTemplate);
                     if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
@@ -2273,6 +2276,7 @@ var QSMContact;
                     let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
                     editor.setContent('');
+                    updatedContent = updatedContent + "<p></p>";
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     const $emailBlock = jQuery(`#email-template-${email_index}`).closest('.email-show');
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
@@ -2454,7 +2458,6 @@ var QSM_Quiz_Broadcast_Channel;
                     let removedDeletedQuestionArray = mergedQuestionIdArray.filter(id => id !== String(currentQuestionId));
                     // Create a new string from the filtered array
                     let removedDeletedQuestionString = removedDeletedQuestionArray.join(',');
-                    // console.log(mergedQuestionIdString, mergedQuestionIdArray, removedDeletedQuestionArray, removedDeletedQuestionString);
                     let sendDataObject = {
                         [currentQuestionId]: {
                             merged_question: removedDeletedQuestionString,
@@ -2884,7 +2887,6 @@ var QSM_Quiz_Broadcast_Channel;
                         $(document).find('.qsm-linked-list-inside').hide().empty();
                         $(document).find('.qsm-linked-list-div-block').hide();
                     }
-                    // $('#save-popup-button').trigger('click');
                 },
                 addNewQuestion: function (model) {
                     var default_answers = parseInt(qsmQuestionSettings.default_answers);
@@ -4471,7 +4473,6 @@ var QSM_Quiz_Broadcast_Channel;
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
                             page.redirect = redirect_value;
-                            // page.result_or_redirect = $(this).find('.qsm-edit-result-view-options input[type="radio"]:checked').val();
                         }
                         
                         $(this).find('.results-page-condition').each(function () {
@@ -4685,8 +4686,9 @@ var QSM_Quiz_Broadcast_Channel;
                     e.preventDefault();
                     let $resultsPage = jQuery(this).parents('.results-page-show');
                     let resultPageIndex = $resultsPage.data('result-page');
-                    let editor = tinymce.get(resultPageIndex - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let editor = tinymce.get('results-page-' + (resultPageIndex));
+                    let updatedContent = qsm_admin_messages.result_template.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminResults.displayResultEditor( $resultsPage );
                 });
@@ -4746,6 +4748,7 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
+                    updatedContent = updatedContent + "<p></p>";
                     editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     const $resultsPage = jQuery(`#results-page-${result_index}`).closest('.results-page-show');
@@ -4759,7 +4762,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let $parent = $this.parents('.results-page-show');
 
                     if ($this.val() === "1") {
-                        let editor = tinymce.get($parent.data('result-page') - 1);
+                        let editor = tinymce.get('results-page-' + ($parent.data('result-page')));
                         let content = editor.getContent().trim();
                         if (content === "") {
                             console.log("Content is empty.");

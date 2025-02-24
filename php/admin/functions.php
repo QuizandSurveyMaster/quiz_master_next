@@ -1462,7 +1462,7 @@ function qsm_advanced_assessment_quiz_page_content() {
 		<h1>
 			<?php esc_html_e( 'Answer Labels', 'quiz-master-next' ); ?>
 		</h1>
-		<?php 
+		<?php
 			$args = array(
 				"id"           => 'advanced-assessment',
 				"title"        => __( 'Advanced Assessment, Smarter Results', 'quiz-master-next' ),
@@ -1483,7 +1483,7 @@ function qsm_advanced_assessment_quiz_page_content() {
 			qsm_admin_upgrade_popup( $args, 'page' );
 		?>
 	</div>
-	<?php 
+	<?php
 }
 
 function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
@@ -1779,7 +1779,6 @@ function qsm_get_plugin_status_by_path( $path ) {
 function qsm_get_dependency_plugin_list() {
 	$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
 	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
-	$all_themes = $qsm_admin_dd['themes'];
 	$all_addons = $qsm_admin_dd['all_addons'];
 
 	$dependency_array = array();
