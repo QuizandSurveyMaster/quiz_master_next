@@ -221,10 +221,32 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 9.3.0 ( November 04, 2024 ) =
-* Feature: Added option to save question as draft
-* Feature: Added option to link question in multiple quizzes
-* Enhancement: Improved API option to get result by user id
+= 10.0.0 ( Fabuary 24, 2025 ) =
+* Feature: Added options to import and create email and result templates.
+* Feature: Enabled saving questions as drafts
+* Feature: Added the ability to link a question across multiple quizzes
+* Feature: Added an option to share quizzes on LinkedIn.
+* Feature: Introduced a setting to send only a single email to the same user when multiple logic conditions are met.
+* Feature: Added an option to disable scrolling while submitting a quiz
+* Bug: Fixed an issue with inline drop-down question types.
+* Enhancement: Improved UI across Quiz, Text, Option, and Email, Result pages
+* Enhancement: Enhanced the UI for Dashboard and other related pages
+
+= 9.2.4 ( December 30, 2024 ) =
+* Bug: Resolved issue with %TOTAL_QUESTIONS% variable
+* Bug: Resolved issue with %MAXIMUM_POINTS% variable
+
+= 9.2.3 ( December 13, 2024 ) =
+* Bug: Resolved issue where contact form not showing at quiz end
+* Bug: Resolved quiz timer issue for single-page quizzes
+* Bug: Fixed PHP warning related to the CONTACT_X variable
+* Enhancement: Enhanced the Captcha question type canvas for RTL websites
+* Enhancement: Refined user role permissions for improved access control
+
+= 9.2.2 ( November 06, 2024 ) =
+* Bug: Fixed issue with text displaying before quiz options
+* Bug: Resolved issue with left/right arrow keys in the quiz input box
+* Enhancement: Updated API to retrieve results by user ID
 
 = 9.2.1 ( October 16, 2024 ) =
 * Bug: Resolved vulnerability issue with question settings

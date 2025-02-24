@@ -93,12 +93,7 @@ function qsm_results_overview_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_enqueue_script( 'qsm_result_page_script', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version, true );
-	wp_localize_script( 'qsm_result_page_script', 'qsm_result_page', array(
-        'delete_confirm' => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
-        'delete_alert'   => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
-	));
+	
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
 
@@ -628,14 +623,19 @@ function qsm_results_overview_tab_content() {
 	if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
 		$qsm_pop_up_arguments = array(
 			"id"           => 'modal-proctor-quiz',
-			"title"        => __('Quiz Proctor', 'quiz-master-next'),
-			"description"  => __('Enhance exam fairness using Quiz Proctor: Capture images, monitor tab shifts, and prevent cheating by restricting copy/paste within the quiz. Ensure focus and equity with full-screen mode.', 'quiz-master-next'),
+			"title"        => __('Secure Your Quizzes with Proctoring', 'quiz-master-next'),
+			"description"  => __('Monitor and prevent cheating with the Quiz Proctor Addon.', 'quiz-master-next'),
 			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/proctor_quiz_chart.png',
 			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Quiz Proctor Addon separately.', 'quiz-master-next'),
 			"buy_btn_text" => __('Buy Quiz Proctor Addon', 'quiz-master-next'),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor/', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 			"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 			"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
+			"list_items"   => array(
+				__("Detect tab switching & enforce full-screen mode", "quiz-master-next"),
+				__("Capture test-taker images during the quiz", "quiz-master-next"),
+				__("Ensure fair and secure assessments", "quiz-master-next"),
+			),
 		);
 		qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 	}
@@ -644,8 +644,8 @@ function qsm_results_overview_tab_content() {
 function qsm_export_results_tabs_content() {
 	$args = array(
 		"id"           => 'export-results',
-		"title"        => __( 'Export Results Addon', 'quiz-master-next' ),
-		"description"  => __( 'The QSM Export Results Addon enables quiz administrators to export quiz results quickly and easily. You can download results as a CSV file for further analysis in Excel or other tools, and provide respondents with a downloadable PDF copy of their results. Perfect for sharing quiz/exam data with colleagues or moderators without database access, this addon streamlines result management and analysis.', 'quiz-master-next' ),
+		"title"        => __( 'Effortlessly Export Quiz Data', 'quiz-master-next' ),
+		"description"  => __( 'Manage quiz results with the Export Results Addon.', 'quiz-master-next' ),
 		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_results.png',
 		"warning"      => __( 'Export Results Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Export Results Addon separately.', 'quiz-master-next' ),
@@ -653,28 +653,10 @@ function qsm_export_results_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'export_results', 'result-exportresults-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/export-results', 'result_page', 'export_results', 'result-exportresults-upsell_buy_addon', 'qsm_plugin_upsell' ),
-		"benefits"     => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Export quiz results to CSV for detailed analysis.', 'quiz-master-next' ),
-				__( 'Generate personalized PDF reports for users.', 'quiz-master-next' ),
-				__( 'Filter exports by quizzes, dates, or data fields.', 'quiz-master-next' ),
-				__( 'Save time with quick, multi-quiz exports.', 'quiz-master-next' ),
-				__( 'Share results easily without database access.', 'quiz-master-next' ),
-				__( 'Analyze responses, scores, and timestamps.', 'quiz-master-next' ),
-				__( 'Ideal for diverse needs like education, training, and research.', 'quiz-master-next' ),
-			),
-		),
-		"use_cases"    => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Track student performance in educational settings.', 'quiz-master-next' ),
-				__( 'Measure training effectiveness for employees.', 'quiz-master-next' ),
-				__( 'Gather insights from consumer surveys.', 'quiz-master-next' ),
-				__( 'Collect feedback to improve future events.', 'quiz-master-next' ),
-				__( 'Evaluate candidates through recruitment quizzes.', 'quiz-master-next' ),
-				__( 'Analyze usability data for product improvement.', 'quiz-master-next' ),
-			),
+		"list_items"   => array(
+			__("Export responses to CSV for analysis", "quiz-master-next"),
+			__("Allow participants to download results as PDFs", "quiz-master-next"),
+			__("Simplify reporting & record-keeping", "quiz-master-next"),
 		),
 	);
 	qsm_admin_upgrade_popup( $args, 'page' );
@@ -682,8 +664,8 @@ function qsm_export_results_tabs_content() {
 function qsm_reporting_analysis_tabs_content() {
 	$args = array(
 		"id"           => 'reporting-analysis',
-		"title"        => __( 'Reporting & Analysis Addon', 'quiz-master-next' ),
-		"description"  => __( 'Transform your quiz/survey results into numbers with QSM Reporting & Analysis! Implement simple & advanced data analysis techniques to measure questions effectiveness and show the user results in the form of Pie Charts. Reporting & Analysis addon by QSM will make your life easier as a question designer by using a variety of charts and graphs and exporting the results in bulk.', 'quiz-master-next' ),
+		"title"        => __( 'Gain Powerful Insights with In-Depth Reports', 'quiz-master-next' ),
+		"description"  => __( 'Analyze performance trends with the Reporting & Analysis Addon.', 'quiz-master-next' ),
 		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png',
 		"warning"      => __( 'Reporting & Analysis Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ),
@@ -691,6 +673,11 @@ function qsm_reporting_analysis_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/reporting-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_read_documentation', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'result_page', 'result_analysis', 'result-reportanalysis-upsell_upgrade', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/results-analysis', 'result_page', 'result_analysis', 'result-reportanalysis-ups_buy_addon', 'qsm_plugin_upsell' ),
+		"list_items"   => array(
+			__("Track quiz performance over time", "quiz-master-next"),
+			__("Customize reports for deeper insights", "quiz-master-next"),
+			__("Optimize quiz results with data-driven decisions", "quiz-master-next"),
+		),
 	);
 	qsm_admin_upgrade_popup( $args, 'page' );
 }
@@ -698,8 +685,8 @@ function qsm_reporting_analysis_tabs_content() {
 function qsm_proctor_quiz_tabs_content() {
 	$args = array(
 		"id"           => 'proctoring-quiz',
-		"title"        => __( 'Quiz Proctor Addon', 'quiz-master-next' ),
-		"description"  => __( 'The Quiz Proctor Addon is your essential tool for ensuring fairness and security in online assessments. Acting as your virtual proctor, it prevents cheating by capturing images of quiz takers, tracking tab shifts, and enabling full-screen quiz mode. With Quiz Proctor, maintain trust in your quizzes by eliminating distractions and promoting integrity in every online test you conduct.', 'quiz-master-next' ),
+		"title"        => __('Secure Your Quizzes with Proctoring', 'quiz-master-next'),
+		"description"  => __('Monitor and prevent cheating with the Quiz Proctor Addon.', 'quiz-master-next'),
 		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
 		"warning"      => __( 'Missing Feature - Quiz Proctor Add-on required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Proctoring Quiz Addon separately.', 'quiz-master-next' ),
@@ -707,26 +694,10 @@ function qsm_proctor_quiz_tabs_content() {
 		"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
 		"addon_link"   => qsm_get_plugin_link( 'downloads/quiz-proctor', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
-		"benefits"     => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Provides feedback using violation reports.', 'quiz-master-next' ),
-				__( 'Ensures fair results with controlled retakes.', 'quiz-master-next' ),
-				__( 'Improves quiz design by analyzing violations.', 'quiz-master-next' ),
-				__( 'Automates monitoring to save time.', 'quiz-master-next' ),
-				__( 'Enhances fairness in online assessments.', 'quiz-master-next' ),
-			),
-		),
-		"use_cases"    => array(
-			'briefing'   => '',
-			'list_items' => array(
-				__( 'Ensures fair testing in online exams.', 'quiz-master-next' ),
-				__( 'Validates employee training assessments.', 'quiz-master-next' ),
-				__( 'Maintains credibility in certification tests.', 'quiz-master-next' ),
-				__( 'Supports students with violation feedback.', 'quiz-master-next' ),
-				__( 'Enforces honesty in compliance quizzes.', 'quiz-master-next' ),
-				__( 'Detects unusual patterns in surveys.', 'quiz-master-next' ),
-			),
+		"list_items"   => array(
+			__("Detect tab switching & enforce full-screen mode", "quiz-master-next"),
+			__("Capture test-taker images during the quiz", "quiz-master-next"),
+			__("Ensure fair and secure assessments", "quiz-master-next"),
 		),
 	);
 	qsm_admin_upgrade_popup( $args, 'page' );

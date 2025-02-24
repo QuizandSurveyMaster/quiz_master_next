@@ -50,7 +50,7 @@ function qsm_options_contact_tab_content() {
 	</div>
 	<div id="contact_form_setup" class="quiz_style_tab_content">
 		<h2 class="qsm-page-subheading" style="font-weight: 500;"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
-		<div id="poststuff" class="contact-form-builder-wrap">
+		<div id="poststuff" class="qsm-contact-form-builder-wrap">
 			<div class="contact-tab-content">
 				<label class="hide-control">
 					<input type="checkbox" class="show-disabled-fields" <?php echo ('true' == $show_fields && true == $show_fields) ? 'checked' : ''; ?> >

@@ -29,12 +29,22 @@ var QSMAdminResultsAndEmail;
         displayAlert: function (message, type) {
             QSMAdmin.clearAlerts();
             const $toaster = jQuery('#footer-bar-notice');
-            $toaster.text(message).removeClass().addClass(`footer-bar-notice qsm-response-${type} show`);
+            // Add message & close button
+            $toaster.html(`${message} <span class="qsm-close-alert">&times;</span>`)
+                .removeClass()
+                .addClass(`footer-bar-notice qsm-response-${type} show`);
+            // Auto-close after 4 seconds
             this.toasterTimeout = setTimeout(() => {
                 $toaster.removeClass('show');
             }, 4000);
+            // Click event to close immediately
+            jQuery('.qsm-close-alert').on('click', function () {
+                $toaster.removeClass('show');
+            });
         },
+        
         clearAlerts: function () {
+            jQuery('#footer-bar-notice').removeClass('show');
             $('.qsm-alerts').empty();
             clearTimeout(this.toasterTimeout);
         },
@@ -475,6 +485,24 @@ var QSMAdminResultsAndEmail;
             }).open();
         });
 
+        $(document).on('click', '#qsm-set-theme-feature-image', function (e) {
+            var button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                title: qsm_admin_messages.set_feature_img,
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: qsm_admin_messages.use_img // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.parents('.quiz_style_tab_content').find('.quiz_featured_image').val(attachment.url).trigger('input');
+            }).open();
+        });
+
         $(document).on('click', '.qsm-image-btn', function (e) {
             let button = $(this);
             e.preventDefault();
@@ -760,16 +788,6 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery('#' + current_id).show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
-jQuery('.qsm-upgrade-tab').click(function (e) {
-    e.preventDefault();
-    let $this = jQuery(this);
-    let current_id = $this.attr('data-id');
-    jQuery('.qsm-upgrade-tab').removeClass('current');
-    $this.addClass('current');
-    $this.parents('.qsm-upgrade-box').find('.qsm-upgrade-tab-content').hide();
-    $this.parents('.qsm-upgrade-box').find('#' + current_id).show();
-    jQuery(document).trigger('qsm_upgrade_tab_after', [current_id]);
-});
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
 if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if (window.location.href.indexOf('tab=style') > 0) {
@@ -784,11 +802,11 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
             });
             jQuery(document).on('input', '.quiz_featured_image', function () {
-                jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
-            });
-            jQuery(document).on('click', '.qsm-theme-featured-image-change', function (e) {
-                e.preventDefault();
-                jQuery('.qsm-theme-featured-image-update').toggle();
+                if(jQuery(this).val() == '') {
+                    jQuery('.qsm_featured_image_preview').attr('src', qsm_admin_messages.feature_img_placeholder);
+                } else {
+                    jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
+                }
             });
             jQuery(document).on('click', '.filter-links a', function () {
                 let current_id = jQuery(this).attr('data-id');
@@ -936,14 +954,14 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                         } else {
                             let response_data = response.data;
                             if (templateType == 'result') {
+                                response_data.indexid = qsmResultsObject.my_tmpl_data.length == 0 ? 0 : qsmResultsObject.my_tmpl_data.length;
                                 qsmResultsObject.my_tmpl_data.push(response_data);
                                 QSMAdminResultsAndEmail.updateMyTemplateOptions(response_data);
-                                response_data.indexid = qsmResultsObject.my_tmpl_data.length == 0 ? 0 : qsmResultsObject.my_tmpl_data.length;
                                 QSMAdminResultsAndEmail.addTemplateRow(response_data);
                             } else if (templateType == 'email') {
+                                response_data.indexid = qsmEmailsObject.my_tmpl_data.length == 0 ? 0 : qsmEmailsObject.my_tmpl_data.length;
                                 qsmEmailsObject.my_tmpl_data.push(response_data);
                                 QSMAdminResultsAndEmail.updateMyTemplateOptions(response_data);
-                                response_data.indexid = qsmEmailsObject.my_tmpl_data.length == 0 ? 0 : qsmEmailsObject.my_tmpl_data.length - 1;
                                 QSMAdminResultsAndEmail.addTemplateRow(response_data);
                             }
                             QSMAdmin.displayAlert(qsm_admin_messages.template_added, 'success');
@@ -1499,7 +1517,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                                             editor.execCommand('Delete');
                                         }
                                         editor.execCommand('mceInsertContent', false, command.value
-                                            .replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;')
+                                            .replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;')
                                             .replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, '<qsmextrashortcodetag>$1</qsmextrashortcodetag>&nbsp;')
                                         );
                                         autocomplete.remove();
@@ -1621,7 +1639,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                             if (variables.includes(pastedValue) || /\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(pastedValue)) {
                                 event.preventDefault();
                                 // Replace the variable tags and qsm shortcodes correctly
-                                let updatedContent = pastedValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');  // Handle %variable%
+                                let updatedContent = pastedValue.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');  // Handle %variable%
                                 updatedContent = qsmConvertContentToShortcode(updatedContent);
                                 editor.execCommand('mceInsertContent', false, updatedContent);
                             }
@@ -1864,6 +1882,7 @@ var QSMContact;
                     $('.contact-message').append('<p>' + message + '</p>');
                 },
                 clearAlerts: function () {
+                    jQuery('#footer-bar-notice').removeClass('show');
                     $('.contact-message').empty().removeClass().addClass('contact-message');
                 },
                 hideShowSettings: function (field) {
@@ -2162,7 +2181,7 @@ var QSMContact;
                 },
                 displayEmailEditor: function ( $emailBlock ){
                     $emailBlock.find('.qsm-email-page-template-options').hide();
-                    $emailBlock.find('.qsm-email-page-editor-options').show();
+                    $emailBlock.find('.qsm-email-page-then-box-styles-wrap').show();
                     $emailBlock.find('.qsm-email-page-common-section').each(function () {
                         let section = $(this);
                         if (section.children().length > 0) {
@@ -2180,23 +2199,21 @@ var QSMContact;
                 QSMAdminResultsAndEmail.loadMyTemplates( 'email' );
                 jQuery(document).on('click', '.qsm-start-with-template', function (e) {
                     e.preventDefault();
-                    let emailPageValue = jQuery(this).parents('.email-show').data('result-page');
+                    let emailPageValue = jQuery(this).parents('.email-show').data('email-page');
                     jQuery("#qsm-email-page-templates-content").attr('data-email-page', emailPageValue);
                     MicroModal.show('qsm-email-page-templates');
                 });
 
-                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) {
+                jQuery(document).on('click', '.qsm-start-with-canvas', function (e) { 
                     e.preventDefault();
                     const $emailBlock = jQuery(this).parents('.email-show');
                     console.log($emailBlock)
                     let email_page = $emailBlock.data('email-page');
                     let editor = tinymce.get(email_page - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = '%QUESTIONS_ANSWERS_EMAIL%'.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
-                    editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
-                    MicroModal.close('qsm-email-page-templates');
                 });
 
                 jQuery(document).on('click', '.qsm-email-page-template-preview-button', function (e) {
@@ -2221,16 +2238,16 @@ var QSMContact;
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
                                 if (dependencyIds.includes(dependency.id)) {
-                                    let $span = $('<span>').addClass('qsm-email-template-dependency-addon');
+                                    let $anchor = $('<a>').addClass('qsm-email-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
-                                    if (dependency.status == 'activated' || dependency.status == 'installed') {
-                                        $span.addClass('qsm-email-template-dependency-addon-purple').text(dependency.name);
+                                    if (dependency.status === 'activated' || dependency.status === 'installed') {
+                                        $anchor.addClass('qsm-email-template-dependency-addon-purple');
                                     } else {
-                                        $span.addClass('qsm-email-template-dependency-addon-orange').text(dependency.name);
+                                        $anchor.addClass('qsm-email-template-dependency-addon-orange');
                                     }
-                                    $usedAddonsDiv.append($span);
+                                    $usedAddonsDiv.append($anchor);
                                 }
-                            });
+                            });                            
                             if (hasUsedAddons) {
                                 $container.append($usedAddonsDiv);
                             }
@@ -2245,21 +2262,21 @@ var QSMContact;
 
                 jQuery(document).on('click', '.qsm-email-page-template-use-button', function (e) {
                     let structure = jQuery(this).data('structure');
+                    let email_index = jQuery("#qsm-email-page-templates-content").attr('data-email-page');
+                    let editor = tinymce.get('email-template-' + (email_index));
                     let templateValue;
                     if (structure == 'default') {
-                        templateValue = qsmEmailsObject.script_tmpl[jQuery(this).data('indexid')].template_content;
+                        templateValue = qsmEmailsObject.script_tmpl[jQuery(this).attr('data-indexid')].template_content;
                     } else if (structure == 'custom') {
-                        templateValue = qsmEmailsObject.my_tmpl_data[jQuery(this).data('indexid')].template_content;
+                        templateValue = qsmEmailsObject.my_tmpl_data[jQuery(this).attr('data-indexid')].template_content;
                     }
-                    let email_page = jQuery("#qsm-email-page-templates-content").data('email-page');
-                    let editor = tinymce.get(email_page -1);
                     let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
                     editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
-                    MicroModal.close('qsm-email-page-templates');
-                    const $emailBlock = jQuery(`#email-template-`+email_page).closest('.email-show');
+                    const $emailBlock = jQuery(`#email-template-${email_index}`).closest('.email-show');
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
+                    MicroModal.close('qsm-email-page-templates');
                 });
 
                 $('.add-new-email').on('click', function (event) {
@@ -4157,9 +4174,11 @@ var QSM_Quiz_Broadcast_Channel;
                         $('.answer-correct-div').show();
                     }
                     if (15 == question_val || 16 == question_val || 17 == question_val) {
-                        MicroModal.show('modal-advanced-question-type');
-                        $('#question_type').val(previous_question_val);
-                        return false;
+                        if (document.getElementById('modal-advanced-question-type')) {
+                            MicroModal.show('modal-advanced-question-type');
+                            $('#question_type').val(previous_question_val);
+                            return false;
+                        }
                     }
                     // show points field only for polar in survey and simple form
                     if (qsmQuestionSettings.form_type != 0) {
@@ -4441,6 +4460,8 @@ var QSM_Quiz_Broadcast_Channel;
                     let default_mark = false;
                     $('.results-page').each(function () {
                         default_mark = $(this).find('.qsm-mark-as-default:checked').length ? $(this).find('.qsm-mark-as-default:checked').val() : false;
+
+                        
                         page = {
                             'conditions': [],
                             'page': wp.editor.getContent($(this).find('.results-page-template').attr('id')),
@@ -4450,7 +4471,9 @@ var QSM_Quiz_Broadcast_Channel;
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
                             page.redirect = redirect_value;
+                            // page.result_or_redirect = $(this).find('.qsm-edit-result-view-options input[type="radio"]:checked').val();
                         }
+                        
                         $(this).find('.results-page-condition').each(function () {
                             page.conditions.push({
                                 'category': $(this).find('.results-page-condition-category').val(),
@@ -4578,6 +4601,7 @@ var QSM_Quiz_Broadcast_Channel;
                     const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
                     const $conditionalButton = $resultsPage.find('.qsm-extra-shortcode-conditional-button');
                     $resultsPage.find('.wp-media-buttons .insert-media').after($conditionalButton);
+                    
                     if (
                         singlePage &&
                         typeof singlePage === 'object' &&
@@ -4590,12 +4614,10 @@ var QSM_Quiz_Broadcast_Channel;
                         $resultsPage.find('.qsm-result-page-template-options').hide();
                         QSMAdminResults.hideShowResultPageSection($resultsPage);
                     } else {
-                        console.log('jhsdakj')
-                        if(typeof singlePage.redirect === 'undefined' || page == '') {
+                        if(typeof singlePage.redirect === 'undefined' || page == '' || !singlePage.hasOwnProperty('default_mark')) {
                             // New Result Page
                             $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div").hide();
                             $resultsPage.find('.qsm-result-page-template-options').show();
-                            console.log('jhsdakj')
                         } else {
                             // Default Loading Result Page
                             $resultsPage.find('.qsm-result-page-redirect-options').hide();
@@ -4664,12 +4686,12 @@ var QSM_Quiz_Broadcast_Channel;
                     let $resultsPage = jQuery(this).parents('.results-page-show');
                     let resultPageIndex = $resultsPage.data('result-page');
                     let editor = tinymce.get(resultPageIndex - 1);
-                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = '%QUESTIONS_ANSWERS% '.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminResults.displayResultEditor( $resultsPage );
                 });
 
-                jQuery(document).on('click', '.qsm-result-page-template-preview-button', function (e) {
+                jQuery(document).on('click', '.qsm-result-page-template-preview-button, .qsm-result-page-template-card-content', function (e) {
                     e.preventDefault();
                     let indexId = jQuery(this).data('indexid');
                     jQuery('.qsm-result-page-template-container').hide();
@@ -4690,15 +4712,15 @@ var QSM_Quiz_Broadcast_Channel;
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
                                 if (dependencyIds.includes(dependency.id)) {
-                                    let $span = $('<span>').addClass('qsm-result-template-dependency-addon');
+                                    let $anchor = $('<a>').addClass('qsm-result-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
-                                    if (dependency.status == 'activated' || dependency.status == 'installed') {
-                                        $span.addClass('qsm-result-template-dependency-addon-purple').text(dependency.name);
+                                    if (dependency.status === 'activated' || dependency.status === 'installed') {
+                                        $anchor.addClass('qsm-result-template-dependency-addon-purple');
                                     } else {
-                                        $span.addClass('qsm-result-template-dependency-addon-orange').text(dependency.name);
+                                        $anchor.addClass('qsm-result-template-dependency-addon-orange');
                                     }
-                                    $usedAddonsDiv.append($span);
-                                }
+                                    $usedAddonsDiv.append($anchor);
+                                }                                
                             });
                             if (hasUsedAddons) {
                                 $container.append($usedAddonsDiv);
@@ -5126,19 +5148,19 @@ jQuery(document).ready(function() {
 
         // Handle bulk delete action
         if (action === 'bulk_delete') {
-            if (confirm(qsm_result_page.delete_confirm)) {
+            if (confirm(qsm_admin_messages.delete_confirm)) {
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
         }
         // Handle permanent delete action
         else if (action === 'bulk_permanent_delete') {
-            if (confirm(qsm_result_page.delete_confirm)) {
+            if (confirm(qsm_admin_messages.delete_confirm)) {
                 jQuery('#bulk_permanent_delete').val('1');
                 jQuery('form[name="bulk_delete_form"]').submit();
             }
         }
         else {
-            alert(qsm_result_page.delete_alert);
+            alert(qsm_admin_messages.delete_alert);
         }
     });
 });

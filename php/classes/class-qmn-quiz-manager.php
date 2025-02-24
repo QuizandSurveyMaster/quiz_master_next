@@ -609,7 +609,7 @@ class QMNQuizManager {
 				'skip_validation_time_expire'        => $qmn_quiz_options->skip_validation_time_expire,
 				'timer_limit_val'                    => $qmn_quiz_options->timer_limit,
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
-				'disable_scroll_on_result' 			 => $qmn_quiz_options->disable_scroll_on_result,
+				'disable_scroll_on_result'           => $qmn_quiz_options->disable_scroll_on_result,
 				'disable_first_page'                 => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
@@ -791,7 +791,7 @@ class QMNQuizManager {
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
 			$order_by_sql = 'ORDER BY rand()';
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
-			if ( $categories && !empty( $quiz_options->question_per_category ) ) {
+			if ( $categories && ! empty( $quiz_options->question_per_category ) ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
 				if ( ! $multiple_category_system ) {
 					$cat_str   = "'" . implode( "', '", $exploded_arr ) . "'";

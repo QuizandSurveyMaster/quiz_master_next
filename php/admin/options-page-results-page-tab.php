@@ -259,7 +259,7 @@ function qsm_options_results_tab_template(){
 											<div style="display: none;" class="qsm-to-replace-page-template-wrap">
 												<select class="qsm-to-replace-page-template"></select>
 											</div>
-											<div class="qsm-insert-template-response"></div>
+											<p class="qsm-insert-template-response"></p>
 										</div>
 										<div class="qsm-insert-template-right">
 											<button data-id="{{data.id}}" class="qsm-save-page-template-button button"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
@@ -302,7 +302,7 @@ function qsm_options_results_tab_template(){
 					<div class="results-page-when">
 						<div class="results-page-content-header">
 							<h4><?php esc_html_e( 'When..', 'quiz-master-next' ); ?></h4>
-							<p><?php esc_html_e( 'Condition for displaying result', 'quiz-master-next' ); ?></p>
+							<p><?php esc_html_e( 'Following conditions are met', 'quiz-master-next' ); ?></p>
 						</div>
 						<div class="results-page-when-conditions">
 							<!-- Conditions go here. Review template below. -->
@@ -329,12 +329,10 @@ function qsm_options_results_tab_template(){
 							<div class="qsm-result-page-template-options qsm-result-page-then-box-styles" >
 								<div class="qsm-result-page-template-buttons">
 									<button class="button qsm-common-button-styles qsm-start-with-template" ><?php esc_html_e( 'Start With a Template', 'quiz-master-next' );?></button>
-									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Blank Canvas', 'quiz-master-next' );?></button>
+									<button class="button qsm-common-button-styles qsm-start-with-canvas"><?php esc_html_e( 'Default Template', 'quiz-master-next' );?></button>
 								</div>
 								<div class="qsm-result-page-template-learn-more">
-									<p><?php esc_html_e( 'Learn to know more about the QSM Premade library? ', 'quiz-master-next' );?>
-										<a href="javascript:void(0)" target="_blank"><?php esc_html_e( 'Learn more', 'quiz-master-next' );?></a>
-									</p>
+									<p><a href="<?php echo esc_url( qsm_get_plugin_link('docs/advanced-topics/template-library', 'quiz-options-result-page') );?>" target="_blank" rel="noopener"><?php esc_html_e( "Learn More About Templates", 'quiz-master-next' ); ?></a></p>
 								</div>
 							</div>
 							<div class="qsm-result-page-editor-options qsm-result-page-then-box-styles">
@@ -383,12 +381,16 @@ function qsm_options_results_tab_template(){
 								<!-- NOTE: Previously redirect input displayed here -->
 								<?php do_action( 'qsm_result_page_after',  $quiz_id, $categories ); 
 									if ( ! class_exists('QSM_Webhooks') ) { ?>
-										<div class="qsm-webhooks-pricing-popup qsm-upgrade-box-base qsm-webhooks-upgrade-button">
-											<div class="qsm-upgrade-box-base-title">
-												<img src="http://test.local/wp-content/plugins/quiz-master-next/php/images/info.png" alt="">
-												<p><?php esc_html_e('Add Webhook', 'quiz-master-next'); ?></p>
+										<div class="qsm-webhooks-pricing-popup qsm-webhooks-upgrade-button">
+											<div class="qsm-webhooks-upgrade-upper">
+												<label class="qsm-webhooks-label"><?php esc_html_e( 'Assign Webhook', 'quiz-master-next' ); ?></label>
+												<select class="qsm-webhooks-select">
+													<option><?php esc_html_e('Select Webhook', 'quiz-master-next'); ?></option>
+												</select>
 											</div>
-											<a class="qsm-webhooks-pricing-popup-details" href="<?php echo qsm_get_plugin_link( 'downloads/webhooks/', 'result_page', 'webhooks', 'result-webhooks-upsell_upgrade', 'qsm_plugin_upsell' ); ?>" ><?php esc_html_e('Details', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt qsm-upgrade-right-arrow"></span></a>
+											<a href="javascript:void(0)" class="qsm-webhooks-upgrade-link">
+											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Lock.png' ); ?>" alt="Lock.png"><span class="qsm-webhooks-anchor-text"><?php esc_html_e( 'Upgrade', 'quiz-master-next' ); ?></span>
+											</a>
 										</div>
 									<?php }
 								?>
