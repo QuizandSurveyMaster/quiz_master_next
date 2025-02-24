@@ -1665,7 +1665,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-left">
 						<img class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-image" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/icon-200x200.png'); ?>" alt="icon-200x200.png"/>
 						<h2 class="qsm-popup__title" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-title">
-							<?php esc_html_e( 'Templates', 'quiz-master-next' ); ?>
+							<?php echo ucfirst(esc_html( $type )); esc_html_e( ' Templates', 'quiz-master-next' ); ?>
 						</h2>
 					</div>
 					<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-header-right">
@@ -1785,10 +1785,11 @@ function qsm_get_dependency_plugin_list() {
 
 	foreach ( $all_addons as $key => $addon ) {
 		$path = $addon['path'] ?? '';
+		$addon_link          = qsm_get_utm_link( $addon['link'], 'result_or_email', 'templates', 'template_preview_' . sanitize_title( $addon['name'] ) );
 		$dependency_array[] = [
 			'id'     => $addon['id'],
 			'name'   => $addon['name'],
-			'link'   => $addon['link'],
+			'link'   => $addon_link,
 			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
 		];
 	}

@@ -830,26 +830,9 @@ span.qsm-quiz-name {
 	}
 }
 /******************** About/Credits Page *********************/
-div.qsm_icon_wrap {
-	position: absolute;
-	top: -24px;
-	left: -30px;
-	color: #111827;
-	background-position: center 24px;
-	background-size: 85px 85px;
-	font-size: 14px;
-	text-align: center;
-	font-weight: 600;
-	margin: 5px 0 0;
-	padding-top: 100px;
-	height: 40px;
-	display: inline-block;
-	width: 150px;
-}
+
 .qsm-about-heading img{
-	width: 100px;
-	margin-left: -5px;
-	margin-top: 13px;
+	width: 60px;
 }
 .qsm-tab-content .feature {
 	margin-bottom: 20px;
@@ -4240,19 +4223,36 @@ h2#qsm-email-page-templates-title {
     padding: 0 8px;
 }
 .qsm-response-toaster, .footer-bar-notice {
-	position: fixed;
-	top: 40px;
-	left: calc(50% - 80px);
-	color: white;
-	padding: 10px 20px;
-	border-radius: 5px;
-	box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.09);
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(-20px) scale(0.5);
-	transition: opacity 0.5s, transform 0.5s, visibility 0.5s;
-	z-index: 99;
+    position: fixed;
+    top: 70px;
+    left: calc(90% - 125px);
+    color: white;
+    padding: 10px 25px 10px 15px;
+    box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.09);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(50px) scale(0.95);
+    transition: opacity 0.8s ease-out, transform 0.5s ease-out, visibility 0.8s;
+    z-index: 99;
+    display: grid;
+    min-height: 30px;
+    align-items: center;
+    min-width: 200px;
+    justify-content: center;
+    grid-template-columns: 5fr 0.5fr;
 }
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
 
 .qsm-response-toaster.show, .footer-bar-notice.show {
 	opacity: 1;
@@ -4279,7 +4279,6 @@ h2#qsm-email-page-templates-title {
 
 .footer-bar-notice.show .qsm-close-alert {
 	position: relative;
-    top: -8px;
     left: 13px;
     background: #FFFFFF;
     height: 15px;
@@ -4315,8 +4314,13 @@ a.qsm-preview-template-image-close.button.button-secondary {
     top: 3px;
     right: 4px;
 }
+.qsm-preview-template-image-wrapper {
+	display: flex;
+	justify-content: center;
+}
 .qsm-preview-template-image-wrapper .qsm-preview-template-image {
-	width: 100%;
+	max-width: 750px;
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 .results-page-show .mce-tinymce.mce-container.mce-fullscreen, .email-show .mce-tinymce.mce-container.mce-fullscreen {
     z-index: 9999;
@@ -4360,7 +4364,14 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 	display: flex;
     gap: 5px 15px;
     flex-wrap: wrap;
+	align-items: center;
 }
+.qsm-result-template-dependency-addons .qsm-used-addons h3 , .qsm-email-template-dependency-addons .qsm-used-addons h3 {
+	font-size: 12px;
+	font-weight: 500;
+	color: #555555;
+}
+
 .qsm-result-template-dependency-addons > div h3, .qsm-email-template-dependency-addons > div h3 {
     margin: 0;
 }
@@ -4369,9 +4380,7 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
     align-items: flex-start;
     grid-gap: 20px;
     margin: 0px 0 10px 0px;
-	border: 1px solid rgba(30, 30, 30, 0.1);
     padding: 10px;
-	background-color: #ffffff;
     border-radius: 6px;
 }
 
@@ -4966,13 +4975,10 @@ span.qsm-insert-template-variable-text {
 .qsm_page_qsm_quiz_about .about-wrap .wp-person .gravatar{
 	border-radius: 30px;
 }
-.qsm_page_qsm_quiz_about .qsm-about-heading h1{
+.qsm_page_qsm_quiz_about .qsm-about-heading h3{
 	font-size: 18px;
 	display: inline-block;
-	position: absolute;
 	font-weight: 400;
-    line-height: 28px;
-	top: 37px;
 }
 .qsm_page_qsm_quiz_about .about-wrap h2{
 	font-size: 18px;
@@ -4990,22 +4996,33 @@ span.qsm-insert-template-variable-text {
 .qsm_page_qsm_quiz_about .about-wrap .wp-person{
 	width: 250px;
 }
-.qsm_page_qsm_quiz_about .help-slide{
-	display: flex;
-    margin: 10px;
-	flex-wrap: wrap;
+.qsm_page_qsm_quiz_about .help-slide{ 
+    display: grid;
+    gap: 1em;
+    margin-top: 24px;
+    grid-template-columns: repeat(auto-fill,minmax(330px,1fr));
+    transition: all .5s;
 }
-.qsm_page_qsm_quiz_about .help-slide div{
-	width: 400px;
+.qsm-about-heading {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+}
+.qsm_page_qsm_quiz_about .help-slide div{ 
 	height: 250px;
 	border: 1px solid #E6E6E6;
-	margin: 20px;
 	flex-direction: column;
 	display: flex;
 	padding: 20px;
 	justify-content: center;
 }
-
+ul.qsm-wp-contributor.wp-people-group { 
+    display: grid;
+    gap: 1em;
+    margin-top: 24px;
+    grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+    transition: all .5s;
+}
 .qsm_page_qsm_quiz_about .help-slide div img{
 	width: 44px;
 	height: 44px;
