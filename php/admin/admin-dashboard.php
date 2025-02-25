@@ -5,8 +5,7 @@
  * @param string $name
  */
 function qsm_get_widget_data( $name ) {
-	$qsm_admin_dd = wp_remote_get( QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ] );
-	$qsm_admin_dd = json_decode( wp_remote_retrieve_body( $qsm_admin_dd ), true );
+	$qsm_admin_dd = qsm_get_parsing_script_data();
 	return isset( $qsm_admin_dd[ $name ] ) ? $qsm_admin_dd[ $name ] : array();
 }
 

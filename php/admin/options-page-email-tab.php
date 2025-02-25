@@ -31,8 +31,7 @@ function qsm_options_emails_tab_content() {
 	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$user_id = get_current_user_id();
-	$template_from_script = wp_remote_get( QSM_PLUGIN_URL . 'data/templates.json', [ 'sslverify' => false ] );
-	$template_from_script = json_decode( wp_remote_retrieve_body( $template_from_script ), true );
+	$template_from_script = qsm_get_parsing_script_data( 'templates.json' );
 	$template_from_script = apply_filters( 'qsm_email_templates_list_before', $template_from_script, $quiz_id );
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
