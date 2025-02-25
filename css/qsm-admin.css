@@ -2328,7 +2328,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     margin-top: 26px;
 }
 
-.qsm-popup__content .qsm-upgrade-buttons-links a { 
+.qsm-popup__content .qsm-upgrade-buttons-links a {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
@@ -2443,7 +2443,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     gap: 22px;
     align-items: center;
 }
-.qsm-upgrade-buttons-links a{ 
+.qsm-upgrade-buttons-links a{
     font-size: 12px;
     line-height: 20px;
     text-align: center;
@@ -2494,7 +2494,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     font-size: 14px;
 }
 .qsm-upgrade-box .qsm-upgrade-briefing,
-.qsm-upgrade-box .qsm-upgrade-description { 
+.qsm-upgrade-box .qsm-upgrade-description {
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 20px;
@@ -2556,7 +2556,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	border:none;
 	padding:0px;
 }
-.qsm-upgrade-box h2 { 
+.qsm-upgrade-box h2 {
     font-weight: 500;
     font-size: 20px;
     line-height: 26.6px;
@@ -4989,7 +4989,7 @@ span.qsm-insert-template-variable-text {
 .qsm_page_qsm_quiz_about .about-wrap .wp-person{
 	width: 250px;
 }
-.qsm_page_qsm_quiz_about .help-slide{ 
+.qsm_page_qsm_quiz_about .help-slide{
     display: grid;
     gap: 1em;
     margin-top: 24px;
@@ -5001,7 +5001,7 @@ span.qsm-insert-template-variable-text {
 	align-items: center;
 	gap: 25px;
 }
-.qsm_page_qsm_quiz_about .help-slide div{ 
+.qsm_page_qsm_quiz_about .help-slide div{
 	height: 250px;
 	border: 1px solid #E6E6E6;
 	flex-direction: column;
@@ -5009,7 +5009,7 @@ span.qsm-insert-template-variable-text {
 	padding: 20px;
 	justify-content: center;
 }
-ul.qsm-wp-contributor.wp-people-group { 
+ul.qsm-wp-contributor.wp-people-group {
     display: grid;
     gap: 1em;
     margin-top: 24px;
@@ -5099,7 +5099,6 @@ ul.qsm-wp-contributor.wp-people-group {
     margin-bottom: 8px;
 }
 .qsm-dashboard-error-btn, .qsm-dashboard-error-btn:hover, .qsm-dashboard-error-btn:focus {
-    display: inline-block;
     padding: 10px 20px;
     background: #fbbf24;
     color: #92400e;

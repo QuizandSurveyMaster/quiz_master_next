@@ -195,7 +195,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						$is_activated = in_array( $theme_path, $activated_plugins, true );
 						$is_installed = array_key_exists( $theme_path, $installed_plugins );
 						$card_class = $is_activated ? "qsm-quiz-theme-activated" : "";
-						
+
 						?>
 						<div class="qsm-quiz-steps-card <?php echo esc_attr($card_class); ?>"  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
 							<div class="qsm-quiz-steps-image">
@@ -313,7 +313,6 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					<div class="qsm-quiz-addon-steps-card" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
 						<div class="qsm-quiz-addon-steps-images">
 							<img class="qsm-quiz-addon-steps-icon" alt="Addon" src="<?php echo esc_url($addon_icon); ?>">
-							<!-- <a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png" /></a> -->
 						</div>
 						<div class="qsm-quiz-addon-steps-info">
 							<h3 class="qsm-quiz-addon-steps-title"><?php echo esc_html($addon_name); ?></h3>
