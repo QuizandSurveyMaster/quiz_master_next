@@ -360,6 +360,7 @@ class QSM_Quiz_Settings {
 					$social_media_text = array(
 						'twitter'  => $quiz_options->social_media_text,
 						'facebook' => $quiz_options->social_media_text,
+						'linkedin' => $quiz_options->social_media_text,
 					);
 				}
 
@@ -394,6 +395,7 @@ class QSM_Quiz_Settings {
 						'total_user_tries_text'    => $quiz_options->total_user_tries_text,
 						'twitter_sharing_text'     => $social_media_text['twitter'],
 						'facebook_sharing_text'    => $social_media_text['facebook'],
+						'linkedin_sharing_text'    => $social_media_text['linkedin'],
 						'previous_button_text'     => $pagination_text[0],
 						'next_button_text'         => $pagination_text[1],
 						'require_log_in_text'      => $quiz_options->require_log_in_text,
@@ -474,7 +476,6 @@ class QSM_Quiz_Settings {
 			unset( $options['quiz_name'] );
 			$quiz_options = array_merge( $quiz_options, $options );
 		}
-
 		// Return as old object model
 		return (object) $quiz_options;
 	}

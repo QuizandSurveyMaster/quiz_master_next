@@ -66,7 +66,7 @@ class QSM_Questions {
 	 * @param  int $quiz_id The ID of the quiz.
 	 * @return array The array of questions.
 	 */
-	public static function load_questions_by_pages( $quiz_id ) {
+	public static function load_questions_by_pages( $quiz_id, $caller = '' ) {
 		// Prepares our variables.
 		global $wpdb;
 		global $mlwQuizMasterNext;
@@ -77,7 +77,7 @@ class QSM_Questions {
 
 		// Gets the pages for the quiz.
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), $caller );
 
 		// Get all question IDs needed.
 		if ( ! empty( $pages ) ) {
@@ -125,7 +125,7 @@ class QSM_Questions {
 			}
 		} else {
 			// If we do not have pages on this quiz yet, use older load_questions and add page to them.
-			$questions = self::load_questions( $quiz_id );
+			$questions = self::load_questions( $quiz_id, $caller );
 			foreach ( $questions as $key => $question ) {
 				$questions[ $key ]['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 			}
@@ -140,7 +140,7 @@ class QSM_Questions {
 	 * @param  int $quiz_id The ID of the quiz.
 	 * @return array The array of questions.
 	 */
-	public static function load_questions( $quiz_id ) {
+	public static function load_questions( $quiz_id, $caller = '' ) {
 
 		global $wpdb;
 		$question_array = array();
@@ -178,6 +178,12 @@ class QSM_Questions {
 
 			$question_array[ $question['question_id'] ] = $question;
 		}
+		$question_array = ! empty( $caller ) ? $question_array : array_filter(
+			$question_array,
+			function ( $question ) {
+				return ! isset( $question['settings']['isPublished'] ) || 0 !== intval( $question['settings']['isPublished'] );
+			}
+		);
 		return apply_filters( 'qsm_load_questions', $question_array, $quiz_id );
 	}
 
@@ -270,6 +276,7 @@ class QSM_Questions {
 			'order'           => 1,
 			'category'        => '',
 			'multicategories' => '',
+			'linked_question' => '',
 		);
 		$data     = wp_parse_args( $data, $defaults );
 
@@ -297,6 +304,22 @@ class QSM_Questions {
 		if ( $trim_question_description ) {
 			$question_name = trim( preg_replace( '/\s+/', ' ', $question_name ) );
 		}
+		$linked_question = sanitize_text_field( $data['linked_question'] );
+		$linked_questions_array = array();
+
+		if ( ( $is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] ) || ! $is_creating ) {
+			// Convert the existing linked_question into an array
+			$linked_questions_array = array_filter(array_map('trim', explode(',', $linked_question)));
+			// Add the new value if it's not already in the array
+			if ( isset($data['is_linking'] ) && ! in_array($data['is_linking'], $linked_questions_array, true) ) {
+				$linked_questions_array[] = $data['is_linking'];
+			}
+			$linked_questions_array = array_filter($linked_questions_array);
+			// Join back into a comma-separated string
+			$linked_question = implode(',', $linked_questions_array);
+		} elseif ( isset($data['is_linking']) && 0 == $data['is_linking'] ) {
+			$linked_question = '';
+		}
 
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
@@ -309,6 +332,7 @@ class QSM_Questions {
 			'question_type_new'    => sanitize_text_field( $data['type'] ),
 			'question_settings'    => maybe_serialize( $settings ),
 			'category'             => sanitize_text_field( $data['category'] ),
+			'linked_question'      => $linked_question,
 			'deleted'              => 0,
 		);
 		$values = apply_filters( 'qsm_save_question_data', $values );
@@ -321,6 +345,7 @@ class QSM_Questions {
 			'%d',
 			'%s',
 			'%d',
+			'%s',
 			'%s',
 			'%s',
 			'%s',
@@ -351,44 +376,72 @@ class QSM_Questions {
 			throw new Exception( $msg );
 		}
 
-		/**
-		 * Process Question Categories
-		 */
-		$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
-		$wpdb->delete(
-			$question_terms_table,
-			array(
-				'question_id' => $question_id,
-				'taxonomy'    => 'qsm_category',
-			)
-		);
-		if ( ! empty( $data['multicategories'] ) ) {
-			foreach ( $data['multicategories'] as $term_id ) {
-				$term_rel_data = array(
-					'question_id' => $question_id,
-					'quiz_id'     => intval( $data['quiz_id'] ),
-					'term_id'     => $term_id,
-					'taxonomy'    => 'qsm_category',
-				);
-				// Check if the data already exists in the table
-				$data_exists = $wpdb->get_row($wpdb->prepare("SELECT * FROM $question_terms_table WHERE question_id = %s AND quiz_id = %s AND term_id = %s AND taxonomy = %s", $question_id, intval( $data['quiz_id'] ), $term_id, 'qsm_category' ));
-				if ( ! $data_exists ) {
-					$wpdb->insert( $question_terms_table, $term_rel_data );
+		$base_question_id = $question_id;
+		$quiz_questions_array = array();
+		$quiz_questions_array[ intval( $data['quiz_id'] ) ] = $question_id;
+		$linked_questions_array[] = $question_id;
+		if ( isset($linked_question) && "" != $linked_question ) {
+			// preparing array for quiz question id
+			$imploded_question_ids = implode( ',', array_unique($linked_questions_array) );
+			if ( ! empty($linked_questions_array) ) {
+				$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $imploded_question_ids . ")" );
+				foreach ( $quiz_results as $key => $value ) {
+					$quiz_questions_array[ $value->quiz_id ] = $value->question_id;
 				}
 			}
+			$values['linked_question'] = $imploded_question_ids;
 		}
+		$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
+		foreach ( $quiz_questions_array as $quiz_id => $question_id_loop ) {
+			$values['quiz_id'] = intval( $quiz_id );
+			$wpdb->update(
+				$wpdb->prefix . 'mlw_questions',
+				$values,
+				array( 'question_id' => intval($question_id_loop) ),
+				$types,
+				array( '%d' )
+			);
 
-		/**
-		 * Hook after saving question
-		 */
-		if ( $is_creating ) {
-			do_action( 'qsm_question_added', $question_id, $values );
-		} else {
-			do_action( 'qsm_question_updated', $question_id, $values );
+			/**
+			 * Process Question Categories
+			 */
+
+			$wpdb->delete(
+				$question_terms_table,
+				array(
+					'question_id' => $question_id_loop,
+					'taxonomy'    => 'qsm_category',
+				)
+			);
+			if ( ! empty( $data['multicategories'] ) ) {
+				foreach ( $data['multicategories'] as $term_id ) {
+					$term_rel_data = array(
+						'question_id' => $question_id_loop,
+						'quiz_id'     => intval( $quiz_id ),
+						'term_id'     => $term_id,
+						'taxonomy'    => 'qsm_category',
+					);
+					// Check if the data already exists in the table
+					$data_exists = $wpdb->get_row($wpdb->prepare("SELECT * FROM $question_terms_table WHERE question_id = %s AND quiz_id = %s AND term_id = %s AND taxonomy = %s", $question_id_loop, intval( $quiz_id ), $term_id, 'qsm_category' ));
+					if ( ! $data_exists ) {
+						$wpdb->insert( $question_terms_table, $term_rel_data );
+					}
+				}
+			}
+
+			/**
+			 * Hook after saving question
+			 */
+
+			if ( $is_creating && $base_question_id == $question_id_loop ) {
+				do_action( 'qsm_question_added', $question_id_loop, $values );
+			} else {
+				do_action( 'qsm_question_updated', $question_id_loop, $values );
+			}
+			do_action( 'qsm_saved_question', $question_id_loop, $values );
+
 		}
-		do_action( 'qsm_saved_question', $question_id, $values );
-
-		return $question_id;
+		return $base_question_id;
 	}
 
 	/**

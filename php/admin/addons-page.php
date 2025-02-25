@@ -118,7 +118,7 @@ function qsm_generate_featured_addons() {
 					<?php
 					if ( $all_addons ) {
 						foreach ( $all_addons as $key => $single_arr ) {
-							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) ) {
+							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) || in_array( $single_arr['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
 								continue;
 							}
 							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
@@ -209,26 +209,35 @@ add_action( 'plugins_loaded', 'qsm_featured_addons_tab' );
 function qsm_display_optin_page() {
 	global $mlwQuizMasterNext;
 	?>
-<div class="wrap about-wrap">
+<div class="wrap qsm-free-addon-wrap">
+	<h1 class="wp-heading-inline"><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1><hr class="wp-header-end">
 
-	<h1><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1>
-
-	<div class="about-text">
-		<?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?>
+	<div class="qsm-free-addon-text">
+		<p><?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?></p>
+		<p>
+		<?php 
+		esc_html_e( 
+			'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 
+			'quiz-master-next' 
+		); 
+		?>
+		<b><?php esc_html_e( 'Quiz and Survey Master', 'quiz-master-next' ); ?></b>,
+		<?php 
+		esc_html_e( 
+			' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 
+			'quiz-master-next' 
+		); 
+		?>
+		<b><?php esc_html_e( 'Quiz and Survey Master', 'quiz-master-next' ); ?></b>
+		<?php esc_html_e( ' to its full potential. ', 'quiz-master-next' ); ?>
+		<a href="<?php echo esc_url( qsm_get_plugin_link( 'privacy-policy', 'qsm-addons-page' ) ); ?>" target="_blank">
+			<?php esc_html_e( 'View our privacy policy', 'quiz-master-next' ); ?>
+		</a>
+	</p>
 	</div>
 
 	<div class="changelog">
 
-		<div class="row">
-			<!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<div class="about-body">
-						<img src="" alt="Improved Custom Fields">
-					</div>
-				</div> -->
-		</div>
-
-		<p><?php esc_html_e( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master', 'quiz-master-next' ) . '</b>,' . __( ' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master ', 'quiz-master-next' ) . '</b>' . __( 'to its full potential. ', 'quiz-master-next' ) . '<a href="' . qsm_get_plugin_link( 'privacy-policy', 'qsm-addons-page' ) . '" target="_blank">' . __( 'View our privacy policy', 'quiz-master-next' ) . '</a>'; ?>
-		</p>
 
 		<div id="wpas-mailchimp-signup-form-wrapper">
 			<div id="status"></div>

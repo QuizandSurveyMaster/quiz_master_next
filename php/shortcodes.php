@@ -45,9 +45,9 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
 	if ( ! empty( $target ) ) {
-		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . wp_kses_post( do_shortcode( $content ) ) . '</a>';
+		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . do_shortcode( $content ) . '</a>';
 	} else {
-		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . wp_kses_post( do_shortcode( $content ) ). '</a>';
+		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . do_shortcode( $content ) . '</a>';
 	}
 }
 
@@ -251,6 +251,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 		$return_display .= '<p class="qsm-time-up-text">'. esc_html__( 'Time is Up!', 'quiz-master-next' ) .'</p>';
 		$return_display .= '</div>';
 		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="'. __( 'Close this dialog window', 'quiz-master-next' ) .'">'. apply_filters( 'qsm_timer_up_cancel_button_text_after', __( 'Cancel', 'quiz-master-next' ) ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'. apply_filters( 'qsm_timer_up_submit_button_text_after', __( 'Submit Quiz', 'quiz-master-next' ) ).'</button></footer>';
+		$return_display .= '</div>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
 	}

@@ -50,12 +50,14 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	if ( ! empty( $question ) ) {
 		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
 	}
-	if ( strpos( $question, '%BLANK%' ) !== false ) {
-		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
-	}
-	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	qsm_question_title_func( $question, 'fill_in_blank', $new_question_title, $id );
+	if ( strpos( $question, '%BLANK%' ) !== false ) {
+		$question = str_replace( '%BLANK%', $input_text, htmlspecialchars_decode( $question, ENT_QUOTES ) );
+		qsm_question_title_func( $question, 'fill_in_blank', $new_question_title, $id );
+		$question = do_shortcode( $question );
+	} else {
+		qsm_question_title_func( $question, 'fill_in_blank', $new_question_title, $id );
+	}
 	echo apply_filters( 'qmn_fill_blank_display_front', '', $id, $question, $answers );
 }
 

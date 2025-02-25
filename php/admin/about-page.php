@@ -30,6 +30,10 @@ function qsm_generate_about_page() {
 			'slug'  => 'help',
 			'title' => 'Help',
 		],
+		[
+			'slug'  => 'system_info',
+			'title' => 'System Info',
+		],
 	];
 	$active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'about';
 
@@ -38,49 +42,46 @@ function qsm_generate_about_page() {
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 
-<?php if ( 'help' === $active_tab ) {?>
-<div class="wrap qsm-help-page">
-	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
+<div class="wrap qsm-about-us-page">
+<h1 class="wp-heading-inline"><?php esc_html_e( 'About us', 'quiz-master-next' ); ?></h1><hr class="wp-header-end">
+	<div class="qsm-about-heading">
+		<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
+		<h3><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h3>
+		<div class="qsm_icon_wrap"><?php esc_html_e('Version: ', 'quiz-master-next'); echo esc_html($version); ?></div>
+	</div>
+	<?php if ( 'help' === $active_tab ) {?>
+	<div class="qsm-help-page">
 	<?php } elseif ( 'about' === $active_tab ) {?>
-	<style>
-	div.qsm_icon_wrap {
-		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
-		?>no-repeat center;
-	}
-	</style>
-	<div class="wrap about-wrap">
-		<h1><?php esc_html_e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?>
-		</h1>
-		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
-		<?php } ?>
-
+	<div class="about-wrap">
+	<?php } elseif ( 'system_info' === $active_tab ) {?>
+	<div class="system-info-wrap">
+	<?php } ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
-            foreach ( $tab_array as $tab ) {
-                $active_class = '';
-                if ( $active_tab === $tab['slug'] ) {
-                    $active_class = ' nav-tab-active';
-                }
-                echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-            }
-            ?>
+			foreach ( $tab_array as $tab ) {
+				$active_class = '';
+				if ( $active_tab === $tab['slug'] ) {
+					$active_class = ' nav-tab-active';
+				}
+				echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+			}
+			?>
 		</h2>
-		<br />
 		<div>
 			<?php
-                if ( 'help' === $active_tab ) {
-                    qsm_show_adverts();
+				if ( 'help' === $active_tab ) {
+					qsm_show_adverts();
 					?>
 			<div style="width:100%;" class="inner-sidebar1">
 				<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
 			</div>
-
-			<div style="width:100%;" class="inner-sidebar1">
-				<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
-			</div>
 			<?php
-                } elseif ( 'about' === $active_tab ) {
+				} elseif ( 'about' === $active_tab ) {
 					?>
+					<div>
+						<h3><?php esc_html_e('About us', 'quiz-master-next'); ?></h3>
+						<p><?php esc_html_e('Quiz And Survey Master is a leading WordPress plugin developed by a dedicated team of developers and educational experts. Our mission is to help individuals and organizations create engaging and effective quizzes and surveys that enhance learning and gather valuable insights. With a focus on user experience and flexibility, our plugin is designed to meet the needs of educators, marketers, and businesses alike. Quiz And Survey Master is a powerful and intuitive WordPress plugin that allows users to create a wide range of quizzes and surveys effortlessly.', 'quiz-master-next'); ?></p>
+					</div>
 			<div class="qsm-tab-content tab-3">
 				<h2 class="text-left" style="font-weight: 500;">GitHub Contributors</h2>
 				<?php
@@ -96,7 +97,7 @@ function qsm_generate_about_page() {
 
 					if ( is_array( $contributors ) & ! empty( $contributors ) ) {
 						set_transient( 'qmn_contributors', $contributors, 3600 );
-						$contributor_list = '<ul class="wp-people-group">';
+						$contributor_list = '<ul class="qsm-wp-contributor wp-people-group">';
 						foreach ( $contributors as $contributor ) {
 							$contributor_list .= '<li class="wp-person">';
 							$contributor_list .= sprintf( '<a href="%s" title="%s">',
@@ -117,10 +118,15 @@ function qsm_generate_about_page() {
 				<a href="<?php echo esc_url( qsm_get_utm_link( 'https://github.com/QuizandSurveyMaster/quiz_master_next', 'qsm', 'about', 'about_git_repo' ) );?>" rel="noopener" target="_blank" class="button-primary">View GitHub Repo</a>
 			</div>
 			<?php
-				}
-            ?>
+				} elseif ( 'system_info' === $active_tab ) { ?>
+					<div class="wrap qsm-system-info-page">
+						<div class="inner-sidebar1">
+							<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
+						</div>
+				<?php } ?>
 		</div>
 	</div>
+</div><!-- Wrap -->
 	<?php
 }
 
@@ -131,12 +137,29 @@ function qsm_generate_about_page() {
  * @since 4.4.0
  */
 function qsm_documentation_meta_box_content() {
+	global $mlwQuizMasterNext;
+	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	?>
-	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
-	<ul>
-		<li>For assistance in using the plugin, read our <a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank">documentation</a></li>
-		<li>For support, fill out the form on our <a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-us' ) );?>" rel="noopener" target="_blank">Contact Us Page</a></li>
-	</ul>
+	<div class="help-slide">
+		<div>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/support.png' )?> " alt="support">
+			<h3><?php esc_html_e( 'Support & Pre-Sales Questions', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Get expert answers to your questions about features, pricing, or installation of Quiz and Survey Master.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
+		</div>
+		<div>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/setup.png' )?> " alt="setup">
+			<h3><?php esc_html_e( 'Need help with QSM Setup?', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Access step-by-step guidance and troubleshooting to ensure your quizzes and surveys are up and running smoothly.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'qsm', 'help', 'about_help_contact-support' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Contact Us', 'quiz-master-next' ); ?></a>
+		</div>
+		<div>
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/services.png' )?> " alt="services">
+			<h3><?php esc_html_e( 'Need Customization Service?', 'quiz-master-next' ); ?></h3>
+			<p><?php esc_html_e( 'Tailor Quiz and Survey Master to your specific needs with our professional customization services for unique functionality.', 'quiz-master-next' ); ?></p>
+			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Documentation', 'quiz-master-next' ); ?></a>
+		</div>
+	</div>
 	<?php
 }
 
