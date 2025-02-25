@@ -222,13 +222,13 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 
 == Changelog ==
 = 10.0.0 ( Fabuary 24, 2025 ) =
-* Feature: Added options to import and create email and result templates.
+* Feature: Added options to import and create email and result templates
 * Feature: Enabled saving questions as drafts
 * Feature: Added the ability to link a question across multiple quizzes
-* Feature: Added an option to share quizzes on LinkedIn.
-* Feature: Introduced a setting to send only a single email to the same user when multiple logic conditions are met.
+* Feature: Added an option to share quizzes on LinkedIn
+* Feature: Added a setting to prevent duplicate emails when multiple logic conditions are met
 * Feature: Added an option to disable scrolling while submitting a quiz
-* Bug: Fixed an issue with inline drop-down question types.
+* Bug: Fixed an issue with inline drop-down question types
 * Enhancement: Improved UI across Quiz, Text, Option, and Email, Result pages
 * Enhancement: Enhanced the UI for Dashboard and other related pages
 
