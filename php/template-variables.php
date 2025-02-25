@@ -557,7 +557,7 @@ function qsm_get_options_of_contact_fields( $data, $label, $type ) {
 	if ( is_array( $data ) ) {
 		foreach ( $data as $item ) {
 			if ( $item['label'] === $label && $item['type'] === $type ) {
-				return $item['options'];
+				return isset( $item['options'] ) ? $item['options'] : array();
 			}
 	  	}
 	}

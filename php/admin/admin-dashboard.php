@@ -222,7 +222,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Popular Themes', 'quiz-master-next'); ?></h3>
 		<div class="qsm-dashboard-themes-container qsm-dashboard-page-common-style">
 			<?php foreach ( $sortedThemes as $single_theme ) {
-				$theme_demo          = qsm_get_utm_link( $theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $single_theme['name'] ) );
+				$theme_demo          = qsm_get_utm_link( $single_theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $single_theme['name'] ) );
 				?>
 				<div class="qsm-dashboard-themes-card">
 					<div class="qsm-dashboard-themes-image-wrapper">

@@ -1097,7 +1097,9 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 	if(container.find('.quiz_begin').is(':visible')){
 		container.find(".mlw_custom_start").show();
 		container.find(".mlw_custom_next").hide();
+		container.find(".qsm-quiz-default-feature-image").show();
 	}else{
+		container.find(".qsm-quiz-default-feature-image").hide();
 		container.find(".mlw_custom_start").hide();
 		let numberToAdd = 2;
 		// Fixed Missing Next Button in single question quiz created with text after quiz

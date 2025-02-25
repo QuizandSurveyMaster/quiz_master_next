@@ -727,3 +727,6 @@ body .ui-tooltip.ui-widget-content {
 .qsm_accessibility_label {
 	color: transparent;
 }
+.qsm-quiz-default-feature-image {
+	width: 100%;
+}
