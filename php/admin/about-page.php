@@ -42,43 +42,41 @@ function qsm_generate_about_page() {
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 
-<div class="wrap ">
-	<h1></h1>
+<div class="wrap qsm-about-us-page">
+<h1 class="wp-heading-inline"><?php esc_html_e( 'About us', 'quiz-master-next' ); ?></h1><hr class="wp-header-end">
 	<div class="qsm-about-heading">
 		<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/logo-blue.svg' ); ?>" alt="logo-blue.svg">
-            <h3><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h3>
-            <div class="qsm_icon_wrap"><?php esc_html_e('Version: ', 'quiz-master-next'); echo esc_html($version); ?></div>
-    	</div>
-
-<?php if ( 'help' === $active_tab ) {?>
-<div class="qsm-help-page">
+		<h3><?php esc_html_e('Quiz And Survey Master', 'quiz-master-next'); ?></h3>
+		<div class="qsm_icon_wrap"><?php esc_html_e('Version: ', 'quiz-master-next'); echo esc_html($version); ?></div>
+	</div>
+	<?php if ( 'help' === $active_tab ) {?>
+	<div class="qsm-help-page">
 	<?php } elseif ( 'about' === $active_tab ) {?>
-	<div class="wrap about-wrap">
-		<?php } elseif ( 'system_info' === $active_tab ) {?>
-			<div class="wrap system-info-wrap">
-				<?php }?>
+	<div class="about-wrap">
+	<?php } elseif ( 'system_info' === $active_tab ) {?>
+	<div class="system-info-wrap">
+	<?php } ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
-            foreach ( $tab_array as $tab ) {
-                $active_class = '';
-                if ( $active_tab === $tab['slug'] ) {
-                    $active_class = ' nav-tab-active';
-                }
-                echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-            }
-            ?>
+			foreach ( $tab_array as $tab ) {
+				$active_class = '';
+				if ( $active_tab === $tab['slug'] ) {
+					$active_class = ' nav-tab-active';
+				}
+				echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+			}
+			?>
 		</h2>
-		<br />
 		<div>
 			<?php
-                if ( 'help' === $active_tab ) {
-                    qsm_show_adverts();
+				if ( 'help' === $active_tab ) {
+					qsm_show_adverts();
 					?>
 			<div style="width:100%;" class="inner-sidebar1">
 				<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
 			</div>
 			<?php
-                } elseif ( 'about' === $active_tab ) {
+				} elseif ( 'about' === $active_tab ) {
 					?>
 					<div>
 						<h3><?php esc_html_e('About us', 'quiz-master-next'); ?></h3>

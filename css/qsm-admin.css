@@ -5111,3 +5111,13 @@ ul.qsm-wp-contributor.wp-people-group {
     align-items: center;
     width: fit-content;
 }
+.qsm-free-addon-text p {
+    font-size: 16px;
+}
+.wrap.qsm-about-us-page h1.wp-heading-inline {
+	display: none;
+}
+
+.wrap.qsm-about-us-page .nav-tab-wrapper {
+	margin: 0 0 20px 0;
+}
