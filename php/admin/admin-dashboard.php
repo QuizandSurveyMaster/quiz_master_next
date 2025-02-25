@@ -91,7 +91,7 @@ function qsm_dashboard_display_change_log_section(){
 								?>
 								<li>
 									<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
-									<?php echo wp_kses_post( $cl_str ); ?>
+									<p><?php echo wp_kses_post( $cl_str ); ?></p>
 								</li>
 								<?php
 								$i ++;

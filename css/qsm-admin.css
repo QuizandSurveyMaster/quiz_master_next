@@ -4223,16 +4223,16 @@ h2#qsm-email-page-templates-title {
     padding: 0 8px;
 }
 .qsm-response-toaster, .footer-bar-notice {
-    position: fixed;
+	position: fixed;
     top: 70px;
-    left: calc(90% - 125px);
+    right: 2%;
     color: white;
-    padding: 10px 25px 10px 15px;
-    box-shadow: 0px 30px 60px 0px rgba(0, 0, 0, 0.09);
+    padding: 20px 25px 20px 25px;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
     opacity: 0;
     visibility: hidden;
     transform: translateX(50px) scale(0.95);
-    transition: opacity 0.8s ease-out, transform 0.5s ease-out, visibility 0.8s;
+    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out, visibility 1s;
     z-index: 99;
     display: grid;
     min-height: 30px;
@@ -4240,16 +4240,7 @@ h2#qsm-email-page-templates-title {
     min-width: 200px;
     justify-content: center;
     grid-template-columns: 5fr 0.5fr;
-}
-@keyframes slideInFromLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    font-size: 15px;
 }
 
 .qsm-response-toaster.show, .footer-bar-notice.show {
@@ -4275,10 +4266,9 @@ h2#qsm-email-page-templates-title {
 	background-color: #64B5F6;
 }
 
-.footer-bar-notice.show .qsm-close-alert {
+.footer-bar-notice .qsm-close-alert {
 	position: relative;
-    left: 13px;
-    background: #FFFFFF;
+    left: 22px;
     height: 15px;
     display: inline-flex;
     width: 15px;
@@ -4286,8 +4276,10 @@ h2#qsm-email-page-templates-title {
     align-items: center;
     border-radius: 50%;
     font-weight: bold;
-    color: #1e1e1e;
+    color: #FFFFFF;
     cursor: pointer;
+    bottom: 25px;
+    opacity: 0.7;
 }
 .qsm-preview-result-page-template-container, .qsm-preview-email-page-template-container {
 	padding: 0 15px;
@@ -5115,7 +5107,4 @@ ul.qsm-wp-contributor.wp-people-group {
     display: flex;
     align-items: center;
     width: fit-content;
-}
-.qsm-dashboard-error-btn:hover {
-    background: #e63946;
 }
