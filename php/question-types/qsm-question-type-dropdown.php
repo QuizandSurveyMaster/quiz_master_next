@@ -21,6 +21,9 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 		$require_class = '';
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
+	if ( ! empty( $question ) ) {
+		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
+	}
 	$question = apply_filters( 'qsm_question_title_function_before', $question, $answers, $id );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;

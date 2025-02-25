@@ -206,7 +206,7 @@ function qsm_generate_quiz_options() {
 						<?php
 					}
 					if ( class_exists( 'QSM_Export_Import' ) ) {
-						?><a class="button button-primary qsm-import-export-btn" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
+						?><a class="button button-primary qsm-import-export-btn qsm-common-button-styles" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 					}
 					?>
 				</nav>
@@ -283,6 +283,7 @@ function qsm_generate_quiz_options() {
 			</div>
 		</div>
 		<!-- set global setting popup end -->
+		<div id="footer-bar-notice" class="footer-bar-notice"></div>
 	</div><!-- Backbone Views -->
 	<script type="text/javascript">jQuery(document).ready(function(){jQuery(".qsm-alerts-placeholder").length>0&&jQuery(".qsm-alerts").length>0&&jQuery(".qsm-alerts-placeholder").replaceWith(jQuery(".qsm-alerts"))});</script>
 	<?php
@@ -299,14 +300,19 @@ function qsm_generate_quiz_options() {
 		if ( ! class_exists('QSM_Advanced_Assessment') ) {
 			$qsm_pop_up_arguments = array(
 				"id"           => 'modal-advanced-assessment',
-				"title"        => __('Advanced Assessment', 'quiz-master-next'),
-				"description"  => __('Create assessments with ease using Advanced Assessment. With features like label assignment, personalized results, and insightful data visualization, you can engage your audience effectively.', 'quiz-master-next'),
+				"title"        => __('Advanced Assessment, Smarter Results', 'quiz-master-next'),
+				"description"  => __('Unlock Personalized Quiz Experiences with the Advanced Assessment Addon.', 'quiz-master-next'),
 				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advance-assessment-chart.png',
 				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
 				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
 				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 				"upgrade_link" => qsm_get_plugin_link( 'pricing', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
 				"addon_link"   => qsm_get_plugin_link( 'downloads/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),
+				"list_items"   => array(
+					__("Assign custom labels to answers", "quiz-master-next"),
+					__("Customize result pages based on quiz performance", "quiz-master-next"),
+					__("Analyse quiz results using charts and tables", "quiz-master-next"),
+				),
 			);
 			qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 		}
