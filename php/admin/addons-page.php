@@ -118,7 +118,7 @@ function qsm_generate_featured_addons() {
 					<?php
 					if ( $all_addons ) {
 						foreach ( $all_addons as $key => $single_arr ) {
-							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) ) {
+							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) || in_array( $single_arr['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
 								continue;
 							}
 							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );

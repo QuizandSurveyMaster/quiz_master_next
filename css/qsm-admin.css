@@ -284,8 +284,11 @@ span.qsm-quiz-name {
 	padding-right: 30px;
 }
 .qsm-quiz-page-addon {
-	width: 100%;
+	width: 75%;
 	float: left;
+}
+#qsm-add-installer div.qsm-quiz-page-addon {
+	width: 100%;
 }
 .qsm-addon-browse-addons {
 	background: #fff;
@@ -4267,8 +4270,8 @@ h2#qsm-email-page-templates-title {
 }
 
 .footer-bar-notice .qsm-close-alert {
-	position: relative;
-    left: 22px;
+	position: absolute;
+    right: 5px;
     height: 15px;
     display: inline-flex;
     width: 15px;
@@ -4278,8 +4281,8 @@ h2#qsm-email-page-templates-title {
     font-weight: bold;
     color: #FFFFFF;
     cursor: pointer;
-    bottom: 25px;
     opacity: 0.7;
+    top: 5px;
 }
 .qsm-preview-result-page-template-container, .qsm-preview-email-page-template-container {
 	padding: 0 15px;
@@ -4821,7 +4824,7 @@ input#preferred-date-format-custom {
 	padding-right: 38px;
     position: relative;
 }
-#toplevel_page_qsm_dashboard li:nth-last-child(3) a:after {
+#toplevel_page_qsm_dashboard li:nth-last-child(4) a:after {
     border-bottom: 1px solid hsla(0, 0%, 100%, .2);
     display: block;
     float: left;
