@@ -215,18 +215,18 @@ function qsm_display_optin_page() {
 	<div class="qsm-free-addon-text">
 		<p><?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?></p>
 		<p>
-		<?php 
-		esc_html_e( 
-			'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 
-			'quiz-master-next' 
-		); 
+		<?php
+		esc_html_e(
+			'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ',
+			'quiz-master-next'
+		);
 		?>
 		<b><?php esc_html_e( 'Quiz and Survey Master', 'quiz-master-next' ); ?></b>,
-		<?php 
-		esc_html_e( 
-			' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 
-			'quiz-master-next' 
-		); 
+		<?php
+		esc_html_e(
+			' let you know when new or updated addons are being released and provide informative articles that show you how to use ',
+			'quiz-master-next'
+		);
 		?>
 		<b><?php esc_html_e( 'Quiz and Survey Master', 'quiz-master-next' ); ?></b>
 		<?php esc_html_e( ' to its full potential. ', 'quiz-master-next' ); ?>
