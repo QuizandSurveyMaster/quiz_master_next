@@ -1684,6 +1684,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 				<main class="qsm-popup__content" id="qsm-<?php echo esc_attr( $type ); ?>-page-templates-content" data-type="<?php echo esc_attr( $type ); ?>" data-<?php echo esc_attr( $type ); ?>-page="">
 				<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
 					<?php
+					if ( ! empty($template_from_script) ) {
 						foreach ( $template_from_script as $key => $single_template ) {
 							if ( $type == $single_template['template_type'] || 'both' == $single_template['template_type'] ) {
 								$image_url = QSM_PLUGIN_URL . 'assets/screenshot-default-theme.png';
@@ -1703,6 +1704,9 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 								<?php
 							}
 						}
+					} else {
+						qsm_display_fullscreen_error();
+					}
 					?>
 				</div>
 				<div class="qsm-<?php echo esc_attr( $type ); ?>-my-template-container qsm-<?php echo esc_attr( $type ); ?>-page-template-common">
@@ -1777,9 +1781,8 @@ function qsm_get_plugin_status_by_path( $path ) {
  * @return array|null Returns the plugin list array if the option exists, or null if not.
  */
 function qsm_get_dependency_plugin_list() {
-	$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
-	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
-	$all_addons = $qsm_admin_dd['all_addons'];
+	$qsm_admin_dd = qsm_get_parsing_script_data();
+	$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
 
 	$dependency_array = array();
 
