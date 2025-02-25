@@ -88,7 +88,10 @@ ul.popuar-addon-ul::after {
 .changelog-ul li {
 	border-bottom: 1px solid #ede8e8;
     margin-bottom: 0;
-    padding: 19px 0 19px 24px;
+    padding: 19px 20px 19px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .changelog-ul li:last-child {
@@ -100,6 +103,11 @@ ul.popuar-addon-ul::after {
     border-radius: 25px;
     display: inline-block;
     color: #fff;
+    display: flex;
+    align-items: center;
+}
+.changelog-ul li p {
+	margin: 0;
 }
 
 .changelog-ul li span:before {

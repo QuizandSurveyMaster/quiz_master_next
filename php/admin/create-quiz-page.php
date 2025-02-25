@@ -207,7 +207,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 									<p class="qsm-dashboard-addon-status">
 									<?php
 									if ( true == $is_activated || true == $is_installed ) {
-										echo esc_html__( 'Version: ', 'quiz-master-next' ). $all_plugins[ $theme_path ]['Version'];
+										echo esc_html__( 'Version: ', 'quiz-master-next' ) . esc_html( $all_plugins[ $theme_path ]['Version'] );
 									}
 									?>
 									</p>
@@ -241,14 +241,14 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
 											<?php if ( true == $is_activated ) {
 												echo esc_html__( 'Select', 'quiz-master-next' );
-											 } elseif ( true == $is_installed ) {
+											} elseif ( true == $is_installed ) {
 												echo esc_html__( 'Activate', 'quiz-master-next' );
-											 } elseif ( false == $is_activated && false == $is_installed ) {
+											} elseif ( false == $is_activated && false == $is_installed ) {
 												echo esc_html__( 'Install & Activate', 'quiz-master-next' );
-											 }
-											 ?>
+											}
+											?>
 										</a>
-									<?php }?>
+									<?php } ?>
 									<a href="<?php echo esc_url($theme_demo); ?>" class="button button-secondary demo" target="_blank">
 										<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
 									</a>
@@ -413,13 +413,9 @@ function qsm_create_quiz_page_callback() {
 	wp_enqueue_script( 'qsm-create-quiz-script',  QSM_PLUGIN_JS_URL.'/qsm-create-quiz-script.js', array( 'jquery' ), $mlwQuizMasterNext->version,true);
 	wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array(), $mlwQuizMasterNext->version );
 
-
-	$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
-	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
-
-	$qsm_admin_dashboard = wp_remote_get(QSM_PLUGIN_URL . 'data/dashboard.json', [ 'sslverify' => false ]);
-	$qsm_admin_dashboard = json_decode(wp_remote_retrieve_body($qsm_admin_dashboard), true);
-	$quizoptions_boxes = $qsm_admin_dashboard['quizoptions'];
+	$qsm_admin_dd = qsm_get_parsing_script_data();
+	$qsm_admin_dashboard = qsm_get_parsing_script_data('dashboard.json');
+	$quizoptions_boxes = isset($qsm_admin_dashboard['quizoptions']) ? $qsm_admin_dashboard['quizoptions'] : array();
 
 	$installed_plugins = get_plugins();
 	$activated_plugins = get_option('active_plugins');
@@ -473,41 +469,45 @@ function qsm_create_quiz_page_callback() {
 				<form action="" method="post" id="new-quiz-form">
 					<div class="qsm-form-inside-container" id="qsm-add-installer">
 						<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' );
+						if ( $qsm_admin_dd ) {
+							$all_addons = $qsm_admin_dd['all_addons'];
+							$all_themes = $qsm_admin_dd['themes'];
 
-						$all_addons = $qsm_admin_dd['all_addons'];
-						$all_themes = $qsm_admin_dd['themes'];
+							$dashboard_pages = [
+								[
+									'page_no'  => 1,
+									'callback' => 'qsm_dashboard_display_quizoptions_section',
+									'params'   => [ $quizoptions_boxes ],
+								],
+								[
+									'page_no'  => 2,
+									'callback' => 'qsm_dashboard_display_theme_section',
+									'params'   => [ $all_themes, $installer_option, $invalid_and_expired, $all_addons, $installer_activated, $installer_script ],
+								],
+								[
+									'page_no'  => 3,
+									'callback' => 'qsm_dashboard_display_addons_section',
+									'params'   => [ $all_addons, $installer_option, $invalid_and_expired, $installer_activated, $installer_script ],
+								],
+								[
+									'page_no'  => 4,
+									'callback' => 'qsm_dashboard_display_quizform_section',
+									'params'   => [],
+								],
+							];
 
-						$dashboard_pages = [
-							[
-								'page_no'  => 1,
-								'callback' => 'qsm_dashboard_display_quizoptions_section',
-								'params'   => [ $quizoptions_boxes ],
-							],
-							[
-								'page_no'  => 2,
-								'callback' => 'qsm_dashboard_display_theme_section',
-								'params'   => [ $all_themes, $installer_option, $invalid_and_expired, $all_addons, $installer_activated, $installer_script ],
-							],
-							[
-								'page_no'  => 3,
-								'callback' => 'qsm_dashboard_display_addons_section',
-								'params'   => [ $all_addons, $installer_option, $invalid_and_expired, $installer_activated, $installer_script ],
-							],
-							[
-								'page_no'  => 4,
-								'callback' => 'qsm_dashboard_display_quizform_section',
-								'params'   => [],
-							],
-						];
+							foreach ( $dashboard_pages as $page ) {
+								echo '<div class="qsm-dashboard-container-pages" data-page-no="' . esc_attr($page['page_no']) . '" style="display: none;">';
 
-						foreach ( $dashboard_pages as $page ) {
-							echo '<div class="qsm-dashboard-container-pages" data-page-no="' . esc_attr($page['page_no']) . '" style="display: none;">';
+								if ( function_exists($page['callback']) ) {
+									call_user_func_array($page['callback'], $page['params']);
+								}
 
-							if ( function_exists($page['callback']) ) {
-								call_user_func_array($page['callback'], $page['params']);
+								echo '</div>';
 							}
-
-							echo '</div>';
+						} else {
+							qsm_dashboard_display_quizform_section();
+							qsm_display_fullscreen_error();
 						}
 						?>
 					</div>

@@ -91,7 +91,7 @@ function qsm_dashboard_display_change_log_section(){
 								?>
 								<li>
 									<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
-									<?php echo wp_kses_post( $cl_str ); ?>
+									<p><?php echo wp_kses_post( $cl_str ); ?></p>
 								</li>
 								<?php
 								$i ++;
@@ -264,13 +264,17 @@ function qsm_generate_dashboard_page() {
 			</div>
 
 			<?php
-			$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ]);
-			$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd), true);
-			$popular_addons = qsm_get_widget_data( 'popular_products' );
+			$qsm_admin_dd = qsm_get_parsing_script_data();
+			if ( $qsm_admin_dd ) {
+				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
+				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_popular_addon_section($popular_addons);
-				qsm_dashboard_display_popular_theme_section($qsm_admin_dd['themes']);
+				qsm_dashboard_display_popular_theme_section($themes);
 				qsm_dashboard_display_change_log_section();
+			} else {
+				qsm_display_fullscreen_error();
+			}
 			?>
 		</div>
 	</div>
