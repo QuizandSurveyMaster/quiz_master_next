@@ -387,11 +387,15 @@ function qsm_create_quiz_page_callback() {
 	$invalid_and_expired = 1;
 	$installer_activated = 0;
 	if ( class_exists('QSM_Installer') ) {
-		$installer_activated = 1;
-		$installer_option = QSM_Installer::get_installer_option();
-		$installer_script = QSM_Installer::qsm_get_addon_data();
-		if ( isset($installer_option['bundle']) && isset($installer_option['license_status']) && 'valid' == $installer_option['license_status'] && isset($installer_option['license_key']) && '' != $installer_option['license_key'] ) {
-			$invalid_and_expired = 0;
+		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
+		$plugin_data = get_plugin_data( $plugin_path );
+		if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '>=' ) ) {
+			$installer_activated = 1;
+			$installer_option = QSM_Installer::get_installer_option();
+			$installer_script = QSM_Installer::qsm_get_addon_data();
+			if ( isset($installer_option['bundle']) && isset($installer_option['license_status']) && 'valid' == $installer_option['license_status'] && isset($installer_option['license_key']) && '' != $installer_option['license_key'] ) {
+				$invalid_and_expired = 0;
+			}
 		}
 	}
 	wp_localize_script( 'qsm-create-quiz-script', 'qsm_admin_new_quiz', array(
@@ -403,7 +407,6 @@ function qsm_create_quiz_page_callback() {
 		'installer_option'    => $installer_option,
 		'installer_activated' => $installer_activated,
 		'invalid_and_expired' => $invalid_and_expired,
-		'installer_script'    => $installer_script,
 		'process'             => __('Processing...', 'quiz-master-next'),
 		'installing'          => __('Installing...', 'quiz-master-next'),
 		'activating'          => __('Activating...', 'quiz-master-next'),
