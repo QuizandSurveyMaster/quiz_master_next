@@ -231,11 +231,12 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary:hover {
 }
 
 .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:nth-last-child(2) {
-    border-bottom-left-radius: 6px;
+    /* border-bottom-left-radius: 6px; */
 }
 
 .qsm-quiz-addon-steps-grid .qsm-quiz-addon-steps-card:last-child {
     border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
 }
 
 @media (max-width: 620px) {

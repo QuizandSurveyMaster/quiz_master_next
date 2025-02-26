@@ -1,7 +1,6 @@
 var QSMAdminDashboard;
 jQuery(function ($) {
 
-    
     // Install Plugin - Working
     QSMAdminDashboard = {
         currentPage: 1,
@@ -140,141 +139,6 @@ jQuery(function ($) {
             }
         },
 
-        installPlugin: function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            $.ajax({
-                type: "POST",
-                url: qsm_admin_new_quiz.ajaxurl,
-                data: {
-                    action: 'qsm_handle_ajax_install',
-                    nonce: qsm_admin_new_quiz.nonce,
-                    slug: slug,
-                },
-                success: function (response) {
-                    response = QSMAdminDashboard.parseResponse(response);
-
-                    if (response.data && response.data.message.includes("Plugin installed successfully")) {
-                        // Ensure installedPlugins is an array before pushing
-                        if (!Array.isArray(qsm_admin_new_quiz.installed)) {
-                            qsm_admin_new_quiz.installed = [];
-                        }
-                        qsm_admin_new_quiz.installed.push(path);
-                        if (!Array.isArray(qsm_admin_new_quiz.activated)) {
-                            qsm_admin_new_quiz.activated = [];
-                        }
-                        qsm_admin_new_quiz.activated.push(path);
-                        if (isButton) {
-                            QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton);
-                            QSMAdminDashboard.processToSelectTheme($parent);
-                        }
-                        if (isToggle) {
-                            $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.activated_text);
-                        }
-                        QSMAdminDashboard.getPluginVersion(slug, path, $parent, $element, installerActivated, isToggle, isButton);
-                    } else {
-                        $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.retry);
-                        if (isToggle) { $element.prop('checked', false).prop('disabled', false); }
-                        if (isButton) { $element.prop('disabled', false); $element.text(qsm_admin_new_quiz.retry); }
-                    }
-                }
-            });
-        },
-
-        activatePlugin: function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            let action = installerActivated == 1 ? 'qsm_handle_ajax_activate' : 'qsm_activate_plugin';
-
-            $.ajax({
-                type: "POST",
-                url: qsm_admin_new_quiz.ajaxurl,
-                data: {
-                    action: action,
-                    nonce: qsm_admin_new_quiz.nonce,
-                    slug: slug,
-                    single: 'bundle',
-                    'plugin_path': path
-                },
-                success: function (response) {
-                    response = QSMAdminDashboard.parseResponse(response);
-                    if (response.data && (response.data.message.includes("Plugin activated successfully") || response.data.message.includes("Plugin is already activated."))) {
-                        // Ensure activatedPlugins is an array before pushing
-                        if (!Array.isArray(qsm_admin_new_quiz.activated)) {
-                            qsm_admin_new_quiz.activated = [];
-                        }
-                        qsm_admin_new_quiz.activated.push(path);
-                        if (isButton) {
-                            QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton);
-                            QSMAdminDashboard.processToSelectTheme($parent);
-                        }
-                        if (isToggle) {
-                            $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.activated_text);
-                            $element.prop('checked', true).prop('disabled', false);
-                        }
-                        $element.prop('disabled', false);
-                        QSMAdminDashboard.getPluginVersion(slug, path, $parent, $element, installerActivated, isToggle, isButton);
-                    } else {
-                        $parent.find('.qsm-dashboard-addon-status').text(response.data.message);
-                        if (isToggle) { $element.prop('checked', false).prop('disabled', false); }
-                        if (isButton) { $element.prop('disabled', false); $element.text(qsm_admin_new_quiz.retry); }
-                    }
-                }
-            });
-        },
-
-        getPluginVersion: function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            $.ajax({
-                url: ajaxurl,
-                type: "POST",
-                data: {
-                    action: "qsm_activate_plugin_ajax_handler",
-                    nonce: qsm_admin_new_quiz.nonce,
-                    plugin_path: path
-                },
-                success: function (response) {
-                    if (response.success) {
-                        console.log("Success:", response.data.message);
-                        if (response.data.version) {
-                            $parent.find('.qsm-dashboard-addon-status').text(response.data.version);
-                            console.log("Plugin Version:", response.data.version);
-                        }
-                    }
-                }
-            });
-        },
-
-        afterInstall: function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            let action = 'qsm_get_activated_themes';
-
-            $.ajax({
-                type: "POST",
-                url: qsm_admin_new_quiz.ajaxurl,
-                data: {
-                    action: action,
-                    nonce: qsm_admin_new_quiz.nonce,
-                    slug: slug,
-                },
-                success: function (response) {
-                    console.log(response);
-                    response = QSMAdminDashboard.parseResponse(response);
-                    if (response.data) {
-                        $parent.find('input[name=quiz_theme_id]').prop("checked", true);
-                        $parent.find('input[name=quiz_theme_id]').val(response.data.id);
-                    }
-                }
-            });
-        },
-
-        parseResponse: function (response) {
-            if (typeof response !== 'object') {
-                const jsonRegex = /\{.*\}/;
-                let match = response.match(jsonRegex);
-                if (match) {
-                    response = JSON.parse(match[0]);
-                } else {
-                    response = { success: false };
-                }
-            }
-            return response;
-        },
-
         processPluginRequest: function ($element) {
             let isToggle = $element.hasClass('qsm-dashboard-addon-toggle');
             let isButton = $element.hasClass('qsm-theme-action-btn');
@@ -303,7 +167,6 @@ jQuery(function ($) {
             if (!Array.isArray(installedPlugins)) {
                 installedPlugins = Object.values(installedPlugins);
             }
-
             // If plugin is already activated, do nothing and keep toggle checked
             if (activatedPlugins.includes(pluginPath)) {
                 if (isToggle) {
@@ -327,14 +190,57 @@ jQuery(function ($) {
                 } else if (isButton) {
                     $element.text(qsm_admin_new_quiz.activating);
                 }
-                QSMAdminDashboard.activatePlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton);
-            } else {
+                jQuery(document).trigger('qsm_activate_plugin_button_click_after', [pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton]);
+                if(0 == installerActivated) {
+                    QSMAdminDashboard.activatePlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton);
+                }
+            } else if( 1 == installerActivated ) { 
                 if (isToggle) {
                     $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.installing);
                 } else if (isButton) {
                     $element.text(qsm_admin_new_quiz.installing);
                 }
-                QSMAdminDashboard.installPlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton);
+                jQuery(document).trigger('qsm_install_plugin_button_click_after', [pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton]);
+            }
+        },
+
+        activatePlugin: async function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
+            response = await QSMAdminDashboard.ajaxRequest('qsm_activate_plugin', {
+                nonce: qsm_admin_new_quiz.nonce,
+                slug: slug,
+                single: 'bundle',
+                'plugin_path': path
+            });
+            if (response.data && (response.data.message.includes("Plugin activated successfully") || response.data.message.includes("Plugin is already activated."))) {
+                // Ensure activatedPlugins is an array before pushing
+                if (!Array.isArray(qsm_admin_new_quiz.activated)) {
+                    qsm_admin_new_quiz.activated = [];
+                }
+                qsm_admin_new_quiz.activated.push(path);
+                if (isButton) {
+                    QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton);
+                    QSMAdminDashboard.processToSelectTheme($parent);
+                }
+                if (isToggle) {
+                    $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.activated_text);
+                    $element.prop('checked', true).prop('disabled', false);
+                }
+                $element.prop('disabled', false);
+            } else {
+                $parent.find('.qsm-dashboard-addon-status').text(response.data.message);
+                if (isToggle) { $element.prop('checked', false).prop('disabled', false); }
+                if (isButton) { $element.prop('disabled', false); $element.text(qsm_admin_new_quiz.retry); }
+            }
+        },
+
+        afterInstall: async function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
+            response = await QSMAdminDashboard.ajaxRequest('qsm_get_activated_themes', {
+                nonce: qsm_admin_new_quiz.nonce,
+                slug: slug,
+            });
+            if (response.data) {
+                $parent.find('input[name=quiz_theme_id]').prop("checked", true);
+                $parent.find('input[name=quiz_theme_id]').val(response.data.id);
             }
         },
 
@@ -345,6 +251,18 @@ jQuery(function ($) {
             jQuery('.qsm-quiz-steps-card').removeClass('qsm-quiz-steps-default-theme-active');
             $parent.addClass('qsm-quiz-steps-default-theme-active');
             $parent.find('.qsm-theme-action-btn').attr('disabled', 'disabled');
+        },
+
+        ajaxRequest: function (action, data) {
+            return jQuery.post({ // Added return statement
+                url: qsm_admin_new_quiz.ajaxurl,
+                data: {
+                    action: action,
+                    ...data
+                }
+            }).then(function (response) { // Use .then to return the response
+                return response; // Ensure the response is returned
+            });
         },
     };
     jQuery(document).ready(function ($) {

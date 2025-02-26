@@ -206,53 +206,35 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 									<h3 class="qsm-quiz-steps-title"><?php echo esc_html($theme_name); ?></h3>
 									<p class="qsm-dashboard-addon-status">
 									<?php
-									if ( true == $is_activated || true == $is_installed ) {
+									if ( $is_activated || $is_installed ) {
 										echo esc_html__( 'Version: ', 'quiz-master-next' ) . esc_html( $all_plugins[ $theme_path ]['Version'] );
 									}
 									?>
 									</p>
 								</div>
-								<div class="qsm-quiz-steps-action-buttons">
-									<?php
-									if (
-										// Case 1: Addon is activated but expired
-										((1 == $installer_activated && 1 == $invalid_and_expired)
-
-										// Case 2: Addon is activated and valid, but user lacks the required bundle
-										|| (1 == $installer_activated && 0 == $invalid_and_expired
-											&& ! empty($addon_lookup)
-											&& isset($addon_lookup[ $theme_slug ])
-											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])), true))
-
-										// Case 3: Addon is not installed and is not activated
-										|| (false == $is_installed && 0 == $installer_activated)
-
-										// Case 4: Addon is not installed but activated, valid license, but user lacks the required bundle
-										|| (false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired
-											&& ! empty($addon_lookup)
-											&& isset($addon_lookup[ $theme_slug ])
-											&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $theme_slug ]['bundle'])), true))
-										) && false == $is_activated
-									) { ?>
-										<a href="<?php echo esc_url($theme_link); ?>" class="button button-primary" target="_blank">
-											<?php echo esc_html__( 'Upgrade', 'quiz-master-next' ); ?>
+								<?php if ( 0 == $installer_activated ) { ?>
+									<div class="qsm-quiz-steps-action-buttons">
+										<?php if ( ! $is_activated && ! $is_installed ) { ?>
+											<a href="<?php echo esc_url($theme_link); ?>" class="button button-primary" target="_blank">
+												<?php echo esc_html__( 'Upgrade', 'quiz-master-next' ); ?>
+											</a>
+										<?php 
+										} elseif ( $is_activated || $is_installed ) { ?>
+											<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
+												<?php if ( $is_activated ) {
+													echo esc_html__( 'Select', 'quiz-master-next' );
+												} elseif ( $is_installed ) {
+													echo esc_html__( 'Activate', 'quiz-master-next' );
+												}
+												?>
+											</a>
+										<?php } ?>
+										<a href="<?php echo esc_url($theme_demo); ?>" class="button button-secondary demo" target="_blank">
+											<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
 										</a>
-									<?php } elseif ( true == $is_activated || true == $is_installed || (false == $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired && 'allaccess' == $selected_bundle) ) { ?>
-										<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
-											<?php if ( true == $is_activated ) {
-												echo esc_html__( 'Select', 'quiz-master-next' );
-											} elseif ( true == $is_installed ) {
-												echo esc_html__( 'Activate', 'quiz-master-next' );
-											} elseif ( false == $is_activated && false == $is_installed ) {
-												echo esc_html__( 'Install & Activate', 'quiz-master-next' );
-											}
-											?>
-										</a>
-									<?php } ?>
-									<a href="<?php echo esc_url($theme_demo); ?>" class="button button-secondary demo" target="_blank">
-										<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
-									</a>
-								</div>
+									</div>
+								<?php } 
+								do_action('qsm_create_quiz_theme_option_buttons', $installer_activated, $invalid_and_expired, $addon_lookup, $theme_slug, $selected_bundle, $is_installed, $is_activated, $theme_demo ); ?>
 							</div>
 							<div class="qsm-dashboard-theme-recommended"><?php echo esc_html__('Recommended', 'quiz-master-next'); ?></div>
 							<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $database_theme_id ); ?>" >
@@ -313,58 +295,38 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					<div class="qsm-quiz-addon-steps-card" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
 						<div class="qsm-quiz-addon-steps-images">
 							<img class="qsm-quiz-addon-steps-icon" alt="Addon" src="<?php echo esc_url($addon_icon); ?>">
-							<!-- <a target="_blank" rel="noopener" href="<?php echo esc_url($addon_link); ?>"><img class="qsm-dashboard-help-arrow" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/cross-right-arrow.png'); ?>" alt="cross-right-arrow.png" /></a> -->
 						</div>
 						<div class="qsm-quiz-addon-steps-info">
 							<h3 class="qsm-quiz-addon-steps-title"><?php echo esc_html($addon_name); ?></h3>
 							<?php  $display_text = mb_strlen($addon_description) > 110 ? mb_substr($addon_description, 0, 110) . '...' : $addon_description; ?>
 							<p class="qsm-quiz-addon-steps-status"><?php echo esc_html($display_text); ?></p>
 						</div>
-						<div class="qsm-quiz-addon-steps-button">
-							<?php
-							if (
-								// Case 1: Addon is activated but expired
-								((1 == $installer_activated && 1 == $invalid_and_expired)
-
-								// Case 2: Addon is activated and valid, but user lacks the required bundle
-								|| (1 == $installer_activated && 0 == $invalid_and_expired
-									&& ! empty($addon_lookup)
-									&& isset($addon_lookup[ $addon_slug ])
-									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])), true))
-
-								// Case 3: Addon is not installed and is not activated
-								|| (false === $is_installed && 0 == $installer_activated)
-
-								// Case 4: Addon is not installed but activated, valid license, but user lacks the required bundle
-								|| (false === $is_installed && 1 == $installer_activated && 0 == $invalid_and_expired
-									&& ! empty($addon_lookup)
-									&& isset($addon_lookup[ $addon_slug ])
-									&& ! in_array($selected_bundle, explode(',', str_replace(' ', '', $addon_lookup[ $addon_slug ]['bundle'])), true))
-								) && false == $is_activated
-							) {
-								?>
-								<p class="qsm-dashboard-addon-status"></p>
-								<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
-									<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
-								</a>
-							<?php } else {
-								$is_woocommerce_activated = 'woocommerce-integration' == $addon_slug && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ? 'qsm-create-quiz-no-activated-tooltip' : '';
-								?>
-								<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
-								<label class="qsm-dashboard-addon-switch <?php echo esc_attr($is_woocommerce_activated); ?>">
-									<input type="checkbox" class="qsm-dashboard-addon-toggle"
-										<?php checked(esc_attr($is_activated)); ?>
-										<?php disabled(esc_attr($is_activated)); ?>>
-									<span class="qsm-dashboard-addon-slider">
-										<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
-									</span>
-									<?php
-									if ( "" != $is_woocommerce_activated ) { ?>
-										<span class="qsm-create-quiz-tooltip"><?php esc_html_e('Please activate the WooCommerce plugin to proceed.', 'quiz-master-next'); ?></span>
-									<?php } ?>
-								</label>
-							<?php } ?>
-						</div>
+						<?php if ( 0 == $installer_activated ) { ?>
+							<div class="qsm-quiz-addon-steps-button">
+								<?php if ( ! $is_activated && ! $is_installed ) { ?>
+									<p class="qsm-dashboard-addon-status"></p>
+									<a href="<?php echo esc_url($addon_link); ?>" class="button button-primary qsm-quiz-addon-steps-upgrade-btn buy" target="_blank">
+										<?php echo esc_html__('Upgrade Plan', 'quiz-master-next'); ?>
+									</a>
+								<?php } elseif ( $is_activated || $is_installed ) {
+									$is_woocommerce_activated = 'woocommerce-integration' == $addon_slug && ! is_plugin_active( 'woocommerce/woocommerce.php' ) ? 'qsm-create-quiz-no-activated-tooltip' : ''; ?>
+									<p class="qsm-dashboard-addon-status"><?php echo esc_html($addon_status); ?></p>
+									<label class="qsm-dashboard-addon-switch <?php echo esc_attr($is_woocommerce_activated); ?>">
+										<input type="checkbox" class="qsm-dashboard-addon-toggle"
+											<?php checked(esc_attr($is_activated)); ?>
+											<?php disabled(esc_attr($is_activated)); ?>>
+										<span class="qsm-dashboard-addon-slider">
+											<span class="qsm-dashboard-addon-checkmark">&#10003;</span>
+										</span>
+										<?php
+										if ( "" != $is_woocommerce_activated ) { ?>
+											<span class="qsm-create-quiz-tooltip"><?php esc_html_e('Please activate the WooCommerce plugin to proceed.', 'quiz-master-next'); ?></span>
+										<?php } ?>
+									</label>
+								<?php } ?>
+							</div>
+						<?php }
+							do_action('qsm_create_quiz_addon_option_buttons', $installer_activated, $invalid_and_expired, $addon_lookup, $addon_slug, $selected_bundle, $is_installed, $is_activated, $addon_link, $addon_status); ?>
 						<div class="qsm-dashboard-addon-recommended"><?php echo esc_html__('Recommended', 'quiz-master-next'); ?></div>
 					</div>
 					<?php
@@ -412,7 +374,7 @@ function qsm_create_quiz_page_callback() {
 
 	wp_enqueue_script( 'qsm-create-quiz-script',  QSM_PLUGIN_JS_URL.'/qsm-create-quiz-script.js', array( 'jquery' ), $mlwQuizMasterNext->version,true);
 	wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array(), $mlwQuizMasterNext->version );
-
+	do_action( 'qsm_create_quiz_script_style' );
 	$qsm_admin_dd = qsm_get_parsing_script_data();
 	$qsm_admin_dashboard = qsm_get_parsing_script_data('dashboard.json');
 	$quizoptions_boxes = isset($qsm_admin_dashboard['quizoptions']) ? $qsm_admin_dashboard['quizoptions'] : array();
