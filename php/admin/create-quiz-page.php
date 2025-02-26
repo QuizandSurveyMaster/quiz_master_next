@@ -218,7 +218,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											<a href="<?php echo esc_url($theme_link); ?>" class="button button-primary" target="_blank">
 												<?php echo esc_html__( 'Upgrade', 'quiz-master-next' ); ?>
 											</a>
-										<?php 
+										<?php
 										} elseif ( $is_activated || $is_installed ) { ?>
 											<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
 												<?php if ( $is_activated ) {
@@ -233,7 +233,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											<?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?>
 										</a>
 									</div>
-								<?php } 
+								<?php }
 								do_action('qsm_create_quiz_theme_option_buttons', $installer_activated, $invalid_and_expired, $addon_lookup, $theme_slug, $selected_bundle, $is_installed, $is_activated, $theme_demo ); ?>
 							</div>
 							<div class="qsm-dashboard-theme-recommended"><?php echo esc_html__('Recommended', 'quiz-master-next'); ?></div>

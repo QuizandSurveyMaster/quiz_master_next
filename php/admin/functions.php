@@ -1980,25 +1980,20 @@ function qsm_check_plugins_compatibility() {
 		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
         $plugin_data = get_plugin_data( $plugin_path );
    
-        // Check if the plugin version is below 2.0.0 
+        // Check if the plugin version is below 2.0.0
         if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '<' ) ) {
             ?>
             <div class="notice notice-error">
                 <p>
                     <?php 
-                    $account_url = esc_url( qsm_get_utm_link( 
-                        'https://quizandsurveymaster.com/account', 
-                        'dashboard', 
-                        'useful_links', 
-                        'qsm_installer_update' 
-                    ) );
+                    $account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
 
                     echo wp_kses(
                         sprintf(
                             /* translators: %s is the URL to the QSM account page */
                             __( 'Please download the latest version of the QSM - Installer from <a href="%s" target="_blank" rel="noopener noreferrer">your account</a>.', 'qsm-ultimate' ),
                             $account_url
-                        ), 
+                        ),
                         array(
                             'a' => array(
                                 'href'   => array(),
@@ -2006,11 +2001,11 @@ function qsm_check_plugins_compatibility() {
                                 'rel'    => array(),
                             ),
                         )
-                    ); 
+                    );
                     ?>
                 </p>
             </div>
-            <?php 
+            <?php
         }
     }
 }

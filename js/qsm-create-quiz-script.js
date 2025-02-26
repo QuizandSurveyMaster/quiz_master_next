@@ -205,7 +205,7 @@ jQuery(function ($) {
         },
 
         activatePlugin: async function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            response = await QSMAdminDashboard.ajaxRequest('qsm_activate_plugin', {
+            let response = await QSMAdminDashboard.ajaxRequest('qsm_activate_plugin', {
                 nonce: qsm_admin_new_quiz.nonce,
                 slug: slug,
                 single: 'bundle',
@@ -234,7 +234,7 @@ jQuery(function ($) {
         },
 
         afterInstall: async function (slug, path, $parent, $element, installerActivated, isToggle, isButton) {
-            response = await QSMAdminDashboard.ajaxRequest('qsm_get_activated_themes', {
+            let response = await QSMAdminDashboard.ajaxRequest('qsm_get_activated_themes', {
                 nonce: qsm_admin_new_quiz.nonce,
                 slug: slug,
             });
