@@ -5,8 +5,7 @@
  * @param string $name
  */
 function qsm_get_widget_data( $name ) {
-	$qsm_admin_dd = wp_remote_get( QSM_PLUGIN_URL . 'data/parsing_script.json', [ 'sslverify' => false ] );
-	$qsm_admin_dd = json_decode( wp_remote_retrieve_body( $qsm_admin_dd ), true );
+	$qsm_admin_dd = qsm_get_parsing_script_data();
 	return isset( $qsm_admin_dd[ $name ] ) ? $qsm_admin_dd[ $name ] : array();
 }
 
@@ -101,7 +100,7 @@ function qsm_dashboard_display_change_log_section(){
 					</ul>
 				<?php endif; ?>
 				<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
-					<a href="<?php echo esc_url(qsm_get_utm_link('https://quizandsurveymaster.com/qsm-changelog', 'dashboard', 'useful_links', 'dashboard_changelog')); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+						
 				</div>
 			</div>
 		</div>

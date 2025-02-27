@@ -101,7 +101,6 @@ ul.popuar-addon-ul::after {
 .changelog-ul li span {
 	padding: 3px 10px;
     border-radius: 25px;
-    display: inline-block;
     color: #fff;
     display: flex;
     align-items: center;
