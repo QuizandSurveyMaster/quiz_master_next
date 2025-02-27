@@ -2547,11 +2547,7 @@ var QSM_Quiz_Broadcast_Channel;
                 openQuestionBank: function (pageID) {
                     QSMQuestion.loadQuestionBank();
                     $('#add-question-bank-page').val(pageID);
-                    MicroModal.show('modal-2', {
-                        onClose: function () {
-                            $('.save-page-button').trigger('click');
-                        }
-                    });
+                    MicroModal.show('modal-2');
                 },
                 loadQuestionBank: function (action = '') {
                     if (action == 'change') {
