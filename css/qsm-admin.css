@@ -4229,7 +4229,7 @@ h2#qsm-email-page-templates-title {
     font-size: 12px;
     padding: 0 8px;
 }
-.qsm-response-toaster, .footer-bar-notice { 
+.qsm-response-toaster, .footer-bar-notice {
     color: #FFFFFF;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
     opacity: 1;
@@ -5116,7 +5116,6 @@ ul.qsm-wp-contributor.wp-people-group {
     color: #1E1E1E;
 }
 .qsm-dashboard-error-btn, .qsm-dashboard-error-btn:hover, .qsm-dashboard-error-btn:focus {
-	display: inline-block;
     padding: 10px 20px;
     background: #1E1E1E;
     color: #FFFFFF;

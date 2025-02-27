@@ -423,7 +423,7 @@ function qsm_create_quiz_page_callback() {
 	<div class="wrap">
 		<div class="qsm-new-quiz-wrapper">
 			<div class="qsm-dashboard-header-pagination">
-			<?php $last_visited_page = ! empty($_SERVER['HTTP_REFERER']) ? esc_url($_SERVER['HTTP_REFERER']) : esc_url(admin_url('admin.php?page=qsm_dashboard')); ?>
+			<?php $last_visited_page = ! empty($_SERVER['HTTP_REFERER']) ? esc_url(sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER']))) : esc_url(admin_url('admin.php?page=qsm_dashboard')); ?>
 				<a href="<?php echo esc_url($last_visited_page); ?>" class="qsm-dashboard-journy-previous-dashboard" >← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-previous-step" style="display:none;">← <?php echo esc_html__('Back', 'quiz-master-next'); ?></a>
 				<a href="javascript:void(0)" class="qsm-dashboard-journy-next-step" style="display:none;"><?php echo esc_html__('Skip this', 'quiz-master-next'); ?></a>

@@ -146,7 +146,7 @@ function qsm_options_styling_tab_content() {
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	}
-	
+
 	echo '<form method="POST" action="">';
 	wp_nonce_field( 'quiz_theme_integration', 'quiz_theme_integration_nouce' );
 	?><div class="themes-container">
@@ -173,7 +173,7 @@ function qsm_options_styling_tab_content() {
 				<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="<?php echo esc_url( $featured_image ); ?>" />
 				<input type="submit" name="save_featured_image" class="button button-secondary" value="<?php esc_attr_e( 'Save Image', 'quiz-master-next' ); ?>" />
 			</div>
-			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo ! empty( $featured_image ) ? esc_url( $featured_image ) : QSM_PLUGIN_URL . 'assets/placeholder.png'; ?>"><br>
+			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo ! empty( $featured_image ) ? esc_url( $featured_image ) : esc_url( QSM_PLUGIN_URL . 'assets/placeholder.png' ); ?>"><br>
 			<button id="qsm-set-theme-feature-image" class="button button-secondary qsm-theme-featured-image-change qsm-common-button-styles"><?php esc_attr_e( 'Upload Image', 'quiz-master-next' ); ?></button>
 		</div>
 		</div>
