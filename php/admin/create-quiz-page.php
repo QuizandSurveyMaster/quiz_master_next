@@ -195,7 +195,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						$is_activated = in_array( $theme_path, $activated_plugins, true );
 						$is_installed = array_key_exists( $theme_path, $installed_plugins );
 						$card_class = $is_activated ? "qsm-quiz-theme-activated" : "";
-						
+
 						?>
 						<div class="qsm-quiz-steps-card <?php echo esc_attr($card_class); ?>"  data-id="<?php echo esc_attr( $theme_id ); ?>" data-slug="<?php echo esc_attr( $theme_slug ); ?>" data-path="<?php echo esc_attr( $theme_path ); ?>">
 							<div class="qsm-quiz-steps-image">
