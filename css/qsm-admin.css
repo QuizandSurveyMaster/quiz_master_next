@@ -2780,31 +2780,35 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 }
 
 .qsm-nonce-validation {
-	border: 1px solid #fbbf24;
-	background: #fff;
-	overflow: auto;
-	border-left-color: #fbbf24;
-	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
-	border-left-width: 4px;
+	border: 1px solid #EFF6FF;
+    background: #EFF6FF;
+    overflow: auto;
+    border-left-color: #2271B1;
+    border-left-width: 6px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
 }
 .qsm-nonce-validation img {
 	float: left;
-	width: auto;
-	height: 30px;
-	margin: 25px 20px;
-	margin-left: 20px;
+    margin-bottom: 15px;
 }
 .qsm-nonce-text {
 	float: left;
-	margin-top: 20px;
+	color: #1E1E1E;
+}
+.qsm-nonce-text strong {
+	font-weight: 400;
+	color: #1E1E1E;
 }
 .qsm-nonce-validation .button-secondary {
-	margin: 20px 20px;
 	float: right;
 }
 .qsm-nonce-validation span {
 	display: inline-block;
-	margin-top: 2px;
+    margin-top: 2px;
+    color: #555555;
 }
 /** * Style tab design */
 .wp-upload-form {
@@ -4225,25 +4229,24 @@ h2#qsm-email-page-templates-title {
     font-size: 12px;
     padding: 0 8px;
 }
-.qsm-response-toaster, .footer-bar-notice {
-	position: fixed;
-    top: 70px;
-    right: 2%;
-    color: white;
-    padding: 20px 25px 20px 25px;
+.qsm-response-toaster, .footer-bar-notice { 
+	color: white;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
     opacity: 0;
     visibility: hidden;
     transform: translateX(50px) scale(0.95);
     transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out, visibility 1s;
     z-index: 99;
-    display: grid;
+    display: flex;
     min-height: 30px;
     align-items: center;
     min-width: 200px;
-    justify-content: center;
-    grid-template-columns: 5fr 0.5fr;
-    font-size: 15px;
+    gap: 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    padding: 7px 15px;
+    justify-content: start;
+    width: max-content;
 }
 
 .qsm-response-toaster.show, .footer-bar-notice.show {
@@ -4253,37 +4256,37 @@ h2#qsm-email-page-templates-title {
 }
 
 .qsm-response-toaster.qsm-response-success, .footer-bar-notice.qsm-response-success {
-	background-color: #4CAF50;
+	background-color: #ECFDF5;
+	color: #065F46;
 }
 
 .qsm-response-toaster.qsm-response-error, .footer-bar-notice.qsm-response-error {
-	background-color: #E57373;
+	background-color: #FEF2F2;
+    color: #991B1B;
 }
 
 .qsm-response-toaster.qsm-response-warning, .footer-bar-notice.qsm-response-warning {
-	background-color: #FFB74D;
-	color: #333333;
+	background-color: #FEF2F2;
+	color: #991B1B;
 }
 
 .qsm-response-toaster.qsm-response-info, .footer-bar-notice.qsm-response-info {
-	background-color: #64B5F6;
+	background-color: #EFF6FF;
+	color: #2271B1;
 }
 
-.footer-bar-notice .qsm-close-alert {
-	position: absolute;
-    right: 5px;
-    height: 15px;
-    display: inline-flex;
-    width: 15px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-weight: bold;
-    color: #FFFFFF;
-    cursor: pointer;
-    opacity: 0.7;
-    top: 5px;
+.qsm-message-notice-wrap {
+	position: fixed;
+    top: 70px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    z-index: 99;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-end;
 }
+
 .qsm-preview-result-page-template-container, .qsm-preview-email-page-template-container {
 	padding: 0 15px;
 	position: relative;
@@ -5076,39 +5079,49 @@ ul.qsm-wp-contributor.wp-people-group {
     font-size: 17px;
 }
 #qsm-dashboard-error-container {
-    background: #fff5f5;
-    border: 1px solid #fbbf24;
-    padding: 20px;
-    border-radius: 8px;
+    background: #FFF2EF;
+    border: 1px solid #FFF2EF;
+    padding: 30px 20px;
+    border-radius: 6px;
     margin: 20px auto;
-    max-width: 800px;
-    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+}
+.qsm-dashboard-error-content div.error {
+	display: none;
 }
 .qsm-dashboard-error-content h2 {
-    font-size: 20px;
-    color: #fbbf24;
-    margin-bottom: 8px;
-    font-weight: 600;
+	font-size: 18px;
+    color: #D43838;
+    font-weight: 400;
+    margin: 0;
 }
 .qsm-dashboard-error-content ul {
-    list-style: none;
+    list-style: disc;
     padding-left: 0;
 }
 .qsm-dashboard-error-content ul li {
+	margin-bottom: 8px;
+    margin-left: 15px;
+    color: #1E1E1E;
     font-size: 14px;
-    margin-bottom: 8px;
+}
+.qsm-dashboard-error-content p {
+	font-size: 16px;
+    color: #1E1E1E;
 }
 .qsm-dashboard-error-btn, .qsm-dashboard-error-btn:hover, .qsm-dashboard-error-btn:focus {
+	display: inline-block;
     padding: 10px 20px;
-    background: #fbbf24;
-    color: #92400e;
+    background: #1E1E1E;
+    color: #FFFFFF;
     text-decoration: none;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 600;
     margin-top: 15px;
     display: flex;
     align-items: center;
+    max-height: 36px;
     width: fit-content;
+    box-shadow: 0px 4px 4px 0px #00000014;
 }
 .qsm-free-addon-text p {
     font-size: 16px;
