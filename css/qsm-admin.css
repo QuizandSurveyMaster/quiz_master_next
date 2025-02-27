@@ -4230,12 +4230,12 @@ h2#qsm-email-page-templates-title {
     padding: 0 8px;
 }
 .qsm-response-toaster, .footer-bar-notice { 
-	color: white;
+    color: #FFFFFF;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
-    opacity: 0;
+    opacity: 1;
     visibility: hidden;
-    transform: translateX(50px) scale(0.95);
-    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out, visibility 1s;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out, visibility 0.5s;
     z-index: 99;
     display: flex;
     min-height: 30px;
@@ -4247,12 +4247,19 @@ h2#qsm-email-page-templates-title {
     padding: 7px 15px;
     justify-content: start;
     width: max-content;
+    right: 0;
+    top: 20px;
 }
 
 .qsm-response-toaster.show, .footer-bar-notice.show {
-	opacity: 1;
-	visibility: visible;
-	transform: translateY(0);
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.qsm-response-toaster.hide, .footer-bar-notice.hide {
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.5s ease-in-out, visibility 0.5s;
 }
 
 .qsm-response-toaster.qsm-response-success, .footer-bar-notice.qsm-response-success {
