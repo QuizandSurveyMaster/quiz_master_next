@@ -604,14 +604,11 @@ input.qsm-dashboard-addon-toggle:checked+.qsm-dashboard-addon-slider .qsm-dashbo
 
 .qsm-create-quiz-switch-label input:checked+.qsm-create-quiz-slider {
     border-color: #2271B1;
+    background-color: #FFFFFF;
 }
 
 .qsm-create-quiz-switch-label input:checked+.qsm-create-quiz-slider::before {
     background-color: #2271B1;
-}
-
-.qsm-create-quiz-switch-label input:checked+.qsm-create-quiz-slider {
-    background-color: #FFFFFF;
 }
 
 span.qsm-create-quiz-toggle-label {
