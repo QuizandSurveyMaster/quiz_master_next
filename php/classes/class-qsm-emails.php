@@ -530,7 +530,7 @@ class QSM_Emails {
 			}
 			if ( isset( $emails[ $i ]['content'] ) ) {
 				$emails[ $i ]['content'] = preg_replace_callback(
-					'/<qsmvariabletag>([^<]+)<\/qsmvariabletag>/u',
+					'/(?:<|&lt;)qsmvariabletag(?:>|&gt;)([^<]+)(?:<\/|&lt;\/)qsmvariabletag(?:>|&gt;)/u',
 						function( $matches ) {
 							return '%' . wp_strip_all_tags( preg_replace('/^\s+|\s+$/u', '', $matches[1] ) ) . '%';
 						},

@@ -26,27 +26,52 @@ var QSMAdminResultsAndEmail;
          * @param string message The message of the alert
          * @param string type The type of alert. Choose from 'error', 'info', 'success', and 'warning'
          */
-        displayAlert: function (message, type) {
+        displayAlert: function (message, type = "success") {
             QSMAdmin.clearAlerts();
-            const $toaster = jQuery('#footer-bar-notice');
-            // Add message & close button
-            $toaster.html(`${message} <span class="qsm-close-alert">&times;</span>`)
-                .removeClass()
-                .addClass(`footer-bar-notice qsm-response-${type} show`);
-            // Auto-close after 4 seconds
-            this.toasterTimeout = setTimeout(() => {
-                $toaster.removeClass('show');
+            QSMAdmin.ensureAlertWrapper();
+            const $wrapper = jQuery('.qsm-message-notice-wrap');
+        
+            // Define icons based on message type
+            const icons = {
+                success: qsm_admin_messages.success_icon,
+                info: qsm_admin_messages.info_icon,
+                error: qsm_admin_messages.error_icon,
+                warning: qsm_admin_messages.warning_icon
+            };
+        
+            // Get the correct icon, default to success
+            const iconSrc = icons[type] || icons.success;
+        
+            // Create alert element
+            const $alert = jQuery(`
+                <div class="footer-bar-notice qsm-response-${type} show">
+                    <img src="${iconSrc}" alt="${type} icon" class="qsm-alert-icon">
+                    <div>${message}</div>
+                </div>
+            `);
+        
+            // Append message to wrapper
+            $wrapper.append($alert);
+        
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                $alert.fadeOut(300, function () {
+                    jQuery(this).remove();
+                });
             }, 4000);
-            // Click event to close immediately
-            jQuery('.qsm-close-alert').on('click', function () {
-                $toaster.removeClass('show');
-            });
         },
         
+        
+        ensureAlertWrapper: function () {
+            if (jQuery('.qsm-message-notice-wrap').length === 0) {
+                jQuery('body').append('<div class="qsm-message-notice-wrap"></div>');
+            }
+        },        
+
         clearAlerts: function () {
-            jQuery('#footer-bar-notice').removeClass('show');
-            $('.qsm-alerts').empty();
-            clearTimeout(this.toasterTimeout);
+            // jQuery('#footer-bar-notice').removeClass('show');
+            // $('.qsm-alerts').empty();
+            // clearTimeout(this.toasterTimeout);
         },
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
@@ -2649,7 +2674,7 @@ var QSM_Quiz_Broadcast_Channel;
                     }));
                 },
                 addQuestionFromQuestionBank: function (questionID, is_linking = 0) {
-                    QSMAdmin.displayAlert(qsm_admin_messages.adding_question, 'info');
+                    QSMAdmin.displayAlert(is_linking == 0 ? qsm_admin_messages.adding_question : qsm_admin_messages.linking_question, 'info');
                     let isLinkingData = is_linking == 1 ? questionID : 0;
                     var model = new QSMQuestion.question({
                         id: questionID,
@@ -3649,9 +3674,6 @@ var QSM_Quiz_Broadcast_Channel;
 
                 $('.questions').on('click', '.add-question-bank-button', function (event) {
                     event.preventDefault();
-                    if (jQuery('.questionElements').is(':visible')) {
-                        $('#save-popup-button').trigger('click');
-                    }
                     QSMQuestion.openQuestionBank($(this).parents('.page').index());
                 });
 

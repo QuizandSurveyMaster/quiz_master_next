@@ -148,10 +148,10 @@ function qsm_generate_quiz_options() {
 			}
 				if ( ! get_user_meta( $user_id, 'nonce_validation_notification' ) ) { ?>
 				<div class="qsm-nonce-validation">
-					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/success-blue.png' ); ?>" alt="information">
 					<div class="qsm-nonce-text">
 						<span> <strong><?php  echo esc_html__( "Your quiz has been created, you can now start adding questions.", 'quiz-master-next' ) ?></strong></span>
-						<br><span> <?php  echo esc_html__( "Please note: If you are using any cache plugins, please remember to exclude your quiz pages from cache to prevent", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue.", 'quiz-master-next' ) ?></a></span>
+						<br><span> <?php  echo esc_html__( "Please note: If you are using any cache plugins, please remember to exclude your quiz pages from cache to prevent.", 'quiz-master-next' ) ?><a><?php  echo esc_html__( " Nonce validation issue.", 'quiz-master-next' ) ?></a></span>
 					</div>
 					<form method="POST" action="">
 						<?php wp_nonce_field( 'nonce_validation_notification', 'nonce_validation_notification' ); ?>

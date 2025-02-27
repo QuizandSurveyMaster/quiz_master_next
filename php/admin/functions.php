@@ -1962,8 +1962,8 @@ function qsm_display_fullscreen_error() {
             <h2><?php esc_html_e('Unable To Load Required Data', 'quiz-master-next'); ?></h2>
             <p><?php esc_html_e('We couldn\'t load the required data, contact our support team for assistance, or you can still create a quiz.', 'quiz-master-next'); ?></p>
             <ul>
-                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
-                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('If the issue persists, contact our support team for assistance.', 'quiz-master-next'); ?></li>
+                <li><?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
+                <li><?php esc_html_e('If the issue persists, contact our support team for assistance.', 'quiz-master-next'); ?></li>
             </ul>
             <a href="<?php echo esc_url($support_link); ?>" class="qsm-dashboard-error-btn" target="_blank">
                 <?php esc_html_e('Troubleshoot Now', 'quiz-master-next'); ?>

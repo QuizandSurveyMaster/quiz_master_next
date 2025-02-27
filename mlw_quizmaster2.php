@@ -540,6 +540,8 @@ class MLWQuizMasterNext {
 			'unlink_question'            => __('Unlink', 'quiz-master-next'),
 			'duplicating_question'       => __('Duplicating question...', 'quiz-master-next'),
 			'linking_question'           => __('Linking...', 'quiz-master-next'),
+			'adding_question'            => __('Adding...', 'quiz-master-next'),
+			'add_question'               => __('Add', 'quiz-master-next'),
 			'link_question'              => __('Link', 'quiz-master-next'),
 			'creating_question'          => __('Creating question...', 'quiz-master-next'),
 			'saving_question'            => __('Saving question...', 'quiz-master-next'),
@@ -609,6 +611,10 @@ class MLWQuizMasterNext {
 			'delete_confirm'             => esc_html__( 'Are you sure you want to delete?', 'quiz-master-next' ),
         	'delete_alert'               => esc_html__( 'Please select a valid bulk action.', 'quiz-master-next' ),
 			'result_template'            => __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
+			'error_icon'                 => esc_url(QSM_PLUGIN_URL . 'assets/error-message.png'),
+			'success_icon'               => esc_url(QSM_PLUGIN_URL . 'assets/success-message.png'),
+			'warning_icon'               => esc_url(QSM_PLUGIN_URL . 'assets/warning-message.png'),
+			'info_icon'                  => esc_url(QSM_PLUGIN_URL . 'assets/info-message.png'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
