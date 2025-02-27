@@ -31,7 +31,6 @@ var QSMAdminResultsAndEmail;
             QSMAdmin.ensureAlertWrapper();
             const $wrapper = jQuery('.qsm-message-notice-wrap');
         
-            // Define icons based on message type
             const icons = {
                 success: qsm_admin_messages.success_icon,
                 info: qsm_admin_messages.info_icon,
@@ -39,40 +38,36 @@ var QSMAdminResultsAndEmail;
                 warning: qsm_admin_messages.warning_icon
             };
         
-            // Get the correct icon, default to success
             const iconSrc = icons[type] || icons.success;
         
-            // Create alert element
             const $alert = jQuery(`
-                <div class="footer-bar-notice qsm-response-${type} show">
+                <div class="footer-bar-notice qsm-response-${type}">
                     <img src="${iconSrc}" alt="${type} icon" class="qsm-alert-icon">
                     <div>${message}</div>
                 </div>
             `);
         
-            // Append message to wrapper
             $wrapper.append($alert);
-        
-            // Auto-remove after 4 seconds
             setTimeout(() => {
-                $alert.fadeOut(300, function () {
-                    jQuery(this).remove();
-                });
+                $alert.addClass('show');
+            }, 50);
+
+            // Auto-hide after 4 seconds with slide-out transition
+            setTimeout(() => {
+                $alert.addClass('hide'); // Add class to animate out
+                setTimeout(() => {
+                    $alert.remove();
+                }, 500);
             }, 4000);
         },
-        
         
         ensureAlertWrapper: function () {
             if (jQuery('.qsm-message-notice-wrap').length === 0) {
                 jQuery('body').append('<div class="qsm-message-notice-wrap"></div>');
             }
-        },        
+        }, 
 
-        clearAlerts: function () {
-            // jQuery('#footer-bar-notice').removeClass('show');
-            // $('.qsm-alerts').empty();
-            // clearTimeout(this.toasterTimeout);
-        },
+        clearAlerts: function () {},
         selectTab: function (tab) {
             $('.qsm-tab').removeClass('nav-tab-active');
             $('.qsm-tab-content').hide();
