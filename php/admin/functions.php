@@ -1520,7 +1520,7 @@ function qsm_webhooks_popup_window_section() {
 			"title"        => __( 'Automate Your Workflow with QSM Webhooks', 'quiz-master-next' ),
 			"description"  => __( 'Enhance your quizzes with seamless integrations using the QSM Webhooks Addon.', 'quiz-master-next' ),
 			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
-			"warning"      => __( 'Missing Feature - webhook Add-on required', 'quiz-master-next' ),
+			"warning"      => __( 'Missing Feature - webhook Add-On required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Webhooks Addon separately.', 'quiz-master-next' ),
 			"buy_btn_text" => __( 'Buy Webhooks Addon', 'quiz-master-next' ),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/qsm-webhooks', 'qsm_list', 'webhooks_button', 'webhooks_read_documentation', 'qsm_plugin_upsell' ),
@@ -1805,7 +1805,25 @@ function qsm_create_theme_defaults_tab() {
 	if ( empty( $themes ) ) {
 		return;
 	}
-    ?>
+	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
+
+	if( empty($active_themes) ) {
+		return;
+	}
+	$pro_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
+
+	$has_pro_theme = false;
+	foreach ($active_themes as $theme) {
+		if (in_array($theme['theme_name'], $pro_themes)) {
+			$has_pro_theme = true;
+			break;
+		}
+	}
+
+	if (!$has_pro_theme) {
+		return;
+	}
+	?>
 	<a href="?page=qmn_global_settings&tab=qsm-theme-defaults" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'qsm-theme-defaults' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Theme Defaults', 'quiz-master-next' ); ?></a>
     <?php
 }
@@ -1951,7 +1969,7 @@ function qsm_get_parsing_script_data( $file_name = 'parsing_script.json' ) {
     }
     $json_data = $wp_filesystem->get_contents($file_path);
     $decoded_data = json_decode($json_data, true);
-    return $decoded_data ?: false;
+    return isset($decoded_data) ? $decoded_data : false;
 }
 
 function qsm_display_fullscreen_error() {

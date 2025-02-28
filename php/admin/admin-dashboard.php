@@ -121,7 +121,7 @@ function qsm_dashboard_display_change_log_section(){
 					</ul>
 				<?php endif; ?>
 				<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
-						
+
 				</div>
 			</div>
 		</div>
