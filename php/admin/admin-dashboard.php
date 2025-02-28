@@ -52,6 +52,32 @@ function qsm_check_close_hidden_box( $widget_id ) {
 	}
 }
 
+function qsm_check_plugins_compatibility() {
+	global $mlwQuizMasterNext;
+
+    if ( class_exists('QSM_Installer') ) {
+		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
+        $plugin_data = get_plugin_data( $plugin_path );
+
+        // Check if the plugin version is below 2.0.0
+        if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '<' ) ) {
+			$account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
+			?>
+			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">
+				<div class="qsm-dashboard-error-content">
+					<h3><?php esc_html_e('Update Available', 'quiz-master-next'); ?></h3>
+					<p><?php esc_html_e('We recommend downloading the latest version of the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next'); ?></p>
+					
+					<a href="<?php echo esc_url($account_url); ?>" class="qsm-dashboard-error-btn" target="_blank">
+						<?php esc_html_e('Get Latest QSM Installer', 'quiz-master-next'); ?>
+					</a>
+				</div>
+			</div>
+		<?php
+		}
+	}
+}
+
 function qsm_dashboard_display_change_log_section(){
 	global $wp_filesystem, $mlwQuizMasterNext;
 	require_once ( ABSPATH . '/wp-admin/includes/file.php' );
@@ -60,10 +86,15 @@ function qsm_dashboard_display_change_log_section(){
 	$readme_file = QSM_PLUGIN_PATH . 'readme.txt';
 	if ( $wp_filesystem->exists( $readme_file ) ) {
 		$file_content = $wp_filesystem->get_contents( $readme_file );
+	
 		if ( $file_content ) {
-			$parts           = explode( '== Changelog ==', $file_content );
-			$last_change_log = mlw_qmn_get_string_between( $parts[1], ' =', '= ' );
-			$change_log      = array_filter( explode( '* ', trim( $last_change_log ) ) );
+			$parts = explode( '== Changelog ==', $file_content, 2 );
+			if ( isset( $parts[1] ) ) {
+				preg_match_all('/\* (.+)/', $parts[1], $matches);
+				if ( !empty($matches[1]) ) { 
+					$change_log = array_slice($matches[1], 0, 5);
+				}
+			}
 		}
 	}
 	?>
@@ -267,6 +298,7 @@ function qsm_generate_dashboard_page() {
 			if ( $qsm_admin_dd ) {
 				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
+				qsm_check_plugins_compatibility();
 				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($themes);

@@ -1012,6 +1012,10 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
             });
             jQuery(document).on('click', '.qsm-insert-page-template-anchor', function (e) {
                 let templateWrap = jQuery(this).find('.qsm-insert-template-wrap');
+                let radioButtons = jQuery(this).find('input[type="radio"][name="qsm-template-action"]');
+                if (!radioButtons.is(':checked')) { 
+                    radioButtons.filter('[value="new"]').prop('checked', true).trigger('change');
+                }
                 jQuery('.qsm-settings-box-details, .qsm-more-settings-box-details').hide();
                 if (!templateWrap.is(':visible')) {
                     templateWrap.show();

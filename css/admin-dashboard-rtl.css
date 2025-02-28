@@ -91,7 +91,7 @@
 	background: #feb325;
 }
 
-.changelog-ul li .bug {
+.changelog-ul li .bug, .changelog-ul li .hotfix {
 	background: #fe2525;
 }
 
