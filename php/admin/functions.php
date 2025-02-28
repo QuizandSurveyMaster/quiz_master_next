@@ -933,9 +933,11 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '', $c
 				<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>" <?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 				<div class="theme-screenshot" id="qsm-theme-screenshot">
 					<img alt="" src="<?php echo esc_url( WP_PLUGIN_URL . '/' . $theme_name . '/screenshot.png' ); ?>" />
+					<?php if ( 'qsm_theme_defaults' !== $caller ) { ?>
 					<div class="downloaded-theme-button">
 						<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 					</div>
+					<?php } ?>
 				</div>
 				<span class="more-details" style="display: none;"><?php esc_html_e( 'Templates', 'quiz-master-next' ); ?></span>
 				<div class="theme-id-container">
@@ -964,7 +966,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '', $c
 	}
 }
 
-function qsm_get_default_wizard_themes() {
+function qsm_get_default_wizard_themes( $show_theme_container = true ) {
 	global $mlwQuizMasterNext;
 	global $themes_data;
 	global $pro_themes;
@@ -1001,7 +1003,10 @@ function qsm_get_default_wizard_themes() {
 		unset( $themes_data[ $key ] );
 	}
 	if ( ! empty( $default_themes_data ) ) {
-		?><div class="themes-container"><?php
+		if ( $show_theme_container ) : ?>
+		<div class="themes-container">
+		<?php
+		endif;
 		foreach ( $default_themes_data as $key => $theme ) {
 			$theme_name          = $theme['name'];
 			$theme_screenshot    = $theme['img'];
@@ -1026,7 +1031,10 @@ function qsm_get_default_wizard_themes() {
 			</div>
 			<?php
 		}
-		?></div><?php
+		if ( $show_theme_container ) : ?>
+		</div>
+		<?php
+		endif;
 	}
 }
 
@@ -1854,6 +1862,8 @@ function qsm_create_theme_defaults_tab_content() {
             <div class="themes wp-clearfix">
                 <?php
                 qsm_get_installed_theme( 0, '', 'qsm_theme_defaults' );
+				qsm_fetch_theme_data();
+				qsm_get_default_wizard_themes( false );
                 ?>
             </div>
         </div>

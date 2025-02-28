@@ -3406,10 +3406,12 @@ input#duplicate_questions {
 	border-radius: 10px;
 	padding: 0 10px;
 }
-#theme-browser .market-theme:hover .market-theme-url {
+#theme-browser .market-theme:hover .market-theme-url,
+.qsm-global-settings-theme-browser .market-theme:hover .market-theme-url {
 	opacity: 1;
 }
-#theme-browser .market-theme .market-theme-url {
+#theme-browser .market-theme .market-theme-url,
+.qsm-global-settings-theme-browser .market-theme .market-theme-url {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -5061,7 +5063,8 @@ ul.qsm-wp-contributor.wp-people-group {
     padding-bottom: 2px;
 }
 .qsm-global-settings-theme-browser {
-	padding: 20px 5px;
+	position: relative;
+    top: 20px;
 }
 #qsm-delete-result-page-popup.qsm-standard-popup .qsm-popup__header .qsm-popup__title {
 	padding: 0;
