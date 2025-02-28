@@ -221,7 +221,10 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.0.0 ( Fabuary 24, 2025 ) =
+= 10.0.1 ( Fabuary 28, 2025 ) =
+* Hotfix: Resolved JS warning while saving email template
+
+= 10.0.0 ( Fabuary 28, 2025 ) =
 * Feature: Added options to import and create email and result templates
 * Feature: Enabled saving questions as drafts
 * Feature: Added the ability to link a question across multiple quizzes
@@ -229,6 +232,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 * Feature: Added a setting to prevent duplicate emails when multiple logic conditions are met
 * Feature: Added an option to disable scrolling while submitting a quiz
 * Bug: Fixed an issue with inline drop-down question types
+* Enhancement: Improved question search feature in question bank
 * Enhancement: Improved UI across Quiz, Text, Option, and Email, Result pages
 * Enhancement: Enhanced the UI for Dashboard and other related pages
 

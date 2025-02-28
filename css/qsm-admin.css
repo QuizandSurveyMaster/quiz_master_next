@@ -5096,10 +5096,17 @@ ul.qsm-wp-contributor.wp-people-group {
     border-radius: 6px;
     margin: 20px auto;
 }
+.qsm-dashboard-warning-container {
+	background: #fff4d2;
+    border: 1px solid #FFF2EF;
+    padding: 30px 20px;
+    border-radius: 6px;
+    margin: 20px auto;
+}
 .qsm-dashboard-error-content div.error {
 	display: none;
 }
-.qsm-dashboard-error-content h2 {
+.qsm-dashboard-error-content h3 {
 	font-size: 18px;
     color: #D43838;
     font-weight: 400;

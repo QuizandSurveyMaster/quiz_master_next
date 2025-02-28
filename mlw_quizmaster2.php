@@ -1259,7 +1259,6 @@ class MLWQuizMasterNext {
 			</div>
 			<?php
 		}
-		qsm_check_plugins_compatibility();
 	}
 }
 
