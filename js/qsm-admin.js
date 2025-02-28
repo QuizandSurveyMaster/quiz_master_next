@@ -928,8 +928,13 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 const templateName = templateWrap.find('.qsm-insert-page-template-title').val().trim();
                 const selectedTemplateId = templateWrap.find('.qsm-to-replace-page-template').val();
                 const uniqueId = button.data('id');
-                const editor = tinymce.get('results-page-' + (uniqueId));
                 const templateType = button.parents('.qsm-insert-page-template-anchor').data('template-type');
+                if (templateType == 'result') {
+                    var editor = tinymce.get('results-page-' + (uniqueId));
+                } else if (templateType == 'email') {
+                    var editor = tinymce.get('email-template-' + (uniqueId));
+                }
+                
                 const templateContent = editor.getContent().trim();
                 const isReplace = jQuery('input[name="qsm-template-action"]:checked').val() === 'replace';
 
