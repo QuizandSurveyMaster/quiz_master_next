@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.0.1 ( Fabuary 28, 2025 ) =
+= 10.0.1 ( March 01, 2025 ) =
 * Hotfix: Resolved JS warning while saving email template
 
 = 10.0.0 ( Fabuary 28, 2025 ) =
