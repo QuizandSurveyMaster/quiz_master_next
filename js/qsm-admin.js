@@ -2982,7 +2982,6 @@ var QSM_Quiz_Broadcast_Channel;
                     );
                 },
                 saveQuestion: function (questionID, CurrentElement) {
-                    QSMAdmin.displayAlert(qsm_admin_messages.saving_question, 'info');
                     var model = QSMQuestion.questions.get(questionID);
                     var hint = $('#hint').val();
                     var name = wp.editor.getContent('question-text');
@@ -3145,7 +3144,6 @@ var QSM_Quiz_Broadcast_Channel;
 					return ansData;
 				},
                 saveSuccess: function (model) {
-                    QSMAdmin.displayAlert(qsm_admin_messages.question_saved, 'success');
                     var template = wp.template('question');
                     var page = model.get('page') + 1;
                     var questionName = model.get('name');

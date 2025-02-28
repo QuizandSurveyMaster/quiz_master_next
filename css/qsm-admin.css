@@ -4282,6 +4282,10 @@ h2#qsm-email-page-templates-title {
 	color: #2271B1;
 }
 
+.footer-bar-notice.qsm-response-info img {
+	animation: rotation 2s infinite linear;
+}
+
 .qsm-message-notice-wrap {
 	position: fixed;
     top: 70px;
