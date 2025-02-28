@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 5.4
-Stable tag: 10.0.0
+Stable tag: 10.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -221,6 +221,9 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 10.0.1 ( March 01, 2025 ) =
+* Hotfix: Resolved JS warning while saving email template
+
 = 10.0.0 ( Fabuary 28, 2025 ) =
 * Feature: Added options to import and create email and result templates
 * Feature: Enabled saving questions as drafts

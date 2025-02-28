@@ -1520,7 +1520,7 @@ function qsm_webhooks_popup_window_section() {
 			"title"        => __( 'Automate Your Workflow with QSM Webhooks', 'quiz-master-next' ),
 			"description"  => __( 'Enhance your quizzes with seamless integrations using the QSM Webhooks Addon.', 'quiz-master-next' ),
 			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
-			"warning"      => __( 'Missing Feature - webhook Add-on required', 'quiz-master-next' ),
+			"warning"      => __( 'Missing Feature - webhook Add-On required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Webhooks Addon separately.', 'quiz-master-next' ),
 			"buy_btn_text" => __( 'Buy Webhooks Addon', 'quiz-master-next' ),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/qsm-webhooks', 'qsm_list', 'webhooks_button', 'webhooks_read_documentation', 'qsm_plugin_upsell' ),
@@ -1805,7 +1805,25 @@ function qsm_create_theme_defaults_tab() {
 	if ( empty( $themes ) ) {
 		return;
 	}
-    ?>
+	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
+
+	if ( empty($active_themes) ) {
+		return;
+	}
+	$pro_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
+
+	$has_pro_theme = false;
+	foreach ( $active_themes as $theme ) {
+		if ( in_array($theme['theme_name'], $pro_themes, true) ) {
+			$has_pro_theme = true;
+			break;
+		}
+	}
+
+	if ( ! $has_pro_theme ) {
+		return;
+	}
+	?>
 	<a href="?page=qmn_global_settings&tab=qsm-theme-defaults" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'qsm-theme-defaults' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Theme Defaults', 'quiz-master-next' ); ?></a>
     <?php
 }
@@ -1959,7 +1977,7 @@ function qsm_display_fullscreen_error() {
     ?>
     <div id="qsm-dashboard-error-container">
         <div class="qsm-dashboard-error-content">
-            <h2><?php esc_html_e('Unable To Load Required Data', 'quiz-master-next'); ?></h2>
+            <h3><?php esc_html_e('Unable To Load Required Data', 'quiz-master-next'); ?></h3>
             <p><?php esc_html_e('We couldn\'t load the required data, contact our support team for assistance, or you can still create a quiz.', 'quiz-master-next'); ?></p>
             <ul>
                 <li><?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
@@ -1971,41 +1989,4 @@ function qsm_display_fullscreen_error() {
         </div>
     </div>
     <?php
-}
-
-function qsm_check_plugins_compatibility() {
-    global $mlwQuizMasterNext;
-
-    if ( class_exists('QSM_Installer') ) {
-		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
-        $plugin_data = get_plugin_data( $plugin_path );
-
-        // Check if the plugin version is below 2.0.0
-        if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '<' ) ) {
-            ?>
-            <div class="notice notice-error">
-                <p>
-                    <?php
-                    $account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
-
-                    echo wp_kses(
-                        sprintf(
-                            /* translators: %s is the URL to the QSM account page */
-                            __( 'Please download the latest version of the QSM - Installer from <a href="%s" target="_blank" rel="noopener noreferrer">your account</a>.', 'quiz-master-next' ),
-                            $account_url
-                        ),
-                        array(
-                            'a' => array(
-                                'href'   => array(),
-                                'target' => array(),
-                                'rel'    => array(),
-                            ),
-                        )
-                    );
-                    ?>
-                </p>
-            </div>
-            <?php
-        }
-    }
 }
