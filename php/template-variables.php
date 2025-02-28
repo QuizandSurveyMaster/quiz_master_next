@@ -542,7 +542,7 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 			if ( isset( $results_contact['label'] ) && isset( $results_contact['type'] ) && isset( $results_contact['value'] ) ) {
 				$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
 				$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
-				$hasOptions = ! empty(trim($options));
+				$hasOptions = ! empty($options) ? trim($options) : "";
 
 				if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
 					$return .= $results_contact['label'] . ': ' . $results_contact['value'] . '<br>';

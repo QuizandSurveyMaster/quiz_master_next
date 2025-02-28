@@ -1951,7 +1951,7 @@ function qsm_get_parsing_script_data( $file_name = 'parsing_script.json' ) {
     }
     $json_data = $wp_filesystem->get_contents($file_path);
     $decoded_data = json_decode($json_data, true);
-    return $decoded_data ?: false;
+    return isset($decoded_data) ? $decoded_data : false;
 }
 
 function qsm_display_fullscreen_error() {
@@ -1962,8 +1962,8 @@ function qsm_display_fullscreen_error() {
             <h2><?php esc_html_e('Unable To Load Required Data', 'quiz-master-next'); ?></h2>
             <p><?php esc_html_e('We couldn\'t load the required data, contact our support team for assistance, or you can still create a quiz.', 'quiz-master-next'); ?></p>
             <ul>
-                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
-                <li><span class="dashicons dashicons-info"></span> <?php esc_html_e('If the issue persists, contact our support team for assistance.', 'quiz-master-next'); ?></li>
+                <li><?php esc_html_e('Check if any security plugins or firewalls are blocking connections.', 'quiz-master-next'); ?></li>
+                <li><?php esc_html_e('If the issue persists, contact our support team for assistance.', 'quiz-master-next'); ?></li>
             </ul>
             <a href="<?php echo esc_url($support_link); ?>" class="qsm-dashboard-error-btn" target="_blank">
                 <?php esc_html_e('Troubleshoot Now', 'quiz-master-next'); ?>
@@ -1971,4 +1971,41 @@ function qsm_display_fullscreen_error() {
         </div>
     </div>
     <?php
+}
+
+function qsm_check_plugins_compatibility() {
+    global $mlwQuizMasterNext;
+
+    if ( class_exists('QSM_Installer') ) {
+		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
+        $plugin_data = get_plugin_data( $plugin_path );
+
+        // Check if the plugin version is below 2.0.0
+        if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '<' ) ) {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php
+                    $account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
+
+                    echo wp_kses(
+                        sprintf(
+                            /* translators: %s is the URL to the QSM account page */
+                            __( 'Please download the latest version of the QSM - Installer from <a href="%s" target="_blank" rel="noopener noreferrer">your account</a>.', 'quiz-master-next' ),
+                            $account_url
+                        ),
+                        array(
+                            'a' => array(
+                                'href'   => array(),
+                                'target' => array(),
+                                'rel'    => array(),
+                            ),
+                        )
+                    );
+                    ?>
+                </p>
+            </div>
+            <?php
+        }
+    }
 }
