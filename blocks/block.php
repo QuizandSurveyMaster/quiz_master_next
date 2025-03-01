@@ -180,7 +180,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						)
 					),
 					'QSMQuizList'               => function_exists( 'qsm_get_quizzes_list' ) ? qsm_get_quizzes_list() : array(),
-					'quizOptions'               => qsm_settings_to_create_quiz( true ),
+					'quizOptions'               => qsm_settings_to_create_quiz( true, false ),
 					'question_type'             => array(
 						'label'              => __( 'Question Type', 'quiz-master-next' ),
 						'options'            => $question_types,
@@ -454,7 +454,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				// Cycle through each quiz and retrieve all of quiz's questions.
 				foreach ( $quiz_data as $key => $quiz ) {
 
-					$question_data = QSM_Questions::load_questions_by_pages( $quiz['quiz_id'] );
+					$question_data = QSM_Questions::load_questions_by_pages( $quiz['quiz_id'], 'qsm_block' );
 					$quiz_data[ $key ]['questions'] = $question_data;
 
 					//unserialize quiz_settings

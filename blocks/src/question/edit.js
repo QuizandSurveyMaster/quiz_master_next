@@ -17,7 +17,7 @@ import {
 	PanelBody,
 	ToggleControl,
 	SelectControl,
-	ToolbarGroup, 
+	ToolbarGroup,
 	ToolbarButton,
 	TextControl,
 	CheckboxControl,
@@ -44,14 +44,14 @@ const isQuestionIDReserved = ( questionIDCheck, clientIdCheck ) => {
 
 /**
  * https://github.com/WordPress/gutenberg/blob/HEAD/packages/block-editor/src/components/rich-text/README.md#allowedformats-array
- *  
+ *
  */
 export default function Edit( props ) {
 	//check for QSM initialize data
 	if ( 'undefined' === typeof qsmBlockData ) {
 		return null;
 	}
-	
+
 	const { className, attributes, setAttributes, isSelected, clientId, context } = props;
 
 	/** https://github.com/WordPress/gutenberg/issues/22282  */
@@ -67,9 +67,9 @@ export default function Edit( props ) {
 	const { createNotice } = useDispatch( noticesStore );
 
 	//Get finstion to find index of blocks
-	const { 
-		getBlockRootClientId, 
-		getBlockIndex 
+	const {
+		getBlockRootClientId,
+		getBlockIndex
 	} = useSelect( blockEditorStore );
 
 	//Get funstion to insert block
@@ -94,10 +94,11 @@ export default function Edit( props ) {
 		answerEditor,
 		matchAnswer,
 		required,
+		isPublished,
 		settings={},
 	} = attributes;
-	
-	//Variable to decide if correct answer info input field should be available 
+
+	//Variable to decide if correct answer info input field should be available
 	const [ enableCorrectAnsInfo, setEnableCorrectAnsInfo ] = useState( ! qsmIsEmpty( correctAnswerInfo ) );
 	//Advance Question modal
 	const [ isOpenAdvanceQModal, setIsOpenAdvanceQModal ] = useState( false );
@@ -133,14 +134,14 @@ export default function Edit( props ) {
 			}
 		})
 	}
-	
+
 	/**Generate question id if not set or in case duplicate questionID ***/
 	useEffect( () => {
 		let shouldSetID = true;
 		if ( shouldSetID ) {
-		
+
 			if ( qsmIsEmpty( questionID ) || '0' == questionID || ( ! qsmIsEmpty( questionID ) && isQuestionIDReserved( questionID, clientId ) ) ) {
-				
+
 				//create a question
 				let newQuestion = qsmFormData( {
 					"id": null,
@@ -157,7 +158,8 @@ export default function Edit( props ) {
 					"hint": qsmValueOrDefault( hint ),
 					"category": qsmValueOrDefault( category ),
 					"multicategories": [],
-					"required": qsmValueOrDefault( required, 0 ),
+					"required": qsmValueOrDefault(required, 0),
+					"isPublished": qsmValueOrDefault(isPublished, 1),
 					"answers": answers,
 					"page": 0,
 					"featureImageID": featureImageID,
@@ -171,7 +173,7 @@ export default function Edit( props ) {
 					method: 'POST',
 					body: newQuestion
 				} ).then( ( response ) => {
-					
+
 					if ( 'success' == response.status ) {
 						let question_id = response.id;
 						setAttributes( { questionID: question_id } );
@@ -187,19 +189,19 @@ export default function Edit( props ) {
 				);
 			}
 		}
-		
+
 		//cleanup
 		return () => {
 			shouldSetID = false;
 		};
-		
+
 	}, [] );
 
 	//detect change in question
 	useEffect( () => {
 		let shouldSetChanged = true;
 		if ( shouldSetChanged && isSelected  && false === isChanged ) {
-			
+
 			setAttributes( { isChanged: true } );
 		}
 
@@ -209,6 +211,7 @@ export default function Edit( props ) {
 		};
 	}, [
 		questionID,
+		isPublished,
 		type,
 		description,
 		title,
@@ -257,8 +260,8 @@ export default function Edit( props ) {
 				let ancestor = getCategoryAncestors( termId, categories );
 				parents = [ ...parents, ...ancestor ];
 			}
-		} 
-		
+		}
+
 		return qsmUniqueArray( parents );
 	 }
 
@@ -268,13 +271,13 @@ export default function Edit( props ) {
 	//set or unset category
 	const setUnsetCatgory = ( termId, categories ) => {
 		let multiCat = ( qsmIsEmpty( multicategories ) || 0 === multicategories.length ) ? ( qsmIsEmpty( category ) ? [] : [ category ] ) : multicategories;
-		
+
 		//Case: category unselected
 		if ( multiCat.includes( termId ) ) {
 			//remove category if already set
 			multiCat = multiCat.filter( catID =>  catID != termId );
 			let children = [];
-			//check for if any child is selcted 
+			//check for if any child is selcted
 			multiCat.forEach( childCatID => {
 				//get ancestors of category
 				let ancestorIds = getCategoryAncestors( childCatID, categories );
@@ -295,7 +298,7 @@ export default function Edit( props ) {
 
 		multiCat = qsmUniqueArray( multiCat );
 
-		setAttributes({ 
+		setAttributes({
 			category: '',
 			multicategories: [ ...multiCat ]
 		});
@@ -326,7 +329,7 @@ export default function Edit( props ) {
 			return true;
 		}
 		const blockToInsert = createBlock( props.name );
-	
+
 		const selectBlockOnInsert = true;
 		insertBlock(
 			blockToInsert,
@@ -368,7 +371,7 @@ export default function Edit( props ) {
 			</ToolbarGroup>
 		</BlockControls>
 	{ isOpenAdvanceQModal && (
-		<Modal 
+		<Modal
 		contentLabel={ __( 'Use QSM Editor for Advanced Question', 'quiz-master-next' ) }
 		className='qsm-advance-q-modal'
 		isDismissible={ false }
@@ -389,7 +392,7 @@ export default function Edit( props ) {
 						{ __( 'Cancel', 'quiz-master-next' ) }
 					</Button>
 					<Button variant="primary" onClick={ () => {} }>
-						<ExternalLink 
+						<ExternalLink
 							href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
 						>
 							{ __( 'Add Question from quiz editor', 'quiz-master-next' ) }
@@ -397,7 +400,7 @@ export default function Edit( props ) {
 					</Button>
 				</div>
 			</div>
-			
+
 		</Modal>
 	) }
 	 { isAdvanceQuestionType( type ) ? (
@@ -407,12 +410,12 @@ export default function Edit( props ) {
 					<h2 className="block-editor-block-card__title">{ __( 'ID', 'quiz-master-next' )+': '+questionID }</h2>
 					<h3>{ __( 'Advanced Question Type', 'quiz-master-next' ) }</h3>
 				</PanelBody>
-			</InspectorControls>	
+			</InspectorControls>
 			<div  { ...blockProps } >
 			<h4 className={ 'qsm-question-title qsm-error-text' } >{ __( 'Advanced Question Type : ', 'quiz-master-next' ) + title }</h4>
-			<p> 
+			<p>
 			{ __( 'Edit question in QSM ', 'quiz-master-next' ) }
-			<ExternalLink 
+			<ExternalLink
 				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID }
 			>
 					{ __( 'editor', 'quiz-master-next' ) }
@@ -425,7 +428,12 @@ export default function Edit( props ) {
 		<InspectorControls>
 			<PanelBody title={ __( 'Question settings', 'quiz-master-next' ) } initialOpen={ true }>
 			<h2 className="block-editor-block-card__title">{ __( 'ID', 'quiz-master-next' )+': '+questionID }</h2>
-			{ /** Question Type **/ }
+			<ToggleControl
+				label={ __( 'Publish', 'quiz-master-next' ) }
+				checked={ ! qsmIsEmpty( isPublished ) && '1' == isPublished  }
+				onChange={ () => setAttributes( { isPublished : ( ( ! qsmIsEmpty( isPublished ) && '1' == isPublished ) ? 0 : 1 ) } ) }
+			/>
+			{ /** Question Type **/}
 			<SelectControl
 				label={ qsmBlockData.question_type.label }
 				value={ type || qsmBlockData.question_type.default }
@@ -436,11 +444,11 @@ export default function Edit( props ) {
 				__nextHasNoMarginBottom
 			>
 				{
-				! qsmIsEmpty( qsmBlockData.question_type.options ) && qsmBlockData.question_type.options.map( qtypes => 
+				! qsmIsEmpty( qsmBlockData.question_type.options ) && qsmBlockData.question_type.options.map( qtypes =>
 					(
 					<optgroup label={ qtypes.category } key={ "qtypes"+qtypes.category }  >
 						{
-							qtypes.types.map( qtype => 
+							qtypes.types.map( qtype =>
 								(
 								<option value={ qtype.slug } key={ "qtype"+qtype.slug }  >{ qtype.name }</option>
 								)
@@ -453,7 +461,7 @@ export default function Edit( props ) {
 			</SelectControl>
 			{/**Answer Type */}
 			{
-				['0','4','1','10','13'].includes( type ) && 
+				['0','4','1','10','13'].includes( type ) &&
 				<SelectControl
 					label={ qsmBlockData.answerEditor.label }
 					value={ answerEditor || qsmBlockData.answerEditor.default }
@@ -505,7 +513,7 @@ export default function Edit( props ) {
 				</PanelBody>
 			)}
 			{/**Categories */}
-			<SelectAddCategory 
+			<SelectAddCategory
 				isCategorySelected={ isCategorySelected }
 				setUnsetCatgory={ setUnsetCatgory }
 			/>
@@ -531,16 +539,16 @@ export default function Edit( props ) {
 			</PanelBody>
 			{/**Feature Image */}
 			<PanelBody title={ __( 'Featured image', 'quiz-master-next' ) } initialOpen={ true }>
-				<FeaturedImage 
+				<FeaturedImage
 				featureImageID={ featureImageID }
 				onUpdateImage={ ( mediaDetails ) => {
-					setAttributes({ 
+					setAttributes({
 						featureImageID: mediaDetails.id,
 						featureImageSrc: mediaDetails.url
 					});
 				}  }
 				onRemoveImage={ ( id ) => {
-					setAttributes({ 
+					setAttributes({
 						featureImageID: undefined,
 						featureImageSrc: undefined,
 					});
@@ -561,7 +569,7 @@ export default function Edit( props ) {
 				className={ 'qsm-question-title' }
 			/>
 			{
-				isParentOfSelectedBlock && 
+				isParentOfSelectedBlock &&
 				<>
 				<RichText
 					tagName='p'
@@ -597,9 +605,9 @@ export default function Edit( props ) {
 					)
 				}
 				{
-					isParentOfSelectedBlock && ( 
+					isParentOfSelectedBlock && (
 					<div className='block-editor-block-list__insertion-point-inserter qsm-add-new-ques-wrapper'>
-					<Button 
+					<Button
 					icon={ plusIcon }
 					label={ __( 'Add New Question', 'quiz-master-next' ) }
 					tooltipPosition="bottom"
@@ -611,7 +619,7 @@ export default function Edit( props ) {
 					</div>
 					)
 				}
-				
+
 				</>
 			}
 		</div>
