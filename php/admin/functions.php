@@ -751,9 +751,10 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+		$fields = array();
 		foreach ( $quiz_setting_option as $key => $single_setting ) {
 			$single_setting['id'] = $key;
-			if ( true != $require_field ) {
+			if ( ! $require_field ) {
 				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
 				QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
 				echo '</div>';
@@ -761,7 +762,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 				$fields[] = $single_setting;
 			}
 		}
-		if ( true === $require_field ) {
+		if ( $require_field ) {
 			return $fields;
 		}
 	}
