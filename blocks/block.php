@@ -180,7 +180,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 						)
 					),
 					'QSMQuizList'               => function_exists( 'qsm_get_quizzes_list' ) ? qsm_get_quizzes_list() : array(),
-					'quizOptions'               => qsm_settings_to_create_quiz( true, false ),
+					'quizOptions'               => qsm_settings_to_create_quiz( true ),
 					'question_type'             => array(
 						'label'              => __( 'Question Type', 'quiz-master-next' ),
 						'options'            => $question_types,
@@ -622,7 +622,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 
 			//save quiz name
 			if ( ! empty(  $_POST['quizData']['quiz'] ) && ! empty(  $_POST['quizData']['quiz']['quiz_name'] ) ) {
-				$quiz_name = sanitize_key( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
+				$quiz_name = sanitize_text_field( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
 				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name ) ) {
 					//update quiz name
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );

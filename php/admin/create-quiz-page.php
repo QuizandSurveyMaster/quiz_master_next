@@ -354,7 +354,7 @@ function qsm_dashboard_display_quizform_section() {
 				<input type="text" class="quiz_name" name="quiz_name" value="" required="" placeholder="<?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?>">
 			</div>
 			<div id="qsm-settings-content" class="qsm-create-quiz-more-settings" style="display: none;">
-				<?php qsm_settings_to_create_quiz( false, true); ?>
+				<?php qsm_settings_to_create_quiz(); ?>
 			</div>
 
 			<div class="qsm-create-quiz-switch">

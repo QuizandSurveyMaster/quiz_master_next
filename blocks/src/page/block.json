@@ -29,7 +29,7 @@
 	"example": {},
 	"supports": {
 		"html": false,
-		"multiple": false
+		"multiple": true
 	},
 	"textdomain": "main-block",
 	"editorScript": "file:./index.js",

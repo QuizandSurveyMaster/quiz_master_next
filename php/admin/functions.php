@@ -624,7 +624,7 @@ function qsm_generate_question_option( $key, $single_option ) {
  * Settings to create Quiz
  */
 if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
-	function qsm_settings_to_create_quiz( $require_field = false, $echo_field = false ) {
+	function qsm_settings_to_create_quiz( $require_field = false ) {
 		global $globalQuizsetting, $mlwQuizMasterNext, $themes_data;
 
 		$quiz_setting_option = array(
@@ -751,27 +751,17 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
-		ob_start();
 		foreach ( $quiz_setting_option as $key => $single_setting ) {
 			$single_setting['id'] = $key;
-			echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
-			QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
-			echo '</div>';
+			if ( true != $require_field ) {
+				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
+				QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
+				echo '</div>';
+			} else {
+				$fields[] = $single_setting;
+			}
 		}
-		$fields = ob_get_clean();
-		if ( $echo_field ) {
-			$allowed_html = wp_kses_allowed_html('post');
-			$allowed_html['input'] = array(
-				'type'     => array(),
-				'name'     => array(),
-				'value'    => array(),
-				'class'    => array(),
-				'id'       => array(),
-				'selected' => array(),
-				'checked'  => array(),
-			);
-			echo wp_kses($fields, $allowed_html);
-		} else {
+		if ( true === $require_field ) {
 			return $fields;
 		}
 	}

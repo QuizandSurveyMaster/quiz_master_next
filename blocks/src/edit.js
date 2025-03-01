@@ -195,7 +195,7 @@ export default function Edit( props ) {
 													answerEditor: question.settings.answerEditor,
 													title: question.settings.question_title,
 													description: question.question_name,
-													required: question.settings.required,
+													required: question.settings.required == '0' ? '1' : '0',
 													hint:question.hints,
 													answers: question.answers,
 													correctAnswerInfo:question.question_answer_info,
@@ -295,16 +295,21 @@ export default function Edit( props ) {
 							{ __( 'Advance options', 'quiz-master-next' ) }
 						</Button>
 						<div className='qsm-advance-settings'>
-						{ showAdvanceOption && quizOptions.map( qSetting => (
-							<InputComponent
-								key={ 'qsm-settings'+qSetting.id }
-								data={ qSetting }
-								quizAttr={ quizAttr }
-								setAttributes={ setAttributes }
-								onChangeFunc={ setQuizAttributes }
-							/>
-						))
-						}
+							{showAdvanceOption && quizOptions.map(qSetting => {
+								if (quizAttr.form_type != 0 && qSetting.id == 'system') {
+									return null; // Correct way to skip rendering
+								}
+
+								return (
+									<InputComponent
+										key={'qsm-settings' + qSetting.id}
+										data={qSetting}
+										quizAttr={quizAttr}
+										setAttributes={setAttributes}
+										onChangeFunc={setQuizAttributes}
+									/>
+								);
+							})}
 						</div>
 						<Button
 							variant="primary"
@@ -416,7 +421,7 @@ export default function Edit( props ) {
 								"hint": qsmValueOrDefault( questionAttr?.hint ),
 								"category": qsmValueOrDefault( questionAttr?.category ),
 								"multicategories": qsmValueOrDefault( questionAttr?.multicategories, [] ),
-								"required": qsmValueOrDefault(questionAttr?.required, 0),
+								"required": qsmValueOrDefault(questionAttr?.required, '1') == '0' ? '1' : '0',
 								"is_published": qsmValueOrDefault(questionAttr?.isPublished, 1),
 								"merged_question": qsmValueOrDefault( questionAttr?.linked_question, '' ),
 								"answers": answers,
@@ -425,7 +430,7 @@ export default function Edit( props ) {
 								"page": pageSNo,
 								"other_settings": {
 									...qsmValueOrDefault( questionAttr?.settings, {} ),
-									"required": qsmValueOrDefault(questionAttr?.required, 0),
+									"required": qsmValueOrDefault(questionAttr?.required, '1') == '0' ? '1' : '0',
 									"isPublished": qsmValueOrDefault(questionAttr?.isPublished, 1),
 									"question_title": qsmValueOrDefault( questionAttr?.title ),
 									"answerEditor": answerEditor
