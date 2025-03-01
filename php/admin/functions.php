@@ -693,7 +693,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 			'progress_bar'                           => array(
 				'label'   => __( 'Show progress bar', 'quiz-master-next' ),
-				'value'   => $globalQuizsetting['enable_pagination_quiz'],
+				'value'   => $globalQuizsetting['progress_bar'],
 				'type'    => 'toggle',
 				'options' => array(
 					array(
