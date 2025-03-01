@@ -221,8 +221,9 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.0.2 ( March 01, 2025 ) =
-* Hotfix: Fixed "Create Quiz" HTML appearing in new posts/pages
+= 10.0.2 ( March 02, 2025 ) =
+* Hotfix: Fixed issue while creating new post/page
+* Enhancement: Improved question saving option in QSM block
 
 = 10.0.1 ( March 01, 2025 ) =
 * Hotfix: Resolved JS warning while saving email template

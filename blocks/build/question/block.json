@@ -73,6 +73,13 @@
       "type": "string",
       "default": "0"
     },
+    "isPublished": {
+      "type": "number",
+      "default": 1
+    },
+    "linked_question": {
+      "type": "string"
+    },
     "media": {
       "type": "object"
     },

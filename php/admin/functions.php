@@ -762,11 +762,13 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 		if ( $echo_field ) {
 			$allowed_html = wp_kses_allowed_html('post');
 			$allowed_html['input'] = array(
-				'type'  => array(),
-				'name'  => array(),
-				'value' => array(),
-				'class' => array(),
-				'id'    => array(),
+				'type'     => array(),
+				'name'     => array(),
+				'value'    => array(),
+				'class'    => array(),
+				'id'       => array(),
+				'selected' => array(),
+				'checked'  => array(),
 			);
 			echo wp_kses($fields, $allowed_html);
 		} else {

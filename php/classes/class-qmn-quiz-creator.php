@@ -300,7 +300,7 @@ class QMNQuizCreator {
 			);
 			$deleted    = 0;
 			if ( $qsm_delete_questions_from_qb ) {
-				
+
 				$deleted = 1;
 				$wpdb->update(
 					$wpdb->prefix . 'mlw_questions',
