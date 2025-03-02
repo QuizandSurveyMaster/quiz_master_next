@@ -693,7 +693,7 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 			'progress_bar'                           => array(
 				'label'   => __( 'Show progress bar', 'quiz-master-next' ),
-				'value'   => $globalQuizsetting['enable_pagination_quiz'],
+				'value'   => $globalQuizsetting['progress_bar'],
 				'type'    => 'toggle',
 				'options' => array(
 					array(
@@ -751,12 +751,19 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
-
+		$fields = array();
 		foreach ( $quiz_setting_option as $key => $single_setting ) {
 			$single_setting['id'] = $key;
-			echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
-			QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
-			echo '</div>';
+			if ( ! $require_field ) {
+				echo '<div class="input-group" id="qsm-quiz-options-' . esc_html( $key ) . '">';
+				QSM_Fields::generate_field( $single_setting, $single_setting['value'] );
+				echo '</div>';
+			} else {
+				$fields[] = $single_setting;
+			}
+		}
+		if ( $require_field ) {
+			return $fields;
 		}
 	}
 }

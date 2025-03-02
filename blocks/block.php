@@ -454,7 +454,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				// Cycle through each quiz and retrieve all of quiz's questions.
 				foreach ( $quiz_data as $key => $quiz ) {
 
-					$question_data = QSM_Questions::load_questions_by_pages( $quiz['quiz_id'] );
+					$question_data = QSM_Questions::load_questions_by_pages( $quiz['quiz_id'], 'qsm_block' );
 					$quiz_data[ $key ]['questions'] = $question_data;
 
 					//unserialize quiz_settings
@@ -622,7 +622,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 
 			//save quiz name
 			if ( ! empty(  $_POST['quizData']['quiz'] ) && ! empty(  $_POST['quizData']['quiz']['quiz_name'] ) ) {
-				$quiz_name = sanitize_key( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
+				$quiz_name = sanitize_text_field( wp_unslash( $_POST['quizData']['quiz']['quiz_name'] ) );
 				if ( ! empty( $quiz_id ) && ! empty( $post_id ) && ! empty( $quiz_name ) ) {
 					//update quiz name
 					$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
