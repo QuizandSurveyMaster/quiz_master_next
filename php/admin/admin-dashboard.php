@@ -91,7 +91,7 @@ function qsm_dashboard_display_change_log_section(){
 			$parts = explode( '== Changelog ==', $file_content, 2 );
 			if ( isset( $parts[1] ) ) {
 				preg_match_all('/\* (.+)/', $parts[1], $matches);
-				if ( !empty($matches[1]) ) { 
+				if ( ! empty($matches[1]) ) { 
 					$change_log = array_slice($matches[1], 0, 5);
 				}
 			}

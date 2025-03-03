@@ -1807,20 +1807,20 @@ function qsm_create_theme_defaults_tab() {
 	}
 	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
 
-	if( empty($active_themes) ) {
+	if ( empty($active_themes) ) {
 		return;
 	}
 	$pro_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
 
 	$has_pro_theme = false;
-	foreach ($active_themes as $theme) {
-		if (in_array($theme['theme_name'], $pro_themes)) {
+	foreach ( $active_themes as $theme ) {
+		if ( in_array($theme['theme_name'], $pro_themes) ) {
 			$has_pro_theme = true;
 			break;
 		}
 	}
 
-	if (!$has_pro_theme) {
+	if ( ! $has_pro_theme ) {
 		return;
 	}
 	?>

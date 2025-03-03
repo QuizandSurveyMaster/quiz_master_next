@@ -35,17 +35,17 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_style_tab_nonce'] ) ), 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' === sanitize_text_field( wp_unslash( $_POST['save_style_options'] ) ) ) {
+	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_style_tab_nonce'] ) ), 'qsm_style_tab_nonce_action' ) ) {
 
-		$style_quiz_id = isset( $_POST['style_quiz_id'] ) ? intval( $_POST['style_quiz_id'] ) : '';
+		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
 		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
 		$quiz_style    = isset( $_POST['quiz_css'] ) ? htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ), ENT_QUOTES, 'UTF-8', false) : '';
 
 		// Saves the new css.
-		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
+		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $quiz_id ) );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $quiz_id, "" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error occured when trying to save the styles. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error saving styles', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -184,6 +184,7 @@ function qsm_options_styling_tab_content() {
 	<div id="custom_css" class="quiz_style_tab_content" style="display: none;">
 		<h1 class="qsm-theme-featured-image-title"><?php esc_html_e( 'Custom Style CSS', 'quiz-master-next' ); ?></h1>
 		<p class="qsm-theme-featured-image-description"><?php esc_html_e( 'Now you can easily customize the appearance', 'quiz-master-next' ); ?></p>
+		<input type='hidden' name='save_quiz_theme' id='save_quiz_theme' value='<?php echo esc_attr( $mlw_quiz_options->theme_selected ); ?>' />
 		<textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo esc_textarea( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_quiz_options->quiz_stye, ENT_QUOTES) ) ); ?></textarea></td>
 		<?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
 		<button id="save_styles_button" class="button-primary qsm-common-button-styles"><?php esc_html_e( 'Save Quiz Style', 'quiz-master-next' ); ?></button>
