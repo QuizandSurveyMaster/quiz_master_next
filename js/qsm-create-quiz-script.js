@@ -25,7 +25,7 @@ jQuery(function ($) {
             if ($(document).find('.qsm-dashboard-error-content').length) {
                 jQuery(document).find('.qsm-dashboard-header-pagination > a').hide();
                 jQuery('.qsm-dashboard-journy-create-quiz').show();
-            } 
+            }
             QSMAdminDashboard.showDependentAddons();
         },
 
@@ -194,7 +194,7 @@ jQuery(function ($) {
                 if(0 == installerActivated) {
                     QSMAdminDashboard.activatePlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, isToggle, isButton);
                 }
-            } else if( 1 == installerActivated ) { 
+            } else if( 1 == installerActivated ) {
                 if (isToggle) {
                     $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.installing);
                 } else if (isButton) {
@@ -317,11 +317,10 @@ jQuery(function ($) {
             } else if (selectedType === 'form') {
                 form_type = 2;
             }
+            0 == form_type ? jQuery('#qsm-quiz-options-system').show() : jQuery('#qsm-quiz-options-system').hide();
             jQuery(`.qsm-create-quiz-more-settings select[name="form_type"]`).val(form_type);
 
-            // Hide recommendetions
             $('.qsm-dashboard-theme-recommended, .qsm-dashboard-addon-recommended').hide();
-
             QSMAdminDashboard.showDependentAddons();
         });
 

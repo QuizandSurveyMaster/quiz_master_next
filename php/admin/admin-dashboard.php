@@ -67,7 +67,6 @@ function qsm_check_plugins_compatibility() {
 				<div class="qsm-dashboard-error-content">
 					<h3><?php esc_html_e('Update Available', 'quiz-master-next'); ?></h3>
 					<p><?php esc_html_e('We recommend downloading the latest version of the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next'); ?></p>
-					
 					<a href="<?php echo esc_url($account_url); ?>" class="qsm-dashboard-error-btn" target="_blank">
 						<?php esc_html_e('Get Latest QSM Installer', 'quiz-master-next'); ?>
 					</a>
@@ -86,12 +85,11 @@ function qsm_dashboard_display_change_log_section(){
 	$readme_file = QSM_PLUGIN_PATH . 'readme.txt';
 	if ( $wp_filesystem->exists( $readme_file ) ) {
 		$file_content = $wp_filesystem->get_contents( $readme_file );
-	
 		if ( $file_content ) {
 			$parts = explode( '== Changelog ==', $file_content, 2 );
 			if ( isset( $parts[1] ) ) {
 				preg_match_all('/\* (.+)/', $parts[1], $matches);
-				if ( ! empty($matches[1]) ) { 
+				if ( ! empty($matches[1]) ) {
 					$change_log = array_slice($matches[1], 0, 5);
 				}
 			}
