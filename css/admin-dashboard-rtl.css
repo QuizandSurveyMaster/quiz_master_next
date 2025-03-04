@@ -1,78 +1,3 @@
-.welcome-panel-column .dashicons {
-	color: #606a73;
-	font-size: 23px;
-	margin-left: 5px;
-	position: relative;
-	top: unset!important;
-}
-
-.welcome-panel .qsm-welcome-panel-close {
-	position: absolute;
-	top: -20px;
-	left: 10px;
-	padding: 10px 21px 10px 15px;
-	font-size: 13px;
-	line-height: 1.23076923;
-	text-decoration: none;
-}
-
-.welcome-panel .qsm-welcome-panel-dismiss {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	padding: 10px 21px 10px 15px;
-	font-size: 13px;
-	line-height: 1.23076923;
-	text-decoration: none;
-	z-index:999;
-}
-
-.welcome-panel .qsm-welcome-panel-dismiss:before {
-	background: 0 0;
-	color: #72777c;
-	content: "\f153";
-	display: block;
-	font: normal 16px/20px dashicons;
-	speak: none;
-	height: 20px;
-	text-align: center;
-	width: 20px;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	position: absolute;
-	top: 9px;
-	right: 0;
-	transition: all 0.1s ease-in-out;
-}
-
-.welcome-panel .qsm-welcome-panel-dismiss:hover:before {
-	color: #c00;
-}
-
-.welcome-panel .qsm-welcome-panel-close img {
-	width: 100px;
-}
-
-.welcome-panel .welcome-panel-close:before {
-	content: none !important;
-}
-
-.welcome-panel .current_version {
-	color: #111827;
-	text-align: center;
-	font-size: 16px;
-	font-weight: bold;
-	margin: 0;
-	padding: 0;
-	position: relative;
-	top: -30px;
-}
-
-.welcome-panel .welcome-icon {
-    display: flex;
-    align-items: center;
-}
-
 .popover-count {
     top: -2px !important;
     right: unset!important;
@@ -166,7 +91,7 @@
 	background: #feb325;
 }
 
-.changelog-ul li .bug {
+.changelog-ul li .bug, .changelog-ul li .hotfix {
 	background: #fe2525;
 }
 
@@ -375,10 +300,6 @@
 	border-bottom: 1px solid #dfd4d4;
 	padding-left: 20px;
 	outline: 0 !important;
-}
-
-#model-wizard .qsm-quiz-page-addon.qsm-addon-page-list {
-	width: 100%;
 }
 
 #model-wizard .qsm-addon-browse-addons {
@@ -1034,10 +955,6 @@ h2.hndle.ui-sortable-handle {
 
 	#model-wizard .qsm-new-menu-elements .input-group .qsm-opt-desc {
 		display: none;
-	}
-
-	.welcome-panel h2 {
-		width: calc(100% - 100px);
 	}
 }
 

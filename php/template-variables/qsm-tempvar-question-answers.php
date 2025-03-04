@@ -35,9 +35,9 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 			$image_class      = 'qmn_image_option';
 		} else {
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ), 'answer-' . $single_answer[0], 'QSM Answers' );
-			$show_user_answer = apply_filters( 'qsm_show_user_answer_before', $show_user_answer, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );
 			$image_class      = '';
 			$show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $show_user_answer, 'answer-' . $answers_from_response['id'] . '-' . $single_answer_key, 'QSM Answers' );
+			$show_user_answer = apply_filters( 'qsm_show_user_answer_before', $show_user_answer, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type );
 		}
 		$show_user_answer = apply_filters( 'qsm_show_user_answer_after', $show_user_answer, $single_answer, $user_answer_array, $single_answer_key, $answers_from_response, $grading_system, $question_settings, $form_type, $total_answers );
 		$close_span = '</span>';

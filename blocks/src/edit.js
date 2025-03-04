@@ -33,7 +33,7 @@ export default function Edit( props ) {
 	}
 
 	const { className, attributes, setAttributes, isSelected, clientId, context } = props;
-	
+
 	const page_post_id = context['postId'];
 	const { createNotice } = useDispatch( noticesStore );
 	//quiz attribute
@@ -72,7 +72,7 @@ export default function Edit( props ) {
 	const editorSelectors = useSelect( ( select ) => {
 		return select( 'core/editor' );
 	}, [] );
-	
+
 	const { getBlock } = useSelect( blockEditorStore );
 
 	/**Initialize block from server */
@@ -106,15 +106,15 @@ export default function Edit( props ) {
 						msg: __( 'Quiz not found. Please select an existing quiz or create a new one.', 'quiz-master-next' )
 					} );
 				}
-				
+
 			}
 		}
-		
+
 		//cleanup
 		return () => {
 			shouldSetQSMAttr = false;
 		};
-		
+
 	}, [ ] );
 
 	/**Add modal advanced-question-type */
@@ -126,7 +126,7 @@ export default function Edit( props ) {
 				method: 'POST',
 			} ).then( ( res ) => {
 				let bodyEl = document.getElementById('wpbody-content');
-				if ( ! qsmIsEmpty( bodyEl ) && 'success' == res.status ) { 
+				if ( ! qsmIsEmpty( bodyEl ) && 'success' == res.status ) {
 					bodyEl.insertAdjacentHTML('afterbegin', res.result );
 				}
 			} ).catch(
@@ -145,14 +145,14 @@ export default function Edit( props ) {
 				method: 'POST',
 				data: { quizID: quiz_id },
 			} ).then( ( res ) => {
-				
+
 				if ( 'success' == res.status ) {
 					setQuizMessage( {
 						error: false,
 						msg: ''
 					} );
 					let result = res.result;
-					setAttributes( { 
+					setAttributes( {
 						quizID: parseInt( quiz_id ),
 						postID: result.post_id,
 						quizAttr: { ...quizAttr, ...result }
@@ -167,7 +167,7 @@ export default function Edit( props ) {
 										let answers = [];
 										//answers options blocks
 										if ( ! qsmIsEmpty( question.answers ) && 0 < question.answers.length ) {
-											
+
 											question.answers.forEach( ( answer, aIndex ) => {
 												answers.push(
 													[
@@ -189,11 +189,13 @@ export default function Edit( props ) {
 												'qsm/quiz-question',
 												{
 													questionID: question.question_id,
+													isPublished: typeof question.settings.isPublished !== 'undefined' ? question.settings.isPublished : 1,
+													linked_question: typeof question.linked_question !== 'undefined' ? question.linked_question : '',
 													type: question.question_type_new,
 													answerEditor: question.settings.answerEditor,
 													title: question.settings.question_title,
 													description: question.question_name,
-													required: question.settings.required,
+													required: question.settings.required == '0' ? '1' : '0',
 													hint:question.hints,
 													answers: question.answers,
 													correctAnswerInfo:question.question_answer_info,
@@ -211,7 +213,7 @@ export default function Edit( props ) {
 									}
 								});
 							}
-							
+
 							quizTemp.push(
 								[
 									'qsm/quiz-page',
@@ -227,7 +229,7 @@ export default function Edit( props ) {
 						});
 						setQuizTemplate( quizTemp );
 					}
-					
+
 				} else {
 					console.log( "error "+ res.msg );
 				}
@@ -236,12 +238,12 @@ export default function Edit( props ) {
 					console.log( 'error',error );
 				}
 			);
-			
+
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @returns Placeholder for quiz in case quiz ID is not set
 	 */
 	const quizPlaceholder = ( ) => {
@@ -254,7 +256,7 @@ export default function Edit( props ) {
 			>
 				{
 					<>
-					{ ( ! qsmIsEmpty( quizList ) && 0 < quizList.length )&&  
+					{ ( ! qsmIsEmpty( quizList ) && 0 < quizList.length )&&
 					<div className='qsm-placeholder-select-create-quiz'>
 					<SelectControl
 						label={ __( '', 'quiz-master-next' ) }
@@ -267,7 +269,7 @@ export default function Edit( props ) {
 						__nextHasNoMarginBottom
 					/>
 					<span>{ __( 'OR', 'quiz-master-next' ) }</span>
-					<Button 
+					<Button
 					variant="link"
 					onClick={ () => setCreateQuiz( ! createQuiz )	}
 					>
@@ -276,7 +278,7 @@ export default function Edit( props ) {
 					</div>
 					}
 					{ ( qsmIsEmpty( quizList ) || createQuiz ) &&
-					<VStack 
+					<VStack
 					spacing='3'
 					className='qsm-placeholder-quiz-create-form'
 					>
@@ -286,25 +288,30 @@ export default function Edit( props ) {
 							value={ quizAttr?.quiz_name || '' }
 							onChange={ ( val ) => setQuizAttributes( val, 'quiz_name') }
 						/>
-						<Button 
+						<Button
 							variant="link"
 							onClick={ () => setShowAdvanceOption( ! showAdvanceOption )	}
 							>
 							{ __( 'Advance options', 'quiz-master-next' ) }
 						</Button>
 						<div className='qsm-advance-settings'>
-						{ showAdvanceOption && quizOptions.map( qSetting => (
-							<InputComponent
-								key={ 'qsm-settings'+qSetting.id }
-								data={ qSetting }
-								quizAttr={ quizAttr }
-								setAttributes={ setAttributes }
-								onChangeFunc={ setQuizAttributes }
-							/>
-						))
-						}
+							{showAdvanceOption && quizOptions.map(qSetting => {
+								if (quizAttr.form_type != 0 && qSetting.id == 'system') {
+									return null; // Correct way to skip rendering
+								}
+
+								return (
+									<InputComponent
+										key={'qsm-settings' + qSetting.id}
+										data={qSetting}
+										quizAttr={quizAttr}
+										setAttributes={setAttributes}
+										onChangeFunc={setQuizAttributes}
+									/>
+								);
+							})}
 						</div>
-						<Button 
+						<Button
 							variant="primary"
 							disabled={ saveQuiz || qsmIsEmpty( quizAttr.quiz_name ) }
 							onClick={ () => createNewQuiz()	}
@@ -336,15 +343,15 @@ export default function Edit( props ) {
 	}
 
 	/**
-	 * Prepare quiz data e.g. quiz details, questions, answers etc to save 
+	 * Prepare quiz data e.g. quiz details, questions, answers etc to save
 	 * @returns quiz data
 	 */
-	const getQuizDataToSave = ( ) => {	
-		let blocks = getBlock( clientId ); 
+	const getQuizDataToSave = ( ) => {
+		let blocks = getBlock( clientId );
 		if ( qsmIsEmpty( blocks ) ) {
 			return false;
 		}
-		
+
 		blocks = blocks.innerBlocks;
 		let quizDataToSave = {
 			quiz_id: quizAttr.quiz_id,
@@ -360,19 +367,19 @@ export default function Edit( props ) {
 			if ( 'qsm/quiz-page' === block.name ) {
 				let pageID = block.attributes.pageID;
 				let questions = [];
-				if ( ! qsmIsEmpty( block.innerBlocks ) && 0 <  block.innerBlocks.length ) { 
+				if ( ! qsmIsEmpty( block.innerBlocks ) && 0 <  block.innerBlocks.length ) {
 					let questionBlocks = block.innerBlocks;
 					//Question Blocks
 					questionBlocks.forEach( ( questionBlock ) => {
 						if ( 'qsm/quiz-question' !== questionBlock.name ) {
 							return true;
 						}
-						
+
 						let questionAttr = questionBlock.attributes;
 						let answerEditor = qsmValueOrDefault( questionAttr?.answerEditor, 'text' );
 						let answers = [];
 						//Answer option blocks
-						if ( ! qsmIsEmpty( questionBlock.innerBlocks ) && 0 <  questionBlock.innerBlocks.length ) { 
+						if ( ! qsmIsEmpty( questionBlock.innerBlocks ) && 0 <  questionBlock.innerBlocks.length ) {
 							let answerOptionBlocks = questionBlock.innerBlocks;
 							answerOptionBlocks.forEach( ( answerOptionBlock ) => {
 								if ( 'qsm/quiz-answer-option' !== answerOptionBlock.name ) {
@@ -396,7 +403,7 @@ export default function Edit( props ) {
 								answers.push( ans );
 							});
 						}
-						
+
 						//questions Data
 						questions.push( questionAttr.questionID );
 						//update question only if changes occured
@@ -414,20 +421,23 @@ export default function Edit( props ) {
 								"hint": qsmValueOrDefault( questionAttr?.hint ),
 								"category": qsmValueOrDefault( questionAttr?.category ),
 								"multicategories": qsmValueOrDefault( questionAttr?.multicategories, [] ),
-								"required": qsmValueOrDefault( questionAttr?.required, 0 ),
+								"required": qsmValueOrDefault(questionAttr?.required, '1') == '0' ? '1' : '0',
+								"is_published": qsmValueOrDefault(questionAttr?.isPublished, 1),
+								"merged_question": qsmValueOrDefault( questionAttr?.linked_question, '' ),
 								"answers": answers,
 								"featureImageID":qsmValueOrDefault( questionAttr?.featureImageID ),
 								"featureImageSrc":qsmValueOrDefault( questionAttr?.featureImageSrc ),
 								"page": pageSNo,
 								"other_settings": {
 									...qsmValueOrDefault( questionAttr?.settings, {} ),
-									"required": qsmValueOrDefault( questionAttr?.required, 0 ),
+									"required": qsmValueOrDefault(questionAttr?.required, '1') == '0' ? '1' : '0',
+									"isPublished": qsmValueOrDefault(questionAttr?.isPublished, 1),
 									"question_title": qsmValueOrDefault( questionAttr?.title ),
 									"answerEditor": answerEditor
 								}
 							});
 						}
-						
+
 					});
 				}
 
@@ -440,7 +450,7 @@ export default function Edit( props ) {
 				// 	post_id: 111
 				//page data
 				quizDataToSave.pages.push( questions );
-				
+
 				quizDataToSave.qpages.push( {
 					'id': pageID,
 					'quizID': quizAttr.quiz_id,
@@ -453,25 +463,25 @@ export default function Edit( props ) {
 		});
 
 		//Quiz details
-		quizDataToSave.quiz =  {   
+		quizDataToSave.quiz =  {
 			'quiz_name': quizAttr.quiz_name,
 			'quiz_id': quizAttr.quiz_id,
 			'post_id': quizAttr.post_id,
 		};
 		if ( showAdvanceOption ) {
 			[
-			'form_type', 
-			'system', 
-			'timer_limit', 
+			'form_type',
+			'system',
+			'timer_limit',
 			'pagination',
-			'enable_contact_form', 
-			'enable_pagination_quiz', 
+			'enable_contact_form',
+			'enable_pagination_quiz',
 			'show_question_featured_image_in_result',
 			'progress_bar',
 			'require_log_in',
 			'disable_first_page',
 			'comment_section'
-			].forEach( ( item ) => { 
+			].forEach( ( item ) => {
 				if ( 'undefined' !== typeof quizAttr[ item ] && null !== quizAttr[ item ] ) {
 					quizDataToSave.quiz[ item ] = quizAttr[ item ];
 				}
@@ -491,11 +501,11 @@ export default function Edit( props ) {
 			let post_status = 'publish';
 			if ( ! qsmIsEmpty( editorSelectors ) ) {
 				post_status = editorSelectors.getEditedPostAttribute( 'status' );
-			} 
+			}
 			if ( qsmIsEmpty( post_status ) ) {
 				post_status = 'publish';
 			}
-			
+
 			quizData = qsmFormData({
 				'save_entire_quiz': '1',
 				'quizData': JSON.stringify( quizData ),
@@ -530,7 +540,7 @@ export default function Edit( props ) {
 
 	/**
 	 * Create new quiz and set quiz ID
-	 * 
+	 *
 	 */
 	const createNewQuiz = () => {
 		if ( qsmIsEmpty( quizAttr.quiz_name ) ) {
@@ -539,18 +549,18 @@ export default function Edit( props ) {
 		}
 		//save quiz status
 		setSaveQuiz( true );
-		
+
 		let quizData = qsmFormData({
 			'quiz_name': quizAttr.quiz_name,
 			'qsm_new_quiz_nonce': qsmBlockData.qsm_new_quiz_nonce
 		});
-		
-		['form_type', 
-		'system', 
-		'timer_limit', 
+
+		['form_type',
+		'system',
+		'timer_limit',
 		'pagination',
-		'enable_contact_form', 
-		'enable_pagination_quiz', 
+		'enable_contact_form',
+		'enable_pagination_quiz',
 		'show_question_featured_image_in_result',
 		'progress_bar',
 		'require_log_in',
@@ -580,6 +590,7 @@ export default function Edit( props ) {
 					"hint": "",
 					"category": "",
 					"required": 0,
+					"isPublished": 1,
 					"answers": [],
 					"page": 0
 				} );
@@ -589,7 +600,7 @@ export default function Edit( props ) {
 					method: 'POST',
 					body: newQuestion
 				} ).then( ( response ) => {
-					
+
 					if ( 'success' == response.status ) {
 						let question_id = response.id;
 
@@ -601,7 +612,7 @@ export default function Edit( props ) {
 						// 	qpages[0][hide_prevbtn]: 0
 						// 	qpages[0][questions][]: 2512
 						// 	post_id: 111
-						
+
 						let newPage = qsmFormData( {
 							"action": qsmBlockData.save_pages_action,
 							"quiz_id": res.quizID,
@@ -622,7 +633,7 @@ export default function Edit( props ) {
 							method: 'POST',
 							body: newPage
 						} ).then( ( pageResponse ) => {
-							
+
 							if ( 'success' == pageResponse.status ) {
 								//set new quiz
 								initializeQuizAttributes( res.quizID );
@@ -630,7 +641,7 @@ export default function Edit( props ) {
 						});
 
 					}
-					
+
 				}).catch(
 					( error ) => {
 						console.log( 'error',error );
@@ -640,8 +651,8 @@ export default function Edit( props ) {
 						} );
 					}
 				);
-				
-			} 
+
+			}
 
 			//create notice
 			createNotice( res.status, res.msg, {
@@ -657,7 +668,7 @@ export default function Edit( props ) {
 				} );
 			}
 		);
-	  
+
 	}
 
 	/**
@@ -670,7 +681,7 @@ export default function Edit( props ) {
 			'qsm/quiz-page'
 		]
 	} );
-	
+
 
 	return (
 	<>
@@ -682,7 +693,7 @@ export default function Edit( props ) {
 				{ quizAttr.post_status }
 			</span>
 		</label>
-		
+
 		<TextControl
 			label={ __( 'Quiz Name *', 'quiz-master-next' ) }
 			help={ __( 'Enter a name for this Quiz', 'quiz-master-next' ) }
@@ -691,9 +702,9 @@ export default function Edit( props ) {
 			className='qsm-no-mb'
 		/>
 		{
-			( ! qsmIsEmpty( quizID ) || '0' != quizID ) && 
+			( ! qsmIsEmpty( quizID ) || '0' != quizID ) &&
 			<p>
-				<ExternalLink 
+				<ExternalLink
 				href={ qsmBlockData.quiz_settings_url+'&quiz_id='+quizID+'&tab=options' }
 				>
 					{ __( 'Advance Quiz Settings', 'quiz-master-next' ) }
@@ -702,12 +713,12 @@ export default function Edit( props ) {
 		}
 		</PanelBody>
 	</InspectorControls>
-	{ ( qsmIsEmpty( quizID ) || '0' == quizID ) ? 
+	{ ( qsmIsEmpty( quizID ) || '0' == quizID ) ?
     <div { ...blockProps }> { quizPlaceholder() } </div>
 	:
 	<div { ...innerBlocksProps } />
 	}
-	
+
 	</>
 	);
 }

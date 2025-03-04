@@ -284,8 +284,34 @@ class QMNPluginHelper {
 	 * @param  mixed  $default What we need to return if no setting exists with given $setting
 	 * @return $mixed Value set for $setting or $default if setting does not exist
 	 */
-	public function get_quiz_setting( $setting, $default = false ) {
+	public function get_quiz_setting( $setting, $default = false, $caller = '' ) {
 		global $mlwQuizMasterNext;
+		if ( ( 'pages' == $setting || 'qpages' == $setting ) && empty( $caller ) ) {
+			$pages = $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
+			$temp_pages = array();
+			foreach ( $pages as $index => $page ) {
+				$page_should_display = array();
+				$page = 'qpages' == $setting ? $page['questions'] : $page;
+				foreach ( $page as $key => $question_id ) {
+					$isPublished = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'isPublished' );
+					if ( '' == $isPublished || ( '' != $isPublished && 1 === intval( $isPublished ) ) ) {
+						$page_should_display[]  = true;
+					} elseif ( '' != $isPublished && 0 === intval( $isPublished ) ) {
+						$page_should_display[] = false;
+						unset( $page[ $key ] );
+					}
+				}
+				if ( in_array( true, $page_should_display, true ) ) {
+					if ( 'qpages' == $setting ) {
+						$pages[ $index ]['questions'] = $page;
+						$temp_pages[] = $pages[ $index ];
+					} else {
+						$temp_pages[] = $page;
+					}
+				}
+			}
+			return $temp_pages;
+		}
 		return $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
 	}
 
@@ -616,6 +642,7 @@ class QMNPluginHelper {
 			'scheduled_timeframe_text'         => '',
 			'twitter_sharing_text'             => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'facebook_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
+			'linkedin_sharing_text'            => __('I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next'),
 			'submit_button_text'               => __('Submit', 'quiz-master-next'),
 			'retake_quiz_button_text'          => __('Retake Quiz', 'quiz-master-next'),
 			'previous_button_text'             => __('Previous', 'quiz-master-next'),
@@ -1097,7 +1124,7 @@ class QMNPluginHelper {
 
 		$qsm_contact_array = $qsm_qna_array['contact'];
 		foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact ) {
-			if ( 'date' === $qsm_contact['type'] && '' !== $qsm_contact['value'] && null !== $GLOBALS['qsm_date_format'] ) {
+			if ( ( isset($qsm_contact['type']) && 'date' === $qsm_contact['type'] ) && ( isset($qsm_contact['value']) && '' !== $qsm_contact['value'] ) && null !== $GLOBALS['qsm_date_format'] ) {
 				$qsm_qna_array['contact'][ $qsm_contact_id ]['value'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime( ( $qsm_contact['value'] ) ) );
 			}
 		}

@@ -327,7 +327,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					<h1>
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' );
 						if ( current_user_can( 'create_qsm_quizzes' ) ) {
-							$add_button = '<a id="new_quiz_button" href="#" class="add-new-h2">' . esc_html__( 'Add New', 'quiz-master-next' ) . '</a>';
+							$add_button = '<a href="' . esc_url(admin_url('admin.php?page=qsm_create_quiz_page')) . '" class="add-new-h2">' . esc_html__('Add New', 'quiz-master-next') . '</a>';
 						}
 						echo apply_filters( 'qsm_add_quiz_after', ! empty( $add_button ) ? $add_button : '' ); ?>
 					</h1>
@@ -390,9 +390,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						</div>
 					</div>
 				</div>
-				<!-- Popup for new quiz -->
-				<?php qsm_create_new_quiz_wizard(); ?>
-				<!-- Popup for duplicate quiz -->
 				<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-4" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 						<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
@@ -485,14 +482,19 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				if ( ! class_exists( 'QSM_Export_Import' ) ) {
 					$qsm_pop_up_arguments = array(
 						"id"           => 'modal-export-import',
-						"title"        => __('Export & Import', 'quiz-master-next'),
-						"description"  => __('Wondering how to import quizzes or survey data from one website and export it to another? Easily export and import data with this premium add-on.', 'quiz-master-next'),
+						"title"        => __( 'Easily Export Quiz Data', 'quiz-master-next' ),
+						"description"  => __( 'Move quizzes effortlessly with the Export & Import Addon.', 'quiz-master-next' ),
 						"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/export_import_chart.png',
-						"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next'),
-						"buy_btn_text" => __('Buy Export & Import Addon', 'quiz-master-next'),
+						"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next' ),
+						"buy_btn_text" => __( 'Buy Export & Import Addon', 'quiz-master-next' ),
 						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'qsm_list', 'importexport_button', 'import-export-upsell_read_documentation', 'qsm_plugin_upsell' ),
 						"upgrade_link" => qsm_get_plugin_link( 'pricing', 'qsm_list', 'importexport_button', 'import-export-upsell_upgrade', 'qsm_plugin_upsell' ),
 						"addon_link"   => qsm_get_plugin_link( 'downloads/export-import', 'qsm_list', 'importexport_button', 'import-export-upsell_buy_addon', 'qsm_plugin_upsell' ),
+						"list_items"   => array(
+							__("Export quizzes and settings in a single click", "quiz-master-next"),
+							__("Import quizzes seamlessly across sites", "quiz-master-next"),
+							__("Save time when migrating or backing up quizzes", "quiz-master-next"),
+						),
 					);
 					qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 				}
