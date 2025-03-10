@@ -5156,13 +5156,14 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 10px;
+	margin-top: 10px;
 }
 .qsm-deleted-question-options-forms {
 	display: flex;
 }
 .qsm-deleted-question-options-forms > * {
 	margin-left: 10px;
+}
 .wrap.qsm-about-us-page .nav-tab-wrapper {
 	margin: 0 0 20px 0;
 }

@@ -2054,6 +2054,7 @@ var QSMContact;
                             'content': email_content,
                             'replyTo': $(this).find('.reply-to').prop('checked'),
                             'default_mark': default_mark,
+                            'is_updated': 1,
                         };
                         $(this).find('.email-condition').each(function () {
                             email.conditions.push({
@@ -4489,6 +4490,7 @@ var QSM_Quiz_Broadcast_Channel;
                             'page': wp.editor.getContent($(this).find('.results-page-template').attr('id')),
                             'redirect': false,
                             default_mark: default_mark,
+                            'is_updated': 1,
                         };
                         redirect_value = $(this).find('.results-page-redirect').val();
                         if ('' != redirect_value) {
@@ -4635,7 +4637,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $resultsPage.find('.qsm-result-page-template-options').hide();
                         QSMAdminResults.hideShowResultPageSection($resultsPage);
                     } else {
-                        if(typeof singlePage.redirect === 'undefined' || page == '' || !singlePage.hasOwnProperty('default_mark')) {
+                        if((typeof singlePage.redirect === 'undefined' || page == '' || !singlePage.hasOwnProperty('default_mark')) && singlePage.hasOwnProperty('is_updated') ) {
                             // New Result Page
                             $resultsPage.find(".qsm-result-page-then-box-styles-wrap > div").hide();
                             $resultsPage.find('.qsm-result-page-template-options').show();
@@ -4666,7 +4668,7 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                 },
                 newResultsPage: function () {
-                    QSMAdminResults.addResultsPage([], '');
+                    QSMAdminResults.addResultsPage([], '', '', false, {is_updated: 1});
                 },
                 displayResultEditor: function ( $resultsPage ){
                     $resultsPage.find(".qsm-result-page-editor-options").show();
