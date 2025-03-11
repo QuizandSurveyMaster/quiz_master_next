@@ -334,8 +334,8 @@ function qsm_get_deleted_questions_records() {
                     DELETE q FROM {$wpdb->prefix}mlw_questions q
                     LEFT JOIN {$wpdb->prefix}mlw_quizzes quiz 
                         ON q.quiz_id = quiz.quiz_id
-                    WHERE (q.deleted = %d AND q.deleted_question_bank = %d) OR quiz.quiz_id IS NULL",
-                    1, 1
+                    WHERE q.deleted = %d OR quiz.quiz_id IS NULL",
+                    1
                 );
 
                 $wpdb->query($query);
