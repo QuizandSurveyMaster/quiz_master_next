@@ -171,7 +171,7 @@ function qsm_restore_function() {
  */
 function qsm_audit_box() {
 	global $wpdb;
-	$table_limit = 1;
+	$table_limit = 30;
 	$audit_total = $wpdb->get_var( "SELECT COUNT(trail_id) FROM {$wpdb->prefix}mlw_qm_audit_trail" );
 
 	// If user has gone to the next audit page, load current page and beginning.
