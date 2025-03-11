@@ -20,7 +20,7 @@ function qsm_generate_quiz_tools() {
 	}
 	// Check the active tab
     $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'qsm_tools_page_audit_trail';
-
+	global $mlwQuizMasterNext;
     ?>
     <div class="wrap">
         <h1><?php esc_html_e('QSM Tools', 'text-domain'); ?></h1>
@@ -32,33 +32,35 @@ function qsm_generate_quiz_tools() {
             </a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_quiz_setting')); ?>" 
                class="nav-tab <?php echo $active_tab === 'qsm_tools_page_quiz_setting' ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('Quiz Settings', 'text-domain'); ?>
+                <?php esc_html_e('Deleted Quiz', 'text-domain'); ?>
             </a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_questions_setting')); ?>" 
                class="nav-tab <?php echo $active_tab === 'qsm_tools_page_questions_setting' ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('Questions Settings', 'text-domain'); ?>
+                <?php esc_html_e('Deleted Questions', 'text-domain'); ?>
             </a>			
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_results_setting')); ?>" 
                class="nav-tab <?php echo $active_tab === 'qsm_tools_page_results_setting' ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('Results Settings', 'text-domain'); ?>
+                <?php esc_html_e('Deleted Results', 'text-domain'); ?>
             </a>			
         </h2>
-
+		<div class="qsm-alerts">
+			<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
+		</div>
         <?php
         // Handle callbacks based on the active tab
-        if (empty($_GET['tab']) || 'qsm_tools_page_audit_trail' === $active_tab) {
+        if ( empty($_GET['tab']) || 'qsm_tools_page_audit_trail' === $active_tab ) {
             qsm_audit_box();
         }
 
-        if (!empty($_GET['tab']) && 'qsm_tools_page_quiz_setting' === $active_tab) {
+        if ( ! empty($_GET['tab']) && 'qsm_tools_page_quiz_setting' === $active_tab ) {
             qsm_restore_function();
         }
 
-        if (!empty($_GET['tab']) && 'qsm_tools_page_questions_setting' === $active_tab) {
+        if ( ! empty($_GET['tab']) && 'qsm_tools_page_questions_setting' === $active_tab ) {
             qsm_get_deleted_questions_records();
         }
 
-        if (!empty($_GET['tab']) && 'qsm_tools_page_results_setting' === $active_tab) {
+        if ( ! empty($_GET['tab']) && 'qsm_tools_page_results_setting' === $active_tab ) {
             qsm_get_deleted_results_records();
         }
         ?>
@@ -83,7 +85,7 @@ function qsm_restore_function() {
 	// Checks if form was submitted.
 	if ( isset( $_POST['restore_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['restore_quiz_nonce'] ) ), 'restore_quiz_nonce' ) && isset( $_POST['restore_quiz'] ) ) {
 		
-		if(isset($_POST['qsm_delete_permanent_quiz'])) {
+		if ( isset($_POST['qsm_delete_permanent_quiz']) ) {
 			global $mlwQuizMasterNext;
 			$quiz_id     = sanitize_text_field( wp_unslash( $_POST['restore_quiz'] ) );
 			$quiz_id     = intval( str_replace( 'QID', '', $quiz_id ) );
@@ -93,7 +95,7 @@ function qsm_restore_function() {
 			?>
 			<span style="color:green;"><?php esc_html_e( 'Quiz Has Been Deleted!', 'quiz-master-next' ); ?></span>
 			<?php
-		} else if(isset($_POST['qsm_restore_quiz'])) {
+		} elseif ( isset($_POST['qsm_restore_quiz']) ) {
 			$restore = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
@@ -306,170 +308,181 @@ function qsm_audit_box() {
 }
 
 function qsm_get_deleted_questions_records() {
+    global $wpdb, $mlwQuizMasterNext;
 
-	global $wpdb, $mlwQuizMasterNext;
+    // Handle deletion before fetching records
+    if ( isset($_POST['delete_selected']) || isset($_POST['delete_all_questions']) ) {
+        if ( isset($_POST['qsm_delete_selected_questions_nonce_field']) &&
+             wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qsm_delete_selected_questions_nonce_field'])), 'qsm_delete_selected_questions_nonce') ) {
+            
+            // Handle Selected Questions Deletion
+            if ( isset($_POST['delete_selected']) && ! empty($_POST['delete_questions']) ) {
+                $delete_ids = array_map('absint', wp_unslash($_POST['delete_questions']));
+                if ( ! empty($delete_ids) ) { 
+                    $placeholders = implode(',', array_fill(0, count($delete_ids), '%d'));
+                    $wpdb->query($wpdb->prepare(
+                        "DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($placeholders)",
+                        ...$delete_ids
+                    ));
+                    $mlwQuizMasterNext->alertManager->newAlert(__('Selected questions have been deleted.', 'quiz-master-next'), 'success');
+                }
+            } 
 
-	// Handle the deletion process before fetching records
-	if ((isset($_POST['delete_selected'])) || isset($_POST['delete_all_questions']) ) {
-		if (isset($_POST['qsm_delete_selected_questions_nonce_field']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qsm_delete_selected_questions_nonce_field'])), 'qsm_delete_selected_questions_nonce')) {
-			if (isset($_POST['delete_selected']) && isset($_POST['delete_questions'])){
-				$delete_ids = array_map('absint', wp_unslash($_POST['delete_questions']));
-				if (!empty($delete_ids)) { 
-					$delete_ids = array_map('intval', $delete_ids);
-					$placeholders = implode(',', array_fill(0, count($delete_ids), '%d'));
-					$query = $wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($placeholders)",
-						$delete_ids
-					);
-					$wpdb->query($query);
-					$mlwQuizMasterNext->alertManager->newAlert(__('Selected questions have been deleted.', 'quiz-master-next'), 'success');
-				}
-			} else if (isset($_POST['delete_all_questions'])) {
-				$wpdb->query("DELETE FROM {$wpdb->prefix}mlw_questions WHERE deleted = 1 OR deleted_question_bank = 1");
-				$mlwQuizMasterNext->alertManager->newAlert(__('All deleted questions have been removed.', 'quiz-master-next'), 'success');
-			}
-		} else {
-			$mlwQuizMasterNext->alertManager->newAlert(__('Nonce verification failed. Please try again.', 'quiz-master-next'), 'error');
-			return;
-		}
-	}
-	// Handle filter order
-	$filter_order = isset($_POST['qsm_deleted_question_filter']) ? sanitize_text_field(wp_unslash($_POST['qsm_deleted_question_filter'])) : '';
-	$order_by = ($filter_order === 'asc' || $filter_order === 'desc') ? strtoupper($filter_order) : 'ASC';
+            // Handle Delete All Questions
+            if ( isset($_POST['delete_all_questions']) ) {
+                $query = $wpdb->prepare("
+                    DELETE q FROM {$wpdb->prefix}mlw_questions q
+                    LEFT JOIN {$wpdb->prefix}mlw_quizzes quiz 
+                        ON q.quiz_id = quiz.quiz_id
+                    WHERE (q.deleted = %d AND q.deleted_question_bank = %d) OR quiz.quiz_id IS NULL",
+                    1, 1
+                );
 
-	// Fetch records
-	$query = $wpdb->prepare(
-		"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = %d OR deleted_question_bank = %d ORDER BY question_id $order_by",
-		1, 1
-	);
-	$questions = $wpdb->get_results($query);
-	$mlwQuizMasterNext->alertManager->showAlerts(); ?>
-	<form action="" method="post">
-	<div class="qsm-deleted-question-options-wrap">
-		<p><?php esc_html_e('List of Questions removed from the quizzes or question bank', 'quiz-master-next'); ?></p>
-		<div>
-			<div class="qsm-deleted-question-options-forms">
-				<?php if(! empty( $questions )) { ?> 
-				<div>
-					<label for="qsm-deleted-question-filter"><?php esc_html_e('Sort By Question ID', 'quiz-master-next'); ?></label>
-					<select name="qsm_deleted_question_filter" id="qsm-deleted-question-filter">
-						<option value=""><?php esc_html_e('Select Order', 'quiz-master-next'); ?></option>
-						<option value="asc" <?php selected($filter_order, 'asc'); ?>><?php esc_html_e('Ascending', 'quiz-master-next'); ?></option>
-						<option value="desc" <?php selected($filter_order, 'desc'); ?>><?php esc_html_e('Descending', 'quiz-master-next'); ?></option>
-					</select>
-					<button type="submit" class="button"><?php esc_html_e('Apply Filter', 'quiz-master-next'); ?></button>
-				</div>
-				<div><button type="submit" name="delete_selected" class="button"><?php esc_html_e('Delete Selected', 'quiz-master-next'); ?></button></div>
-				<div><button type="submit" name="delete_all_questions" class="button-primary"><?php esc_html_e('Delete All Questions', 'quiz-master-next'); ?></button></div>
-				<?php } ?>
-			</div>
-		</div>
-	</div>
+                $wpdb->query($query);
+                $mlwQuizMasterNext->alertManager->newAlert(__('All deleted questions have been removed.', 'quiz-master-next'), 'success');
+            }
+        } else {
+            $mlwQuizMasterNext->alertManager->newAlert(__('Nonce verification failed. Please try again.', 'quiz-master-next'), 'error');
+            return;
+        }
+    }
 
-	<?php
-	if ($questions) { 
-		wp_nonce_field('qsm_delete_selected_questions_nonce', 'qsm_delete_selected_questions_nonce_field'); ?>
-		<table class="widefat">
-			<thead>
-				<tr>
-					<th width="5%">
-						
-					</th>
-					<th width="15%"><?php esc_html_e('Question ID', 'quiz-master-next'); ?></th>
-					<th><?php esc_html_e('Question Name', 'quiz-master-next'); ?></th>
-				</tr>
-			</thead>
-			<tbody id="the-list">
-			<?php
-			foreach ($questions as $row) {
-				$settings = maybe_unserialize($row->question_settings);
-				?>
-				<tr>
-					<td>
-						<input type="checkbox" name="delete_questions[]" value="<?php echo esc_attr($row->question_id); ?>" />
-					</td>
-					<td><?php echo esc_html($row->question_id); ?></td>
-					<td><?php echo esc_html($settings['question_title']); ?></td>
-				</tr>
-				<?php
-			}
-			?>
-			</tbody>
-		</table>
-		<?php
-	} else {
-		?>
-		<table class="widefat">
-			<tr>
-				<td colspan="3"><?php esc_html_e('No data found!!', 'quiz-master-next'); ?></td>
-			</tr>
-		</table>
-		<?php
-	}
-	?></form><?php
+    // Handle filter order
+    $filter_order = isset($_POST['qsm_deleted_question_filter']) ? sanitize_text_field(wp_unslash($_POST['qsm_deleted_question_filter'])) : '';
+    $order_by = ($filter_order === 'asc' || $filter_order === 'desc') ? strtoupper($filter_order) : 'ASC';
+
+    // Secure query execution using prepare
+    $query = "
+        SELECT q.*, quiz.quiz_id AS quiz_quiz_id
+        FROM {$wpdb->prefix}mlw_questions q
+        LEFT JOIN {$wpdb->prefix}mlw_quizzes quiz 
+            ON q.quiz_id = quiz.quiz_id
+        WHERE q.deleted = 1 OR quiz.quiz_id IS NULL
+        ORDER BY q.question_id " . esc_sql($order_by);
+
+    $questions = $wpdb->get_results($query);
+    ?>
+    <form action="" method="post">
+        <div class="qsm-deleted-question-options-wrap">
+            <p><?php esc_html_e('List of Questions removed from the quizzes', 'quiz-master-next'); ?></p>
+            <div>
+                <div class="qsm-deleted-question-options-forms">
+                    <?php if ( ! empty($questions) ) { ?> 
+                        <div>
+                            <label for="qsm-deleted-question-filter"><?php esc_html_e('Sort By Question ID', 'quiz-master-next'); ?></label>
+                            <select name="qsm_deleted_question_filter" id="qsm-deleted-question-filter">
+                                <option value="asc" <?php selected($filter_order, 'asc'); ?>><?php esc_html_e('Ascending', 'quiz-master-next'); ?></option>
+                                <option value="desc" <?php selected($filter_order, 'desc'); ?>><?php esc_html_e('Descending', 'quiz-master-next'); ?></option>
+                            </select>
+                            <button type="submit" class="button"><?php esc_html_e('Apply Filter', 'quiz-master-next'); ?></button>
+                        </div>
+                        <div>
+                            <button type="submit" name="delete_selected" class="button"
+                                onclick="return confirm('<?php esc_attr_e('Are you sure you want to delete the selected questions?', 'quiz-master-next'); ?>');">
+                                <?php esc_html_e('Delete Selected', 'quiz-master-next'); ?>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="submit" name="delete_all_questions" class="button-primary"
+                                onclick="return confirm('<?php esc_attr_e('Are you sure you want to delete all deleted questions?', 'quiz-master-next'); ?>');">
+                                <?php esc_html_e('Delete All Questions', 'quiz-master-next'); ?>
+                            </button>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+
+        <?php 
+        if ( $questions ) { 
+            wp_nonce_field('qsm_delete_selected_questions_nonce', 'qsm_delete_selected_questions_nonce_field'); ?>
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th width="5%"></th>
+                        <th width="15%"><?php esc_html_e('Question ID', 'quiz-master-next'); ?></th>
+                        <th width="15%"><?php esc_html_e('Quiz ID', 'quiz-master-next'); ?></th>
+                        <th><?php esc_html_e('Question Name', 'quiz-master-next'); ?></th>
+                    </tr>
+                </thead>
+                <tbody id="the-list">
+                <?php foreach ( $questions as $row ) {
+                    $settings = maybe_unserialize($row->question_settings);
+                    $question_title = isset($settings['question_title']) ? $settings['question_title'] : ''; ?>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="delete_questions[]" value="<?php echo esc_attr($row->question_id); ?>" />
+                        </td>
+                        <td><?php echo esc_html($row->question_id); ?></td>
+                        <td><?php echo esc_html($row->quiz_id); ?></td>
+                        <td><?php echo esc_html($question_title); ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        <?php } else { ?>
+            <table class="widefat">
+                <tr>
+                    <td colspan="4"><?php esc_html_e('No Questions found!!', 'quiz-master-next'); ?></td>
+                </tr>
+            </table>
+        <?php } ?>
+    </form>
+    <?php
 }
 
+
 function qsm_get_deleted_results_records() {
-    global $wpdb;
+    global $wpdb, $mlwQuizMasterNext;
 
     // Handle "Delete All Results" action
-    if (isset($_POST['delete_all_results'])) {
+    if ( isset($_POST['delete_all_results']) ) {
         if (
             isset($_POST['qsm_delete_selected_questions_nonce_field']) &&
-            wp_verify_nonce($_POST['qsm_delete_selected_questions_nonce_field'], 'qsm_delete_selected_questions_nonce')
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qsm_delete_selected_questions_nonce_field'])), 'qsm_delete_selected_questions_nonce')
         ) {
             // Delete all results marked as deleted
-            $wpdb->query("DELETE FROM {$wpdb->prefix}mlw_results WHERE deleted = 1");
+            $wpdb->query(
+                $wpdb->prepare("DELETE FROM {$wpdb->prefix}mlw_results WHERE deleted = %d", 1)
+            );
 
-            // Redirect to avoid form resubmission issues
-            wp_safe_redirect(add_query_arg('message', 'deleted_all', $_SERVER['REQUEST_URI']));
-            exit;
+            // Show success message
+            $mlwQuizMasterNext->alertManager->newAlert(__('All deleted results have been removed.', 'quiz-master-next'), 'success');
         } else {
-            wp_die(__('Nonce verification failed. Action not allowed.', 'quiz-master-next'));
+            $mlwQuizMasterNext->alertManager->newAlert(__('Nonce verification failed. Action not allowed.', 'quiz-master-next'), 'error');
         }
     }
 
     // Handle "Delete Selected" action
-    if (isset($_POST['delete_selected'])) {
+    if ( isset($_POST['delete_selected']) ) {
         if (
             isset($_POST['qsm_delete_selected_questions_nonce_field']) &&
-            wp_verify_nonce($_POST['qsm_delete_selected_questions_nonce_field'], 'qsm_delete_selected_questions_nonce')
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['qsm_delete_selected_questions_nonce_field'])), 'qsm_delete_selected_questions_nonce')
         ) {
-            if (!empty($_POST['quiz_results'])) {
-                $selected_ids = array_map('intval', $_POST['quiz_results']);
-                $ids_placeholders = implode(',', array_fill(0, count($selected_ids), '%d'));
+            if ( ! empty($_POST['quiz_results']) ) {
+                $selected_ids = array_map('absint', wp_unslash($_POST['quiz_results']));
+                if ( ! empty($selected_ids) ) {
+                    $placeholders = implode(',', array_fill(0, count($selected_ids), '%d'));
 
-                $wpdb->query($wpdb->prepare(
-                    "DELETE FROM {$wpdb->prefix}mlw_results WHERE result_id IN ($ids_placeholders)",
-                    ...$selected_ids
-                ));
+                    $wpdb->query($wpdb->prepare(
+                        "DELETE FROM {$wpdb->prefix}mlw_results WHERE result_id IN ($placeholders)",
+                        ...$selected_ids
+                    ));
+
+                    // Show success message
+                    $mlwQuizMasterNext->alertManager->newAlert(__('Selected results have been deleted.', 'quiz-master-next'), 'success');
+                }
             }
-
-            // Redirect to avoid form resubmission issues
-            wp_safe_redirect(add_query_arg('message', 'deleted_selected', $_SERVER['REQUEST_URI']));
-            exit;
         } else {
-            wp_die(__('Nonce verification failed. Action not allowed.', 'quiz-master-next'));
+            $mlwQuizMasterNext->alertManager->newAlert(__('Nonce verification failed. Action not allowed.', 'quiz-master-next'), 'error');
         }
     }
 
-    // Get the filter value from the POST request
-    $filtered_quiz_id = isset($_POST['qsm_deleted_result_filter']) ? intval($_POST['qsm_deleted_result_filter']) : 0;
-
-    // Prepare the query for deleted results
-    if ($filtered_quiz_id) {
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted = %d AND quiz_id = %d ORDER BY result_id DESC",
-            1,
-            $filtered_quiz_id
-        );
-    } else {
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted = %d ORDER BY result_id DESC",
-            1
-        );
-    }
-
+    // Fetch deleted results
+    $query = $wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted = %d ORDER BY result_id DESC",
+        1
+    );
     $results = $wpdb->get_results($query);
 
     ?>
@@ -478,38 +491,25 @@ function qsm_get_deleted_results_records() {
             <p><?php esc_html_e('List of deleted Quiz Results from the quiz result page', 'quiz-master-next'); ?></p>
             <div>
                 <div class="qsm-deleted-question-options-forms">
-                    <?php
-                    // Retrieve all non-deleted quizzes
-                    $quizzes = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0");
-                    if (!empty($quizzes)) { ?> 
+                    <?php if ( ! empty($results) ) { ?> 
                         <div>
-                            <label for="qsm-deleted-result-filter"><?php esc_html_e('Sort By Quiz', 'quiz-master-next'); ?></label>
-                            <select name="qsm_deleted_result_filter" id="qsm-deleted-result-filter">
-                                <option value=""><?php esc_html_e('Select Quiz', 'quiz-master-next'); ?></option>
-                                <?php
-                                foreach ($quizzes as $quiz) {
-                                    ?>
-                                    <option value="<?php echo esc_attr($quiz->quiz_id); ?>" <?php selected($filtered_quiz_id, $quiz->quiz_id); ?>>
-                                        <?php echo wp_kses_post($quiz->quiz_name); ?>
-                                    </option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
-                            <button type="submit" class="button"><?php esc_html_e('Apply Filter', 'quiz-master-next'); ?></button>
+                            <button type="submit" name="delete_selected" class="button" 
+                                onclick="return confirm('<?php esc_attr_e('Are you sure you want to delete the selected results?', 'quiz-master-next'); ?>');">
+                                <?php esc_html_e('Delete Selected', 'quiz-master-next'); ?>
+                            </button>
                         </div>
                         <div>
-                            <button type="submit" name="delete_selected" class="button"><?php esc_html_e('Delete Selected', 'quiz-master-next'); ?></button>
-                        </div>
-                        <div>
-                            <button type="submit" name="delete_all_results" class="button-primary"><?php esc_html_e('Delete All Deleted Results', 'quiz-master-next'); ?></button>
+                            <button type="submit" name="delete_all_results" class="button-primary" 
+                                onclick="return confirm('<?php esc_attr_e('Are you sure you want to delete all deleted results?', 'quiz-master-next'); ?>');">
+                                <?php esc_html_e('Delete All Deleted Results', 'quiz-master-next'); ?>
+                            </button>
                         </div>
                     <?php } ?>
                 </div>
             </div>
         </div>
         <?php 
-        if ($results) { 
+        if ( $results ) { 
             wp_nonce_field('qsm_delete_selected_questions_nonce', 'qsm_delete_selected_questions_nonce_field'); ?>
             <table class="widefat">
                 <thead>
@@ -523,7 +523,7 @@ function qsm_get_deleted_results_records() {
                 </thead>
                 <tbody id="the-list">
                 <?php
-                foreach ($results as $row) {
+                foreach ( $results as $row ) {
                     ?>
                     <tr>
                         <td>
@@ -544,7 +544,7 @@ function qsm_get_deleted_results_records() {
             ?>
             <table class="widefat">
                 <tr>
-                    <td colspan="5"><?php esc_html_e('No data found!', 'quiz-master-next'); ?></td>
+                    <td colspan="5"><?php esc_html_e('No deleted results found!', 'quiz-master-next'); ?></td>
                 </tr>
             </table>
             <?php

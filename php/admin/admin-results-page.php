@@ -97,7 +97,7 @@ function qsm_delete_results_attachments( $rows_before_update ) {
         // Ensure the results array exists and has the expected structure
 		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
 			// Check if the question type is 11 and user answer is not empty
-			if ( $value['question_type'] == 11 && !empty( $value['user_answer'] ) ) {
+			if ( $value['question_type'] == 11 && ! empty( $value['user_answer'] ) ) {
 				// Check if the user answer has a file_id
 				if ( isset( $value['user_answer']['file_id'] ) ) {
 					$attachment_id = $value['user_answer']['file_id'];
