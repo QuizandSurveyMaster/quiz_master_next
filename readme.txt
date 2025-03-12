@@ -15,7 +15,7 @@ Create quizzes, surveys, and tests easily on WordPress with this versatile plugi
 
 **Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)**
 
-https://youtu.be/DyiCCNnDpHk?si=7nda3koRTGw7BW_J
+https://youtu.be/G5w8F6XRgio
 
 ### CREATE UNLIMITED QUIZZES AND QUESTIONS
 

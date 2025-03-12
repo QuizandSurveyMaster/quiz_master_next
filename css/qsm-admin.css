@@ -814,6 +814,7 @@ span.qsm-quiz-name {
 .qsm-styles {
 	display: flex;
 	flex-direction: column;
+	gap: 10px;
 }
 .qsm_featured_image_preview {
 	max-width: 30%;
@@ -5166,4 +5167,7 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 }
 .wrap.qsm-about-us-page .nav-tab-wrapper {
 	margin: 0 0 20px 0;
+}
+div.mlw_qmn_themeBlockActive {
+	background-color: yellow;
 }
