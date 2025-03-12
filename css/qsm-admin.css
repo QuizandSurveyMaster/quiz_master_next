@@ -4952,6 +4952,8 @@ span.qsm-insert-template-variable-text {
 .qsm_page_mlw_quiz_results .tablenav-pages .paging-input {
     display: inline-flex;
     align-items: center;
+	position: relative;
+    right: 6px;
 }
 
 .qsm_page_mlw_quiz_results .tablenav-pages .total-pages {
@@ -4971,7 +4973,8 @@ span.qsm-insert-template-variable-text {
     color: inherit;
 }
 .qsm_page_mlw_quiz_results .result-page-wrapper .tablenav-pages .pagination-links .disable{
-	background-color: #f0f0f1;
+	pointer-events: none;
+	cursor: not-allowed;
 }
 .qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .prev-page.disable:hover,
 .qsm_page_mlw_quiz_results .result-page-wrapper .pagination-links .next-page.disable:hover{
@@ -5170,4 +5173,8 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 }
 div.mlw_qmn_themeBlockActive {
 	background-color: yellow;
+}
+.qsm-admin-result-page-number {
+	width: 55px;
+	min-width: 52px;
 }
