@@ -222,8 +222,8 @@ function qsm_results_overview_tab_content() {
 		}
 	}
 
-	if ( isset( $_GET['qsm_results_page'] ) ) {
-		$result_page     = intval( $_GET['qsm_results_page'] ) + 1;
+	if ( isset( $_GET['qsm_results_page'] ) || isset( $_GET['goto'] ) ) {
+		$result_page     = isset( $_GET['qsm_results_page'] ) ? intval( $_GET['qsm_results_page'] ) + 1 : intval( $_GET['goto'] ) - 1;
 		$result_begin    = $table_limit * $result_page;
 	} else {
 		$result_page     = 0;
@@ -278,8 +278,18 @@ function qsm_results_overview_tab_content() {
 					<?php
 				}
 				?>
-				<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> - <?php echo esc_html( $mlw_total_pages ); ?>&nbsp
-					<span class="total-entries"> of <?php echo esc_html( $qsm_results_count ); ?></span>
+				<span class="paging-input">
+					<form action="" method="GET">
+						<?php
+						$query_params = $_GET;
+						unset($query_params['qsm_results_page']);
+						foreach ($query_params as $key => $value) {
+							echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '">';
+						}
+						?>
+						<input type="text" class="qsm-admin-result-page-number" name="goto" value="<?php echo esc_attr($mlw_current_page); ?>">
+					</form>&nbsp;
+					<span class="total-entries"> of <?php echo esc_html($mlw_total_pages); ?></span>
 				</span>
 				<?php
 				if ( $results_left > $table_limit ) {
