@@ -1735,6 +1735,29 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Validate Contact Fields
+	 *
+	 * Validates the contact fields in the request
+	 *
+	 * @since  10.0.3
+	 * @param  array $contact_form The contact form fields
+	 * @param  array $request      The request data
+	 * @return bool               Whether the contact fields are valid
+	 */
+	public function qsm_validate_contact_fields( $contact_form, $request ) {
+		$missing_labels = [];
+		foreach ( $contact_form as $index => $field ) {
+			if ( 'true' === $field['required'] && 'true' === $field['enable'] ) {
+				$contact_key = "contact_field_" . $index;
+				if ( ! isset( $request[ $contact_key ] ) || empty( trim( $request[ $contact_key ] ) ) ) {
+					$missing_labels[] = $field['label'];
+				}
+			}
+		}
+		return empty( $missing_labels ) ? 1 : implode( ", ", $missing_labels );
+	}
+
+	/**
 	 * Calls the results page from ajax
 	 *
 	 * @since  4.6.0
@@ -1803,6 +1826,19 @@ class QMNQuizManager {
 		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
+		$missing_contact_fields = $this->qsm_validate_contact_fields( $qsm_option['contact_form'], $_REQUEST );
+		if ( 1 !== $missing_contact_fields ) {
+			echo wp_json_encode(
+				array(
+					'display'       => '<div class="qsm-result-page-warning">' . __( 'Missing or empty fields: ', 'quiz-master-next' ) . esc_html( $missing_contact_fields ) . '</div>',
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
 
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
 			echo wp_json_encode(
