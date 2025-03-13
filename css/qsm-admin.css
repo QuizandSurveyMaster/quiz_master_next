@@ -5069,13 +5069,13 @@ ul.qsm-wp-contributor.wp-people-group {
 	color: #2271b1;
 }
 
-#qsm-delete-result-page-popup .qsm-popup__footer {
+#qsm-delete-result-page-popup .qsm-popup__footer, #qsm-delete-questions-tools-page-popup .qsm-popup__footer, #qsm-delete-results-tools-page-popup .qsm-popup__footer {
 	display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#qsm-delete-result-page-popup .qsm-delete-result-popup-btn {
+#qsm-delete-result-page-popup .qsm-delete-result-popup-btn, #qsm-delete-questions-tools-page-popup .qsm-delete-questions-tools-page-btn, #qsm-delete-results-tools-page-popup .qsm-delete-results-tools-page-btn {
 	background-color: #dc3232;
     display: flex;
     margin: 0 5px;
@@ -5085,7 +5085,7 @@ ul.qsm-wp-contributor.wp-people-group {
     gap: 5px;
 }
 
-.qsm-result-page-delete-message {
+.qsm-result-page-delete-message, .qsm-tools-page-delete-questions-message, .qsm-tools-page-delete-results-message {
     display: flex;
     justify-content: center;
     font-size: 17px;
@@ -5170,4 +5170,7 @@ button.button.qsm-slashcommand-variables-button	.qsm-slash-inside {
 }
 div.mlw_qmn_themeBlockActive {
 	background-color: yellow;
+}
+input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
+	margin-left: 0 !important;
 }
