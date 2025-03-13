@@ -626,6 +626,36 @@ var QSMAdminResultsAndEmail;
         });
         $('.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]:checked').trigger('change');
         $('.global_setting_system input[name="qsm-quiz-settings[system]"]:checked').trigger('change');
+        jQuery(document).on('click', '.qsm-select-all-deleted-result', function () {
+            $('.qsm-deleted-result-checkbox').prop('checked', $(this).prop('checked'));
+        });
+        jQuery(document).on('click', '.qsm-select-all-deleted-question', function () {
+            $('.qsm-deleted-question-checkbox').prop('checked', $(this).prop('checked'));
+        });
+        
+        jQuery(document).on('click', '.qsm-tools-delete-all-questions, .qsm-tools-delete-selected-questions', function (e) {
+            e.preventDefault();
+            MicroModal.show('qsm-delete-questions-tools-page-popup');
+            $('.qsm-tools-page-delete-questions-message').html($(this).data('message'));
+            $('.qsm-tools-delete-questions-action-name').val($(this).data('actiontype'));
+        });
+        
+        jQuery(document).on('click', '.qsm-delete-questions-tools-page-btn', function () {
+            let deleteForm = $("#qsm-tools-delete-questions-form");
+            deleteForm.submit();
+        });
+
+        jQuery(document).on('click', '.qsm-tools-delete-all-results, .qsm-tools-delete-selected-results', function (e) {
+            e.preventDefault();
+            MicroModal.show('qsm-delete-results-tools-page-popup');
+            $('.qsm-tools-page-delete-results-message').html($(this).data('message'));
+            $('.qsm-tools-delete-results-action-name').val($(this).data('actiontype'));
+        });
+        
+        jQuery(document).on('click', '.qsm-delete-results-tools-page-btn', function () {
+            let deleteForm = $("#qsm-tools-delete-results-form");
+            deleteForm.submit();
+        });
 
     });
 
@@ -2223,19 +2253,27 @@ var QSMContact;
                     var replyTo = false;
                     QSMAdminEmails.addEmail(conditions, to, subject, content, replyTo);
                 },
-                displayEmailEditor: function ( $emailBlock ){
-                    $emailBlock.find('.qsm-email-page-template-options').hide();
-                    $emailBlock.find('.qsm-email-page-then-box-styles-wrap').show();
-                    $emailBlock.find('.qsm-email-page-common-section').each(function () {
-                        let section = $(this);
-                        if (section.children().length > 0) {
-                            if (!section.is(':visible')) {
-                                section.show();
+                displayEmailEditor: function ($emailBlock) {
+                    let email_page = $emailBlock.data('email-page');
+                    let editor = tinymce.get('email-template-' + email_page);
+                    let content = editor.getContent().trim();
+                    if (content === '') { 
+                        $emailBlock.find('.qsm-email-page-then-box-styles-wrap').hide();
+                        $emailBlock.find('.qsm-email-page-template-options').show();
+                    } else { 
+                        $emailBlock.find('.qsm-email-page-template-options').hide();
+                        $emailBlock.find('.qsm-email-page-then-box-styles-wrap').show();
+                        $emailBlock.find('.qsm-email-page-common-section').each(function () {
+                            let section = $(this);
+                            if (section.children().length > 0) {
+                                if (!section.is(':visible')) {
+                                    section.show();
+                                }
+                            } else {
+                                section.hide();
                             }
-                        } else {
-                            section.hide();
-                        }
-                    });
+                        });
+                    }
                 }
             };
             $(function () {
