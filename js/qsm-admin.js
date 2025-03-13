@@ -40,6 +40,15 @@ var QSMAdminResultsAndEmail;
         
             const iconSrc = icons[type] || icons.success;
         
+            // Check if an alert with the same message and type already exists
+            const $existingAlert = $wrapper.find(`.qsm-response-${type}`).filter(function () {
+                return jQuery(this).text().trim() === message;
+            });
+
+            if ($existingAlert.length > 0) {
+                return; // Don't add duplicate alerts
+            }
+        
             const $alert = jQuery(`
                 <div class="footer-bar-notice qsm-response-${type}">
                     <img src="${iconSrc}" alt="${type} icon" class="qsm-alert-icon">
