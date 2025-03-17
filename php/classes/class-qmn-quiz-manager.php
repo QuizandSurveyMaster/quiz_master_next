@@ -1745,16 +1745,48 @@ class QMNQuizManager {
 	 * @return bool               Whether the contact fields are valid
 	 */
 	public function qsm_validate_contact_fields( $contact_form, $request ) {
-		$missing_labels = [];
+		$errors = [];
 		foreach ( $contact_form as $index => $field ) {
-			if ( 'true' === $field['required'] && 'true' === $field['enable'] ) {
+			if ( 'true' === $field['enable'] ) {
 				$contact_key = "contact_field_" . $index;
-				if ( ! isset( $request[ $contact_key ] ) || empty( trim( $request[ $contact_key ] ) ) ) {
-					$missing_labels[] = $field['label'];
+				$value = isset( $request[ $contact_key ] ) ? trim( $request[ $contact_key ] ) : '';
+				
+				if ( 'true' === $field['required'] && empty( $value ) ) {
+					$errors[] = __( "Enter ", 'quiz-master-next' ) . $field['label'];
+				}
+				
+				if ( !empty( $field['minlength'] ) && strlen( $value ) < (int) $field['minlength'] ) {
+					$errors[] = $field['label'] . __( " must be at least ", 'quiz-master-next' ) . $field['minlength'] . __( " characters long.", 'quiz-master-next' );
+				}
+				
+				if ( !empty( $field['maxlength'] ) && strlen( $value ) > (int) $field['maxlength'] ) {
+					$errors[] = $field['label'] . __( " must be no more than ", 'quiz-master-next' ) . $field['maxlength'] . __( " characters long.", 'quiz-master-next' );
+				}
+				
+				if ( 'email' === $field['type'] && !empty( $value ) ) {
+					if ( ! filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
+						$errors[] = __( "Email must be a valid e-mail.", 'quiz-master-next' );
+					} else {
+						$email_domain = substr( strrchr( $value, "@" ), 1 );
+						
+						if ( !empty( $field['allowdomains'] ) ) {
+							$allowed_domains = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
+							if ( !in_array( $email_domain, $allowed_domains ) ) {
+								$errors[] = __( "Email must be from an allowed domain (", 'quiz-master-next' ) . $field['allowdomains'] . ").";
+							}
+						}
+						
+						if ( !empty( $field['blockdomains'] ) ) {
+							$blocked_domains = array_map( 'trim', explode( ',', $field['blockdomains'] ) );
+							if ( in_array( $email_domain, $blocked_domains ) ) {
+								$errors[] = __( "Email cannot be from a blocked domain (", 'quiz-master-next' ) . $field['blockdomains'] . ").";
+							}
+						}
+					}
 				}
 			}
 		}
-		return empty( $missing_labels ) ? 1 : implode( ", ", $missing_labels );
+		return empty( $errors ) ? 1 : "<strong>" . __( 'There was an error with your submission:', 'quiz-master-next' ) . "</strong><ul style='left: -20px; position: relative;'><li>" . implode( "</li><li>", $errors ) . "</li></ul>";
 	}
 
 	/**
@@ -1830,7 +1862,7 @@ class QMNQuizManager {
 		if ( 1 !== $missing_contact_fields ) {
 			echo wp_json_encode(
 				array(
-					'display'       => '<div class="qsm-result-page-warning">' . __( 'Missing or empty fields: ', 'quiz-master-next' ) . esc_html( $missing_contact_fields ) . '</div>',
+					'display'       => '<div class="qsm-result-page-warning">' . wp_kses_post( $missing_contact_fields ) . '</div>',
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
