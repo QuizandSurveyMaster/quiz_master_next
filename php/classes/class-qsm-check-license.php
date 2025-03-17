@@ -25,7 +25,7 @@ class QSM_Check_License
 		if ( ! empty( $license_key ) ) {
 			$params              = array(
 				'timeout'   => 15,
-				'sslverify' => false,
+				'sslverify' => true,
 				'body'      => array(
 					'edd_action' => 'activate_license',
 					'license'    => $license_key,

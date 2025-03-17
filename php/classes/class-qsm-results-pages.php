@@ -306,6 +306,7 @@ class QSM_Results_Pages {
 				'conditions' => array(),
 				'page'       => $old_pages,
 				'redirect'   => false,
+				'is_updated' => 1,
 			);
 		}
 
