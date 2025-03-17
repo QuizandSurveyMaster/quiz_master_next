@@ -2256,7 +2256,7 @@ var QSMContact;
                 displayEmailEditor: function ($emailBlock) {
                     let email_page = $emailBlock.data('email-page');
                     let editor = tinymce.get('email-template-' + email_page);
-                    let content = editor.getContent().trim();
+					let content = wp.editor.getContent('email-template-' + email_page);
                     if (content === '') { 
                         $emailBlock.find('.qsm-email-page-then-box-styles-wrap').hide();
                         $emailBlock.find('.qsm-email-page-template-options').show();
