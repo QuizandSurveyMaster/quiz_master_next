@@ -85,7 +85,6 @@ function qsm_dashboard_display_change_log_section(){
 	$readme_file = QSM_PLUGIN_PATH . 'readme.txt';
 	if ( $wp_filesystem->exists( $readme_file ) ) {
 		$file_content = $wp_filesystem->get_contents( $readme_file );
-
 		if ( $file_content ) {
 			$parts = explode( '== Changelog ==', $file_content, 2 );
 			if ( isset( $parts[1] ) ) {
