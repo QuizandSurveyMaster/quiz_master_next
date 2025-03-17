@@ -283,7 +283,7 @@ function qsm_results_overview_tab_content() {
 						<?php
 						$query_params = $_GET;
 						unset($query_params['qsm_results_page']);
-						foreach ($query_params as $key => $value) {
+						foreach ( $query_params as $key => $value ) {
 							echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '">';
 						}
 						?>
