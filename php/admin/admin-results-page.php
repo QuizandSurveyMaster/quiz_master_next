@@ -97,13 +97,10 @@ function qsm_delete_results_attachments( $rows_before_update ) {
         // Ensure the results array exists and has the expected structure
 		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
 			// Check if the question type is 11 and user answer is not empty
-			if ( 11 == $value['question_type'] && ! empty( $value['user_answer'] ) ) {
-				// Check if the user answer has a file_id
-				if ( isset( $value['user_answer']['file_id'] ) ) {
-					$attachment_id = $value['user_answer']['file_id'];
-					// Delete the attachment
-					wp_delete_attachment( $attachment_id, true );
-				}
+			if ( 11 == $value['question_type'] && ! empty( $value['user_answer'] ) && isset( $value['user_answer']['file_id'] ) ) {
+				$attachment_id = $value['user_answer']['file_id'];
+				// Delete the attachment
+				wp_delete_attachment( $attachment_id, true );
 			}
 		}
     }

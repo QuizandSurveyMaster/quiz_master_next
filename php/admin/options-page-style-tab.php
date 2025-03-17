@@ -194,20 +194,12 @@ function qsm_options_styling_tab_content() {
 			<p><?php esc_html_e( 'Choose your style:', 'quiz-master-next' ); ?></p>
 			<div class="qsm-styles">
 				<?php foreach ( $registered_templates as $slug => $template ) { ?>
-					<div 
-						onclick="mlw_qmn_theme('<?php echo esc_js( $slug ); ?>');" 
-						id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" 
-						class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected === $slug ) ? 'mlw_qmn_themeBlockActive' : ''; ?>"
-					>
+					<div onclick="mlw_qmn_theme('<?php echo esc_js( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected === $slug ) ? 'mlw_qmn_themeBlockActive' : ''; ?>">
 						<?php echo wp_kses_post( $template['name'] ); ?>
 					</div>
 				<?php } ?>
 
-				<div 
-					onclick="mlw_qmn_theme('default');" 
-					id="mlw_qmn_theme_block_default" 
-					class="qsm-info-widget <?php echo ( 'default' === $mlw_quiz_options->theme_selected ) ? 'mlw_qmn_themeBlockActive' : ''; ?>"
-				>
+				<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget <?php echo ( 'default' === $mlw_quiz_options->theme_selected ) ? 'mlw_qmn_themeBlockActive' : ''; ?>">
 					<?php esc_html_e( 'Custom', 'quiz-master-next' ); ?>
 				</div>
 
