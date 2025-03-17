@@ -426,9 +426,11 @@ function qsm_get_deleted_questions_records() {
                     </tr>
                 </thead>
                 <tbody id="the-list">
-                <?php foreach ( $questions as $row ) {
+                <?php foreach ( $questions as $row ) { 
                     $settings = maybe_unserialize($row->question_settings);
-                    $question_title = isset($settings['question_title']) ? $settings['question_title'] : ''; ?>
+                    $question_title = isset($settings['question_title']) ? $settings['question_title'] : '';
+                    $question_title = '' == $question_title ? $row->question_name : $question_title;
+                    ?>
                     <tr>
                         <td>
                             <input type="checkbox" class="qsm-deleted-question-checkbox" name="delete_questions[]" value="<?php echo esc_attr($row->question_id); ?>" />
