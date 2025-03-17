@@ -1328,6 +1328,7 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 			'%QUIZ_PERCENTAGE%'           => __('This variable displays the obtained percentage of quiz.', 'quiz-master-next'),
 			'%CATEGORY_PERCENTAGE_X%'     => __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
 			'%COUNT_UNATTEMPTED%'         => __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_ATTEMPTED%' => __('This variable displays only attempted questions answers on the result page.', 'quiz-master-next'),
 		);
 		$extra_variables = array(
 			'Extra Template Variables' => $template_array,
