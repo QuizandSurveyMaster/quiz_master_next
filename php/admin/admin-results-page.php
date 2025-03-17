@@ -97,7 +97,7 @@ function qsm_delete_results_attachments( $rows_before_update ) {
         // Ensure the results array exists and has the expected structure
 		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
 			// Check if the question type is 11 and user answer is not empty
-			if ( $value['question_type'] == 11 && ! empty( $value['user_answer'] ) ) {
+			if ( 11 == $value['question_type'] && ! empty( $value['user_answer'] ) ) {
 				// Check if the user answer has a file_id
 				if ( isset( $value['user_answer']['file_id'] ) ) {
 					$attachment_id = $value['user_answer']['file_id'];
@@ -112,7 +112,7 @@ function qsm_results_overview_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	
+
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
 
@@ -122,13 +122,13 @@ function qsm_results_overview_tab_content() {
 		// Updates table to mark results as deleted.
 		$results                 = $wpdb->update( $wpdb->prefix . 'mlw_results', array( 'deleted' => 1 ), array( 'result_id' => $mlw_delete_results_id ), array( '%d' ), array( '%d' ) );
 		// Get the row before the update
-		$row_before_update = $wpdb->get_results( 
-			$wpdb->prepare( 
-				"SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", 
-				$mlw_delete_results_id 
-			) 
+		$row_before_update = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d",
+				$mlw_delete_results_id
+			)
 		);
-		
+
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -151,13 +151,12 @@ function qsm_results_overview_tab_content() {
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
 			$table_name = $wpdb->prefix . 'mlw_results';
-			$placeholders = implode(',', array_fill(0, count($delete_results), '%d'));
 			$query = $wpdb->prepare(
-				"SELECT * FROM $table_name WHERE result_id IN ($placeholders)",
+				"SELECT * FROM $table_name WHERE result_id IN (" . implode(',', array_fill(0, count($delete_results), '%d')) . ")",
 				$delete_results
 			);
 			$row_before_update = $wpdb->get_results($query);
-			
+
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
 			foreach ( $delete_results as $result ) {
 
@@ -283,7 +282,7 @@ function qsm_results_overview_tab_content() {
 						<?php
 						$query_params = $_GET;
 						unset($query_params['qsm_results_page']);
-						foreach ($query_params as $key => $value) {
+						foreach ( $query_params as $key => $value ) {
 							echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '">';
 						}
 						?>
