@@ -468,6 +468,7 @@ class QSM_Emails {
 				'content'    => $emails,
 				'subject'    => 'Quiz results for %QUIZ_NAME%',
 				'replyTo'    => false,
+				'is_updated' => 1,
 			);
 
 			// Prepares the to email.
