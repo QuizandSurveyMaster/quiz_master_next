@@ -223,6 +223,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 == Changelog ==
 = 10.0.3 ( March 17, 2025 ) =
 * Feature: Added an option to remove orphaned questions and results
+* Feature: Added an option to navigate to any result page
 * Bug: Resolved an issue with custom CSS
 * Enhancement: Updated the display logic for the result page template
 
