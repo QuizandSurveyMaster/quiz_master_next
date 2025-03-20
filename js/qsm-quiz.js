@@ -2152,6 +2152,5 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholder(container, replacementValue);
         });
     }
-
-    console.log(answer_type);
+	
 });
