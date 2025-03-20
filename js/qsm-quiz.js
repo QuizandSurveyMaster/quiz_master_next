@@ -2125,3 +2125,33 @@ jQuery(document).keydown(function(event) {
 const qsm_timer_consumed_obj = {
 	qmn_count_upward_status : false
 }
+
+jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, value, $this, answer_type) => {
+
+    const variableName = `%USER_ANSWER_${parseInt(question_id)}%`;
+
+    const replacePlaceholder = (node, replacementValue) => {
+        if (node.nodeType === Node.TEXT_NODE) { 
+            node.nodeValue = node.nodeValue.replace(new RegExp(variableName, 'g'), replacementValue);
+        } else if (node.nodeType === Node.ELEMENT_NODE && !['INPUT', 'TEXTAREA'].includes(node.tagName)) {
+            Array.from(node.childNodes).forEach(childNode => replacePlaceholder(childNode, replacementValue));
+        }
+    };
+
+    let replacementValue;
+    if (answer_type === 'radio') {
+        const ansValue = ++value;
+        const forValue = `question${question_id}_${ansValue}`;
+        replacementValue = jQuery(`label[for="${forValue}"]`).text().trim();
+    } else {
+        replacementValue = value;
+    }
+
+    if (replacementValue !== undefined) {
+        jQuery('.qsm-quiz-container').each((_, container) => {
+            replacePlaceholder(container, replacementValue);
+        });
+    }
+
+    console.log(answer_type);
+});
