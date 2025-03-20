@@ -2127,11 +2127,10 @@ const qsm_timer_consumed_obj = {
 }
 
 jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, value, $this, answer_type) => {
-
     const variableName = `%USER_ANSWER_${parseInt(question_id)}%`;
 
     const replacePlaceholder = (node, replacementValue) => {
-        if (node.nodeType === Node.TEXT_NODE) { 
+        if (node.nodeType === Node.TEXT_NODE) {
             node.nodeValue = node.nodeValue.replace(new RegExp(variableName, 'g'), replacementValue);
         } else if (node.nodeType === Node.ELEMENT_NODE && !['INPUT', 'TEXTAREA'].includes(node.tagName)) {
             Array.from(node.childNodes).forEach(childNode => replacePlaceholder(childNode, replacementValue));
@@ -2139,10 +2138,15 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
     };
 
     let replacementValue;
+
     if (answer_type === 'radio') {
-        const ansValue = ++value;
-        const forValue = `question${question_id}_${ansValue}`;
-        replacementValue = jQuery(`label[for="${forValue}"]`).text().trim();
+        if (jQuery('.qsm_select.qsm_dropdown').length) {
+            replacementValue = jQuery(`option[value="${value}"]`).text().trim();
+        } else {
+            const ansValue = ++value;
+            const forValue = `question${question_id}_${ansValue}`;
+            replacementValue = jQuery(`label[for="${forValue}"]`).text().trim();
+        }
     } else {
         replacementValue = value;
     }
@@ -2152,5 +2156,4 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholder(container, replacementValue);
         });
     }
-	
 });
