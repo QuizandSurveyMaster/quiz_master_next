@@ -2152,7 +2152,7 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
     }
 
     if (replacementValue !== undefined) {
-        jQuery('.qsm-quiz-container').each((_, container) => {
+        jQuery('.qsm-quiz-container-'+ quizID).each((_, container) => {
             replacePlaceholder(container, replacementValue);
         });
     }
