@@ -181,10 +181,12 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
  * @return string $content
  */
 function qsm_variable_total_possible_points( $content, $mlw_quiz_array ) {
-	if ( isset( $mlw_quiz_array['total_possible_points'] ) && qsm_is_allow_score_roundoff() ) {
-		$content = str_replace( '%MAXIMUM_POINTS%', round( $mlw_quiz_array['total_possible_points'] ), $content );
-	} elseif ( isset( $mlw_quiz_array['total_possible_points'] ) ) {
-		$content = str_replace( '%MAXIMUM_POINTS%', round( $mlw_quiz_array['total_possible_points'], 2 ), $content );
+	if (isset($mlw_quiz_array['total_possible_points']) && is_numeric($mlw_quiz_array['total_possible_points'])) {
+		$points = floatval($mlw_quiz_array['total_possible_points']);
+		$rounded = qsm_is_allow_score_roundoff() ? round($points) : round($points, 2);
+		$content = str_replace('%MAXIMUM_POINTS%', $rounded, $content);
+	} else {
+		$content = str_replace('%MAXIMUM_POINTS%', '0', $content);
 	}
 	return $content;
 }
@@ -1086,7 +1088,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
 	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
-	$question_title       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", 'QSM Questions' );
+	$question_title = isset($answer['question_title']) 
+    ? $mlwQuizMasterNext->pluginHelper->qsm_language_support($answer['question_title'], "Question-{$answer['id']}", 'QSM Questions')
+    : '';
 	$question_description = '';
 	if ( 14 == $answer['question_type'] ) {
 		$question_description = ! empty($answer[0]) ? $answer[0] : '';
