@@ -1750,35 +1750,35 @@ class QMNQuizManager {
 			if ( 'true' === $field['enable'] ) {
 				$contact_key = "contact_field_" . $index;
 				$value = isset( $request[ $contact_key ] ) ? trim( $request[ $contact_key ] ) : '';
-				
+
 				if ( 'true' === $field['required'] && empty( $value ) ) {
 					$errors[] = __( "Enter ", 'quiz-master-next' ) . $field['label'];
 				}
-				
-				if ( !empty( $field['minlength'] ) && strlen( $value ) < (int) $field['minlength'] ) {
+
+				if ( ! empty( $field['minlength'] ) && strlen( $value ) < (int) $field['minlength'] ) {
 					$errors[] = $field['label'] . __( " must be at least ", 'quiz-master-next' ) . $field['minlength'] . __( " characters long.", 'quiz-master-next' );
 				}
-				
-				if ( !empty( $field['maxlength'] ) && strlen( $value ) > (int) $field['maxlength'] ) {
+
+				if ( ! empty( $field['maxlength'] ) && strlen( $value ) > (int) $field['maxlength'] ) {
 					$errors[] = $field['label'] . __( " must be no more than ", 'quiz-master-next' ) . $field['maxlength'] . __( " characters long.", 'quiz-master-next' );
 				}
-				
-				if ( 'email' === $field['type'] && !empty( $value ) ) {
+
+				if ( 'email' === $field['type'] && ! empty( $value ) ) {
 					if ( ! filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
 						$errors[] = __( "Email must be a valid e-mail.", 'quiz-master-next' );
 					} else {
 						$email_domain = substr( strrchr( $value, "@" ), 1 );
-						
-						if ( !empty( $field['allowdomains'] ) ) {
+
+						if ( ! empty( $field['allowdomains'] ) ) {
 							$allowed_domains = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
-							if ( !in_array( $email_domain, $allowed_domains ) ) {
+							if ( ! in_array( $email_domain, $allowed_domains, true ) ) {
 								$errors[] = __( "Email must be from an allowed domain (", 'quiz-master-next' ) . $field['allowdomains'] . ").";
 							}
 						}
-						
-						if ( !empty( $field['blockdomains'] ) ) {
+
+						if ( ! empty( $field['blockdomains'] ) ) {
 							$blocked_domains = array_map( 'trim', explode( ',', $field['blockdomains'] ) );
-							if ( in_array( $email_domain, $blocked_domains ) ) {
+							if ( in_array( $email_domain, $blocked_domains, true ) ) {
 								$errors[] = __( "Email cannot be from a blocked domain (", 'quiz-master-next' ) . $field['blockdomains'] . ").";
 							}
 						}
