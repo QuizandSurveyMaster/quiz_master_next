@@ -157,12 +157,12 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		}
 		$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
 	}
-	while (false !== strpos($content, '%USER_ANSWER_')) {
+	while ( false !== strpos($content, '%USER_ANSWER_') ) {
 		$question_id = mlw_qmn_get_string_between($content, '%USER_ANSWER_', '%');
 		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? [];
 		
-		foreach ($question_answers_array as $question) {
-			if ($question['id'] == $question_id) {
+		foreach ( $question_answers_array as $question ) {
+			if ( $question['id'] == $question_id ) {
 				$user_answer = is_array($question['user_answer']) ? implode(", ", $question['user_answer']) : '';
 				$content = str_replace('%USER_ANSWER_' . $question_id . '%', $user_answer, $content);
 				break;
@@ -181,7 +181,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
  * @return string $content
  */
 function qsm_variable_total_possible_points( $content, $mlw_quiz_array ) {
-	if (isset($mlw_quiz_array['total_possible_points']) && is_numeric($mlw_quiz_array['total_possible_points'])) {
+	if ( isset($mlw_quiz_array['total_possible_points']) && is_numeric($mlw_quiz_array['total_possible_points']) ) {
 		$points = floatval($mlw_quiz_array['total_possible_points']);
 		$rounded = qsm_is_allow_score_roundoff() ? round($points) : round($points, 2);
 		$content = str_replace('%MAXIMUM_POINTS%', $rounded, $content);
