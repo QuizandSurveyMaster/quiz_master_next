@@ -2125,3 +2125,48 @@ jQuery(document).keydown(function(event) {
 const qsm_timer_consumed_obj = {
 	qmn_count_upward_status : false
 }
+
+const userAnswers = {};
+
+jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, value, $this, answer_type) => {
+    const variableName = `%USER_ANSWER_${parseInt(question_id)}%`;
+
+    let replacementValue;
+
+    if (answer_type === 'radio') {
+        if (jQuery('.qsm_select.qsm_dropdown').length) {
+            replacementValue = jQuery(`option[value="${value}"]`).text().trim();
+        } else {
+            const ansValue = ++value;
+            const forValue = `question${question_id}_${ansValue}`;
+            replacementValue = jQuery(`label[for="${forValue}"]`).text().trim();
+        }
+    } else {
+        replacementValue = value;
+    }
+
+    if (replacementValue !== undefined) {
+        userAnswers[variableName] = replacementValue;
+
+        jQuery('.qsm-quiz-container-' + quizID).each((_, container) => {
+            const replacePlaceholders = (node) => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    if (!node.hasOwnProperty('__originalText')) {
+                        node.__originalText = node.nodeValue;
+                    }
+
+                    let newValue = node.__originalText;
+                    for (const [varName, answer] of Object.entries(userAnswers)) {
+                        newValue = newValue.replace(new RegExp(varName, 'g'), answer);
+                    }
+                    node.nodeValue = newValue;
+
+                } else if (node.nodeType === Node.ELEMENT_NODE && !['INPUT', 'TEXTAREA'].includes(node.tagName)) {
+                    Array.from(node.childNodes).forEach(child => replacePlaceholders(child));
+                }
+            };
+
+            replacePlaceholders(container);
+        });
+    }
+});
