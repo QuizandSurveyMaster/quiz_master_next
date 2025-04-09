@@ -202,16 +202,6 @@ function qsm_generate_fb_header_metadata() {
 			<?php
 		}
 	}
-	$quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
-	$featured_image = get_option("quiz_featured_image_$quiz_id");
-	$qsm_preloader_setting = (array) get_option( 'qmn-settings' );
-		// 	echo "<pre>";
-		// print_r($featured_image);
-	// if($qsm_preloader_setting['enable_preloader'] > 0){
-		if ($featured_image) {
-			echo '<link rel="preload" href="' . esc_url($featured_image) . '" as="image">';
-		}	
-	// }
 }
 
 add_action( 'wp_head', 'qsm_generate_fb_header_metadata' );
