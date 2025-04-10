@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.1.0 ( April 08, 2025 ) =
+= 10.1.0 ( April 10, 2025 ) =
 * Feature: Implemented server-side validation for contact form fields
 * Feature: Added option to use responses in other questions
 * Enhancement: Refined the user interface to align with the WordPress 2024 Dark Theme
