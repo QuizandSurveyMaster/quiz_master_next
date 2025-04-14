@@ -201,7 +201,7 @@ class QMNGlobalSettingsPage {
 			'preferred_date_format'                  => 'F j, Y',
 			'default_answers'                        => 1,
 			'correct_answer_logic'                   => 0,
-			'enable-preloader'                 		 => 0,
+			'enable-preloader'                       => 0,
 		);
 	}
 

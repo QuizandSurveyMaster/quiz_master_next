@@ -2055,6 +2055,11 @@ jQuery(document).keydown(function(event) {
 				return;
 			}
 		}
+		let lastVisibleWrapper = jQuery('.qsm-question-wrapper:visible:last');
+		if (lastVisibleWrapper.hasClass('qsm-active-question')) {
+			lastVisibleWrapper.addClass('qsm-last-active-question');
+			return;
+		}
         if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0) {
             event.preventDefault();
         }
@@ -2100,17 +2105,17 @@ jQuery(document).keydown(function(event) {
             let active_question = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question');
             if (active_question.length) {
                 jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
-                active_question.prev('.qsm-question-wrapper:visible').addClass("qsm-active-question");
+                active_question.prev('.qsm-question-wrapper:visible').addClass("qsm-active-question").removeClass('qsm-last-active-question');
             } else {
-                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question");
+				jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first-child").addClass("qsm-active-question").removeClass('qsm-last-active-question');
             }
         } else if (event.keyCode === 9) {
             let active_question = jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question');
             if (active_question.length) {
                 jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper').removeClass("qsm-active-question");
-                active_question.next('.qsm-question-wrapper:visible').addClass("qsm-active-question");
+                active_question.next('.qsm-question-wrapper:visible').addClass("qsm-active-question").removeClass('qsm-last-active-question');
             } else {
-                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first").addClass("qsm-active-question");
+                jQuery(".qsm-quiz-container.qsm-recently-active .qsm-question-wrapper:visible:first").addClass("qsm-active-question").removeClass('qsm-last-active-question');
             }
         }
         if (event.keyCode === 9) {
