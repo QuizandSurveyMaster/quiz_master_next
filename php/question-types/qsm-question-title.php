@@ -40,6 +40,12 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	if ( $question_id ) {
 		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
 		if ( $featureImageID ) {
+			$qsm_global_settings = (array) get_option( 'qmn-settings' );
+			$qsm_preloader_setting = isset($qsm_global_settings['enable_preloader']) ? $qsm_global_settings['enable_preloader'] : '';
+			if ( $qsm_preloader_setting > 0 ) {
+				$featured_image_url = wp_get_attachment_image_url( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) );
+				echo '<link rel="preload" href="' . esc_url($featured_image_url) . '" as="image">';
+			}
 			?>
 			<div class="qsm-featured-image"><?php echo wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ); ?></div>
 			<?php
