@@ -125,7 +125,7 @@ ul.popuar-addon-ul::after {
 	color: #92400E;
 }
 
-.changelog-ul li .bug, .changelog-ul li .hotfix {
+.changelog-ul li .bug, .changelog-ul li .hotfix, .changelog-ul li .fix  {
 	background: #FCE7F3;
 	color: #92400E;
 }
@@ -135,7 +135,7 @@ ul.popuar-addon-ul::after {
     color: #065F46;
 }
 
-.changelog-ul li span.bug:before, .changelog-ul li span.hotfix:before {
+.changelog-ul li span.bug:before, .changelog-ul li span.hotfix:before, .changelog-ul li span.fix:before{
 	background: #9D174D;
 }
 
