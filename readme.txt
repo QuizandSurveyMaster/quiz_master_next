@@ -1,6 +1,5 @@
 === Quiz and Survey Master (QSM) - Easy Quiz and Survey Maker ===
 Contributors: quizsurvey,expresstech
-Donate link: https://quizandsurveymaster.com/pricing/
 Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.8
