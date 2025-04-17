@@ -15,7 +15,7 @@ function qsm_settings_contact_tab() {
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Contact", 'quiz-master-next' ), 'qsm_options_contact_tab_content', 'contact' );
 }
 
-add_action( "plugins_loaded", 'qsm_settings_contact_tab', 5 );
+add_action( "init", 'qsm_settings_contact_tab', 5 );
 
 /**
  * Adds the content for the options for contact tab.

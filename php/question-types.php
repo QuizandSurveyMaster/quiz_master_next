@@ -26,21 +26,21 @@ include_once 'classes/question-types/class-question-review-fill-in-blanks.php';
 include_once 'classes/question-types/class-question-review-file-upload.php';
 include_once 'classes/question-types/class-question-review-choice.php';
 
-add_action( 'plugins_loaded', 'qmn_question_type_multiple_choice' );
-add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
-add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_choice' );
-add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' );
-add_action( 'plugins_loaded', 'qmn_question_type_drop_down' );
-add_action( 'plugins_loaded', 'qmn_question_type_polar' );
-add_action( 'plugins_loaded', 'qmn_question_type_accept' );
-add_action( 'plugins_loaded', 'qmn_question_type_date' );
-add_action( 'plugins_loaded', 'qmn_question_type_number' );
-add_action( 'plugins_loaded', 'qmn_question_type_small_open' );
-add_action( 'plugins_loaded', 'qmn_question_type_large_open' );
-add_action( 'plugins_loaded', 'qmn_question_type_fill_blank' );
-add_action( 'plugins_loaded', 'qmn_question_type_file_upload' );
-add_action( 'plugins_loaded', 'qmn_question_type_text_block' );
-add_action( 'plugins_loaded', 'qmn_question_type_captcha' );
+add_action( 'init', 'qmn_question_type_multiple_choice' );
+add_action( 'init', 'qmn_question_type_multiple_response' );
+add_action( 'init', 'qmn_question_type_horizontal_multiple_choice' );
+add_action( 'init', 'qmn_question_type_horizontal_multiple_response' );
+add_action( 'init', 'qmn_question_type_drop_down' );
+add_action( 'init', 'qmn_question_type_polar' );
+add_action( 'init', 'qmn_question_type_accept' );
+add_action( 'init', 'qmn_question_type_date' );
+add_action( 'init', 'qmn_question_type_number' );
+add_action( 'init', 'qmn_question_type_small_open' );
+add_action( 'init', 'qmn_question_type_large_open' );
+add_action( 'init', 'qmn_question_type_fill_blank' );
+add_action( 'init', 'qmn_question_type_file_upload' );
+add_action( 'init', 'qmn_question_type_text_block' );
+add_action( 'init', 'qmn_question_type_captcha' );
 
 /**
  * Registers the multiple choice type
@@ -279,7 +279,7 @@ function qmn_question_type_captcha() {
 }
 
 
-add_action( 'plugins_loaded', 'qmn_extra_question_types' );
+add_action( 'init', 'qmn_extra_question_types' );
 function qmn_extra_question_types() {
 	global $mlwQuizMasterNext;
 	if ( ! class_exists( 'QSM_Advance_Question' ) ) {

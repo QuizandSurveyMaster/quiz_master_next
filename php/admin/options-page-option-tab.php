@@ -13,7 +13,7 @@ function qsm_settings_options_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Options', 'quiz-master-next' ), 'qsm_options_option_tab_content', 'options');
 }
-add_action( 'plugins_loaded', 'qsm_settings_options_tab', 5 );
+add_action( 'init', 'qsm_settings_options_tab', 5 );
 
 /**
  * Adds the options content to the Quiz Settings page.

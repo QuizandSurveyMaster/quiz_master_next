@@ -373,6 +373,7 @@ var qsmTimerInterval = [];
 				seconds = parseInt(timerRemaning);
 			}
 			$timer.text(QSM.secondsToTimer(seconds));
+			jQuery(document).trigger('qsm_init_pagination_after', [quizID]);
 		},
 		/**
 		 * Navigates quiz to specific page
