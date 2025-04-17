@@ -23,7 +23,7 @@ function qsm_settings_style_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Style', 'quiz-master-next' ), 'qsm_options_styling_tab_content', 'style' );
 }
-add_action( 'plugins_loaded', 'qsm_settings_style_tab', 5 );
+add_action( 'init', 'qsm_settings_style_tab', 5 );
 
 /**
  * Adds the Style tab content to the tab.

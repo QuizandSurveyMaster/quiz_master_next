@@ -200,7 +200,7 @@ function qsm_featured_addons_tab() {
 	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab( __( 'Featured Addons', 'quiz-master-next' ), 'qsm_generate_featured_addons' );
 }
 
-add_action( 'plugins_loaded', 'qsm_featured_addons_tab' );
+add_action( 'init', 'qsm_featured_addons_tab' );
 
 /**
  * @version 3.2.0

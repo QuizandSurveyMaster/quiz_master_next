@@ -19,7 +19,7 @@ function qsm_settings_email_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Emails', 'quiz-master-next' ), 'qsm_options_emails_tab_content', 'emails' );
 }
-add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
+add_action( 'init', 'qsm_settings_email_tab', 5 );
 
 /**
  * Creates the email content that is displayed on the email tab.
