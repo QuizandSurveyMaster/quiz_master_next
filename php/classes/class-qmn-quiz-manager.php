@@ -1134,13 +1134,12 @@ class QMNQuizManager {
 				$qsm_global_settings   = (array) get_option( 'qmn-settings' );
 				$qsm_preloader_setting = isset( $qsm_global_settings['enable_preloader'] ) ? $qsm_global_settings['enable_preloader'] : '';
 
-				if ( $qsm_preloader_setting > 0 ) {
-					if ( $featured_image ) {
-						echo '<link rel="preload" href="' . esc_url( $featured_image ) . '" as="image">';
-					}
+				if ( isset( $qsm_preloader_setting ) && $qsm_preloader_setting > 0 && ! empty( $featured_image ) ) {
+					echo '<link rel="preload" href="' . esc_url( $featured_image ) . '" as="image">';
 				}
+
 				if ( "" != $featured_image ) {
-					 ?>
+					?>
 					<img class="qsm-quiz-default-feature-image" src="<?php echo esc_url( $featured_image ); ?>" alt="<?php esc_attr_e( 'Featured Image', 'quiz-master-next' ); ?>" />
 				<?php }
 				?>
