@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.1.1 ( April 17, 2025 ) =
+= 10.1.1 ( April 21, 2025 ) =
 * Enhancement: Added option to preload quiz and question feature images
 * Fix: Improved keyboard navigation for quizzes
 * Fix: Compatibility with WordPress 6.8

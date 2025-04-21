@@ -1140,7 +1140,7 @@ class QMNQuizManager {
 					}
 				}
 				if ( "" != $featured_image ) {
-					 ?>
+					?>
 					<img class="qsm-quiz-default-feature-image" src="<?php echo esc_url( $featured_image ); ?>" alt="<?php esc_attr_e( 'Featured Image', 'quiz-master-next' ); ?>" />
 				<?php }
 				?>
