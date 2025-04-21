@@ -18,7 +18,7 @@ function qsm_options_results_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Results Pages', 'quiz-master-next' ), 'qsm_options_results_tab_content', 'results-pages' );
 }
-add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
+add_action( 'init', 'qsm_options_results_tab', 5 );
 
 /**
  * Adds the Results page content to the Results tab.

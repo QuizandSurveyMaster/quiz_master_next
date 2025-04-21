@@ -60,7 +60,7 @@ function qmn_stats_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_stats_settings_tab(__("Quiz And Survey Submissions", 'quiz-master-next'), "qmn_stats_overview_content");
 }
-add_action("plugins_loaded", 'qmn_stats_overview_tab');
+add_action("init", 'qmn_stats_overview_tab');
 
 /**
  * Generates HTML For Overview Tab

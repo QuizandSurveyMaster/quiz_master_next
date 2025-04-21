@@ -81,7 +81,7 @@ function qsm_results_overview_tab() {
 	}
 }
 
-add_action( 'plugins_loaded', 'qsm_results_overview_tab' );
+add_action( 'init', 'qsm_results_overview_tab' );
 
 /**
  * Generates HTML For Overview Tab

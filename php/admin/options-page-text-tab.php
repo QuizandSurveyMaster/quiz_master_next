@@ -14,7 +14,7 @@ function qmn_settings_text_tab() {
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Text', 'quiz-master-next' ), 'mlw_options_text_tab_content', 'text' );
 }
 
-add_action( "plugins_loaded", 'qmn_settings_text_tab', 5 );
+add_action( "init", 'qmn_settings_text_tab', 5 );
 
 /**
  * Adds the Text tab content to the tab.
