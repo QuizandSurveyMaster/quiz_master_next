@@ -2636,7 +2636,7 @@ var QSM_Quiz_Broadcast_Channel;
                     } else {
                         $('#question-bank').empty();
                         $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
-                    }
+                    } 
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
                         method: 'GET',
@@ -2645,6 +2645,7 @@ var QSM_Quiz_Broadcast_Channel;
                         },
                         data: {
                             'quizID': $('#question-bank-quiz').val(),
+                            'type': $('#question-bank-type').val(),
                             'page': $('#question_back_page_number').length > 0 ? parseInt($('#question_back_page_number').val()) + 1 : 1,
                             'category': $('#question-bank-cat').val(),
                             'search': $('#question-bank-search-input').val()
@@ -2655,6 +2656,7 @@ var QSM_Quiz_Broadcast_Channel;
                 questionBankLoadSuccess: function (response) {
                     var pagination = response.pagination;
                     var questions = response.questions;
+                    console.log(response);
                     if ($('.qb-load-more-wrapper').length > 0) {
                         $('.qb-load-more-wrapper').remove();
                     } else {
@@ -2684,6 +2686,7 @@ var QSM_Quiz_Broadcast_Channel;
                             });
                             $('#question-bank-cat').html($cat_html);
                             $('#question-bank-cat').val(pagination.category);
+                            jQuery(document).trigger('qsm_question_bank_options', $cat_html);
                         }
                     }
                     if ( 1 > questions.length ) {
@@ -3734,7 +3737,7 @@ var QSM_Quiz_Broadcast_Channel;
                 });
 
                 //Show category related question
-                $(document).on('change', '#question-bank-cat, #question-bank-quiz', function (event) {
+                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function (event) {
                     event.preventDefault();
                     QSMQuestion.loadQuestionBank('change');
                 });
