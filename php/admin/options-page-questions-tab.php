@@ -236,6 +236,7 @@ function qsm_options_questions_tab_content() {
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-2-content">
+					<?php do_action('qsm-question-categories-setting')?>
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
 						<div class="qsm-question-bank-select">
@@ -253,6 +254,18 @@ function qsm_options_questions_tab_content() {
 								<?php
 								foreach ( $quiz_data as $quiz ) {
 									echo '<option value="' . esc_attr( $quiz->quiz_id ) . '">' . esc_html( $quiz->quiz_name ) . '</option>';
+								}
+								?>
+							</select>
+							<select name="question-bank-type" id="question-bank-type">
+								<option value=""><?php esc_html_e( 'All Question Types', 'quiz-master-next' ); ?></option>
+								<?php
+								if ( ! empty( $question_types ) ) {
+									foreach ( $question_types as $type ) {
+										$slug = isset( $type['slug'] ) ? esc_attr( $type['slug'] ) : '';
+										$name = isset( $type['name'] ) ? esc_html( $type['name'] ) : '';
+										echo '<option value="' . $slug . '">' . $name . '</option>';
+									}
 								}
 								?>
 							</select>

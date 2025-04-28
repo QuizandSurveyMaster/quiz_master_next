@@ -220,10 +220,15 @@
 	margin: 10px 0 0;
 }
 .qsm-question-bank-select .qsm-select-all-label {
+	display: block;
+	min-width: 200px;
 	margin-right: 15px;
 	position: relative;
 	top: 5px;
 	vertical-align: top;
+}
+#question-bank-type{
+	margin-top: 2px;
 }
 .qsm-question-bank-filters {
 	display: flex;
@@ -232,7 +237,9 @@
 	padding: 0 20px;
 }
 .qsm-question-bank-search {
-	display: inline-flex;
+	display: flex;
+	flex-wrap: wrap;
+    justify-content: end;
 }
 #modal-2 .qsm-popup__footer.qsm-question-bank-footer {
 	display: none;
@@ -669,6 +676,9 @@ input.qsm-admin-select-page-question {
 	}
 	.questionElements {
 		overflow: hidden;
+	}
+	.qsm-question-bank-select .qsm-select-all-label{
+	    min-width: 140px;
 	}
 }
 @media screen and (max-width: 782px) {
