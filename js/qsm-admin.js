@@ -2636,7 +2636,7 @@ var QSM_Quiz_Broadcast_Channel;
                     } else {
                         $('#question-bank').empty();
                         $('#question-bank').append('<div style="top: 70px;position: relative;left: calc(50% - 20px);" class="qsm-spinner-loader"></div>');
-                    } 
+                    }
                     $.ajax({
                         url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
                         method: 'GET',
@@ -2656,7 +2656,6 @@ var QSM_Quiz_Broadcast_Channel;
                 questionBankLoadSuccess: function (response) {
                     var pagination = response.pagination;
                     var questions = response.questions;
-                    console.log(response);
                     if ($('.qb-load-more-wrapper').length > 0) {
                         $('.qb-load-more-wrapper').remove();
                     } else {
