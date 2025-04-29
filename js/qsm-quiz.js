@@ -2185,12 +2185,4 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholders(container);
         });
     }
-	
-	if(answer_type === 'radio' || answer_type === 'checkbox' || answer_type === 'input'){
-		window.onbeforeunload = function (e) {
-			e.preventDefault(); 
-			e.returnValue = ''; 
-		};
-	}
-	
 });
