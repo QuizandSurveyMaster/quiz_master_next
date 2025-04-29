@@ -959,7 +959,7 @@ function qmnFormSubmit(quiz_form_id, $this) {
 
 				window.onbeforeunload = function (e) {
 					e.preventDefault(); 
-					e.returnValue = ''; 
+					e.returnValue = "Are you sure you want to leave?"; 
 				};
 
 				// run MathJax on the new content
@@ -1121,7 +1121,7 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 		}
 		window.onbeforeunload = function (e) {
 			e.preventDefault(); 
-			e.returnValue = ''; 
+			e.returnValue = "Are you sure you want to leave?"; 
 		};
 	}
 }
