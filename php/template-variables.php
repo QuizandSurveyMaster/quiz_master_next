@@ -157,18 +157,20 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		}
 		$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
 	}
-	while ( false !== strpos($content, '%USER_ANSWER_') ) {
-		$question_id = mlw_qmn_get_string_between($content, '%USER_ANSWER_', '%');
+	while ( false !== strpos( $content, '%USER_ANSWER_' ) ) {
+		$question_id = mlw_qmn_get_string_between( $content, '%USER_ANSWER_', '%' );
 		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? [];
-		
-		foreach ( $question_answers_array as $question ) {
-			if ( $question['id'] == $question_id ) {
-				$user_answer = is_array($question['user_answer']) ? implode(", ", $question['user_answer']) : '';
-				$content = str_replace('%USER_ANSWER_' . $question_id . '%', $user_answer, $content);
-				break;
-			}
+		$key = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
+	
+		if ( $key !== false && isset( $question_answers_array[ $key ] ) ) {
+			$answer = $question_answers_array[ $key ]['user_answer'] ?? '';
+			$user_answer = is_array( $answer ) ? implode( ', ', $answer ) : $answer;
+			$content = str_replace( '%USER_ANSWER_' . $question_id . '%', $user_answer, $content );
+		} else {
+			break;
 		}
 	}
+	
 	return $content;
 }
 /**
