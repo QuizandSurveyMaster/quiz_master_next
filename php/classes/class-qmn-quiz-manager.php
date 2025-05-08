@@ -1754,6 +1754,11 @@ class QMNQuizManager {
 	 */
 	public function qsm_validate_contact_fields( $contact_form, $request ) {
 		$errors = [];
+
+		if ( ! is_array( $contact_form ) ) {
+			return 1;
+		}
+		
 		foreach ( $contact_form as $index => $field ) {
 			if ( 'true' === $field['enable'] ) {
 				$contact_key = "contact_field_" . $index;
