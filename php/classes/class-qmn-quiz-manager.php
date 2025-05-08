@@ -1756,9 +1756,9 @@ class QMNQuizManager {
 		$errors = [];
 
 		if ( ! is_array( $contact_form ) ) {
-			return 1;
+			return;
 		}
-		
+
 		foreach ( $contact_form as $index => $field ) {
 			if ( 'true' === $field['enable'] ) {
 				$contact_key = "contact_field_" . $index;
