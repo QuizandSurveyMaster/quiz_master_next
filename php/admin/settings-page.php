@@ -202,6 +202,7 @@ class QMNGlobalSettingsPage {
 			'default_answers'                        => 1,
 			'correct_answer_logic'                   => 0,
 			'enable-preloader'                       => 0,
+			'enable_server_side_validation'          => 0,
 		);
 	}
 

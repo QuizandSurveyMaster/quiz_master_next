@@ -1871,18 +1871,21 @@ class QMNQuizManager {
 		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
-		$missing_contact_fields = $this->qsm_validate_contact_fields( $qsm_option['contact_form'], $_REQUEST );
-		if ( 1 !== $missing_contact_fields ) {
-			echo wp_json_encode(
-				array(
-					'display'       => '<div class="qsm-result-page-warning">' . wp_kses_post( $missing_contact_fields ) . '</div>',
-					'redirect'      => false,
-					'result_status' => array(
-						'save_response' => false,
-					),
-				)
-			);
-			wp_die();
+		$enable_server_side_validation = isset( $qsm_option['quiz_options']['enable_server_side_validation'] ) ? $qsm_option['quiz_options']['enable_server_side_validation'] : 0;
+		if ( 1 == $enable_server_side_validation ) {
+			$missing_contact_fields = $this->qsm_validate_contact_fields( $qsm_option['contact_form'], $_REQUEST );
+			if ( 1 !== $missing_contact_fields ) {
+				echo wp_json_encode(
+					array(
+						'display'       => '<div class="qsm-result-page-warning">' . wp_kses_post( $missing_contact_fields ) . '</div>',
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				wp_die();
+			}
 		}
 
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
