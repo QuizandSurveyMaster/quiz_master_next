@@ -308,9 +308,12 @@
 	position: relative;
 }
 .answers-single>div.remove-answer-icon {
-	width: 20px;
-	min-width: 25px;
-	padding: 5px 0;
+	width: 40px;
+    min-width: 45px;
+    padding: 5px 0;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 }
 .qsm-question-misc-options {
 	display: inline-block;
@@ -519,19 +522,34 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 #advanceddiv input[type="number"] {
 	width: 100% !important;
 }
-.questionElements .new-answer-button {
-	text-align: center;
-	width: 550px;
-	max-width: 60%;
-	margin-left: 33px;
+.questionElements .new-answer-button{
+    margin-left: 53px;
 }
 #advanceddiv {
 	margin-bottom: 0;
 }
+#answers .delete-answer-button, #answers .qsm-add-answer-button {
+    color: #fff;
+    border-radius: 50%;
+    padding: 1px;
+    max-width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+}
 #answers .delete-answer-button {
-	text-decoration: none;
-	color: #dc3232;
-	vertical-align: middle;
+	background: #dc3232;
+}
+#answers .qsm-add-answer-button  {
+	background: #2270B1;
+}
+.qsm-wrap-add-new-answer{
+    display: flex;
+	margin-bottom: 5px;
+}
+#answers .delete-answer-button span, #answers .qsm-add-answer-button span {
+    font-size: 13px;
+    line-height: 19px;
 }
 .answers-single .correct-answer {
 	margin-right: 0;
