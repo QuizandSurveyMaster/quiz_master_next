@@ -4416,7 +4416,19 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
     margin: 0;
     padding: 10px;
 }
-
+.qsm-popup-table-row {
+    background: #F2F5F7;
+    display: flex;
+    justify-content: space-between;
+	align-items: center;
+    padding: 20px 15px;
+	border-radius: 4px;
+	gap: 15px;
+}
+.qsm-popup-table-row h3 {
+    margin: 0;
+	font-size: 18px;
+}
 .qsm-insert-template-left:before {
     content: " ";
     position: absolute;

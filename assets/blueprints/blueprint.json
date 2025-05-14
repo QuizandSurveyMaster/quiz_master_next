@@ -1,0 +1,138 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "preferredVersions": {
+        "wp": "6.8",
+        "php": "8.1"
+    },
+    "features": {
+        "networking": true
+    },
+    "plugins": [
+        {
+            "resource": "url",
+            "url": "https://downloads.wordpress.org/plugin/quiz-master-next.10.1.1.zip"
+        }
+    ],
+    "theme": "twentytwentyfour",
+    "siteOptions": {
+        "blogname": "Quiz and Survey Master Demo",
+        "blogdescription": "Explore QSM's powerful quiz features!",
+        "admin_email": "demo@example.com"
+    },
+    "steps": [
+        {
+            "step": "login",
+            "username": "admin",
+            "password": "password"
+        },
+        {
+            "step": "writeFile",
+            "path": "/wordpress/sample-quiz-page.php",
+            "data": "<?php\n// Create a sample quiz page\nwp_insert_post([\n    'post_title'   => 'Sample Quiz',\n    'post_content' => 'Welcome to the Sample Quiz! Take the quiz below:\\n[mlw_quizmaster quiz=1]',\n    'post_status'  => 'publish',\n    'post_type'    => 'page',\n    'post_author'  => 1,\n]);\n?>"
+        },
+        {
+            "step": "runPHP",
+            "path": "/wordpress/sample-quiz-page.php"
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php
+            global $wpdb;
+            $quiz_name = 'Sample Quiz';
+            $quiz_settings = [];
+            $theme_id = 'primary';
+            $current_user = wp_get_current_user();
+            $results = $wpdb->insert(
+                $wpdb->prefix . 'mlw_quizzes',
+                [
+                    'quiz_name'                => $quiz_name,
+                    'message_before'           => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+                    'message_after'            => __( 'Thanks for submitting your response!', 'quiz-master-next' ),
+                    'message_comment'          => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+                    'message_end_template'     => '',
+                    'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',
+                    'admin_email_template'     => '%QUESTIONS_ANSWERS_EMAIL%',
+                    'submit_button_text'       => __( 'Submit', 'quiz-master-next' ),
+                    'name_field_text'          => __( 'Name', 'quiz-master-next' ),
+                    'business_field_text'      => __( 'Business', 'quiz-master-next' ),
+                    'email_field_text'         => __( 'Email', 'quiz-master-next' ),
+                    'phone_field_text'         => __( 'Phone Number', 'quiz-master-next' ),
+                    'comment_field_text'       => __( 'Comments', 'quiz-master-next' ),
+                    'email_from_text'          => 'WordPress',
+                    'question_answer_template' => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
+                    'leaderboard_template'     => '',
+                    'quiz_system'              => 0,
+                    'randomness_order'         => 0,
+                    'loggedin_user_contact'    => 0,
+                    'show_score'               => 0,
+                    'send_user_email'          => 0,
+                    'send_admin_email'         => 0,
+                    'contact_info_location'    => 0,
+                    'user_name'                => 2,
+                    'user_comp'                => 2,
+                    'user_email'               => 2,
+                    'user_phone'               => 2,
+                    'admin_email'              => get_option( 'admin_email', 'demo@example.com' ),
+                    'comment_section'          => 1,
+                    'question_from_total'      => 0,
+                    'total_user_tries'         => 0,
+                    'total_user_tries_text'    => __( 'You have utilized all of your attempts.', 'quiz-master-next' ),
+                    'certificate_template'     => '',
+                    'social_media'             => 0,
+                    'social_media_text'        => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+                    'pagination'               => 0,
+                    'pagination_text'          => __( 'Next', 'quiz-master-next' ),
+                    'timer_limit'              => 0,
+                    'quiz_style'               => '',
+                    'question_numbering'       => 0,
+                    'quiz_settings'            => maybe_serialize( $quiz_settings ),
+                    'theme_selected'           => $theme_id,
+                    'last_activity'            => current_time( 'mysql' ),
+                    'require_log_in'           => 0,
+                    'require_log_in_text'      => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
+                    'limit_total_entries'      => 0,
+                    'limit_total_entries_text' => __( 'This quiz has reached its entry limit.', 'quiz-master-next' ),
+                    'scheduled_timeframe'      => '',
+                    'scheduled_timeframe_text' => '',
+                    'quiz_views'               => 0,
+                    'quiz_taken'               => 0,
+                    'deleted'                  => 0,
+                    'quiz_author_id'           => $current_user->ID
+                ],
+                [
+                    '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
+                    '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%d', '%d', '%d', '%s',
+                    '%s', '%d', '%s', '%d', '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%d', '%s', '%d', '%s', '%s',
+                    '%s', '%d', '%d', '%d', '%d'
+                ]
+            );
+            if ( false !== $results ) {
+                $new_quiz = $wpdb->insert_id;
+                $quiz_post = [
+                    'post_title'   => $quiz_name,
+                    'post_content' => '[mlw_quizmaster quiz=' . $new_quiz . ']',
+                    'post_status'  => 'publish',
+                    'post_type'    => 'qsm_quiz',
+                    'post_author'  => $current_user->ID
+                ];
+                $quiz_post_id = wp_insert_post( $quiz_post );
+                add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
+            }
+            ?>"
+        },
+        {
+            "step": "setSiteOptions",
+            "options": {
+                "permalink_structure": "/%postname%/",
+                "show_on_front": "page",
+                "page_on_front": {
+                    "query": "post_type=page&post_title=Sample Quiz"
+                }
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php flush_rewrite_rules(); ?>"
+        }
+    ]
+}

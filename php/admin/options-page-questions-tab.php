@@ -358,7 +358,7 @@ function qsm_options_questions_tab_content() {
 									</div>
 									<div class="qsm-wrap-add-new-answer">
 										<div class="new-answer-button">
-											<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+											<a href="javascript:void(0)" class="button-secondary" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php esc_html_e( 'Add Answer!', 'quiz-master-next' ); ?></a>
 										</div>
 										<?php do_action( 'qsm_question_editor_button_section_after' ); ?>
 									</div>
@@ -777,23 +777,22 @@ function qsm_options_questions_tab_content() {
 				</header>
 				<main class="qsm-popup__content" id="modal-7-content">
 					<form action='' method='post' id="delete-question-form">
-						<table class="modal-7-table">
+						<table class="modal-7-table qsm-popup-table">
+							<tr class="qsm-popup-table-row">
+								<td>
+									<h3><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></h3>
+									<?php esc_html_e( 'Removes the question only from this quiz.', 'quiz-master-next' ); ?></td>
+								<td><button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button></td>
 							<tr>
-								<td><strong style="color:#00449e"><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></strong></td>
-								<td><?php esc_html_e( 'Removes the question only from this quiz.', 'quiz-master-next' ); ?></td>
-							<tr>
-							<tr>
-								<td><strong style="color:#dc3232"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></Strong></td>
-								<td><?php esc_html_e( 'Removes this question from database and everywhere. This action cannot be reversed.', 'quiz-master-next' ); ?>
-								</td>
+							<tr class="qsm-popup-table-row">
+								<td>
+									<h3><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></h3>
+									<?php esc_html_e( 'Removes this question from database and everywhere. This action cannot be reversed.', 'quiz-master-next' ); ?></td>
+								<td><button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button></td>
 							<tr>
 						</table>
 					</form>
 				</main>
-				<footer class="qsm-popup__footer">
-					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
-					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
-				</footer>
 			</div>
 		</div>
 	</div>
@@ -1474,7 +1473,10 @@ function qsm_options_questions_tab_template() {
 	<!-- View for single answer -->
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
-			<div class="remove-answer-icon"><a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-remove"></span></a></div>
+			<div class="remove-answer-icon">
+				<a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-minus"></span></a>
+				<a href="javascript:void(0)" class="qsm-add-answer-button"><span class="dashicons dashicons-plus"></span></a>
+			</div>
 			<?php do_action( 'qsm_admin_single_answer_option_fields_before' ); ?>
 			<div class="answer-text-div qsm-editor-wrap">
 				<# if ( 'rich' == data.answerType ) { #>
