@@ -523,7 +523,8 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 	width: 100% !important;
 }
 .questionElements .new-answer-button{
-    margin-left: 53px;
+    margin-left: 38px;
+    margin-right: 15px;
 }
 #advanceddiv {
 	margin-bottom: 0;
