@@ -304,7 +304,7 @@ function qsm_options_questions_tab_content() {
 									</div>
 								</div>
 								<div class="qsm-row">
-									<input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>">
+									<textarea id="question_title" class="question-title" name="question-title" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>"></textarea>
 								</div>
 								<a href="javascript:void(0)" class="qsm-show-question-desc-box">+ <?php esc_html_e( 'Edit description', 'quiz-master-next' ); ?></a>
 								<div class="qsm-row qsm-editor-wrap" style="display: none;">

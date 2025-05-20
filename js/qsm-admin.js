@@ -40,31 +40,41 @@ var QSMAdminResultsAndEmail;
 
             const iconSrc = icons[type] || icons.success;
 
-            // Check if an alert with the same message and type already exists
-            const $existingAlert = $wrapper.find(`.qsm-response-${type}`).filter(function () {
-                return jQuery(this).text().trim() === message;
-            });
-
-            if ($existingAlert.length > 0) {
-                return; // Don't add duplicate alerts
+            // Find any existing alert
+            let $alert = $wrapper.find('.footer-bar-notice');
+            // Store timer on wrapper to avoid multiple timers
+            if ($wrapper.data('alertTimeout')) {
+                clearTimeout($wrapper.data('alertTimeout'));
+            }
+            if ($wrapper.data('alertHideTimeout')) {
+                clearTimeout($wrapper.data('alertHideTimeout'));
             }
 
-            const $alert = jQuery(`
-                <div class="footer-bar-notice qsm-response-${type}">
-                    <img src="${iconSrc}" alt="${type} icon" class="qsm-alert-icon">
-                    <div>${message}</div>
-                </div>
-            `);
-
-            $wrapper.append($alert);
-            setTimeout(() => {
+            if ($alert.length > 0) {
+                // Update existing alert
+                $alert.removeClass('qsm-response-success qsm-response-info qsm-response-error qsm-response-warning hide');
+                $alert.addClass(`qsm-response-${type}`);
+                $alert.find('.qsm-alert-icon').attr('src', iconSrc).attr('alt', `${type} icon`);
+                $alert.find('div').text(message);
                 $alert.addClass('show');
-            }, 50);
+            } else {
+                // Create new alert
+                $alert = jQuery(`
+                    <div class="footer-bar-notice qsm-response-${type}">
+                        <img src="${iconSrc}" alt="${type} icon" class="qsm-alert-icon">
+                        <div>${message}</div>
+                    </div>
+                `);
+                $wrapper.append($alert);
+                setTimeout(() => {
+                    $alert.addClass('show');
+                }, 50);
+            }
 
             // Auto-hide after 4 seconds with slide-out transition
-            setTimeout(() => {
+            const alertTimeout = setTimeout(() => {
                 $alert.addClass('hide'); // Add class to animate out
-                setTimeout(() => {
+                const alertHideTimeout = setTimeout(() => {
                     $alert.remove();
                 }, 500);
             }, 4000);
@@ -5264,6 +5274,11 @@ function qsm_check_email_sent_option() {
 }(jQuery));
 
 jQuery(document).ready(function() {
+    jQuery(document).on('input', '.question-title', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
     const bulkActionSelect = jQuery('#qsm_bulk_action_select');
     const applyBulkActionButton = jQuery('#qsm_apply_bulk_action');
 
