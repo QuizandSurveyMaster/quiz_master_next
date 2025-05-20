@@ -2,3 +2,4 @@
 .qsm-editor-wrap .wp-media-buttons{float: left;margin: 6px 5px -3px 0;}
 .questionElements .new-answer-button{margin-left: 0;margin-right: 36px;}
 #delete-question-button .dashicons, #unlink-question-button .dashicons{margin-left: 5px;margin-right: 0;}
+.questionElements .question-title { overflow-y: hidden; resize: none; min-height: 40px;}

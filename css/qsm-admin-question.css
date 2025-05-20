@@ -13,7 +13,6 @@
 }
 #delete-question-button , #unlink-question-button {
 	display: inline-flex;
-	margin: 0 5px;
 	align-items: center;
 	flex-wrap: nowrap;
 }
@@ -54,10 +53,7 @@
 .modal-7-table, .modal-8-table {
 	font-size: 16px;
 }
-.modal-7-table tr td, .modal-8-table tr td {
-	vertical-align: top;
-	padding: 0 10px 5px 0
-}
+
 #modal-8 footer {
 	margin-top: 15px;
 }
@@ -504,10 +500,13 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 .questionElements .question-title {
 	padding: 6px 10px;
 	font-size: 22px;
-	line-height: 100%;
+	line-height: 1.5;
 	outline: 0;
 	margin: 0 0 3px;
 	background-color: #fff;
+	resize: none;
+	overflow-y: hidden;
+	min-height: 40px;
 }
 .questionElements #major-publishing-actions {
 	display: inline-block;
@@ -523,7 +522,8 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 	width: 100% !important;
 }
 .questionElements .new-answer-button{
-    margin-left: 53px;
+    margin-left: 38px;
+    margin-right: 15px;
 }
 #advanceddiv {
 	margin-bottom: 0;
