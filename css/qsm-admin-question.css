@@ -504,13 +504,13 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 .questionElements .question-title {
 	padding: 6px 10px;
 	font-size: 22px;
-	line-height: 100%;
+	line-height: 1.5;
 	outline: 0;
 	margin: 0 0 3px;
 	background-color: #fff;
 	resize: none;
 	overflow-y: hidden;
-	height: 40px;
+	min-height: 40px;
 }
 .questionElements #major-publishing-actions {
 	display: inline-block;
