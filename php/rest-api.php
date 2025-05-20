@@ -271,7 +271,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				'img_height'              => isset( $question['settings']['image_size-height'] ) ? $question['settings']['image_size-height'] : '',
 				'hint'                    => $question['hints'],
 				'category'                => $question['category'],
-				'required'                => $question['settings']['required'],
+				'required'                => isset( $question['settings']['required'] ) ? $question['settings']['required'] : 0,
 				'answers'                 => $question['answers'],
 				'page'                    => $question['page'],
 				'answerEditor'            => isset( $question['settings']['answerEditor'] ) ? $question['settings']['answerEditor'] : 'text',

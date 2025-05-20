@@ -161,8 +161,8 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%USER_ANSWER_', '%' );
 		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? [];
 		$key = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
-	
-		if ( $key !== false && isset( $question_answers_array[ $key ] ) ) {
+
+		if ( false !== $key && isset( $question_answers_array[ $key ] ) ) {
 			$answer = $question_answers_array[ $key ]['user_answer'] ?? '';
 			$user_answer = is_array( $answer ) ? implode( ', ', $answer ) : $answer;
 			$content = str_replace( '%USER_ANSWER_' . $question_id . '%', $user_answer, $content );
@@ -170,7 +170,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 			break;
 		}
 	}
-	
+
 	return $content;
 }
 /**
@@ -1090,7 +1090,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
 	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
-	$question_title = isset($answer['question_title']) 
+	$question_title = isset($answer['question_title'])
     ? $mlwQuizMasterNext->pluginHelper->qsm_language_support($answer['question_title'], "Question-{$answer['id']}", 'QSM Questions')
     : '';
 	$question_description = '';

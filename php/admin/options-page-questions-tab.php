@@ -264,7 +264,7 @@ function qsm_options_questions_tab_content() {
 									foreach ( $question_types as $type ) {
 										$slug = isset( $type['slug'] ) ? esc_attr( $type['slug'] ) : '';
 										$name = isset( $type['name'] ) ? esc_html( $type['name'] ) : '';
-										echo '<option value="' . $slug . '">' . $name . '</option>';
+										echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $name ) . '</option>';
 									}
 								}
 								?>
