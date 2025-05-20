@@ -781,13 +781,13 @@ function qsm_options_questions_tab_content() {
 							<tr class="qsm-popup-table-row">
 								<td>
 									<h3><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></h3>
-									<?php esc_html_e( 'Removes the question only from this quiz.', 'quiz-master-next' ); ?></td>
+									<?php esc_html_e( 'Remove this question from the quiz only.', 'quiz-master-next' ); ?></td>
 								<td><button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button></td>
 							<tr>
 							<tr class="qsm-popup-table-row">
 								<td>
 									<h3><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></h3>
-									<?php esc_html_e( 'Removes this question from database and everywhere. This action cannot be reversed.', 'quiz-master-next' ); ?></td>
+									<?php esc_html_e( 'Permanently remove this question from all quizzes and the database. This cannot be undone.', 'quiz-master-next' ); ?></td>
 								<td><button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button></td>
 							<tr>
 						</table>
