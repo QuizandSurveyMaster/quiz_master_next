@@ -4427,7 +4427,8 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 }
 .qsm-popup-table-row h3 {
     margin: 0;
-	font-size: 18px;
+    font-size: 18px;
+    font-weight: 500;
 }
 .qsm-popup-table-row .qsm-popup__btn {
     margin: 0;
