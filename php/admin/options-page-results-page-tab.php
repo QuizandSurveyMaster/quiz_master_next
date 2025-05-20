@@ -102,10 +102,16 @@ function qsm_options_results_tab_content() {
 				}
 				if ( ! class_exists('QSM_Advanced_Assessment') ) {
 					$template_array = array(
-						'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
-						'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
-						'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
-						'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_POINTS%'       => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_POINTS_X%'     => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS%'       => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_COUNTS_X%'     => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_PERCENTAGE%'   => __( 'The amount of percentage of all labels earned.', 'quiz-master-next' ),
+						'%ANSWER_LABEL_PERCENTAGE_X%' => __( 'X: Answer label slug - The amount of percentage a specific label earned.', 'quiz-master-next' ),
+						'%MOST_SELECTED_LABEL%'       => __( 'Shows the most frequently chosen label(s).', 'quiz-master-next' ),
+						'%HIGHEST_SCORING_LABEL%'     => __( 'Shows the label(s) with highest points earned.', 'quiz-master-next' ),
+						'%LOWEST_SCORING_LABEL%'      => __( 'Shows the label(s) with lowest points earned.', 'quiz-master-next' ),
+						'%LEAST_SELECTED_LABEL%'      => __( 'Shows the label(s) least frequently chosen.', 'quiz-master-next' ),
 					);
 					if ( ! empty( $_GET['tab'] ) && 'results-pages' === $_GET['tab'] ) {
 						$template_array['%ANSWER_LABEL_POINTS_PIE_CHART%'] = __( 'Display piechart based on points.', 'quiz-master-next' );
@@ -124,6 +130,16 @@ function qsm_options_results_tab_content() {
 						'Export Results' => $template_array,
 					);
 					$variable_list = array_merge($variable_list, $download_results);
+				}
+				if ( ! class_exists( 'QSM_AdvancedTimer' ) ) {
+					$template_array = array(
+						'%TIME_PER_PAGE%'   => __( 'Display time taken by user per page.', 'quiz-master-next' ),
+						'%TIME_PER_PAGE_X%' => __( 'X: Page name, Display time taken by user.', 'quiz-master-next' ),		
+					);
+					$advanced_timer = array(
+						'Advance Timer' => $template_array,
+					);
+					$variable_list = array_merge($variable_list, $advanced_timer);
 				}
 				//filter to add or remove variables from variable list for pdf tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
@@ -167,6 +183,11 @@ function qsm_options_results_tab_content() {
 							if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
 								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
 								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
+							if ( ( ! class_exists( 'QSM_AdvancedTimer' ) ) && ( 'Advance Timer' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-timer/' );
+								$classname = "qsm-upgrade-popup-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
 							?>
