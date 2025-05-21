@@ -239,9 +239,6 @@ function qsm_options_questions_tab_content() {
 					<?php do_action('qsm-question-categories-setting')?>
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
-						<div class="qsm-question-bank-select">
-							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
-						</div>
 						<div class="qsm-question-bank-search">
 							<form action="" method="post" id="question-bank-search-form">
 								<input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>">
@@ -269,6 +266,9 @@ function qsm_options_questions_tab_content() {
 								}
 								?>
 							</select>
+						</div>
+						<div class="qsm-question-bank-select">
+							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 						</div>
 					</div>
 					<div id="question-bank"></div>

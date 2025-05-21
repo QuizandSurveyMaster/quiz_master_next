@@ -227,15 +227,14 @@
 	margin-top: 2px;
 }
 .qsm-question-bank-filters {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: nowrap;
 	padding: 0 20px;
+}
+.qsm-question-bank-select {
+    margin: 15px 0;
 }
 .qsm-question-bank-search {
 	display: flex;
 	flex-wrap: wrap;
-    justify-content: end;
 }
 #modal-2 .qsm-popup__footer.qsm-question-bank-footer {
 	display: none;
