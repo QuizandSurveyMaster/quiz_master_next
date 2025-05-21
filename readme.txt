@@ -222,11 +222,11 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 
 == Changelog ==
 = 10.2.0 ( May 21, 2025 ) =
+* Feature: Added ability to insert answers at any position
 * Feature: Added search filter for questions by type in the question bank
 * Feature: Implemented server-side validation for contact form fields
-* Feature: Added ability to insert answers at any position
 * Enhancement: Refined UI and messaging for popups and alerts
-* Enhancement: Improved handling of onbeforeunload event
+* Enhancement: Improved handling of window.onbeforeunload event
 
 = 10.1.1 ( April 21, 2025 ) =
 * Enhancement: Added option to preload quiz and question feature images
