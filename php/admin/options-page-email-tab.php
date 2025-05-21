@@ -314,14 +314,20 @@ function qsm_options_emails_tab_template() {
 									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
 								}
 							}
-							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
-								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
-							} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
+							if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
 								return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, emailcontent) {
 									const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
 									const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
-									return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${emailcontent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
+									const processedContent = emailcontent.replace(/%([^%]+)%/g, function(varMatch, varName) {
+										if (qsm_is_substring_in_array(varMatch, qsm_varaible_list)) {
+											return '<qsmvariabletag>' + varName + '</qsmvariabletag>';
+										}
+										return varMatch; // Return unchanged if not a valid variable
+									});
+									return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${processedContent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
 								});
+							} else if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
 							} else {
 								return match;
 							}

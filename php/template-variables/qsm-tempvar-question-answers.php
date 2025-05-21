@@ -59,6 +59,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 				$question_with_answer_text .= '<span class="qsm-text-simple-option ' .  $class . ' ' . $image_class . '">' . $show_user_answer .$caption.$close_span;
 			}
 		}
+		$question_with_answer_text = apply_filters( 'qsm_after_result_submit_answers', $question_with_answer_text, $form_type, $is_answer_correct, $total_answers, $answers_from_response, $grading_system, $question_settings );
 	}
 	return $question_with_answer_text;
 }

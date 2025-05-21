@@ -758,7 +758,7 @@ class QMNPluginHelper {
 		$hints       = isset( $question_data['hints'] ) ? $question_data['hints'] : '';
 		$answer_info = isset( $question_data['question_answer_info'] ) ? html_entity_decode( $question_data['question_answer_info'] ) : '';
 
-		$this->qsm_register_language_support( htmlspecialchars_decode( $settings['question_title'], ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
+		$this->qsm_register_language_support( htmlspecialchars_decode( isset($settings['question_title']) ? $settings['question_title'] : '', ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
 		$this->qsm_register_language_support( htmlspecialchars_decode( $question_data['question_name'], ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 		$this->qsm_register_language_support( $hints, "hint-{$question_id}" );
 		$this->qsm_register_language_support( $answer_info, "correctanswerinfo-{$question_id}" );

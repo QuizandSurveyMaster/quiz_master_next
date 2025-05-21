@@ -920,7 +920,7 @@ function qmnFormSubmit(quiz_form_id, $this) {
 	fd.append("qsm_unique_key", jQuery('#qsm_unique_key_' + quiz_id ).val() );
 	fd.append("currentuserTime", Math.round(new Date().getTime() / 1000));
 	fd.append("currentuserTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
-
+	jQuery(document).trigger('qsm_after_form_data_process', [quiz_form_id, fd]);
 	qsmEndTimeTakenTimer(quiz_id);
 
 	if (qmn_quiz_data[quiz_id].hasOwnProperty('timer_limit')) {
@@ -955,6 +955,9 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				MicroModal.show('modal-4');
 				return false;
 			} else {
+				if (typeof response.redirect !== 'undefined' && response.redirect ) {
+					window.onbeforeunload = null;
+				}
 				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
@@ -1113,6 +1116,10 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 				container.find(".mlw_custom_next").hide();
 			}
 		}
+		window.onbeforeunload = function (e) {
+			e.preventDefault();
+			e.returnValue = '';
+		};
 	}
 }
 
@@ -2175,4 +2182,12 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholders(container);
         });
     }
+
+	if(answer_type === 'radio' || answer_type === 'checkbox' || answer_type === 'input'){
+		window.onbeforeunload = function (e) {
+			e.preventDefault();
+			e.returnValue = '';
+		};
+	}
+
 });

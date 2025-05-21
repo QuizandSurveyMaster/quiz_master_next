@@ -141,6 +141,23 @@ function qsm_options_contact_tab_content() {
 						</fieldset>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="enable_server_side_validation"><?php esc_html_e( 'Enable server side validation', 'quiz-master-next' ); ?></label>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="enable_server_side_validation-1">
+								<input type="radio" id="enable_server_side_validation-1" name="enable_server_side_validation" value="1" <?php checked( isset($quiz_options['enable_server_side_validation']) ? $quiz_options['enable_server_side_validation'] : '', '1', true )?>>
+								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
+							</label>
+							<label for="enable_server_side_validation-0">
+								<input type="radio" id="enable_server_side_validation-0" name="enable_server_side_validation" value="0" <?php checked( isset($quiz_options['enable_server_side_validation']) ? $quiz_options['enable_server_side_validation'] : '0', '0', true )?>>
+								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

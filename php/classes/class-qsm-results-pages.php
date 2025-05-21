@@ -321,6 +321,16 @@ class QSM_Results_Pages {
 
 		return $pages;
 	}
+
+	public static function qsm_sanitize_text_preserve_percent( $str, $revert = false ) {
+		if ( $revert ) {
+			$str = str_replace( 'utf8_byte_prefixes', '%', $str );
+		} else {
+			$str = str_replace( '%', 'utf8_byte_prefixes', $str );
+		}
+		return $str;
+	}
+
 	/**
 	 * Saves the results pages for a quiz.
 	 *
@@ -362,7 +372,9 @@ class QSM_Results_Pages {
 				// Sanitizes the conditions.
 				$total_conditions = count( $pages[ $i ]['conditions'] );
 				for ( $j = 0; $j < $total_conditions; $j++ ) {
+					$pages[ $i ]['conditions'][ $j ]['value'] = self::qsm_sanitize_text_preserve_percent( $pages[ $i ]['conditions'][ $j ]['value'] );
 					$pages[ $i ]['conditions'][ $j ]['value'] = sanitize_text_field( $pages[ $i ]['conditions'][ $j ]['value'] );
+					$pages[ $i ]['conditions'][ $j ]['value'] = self::qsm_sanitize_text_preserve_percent( $pages[ $i ]['conditions'][ $j ]['value'], true );
 				}
 			} else {
 				$pages[ $i ]['conditions'] = array();

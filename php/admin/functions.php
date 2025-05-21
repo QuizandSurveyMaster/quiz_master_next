@@ -1319,16 +1319,21 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 	if ( ! class_exists( 'QSM_Extra_Variables' ) ) {
 		global $mlwQuizMasterNext;
 		$template_array = array(
-			'%QUESTION_ANSWER_CORRECT%'   => __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_INCORRECT%' => __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_GROUP_X%'   => __('X: Answer value - This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
-    		'%CUSTOM_MESSAGE_POINTS_X%'   => __('X: Points range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
-    		'%CUSTOM_MESSAGE_CORRECT_X%'  => __('X: Score range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
-			'%QUIZ_TIME%'                 => __('This variable displays the total time of quiz.', 'quiz-master-next'),
-			'%QUIZ_PERCENTAGE%'           => __('This variable displays the obtained percentage of quiz.', 'quiz-master-next'),
-			'%CATEGORY_PERCENTAGE_X%'     => __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
-			'%COUNT_UNATTEMPTED%'         => __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_ATTEMPTED%' => __('This variable displays only attempted questions answers on the result page.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_CORRECT%'   	=> __('This variable shows all questions and answers for questions the user got correct.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_INCORRECT%' 	=> __('This variable shows all questions and answers for questions the user got incorrect.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_GROUP_X%'   	=> __('X: Answer value - This variable shows all questions and answers for questions where the user selected the matching answer.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_POINTS_X%'   	=> __('X: Points range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the amount of points a user has earned.', 'quiz-master-next'),
+    		'%CUSTOM_MESSAGE_CORRECT_X%'  	=> __('X: Score range and message e.g. ( CUSTOM_MESSAGE_POINTS_loser:0-49;winner:50-100; ) - Shows a custom message based on the score a user has earned.', 'quiz-master-next'),
+			'%QUIZ_TIME%'                 	=> __('This variable displays the total time of quiz.', 'quiz-master-next'),
+			'%QUIZ_PERCENTAGE%'           	=> __('This variable displays the obtained percentage of quiz.', 'quiz-master-next'),
+			'%CATEGORY_PERCENTAGE_X%'     	=> __('X:Category Name - This variable displays the percentage of any selected category out of the total quiz score.', 'quiz-master-next'),
+			'%COUNT_UNATTEMPTED%'         	=> __('This variable displays the total number of questions not attempted or not counted by the user.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_ATTEMPTED%' 	=> __('This variable displays only attempted questions answers on the result page.', 'quiz-master-next'),
+			'%SUBMISSION_DATE%' 		  	=> __('This variable displays the quiz submission date.', 'quiz-master-next'),
+			'%RETAKE_QUIZ_BUTTON%' 		  	=> __('This variable displays the quiz retake button.', 'quiz-master-next'),
+		  	'%REMAINING_QUIZ_ATTEMPTS%'   	=> __('This variable displays the quiz remaining attempts.', 'quiz-master-next'),
+		    '%CATEGORY_MAX_POINTS_X%'     	=> __('X:Category Name - This variable displays the max points of any selected category can earn in the total quiz score.', 'quiz-master-next'),
+		    '%CATEGORY_WISE_PERCENTAGE_X%' 	=> __('X:Category Name - This variable displays the percentage of points that earned for that category.', 'quiz-master-next'),
 		);
 		$extra_variables = array(
 			'Extra Template Variables' => $template_array,
@@ -1349,10 +1354,16 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 	}
 	if ( ! class_exists('QSM_Advanced_Assessment') ) {
 		$template_array = array(
-			'%ANSWER_LABEL_POINTS%'   => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
-			'%ANSWER_LABEL_POINTS_X%' => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
-			'%ANSWER_LABEL_COUNTS%'   => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
-			'%ANSWER_LABEL_COUNTS_X%' => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_POINTS%'       => __( 'The amount of points of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_POINTS_X%'     => __( 'X: Answer label slug - The amount of points a specific label earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS%'       => __( 'The amount of counts of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_COUNTS_X%'     => __( 'X: Answer label slug - The amount of counts a specific label earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_PERCENTAGE%'   => __( 'The amount of percentage of all labels earned.', 'quiz-master-next' ),
+			'%ANSWER_LABEL_PERCENTAGE_X%' => __( 'X: Answer label slug - The amount of percentage a specific label earned.', 'quiz-master-next' ),
+			'%MOST_SELECTED_LABEL%'       => __( 'Shows the most frequently chosen label(s).', 'quiz-master-next' ),
+			'%HIGHEST_SCORING_LABEL%'     => __( 'Shows the label(s) with highest points earned.', 'quiz-master-next' ),
+			'%LOWEST_SCORING_LABEL%'      => __( 'Shows the label(s) with lowest points earned.', 'quiz-master-next' ),
+			'%LEAST_SELECTED_LABEL%'      => __( 'Shows the label(s) least frequently chosen.', 'quiz-master-next' ),
 		);
 		$advanced_assessment = array(
 			'Advanced Assessment' => $template_array,

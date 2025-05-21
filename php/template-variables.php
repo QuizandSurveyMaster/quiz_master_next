@@ -157,18 +157,20 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 		}
 		$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
 	}
-	while ( false !== strpos($content, '%USER_ANSWER_') ) {
-		$question_id = mlw_qmn_get_string_between($content, '%USER_ANSWER_', '%');
+	while ( false !== strpos( $content, '%USER_ANSWER_' ) ) {
+		$question_id = mlw_qmn_get_string_between( $content, '%USER_ANSWER_', '%' );
 		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? [];
-		
-		foreach ( $question_answers_array as $question ) {
-			if ( $question['id'] == $question_id ) {
-				$user_answer = is_array($question['user_answer']) ? implode(", ", $question['user_answer']) : '';
-				$content = str_replace('%USER_ANSWER_' . $question_id . '%', $user_answer, $content);
-				break;
-			}
+		$key = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
+
+		if ( false !== $key && isset( $question_answers_array[ $key ] ) ) {
+			$answer = $question_answers_array[ $key ]['user_answer'] ?? '';
+			$user_answer = is_array( $answer ) ? implode( ', ', $answer ) : $answer;
+			$content = str_replace( '%USER_ANSWER_' . $question_id . '%', $user_answer, $content );
+		} else {
+			break;
 		}
 	}
+
 	return $content;
 }
 /**
@@ -1088,7 +1090,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
 	$question_settings    = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
-	$question_title = isset($answer['question_title']) 
+	$question_title = isset($answer['question_title'])
     ? $mlwQuizMasterNext->pluginHelper->qsm_language_support($answer['question_title'], "Question-{$answer['id']}", 'QSM Questions')
     : '';
 	$question_description = '';
@@ -1352,6 +1354,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . $user_given_answer . '</span>';
 				} else {
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
+					$question_with_answer_text = apply_filters( 'qsm_result_page_answer_text_with_no_answer', $question_with_answer_text, $total_answers, $questions, $answer );
 				}
 			}
 		}
