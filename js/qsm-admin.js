@@ -1577,7 +1577,6 @@ function qsmConvertContentToShortcode( contentToConvert ){
                             if ( 0 < newCommand.length ) {
                                 let var_group = [];
                                 newCommand.forEach(function (command, key) {
-                                    console.log(key);
                                     //Add Group Name
                                     if ( -1 == var_group.indexOf( command.group ) ) {
                                         var_group.push( command.group );
