@@ -545,6 +545,7 @@ a.import-button.button.disable_import::before, a.link-question.button.disable_im
 .qsm-wrap-add-new-answer{
     display: flex;
 	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 #answers .delete-answer-button span, #answers .qsm-add-answer-button span {
     font-size: 13px;

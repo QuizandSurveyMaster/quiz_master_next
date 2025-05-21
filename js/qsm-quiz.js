@@ -955,13 +955,10 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				MicroModal.show('modal-4');
 				return false;
 			} else {
+				if (typeof response.redirect !== 'undefined' && response.redirect ) {
+					window.onbeforeunload = null;
+				}
 				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
-
-				window.onbeforeunload = function (e) {
-					e.preventDefault(); 
-					e.returnValue = ''; 
-				};
-
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 					MathJax.typesetPromise();
@@ -1119,10 +1116,10 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 				container.find(".mlw_custom_next").hide();
 			}
 		}
-			window.onbeforeunload = function (e) {
-					e.preventDefault(); 
-					e.returnValue = ''; 
-				};
+		window.onbeforeunload = function (e) {
+			e.preventDefault();
+			e.returnValue = '';
+		};
 	}
 }
 
@@ -2185,12 +2182,12 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholders(container);
         });
     }
-	
+
 	if(answer_type === 'radio' || answer_type === 'checkbox' || answer_type === 'input'){
 		window.onbeforeunload = function (e) {
-			e.preventDefault(); 
-			e.returnValue = ''; 
+			e.preventDefault();
+			e.returnValue = '';
 		};
 	}
-	
+
 });
