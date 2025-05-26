@@ -45,6 +45,8 @@ class QSM_Questions {
 				$settings = array( 'required' => 1 );
 			}
 			$question['settings'] = $settings;
+			// Ensure display_answer_limit is set, defaulting to 0.
+			$question['settings'] = wp_parse_args( $question['settings'], array( 'display_answer_limit' => 0, 'required' => 1 ) );
 
 			return apply_filters( 'qsm_load_question', $question, $question_id );
 		}
@@ -110,6 +112,8 @@ class QSM_Questions {
 				if ( ! is_array( $settings ) ) {
 					$settings = array( 'required' => 1 );
 				}
+				// Ensure display_answer_limit is set, defaulting to 0.
+				$settings             = wp_parse_args( $settings, array( 'display_answer_limit' => 0, 'required' => 1 ) );
 				$question['settings'] = $settings;
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
@@ -281,7 +285,8 @@ class QSM_Questions {
 		$data     = wp_parse_args( $data, $defaults );
 
 		$defaults = array(
-			'required' => 1,
+			'required'             => 1,
+			'display_answer_limit' => 0,
 		);
 		$settings = wp_parse_args( $settings, $defaults );
 
@@ -611,4 +616,85 @@ class QSM_Questions {
 		return $taxTree;
 	}
 
+	/**
+	 * Selects and shuffles answers based on the display limit.
+	 * Correct answers are prioritized. If the limit is less than the number of correct answers, all correct answers are still shown.
+	 * Incorrect answers are randomly selected if their count exceeds the available slots after including correct answers.
+	 * The final list of answers to display is shuffled.
+	 *
+	 * @since QSM_VERSION
+	 * @param array $all_answers The full list of answers for a question. Each answer is an array.
+	 *                           Format: [ 0 => (string) answer_text, 1 => (int) points, 2 => (int) is_correct (1 or 0), 3 => (string) caption_if_image (optional) ]
+	 * @param int   $display_limit The maximum number of answers to display. If 0, all answers are displayed.
+	 * @return array The array of answers to be displayed, with original keys preserved and shuffled.
+	 */
+	public static function get_answers_for_display( $all_answers, $display_limit ) {
+		if ( ! is_array( $all_answers ) ) {
+			return array();
+		}
+
+		$correct_answers   = array();
+		$incorrect_answers = array();
+
+		foreach ( $all_answers as $answer_index => $answer_item ) {
+			if ( isset( $answer_item[2] ) && 1 == $answer_item[2] ) {
+				$correct_answers[ $answer_index ] = $answer_item;
+			} else {
+				$incorrect_answers[ $answer_index ] = $answer_item;
+			}
+		}
+
+		$answers_to_display = array();
+		$num_correct        = count( $correct_answers );
+		$num_incorrect      = count( $incorrect_answers );
+
+		if ( $display_limit > 0 && ( $num_correct + $num_incorrect ) > $display_limit ) {
+			// Add all correct answers first.
+			foreach ( $correct_answers as $key => $value ) {
+				$answers_to_display[ $key ] = $value;
+			}
+
+			// Calculate remaining slots for incorrect answers.
+			// If num_correct already exceeds display_limit, no slots for incorrect.
+			$slots_for_incorrect = $display_limit - $num_correct;
+
+			if ( $slots_for_incorrect > 0 && $num_incorrect > 0 ) {
+				if ( $num_incorrect > $slots_for_incorrect ) {
+					// More incorrect answers than slots, so shuffle and pick.
+					$shuffled_incorrect_keys = array_keys( $incorrect_answers );
+					shuffle( $shuffled_incorrect_keys );
+					foreach ( array_slice( $shuffled_incorrect_keys, 0, $slots_for_incorrect ) as $key ) {
+						$answers_to_display[ $key ] = $incorrect_answers[ $key ];
+					}
+				} else {
+					// Enough slots for all incorrect answers.
+					foreach ( $incorrect_answers as $key => $value ) {
+						$answers_to_display[ $key ] = $value;
+					}
+				}
+			}
+			// If $slots_for_incorrect <= 0, only correct answers (already added) are displayed.
+			// This also handles the case where $num_correct >= $display_limit.
+		} else {
+			// No limit ($display_limit == 0), or total answers within limit - show all.
+			// Combine correct and incorrect answers.
+			foreach ( $correct_answers as $key => $value ) {
+				$answers_to_display[ $key ] = $value;
+			}
+			foreach ( $incorrect_answers as $key => $value ) {
+				$answers_to_display[ $key ] = $value;
+			}
+		}
+
+		// Shuffle the final list of answers to display, preserving keys.
+		$display_keys = array_keys( $answers_to_display );
+		shuffle( $display_keys );
+		
+		$shuffled_answers_to_display = array();
+		foreach ( $display_keys as $key ) {
+			$shuffled_answers_to_display[ $key ] = $answers_to_display[ $key ];
+		}
+
+		return $shuffled_answers_to_display;
+	}
 }

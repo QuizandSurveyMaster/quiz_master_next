@@ -477,6 +477,24 @@ export default function Edit( props ) {
 				checked={ ! qsmIsEmpty( required ) && '1' == required  }
 				onChange={ () => setAttributes( { required : ( ( ! qsmIsEmpty( required ) && '1' == required ) ? 0 : 1 ) } ) }
 			/>
+			{ /* Display Answer Limit Control */ }
+			{ ['0', '4'].includes(type) && (
+				<TextControl
+					label={ __( 'Display Answer Limit', 'quiz-master-next' ) }
+					type='number'
+					value={ settings?.display_answer_limit ?? 0 }
+					onChange={ ( newLimit ) => {
+						setAttributes({
+							settings: {
+								...settings,
+								display_answer_limit: parseInt( newLimit, 10 ) || 0
+							}
+						});
+					} }
+					help={ __( 'Max answers to show (0 for no limit). Correct answers are always shown.', 'quiz-master-next' ) }
+					min='0'
+				/>
+			)}
 			<ToggleControl
 				label={ __( 'Show Correct Answer Info', 'quiz-master-next' ) }
 				checked={ enableCorrectAnsInfo  }
