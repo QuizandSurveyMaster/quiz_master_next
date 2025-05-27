@@ -29,6 +29,8 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
+	$answer_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answer_limit' );
+	$answers = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options( $answers, intval($answer_limit) ) : $answers;
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
 	<fieldset>

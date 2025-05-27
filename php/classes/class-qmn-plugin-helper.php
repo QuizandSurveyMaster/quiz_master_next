@@ -1272,4 +1272,13 @@ class QMNPluginHelper {
 			// ),
 		);
 	}
+
+	public function qsm_get_limited_options( $options, $limit ) {
+		$correct = array_filter( $options, fn( $o ) => $o[2] == 1 );
+		$incorrect = array_filter( $options, fn( $o ) => $o[2] == 0 );
+		shuffle( $incorrect );
+		$final = array_merge( $correct, array_slice( $incorrect, 0, $limit - count( $correct ) ) );
+		shuffle( $final );
+		return $final;
+	}
 }
