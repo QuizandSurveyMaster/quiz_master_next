@@ -20,6 +20,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
+	$answer_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answer_limit' );
 	$mlw_class = '';
 	$add_label = array();
 	if ( 0 == $required ) {
@@ -28,6 +29,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$answers = apply_filters( 'qsm_multiple_choice_display_before', $answers, $id, $question );
 	$mlw_class = apply_filters( 'qsm_multiple_choice_classes', $mlw_class, $id );
 	// $question_title = apply_filters('the_content', $question);
+	$answers = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options( $answers, intval($answer_limit) ) : $answers;
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
 	?>
 	<fieldset>

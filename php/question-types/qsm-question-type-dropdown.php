@@ -25,6 +25,8 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
 	}
 	$question = apply_filters( 'qsm_question_title_function_before', $question, $answers, $id );
+	$answer_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answer_limit' );
+	$answers = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options( $answers, intval($answer_limit) ) : $answers;
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_show_answer_drop_down', $show, $id, $question, $answers );
