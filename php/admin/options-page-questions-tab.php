@@ -492,6 +492,14 @@ function qsm_options_questions_tab_content() {
 											'show'     => '4,10' . $show_limit_multiple_response,
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'limit_multiple_response', 'quizsurvey-limit_multiple_response_doc' ),
 										),
+										'display_answer_limit' => array(
+											'heading'  => __( 'Display Answer Limit', 'quiz-master-next' ),
+											'label'    => __( 'Max answers to show (0 for no limit). Correct answers are always shown.', 'quiz-master-next' ),
+											'type'     => 'number',
+											'priority' => '8.1',
+											'default'  => '0',
+											'show'     => '0,4', // Show for Multiple Choice (0) and Multiple Response (4)
+										),
 										'file_upload_limit' => array(
 											'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
 											'type'     => 'number',
