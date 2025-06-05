@@ -194,7 +194,7 @@ class QMNQuizManager {
 
                 // Retrieve action.
                 if ( 'retrieve' === $action ) {
-                    $res = $this->add_quiz_results( $data );
+                    $res = $this->add_quiz_results( $data, 'resubmit' );
                     if ( false !== $res ) {
                         $data['processed'] = 1;
                         // Mark submission processed.
@@ -1970,7 +1970,7 @@ class QMNQuizManager {
 	 *
 	 * @return boolean results added or not
 	 */
-	public function add_quiz_results( $data ) {
+	public function add_quiz_results( $data, $action = '' ) {
 		global $wpdb;
 		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
@@ -2042,13 +2042,13 @@ class QMNQuizManager {
 				'%s',  // page_name
 			);
 
-			if ( $existing_id ) {
-				$res = $wpdb->update(
+			if ( $action === 'resubmit' && $existing_id ) {
+				$new_unique_id = uniqid();
+				$record['unique_id'] = $new_unique_id;
+				$res = $wpdb->insert(
 					$table_name,
 					$record,
-					array( 'result_id' => $existing_id ),
-					$formats,
-					array( '%d' )
+					$formats
 				);
 			} else {
 				$res = $wpdb->insert(
@@ -2229,6 +2229,7 @@ class QMNQuizManager {
 							)
 						);
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
+						$result_display .= '<div class="qsm-result-page-warning">' . __( "Sorry, your submission was not successful. Please contact the website administrator.", "quiz-master-next" ) . '</div>';
 					}
 				}
 			}
