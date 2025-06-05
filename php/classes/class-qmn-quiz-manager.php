@@ -1986,55 +1986,77 @@ class QMNQuizManager {
 			if ( empty( $data['page_name'] ) ) {
 				$data['page_name'] = url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '';
 			}
-			$res = $wpdb->insert(
-				$table_name,
-				array(
-					'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
-					'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
-					'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
-					'point_score'     => $data['qmn_array_for_variables']['total_points'],
-					'correct_score'   => $data['qmn_array_for_variables']['total_score'],
-					'correct'         => $data['qmn_array_for_variables']['total_correct'],
-					'total'           => $data['qmn_array_for_variables']['total_questions'],
-					'name'            => $data['qmn_array_for_variables']['user_name'],
-					'business'        => $data['qmn_array_for_variables']['user_business'],
-					'email'           => $data['qmn_array_for_variables']['user_email'],
-					'phone'           => $data['qmn_array_for_variables']['user_phone'],
-					'user'            => $data['qmn_array_for_variables']['user_id'],
-					'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
-					'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
-					'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
-					'quiz_results'    => maybe_serialize( $data['results_array'] ),
-					'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
-					'unique_id'       => $data['unique_id'],
-					'form_type'       => $data['form_type'],
-					'page_url'        => $data['http_referer'],
-					'page_name'       => sanitize_text_field( $data['page_name'] ),
-				),
-				array(
-					'%d',
-					'%s',
-					'%d',
-					'%f',
-					'%d',
-					'%d',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d',
-					'%s',
-					'%d',
-					'%s',
-					'%s',
+			// Check if unique_id already exists
+			$existing_id = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT result_id FROM $table_name WHERE unique_id = %s LIMIT 1",
+					$data['unique_id']
 				)
 			);
+
+			$record = array(
+				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
+				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
+				'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
+				'point_score'     => $data['qmn_array_for_variables']['total_points'],
+				'correct_score'   => $data['qmn_array_for_variables']['total_score'],
+				'correct'         => $data['qmn_array_for_variables']['total_correct'],
+				'total'           => $data['qmn_array_for_variables']['total_questions'],
+				'name'            => $data['qmn_array_for_variables']['user_name'],
+				'business'        => $data['qmn_array_for_variables']['user_business'],
+				'email'           => $data['qmn_array_for_variables']['user_email'],
+				'phone'           => $data['qmn_array_for_variables']['user_phone'],
+				'user'            => $data['qmn_array_for_variables']['user_id'],
+				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
+				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
+				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
+				'quiz_results'    => maybe_serialize( $data['results_array'] ),
+				'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
+				'unique_id'       => $data['unique_id'],
+				'form_type'       => $data['form_type'],
+				'page_url'        => $data['http_referer'],
+				'page_name'       => sanitize_text_field( $data['page_name'] ),
+			);
+
+			$formats = array(
+				'%d',  // quiz_id
+				'%s',  // quiz_name
+				'%d',  // quiz_system
+				'%f',  // point_score
+				'%d',  // correct_score
+				'%d',  // correct
+				'%d',  // total
+				'%s',  // name
+				'%s',  // business
+				'%s',  // email
+				'%s',  // phone
+				'%d',  // user
+				'%s',  // user_ip
+				'%s',  // time_taken
+				'%s',  // time_taken_real
+				'%s',  // quiz_results
+				'%d',  // deleted
+				'%s',  // unique_id
+				'%d',  // form_type
+				'%s',  // page_url
+				'%s',  // page_name
+			);
+
+			if ( $existing_id ) {
+				$res = $wpdb->update(
+					$table_name,
+					$record,
+					array( 'result_id' => $existing_id ),
+					$formats,
+					array( '%d' )
+				);
+			} else {
+				$res = $wpdb->insert(
+					$table_name,
+					$record,
+					$formats
+				);
+			}
 			if ( false === $res ) {
 				// Throw exception
 				throw new Exception( 'Database insert failed.' );
