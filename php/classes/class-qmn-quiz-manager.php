@@ -623,6 +623,7 @@ class QMNQuizManager {
 				'quiz_limit_choice'                  => $quiz_limit_choice,
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
+				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
