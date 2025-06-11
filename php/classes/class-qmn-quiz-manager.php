@@ -2466,6 +2466,7 @@ class QMNQuizManager {
 										'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
 										'case_sensitive'  => $case_sensitive,
+										'answer_limit_keys' => isset( $results_array['answer_limit_keys'] ) ? $results_array['answer_limit_keys'] : '',
 									),
 									$options,
 									$quiz_data
@@ -2550,6 +2551,7 @@ class QMNQuizManager {
 									'question_title'    => isset( $question['settings']['question_title'] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['settings']['question_title'], "Question-{$question_id}", "QSM Questions") : '',
 									'user_compare_text' => $user_compare_text,
 									'case_sensitive'    => $case_sensitive,
+									'answer_limit_keys' => isset( $results_array['answer_limit_keys'] ) ? $results_array['answer_limit_keys'] : '',
 								),
 								$options,
 								$quiz_data

@@ -25,6 +25,10 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 		$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( html_entity_decode( $question, ENT_HTML5 ), ENT_QUOTES ), "question-description-{$id}", "QSM Questions" );
 	}
 	$question = apply_filters( 'qsm_question_title_function_before', $question, $answers, $id );
+	$answer_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answer_limit' );
+	$limited_answers = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options( $answers, intval($answer_limit) ) : $answers;
+	$answers = isset( $limited_answers['final'] ) ? $limited_answers['final'] : $answers;
+	$answer_limit_keys = isset( $limited_answers['answer_limit_keys'] ) ? $limited_answers['answer_limit_keys'] : '';
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_show_answer_drop_down', $show, $id, $question, $answers );
@@ -48,6 +52,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 			}
 			?>
 		</select>
+		<input type="hidden" name="answer_limit_keys_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $answer_limit_keys ); ?>" />
 	<?php
 	}
 	echo apply_filters( 'qmn_drop_down_display_front', '', $id, $question, $answers );
@@ -72,7 +77,8 @@ function qmn_drop_down_review( $id, $question, $answers ) {
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
 	$return_array['user_answer']    = $user_text_array;
-	$return_array['correct_answer'] = $correct_text_array ;
+	$return_array['correct_answer'] = $correct_text_array;
+	$return_array['answer_limit_keys'] = isset( $_POST[ 'answer_limit_keys_'.$id ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'answer_limit_keys_'.$id ] ) ) : '';
 	/**
 	 * Hook to filter answers array
 	 */

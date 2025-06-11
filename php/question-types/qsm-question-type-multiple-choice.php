@@ -20,6 +20,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$image_width = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-width' );
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
+	$answer_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answer_limit' );
 	$mlw_class = '';
 	$add_label = array();
 	if ( 0 == $required ) {
@@ -28,6 +29,9 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$answers = apply_filters( 'qsm_multiple_choice_display_before', $answers, $id, $question );
 	$mlw_class = apply_filters( 'qsm_multiple_choice_classes', $mlw_class, $id );
 	// $question_title = apply_filters('the_content', $question);
+	$limited_answers = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options( $answers, intval($answer_limit) ) : $answers;
+	$answers = isset( $limited_answers['final'] ) ? $limited_answers['final'] : $answers;
+	$answer_limit_keys = isset( $limited_answers['answer_limit_keys'] ) ? $limited_answers['answer_limit_keys'] : '';
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
 	?>
 	<fieldset>
@@ -107,6 +111,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 		?>
 	</div>
 	</fieldset>
+	<input type="hidden" name="answer_limit_keys_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $answer_limit_keys ); ?>" />
 	<?php
 	echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );
 }
@@ -131,5 +136,6 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( ', ', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
+	$return_array['answer_limit_keys'] = isset( $_POST[ 'answer_limit_keys_'.$id ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'answer_limit_keys_'.$id ] ) ) : '';
 	return apply_filters( 'qmn_multiple_choice_review', $return_array, $answers );
 }
