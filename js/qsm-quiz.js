@@ -883,7 +883,7 @@ function getFormData($form) {
 
 	return indexed_array;
 }
-
+var qsmAllowPageUnload = false;
 function qmnFormSubmit(quiz_form_id, $this) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	let $container = jQuery($this).closest('.qmn_quiz_container');
@@ -955,9 +955,6 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				MicroModal.show('modal-4');
 				return false;
 			} else {
-				if (typeof response.redirect !== 'undefined' && response.redirect && qmn_quiz_data[quiz_id].prevent_reload == 1 ) {
-					window.onbeforeunload = null;
-				}
 				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
@@ -1116,12 +1113,6 @@ function check_if_show_start_quiz_button(container, total_pages, page_number) {
 			if (jQuery('.quiz_end').is(':visible')) {
 				container.find(".mlw_custom_next").hide();
 			}
-		}
-		if ( qmn_quiz_data[quiz_id].prevent_reload == 1 ) {
-			window.onbeforeunload = function (e) {
-				e.preventDefault();
-				e.returnValue = '';
-			};
 		}
 	}
 }
@@ -1922,6 +1913,19 @@ jQuery(document).ready(function () {
         }
         document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
+	window.onbeforeunload =  function (e) {
+		var startButton = jQuery('.qsm-quiz-container .qsm-submit-btn');
+		var quiz_id = jQuery('.qsm-quiz-container .qmn_quiz_id').val();
+		var flag = false;
+		if( startButton.length ){
+			flag = true;
+		}
+		if( flag && qmn_quiz_data[quiz_id].prevent_reload == 1 ){
+			return true;
+		}else{
+			return null;
+		}
+	}
 });
 
 var quizType = 'default';
@@ -2185,12 +2189,5 @@ jQuery(document).on('qsm_after_select_answer', (event, quizID, question_id, valu
             replacePlaceholders(container);
         });
     }
-
-	if( (answer_type === 'radio' || answer_type === 'checkbox' || answer_type === 'input') && qmn_quiz_data[quizID].prevent_reload == 1){
-		window.onbeforeunload = function (e) {
-			e.preventDefault();
-			e.returnValue = '';
-		};
-	}
 
 });
