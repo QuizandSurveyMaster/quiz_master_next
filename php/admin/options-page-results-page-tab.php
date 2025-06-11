@@ -134,7 +134,7 @@ function qsm_options_results_tab_content() {
 				if ( ! class_exists( 'QSM_AdvancedTimer' ) ) {
 					$template_array = array(
 						'%TIME_PER_PAGE%'   => __( 'Display time taken by user per page.', 'quiz-master-next' ),
-						'%TIME_PER_PAGE_X%' => __( 'X: Page name, Display time taken by user.', 'quiz-master-next' ),		
+						'%TIME_PER_PAGE_X%' => __( 'X: Page name, Display time taken by user.', 'quiz-master-next' ),       
 					);
 					$advanced_timer = array(
 						'Advance Timer' => $template_array,

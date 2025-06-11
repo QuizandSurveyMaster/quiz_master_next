@@ -136,6 +136,6 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( ', ', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
-	$return_array['answer_limit_keys'] = isset( $_POST['answer_limit_keys_'.$id] ) ? sanitize_text_field( wp_unslash( $_POST['answer_limit_keys_'.$id] ) ) : '';
+	$return_array['answer_limit_keys'] = isset( $_POST[ 'answer_limit_keys_'.$id ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'answer_limit_keys_'.$id ] ) ) : '';
 	return apply_filters( 'qmn_multiple_choice_review', $return_array, $answers );
 }

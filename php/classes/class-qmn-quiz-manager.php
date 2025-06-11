@@ -2043,7 +2043,7 @@ class QMNQuizManager {
 				'%s',  // page_name
 			);
 
-			if ( $action === 'resubmit' && $existing_id ) {
+			if ( 'resubmit' === $action  && $existing_id ) {
 				$new_unique_id = uniqid();
 				$record['unique_id'] = $new_unique_id;
 				$res = $wpdb->insert(
