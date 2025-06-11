@@ -194,7 +194,7 @@ class QMNQuizManager {
 
                 // Retrieve action.
                 if ( 'retrieve' === $action ) {
-                    $res = $this->add_quiz_results( $data );
+                    $res = $this->add_quiz_results( $data, 'resubmit' );
                     if ( false !== $res ) {
                         $data['processed'] = 1;
                         // Mark submission processed.
@@ -623,6 +623,7 @@ class QMNQuizManager {
 				'quiz_limit_choice'                  => $quiz_limit_choice,
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
+				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
@@ -1131,7 +1132,15 @@ class QMNQuizManager {
 		<?php
 			if ( 'default' == $saved_quiz_theme ) {
 				$featured_image       = get_option( "quiz_featured_image_$options->quiz_id" );
-				if ( "" != $featured_image ) { ?>
+				$qsm_global_settings   = (array) get_option( 'qmn-settings' );
+				$qsm_preloader_setting = isset( $qsm_global_settings['enable_preloader'] ) ? $qsm_global_settings['enable_preloader'] : '';
+
+				if ( isset( $qsm_preloader_setting ) && $qsm_preloader_setting > 0 && ! empty( $featured_image ) ) {
+					echo '<link rel="preload" href="' . esc_url( $featured_image ) . '" as="image">';
+				}
+
+				if ( "" != $featured_image ) {
+					?>
 					<img class="qsm-quiz-default-feature-image" src="<?php echo esc_url( $featured_image ); ?>" alt="<?php esc_attr_e( 'Featured Image', 'quiz-master-next' ); ?>" />
 				<?php }
 				?>
@@ -1746,6 +1755,11 @@ class QMNQuizManager {
 	 */
 	public function qsm_validate_contact_fields( $contact_form, $request ) {
 		$errors = [];
+
+		if ( ! is_array( $contact_form ) ) {
+			return;
+		}
+
 		foreach ( $contact_form as $index => $field ) {
 			if ( 'true' === $field['enable'] ) {
 				$contact_key = "contact_field_" . $index;
@@ -1858,18 +1872,21 @@ class QMNQuizManager {
 		$dateStr    = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone   = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate  = strtotime( $dateStr . ' ' . $timezone );
-		$missing_contact_fields = $this->qsm_validate_contact_fields( $qsm_option['contact_form'], $_REQUEST );
-		if ( 1 !== $missing_contact_fields ) {
-			echo wp_json_encode(
-				array(
-					'display'       => '<div class="qsm-result-page-warning">' . wp_kses_post( $missing_contact_fields ) . '</div>',
-					'redirect'      => false,
-					'result_status' => array(
-						'save_response' => false,
-					),
-				)
-			);
-			wp_die();
+		$enable_server_side_validation = isset( $qsm_option['quiz_options']['enable_server_side_validation'] ) ? $qsm_option['quiz_options']['enable_server_side_validation'] : 0;
+		if ( 1 == $enable_server_side_validation ) {
+			$missing_contact_fields = $this->qsm_validate_contact_fields( $qsm_option['contact_form'], $_REQUEST );
+			if ( 1 !== $missing_contact_fields ) {
+				echo wp_json_encode(
+					array(
+						'display'       => '<div class="qsm-result-page-warning">' . wp_kses_post( $missing_contact_fields ) . '</div>',
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				wp_die();
+			}
 		}
 
 		if ( isset($qsm_option['quiz_options']['not_allow_after_expired_time']) && '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate && ! empty($dateStr) ) {
@@ -1954,7 +1971,7 @@ class QMNQuizManager {
 	 *
 	 * @return boolean results added or not
 	 */
-	public function add_quiz_results( $data ) {
+	public function add_quiz_results( $data, $action = '' ) {
 		global $wpdb;
 		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
@@ -1970,55 +1987,77 @@ class QMNQuizManager {
 			if ( empty( $data['page_name'] ) ) {
 				$data['page_name'] = url_to_postid( $data['http_referer'] ) ? get_the_title( url_to_postid( $data['http_referer'] ) ) : '';
 			}
-			$res = $wpdb->insert(
-				$table_name,
-				array(
-					'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
-					'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
-					'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
-					'point_score'     => $data['qmn_array_for_variables']['total_points'],
-					'correct_score'   => $data['qmn_array_for_variables']['total_score'],
-					'correct'         => $data['qmn_array_for_variables']['total_correct'],
-					'total'           => $data['qmn_array_for_variables']['total_questions'],
-					'name'            => $data['qmn_array_for_variables']['user_name'],
-					'business'        => $data['qmn_array_for_variables']['user_business'],
-					'email'           => $data['qmn_array_for_variables']['user_email'],
-					'phone'           => $data['qmn_array_for_variables']['user_phone'],
-					'user'            => $data['qmn_array_for_variables']['user_id'],
-					'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
-					'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
-					'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
-					'quiz_results'    => maybe_serialize( $data['results_array'] ),
-					'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
-					'unique_id'       => $data['unique_id'],
-					'form_type'       => $data['form_type'],
-					'page_url'        => $data['http_referer'],
-					'page_name'       => sanitize_text_field( $data['page_name'] ),
-				),
-				array(
-					'%d',
-					'%s',
-					'%d',
-					'%f',
-					'%d',
-					'%d',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d',
-					'%s',
-					'%d',
-					'%s',
-					'%s',
+			// Check if unique_id already exists
+			$existing_id = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT result_id FROM $table_name WHERE unique_id = %s LIMIT 1",
+					$data['unique_id']
 				)
 			);
+
+			$record = array(
+				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
+				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
+				'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
+				'point_score'     => $data['qmn_array_for_variables']['total_points'],
+				'correct_score'   => $data['qmn_array_for_variables']['total_score'],
+				'correct'         => $data['qmn_array_for_variables']['total_correct'],
+				'total'           => $data['qmn_array_for_variables']['total_questions'],
+				'name'            => $data['qmn_array_for_variables']['user_name'],
+				'business'        => $data['qmn_array_for_variables']['user_business'],
+				'email'           => $data['qmn_array_for_variables']['user_email'],
+				'phone'           => $data['qmn_array_for_variables']['user_phone'],
+				'user'            => $data['qmn_array_for_variables']['user_id'],
+				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
+				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
+				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
+				'quiz_results'    => maybe_serialize( $data['results_array'] ),
+				'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
+				'unique_id'       => $data['unique_id'],
+				'form_type'       => $data['form_type'],
+				'page_url'        => $data['http_referer'],
+				'page_name'       => sanitize_text_field( $data['page_name'] ),
+			);
+
+			$formats = array(
+				'%d',  // quiz_id
+				'%s',  // quiz_name
+				'%d',  // quiz_system
+				'%f',  // point_score
+				'%d',  // correct_score
+				'%d',  // correct
+				'%d',  // total
+				'%s',  // name
+				'%s',  // business
+				'%s',  // email
+				'%s',  // phone
+				'%d',  // user
+				'%s',  // user_ip
+				'%s',  // time_taken
+				'%s',  // time_taken_real
+				'%s',  // quiz_results
+				'%d',  // deleted
+				'%s',  // unique_id
+				'%d',  // form_type
+				'%s',  // page_url
+				'%s',  // page_name
+			);
+
+			if ( 'resubmit' === $action && $existing_id ) {
+				$new_unique_id = uniqid();
+				$record['unique_id'] = $new_unique_id;
+				$res = $wpdb->insert(
+					$table_name,
+					$record,
+					$formats
+				);
+			} else {
+				$res = $wpdb->insert(
+					$table_name,
+					$record,
+					$formats
+				);
+			}
 			if ( false === $res ) {
 				// Throw exception
 				throw new Exception( 'Database insert failed.' );
@@ -2191,6 +2230,7 @@ class QMNQuizManager {
 							)
 						);
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] .' - ' .$qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
+						$result_display .= '<div class="qsm-result-page-warning">' . __( "Sorry, your submission was not successful. Please contact the website administrator.", "quiz-master-next" ) . '</div>';
 					}
 				}
 			}
@@ -2450,6 +2490,7 @@ class QMNQuizManager {
 										'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
 										'case_sensitive'  => $case_sensitive,
+										'answer_limit_keys' => isset( $results_array['answer_limit_keys'] ) ? $results_array['answer_limit_keys'] : '',
 									),
 									$options,
 									$quiz_data
@@ -2534,6 +2575,7 @@ class QMNQuizManager {
 									'question_title'    => isset( $question['settings']['question_title'] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['settings']['question_title'], "Question-{$question_id}", "QSM Questions") : '',
 									'user_compare_text' => $user_compare_text,
 									'case_sensitive'    => $case_sensitive,
+									'answer_limit_keys' => isset( $results_array['answer_limit_keys'] ) ? $results_array['answer_limit_keys'] : '',
 								),
 								$options,
 								$quiz_data

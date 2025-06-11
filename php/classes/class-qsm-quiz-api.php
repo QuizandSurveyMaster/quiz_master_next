@@ -439,6 +439,7 @@ class QSMQuizApi {
 				'numberposts' => 1,
 			));
 
+			$post_status = false;
 			if ( ! empty( $post_ids[0] ) ) {
 				$post_status = get_post_status( $post_ids[0] );
 			}
@@ -470,7 +471,6 @@ class QSMQuizApi {
 
 			$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 			$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
-			$post_status = false;
 
 			if ( 0 != $options->limit_total_entries ) {
 				$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $options->quiz_id ) );

@@ -30,7 +30,7 @@ class QSM_Install {
 		add_action( 'admin_init', array( $this, 'update' ) );
 		add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
-		add_action( 'plugins_loaded', array( $this, 'register_default_settings' ) );
+		add_action( 'init', array( $this, 'register_default_settings' ) );
 	}
 
 	/**
@@ -323,6 +323,21 @@ class QSM_Install {
 				),
 			),
 			'default'    => 1,
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		// Registers prevent_reload setting
+		$field_array = array(
+			'id'         => 'prevent_reload',
+			'label'      => __( 'Prevent accidental page reloads', 'quiz-master-next' ),
+			'type'       => 'checkbox',
+			'options'    => array(
+				array(
+					'label' => __( 'Show confirmation alert before reloading or leaving the page', 'quiz-master-next' ),
+					'value' => 1,
+				),
+			),
+			'default'    => 0,
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );

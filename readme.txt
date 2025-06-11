@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.4
-Stable tag: 10.1.0
+Stable tag: 10.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -221,6 +221,22 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 10.2.1 ( June 11, 2025 ) =
+* Feature: Added option to display random limited answer options including the correct one
+* Enhancement: Added setting to toggle quiz reload warning
+
+= 10.2.0 ( May 21, 2025 ) =
+* Feature: Added server-side validation for contact form fields
+* Feature: Added option to filter questions by type in the question bank
+* Enhancement: Added ability to insert answers at any position
+* Enhancement: Refined UI and messaging for popups and alerts
+* Enhancement: Added alert to prevent accidental reloads
+
+= 10.1.1 ( April 21, 2025 ) =
+* Enhancement: Added option to preload quiz and question feature images
+* Fix: Improved keyboard navigation for quizzes
+* Fix: Compatibility with WordPress 6.8
+
 = 10.1.0 ( April 10, 2025 ) =
 * Feature: Implemented server-side validation for contact form fields
 * Feature: Added option to use responses in other questions

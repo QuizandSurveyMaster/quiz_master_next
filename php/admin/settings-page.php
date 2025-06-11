@@ -75,6 +75,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'enable-preloader', __( 'Enable preloader', 'quiz-master-next' ), array( $this, 'qsm_enable_preloader' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'duplicate-quiz-with-theme', __( 'Duplicate Quiz Controls', 'quiz-master-next' ), array( $this, 'qsm_duplicate_quiz_with_theme' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -200,6 +201,8 @@ class QMNGlobalSettingsPage {
 			'preferred_date_format'                  => 'F j, Y',
 			'default_answers'                        => 1,
 			'correct_answer_logic'                   => 0,
+			'enable-preloader'                       => 0,
+			'enable_server_side_validation'          => 0,
 		);
 	}
 
@@ -582,6 +585,28 @@ class QMNGlobalSettingsPage {
 		echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="qsm-switch-slider round"></span></label>';
 		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+	}
+
+		/**
+	 * Generates Setting Field For Preloader
+	 *
+	 * @since 5.3.0
+	 * @return void
+	 */
+	public function qsm_enable_preloader() {
+		$settings      = (array) get_option( 'qmn-settings' );
+		$enable_preloader = '0';
+		if ( isset( $settings['enable_preloader'] ) ) {
+			$enable_preloader = esc_attr( $settings['enable_preloader'] );
+		}
+		$checked = '';
+		if ( '1' == $enable_preloader ) {
+			$checked = " checked='checked'";
+		}
+		echo '<label class="qsm-checkbox-switch">';
+		echo '<input type="checkbox" name="qmn-settings[enable_preloader]" id="qmn-settings[enable_preloader]" value="1"' . esc_attr( $checked ) . '/>';
+		echo '<span class="qsm-switch-slider round"></span></label>';
+		echo "<span class='global-sub-text' for='qmn-settings[enable_preloader]'>" . esc_html__( 'Enable this option to preload featured images in the quiz', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**

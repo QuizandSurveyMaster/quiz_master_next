@@ -758,7 +758,7 @@ class QMNPluginHelper {
 		$hints       = isset( $question_data['hints'] ) ? $question_data['hints'] : '';
 		$answer_info = isset( $question_data['question_answer_info'] ) ? html_entity_decode( $question_data['question_answer_info'] ) : '';
 
-		$this->qsm_register_language_support( htmlspecialchars_decode( $settings['question_title'], ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
+		$this->qsm_register_language_support( htmlspecialchars_decode( isset($settings['question_title']) ? $settings['question_title'] : '', ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
 		$this->qsm_register_language_support( htmlspecialchars_decode( $question_data['question_name'], ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 		$this->qsm_register_language_support( $hints, "hint-{$question_id}" );
 		$this->qsm_register_language_support( $answer_info, "correctanswerinfo-{$question_id}" );
@@ -1271,5 +1271,23 @@ class QMNPluginHelper {
 			// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 			// ),
 		);
+	}
+
+	public function qsm_get_limited_options( $options, $limit ) {
+		$correct = array_filter( $options, fn( $o, $k ) => 1 == $o[2], ARRAY_FILTER_USE_BOTH );
+		$incorrect = array_filter( $options, fn( $o, $k ) => 0 == $o[2], ARRAY_FILTER_USE_BOTH );
+		shuffle( $incorrect );
+		$final = array_merge( $correct, array_slice( $incorrect, 0, $limit - count( $correct ) ) );
+		shuffle( $final );
+		// $final_keys = array_keys( $final );
+		$final_keys = array_map( fn( $k ) => array_search( $k, array_values( $options ), true ),  $final );
+		return array(
+			'final'             => $final,
+			'answer_limit_keys' => implode( ',', $final_keys ),
+		);
+	}
+
+	public function qsm_get_limited_options_by_keys( $options, $keys ) {
+		return array_map( fn( $k ) => $options[ $k ], explode( ',', $keys ) );
 	}
 }

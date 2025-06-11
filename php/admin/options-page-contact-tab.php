@@ -15,7 +15,7 @@ function qsm_settings_contact_tab() {
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Contact", 'quiz-master-next' ), 'qsm_options_contact_tab_content', 'contact' );
 }
 
-add_action( "plugins_loaded", 'qsm_settings_contact_tab', 5 );
+add_action( "init", 'qsm_settings_contact_tab', 5 );
 
 /**
  * Adds the content for the options for contact tab.
@@ -136,6 +136,23 @@ function qsm_options_contact_tab_content() {
 							</label>
 							<label for="disable_first_page-0">
 								<input type="radio" id="disable_first_page-0" name="disable_first_page" value="0" <?php checked( $quiz_options['disable_first_page'], '0', true )?>>
+								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row" class="qsm-opt-tr">
+						<label for="enable_server_side_validation"><?php esc_html_e( 'Enable server side validation', 'quiz-master-next' ); ?></label>
+					</th>
+					<td>
+						<fieldset class="buttonset buttonset-hide" data-hide="1">
+							<label for="enable_server_side_validation-1">
+								<input type="radio" id="enable_server_side_validation-1" name="enable_server_side_validation" value="1" <?php checked( isset($quiz_options['enable_server_side_validation']) ? $quiz_options['enable_server_side_validation'] : '', '1', true )?>>
+								<?php esc_html_e( 'Yes', 'quiz-master-next' ); ?>
+							</label>
+							<label for="enable_server_side_validation-0">
+								<input type="radio" id="enable_server_side_validation-0" name="enable_server_side_validation" value="0" <?php checked( isset($quiz_options['enable_server_side_validation']) ? $quiz_options['enable_server_side_validation'] : '0', '0', true )?>>
 								<?php esc_html_e( 'No', 'quiz-master-next' ); ?>
 							</label>
 						</fieldset>

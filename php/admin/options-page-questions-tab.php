@@ -20,7 +20,7 @@ function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content', 'questions' );
 }
-add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
+add_action( 'init', 'qsm_settings_questions_tab', 5 );
 
 /**
  * Adds the content for the options for questions tab.
@@ -236,11 +236,9 @@ function qsm_options_questions_tab_content() {
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-2-content">
+					<?php do_action('qsm-question-categories-setting')?>
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
-						<div class="qsm-question-bank-select">
-							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
-						</div>
 						<div class="qsm-question-bank-search">
 							<form action="" method="post" id="question-bank-search-form">
 								<input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>">
@@ -256,6 +254,21 @@ function qsm_options_questions_tab_content() {
 								}
 								?>
 							</select>
+							<select name="question-bank-type" id="question-bank-type">
+								<option value=""><?php esc_html_e( 'All Question Types', 'quiz-master-next' ); ?></option>
+								<?php
+								if ( ! empty( $question_types ) ) {
+									foreach ( $question_types as $type ) {
+										$slug = isset( $type['slug'] ) ? esc_attr( $type['slug'] ) : '';
+										$name = isset( $type['name'] ) ? esc_html( $type['name'] ) : '';
+										echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $name ) . '</option>';
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="qsm-question-bank-select">
+							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
 						</div>
 					</div>
 					<div id="question-bank"></div>
@@ -291,7 +304,7 @@ function qsm_options_questions_tab_content() {
 									</div>
 								</div>
 								<div class="qsm-row">
-									<input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>">
+									<textarea id="question_title" rows="1" class="question-title" name="question-title" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>"></textarea>
 								</div>
 								<a href="javascript:void(0)" class="qsm-show-question-desc-box">+ <?php esc_html_e( 'Edit description', 'quiz-master-next' ); ?></a>
 								<div class="qsm-row qsm-editor-wrap" style="display: none;">
@@ -345,7 +358,7 @@ function qsm_options_questions_tab_content() {
 									</div>
 									<div class="qsm-wrap-add-new-answer">
 										<div class="new-answer-button">
-											<a href="javascript:void(0)" class="qsm-dashed-btn qsm-block-btn" id="new-answer-button">+ <?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
+											<a href="javascript:void(0)" class="button-secondary" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php esc_html_e( 'Add Answer!', 'quiz-master-next' ); ?></a>
 										</div>
 										<?php do_action( 'qsm_question_editor_button_section_after' ); ?>
 									</div>
@@ -428,6 +441,14 @@ function qsm_options_questions_tab_content() {
 											'default'  => '',
 											'priority' => '4',
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'hints', 'quizsurvey-hints_doc' ),
+										),
+										'answer_limit'     => array(
+											'heading'  => __( 'Answer Limit', 'quiz-master-next' ),
+											'label'    => __( 'Answer Limit', 'quiz-master-next' ),
+											'type'     => 'text',
+											'default'  => '',
+											'priority' => '0,1,2,4,10',
+											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_limit', 'quizsurvey-answer_limit_doc' ),
 										),
 										'autofill'         => array(
 											'heading'  => __( 'Autofill', 'quiz-master-next' ),
@@ -764,23 +785,22 @@ function qsm_options_questions_tab_content() {
 				</header>
 				<main class="qsm-popup__content" id="modal-7-content">
 					<form action='' method='post' id="delete-question-form">
-						<table class="modal-7-table">
+						<table class="modal-7-table qsm-popup-table">
+							<tr class="qsm-popup-table-row">
+								<td>
+									<h3><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></h3>
+									<?php esc_html_e( 'Remove this question from the quiz only.', 'quiz-master-next' ); ?></td>
+								<td><button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button></td>
 							<tr>
-								<td><strong style="color:#00449e"><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></strong></td>
-								<td><?php esc_html_e( 'Removes the question only from this quiz.', 'quiz-master-next' ); ?></td>
-							<tr>
-							<tr>
-								<td><strong style="color:#dc3232"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></Strong></td>
-								<td><?php esc_html_e( 'Removes this question from database and everywhere. This action cannot be reversed.', 'quiz-master-next' ); ?>
-								</td>
+							<tr class="qsm-popup-table-row">
+								<td>
+									<h3><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></h3>
+									<?php esc_html_e( 'Permanently remove this question from all quizzes and the database. This cannot be undone.', 'quiz-master-next' ); ?></td>
+								<td><button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button></td>
 							<tr>
 						</table>
 					</form>
 				</main>
-				<footer class="qsm-popup__footer">
-					<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
-					<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
-				</footer>
 			</div>
 		</div>
 	</div>
@@ -1461,7 +1481,10 @@ function qsm_options_questions_tab_template() {
 	<!-- View for single answer -->
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
-			<div class="remove-answer-icon"><a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-remove"></span></a></div>
+			<div class="remove-answer-icon">
+				<a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-minus"></span></a>
+				<a href="javascript:void(0)" class="qsm-add-answer-button"><span class="dashicons dashicons-plus"></span></a>
+			</div>
 			<?php do_action( 'qsm_admin_single_answer_option_fields_before' ); ?>
 			<div class="answer-text-div qsm-editor-wrap">
 				<# if ( 'rich' == data.answerType ) { #>

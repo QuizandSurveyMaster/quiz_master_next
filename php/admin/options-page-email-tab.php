@@ -19,7 +19,7 @@ function qsm_settings_email_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Emails', 'quiz-master-next' ), 'qsm_options_emails_tab_content', 'emails' );
 }
-add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
+add_action( 'init', 'qsm_settings_email_tab', 5 );
 
 /**
  * Creates the email content that is displayed on the email tab.
@@ -132,11 +132,6 @@ function qsm_options_emails_tab_content() {
 							if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
 								$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
 								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
-								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
-							}
-							if ( ( ! class_exists( 'QSM_Advance_Certificate' ) ) && ( 'Advance Certificate' == $category_name ) ) {
-								$upgrade_link = qsm_get_plugin_link( 'downloads/advance-certificate/' );
-								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advance-certificate-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
 							?>
@@ -319,14 +314,20 @@ function qsm_options_emails_tab_template() {
 									qsm_varaible_list[qsm_variable] = variable_name.slice(0, -2);
 								}
 							}
-							if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
-								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
-							} else if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
+							if (/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs.test(match)) {
 								return match.replace(/\[qsm[^\]]*\](.*?)\[\/qsm[^\]]*\]/gs, function(innerMatch, emailcontent) {
 									const openingTag = innerMatch.match(/\[qsm[^\]]*\]/)[0];
 									const closingTag = innerMatch.match(/\[\/qsm[^\]]*\]/)[0];
-									return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${emailcontent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
+									const processedContent = emailcontent.replace(/%([^%]+)%/g, function(varMatch, varName) {
+										if (qsm_is_substring_in_array(varMatch, qsm_varaible_list)) {
+											return '<qsmvariabletag>' + varName + '</qsmvariabletag>';
+										}
+										return varMatch; // Return unchanged if not a valid variable
+									});
+									return `<qsmextrashortcodetag>${openingTag}</qsmextrashortcodetag>${processedContent}<qsmextrashortcodetag>${closingTag}</qsmextrashortcodetag>`;
 								});
+							} else if (qsm_is_substring_in_array(match, qsm_varaible_list)) {
+								return '<qsmvariabletag>' + capturedValue + '</qsmvariabletag>';
 							} else {
 								return match;
 							}
