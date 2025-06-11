@@ -127,7 +127,7 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 	$return_array['points']         = $current_question->get_points();
 	$return_array['user_answer']    = $user_text_array;
 	$return_array['correct_answer'] = $correct_text_array;
-	$return_array['answer_limit_keys'] = isset( $_POST['answer_limit_keys_'.$id] ) ? sanitize_text_field( wp_unslash( $_POST['answer_limit_keys_'.$id] ) ) : '';
+	$return_array['answer_limit_keys'] = isset( $_POST[ 'answer_limit_keys_'.$id ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'answer_limit_keys_'.$id ] ) ) : '';
 	/**
 	 * Hook to filter answers array
 	 */
