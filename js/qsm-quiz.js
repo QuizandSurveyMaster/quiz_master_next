@@ -883,7 +883,7 @@ function getFormData($form) {
 
 	return indexed_array;
 }
-var qsmAllowPageUnload = false;
+
 function qmnFormSubmit(quiz_form_id, $this) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	let $container = jQuery($this).closest('.qmn_quiz_container');
