@@ -85,7 +85,7 @@ function qsm_generate_results_details_tab() {
             </a>
         </div>
     </div>
-    <?php 
+    <?php
     return;
     }
 	// Prepare plugin helper.

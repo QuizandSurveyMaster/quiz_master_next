@@ -110,7 +110,7 @@ function qsm_results_overview_tab_content() {
 	$current_subtab = isset( $_GET['subtab'] ) ? sanitize_key( $_GET['subtab'] ) : '';
 	do_action('qsm_before_admin_show_results_list', $get_subtabs, $current_subtab);
 
-	if ( ( empty( $get_subtabs ) || '' === $current_subtab ) ) {
+	if ( empty( $get_subtabs ) || '' === $current_subtab ) {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
