@@ -74,13 +74,15 @@ function qsm_generate_results_details_tab() {
     $results_data = apply_filters( 'qsm_admin_result_page_before', $results_data );
 
     if ( empty($results_data) ) {
-        $resultpage_link = admin_url('admin.php?page=qsm_quiz_result_details');
+        $resultpage_link = admin_url('admin.php?page=mlw_quiz_results');
     ?>
     <div id="qsm-dashboard-error-container">
         <div class="qsm-dashboard-error-content">
-            <h3><?php esc_html_e('Quiz Result Not Found', 'quiz-master-next'); ?></h3>
-            <p><?php esc_html_e('Click the back to results button.', 'quiz-master-next'); ?></p>
-            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn" ><?php esc_html_e('Back To Results', 'quiz-master-next'); ?></a>
+            <h3><?php esc_html_e('Quiz Result Not Available', 'quiz-master-next'); ?></h3>
+            <p><?php esc_html_e('The quiz result you are trying to view could not be found. Please return to the results page.', 'quiz-master-next'); ?></p>
+            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn">
+                <?php esc_html_e('Back to All Results', 'quiz-master-next'); ?>
+            </a>
         </div>
     </div>
     <?php 
