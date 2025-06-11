@@ -1914,9 +1914,9 @@ jQuery(document).ready(function () {
         document.getElementById('mlw_code_captcha').value = mlw_code;
 	}
 	window.onbeforeunload =  function (e) {
-		var startButton = jQuery('.qsm-quiz-container .qsm-submit-btn');
-		var quiz_id = jQuery('.qsm-quiz-container .qmn_quiz_id').val();
-		var flag = false;
+		let startButton = jQuery('.qsm-quiz-container .qsm-submit-btn');
+		let quiz_id = jQuery('.qsm-quiz-container .qmn_quiz_id').val();
+		let flag = false;
 		if( startButton.length ){
 			flag = true;
 		}
