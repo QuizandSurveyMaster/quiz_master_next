@@ -80,7 +80,7 @@ function qsm_generate_results_details_tab() {
         <div class="qsm-dashboard-error-content">
             <h3><?php esc_html_e('Quiz Result Not Found', 'quiz-master-next'); ?></h3>
             <p><?php esc_html_e('Click the back to results button.', 'quiz-master-next'); ?></p>
-            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn" target="_blank"><?php esc_html_e('Back To Results', 'quiz-master-next'); ?></a>
+            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn" ><?php esc_html_e('Back To Results', 'quiz-master-next'); ?></a>
         </div>
     </div>
     <?php 
