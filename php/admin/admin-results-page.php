@@ -106,6 +106,11 @@ function qsm_delete_results_attachments( $rows_before_update ) {
     }
 }
 function qsm_results_overview_tab_content() {
+	$get_subtabs = apply_filters( 'qsm_ultimate_get_subtabs_options', array() );
+	$current_subtab = isset( $_GET['subtab'] ) ? sanitize_key( $_GET['subtab'] ) : '';
+	do_action('qsm_before_admin_show_results_list', $get_subtabs, $current_subtab);
+
+	if ( empty( $get_subtabs ) || '' === $current_subtab ) {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
@@ -691,6 +696,8 @@ function qsm_results_overview_tab_content() {
 		);
 		qsm_admin_upgrade_popup($qsm_pop_up_arguments);
 	}
+	}
+	do_action('qsm_ultimate_display_actiivity_report_section');
 }
 
 function qsm_export_results_tabs_content() {

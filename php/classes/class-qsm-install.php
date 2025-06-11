@@ -326,6 +326,21 @@ class QSM_Install {
 			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		// Registers prevent_reload setting
+		$field_array = array(
+			'id'         => 'prevent_reload',
+			'label'      => __( 'Prevent accidental page reloads', 'quiz-master-next' ),
+			'type'       => 'checkbox',
+			'options'    => array(
+				array(
+					'label' => __( 'Show confirmation alert before reloading or leaving the page', 'quiz-master-next' ),
+					'value' => 1,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		/* ===== Generat tab end ======== */
 		/* ===== Submission tab start ======== */
 		$field_array = array(
