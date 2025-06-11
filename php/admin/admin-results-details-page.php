@@ -30,9 +30,16 @@ function qsm_generate_result_details() {
             if ( $active_tab === $tab['slug'] ) {
                 $active_class = ' nav-tab-active';
             }
-            $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
+            $result_id = isset( $_GET['result_id'] ) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : '';
+            $link = esc_url(add_query_arg(array(
+				'page'      => 'qsm_quiz_result_details',
+				'result_id' => $result_id,
+				'tab'       => isset($tab['slug']) ? $tab['slug'] : '',
+			), admin_url('admin.php')));
 
-            echo '<a href="?page=qsm_quiz_result_details&result_id='.esc_attr( $result_id ).'&tab='.esc_attr( $tab['slug'] ).'" class="nav-tab '.esc_attr( $active_class ).'">' . esc_html( $tab['title'] ) . '</a>';
+            $link = apply_filters( 'qsm_admin_before_results_details_page_link', $link, $tab['slug'] );
+
+            echo '<a href="'.esc_url($link).'" class="nav-tab '.esc_attr( $active_class ).'">' . esc_html( $tab['title'] ) . '</a>';
         }
         ?>
         </h2>
@@ -65,6 +72,22 @@ function qsm_generate_results_details_tab() {
     $result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
     $results_data = apply_filters( 'qsm_admin_result_page_before', $results_data );
+
+    if ( empty($results_data) ) {
+        $resultpage_link = admin_url('admin.php?page=mlw_quiz_results');
+    ?>
+    <div id="qsm-dashboard-error-container">
+        <div class="qsm-dashboard-error-content">
+            <h3><?php esc_html_e('Quiz Result Not Available', 'quiz-master-next'); ?></h3>
+            <p><?php esc_html_e('The quiz result you are trying to view could not be found. Please return to the results page.', 'quiz-master-next'); ?></p>
+            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn">
+                <?php esc_html_e('Back to All Results', 'quiz-master-next'); ?>
+            </a>
+        </div>
+    </div>
+    <?php
+    return;
+    }
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );

@@ -222,7 +222,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 
 == Changelog ==
 = 10.2.1 ( June 11, 2025 ) =
-* Feature: Added option to load limited answers randomly
+* Feature: Added option to display random limited answer options including the correct one
 * Enhancement: Added setting to toggle quiz reload warning
 
 = 10.2.0 ( May 21, 2025 ) =
