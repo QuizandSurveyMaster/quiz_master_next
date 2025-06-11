@@ -1280,7 +1280,7 @@ class QMNPluginHelper {
 		$final = array_merge( $correct, array_slice( $incorrect, 0, $limit - count( $correct ) ) );
 		shuffle( $final );
 		// $final_keys = array_keys( $final );
-		$final_keys = array_map( fn( $k ) => array_search( $k, array_values( $options ) ),  $final );
+		$final_keys = array_map( fn( $k ) => array_search( $k, array_values( $options ), true ),  $final );
 		return array(
 			'final'             => $final,
 			'answer_limit_keys' => implode( ',', $final_keys ),

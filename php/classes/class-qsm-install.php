@@ -329,11 +329,11 @@ class QSM_Install {
 		// Registers prevent_reload setting
 		$field_array = array(
 			'id'         => 'prevent_reload',
-			'label'      => __( 'Prevent reload', 'quiz-master-next' ),
+			'label'      => __( 'Prevent accidental page reloads', 'quiz-master-next' ),
 			'type'       => 'checkbox',
 			'options'    => array(
 				array(
-					'label' => __( 'Enable this option to prevent reload', 'quiz-master-next' ),
+					'label' => __( 'Show confirmation alert before reloading or leaving the page', 'quiz-master-next' ),
 					'value' => 1,
 				),
 			),

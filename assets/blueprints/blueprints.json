@@ -1,0 +1,43 @@
+{
+  "landingPage": "/wp-admin/index.php",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "features": {
+    "networking": true
+  },
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "admin123"
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "quiz-master-next"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire_once '/wordpress/wp-load.php';\n\n$role = get_role('administrator');\nif ($role && !$role->has_cap('edit_others_qsm_quizzes')) {\n    $role->add_cap('edit_others_qsm_quizzes');\n    echo \"Capability 'edit_others_qsm_quizzes' added to administrator.\";\n} else {\n    echo \"Capability already exists or role not found.\";\n}"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire_once '/wordpress/wp-load.php';\n\n// Clear existing posts to start fresh\n$posts = get_posts(array(\n  'numberposts' => -1,\n  'post_type'   => array('post', 'page'),\n  'post_status' => 'any',\n  'exclude'     => get_option('page_on_front')\n));\n\nforeach ($posts as $post) {\n  wp_delete_post($post->ID, true);\n}\n\n// Clear any existing QSM quizzes if needed\nglobal $wpdb;\n$quiz_table = $wpdb->prefix . 'mlw_quizzes';\n\n$table_exists = $wpdb->get_var(\"SHOW TABLES LIKE '$quiz_table'\");\nif ($table_exists) {\n  $wpdb->query(\"UPDATE $quiz_table SET deleted = 1 WHERE system = 0\");\n  \n  $question_table = $wpdb->prefix . 'mlw_questions';\n  if ($wpdb->get_var(\"SHOW TABLES LIKE '$question_table'\")) {\n    $wpdb->query(\"UPDATE $question_table SET deleted = 1\");\n  }\n  \n  $results_table = $wpdb->prefix . 'mlw_results';\n  if ($wpdb->get_var(\"SHOW TABLES LIKE '$results_table'\")) {\n    $wpdb->query(\"TRUNCATE TABLE $results_table\");\n  }\n}"
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire_once '/wordpress/wp-load.php';\n\nif (!function_exists('is_plugin_active')) {\n    include_once(ABSPATH . 'wp-admin/includes/plugin.php');\n}\n\nif (!is_plugin_active('quiz-master-next/mlw_quizmaster2.php')) {\n    echo \"QSM plugin is not active. Activating...\";\n    activate_plugin('quiz-master-next/mlw_quizmaster2.php');\n}\n\nglobal $wpdb;\n$quiz_table = $wpdb->prefix . 'mlw_quizzes';\nif (!$wpdb->get_var(\"SHOW TABLES LIKE '$quiz_table'\")) {\n    echo \"QSM tables not found. Running installation...\";\n    if (class_exists('QSM_Install')) {\n        QSM_Install::install();\n    }\n}\n\n$quiz_name = 'Sample QSM Quiz';\n$theme_id = 'primary';\n\n$quiz_settings = array(\n    'quiz_options' => array(\n        'form_type' => 0,\n        'system' => 0,\n        'require_log_in' => 0,\n        'pagination' => 0,\n        'timer_limit' => 0,\n        'randomness_order' => 0,\n        'scheduled_time_start' => '',\n        'scheduled_time_end' => ''\n    ),\n    'quiz_text' => array(\n        'message_before' => 'Welcome to our sample quiz!',\n        'message_comment' => 'Feel free to provide feedback',\n        'message_end_template' => '',\n        'message_after' => 'Thanks for taking our quiz!',\n        'submit_button_text' => 'Submit',\n        'name_field_text' => 'Name',\n        'business_field_text' => 'Business',\n        'email_field_text' => 'Email',\n        'phone_field_text' => 'Phone',\n        'comment_field_text' => 'Comments'\n    ),\n    'quiz_result_settings' => array(\n        'results_page_fb_sharing' => 0,\n        'results_page_twitter_sharing' => 0\n    )\n);\n\nif (class_exists('QMNQuizCreator')) {\n    $quiz_creator = new QMNQuizCreator();\n    $quiz_creator->create_quiz($quiz_name, $theme_id, $quiz_settings);\n    \n    $quiz_id = $wpdb->insert_id;\n    echo \"Created quiz with ID: $quiz_id using QMNQuizCreator\";\n} else {\n    echo \"QMNQuizCreator class not found. Cannot create quiz.\";\n    exit;\n}\n\n$quiz_post = array(\n    'post_title'    => $quiz_name,\n    'post_content'  => \"[qsm quiz=\\\"$quiz_id\\\"]\",\n    'post_status'   => 'publish',\n    'post_author'   => 1,\n    'post_type'     => 'qsm_quiz'\n);\n\n$quiz_post_id = wp_insert_post($quiz_post);\n\nif ($quiz_post_id && !is_wp_error($quiz_post_id)) {\n    add_post_meta($quiz_post_id, 'quiz_id', $quiz_id);\n    echo \"Created quiz post with ID: $quiz_post_id\";\n}\n\n$post_content = '<!-- wp:paragraph -->\n<p>Welcome to our demo quiz page!</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:shortcode -->\n[qsm quiz=\"' . $quiz_id . '\"]\n<!-- /wp:shortcode -->';\n\n$post_data = array(\n    'post_title'    => 'QSM Quiz Demo',\n    'post_content'  => $post_content,\n    'post_status'   => 'publish',\n    'post_type'     => 'page',\n    'post_author'   => 1\n);\n\n$post_id = wp_insert_post($post_data);\n\nif (is_wp_error($post_id)) {\n    echo \"Error creating page: \" . $post_id->get_error_message();\n} else {\n    echo \"Created page with ID: $post_id\";\n    update_option('page_on_front', $post_id);\n    update_option('show_on_front', 'page');\n}"
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "Quiz Master Next Test Site",
+        "blogdescription": "Automated Quiz Master Next Preview"
+      }
+    }
+  ]
+}
