@@ -1995,14 +1995,24 @@ class QMNQuizManager {
 				)
 			);
 
+			global $mlwQuizMasterNext;
+			$quiz_id_for_setting = $data['qmn_array_for_variables']['quiz_id'];
+			// It's good practice to ensure settings are loaded for the specific quiz ID
+			// however, pluginHelper->prepare_quiz might have already been called in submit_results.
+			// If not, this ensures it.
+			if ( ! isset($mlwQuizMasterNext->quiz_settings) || $mlwQuizMasterNext->quiz_settings->quiz_id != $quiz_id_for_setting ) {
+				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id_for_setting );
+			}
+			$grading_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'grading_system', 'correct_incorrect' );
+
 			$record = array(
 				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
 				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
 				'quiz_system'     => $data['qmn_array_for_variables']['quiz_system'],
-				'point_score'     => $data['qmn_array_for_variables']['total_points'],
-				'correct_score'   => $data['qmn_array_for_variables']['total_score'],
-				'correct'         => $data['qmn_array_for_variables']['total_correct'],
-				'total'           => $data['qmn_array_for_variables']['total_questions'],
+				'point_score'     => ($grading_system === 'none') ? 0 : $data['qmn_array_for_variables']['total_points'],
+				'correct_score'   => ($grading_system === 'none') ? 0 : $data['qmn_array_for_variables']['total_score'],
+				'correct'         => ($grading_system === 'none') ? 0 : $data['qmn_array_for_variables']['total_correct'],
+				'total'           => $data['qmn_array_for_variables']['total_questions'], // Total questions remains the same
 				'name'            => $data['qmn_array_for_variables']['user_name'],
 				'business'        => $data['qmn_array_for_variables']['user_business'],
 				'email'           => $data['qmn_array_for_variables']['user_email'],
@@ -2348,6 +2358,9 @@ class QMNQuizManager {
 	 */
 	public static function check_answers( $options, $quiz_data ) {
 		global $mlwQuizMasterNext;
+		// Get the grading system setting for the current quiz
+		$grading_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'grading_system', 'correct_incorrect' );
+
 		$new_questions = array();
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
@@ -2422,40 +2435,67 @@ class QMNQuizManager {
 							// Reset question-specific variables.
 							$user_answer    = '';
 							$correct_answer = '';
-							$correct_status = 'incorrect';
+							$correct_status = ($grading_system === 'none') ? 'ungraded' : 'incorrect'; // Default status
 							$answer_points  = 0;
 
-							// Get maximum and minimum points for the quiz.
-							if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-								$max_min_result           = self::qsm_max_min_points( $options, $question );
-								$total_possible_points   += $max_min_result['max_point'];
-								$minimum_possible_points += $max_min_result['min_point'];
-							}
-
-							// Send question to our grading function
+							// Send question to our grading function to get user's answer text, etc.
 							$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
 							$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
-							// If question was graded correctly.
-							if ( ! isset( $results_array['null_review'] ) ) {
-								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-									$points_earned += $results_array['points'] ? $results_array['points'] : 0;
-									$answer_points += $results_array['points'] ? $results_array['points'] : 0;
-								}
 
-								// If the user's answer was correct
-								if ( ! empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-									$total_correct += 1;
-									$correct_status = 'correct';
-								}
-								$user_answer       = $results_array['user_text'];
-								$correct_answer    = $results_array['correct_text'];
+							if ($grading_system === 'none') {
+								$correct_status = 'ungraded';
+								$answer_points  = 0;
+								// We still need user_answer and correct_answer for display purposes if configured
+								$user_answer    = isset($results_array['user_text']) ? $results_array['user_text'] : '';
+								$correct_answer = isset($results_array['correct_text']) ? $results_array['correct_text'] : ''; // Keep correct answer for display
 								$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
-
 								if ( '' !== trim( $user_answer ) ) {
 									$attempted_question++;
 								}
+								// Max/min points are not relevant for 'none' grading system for scoring, but might be for display
+								if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$max_min_result           = self::qsm_max_min_points( $options, $question );
+									$total_possible_points   += $max_min_result['max_point']; // Or set to 0 if not needed for display
+									$minimum_possible_points += $max_min_result['min_point']; // Or set to 0
+								}
 
-								// If a comment was submitted
+							} else {
+								// Existing logic for 'points' or 'correct_incorrect'
+								// Get maximum and minimum points for the quiz.
+								if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$max_min_result           = self::qsm_max_min_points( $options, $question );
+									$total_possible_points   += $max_min_result['max_point'];
+									$minimum_possible_points += $max_min_result['min_point'];
+								}
+
+								// If question was graded correctly.
+								if ( ! isset( $results_array['null_review'] ) ) {
+									if ($grading_system !== 'none') { // Apply scoring only if not 'none'
+										if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+											$points_earned += $results_array['points'] ? $results_array['points'] : 0;
+											$answer_points += $results_array['points'] ? $results_array['points'] : 0;
+										}
+
+										// If the user's answer was correct
+										if ( ! empty( $results_array['correct'] ) && 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+											$total_correct += 1;
+											$correct_status = 'correct';
+										}
+									}
+									$user_answer       = isset($results_array['user_text']) ? $results_array['user_text'] : '';
+									$correct_answer    = isset($results_array['correct_text']) ? $results_array['correct_text'] : '';
+									if ($grading_system === 'none') {
+										$correct_answer = ''; // Clear correct answer if no grading for results processing
+									}
+									$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
+
+									if ( '' !== trim( $user_answer ) ) {
+										$attempted_question++;
+									}
+								}
+							}
+
+							// If a comment was submitted
 								if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
 									$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
 								} else {
@@ -2515,33 +2555,58 @@ class QMNQuizManager {
 						// Reset question-specific variables.
 						$user_answer    = '';
 						$correct_answer = '';
-						$correct_status = 'incorrect';
+						$correct_status = ($grading_system === 'none') ? 'ungraded' : 'incorrect'; // Default status
 						$answer_points  = 0;
 
-						// Get maximum and minimum points for the quiz.
-						$max_min_result           = self::qsm_max_min_points( $options, $question );
-						$total_possible_points   += $max_min_result['max_point'];
-						$minimum_possible_points += $max_min_result['min_point'];
-
-						// Send question to our grading function
+						// Send question to our grading function to get user's answer text, etc.
 						$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
 						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
-						// If question was graded correctly.
-						if ( ! isset( $results_array['null_review'] ) ) {
-							$points_earned += isset($results_array['points']) ? (float)$results_array['points'] : 0;
-							$answer_points += isset($results_array['points']) ? (float)$results_array['points'] : 0;
-							// If the user's answer was correct.
-							if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
-								$total_correct += 1;
-								$correct_status = 'correct';
-							}
-							$user_answer       = $results_array['user_text'];
-							$correct_answer    = $results_array['correct_text'];
+
+						if ($grading_system === 'none') {
+							$correct_status = 'ungraded';
+							$answer_points  = 0;
+							$user_answer    = isset($results_array['user_text']) ? $results_array['user_text'] : '';
+							$correct_answer = isset($results_array['correct_text']) ? $results_array['correct_text'] : '';
 							$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
 							if ( '' !== trim( $user_answer ) ) {
 								$attempted_question++;
 							}
-							// If a comment was submitted.
+							// Max/min points are not relevant for 'none' grading system for scoring
+							if ( ! in_array( intval( $question['question_id'] ), $hidden_questions, true ) ) {
+								$max_min_result           = self::qsm_max_min_points( $options, $question );
+								$total_possible_points   += $max_min_result['max_point']; // Or set to 0
+								$minimum_possible_points += $max_min_result['min_point']; // Or set to 0
+							}
+						} else {
+							// Existing logic for 'points' or 'correct_incorrect'
+							// Get maximum and minimum points for the quiz.
+							$max_min_result           = self::qsm_max_min_points( $options, $question );
+							$total_possible_points   += $max_min_result['max_point'];
+							$minimum_possible_points += $max_min_result['min_point'];
+
+							// If question was graded correctly.
+							if ( ! isset( $results_array['null_review'] ) ) {
+								if ($grading_system !== 'none') { // Apply scoring only if not 'none'
+									$points_earned += isset($results_array['points']) ? (float)$results_array['points'] : 0;
+									$answer_points += isset($results_array['points']) ? (float)$results_array['points'] : 0;
+									// If the user's answer was correct.
+									if ( isset( $results_array['correct'] ) && ( 'correct' == $results_array['correct'] ) ) {
+										$total_correct += 1;
+										$correct_status = 'correct';
+									}
+								}
+								$user_answer       = isset($results_array['user_text']) ? $results_array['user_text'] : '';
+								$correct_answer    = isset($results_array['correct_text']) ? $results_array['correct_text'] : '';
+								if ($grading_system === 'none') {
+									$correct_answer = ''; // Clear correct answer if no grading for results processing
+								}
+								$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
+								if ( '' !== trim( $user_answer ) ) {
+									$attempted_question++;
+								}
+							}
+						}
+						// If a comment was submitted.
 							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
 								$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
 							} else {
@@ -2594,10 +2659,18 @@ class QMNQuizManager {
 
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-		if ( 0 !== $total_questions ) {
-			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
+		if ($grading_system !== 'none') {
+			if ( 0 !== $total_questions && ( $total_questions - count( $hidden_questions ) ) > 0 ) { // Avoid division by zero
+				$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
+			} else {
+				$total_score = 0;
+			}
 		} else {
 			$total_score = 0;
+			$points_earned = 0; // Ensure points are zeroed out if no grading
+			$total_correct = 0; // Ensure total correct is zero
+			$total_possible_points = 0; // Ensure total possible points is zero
+			$minimum_possible_points = 0; // Ensure min possible points is zero
 		}
 
 		// Return array to be merged with main user response array

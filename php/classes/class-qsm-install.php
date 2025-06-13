@@ -67,6 +67,31 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers quiz-specific grading_system setting
+		$field_array = array(
+			'id'         => 'grading_system',
+			'label'      => __( 'Grading System (Quiz Specific)', 'quiz-master-next' ),
+			'type'       => 'select',
+			'options'    => array(
+				array(
+					'label' => __( 'Points', 'quiz-master-next' ),
+					'value' => 'points',
+				),
+				array(
+					'label' => __( 'Correct/Incorrect', 'quiz-master-next' ),
+					'value' => 'correct_incorrect',
+				),
+				array(
+					'label' => __( 'No Grading System', 'quiz-master-next' ),
+					'value' => 'none',
+				),
+			),
+			'default'    => 'correct_incorrect',
+			'help'       => __( 'Select the grading system for this specific quiz. This will override the global default if set.', 'quiz-master-next' ),
+			'option_tab' => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers system setting
 		$field_array = array(
 

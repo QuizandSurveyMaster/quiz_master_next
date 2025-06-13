@@ -751,6 +751,8 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			),
 		);
 		$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+		// Add the new grading system option.
+		$quiz_setting_option = qsm_add_custom_grading_system_option( $quiz_setting_option );
 		$fields = array();
 		foreach ( $quiz_setting_option as $key => $single_setting ) {
 			$single_setting['id'] = $key;
@@ -766,6 +768,41 @@ if ( ! function_exists( 'qsm_settings_to_create_quiz' ) ) {
 			return $fields;
 		}
 	}
+}
+
+/**
+ * Adds a custom grading system option to the quiz settings.
+ *
+ * @since NEXT_VERSION
+ * @param array $settings The existing quiz settings options.
+ * @return array The modified quiz settings options.
+ */
+function qsm_add_custom_grading_system_option( $settings ) {
+	global $globalQuizsetting; // Not ideal to rely on global, but consistent with existing code.
+	$settings['grading_system'] = array(
+		'label'   => __( 'Grading System (Quiz Specific)', 'quiz-master-next' ), // Changed label to avoid confusion
+		'id'      => 'grading_system', // Explicitly set id
+		'value'   => isset( $globalQuizsetting['grading_system'] ) ? $globalQuizsetting['grading_system'] : 'correct_incorrect', // Set default value
+		'default' => 'correct_incorrect',
+		'type'    => 'select',
+		'options' => array(
+			array(
+				'label' => __( 'Points', 'quiz-master-next' ),
+				'value' => 'points',
+			),
+			array(
+				'label' => __( 'Correct/Incorrect', 'quiz-master-next' ),
+				'value' => 'correct_incorrect',
+			),
+			array(
+				'label' => __( 'No Grading System', 'quiz-master-next' ),
+				'value' => 'none',
+			),
+		),
+		'help'    => __( 'Select the grading system for this specific quiz. This will override the global default if set.', 'quiz-master-next' ),
+		'section' => 'quiz_options', // Ensure it appears in the options tab
+	);
+	return $settings;
 }
 
 /**
