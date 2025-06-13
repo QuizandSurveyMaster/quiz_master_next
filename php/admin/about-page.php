@@ -138,7 +138,7 @@ function qsm_generate_about_page() {
  */
 function qsm_documentation_meta_box_content() {
 	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qsm_result_page_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+	wp_enqueue_style( 'qsm_result_page_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css', array(), $mlwQuizMasterNext->version );
 	?>
 	<div class="help-slide">
 		<div>
@@ -155,9 +155,9 @@ function qsm_documentation_meta_box_content() {
 		</div>
 		<div>
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/services.png' )?> " alt="services">
-			<h3><?php esc_html_e( 'Need Customization Service?', 'quiz-master-next' ); ?></h3>
+			<h3><?php esc_html_e( 'See All Services', 'quiz-master-next' ); ?></h3>
 			<p><?php esc_html_e( 'Tailor Quiz and Survey Master to your specific needs with our professional customization services for unique functionality.', 'quiz-master-next' ); ?></p>
-			<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'qsm', 'help', 'about_help_documentation' ) );?>" rel="noopener" target="_blank"><?php esc_html_e( 'Documentation', 'quiz-master-next' ); ?></a>
+			<a href="<?php echo esc_url( qsm_get_utm_link( 'https://justhyre.com/customize-qsm/', 'qsm', 'help', 'see_all_services' ) ); ?>" rel="noopener" target="_blank"><?php esc_html_e( 'See All Services', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
