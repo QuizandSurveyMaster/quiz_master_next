@@ -395,7 +395,7 @@ input#image_size-width {
 	width: 100%;
 	box-sizing: border-box;
 	overflow-y: auto;
-	max-height: calc(100vh - 230px);
+	max-height: calc(100vh - 285px);
 	flex-wrap: nowrap;
 	flex-direction: column;
 	padding: 0 20px 20px;
