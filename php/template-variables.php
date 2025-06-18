@@ -1362,13 +1362,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWERS_DEFAULT%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 	}
-	$close_span_with_br = '</span><br/>';
+	$close_span_tag = '</span>';
 	if ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( '.jpg' === $file_extension || '.jpeg' === $file_extension || '.png' === $file_extension || '.gif' === $file_extension ) {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$answer[1]'/>$close_span_with_br", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$answer[1]'/>$close_span_tag", $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_tag, $mlw_question_answer_display );
 		}
 	} elseif ( 13 == $answer['question_type'] ) {
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
@@ -1425,12 +1425,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $images_answer, $mlw_question_answer_display );
 			} else {
-				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $open_span_tag . '<img src="' . esc_url( $image_url ) . '"  style="' . esc_attr( $size_style ) . '"/>' . $close_span_with_br . $caption, $mlw_question_answer_display );
+				$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $open_span_tag . '<img src="' . esc_url( $image_url ) . '"  style="' . esc_attr( $size_style ) . '"/>' . $close_span_tag . $caption, $mlw_question_answer_display );
 			}
 		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_tag, $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . do_shortcode( $user_answer_new ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . do_shortcode( $user_answer_new ) . $close_span_tag, $mlw_question_answer_display );
 		}
 }
 	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], 'answer-' . $answer[2], 'QSM Answers' ) : 'NA';
