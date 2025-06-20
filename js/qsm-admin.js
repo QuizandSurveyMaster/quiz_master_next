@@ -4216,6 +4216,7 @@ var QSM_Quiz_Broadcast_Channel;
                     var newVal = $(this).val();
                     if (confirm(qsm_admin_messages.question_reset_message)) {
                         $('#answers').find('.answers-single').remove();
+                        $('#new-answer-button').show();
                         $('#image_size_area').hide();
                         if ('image' === newVal) {
                             $('#image_size_area').show();
