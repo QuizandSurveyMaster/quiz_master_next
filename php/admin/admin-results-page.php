@@ -561,10 +561,7 @@ function qsm_results_overview_tab_content() {
 				<?php
 				$co = ! empty( $quiz_infos ) ? count( $quiz_infos ) : 0;
 				if ( $co > 0 ) {
-					for ( $x = 0; $x < $co; $x++ ) {
-						echo"<pre>";
-						print_r($quiz_infos[ $x ]);
-						echo"</pre>";
+					for ( $x = 0; $x < $co; $x++ ) { 
 						?>
 						<tr>
 							<td style="text-align: center;">
