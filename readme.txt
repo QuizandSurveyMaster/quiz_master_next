@@ -221,6 +221,10 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 10.2.2 ( June 24, 2025 ) =
+* Bug: Fixed issue with answer type options
+* Enhancement: Improved question bank popup UI
+
 = 10.2.1 ( June 11, 2025 ) =
 * Feature: Added option to display a limited number of random answer choices, always including the correct one
 * Enhancement: Added setting to toggle quiz reload warning

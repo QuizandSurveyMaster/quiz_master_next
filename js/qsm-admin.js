@@ -3612,7 +3612,9 @@ var QSM_Quiz_Broadcast_Channel;
                 question_type_change: function (previous_question_val, questionID) {
                     //you can override this object
                     var ans_type = $('#change-answer-editor').val();
-                    if (($.inArray(questionID, [0, 1, 4, 10, 15, 18]) === -1 || 2 == questionID) && 'text' !== ans_type) {
+                    if (($.inArray( parseInt( questionID ), [0, 1, 4, 10, 15, 18]) === -1 || 2 == parseInt( questionID )) && 'text' !== ans_type) {
+                        console.log(ans_type);
+                        console.log(questionID);
                         $('#change-answer-editor').val('text');
                         $('.answers-single').remove();
                     }
