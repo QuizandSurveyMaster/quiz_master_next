@@ -561,7 +561,7 @@ function qsm_results_overview_tab_content() {
 				<?php
 				$co = ! empty( $quiz_infos ) ? count( $quiz_infos ) : 0;
 				if ( $co > 0 ) {
-					for ( $x = 0; $x < $co; $x++ ) { 
+					for ( $x = 0; $x < $co; $x++ ) {
 						?>
 						<tr>
 							<td style="text-align: center;">
@@ -571,7 +571,7 @@ function qsm_results_overview_tab_content() {
 								<span style="font-size: 16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span>
 								<div class="row-actions">
 									<span style="color: green; font-size: 16px;">
-									<?php do_action('qsm_admin_quiz_results_page_rowactions_before', $quiz_infos[ $x ]); 
+									<?php do_action('qsm_admin_quiz_results_page_rowactions_before', $quiz_infos[ $x ]);
 									if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $quiz_infos[ $x ]->user ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
 									?>
 										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
