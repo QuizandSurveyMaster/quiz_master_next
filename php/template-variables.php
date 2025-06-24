@@ -1363,6 +1363,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 	}
 	$close_span_with_br = '</span><br/>';
+	$close_span_with_br = apply_filters('qsm_close_span_with_br', $close_span_with_br, $answer['question_type']);
 	if ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( '.jpg' === $file_extension || '.jpeg' === $file_extension || '.png' === $file_extension || '.gif' === $file_extension ) {
