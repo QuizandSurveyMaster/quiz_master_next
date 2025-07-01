@@ -978,10 +978,13 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                 const selectedTemplateId = templateWrap.find('.qsm-to-replace-page-template').val();
                 const uniqueId = button.data('id');
                 const templateType = button.parents('.qsm-insert-page-template-anchor').data('template-type');
+                let nonce;
                 if (templateType == 'result') {
                     var editor = tinymce.get('results-page-' + (uniqueId));
+                    nonce = qsmResultsObject.add_tmpl_nonce;
                 } else if (templateType == 'email') {
                     var editor = tinymce.get('email-template-' + (uniqueId));
+                    nonce = qsmEmailsObject.add_tmpl_nonce;
                 }
 
                 const templateContent = editor.getContent().trim();
@@ -1010,6 +1013,7 @@ if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
                     template_id: isReplace ? selectedTemplateId : null,
                     template_type: templateType,
                     template_content: templateContent,
+                    nonce: nonce,
                 };
 
                 try {
