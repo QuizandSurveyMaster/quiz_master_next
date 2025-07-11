@@ -4662,6 +4662,7 @@ select.qsm-to-replace-page-template {
 		align-items: initial;
 		font-size: 12px;
 		padding-bottom: 0;
+		gap: 20px;
 	}
 	.qsm-contact-form-field > div {
 		margin: 2px 0;
