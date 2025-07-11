@@ -3490,13 +3490,14 @@ input#duplicate_questions {
 }
 .qsm-contact-form-field {
 	display: flex;
-	padding: 12px 5px;
+	padding: 12px 5px 5px 5px;
 	margin: 0 0 10px;
 	background: #ffffff;
 	border: 1px solid #dfd4d4;
 	justify-content: space-between;
 	align-items: center;
 	position: relative;
+	min-height: 60px;
 }
 .qsm-contact-form-field.new {
 	background: #f1f1f1;
@@ -3511,12 +3512,13 @@ input#duplicate_questions {
 	display: none;
 }
 .qsm-contact-form-field .qsm-contact-form-group {
-	padding: 0 15px;
+	padding: 0 10px;
 	vertical-align: middle;
 }
 .qsm-contact-form-field .contact-form-inputs,
 .qsm-contact-form-field .contact-form-actions {
 	min-width: 150px;
+	position: relative;
 }
 .qsm-contact-form-field .sortable-handle {
 	width: 25px;
@@ -3546,6 +3548,10 @@ input#duplicate_questions {
 	display: block;
 	font-weight: bold;
 	margin: 0 0 5px;
+}
+.qsm-contact-form-field .qsm-contact-form-group.contact-form-inputs .qsm-contact-form-label {
+    position: absolute;
+    top: -20px;
 }
 .qsm-contact-form-field .qsm-contact-form-group .qsm-contact-form-control,
 .qsm-contact-form-field .qsm-contact-form-group select.qsm-contact-form-control,
@@ -3582,7 +3588,7 @@ input#duplicate_questions {
 	position: absolute;
 	pointer-events: none;
 	width: 0;
-	left: 28%;
+	left: 31%;
 	border-width: 15px;
 	border-color: rgba(255, 255, 255, 0);
 }
@@ -4656,6 +4662,7 @@ select.qsm-to-replace-page-template {
 		align-items: initial;
 		font-size: 12px;
 		padding-bottom: 0;
+		gap: 20px;
 	}
 	.qsm-contact-form-field > div {
 		margin: 2px 0;
