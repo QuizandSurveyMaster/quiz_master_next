@@ -586,7 +586,7 @@ function qsm_get_options_of_contact_fields( $data, $label, $type ) {
  * @param array  $mlw_quiz_array The array for the response data
  */
 function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $qmn_total_questions;
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 	$logic_rules      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
@@ -623,6 +623,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 		// Cycles through each answer in the responses.
 		$total_question_cnt = count( $mlw_quiz_array['question_answers_array'] );
 		$qsm_question_cnt   = 1;
+		$qmn_total_questions = 0;
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( ! empty( $hidden_questions ) && is_array( $hidden_questions ) && in_array( $answer['id'], $hidden_questions, true ) ) {
 				continue;
@@ -1363,7 +1364,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 	}
 	$close_span_with_br = '</span><br/>';
-	$close_span_with_br = apply_filters('qsm_close_span_with_br', $close_span_with_br, $answer['question_type']);
 	if ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( '.jpg' === $file_extension || '.jpeg' === $file_extension || '.png' === $file_extension || '.gif' === $file_extension ) {
