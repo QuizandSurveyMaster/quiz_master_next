@@ -420,19 +420,8 @@ function qsm_results_overview_tab_content() {
 		if ( "0" === $results_screen_option['view_result_page'] ) {
 			$values['view_result_page']['style'] = $display_none;
 		}
-		if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) {
-			$proctor_class = "qsm-quiz-proctor-addon";
-		}else {
-			$proctor_class = "";
-		}
 		if ( $mlw_quiz_data ) {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
-				$mlw_quiz_info->proctor_report_class = $proctor_class;
-				if ( "" == $proctor_class ) {
-					$mlw_quiz_info->proctor_report_link = "admin.php?page=qsm_quiz_result_details&tab=proctor-results&quiz_id=$mlw_quiz_info->quiz_id&result_id=$mlw_quiz_info->result_id";
-				}else {
-					$mlw_quiz_info->proctor_report_link = "#";
-				}
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
 				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
@@ -577,7 +566,9 @@ function qsm_results_overview_tab_content() {
 										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
 									<?php } ?>
 										<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
-										<a class="<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_class ); ?>" href='<?php echo esc_attr( $quiz_infos[ $x ]->proctor_report_link ); ?>'><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
+										<?php if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) { ?>
+											<a class="qsm-quiz-proctor-addon" href="#"><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
+										<?php } ?>
 									<?php do_action('qsm_admin_quiz_results_page_rowactions_after', $quiz_infos[ $x ]); ?>
 									</span>
 								</div>
