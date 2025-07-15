@@ -1916,6 +1916,28 @@ class QMNQuizManager {
 				wp_die();
 			}
 		}
+		if ( 0 != $options->limit_email_based_submission ) {
+			$user_email = '';
+			foreach ( $_POST as $key => $value ) {
+				if ( preg_match( '/^contact_field_\d+$/', $key ) && is_string( $value ) && filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
+					$user_email = $value;
+					break;
+				}
+			}
+			$mlw_qmn_email_based_submission_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE email=%s AND deleted=0 AND quiz_id=%d", $user_email, $options->quiz_id ) );
+			if ( $mlw_qmn_email_based_submission_count >= $options->limit_email_based_submission ) {
+				echo wp_json_encode(
+					array(
+						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_email_based_submission_text, ENT_QUOTES ), "quiz_limit_email_based_submission_text-{$options->quiz_id}" ),
+						'redirect'      => false,
+						'result_status' => array(
+							'save_response' => false,
+						),
+					)
+				);
+				wp_die();
+			}
+		}
 		if ( 0 != $options->total_user_tries ) {
 
 			// Prepares the variables

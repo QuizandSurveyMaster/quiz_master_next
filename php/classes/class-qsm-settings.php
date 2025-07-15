@@ -402,6 +402,7 @@ class QSM_Quiz_Settings {
 						'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
 						'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
 						"start_quiz_survey_text"   => $start_quiz_text,
+						'limit_email_based_submission_text' => $quiz_options->limit_email_based_submission_text,
 					)
 				);
 			}

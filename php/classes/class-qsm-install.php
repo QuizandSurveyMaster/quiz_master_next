@@ -423,6 +423,12 @@ class QSM_Install {
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
 					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
 				),
+				'limit_email_based_submission' => array(
+					'type'        => 'number',
+					'default'     => 0,
+					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
+					'suffix_text' => __( 'submissions can be done per email address', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on email-based submissions.', 'quiz-master-next' ) . '</label>',
+				),
 				'enable_retake_quiz_button' => array(
 					'type'    => 'checkbox',
 					'options' => array(
@@ -1038,6 +1044,21 @@ class QSM_Install {
 		$field_array = array(
 			'id'        => 'limit_total_entries_text',
 			'label'     => __( 'Text for Limited Entries', 'quiz-master-next' ),
+			'type'      => 'editor',
+			'default'   => 0,
+			'variables' => array(
+				'%QUIZ_NAME%',
+				'%QUIZ_LINK%',
+				'%CURRENT_DATE%',
+				'%TOTAL_QUESTIONS%',
+			),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers limit_email_based_submission_text setting
+		$field_array = array(
+			'id'        => 'limit_email_based_submission_text',
+			'label'     => __( 'Text for Limited Email Based Submissions', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(

@@ -165,6 +165,7 @@ class QMNGlobalSettingsPage {
 			'skip_validation_time_expire'            => 0,
 			'total_user_tries'                       => 0,
 			'limit_total_entries'                    => 0,
+			'limit_email_based_submission'           => 0,
 			'question_from_total'                    => 0,
 			'question_per_category'                  => 0,
 			'contact_info_location'                  => 0,
