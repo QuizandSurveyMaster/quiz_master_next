@@ -90,6 +90,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key-options', __( 'Enable APIs', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key', __( 'API Key', 'quiz-master-next' ), array( $this, 'api_key_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cron-job-reschedule-time', __( 'Cron Job Reschedule Time', 'quiz-master-next' ), array( $this, 'cron_job_reschedule_time_field' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	/**
@@ -143,6 +144,24 @@ class QMNGlobalSettingsPage {
 		<?php } else { ?>
 			<button class="button qsm-generate-api-key"><?php esc_html_e('Generate Key', 'quiz-master-next'); ?></button>
 		<?php } ?>
+		<?php
+	}
+
+	/**
+	 * Generates Setting Field For cron job reschedule time
+	 *
+	 * @since 7.0.1
+	 * @return void
+	 */
+	public function cron_job_reschedule_time_field() {
+		$settings = (array) get_option( 'qmn-settings' );
+		$cron_job_reschedule_time = 15;
+		if ( isset( $settings['cron_job_reschedule_time'] ) ) {
+			$cron_job_reschedule_time = $settings['cron_job_reschedule_time'];
+		}
+		?>
+		<input type='number' name='qmn-settings[cron_job_reschedule_time]' id='qmn-settings[cron_job_reschedule_time]'
+			value='<?php echo esc_attr( $cron_job_reschedule_time ); ?>' />
 		<?php
 	}
 
