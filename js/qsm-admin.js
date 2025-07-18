@@ -3803,7 +3803,8 @@ var QSM_Quiz_Broadcast_Channel;
                     $('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
                 });
                 // removes question from database
-                $(document).on('click', '.qsm-delete-question-button-btn', function () {
+                $(document).on('click', '.qsm-delete-question-button-btn', function (e) {
+                    e.preventDefault();
                     let question_id = $(this).attr('data-question-iid');
                     let checkedValues = "";
                     if ("selected-questions" == question_id || "all-questions" == question_id) {
@@ -3842,6 +3843,7 @@ var QSM_Quiz_Broadcast_Channel;
                                     jQuery('.qsm-admin-select-page-question').prop('checked',false);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
+                                    QSMAdmin.displayAlert(response.data, 'success');
                                 } else {
                                     QSMAdmin.displayAlert(response.data, 'error');
                                 }
@@ -3864,6 +3866,7 @@ var QSM_Quiz_Broadcast_Channel;
                                     QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, question_id);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
+                                    QSMAdmin.displayAlert(response.data, 'success');
                                 } else {
                                     QSMAdmin.displayAlert(response.data, 'error');
                                 }
