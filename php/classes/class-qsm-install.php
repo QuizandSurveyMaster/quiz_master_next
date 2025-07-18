@@ -424,10 +424,14 @@ class QSM_Install {
 					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
 				),
 				'limit_email_based_submission' => array(
-					'type'        => 'number',
+					'type'        => 'checkbox',
+					'options'     => array(
+						array(
+							'label' => __( 'Limit submissions based on email address', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
 					'default'     => 0,
-					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => __( 'submissions can be done per email address', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on email-based submissions.', 'quiz-master-next' ) . '</label>',
 				),
 				'enable_retake_quiz_button' => array(
 					'type'    => 'checkbox',
