@@ -624,6 +624,10 @@ class QMNQuizManager {
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
+				'limit_email_based_submission'       => $qmn_quiz_options->limit_email_based_submission,
+				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
+				'is_logged_in'						 => is_user_logged_in(),
+				'limit_email_based_submission_text'  => $qmn_quiz_options->limit_email_based_submission_text,
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
@@ -3215,7 +3219,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 		}
 		$mlw_qmn_user_try_count = apply_filters( 'qsm_total_user_tries_check_before', $mlw_qmn_user_try_count, $qmn_quiz_options, $qmn_array_for_variables );
 		// If user has already reached the limit for this quiz
-		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries ) {
+		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries && $qmn_quiz_options->limit_email_based_submission != 1 ) {
 
 			// Stops the quiz and prepares entered text
 			$qmn_allowed_visit = false;

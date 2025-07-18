@@ -884,12 +884,47 @@ function getFormData($form) {
 	return indexed_array;
 }
 
+function qsmValidateEmailBasedSubmission( element, quiz_id ) {
+	let email = jQuery(element).find('.mlwEmail').val();
+	if ( !email ) {
+		return false;
+	}
+	
+	let formData = getFormData(element);
+	formData.quiz_id = quiz_id;
+	formData.email = email;
+	formData.total_user_tries = qmn_quiz_data[quiz_id].total_user_tries;
+	formData.action = 'qsm_validate_result_submission';
+	
+	let returnValue = null;
+	jQuery.ajax({
+		url: qmn_ajax_object.ajaxurl,
+		data: formData,
+		async: false,
+		type: 'POST',
+		success: function(response) {
+			if (response.success) {
+				returnValue = false;
+			} else {
+				returnValue = true;
+			}
+		}
+	});
+	return returnValue;
+}
+
 function qmnFormSubmit(quiz_form_id, $this) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	let $container = jQuery($this).closest('.qmn_quiz_container');
 	let result = qmnValidation( $container.find('*'), quiz_form_id);
 	if (!result) { return result; }
-
+	if ( qmn_quiz_data[quiz_id].hasOwnProperty('limit_email_based_submission') && qmn_quiz_data[quiz_id].limit_email_based_submission == 1 ) {
+		let validateEmailBasedSubmission = qsmValidateEmailBasedSubmission($container.find('*'), quiz_id);
+		if (!validateEmailBasedSubmission) { 
+			alert(qmn_quiz_data[quiz_id].limit_email_based_submission_text);
+			return validateEmailBasedSubmission; 
+		}
+	}
 	/**
 	 * Update Timer in MS
 	 */
