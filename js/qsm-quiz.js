@@ -896,7 +896,7 @@ function qsmValidateEmailBasedSubmission( element, quiz_id ) {
 	formData.total_user_tries = qmn_quiz_data[quiz_id].total_user_tries;
 	formData.action = 'qsm_validate_result_submission';
 	
-	let returnValue = null;
+	let returnValue = true;
 	jQuery.ajax({
 		url: qmn_ajax_object.ajaxurl,
 		data: formData,
@@ -904,9 +904,9 @@ function qsmValidateEmailBasedSubmission( element, quiz_id ) {
 		type: 'POST',
 		success: function(response) {
 			if (response.success) {
-				returnValue = false;
-			} else {
 				returnValue = true;
+			} else {
+				returnValue = false;
 			}
 		}
 	});
@@ -921,7 +921,7 @@ function qmnFormSubmit(quiz_form_id, $this) {
 	let isLoggedIn = typeof qmn_quiz_data[quiz_id].hasOwnProperty('is_logged_in') != undefined ?  qmn_quiz_data[quiz_id].is_logged_in : false;
 	if ( !isLoggedIn && qmn_quiz_data[quiz_id].hasOwnProperty('limit_email_based_submission') && qmn_quiz_data[quiz_id].limit_email_based_submission == 1 ) {
 		let validateEmailBasedSubmission = qsmValidateEmailBasedSubmission($container.find('*'), quiz_id);
-		if (!validateEmailBasedSubmission) { 
+		if (validateEmailBasedSubmission == false) { 
 			alert(qmn_quiz_data[quiz_id].limit_email_based_submission_text);
 			return validateEmailBasedSubmission; 
 		}
