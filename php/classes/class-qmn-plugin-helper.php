@@ -107,7 +107,7 @@ class QMNPluginHelper {
 				)
 			);
 		}
-		if ( $mlw_qmn_user_try_count >= $total_user_tries ) {
+		if ( $mlw_qmn_user_try_count < $total_user_tries ) {
 			wp_send_json_success();
 		} else {
 			wp_send_json_error();

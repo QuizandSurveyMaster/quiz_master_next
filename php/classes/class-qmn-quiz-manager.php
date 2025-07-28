@@ -1930,7 +1930,17 @@ class QMNQuizManager {
 				$current_user           = wp_get_current_user();
 				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user=%d AND deleted=0 AND quiz_id=%d", $current_user->ID, $options->quiz_id ) );
 			} else {
-				$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $this->get_user_ip(), $options->quiz_id ) );
+				if ( isset( $options->limit_email_based_submission ) && 1 == $options->limit_email_based_submission ) {
+					$mlw_qmn_user_try_count = $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE email = %s AND deleted = 0 AND quiz_id = %d",
+							$user_email,
+							$quiz_id
+						)
+					);
+				} else {
+					$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $this->get_user_ip(), $options->quiz_id ) );
+				}
 			}
 
 			// If user has already reached the limit for this quiz
