@@ -88,7 +88,7 @@ function qsm_options_emails_tab_content() {
 					<?php esc_html_e( 'Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next' ); ?>
 					<br /><strong><?php esc_html_e( 'Note: ', 'quiz-master-next' ); ?></strong>
 					<?php esc_html_e( 'Always use uppercase while using these variables.', 'quiz-master-next' ); ?>
-					<a href="<?php echo esc_url( 'https://quizandsurveymaster.com/docs/about-quiz-survey-master/intro-to-template-variables/' ); ?>" target="_blank"><?php esc_html_e( 'Refer Documentation', 'quiz-master-next' ); ?></a>
+					<a href="<?php echo esc_url( 'https://quizandsurveymaster.com/docs/about-quiz-survey-master/intro-to-template-variables/' ); ?>" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a>
 				</span>
 			</header>
 			<main class="qsm-popup__content" id="show-all-variable-content">
