@@ -417,12 +417,6 @@ class QSM_Install {
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
 					'suffix_text' => __( 'attempts or submissions can be done by a respondent', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on attempts.', 'quiz-master-next' ) . '</label>',
 				),
-				'limit_total_entries'       => array(
-					'type'        => 'number',
-					'default'     => 0,
-					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
-					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
-				),
 				'limit_email_based_submission' => array(
 					'type'        => 'checkbox',
 					'options'     => array(
@@ -432,6 +426,12 @@ class QSM_Install {
 						),
 					),
 					'default'     => 0,
+				),
+				'limit_total_entries'       => array(
+					'type'        => 'number',
+					'default'     => 0,
+					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
+					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
 				),
 				'enable_retake_quiz_button' => array(
 					'type'    => 'checkbox',

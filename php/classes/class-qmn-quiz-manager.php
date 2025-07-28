@@ -627,7 +627,7 @@ class QMNQuizManager {
 				'limit_email_based_submission'       => $qmn_quiz_options->limit_email_based_submission,
 				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
 				'is_logged_in'						 => is_user_logged_in(),
-				'limit_email_based_submission_text'  => $qmn_quiz_options->limit_email_based_submission_text,
+				'limit_email_based_submission_text'  => ! empty( $qmn_quiz_options->limit_email_based_submission_text ) ? $qmn_quiz_options->limit_email_based_submission_text : __('Limit of email-based submissions is reached.', 'quiz-master-next'),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );

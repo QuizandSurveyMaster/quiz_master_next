@@ -1172,6 +1172,9 @@ jQuery(document).ready(function () {
         let modalName = $(this).data('popup');
         MicroModal.show( modalName );
     });
+    $("input[name='total_user_tries']").on("change", function() {
+        $("input[name='limit_email_based_submission']").prop('disabled', +$(this).val() <= 0);
+    }).trigger('change');
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {
