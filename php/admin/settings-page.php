@@ -90,6 +90,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key-options', __( 'Enable APIs', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key', __( 'API Key', 'quiz-master-next' ), array( $this, 'api_key_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		do_action('qsm_global_setting_field_after');
 	}
 
 	/**
@@ -165,6 +166,7 @@ class QMNGlobalSettingsPage {
 			'skip_validation_time_expire'            => 0,
 			'total_user_tries'                       => 0,
 			'limit_total_entries'                    => 0,
+			'limit_email_based_submission'           => 0,
 			'question_from_total'                    => 0,
 			'question_per_category'                  => 0,
 			'contact_info_location'                  => 0,

@@ -1172,6 +1172,17 @@ jQuery(document).ready(function () {
         let modalName = $(this).data('popup');
         MicroModal.show( modalName );
     });
+    $("input[name='total_user_tries']").on("change", function() {
+        $("input[name='limit_email_based_submission']").prop('disabled', +$(this).val() <= 0);
+        $("#limit_email_based_submission").css('opacity', +$(this).val() <= 0 ? 0.5 : 1);
+    }).trigger('change');
+    $("input[name='limit_email_based_submission']").on("change", function() {
+        if ( $(this).prop('checked') ) {
+            $("#limit_email_based_submission").find(".qsm-opt-desc").show();
+        } else {
+            $("#limit_email_based_submission").find(".qsm-opt-desc").hide();
+        }
+    }).trigger('change');
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {
@@ -3803,7 +3814,8 @@ var QSM_Quiz_Broadcast_Channel;
                     $('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
                 });
                 // removes question from database
-                $(document).on('click', '.qsm-delete-question-button-btn', function () {
+                $(document).on('click', '.qsm-delete-question-button-btn', function (e) {
+                    e.preventDefault();
                     let question_id = $(this).attr('data-question-iid');
                     let checkedValues = "";
                     if ("selected-questions" == question_id || "all-questions" == question_id) {
@@ -3842,6 +3854,7 @@ var QSM_Quiz_Broadcast_Channel;
                                     jQuery('.qsm-admin-select-page-question').prop('checked',false);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
+                                    QSMAdmin.displayAlert(response.data, 'success');
                                 } else {
                                     QSMAdmin.displayAlert(response.data, 'error');
                                 }
@@ -3864,6 +3877,7 @@ var QSM_Quiz_Broadcast_Channel;
                                     QSM_Quiz_Broadcast_Channel.unlinkQuestionData(model, question_id);
                                     QSMQuestion.countTotal();
                                     $('.save-page-button').trigger('click');
+                                    QSMAdmin.displayAlert(response.data, 'success');
                                 } else {
                                     QSMAdmin.displayAlert(response.data, 'error');
                                 }
