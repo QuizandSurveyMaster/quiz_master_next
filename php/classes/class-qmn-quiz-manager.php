@@ -1919,7 +1919,7 @@ class QMNQuizManager {
 				wp_die();
 			}
 		}
-		if ( 0 != $options->total_user_tries && (( ! isset( $options->limit_email_based_submission ) || ( isset( $options->limit_email_based_submission ) && 0 == $options->limit_email_based_submission ) ) ) ) {
+		if ( 0 != $options->total_user_tries && ( ! isset( $options->limit_email_based_submission ) || ( isset( $options->limit_email_based_submission ) && 0 == $options->limit_email_based_submission ) ) ) {
 
 			// Prepares the variables
 			$mlw_qmn_user_try_count = 0;
