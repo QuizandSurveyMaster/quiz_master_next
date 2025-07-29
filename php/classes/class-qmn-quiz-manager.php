@@ -624,10 +624,9 @@ class QMNQuizManager {
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
-				'limit_email_based_submission'       => $qmn_quiz_options->limit_email_based_submission,
+				'limit_email_based_submission'       => isset($qmn_quiz_options->limit_email_based_submission) ? $qmn_quiz_options->limit_email_based_submission : 0,
 				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
 				'is_logged_in'						 => is_user_logged_in(),
-				'limit_email_based_submission_text'  => ! empty( $qmn_quiz_options->limit_email_based_submission_text ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->limit_email_based_submission_text, "quiz_limit_email_based_submission_text-{$qmn_array_for_variables['quiz_id']}" ) : __( 'Limit of email-based submissions is reached.', 'quiz-master-next' ),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
@@ -1920,7 +1919,7 @@ class QMNQuizManager {
 				wp_die();
 			}
 		}
-		if ( 0 != $options->total_user_tries ) {
+		if ( 0 != $options->total_user_tries && ( ! isset( $options->limit_email_based_submission ) || ( isset( $options->limit_email_based_submission ) && 0 == $options->limit_email_based_submission ) ) ) {
 
 			// Prepares the variables
 			$mlw_qmn_user_try_count = 0;
@@ -1934,7 +1933,7 @@ class QMNQuizManager {
 			}
 
 			// If user has already reached the limit for this quiz
-			if ( $mlw_qmn_user_try_count >= $options->total_user_tries && ( ( is_user_logged_in() && isset( $options->limit_email_based_submission ) ) || ( ! is_user_logged_in() && $options->limit_email_based_submission != 1 ) ) ) {
+			if ( $mlw_qmn_user_try_count >= $options->total_user_tries ) {
 				echo wp_json_encode(
 					array(
 						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
@@ -1945,6 +1944,30 @@ class QMNQuizManager {
 					)
 				);
 				wp_die();
+			}
+		}
+		if ( isset( $options->limit_email_based_submission ) && 0 != $options->limit_email_based_submission ) {
+			$user_email = '';
+			foreach ( $_POST as $key => $value ) {
+				if ( preg_match( '/^contact_field_\d+$/', $key ) && is_string( $value ) && filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
+					$user_email = $value;
+					break;
+				}
+			}
+			if ( ! empty( $user_email ) ) {
+				$mlw_qmn_email_based_submission_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE email=%s AND deleted=0 AND quiz_id=%d", $user_email, $options->quiz_id ) );
+				if ( $mlw_qmn_email_based_submission_count >= $options->total_user_tries ) {
+					echo wp_json_encode(
+						array(
+							'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_email_based_submission_text, ENT_QUOTES ), "quiz_limit_email_based_submission_text-{$options->quiz_id}" ),
+							'redirect'      => false,
+							'result_status' => array(
+								'save_response' => false,
+							),
+						)
+					);
+					wp_die();
+				}
 			}
 		}
 		$data      = array(
@@ -3219,7 +3242,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 		}
 		$mlw_qmn_user_try_count = apply_filters( 'qsm_total_user_tries_check_before', $mlw_qmn_user_try_count, $qmn_quiz_options, $qmn_array_for_variables );
 		// If user has already reached the limit for this quiz
-		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries && ( ( is_user_logged_in() && isset( $qmn_quiz_options->limit_email_based_submission ) ) || ( ! is_user_logged_in() && $qmn_quiz_options->limit_email_based_submission != 1 ) ) ) {
+		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries && ( ! isset( $qmn_quiz_options->limit_email_based_submission ) || ( isset( $qmn_quiz_options->limit_email_based_submission ) && 0 == $qmn_quiz_options->limit_email_based_submission ) ) ) {
 
 			// Stops the quiz and prepares entered text
 			$qmn_allowed_visit = false;

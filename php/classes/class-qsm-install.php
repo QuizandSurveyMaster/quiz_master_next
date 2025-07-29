@@ -42,6 +42,16 @@ class QSM_Install {
 
 		global $mlwQuizMasterNext;
 		$settings_value = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+		$contact_form_fields = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' );
+		$is_email_field_enabled = false;
+		if ( ! empty( $contact_form_fields ) ) {
+			foreach ( $contact_form_fields as $field ) {
+				if ( 'email' === $field['type'] && 'true' === $field['enable'] ) {
+					$is_email_field_enabled = true;
+					break;
+				}
+			}
+		}
 		$i_tag = '<i class="qsm-font-light">';
 		// Registers require_log_in setting
 		$field_array = array(
@@ -426,7 +436,18 @@ class QSM_Install {
 						),
 					),
 					'default'     => 0,
-					'suffix_text' => '<label class="qsm-opt-desc">' . __( 'This option works only for non-logged-in users. By default, users are restricted based on their IP address to attend the quiz.', 'quiz-master-next' ) . '</label>',
+					'suffix_text' => ( ! $is_email_field_enabled )
+						? '<label class="qsm-opt-desc" style="color: red; display: none;">'
+							. sprintf(
+								__( 'Please enable contact Email field to use this feature. <a href="%s" target="_blank">Go to Contact tab</a>', 'quiz-master-next' ),
+								admin_url(
+									'admin.php?page=mlw_quiz_options'
+									. ( isset( $_GET['quiz_id'] ) ? '&quiz_id=' . $_GET['quiz_id'] : '' )
+									. '&tab=contact'
+								)
+							)
+							. '</label>'
+						: '',
 				),
 				'limit_total_entries'       => array(
 					'type'        => 'number',
