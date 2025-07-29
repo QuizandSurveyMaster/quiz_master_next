@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.2.4 ( July 28, 2025 ) =
+= 10.2.4 ( July 29, 2025 ) =
 * Feature: Added option to limit quiz attempts by user email
 
 = 10.2.3 ( July 15, 2025 ) =

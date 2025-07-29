@@ -1174,6 +1174,14 @@ jQuery(document).ready(function () {
     });
     $("input[name='total_user_tries']").on("change", function() {
         $("input[name='limit_email_based_submission']").prop('disabled', +$(this).val() <= 0);
+        $("#limit_email_based_submission").css('opacity', +$(this).val() <= 0 ? 0.5 : 1);
+    }).trigger('change');
+    $("input[name='limit_email_based_submission']").on("change", function() {
+        if ( $(this).prop('checked') ) {
+            $("#limit_email_based_submission").find(".qsm-opt-desc").show();
+        } else {
+            $("#limit_email_based_submission").find(".qsm-opt-desc").hide();
+        }
     }).trigger('change');
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 

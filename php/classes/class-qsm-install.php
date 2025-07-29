@@ -42,6 +42,16 @@ class QSM_Install {
 
 		global $mlwQuizMasterNext;
 		$settings_value = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+		$contact_form_fields = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' );
+		$is_email_field_enabled = false;
+		if ( ! empty( $contact_form_fields ) ) {
+			foreach ( $contact_form_fields as $field ) {
+				if ( 'email' === $field['type'] && 'true' === $field['enable'] ) {
+					$is_email_field_enabled = true;
+					break;
+				}
+			}
+		}
 		$i_tag = '<i class="qsm-font-light">';
 		// Registers require_log_in setting
 		$field_array = array(
@@ -426,6 +436,18 @@ class QSM_Install {
 						),
 					),
 					'default'     => 0,
+					'suffix_text' => ( ! $is_email_field_enabled )
+						? '<label class="qsm-opt-desc" style="color: red; display: none;">'
+							. sprintf(
+								__( 'Please enable contact Email field to use this feature. <a href="%s" target="_blank">Go to Contact tab</a>', 'quiz-master-next' ),
+								admin_url(
+									'admin.php?page=mlw_quiz_options'
+									. ( isset( $_GET['quiz_id'] ) ? '&quiz_id=' . $_GET['quiz_id'] : '' )
+									. '&tab=contact'
+								)
+							)
+							. '</label>'
+						: '',
 				),
 				'limit_total_entries'       => array(
 					'type'        => 'number',
@@ -1048,21 +1070,6 @@ class QSM_Install {
 		$field_array = array(
 			'id'        => 'limit_total_entries_text',
 			'label'     => __( 'Text for Limited Entries', 'quiz-master-next' ),
-			'type'      => 'editor',
-			'default'   => 0,
-			'variables' => array(
-				'%QUIZ_NAME%',
-				'%QUIZ_LINK%',
-				'%CURRENT_DATE%',
-				'%TOTAL_QUESTIONS%',
-			),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Registers limit_email_based_submission_text setting
-		$field_array = array(
-			'id'        => 'limit_email_based_submission_text',
-			'label'     => __( 'Text for Limited Email Based Submissions', 'quiz-master-next' ),
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
