@@ -426,6 +426,7 @@ class QSM_Install {
 						),
 					),
 					'default'     => 0,
+					'suffix_text' => '<label class="qsm-opt-desc">' . __( 'This option works only for non-logged-in users. By default, users are restricted based on their IP address to attend the quiz.', 'quiz-master-next' ) . '</label>',
 				),
 				'limit_total_entries'       => array(
 					'type'        => 'number',

@@ -1174,6 +1174,7 @@ jQuery(document).ready(function () {
     });
     $("input[name='total_user_tries']").on("change", function() {
         $("input[name='limit_email_based_submission']").prop('disabled', +$(this).val() <= 0);
+        $("#limit_email_based_submission").css('opacity', +$(this).val() <= 0 ? 0.5 : 1);
     }).trigger('change');
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
