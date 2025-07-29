@@ -3242,7 +3242,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 		}
 		$mlw_qmn_user_try_count = apply_filters( 'qsm_total_user_tries_check_before', $mlw_qmn_user_try_count, $qmn_quiz_options, $qmn_array_for_variables );
 		// If user has already reached the limit for this quiz
-		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries && ( ( ! isset( $qmn_quiz_options->limit_email_based_submission ) || ( isset( $qmn_quiz_options->limit_email_based_submission ) && 0 == $qmn_quiz_options->limit_email_based_submission ) ) ) ) {
+		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries && ( ! isset( $qmn_quiz_options->limit_email_based_submission ) || ( isset( $qmn_quiz_options->limit_email_based_submission ) && 0 == $qmn_quiz_options->limit_email_based_submission ) ) ) {
 
 			// Stops the quiz and prepares entered text
 			$qmn_allowed_visit = false;
