@@ -86,6 +86,33 @@ class QMNPluginHelper {
 
 		add_action( 'qsm_register_language_support', array( $this, 'qsm_register_language_support' ), 10, 3 );
 		add_filter( 'qsm_language_support', array( $this, 'qsm_language_support' ), 10, 3 );
+		add_action( 'wp_ajax_qsm_validate_result_submission', array( $this, 'qsm_validate_result_submission' ), 10, 3 );
+		add_action( 'wp_ajax_nopriv_qsm_validate_result_submission', array( $this, 'qsm_validate_result_submission' ), 10, 3 );
+	}
+
+	public function qsm_validate_result_submission() {
+		global $wpdb, $mlwQuizMasterNext;
+
+		$user_email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
+		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+		$total_user_tries = isset( $_POST['total_user_tries'] ) ? intval( $_POST['total_user_tries'] ) : 0;
+		$mlw_qmn_user_try_count = 0;
+
+		if ( ! empty( $user_email ) && is_email( $user_email ) ) {
+			$mlw_qmn_user_try_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE email = %s AND deleted = 0 AND quiz_id = %d",
+					$user_email,
+					$quiz_id
+				)
+			);
+		}
+		if ( $mlw_qmn_user_try_count < $total_user_tries ) {
+			wp_send_json_success();
+		} else {
+			wp_send_json_error();
+		}
+		wp_die();
 	}
 
 	/**
