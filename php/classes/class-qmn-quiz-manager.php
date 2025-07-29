@@ -1959,7 +1959,7 @@ class QMNQuizManager {
 				if ( $mlw_qmn_email_based_submission_count >= $options->total_user_tries ) {
 					echo wp_json_encode(
 						array(
-							'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->limit_email_based_submission_text, ENT_QUOTES ), "quiz_limit_email_based_submission_text-{$options->quiz_id}" ),
+							'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
 							'redirect'      => false,
 							'result_status' => array(
 								'save_response' => false,

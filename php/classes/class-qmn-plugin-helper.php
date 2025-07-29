@@ -694,7 +694,6 @@ class QMNPluginHelper {
 			'phone_field_text'                 => __('Phone Number', 'quiz-master-next'),
 			'start_quiz_text'                  => __('Start Quiz', 'quiz-master-next'),
 			'start_survey_text'                => __('Start Survey', 'quiz-master-next'),
-			'limit_email_based_submission_text' => __('Limit of email-based submissions is reached.', 'quiz-master-next'),
 		);
 		return apply_filters( 'qsm_default_texts', $defaults );
 	}
