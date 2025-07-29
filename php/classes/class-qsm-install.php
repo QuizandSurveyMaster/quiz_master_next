@@ -1081,21 +1081,6 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
-		// Registers limit_email_based_submission_text setting
-		$field_array = array(
-			'id'        => 'limit_email_based_submission_text',
-			'label'     => __( 'Text for Limited Email Based Submissions', 'quiz-master-next' ),
-			'type'      => 'editor',
-			'default'   => 0,
-			'variables' => array(
-				'%QUIZ_NAME%',
-				'%QUIZ_LINK%',
-				'%CURRENT_DATE%',
-				'%TOTAL_QUESTIONS%',
-			),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
 		// Registers question_answer_template setting
 		$field_array = array(
 			'id'        => 'question_answer_template',
