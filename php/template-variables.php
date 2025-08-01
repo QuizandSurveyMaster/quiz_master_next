@@ -1149,7 +1149,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
 				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
-				$quiz_answer_random_ids = maybe_unserialize( $quiz_answer_random_ids );
+				$quiz_answer_random_ids = qmn_sanitize_random_ids_data( $quiz_answer_random_ids );
 				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
 					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
 						$answers_random[ $key ] = $total_answers[ $key ];
@@ -1652,6 +1652,29 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 		$data = stripslashes( $data );
 	}
 	return maybe_unserialize( $data );
+}
+
+/**
+ * Sanitize Input Array Data
+ *
+ * @params $qmn_sanitize_random_ids Questions Data
+ * @return $qmn_sanitize_random_ids Returns sanitized data
+ */
+function qmn_sanitize_random_ids_data( $qmn_sanitize_random_ids ) {
+	if ( is_string( $qmn_sanitize_random_ids ) ) {
+		if ( preg_match( '/^(O|C):\d+:/', $qmn_sanitize_random_ids ) ) {
+			return '';
+		}
+
+		if ( is_serialized( $qmn_sanitize_random_ids ) ) {
+			$unserialized = maybe_unserialize( $qmn_sanitize_random_ids );
+			if ( ! is_object( $unserialized ) && ! is_resource( $unserialized ) ) {
+				return $unserialized;
+			}
+		}
+	}
+
+	return $qmn_sanitize_random_ids;
 }
 
 /**
