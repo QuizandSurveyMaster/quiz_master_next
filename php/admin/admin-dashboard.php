@@ -297,6 +297,7 @@ function qsm_generate_dashboard_page() {
 				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_check_plugins_compatibility();
+				qmn_snapshot_dashboard_widget();
 				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($themes);

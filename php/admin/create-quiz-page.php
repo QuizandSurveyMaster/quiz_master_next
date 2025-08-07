@@ -285,6 +285,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					$addon_icon = isset($addon_value['icon']) && "" != $addon_value['icon'] ? $addon_value['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
 					$is_installed = array_key_exists($addon_path, $installed_plugins);
 					$is_activated = in_array($addon_path, $activated_plugins, true);
+					$addon_card_class = $is_activated ? "qsm-quiz-addon-activated" : "";
 					$addon_status = '';
 					if ( true == $is_activated || true == $is_installed ) {
 						$addon_status = esc_html__( 'Version: ', 'quiz-master-next' ). $all_plugins[ $addon_path ]['Version'];
@@ -292,7 +293,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 						$addon_status = esc_html__( 'Install & Activate', 'quiz-master-next' );
 					}
 					?>
-					<div class="qsm-quiz-addon-steps-card" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
+					<div class="qsm-quiz-addon-steps-card <?php echo esc_attr($addon_card_class); ?>" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
 						<div class="qsm-quiz-addon-steps-images">
 							<img class="qsm-quiz-addon-steps-icon" alt="Addon" src="<?php echo esc_url($addon_icon); ?>">
 						</div>
