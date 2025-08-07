@@ -84,12 +84,15 @@ jQuery(function ($) {
 
             let suggestedThemes = [];
             let remainingThemes = [];
+            let activatedThemes = [];
             $themeItems.show();
             $themeItems.each(function () {
                 let themeId = $(this).data('id');
                 if ($dependency.themes.some(id => id == themeId)) {
                     suggestedThemes.push($(this));
                     $(this).find('.qsm-dashboard-theme-recommended').show();
+                } else if ($(this).hasClass('qsm-quiz-theme-activated')) {
+                    activatedThemes.push($(this));
                 } else {
                     remainingThemes.push($(this));
                 }
@@ -97,6 +100,9 @@ jQuery(function ($) {
 
             $themeItemsParent.empty();
             suggestedThemes.forEach(function ($item) {
+                $themeItemsParent.append($item);
+            });
+            activatedThemes.forEach(function ($item) {
                 $themeItemsParent.append($item);
             });
             remainingThemes.forEach(function ($item) {
@@ -107,6 +113,11 @@ jQuery(function ($) {
             // show only first four
             if (jQuery('.qsm-dashboard-see-more-themes').is(":visible")) {
                 $themeItemsParent.children(":gt(3)").hide();
+                $themeItemsParent.children().each(function () { 
+                    if($(this).hasClass('qsm-quiz-theme-activated')) {
+                        $(this).show();
+                    }
+                });
             }
 
             let $addonItemsParent = $('.qsm-quiz-addon-steps-grid');
@@ -114,19 +125,26 @@ jQuery(function ($) {
 
             let suggestedAddons = [];
             let remainingAddons = [];
+            let activatedAddons = [];
             $addonItems.show();
             $addonItems.each(function () {
                 let addonId = $(this).data('id');
                 if ($dependency.addons.some(id => id == addonId)) {
                     suggestedAddons.push($(this));
                     $(this).find('.qsm-dashboard-addon-recommended').show();
+                } else if ($(this).hasClass('qsm-quiz-addon-activated')) {
+                    activatedAddons.push($(this));
                 } else {
+                    console.log('else', $(this));
                     remainingAddons.push($(this));
                 }
             });
 
             $addonItemsParent.empty();
             suggestedAddons.forEach(function ($item) {
+                $addonItemsParent.append($item);
+            });
+            activatedAddons.forEach(function ($item) {
                 $addonItemsParent.append($item);
             });
             remainingAddons.forEach(function ($item) {
@@ -136,6 +154,11 @@ jQuery(function ($) {
             // show only first four
             if (jQuery('.qsm-dashboard-see-more-addons').is(":visible")) {
                 $addonItemsParent.children(":gt(3)").hide();
+                $addonItemsParent.children().each(function () { 
+                    if($(this).hasClass('qsm-quiz-addon-activated')) {
+                        $(this).show();
+                    }
+                });
             }
         },
 
@@ -171,6 +194,7 @@ jQuery(function ($) {
             if (activatedPlugins.includes(pluginPath)) {
                 if (isToggle) {
                     $element.prop('checked', true);
+                    $parent.addClass('qsm-quiz-addon-activated');
                     return;
                 }
                 if (isButton) {
