@@ -5211,3 +5211,11 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	width: 55px;
 	min-width: 52px;
 }
+.qsm-row-actions-links a:not(:first-child)::before {
+	content: " | ";
+	color: #8a8a8a;
+}
+.qsm-row-actions-links a:active, .qsm-row-actions-links a:focus {
+	text-decoration: none;
+	box-shadow: none;
+}
