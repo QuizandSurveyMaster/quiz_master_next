@@ -243,7 +243,7 @@ class QSM_Questions {
 		if ( false === $results ) {
 			$msg = $wpdb->last_error . ' from ' . $wpdb->last_query;
 			$mlwQuizMasterNext->log_manager->add( 'Error when deleting question', $msg, 0, 'error' );
-			throw new Exception( $msg );
+			throw new Exception( esc_html( $msg ) );
 		}
 
 		return true;
@@ -373,7 +373,7 @@ class QSM_Questions {
 		if ( false === $results ) {
 			$msg = $wpdb->last_error . ' from ' . $wpdb->last_query;
 			$mlwQuizMasterNext->log_manager->add( 'Error when creating/saving question', $msg, 0, 'error' );
-			throw new Exception( $msg );
+			throw new Exception( esc_html( $msg ) );
 		}
 
 		$base_question_id = $question_id;

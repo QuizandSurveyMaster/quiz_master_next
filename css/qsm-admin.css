@@ -84,13 +84,17 @@
 	font-weight: 400;
 }
 
-.qsm-dashboard-page-common-style {
+.qsm-dashboard-page-common-style, .qsm-dashboard-wrapper .qmn_dashboard_list {
     margin-bottom: 16px;
     border: 1px solid #D1D5DB;
     padding: 17px 25px;
     border-radius: 8px;
     background: #ffffff;
     box-shadow: 0px 1px 2px 0px #0000000D;
+}
+
+.qsm-dashboard-wrapper .qmn_dashboard_list .qmn_dashboard_inside {
+	color: #555555;
 }
 
 .qsm-dashboard-help-center-grid {
@@ -189,7 +193,7 @@
 
 .qsm-dashboard-help-center-card-description {
 	font-size: 14px;
-	color: #666;
+	color: #555555;
 	line-height: 1.6;
 }
 
@@ -5210,4 +5214,12 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm-admin-result-page-number {
 	width: 55px;
 	min-width: 52px;
+}
+.qsm-row-actions-links a:not(:first-child)::before {
+	content: " | ";
+	color: #8a8a8a;
+}
+.qsm-row-actions-links a:active, .qsm-row-actions-links a:focus {
+	text-decoration: none;
+	box-shadow: none;
 }
