@@ -421,7 +421,7 @@ class QSM_Install {
 			'type'            => 'multiple_fields',
 			'label'           => __( 'Quiz Controls', 'quiz-master-next' ),
 			'fields'          => array(
-				'total_user_tries'          => array(
+				'total_user_tries'             => array(
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
@@ -439,23 +439,24 @@ class QSM_Install {
 					'suffix_text' => ( ! $is_email_field_enabled )
 						? '<label class="qsm-opt-desc" style="color: red; display: none;">'
 							. sprintf(
+								/* translators: %s: URL to the contact tab */
 								__( 'Please enable contact Email field to use this feature. <a href="%s" target="_blank">Go to Contact tab</a>', 'quiz-master-next' ),
-								admin_url(
+								esc_url( admin_url(
 									'admin.php?page=mlw_quiz_options'
-									. ( isset( $_GET['quiz_id'] ) ? '&quiz_id=' . $_GET['quiz_id'] : '' )
+									. ( isset( $_GET['quiz_id'] ) ? '&quiz_id=' . intval( wp_unslash( $_GET['quiz_id'] ) ) : '' )
 									. '&tab=contact'
-								)
+								) )
 							)
 							. '</label>'
 						: '',
 				),
-				'limit_total_entries'       => array(
+				'limit_total_entries'          => array(
 					'type'        => 'number',
 					'default'     => 0,
 					'placeholder' => __( 'Set Limit', 'quiz-master-next' ),
 					'suffix_text' => __( 'users can respond to this form type', 'quiz-master-next' ) . '<label class="qsm-opt-desc">' . __( 'Set the limit to 0 or leave it blank to remove the limit on entries.', 'quiz-master-next' ) . '</label>',
 				),
-				'enable_retake_quiz_button' => array(
+				'enable_retake_quiz_button'    => array(
 					'type'    => 'checkbox',
 					'options' => array(
 						array(
@@ -1673,7 +1674,7 @@ class QSM_Install {
 		$upload_dir = $upload['basedir'];
 		$upload_dir = $upload_dir . '/qsm_themes';
 		if ( ! is_dir( $upload_dir ) ) {
-			mkdir( $upload_dir, 0700 );
+			wp_mkdir_p( $upload_dir );
 		}
 		flush_rewrite_rules();
 	}
