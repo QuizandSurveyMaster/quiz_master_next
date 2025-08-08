@@ -275,7 +275,7 @@ function qsm_results_overview_tab_content() {
 					<?php
 				} elseif ( 0 == $result_page ) {
 					?>
-					<a class="prev-page button disable" href=""><</a>
+					<a class="prev-page button disable" style="opacity: 0.3; pointer-events: none;" href=""><</a>
 					<?php
 				}
 				?>
@@ -299,7 +299,7 @@ function qsm_results_overview_tab_content() {
 					<?php
 				} elseif ( $results_left <= $table_limit ) {
 					?>
-					<a class="next-page button disable" href="">></a>
+					<a class="next-page button disable" style="opacity: 0.3; pointer-events: none;" href="">></a>
 					<?php
 				}
 				?>
@@ -532,7 +532,7 @@ function qsm_results_overview_tab_content() {
 		}
 		?>
 
-		<table class="widefat" aria-label="<?php esc_html_e( 'Results Table', 'quiz-master-next' ); ?>">
+		<table class="widefat striped" aria-label="<?php esc_html_e( 'Results Table', 'quiz-master-next' ); ?>">
 			<thead>
 				<tr>
 					<th style="text-align: center;"><input type="checkbox" id="qmn_check_all" /></th>
@@ -557,18 +557,17 @@ function qsm_results_overview_tab_content() {
 								<input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" />
 							</td>
 							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class', '', $quiz_infos[ $x ]->result_id ); ?>">
-								<span style="font-size: 16px;"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></span>
+								<strong><a class="row-title" href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></a></strong>
 								<div class="row-actions">
-									<span style="color: green; font-size: 16px;">
+									<span class="qsm-row-actions-links" style="color: green;">
 									<?php do_action('qsm_admin_quiz_results_page_rowactions_before', $quiz_infos[ $x ]);
-									if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $quiz_infos[ $x ]->user ) || current_user_can( 'delete_others_qsm_quizzes' ) ) {
-									?>
-										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
+									if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $quiz_infos[ $x ]->user ) || current_user_can( 'delete_others_qsm_quizzes' ) ) { ?>
+										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a>
 									<?php } ?>
-										<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
-										<?php if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) { ?>
-											<a class="qsm-quiz-proctor-addon" href="#"><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
-										<?php } ?>
+									<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+									<?php if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) { ?>
+										<a class="qsm-quiz-proctor-addon" href="#"><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
+									<?php } ?>
 									<?php do_action('qsm_admin_quiz_results_page_rowactions_after', $quiz_infos[ $x ]); ?>
 									</span>
 								</div>
@@ -576,7 +575,12 @@ function qsm_results_overview_tab_content() {
 							<?php
 							foreach ( $values as $k => $v ) {
 								if ( isset( $v['content'][ $x ] ) ) {
-									echo '<td' . esc_html( $v['style'] ) . '><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k ) ) . '</span></td>';
+									$cell_data = apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k );
+									if ( 'start_date' === $k || 'time_taken' === $k ) {
+										$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+										$cell_data = '<abbr title="' . gmdate( $date_time_format, strtotime( $cell_data ) ) . '">' . gmdate( get_option( 'date_format' ), strtotime( $cell_data ) ) . '<br>' . gmdate( get_option( 'time_format' ), strtotime( $cell_data ) ) . '</abbr>';
+									}
+									echo '<td' . esc_html( $v['style'] ) . '><span>' . wp_kses_post( $cell_data ) . '</span></td>';
 								}
 							}
 							?>

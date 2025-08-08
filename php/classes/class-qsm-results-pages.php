@@ -175,6 +175,8 @@ class QSM_Results_Pages {
 			if ( ! $redirect ) {
 				$redirect = $default_redirect;
 			}
+			
+			$redirect = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $redirect, "quiz-result-redirect-{$page_index}-{$response_data['quiz_id']}" );
 
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
@@ -401,6 +403,9 @@ class QSM_Results_Pages {
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
 
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
+			if ( ! empty( $pages[ $i ]['redirect'] ) ) {
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['redirect'], "quiz-result-redirect-{$i}-{$quiz_id}" );
+			}
 		}
 
 		$results = $wpdb->update(
