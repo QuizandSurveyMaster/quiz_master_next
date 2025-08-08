@@ -146,7 +146,7 @@ function qsm_generate_quiz_options() {
 			if ( isset( $_POST['nonce_validation_notification'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce_validation_notification'] ) ), 'nonce_validation_notification' ) ) {
 				update_user_meta( $user_id, 'nonce_validation_notification' ,true);
 			}
-				if ( ! get_user_meta( $user_id, 'nonce_validation_notification' ) ) { ?>
+			if ( ! get_user_meta( $user_id, 'nonce_validation_notification', true ) ) { ?>
 				<div class="qsm-nonce-validation">
 					<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/success-blue.png' ); ?>" alt="information">
 					<div class="qsm-nonce-text">
@@ -157,8 +157,8 @@ function qsm_generate_quiz_options() {
 						<?php wp_nonce_field( 'nonce_validation_notification', 'nonce_validation_notification' ); ?>
 						<button type="submit"  style="float:right;"   id="nonce_validation_notification" class="button-secondary"><?php echo esc_html__( 'Thanks I undertsand!', 'quiz-master-next' ) ?></a>
 					</form>
-					</div>
-					<?php  } ?>
+				</div>
+			<?php  } ?>
 			<?php if ( $quiz_id ) {
 				$active_class_aadon = true;
 				?>
@@ -247,7 +247,7 @@ function qsm_generate_quiz_options() {
 							<label><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></label>
 							<input type="text" id="edit_quiz_name" class="regular-text" name="edit_quiz_name" value="<?php echo esc_attr( $quiz_name ); ?>" />
 							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset( $_GET['quiz_id'] ) && is_int( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '0'; ?>" />
-							<input type="hidden" id="edit_quiz_post_id" name="edit_quiz_post_id" value="<?php echo get_the_ID(); ?>" />
+							<input type="hidden" id="edit_quiz_post_id" name="edit_quiz_post_id" value="<?php echo esc_attr( get_the_ID() ); ?>" />
 							<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
 						</form>
 					</main>

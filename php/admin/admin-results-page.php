@@ -576,9 +576,9 @@ function qsm_results_overview_tab_content() {
 							foreach ( $values as $k => $v ) {
 								if ( isset( $v['content'][ $x ] ) ) {
 									$cell_data = apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k );
-									if ( $k == 'start_date' || $k == 'time_taken' ) {
+									if ( 'start_date' === $k || 'time_taken' === $k ) {
 										$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-										$cell_data = '<abbr title="' . date( $date_time_format, strtotime( $cell_data ) ) . '">' . date( get_option( 'date_format' ), strtotime( $cell_data ) ) . '<br>' . date( get_option( 'time_format' ), strtotime( $cell_data ) ) . '</abbr>';
+										$cell_data = '<abbr title="' . gmdate( $date_time_format, strtotime( $cell_data ) ) . '">' . gmdate( get_option( 'date_format' ), strtotime( $cell_data ) ) . '<br>' . gmdate( get_option( 'time_format' ), strtotime( $cell_data ) ) . '</abbr>';
 									}
 									echo '<td' . esc_html( $v['style'] ) . '><span>' . wp_kses_post( $cell_data ) . '</span></td>';
 								}

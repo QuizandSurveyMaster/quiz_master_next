@@ -93,9 +93,9 @@ class QMNPluginHelper {
 	public function qsm_validate_result_submission() {
 		global $wpdb, $mlwQuizMasterNext;
 
-		$user_email = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
-		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-		$total_user_tries = isset( $_POST['total_user_tries'] ) ? intval( $_POST['total_user_tries'] ) : 0;
+		$user_email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( wp_unslash( $_POST['quiz_id'] ) ) : 0;
+		$total_user_tries = isset( $_POST['total_user_tries'] ) ? intval( wp_unslash( $_POST['total_user_tries'] ) ) : 0;
 		$mlw_qmn_user_try_count = 0;
 
 		if ( ! empty( $user_email ) && is_email( $user_email ) ) {

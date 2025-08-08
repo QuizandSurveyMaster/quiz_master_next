@@ -403,7 +403,7 @@ class QSM_Results_Pages {
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
 
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
-			if ( !empty( $pages[ $i ]['redirect'] ) ) {
+			if ( ! empty( $pages[ $i ]['redirect'] ) ) {
 				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['redirect'], "quiz-result-redirect-{$i}-{$quiz_id}" );
 			}
 		}
