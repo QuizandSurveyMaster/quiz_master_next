@@ -135,6 +135,15 @@ ul.popuar-addon-ul::after {
     color: #065F46;
 }
 
+.changelog-ul li .security {
+	color: #0f0fea;
+	background: #c0c0ff;
+}
+
+.changelog-ul li span.security:before {
+	background: #0f0fea;
+}
+
 .changelog-ul li span.bug:before, .changelog-ul li span.hotfix:before, .changelog-ul li span.fix:before{
 	background: #9D174D;
 }
