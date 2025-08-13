@@ -1655,45 +1655,44 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 }
 
 /**
- * Safe unserialize:
- * - Objects/resources blocked
- * - Nested serialized strings blocked (double-unserialize sink)
- * - Returns null on tainted/invalid; else normalized value
+ * Safely unserialize a value while blocking objects/resources and nested serialized payloads.
  *
- * @param mixed $data Data to unserialize safely.
- * @return mixed Unserialized data or null on failure/invalid data.
+ * @param mixed $value Serialized string or any other value.
+ * @return mixed|null  Unserialized value on success, original value if not serialized, or null if rejected.
  */
-function qsm_safe_unserialize( $data ) {
-	if ( ! is_string( $data ) || ! is_serialized( $data ) ) {
-		return $data;
-	}
+function qsm_safe_unserialize( $value ) {
+	$result = $value;
 
-	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged
-	$u = unserialize( $data, [ 'allowed_classes' => false ] );
-	if ( false === $u && 'b:0;' !== $data ) {
-		return null; // bad blob
-	}
-	if ( is_object( $u ) || is_resource( $u ) ) {
-		return null; // object/resource not allowed
-	}
+	// If it's not a serialized string, keep original value
+	if ( is_string( $value ) && is_serialized( $value ) ) {
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged
+		$unserialized_value = unserialize( $value, [ 'allowed_classes' => false ] );
 
-	// Reject nested serialized payloads anywhere in the result.
-	$has_nested = false;
-	$scan       = static function ( $v ) use ( &$has_nested ) {
-		if ( is_string( $v ) ) {
-			if ( is_serialized( $v ) || preg_match( '/(^|[;:{])(?:O|C):\d+:"/i', $v ) ) {
-				$has_nested = true;
+		$is_invalid_blob = ( false === $unserialized_value && 'b:0;' !== $value );
+		$is_disallowed_type = is_object( $unserialized_value ) || is_resource( $unserialized_value );
+
+		if ( $is_invalid_blob || $is_disallowed_type ) {
+			$result = null;
+		} else {
+			$contains_nested_serialization = false;
+
+			$scan_for_nested = static function ( $item ) use ( &$contains_nested_serialization ) {
+				if ( is_string( $item ) && ( is_serialized( $item ) || preg_match( '/(^|[;:{])(?:[OC]):\d+:"/i', $item ) ) ) {
+					$contains_nested_serialization = true;
+				}
+			};
+
+			if ( is_array( $unserialized_value ) ) {
+				array_walk_recursive( $unserialized_value, $scan_for_nested );
+			} else {
+				$scan_for_nested( $unserialized_value );
 			}
-		}
-	};
 
-	if ( is_array( $u ) ) {
-		array_walk_recursive( $u, $scan );
-	} else {
-		$scan( $u );
+			$result = $contains_nested_serialization ? null : $unserialized_value;
+		}
 	}
 
-	return $has_nested ? null : $u;
+	return $result;
 }
 
 /**
