@@ -99,6 +99,15 @@
 	background: #25bdfe;
 }
 
+.changelog-ul li .security {
+	color: #0f0fea;
+	background: #c0c0ff;
+}
+
+.changelog-ul li span.security:before {
+	background: #0f0fea;
+}
+
 .recently-taken-quiz-ul li {
 	position: relative;
 	min-height: 50px;
