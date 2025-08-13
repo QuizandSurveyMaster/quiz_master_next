@@ -1149,7 +1149,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
 				$answers_random = array();
 				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
-				$quiz_answer_random_ids = qmn_sanitize_random_ids_data( $quiz_answer_random_ids );
+				$quiz_answer_random_ids = qsm_safe_unserialize( $quiz_answer_random_ids );
 				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
 					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
 						$answers_random[ $key ] = $total_answers[ $key ];
@@ -1655,26 +1655,44 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 }
 
 /**
- * Sanitize Input Array Data
+ * Safely unserialize a value while blocking objects/resources and nested serialized payloads.
  *
- * @params $qmn_sanitize_random_ids Questions Data
- * @return $qmn_sanitize_random_ids Returns sanitized data
+ * @param mixed $value Serialized string or any other value.
+ * @return mixed|null  Unserialized value on success, original value if not serialized, or null if rejected.
  */
-function qmn_sanitize_random_ids_data( $qmn_sanitize_random_ids ) {
-	if ( is_string( $qmn_sanitize_random_ids ) ) {
-		if ( preg_match( '/^(O|C):\d+:/', $qmn_sanitize_random_ids ) ) {
-			return '';
-		}
+function qsm_safe_unserialize( $value ) {
+	$result = $value;
 
-		if ( is_serialized( $qmn_sanitize_random_ids ) ) {
-			$unserialized = maybe_unserialize( $qmn_sanitize_random_ids );
-			if ( ! is_object( $unserialized ) && ! is_resource( $unserialized ) ) {
-				return $unserialized;
+	// If it's not a serialized string, keep original value
+	if ( is_string( $value ) && is_serialized( $value ) ) {
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged
+		$unserialized_value = unserialize( $value, [ 'allowed_classes' => false ] );
+
+		$is_invalid_blob = ( false === $unserialized_value && 'b:0;' !== $value );
+		$is_disallowed_type = is_object( $unserialized_value ) || is_resource( $unserialized_value );
+
+		if ( $is_invalid_blob || $is_disallowed_type ) {
+			$result = null;
+		} else {
+			$contains_nested_serialization = false;
+
+			$scan_for_nested = static function ( $item ) use ( &$contains_nested_serialization ) {
+				if ( is_string( $item ) && ( is_serialized( $item ) || preg_match( '/(^|[;:{])(?:[OC]):\d+:"/i', $item ) ) ) {
+					$contains_nested_serialization = true;
+				}
+			};
+
+			if ( is_array( $unserialized_value ) ) {
+				array_walk_recursive( $unserialized_value, $scan_for_nested );
+			} else {
+				$scan_for_nested( $unserialized_value );
 			}
+
+			$result = $contains_nested_serialization ? null : $unserialized_value;
 		}
 	}
 
-	return $qmn_sanitize_random_ids;
+	return $result;
 }
 
 /**
