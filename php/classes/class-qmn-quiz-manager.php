@@ -1204,6 +1204,7 @@ class QMNQuizManager {
 					do_action( 'qsm_before_end_quiz_form', $options, $quiz_data, $shortcode_args );
 					?>
 				</form>
+				<?php do_action( 'qsm_after_end_quiz_form', $options, $quiz_data, $shortcode_args ); ?>
 		</div>
 		<?php
 		echo apply_filters( 'qmn_end_quiz', '', $options, $quiz_data );
@@ -1580,6 +1581,7 @@ class QMNQuizManager {
 			}
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
+			do_action( 'qsm_question_before', $mlw_question, $qmn_quiz_options,$mlw_qmn_section_count );
 			?>
 			<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $mlw_question->question_type_new ); ?> <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
 				<?php
@@ -1606,6 +1608,7 @@ class QMNQuizManager {
 				?>
 			</div><!-- .quiz_section -->
 			<?php
+			do_action( 'qsm_question_after', $mlw_question, $qmn_quiz_options,$mlw_qmn_section_count );
 			if ( 0 != $pagination_option ) {
 				if ( 1 == $pagination_option || 0 == $pages_count % $pagination_option || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
 					?>
