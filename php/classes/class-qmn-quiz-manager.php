@@ -279,6 +279,12 @@ class QMNQuizManager {
 	 * Upload file to server
 	 */
 	public function qsm_upload_image_fd_question() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_upload_image_fd_question' ) ) {
+			$json['type']    = 'error';
+			$json['message'] = __( 'Security check failed!', 'quiz-master-next' );
+			echo wp_json_encode( $json );
+			exit;
+		}
 		global $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
 		$file_upload_type  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'file_upload_type' );
@@ -1115,6 +1121,7 @@ class QMNQuizManager {
 				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
+				'file_nonce'                => wp_create_nonce( 'qsm_upload_image_fd_question' ),
 			)
 		);
 
