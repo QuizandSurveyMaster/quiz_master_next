@@ -297,6 +297,7 @@ function qsm_generate_dashboard_page() {
 				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_check_plugins_compatibility();
+				qsm_dashboard_display_popular_quizzes();
 				qsm_dashboard_display_need_help_section();
 				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($themes);
@@ -436,4 +437,48 @@ function qsm_create_new_quiz_from_wizard() {
 		) );
 	}
 }
+
+/**
+ * Display popular quizzes section on dashboard
+ *
+ * @since 10.2.6
+ */
+function qsm_dashboard_display_popular_quizzes() {
+    global $wpdb;
+    $popular_quizzes = $wpdb->get_results(
+        "SELECT quiz_id, quiz_name, quiz_taken 
+        FROM {$wpdb->prefix}mlw_quizzes 
+        WHERE deleted = 0 
+        ORDER BY quiz_taken DESC 
+        LIMIT 5"
+    );
+	$counter = 1;
+	if ( $popular_quizzes && ! empty($popular_quizzes) ) {
+		?>
+		<div class="qsm-dashboard-help-center">
+			<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Most Popular Quizzes', 'quiz-master-next'); ?></h3>
+			<div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
+				<div class="qsm-dashboard-stats-table">
+					<table class="qsm-dashboard-popular-quizzes-table">
+						<thead>
+							<tr>
+								<th><?php esc_html_e('No', 'quiz-master-next'); ?></th>
+								<th><?php esc_html_e('Quiz Name', 'quiz-master-next'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $popular_quizzes as $quiz ) : ?>
+								<tr>
+									<td><?php echo esc_html($counter); ?></td>
+									<td><?php echo esc_html($quiz->quiz_name); ?></td>
+								</tr>
+							<?php $counter++; endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div><!-- End of Popular Quizzes -->
+	<?php } 
+}
+
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

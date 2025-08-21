@@ -625,8 +625,8 @@ class QMNQuizManager {
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
 				'limit_email_based_submission'       => isset($qmn_quiz_options->limit_email_based_submission) ? $qmn_quiz_options->limit_email_based_submission : 0,
-				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
-				'is_logged_in'						 => is_user_logged_in(),
+				'total_user_tries'                   => $qmn_quiz_options->total_user_tries,
+				'is_logged_in'                       => is_user_logged_in(),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
