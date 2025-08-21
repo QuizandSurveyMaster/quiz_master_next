@@ -196,7 +196,7 @@ class QSM_Emails {
 		// Sets up our to email addresses.
 		$user_email = sanitize_email( $response_data['user_email'] );
 		$count      = 0;
-		$to 	  = apply_filters( 'mlw_qmn_template_variable_results_page', $to, $response_data );
+		$to       = apply_filters( 'mlw_qmn_template_variable_results_page', $to, $response_data );
 		$to       = apply_filters( 'qsm_send_results_email_addresses', $to, $response_data );
 		$to_array = array_map( 'trim', explode( ',', $to ) );
 		$to_array = array_filter( array_unique( $to_array ), 'is_email' );
