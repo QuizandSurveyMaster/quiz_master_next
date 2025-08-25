@@ -910,11 +910,16 @@ function qmnFormSubmit(quiz_form_id, $this) {
 			name: 'quiz_start_date',
 			value: localStorage.getItem('mlw_quiz_start_date' + quiz_id)
 		}
-	)
+	);
 	jQuery(document).trigger('qsm_before_form_data_process', [quiz_form_id, unindexed_array]);
 	var fd = new FormData();
 	jQuery.each(unindexed_array, function (key, input) {
 		fd.append(input.name, input.value);
+	});
+	jQuery('#' + quiz_form_id + ' input[type="file"]').each(function() {
+		if (this.files && this.files[0]) {
+			fd.append(this.name, this.files[0]);
+		}
 	});
 	fd.append("action", 'qmn_process_quiz');
 	fd.append("nonce", jQuery('#qsm_nonce_' + quiz_id ).val() );
@@ -1429,41 +1434,18 @@ function maxLengthCheck(object) {
 }
 
 async function qsm_remove_uploaded_file_fd_question( $this ) {
-	let media_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').val();
-	if( '' == media_id ) { return; }
-	let nonce = $this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val();
-	let form_data = new FormData();
-	form_data.append('action', 'qsm_remove_file_fd_question');
-	form_data.append('media_id', media_id);
-	form_data.append('nonce', nonce);
 	$this.parent('.quiz_section').find('.qsm-file-upload-status').removeClass('qsm-processing qsm-success');
 	$this.parent('.quiz_section').find('.qsm-file-upload-status').addClass('qsm-error');
-	$this.parent('.quiz_section').find('.qsm-file-upload-status').html('Removing...').show();
+	$this.parent('.quiz_section').find('.qsm-file-upload-status').html(qmn_ajax_object.remove_file).show();
 	$this.parent('.quiz_section').find('.qsm-file-upload-name').html('').show();
-	jQuery.ajax({
-		url: qmn_ajax_object.ajaxurl,
-		type: 'POST',
-		data: form_data,
-		cache: false,
-		contentType: false,
-		processData: false,
-		success: function (response) {
-			let obj = jQuery.parseJSON(response);
-			if (obj.type == 'success') {
-				$this.hide();
-				$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
-				$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val('');
-				$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
-				$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
-				$this.parent('.quiz_section').find('.qsm-file-upload-status').text(obj.message);
-			} else {
-				$this.parent('.quiz_section').find('.qsm-file-upload-status').text('').text(obj.message);
-				$this.parent('.quiz_section').find('.qsm-file-upload-status').show();
-			}
-			// triggers after file remove
-			jQuery(document).trigger('qsm_after_file_remove', [$this.parent(), obj]);
-		}
-	});
+	$this.hide();
+	$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
+	$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val('');
+	$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
+	$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
+	$this.parent('.quiz_section').find('.qsm-file-upload-status').text(qmn_ajax_object.remove_file_success);
+	// triggers after file remove
+	jQuery(document).trigger('qsm_after_file_remove', [$this.parent(), {type: 'success', message: qmn_ajax_object.remove_file_success}]);
 }
 
 jQuery(function () {
@@ -1648,55 +1630,77 @@ jQuery(function () {
 	jQuery('.quiz_section .mlw_answer_file_upload').on('change', async function () {
 		var $this = jQuery(this);
 		var file_data = jQuery(this).prop('files')[0];
-		if (file_data) {
-			var $quizSection = $this.closest('.quiz_section');
-			const removeButton = $quizSection.find('.remove-uploaded-file');
-			if (removeButton.length) {
-				await qsm_remove_uploaded_file_fd_question(removeButton);
-			}
+		if (!file_data) {
+			return false;
 		}
-		var form_data = new FormData();
-		form_data.append('file', file_data);
-		form_data.append('action', 'qsm_upload_image_fd_question');
-		form_data.append('nonce', qmn_ajax_object.file_nonce);
 		var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
-		form_data.append('question_id', question_id);
-		$this.next('.loading-uploaded-file').show();
-		$this.parent('.quiz_section').find('.qsm-file-upload-status').removeClass('qsm-error qsm-success');
-		$this.parent('.quiz_section').find('.qsm-file-upload-status').addClass('qsm-processing');
-		$this.parent('.quiz_section').find('.qsm-file-upload-status').html('Uploading...').show();
-		$this.parent('.quiz_section').find('.qsm-file-upload-name').html(jQuery(this)[0].files[0].name).show();
-		jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', true);
-		jQuery.ajax({
-			url: qmn_ajax_object.ajaxurl,
-			type: 'POST',
-			data: form_data,
-			cache: false,
-			contentType: false,
-			processData: false,
-			success: function (response) {
-				var obj = jQuery.parseJSON(response);
-				$this.next('.loading-uploaded-file').hide();
-				jQuery(".qsm-submit-btn, .mlw_custom_next").attr('disabled', false);
-				if (obj.type == 'success') {
-					$this.next().next().next('.remove-uploaded-file').show();
-					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val(obj.wp_nonoce);
-					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
-					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').hide();
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').removeClass('qsm-processing qsm-error');
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').addClass('qsm-success').text(obj.message);
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').show();
-				} else {
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').removeClass('qsm-processing qsm-success');
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').addClass('qsm-error').text('').text(obj.message);
-					$this.parent('.quiz_section').find('.qsm-file-upload-status').show();
-					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
+		var quiz_id = jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+		var file_upload_type = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_type;
+		var file_upload_limit = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_limit || 1; // Default 1MB
+		var $file_upload_status = $this.parent('.quiz_section').find('.qsm-file-upload-status');
+		$file_upload_status.removeClass('qsm-error qsm-success qsm-processing');
+		$file_upload_status.addClass('qsm-processing');
+		$file_upload_status.text(qmn_ajax_object.validate_process).show();
+		// Build allowed mime types array
+		var allowed_mime_types = [];
+		if (file_upload_type) {
+			var types = file_upload_type.split(',');
+			types.forEach(function(type) {
+				type = type.trim();
+				if (type === 'image') {
+					allowed_mime_types.push('image/jpeg', 'image/png', 'image/x-icon', 'image/gif', 'image/webp');
+				} else if (type === 'doc') {
+					allowed_mime_types.push('application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+				} else if (type === 'excel') {
+					allowed_mime_types.push('application/excel', 'application/vnd.ms-excel', 'application/x-excel', 'application/x-msexcel', 
+					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv');
+				} else if (type) {
+					allowed_mime_types.push(type);
 				}
-				// triggers after file uploads
-				jQuery(document).trigger('qsm_after_file_upload', [$this.parent(), obj]);
+			});
+		}
+
+		let trigger_message, trigger_type = '';
+		// Validate file type
+		if (!allowed_mime_types.includes(file_data.type) || file_upload_limit > 0 && file_data.size > file_upload_limit * 1024 * 1024) {
+			let warning_message = '';
+			if(file_upload_limit > 0 && file_data.size > file_upload_limit * 1024 * 1024) {
+				warning_message = qmn_ajax_object.invalid_file_size + file_upload_limit + 'MB';
+			} else {
+				warning_message = qmn_ajax_object.invalid_file_type + file_upload_type;
 			}
-		});
+			$this.val('');
+			$file_upload_status.removeClass('qsm-processing');
+			$file_upload_status.addClass('qsm-error').text(warning_message).show();
+			trigger_message = warning_message;
+			trigger_type = 'error';
+		} else {
+			// If validation passes, update UI to show success
+			$this.next('.loading-uploaded-file').show();
+			$file_upload_status.removeClass('qsm-error qsm-processing');
+			$file_upload_status.addClass('qsm-success');
+			$this.parent('.quiz_section').find('.qsm-file-upload-name').html(jQuery(this)[0].files[0].name).show();
+			$this.next().next().next('.remove-uploaded-file').show();
+			$file_upload_status.text(qmn_ajax_object.validate_success).show();
+			trigger_message = qmn_ajax_object.validate_success;
+			trigger_type = 'success';
+		}
+
+		// Store file info in hidden fields for form submission
+		$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(Date.now());
+
+		// Trigger event for any listeners
+		const obj = {
+			type: trigger_type,
+			message: trigger_message,
+			file_name: file_data.name,
+			file_type: file_data.type,
+			file_size: file_data.size,
+			file_path: '',
+			file_url: '',
+		};
+		jQuery(document).trigger('qsm_after_file_upload', [$this.parent(), obj]);
+
 		return false;
 	});
 
