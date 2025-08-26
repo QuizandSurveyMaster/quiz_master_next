@@ -470,8 +470,8 @@ class QMNQuizManager {
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
 				'limit_email_based_submission'       => isset($qmn_quiz_options->limit_email_based_submission) ? $qmn_quiz_options->limit_email_based_submission : 0,
-				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
-				'is_logged_in'						 => is_user_logged_in(),
+				'total_user_tries'                   => $qmn_quiz_options->total_user_tries,
+				'is_logged_in'                       => is_user_logged_in(),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
@@ -505,7 +505,7 @@ class QMNQuizManager {
 				
 				$unserialized_settings = maybe_unserialize( $question['question_settings'] );
 				$question_type_new = $question['question_type_new'];
-				if( 11 == $question_type_new ) {
+				if ( 11 == $question_type_new ) {
 					$questions_settings[ $question['question_id'] ]['file_upload_type'] = $unserialized_settings['file_upload_type'];
 					$questions_settings[ $question['question_id'] ]['file_upload_limit'] = $unserialized_settings['file_upload_limit'];
 				}
@@ -969,10 +969,10 @@ class QMNQuizManager {
 				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
-				'validate_process' => esc_html__( 'Validating file...', 'quiz-master-next' ),
-				'remove_file' => esc_html__( 'Removing file...', 'quiz-master-next' ),
-				'remove_file_success' => esc_html__( 'File removed successfully', 'quiz-master-next' ),
-				'validate_success' => esc_html__( 'File validated successfully', 'quiz-master-next' ),
+				'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
+				'remove_file'               => esc_html__( 'Removing file...', 'quiz-master-next' ),
+				'remove_file_success'       => esc_html__( 'File removed successfully', 'quiz-master-next' ),
+				'validate_success'          => esc_html__( 'File validated successfully', 'quiz-master-next' ),
 				'invalid_file_type'         => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
 				'invalid_file_size'         => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
 			)

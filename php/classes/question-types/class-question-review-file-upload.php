@@ -44,15 +44,15 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 				$mimes = apply_filters( 'qsm_file_upload_mime_type', $mimes );
 			}
 	
-			if ( ! isset( $_FILES['qsm_file_question' . $this->question_id] ) ) {
+			if ( ! isset( $_FILES[ 'qsm_file_question' . $this->question_id ] ) ) {
 				$do_error = 1;
 				$do_error_message = __( 'File is not uploaded!', 'quiz-master-next' );
 			}
-			$uploaded_file = $_FILES['qsm_file_question' . $this->question_id]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$file_name     = isset( $_FILES['qsm_file_question' . $this->question_id]['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
+			$uploaded_file = $_FILES[ 'qsm_file_question' . $this->question_id ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			$file_name     = isset( $_FILES[ 'qsm_file_question' . $this->question_id ]['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 			$validate_file = wp_check_filetype( $file_name );
 			if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
-				if ( isset( $_FILES['qsm_file_question' . $this->question_id]['size'] ) && $file_upload_limit > 0 && $_FILES['qsm_file_question' . $this->question_id]['size'] >= $file_upload_limit * 1024 * 1024 ) {
+				if ( isset( $_FILES[ 'qsm_file_question' . $this->question_id ]['size'] ) && $file_upload_limit > 0 && $_FILES[ 'qsm_file_question' . $this->question_id ]['size'] >= $file_upload_limit * 1024 * 1024 ) {
 					$do_error = 1;
 					$do_error_message = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
 				}
