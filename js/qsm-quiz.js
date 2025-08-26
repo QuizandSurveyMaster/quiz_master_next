@@ -916,11 +916,12 @@ function qmnFormSubmit(quiz_form_id, $this) {
 	jQuery.each(unindexed_array, function (key, input) {
 		fd.append(input.name, input.value);
 	});
-	jQuery('#' + quiz_form_id + ' input[type="file"]').each(function() {
-		if (this.files && this.files[0]) {
-			fd.append(this.name, this.files[0]);
+	jQuery('#' + quiz_form_id + ' input[type="file"]').each(function () {
+		const file = this.files ? this.files[0] : null;
+		if ( file !== null ) {
+			fd.append(this.name, file);
 		}
-	});
+	});	
 	fd.append("action", 'qmn_process_quiz');
 	fd.append("nonce", jQuery('#qsm_nonce_' + quiz_id ).val() );
 	fd.append("qsm_unique_key", jQuery('#qsm_unique_key_' + quiz_id ).val() );
@@ -1633,18 +1634,18 @@ jQuery(function () {
 		if (!file_data) {
 			return false;
 		}
-		var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
-		var quiz_id = jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
-		var file_upload_type = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_type;
-		var file_upload_limit = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_limit || 1; // Default 1MB
-		var $file_upload_status = $this.parent('.quiz_section').find('.qsm-file-upload-status');
+		let question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
+		let quiz_id = jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
+		let file_upload_type = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_type;
+		let file_upload_limit = qmn_quiz_data[quiz_id].questions_settings[question_id].file_upload_limit || 1; // Default 1MB
+		let $file_upload_status = $this.parent('.quiz_section').find('.qsm-file-upload-status');
 		$file_upload_status.removeClass('qsm-error qsm-success qsm-processing');
 		$file_upload_status.addClass('qsm-processing');
 		$file_upload_status.text(qmn_ajax_object.validate_process).show();
 		// Build allowed mime types array
 		var allowed_mime_types = [];
 		if (file_upload_type) {
-			var types = file_upload_type.split(',');
+			let types = file_upload_type.split(',');
 			types.forEach(function(type) {
 				type = type.trim();
 				if (type === 'image') {
