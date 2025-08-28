@@ -361,7 +361,7 @@ function qsm_dashboard_display_popular_quizzes() {
 		</h3>
 		<div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
 			<div class="qsm-dashboard-stats-table">
-			<?php if ( !$popular_quizzes && ! empty($popular_quizzes) ) { ?>
+			<?php if ( $popular_quizzes && ! empty($popular_quizzes) ) { ?>
 				<table class="qsm-dashboard-popular-quizzes-table">
 					<thead>
 						<tr>
@@ -427,10 +427,10 @@ function qsm_generate_dashboard_page() {
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_check_plugins_compatibility();
 				qsm_dashboard_display_popular_quizzes();
-				qsm_dashboard_display_need_help_section();
-				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($themes);
+				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_change_log_section();
+				qsm_dashboard_display_need_help_section();
 			} else {
 				qsm_display_fullscreen_error();
 			}
