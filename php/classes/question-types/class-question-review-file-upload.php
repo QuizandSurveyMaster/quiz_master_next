@@ -9,10 +9,11 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 	}
 
 	public function set_user_answer() {
-		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
+		if ( isset( $_POST[ 'question' . $this->question_id ] ) && isset( $_FILES[ 'qsm_file_question' . $this->question_id ] ) ) {
 			global $qsm_global_result_warning_message;
 			$do_error = 0;
 			$do_error_message = '';
+			$user_answer_value = '';
 			global $mlwQuizMasterNext;
 			$question_id       = $this->question_id;
 			$file_upload_type  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'file_upload_type' );
@@ -85,7 +86,6 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 						$json['file_path'] = basename( $movefile['url'] );
 						$user_answer_key                       = 'file_id';
 						$user_answer_value                     = $attach_id;
-						$this->user_answer[ $user_answer_key ] = $user_answer_value;
 					} else {
 						$do_error = 1;
 						$do_error_message = __( 'Upload failed!', 'quiz-master-next' );
@@ -124,6 +124,7 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 			if ( 1 == $do_error ) {
 				$qsm_global_result_warning_message .= '<div class="qsm-result-page-warning">' . $do_error_message . '</div>';
 			}
+			$this->user_answer[ $user_answer_key ] = $user_answer_value;
 		}
 	}
 

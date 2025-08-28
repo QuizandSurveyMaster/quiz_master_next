@@ -1440,8 +1440,6 @@ async function qsm_remove_uploaded_file_fd_question( $this ) {
 	$this.parent('.quiz_section').find('.qsm-file-upload-status').html(qmn_ajax_object.remove_file).show();
 	$this.parent('.quiz_section').find('.qsm-file-upload-name').html('').show();
 	$this.hide();
-	$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
-	$this.parent('.quiz_section').find('.mlw_file_upload_hidden_nonce').val('');
 	$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
 	$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
 	$this.parent('.quiz_section').find('.qsm-file-upload-status').text(qmn_ajax_object.remove_file_success);
