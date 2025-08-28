@@ -1292,7 +1292,13 @@ class QMNQuizManager {
 			</section>
 			<?php
 		}
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
+		$is_contact_fields_enabled = array_filter(
+			$contact_fields,
+			function( $sub ) {
+				return isset( $sub['enable'] ) && 'true' === $sub['enable'];
+			}
+		);
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $is_contact_fields_enabled ) ) ) {
 			$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page" style="display: none;">
