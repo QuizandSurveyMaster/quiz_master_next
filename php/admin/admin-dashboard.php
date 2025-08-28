@@ -266,6 +266,127 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 	</div>
 <?php
 }
+
+/**
+ * Display popular quizzes section on dashboard
+ *
+ * @since 10.2.7
+ */
+
+function qsm_dashboard_display_popular_quizzes() {
+    global $wpdb;
+
+    // Handle form submission
+    if ( isset($_POST['qsm_time_range']) && check_admin_referer('qsm_timerange_nonce') ) {
+        $timerange = sanitize_text_field($_POST['qsm_time_range']);
+        $valid_ranges = array( 'all', '7days', '15days', '1month' );
+        
+        if ( in_array($timerange, $valid_ranges) ) {
+            update_option('qsm_dashboard_quiz_snapshot_options', $timerange);
+        }
+    }
+
+    // Get saved time range option, default to 'all'
+    $selected_range = get_option('qsm_dashboard_quiz_snapshot_options', 'all');
+    
+    // Build the date condition based on selected range
+    $date_condition = '';
+    $current_time = current_time('Y-m-d H:i:s');
+    
+    switch ( $selected_range ) {
+        case '7days':
+            $date_condition = $wpdb->prepare("AND last_activity >= DATE_SUB(%s, INTERVAL 7 DAY)", $current_time);
+            break;
+        case '15days':
+            $date_condition = $wpdb->prepare("AND last_activity >= DATE_SUB(%s, INTERVAL 15 DAY)", $current_time);
+            break;
+        case '1month':
+            $date_condition = $wpdb->prepare("AND last_activity >= DATE_SUB(%s, INTERVAL 1 MONTH)", $current_time);
+            break;
+        default: // 'all'
+            $date_condition = '';
+    }
+
+    // Build the query with placeholder
+    $query = "SELECT quiz_id, quiz_name, quiz_taken 
+             FROM {$wpdb->prefix}mlw_quizzes 
+             WHERE deleted = 0";
+    
+    if ( $selected_range !== 'all' ) {
+        $query .= " AND last_activity >= DATE_SUB(%s, INTERVAL ";
+        switch ( $selected_range ) {
+            case '7days':
+                $query .= "7 DAY";
+                break;
+            case '15days':
+                $query .= "15 DAY";
+                break;
+            case '1month':
+                $query .= "1 MONTH";
+                break;
+        }
+        $query .= ")";
+        
+        // Get popular quizzes with date filter
+        $popular_quizzes = $wpdb->get_results(
+            $wpdb->prepare(
+                $query . " ORDER BY quiz_taken DESC LIMIT 5",
+                $current_time
+            )
+        );
+    } else {
+        // Get popular quizzes for all time
+        $popular_quizzes = $wpdb->get_results(
+            $query . " ORDER BY quiz_taken DESC LIMIT 5"
+        );
+    }
+
+    $counter = 1;
+    if ( $popular_quizzes && ! empty($popular_quizzes) ) {
+        ?>
+        <div class="qsm-dashboard-help-center">
+            <h3 class="qsm-dashboard-help-center-title">
+                <?php echo esc_html__('Most Popular Quizzes', 'quiz-master-next'); ?>
+                <div class="qsm-dashboard-time-range-selector">
+                    <form method="post" style="display: inline;">
+                        <?php wp_nonce_field('qsm_timerange_nonce'); ?>
+                        <select name="qsm_time_range">
+                            <option value="all" <?php selected($selected_range, 'all'); ?>><?php esc_html_e('All Time', 'quiz-master-next'); ?></option>
+                            <option value="7days" <?php selected($selected_range, '7days'); ?>><?php esc_html_e('Last 7 Days', 'quiz-master-next'); ?></option>
+                            <option value="15days" <?php selected($selected_range, '15days'); ?>><?php esc_html_e('Last 15 Days', 'quiz-master-next'); ?></option>
+                            <option value="1month" <?php selected($selected_range, '1month'); ?>><?php esc_html_e('Last 1 Month', 'quiz-master-next'); ?></option>
+                        </select>
+                        <button type="submit" class="button button-primary"><?php esc_html_e('Save', 'quiz-master-next'); ?></button>
+                    </form>
+                </div>
+            </h3>
+            <div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
+                <div class="qsm-dashboard-stats-table">
+                    <table class="qsm-dashboard-popular-quizzes-table">
+                        <thead>
+                            <tr>
+                                <th><?php esc_html_e('Rank', 'quiz-master-next'); ?></th>
+                                <th><?php esc_html_e('Quiz Title', 'quiz-master-next'); ?></th>
+                                <th><?php esc_html_e('Total Attempts', 'quiz-master-next'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $popular_quizzes as $quiz ) : ?>
+                                <tr>
+                                    <td><?php echo esc_html($counter); ?></td>
+                                    <td><?php echo esc_html($quiz->quiz_name); ?></td>
+                                    <td><?php echo esc_html($quiz->quiz_taken); ?></td>
+                                </tr>
+                            <?php $counter++; endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php 
+    }
+}
+
 /**
  * @since 7.0
  * @return HTMl Dashboard for QSM
@@ -436,49 +557,6 @@ function qsm_create_new_quiz_from_wizard() {
 			'contact_form' => $contact_form,
 		) );
 	}
-}
-
-/**
- * Display popular quizzes section on dashboard
- *
- * @since 10.2.6
- */
-function qsm_dashboard_display_popular_quizzes() {
-    global $wpdb;
-    $popular_quizzes = $wpdb->get_results(
-        "SELECT quiz_id, quiz_name, quiz_taken 
-        FROM {$wpdb->prefix}mlw_quizzes 
-        WHERE deleted = 0 
-        ORDER BY quiz_taken DESC 
-        LIMIT 5"
-    );
-	$counter = 1;
-	if ( $popular_quizzes && ! empty($popular_quizzes) ) {
-		?>
-		<div class="qsm-dashboard-help-center">
-			<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Most Popular Quizzes', 'quiz-master-next'); ?></h3>
-			<div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
-				<div class="qsm-dashboard-stats-table">
-					<table class="qsm-dashboard-popular-quizzes-table">
-						<thead>
-							<tr>
-								<th><?php esc_html_e('No', 'quiz-master-next'); ?></th>
-								<th><?php esc_html_e('Quiz Name', 'quiz-master-next'); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $popular_quizzes as $quiz ) : ?>
-								<tr>
-									<td><?php echo esc_html($counter); ?></td>
-									<td><?php echo esc_html($quiz->quiz_name); ?></td>
-								</tr>
-							<?php $counter++; endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div><!-- End of Popular Quizzes -->
-	<?php } 
 }
 
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

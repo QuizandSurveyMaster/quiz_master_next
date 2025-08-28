@@ -954,7 +954,10 @@ h2.hndle.ui-sortable-handle {
     align-items: center;
 	margin-top: 60px;
 }
-
+.qsm-dashboard-time-range-selector {
+	float: right;
+	margin-bottom: 5px;
+}
 @media screen and (min-width: 1200px) {
 	#quiz_settings_wrapper tr td fieldset>br {
 		display: none;
