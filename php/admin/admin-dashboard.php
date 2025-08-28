@@ -342,49 +342,57 @@ function qsm_dashboard_display_popular_quizzes() {
     }
 
     $counter = 1;
-    if ( $popular_quizzes && ! empty($popular_quizzes) ) {
-        ?>
-        <div class="qsm-dashboard-help-center">
-            <h3 class="qsm-dashboard-help-center-title">
-                <?php echo esc_html__('Most Popular Quizzes', 'quiz-master-next'); ?>
-                <div class="qsm-dashboard-time-range-selector">
-                    <form method="post" style="display: inline;">
-                        <?php wp_nonce_field('qsm_timerange_nonce'); ?>
-                        <select name="qsm_time_range">
-                            <option value="all" <?php selected($selected_range, 'all'); ?>><?php esc_html_e('All Time', 'quiz-master-next'); ?></option>
-                            <option value="7days" <?php selected($selected_range, '7days'); ?>><?php esc_html_e('Last 7 Days', 'quiz-master-next'); ?></option>
-                            <option value="15days" <?php selected($selected_range, '15days'); ?>><?php esc_html_e('Last 15 Days', 'quiz-master-next'); ?></option>
-                            <option value="1month" <?php selected($selected_range, '1month'); ?>><?php esc_html_e('Last 1 Month', 'quiz-master-next'); ?></option>
-                        </select>
-                        <button type="submit" class="button button-primary"><?php esc_html_e('Save', 'quiz-master-next'); ?></button>
-                    </form>
-                </div>
-            </h3>
-            <div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
-                <div class="qsm-dashboard-stats-table">
-                    <table class="qsm-dashboard-popular-quizzes-table">
-                        <thead>
-                            <tr>
-                                <th><?php esc_html_e('Rank', 'quiz-master-next'); ?></th>
-                                <th><?php esc_html_e('Quiz Title', 'quiz-master-next'); ?></th>
-                                <th><?php esc_html_e('Total Attempts', 'quiz-master-next'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ( $popular_quizzes as $quiz ) : ?>
-                                <tr>
-                                    <td><?php echo esc_html($counter); ?></td>
-                                    <td><?php echo esc_html($quiz->quiz_name); ?></td>
-                                    <td><?php echo esc_html($quiz->quiz_taken); ?></td>
-                                </tr>
-                            <?php $counter++; endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <?php 
-    }
+	?>
+	<div class="qsm-dashboard-help-center">
+		<h3 class="qsm-dashboard-help-center-title">
+			<?php echo esc_html__('Most Popular Quizzes', 'quiz-master-next'); ?>
+			<div class="qsm-dashboard-time-range-selector">
+				<form method="post" style="display: inline;">
+					<?php wp_nonce_field('qsm_timerange_nonce'); ?>
+					<select name="qsm_time_range">
+						<option value="all" <?php selected($selected_range, 'all'); ?>><?php esc_html_e('All Time', 'quiz-master-next'); ?></option>
+						<option value="7days" <?php selected($selected_range, '7days'); ?>><?php esc_html_e('Last 7 Days', 'quiz-master-next'); ?></option>
+						<option value="15days" <?php selected($selected_range, '15days'); ?>><?php esc_html_e('Last 15 Days', 'quiz-master-next'); ?></option>
+						<option value="1month" <?php selected($selected_range, '1month'); ?>><?php esc_html_e('Last 1 Month', 'quiz-master-next'); ?></option>
+					</select>
+					<button type="submit" class="button button-primary"><?php esc_html_e('Save', 'quiz-master-next'); ?></button>
+				</form>
+			</div>
+		</h3>
+		<div class="qsm-dashboard-stats qsm-dashboard-page-common-style">
+			<div class="qsm-dashboard-stats-table">
+			<?php if ( !$popular_quizzes && ! empty($popular_quizzes) ) { ?>
+				<table class="qsm-dashboard-popular-quizzes-table">
+					<thead>
+						<tr>
+							<th><?php esc_html_e('Rank', 'quiz-master-next'); ?></th>
+							<th><?php esc_html_e('Quiz Title', 'quiz-master-next'); ?></th>
+							<th><?php esc_html_e('Total Attempts', 'quiz-master-next'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $popular_quizzes as $quiz ) : ?>
+							<tr>
+								<td><?php echo esc_html($counter); ?></td>
+								<td><?php echo esc_html($quiz->quiz_name); ?></td>
+								<td><?php echo esc_html($quiz->quiz_taken); ?></td>
+							</tr>
+						<?php $counter++; endforeach; ?>
+					</tbody>
+				</table>
+				<?php } else { ?>
+					<table class="qsm-dashboard-popular-quizzes-table">
+						<tbody>
+							<tr>
+								<td colspan="3"><?php esc_html_e('No quizzes available for this time range', 'quiz-master-next'); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<?php 
 }
 
 /**
