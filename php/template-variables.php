@@ -1067,7 +1067,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$user_answer_class     = 'qmn_user_correct_answer';
 					$question_answer_class = 'qmn_question_answer_correct';
 				} else {
-					$user_answer_class     = 'qmn_user_incorrect_answer';
+					$user_answer_class     = 'qmn_user_incorrect_answer 12';
 					$question_answer_class = 'qmn_question_answer_incorrect';
 				}
 			}
@@ -1081,11 +1081,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
-				$user_answer_class     = 'qmn_user_incorrect_answer';
+				$user_answer_class     = 'qmn_user_incorrect_answer 34';
 				$question_answer_class = 'qmn_question_answer_incorrect';
 			}
 		}
 	}
+	$user_answer_class = 11 != $answer['question_type'] ? $user_answer_class : '';
 	$open_span_tag                 = '<span class="' . $user_answer_class . '">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
