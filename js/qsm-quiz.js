@@ -1631,6 +1631,7 @@ jQuery(function () {
 		var $this = jQuery(this);
 		var file_data = jQuery(this).prop('files')[0];
 		if (!file_data) {
+			await qsm_remove_uploaded_file_fd_question( $this.parent('.quiz_section').find('.qsm-file-upload-container').find('.remove-uploaded-file') );
 			return false;
 		}
 		let question_id = $this.parent('.quiz_section').find('.mlw_file_upload_media_id').attr("name").replace('question', '');
@@ -1705,7 +1706,7 @@ jQuery(function () {
 	});
 
 	//Ajax remove file code
-	jQuery(document).on('click ', '.quiz_section .qsm-file-upload-container .remove-uploaded-file', async function () {
+	jQuery(document).on('click ', '.quiz_section .remove-uploaded-file', async function () {
 		await qsm_remove_uploaded_file_fd_question( jQuery(this) );
 		return false;
 	});
