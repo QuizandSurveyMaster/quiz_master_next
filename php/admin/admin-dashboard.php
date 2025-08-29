@@ -266,6 +266,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 	</div>
 <?php
 }
+
 /**
  * @since 7.0
  * @return HTMl Dashboard for QSM
@@ -297,10 +298,10 @@ function qsm_generate_dashboard_page() {
 				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_check_plugins_compatibility();
-				qsm_dashboard_display_need_help_section();
-				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_popular_theme_section($themes);
+				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_change_log_section();
+				qsm_dashboard_display_need_help_section();
 			} else {
 				qsm_display_fullscreen_error();
 			}
@@ -436,4 +437,5 @@ function qsm_create_new_quiz_from_wizard() {
 		) );
 	}
 }
+
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

@@ -382,6 +382,11 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	margin-bottom: -5px;
 }
 
+.qsm-admin-i-understand-warning {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
 /**
 * Design for new template variable QUESTION_WITH_ANSWER
 */
