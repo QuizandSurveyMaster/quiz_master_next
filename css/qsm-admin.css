@@ -103,48 +103,6 @@
 	padding: 0;
 }
 
-/* Popular Quizzes Table */
-
-.qsm-dashboard-stats.qsm-dashboard-page-common-style {
-	padding: 0;
-}
-
-table.qsm-dashboard-popular-quizzes-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-table.qsm-dashboard-popular-quizzes-table thead {
-    background: #F9FAFB;
-    font-weight: 600;
-}
-
-table.qsm-dashboard-popular-quizzes-table th,
-table.qsm-dashboard-popular-quizzes-table td {
-    padding: 12px 25px;
-	color: #1E1E1E;
-    text-align: left;
-}
-
-table.qsm-dashboard-popular-quizzes-table tr {
-    border-bottom: 1px solid #E5E7EB;
-    transition: background 0.2s ease-in-out;
-}
-
-table.qsm-dashboard-popular-quizzes-table tr:hover {
-    background: #E5E7EB;
-}
-
-table.qsm-dashboard-popular-quizzes-table td:first-child {
-    font-weight: 500;
-    color: #555555;
-}
-/* Popular Quizzes Table over */
-
 /* Adjustments for mobile devices */
 @media (max-width: 620px) {
 
