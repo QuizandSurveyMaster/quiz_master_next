@@ -1067,7 +1067,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$user_answer_class     = 'qmn_user_correct_answer';
 					$question_answer_class = 'qmn_question_answer_correct';
 				} else {
-					$user_answer_class     = 'qmn_user_incorrect_answer 12';
+					$user_answer_class     = 'qmn_user_incorrect_answer';
 					$question_answer_class = 'qmn_question_answer_incorrect';
 				}
 			}
@@ -1081,7 +1081,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
-				$user_answer_class     = 'qmn_user_incorrect_answer 34';
+				$user_answer_class     = 'qmn_user_incorrect_answer';
 				$question_answer_class = 'qmn_question_answer_incorrect';
 			}
 		}
