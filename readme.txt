@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.8
 Requires PHP: 5.4
-Stable tag: 10.2.6
+Stable tag: 10.2.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -221,6 +221,11 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 10.2.7 ( September 2, 2025 ) =
+* Bug: Fixed an issue where the quiz page displayed blank if the "End Quiz" section was missing
+* Enhancement: Improved file upload question handling to block unwanted file upload
+* Enhancement: Added support for the %CONTACT_X% variable in to Email input
+
 = 10.2.6 ( August 13, 2025 ) =
 * Security: Completed fix for quiz_answer_random_ids vulnerability using secure unserialize() with allowed_classes => false
 
