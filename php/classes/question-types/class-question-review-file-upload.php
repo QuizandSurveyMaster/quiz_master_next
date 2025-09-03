@@ -9,7 +9,7 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 	}
 
 	public function set_user_answer() {
-		if ( isset( $_POST[ 'question' . $this->question_id ] ) && isset( $_FILES[ 'qsm_file_question' . $this->question_id ] ) ) {
+		if ( isset( $_FILES[ 'qsm_file_question' . $this->question_id ] ) ) {
 			global $qsm_global_result_warning_message;
 			$do_error = 0;
 			$do_error_message = '';
@@ -78,12 +78,6 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 						include_once ABSPATH . 'wp-admin/includes/image.php';
 						$attach_data = wp_generate_attachment_metadata( $attach_id, $movefile['file'] );
 						wp_update_attachment_metadata( $attach_id, $attach_data );
-						$json['type']      = 'success';
-						$json['media_id']  = $attach_id;
-						$json['wp_nonoce'] = wp_create_nonce( 'delete_atteched_file_' . $attach_id );
-						$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
-						$json['file_url']  = $movefile['url'];
-						$json['file_path'] = basename( $movefile['url'] );
 						$user_answer_key                       = 'file_id';
 						$user_answer_value                     = $attach_id;
 					} else {

@@ -202,6 +202,8 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	position: absolute;
     right: 5px;
     top: 0;
+	width: 22px;
+    height: 22px;
 }
 
 /**
