@@ -312,6 +312,9 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	cursor: pointer;
 	position: relative;
 }
+.quiz_theme_default .qsm-file-upload-status{
+	max-width: 300px;
+}
 .quiz_section .qsm-file-upload-container.file-hover,
 .quiz_section .qsm-file-upload-container:hover {
 	border: 3px solid #229ACD;
@@ -361,6 +364,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	background-color: rgb(255, 221, 221);
 	color: red;
 }
+
 .qsm-success {
 	background-color: rgb(221, 255, 221);
 	color: green;

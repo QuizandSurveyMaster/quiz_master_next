@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.2.7 ( September 2, 2025 ) =
+= 10.2.7 ( September 5, 2025 ) =
 * Bug: Fixed an issue where the quiz page displayed blank if the "End Quiz" section was missing
 * Enhancement: Improved file upload question handling to block unwanted file upload
 * Enhancement: Added support for the %CONTACT_X% variable in to Email input
