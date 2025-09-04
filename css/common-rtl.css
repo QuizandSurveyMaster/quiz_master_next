@@ -195,7 +195,6 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 .quiz_section .qsm-file-upload-container .remove-uploaded-file {
 	color: red;
 	border: 1px solid red;
-	width: 31px;
 	padding: 5px 5px 0px 5px;
 	display: inline-block;
 	cursor: pointer;
