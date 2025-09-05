@@ -103,6 +103,28 @@
 	padding: 0;
 }
 
+/* Popular Quizzes Table */
+
+.qsm-dashboard-recently-taken-quiz.qsm-dashboard-page-common-style { 
+	position: relative;
+}
+
+.qsm-dashboard-recently-taken-quiz .recently-taken-quiz-ul {
+	padding-bottom: 30px;
+}
+
+.qsm-dashboard-recently-taken-quiz .qsm-dashboard-view-all-results {
+	position: absolute;
+    bottom: 10px;
+    color: #fff;
+    right: calc(100% - 370px);
+    font-weight: 500;
+    font-size: 12px;
+    padding: 1px 10px;
+}
+
+/* Popular Quizzes Table over */
+
 /* Adjustments for mobile devices */
 @media (max-width: 620px) {
 

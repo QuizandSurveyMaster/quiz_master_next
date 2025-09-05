@@ -196,17 +196,14 @@ class QSM_Emails {
 		// Sets up our to email addresses.
 		$user_email = sanitize_email( $response_data['user_email'] );
 		$count      = 0;
-		if ( is_email( $user_email ) ) {
-			$to = str_replace( '%USER_EMAIL%', $response_data['user_email'], $to, $count );
-		} else {
-			$to = str_replace( '%USER_EMAIL%', '', $to );
-		}
+		$to       = apply_filters( 'mlw_qmn_template_variable_results_page', $to, $response_data );
 		$to       = apply_filters( 'qsm_send_results_email_addresses', $to, $response_data );
-		$to_array = explode( ',', $to );
-		$to_array = array_unique( $to_array );
+		$to_array = array_map( 'trim', explode( ',', $to ) );
+		$to_array = array_filter( array_unique( $to_array ), 'is_email' );
 		if ( empty( $to_array ) ) {
 			return;
 		}
+		$count = count( $to_array );
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 		// Prepares our content.

@@ -192,13 +192,17 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	display: block;
 }
 
-.quiz_section .remove-uploaded-file {
+.quiz_section .qsm-file-upload-container .remove-uploaded-file {
 	color: red;
 	border: 1px solid red;
-	width: 31px;
 	padding: 5px 5px 0px 5px;
 	display: inline-block;
 	cursor: pointer;
+	position: absolute;
+    right: 5px;
+    top: 0;
+	width: 22px;
+    height: 22px;
 }
 
 /**

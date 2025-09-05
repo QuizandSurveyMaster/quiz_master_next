@@ -1086,6 +1086,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			}
 		}
 	}
+	$user_answer_class = 11 != $answer['question_type'] ? $user_answer_class : '';
 	$open_span_tag                 = '<span class="' . $user_answer_class . '">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
@@ -1478,7 +1479,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$mlw_question_answer_display = apply_filters( 'qsm_question_answers_template_variable', $mlw_question_answer_display, $mlw_quiz_array, $answer );
 	$question_obj                = ( isset( $questions[ $answer['id'] ] ) ? $questions[ $answer['id'] ] : null );
 	$display                     = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters( 'qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array, $question_obj ) . '</div>';
-
+	$display = apply_filters( 'qsm_question_answers_template_variable_display_before', $display, $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt );
 	return wp_kses_post( $display );
 }
 

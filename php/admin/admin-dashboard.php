@@ -266,6 +266,111 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 	</div>
 <?php
 }
+
+/**
+ * Display recently quiz taken section on dashboard
+ *
+ * @since 10.2.7
+ */
+
+function qsm_dashboard_recent_taken_quiz() {
+	global $wpdb;
+	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
+	?>
+	<div class="qsm-dashboard-help-center">
+		<h3 class="qsm-dashboard-help-center-title"><?php esc_html_e( 'Recent Activity', 'quiz-master-next' ); ?></h3>
+		<div class="qsm-dashboard-recently-taken-quiz qsm-dashboard-page-common-style">
+			<a href="admin.php?page=mlw_quiz_results" style="color: #fff;" class="button button-primary qsm-dashboard-view-all-results">
+				<?php echo esc_html__( 'See All Results ', 'quiz-master-next' );
+				echo isset( $mlw_result_data['total_result'] ) ? ' (' . wp_kses_post( $mlw_result_data['total_result'] ) . ')' : ''; ?>
+			</a>
+			<ul class="recently-taken-quiz-ul">
+				<?php
+				$mlw_result_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 ORDER BY result_id DESC LIMIT 2", ARRAY_A );
+				if ( $mlw_result_data ) {
+					foreach ( $mlw_result_data as $key => $single_result_arr ) { ?>
+						<li> <?php
+							if ( isset( $single_result_arr['user'] ) && '' !== $single_result_arr['user'] ) {
+								echo '<img src="' . esc_url( get_avatar_url( $single_result_arr['user'] ) ) . '" class="avatar avatar-50 photo" alt="User Avatar">';
+							} else {
+								echo '<img src="' . esc_url( QSM_PLUGIN_URL . '/assets/default_image.png' ) . '" class="avatar avatar-50 photo" alt="Default Image">';
+							}
+							?>
+							<div class="rtq-main-wrapper">
+								<span class="rtq_user_info">
+									<?php
+									if ( isset( $single_result_arr['user'] ) && 0 !== intval( $single_result_arr['user'] ) ) {
+										$edit_link = get_edit_profile_url( $single_result_arr['user'] );
+										$actual_user = get_userdata( $single_result_arr['user'] );
+										$user_name = 'None' === $single_result_arr['name'] ? $actual_user->data->display_name : $single_result_arr['name'];
+										echo '<a href="' . esc_url( $edit_link ) . '">' . esc_html( $user_name ) . '</a>';
+									} else {
+										esc_html_e( 'Guest', 'quiz-master-next' );
+									}
+									esc_html_e( ' took quiz ', 'quiz-master-next' );
+									echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . esc_html( $single_result_arr['quiz_name'] ) . '</a>';
+									?>
+								</span>
+								<span class="rtq-result-info">
+									<?php
+									$quotes_list = '';
+									$form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
+									if ( 1 === intval( $form_type ) || 2 === intval( $form_type ) ) {
+										$quotes_list .= __( 'Not Graded', 'quiz-master-next' );
+									} else {
+										if ( 0 === intval( $single_result_arr['quiz_system'] ) ) {
+											$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%';
+										}
+										if ( 1 === intval( $single_result_arr['quiz_system'] ) ) {
+											$quotes_list .= $single_result_arr['point_score'] . ' Points';
+										}
+										if ( 3 === intval( $single_result_arr['quiz_system'] ) ) {
+											$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%<br/>';
+											$quotes_list .= $single_result_arr['point_score'] . ' Points';
+										}
+									}
+									echo wp_kses_post( $quotes_list );
+									?>
+									|
+									<?php
+									$mlw_complete_time     = '';
+									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									if ( is_array( $mlw_qmn_results_array ) ) {
+										$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
+										if ( $mlw_complete_hours > 0 ) {
+											$mlw_complete_time .= "$mlw_complete_hours hours ";
+										}
+										$mlw_complete_minutes = floor( ( $mlw_qmn_results_array[0] % 3600 ) / 60 );
+										if ( $mlw_complete_minutes > 0 ) {
+											$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+										}
+										$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+										$mlw_complete_time   .= "$mlw_complete_seconds seconds";
+									}
+									esc_html_e( ' Time to complete ', 'quiz-master-next' );
+									echo wp_kses_post( $mlw_complete_time );
+									?>
+								</span>
+								<span class="rtq-time-taken"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ) ); ?></span>
+								<p class="row-actions-c">
+									<a
+										href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
+									| <a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
+										class="trash rtq-delete-result"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+								</p>
+							</div>
+						</li>
+					<?php }
+				} else { ?>
+					<li><?php esc_html_e( 'No recent activity found.', 'quiz-master-next' ); ?></li>
+				<?php }
+				?>
+			</ul>
+		</div>
+	</div>
+<?php
+}
+
 /**
  * @since 7.0
  * @return HTMl Dashboard for QSM
@@ -297,10 +402,11 @@ function qsm_generate_dashboard_page() {
 				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
 				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
 				qsm_check_plugins_compatibility();
-				qsm_dashboard_display_need_help_section();
-				qsm_dashboard_display_popular_addon_section($popular_addons);
+				qsm_dashboard_recent_taken_quiz();
 				qsm_dashboard_display_popular_theme_section($themes);
+				qsm_dashboard_display_popular_addon_section($popular_addons);
 				qsm_dashboard_display_change_log_section();
+				qsm_dashboard_display_need_help_section();
 			} else {
 				qsm_display_fullscreen_error();
 			}
@@ -436,4 +542,5 @@ function qsm_create_new_quiz_from_wizard() {
 		) );
 	}
 }
+
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
