@@ -30,7 +30,7 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?> <div></div>
 		<label style="display: none;" for="question<?php echo esc_attr( $id ); ?>"><?php echo esc_attr( "Choose File" ); ?></label>
-		<input style="display: none;" type="file" id="question<?php echo esc_attr( $id ); ?>" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
+ 		<input style="display: none;" type="file" name="qsm_file_question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
 		<?php if ( ! $hide ) : ?>
 			<div class="qsm-file-upload-container">
 				<span class="dashicons dashicons-cloud-upload qsm-file-upload-logo"></span>
@@ -41,15 +41,11 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 					</a>
 				</div>
 				<div class="qsm-file-upload-name"></div>
-				<div class="qsm-file-upload-status"></div>
+				<span title="<?php esc_html_e( 'Remove', 'quiz-master-next' ); ?>" style="display: none;"  class="dashicons dashicons-no-alt remove-uploaded-file"></span>
 			</div>
 		<?php endif; ?>
-		<img style="display: none;" class="loading-uploaded-file" alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif' ); ?>">
-		<span title="<?php esc_html_e( 'Remove', 'quiz-master-next' ); ?>" style="display: none;"  class="dashicons dashicons-no-alt remove-uploaded-file"></span>
+		<div class="qsm-file-upload-status"></div>
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
-		<input class="mlw_file_upload_hidden_path" type="hidden" value="" />
-		<input class="mlw_file_upload_hidden_nonce" type="hidden" value="" />
-		<input class="mlw_file_upload_media_id" name="question<?php echo esc_attr( $id ); ?>" type="hidden" value="" />
 		<?php
 		echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
 }

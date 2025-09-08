@@ -85,14 +85,6 @@ class QMNQuizManager {
 		// Clear audit trail
 		add_action( 'wp_ajax_qsm_clear_audit_data', array( $this, 'qsm_clear_audit_data' ) );
 
-		// Upload file of file upload question type
-		add_action( 'wp_ajax_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
-		add_action( 'wp_ajax_nopriv_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
-
-		// remove file of file upload question type
-		add_action( 'wp_ajax_qsm_remove_file_fd_question', array( $this, 'qsm_remove_file_fd_question' ) );
-		add_action( 'wp_ajax_nopriv_qsm_remove_file_fd_question', array( $this, 'qsm_remove_file_fd_question' ) );
-
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action('wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
@@ -273,153 +265,6 @@ class QMNQuizManager {
 			wp_send_json_success();
 		}
 	}
-
-	/**
-	 * @version 6.3.7
-	 * Upload file to server
-	 */
-	public function qsm_upload_image_fd_question() {
-		global $mlwQuizMasterNext;
-		$question_id       = isset( $_POST['question_id'] ) ? sanitize_text_field( wp_unslash( $_POST['question_id'] ) ) : 0;
-		$file_upload_type  = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'file_upload_type' );
-		$file_upload_limit = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'file_upload_limit' );
-		$mimes             = array();
-		if ( $file_upload_type ) {
-			$file_type_exp = explode( ',', $file_upload_type );
-			foreach ( $file_type_exp as $value ) {
-				$value = trim( $value );
-				if ( 'image' === $value ) {
-					$mimes[] = 'image/jpeg';
-					$mimes[] = 'image/png';
-					$mimes[] = 'image/x-icon';
-					$mimes[] = 'image/gif';
-					$mimes[] = 'image/webp';
-				} elseif ( 'doc' === $value ) {
-					$mimes[] = 'application/msword';
-					$mimes[] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-				} elseif ( 'excel' === $value ) {
-					$mimes[] = 'application/excel, application/vnd.ms-excel, application/x-excel, application/x-msexcel';
-					$mimes[] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-					$mimes[] = 'text/csv';
-				} elseif ( empty( $value ) ) {
-					// don't add blank mime type
-				} else {
-					$mimes[] = $value;
-				}
-			}
-			$mimes = apply_filters( 'qsm_file_upload_mime_type', $mimes );
-		}
-
-		$json = array();
-		if ( ! isset( $_FILES['file'] ) ) {
-			$json['type']    = 'error';
-			$json['message'] = __( 'File is not uploaded!', 'quiz-master-next' );
-			echo wp_json_encode( $json );
-			exit;
-		}
-		$uploaded_file = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
-		$validate_file = wp_check_filetype( $file_name );
-		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
-			if ( isset( $_FILES['file']['size'] ) && $file_upload_limit > 0 && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
-				$json['type']    = 'error';
-				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
-				echo wp_json_encode( $json );
-				exit;
-			}
-
-			$uploaded_file['name'] = 'qsmfileupload_' . uniqid() . '_' . str_replace( '-', '_', $file_name );
-			$upload_overrides      = array(
-				'test_form' => false,
-			);
-			$movefile              = wp_handle_upload( $uploaded_file, $upload_overrides );
-			if ( $movefile && ! isset( $movefile['error'] ) ) {
-				// Prepare an array of post data for the attachment.
-				$attachment = array(
-					'guid'           => $movefile['url'],
-					'post_mime_type' => $movefile['type'],
-					'post_title'     => preg_replace( '/\\.[^.]+$/', '', basename( $uploaded_file['name'] ) ),
-					'post_content'   => '',
-					'post_status'    => 'inherit',
-				);
-				// Insert the attachment.
-				$attach_id = wp_insert_attachment( $attachment, $movefile['file'], 0 );
-				if ( $attach_id ) {
-					include_once ABSPATH . 'wp-admin/includes/image.php';
-					$attach_data = wp_generate_attachment_metadata( $attach_id, $movefile['file'] );
-					wp_update_attachment_metadata( $attach_id, $attach_data );
-					$json['type']      = 'success';
-					$json['media_id']  = $attach_id;
-					$json['wp_nonoce'] = wp_create_nonce( 'delete_atteched_file_' . $attach_id );
-					$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
-					$json['file_url']  = $movefile['url'];
-					$json['file_path'] = basename( $movefile['url'] );
-					echo wp_json_encode( $json );
-				} else {
-					$json['type']    = 'error';
-					$json['message'] = __( 'Upload failed!', 'quiz-master-next' );
-					echo wp_json_encode( $json );
-				}
-			} else {
-				$json['type']    = 'error';
-				$json['message'] = $movefile['error'];
-				echo wp_json_encode( $json );
-			}
-		} else {
-			if ( ! empty ($file_upload_type) ) {
-				$filestype = explode(',', $file_upload_type);
-				foreach ( $filestype as $file ) {
-					if ( strpos($file, '/') !== false ) {
-						$filetypes = explode('/', $file);
-						if ( ! empty($filetypes[0]) && 'application' == $filetypes[0] ) {
-							$filetypes_allowed[] = 'pdf';
-						} else {
-						$filetypes_allowed[] = $filetypes[0];
-						}
-					}else {
-						$filetypes_allowed[] = $file;
-					}
-				}
-				if ( count($filetypes_allowed) > 1 ) {
-					$files_allowed = implode(',', $filetypes_allowed);
-				} else {
-					$files_allowed = $filetypes_allowed[0]; // Just take the single element
-				}
-				$json['type']    = 'error';
-				$json['message'] = __('File Upload Unsuccessful! (Please upload ', 'quiz-master-next') . $files_allowed . __(' file type)', 'quiz-master-next');
-				echo wp_json_encode( $json );
-			} else {
-				$json['type']    = 'error';
-				$json['message'] = __( 'File Upload Unsuccessful! (Please select file type)', 'quiz-master-next' );
-				echo wp_json_encode( $json );
-			}
-		}
-		exit;
-	}
-
-	/**
-	 * @since 6.3.7
-	 * Remove the uploaded image
-	 */
-	public function qsm_remove_file_fd_question() {
-		$json          = array();
-		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
-		if ( ! empty( $attachment_id ) && isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_atteched_file_' . $attachment_id ) ) {
-			$delete = wp_delete_attachment( $attachment_id, true );
-			if ( $delete ) {
-				$json['type']    = 'success';
-				$json['message'] = __( 'File removed successfully', 'quiz-master-next' );
-				echo wp_json_encode( $json );
-				exit;
-			}
-		}
-
-		$json['type']    = 'error';
-		$json['message'] = __( 'File not removed', 'quiz-master-next' );
-		echo wp_json_encode( $json );
-		exit;
-	}
-
 
 	/**
 	 * Export CSV file
@@ -625,8 +470,8 @@ class QMNQuizManager {
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
 				'limit_email_based_submission'       => isset($qmn_quiz_options->limit_email_based_submission) ? $qmn_quiz_options->limit_email_based_submission : 0,
-				'total_user_tries'					 => $qmn_quiz_options->total_user_tries,
-				'is_logged_in'						 => is_user_logged_in(),
+				'total_user_tries'                   => $qmn_quiz_options->total_user_tries,
+				'is_logged_in'                       => is_user_logged_in(),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
@@ -655,13 +500,22 @@ class QMNQuizManager {
 				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
 				FROM {$wpdb->prefix}mlw_questions
 				WHERE question_id IN ($enc_questions)", ARRAY_A);
+			$questions_settings = array();
 			foreach ( $question_array as $key => $question ) {
-				$encryption[ $question['question_id'] ]['question_type_new'] = $question['question_type_new'];
+				
+				$unserialized_settings = maybe_unserialize( $question['question_settings'] );
+				$question_type_new = $question['question_type_new'];
+				if ( 11 == $question_type_new ) {
+					$questions_settings[ $question['question_id'] ]['file_upload_type'] = $unserialized_settings['file_upload_type'];
+					$questions_settings[ $question['question_id'] ]['file_upload_limit'] = $unserialized_settings['file_upload_limit'];
+				}
+				$encryption[ $question['question_id'] ]['question_type_new'] = $question_type_new;
 				$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
-				$encryption[ $question['question_id'] ]['settings'] = maybe_unserialize( $question['question_settings'] );
+				$encryption[ $question['question_id'] ]['settings'] = $unserialized_settings;
 				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
 				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
 			}
+			$qmn_filtered_json['questions_settings'] = $questions_settings;
 			if ( ( isset($qmn_json_data['end_quiz_if_wrong']) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) || ( ! empty( $qmn_json_data['enable_quick_correct_answer_info'] ) && 0 != $qmn_json_data['enable_quick_correct_answer_info'] ) || ( ! empty( $qmn_json_data['ajax_show_correct'] ) && 1 == $qmn_json_data['ajax_show_correct'] ) ) {
 				$quiz_id = $qmn_json_data['quiz_id'];
 				$qsm_inline_encrypt_js = '
@@ -1081,7 +935,7 @@ class QMNQuizManager {
 		wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $mlwQuizMasterNext->version );
-		wp_enqueue_style( 'qsm_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
+		wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
@@ -1115,6 +969,12 @@ class QMNQuizManager {
 				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
 				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
+				'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
+				'remove_file'               => esc_html__( 'Removing file...', 'quiz-master-next' ),
+				'remove_file_success'       => esc_html__( 'File removed successfully', 'quiz-master-next' ),
+				'validate_success'          => esc_html__( 'File validated successfully', 'quiz-master-next' ),
+				'invalid_file_type'         => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
+				'invalid_file_size'         => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
 			)
 		);
 
@@ -1204,6 +1064,7 @@ class QMNQuizManager {
 					do_action( 'qsm_before_end_quiz_form', $options, $quiz_data, $shortcode_args );
 					?>
 				</form>
+				<?php do_action( 'qsm_after_end_quiz_form', $options, $quiz_data, $shortcode_args ); ?>
 		</div>
 		<?php
 		echo apply_filters( 'qmn_end_quiz', '', $options, $quiz_data );
@@ -1431,7 +1292,13 @@ class QMNQuizManager {
 			</section>
 			<?php
 		}
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
+		$is_contact_fields_enabled = array_filter(
+			$contact_fields,
+			function( $sub ) {
+				return isset( $sub['enable'] ) && 'true' === $sub['enable'];
+			}
+		);
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $is_contact_fields_enabled ) ) ) {
 			$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page" style="display: none;">
@@ -1580,6 +1447,7 @@ class QMNQuizManager {
 			}
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
+			do_action( 'qsm_question_before', $mlw_question, $qmn_quiz_options,$mlw_qmn_section_count );
 			?>
 			<div class="quiz_section qsm-question-wrapper question-type-<?php echo esc_attr( $mlw_question->question_type_new ); ?> <?php echo esc_attr( $animation_effect ); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count . ' ' . $category_class ); ?>">
 				<?php
@@ -1606,6 +1474,7 @@ class QMNQuizManager {
 				?>
 			</div><!-- .quiz_section -->
 			<?php
+			do_action( 'qsm_question_after', $mlw_question, $qmn_quiz_options,$mlw_qmn_section_count );
 			if ( 0 != $pagination_option ) {
 				if ( 1 == $pagination_option || 0 == $pages_count % $pagination_option || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
 					?>
@@ -2115,7 +1984,8 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function submit_results( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $wpdb, $qmn_allowed_visit, $mlwQuizMasterNext;
+		global $wpdb, $qmn_allowed_visit, $mlwQuizMasterNext, $qsm_global_result_warning_message;
+		$qsm_global_result_warning_message = '';
 		$result_display = '';
 		do_action( 'qsm_submit_results_before', $qmn_quiz_options, $qmn_array_for_variables );
 		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
@@ -2350,7 +2220,7 @@ class QMNQuizManager {
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'quizExpired'   => false,
-			'display'       => $result_display,
+			'display'       => $qsm_global_result_warning_message.$result_display,
 			'redirect'      => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 			'result_status' => array(
 				'save_response' => $qmn_array_for_variables['response_saved'],
