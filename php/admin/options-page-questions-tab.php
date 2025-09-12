@@ -1424,6 +1424,9 @@ function qsm_options_questions_tab_template() {
 			</div>
 			<label for="qsm-admin-select-page-question-{{data.id}}" class="qsm-admin-select-page-question-label"><input class="qsm-admin-select-page-question" id="qsm-admin-select-page-question-{{data.id}}" value="1" type="checkbox"/><?php esc_html_e( 'Select All', 'quiz-master-next' ); ?></label>
 			<div class="page-footer">
+				<div class="page-footer-buttons">
+					<a href="javascript:void(0)" class="button button-secondary qsm-admin-randomize-page-questions" id="qsm-admin-randomize-page-question-{{data.id}}" data-page-id="{{data.id}}"><?php esc_html_e( 'Randomize Questions', 'quiz-master-next' ); ?></a>
+				</div>
 				<div class="page-header-buttons">
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
 					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>

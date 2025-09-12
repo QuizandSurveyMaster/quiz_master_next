@@ -198,6 +198,10 @@ class QSM_Install {
 					'label' => __( 'Randomize questions and their answers', 'quiz-master-next' ),
 					'value' => 2,
 				),
+				array(
+					'label' => __( 'Randomize pages only', 'quiz-master-next' ),
+					'value' => 4,
+				),
 			),
 			'default'    => 0,
 			'option_tab' => 'general',
