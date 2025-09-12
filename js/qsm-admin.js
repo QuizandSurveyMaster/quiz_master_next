@@ -2858,8 +2858,8 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                 },
                 shuffleQuestions: function (pageID) {
-                    var $targetPage = jQuery('.page[data-page-id="' + pageID + '"]');
-                    var $questions = $targetPage.children('.question');
+                    let $targetPage = jQuery('.page[data-page-id="' + pageID + '"]');
+                    let $questions = $targetPage.children('.question');
                     if ($questions.length <= 1) {
                         return;
                     }
@@ -2867,25 +2867,25 @@ var QSM_Quiz_Broadcast_Channel;
                         return;
                     }
                     jQuery('.qsm-admin-randomize-page-questions[data-page-id="' + pageID + '"]').prop('disabled', true);
-                    var allQuestions = [];
+                    let allQuestions = [];
                     $questions.each(function() {
                         allQuestions.push(jQuery(this).detach());
                     });
-                    var $loader = jQuery('<div style="text-align: center; padding: 30px; margin: 20px 0;"><div class="qsm-spinner-loader"></div></div>');
+                    let $loader = jQuery('<div style="text-align: center; padding: 30px; margin: 20px 0;"><div class="qsm-spinner-loader"></div></div>');
                     $targetPage.append($loader);
-                    for (var i = allQuestions.length - 1; i > 0; i--) {
-                        var j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
-                        var temp = allQuestions[i];
+                    for (let i = allQuestions.length - 1; i > 0; i--) {
+                        let j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
+                        let temp = allQuestions[i];
                         allQuestions[i] = allQuestions[j];
                         allQuestions[j] = temp;
                     }
                     setTimeout(function() {
                         $loader.fadeOut(200, function() {
                             $loader.remove();
-                            var questionIndex = 0;
+                            let questionIndex = 0;
                             function addNextQuestion() {
                                 if (questionIndex < allQuestions.length) {
-                                    var $question = allQuestions[questionIndex];
+                                    let $question = allQuestions[questionIndex];
                                     $question.hide().appendTo($targetPage);
                                     $question.fadeIn(300);
                                     questionIndex++;
@@ -2904,12 +2904,12 @@ var QSM_Quiz_Broadcast_Channel;
                 },
                 updateQuestionModelsForPage: function(pageID) {
                     jQuery('.page[data-page-id="' + pageID + '"]').each(function() {
-                        var $page = jQuery(this);
-                        var pageId = $page.data('page-id');
+                        let $page = jQuery(this);
+                        let pageId = $page.data('page-id');
                         
                         $page.children('.question').each(function() {
-                            var questionId = jQuery(this).data('question-id');
-                            var model = QSMQuestion.questions.get(questionId);
+                            let questionId = jQuery(this).data('question-id');
+                            let model = QSMQuestion.questions.get(questionId);
                             if (model) {
                                 model.set('page', pageId - 1);
                             }
