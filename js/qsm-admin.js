@@ -2871,10 +2871,10 @@ var QSM_Quiz_Broadcast_Channel;
                     $questions.each(function() {
                         allQuestions.push(jQuery(this).detach());
                     });
-                    var $loader = jQuery('<div class="qsm-shuffle-loader" style="text-align: center; padding: 30px; margin: 20px 0;"><div class="qsm-spinner-loader"></div><p style="margin: 15px 0 0 0; font-weight: 500; color: #666;">Shuffling questions...</p></div>');
+                    var $loader = jQuery('<div style="text-align: center; padding: 30px; margin: 20px 0;"><div class="qsm-spinner-loader"></div></div>');
                     $targetPage.append($loader);
                     for (var i = allQuestions.length - 1; i > 0; i--) {
-                        var j = Math.floor(Math.random() * (i + 1));
+                        var j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
                         var temp = allQuestions[i];
                         allQuestions[i] = allQuestions[j];
                         allQuestions[j] = temp;
