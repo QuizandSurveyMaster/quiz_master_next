@@ -110,6 +110,8 @@
 	box-sizing: border-box;
 	background-color: #fafafa;
 	box-shadow: 0 -2px 6px 0 #dadadb;
+	display: flex;
+	justify-content: space-between;
 }
 .page-footer a.qsm-dashed-btn {
 	min-width: 45%;

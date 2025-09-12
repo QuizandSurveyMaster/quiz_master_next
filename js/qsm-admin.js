@@ -2857,6 +2857,65 @@ var QSM_Quiz_Broadcast_Channel;
                         }
                     });
                 },
+                shuffleQuestions: function (pageID) {
+                    var $targetPage = jQuery('.page[data-page-id="' + pageID + '"]');
+                    var $questions = $targetPage.children('.question');
+                    if ($questions.length <= 1) {
+                        return;
+                    }
+                    if ($targetPage.find('.qsm-shuffle-loader').length > 0) {
+                        return;
+                    }
+                    jQuery('.qsm-admin-randomize-page-questions[data-page-id="' + pageID + '"]').prop('disabled', true);
+                    var allQuestions = [];
+                    $questions.each(function() {
+                        allQuestions.push(jQuery(this).detach());
+                    });
+                    var $loader = jQuery('<div class="qsm-shuffle-loader" style="text-align: center; padding: 30px; margin: 20px 0;"><div class="qsm-spinner-loader"></div><p style="margin: 15px 0 0 0; font-weight: 500; color: #666;">Shuffling questions...</p></div>');
+                    $targetPage.append($loader);
+                    for (var i = allQuestions.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        var temp = allQuestions[i];
+                        allQuestions[i] = allQuestions[j];
+                        allQuestions[j] = temp;
+                    }
+                    setTimeout(function() {
+                        $loader.fadeOut(200, function() {
+                            $loader.remove();
+                            var questionIndex = 0;
+                            function addNextQuestion() {
+                                if (questionIndex < allQuestions.length) {
+                                    var $question = allQuestions[questionIndex];
+                                    $question.hide().appendTo($targetPage);
+                                    $question.fadeIn(300);
+                                    questionIndex++;
+                                    setTimeout(addNextQuestion, 500);
+                                } else {
+                                    QSMQuestion.updateQuestionModelsForPage(pageID);
+                                    QSMQuestion.countTotal();
+                                    QSMQuestion.savePages();
+                                    jQuery('.qsm-admin-randomize-page-questions[data-page-id="' + pageID + '"]').prop('disabled', false);
+                                    QSMAdmin.displayAlert(qsm_admin_messages.question_shuffle, 'success');
+                                }
+                            }
+                            addNextQuestion();
+                        });
+                    }, 1000);
+                },
+                updateQuestionModelsForPage: function(pageID) {
+                    jQuery('.page[data-page-id="' + pageID + '"]').each(function() {
+                        var $page = jQuery(this);
+                        var pageId = $page.data('page-id');
+                        
+                        $page.children('.question').each(function() {
+                            var questionId = jQuery(this).data('question-id');
+                            var model = QSMQuestion.questions.get(questionId);
+                            if (model) {
+                                model.set('page', pageId - 1);
+                            }
+                        });
+                    });
+                },
                 savePages: function () {
                     var pages = [];
                     var qpages = [];
@@ -3918,6 +3977,11 @@ var QSM_Quiz_Broadcast_Channel;
                     } else {
                         jQuery('.qsm-admin-bulk-actions').fadeOut();
                     }
+                });
+
+                $(document).on('click', '.qsm-admin-randomize-page-questions', function () {
+                    let pageId = $(this).data('page-id');
+                    QSMQuestion.shuffleQuestions(pageId);
                 });
 
                 $(document).on('click', '.qsm-admin-select-question-input', function () {
