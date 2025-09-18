@@ -179,24 +179,28 @@ class QSM_Install {
 		// Registers randomness_order setting
 		$field_array = array(
 			'id'         => 'randomness_order',
-			'label'      => __( 'Randomize Question', 'quiz-master-next' ) . '<span class="qsm-opt-desc"> ' . __( 'Randomize the order of questions or answers every time the quiz loads', 'quiz-master-next' ) . ' </span>',
+			'label'      => __( 'Randomization Mode', 'quiz-master-next' ) . '<span class="qsm-opt-desc"> ' . __( 'Randomize the order of questions or answers every time the quiz loads', 'quiz-master-next' ) . ' </span>',
 			'type'       => 'radio',
 			'options'    => array(
 				array(
-					'label' => __( 'Disabled', 'quiz-master-next' ),
+					'label' => __( 'None', 'quiz-master-next' ),
 					'value' => 0,
 				),
 				array(
-					'label' => __( 'Randomize question only', 'quiz-master-next' ),
+					'label' => __( 'Questions', 'quiz-master-next' ),
 					'value' => 1,
 				),
 				array(
-					'label' => __( 'Randomize answers only', 'quiz-master-next' ),
+					'label' => __( 'Answers', 'quiz-master-next' ),
 					'value' => 3,
 				),
 				array(
-					'label' => __( 'Randomize questions and their answers', 'quiz-master-next' ),
+					'label' => __( 'Questions & Answers', 'quiz-master-next' ),
 					'value' => 2,
+				),
+				array(
+					'label' => __( 'Pages', 'quiz-master-next' ),
+					'value' => 4,
 				),
 			),
 			'default'    => 0,

@@ -615,6 +615,7 @@ class MLWQuizMasterNext {
 			'success_icon'               => esc_url(QSM_PLUGIN_URL . 'assets/success-message.png'),
 			'warning_icon'               => esc_url(QSM_PLUGIN_URL . 'assets/warning-message.png'),
 			'info_icon'                  => esc_url(QSM_PLUGIN_URL . 'assets/info-message.png'),
+			'question_shuffle'           => __('Question shuffled successfully!', 'quiz-master-next'),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );

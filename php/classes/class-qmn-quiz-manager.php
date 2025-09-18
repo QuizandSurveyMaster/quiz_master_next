@@ -1221,6 +1221,9 @@ class QMNQuizManager {
 			</section>
 			<?php
 		} else {
+			if ( 4 == $options->randomness_order ) {
+				shuffle( $pages );
+			}
 			$total_pages_count = count( $pages );
 			$pages_count       = 1;
 			foreach ( $pages as $key => $page ) {
