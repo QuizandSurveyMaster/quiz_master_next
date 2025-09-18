@@ -88,8 +88,38 @@
 .page-header .dashicons.dashicons-trash {
 	color: #dc3232;
 }
-.page-header .edit-page-button {
-	margin: 0 10px;
+.page-header .page-header-buttons {
+	display: flex;
+    min-width: 246px;
+    justify-content: space-between;
+}
+.page-header-icons{
+	display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    border: 1px solid #8a8a8a;
+    justify-content: space-around;
+    min-height: 28px;
+}
+.page-header-icons a {
+    padding: 0 6px 4px 6px;
+    color: #03396e;
+    cursor: pointer;
+}
+.page-header-icons a:not(:last-child) {
+	border-right: 1px solid #d6d6d6;
+}
+.page-header-icons a:first-child {
+	border-radius: 5px 0 0 5px;
+}
+.page-header-icons a:last-child {
+	border-radius: 0 5px 5px 0;
+}
+.page-header-icons a:hover {
+	outline: none;
+	box-shadow: none;
+	background: #eee;
 }
 .page-header .edit-page-button span {
 	color: #1f8cbe;
@@ -110,8 +140,6 @@
 	box-sizing: border-box;
 	background-color: #fafafa;
 	box-shadow: 0 -2px 6px 0 #dadadb;
-	display: flex;
-	justify-content: space-between;
 }
 .page-footer a.qsm-dashed-btn {
 	min-width: 45%;
