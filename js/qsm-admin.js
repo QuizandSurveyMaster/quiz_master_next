@@ -2882,25 +2882,31 @@ var QSM_Quiz_Broadcast_Channel;
                     setTimeout(function() {
                         $loader.fadeOut(200, function() {
                             $loader.remove();
-                            let questionIndex = 0;
-                            function addNextQuestion() {
-                                if (questionIndex < allQuestions.length) {
-                                    let $question = allQuestions[questionIndex];
-                                    $question.hide().appendTo($targetPage);
-                                    $question.fadeIn(300);
-                                    questionIndex++;
-                                    setTimeout(addNextQuestion, 500);
-                                } else {
-                                    QSMQuestion.updateQuestionModelsForPage(pageID);
-                                    QSMQuestion.countTotal();
-                                    QSMQuestion.savePages();
-                                    jQuery('.qsm-admin-randomize-page-questions[data-page-id="' + pageID + '"]').prop('disabled', false);
-                                    QSMAdmin.displayAlert(qsm_admin_messages.question_shuffle, 'success');
-                                }
-                            }
-                            addNextQuestion();
+                            QSMQuestion.handleQuestions($targetPage, allQuestions, pageID);
                         });
                     }, 1000);
+                },
+                handleQuestions: function($targetPage, allQuestions, pageID) {
+                    let questionIndex = 0;
+                    function addNextQuestion() {
+                        if (questionIndex < allQuestions.length) {
+                            let $question = allQuestions[questionIndex];
+                            $question.hide().appendTo($targetPage);
+                            $question.fadeIn(300);
+                            questionIndex++;
+                            setTimeout(addNextQuestion, 500);
+                        } else {
+                            QSMQuestion.finalizeQuestionShuffle(pageID);
+                        }
+                    }
+                    addNextQuestion();
+                },
+                finalizeQuestionShuffle: function(pageID) {
+                    QSMQuestion.updateQuestionModelsForPage(pageID);
+                    QSMQuestion.countTotal();
+                    QSMQuestion.savePages();
+                    jQuery('.qsm-admin-randomize-page-questions[data-page-id="' + pageID + '"]').prop('disabled', false);
+                    QSMAdmin.displayAlert(qsm_admin_messages.question_shuffle, 'success');
                 },
                 updateQuestionModelsForPage: function(pageID) {
                     jQuery('.page[data-page-id="' + pageID + '"]').each(function() {
