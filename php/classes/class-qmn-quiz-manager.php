@@ -1297,7 +1297,7 @@ class QMNQuizManager {
 			<?php
 		}
 		$is_contact_fields_enabled = array_filter(
-			$contact_fields,
+			is_array( $contact_fields ) ? $contact_fields : [],
 			function( $sub ) {
 				return isset( $sub['enable'] ) && 'true' === $sub['enable'];
 			}
