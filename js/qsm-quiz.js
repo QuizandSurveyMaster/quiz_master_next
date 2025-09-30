@@ -2087,10 +2087,11 @@ jQuery(document).on('click', function(event) {
 
 jQuery(document).keydown(function(event) {
 	if (jQuery('.qsm-quiz-container.qsm-recently-active').length) {
-		let keypress_obj = {
-			"value": true
+		let qsm_keypress_action = { allowed: true };
+		jQuery(document).trigger('qsm_keyboard_quiz_action_start', [event, qsm_keypress_action]);
+		if(qsm_keypress_action.allowed === false){
+			return;
 		}
-		jQuery(document).trigger('qsm_keyboard_quiz_action_start', [event, keypress_obj]);
 		if (jQuery(event.target).is('input')) {
 			// Check if the parent div has the class 'qsm_contact_div'
 			if (jQuery(event.target).closest('div.qsm_contact_div').length > 0) {
@@ -2112,10 +2113,8 @@ jQuery(document).keydown(function(event) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
         }
         if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {
-			if(keypress_obj.value){
 				jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
 				jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
-			}
         }
         if (event.keyCode === 40 && jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question:visible .qmn_radio_answers:not(.qsm_multiple_grid_answers)').length) {
             event.preventDefault();
