@@ -133,6 +133,8 @@ class MLWQuizMasterNext {
 	 */
 	public $quiz = array();
 
+	public $qsm_assets;
+
 	/*
 	* Default MathJax inline scripts.
 	*/
@@ -265,7 +267,10 @@ class MLWQuizMasterNext {
 		include_once 'blocks/block.php';
 
 		include_once 'php/classes/class-qsm-install.php';
-		include_once 'php/classes/class-qsm-fields.php';
+		include_once 'php/classes/class-qsm-fields.php';	
+		
+		include_once 'php/classes/class-qsm-assets-loader.php';
+		$this->qsm_assets = new QSM_Assets_Loader();
 
 		include_once 'php/classes/class-qmn-log-manager.php';
 		$this->log_manager = new QMN_Log_Manager();
@@ -335,6 +340,7 @@ class MLWQuizMasterNext {
 		include_once 'php/rest-api.php';
 		include_once 'php/classes/class-qsm-quiz-api.php';
 		$this->qsm_api = new QSMQuizApi();
+		
 	}
 
 	/**
