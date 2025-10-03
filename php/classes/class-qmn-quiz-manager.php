@@ -352,6 +352,7 @@ class QMNQuizManager {
 		}
 
 		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
+		$qmn_quiz_options = apply_filters('qsm_quiz_option_before', $qmn_quiz_options);
 		$return_display = '';
 
 		ob_start();
@@ -1293,7 +1294,7 @@ class QMNQuizManager {
 			<?php
 		}
 		$is_contact_fields_enabled = array_filter(
-			$contact_fields,
+			is_array( $contact_fields ) ? $contact_fields : [],
 			function( $sub ) {
 				return isset( $sub['enable'] ) && 'true' === $sub['enable'];
 			}
@@ -1672,6 +1673,8 @@ class QMNQuizManager {
 				}
 			}
 		}
+		
+		$errors = apply_filters( 'qsm_validate_contact_field', $errors, $contact_form, $request );
 		return empty( $errors ) ? 1 : "<strong>" . __( 'There was an error with your submission:', 'quiz-master-next' ) . "</strong><ul style='left: -20px; position: relative;'><li>" . implode( "</li><li>", $errors ) . "</li></ul>";
 	}
 

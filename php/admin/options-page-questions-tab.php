@@ -1416,8 +1416,11 @@ function qsm_options_questions_tab_template() {
 		<div class="page page-new" data-page-id="{{data.id }}">
 			<div class="page-header">
 				<div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
-				<div>
-					<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a>
+				<div class="page-header-buttons">
+					<div class="page-header-icons">
+						<a href="javascript:void(0)" class="qsm-admin-randomize-page-questions" title="Shuffle Questions" id="qsm-admin-randomize-page-question-{{data.id}}" data-page-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/randomize.svg'); ?>" alt="randomize.svg"/></a>
+						<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/></a>
+					</div>
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
 					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
 				</div>
