@@ -5245,3 +5245,9 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	text-decoration: none;
 	box-shadow: none;
 }
+
+.qsm-sub-tab-menu.qsm-results-page-sub-tab-menu {
+    margin: 20px 0 0 0;
+	display: inline-block; 
+	width: 100%;
+}

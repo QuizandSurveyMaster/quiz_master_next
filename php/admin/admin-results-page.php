@@ -109,9 +109,31 @@ function qsm_results_overview_tab_content() {
 	$get_subtabs = apply_filters( 'qsm_ultimate_get_subtabs_options', array() );
 	$current_subtab = isset( $_GET['subtab'] ) ? sanitize_key( $_GET['subtab'] ) : '';
 	do_action('qsm_before_admin_show_results_list', $get_subtabs, $current_subtab);
+	if ( ! empty( $get_subtabs ) ) { ?>
+		<div class="qsm-sub-tab-menu qsm-results-page-sub-tab-menu">
+			<ul class="subsubsub">
+				<?php foreach ( $get_subtabs as $subtab_key => $subtab_value ) :
+					$subtab_page  = isset( $subtab_value['page'] ) ? sanitize_key( $subtab_value['page'] ) : '';
+					$subtab_slug  = isset( $subtab_value['subtab'] ) ? sanitize_key( $subtab_value['subtab'] ) : '';
+					$subtab_title = isset( $subtab_value['title'] ) ? $subtab_value['title'] : '';
+					$is_first     = ( 0 === $subtab_key );
+					$is_active    = ( $subtab_slug === $current_subtab ) || ( $is_first && empty( $current_subtab ) );
+					$is_active = $is_active ? ' current' : '';
 
-	if ( empty( $get_subtabs ) || '' === $current_subtab ) {
-
+					$tab_url = add_query_arg(
+						array(
+							'page'   => $subtab_page,
+							'subtab' => $subtab_slug,
+						),
+						admin_url( 'admin.php' )
+					);
+					?>
+					<li><a href="<?php echo esc_url( $tab_url ); ?>" class="<?php echo esc_attr($is_active); ?>"> <?php echo esc_html( $subtab_title ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php }
+	if ( '' === $current_subtab ) {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
