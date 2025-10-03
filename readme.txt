@@ -223,7 +223,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 == Changelog ==
 = 10.2.8 ( October 3, 2025 ) =
 * Feature: Added option to shuffle questions in edit quiz page
-* Bug: Fixed issue with attempt limit by email
+* Bug: Resolved conflict between per-user limits and total quiz limits
 
 = 10.2.7 ( September 8, 2025 ) =
 * Bug: Fixed an issue where the quiz page displayed blank if the "End Quiz" section was missing
