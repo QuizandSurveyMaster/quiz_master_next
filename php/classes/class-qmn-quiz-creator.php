@@ -225,7 +225,7 @@ class QMNQuizCreator {
 			$new_quiz     = $wpdb->insert_id;
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
-				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
+				'post_content' => '[mlw_quizmaster quiz="' . $new_quiz . '"]',
 				'post_status'  => 'draft',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'qsm_quiz',
@@ -593,7 +593,7 @@ class QMNQuizCreator {
 			$current_user = wp_get_current_user();
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
-				'post_content' => "[mlw_quizmaster quiz=$mlw_new_id]",
+				'post_content' => '[mlw_quizmaster quiz="' . $mlw_new_id . '"]',
 				'post_status'  => 'publish',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'qsm_quiz',
