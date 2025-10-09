@@ -1183,6 +1183,19 @@ jQuery(document).ready(function () {
             $("#limit_email_based_submission").find(".qsm-opt-desc").hide();
         }
     }).trigger('change');
+    if ($("input[name='pagination']").val() > 0) {
+        $("#randomness_order-4").attr('disabled', true);
+        $("#randomness_order-5").attr('disabled', true);
+    }
+    $("input[name='pagination']").on("change", function() {
+        if ( $(this).val() > 0 ) {
+            $("#randomness_order-4").attr('disabled', true);
+            $("#randomness_order-5").attr('disabled', true);
+        } else {
+            $("#randomness_order-4").attr('disabled', false);
+            $("#randomness_order-5").attr('disabled', false);
+        }
+    }).trigger('change');
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {

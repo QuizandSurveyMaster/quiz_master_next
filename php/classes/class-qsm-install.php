@@ -198,6 +198,14 @@ class QSM_Install {
 					'label' => __( 'Questions & Answers', 'quiz-master-next' ),
 					'value' => 2,
 				),
+				array(
+					'label' => __( 'Pages', 'quiz-master-next' ),
+					'value' => 4,
+				),
+				array(
+					'label' => __( 'Only Questions', 'quiz-master-next' ),
+					'value' => 5,
+				),
 			),
 			'default'    => 0,
 			'option_tab' => 'general',
