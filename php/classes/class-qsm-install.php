@@ -2116,7 +2116,7 @@ class QSM_Install {
 			}
 
 			// Update 8.1.14
-			if ( ! $wpdb->query("SHOW KEYS FROM {$results_table_name} WHERE Key_name = 'unique_id_unique'" ) ) {
+			if ( ! $wpdb->query("SHOW KEYS FROM {$results_table_name} WHERE Key_name = 'unique_id'" ) ) {
 				$results = $mlwQuizMasterNext->wpdb_alter_table_query("ALTER TABLE {$results_table_name} ADD UNIQUE (unique_id)");
 			}
 
