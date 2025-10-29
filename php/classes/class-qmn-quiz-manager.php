@@ -341,6 +341,7 @@ class QMNQuizManager {
 			),
 			$atts
 		);
+		$shortcode_args = apply_filters('qsm_shortcode_before', $shortcode_args, $atts);
 		// Quiz ID.
 		$quiz            = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );
