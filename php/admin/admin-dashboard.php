@@ -276,6 +276,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 function qsm_dashboard_recent_taken_quiz() {
 	global $wpdb;
 	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
+	if($mlw_result_data['total_result'] != 0){
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php esc_html_e( 'Recent Activity', 'quiz-master-next' ); ?></h3>
@@ -368,7 +369,7 @@ function qsm_dashboard_recent_taken_quiz() {
 			</ul>
 		</div>
 	</div>
-<?php
+	<?php }
 }
 
 /**
