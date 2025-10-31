@@ -341,6 +341,7 @@ class QMNQuizManager {
 			),
 			$atts
 		);
+		$shortcode_args = apply_filters('qsm_shortcode_before', $shortcode_args, $atts);
 		// Quiz ID.
 		$quiz            = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );
@@ -644,10 +645,10 @@ class QMNQuizManager {
 		if ( $enabled && 'cancelled' !== $enabled ) {
 			$multiple_category_system = true;
 		}
-
+		$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $quiz_options->randomness_order );
 		// Checks if the questions should be randomized.
 		$cat_query = '';
-		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
 			$order_by_sql = 'ORDER BY rand()';
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 			if ( $categories && ! empty( $quiz_options->question_per_category ) ) {
@@ -730,7 +731,7 @@ class QMNQuizManager {
 							}
 						}
 						foreach ( $term_data as $tv ) {
-							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+							if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
 								shuffle( $tv );
 							}
 							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, intval( $quiz_options->question_per_category ) ) );
@@ -755,7 +756,7 @@ class QMNQuizManager {
 							$exclude_ids = implode(',', array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id') );
 						}
 						$category_order_sql = '';
-						if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+						if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
 						$tq_ids[] = $wpdb->get_results(
@@ -773,7 +774,7 @@ class QMNQuizManager {
 						);
 					}
 					$final_result = array_column(array_merge(...array_map('array_merge', $tq_ids)),'question_id');
-					if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+					if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
 						shuffle( $final_result );
 					}
 					$question_ids = $final_result;
@@ -781,7 +782,7 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+			if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
 				if ( isset( $_COOKIE[ 'question_ids_'.$quiz_id ] ) && empty( $quiz_options->question_per_category ) && empty( $quiz_options->limit_category_checkbox ) ) {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 					if ( ! preg_match("/^\d+(,\d+)*$/", $question_sql) ) {
@@ -810,7 +811,7 @@ class QMNQuizManager {
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
-			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && 0 == $quiz_options->question_per_category && 0 == $quiz_options->limit_category_checkbox ) {
+			if ( ( ! in_array( 'questions', $randomness_order ) && ! in_array( 'pages', $randomness_order ) ) && 0 == $quiz_options->question_per_category && 0 == $quiz_options->limit_category_checkbox ) {
 				$ordered_questions = array();
 
 				foreach ( $questions as $question ) {
@@ -834,7 +835,7 @@ class QMNQuizManager {
 
 		}
 		if (
-			in_array( intval( $quiz_options->randomness_order ), [ 1, 2 ], true) &&
+			( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) &&
 			! empty($questions) &&
 			is_array($questions) &&
 			! isset($_COOKIE[ 'question_ids_' . $quiz_id ])
@@ -991,7 +992,8 @@ class QMNQuizManager {
 		$auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
-		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
+		$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
+		$randomness_class = ! empty( $randomness_order ) ? 'random' : '';
 		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
 			if ( 'default' == $saved_quiz_theme ) {
@@ -1022,7 +1024,7 @@ class QMNQuizManager {
 				echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-				if ( 2 === intval( $options->randomness_order ) || 3 === intval( $options->randomness_order ) ) {
+				if ( in_array( 'answers', $randomness_order ) ) {
 					global $quiz_answer_random_ids;
 					$quiz_answer_random_ids = array();
 				}
@@ -1050,7 +1052,7 @@ class QMNQuizManager {
 					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' />
 					<?php
-					if ( 2 === intval( $options->randomness_order ) || 3 === intval( $options->randomness_order ) ) {
+					if ( in_array( 'answers', $randomness_order ) ) {
 						?>
 						<input type="hidden" name="quiz_answer_random_ids" id="quiz_answer_random_ids_<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" value="<?php echo esc_attr( maybe_serialize( $quiz_answer_random_ids ) ); ?>" />
 						<?php
@@ -1089,11 +1091,16 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && is_array( $pages ) && empty( $options->question_per_category ) ) {
-			$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
+		$randomness_order 		= $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
+		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) && is_array( $pages ) && empty( $options->question_per_category ) ) {
+			if ( in_array( 'pages', $randomness_order ) ) {
+				$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
+			}
 			$question_list_array = array();
 			foreach ( $pages as &$question_ids ) {
-				shuffle( $question_ids );
+				if ( in_array( 'questions', $randomness_order ) ) {
+					shuffle( $question_ids );
+				}
 				$question_list_array = array_merge($question_list_array, $question_ids);
 			}
 			$question_list_str = implode( ',', $question_list_array );
@@ -1221,6 +1228,7 @@ class QMNQuizManager {
 			</section>
 			<?php
 		} else {
+
 			$total_pages_count = count( $pages );
 			$pages_count       = 1;
 			foreach ( $pages as $key => $page ) {
@@ -1545,7 +1553,7 @@ class QMNQuizManager {
 		$section_display       = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_option     = $qmn_quiz_options->pagination;
-
+		$randomness_order	   = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
 		do_action( 'mlw_qmn_end_quiz_section' );
 		$qsm_d_none = 0 < intval( $pagination_option ) ? 'qsm-d-none' : '';
 		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
@@ -1578,7 +1586,7 @@ class QMNQuizManager {
 		} else {
 			?>
 			<div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
-				<?php if ( ( ( ! empty( $qmn_quiz_options->randomness_order ) && 0 !== intval( $qmn_quiz_options->randomness_order ) ) || ( ! empty( $qmn_quiz_options->question_from_total ) && 0 !== intval( $qmn_quiz_options->question_from_total ) ) ) && ( empty( $qmn_quiz_options->pagination ) || 0 === intval( $qmn_quiz_options->pagination ) ) ) : ?>
+				<?php if ( ( ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) || in_array( 'answers', $randomness_order ) ) || ( ! empty( $qmn_quiz_options->question_from_total ) && 0 !== intval( $qmn_quiz_options->question_from_total ) ) ) && ( empty( $qmn_quiz_options->pagination ) || 0 === intval( $qmn_quiz_options->pagination ) ) ) : ?>
 					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
 				<?php endif; ?>
 			</div>
@@ -2252,7 +2260,8 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+		$randomness_order	= $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
+		if ( in_array( 'questions', $randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
 			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
