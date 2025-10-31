@@ -530,6 +530,7 @@ class QMNPluginHelper
     {
         global $wpdb;
         global $qmn_total_questions, $qmn_all_questions_count;
+        $randomness_order = $this->qsm_get_randomization_modes( $quiz_options->randomness_order );
         $question = $wpdb->get_row($wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', intval($question_id)));
         $answers  = [];
         if (is_serialized($question->answer_array) && is_array(maybe_unserialize($question->answer_array))) {
@@ -547,7 +548,7 @@ class QMNPluginHelper
             ];
         }
         $answers_original = $answers;
-        if (2 === intval($quiz_options->randomness_order) || 3 === intval($quiz_options->randomness_order)) {
+        if (in_array( 'answers', $randomness_order )) {
             $answers = self::qsm_shuffle_assoc($answers);
             global $quiz_answer_random_ids;
             $answer_ids = array_keys($answers);
@@ -1365,5 +1366,66 @@ class QMNPluginHelper
     public function qsm_get_limited_options_by_keys($options, $keys)
     {
         return array_map(fn($k) => $options[ $k ], explode(',', $keys));
+    }
+
+    /**
+     * Normalize and return randomization modes.
+     *
+     * Supports both old (radio) and new (checkbox) structures.
+     *
+     * @param mixed $randomness_order The raw stored value (numeric or array).
+     * @return array Normalized array of randomization modes.
+     */
+    public function qsm_get_randomization_modes( $randomness_order ) {
+
+        // If stored as serialized (from DB), unserialize it
+        if ( is_serialized( $randomness_order ) ) {
+            $randomness_order = maybe_unserialize( $randomness_order );
+        }
+
+        $normalized_modes = array();
+        $valid_modes      = array( 'questions', 'pages', 'answers' );
+
+        // ----------------------------------------------
+        // Handle backward compatibility (old radio field)
+        // ----------------------------------------------
+        // 0 = None
+        // 1 = Questions
+        // 2 = Questions, Answers, Pages (legacy behavior)
+        // 3 = Answers
+        // ----------------------------------------------
+        if ( ! is_array( $randomness_order ) ) {
+
+            switch ( intval( $randomness_order ) ) {
+                case 0:
+                    $normalized_modes = array(); // None
+                    break;
+
+                case 1:
+                    $normalized_modes = array( 'questions' );
+                    break;
+
+                case 2:
+                    // Old "Questions & Answers" now includes Pages as well
+                    $normalized_modes = array( 'questions', 'answers', 'pages' );
+                    break;
+
+                case 3:
+                    $normalized_modes = array( 'answers' );
+                    break;
+
+                default:
+                    $normalized_modes = array();
+                    break;
+            }
+
+        } else {
+            // ----------------------------------------------
+            // Handle new checkbox array structure
+            // ----------------------------------------------
+            $normalized_modes = array_intersect( $randomness_order, $valid_modes );
+        }
+
+        return array_values( $normalized_modes );
     }
 }
