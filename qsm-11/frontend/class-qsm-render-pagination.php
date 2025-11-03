@@ -75,6 +75,13 @@ class QSM_New_Pagination_Renderer {
 	 * @var array
 	 */
 	private $quiz_texts;
+	
+	/**
+	 * Randomness order
+	 *
+	 * @var array
+	 */
+	private $randomness_order;
 
 	/**
 	 * Constructor
@@ -97,6 +104,7 @@ class QSM_New_Pagination_Renderer {
 		$this->quiz_texts 		= (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );		
 		$this->contact_fields 	= maybe_unserialize( $this->quiz_settings['contact_form'] );
 		$this->pages 			= maybe_unserialize( $this->quiz_settings['pages'] );
+		$this->randomness_order = maybe_unserialize( $this->quiz_options->randomness_order );
 		
 		// Ensure quiz_data has required fields
 		if ( ! isset( $this->quiz_data['quiz_id'] ) ) {
@@ -113,6 +121,7 @@ class QSM_New_Pagination_Renderer {
 
 	/**
 	 * Load questions for the quiz
+	 * Enhanced with category support, question limiting, and proper filters
 	 */
 	private function load_questions() {
 		global $mlwQuizMasterNext, $wpdb;
@@ -132,7 +141,9 @@ class QSM_New_Pagination_Renderer {
 			$this->questions = array();
 			if ( $questions_results ) {
 				foreach ( $questions_results as $question ) {
-					$this->questions[ $question['question_id'] ] = $question;
+					// Convert object to array for consistency
+					$question_array = (array) $question;
+					$this->questions[ $question_array['question_id'] ] = $question_array;
 				}
 			}
 			
@@ -151,24 +162,282 @@ class QSM_New_Pagination_Renderer {
 	 * Setup pages based on quiz configuration
 	 */
 	private function setup_pages() {
-		// If no manual pages defined, create automatic pagination
-		if ( $this->quiz_options->pagination > 0 ) {
+		$quiz_id = intval( $this->quiz_data['quiz_id'] );
+		
+		// If pagination value is greater than 0
+		if ( $this->quiz_options->pagination <= 0 ) {
+			if ( in_array( 'pages', $this->randomness_order ) ) {
+				shuffle( $this->pages );
+			}
+			if ( in_array( 'questions', $this->randomness_order ) ) {
+				foreach ( $this->pages as &$page ) {
+					shuffle( $page );
+				}
+			}
+		} else {
 			$this->create_auto_pagination();
 		}
 	}
 
 	/**
 	 * Create automatic pagination based on questions per page setting
+	 * Refactored to use already fetched questions and follow proper filtering order
 	 */
 	private function create_auto_pagination() {
+		global $wpdb;
+		
 		$questions_per_page = intval( $this->quiz_options->pagination );
-		$question_ids = array_keys( $this->questions );
+		$quiz_id = intval( $this->quiz_data['quiz_id'] );
+		$randomness_order = $this->randomness_order;
+		
+		// Check if multiple category system is enabled
+		$multiple_category_system = false;
+		$enabled = get_option( 'qsm_multiple_category_enabled' );
+		if ( $enabled && 'cancelled' !== $enabled ) {
+			$multiple_category_system = true;
+		}
+		
+		// STEP 1: Start with already fetched questions
+		$questions = $this->questions;
+		
+		// STEP 2: Filter out unpublished questions first
+		$questions = array_filter(
+			$questions,
+			function ( $question ) {
+				$question_settings = maybe_unserialize( $question['question_settings'] );
+				return ! isset( $question_settings['isPublished'] ) || 0 !== intval( $question_settings['isPublished'] );
+			}
+		);
+		
+		// Get question IDs for further processing
+		$question_ids = array_keys( $questions );
+		
+		// STEP 3: Apply category-based filtering
+		$exploded_arr = array();
+		$categories = isset( $this->quiz_options->randon_category ) ? $this->quiz_options->randon_category : '';
+		
+		// Check if we need to filter by specific categories
+		if ( $categories && ! empty( $this->quiz_options->question_per_category ) ) {
+			$exploded_arr = explode( ',', $this->quiz_options->randon_category );
+			if ( $multiple_category_system ) {
+				$exploded_arr = array_map( 'intval', $exploded_arr );
+			}
+		}
+		
+		// Handle manual pages from quiz settings
+		$pages = isset( $this->pages ) && is_array( $this->pages ) ? $this->pages : array();
+		$total_pages = is_countable( $pages ) ? count( $pages ) : 0;
+		
+		// Get category question IDs if using multiple category system
+		$category_question_ids = array();
+		if ( $multiple_category_system && ! empty( $exploded_arr ) ) {
+			$term_ids = implode( ', ', $exploded_arr );
+			$query = $wpdb->prepare( 
+				"SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d AND term_id IN (%1s)", 
+				$quiz_id, 
+				$term_ids 
+			);
+			$question_data = $wpdb->get_results( $query, ARRAY_N );
+			foreach ( $question_data as $q_data ) {
+				$category_question_ids[] = $q_data[0];
+			}
+		}
+		
+		// If manual pages exist, use them to determine question order
+		if ( $total_pages > 0 ) {
+			$page_question_ids = array();
+			for ( $i = 0; $i < $total_pages; $i++ ) {
+				foreach ( $pages[ $i ] as $question ) {
+					if ( ! empty( $category_question_ids ) ) {
+						if ( in_array( intval( $question ), array_map( 'intval', $category_question_ids ), true ) ) {
+							$page_question_ids[] = intval( $question );
+						}
+					} else {
+						$page_question_ids[] = intval( $question );
+					}
+				}
+			}
+			
+			// Filter questions to only include those from pages
+			$question_ids = array_intersect( $question_ids, $page_question_ids );
+			
+			// Apply category-based question limiting
+			// Mode 1: Standard question per category limit
+			if ( ( '' == $this->quiz_options->limit_category_checkbox || 0 == $this->quiz_options->limit_category_checkbox ) 
+				&& 0 != $this->quiz_options->question_per_category ) {
+				
+				$categories_data = QSM_Questions::get_quiz_categories( $quiz_id );
+				$category_ids = ( isset( $categories_data['list'] ) ? array_keys( $categories_data['list'] ) : array() );
+				$categories_tree = ( isset( $categories_data['tree'] ) ? $categories_data['tree'] : array() );
+				
+				if ( ! empty( $category_ids ) ) {
+					$term_ids = implode( ',', $category_ids );
+					$question_id_str = implode( ',', $question_ids );
+					$term_ids = ( '' !== $this->quiz_options->randon_category ) ? $this->quiz_options->randon_category : $term_ids;
+					
+					$tq_ids = $wpdb->get_results(
+						"SELECT DISTINCT qt.term_id, qt.question_id
+						FROM {$wpdb->prefix}mlw_question_terms AS qt
+						WHERE qt.question_id IN ($question_id_str)
+							AND qt.term_id IN ($term_ids)
+							AND qt.taxonomy = 'qsm_category'
+						",
+						ARRAY_A
+					);
+					
+					$random = array();
+					if ( ! empty( $tq_ids ) ) {
+						$term_data = array();
+						foreach ( $tq_ids as $key => $val ) {
+							$term_data[ $val['term_id'] ][] = $val['question_id'];
+						}
+						
+						// Remove parent categories if using tree structure
+						if ( '' === $this->quiz_options->randon_category ) {
+							foreach ( $categories_tree as $cat ) {
+								if ( ! empty( $cat->children ) ) {
+									unset( $term_data[ $cat->term_id ] );
+								}
+							}
+						}
+						
+						// Randomly select questions from each category (randomness applied later)
+						foreach ( $term_data as $tv ) {
+							$random = array_merge( $random, array_slice( array_unique( $tv ), 0, intval( $this->quiz_options->question_per_category ) ) );
+						}
+					}
+					$question_ids = array_unique( $random );
+				}
+			}
+			// Mode 2: Advanced category question limit
+			elseif ( 1 == $this->quiz_options->limit_category_checkbox 
+				&& ! empty( maybe_unserialize( $this->quiz_options->select_category_question ) ) ) {
+				
+				$category_question_limit = maybe_unserialize( $this->quiz_options->select_category_question );
+				$categories_data = QSM_Questions::get_quiz_categories( $quiz_id );
+				$category_ids = ( isset( $categories_data['list'] ) ? array_keys( $categories_data['list'] ) : array() );
+				
+				if ( ! empty( $category_ids ) ) {
+					$selected_questions = array();
+					$exclude_ids = array( 0 );
+					
+					foreach ( $category_question_limit['category_select_key'] as $key => $category ) {
+						if ( empty( $category ) || empty( $category_question_limit['question_limit_key'][ $key ] ) ) {
+							continue;
+						}
+						
+						$limit = intval( $category_question_limit['question_limit_key'][ $key ] );
+						
+						// Get questions from this category
+						$category_questions = array();
+						foreach ( $question_ids as $qid ) {
+							// Check if question belongs to this category
+							$has_term = $wpdb->get_var( $wpdb->prepare(
+								"SELECT COUNT(*) FROM {$wpdb->prefix}mlw_question_terms 
+								WHERE question_id = %d AND term_id = %d AND taxonomy = 'qsm_category'",
+								$qid,
+								$category
+							) );
+							
+							if ( $has_term && ! in_array( $qid, $exclude_ids ) ) {
+								$category_questions[] = $qid;
+							}
+						}
+						
+						// Take limited number from this category
+						$category_questions = array_slice( $category_questions, 0, $limit );
+						$selected_questions = array_merge( $selected_questions, $category_questions );
+						$exclude_ids = array_merge( $exclude_ids, $category_questions );
+					}
+					
+					$question_ids = array_unique( $selected_questions );
+				}
+			}
+		} else {
+			// No manual pages - apply filter hook for custom question selection
+			$question_ids = apply_filters( 'qsm_load_questions_ids', array(), $quiz_id, $this->quiz_options );
+			
+			// If filter didn't provide question IDs, use all published questions
+			if ( empty( $question_ids ) ) {
+				$question_ids = array_keys( $questions );
+			} else {
+				// Filter to only include published questions from the filtered list
+				$question_ids = array_intersect( $question_ids, array_keys( $questions ) );
+			}
+		}
+		
+		// Apply the main filter hook with same data as before
+		$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $this->quiz_options );
+		
+		// STEP 4: Apply randomness_order at the end
+		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
+			// Check if we should use cookie to maintain order
+			if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) 
+				&& empty( $this->quiz_options->question_per_category ) 
+				&& empty( $this->quiz_options->limit_category_checkbox ) ) {
+				
+				$cookie_ids = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $quiz_id ] ) );
+				if ( preg_match( "/^\d+(,\d+)*$/", $cookie_ids ) ) {
+					$cookie_question_ids = explode( ',', $cookie_ids );
+					// Only use cookie IDs that are in our filtered list
+					$question_ids = array_intersect( $cookie_question_ids, $question_ids );
+				} else {
+					// Invalid cookie format, shuffle normally
+					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
+				}
+			} else {
+				// Shuffle questions
+				$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
+			}
+		}
+		
+		// Reorder questions array based on final question_ids order
+		$ordered_questions = array();
+		foreach ( $question_ids as $qid ) {
+			if ( isset( $questions[ $qid ] ) ) {
+				$ordered_questions[ $qid ] = $questions[ $qid ];
+			}
+		}
+		$questions = $ordered_questions;
+		
+		// Store cookie for randomized questions if needed
+		if ( ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) )
+			&& ! empty( $questions )
+			&& ! isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) ) {
+			
+			$question_sql = implode( ',', array_unique( array_keys( $questions ) ) );
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				let expires = "expires=" + d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
+			</script>
+			<?php
+		}
+		
+		// Apply final filter hook with same data as before (convert to object format for compatibility)
+		$questions_objects = array();
+		foreach ( $questions as $question ) {
+			$questions_objects[] = (object) $question;
+		}
+		$questions_objects = apply_filters( 'qsm_load_questions_filter', $questions_objects, $quiz_id, $this->quiz_options );
+		
+		// Convert back to array format
+		$questions = array();
+		foreach ( $questions_objects as $question ) {
+			$question_array = (array) $question;
+			$questions[ $question_array['question_id'] ] = $question_array;
+		}
+		
+		// Update the main questions property
+		$this->questions = $questions;
+		
+		// Create pages array for auto-pagination
+		$question_ids = array_keys( $questions );
 		
 		if ( $questions_per_page > 0 ) {
 			$this->pages = array_chunk( $question_ids, $questions_per_page );
-		} else {
-			// Single page with all questions
-			$this->pages = array( $question_ids );
 		}
 	}
 
@@ -176,6 +445,12 @@ class QSM_New_Pagination_Renderer {
 	 * Render the complete quiz with new pagination system
 	 */
 	public function render() {
+		global $mlwQuizMasterNext, $qmn_json_data, $qmn_total_questions, $qmn_all_questions_count, $mlw_qmn_section_count, $quiz_answer_random_ids;
+		
+		// Initialize global variables
+		$qmn_total_questions = $qmn_all_questions_count = 0;
+		$mlw_qmn_section_count = 0;
+		
 		// Debug: Log when render method is called
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( 'QSM Pagination Renderer: render() method called for quiz ID ' . $this->options->quiz_id );
@@ -195,15 +470,92 @@ class QSM_New_Pagination_Renderer {
 				$rendering = false;
 				return '<div class="qsm-error">Error: Missing quiz options or data</div>';
 			}
+			
+			// Apply qmn_begin_quiz filter
+			echo apply_filters( 'qmn_begin_quiz', '', $this->options, $this->quiz_data );
+			$this->options = apply_filters( 'qmn_begin_quiz_options', $this->options, $this->quiz_data );
+			
+			// Setup error messages in qmn_json_data
+			$qmn_json_data['error_messages'] = array(
+				'email_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->email_error_text, "quiz_email_error_text-{$this->options->quiz_id}" ),
+				'number_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->number_error_text, "quiz_number_error_text-{$this->options->quiz_id}" ),
+				'incorrect_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->incorrect_error_text, "quiz_incorrect_error_text-{$this->options->quiz_id}" ),
+				'empty_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->empty_error_text, "quiz_empty_error_text-{$this->options->quiz_id}" ),
+				'url_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->url_error_text, "quiz_url_error_text-{$this->options->quiz_id}" ),
+				'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->minlength_error_text, "quiz_minlength_error_text-{$this->options->quiz_id}" ),
+				'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->maxlength_error_text, "quiz_maxlength_error_text-{$this->options->quiz_id}" ),
+				'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
+			);
+			$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data, $this->options );
+			
+			// Enqueue additional scripts
+			
+			// Localize qsm_quiz script
+			wp_localize_script(
+				'qsm_quiz',
+				'qmn_ajax_object',
+				array(
+					'site_url' => site_url(),
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->quiz_limit_choice, "quiz_quiz_limit_choice-{$this->options->quiz_id}" ),
+					'out_of_text' => esc_html__( ' out of ', 'quiz-master-next' ),
+					'quiz_time_over' => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+					'security' => wp_create_nonce( 'qsm_submit_quiz' ),
+					'start_date' => current_time( 'h:i:s A m/d/Y' ),
+					'validate_process' => esc_html__( 'Validating file...', 'quiz-master-next' ),
+					'remove_file' => esc_html__( 'Removing file...', 'quiz-master-next' ),
+					'remove_file_success' => esc_html__( 'File removed successfully', 'quiz-master-next' ),
+					'validate_success' => esc_html__( 'File validated successfully', 'quiz-master-next' ),
+					'invalid_file_type' => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
+					'invalid_file_size' => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
+				)
+			);
+			
+			// Enqueue MathJax if not disabled
+			$disable_mathjax = isset( $this->options->disable_mathjax ) ? $this->options->disable_mathjax : '';
+			if ( 1 != $disable_mathjax ) {
+				$mathjax_url = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML';
+				wp_enqueue_script( 'math_jax', $mathjax_url, array(), '2.7.5', true );
+				$default_MathJax_script = "if (typeof MathJax !== 'undefined') {\n\t\t\t\t\tMathJax.Hub.Config({\n\t\t\t\t\t\ttex2jax: {inlineMath: [['\\$','\\$'], ['\\\\(','\\\\)']]}\n\t\t\t\t\t});\n\t\t\t\t}";
+				wp_add_inline_script( 'math_jax', $default_MathJax_script, 'before' );
+			}
+			
+			// Initialize quiz answer random IDs if randomizing answers
+			if ( in_array( 'answers', $this->randomness_order ) ) {
+				$quiz_answer_random_ids = array();
+			}
 
 			// Hook before rendering to prevent recursion
 			do_action( 'qsm_new_before_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
 			
+			// Display featured image for default theme
+			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $this->options->quiz_id );
+			if ( 'default' == $saved_quiz_theme ) {
+				$featured_image = get_option( "quiz_featured_image_{$this->options->quiz_id}" );
+				$qsm_global_settings = (array) get_option( 'qmn-settings' );
+				$qsm_preloader_setting = isset( $qsm_global_settings['enable_preloader'] ) ? $qsm_global_settings['enable_preloader'] : '';
+				
+				if ( isset( $qsm_preloader_setting ) && $qsm_preloader_setting > 0 && ! empty( $featured_image ) ) {
+					echo '<link rel="preload" href="' . esc_url( $featured_image ) . '" as="image">';
+				}
+				
+				if ( "" != $featured_image ) {
+					echo '<img class="qsm-quiz-default-feature-image" src="' . esc_url( $featured_image ) . '" alt="' . esc_attr__( 'Featured Image', 'quiz-master-next' ) . '" />';
+				}
+			}
+			
+			// Hook before form
+			echo apply_filters( 'qsm_display_before_form', '', $this->options, $this->quiz_data );
+			
 			// Start form - don't render form here as it's handled by main quiz manager
 			echo $this->render_form_start();
 			
-			// Add hidden inputs
-			echo $this->render_hidden_inputs();
+			// Error message container
+			echo '<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>';
+			echo '<span id="mlw_top_of_quiz"></span>';
+			
+			// Hook after form begin
+			echo apply_filters( 'qmn_begin_quiz_form', '', $this->options, $this->quiz_data );
 
 			// Render quiz timer
 			echo $this->render_quiz_timer();
@@ -213,22 +565,50 @@ class QSM_New_Pagination_Renderer {
 				echo $this->render_first_page();
 			}
 			
+			// Hook before questions
+			echo apply_filters( 'qmn_begin_quiz_questions', '', $this->options, $this->quiz_data );
+			
 			// Render question pages
 			$this->render_quiz_pages();
+			
+			// Hook before comment section
+			echo apply_filters( 'qmn_before_comment_section', '', $this->options, $this->quiz_data );
 			
 			// Render last page if enabled
 			if ( $this->should_show_last_page() ) {
 				echo $this->render_last_page();
 			}
 			
+			// Hook after comment section
+			echo apply_filters( 'qmn_after_comment_section', '', $this->options, $this->quiz_data );
+			
+			// Hook before error message
+			echo apply_filters( 'qmn_before_error_message', '', $this->options, $this->quiz_data );
+		
+			// Bottom error message
+			echo '<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>';
+		
+			// Hook before end quiz form
+			echo apply_filters( 'qmn_end_quiz_form', '', $this->options, $this->quiz_data );
+			do_action( 'qsm_before_end_quiz_form', $this->options, $this->quiz_data, array() );
+			
+			// Add hidden inputs
+			echo $this->render_hidden_inputs();
+
 			// End form here as it's handled by main quiz manager
 			echo $this->render_form_end();
+			
+			// Hook after end quiz form
+			do_action( 'qsm_after_end_quiz_form', $this->options, $this->quiz_data, array() );
 			
 			// Render navigation
 			echo $this->render_navigation();
 			
 			// Add JavaScript data
 			echo $this->render_javascript_data();
+			
+			// Apply end quiz filter
+			echo apply_filters( 'qmn_end_quiz', '', $this->options, $this->quiz_data );
 			
 			// Hook after rendering to prevent recursion
 			do_action( 'qsm_new_after_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
@@ -348,7 +728,6 @@ class QSM_New_Pagination_Renderer {
 		global $qmn_total_questions;
 		$output = '';
 		$animation_effect = isset( $this->options->quiz_animation ) && '' !== $this->options->quiz_animation ? ' animated ' . $this->options->quiz_animation : '';
-		$enable_pagination_quiz = isset( $this->options->enable_pagination_quiz ) && 1 == $this->options->enable_pagination_quiz;
 		
 		// Check if we have pages
 		if ( empty( $this->pages ) ) {
@@ -357,10 +736,6 @@ class QSM_New_Pagination_Renderer {
 		
 		// Apply filters to pages
 		$pages = apply_filters( 'qsm_display_pages', $this->pages, $this->options->quiz_id, $this->options );
-		
-		if ( 2 == $this->quiz_options->randomness_order ) {
-			shuffle( $pages );
-		}
 		
 		$is_display_first_page = $this->should_show_first_page();
 		$total_pages_count = count( $pages );
@@ -376,10 +751,6 @@ class QSM_New_Pagination_Renderer {
 			
 			// Hook before page
 			do_action( 'qsm_new_action_before_page', $pages_count, $page, $this );
-			
-			if ( 1 == $this->quiz_options->randomness_order || 2 == $this->quiz_options->randomness_order ) {
-				shuffle( $page );
-			}
 			
 			// Render questions in this page
 			foreach ( $page as $question_id ) {
@@ -442,11 +813,13 @@ class QSM_New_Pagination_Renderer {
 		$question_data = $this->questions[ $question_id ];
 		$question_settings = maybe_unserialize( $question_data['question_settings'] );
 		
-		$randomness_order = $this->quiz_options->randomness_order;
 		$answer_array = maybe_unserialize( $question_data['answer_array'] );
 		
-		if ( $randomness_order == 3 || $randomness_order == 2 ) {
-			shuffle( $answer_array );
+		if ( in_array( 'answers', $this->randomness_order ) ) {
+			$answer_array = QMNPluginHelper::qsm_shuffle_assoc($answer_array);
+			global $quiz_answer_random_ids;
+			$answer_ids = array_keys( $answer_array );
+			$quiz_answer_random_ids[ $question_id ] = $answer_ids;
 		}
 		
 		$args = array(
@@ -456,7 +829,6 @@ class QSM_New_Pagination_Renderer {
 			'answers' => $answer_array,
 			'question_settings' => is_array( $question_settings ) ? $question_settings : array(),
 			'quiz_options' => $this->quiz_options,
-			'randomness_order' => $randomness_order,
 		);
 
 		// Use the new question template function
@@ -650,7 +1022,12 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	private function render_hidden_inputs() {
+		global $mlwQuizMasterNext, $qmn_total_questions, $qmn_all_questions_count, $quiz_answer_random_ids;
+		
 		$output = '';
+		
+		// Hidden questions field (for legacy compatibility)
+		$output .= '<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">';
 		
 		// Question list
 		$question_list = '';
@@ -663,13 +1040,32 @@ class QSM_New_Pagination_Renderer {
 		}
 		$output .= '<input type="hidden" name="qmn_question_list" value="' . esc_attr( $question_list ) . '" />';
 		
-		// Other required inputs
+		// Security and unique identifiers
 		$output .= '<input type="hidden" name="qsm_nonce" id="qsm_nonce_' . esc_attr($this->options->quiz_id) . '" value="' . esc_attr( wp_create_nonce( 'qsm_submit_quiz_' . intval( $this->options->quiz_id ) ) ) . '">';
 		$output .= '<input type="hidden" name="qsm_unique_key" id="qsm_unique_key_' . esc_attr($this->options->quiz_id) . '" value="' . esc_attr( uniqid() ) . '">';
-		$output .= '<input type="hidden" name="qmn_quiz_id" value="' . esc_attr( $this->options->quiz_id ) . '" />';
+		
+		// Quiz identification
+		$output .= '<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="' . esc_attr( $this->quiz_data['quiz_id'] ) . '" />';
 		$output .= '<input type="hidden" name="complete_quiz" value="confirmation" />';
+		
+		// Question counts (using global variables for legacy compatibility)
+		$output .= '<input type="hidden" name="qmn_all_questions_count" id="qmn_all_questions_count" value="' . esc_attr( $qmn_all_questions_count ) . '" />';
+		$output .= '<input type="hidden" name="total_questions" id="total_questions" value="' . esc_attr( $qmn_total_questions ) . '" />';
+		
+		// Timer fields
 		$output .= '<input type="hidden" name="timer" id="timer" value="0" />';
-		$output .= '<input type="hidden" name="total_questions" id="total_questions" value="'. esc_attr( $total_questions ).'" />';
+		$output .= '<input type="hidden" name="timer_ms" id="timer_ms" value="0"/>';
+		
+		// Answer randomization IDs (if randomizing answers)
+		if ( in_array( 'answers', $this->randomness_order ) && ! empty( $quiz_answer_random_ids ) ) {
+			$output .= '<input type="hidden" name="quiz_answer_random_ids" id="quiz_answer_random_ids_' . esc_attr( $this->quiz_data['quiz_id'] ) . '" value="' . esc_attr( maybe_serialize( $quiz_answer_random_ids ) ) . '" />';
+		}
+		
+		// Payment ID (if present in GET parameters)
+		if ( isset( $_GET['payment_id'] ) && '' !== $_GET['payment_id'] ) {
+			$payment_id = sanitize_text_field( wp_unslash( $_GET['payment_id'] ) );
+			$output .= '<input type="hidden" name="main_payment_id" value="' . esc_attr( $payment_id ) . '" />';
+		}
 		
 		return $output;
 	}

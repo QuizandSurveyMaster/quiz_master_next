@@ -304,7 +304,7 @@
             }
 
             // Scroll to top of quiz
-            if (quizData.data.scroll_to_top !== false) {
+            if (quizData.data.disable_scroll_next_previous_click != 1) {
                 this.scrollToQuiz(quizId);
             }
 
@@ -376,7 +376,6 @@
             }
             
             if (quizData.currentPage < minPage) return;
-            console.log('Current page:', quizData.currentPage);
             this.goToPage(quizId, quizData.currentPage - 1);
         },
 
@@ -398,8 +397,6 @@
             let isLastPage = (currentPage == quizData.totalPages);
             let showStartButton = (isFirstPage && quizData.hasFirstPage);
             
-            console.log('Button update - Quiz:', quizId, 'Page:', currentPage, 'HasFirstPage:', quizData.hasFirstPage, 'ShowStart:', showStartButton);
-
             // Simple button visibility logic
             if (showStartButton) {
                 // First page with start button

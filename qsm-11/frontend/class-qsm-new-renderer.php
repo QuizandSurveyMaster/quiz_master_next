@@ -74,48 +74,62 @@ class QSM_New_Renderer {
 	 * Enqueue scripts and styles for new rendering system
 	 */
 	public function enqueue_scripts() {
+		global $mlwQuizMasterNext;
 		// Enqueue MicroModal script
 		wp_enqueue_script( 
 			'micromodal_script', 
 			QSM_PLUGIN_JS_URL . '/micromodal.min.js', 
 			array( 'jquery' ), 
-			'11.0.0', 
+			$mlwQuizMasterNext->version, 
 			true 
+		);
+
+		// Enqueue encryption script
+		wp_enqueue_script( 
+			'qsm_encryption', 
+			QSM_PLUGIN_JS_URL . '/crypto-js.js', 
+			array( 'jquery' ), 
+			$mlwQuizMasterNext->version, 
+			false 
 		);
 
 		// Enqueue navigation JavaScript
 		wp_enqueue_script( 
-			'qsm-new-navigation', 
+			'qsm-quiz-navigation', 
 			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js', 
 			array( 'jquery' ), 
-			'1.0.0', 
+			$mlwQuizMasterNext->version, 
 			true 
 		);
 		
 		// Enqueue progress bar JavaScript
 		wp_enqueue_script( 
-			'qsm-new-progressbar', 
+			'qsm-progressbar', 
 			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-progressbar.js', 
-			array( 'jquery', 'qsm-new-navigation' ), 
-			'1.0.0', 
+			array( 'jquery', 'qsm-quiz-navigation' ), 
+			$mlwQuizMasterNext->version, 
 			true 
 		);
 		
 		// Enqueue timer JavaScript
 		wp_enqueue_script( 
-			'qsm-new-timer', 
+			'qsm-quiz-timer', 
 			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-timer.js', 
-			array( 'jquery', 'qsm-new-navigation' ), 
-			'1.0.0', 
+			array( 'jquery', 'qsm-quiz-navigation' ), 
+			$mlwQuizMasterNext->version, 
 			true 
 		);
 		
+		// Enqueue required scripts
+		wp_enqueue_script( 'json2' );
+		wp_enqueue_script( 'jquery' );
+
 		// Enqueue styles
 		wp_enqueue_style( 
-			'qsm-new-styles', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-new-rendering.css', 
+			'qsm-quiz-styles', 
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
 			array(), 
-			'1.0.0' 
+			$mlwQuizMasterNext->version 
 		);
 	}
 
@@ -146,56 +160,102 @@ class QSM_New_Renderer {
 	 * @return string
 	 */
 	public function render_quiz_shortcode( $atts ) {
-		// Debug: Check if this shortcode is being called
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'QSM New Renderer: Shortcode called with attributes: ' . print_r( $atts, true ) );
-		}
+		global $wpdb, $mlwQuizMasterNext;
 		
-		$atts = shortcode_atts( array(
+		// Apply shortcode_atts and filter
+		$shortcode_args = shortcode_atts( array(
 			'quiz' => 0,
 			'question_amount' => 0,
 		), $atts );
-
-		$quiz_id = intval( $atts['quiz'] );
+		$shortcode_args = apply_filters( 'qsm_shortcode_before', $shortcode_args, $atts );
+		
+		$quiz_id = intval( $shortcode_args['quiz'] );
+		$question_amount = intval( $shortcode_args['question_amount'] );
 		
 		if ( ! $quiz_id ) {
 			return '<p>Invalid quiz ID</p>';
 		}
 
-		// Get quiz options
-		global $wpdb, $mlwQuizMasterNext;
-		$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
-		
-		if ( ! $quiz_options ) {
-			return '<p>Quiz not found</p>';
+		// Check if quiz is setup properly (matching legacy flow)
+		$has_proper_quiz = $mlwQuizMasterNext->pluginHelper->has_proper_quiz( $quiz_id );
+		if ( false === $has_proper_quiz['res'] ) {
+			return $has_proper_quiz['message'];
 		}
+		
+		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
+		$qmn_quiz_options = apply_filters( 'qsm_quiz_option_before', $qmn_quiz_options );
 
-		// Prepare quiz data
-		$quiz_data = array(
-			'quiz_id' => $quiz_id,
-			'quiz_name' => $quiz_options->quiz_name,
+		// Setup global variables for compatibility
+		global $qmn_allowed_visit, $qmn_json_data, $mlw_qmn_quiz;
+		$return_display = '';
+		
+		ob_start();
+		
+		// Load theme functions if exists
+		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz_id );
+		$folder_name = QSM_THEME_PATH . $saved_quiz_theme . '/';
+		if ( file_exists( $folder_name . 'functions.php' ) ) {
+			include_once $folder_name . 'functions.php';
+		}
+		
+		// Hook for enqueueing additional scripts/styles
+		do_action( 'qsm_enqueue_script_style', $qmn_quiz_options );
+		
+		// Prepare quiz data array
+		$qmn_array_for_variables = array(
+			'quiz_id' => $qmn_quiz_options->quiz_id,
+			'quiz_name' => $qmn_quiz_options->quiz_name,
+			'quiz_system' => $qmn_quiz_options->system,
 			'user_ip' => $this->get_user_ip(),
 		);
+		
+		// Initialize qmn_quiz_data object
+		$return_display .= '<script>
+			if (window.qmn_quiz_data === undefined) {
+				window.qmn_quiz_data = new Object();
+			}
+		</script>';
+		
+		// Apply filters before rendering
+		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
+		$qmn_quiz_options = apply_filters( 'qsm_quiz_options_before', $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
+		
+		// Check if we should show quiz
+		if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
+			// Prepare quiz data
+			$quiz_data = array(
+				'quiz_id' => $quiz_id,
+				'quiz_name' => $qmn_quiz_options->quiz_name,
+				'quiz_system' => $qmn_quiz_options->system,
+				'user_ip' => $this->get_user_ip(),
+			);
 
-		// Create renderer instance
-		$renderer = new QSM_New_Pagination_Renderer( $quiz_options, $quiz_data );
-		$auto_pagination_class = $quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
-		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
-		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz_id );
-		$randomness_class = 0 === intval( $quiz_options->randomness_order ) ? '' : 'random';
-		ob_start();
-		?>
-		<div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> ' data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>">
-			<?php echo $renderer->render(); ?>
-		</div>
-		<?php
-		$output = ob_get_clean();
+			// Create renderer instance
+			$renderer = new QSM_New_Pagination_Renderer( $qmn_quiz_options, $quiz_data );
+			$auto_pagination_class = $qmn_quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
+			$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
+			$randomness_class = ! empty( $randomness_order ) ? 'random' : '';
+			?>
+			<!-- // Render quiz container -->
+			<div class="qsm-quiz-container qmn_quiz_container qsm-quiz-container-<?php echo esc_attr( $quiz_data['quiz_id'] ); ?> mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme ); ?> <?php echo esc_attr( $randomness_class ); ?>" data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>">
+			
+			<?php
+			// Render quiz
+			$renderer->render();
+			?>
+			</div>
+			<?php
+		} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
+			// Display results - delegate to legacy system
+			// This is handled by the main QMN quiz manager
+		}
 		
-		$quiz_settings = (object)maybe_unserialize($quiz_options->quiz_settings);
-		$parameters = (object)array_merge( (array)$quiz_options, (array)maybe_unserialize($quiz_settings->quiz_options) );
-		$output .= apply_filters( 'qmn_end_shortcode', '', $parameters, [], $atts );
+		$return_display .= ob_get_clean();
 		
-		return $output;
+		// Apply end shortcode filter
+		$return_display = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
+		
+		return $return_display;
 	}
 
 	/**
