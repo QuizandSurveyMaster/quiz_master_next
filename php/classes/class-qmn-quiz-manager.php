@@ -2261,7 +2261,7 @@ class QMNQuizManager {
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 		$randomness_order	= $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
-		if ( in_array( 'questions', $randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
 			$question_array = explode(",",$question_sql);
 			foreach ( $question_array as $key ) {
