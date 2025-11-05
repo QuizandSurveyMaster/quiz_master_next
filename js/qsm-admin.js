@@ -1183,6 +1183,7 @@ jQuery(document).ready(function () {
             $("#limit_email_based_submission").find(".qsm-opt-desc").hide();
         }
     }).trigger('change');
+
     if (jQuery('body').hasClass('post-type-qsm_quiz')) {
 
         $('#new_quiz_button_two').on('click', function (event) {
