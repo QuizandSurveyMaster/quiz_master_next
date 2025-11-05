@@ -39,7 +39,16 @@ class QSM_Fields {
 							break;
 
 						case 'checkbox':
-							$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : 0;
+							// Handle array values for randomness_order field (multiple checkboxes)
+							if ( 'randomness_order' === $field["id"] && isset( $_POST[ $field["id"] ] ) && is_array( $_POST[ $field["id"] ] ) ) {
+								$sanitized_array = array();
+								foreach ( $_POST[ $field["id"] ] as $checkbox_value ) {
+									$sanitized_array[] = sanitize_text_field( wp_unslash( $checkbox_value ) );
+								}
+								$sanitized_value = maybe_serialize( $sanitized_array );
+							} else {
+								$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : 0;
+							}
 							break;
 						case 'date':
 							$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
@@ -876,39 +885,56 @@ class QSM_Fields {
 	 * Generates checkbox inputs
 	 *
 	 * @since 7.1.10
-	 * @param array $field The array that contains the data for the input field
+	 * @param array $checkbox_field The array that contains the data for the input field
 	 * @param mixed $value The current value of the setting
 	 */
-	public static function generate_checkbox_field( $field, $value ) {
-		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+	public static function generate_checkbox_field( $checkbox_field, $value ) {
+		$show_option = isset( $checkbox_field['show_option'] ) ? $checkbox_field['show_option'] : '';
 		global $mlwQuizMasterNext;
-		$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
+		$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$checkbox_field["id"] );
+
+		// Handle randomness_order field with array values and backward compatibility
+		if ( 'randomness_order' == $checkbox_field["id"] ) {
+			$selected_values = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $value );
+		}
+		
 		$class = "";
 		if ( 'form_type_1' != $show_option ) {
 			$class = $show_option ? $show_option . ' hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem' : '';
 		}
-		$class .= isset( $field['id'] ) ? ' '.$field['id'] : '';
+		$class .= isset( $checkbox_field['id'] ) ? ' '.$checkbox_field['id'] : '';
 		?>
 		<tr class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
-				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
+				<label for="<?php echo esc_attr( $checkbox_field["id"] ); ?>"><?php echo wp_kses_post( $checkbox_field['label'] ); ?></label>
+				<?php if ( isset($checkbox_field['tooltip']) && '' !== $checkbox_field['tooltip'] ) { ?>
 				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
+					<span class="qsm-tooltips"><?php echo wp_kses_post( $checkbox_field['tooltip'] ); ?></span>
 				</span>
 				<?php } ?>
 			</th>
 			<td>
 				<fieldset class="buttonset buttonset-hide" data-hide='1'>
-					<?php if ( isset($field['ph_text']) && '' !== $field['ph_text'] ) { ?>
-						<span><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
+					<?php if ( isset($checkbox_field['ph_text']) && '' !== $checkbox_field['ph_text'] ) { ?>
+						<span><?php echo wp_kses_post( $checkbox_field['ph_text'] ); ?></span>
 					<?php } ?>
 					<?php
-					foreach ( $field["options"] as $option ) {
+					foreach ( $checkbox_field["options"] as $option ) {
+						// Determine if this option should be checked
+						$is_checked = false;
+						if ( 'randomness_order' == $checkbox_field["id"] ) {
+							// For randomness_order, check against string values (new format)
+							$is_checked = in_array( $option["value"], $selected_values );
+						} else {
+							$is_checked = ( $option["value"] == $score_roundoff );
+						}
+						
+						// Set name attribute - only use array format for randomness_order
+						$name_attr = ( 'randomness_order' == $checkbox_field["id"] ) ? $checkbox_field["id"] . '[]' : $checkbox_field["id"];
 						?>
-						<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>">
-							<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
-								name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $score_roundoff ); ?>
+						<label for="<?php echo esc_attr( $checkbox_field["id"] . '-' . $option["value"] ); ?>">
+							<input type="checkbox" id="<?php echo esc_attr( $checkbox_field["id"] . '-' . $option["value"] ); ?>"
+								name="<?php echo esc_attr( $name_attr ); ?>" <?php checked( $is_checked ); ?>
 								value="<?php echo esc_attr( $option["value"] ); ?>" />
 							<?php echo isset( $option["label"] ) ? wp_kses_post( $option["label"] ) : ""; ?>
 						</label>
@@ -916,8 +942,8 @@ class QSM_Fields {
 					}
 					?>
 				</fieldset>
-				<?php if ( isset($field['help']) && '' !== $field['help'] ) { ?>
-				<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
+				<?php if ( isset($checkbox_field['help']) && '' !== $checkbox_field['help'] ) { ?>
+				<span class="qsm-opt-desc"><?php echo wp_kses_post( $checkbox_field['help'] ); ?></span>
 				<?php } ?>
 			</td>
 		</tr>
