@@ -1370,6 +1370,15 @@ function qsm_extra_template_and_leaderboard( $variable_list ) {
 		);
 		$variable_list = array_merge( $variable_list, $advanced_assessment );
 	}
+		if ( ! class_exists('QSM_URL_Parameters') ) {
+		$template_array = array(
+			'%URL_PARAMETERS_X%' => __( 'X: The URL parameter name used to display its corresponding value.', 'quiz-master-next' ),
+		);
+		$url_parameters = array(
+			'URL Parameters' => $template_array,
+		);
+		$variable_list = array_merge( $variable_list, $url_parameters );
+	}
 	return $variable_list;
 }
 /**

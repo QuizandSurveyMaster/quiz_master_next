@@ -135,6 +135,11 @@ function qsm_options_emails_tab_content() {
 								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
 								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
 							}
+							if ( ( ! class_exists( 'QSM_URL_Parameters' ) ) && ( 'URL Parameters' == $category_name ) ) {
+								$upgrade_link = qsm_get_plugin_link( 'downloads/url-parameters/' );
+								$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-url-parameters-variable";
+								$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
+							}
 							?>
 							<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name ); ?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
 							<?php
