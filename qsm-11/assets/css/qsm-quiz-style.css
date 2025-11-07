@@ -1033,15 +1033,18 @@ body .qsm-popup__btn-primary {
 	height: 20px;
 }
 .question-type-polar-s .ui-widget-content .ui-slider-handle {
+	position: relative;
 	background: rgb(119, 113, 113);
 	height: 32px;
 	border-color: rgb(119, 113, 113);
-	top: -7px;
+	top: -6px;
 	border-radius: 0px;
 	text-decoration: none;
 	color: #fff !important;
 	display: flex;
 	justify-content: center;
+	width: 25px;
+	line-height: 30px;
 }
 .site .question-type-polar-s a.ui-state-focus:focus {
 	background: rgba(119, 113, 113, 1);

@@ -128,7 +128,7 @@ function qsm_locate_template_in_qsm_plugins( $template_name ) {
 	$qsm_addon_or_theme = apply_filters( 'qsm_replace_template_from_addon_or_theme', '', $template_name );
 
 	// Search through QSM plugins for template
-	$template_paths = $plugins_dir . $qsm_addon_or_theme . '/qsm-11/templates/' . $template_name;
+	$template_paths = $plugins_dir . $qsm_addon_or_theme . '/' . $template_name;
 	
 	if ( file_exists( $template_paths ) ) {
 		$located = $template_paths;
@@ -193,56 +193,6 @@ function qsm_get_question_template( $question_type, $args = array() ) {
 }
 
 /**
- * Get navigation HTML using template system
- *
- * @param array $context Navigation context data
- * @return string Navigation HTML
- */
-function qsm_get_navigation_html( $context = array() ) {
-	$defaults = array(
-		'quiz_id' => 0,
-		'previous_text' => __( 'Previous', 'quiz-master-next' ),
-		'next_text' => __( 'Next', 'quiz-master-next' ),
-		'start_text' => __( 'Start', 'quiz-master-next' ),
-		'submit_text' => __( 'Submit', 'quiz-master-next' ),
-	);
-	
-	$args = wp_parse_args( $context, $defaults );
-	
-	// Apply filter to allow customization
-	$args = apply_filters( 'qsm_render_navigation', $args );
-	
-	return qsm_new_get_template_part( 'pagination', $args );
-}
-
-/**
- * Load template with caching support
- *
- * @param string $template_name Template name
- * @param array  $args Template arguments
- * @param bool   $cache Whether to cache the template
- * @return string Template output
- */
-function qsm_load_template( $template_name, $args = array(), $cache = false ) {
-	$cache_key = 'qsm_template_' . md5( $template_name . serialize( $args ) );
-	
-	if ( $cache ) {
-		$cached = wp_cache_get( $cache_key, 'qsm_templates' );
-		if ( false !== $cached ) {
-			return $cached;
-		}
-	}
-	
-	$output = qsm_new_get_template_part( $template_name, $args );
-	
-	if ( $cache ) {
-		wp_cache_set( $cache_key, $output, 'qsm_templates', HOUR_IN_SECONDS );
-	}
-	
-	return $output;
-}
-
-/**
  * Get template directory path
  *
  * @return string Template directory path
@@ -269,50 +219,6 @@ function qsm_get_theme_template_directory() {
 function qsm_template_exists_in_theme( $template_name ) {
 	$theme_template = qsm_get_theme_template_directory() . $template_name;
 	return file_exists( $theme_template );
-}
-
-/**
- * Get all available templates
- *
- * @return array Array of available templates
- */
-function qsm_get_available_templates() {
-	$templates = array();
-	$template_dir = qsm_get_template_directory();
-	
-	if ( is_dir( $template_dir ) ) {
-		// Get root level templates
-		$files = scandir( $template_dir );
-		foreach ( $files as $file ) {
-			if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'php' ) {
-				$templates[] = pathinfo( $file, PATHINFO_FILENAME );
-			}
-		}
-		
-		// Get question templates
-		$questions_dir = $template_dir . 'questions/';
-		if ( is_dir( $questions_dir ) ) {
-			$question_files = scandir( $questions_dir );
-			foreach ( $question_files as $file ) {
-				if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'php' ) {
-					$templates[] = 'questions/' . pathinfo( $file, PATHINFO_FILENAME );
-				}
-			}
-		}
-		
-		// Get page templates
-		$pages_dir = $template_dir . 'pages/';
-		if ( is_dir( $pages_dir ) ) {
-			$page_files = scandir( $pages_dir );
-			foreach ( $page_files as $file ) {
-				if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'php' ) {
-					$templates[] = 'pages/' . pathinfo( $file, PATHINFO_FILENAME );
-				}
-			}
-		}
-	}
-	
-	return apply_filters( 'qsm_available_templates', $templates );
 }
 
 /**

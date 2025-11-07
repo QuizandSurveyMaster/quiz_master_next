@@ -41,7 +41,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	<?php endif; ?>
 
 	<!-- Progress Bar -->
-	<?php if ( apply_filters( 'qsm_show_progress_bar', true, $quiz_id, $args ) ) : ?>
+	<?php if ( 1 == intval( $options->progress_bar ) && apply_filters( 'qsm_show_progress_bar', true, $quiz_id, $args ) ) : ?>
 		<div class="qsm-progress-bar">
 			<div class="qsm-progress-bar-container">
 				<div class="qsm-progress-fill"></div>

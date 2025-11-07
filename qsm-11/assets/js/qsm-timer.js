@@ -48,8 +48,8 @@
             var remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
             
             this.quizObjects[quizId] = {
-                $form: $form,
-                $timer: $timer,
+                form: $form,
+                timer: $timer,
                 totalTime: totalTime,
                 remainingTime: remainingTime,
                 consumedTime: consumedTime,
@@ -82,7 +82,7 @@
             // QSM-11 events
             $(document).on('qsm_quiz_initialized', function(e, quizId, instance) {
                 if (!self.quizObjects[quizId]) {
-                    self.initTimer(quizId, instance.$form);
+                    self.initTimer(quizId, instance.form);
                 }
             });
             
@@ -120,8 +120,7 @@
             // Update legacy data
             this.updateLegacyQuizData(quizId);
             
-            // Mark quiz as started in localStorage (both new and legacy keys)
-            localStorage.setItem('qsm_started_quiz_' + quizId, 'yes');
+            // Mark quiz as started in localStorage (legacy keys)
             localStorage.setItem('mlw_started_quiz' + quizId, 'yes');
             
             // Set initial time in localStorage if not set
@@ -164,22 +163,6 @@
             this.updateLegacyQuizData(quizId);
         },
 
-        pause: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz || !currentQuiz.isActive) return;
-            
-            this.stop(quizId);
-            currentQuiz.$timer.addClass('qsm-timer-paused');
-        },
-
-        resume: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz || currentQuiz.isActive) return;
-            
-            currentQuiz.$timer.removeClass('qsm-timer-paused');
-            this.start(quizId);
-        },
-
         expire: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
@@ -190,10 +173,10 @@
             this.updateDisplay(quizId);
             
             // Add visual indicators
-            currentQuiz.$timer.addClass('qsm-timer-expired qsm-timer--danger');
+            currentQuiz.timer.addClass('qsm-timer-expired qsm-timer--danger');
             
             // Disable form inputs (matching legacy behavior)
-            var $quizForm = currentQuiz.$form;
+            var $quizForm = currentQuiz.form;
             $quizForm.find('.mlw_qmn_quiz input:radio').attr('disabled', true);
             $quizForm.find('.mlw_qmn_quiz input:checkbox').attr('disabled', true);
             $quizForm.find('.mlw_qmn_quiz select').attr('disabled', true);
@@ -220,7 +203,7 @@
             } else {
                 // Show timer expired modal
                 $('.qsm-quiz-container-' + quizId).find('.stoptimer-p').hide();
-                this.showTimerExpiredModal(quizId);
+                MicroModal.show('modal-3');
             }
             
             // Trigger events
@@ -232,7 +215,7 @@
 
         tick: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return;
+            if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             // Check for scheduled time expiration
             if (this.checkScheduledTimeExpiration(quizId)) {
@@ -250,8 +233,6 @@
             this.updateLegacyQuizData(quizId);
             
             // Save current state to localStorage (both new and legacy keys)
-            localStorage.setItem('qsm_time_consumed_quiz_' + quizId, currentQuiz.consumedTime);
-            localStorage.setItem('qsm_time_remaining_quiz_' + quizId, currentQuiz.remainingTime);
             localStorage.setItem('mlw_time_consumed_quiz' + quizId, currentQuiz.consumedTime);
             localStorage.setItem('mlw_time_quiz' + quizId, currentQuiz.remainingTime);
             
@@ -272,15 +253,15 @@
 
         updateDisplay: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return;
+            if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             var display = this.secondsToTimer(currentQuiz.remainingTime);
             
-            var $display = currentQuiz.$timer.find('.qsm-timer-display');
+            var $display = currentQuiz.timer.find('.qsm-timer-display');
             if ($display.length) {
                 $display.text(display);
             } else {
-                currentQuiz.$timer.text(display);
+                currentQuiz.timer.text(display);
             }
             
             // Update browser tab title
@@ -319,7 +300,7 @@
             // Check for 10% remaining warning
             if (percentRemaining <= 10 && percentRemaining > 0 && !currentQuiz.warnings.ten) {
                 currentQuiz.warnings.ten = true;
-                currentQuiz.$timer.addClass('qsm-timer--warning');
+                currentQuiz.timer.addClass('qsm-timer--warning');
                 
                 // Trigger warning event
                 $(document).trigger('qsm_timer_warning', [quizId, currentQuiz.remainingTime, percentRemaining]);
@@ -370,11 +351,8 @@
             this.stop(quizId);
             
             // Clean up localStorage (both new and legacy keys)
-            localStorage.setItem('qsm_time_remaining_quiz_' + quizId, 'completed');
-            localStorage.setItem('qsm_started_quiz_' + quizId, 'no');
             localStorage.setItem('mlw_time_quiz' + quizId, 'completed');
             localStorage.setItem('mlw_started_quiz' + quizId, 'no');
-            localStorage.removeItem('qsm_time_consumed_quiz_' + quizId);
             localStorage.removeItem('mlw_time_consumed_quiz' + quizId);
             
             // Restore original title
@@ -388,7 +366,7 @@
         // Public API methods for external access
         getTimerInfo: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return null;
+            if (!currentQuiz || currentQuiz.warnings.expired) return null;
             
             return {
                 quizId: quizId,
@@ -415,9 +393,7 @@
             // Try multiple data sources for compatibility
             var data = {};
             
-            if (window.qsmQuizData && window.qsmQuizData[quizId]) {
-                data = window.qsmQuizData[quizId];
-            } else if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
+            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
                 data = window.qmn_quiz_data[quizId];
             }
             
@@ -426,7 +402,7 @@
         
         updateLegacyQuizData: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return;
+            if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             // Ensure qmn_quiz_data exists and update it
             if (typeof window.qmn_quiz_data === 'undefined') {
@@ -455,13 +431,13 @@
         
         checkScheduledTimeExpiration: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return false;
+            if (!currentQuiz || currentQuiz.warnings.expired) return false;
             
             var data = currentQuiz.data;
             if (data.not_allow_after_expired_time === '1' && data.scheduled_time_end) {
                 var systemTime = Math.round(new Date().getTime() / 1000);
                 if (systemTime > data.scheduled_time_end) {
-                    this.showScheduledTimeExpiredModal(quizId);
+                    MicroModal.show('modal-4');
                     return true;
                 }
             }
@@ -471,22 +447,11 @@
         
         showNinetyPercentWarning: function(quizId) {
             var currentQuiz = this.quizObjects[quizId];
-            if (!currentQuiz) return;
+            if (!currentQuiz || currentQuiz.warnings.expired) return;
             
-            var $container = currentQuiz.$form.closest('.qmn_quiz_container, .qsm-quiz-container');
+            var $container = currentQuiz.form.closest('.qmn_quiz_container, .qsm-quiz-container');
             $container.find('.qsm_ninety_warning').fadeIn();
         },
-        
-        showTimerExpiredModal: function(quizId) {
-            // Show timer expired modal using MicroModal if available
-            MicroModal.show('modal-3');
-        },
-        
-        showScheduledTimeExpiredModal: function(quizId) {
-            // Show scheduled time expired modal
-            MicroModal.show('modal-4');
-            return false;
-        }
     };
 
     // Initialize timer on document ready

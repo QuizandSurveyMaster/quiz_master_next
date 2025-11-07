@@ -97,6 +97,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array  $quiz_data Quiz data
 	 */
 	public function __construct( $options, $quiz_data ) {
+		global $mlwQuizMasterNext;
 		$this->options 			= $options;
 		$this->quiz_data 		= $quiz_data;
 		$this->quiz_settings 	= maybe_unserialize( $options->quiz_settings );
@@ -104,7 +105,7 @@ class QSM_New_Pagination_Renderer {
 		$this->quiz_texts 		= (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );		
 		$this->contact_fields 	= maybe_unserialize( $this->quiz_settings['contact_form'] );
 		$this->pages 			= maybe_unserialize( $this->quiz_settings['pages'] );
-		$this->randomness_order = maybe_unserialize( $this->quiz_options->randomness_order );
+		$this->randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $this->quiz_options->randomness_order );
 		
 		// Ensure quiz_data has required fields
 		if ( ! isset( $this->quiz_data['quiz_id'] ) ) {
@@ -823,6 +824,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$args = array(
+			'quiz_id' => $this->options->quiz_id,
 			'id' => $question_id,
 			'class_object' => $this,
 			'question' => $question_data,
@@ -1030,15 +1032,27 @@ class QSM_New_Pagination_Renderer {
 		$output .= '<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">';
 		
 		// Question list
-		$question_list = '';
+		$question_list = array();
 		$total_questions = 0;
 		foreach ( $this->pages as $page ) {
 			foreach ( $page as $question_id ) {
-				$question_list .= $question_id . 'Q';
+				$question_list[] = $question_id;
 				$total_questions++;
 			}
 		}
-		$output .= '<input type="hidden" name="qmn_question_list" value="' . esc_attr( $question_list ) . '" />';
+
+		if ( $this->quiz_options->pagination <= 0 ) {
+			?>
+			<script>
+				const d = new Date();
+				d.setTime(d.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ d.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_attr( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+expires+"; path=/";
+			</script>
+			<?php
+		}
+
+		$output .= '<input type="hidden" name="qmn_question_list" value="' . esc_attr( implode( 'Q', $question_list ) ) . '" />';
 		
 		// Security and unique identifiers
 		$output .= '<input type="hidden" name="qsm_nonce" id="qsm_nonce_' . esc_attr($this->options->quiz_id) . '" value="' . esc_attr( wp_create_nonce( 'qsm_submit_quiz_' . intval( $this->options->quiz_id ) ) ) . '">';
@@ -1196,22 +1210,71 @@ class QSM_New_Pagination_Renderer {
 			'template_system' => 'qsm-11',
 			'version' => '2.0',
 			'scroll_to_top' => true,
-			'timer_auto_start' => true,
+			'timer_auto_start' => false,
 		);
 		
 		// Apply filters to allow customization (matching legacy filter)
-		$quiz_data = apply_filters( 'qsm_new_json_data', $quiz_data, $this->options, $this->quiz_data );
 		$quiz_data = apply_filters( 'qmn_json_data', $quiz_data, $this->options, $this->quiz_data );
+		$correct_answer_logic = ! empty( $this->quiz_options->correct_answer_logic ) ? $this->quiz_options->correct_answer_logic : '';
+		$encryption['correct_answer_logic'] = $correct_answer_logic;
+		$question_ids = array();
+		if ( ! empty( $this->pages ) ) {
+			foreach ( $this->pages as $item ) {
+				$question_ids = array_merge($question_ids, $item);
+			}
+		}
+		$questions_settings = array();
+		foreach ( $this->questions as $key => $question ) {
+			if ( ! in_array($question['question_id'], $question_ids) ) {
+				continue;
+			}
+			$unserialized_settings = maybe_unserialize( $question['question_settings'] );
+			$question_type_new = $question['question_type_new'];
+			if ( 11 == $question_type_new ) {
+				$questions_settings[ $question['question_id'] ]['file_upload_type'] = $unserialized_settings['file_upload_type'];
+				$questions_settings[ $question['question_id'] ]['file_upload_limit'] = $unserialized_settings['file_upload_limit'];
+			}
+			$encryption[ $question['question_id'] ]['question_type_new'] = $question_type_new;
+			$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
+			$encryption[ $question['question_id'] ]['settings'] = $unserialized_settings;
+			$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
+			$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
+		}
 		
-		// Output JavaScript with both legacy and new variable names for compatibility
-		$output = '<script type="text/javascript">';
-		$output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
-		$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
-		$output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-		$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-		$output .= '</script>';
-		
-		return $output;
+		$quiz_data['questions_settings'] = $questions_settings;
+	
+	// Output JavaScript with both legacy and new variable names for compatibility
+	$output = '<script type="text/javascript">';
+	$output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
+	$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
+	$output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
+	$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
+	
+	// Add encryption data if available
+	if ( ! empty( $encryption ) ) {
+		$output .= '
+		if (typeof encryptionKey === "undefined") {
+			var encryptionKey = {};
+		}
+		if (typeof data === "undefined") {
+			var data = {};
+		}
+		if (typeof jsonString === "undefined") {
+			var jsonString = {};
+		}
+		if (typeof encryptedData === "undefined") {
+			var encryptedData = {};
+		}
+		encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
+
+		data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
+		jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
+		encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
+	}
+	
+	$output .= '</script>';
+	
+	return $output;
 	}
 
 	/**
