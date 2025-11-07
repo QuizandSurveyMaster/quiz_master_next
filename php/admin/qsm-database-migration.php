@@ -124,7 +124,7 @@ Class QSM_Database_Migration {
                             'created_at' => current_time('mysql')
                         );
 
-                        qsm_debug_output( $data_to_insert , 0);
+                        // qsm_debug_output( $data_to_insert , 0);
 
                         // Insert into the new simplified results_answers table
                         $this->wpdb->insert(
