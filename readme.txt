@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.3.0 ( November 3, 2025 ) =
+= 10.3.0 ( November 5, 2025 ) =
 * Feature: Added option to randomize questions within each page
 * Feature: Added option to randomize the order of pages only
 * Bug: Fixed issue with incorrect inline results for multiple fill-in-the-blank questions

@@ -3567,7 +3567,7 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     //Append extra settings
                     var all_setting = question.get('settings');
-                    if ((typeof all_setting === 'undefined') || (all_setting && typeof all_setting.isPublished === 'undefined')) {
+                    if (all_setting?.isPublished === undefined) {
                         $('#qsm-question-status').prop('checked', true).trigger('change');
                     }
                     if (all_setting === null || typeof all_setting === "undefined") { } else {
