@@ -736,3 +736,9 @@ body .ui-tooltip.ui-widget-content {
 .qsm-quiz-default-feature-image {
 	width: 100%;
 }
+.qsm-correct-answer-info {
+	color: green;
+}
+.qsm-incorrect-answer-info {
+	color: #dc3232;
+}
