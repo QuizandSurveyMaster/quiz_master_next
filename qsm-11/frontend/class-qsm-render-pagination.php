@@ -747,7 +747,11 @@ class QSM_New_Pagination_Renderer {
 				$display_current_page = 'block';
 			}
 			?>
-			<section class="qsm-page qsm-question-page qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" data-pid="<?php echo esc_attr( $pages_count ); ?>" data-qid="<?php echo esc_attr( $pages_count ); ?>" data-page="<?php echo esc_attr( $pages_count ); ?>" style="display: <?php echo $display_current_page; ?>;">
+			<section class="qsm-page qsm-question-page qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
+			data-pid="<?php echo esc_attr( $pages_count ); ?>" 
+			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
+			data-page="<?php echo esc_attr( $pages_count ); ?>" 
+			style="display: <?php echo $display_current_page; ?>;">
 			<?php
 			
 			// Hook before page
@@ -1211,6 +1215,7 @@ class QSM_New_Pagination_Renderer {
 			'version' => '2.0',
 			'scroll_to_top' => true,
 			'timer_auto_start' => false,
+			'render_type' => '11',
 		);
 		
 		// Apply filters to allow customization (matching legacy filter)
@@ -1326,6 +1331,28 @@ class QSM_New_Pagination_Renderer {
 	 */
 	public function get_pages_data() {
 		return $this->pages;
+	}
+
+	/**
+	 * Get quiz properties
+	 *
+	 * @return array
+	 */
+	public function get_quiz_properties( $param = false ) {
+		if ( ! empty( $param ) ) {
+			switch ( $param ) {
+				case 'options':
+					return $this->options;
+				case 'quiz_data':
+					return $this->quiz_data;
+				case 'pages':
+					return $this->pages;
+				case 'questions':
+					return $this->questions;
+				default:
+					return false;
+			}
+		}
 	}
 
 	/**

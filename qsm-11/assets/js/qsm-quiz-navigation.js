@@ -7,7 +7,7 @@
  * @package QSM
  * @version 1.0.0
  */
-
+var show_result_validation = true;
 (function($) {
 
     // Global namespace for QSM New Navigation
@@ -743,11 +743,11 @@
                 return;
             }
 
-            // Trigger next button click event (for legacy compatibility)
-            $(document).trigger('qsm_next_button_click_after', [quizId]);
-
             // Go to next page
             this.goToPage(quizId, quizData.currentPage + 1);
+
+            // Trigger next button click event (for legacy compatibility)
+            $(document).trigger('qsm_next_button_click_after', [quizId]);
         },
 
         /**
@@ -769,6 +769,9 @@
             
             if (quizData.currentPage < minPage) return;
             this.goToPage(quizId, quizData.currentPage - 1);
+
+            // Trigger previous button click event (for legacy compatibility)
+            $(document).trigger('qsm_previous_button_click_after', [quizId]);
         },
 
         /**
@@ -889,7 +892,8 @@
             let quizData = this.quizObjects[quizId];
             if (!quizData) return false;
             
-            let isValid = true;
+            show_result_validation = true;
+	        jQuery(document).trigger('qsm_before_validation', [$elements, quizId]);
             let data = quizData.data;
             let errorMessages = data.error_messages || {};
             
@@ -912,7 +916,7 @@
                     let email = $.trim(fieldValue);
                     if (!self.isValidEmail(email)) {
                         self.displayError(errorMessages.email_error_text || 'Please enter a valid email address.', $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
                 
@@ -920,7 +924,7 @@
                 if (fieldClass.indexOf('mlwUrl') !== -1 && fieldValue !== '') {
                     if (!self.isValidUrl($.trim(fieldValue))) {
                         self.displayError(errorMessages.url_error_text || 'Please enter a valid URL.', $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
                 
@@ -930,7 +934,7 @@
                     if ($.trim(fieldValue).length < minLength) {
                         let message = (errorMessages.minlength_error_text || 'Minimum %minlength% characters required.').replace('%minlength%', minLength);
                         self.displayError(message, $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
                 
@@ -940,36 +944,36 @@
                     if ($.trim(fieldValue).length > maxLength) {
                         let message = (errorMessages.maxlength_error_text || 'Maximum %maxlength% characters allowed.').replace('%maxlength%', maxLength);
                         self.displayError(message, $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
                 
                 // Required field validations
                 if (fieldClass.indexOf('mlwRequiredText') !== -1 && $.trim(fieldValue) === '') {
                     self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
-                    isValid = false;
+                    show_result_validation = false;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredNumber') !== -1 && (fieldValue === '' || isNaN(fieldValue))) {
                     self.displayError(errorMessages.number_error_text || 'Please enter a valid number.', $field, quizId);
-                    isValid = false;
+                    show_result_validation = false;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredDate') !== -1 && fieldValue === '') {
                     self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
-                    isValid = false;
+                    show_result_validation = false;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredAccept') !== -1 && !$field.prop('checked')) {
                     self.displayError(errorMessages.empty_error_text || 'You must accept this.', $field, quizId);
-                    isValid = false;
+                    show_result_validation = false;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredRadio') !== -1) {
                     let checkedVal = $field.find('input:checked').val();
                     if (!checkedVal) {
                         self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
                 
@@ -977,12 +981,12 @@
                     let files = $field.get(0).files;
                     if (!files || files.length === 0) {
                         self.displayError(errorMessages.empty_error_text || 'Please select a file.', $field, quizId);
-                        isValid = false;
+                        show_result_validation = false;
                     }
                 }
             });
-            
-            return isValid;
+	        jQuery(document).trigger('qsm_after_validation', [$elements, quizId]);
+            return show_result_validation;
         },
 
 
