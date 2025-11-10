@@ -1578,27 +1578,60 @@ jQuery(function () {
 		clearTimeout(qsm_inline_result_timer);
 		qsm_inline_result_timer = setTimeout(() => {
 			let showFeedback = true;
-			if ($i_this.hasClass('qmn_fill_blank')) {
+			let allCorrect = true;
+			let isFillBlank = $i_this.hasClass('qmn_fill_blank');
+			
+			if (isFillBlank) {
 				let $allBlanks = $this.find('.qmn_fill_blank');
-				let totalBlanks = $allBlanks.length;
 				let filledBlanks = $allBlanks.filter(function() {
 					return jQuery(this).val().trim() !== '';
-				}).length;
-				showFeedback = (totalBlanks > 0 && filledBlanks === totalBlanks);
-
+				});
+				showFeedback = filledBlanks.length === $allBlanks.length && $allBlanks.length > 0;
+				
 				if (!showFeedback) {
 					$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
+				} else {
+					filledBlanks.each(function(index) {
+						let blankData = qsm_question_quick_result_js(question_id, jQuery(this).val().trim(), 'input', qmn_quiz_data[quizID].enable_quick_correct_answer_info, quizID, index);
+						if (blankData.success !== 'correct') {
+							allCorrect = false;
+							return false;
+						}
+					});
 				}
 			}
 			
 			if (showFeedback) {
-				if (qmn_quiz_data[quizID].enable_quick_result_mc == 1) {
-					qsm_show_inline_result(quizID, question_id, sendValue, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
-				} else if (qmn_quiz_data[quizID].enable_quick_correct_answer_info != 0) {
-					let data = qsm_question_quick_result_js(question_id, sendValue, 'input', qmn_quiz_data[quizID].enable_quick_correct_answer_info, quizID, $this.find('.qmn_fill_blank').index($i_this));
+				let quickResultEnabled = qmn_quiz_data[quizID].enable_quick_result_mc == 1;
+				let correctInfoEnabled = qmn_quiz_data[quizID].enable_quick_correct_answer_info != 0;
+				
+				if (quickResultEnabled) {
+					if (isFillBlank) {
+						$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
+						let displayData = qsm_question_quick_result_js(question_id, sendValue, 'input', qmn_quiz_data[quizID].enable_quick_correct_answer_info, quizID, $this.find('.qmn_fill_blank').index($i_this));
+						let resultClass = allCorrect ? 'qsm-correct-answer-info' : 'qsm-incorrect-answer-info';
+						let resultColor = allCorrect ? 'green' : 'red';
+						let resultText = allCorrect ? qmn_quiz_data[quizID].quick_result_correct_answer_text : qmn_quiz_data[quizID].quick_result_wrong_answer_text;
+						
+						$this.append(`<div style="color: ${resultColor}" class="quick-question-res-p ${resultClass}">${resultText}</div>`);
+						if (displayData.message) {
+							$this.append(`<div class="qsm-inline-correct-info">${qsm_check_shortcode(displayData.message)}</div>`);
+						}
+						if (1 != qmn_quiz_data[quizID].disable_mathjax) MathJax.typesetPromise();
+						jQuery('.qsm-spinner-loader').remove();
+					} else {
+						qsm_show_inline_result(quizID, question_id, sendValue, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
+					}
+				} else if (correctInfoEnabled) {
+					let data = qsm_question_quick_result_js(question_id, sendValue, 'input', correctInfoEnabled, quizID, $this.find('.qmn_fill_blank').index($i_this));
 					$this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
-					if ( 0 < value.length && data.success != '') {
-						$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
+					
+					if (isFillBlank) {
+						data.success = allCorrect ? 'correct' : 'incorrect';
+					}
+					
+					if (0 < value.length && data.success != '' && data.message) {
+						$this.append(`<div class="qsm-inline-correct-info">${qsm_check_shortcode(data.message)}</div>`);
 					}
 				}
 			}
