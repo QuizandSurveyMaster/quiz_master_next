@@ -74,8 +74,6 @@ class QMNQuizManager {
 		add_shortcode( 'qsm_result', array( $this, 'shortcode_display_result' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
-		add_action( 'wp_ajax_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
-		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_nopriv_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 		add_action( 'wp_ajax_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 
@@ -1720,14 +1718,29 @@ class QMNQuizManager {
 			'numberposts' => 1,
 		));
 		$post_status = false;
+		$post_obj    = null;
 		if ( ! empty( $post_ids[0] ) ) {
 			$post_status = get_post_status( $post_ids[0] );
+			$post_obj    = get_post( $post_ids[0] );
 		}
 
 		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
+		// Prevent submissions to password-protected quizzes from visitors who are not quiz editors.
+		if ( $post_obj instanceof WP_Post && post_password_required( $post_obj ) && ! current_user_can( 'edit_qsm_quizzes' ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'This quiz is password protected and not accepting responses from this endpoint.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1857,16 +1870,6 @@ class QMNQuizManager {
 		);
 		echo wp_json_encode( $this->submit_results( $options, $data ) );
 		wp_die();
-	}
-
-	/**
-	 * @version 6.3.2
-	 * Show quiz on button click
-	 */
-	public function qsm_get_quiz_to_reload() {
-		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-		echo do_shortcode( '[qsm quiz="' . $quiz_id . '"]' );
-		exit;
 	}
 
 	/**

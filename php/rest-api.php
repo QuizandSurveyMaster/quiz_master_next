@@ -20,7 +20,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_questions',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -51,7 +53,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_question',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -60,7 +64,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_results',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -80,7 +86,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_emails',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -94,25 +102,29 @@ function qsm_register_rest_routes() {
 			},
 		)
 	);
-		// Register rest api to get quiz list
+		// Register rest api to get quiz list (admin-only)
 		register_rest_route(
 			'qsm',
 			'/list_quiz',
 			array(
 				'methods'             => 'GET',
 				'callback'            => 'qsm_get_basic_info_quiz',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
 
-		// Register rest api to get result of quiz
+		// Register rest api to get result of quiz (admin-only)
 		register_rest_route(
 			'qsm',
 			'/list_results/(?P<id>\d+)',
 			array(
 				'methods'             => 'GET',
 				'callback'            => 'qsm_get_result_of_quiz',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
 		// Get questions for question bank
@@ -127,24 +139,28 @@ function qsm_register_rest_routes() {
 				},
 			)
 		);
-		// Get Categories of quiz
+		// Get Categories of quiz (admin-only)
 		register_rest_route(
 			'quiz-survey-master/v1',
 			'/quizzes/(?P<id>\d+)/categories',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_categories',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
-		// Get Categories of quiz
+		// Get quizzes list (admin-only REST).
 		register_rest_route(
 			'quiz-survey-master/v2',
 			'/quizzlist/',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_get_quizzes_list',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
 }
