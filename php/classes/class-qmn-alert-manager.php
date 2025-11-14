@@ -51,6 +51,5 @@ class MlwQmnAlertManager {
 		}
 		echo apply_filters( 'qsm_warning_messages', $alert_list );
 	}
-
 }
 

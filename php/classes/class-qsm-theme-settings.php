@@ -55,13 +55,10 @@ class QSM_Theme_Settings {
 				} else {
 					return $reuslt = $this->update_theme( $theme_id, $status );
 				}
-			} else {
-				if ( $status ) {
+			} elseif ( $status ) {
 					return $result = $this->add_theme_active( $theme_path, $theme_name, $theme_default_settings );
-				}
 			}
 		}
-
 	}
 
 	/**
@@ -130,7 +127,6 @@ class QSM_Theme_Settings {
 			$data,
 			array( '%d', '%s', '%s', '%s' )
 		);
-
 	}
 
 	/**
@@ -142,7 +138,6 @@ class QSM_Theme_Settings {
 		global $wpdb;
 		$query          = "SELECT id, theme, theme_name FROM {$wpdb->prefix}$this->themes_table WHERE theme_active = 1";
 		return $results = $wpdb->get_results( $query, ARRAY_A );
-
 	}
 
 	/**
@@ -264,7 +259,4 @@ class QSM_Theme_Settings {
 			array( '%d', '%d' )
 		);
 	}
-
-
-
 }

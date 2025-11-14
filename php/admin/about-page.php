@@ -21,20 +21,20 @@ function qsm_generate_about_page() {
 	if ( ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
 		return;
 	}
-	$tab_array = [
-		[
+	$tab_array = array(
+		array(
 			'slug'  => 'about',
 			'title' => 'About',
-		],
-		[
+		),
+		array(
 			'slug'  => 'help',
 			'title' => 'Help',
-		],
-		[
+		),
+		array(
 			'slug'  => 'system_info',
 			'title' => 'System Info',
-		],
-	];
+		),
+	);
 	$active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'about';
 
 	// Creates the widgets.

@@ -47,7 +47,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 				if ( empty( $add_label_value ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
-				$mlw_answer_total++;
+				++$mlw_answer_total;
 				$other_option_class = '';
 				$other_option_class = apply_filters( 'qsm_multiple_choice_other_option_classes', $other_option_class, $mlw_answer_total, $id, $answers );
 				if ( '' !== $answer[0] ) {

@@ -275,7 +275,7 @@ class QMNGlobalSettingsPage {
 						<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br/>
 						<?php
 						/* translators: %s: HTML tag */
-						echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
+						printf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
 						?>
 				</p>
 				<p class="category-action">
@@ -856,7 +856,7 @@ class QMNGlobalSettingsPage {
 			<div class="qsm-mb-1"><?php esc_html_e( 'Correct Answer Logic', 'quiz-master-next' ); ?>:
 				<br/><small><?php
 				/* translators: %s: HTML tag */
-				echo sprintf( esc_html__( 'Works with %1$sMultiple Response, Horizontal Multiple Response%2$s and %3$sFill in the Blanks%4$s Question Types.', 'quiz-master-next' ), '<b>', '</b>', '<b>', '</b>' ); ?></small>
+				printf( esc_html__( 'Works with %1$sMultiple Response, Horizontal Multiple Response%2$s and %3$sFill in the Blanks%4$s Question Types.', 'quiz-master-next' ), '<b>', '</b>', '<b>', '</b>' ); ?></small>
 			</div>
 			<label for="qsm-correct-answer-logic-1">
 				<input type="radio" id="qsm-correct-answer-logic-1" name="qsm-quiz-settings[correct_answer_logic]" value="1" <?php checked( $qsm_all_correct_selected, 1 ); ?>>
