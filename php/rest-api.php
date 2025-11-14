@@ -510,26 +510,27 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 			$question       = QSM_Questions::load_question( $request['id'] );
 			$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
 			if ( ! empty( $question ) ) {
-				$is_linking = $request['is_linking'];
-				$comma_separated_ids = '';
-				if ( 1 <= $is_linking ) {
-					if ( isset( $question['linked_question'] ) && '' == $question['linked_question'] ) {
-						$comma_separated_ids = $is_linking;
-					} else {
-						$linked_question = isset($question['linked_question']) ? $question['linked_question'] : '';
-						$exploded_question_array = explode(',', $linked_question);
-						if ( ! empty($linked_question) ) {
-							$exploded_question_array = array_merge(array( $is_linking ), $exploded_question_array);
-						} else {
-							$exploded_question_array = array( $is_linking );
-						}
-						$comma_separated_ids = implode(',', array_unique($exploded_question_array));
+				$is_linking = isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0;
+				$linked_ids = array();
+
+				if ( isset( $question['linked_question'] ) && '' !== $question['linked_question'] ) {
+					$existing_ids = array_map( 'intval', array_filter( array_map( 'trim', explode( ',', $question['linked_question'] ) ) ) );
+					if ( ! empty( $existing_ids ) ) {
+						$linked_ids = $existing_ids;
 					}
 				}
 
+				if ( 1 <= $is_linking ) {
+					$linked_ids[] = $is_linking;
+				}
+
+				$linked_ids = array_values( array_unique( array_filter( $linked_ids ) ) );
+
 				$quiz_name_by_question = array();
-				if ( ! empty($comma_separated_ids) ) {
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_separated_ids. ")" );
+				if ( ! empty( $linked_ids ) ) {
+					$linked_ids  = array_map( 'intval', $linked_ids );
+					$ids_list    = implode( ',', $linked_ids );
+					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $ids_list . ")" );
 					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
@@ -553,7 +554,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'page'            => $question['page'],
 					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 					'link_quizzes'    => $quiz_name_by_question,
-					'merged_question' => $comma_separated_ids,
+					'merged_question' => implode( ',', $linked_ids ),
 				);
 			}
 			return $question;
