@@ -1101,7 +1101,7 @@ function qsm_advance_question_type_upgrade_popup() {
 		"id"           => 'modal-advanced-question-type',
 		"title"        => __('Go Beyond Standard Questions', 'quiz-master-next'),
 		"description"  => __('Make your quizzes more engaging with the Advanced Question Types Addon.', 'quiz-master-next'),
-		"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advanced_question_type.png',
+		"chart_image"  => plugins_url('', __DIR__) . '/images/advanced_question_type.png',
 		"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Advanced Question Addon separately.', 'quiz-master-next'),
 		"buy_btn_text" => __('Buy Advanced Questions Addon', 'quiz-master-next'),
 		"doc_link"     => qsm_get_plugin_link( 'docs/question-types', 'qsm_list', 'advance-question_type', 'advance-question-upsell_read_documentation', 'qsm_plugin_upsell' ),
@@ -1233,8 +1233,6 @@ function qsm_admin_upgrade_content( $args = array(), $type = 'popup' ) {
 }
 
 /**
- * Generates theme setting feilds
- *
  * @since 8.0.5
  * @param string $type input type
 * @return string $label input label
@@ -1422,12 +1420,11 @@ function qsm_get_input_control_unit( $param ) {
 			'selected' => array(),
 		),
 	);
-	echo sprintf(
+	printf(
 		'<select name="%1$s" class="qsm-theme-option-unit"> %2$s </select>',
 		esc_attr( $param['name'] ),
 		wp_kses( $options, $allowed_tags )
 	);
-
 }
 
 function qsm_get_input_label_selected( $param ) {
@@ -1459,7 +1456,7 @@ function qsm_get_input_label_selected( $param ) {
             'selected' => array(),
         ),
     );
-    echo sprintf(
+    printf(
         '<select name="%1$s"> %2$s </select>',
         esc_attr( $param['name'] ),
         wp_kses( $options ,$allowed_tags)
@@ -1476,7 +1473,7 @@ function qsm_advanced_assessment_quiz_page_content() {
 				"id"           => 'advanced-assessment',
 				"title"        => __( 'Advanced Assessment, Smarter Results', 'quiz-master-next' ),
 				"description"  => __( 'Unlock Personalized Quiz Experiences with the Advanced Assessment Addon.', 'quiz-master-next' ),
-				"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/advance-assessment-chart.png',
+				"chart_image"  => plugins_url( '', __DIR__ ) . '/images/advance-assessment-chart.png',
 				"warning"      => __( 'Missing Feature - Advanced Assessment Add-on required', 'quiz-master-next' ),
 				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
 				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
@@ -1501,7 +1498,7 @@ function qsm_extra_shortcode_popup_window_button( $quiz_id, $categories ) {
 			"id"           => 'modal-extra-shortcodes',
 			"title"        => __('Unlock More Customization with Extra Shortcodes', 'quiz-master-next'),
 			"description"  => __('Enhance quiz display and functionality with the Extra Shortcodes Addon.', 'quiz-master-next'),
-			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/extra-shortcodes.png',
+			"chart_image"  => plugins_url('', __DIR__) . '/images/extra-shortcodes.png',
 			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy QSM Extra Shortodes Addon separately.', 'quiz-master-next'),
 			"buy_btn_text" => __('Buy QSM Extra Shortodes Addon', 'quiz-master-next'),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/extra-shortcodes/', 'qsm_list', 'extrashortcodea_button', 'extra-shortcodes-upsell_read_documentation', 'qsm_plugin_upsell' ),
@@ -1528,7 +1525,7 @@ function qsm_webhooks_popup_window_section() {
 			"id"           => 'modal-qsm-webhooks',
 			"title"        => __( 'Automate Your Workflow with QSM Webhooks', 'quiz-master-next' ),
 			"description"  => __( 'Enhance your quizzes with seamless integrations using the QSM Webhooks Addon.', 'quiz-master-next' ),
-			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
+			"chart_image"  => plugins_url( '', __DIR__ ) . '/images/proctor_quiz_chart.png',
 			"warning"      => __( 'Missing Feature - webhook Add-On required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Webhooks Addon separately.', 'quiz-master-next' ),
 			"buy_btn_text" => __( 'Buy Webhooks Addon', 'quiz-master-next' ),
@@ -1626,7 +1623,7 @@ function qsm_insert_quiz_template_callback() {
 			}
 		}
 	} else {
-		wp_send_json_error( [ 'message' => __( 'Invalid nonce. Busted.', 'quiz-master-next' ) ] );
+		wp_send_json_error( array( 'message' => __( 'Invalid nonce. Busted.', 'quiz-master-next' ) ) );
         wp_die();
 	}
 }
@@ -1643,22 +1640,22 @@ function qsm_remove_my_templates_handler() {
 	if ( ! isset( $_POST['nonce'] ) ||
         ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' )
     ) {
-        wp_send_json_error( [ 'message' => __( 'Invalid nonce. Action not authorized.', 'quiz-master-next' ) ] );
+        wp_send_json_error( array( 'message' => __( 'Invalid nonce. Action not authorized.', 'quiz-master-next' ) ) );
         wp_die();
     }
 
     if ( ! isset( $_POST['id'] ) || ! absint( wp_unslash( $_POST['id'] ) ) ) {
-        wp_send_json_error( [ 'message' => __( 'Invalid template ID.', 'quiz-master-next' ) ] );
+        wp_send_json_error( array( 'message' => __( 'Invalid template ID.', 'quiz-master-next' ) ) );
         wp_die();
     }
 
     $template_id = absint( wp_unslash( $_POST['id'] ) );
     $table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-    $result = $wpdb->delete( $table_name, [ 'id' => $template_id ], [ '%d' ] );
+    $result = $wpdb->delete( $table_name, array( 'id' => $template_id ), array( '%d' ) );
     if ( $result ) {
-        wp_send_json_success( [ 'message' => __( 'Template removed successfully.', 'quiz-master-next' ) ] );
+        wp_send_json_success( array( 'message' => __( 'Template removed successfully.', 'quiz-master-next' ) ) );
     } else {
-        wp_send_json_error( [ 'message' => __( 'Failed to remove the template.', 'quiz-master-next' ) ] );
+        wp_send_json_error( array( 'message' => __( 'Failed to remove the template.', 'quiz-master-next' ) ) );
     }
     wp_die();
 }
@@ -1714,7 +1711,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button button-secondary" data-indexid="<?php echo esc_html($key); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button button-secondary" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
 									</div>
 								</div>
 								<?php
@@ -1781,9 +1778,9 @@ function qsm_result_and_email_row_templates(){
 }
 
 function qsm_get_plugin_status_by_path( $path ) {
-	if ( is_plugin_active($path) ) {
+	if ( is_plugin_active( $path ) ) {
 		return 'activated';
-	} elseif ( '' != $path && file_exists(WP_PLUGIN_DIR . '/' . $path) ) {
+	} elseif ( ! empty( $path ) && file_exists( WP_PLUGIN_DIR . '/' . $path ) ) {
 		return 'installed';
 	} else {
 		return 'not_installed';
@@ -1798,39 +1795,39 @@ function qsm_get_plugin_status_by_path( $path ) {
  */
 function qsm_get_dependency_plugin_list() {
 	$qsm_admin_dd = qsm_get_parsing_script_data();
-	$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
+	$all_addons   = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
 
 	$dependency_array = array();
 
 	foreach ( $all_addons as $key => $addon ) {
-		$path = $addon['path'] ?? '';
-		$addon_link          = qsm_get_utm_link( $addon['link'], 'result_or_email', 'templates', 'template_preview_' . sanitize_title( $addon['name'] ) );
-		$dependency_array[] = [
+		$path       = isset( $addon['path'] ) ? $addon['path'] : '';
+		$addon_link = qsm_get_utm_link( $addon['link'], 'result_or_email', 'templates', 'template_preview_' . sanitize_title( $addon['name'] ) );
+		$dependency_array[] = array(
 			'id'     => $addon['id'],
 			'name'   => $addon['name'],
 			'link'   => $addon_link,
-			'status' => qsm_get_plugin_status_by_path($path), // Use the common function
-		];
+			'status' => qsm_get_plugin_status_by_path( $path ), // Use the common function
+		);
 	}
 
 	return $dependency_array;
 }
 function qsm_create_theme_defaults_tab() {
 	global $mlwQuizMasterNext, $wpdb;
-    $themes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_themes", ARRAY_A );
+	$themes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_themes", ARRAY_A );
 	if ( empty( $themes ) ) {
 		return;
 	}
 	$active_themes   = $mlwQuizMasterNext->theme_settings->get_active_themes();
 
-	if ( empty($active_themes) ) {
+	if ( empty( $active_themes ) ) {
 		return;
 	}
 	$pro_themes = array( 'Fortune', 'Sigma', 'Pixel', 'Sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory' );
 
 	$has_pro_theme = false;
 	foreach ( $active_themes as $theme ) {
-		if ( in_array($theme['theme_name'], $pro_themes, true) ) {
+		if ( in_array( $theme['theme_name'], $pro_themes, true ) ) {
 			$has_pro_theme = true;
 			break;
 		}

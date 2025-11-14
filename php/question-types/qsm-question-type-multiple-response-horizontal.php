@@ -47,7 +47,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 				if ( empty( $add_label_value ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
-				$mlw_answer_total++;
+				++$mlw_answer_total;
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					$answer_class .= 'image' === $answerEditor ? ' qmn_image_option' : '';

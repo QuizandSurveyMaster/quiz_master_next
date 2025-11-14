@@ -40,7 +40,7 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 			if ( is_array( $answers ) ) {
 				$mlw_answer_total = 0;
 				foreach ( $answers as $answer_index => $answer ) {
-					$mlw_answer_total++;
+					++$mlw_answer_total;
 					if ( '' !== $answer[0] ) {
 						$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, "answer-" . $id . "-" . $answer_index, "QSM Answers" );

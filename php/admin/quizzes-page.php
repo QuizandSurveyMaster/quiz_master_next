@@ -484,7 +484,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						"id"           => 'modal-export-import',
 						"title"        => __( 'Easily Export Quiz Data', 'quiz-master-next' ),
 						"description"  => __( 'Move quizzes effortlessly with the Export & Import Addon.', 'quiz-master-next' ),
-						"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/export_import_chart.png',
+						"chart_image"  => plugins_url('', __DIR__) . '/images/export_import_chart.png',
 						"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Export & Import Addon separately.', 'quiz-master-next' ),
 						"buy_btn_text" => __( 'Buy Export & Import Addon', 'quiz-master-next' ),
 						"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/export-import/', 'qsm_list', 'importexport_button', 'import-export-upsell_read_documentation', 'qsm_plugin_upsell' ),
@@ -547,9 +547,6 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				<?php
 			}
 		}
-
-
-
 	}
 
 }

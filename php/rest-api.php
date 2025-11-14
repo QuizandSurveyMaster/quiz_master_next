@@ -147,7 +147,6 @@ function qsm_register_rest_routes() {
 				'permission_callback' => '__return_true',
 			)
 		);
-
 }
 
 /**
@@ -214,7 +213,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		$total_pages = ceil( $total_count / $limit );
 		$pageno = isset( $parameters['page'] ) ? intval( $parameters['page'] ) : 1;
 		$offset = ( $pageno - 1 ) * $limit;
-		$questions = [];
+		$questions = array();
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
 				$query_result = array();
@@ -520,9 +519,9 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 						$linked_question = isset($question['linked_question']) ? $question['linked_question'] : '';
 						$exploded_question_array = explode(',', $linked_question);
 						if ( ! empty($linked_question) ) {
-							$exploded_question_array = array_merge([ $is_linking ], $exploded_question_array);
+							$exploded_question_array = array_merge(array( $is_linking ), $exploded_question_array);
 						} else {
-							$exploded_question_array = [ $is_linking ];
+							$exploded_question_array = array( $is_linking );
 						}
 						$comma_separated_ids = implode(',', array_unique($exploded_question_array));
 					}
@@ -609,7 +608,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 						}
 					}
 				}
-				$quiz_name_by_question = array_diff($quiz_name_by_question, [ $quiz_name ]); // remove current quiz id from the list
+				$quiz_name_by_question = array_diff($quiz_name_by_question, array( $quiz_name )); // remove current quiz id from the list
 				$question_data    = array(
 					'id'                      => $question['question_id'],
 					'quizID'                  => $question['quiz_id'],

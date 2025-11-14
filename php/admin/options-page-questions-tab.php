@@ -758,7 +758,7 @@ function qsm_options_questions_tab_content() {
 								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
 									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
-									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); echo sprintf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); printf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
 								</div>
 							<?php } ?>
 							</div>
@@ -953,7 +953,7 @@ function qsm_process_unlink_question_from_list_by_question_id( $question_id ) {
 	if ( $current_linked_questions ) {
 		$current_links = explode(',', $current_linked_questions);
 		$current_links = array_map('trim', $current_links);
-		$current_links = array_diff($current_links, [ $question_id ]);
+		$current_links = array_diff($current_links, array( $question_id ));
 		$updated_linked_list = implode(',', array_filter($current_links));
 		$linked_ids = explode(',', $updated_linked_list);
 		foreach ( $linked_ids as $linked_id ) {
@@ -1116,7 +1116,7 @@ function qsm_send_data_sendy() {
 add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
 function qsm_dashboard_delete_result() {
 	$result_id = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
-	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) && $result_id ) {
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) && $result_id && current_user_can( 'administrator' ) ) {
 		global $wpdb;
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_results',
@@ -1197,15 +1197,15 @@ function qsm_delete_question_from_database() {
 
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
-		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove( [ $question_id ] );
-		$question_ids_to_delete = array_merge($connected_question_ids, [ $question_id ]);
+		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) );
+		$question_ids_to_delete = array_merge($connected_question_ids, array( $question_id ));
 		$question_ids_to_delete = array_unique( $question_ids_to_delete );
 		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
 
 		do_action('qsm_question_deleted',$question_id);
 
 		if ( ! empty($connected_question_ids) ) {
-			$connected_question_ids = array_diff($connected_question_ids, [ $base_question_id ] );
+			$connected_question_ids = array_diff($connected_question_ids, array( $base_question_id ) );
 			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
 		}
 
@@ -1331,8 +1331,8 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
 				if ( ! empty($clone_qpages) ) {
 					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
 						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions'], true) ) {
-							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], [ $single_quiz->question_id ]);
-							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], [ $single_quiz->question_id ]);
+							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], array( $single_quiz->question_id ));
+							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], array( $single_quiz->question_id ));
 						}
 					}
 					$qpages = $clone_qpages;

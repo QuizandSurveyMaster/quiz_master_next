@@ -122,7 +122,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
  */
 
 function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
-	global $mlwQuizMasterNext,$wpdb;
+	global $mlwQuizMasterNext, $wpdb;
 	$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%ANSWER_' ) ) {
@@ -159,7 +159,7 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 	}
 	while ( false !== strpos( $content, '%USER_ANSWER_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%USER_ANSWER_', '%' );
-		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? [];
+		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? array();
 		$key = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
 
 		if ( false !== $key && isset( $question_answers_array[ $key ] ) ) {
@@ -312,12 +312,12 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '%QUIZ_NAME%' );
 		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_facebook_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
-		$fb_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/facebook.png';
+		$fb_image       = plugins_url( '', __DIR__ ) . '/assets/facebook.png';
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "', '$facebook_app_id', '$page_link');\"><img src='" . $fb_image . "' alt='" . __( 'Facebbok Share', 'quiz-master-next' ) . "' /></a>";
 		$content        = str_replace( '%FACEBOOK_SHARE%', $social_display, $content );
 	}
 	if ( false !== strpos( $content, '%TWITTER_SHARE%' ) ) {
-		$tw_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/twitter.png';
+		$tw_image       = plugins_url( '', __DIR__ ) . '/assets/twitter.png';
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '%QUIZ_NAME%' );
 		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_twitter_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
@@ -325,7 +325,7 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 		$content        = str_replace( '%TWITTER_SHARE%', $social_display, $content );
 	}
 	if ( false !== strpos( $content, '%LINKEDIN_SHARE%' ) ) {
-		$ln_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/linkedin.png';
+		$ln_image       = plugins_url( '', __DIR__ ) . '/assets/linkedin.png';
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'linkedin_sharing_text', '%QUIZ_NAME%' );
 		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_linkedin_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
@@ -364,7 +364,7 @@ function mlw_qmn_variable_average_point( $content, $mlw_quiz_array ) {
 	if ( isset( $mlw_quiz_array['question_answers_array'] ) ) {
 		foreach ( $mlw_quiz_array['question_answers_array'] as $single_question ) {
 			if ( '11' !== $single_question['question_type'] ) {
-				$question_total++;
+				++$question_total;
 			}
 		}
 	}
@@ -557,7 +557,7 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 		foreach ( $results['contact'] as $results_contact ) {
 			if ( isset( $results_contact['label'] ) && isset( $results_contact['type'] ) && isset( $results_contact['value'] ) ) {
 				$options = qsm_get_options_of_contact_fields($contact_form, $results_contact['label'], $results_contact['type'] );
-				$isRadioOrSelect = in_array($results_contact['type'], [ 'radio', 'select' ], true);
+				$isRadioOrSelect = in_array($results_contact['type'], array( 'radio', 'select' ), true);
 				$hasOptions = ! empty($options) ? trim($options) : "";
 
 				if ( ($isRadioOrSelect && $hasOptions) || ! $isRadioOrSelect ) {
@@ -632,7 +632,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 			$display .= qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt );
 			$question_display = apply_filters( 'qsm_result_page_data_template', $question_display, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt );
 			$display .= $question_display;
-			$qsm_question_cnt++;
+			++$qsm_question_cnt;
 		}
 		$display = "<div class='qsm_questions_answers_section'>{$display}</div>";
 		$content = str_replace( '%QUESTIONS_ANSWERS%', $display, $content );
@@ -839,13 +839,11 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 						}
 					}
 				}
-			} else {
-				if ( $answer['category'] == $category_name ) {
+			} elseif ( $answer['category'] == $category_name ) {
 					$total_questions += 1;
 					if ( 'correct' == $answer['correct'] ) {
 						$amount_correct += 1;
 					}
-				}
 			}
 		}
 
@@ -970,7 +968,7 @@ function qsm_end_results_rank( $result_display, $qmn_quiz_options, $qmn_array_fo
 			 */
 			$rank = 0;
 			foreach ( $mlw_result_data as $mlw_eaches ) {
-				$rank++;
+				++$rank;
 				if ( $mlw_eaches->result_id == $mlw_result_id ) {
 					$mlw_rank = $rank;
 				}
@@ -1072,19 +1070,15 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 			}
 		}
-	} else {
-		if ( isset( $mlw_quiz_array['form_type'] ) && '1' === $mlw_quiz_array['form_type'] || '2' === $mlw_quiz_array['form_type'] ) {
+	} elseif ( isset( $mlw_quiz_array['form_type'] ) && '1' === $mlw_quiz_array['form_type'] || '2' === $mlw_quiz_array['form_type'] ) {
 			$user_answer_class     = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
-		} else {
-			if ( 'correct' === $answer['correct'] ) {
+		} elseif ( 'correct' === $answer['correct'] ) {
 				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
 				$user_answer_class     = 'qmn_user_incorrect_answer';
 				$question_answer_class = 'qmn_question_answer_incorrect';
-			}
-		}
 	}
 	$user_answer_class = 11 != $answer['question_type'] ? $user_answer_class : '';
 	$open_span_tag                 = '<span class="' . $user_answer_class . '">';
@@ -1181,12 +1175,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									break;
 								}
 							}
-						} else {
-							if ( isset( $single_answer[2] ) && 'correct' === $answer['correct'] ) {
+						} elseif ( isset( $single_answer[2] ) && 'correct' === $answer['correct'] ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
 								break;
-							}
 						}
 					}
 					if ( $do_show_wrong ) {
@@ -1293,8 +1285,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						}
 						$question_with_answer_text = $is_any_incorrect ? $question_with_answer_text . $question_correct_fill_answer_text : $question_with_answer_text;
 					}
-				} else {
-					if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
+				} elseif ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 						if ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 							$result_page_default_template = "";
 							$result_page_default_template = apply_filters( 'qsm_result_page_custom_default_template', $result_page_default_template, $total_answers, $questions, $answer );
@@ -1310,15 +1301,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
-						} else {
-							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
+						} elseif ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings, $form_type );
 							} else {
 								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $total_answers, $answer, $question_settings );
-							}
 						}
-					} else {
-						if ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
+					} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 							$question_type              = $answer['question_type'];
 							$result_page_default_template = "";
 							$result_page_default_template = apply_filters( 'qsm_result_page_custom_default_template', $result_page_default_template, $total_answers, $questions, $answer );
@@ -1334,17 +1322,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '', $mlw_question_answer_display );
 							$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $answer['points'], $mlw_question_answer_display );
-						} else {
-							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
+						} elseif ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings, $form_type );
 							} else {
 								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $total_answers, $answer, $question_settings );
-							}
-						}
-					}
 				}
-			} else {
-				if ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
+			} elseif ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
 					$file_extension = substr( $answer[1], -4 );
 					if ( '.jpg' === $file_extension || '.jpeg' === $file_extension || '.png' === $file_extension || '.gif' === $file_extension ) {
 						$question_with_answer_text .= "$open_span_tag<img src='$answer[1]'/></span>";
@@ -1358,7 +1341,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} else {
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 					$question_with_answer_text = apply_filters( 'qsm_result_page_answer_text_with_no_answer', $question_with_answer_text, $total_answers, $questions, $answer );
-				}
 			}
 		}
 		$mlw_question_answer_display = str_replace( '%USER_ANSWERS_DEFAULT%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
@@ -1667,7 +1649,7 @@ function qsm_safe_unserialize( $value ) {
 	// If it's not a serialized string, keep original value
 	if ( is_string( $value ) && is_serialized( $value ) ) {
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged
-		$unserialized_value = unserialize( $value, [ 'allowed_classes' => false ] );
+		$unserialized_value = unserialize( $value, array( 'allowed_classes' => false ) );
 
 		$is_invalid_blob = ( false === $unserialized_value && 'b:0;' !== $value );
 		$is_disallowed_type = is_object( $unserialized_value ) || is_resource( $unserialized_value );
