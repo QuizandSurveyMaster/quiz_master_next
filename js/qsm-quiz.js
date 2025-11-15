@@ -1495,36 +1495,6 @@ jQuery(function () {
 		});
 	});
 
-	jQuery(document).on('click', '.btn-reload-quiz', function (e) {
-		e.preventDefault();
-		var quiz_id = jQuery(this).data('quiz_id');
-		var parent_div = jQuery(this).parents('.qsm-quiz-container');
-		qsmDisplayLoading(parent_div, quiz_id);
-		jQuery.ajax({
-			type: 'POST',
-			url: qmn_ajax_object.ajaxurl,
-			data: {
-				action: "qsm_get_quiz_to_reload",
-				quiz_id: quiz_id,
-			},
-			success: function (response) {
-				parent_div.replaceWith(response);
-				//Reload the timer and pagination
-				qmnDoInit();
-
-				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
-					MathJax.typesetPromise();
-				}
-
-				// trigger fired on successfull retake quiz
-				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
-			},
-			error: function (errorThrown) {
-				console.log('error');
-			}
-		});
-	});
-
 	jQuery(document).on('change', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date ' , function (e) {
 		let $i_this = jQuery(this);
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
