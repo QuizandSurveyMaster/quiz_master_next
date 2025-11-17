@@ -122,7 +122,7 @@ function qsm_dashboard_display_change_log_section(){
 									<p><?php echo wp_kses_post( $cl_str ); ?></p>
 								</li>
 								<?php
-								$i ++;
+								++$i ;
 							}
 						}
 						?>
@@ -139,37 +139,37 @@ function qsm_dashboard_display_change_log_section(){
 
 function qsm_dashboard_display_need_help_section(){
 		// Define sections
-	$sections = [
-		[
+	$sections = array(
+		array(
 			'title'       => __('Documentation', 'quiz-master-next'),
 			'description' => __('Find detailed guides and step-by-step instructions to help you explore and utilize all the features of the QSM plugin effectively.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/contact.png',
 			'alt'         => 'contact.png',
 			'link'        => qsm_get_plugin_link('docs', 'dashboard', 'next_steps', 'dashboard_read_document'),
-		],
-		[
+		),
+		array(
 			'title'       => __('Demos', 'quiz-master-next'),
 			'description' => __('Explore live examples of quizzes and surveys built with QSM to see its features in action.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/camera.png',
 			'alt'         => 'camera.png',
 			'link'        => qsm_get_utm_link('https://demo.quizandsurveymaster.com/', 'demos', 'dashboard', 'useful_links', 'dashboard_demos'),
 
-		],
-		[
+		),
+		array(
 			'title'       => __('FAQ', 'quiz-master-next'),
 			'description' => __('Get quick answers to commonly asked questions about QSM, covering troubleshooting, setup, and best practices.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/faq.png',
 			'alt'         => 'faq.png',
 			'link'        => 'https://quizandsurveymaster.com/#:~:text=Frequently%20asked%20questions',
-		],
-		[
+		),
+		array(
 			'title'       => __('Contact Support', 'quiz-master-next'),
 			'description' => __('Need further assistance? Reach out to our support team for personalized help with any issues or queries related to QSM.', 'quiz-master-next'),
 			'image'       => QSM_PLUGIN_URL . 'assets/dashboard-support.png',
 			'alt'         => 'dashboard-support.png',
 			'link'        => qsm_get_plugin_link('contact-support', 'dashboard', 'useful_links', 'dashboard_support'),
-		],
-	];
+		),
+	);
 	?>
 
 	<div class="qsm-dashboard-help-center">
@@ -196,8 +196,8 @@ function qsm_dashboard_display_need_help_section(){
 }
 
 function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
-	$desiredOrder = [ 572582, 591230, 567900, 3437 ];
-	$sortedAddons = [];
+	$desiredOrder = array( 572582, 591230, 567900, 3437 );
+	$sortedAddons = array();
 	foreach ( $desiredOrder as $id ) {
 		foreach ( $popular_addons as $addon ) {
 			if ( $addon['id'] == $id ) {
@@ -236,8 +236,8 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 
 
 function qsm_dashboard_display_popular_theme_section( $themes ) {
-	$desiredOrder = [ 547794, 557086, 551027, 302299 ];
-	$sortedThemes = [];
+	$desiredOrder = array( 547794, 557086, 551027, 302299 );
+	$sortedThemes = array();
 	foreach ( $desiredOrder as $id ) {
 		foreach ( $themes as $theme ) {
 			if ( $theme['id'] == $id ) {
@@ -276,7 +276,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 function qsm_dashboard_recent_taken_quiz() {
 	global $wpdb;
 	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
-	if($mlw_result_data['total_result'] != 0){
+	if ( $mlw_result_data['total_result'] != 0 ) {
 	?>
 	<div class="qsm-dashboard-help-center">
 		<h3 class="qsm-dashboard-help-center-title"><?php esc_html_e( 'Recent Activity', 'quiz-master-next' ); ?></h3>
@@ -353,14 +353,16 @@ function qsm_dashboard_recent_taken_quiz() {
 									?>
 								</span>
 								<span class="rtq-time-taken"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ) ); ?></span>
-								<p class="row-actions-c">
-									<a
-										href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
-									| <a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
-										class="trash rtq-delete-result"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
-								</p>
+								<?php if ( current_user_can( 'view_qsm_quiz_result' ) || current_user_can( 'administrator' ) ) { ?>
+									<p class="row-actions-c">
+										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a>
+										<?php if ( current_user_can( 'administrator' ) ) { ?>
+											| <a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
+												class="trash rtq-delete-result"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+										<?php } ?>
+									</p>
+								<?php } ?>
 							</div>
-						</li>
 					<?php }
 				} else { ?>
 					<li><?php esc_html_e( 'No recent activity found.', 'quiz-master-next' ); ?></li>
@@ -400,8 +402,8 @@ function qsm_generate_dashboard_page() {
 			<?php
 			$qsm_admin_dd = qsm_get_parsing_script_data();
 			if ( $qsm_admin_dd ) {
-				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : [];
-				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : [];
+				$popular_addons = isset($qsm_admin_dd['popular_products']) ? $qsm_admin_dd['popular_products'] : array();
+				$themes = isset($qsm_admin_dd['themes']) ? $qsm_admin_dd['themes'] : array();
 				qsm_check_plugins_compatibility();
 				qsm_dashboard_recent_taken_quiz();
 				qsm_dashboard_display_popular_theme_section($themes);

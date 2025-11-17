@@ -762,7 +762,7 @@ class QSM_Fields {
 	 * @param mixed $value The current value of the setting
 	 */
 	public static function generate_category_field( $field, $value ) {
-		global $wpdb,$mlwQuizMasterNext;
+		global $wpdb, $mlwQuizMasterNext;
 		$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 		$explode_cat = explode(',', $value);
 		$limit_category_checkbox = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options','limit_category_checkbox');
@@ -1010,7 +1010,7 @@ class QSM_Fields {
 	 * @param mixed $value The current value of the setting
 	 */
 	public static function generate_selectinput_field( $field, $value ) {
-		global $wpdb,$mlwQuizMasterNext;
+		global $wpdb, $mlwQuizMasterNext;
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 
 		$value = ! empty($value) ? maybe_unserialize($value) : array(
@@ -1074,7 +1074,7 @@ class QSM_Fields {
 							<span class="dashicons dashicons-remove"></span>
 						</a>
 					</div>
-				<?php $i++;
+				<?php ++$i;
 			 	}
 				?>
 				</div>

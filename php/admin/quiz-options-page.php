@@ -176,7 +176,7 @@ function qsm_generate_quiz_options() {
 							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
 							<?php
 						} else {
-							$addon_tabs++;
+							++$addon_tabs;
 						}
 					}
 					if ( 0 < $addon_tabs ) {
@@ -302,7 +302,7 @@ function qsm_generate_quiz_options() {
 				"id"           => 'modal-advanced-assessment',
 				"title"        => __('Advanced Assessment, Smarter Results', 'quiz-master-next'),
 				"description"  => __('Unlock Personalized Quiz Experiences with the Advanced Assessment Addon.', 'quiz-master-next'),
-				"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/advance-assessment-chart.png',
+				"chart_image"  => plugins_url('', __DIR__) . '/images/advance-assessment-chart.png',
 				"information"  => __( 'Get all our add-ons at a discounted rate with the QSM Addon Bundle and save up to 95% today! Alternatively, you can also purchase the Advanced Assessment Addon separately.', 'quiz-master-next' ),
 				"buy_btn_text" => __( 'Buy Quiz Advanced Assessment', 'quiz-master-next' ),
 				"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/advanced-assessment', 'quiz-documentation', 'plugin', 'advanced-assessment', 'qsm_plugin_upsell' ),

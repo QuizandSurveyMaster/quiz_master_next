@@ -74,8 +74,6 @@ class QMNQuizManager {
 		add_shortcode( 'qsm_result', array( $this, 'shortcode_display_result' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
-		add_action( 'wp_ajax_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
-		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_nopriv_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 		add_action( 'wp_ajax_qsm_create_quiz_nonce', array( $this, 'qsm_create_quiz_nonce' ) );
 
@@ -1091,7 +1089,7 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && '' !== $options->quiz_animation ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && 1 == $options->enable_pagination_quiz ? true : false;
-		$randomness_order 		= $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
+		$randomness_order       = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
 		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) && is_array( $pages ) && empty( $options->question_per_category ) ) {
 			if ( in_array( 'pages', $randomness_order ) ) {
 				$pages = QMNPluginHelper::qsm_shuffle_assoc( $pages );
@@ -1287,7 +1285,7 @@ class QMNQuizManager {
 				<?php } ?>
 				</section>
 				<?php
-				$pages_count++;
+				++$pages_count;
 			}
 		}
 		if ( count( $pages ) > 1 && 0 == $options->comment_section && "" !== $options->comment_section ) {
@@ -1302,7 +1300,7 @@ class QMNQuizManager {
 			<?php
 		}
 		$is_contact_fields_enabled = array_filter(
-			is_array( $contact_fields ) ? $contact_fields : [],
+			is_array( $contact_fields ) ? $contact_fields : array(),
 			function( $sub ) {
 				return isset( $sub['enable'] ) && 'true' === $sub['enable'];
 			}
@@ -1351,7 +1349,6 @@ class QMNQuizManager {
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php
-
 	}
 
 	/**
@@ -1441,7 +1438,7 @@ class QMNQuizManager {
 					?>
 					<div class="qsm-auto-page-row qsm-question-page qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr($current_page_number); ?>" data-qpid="<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
 					<?php
-					$current_page_number++;
+					++$current_page_number;
 					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 				}
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
@@ -1492,7 +1489,7 @@ class QMNQuizManager {
 				}
 			}
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$pages_count++;
+			++$pages_count;
 		}
 		if ( $enable_pagination_quiz ) {
 			?>
@@ -1553,7 +1550,7 @@ class QMNQuizManager {
 		$section_display       = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_option     = $qmn_quiz_options->pagination;
-		$randomness_order	   = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
+		$randomness_order      = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
 		do_action( 'mlw_qmn_end_quiz_section' );
 		$qsm_d_none = 0 < intval( $pagination_option ) ? 'qsm-d-none' : '';
 		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
@@ -1635,7 +1632,7 @@ class QMNQuizManager {
 	 * @return bool               Whether the contact fields are valid
 	 */
 	public function qsm_validate_contact_fields( $contact_form, $request ) {
-		$errors = [];
+		$errors = array();
 
 		if ( ! is_array( $contact_form ) ) {
 			return;
@@ -1721,14 +1718,29 @@ class QMNQuizManager {
 			'numberposts' => 1,
 		));
 		$post_status = false;
+		$post_obj    = null;
 		if ( ! empty( $post_ids[0] ) ) {
 			$post_status = get_post_status( $post_ids[0] );
+			$post_obj    = get_post( $post_ids[0] );
 		}
 
 		if ( is_null( $options ) || 1 == $options->deleted ) {
 			echo wp_json_encode(
 				array(
 					'display'       => __( 'This quiz is no longer available.', 'quiz-master-next' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
+		// Prevent submissions to password-protected quizzes from visitors who are not quiz editors.
+		if ( $post_obj instanceof WP_Post && post_password_required( $post_obj ) && ! current_user_can( 'edit_qsm_quizzes' ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => __( 'This quiz is password protected and not accepting responses from this endpoint.', 'quiz-master-next' ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -1858,16 +1870,6 @@ class QMNQuizManager {
 		);
 		echo wp_json_encode( $this->submit_results( $options, $data ) );
 		wp_die();
-	}
-
-	/**
-	 * @version 6.3.2
-	 * Show quiz on button click
-	 */
-	public function qsm_get_quiz_to_reload() {
-		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-		echo do_shortcode( '[qsm quiz="' . $quiz_id . '"]' );
-		exit;
 	}
 
 	/**
@@ -2260,7 +2262,7 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		$randomness_order	= $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
+		$randomness_order   = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
 		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) && empty( $options->question_per_category ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
 			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
 			$question_array = explode(",",$question_sql);
@@ -2361,7 +2363,7 @@ class QMNQuizManager {
 								$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
 
 								if ( '' !== trim( $user_answer ) ) {
-									$attempted_question++;
+									++$attempted_question;
 								}
 
 								// If a comment was submitted
@@ -2448,7 +2450,7 @@ class QMNQuizManager {
 							$correct_answer    = $results_array['correct_text'];
 							$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
 							if ( '' !== trim( $user_answer ) ) {
-								$attempted_question++;
+								++$attempted_question;
 							}
 							// If a comment was submitted.
 							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
@@ -2588,7 +2590,6 @@ class QMNQuizManager {
 		$multi_response    = ( '4' === $question_type || '10' === $question_type || '14' === $question_type );
 		$max_value_array   = apply_filters( 'before_max_min_points_conditions', $max_value_array, $question['answers'], $question_type );
 		return self::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required, $multi_response, $question );
-
 	}
 	/**
 	 * evaluates conditions and returns maximum and minimum points for a quiz

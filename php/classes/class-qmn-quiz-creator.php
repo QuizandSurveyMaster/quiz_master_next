@@ -804,7 +804,6 @@ class QMNQuizCreator {
 		} else {
 			return '';
 		}
-
 	}
 
 	/**
