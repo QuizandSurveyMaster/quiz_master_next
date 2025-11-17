@@ -755,7 +755,13 @@ class QSM_New_Pagination_Renderer {
 		// Apply filters to pages
 		$pages = apply_filters( 'qsm_display_pages', $this->pages, $this->options->quiz_id, $this->options );
 		
+		// Check if lazy loading is enabled (default: true)
+		$enable_lazy_loading = apply_filters( 'qsm_enable_lazy_loading', true, $this->options->quiz_id );
+		
+		// Determine how many pages to render initially (first page + first 2 question pages)
 		$is_display_first_page = $this->should_show_first_page();
+		$initial_pages_to_render = $is_display_first_page ? 3 : 2; // If first page exists, render 3 total (first + 2 question pages), else 2
+		
 		$total_pages_count = count( $pages );
 		$pages_count = 1;
 		foreach ( $pages as $key => $page ) {
@@ -767,44 +773,67 @@ class QSM_New_Pagination_Renderer {
 			if ( 1 == $pages_count && ! $is_display_first_page ) {
 				$display_current_page = 'block';
 			}
+			
+			// Determine if this page should be lazy loaded
+			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render );
+			$lazy_load_class = $should_lazy_load ? 'qsm-lazy-load-page' : 'qsm-loaded-page';
+			$question_ids_csv = implode( ',', $page );
 			?>
-			<section class="qsm-page qsm-question-page qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
+			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
 			data-pid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-apid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-page="<?php echo esc_attr( $pages_count ); ?>" 
-			style="display: <?php echo $display_current_page; ?>;">
+			data-lazy-load="<?php echo esc_attr( $should_lazy_load ? '1' : '0' ); ?>"
+			data-question-ids="<?php echo esc_attr( $question_ids_csv ); ?>"
+			data-question-start-number="<?php echo esc_attr( $qmn_total_questions + 1 ); ?>"
+			style="display: <?php echo esc_attr( $display_current_page ); ?>;">
 			<?php
 			
 			// Hook before page
 			do_action( 'qsm_action_before_page', $qpage_id, $qpage );
 			
-			// Render questions in this page
-			foreach ( $page as $question_id ) {
-				if ( ! isset( $this->questions[ $question_id ] ) ) {
-					continue;
-				}
-				
-				$qmn_total_questions += 1;
-				$question = $this->questions[ $question_id ];
-				?>
-				<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
-					<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
-					<?php
-					if ( $this->quiz_options->show_category_on_front ) {
-						$categories = QSM_Questions::get_question_categories( $question_id );
-						if ( ! empty( $categories['category_name'] ) ) {
-							$cat_name = implode( ',', $categories['category_name'] );
-							?>
-							<div class="quiz-cat"><?php echo esc_html( $cat_name ); ?></div>
-							<?php
-						}
+			// Only render questions if not lazy loading, or if within initial page limit
+			if ( ! $should_lazy_load ) {
+				// Render questions in this page
+				foreach ( $page as $question_id ) {
+					if ( ! isset( $this->questions[ $question_id ] ) ) {
+						continue;
 					}
-					echo $this->display_question( $question['question_type_new'], $question_id, $this->options );
-					do_action('qsm_after_question', $question);
+					
+					$qmn_total_questions += 1;
+					$question = $this->questions[ $question_id ];
 					?>
+					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
+						<?php
+						if ( $this->quiz_options->show_category_on_front ) {
+							$categories = QSM_Questions::get_question_categories( $question_id );
+							if ( ! empty( $categories['category_name'] ) ) {
+								$cat_name = implode( ',', $categories['category_name'] );
+								?>
+								<div class="quiz-cat"><?php echo esc_html( $cat_name ); ?></div>
+								<?php
+							}
+						}
+						echo $this->display_question( $question['question_type_new'], $question_id, $this->options );
+						do_action('qsm_after_question', $question);
+						?>
+					</div>
+					<?php
+				}
+			} else {
+				// Lazy load page - add placeholder and loading indicator
+				?>
+				<div class="qsm-lazy-load-placeholder" style="text-align: center; padding: 20px;">
+					<div class="qsm-lazy-load-spinner" style="display: none;">
+						<span class="qsm-spinner"></span>
+						<p><?php esc_html_e( 'Loading questions...', 'quiz-master-next' ); ?></p>
+					</div>
 				</div>
 				<?php
+				// Increment question count for lazy loaded pages
+				$qmn_total_questions += count( $page );
 			}
 			
 			// Show page count if enabled
@@ -1215,6 +1244,7 @@ class QSM_New_Pagination_Renderer {
 			'prevent_reload' => $this->quiz_options->prevent_reload ?? 0,
 			'limit_email_based_submission' => $this->quiz_options->limit_email_based_submission ?? 0,
 			'total_user_tries' => $this->quiz_options->total_user_tries ?? 0,
+			'randomness_order' => $this->randomness_order,
 			
 			// Text messages
 			'quick_result_correct_answer_text' => $correct_answer_text,
@@ -1241,6 +1271,7 @@ class QSM_New_Pagination_Renderer {
 			// System data
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'qsm_quiz_nonce_' . $this->options->quiz_id ),
+			'lazy_load_nonce' => wp_create_nonce( 'qsm_lazy_load_' . $this->options->quiz_id ),
 			
 			// QSM-11 specific enhancements
 			'template_system' => 'qsm-11',

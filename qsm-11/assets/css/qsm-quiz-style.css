@@ -1556,3 +1556,89 @@ body .ui-tooltip.ui-widget-content {
 .qsm-quiz-default-feature-image {
 	width: 100%;
 }
+
+/* ==========================================================================
+   LAZY LOADING STYLES
+   ========================================================================== */
+
+/* Lazy load placeholder and spinner */
+.qsm-lazy-load-placeholder {
+	min-height: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.qsm-lazy-load-spinner {
+	text-align: center;
+}
+
+.qsm-lazy-load-spinner .qsm-spinner {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	border: 4px solid rgba(0, 0, 0, 0.1);
+	border-left-color: #2271b1;
+	border-radius: 50%;
+	animation: spinner-loader 1s linear infinite;
+}
+
+.qsm-lazy-load-spinner p {
+	margin-top: 15px;
+	color: #666;
+	font-size: 14px;
+}
+
+/* Loading state for pages */
+.qsm-page.qsm-loading {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+/* Lazy load error message */
+.qsm-lazy-load-placeholder .qsm-error-message {
+	background: #fff;
+	border-left: 4px solid #d63638;
+	padding: 20px;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	max-width: 500px;
+}
+
+.qsm-lazy-load-placeholder .qsm-error-message strong {
+	display: block;
+	margin-bottom: 10px;
+	color: #d63638;
+}
+
+.qsm-lazy-load-placeholder .qsm-retry-load {
+	background: #2271b1;
+	color: #fff;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background 0.2s ease;
+}
+
+.qsm-lazy-load-placeholder .qsm-retry-load:hover {
+	background: #135e96;
+}
+
+/* Fade in animation for loaded questions */
+@keyframes qsm-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.qsm-loaded-page .quiz_section {
+	animation: qsm-fade-in 0.3s ease forwards;
+}

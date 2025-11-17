@@ -83,6 +83,9 @@ class QSM_New_Renderer {
 		
 		// Hook into main quiz container to add new CSS classes
 		add_filter( 'qsm_quiz_container_classes', array( $this, 'add_quiz_container_classes' ), 10, 2 );
+		
+		// Include AJAX handler for lazy loading
+		require_once QSM_PLUGIN_PATH . 'qsm-11/frontend/class-qsm-ajax-handler.php';
 	}
 
 	/**

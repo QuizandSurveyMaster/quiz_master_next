@@ -719,7 +719,118 @@ var show_result_validation = true;
             let $targetPage = quizData.pages.eq(pageNumber - 1);
             if ($targetPage.length > 0) {
                 $targetPage.show();
+                
+                // Check if this page needs lazy loading
+                if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
+                    this.loadPageQuestions(quizId, $targetPage, pageNumber);
+                }
             }
+        },
+        
+        /**
+         * Load questions for a lazy-loaded page via AJAX
+         */
+        loadPageQuestions: function(quizId, $page, pageNumber) {
+            let self = this;
+            let quizData = this.quizObjects[quizId];
+            if (!quizData) return;
+            
+            // Check if already loading or loaded
+            if ($page.hasClass('qsm-loading') || $page.hasClass('qsm-loaded-page')) {
+                return;
+            }
+            
+            // Mark as loading
+            $page.addClass('qsm-loading');
+            
+            // Show loading spinner
+            $page.find('.qsm-lazy-load-spinner').show();
+            
+            // Get question IDs and other data from page attributes
+            let questionIds = $page.attr('data-question-ids') || '';
+            let questionStartNumber = parseInt($page.attr('data-question-start-number')) || 1;
+            
+            // Prepare AJAX data
+            let ajaxData = {
+                action: 'qsm_load_page_questions',
+                nonce: quizData.data.lazy_load_nonce || quizData.data.nonce || (typeof qmn_ajax_object !== 'undefined' ? qmn_ajax_object.security : ''),
+                quiz_id: quizId,
+                page_number: pageNumber,
+                question_ids: questionIds,
+                question_start_number: questionStartNumber,
+                randomness_order: JSON.stringify(quizData.data.randomness_order || [])
+            };
+            
+            // Trigger before lazy load event
+            $(document).trigger('qsm_before_lazy_load', [quizId, pageNumber, $page]);
+            
+            // Make AJAX request
+            $.ajax({
+                url: quizData.data.ajax_url || (typeof qmn_ajax_object !== 'undefined' ? qmn_ajax_object.ajaxurl : '/wp-admin/admin-ajax.php'),
+                type: 'POST',
+                data: ajaxData,
+                success: function(response) {
+                    if (response.success && response.data.html) {
+                        // Remove placeholder
+                        $page.find('.qsm-lazy-load-placeholder').remove();
+                        
+                        // Insert questions HTML
+                        $page.prepend(response.data.html);
+                        
+                        // Mark page as loaded
+                        $page.removeClass('qsm-lazy-load-page qsm-loading');
+                        $page.addClass('qsm-loaded-page');
+                        $page.attr('data-lazy-load', '0');
+                        
+                        // Re-bind events for newly loaded questions
+                        self.bindAnswerEvents(quizId);
+                        
+                        // Initialize any new file upload fields
+                        self.bindFileUploadEvents(quizId);
+                        
+                        // Trigger after lazy load event
+                        $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
+                        
+                        console.log('QSM: Loaded ' + response.data.question_count + ' questions for page ' + pageNumber);
+                    } else {
+                        self.handleLazyLoadError(quizId, $page, response.data ? response.data.message : 'Unknown error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    self.handleLazyLoadError(quizId, $page, 'AJAX error: ' + error);
+                }
+            });
+        },
+        
+        /**
+         * Handle lazy load errors
+         */
+        handleLazyLoadError: function(quizId, $page, errorMessage) {
+            console.error('QSM Lazy Load Error:', errorMessage);
+            
+            // Hide spinner
+            $page.find('.qsm-lazy-load-spinner').hide();
+            
+            // Show error message
+            let errorHtml = '<div class="qsm-error-message" style="padding: 20px; color: #d63638;">' +
+                '<strong>Error loading questions:</strong><br>' + errorMessage +
+                '<br><button class="qsm-retry-load" style="margin-top: 10px;">Retry</button>' +
+                '</div>';
+            $page.find('.qsm-lazy-load-placeholder').html(errorHtml);
+            
+            // Remove loading class
+            $page.removeClass('qsm-loading');
+            
+            // Bind retry button
+            let self = this;
+            $page.find('.qsm-retry-load').on('click', function() {
+                $page.find('.qsm-error-message').remove();
+                $page.find('.qsm-lazy-load-placeholder').html('<div class="qsm-lazy-load-spinner" style="display: none;"></div>');
+                self.loadPageQuestions(quizId, $page, parseInt($page.attr('data-page')));
+            });
+            
+            // Trigger error event
+            $(document).trigger('qsm_lazy_load_error', [quizId, $page, errorMessage]);
         },
 
         /**
