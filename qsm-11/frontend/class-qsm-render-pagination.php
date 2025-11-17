@@ -47,6 +47,13 @@ class QSM_New_Pagination_Renderer {
 	 * @var array
 	 */
 	private $pages;
+	
+	/**
+	 * Question pages array
+	 *
+	 * @var array
+	 */
+	private $qpages;
 
 	/**
 	 * Quiz settings
@@ -84,27 +91,30 @@ class QSM_New_Pagination_Renderer {
 	private $randomness_order;
 
 	/**
-	 * Constructor
+	 * Shortcode arguments
 	 *
-	 * @param object $options Quiz options
-	 * @param array  $quiz_data Quiz data
+	 * @var array
 	 */
+	private $shortcode_args;
 
 	/**
 	 * Constructor
 	 *
 	 * @param object $options Quiz options
 	 * @param array  $quiz_data Quiz data
+	 * @param array  $shortcode_args Shortcode arguments
 	 */
-	public function __construct( $options, $quiz_data ) {
+	public function __construct( $options, $quiz_data, $shortcode_args ) {
 		global $mlwQuizMasterNext;
 		$this->options 			= $options;
 		$this->quiz_data 		= $quiz_data;
+		$this->shortcode_args 	= $shortcode_args;
 		$this->quiz_settings 	= maybe_unserialize( $options->quiz_settings );
 		$this->quiz_options 	= (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );		
 		$this->quiz_texts 		= (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );		
 		$this->contact_fields 	= maybe_unserialize( $this->quiz_settings['contact_form'] );
 		$this->pages 			= maybe_unserialize( $this->quiz_settings['pages'] );
+		$this->qpages 			= maybe_unserialize( $this->quiz_settings['qpages'] );
 		$this->randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $this->quiz_options->randomness_order );
 		
 		// Ensure quiz_data has required fields
@@ -446,7 +456,7 @@ class QSM_New_Pagination_Renderer {
 	 * Render the complete quiz with new pagination system
 	 */
 	public function render() {
-		global $mlwQuizMasterNext, $qmn_json_data, $qmn_total_questions, $qmn_all_questions_count, $mlw_qmn_section_count, $quiz_answer_random_ids;
+		global $mlwQuizMasterNext, $qmn_allowed_visit, $qmn_json_data, $qmn_total_questions, $qmn_all_questions_count, $mlw_qmn_section_count, $quiz_answer_random_ids;
 		
 		// Initialize global variables
 		$qmn_total_questions = $qmn_all_questions_count = 0;
@@ -476,6 +486,10 @@ class QSM_New_Pagination_Renderer {
 			echo apply_filters( 'qmn_begin_quiz', '', $this->options, $this->quiz_data );
 			$this->options = apply_filters( 'qmn_begin_quiz_options', $this->options, $this->quiz_data );
 			
+			if ( ! $qmn_allowed_visit ) {
+				return;
+			}
+
 			// Setup error messages in qmn_json_data
 			$qmn_json_data['error_messages'] = array(
 				'email_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->email_error_text, "quiz_email_error_text-{$this->options->quiz_id}" ),
@@ -559,7 +573,7 @@ class QSM_New_Pagination_Renderer {
 			echo apply_filters( 'qmn_begin_quiz_form', '', $this->options, $this->quiz_data );
 
 			// Render quiz timer
-			echo $this->render_quiz_timer();
+			// echo $this->render_quiz_timer();
 			
 			// Render first page if enabled
 			if ( $this->should_show_first_page() ) {
@@ -578,6 +592,12 @@ class QSM_New_Pagination_Renderer {
 			// Render last page if enabled
 			if ( $this->should_show_last_page() ) {
 				echo $this->render_last_page();
+			}
+			
+			if ( $this->quiz_options->pagination == 0 ) {
+				do_action( 'qsm_after_all_section' );
+			} else {
+				do_action( 'mlw_qmn_end_quiz_section' );
 			}
 			
 			// Hook after comment section
@@ -608,9 +628,6 @@ class QSM_New_Pagination_Renderer {
 			// Add JavaScript data
 			echo $this->render_javascript_data();
 			
-			// Apply end quiz filter
-			echo apply_filters( 'qmn_end_quiz', '', $this->options, $this->quiz_data );
-			
 			// Hook after rendering to prevent recursion
 			do_action( 'qsm_new_after_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
 			
@@ -634,16 +651,16 @@ class QSM_New_Pagination_Renderer {
 	 */
 	private function render_quiz_timer() {
 		$output = '';
-
+		echo 'timing';
 		// Only render timer if timer limit is set
 		$timer_limit = isset( $this->quiz_options->timer_limit ) ? intval( $this->quiz_options->timer_limit ) : 0;
 		if ( $timer_limit > 0 ) {
-			$output .= '<div class="qsm-timer qsm-quiz-timer-' . esc_attr( $this->options->quiz_id ) . '">';
-			$output .= '<div class="mlw_qmn_timer qsm-timer-display">00:00:00</div>';
-			$output .= '</div>';
+		?>
+		<div class="qsm-timer qsm-quiz-timer-<?php echo esc_attr( $this->options->quiz_id ); ?>">
+			<div class="mlw_qmn_timer qsm-timer-display">00:00:00</div>
+		</div>
+		<?php
 		}
-		
-		return $output;
 	}
 
 	/**
@@ -742,6 +759,10 @@ class QSM_New_Pagination_Renderer {
 		$total_pages_count = count( $pages );
 		$pages_count = 1;
 		foreach ( $pages as $key => $page ) {
+			$qpage        = ( isset( $this->qpages[ $key ] ) ? $this->qpages[ $key ] : array() );
+			$qpage_id     = ( isset( $this->qpage['id'] ) ? $this->qpage['id'] : $key );
+			$page_key     = ( isset( $this->qpage['pagekey'] ) ? $this->qpage['pagekey'] : $key );
+			$hide_prevbtn = ( isset( $this->qpage['hide_prevbtn'] ) ? $this->qpage['hide_prevbtn'] : 0 );
 			$display_current_page = 'none';
 			if ( 1 == $pages_count && ! $is_display_first_page ) {
 				$display_current_page = 'block';
@@ -749,13 +770,14 @@ class QSM_New_Pagination_Renderer {
 			?>
 			<section class="qsm-page qsm-question-page qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
 			data-pid="<?php echo esc_attr( $pages_count ); ?>" 
+			data-apid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-page="<?php echo esc_attr( $pages_count ); ?>" 
 			style="display: <?php echo $display_current_page; ?>;">
 			<?php
 			
 			// Hook before page
-			do_action( 'qsm_new_action_before_page', $pages_count, $page, $this );
+			do_action( 'qsm_action_before_page', $qpage_id, $qpage );
 			
 			// Render questions in this page
 			foreach ( $page as $question_id ) {
@@ -778,7 +800,9 @@ class QSM_New_Pagination_Renderer {
 							<?php
 						}
 					}
-					echo $this->display_question( $question['question_type_new'], $question_id, $this->options ); ?>
+					echo $this->display_question( $question['question_type_new'], $question_id, $this->options );
+					do_action('qsm_after_question', $question);
+					?>
 				</div>
 				<?php
 			}
@@ -838,7 +862,15 @@ class QSM_New_Pagination_Renderer {
 		);
 
 		// Use the new question template function
-		return qsm_get_question_template( $question_type, $args );
+		$question_template = qsm_get_question_template( $question_type, $args );
+		if ( $question_template == false ) {
+			$question_type = array_filter($mlwQuizMasterNext->pluginHelper->question_types, function($item) use ($question_type) {
+				return $item['slug'] == $question_type;
+			});
+			$question_type = array_shift($question_type);
+			call_user_func($question_type['display'], intval($question_id), $question_data['question_name'], $answer_array);
+		}
+		return $question_template;
 	}
 
 	/**
@@ -1005,8 +1037,8 @@ class QSM_New_Pagination_Renderer {
 	private function render_form_start() {
 		$form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 		
-		$output = '<form name="qsmForm' . esc_attr( $this->options->quiz_id ) . '" ';
-		$output .= 'id="qsmForm' . esc_attr( $this->options->quiz_id ) . '" ';
+		$output = '<form name="quizForm' . esc_attr( $this->options->quiz_id ) . '" ';
+		$output .= 'id="quizForm' . esc_attr( $this->options->quiz_id ) . '" ';
 		$output .= 'action="' . esc_url( $form_action ) . '" ';
 		$output .= 'method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">';
 		
@@ -1169,7 +1201,7 @@ class QSM_New_Pagination_Renderer {
 			'progress_bar' => $this->quiz_options->progress_bar ?? 0,
 			'contact_info_location' => $this->quiz_options->contact_info_location ?? 0,
 			'skip_validation_time_expire' => $this->quiz_options->skip_validation_time_expire ?? 0,
-			'timer_limit' => intval( $this->quiz_options->timer_limit ?? 0 ),
+			'timer_limit' => intval( $this->options->timer_limit ?? 0 ),
 			'disable_scroll_next_previous_click' => $this->quiz_options->disable_scroll_next_previous_click ?? 0,
 			'disable_scroll_on_result' => $this->quiz_options->disable_scroll_on_result ?? 0,
 			'disable_first_page' => $this->quiz_options->disable_first_page ?? 0,
@@ -1197,7 +1229,7 @@ class QSM_New_Pagination_Renderer {
 			'is_logged_in' => is_user_logged_in(),
 			
 			// Pages data
-			'qpages' => $this->get_pages_data(),
+			'qpages' => $this->get_quiz_properties('qpages'),
 			'first_page' => $this->should_show_first_page(),
 			
 			// Questions data
@@ -1219,7 +1251,7 @@ class QSM_New_Pagination_Renderer {
 		);
 		
 		// Apply filters to allow customization (matching legacy filter)
-		$quiz_data = apply_filters( 'qmn_json_data', $quiz_data, $this->options, $this->quiz_data );
+		$quiz_data = apply_filters( 'qmn_json_data', $quiz_data, $this->options, $this->quiz_data, $this->shortcode_args );
 		$correct_answer_logic = ! empty( $this->quiz_options->correct_answer_logic ) ? $this->quiz_options->correct_answer_logic : '';
 		$encryption['correct_answer_logic'] = $correct_answer_logic;
 		$question_ids = array();
@@ -1347,6 +1379,8 @@ class QSM_New_Pagination_Renderer {
 					return $this->quiz_data;
 				case 'pages':
 					return $this->pages;
+				case 'qpages':
+					return $this->qpages;
 				case 'questions':
 					return $this->questions;
 				default:

@@ -23,7 +23,7 @@ $page_class = implode( ' ', $page_classes );
 do_action( 'qsm_before_first_page', $quiz_id, $args );
 ?>
 
-<section class="<?php echo esc_attr( $page_class ); ?>" data-pid="0" data-qid="0" data-page="0" data-page-type="first">
+<section class="<?php echo esc_attr( $page_class ); ?>" >
 	<div class="quiz_section quiz_begin">
 		
 		<?php do_action( 'qsm_before_first_page_content', $quiz_id, $args ); ?>

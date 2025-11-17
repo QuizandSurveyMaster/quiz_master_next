@@ -174,14 +174,18 @@ function qsm_get_question_type_templates() {
  */
 function qsm_get_question_template( $question_type, $args = array() ) {
 	$question_types = qsm_get_question_type_templates();
-	$template_name = isset( $question_types[ $question_type ] ) ? $question_types[ $question_type ] : 'multiple-choice';
+	$question_template_name = isset( $question_types[ $question_type ] ) ? $question_types[ $question_type ] : '';
+	
+	if ( '' == $question_template_name ) {
+		return false;
+	}
 	
 	// Try to load the specific question template
-	$template_slug = 'questions/' . $template_name;
+	$template_slug = 'questions/' . $question_template_name;
 	$located = qsm_new_locate_template( $template_slug . '.php' );
 	
 	// Fallback to multiple-choice if template not found
-	if ( ! $located && $template_name !== 'multiple-choice' ) {
+	if ( ! $located && $question_template_name !== 'multiple-choice' ) {
 		$template_slug = 'questions/multiple-choice';
 		$located = qsm_new_locate_template( $template_slug . '.php' );
 	}
@@ -190,35 +194,6 @@ function qsm_get_question_template( $question_type, $args = array() ) {
 	$template_slug = apply_filters( 'qsm_question_template_slug', $template_slug, $question_type, $args );
 	
 	return qsm_new_get_template_part( $template_slug, $args );
-}
-
-/**
- * Get template directory path
- *
- * @return string Template directory path
- */
-function qsm_get_template_directory() {
-	return QSM_PLUGIN_PATH . 'qsm-11/templates/';
-}
-
-/**
- * Get theme template directory path
- *
- * @return string Theme template directory path
- */
-function qsm_get_theme_template_directory() {
-	return get_stylesheet_directory() . '/qsm/templates/';
-}
-
-/**
- * Check if template exists in theme
- *
- * @param string $template_name Template name
- * @return bool True if template exists in theme
- */
-function qsm_template_exists_in_theme( $template_name ) {
-	$theme_template = qsm_get_theme_template_directory() . $template_name;
-	return file_exists( $theme_template );
 }
 
 /**

@@ -31,17 +31,17 @@
 
         initTimer: function(quizId, $form) {
             var data = this.getQuizData(quizId);
-            
+            console.log('Timer data for quiz ' + quizId + ':', data);
             if (!data.timer_limit || data.timer_limit <= 0) {
                 console.log('Timer not initialized - no timer limit set');
                 return;
             }
 
-            var $timer = $form.find('.qsm-timer, .mlw_qmn_timer');
-            if (!$timer.length) {
-                console.log('Timer not initialized - no timer element found');
-                return;
-            }
+            var $timer = $form.find('.mlw_qmn_timer');
+            // if (!$timer.length) {
+            //     console.log('Timer not initialized - no timer element found');
+            //     return;
+            // }
             
             var totalTime = data.timer_limit * 60;
             var consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId)) || 1;
@@ -49,7 +49,7 @@
             
             this.quizObjects[quizId] = {
                 form: $form,
-                timer: $timer,
+                timer: $timer.length ? $timer : null,
                 totalTime: totalTime,
                 remainingTime: remainingTime,
                 consumedTime: consumedTime,
@@ -66,8 +66,11 @@
 
             // Update qmn_quiz_data for legacy compatibility
             this.updateLegacyQuizData(quizId);
+            $form.find(".hiddentimer").html(remainingTime);
             
-            $timer.show();
+            if ($timer && $timer.length) {
+                $timer.show();
+            }
             this.updateDisplay(quizId);
             
             // Auto-start conditions matching legacy behavior
@@ -103,7 +106,7 @@
             });
             
             // Legacy events compatibility
-            $(document).on('qsm_activate_time_before qsm_activate_time_after', function(e, quizId) {
+            $(document).on('qsm_activate_time_before qsm_activate_time_after', function(e, quizId, qmn_quiz_data) {
                 if (e.type === 'qsm_activate_time_before') {
                     self.start(quizId);
                 }
@@ -139,7 +142,7 @@
             $('.qsm-quiz-container-' + quizId).find('.stoptimer-p').show();
             
             // Trigger legacy events
-            $(document).trigger('qsm_activate_time_after', [quizId, this.getQuizData(quizId)]);
+            $(document).trigger('qsm_activate_time_after', [quizId, window.qmn_quiz_data]);
         },
 
         stop: function(quizId) {
@@ -173,7 +176,7 @@
             this.updateDisplay(quizId);
             
             // Add visual indicators
-            currentQuiz.timer.addClass('qsm-timer-expired qsm-timer--danger');
+            currentQuiz.timer?.addClass('qsm-timer-expired qsm-timer--danger');
             
             // Disable form inputs (matching legacy behavior)
             var $quizForm = currentQuiz.form;
@@ -208,7 +211,7 @@
             
             // Trigger events
             $(document).trigger('qsm_timer_expired', [quizId, currentQuiz]);
-            $(document).trigger('qsm_timer_ended', [quizId, this.getQuizData(quizId), {
+            $(document).trigger('qsm_timer_ended', [quizId, window.qmn_quiz_data, {
                 qmn_count_upward_status: false
             }]);
         },
@@ -241,7 +244,7 @@
             
             // Trigger events
             $(document).trigger('qsm_timer_tick', [quizId, currentQuiz.remainingTime, currentQuiz.consumedTime]);
-            $(document).trigger('qmn_timer_consumed_seconds', [quizId, this.getQuizData(quizId), {
+            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, {
                 qmn_count_upward_status: false
             }]);
             $(document).trigger('load_timer_faces', [quizId, currentQuiz.remainingTime, currentQuiz.totalTime, this.secondsToTimer(currentQuiz.remainingTime)]);
@@ -257,13 +260,10 @@
             
             var display = this.secondsToTimer(currentQuiz.remainingTime);
             
-            var $display = currentQuiz.timer.find('.qsm-timer-display');
-            if ($display.length) {
-                $display.text(display);
-            } else {
+            if (currentQuiz.timer) {
                 currentQuiz.timer.text(display);
             }
-            
+
             // Update browser tab title
             if (currentQuiz.remainingTime > 0) {
                 document.title = display + ' - ' + this.originalTitle;
@@ -300,7 +300,7 @@
             // Check for 10% remaining warning
             if (percentRemaining <= 10 && percentRemaining > 0 && !currentQuiz.warnings.ten) {
                 currentQuiz.warnings.ten = true;
-                currentQuiz.timer.addClass('qsm-timer--warning');
+                currentQuiz.timer?.addClass('qsm-timer--warning');
                 
                 // Trigger warning event
                 $(document).trigger('qsm_timer_warning', [quizId, currentQuiz.remainingTime, percentRemaining]);
@@ -359,8 +359,7 @@
             document.title = this.originalTitle;
             
             // Trigger events
-            $(document).trigger('qsm_timer_ended', [quizId]);
-            $(document).trigger('qsm_end_timer', [quizId, this.getQuizData(quizId)]);
+            $(document).trigger('qsm_end_timer', [quizId, window.qmn_quiz_data]);
         },
 
         // Public API methods for external access

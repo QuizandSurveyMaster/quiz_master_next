@@ -255,6 +255,9 @@ class QSM_New_Renderer {
 			return '<p>Invalid quiz ID</p>';
 		}
 
+		wp_register_style( 'qmn_quiz_common_style', QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css', array(), $mlwQuizMasterNext->version );
+		wp_enqueue_style( 'qmn_quiz_common_style' );
+
 		// Check if quiz is setup properly (matching legacy flow)
 		$has_proper_quiz = $mlwQuizMasterNext->pluginHelper->has_proper_quiz( $quiz_id );
 		if ( false === $has_proper_quiz['res'] ) {
@@ -273,7 +276,7 @@ class QSM_New_Renderer {
 		// Setup global variables for compatibility
 		global $qmn_allowed_visit, $qmn_json_data, $mlw_qmn_quiz;
 		$return_display = '';
-				
+
 		// Load theme functions if exists
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz_id );
 		$folder_name = QSM_THEME_PATH . $saved_quiz_theme . '/';
@@ -314,7 +317,7 @@ class QSM_New_Renderer {
 			);
 
 			// Create renderer instance
-			$renderer = new QSM_New_Pagination_Renderer( $qmn_quiz_options, $quiz_data );
+			$renderer = new QSM_New_Pagination_Renderer( $qmn_quiz_options, $quiz_data, $shortcode_args );
 			$auto_pagination_class = $qmn_quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 			$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
 			$randomness_class = ! empty( $randomness_order ) ? 'random' : '';
@@ -328,6 +331,8 @@ class QSM_New_Renderer {
 			?>
 			</div>
 			<?php
+			// Apply end quiz filter
+			echo apply_filters( 'qmn_end_quiz', '', $qmn_quiz_options, $quiz_data );
 		} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 			// Display results - delegate to legacy system
 			// This is handled by the main QMN quiz manager

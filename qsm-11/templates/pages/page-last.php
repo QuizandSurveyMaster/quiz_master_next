@@ -25,7 +25,7 @@ do_action( 'qsm_before_last_page', $quiz_id, $args );
 ?>
 
 <section class="<?php echo esc_attr( $page_class ); ?>" data-page="<?php echo ++$last_page_count; ?>" data-page-type="last" style="display: none;">
-	<div class="quiz_section quiz_end">
+	<div class="quiz_section quiz_end empty_quiz_end">
 	
 	<?php do_action( 'qsm_before_last_page_content', $quiz_id, $args ); ?>
 	
@@ -45,10 +45,6 @@ do_action( 'qsm_before_last_page', $quiz_id, $args );
 	
 	<?php do_action( 'qsm_after_last_page_content', $quiz_id, $args ); ?>
 	
-	<?php
-	// Legacy hook for backward compatibility
-	do_action( 'mlw_qmn_end_quiz_section' );
-	?>
 </section>
 
 <?php
