@@ -834,7 +834,7 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question {
     color: rgb(52, 152, 219);
     white-space: nowrap;
     min-width: 40px;
-    text-align: right;
+    text-align: center;
 }
 
 /* Progress Bar Responsive Design */

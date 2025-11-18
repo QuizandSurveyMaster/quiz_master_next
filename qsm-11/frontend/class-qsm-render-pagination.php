@@ -221,7 +221,7 @@ class QSM_New_Pagination_Renderer {
 		);
 		
 		// Get question IDs for further processing
-		$question_ids = array_keys( $questions );
+		$question_ids = array_merge( ...array_values( $this->pages ) );
 		
 		// STEP 3: Apply category-based filtering
 		$exploded_arr = array();
@@ -382,6 +382,7 @@ class QSM_New_Pagination_Renderer {
 		
 		// STEP 4: Apply randomness_order at the end
 		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
+			echo 'inside';
 			// Check if we should use cookie to maintain order
 			if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) 
 				&& empty( $this->quiz_options->question_per_category ) 
@@ -415,6 +416,7 @@ class QSM_New_Pagination_Renderer {
 		if ( ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) )
 			&& ! empty( $questions )
 			&& ! isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) ) {
+			echo 'inside1';
 			
 			$question_sql = implode( ',', array_unique( array_keys( $questions ) ) );
 			?>
@@ -651,7 +653,7 @@ class QSM_New_Pagination_Renderer {
 	 */
 	private function render_quiz_timer() {
 		$output = '';
-		echo 'timing';
+
 		// Only render timer if timer limit is set
 		$timer_limit = isset( $this->quiz_options->timer_limit ) ? intval( $this->quiz_options->timer_limit ) : 0;
 		if ( $timer_limit > 0 ) {
@@ -673,8 +675,11 @@ class QSM_New_Pagination_Renderer {
 		$message_before = isset( $this->options->message_before ) ? $this->options->message_before : '';
 		$contact_info_location = isset( $this->options->contact_info_location ) ? intval( $this->options->contact_info_location ) : 0;
 		
+		// Show first page if:
+		// 1. First page is not disabled
+		// 2. There's a message_before OR contact fields are set to show on first page
+		// Note: Removed the page count check - welcome page should show regardless of question page count
 		return ( 
-			count( $this->pages ) > 1 && 
 			1 !== $disable_first_page && 
 			( ! empty( $message_before ) || ( 0 == $contact_info_location && $this->contact_fields ) )
 		);
@@ -770,6 +775,9 @@ class QSM_New_Pagination_Renderer {
 			$page_key     = ( isset( $this->qpage['pagekey'] ) ? $this->qpage['pagekey'] : $key );
 			$hide_prevbtn = ( isset( $this->qpage['hide_prevbtn'] ) ? $this->qpage['hide_prevbtn'] : 0 );
 			$display_current_page = 'none';
+			// Show first question page if:
+			// 1. It's the first page AND there's no welcome page
+			// 2. OR it's page 2 AND there IS a welcome page (handled by JS)
 			if ( 1 == $pages_count && ! $is_display_first_page ) {
 				$display_current_page = 'block';
 			}

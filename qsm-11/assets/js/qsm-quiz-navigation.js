@@ -687,11 +687,6 @@ var show_result_validation = true;
             // Update UI components
             this.updateNavigationButtons(quizId);
             this.updatePageCounter(quizId);
-            
-            // Update progress bar if available
-            if (window.QSMPagination && window.QSMPagination.ProgressBar) {
-                window.QSMPagination.ProgressBar.updateProgress(quizId, pageNumber);
-            }
 
             // Scroll to top of quiz
             if (quizData.data.disable_scroll_next_previous_click != 1) {
@@ -724,7 +719,50 @@ var show_result_validation = true;
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
                     this.loadPageQuestions(quizId, $targetPage, pageNumber);
                 }
+                
+                // Preemptively load next pages (load 2 pages ahead)
+                this.preloadNextPages(quizId, pageNumber);
             }
+        },
+        
+        /**
+         * Preload next pages (load 2 pages ahead of current page)
+         * This ensures smooth navigation by loading pages before user reaches them
+         */
+        preloadNextPages: function(quizId, currentPage) {
+            let self = this;
+            let quizData = this.quizObjects[quizId];
+            if (!quizData) return;
+            
+            // Calculate which pages to preload (next 2 pages)
+            let pagesToPreload = [];
+            
+            // Preload page currentPage + 1 and currentPage + 2
+            for (let i = 1; i <= 2; i++) {
+                let nextPageNum = currentPage + i;
+                if (nextPageNum <= quizData.totalPages) {
+                    pagesToPreload.push(nextPageNum);
+                }
+            }
+            
+            // Load each page that needs preloading
+            pagesToPreload.forEach(function(pageNum) {
+                let $nextPage = quizData.pages.eq(pageNum - 1);
+                
+                // Only preload if:
+                // 1. Page exists
+                // 2. Page is marked for lazy loading
+                // 3. Page hasn't been loaded yet
+                // 4. Page is not currently being loaded
+                if ($nextPage.length > 0 && 
+                    $nextPage.hasClass('qsm-lazy-load-page') && 
+                    $nextPage.attr('data-lazy-load') === '1' &&
+                    !$nextPage.hasClass('qsm-loading')) {
+                    
+                    console.log('QSM: Preloading page ' + pageNum + ' (user currently on page ' + currentPage + ')');
+                    self.loadPageQuestions(quizId, $nextPage, pageNum);
+                }
+            });
         },
         
         /**
@@ -791,7 +829,7 @@ var show_result_validation = true;
                         // Trigger after lazy load event
                         $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
                         
-                        console.log('QSM: Loaded ' + response.data.question_count + ' questions for page ' + pageNumber);
+                        console.log('QSM: Successfully loaded ' + response.data.question_count + ' questions for page ' + pageNumber);
                     } else {
                         self.handleLazyLoadError(quizId, $page, response.data ? response.data.message : 'Unknown error');
                     }
@@ -869,11 +907,11 @@ var show_result_validation = true;
             // Check minimum page based on first page setting
             let minPage;
             if (quizData.hasFirstPage) {
-                // First page enabled: Can go back to page 1 (start page)
-                minPage = 1;
-            } else {
-                // First page disabled: Can't go back past page 2 (first question)
+                // First page enabled: Can't go back past page 2 (first question page, not welcome page)
                 minPage = 2;
+            } else {
+                // First page disabled: Can't go back past page 1 (first question page)
+                minPage = 1;
             }
             
             if (quizData.currentPage < minPage) return;
@@ -903,15 +941,19 @@ var show_result_validation = true;
             
             // Simple button visibility logic
             if (showStartButton) {
-                // First page with start button
+                // First page (welcome page) with start button
                 $startBtn.show();
                 $previousBtn.hide();
                 $nextBtn.hide();
                 $submitBtn.hide();
             } else {
-                // Regular navigation pages
+                // Regular navigation pages (question pages)
                 $startBtn.hide();
                 
+                // Previous button logic:
+                // - Hide on first page when no welcome page
+                // - Hide on page 2 when there IS a welcome page (can't go back from first question page to welcome)
+                // - Show otherwise
                 if (currentPage < 2) {
                     $previousBtn.hide();
                 } else {
@@ -938,7 +980,7 @@ var show_result_validation = true;
 
             let $counter = quizData.pagination.find(this.config.selectors.pageCounter);
             if ($counter.length) {
-                // Don't show page counter for start page
+                // Don't show page counter for start page (welcome page)
                 if (quizData.currentPage === 1 && quizData.hasFirstPage) {
                     $counter.hide();
                 } else {

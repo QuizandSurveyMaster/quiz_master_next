@@ -75,8 +75,12 @@ class QSM_New_Renderer {
 		// Always enqueue scripts when new rendering is enabled
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
-		add_shortcode( 'mlw_quizmaster', array( $this, 'render_quiz_shortcode' ) );
-		add_shortcode( 'qsm', array( $this, 'render_quiz_shortcode' ) );
+		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
+		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		if ( 1 === intval( $enable_new_render ) ) {
+			add_shortcode( 'mlw_quizmaster', array( $this, 'render_quiz_shortcode' ) );
+			add_shortcode( 'qsm', array( $this, 'render_quiz_shortcode' ) );
+		}
 		
 		// Add admin option to enable new rendering
 		add_filter( 'qsm_quiz_options', array( $this, 'add_new_rendering_option' ) );

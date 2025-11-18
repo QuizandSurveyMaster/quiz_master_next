@@ -3,8 +3,6 @@
  * @package QSM
  */
 (function($) {
-    'use strict';
-    
     window.QSMPagination = window.QSMPagination || {};
     
     QSMPagination.ProgressBar = {
@@ -71,8 +69,8 @@
         },
 
         updateProgress: function(quizId, currentPage) {
-            var instance = this.quizObjects[quizId];
-            if (!instance) {
+            var currentQuiz = this.quizObjects[quizId];
+            if (!currentQuiz) {
                 return;
             }
 
@@ -81,27 +79,24 @@
                 var navInstance = window.QSMPagination.Navigation.quizObjects[quizId];
                 if (navInstance) {
                     currentPage = navInstance.currentPage;
-                    // Also sync total pages if navigation has more accurate count
-                    if (navInstance.totalPages && navInstance.totalPages !== instance.totalPages) {
-                        instance.totalPages = navInstance.totalPages;
-                    }
                 }
             }
 
+            // Fallback to instance currentPage if still undefined
             if (typeof currentPage === 'undefined') {
-                currentPage = instance.currentPage;
+                currentPage = currentQuiz.currentPage;
             }
 
-            instance.currentPage = currentPage;
+            currentQuiz.currentPage = currentPage;
             
             // Calculate progress based on question pages only (exclude first page)
             var effectiveCurrentPage = 0;
-            var effectiveTotalPages = instance.questionPages;
+            var effectiveTotalPages = currentQuiz.questionPages;
             
-            if (instance.hasFirstPage) {
+            if (currentQuiz.hasFirstPage) {
                 // First page exists - only count progress from page 2 onwards
-                if (currentPage === 1) {
-                    // On start page - 0% progress
+                if (currentPage == 1) {
+                    // On start page (welcome page) - 0% progress
                     effectiveCurrentPage = 0;
                 } else {
                     // On question pages - calculate progress
@@ -112,12 +107,19 @@
                 effectiveCurrentPage = currentPage;
             }
             
-            var progress = Math.max(0, Math.min(100, (effectiveCurrentPage / effectiveTotalPages) * 100));
+            // Safeguard against division by zero and ensure valid percentage
+            var progress = 0;
+            if (effectiveTotalPages > 0) {
+                progress = Math.max(0, Math.min(100, (effectiveCurrentPage / effectiveTotalPages) * 100));
+            }
             
+            // Ensure progress bar stays visible during all page transitions
+            // This is critical for single-page quizzes where bar might hide on navigation
+            currentQuiz.$bar.show();
             
-            instance.$fill.animate({ width: progress + '%' }, 300);
-            if (instance.$text.length) {
-                instance.$text.text(Math.round(progress) + '%');
+            currentQuiz.$fill.animate({ width: progress + '%' }, 300);
+            if (currentQuiz.$text.length) {
+                currentQuiz.$text.text(Math.round(progress) + '%');
             }
         },
     };
