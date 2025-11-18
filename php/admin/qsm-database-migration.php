@@ -72,7 +72,6 @@ Class QSM_Database_Migration {
             user_answer LONGTEXT,
             correct TINYINT(1),
             points FLOAT,
-            created_at DATETIME,
             correct_answer LONGTEXT,
             PRIMARY KEY (id),
             KEY result_id (result_id),
