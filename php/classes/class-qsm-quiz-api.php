@@ -87,8 +87,7 @@ class QSMQuizApi {
 		$qsm_api_settings = (array) get_option( 'qmn-settings' );
 		if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
 			$response['success'] = true;
-		} else {
-			if ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
+		} elseif ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
 				$response['message'] = __('The API key is not configured.', 'quiz-master-next');
 			} elseif ( ! $api_key ) {
 				$response['message'] = __('Please provide an API key.', 'quiz-master-next');
@@ -96,7 +95,6 @@ class QSMQuizApi {
 				$response['message'] = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
 			} elseif ( ! isset($qsm_api_settings[ $type ]) || "" == $qsm_api_settings[ $type ] ) {
 				$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
-			}
 		}
 
 		return $response;
@@ -166,7 +164,7 @@ class QSMQuizApi {
 				$results = $wpdb->get_results($query .= " ORDER BY result_id {$order} LIMIT {$limit}");
 
 				if ( $results ) {
-					$data = [];
+					$data = array();
 					foreach ( $results as $key => $value ) {
 						$value->quiz_results = maybe_unserialize($value->quiz_results);
 						$data[] = $value;
@@ -245,7 +243,7 @@ class QSMQuizApi {
 				$results = $wpdb->get_results($query .= " LIMIT {$limit}");
 				if ( $results ) {
 
-					$data = [];
+					$data = array();
 					foreach ( $results as $key => $value ) {
 						$formated_array = $this->qsm_convert_to_api_format($value);
 						$data[] = $formated_array;
@@ -284,7 +282,7 @@ class QSMQuizApi {
 
 	public function qsm_convert_to_api_format( $inputObject ) {
 
-		$apiFormat = [];
+		$apiFormat = array();
 
 		foreach ( $inputObject as $key => $value ) {
 			if ( 'message_after' === $key || 'user_email_template' === $key || 'quiz_settings' === $key ) {
@@ -356,7 +354,7 @@ class QSMQuizApi {
 					);
 				}
 			} else {
-				$data = [];
+				$data = array();
 				global $wpdb;
 				$question_name = $request->get_param('question_name' );
 				$quiz_id = $request->get_param('quizId' );
@@ -517,5 +515,4 @@ class QSMQuizApi {
 
 		return rest_ensure_response($response);
 	}
-
 }

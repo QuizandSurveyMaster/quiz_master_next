@@ -6,24 +6,24 @@ add_action('wp_ajax_qsm_activate_plugin', 'qsm_activate_plugin_ajax_activate_plu
 function qsm_activate_plugin_ajax_activate_plugin() {
     // Check if the user has permission to activate plugins
     if ( ! current_user_can('activate_plugins') ) {
-        wp_send_json_error([ 'message' => 'Permission denied.' ]);
+        wp_send_json_error(array( 'message' => 'Permission denied.' ));
         wp_die();
     }
     check_ajax_referer('qsm_installer_nonce', 'nonce');
     if ( empty($_POST['plugin_path']) ) {
-        wp_send_json_error([ 'message' => 'No plugin path provided.' ]);
+        wp_send_json_error(array( 'message' => 'No plugin path provided.' ));
         wp_die();
     }
     $plugin_path = isset($_POST['plugin_path']) ? sanitize_text_field(wp_unslash( $_POST['plugin_path'] ) ) : "";
     $result = activate_plugin($plugin_path);
-	wp_send_json_success([ 'message' => 'Plugin activated successfully.' ]);
+	wp_send_json_success(array( 'message' => 'Plugin activated successfully.' ));
     wp_die();
 }
 
 function qsm_activate_plugin_ajax_handler() {
     // Check if the user has permission to activate plugins
     if ( ! current_user_can('activate_plugins') ) {
-        wp_send_json_error([ 'message' => 'Permission denied.' ]);
+        wp_send_json_error(array( 'message' => 'Permission denied.' ));
         wp_die();
     }
 
@@ -38,9 +38,9 @@ function qsm_activate_plugin_ajax_handler() {
 
     $all_plugins = get_plugins();
 	if ( isset($all_plugins[ $plugin_path ]) ) {
-		wp_send_json_success([ 'version' => esc_html__('Version: ', 'quiz-master-next') . $all_plugins[ $plugin_path ]['Version'] ]);
+		wp_send_json_success(array( 'version' => esc_html__('Version: ', 'quiz-master-next') . $all_plugins[ $plugin_path ]['Version'] ));
 	} else {
-		wp_send_json_error([ 'message' => 'Plugin not found.' ]);
+		wp_send_json_error(array( 'message' => 'Plugin not found.' ));
 	}
     wp_die();
 }
@@ -59,7 +59,7 @@ function qsm_get_activated_themes_ajax() {
 	global $wpdb;
 	$query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}mlw_themes WHERE theme = %s", $theme_slug);
 	$id = $wpdb->get_var($query);
-	wp_send_json_success([ 'id' => $id ]);
+	wp_send_json_success(array( 'id' => $id ));
     wp_die();
 }
 
@@ -74,7 +74,7 @@ function qsm_get_filtered_dashboard_themes() {
 	}
 
 	// Filter active themes to ensure their directories exist
-	$filtered_active_themes = [];
+	$filtered_active_themes = array();
 	if ( ! empty($active_themes) ) {
 		foreach ( $active_themes as $theme ) {
 			$theme_dir = WP_PLUGIN_DIR . '/' . $theme['theme'];
@@ -85,7 +85,7 @@ function qsm_get_filtered_dashboard_themes() {
 	}
 
 	// Merge installed themes and filtered active themes
-	$merged_themes = [];
+	$merged_themes = array();
 	foreach ( array_merge($installed_themes, $filtered_active_themes) as $theme ) {
 		$key = $theme['theme'];
 		if ( ! isset($merged_themes[ $key ]) ) {
@@ -176,12 +176,12 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 						foreach ( $all_addons as $addon ) {
 							if ( $addon['id'] == $theme_value['id'] ) {
 								// Merge the additional keys into the theme array
-								$theme_value = array_merge($theme_value, [
+								$theme_value = array_merge($theme_value, array(
 									'path'         => $addon['path'],
 									'icon'         => $addon['icon'],
 									'settings_tab' => $addon['settings_tab'],
 									'option'       => $addon['option'],
-								]);
+								));
 								break; // Stop looping once a match is found
 							}
 						}
@@ -439,28 +439,28 @@ function qsm_create_quiz_page_callback() {
 							$all_addons = $qsm_admin_dd['all_addons'];
 							$all_themes = $qsm_admin_dd['themes'];
 
-							$dashboard_pages = [
-								[
+							$dashboard_pages = array(
+								array(
 									'page_no'  => 1,
 									'callback' => 'qsm_dashboard_display_quizoptions_section',
-									'params'   => [ $quizoptions_boxes ],
-								],
-								[
+									'params'   => array( $quizoptions_boxes ),
+								),
+								array(
 									'page_no'  => 2,
 									'callback' => 'qsm_dashboard_display_theme_section',
-									'params'   => [ $all_themes, $installer_option, $invalid_and_expired, $all_addons, $installer_activated, $installer_script ],
-								],
-								[
+									'params'   => array( $all_themes, $installer_option, $invalid_and_expired, $all_addons, $installer_activated, $installer_script ),
+								),
+								array(
 									'page_no'  => 3,
 									'callback' => 'qsm_dashboard_display_addons_section',
-									'params'   => [ $all_addons, $installer_option, $invalid_and_expired, $installer_activated, $installer_script ],
-								],
-								[
+									'params'   => array( $all_addons, $installer_option, $invalid_and_expired, $installer_activated, $installer_script ),
+								),
+								array(
 									'page_no'  => 4,
 									'callback' => 'qsm_dashboard_display_quizform_section',
-									'params'   => [],
-								],
-							];
+									'params'   => array(),
+								),
+							);
 
 							foreach ( $dashboard_pages as $page ) {
 								echo '<div class="qsm-dashboard-container-pages" data-page-no="' . esc_attr($page['page_no']) . '" style="display: none;">';
@@ -490,5 +490,4 @@ function qsm_create_quiz_page_callback() {
 		</div><!-- qsm-new-quiz-wrapper -->
 	</div>
 	<?php
-
 }
