@@ -2820,7 +2820,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
     border-left-color: #2271B1;
     border-left-width: 6px;
     display: flex;
-    align-items: center;
+    align-items: end;
     padding: 10px;
     gap: 20px;
 }

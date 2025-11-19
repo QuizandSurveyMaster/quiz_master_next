@@ -44,7 +44,9 @@ class QSM_Fields {
 							// Handle array values for randomness_order field (multiple checkboxes)
 							if ( 'randomness_order' === $field['id'] && isset( $_POST[ $field['id'] ] ) && is_array( $_POST[ $field['id'] ] ) ) {
 								$sanitized_array = array();
-								foreach ( $_POST[ $field['id'] ] as $checkbox_value ) {
+								$form_settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST[ $field['id'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								foreach ( $form_settings_array as $checkbox_value ) {
+									// Sanitized each fields in loop
 									$sanitized_array[] = sanitize_text_field( wp_unslash( $checkbox_value ) );
 								}
 								$sanitized_value = maybe_serialize( $sanitized_array );
