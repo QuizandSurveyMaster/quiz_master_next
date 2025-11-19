@@ -53,6 +53,9 @@ var qsmTimerInterval = [];
 						QSM.initTimer(quizID);
 						quizType = 'timer';
 					} else if (jQuery('.qsm-quiz-container-' + quizID + ' #timer').val() == 0) {
+						if (qsmTimerInterval[quizID]) {
+							clearInterval(qsmTimerInterval[quizID]);
+						}
 						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
@@ -114,6 +117,9 @@ var qsmTimerInterval = [];
 			var timer_ms = jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
+				if (qsmTimerInterval[quizID]) {
+					clearInterval(qsmTimerInterval[quizID]);
+				}
 				qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 				jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
@@ -674,6 +680,9 @@ function qmnDoInit() {
 			var timer_ms = jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				jQuery('.qsm-quiz-container-' + _quiz_id + ' #timer').val(0);
+				if (qsmTimerInterval[_quiz_id]) {
+					clearInterval(qsmTimerInterval[_quiz_id]);
+				}
 				qsmTimerInterval[_quiz_id] = setInterval(function () { qmnTimeTakenTimer(_quiz_id) }, 1000);
 				jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
