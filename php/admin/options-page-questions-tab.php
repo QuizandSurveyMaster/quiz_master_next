@@ -30,7 +30,7 @@ add_action( 'init', 'qsm_settings_questions_tab', 5 );
  */
 function qsm_options_questions_tab_content() {
 	global $wpdb, $mlwQuizMasterNext;
-	$quiz_data           = $wpdb->get_results( "SELECT quiz_id, quiz_name	FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC" );
+	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name	FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC' );
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
@@ -66,26 +66,26 @@ function qsm_options_questions_tab_content() {
 			'questions'    => array(),
 		);
 		foreach ( $pages as $k => $val ) {
-			$qpage                   = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
-			$qpage['id']             = $k + 1;
-			$qpage['pagekey']        = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
-			$qpage['hide_prevbtn']   = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
+			$qpage                 = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
+			$qpage['id']           = $k + 1;
+			$qpage['pagekey']      = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
+			$qpage['hide_prevbtn'] = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
 			$pages[ $k ]           = array_values( $val );
-			$qpage['questions']      = array_values( $val );
-			$qpages[]                = $qpage;
+			$qpage['questions']    = array_values( $val );
+			$qpages[]              = $qpage;
 		}
 	} else {
-		$defaultQPage    = array(
+		$defaultQPage = array(
 			'id'           => 1,
 			'quizID'       => $quiz_id,
 			'pagekey'      => uniqid(),
 			'hide_prevbtn' => 0,
 			'questions'    => array(),
 		);
-		$qpages[]        = $defaultQPage;
+		$qpages[]     = $defaultQPage;
 	}
-	$qpages      = apply_filters( 'qsm_filter_quiz_page_attributes', $qpages, $pages );
-	$json_data   = array(
+	$qpages    = apply_filters( 'qsm_filter_quiz_page_attributes', $qpages, $pages );
+	$json_data = array(
 		'quizID'                => $quiz_id,
 		'answerText'            => __( 'Answer', 'quiz-master-next' ),
 		'linked_view'           => __( 'View', 'quiz-master-next' ),
@@ -107,8 +107,8 @@ function qsm_options_questions_tab_content() {
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
 	// Load Question Types.
-	$question_types              = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
-	$question_types_categorized  = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
+	$question_types             = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$question_types_categorized = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
 
 	// Display warning if using competing options.
 	$pagination = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' );
@@ -133,9 +133,9 @@ function qsm_options_questions_tab_content() {
 		/**
 		 * Check for invalid Questions.
 		 */
-		$q_types         = array();
-		$invalid_types   = array();
-		$question_types_new  = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ")" );
+		$q_types            = array();
+		$invalid_types      = array();
+		$question_types_new = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ')' );
 		if ( ! empty( $question_types_new ) ) {
 			foreach ( $question_types_new as $data ) {
 				$q_types[] = $data->type;
@@ -158,46 +158,46 @@ function qsm_options_questions_tab_content() {
 			<?php
 		}
 	}
-	$read_only = "";
-	$disable_class = "";
-	$background = "#FFFFFF";
-	$display_advance = "yes";
-	if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) {
-		$read_only = 'readonly';
+	$read_only       = '';
+	$disable_class   = '';
+	$background      = '#FFFFFF';
+	$display_advance = 'yes';
+	if ( ! class_exists( 'QSM_AdvancedTimer' ) ) {
+		$read_only     = 'readonly';
 		$disable_class = 'qsm-disabled-td';
-		$background = "#F0F0F0";
+		$background    = '#F0F0F0';
 	} else {
-		$date_now = gmdate("d-m-Y");
-		$settings_data   = get_option('qsm_addon_advanced_timer_settings', '');
-		$license         = isset( $settings_data['license_key'] ) ? trim( $settings_data['license_key'] ) : '';
-		if ( version_compare( $mlwQuizMasterNext->version, '8.1.6', '<' ) && (isset($settings_data['expiry_date']) && "" != $settings_data['expiry_date']) && (isset($settings_data['last_validate']) && "" != $settings_data['last_validate']) && strtotime($date_now) > strtotime($settings_data['expiry_date']) && strtotime($date_now) >= strtotime($settings_data['last_validate']) ) {
-			$item_url = 'https://quizandsurveymaster.com/checkout/?edd_license_key='.$license.'&download_id=109654';
-			$target_text = __('License Key Expired. ', 'quiz-master-next');
-			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>'.__('Error! ', 'quiz-master-next').'</strong>'.$target_text.'<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
-			echo wp_kses_post($target_link);
+		$date_now      = gmdate( 'd-m-Y' );
+		$settings_data = get_option( 'qsm_addon_advanced_timer_settings', '' );
+		$license       = isset( $settings_data['license_key'] ) ? trim( $settings_data['license_key'] ) : '';
+		if ( version_compare( $mlwQuizMasterNext->version, '8.1.6', '<' ) && ( isset( $settings_data['expiry_date'] ) && '' != $settings_data['expiry_date'] ) && ( isset( $settings_data['last_validate'] ) && '' != $settings_data['last_validate'] ) && strtotime( $date_now ) > strtotime( $settings_data['expiry_date'] ) && strtotime( $date_now ) >= strtotime( $settings_data['last_validate'] ) ) {
+			$item_url    = 'https://quizandsurveymaster.com/checkout/?edd_license_key=' . $license . '&download_id=109654';
+			$target_text = __( 'License Key Expired. ', 'quiz-master-next' );
+			$target_link = sprintf( '<div class="notice notice-error notice-advance-timer"><strong>' . __( 'Error! ', 'quiz-master-next' ) . '</strong>' . $target_text . '<a style="font-weight: bolder;" href="%s" target="_blank">%s</a></div>', esc_url( $item_url ), __( 'Click here to renew', 'quiz-master-next' ) );
+			echo wp_kses_post( $target_link );
 		}
-		if ( ( isset($settings_data['last_validate']) && "invalid" == $settings_data['last_validate'] ) || empty($settings_data) ) {
-			$read_only = 'readonly';
-			$disable_class = 'qsm-disabled-td';
-			$background = "#F0F0F0";
-			$admin_page_url = esc_url(admin_url('admin.php?page=qmn_addons&tab=advanced-timer'));
-			$error_message = sprintf(
+		if ( ( isset( $settings_data['last_validate'] ) && 'invalid' == $settings_data['last_validate'] ) || empty( $settings_data ) ) {
+			$read_only      = 'readonly';
+			$disable_class  = 'qsm-disabled-td';
+			$background     = '#F0F0F0';
+			$admin_page_url = esc_url( admin_url( 'admin.php?page=qmn_addons&tab=advanced-timer' ) );
+			$error_message  = sprintf(
 				'<div class="notice notice-error notice-advance-timer">
 					<strong>%s</strong> %s <a href="%s" target="_blank">%s</a> %s
 				</div>',
-				__('Error! ', 'quiz-master-next'),
-				__('Your Advanced Timer Settings are not saved successfully. ', 'quiz-master-next'),
+				__( 'Error! ', 'quiz-master-next' ),
+				__( 'Your Advanced Timer Settings are not saved successfully. ', 'quiz-master-next' ),
 				$admin_page_url,
-				__('Validate license', 'quiz-master-next'),
-				__('to save the settings. ', 'quiz-master-next')
+				__( 'Validate license', 'quiz-master-next' ),
+				__( 'to save the settings. ', 'quiz-master-next' )
 			);
-			echo wp_kses_post($error_message);
+			echo wp_kses_post( $error_message );
 		}
-		$advancetimer = 'qsm-advanced-timer/qsm-advanced-timer.php';
-		$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $advancetimer);
+		$advancetimer   = 'qsm-advanced-timer/qsm-advanced-timer.php';
+		$plugin_data    = get_plugin_data( WP_PLUGIN_DIR . '/' . $advancetimer );
 		$version_number = $plugin_data['Version'];
-		if ( version_compare($version_number, '2.0.0', '<') ) {
-			$display_advance = "no";
+		if ( version_compare( $version_number, '2.0.0', '<' ) ) {
+			$display_advance = 'no';
 		}
 	}
 	?>
@@ -206,7 +206,7 @@ function qsm_options_questions_tab_content() {
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
-			<?php do_action('qsm_question_controls_head'); ?>
+			<?php do_action( 'qsm_question_controls_head' ); ?>
 		</p>
 	</div>
 	<div class="qsm-admin-bulk-actions">
@@ -236,7 +236,7 @@ function qsm_options_questions_tab_content() {
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-2-content">
-					<?php do_action('qsm-question-categories-setting')?>
+					<?php do_action( 'qsm-question-categories-setting' ); ?>
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
 					<div class="qsm-question-bank-filters">
 						<div class="qsm-question-bank-search">
@@ -325,14 +325,14 @@ function qsm_options_questions_tab_content() {
 									}
 									// disabling polar for form type quiz and system correct/incorrect
 									if ( 0 === intval( $form_type ) && 0 === intval( $quiz_system ) ) {
-										$polar_class         = $polar_question_use   = '';
-										$description_arr[]   = array(
+										$polar_class       = $polar_question_use   = '';
+										$description_arr[] = array(
 											'question_type_id' => '13',
 											'description' => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 										);
 									} else {
-										$polar_class         = 'qsm_show_question_type_13';
-										$polar_question_use  = ',13';
+										$polar_class        = 'qsm_show_question_type_13';
+										$polar_question_use = ',13';
 									}
 
 									$show_answer_option = '';
@@ -346,7 +346,9 @@ function qsm_options_questions_tab_content() {
 									if ( $description_arr ) {
 										foreach ( $description_arr as $value ) {
 											$question_type_id = $value['question_type_id'];
-											?><p id="question_type_<?php echo esc_attr( $question_type_id ); ?>_description" class="question-type-description"><?php echo esc_attr( $value['description'] ); ?></p><?php
+											?>
+											<p id="question_type_<?php echo esc_attr( $question_type_id ); ?>_description" class="question-type-description"><?php echo esc_attr( $value['description'] ); ?></p>
+											<?php
 										}
 									}
 									?>
@@ -366,14 +368,14 @@ function qsm_options_questions_tab_content() {
 								</div>
 								<div class="qsm-question-misc-options advanced-content">
 									<?php
-									$show_correct_answer_info        = '';
-									$show_autofill                   = '';
-									$show_case_sensitive             = '';
-									$show_limit_text                 = '';
-									$show_limit_multiple_response    = '';
-									$show_file_upload_type           = '';
-									$show_file_upload_limit          = '';
-									$placeholder_text                = '';
+									$show_correct_answer_info     = '';
+									$show_autofill                = '';
+									$show_case_sensitive          = '';
+									$show_limit_text              = '';
+									$show_limit_multiple_response = '';
+									$show_file_upload_type        = '';
+									$show_file_upload_limit       = '';
+									$placeholder_text             = '';
 									foreach ( $question_types as $type ) {
 										if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
 											$show_correct_answer_info .= ',' . $type['slug'];
@@ -400,7 +402,7 @@ function qsm_options_questions_tab_content() {
 											$placeholder_text .= ',' . $type['slug'];
 										}
 									}
-									$advanced_question_option    = array(
+									$advanced_question_option = array(
 										'correct_answer_info' => array(
 											'heading'  => __( 'Correct Answer Info', 'quiz-master-next' ),
 											'type'     => 'textarea',
@@ -533,8 +535,8 @@ function qsm_options_questions_tab_content() {
 											'show'     => '3, 5, 7' . $placeholder_text,
 										),
 									);
-									$advanced_question_option    = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
-									$keys                        = array_column( $advanced_question_option, 'priority' );
+									$advanced_question_option = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
+									$keys                     = array_column( $advanced_question_option, 'priority' );
 									array_multisort( $keys, SORT_ASC, $advanced_question_option );
 									foreach ( $advanced_question_option as $qo_key => $single_option ) {
 										qsm_generate_question_option( $qo_key, $single_option );
@@ -570,7 +572,7 @@ function qsm_options_questions_tab_content() {
 															<?php
 															foreach ( $question_types_categorized as $category_name => $category_items ) {
 																?>
-																	<optgroup label="<?php echo esc_attr( $category_name ) ?>">
+																	<optgroup label="<?php echo esc_attr( $category_name ); ?>">
 																	<?php
 																	foreach ( $category_items as $type ) {
 																		if ( isset( $type['disabled'] ) && true === $type['disabled'] ) {
@@ -600,7 +602,7 @@ function qsm_options_questions_tab_content() {
 															$show_match_answer .= ',' . $type['slug'];
 														}
 													}
-													$simple_question_option  = array(
+													$simple_question_option = array(
 														'change-answer-editor'   => array(
 															'label'              => __( 'Answers Type', 'quiz-master-next' ),
 															'type'               => 'select',
@@ -636,8 +638,8 @@ function qsm_options_questions_tab_content() {
 															'default'    => '0',
 														),
 													);
-													$simple_question_option  = apply_filters( 'qsm_question_format_option', $simple_question_option );
-													$keys                    = array_column( $simple_question_option, 'priority' );
+													$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
+													$keys                   = array_column( $simple_question_option, 'priority' );
 													array_multisort( $keys, SORT_ASC, $simple_question_option );
 													foreach ( $simple_question_option as $qo_key => $single_option ) {
 														qsm_display_question_option( $qo_key, $single_option );
@@ -683,8 +685,8 @@ function qsm_options_questions_tab_content() {
 													),
 												);
 											}
-											$category_question_option    = apply_filters( 'qsm_question_category_option', $category_question_option );
-											$keys                        = array_column( $category_question_option, 'priority' );
+											$category_question_option = apply_filters( 'qsm_question_category_option', $category_question_option );
+											$keys                     = array_column( $category_question_option, 'priority' );
 											array_multisort( $keys, SORT_ASC, $category_question_option );
 											foreach ( $category_question_option as $qo_key => $single_cat_option ) {
 												qsm_display_question_option( $qo_key, $single_cat_option );
@@ -736,29 +738,35 @@ function qsm_options_questions_tab_content() {
 							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
 							<span class="qsm-page-setting-span"><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
 						</div>
-						<?php if ( "yes" == $display_advance ) { ?>
-						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr($background); ?>">
+						<?php if ( 'yes' == $display_advance ) { ?>
+						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr( $background ); ?>">
 							<div class="qsm-page-setting-top ">
 								<div class="qsm-page-setting-left">
 									<span class="qsm-page-setting-label"><?php esc_html_e( 'Page Timer', 'quiz-master-next' ); ?></span>
 								</div>
 								<div class="qsm-page-setting-right">
-									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
+									<div class="qsm-row <?php echo esc_attr( $disable_class ); ?>">
 										<label><?php esc_html_e( 'How many minutes does the user have to finish the page?', 'quiz-master-next' ); ?></label>
-										<span><?php esc_html_e( 'Set a time limit to complete this page in ', 'quiz-master-next' ); ?></span><input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" id="pagetimer" name="pagetimer" value="0" placeholder="<?php esc_attr_e( 'MM', 'quiz-master-next' ); ?>"> : <input type="number" <?php echo esc_html($read_only); ?> step="1" class="small-text" min="0" id="pagetimer_second" name="pagetimer_second" value="0" placeholder="<?php esc_attr_e( 'SS', 'quiz-master-next' ); ?>">
+										<span><?php esc_html_e( 'Set a time limit to complete this page in ', 'quiz-master-next' ); ?></span><input <?php echo esc_html( $read_only ); ?> type="number" step="1" class="small-text" min="0" id="pagetimer" name="pagetimer" value="0" placeholder="<?php esc_attr_e( 'MM', 'quiz-master-next' ); ?>"> : <input type="number" <?php echo esc_html( $read_only ); ?> step="1" class="small-text" min="0" id="pagetimer_second" name="pagetimer_second" value="0" placeholder="<?php esc_attr_e( 'SS', 'quiz-master-next' ); ?>">
 									</div>
-									<div class="qsm-row <?php echo esc_attr($disable_class); ?>">
-										<input <?php echo esc_html($read_only); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
-										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> :
-										<input <?php echo esc_html($read_only); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
+									<div class="qsm-row <?php echo esc_attr( $disable_class ); ?>">
+										<input <?php echo esc_html( $read_only ); ?> name="warning_checkbox" type="checkbox" value="" /><span><?php esc_html_e( 'Show warning at', 'quiz-master-next' ); ?></span>
+										<input <?php echo esc_html( $read_only ); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'MM', 'quiz-master-next' ); ?>" id="pagetimer_warning" name="pagetimer_warning" value="0"> :
+										<input <?php echo esc_html( $read_only ); ?> type="number" step="1" class="small-text" min="0" placeholder="<?php esc_html_e( 'SS', 'quiz-master-next' ); ?>" id="pagetimer_warning_second" name="pagetimer_warning_second" value="0">
 									</div>
 								</div>
 							</div>
 							<div class="qsm-page-setting-bottom ">
-								<?php if ( ! class_exists ( 'QSM_AdvancedTimer' ) ) { ?>
+								<?php if ( ! class_exists( 'QSM_AdvancedTimer' ) ) { ?>
 								<div class="qsm-popup-upgrade-warning">
 									<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/info-yellow.png' ); ?>" alt="information">
-									<span><?php esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next'); printf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) ); esc_html_e( 'and extend your quiz features.', 'quiz-master-next' ); ?></span>
+									<span>
+									<?php
+									esc_html_e( 'You can set timer in each page using Advanced Timer Add-on. ', 'quiz-master-next' );
+									printf( '<a style="margin-right: 5px;font-weight: bolder;" href="%s" target="_blank">%s</a>', esc_url( qsm_get_plugin_link( 'downloads/wordpress-quiz-timer-advanced', 'advanced-timer-popup', 'quiz_editor', 'get_addon', 'qsm_plugin_upsell' ) ), esc_html__( 'Get this add-on ', 'quiz-master-next' ) );
+									esc_html_e( 'and extend your quiz features.', 'quiz-master-next' );
+									?>
+									</span>
 								</div>
 							<?php } ?>
 							</div>
@@ -918,22 +926,28 @@ function qsm_options_questions_tab_content() {
  * @return void
  */
 function qsm_ajax_unlink_question_from_list() {
-    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-unlink-question' ) ) {
-        wp_send_json_error( array(
-			'message' => __( 'Nonce verification failed.', 'quiz-master-next'),
-		));
-    }
-    $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-    if ( $question_id > 0 ) {
-		qsm_process_unlink_question_from_list_by_question_id($question_id);
-		wp_send_json_success( array(
-			'message' => __( 'Question is unlinked from all quizzes.', 'quiz-master-next' ),
-		));
-    } else {
-		wp_send_json_error( array(
-			'message' => __( 'Invalid question ID.', 'quiz-master-next' ),
-		));
-    }
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-unlink-question' ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'Nonce verification failed.', 'quiz-master-next' ),
+			)
+		);
+	}
+	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
+	if ( $question_id > 0 ) {
+		qsm_process_unlink_question_from_list_by_question_id( $question_id );
+		wp_send_json_success(
+			array(
+				'message' => __( 'Question is unlinked from all quizzes.', 'quiz-master-next' ),
+			)
+		);
+	} else {
+		wp_send_json_error(
+			array(
+				'message' => __( 'Invalid question ID.', 'quiz-master-next' ),
+			)
+		);
+	}
 }
 add_action( 'wp_ajax_qsm_unlink_question_from_list', 'qsm_ajax_unlink_question_from_list' );
 
@@ -944,23 +958,25 @@ add_action( 'wp_ajax_qsm_unlink_question_from_list', 'qsm_ajax_unlink_question_f
  * @return void
  */
 function qsm_process_unlink_question_from_list_by_question_id( $question_id ) {
-    global $wpdb;
-    $current_linked_questions = $wpdb->get_var( $wpdb->prepare(
-		"SELECT linked_question FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d",
-		$question_id
-	) );
+	global $wpdb;
+	$current_linked_questions = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT linked_question FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d",
+			$question_id
+		)
+	);
 
 	if ( $current_linked_questions ) {
-		$current_links = explode(',', $current_linked_questions);
-		$current_links = array_map('trim', $current_links);
-		$current_links = array_diff($current_links, array( $question_id ));
-		$updated_linked_list = implode(',', array_filter($current_links));
-		$linked_ids = explode(',', $updated_linked_list);
+		$current_links       = explode( ',', $current_linked_questions );
+		$current_links       = array_map( 'trim', $current_links );
+		$current_links       = array_diff( $current_links, array( $question_id ) );
+		$updated_linked_list = implode( ',', array_filter( $current_links ) );
+		$linked_ids          = explode( ',', $updated_linked_list );
 		foreach ( $linked_ids as $linked_id ) {
 			$wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				array( 'linked_question' => $updated_linked_list ),
-				array( 'question_id' => intval($linked_id) ),
+				array( 'question_id' => intval( $linked_id ) ),
 				array( '%s' ),
 				array( '%d' )
 			);
@@ -968,7 +984,7 @@ function qsm_process_unlink_question_from_list_by_question_id( $question_id ) {
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_questions',
 			array( 'linked_question' => '' ),
-			array( 'question_id' => intval($question_id) ),
+			array( 'question_id' => intval( $question_id ) ),
 			array( '%s' ),
 			array( '%d' )
 		);
@@ -988,26 +1004,26 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
-	$json            = array(
+	$json    = array(
 		'status' => 'error',
 	);
-	$quiz_id         = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-	$post_id         = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$all_questions   = array();
+	$pages         = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$qpages        = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$all_questions = array();
 	//merge duplicate questions
 	foreach ( $pages as $page_key => $questions ) {
-		$page_questions  = array();
-		$questions       = array_unique( $questions );
+		$page_questions = array();
+		$questions      = array_unique( $questions );
 		foreach ( $questions as $id ) {
 			if ( ! in_array( $id, $all_questions, true ) ) {
 				$page_questions[] = $id;
 			}
 		}
-		$all_questions       = array_merge( $all_questions, $questions );
-		$pages[ $page_key ]    = $page_questions;
+		$all_questions      = array_merge( $all_questions, $questions );
+		$pages[ $page_key ] = $page_questions;
 		if ( isset( $qpages[ $page_key ] ) ) {
 			$qpages[ $page_key ]['questions'] = $page_questions;
 		}
@@ -1018,8 +1034,8 @@ function qsm_ajax_save_pages() {
 	if ( $response ) {
 		$json['status'] = 'success';
 		// update post_modified
-		$datetime  = current_time( 'Y-m-d H:i:s', 0 );
-		$update = array(
+		$datetime = current_time( 'Y-m-d H:i:s', 0 );
+		$update   = array(
 			'ID'            => $post_id,
 			'post_modified' => $datetime,
 		);
@@ -1197,16 +1213,16 @@ function qsm_delete_question_from_database() {
 
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
-		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) );
-		$question_ids_to_delete = array_merge($connected_question_ids, array( $question_id ));
-		$question_ids_to_delete = array_unique( $question_ids_to_delete );
-		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
+		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) );
+		$question_ids_to_delete     = array_merge( $connected_question_ids, array( $question_id ) );
+		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
+		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );
 
-		do_action('qsm_question_deleted',$question_id);
+		do_action( 'qsm_question_deleted', $question_id );
 
-		if ( ! empty($connected_question_ids) ) {
-			$connected_question_ids = array_diff($connected_question_ids, array( $base_question_id ) );
-			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
+		if ( ! empty( $connected_question_ids ) ) {
+			$connected_question_ids     = array_diff( $connected_question_ids, array( $base_question_id ) );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink( $connected_question_ids );
 		}
 
 		// Construct the query with placeholders
@@ -1216,10 +1232,10 @@ function qsm_delete_question_from_database() {
 		);
 
 		// Prepare the query
-		$query = $wpdb->prepare( $query, $question_ids_to_delete );
+		$query   = $wpdb->prepare( $query, $question_ids_to_delete );
 		$results = $wpdb->query( $query );
 		if ( $results ) {
-			if ( ! empty($update_qpages_after_delete) ) {
+			if ( ! empty( $update_qpages_after_delete ) ) {
 				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
 					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
@@ -1227,9 +1243,9 @@ function qsm_delete_question_from_database() {
 				}
 			}
 			wp_send_json_success( __( 'Question removed Successfully.', 'quiz-master-next' ) );
-		}else {
+		} else {
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
-			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question ID:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+			$mlwQuizMasterNext->log_manager->add( __( 'Error 0001 delete questions failed - question ID:', 'quiz-master-next' ) . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
 }
@@ -1259,9 +1275,12 @@ function qsm_bulk_delete_question_from_database() {
 	$question_id = explode( ',', $question_id );
 
 	// filter question ids
-	$question_id = array_filter( $question_id, function( $questionID ) {
-		return is_numeric( $questionID ) && 0 < intval( $questionID );
-	} );
+	$question_id = array_filter(
+		$question_id,
+		function ( $questionID ) {
+			return is_numeric( $questionID ) && 0 < intval( $questionID );
+		}
+	);
 
 	// Sanitize and validate the IDs
 	$base_question_ids = $question_id = array_map( 'intval', $question_id );
@@ -1269,16 +1288,16 @@ function qsm_bulk_delete_question_from_database() {
 	if ( ! empty( $question_id ) ) {
 
 		$update_qpages_after_delete = array();
-		$connected_question_ids = qsm_get_unique_linked_question_ids_to_remove($question_id);
-		$question_ids_to_delete = array_merge($connected_question_ids, $question_id);
-		$question_ids_to_delete = array_unique( $question_ids_to_delete );
-		$placeholders = array_fill( 0, count( $question_ids_to_delete ), '%d' );
+		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( $question_id );
+		$question_ids_to_delete     = array_merge( $connected_question_ids, $question_id );
+		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
+		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );
 
-		do_action('qsm_question_deleted',$question_id);
+		do_action( 'qsm_question_deleted', $question_id );
 
-		if ( ! empty($connected_question_ids) ) {
-			$connected_question_ids = array_diff($connected_question_ids, $base_question_ids );
-			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink($connected_question_ids);
+		if ( ! empty( $connected_question_ids ) ) {
+			$connected_question_ids     = array_diff( $connected_question_ids, $base_question_ids );
+			$update_qpages_after_delete = qsm_process_to_update_qpages_after_unlink( $connected_question_ids );
 		}
 
 		// Construct the query with placeholders
@@ -1292,7 +1311,7 @@ function qsm_bulk_delete_question_from_database() {
 
 		$results = $wpdb->query( $query );
 		if ( $results ) {
-			if ( ! empty($update_qpages_after_delete) ) {
+			if ( ! empty( $update_qpages_after_delete ) ) {
 				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
 					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 					$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $aftervalue['qpages'] );
@@ -1300,8 +1319,8 @@ function qsm_bulk_delete_question_from_database() {
 				}
 			}
 			wp_send_json_success( __( 'Questions removed Successfully.', 'quiz-master-next' ) );
-		}else {
-			$mlwQuizMasterNext->log_manager->add( __('Error 0001 delete questions failed - question IDs:', 'quiz-master-next') . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		} else {
+			$mlwQuizMasterNext->log_manager->add( __( 'Error 0001 delete questions failed - question IDs:', 'quiz-master-next' ) . $question_id, '<br><b>Error:</b>' . $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 			wp_send_json_error( __( 'Question delete failed!', 'quiz-master-next' ) );
 		}
 	} else {
@@ -1317,38 +1336,38 @@ add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_q
  * @since 9.1.3
  */
 function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
-	$comma_seprated_ids = implode( ',', array_unique($connected_question_ids) );
-	$qpages_array = array();
-	if ( ! empty($comma_seprated_ids) ) {
+	$comma_seprated_ids = implode( ',', array_unique( $connected_question_ids ) );
+	$qpages_array       = array();
+	if ( ! empty( $comma_seprated_ids ) ) {
 		global $wpdb, $mlwQuizMasterNext;
-		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_seprated_ids. ")" );
-		if ( ! empty($quiz_results) ) {
+		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $comma_seprated_ids . ')' );
+		if ( ! empty( $quiz_results ) ) {
 			foreach ( $quiz_results as $single_quiz ) {
-				$quiz_id         = $single_quiz->quiz_id;
+				$quiz_id = $single_quiz->quiz_id;
 				$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-				$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+				$pages        = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 				$clone_qpages = $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-				if ( ! empty($clone_qpages) ) {
+				if ( ! empty( $clone_qpages ) ) {
 					foreach ( $clone_qpages as $clonekey => $clonevalue ) {
-						if ( ! empty($clonevalue['questions']) && in_array($single_quiz->question_id, $clonevalue['questions'], true) ) {
-							$clone_qpages[ $clonekey ]['questions'] = array_diff($clonevalue['questions'], array( $single_quiz->question_id ));
-							$pages[ $clonekey ] = array_diff($pages[ $clonekey ], array( $single_quiz->question_id ));
+						if ( ! empty( $clonevalue['questions'] ) && in_array( $single_quiz->question_id, $clonevalue['questions'], true ) ) {
+							$clone_qpages[ $clonekey ]['questions'] = array_diff( $clonevalue['questions'], array( $single_quiz->question_id ) );
+							$pages[ $clonekey ]                     = array_diff( $pages[ $clonekey ], array( $single_quiz->question_id ) );
 						}
 					}
 					$qpages = $clone_qpages;
 				}
 				//merge duplicate questions
-				$all_questions   = array();
+				$all_questions = array();
 				foreach ( $pages as $page_key => $questions ) {
-					$page_questions  = array();
-					$questions       = array_unique( $questions );
+					$page_questions = array();
+					$questions      = array_unique( $questions );
 					foreach ( $questions as $id ) {
 						if ( ! in_array( $id, $all_questions, true ) ) {
 							$page_questions[] = $id;
 						}
 					}
-					$all_questions       = array_merge( $all_questions, $questions );
-					$pages[ $page_key ]    = $page_questions;
+					$all_questions      = array_merge( $all_questions, $questions );
+					$pages[ $page_key ] = $page_questions;
 					if ( isset( $qpages[ $page_key ] ) ) {
 						$qpages[ $page_key ]['questions'] = $page_questions;
 					}
@@ -1371,26 +1390,26 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
  * @since 9.1.3
  */
 function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
-    global $wpdb;
+	global $wpdb;
 	$all_ids = array();
-    foreach ( $question_ids as $id ) {
-        $sql = $wpdb->prepare(
-            "SELECT linked_question FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d",
-            $id
-        );
-        $linked_question = $wpdb->get_var($sql);
-        if ( ! empty($linked_question) ) {
-			$all_ids = array_merge($all_ids, explode(',', $linked_question));
-        }
-    }
-    return $all_ids;
+	foreach ( $question_ids as $id ) {
+		$sql             = $wpdb->prepare(
+			"SELECT linked_question FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d",
+			$id
+		);
+		$linked_question = $wpdb->get_var( $sql );
+		if ( ! empty( $linked_question ) ) {
+			$all_ids = array_merge( $all_ids, explode( ',', $linked_question ) );
+		}
+	}
+	return $all_ids;
 }
 
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
-	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
-	$parent     = ( -1 == $parent ) ? 0 : $parent;
+	$category = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$parent   = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
+	$parent   = ( -1 == $parent ) ? 0 : $parent;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
 		$term_array = wp_insert_term(
 			$category,
@@ -1418,8 +1437,8 @@ function qsm_options_questions_tab_template() {
 				<div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
 				<div class="page-header-buttons">
 					<div class="page-header-icons">
-						<a href="javascript:void(0)" class="qsm-admin-randomize-page-questions" title="Shuffle Questions" id="qsm-admin-randomize-page-question-{{data.id}}" data-page-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/randomize.svg'); ?>" alt="randomize.svg"/></a>
-						<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/gear.svg'); ?>" alt="gear.svg"/></a>
+						<a href="javascript:void(0)" class="qsm-admin-randomize-page-questions" title="Shuffle Questions" id="qsm-admin-randomize-page-question-{{data.id}}" data-page-id="{{data.id}}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/randomize.svg' ); ?>" alt="randomize.svg"/></a>
+						<a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/gear.svg' ); ?>" alt="gear.svg"/></a>
 					</div>
 					<a href="javascript:void(0)" class="add-question-bank-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Import', 'quiz-master-next' ); ?></a>
 					<a href="javascript:void(0)" class="new-question-button button button-primary qsm-common-button-styles"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a>
@@ -1450,10 +1469,10 @@ function qsm_options_questions_tab_template() {
 					</div>
 					<div class="form-actions">
 						<div class="qsm-actions-link-box">
-							<a href="#" title="Edit Question" class="edit-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/edit-pencil.svg'); ?>" alt="edit-pencil.svg"/></a>
-							<a href="#" title="Clone Question" class="duplicate-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/copy.svg'); ?>" alt="copy.svg"/></a>
-							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-down-fill.svg'); ?>" alt="arrow-up-down-fill.svg"/></a>
-							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/trash.svg'); ?>" alt="trash.svg"/></a>
+							<a href="#" title="Edit Question" class="edit-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/edit-pencil.svg' ); ?>" alt="edit-pencil.svg"/></a>
+							<a href="#" title="Clone Question" class="duplicate-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/copy.svg' ); ?>" alt="copy.svg"/></a>
+							<a href="javascript:void(0)" title="Move Question" class="move-question-button"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/arrow-up-down-fill.svg' ); ?>" alt="arrow-up-down-fill.svg"/></a>
+							<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><img class="qsm-common-svg-image-class" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/trash.svg' ); ?>" alt="trash.svg"/></a>
 						</div>
 					</div>
 				</div>
