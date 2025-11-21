@@ -97,6 +97,14 @@ class QSM_New_Renderer {
 	 */
 	public function enqueue_scripts() {
 		global $mlwQuizMasterNext;
+
+		wp_enqueue_style( 
+			'qmn_quiz_animation_style', 
+			QSM_PLUGIN_CSS_URL . '/animate.css', 
+			array(), 
+			$mlwQuizMasterNext->version 
+		);
+
 		// Enqueue MicroModal script
 		wp_enqueue_script( 
 			'micromodal_script', 

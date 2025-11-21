@@ -54,7 +54,7 @@ var show_result_validation = true;
                 current: 'qsm-current-page'
             },
             animation: {
-                duration: 300,
+                duration: 1000,
                 easing: 'swing'
             }
         },
