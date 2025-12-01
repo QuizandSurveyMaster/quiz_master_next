@@ -132,15 +132,6 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version 
 		);
 
-		// Enqueue common script
-		wp_enqueue_script( 
-			'qsm-common', 
-			QSM_PLUGIN_JS_URL . '/qsm-common.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-
 		// Enqueue encryption script
 		wp_enqueue_script( 
 			'qsm_encryption', 
@@ -158,7 +149,14 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version, 
 			true 
 		);
-		
+		// Enqueue common script
+		wp_enqueue_script( 
+			'qsm_common', 
+			QSM_PLUGIN_JS_URL . '/qsm-common.js', 
+			array( 'jquery' ), 
+			$mlwQuizMasterNext->version, 
+			true 
+		);
 		// Enqueue progress bar JavaScript
 		wp_enqueue_script( 
 			'qsm-progressbar', 
@@ -184,9 +182,23 @@ class QSM_New_Renderer {
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 
 		// Enqueue styles
+		// wp_enqueue_style( 
+		// 	'qsm-quiz-styles', 
+		// 	QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
+		// 	array(), 
+		// 	$mlwQuizMasterNext->version 
+		// );
 		wp_enqueue_style( 
-			'qsm-quiz-styles', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
+			'qmn_quiz_common_style', 
+			QSM_PLUGIN_URL . 'css/common.css', 
+			array(), 
+			$mlwQuizMasterNext->version 
+		);
+		wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
+
+		wp_enqueue_style( 
+			'primary', 
+			QSM_PLUGIN_URL . 'templates/qmn-primary.css', 
 			array(), 
 			$mlwQuizMasterNext->version 
 		);
@@ -331,6 +343,9 @@ class QSM_New_Renderer {
 				'user_ip' => $this->get_user_ip(),
 			);
 
+			echo apply_filters( 'qmn_begin_quiz', '', $qmn_quiz_options, $quiz_data );
+			$qmn_quiz_options = apply_filters( 'qmn_begin_quiz_options', $qmn_quiz_options, $quiz_data );
+			
 			// Create renderer instance
 			$renderer = new QSM_New_Pagination_Renderer( $qmn_quiz_options, $quiz_data, $shortcode_args );
 			$auto_pagination_class = $qmn_quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';

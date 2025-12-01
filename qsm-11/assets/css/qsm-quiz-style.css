@@ -619,6 +619,7 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question {
   justify-content: space-between;
   flex-direction: row;
   margin: 10px 0;
+  width: 100%;
 }
 
 .qmn_pagination .mlw_previous {

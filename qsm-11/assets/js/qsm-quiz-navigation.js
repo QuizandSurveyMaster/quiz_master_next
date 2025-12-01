@@ -814,7 +814,12 @@ var show_result_validation = true;
                         
                         // Insert questions HTML
                         $page.prepend(response.data.html);
-                        
+                        if ( $page.find('.question-type-polar-s').length > 0 ) {
+                            let polarQuestion = $page.find('.question-type-polar-s').find('.slider-main-wrapper div');
+                            let questionID    = polarQuestion.parents('.quiz_section').data('qid');
+                            let page = 'question';
+                            qsmPolarSliderEach(polarQuestion, questionID, page);
+                        }
                         // Mark page as loaded
                         $page.removeClass('qsm-lazy-load-page qsm-loading');
                         $page.addClass('qsm-loaded-page');

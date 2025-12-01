@@ -45,7 +45,7 @@
                 $form: $form,
                 $bar: $bar,
                 $fill: $bar.find('.qsm-progress-fill'),
-                $text: $bar.find('.qsm-progress-text'),
+                $text: $bar.find('.progressbar-text'),
                 totalPages: totalPages,
                 questionPages: questionPages,
                 hasFirstPage: hasFirstPage,

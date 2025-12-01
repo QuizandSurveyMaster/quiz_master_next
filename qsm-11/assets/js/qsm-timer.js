@@ -5,7 +5,7 @@
 (function($) {
     
     window.QSMPagination = window.QSMPagination || {};
-    
+
     QSMPagination.Timer = {
         quizObjects: {},
         intervals: {},
@@ -244,9 +244,7 @@
             
             // Trigger events
             $(document).trigger('qsm_timer_tick', [quizId, currentQuiz.remainingTime, currentQuiz.consumedTime]);
-            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, {
-                qmn_count_upward_status: false
-            }]);
+            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, qsm_timer_consumed_obj]);
             $(document).trigger('load_timer_faces', [quizId, currentQuiz.remainingTime, currentQuiz.totalTime, this.secondsToTimer(currentQuiz.remainingTime)]);
             
             if (currentQuiz.remainingTime <= 0) {
@@ -459,3 +457,9 @@
     });
 
 })(jQuery);
+
+if (typeof qsm_timer_consumed_obj === 'undefined') {
+    var qsm_timer_consumed_obj = {
+        qmn_count_upward_status : false
+    };
+}

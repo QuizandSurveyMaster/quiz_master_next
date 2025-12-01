@@ -485,8 +485,8 @@ class QSM_New_Pagination_Renderer {
 			}
 			
 			// Apply qmn_begin_quiz filter
-			echo apply_filters( 'qmn_begin_quiz', '', $this->options, $this->quiz_data );
-			$this->options = apply_filters( 'qmn_begin_quiz_options', $this->options, $this->quiz_data );
+			// echo apply_filters( 'qmn_begin_quiz', '', $this->options, $this->quiz_data );
+			// $this->options = apply_filters( 'qmn_begin_quiz_options', $this->options, $this->quiz_data );
 			
 			if ( ! $qmn_allowed_visit ) {
 				return;
@@ -1390,6 +1390,8 @@ class QSM_New_Pagination_Renderer {
 				<?php
 			}
 		}
+		
+		do_action( 'qsm_contact_fields_end' );
 		
 		return ob_get_clean();
 	}

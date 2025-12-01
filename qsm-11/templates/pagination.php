@@ -50,7 +50,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 			<div class="qsm-progress-bar-container">
 				<div class="qsm-progress-fill"></div>
 			</div>
-			<div class="qsm-progress-text">0%</div>
+			<div class="progressbar-text">0%</div>
 		</div>
 	<?php endif; ?>
 	
