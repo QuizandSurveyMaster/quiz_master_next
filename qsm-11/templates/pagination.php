@@ -56,7 +56,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	
 	<!-- Start Button -->
 	<?php if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) : 
-		$start_button_class = apply_filters( 'qsm_start_button_class', array('qsm-start-btn', 'qmn_btn', 'qsm-btn', 'mlw_custom_start', 'qsm-start-btn', 'qsm-primary'), $quiz_id, $args );
+		$start_button_class = apply_filters( 'qsm_start_button_class', array('qsm-start-btn', 'qmn_btn', 'qsm-btn', 'mlw_custom_start', 'qsm-start-btn', 'qsm-primary', 'mlw_qmn_quiz_link', 'mlw_next'), $quiz_id, $args );
 		$start_button_class = implode( ' ', $start_button_class );
 	?>
 		<a href="javascript:void(0);" 

@@ -182,23 +182,23 @@ class QSM_New_Renderer {
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 
 		// Enqueue styles
-		// wp_enqueue_style( 
-		// 	'qsm-quiz-styles', 
-		// 	QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
-		// 	array(), 
-		// 	$mlwQuizMasterNext->version 
-		// );
+		wp_enqueue_style( 
+			'qsm-quiz-styles', 
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
+			array(), 
+			$mlwQuizMasterNext->version 
+		);
 		wp_enqueue_style( 
 			'qmn_quiz_common_style', 
-			QSM_PLUGIN_URL . 'css/common.css', 
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/common.css', 
 			array(), 
 			$mlwQuizMasterNext->version 
 		);
 		wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 
 		wp_enqueue_style( 
-			'primary', 
-			QSM_PLUGIN_URL . 'templates/qmn-primary.css', 
+			'qsm_primary_css', 
+			QSM_PLUGIN_URL . 'templates/qmn_primary.css', 
 			array(), 
 			$mlwQuizMasterNext->version 
 		);

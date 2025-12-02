@@ -6,6 +6,12 @@
     
     window.QSMPagination = window.QSMPagination || {};
 
+    if (typeof qsm_timer_consumed_obj === 'undefined') {
+        window.qsm_timer_consumed_obj = {
+            qmn_count_upward_status : false
+        };
+    }
+    
     QSMPagination.Timer = {
         quizObjects: {},
         intervals: {},
@@ -457,9 +463,3 @@
     });
 
 })(jQuery);
-
-if (typeof qsm_timer_consumed_obj === 'undefined') {
-    var qsm_timer_consumed_obj = {
-        qmn_count_upward_status : false
-    };
-}

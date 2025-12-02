@@ -114,7 +114,15 @@ class QSM_New_Pagination_Renderer {
 		$this->quiz_texts 		= (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );		
 		$this->contact_fields 	= maybe_unserialize( $this->quiz_settings['contact_form'] );
 		$this->pages 			= maybe_unserialize( $this->quiz_settings['pages'] );
-		$this->qpages 			= maybe_unserialize( $this->quiz_settings['qpages'] );
+		$qpages 				= maybe_unserialize( $this->quiz_settings['qpages'] );
+		if ( ! empty( $qpages ) ) {
+			foreach ( $qpages as $key => $qpage ) {
+				unset( $qpage['questions'] );
+				if ( isset( $qpage['id'] ) ) {
+					$this->qpages[ $qpage['id'] ] = $qpage;
+				}
+			}
+		}
 		$this->randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $this->quiz_options->randomness_order );
 		
 		// Ensure quiz_data has required fields

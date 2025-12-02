@@ -707,6 +707,9 @@ var show_result_validation = true;
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
             
+            // Trigger before page show event
+            $(document).trigger('qsm_show_page_before', [quizId, pageNumber, quizData]);
+            
             // Hide all pages
             quizData.pages.hide();
             
@@ -723,6 +726,9 @@ var show_result_validation = true;
                 // Preemptively load next pages (load 2 pages ahead)
                 this.preloadNextPages(quizId, pageNumber);
             }
+            
+            // Trigger after page show event
+            $(document).trigger('qsm_show_page_after', [quizId, pageNumber, quizData]);
         },
         
         /**
