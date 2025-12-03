@@ -1327,38 +1327,36 @@ class QSM_New_Pagination_Renderer {
 		
 		$quiz_data['questions_settings'] = $questions_settings;
 	
-	// Output JavaScript with both legacy and new variable names for compatibility
-	$output = '<script type="text/javascript">';
-	$output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
-	$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
-	$output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-	$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-	
-	// Add encryption data if available
-	if ( ! empty( $encryption ) ) {
-		$output .= '
-		if (typeof encryptionKey === "undefined") {
-			var encryptionKey = {};
-		}
-		if (typeof data === "undefined") {
-			var data = {};
-		}
-		if (typeof jsonString === "undefined") {
-			var jsonString = {};
-		}
-		if (typeof encryptedData === "undefined") {
-			var encryptedData = {};
-		}
-		encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
+		// Add encryption data if available
+		if ( ! empty( $encryption ) ) {
+			$qsm_inline_encrypt_js = '
+			if (typeof encryptionKey === "undefined") {
+				var encryptionKey = {};
+			}
+			if (typeof data === "undefined") {
+				var data = {};
+			}
+			if (typeof jsonString === "undefined") {
+				var jsonString = {};
+			}
+			if (typeof encryptedData === "undefined") {
+				var encryptedData = {};
+			}
+			encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
 
-		data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
-		jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
-		encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
-	}
+			data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
+			jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
+			encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
+			wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+		}
+		
+		// Output JavaScript with both legacy and new variable names for compatibility
+		$output = '<script type="text/javascript">';
+		$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
+		$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
+		$output .= '</script>';
 	
-	$output .= '</script>';
-	
-	return $output;
+		return $output;
 	}
 
 	/**

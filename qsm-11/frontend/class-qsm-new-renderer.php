@@ -96,6 +96,12 @@ class QSM_New_Renderer {
 	 * Enqueue scripts and styles for new rendering system
 	 */
 	public function enqueue_scripts() {
+		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
+		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		if ( 0 === intval( $enable_new_render ) ) {
+			return;
+		}
+
 		global $mlwQuizMasterNext;
 
 		wp_enqueue_style( 
@@ -132,15 +138,6 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version 
 		);
 
-		// Enqueue encryption script
-		wp_enqueue_script( 
-			'qsm_encryption', 
-			QSM_PLUGIN_JS_URL . '/crypto-js.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			false 
-		);
-
 		// Enqueue navigation JavaScript
 		wp_enqueue_script( 
 			'qsm-quiz-navigation', 
@@ -149,6 +146,7 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version, 
 			true 
 		);
+
 		// Enqueue common script
 		wp_enqueue_script( 
 			'qsm_common', 
@@ -157,6 +155,16 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version, 
 			true 
 		);
+		
+		// Enqueue encryption script
+		wp_enqueue_script( 
+			'qsm_encryption', 
+			QSM_PLUGIN_JS_URL . '/crypto-js.js', 
+			array( 'jquery' ), 
+			$mlwQuizMasterNext->version, 
+			true 
+		);
+
 		// Enqueue progress bar JavaScript
 		wp_enqueue_script( 
 			'qsm-progressbar', 

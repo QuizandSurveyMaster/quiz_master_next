@@ -1444,6 +1444,9 @@ var show_result_validation = true;
             $('html, body').animate({
                 scrollTop: $resultDiv.offset().top - 50
             }, 500);
+		    
+		    // Trigger after result is displayed - matches legacy qsm-quiz.js format
+		    jQuery(document).trigger('qsm_after_display_result', [response, 'quizForm' + quizId, $quizContainer]);
         },
 
         /**

@@ -24,7 +24,7 @@
         },
 
         initProgressBar: function(quizId, $container, $form) {
-            var data = window.qsmQuizData && window.qsmQuizData[quizId] ? window.qsmQuizData[quizId] : {};
+            var data = window.qmn_quiz_data && window.qmn_quiz_data[quizId] ? window.qmn_quiz_data[quizId] : {};
             if (!data.progress_bar || data.progress_bar == 0) return;
 
             // Look for progress bar in container first, then form (for new structure)
