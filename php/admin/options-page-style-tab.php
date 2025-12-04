@@ -229,7 +229,7 @@ function qsm_options_styling_tab_content() {
 			"id"           => 'qsm-ultimate',
 			"title"        => __( 'Go Beyond Standard Quizzes', 'quiz-master-next' ),
 			"description"  => __( 'Take full control over quiz customization and User Experience with QSM Ultimate Add-On.', 'quiz-master-next' ),
-			"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/Ultimate.png',
+			"chart_image"  => plugins_url( '', __DIR__ ) . '/images/Ultimate.png',
 			"warning"      => __( 'Ultimate Addon required', 'quiz-master-next' ),
 			"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Ultimate Addon separately.', 'quiz-master-next' ),
 			"buy_btn_text" => __( 'Buy Ultimate Addon', 'quiz-master-next' ),

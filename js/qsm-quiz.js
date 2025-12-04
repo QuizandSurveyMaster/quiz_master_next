@@ -53,6 +53,9 @@ var qsmTimerInterval = [];
 						QSM.initTimer(quizID);
 						quizType = 'timer';
 					} else if (jQuery('.qsm-quiz-container-' + quizID + ' #timer').val() == 0) {
+						if (qsmTimerInterval[quizID]) {
+							clearInterval(qsmTimerInterval[quizID]);
+						}
 						qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 					}
 					if (jQuery('.qsm-quiz-container-' + quizID + ' .qsm-submit-btn').is(':visible') && !jQuery('.qsm-quiz-container-' + quizID).hasClass('qsm_auto_pagination_enabled') ) {
@@ -114,6 +117,9 @@ var qsmTimerInterval = [];
 			var timer_ms = jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				jQuery('.qsm-quiz-container-' + quizID + ' #timer').val(0);
+				if (qsmTimerInterval[quizID]) {
+					clearInterval(qsmTimerInterval[quizID]);
+				}
 				qsmTimerInterval[quizID] = setInterval(function () { qmnTimeTakenTimer(quizID) }, 1000);
 				jQuery(".qsm-quiz-container-" + quizID + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
@@ -674,6 +680,9 @@ function qmnDoInit() {
 			var timer_ms = jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				jQuery('.qsm-quiz-container-' + _quiz_id + ' #timer').val(0);
+				if (qsmTimerInterval[_quiz_id]) {
+					clearInterval(qsmTimerInterval[_quiz_id]);
+				}
 				qsmTimerInterval[_quiz_id] = setInterval(function () { qmnTimeTakenTimer(_quiz_id) }, 1000);
 				jQuery(".qsm-quiz-container-" + _quiz_id + " input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
@@ -1492,36 +1501,6 @@ jQuery(function () {
 				jQuery('#' + form_id).find("#qsm_grecaptcha_v3_response").val(token);
 				qmnFormSubmit(form_id, $this);
 			});
-		});
-	});
-
-	jQuery(document).on('click', '.btn-reload-quiz', function (e) {
-		e.preventDefault();
-		var quiz_id = jQuery(this).data('quiz_id');
-		var parent_div = jQuery(this).parents('.qsm-quiz-container');
-		qsmDisplayLoading(parent_div, quiz_id);
-		jQuery.ajax({
-			type: 'POST',
-			url: qmn_ajax_object.ajaxurl,
-			data: {
-				action: "qsm_get_quiz_to_reload",
-				quiz_id: quiz_id,
-			},
-			success: function (response) {
-				parent_div.replaceWith(response);
-				//Reload the timer and pagination
-				qmnDoInit();
-
-				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
-					MathJax.typesetPromise();
-				}
-
-				// trigger fired on successfull retake quiz
-				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
-			},
-			error: function (errorThrown) {
-				console.log('error');
-			}
 		});
 	});
 

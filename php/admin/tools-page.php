@@ -190,7 +190,7 @@ function qsm_audit_box() {
 		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr( $previous ); ?>">
 			<?php
 			/* translators: %s: table limit */
-			echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
+			printf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
 			?>
 		</a>
 		<?php
@@ -199,7 +199,7 @@ function qsm_audit_box() {
 			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr( $page ); ?>">
 			<?php
 			/* translators: %s: table limit */
-			echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
+			printf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
 			?>
 			</a>
 			<?php
@@ -210,7 +210,7 @@ function qsm_audit_box() {
 			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr( $page ); ?>">
 				<?php
 				/* translators: %s: table limit */
-				echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
+				printf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
 				?>
 			</a>
 			<?php
@@ -221,7 +221,7 @@ function qsm_audit_box() {
 		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr( $previous ); ?>">
 			<?php
 			/* translators: %s: table limit */
-			echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
+			printf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) );
 			?>
 		</a>
 		<?php

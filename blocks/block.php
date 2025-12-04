@@ -35,7 +35,6 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			add_action( 'enqueue_block_editor_assets', array( $this, 'register_block_scripts' ) );
 
 			add_action( 'rest_api_init', array( $this, 'register_editor_rest_routes' ) );
-
 		}
 
 		/**
@@ -64,7 +63,6 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					)
 				);
 			}
-
 		}
 
 		/**
@@ -108,7 +106,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 		 * Get hierarchical qsm_category
 		 */
 		private function hierarchical_qsm_category( $cat = 0 ) {
-			$category = [];
+			$category = array();
 			$next = get_categories( array(
 				'taxonomy'     => 'qsm_category',
 				'hide_empty'   => false,
@@ -364,7 +362,6 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			);
 
 			//save pages and question order inside page : qsm_ajax_save_pages()
-
 		}
 
 		/**
@@ -661,9 +658,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				'status' => 'success',
 				'msg'    => __( 'Quiz saved successfully', 'quiz-master-next' ),
 			);
-
 		}
-
 	}
 
 	QSMBlock::get_instance();

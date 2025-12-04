@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 10.3.1
+ * Version: 10.3.2
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
@@ -43,7 +43,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '10.3.1';
+	public $version = '10.3.2';
 
 	/**
 	 * QSM Alert Manager Object
@@ -619,7 +619,6 @@ class MLWQuizMasterNext {
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
-
 	}
 
 	/**
@@ -798,7 +797,7 @@ class MLWQuizMasterNext {
 			return;
 		}
 		$roles    = (array) $user->roles;
-		if ( empty( $roles ) ) {
+		if ( empty( $roles ) || !isset($roles[0]) || !is_string($roles[0]) ) {
 			return;
 		}
 		$rolename = $roles[0];
@@ -806,12 +805,11 @@ class MLWQuizMasterNext {
 		if ( ! $role ) {
 			return;
 		}
-
 		// Dynamically determine the capabilities to add based on the current user role.
 		$capabilities_to_add = isset(${$rolename . '_capabilities'}) ? ${$rolename . '_capabilities'} : array();
 		$capabilities_to_add = apply_filters(
 			'qsm_default_user_capabilities',
-			isset(${$rolename . '_capabilities'}) ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : [],
+			isset(${$rolename . '_capabilities'}) ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : array(),
 			$user
 		);
 
@@ -947,8 +945,8 @@ class MLWQuizMasterNext {
         $question_terms_table_name       = $wpdb->prefix . 'mlw_question_terms';
 
         // List of tables and their columns
-        $tables = [
-            $quiz_table_name                 => [
+        $tables = array(
+            $quiz_table_name                 => array(
                 'quiz_id',
 				'quiz_name',
 				'message_before',
@@ -1005,8 +1003,8 @@ class MLWQuizMasterNext {
 				'quiz_taken',
 				'deleted',
 				'quiz_author_id',
-            ],
-            $question_table_name             => [
+            ),
+            $question_table_name             => array(
                 'question_id',
 				'quiz_id',
 				'question_name',
@@ -1034,8 +1032,8 @@ class MLWQuizMasterNext {
 				'category',
 				'deleted',
                 'deleted_question_bank',
-            ],
-            $results_table_name              => [
+            ),
+            $results_table_name              => array(
                 'result_id',
 				'quiz_id',
 				'quiz_name',
@@ -1058,8 +1056,8 @@ class MLWQuizMasterNext {
 				'form_type',
 				'page_name',
 				'page_url',
-            ],
-            $audit_table_name                => [
+            ),
+            $audit_table_name                => array(
                 'trail_id',
 				'action_user',
 				'action',
@@ -1067,32 +1065,32 @@ class MLWQuizMasterNext {
 				'quiz_name',
 				'form_data',
 				'time',
-            ],
-            $themes_table_name               => [
+            ),
+            $themes_table_name               => array(
                 'id',
 				'theme',
 				'theme_name',
 				'default_settings',
 				'theme_active',
-            ],
-            $quiz_themes_settings_table_name => [
+            ),
+            $quiz_themes_settings_table_name => array(
                 'id',
 				'theme_id',
 				'quiz_id',
 				'quiz_theme_settings',
 				'active_theme',
-            ],
-            $question_terms_table_name       => [
+            ),
+            $question_terms_table_name       => array(
                 'id',
 				'question_id',
 				'quiz_id',
 				'term_id',
 				'taxonomy',
-            ],
-        ];
+            ),
+        );
 		$response['message'] = "";
         // Check all tables
-        $errors = [];
+        $errors = array();
         foreach ( $tables as $table_name => $columns ) {
             $error = $this->qsm_check_table_structure($table_name, $columns);
             if ( $error ) {
@@ -1133,7 +1131,7 @@ class MLWQuizMasterNext {
             return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" does not exist.", "quiz-master-next");
         }
         $existing_columns = array_column($columns, 'Field');
-        $missing_columns = [];
+        $missing_columns = array();
         foreach ( $expected_columns as $column ) {
             if ( ! in_array($column, $existing_columns, true) ) {
                 $missing_columns[] = $column;
@@ -1243,7 +1241,7 @@ class MLWQuizMasterNext {
 					<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br>
 					<?php
 					/* translators: %s: HTML tag */
-					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
+					printf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
 					?>
 				</p>
 				<p class="category-action">

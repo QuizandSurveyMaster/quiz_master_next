@@ -181,5 +181,4 @@ class QSM_Migrate {
 		}
 		update_option( 'fix_deleted_quiz_posts', 1 );
 	}
-
 }

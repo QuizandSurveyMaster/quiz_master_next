@@ -1429,7 +1429,6 @@ class QSM_Install {
 			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
 	}
 
 	/**
@@ -2175,7 +2174,6 @@ class QSM_Install {
 		}
 		return (array) $links;
 	}
-
 }
 
 $qsm_install = new QSM_Install();
