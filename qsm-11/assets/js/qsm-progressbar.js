@@ -117,11 +117,23 @@
             // This is critical for single-page quizzes where bar might hide on navigation
             currentQuiz.$bar.show();
             
-            currentQuiz.$fill.animate({ width: progress + '%' }, 300);
+            currentQuiz.$fill.animate({ width: progress + '%' }, 1400);
+            
             if (currentQuiz.$text.length) {
-                currentQuiz.$text.text(Math.round(progress) + '%');
+                let $el = currentQuiz.$text;
+                let oldVal = parseInt($el.text()) || 0;
+                let newVal = Math.round(progress);
+
+                $({val: oldVal}).animate({val: newVal}, {
+                    duration: 1400,
+                    easing: 'swing',
+                    step: function(now) {
+                        $el.text(Math.floor(now) + '%');
+                    }
+                });
             }
-        },
+        }
+
     };
 
     $(document).ready(function() {

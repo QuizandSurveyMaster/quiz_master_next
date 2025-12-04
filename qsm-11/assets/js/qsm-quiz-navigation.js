@@ -44,7 +44,8 @@ var show_result_validation = true;
                 errorMessage: '.qsm-error-message',
                 modalSubmitBtn: '.submit-the-form',
                 timerField: '#timer',
-                timerMsField: 'input[name="timer_ms"]'
+                timerMsField: 'input[name="timer_ms"]',
+                currentPageField: 'input[name="current_page"]'
             },
             classes: {
                 hidden: 'qsm-hidden',
@@ -988,6 +989,9 @@ var show_result_validation = true;
         updatePageCounter: function(quizId) {
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
+            
+            let currentPage = quizData.form.find(this.config.selectors.currentPageField);
+            currentPage.val(quizData.currentPage);
 
             let $counter = quizData.pagination.find(this.config.selectors.pageCounter);
             if ($counter.length) {

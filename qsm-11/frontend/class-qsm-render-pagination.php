@@ -1150,6 +1150,7 @@ class QSM_New_Pagination_Renderer {
 		// Timer fields
 		$output .= '<input type="hidden" name="timer" id="timer" value="0" />';
 		$output .= '<input type="hidden" name="timer_ms" id="timer_ms" value="0"/>';
+		$output .= '<input type="hidden" name="current_page" class="current_page_hidden" value="0"/>';
 		
 		// Answer randomization IDs (if randomizing answers)
 		if ( in_array( 'answers', $this->randomness_order ) && ! empty( $quiz_answer_random_ids ) ) {

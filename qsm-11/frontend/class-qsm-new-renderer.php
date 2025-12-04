@@ -96,14 +96,10 @@ class QSM_New_Renderer {
 	 * Enqueue scripts and styles for new rendering system
 	 */
 	public function enqueue_scripts() {
-		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
-		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
-		if ( 0 === intval( $enable_new_render ) ) {
+		global $mlwQuizMasterNext;
+		if ( ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
 			return;
 		}
-
-		global $mlwQuizMasterNext;
-
 		wp_enqueue_style( 
 			'qmn_quiz_animation_style', 
 			QSM_PLUGIN_CSS_URL . '/animate.css', 
