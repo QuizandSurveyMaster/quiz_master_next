@@ -44,7 +44,9 @@ class QSM_Fields {
 							// Handle array values for randomness_order field (multiple checkboxes)
 							if ( 'randomness_order' === $field['id'] && isset( $_POST[ $field['id'] ] ) && is_array( $_POST[ $field['id'] ] ) ) {
 								$sanitized_array = array();
-								foreach ( $_POST[ $field['id'] ] as $checkbox_value ) {
+								$form_settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST[ $field['id'] ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								foreach ( $form_settings_array as $checkbox_value ) {
+									// Sanitized each fields in loop
 									$sanitized_array[] = sanitize_text_field( wp_unslash( $checkbox_value ) );
 								}
 								$sanitized_value = maybe_serialize( $sanitized_array );
@@ -667,7 +669,7 @@ class QSM_Fields {
 		$prefix_text = isset( $field['prefix_text'] ) ? $field['prefix_text'] . ' ' : '';
 		$suffix_text = isset( $field['suffix_text'] ) ? ' ' . $field['suffix_text'] : '';
 		?>
-		<tr class="<?php echo ! empty( $field['container_class'] ) ? esc_attr( $field['container_class'] ) : ''; ?>" valign="top" <?php echo esc_html( $display ); ?>>
+		<tr class="<?php echo ! empty( $field['container_class'] ) ? esc_attr( $field['container_class'] ) : ''; ?>" <?php echo esc_html( $display ); ?>>
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 				<?php if ( isset( $field['tooltip'] ) && '' !== $field['tooltip'] ) { ?>
@@ -1045,7 +1047,7 @@ class QSM_Fields {
 				<?php
 					$categories          = QSM_Questions::get_quiz_categories( $quiz_id );
 					$category_select_key = ( ! empty( $value['category_select_key'] ) ) ? $value['category_select_key'] : array();
-				if ( count( $category_select_key ) == 0 && ! empty( $categories ) ) {
+				if ( empty( $category_select_key ) && ! empty( $categories ) ) {
 					?>
 						<div class = "select-category-question-limit-subdiv">
 							<select class="question_limit_category" name="category_select_key[]">

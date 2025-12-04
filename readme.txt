@@ -2,7 +2,7 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 5.4
 Stable tag: 10.3.2
 License: GPLv2
@@ -221,7 +221,7 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
-= 10.3.2 ( November 19, 2025 ) =
+= 10.3.2 ( December 04, 2025 ) =
 * Bug: Patch vulnerability with qsm_dashboard_delete_result function
 * Bug: Fixed SQL Injection via is_linking parameter
 * Enhancement: Strengthened validation and overall security across quiz questions and other admin pages

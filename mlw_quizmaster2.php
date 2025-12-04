@@ -797,7 +797,7 @@ class MLWQuizMasterNext {
 			return;
 		}
 		$roles    = (array) $user->roles;
-		if ( empty( $roles ) ) {
+		if ( empty( $roles ) || !isset($roles[0]) || !is_string($roles[0]) ) {
 			return;
 		}
 		$rolename = $roles[0];
@@ -805,7 +805,6 @@ class MLWQuizMasterNext {
 		if ( ! $role ) {
 			return;
 		}
-
 		// Dynamically determine the capabilities to add based on the current user role.
 		$capabilities_to_add = isset(${$rolename . '_capabilities'}) ? ${$rolename . '_capabilities'} : array();
 		$capabilities_to_add = apply_filters(
