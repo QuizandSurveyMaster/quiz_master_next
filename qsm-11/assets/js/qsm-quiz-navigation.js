@@ -75,72 +75,110 @@ var show_result_validation = true;
         /**
          * Initialize navigation for all quizzes on page
          */
-        init: function() {
+        init: function(initialPage = 1) {
             let self = this;
             
             // Initialize each quiz form found
             $(this.config.selectors.quizContainer).each(function() {
+                
                 let $quizContainer = $(this);
                 let quizId = self.getQuizId($quizContainer);
                 
-                if (quizId && !self.quizObjects[quizId]) {
-                    self.initQuiz(quizId, $quizContainer);
+                if (quizId) {
+                    self.initQuiz(quizId, $quizContainer,initialPage);
                 }
             });
         },
+        initQuizObject: function(quizId, $quizContainer,initialPage) {
 
-        /**
-         * Initialize a specific quiz
-         */
-        initQuiz: function(quizId, $quizContainer) {
+            // Get quiz data from backend config
             let quizData = this.getQuizData(quizId);
+
+            // Find all pages for this quiz
             let $pages = $quizContainer.find(this.config.selectors.page);
-            
-            // Determine if first page should be shown
+
+            // Determine if first page is disabled
             let hasFirstPage = (quizData.disable_first_page != 1);
-                        
-            // Calculate question pages (exclude first page if present)
+
+            // Question pages count (excluding intro page)
             let questionPages = hasFirstPage ? $pages.length - 1 : $pages.length;
-            
+
+            // Build quiz object
             this.quizObjects[quizId] = {
                 id: quizId,
                 quizContainer: $quizContainer,
                 form: $quizContainer.find(this.config.selectors.form),
-                pagination: $quizContainer.find(this.config.selectors.pagination),
-                nonceValue: $quizContainer.find('#qsm_nonce_' + quizId).val() || $quizContainer.find('input[name="qsm_nonce"]').val(),
+                pagination: jQuery('.qsm-pagination-' + quizId),
+                nonceValue: $quizContainer.find('#qsm_nonce_' + quizId).val() 
+                            || $quizContainer.find('input[name="qsm_nonce"]').val(),
+
                 pages: $pages,
-                currentPage: 1,
+                currentPage: initialPage,
                 totalPages: $pages.length,
-                questionPages: questionPages, // Pages that count for progress
+                questionPages: questionPages,
                 hasFirstPage: hasFirstPage,
                 data: quizData,
+
+                // Validation state
                 validation: {
                     enabled: true,
                     errors: []
+                },
+
+                // Runtime values (extendable later)
+                runtime: {
+                    initialized: false,
+                    started: false,
+                    completed: false,
+                    timeTakenSeconds: 0,
                 }
             };
+
+            return this.quizObjects[quizId];
+        },
+
+
+        /**
+         * Initialize a specific quiz
+         */
+        initQuiz: function(quizId, $quizContainer,initialPage) {
             
-            // Initialize components
+
+            // Create quiz object
+            let quizObj = this.initQuizObject(quizId, $quizContainer,initialPage);
+
+            // Initialize pagination UI
             this.initPagination(quizId);
-            
-            // Show initial page
-            this.showPage(quizId, 1);
-            
-            // Initialize time taken timer
-            var self = this;
-            setInterval(function () { self.qsmQuizTimeTakenTimer(quizId) }, 1000);
-            
-            // Initialize progress bar if available
+
+            // Show first page
+            this.showPage(quizId, quizObj.currentPage);
+            //this.showPage(quizId, 1);
+
+            // Timer
+            let self = this;
+            setInterval(function() {
+                self.qsmQuizTimeTakenTimer(quizId);
+            }, 1000);
+
+            // Progress Bar
             if (window.QSMPagination && window.QSMPagination.ProgressBar) {
-                window.QSMPagination.ProgressBar.initProgressBar(quizId, $quizContainer, this.quizObjects[quizId].form);
+                window.QSMPagination.ProgressBar.initProgressBar(
+                    quizId,
+                    $quizContainer,
+                    quizObj.form
+                );
             }
-            
+
             // Bind events
             this.bindEvents(quizId);
-            
-            // Trigger initialization complete event
-            $(document).trigger('qsm_quiz_initialized', [quizId, this.quizObjects[quizId]]);
+
+            // Mark as initialized
+            quizObj.runtime.initialized = true;
+
+            // Fire event
+            $(document).trigger('qsm_quiz_initialized', [quizId, quizObj]);
         },
+
 
         qsmQuizTimeTakenTimer: function(quizId) {
             let currentQuiz = this.quizObjects[quizId];
@@ -191,20 +229,34 @@ var show_result_validation = true;
             let currentQuiz = this.quizObjects[quizId];
             let $form = currentQuiz.form;
             let $container = currentQuiz.quizContainer;
-
+            let $pagination_container = jQuery('.qsm-pagination-'+quizId);
+            let $start_btn = '.qsm-start-btn-'+quizId;
+            let $prev_btn = '.qsm-previous-btn-'+quizId;
+            let $next_btn = '.qsm-next-btn-'+quizId;
+            let $submit_btn = '.qsm-submit-btn-'+quizId;
+            
+            // =========================================
+            // 🔥 Prevent duplicate click handlers
+            // =========================================
+            jQuery(document).off('click', $start_btn);
+            jQuery(document).off('click', $prev_btn);
+            jQuery(document).off('click', $next_btn);
+            jQuery(document).off('click', $submit_btn);
+            
             // Navigation button clicks - bind to container since navigation is outside form
-            $container.on('click', this.config.selectors.previousBtn, function(e) {
+           jQuery(document).on('click', $prev_btn, function(e) {
                 e.preventDefault();
+                console.log('Previous button clicked for quiz:', quizId);
                 self.previousPage(quizId);
             });
 
-            $container.on('click', this.config.selectors.nextBtn, function(e) {
+           jQuery(document).on('click', $next_btn, function(e) {
                 e.preventDefault();
                 self.nextPage(quizId);
+                console.log('Next button clicked for quiz:', quizId);
             });
-
             // Start button click - bind to container (multiple selectors for compatibility)
-            $container.on('click', this.config.selectors.startBtn, function(e) {
+            jQuery(document).on('click', $start_btn, function(e) {
                 e.preventDefault();
                 console.log('Start button clicked for quiz:', quizId);
                 self.startQuiz(quizId);
@@ -216,9 +268,9 @@ var show_result_validation = true;
             });
 
             // Submit button click - bind to container since submit button is in navigation
-            $container.on('click', this.config.selectors.submitBtn, function(e) {
+           jQuery(document).on('click', $submit_btn, function(e) {
                 e.preventDefault();
-                
+                console.log('Submit button clicked for quiz:', quizId);
                 if (!self.validateForm(quizId)) {
                     return false;
                 }
@@ -712,6 +764,7 @@ var show_result_validation = true;
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
+            console.log( " pageNumber ", pageNumber );   
             if ($targetPage.length > 0) {
                 $targetPage.show();
                 
@@ -787,7 +840,7 @@ var show_result_validation = true;
             // Get question IDs and other data from page attributes
             let questionIds = $page.attr('data-question-ids') || '';
             let questionStartNumber = parseInt($page.attr('data-question-start-number')) || 1;
-            
+            console.log( quizData.data.ajax_url );
             // Prepare AJAX data
             let ajaxData = {
                 action: 'qsm_load_page_questions',
@@ -876,6 +929,7 @@ var show_result_validation = true;
          */
         nextPage: function(quizId) {
             let quizData = this.quizObjects[quizId];
+            console.log(quizData);
             if (!quizData) return;
 
             // Validate current page before proceeding
@@ -927,12 +981,18 @@ var show_result_validation = true;
         updateNavigationButtons: function(quizId) {
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
-
+            
             let $pagination = quizData.pagination;
-            let $previousBtn = $pagination.find(this.config.selectors.previousBtn);
-            let $nextBtn = $pagination.find(this.config.selectors.nextBtn);
-            let $submitBtn = $pagination.find(this.config.selectors.submitBtn);
-            let $startBtn = $pagination.find(this.config.selectors.startBtn);
+
+            // let $previousBtn = $pagination.find(this.config.selectors.previousBtn);
+            // let $nextBtn = $pagination.find(this.config.selectors.nextBtn);
+            // let $submitBtn = $pagination.find(this.config.selectors.submitBtn);
+            // let $startBtn = $pagination.find(this.config.selectors.startBtn);
+
+            let $previousBtn = jQuery('.qsm-previous-btn-'+quizId);
+            let $nextBtn = jQuery('.qsm-next-btn-'+quizId);
+            let $submitBtn = jQuery('.qsm-submit-btn-'+quizId);
+            let $startBtn = jQuery('.qsm-start-btn-'+quizId);
             
             let currentPage = quizData.currentPage;
             let isFirstPage = (currentPage == 1);
@@ -941,6 +1001,7 @@ var show_result_validation = true;
             
             // Simple button visibility logic
             if (showStartButton) {
+                console.log($previousBtn);
                 // First page (welcome page) with start button
                 $startBtn.show();
                 $previousBtn.hide();
@@ -949,6 +1010,9 @@ var show_result_validation = true;
             } else {
                 // Regular navigation pages (question pages)
                 $startBtn.hide();
+
+                
+                
                 
                 // Previous button logic:
                 // - Hide on first page when no welcome page
@@ -964,9 +1028,11 @@ var show_result_validation = true;
                 if (isLastPage) {
                     $nextBtn.hide();
                     $submitBtn.show();
+                    
                 } else {
                     $nextBtn.show();
                     $submitBtn.hide();
+                    
                 }
             }
         },
@@ -1846,12 +1912,15 @@ var show_result_validation = true;
          * Destroy quiz instance
          */
         destroy: function(quizId) {
+            
             if (this.quizObjects[quizId]) {
                 // Remove event listeners
                 this.quizObjects[quizId].form.off();
+                
 
                 // Delete instance
                 delete this.quizObjects[quizId];
+                console.log('destroy')
                 
                 // Trigger destroy event
                 $(document).trigger('qsm_navigation_destroyed', [quizId]);

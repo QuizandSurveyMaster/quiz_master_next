@@ -170,9 +170,10 @@ function qsm_get_question_type_templates() {
  *
  * @param string|int $question_type Question type ID
  * @param array      $args Template arguments
+ * @param array      $shortcode_args Shortcode arguments
  * @return string Template output
  */
-function qsm_get_question_template( $question_type, $args = array() ) {
+function qsm_get_question_template( $question_type, $args = array(), $shortcode_args = array() ) {
 	$question_types = qsm_get_question_type_templates();
 	$question_template_name = isset( $question_types[ $question_type ] ) ? $question_types[ $question_type ] : '';
 	

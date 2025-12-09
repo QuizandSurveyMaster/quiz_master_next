@@ -23,13 +23,16 @@
             this.bindEvents();
         },
 
-        initProgressBar: function(quizId, $container, $form) {
+        initProgressBar: function(quizId, $container, $form, $initial_page = 1) {
+            
             var data = window.qsmQuizData && window.qsmQuizData[quizId] ? window.qsmQuizData[quizId] : {};
             if (!data.progress_bar || data.progress_bar == 0) return;
-
+            console.log("initProgressBar" , data);
             // Look for progress bar in container first, then form (for new structure)
-            var $bar = $container.find('.qsm-progress-bar');
-
+            //var $bar = $container.find('.qsm-progress-bar');
+            //let $bar = jQuery('.qsm-pagination-'+quizId).find('.qsm-progress-bar');
+            let $bar = jQuery('.qsm-progress-bar-'+quizId);
+            console.log($bar);
             if (!$bar.length) return;
 
             // Count pages - use same selectors as navigation system
@@ -49,10 +52,10 @@
                 totalPages: totalPages,
                 questionPages: questionPages,
                 hasFirstPage: hasFirstPage,
-                currentPage: 1
+                currentPage: $initial_page
             };
             $bar.show();
-            this.updateProgress(quizId, 1);
+            this.updateProgress(quizId, $initial_page);
         },
 
         bindEvents: function() {

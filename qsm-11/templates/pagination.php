@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 extract( $args );
 
 // Apply filters to allow customization
-$pagination_classes = apply_filters( 'qsm_pagination_classes', array( 'qsm-navigation', 'qsm-pagination', 'qmn_pagination', 'border', 'margin-bottom' ), $quiz_id );
+$pagination_classes = apply_filters( 'qsm_pagination_classes', array( 'qsm-navigation', 'qsm-pagination', 'qmn_pagination', 'border', 'margin-bottom','qsm-pagination-'.esc_attr( $quiz_id ) ), $quiz_id );
 $pagination_class = implode( ' ', $pagination_classes );
 
 // Hook before pagination render
@@ -33,7 +33,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	<!-- Previous Button -->
 	<?php 
 	if ( apply_filters( 'qsm_show_previous_button', true, $quiz_id, $args ) ) {
-		$previous_button_class = apply_filters( 'qsm_previous_button_class', array('qsm-previous-btn', 'qmn_btn', 'qsm-btn', 'qsm-previous', 'mlw_qmn_quiz_link', 'mlw_previous', 'qsm-secondary'), $quiz_id, $args );
+		$previous_button_class = apply_filters( 'qsm_previous_button_class', array('qsm-previous-btn', 'qmn_btn', 'qsm-btn', 'qsm-previous', 'mlw_qmn_quiz_link', 'mlw_previous', 'qsm-secondary','qsm-previous-btn-'.esc_attr( $quiz_id ) ), $quiz_id, $args );
 		$previous_button_class = implode( ' ', $previous_button_class );
 	?>
 		<a href="javascript:void(0);" 
@@ -46,7 +46,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 
 	<!-- Progress Bar -->
 	<?php if ( 1 == intval( $options->progress_bar ) && apply_filters( 'qsm_show_progress_bar', true, $quiz_id, $args ) ) : ?>
-		<div class="qsm-progress-bar">
+		<div class="qsm-progress-bar qsm-progress-bar-<?php echo esc_attr( $quiz_id ); ?>">
 			<div class="qsm-progress-bar-container">
 				<div class="qsm-progress-fill"></div>
 			</div>
@@ -56,7 +56,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	
 	<!-- Start Button -->
 	<?php if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) : 
-		$start_button_class = apply_filters( 'qsm_start_button_class', array('qsm-start-btn', 'qmn_btn', 'qsm-btn', 'mlw_custom_start', 'qsm-start-btn', 'qsm-primary'), $quiz_id, $args );
+		$start_button_class = apply_filters( 'qsm_start_button_class', array('qsm-start-btn', 'qmn_btn', 'qsm-btn', 'mlw_custom_start', 'qsm-start-btn', 'qsm-primary','qsm-start-btn-'.esc_attr( $quiz_id ) ), $quiz_id, $args );
 		$start_button_class = implode( ' ', $start_button_class );
 	?>
 		<a href="javascript:void(0);" 
@@ -69,7 +69,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	
 	<!-- Next Button -->
 	<?php if ( apply_filters( 'qsm_show_next_button', true, $quiz_id, $args ) ) : 
-		$next_button_class = apply_filters( 'qsm_next_button_class', array('qsm-next-btn', 'qmn_btn', 'qsm-btn', 'qsm-next', 'mlw_qmn_quiz_link', 'mlw_next', 'mlw_custom_next', 'qsm-primary'), $quiz_id, $args );
+		$next_button_class = apply_filters( 'qsm_next_button_class', array('qsm-next-btn', 'qmn_btn', 'qsm-btn', 'qsm-next', 'mlw_qmn_quiz_link', 'mlw_next', 'mlw_custom_next', 'qsm-primary','qsm-next-btn-'.esc_attr( $quiz_id ) ), $quiz_id, $args );
 		$next_button_class = implode( ' ', $next_button_class );
 	?>
 		<a href="javascript:void(0);" 
@@ -82,7 +82,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	
 	<!-- Submit Button -->
 	<?php if ( apply_filters( 'qsm_show_submit_button', true, $quiz_id, $args ) ) : 
-		$submit_button_class = apply_filters( 'qsm_submit_button_class', array('qmn_btn', 'qsm-btn', 'qsm-submit-btn', 'qsm-primary'), $quiz_id, $args );
+		$submit_button_class = apply_filters( 'qsm_submit_button_class', array('qmn_btn', 'qsm-btn', 'qsm-submit-btn', 'qsm-primary','qsm-submit-btn-'.esc_attr( $quiz_id ) ), $quiz_id, $args );
 		$submit_button_class = implode( ' ', $submit_button_class );
 	?>
 		<input type="submit" 

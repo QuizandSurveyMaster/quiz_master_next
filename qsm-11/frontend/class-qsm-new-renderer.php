@@ -40,6 +40,8 @@ class QSM_New_Renderer {
 	  };";
 	public $mathjax_url                   = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
 	public $mathjax_version               = '3.2.0';
+	public $quiz_data;
+	public static $qmn_quiz_options;
 
 	/**
 	 * Get singleton instance
@@ -261,10 +263,14 @@ class QSM_New_Renderer {
 			'quiz' => 0,
 			'question_amount' => 0,
 		), $atts );
+		$shortcode_args = array_merge( $shortcode_args, $atts );
+
 		$shortcode_args = apply_filters( 'qsm_shortcode_before', $shortcode_args, $atts );
+		
 		
 		$quiz_id = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );
+		
 		
 		if ( ! $quiz_id ) {
 			return '<p>Invalid quiz ID</p>';
@@ -278,9 +284,42 @@ class QSM_New_Renderer {
 		if ( false === $has_proper_quiz['res'] ) {
 			return $has_proper_quiz['message'];
 		}
+			// Get quiz post based on quiz id
+		$args      = array(
+			'posts_per_page' => 1,
+			'post_type'      => 'qsm_quiz',
+			'meta_query'     => array(
+				array(
+					'key'     => 'quiz_id',
+					'value'   => $quiz_id,
+					'compare' => '=',
+				),
+			),
+		);
+		$the_query = new WP_Query( $args );
+
+		// The Loop
+		$quiz_post_data = array(
+			'post_status' => '',
+			'post_id' => '',
+			'post_permalink' => '',
+			'edit_link' => '',
+		);
+		if ( $the_query->have_posts() ) {
+			while ( $the_query->have_posts() ) {
+				$the_query->the_post();
+				$quiz_post_data['post_status'] = get_post_status( get_the_ID() );
+				$quiz_post_data['post_id'] = get_the_ID();
+				$quiz_post_data['post_permalink'] = get_the_permalink( get_the_ID() );
+				$quiz_post_data['edit_link'] = get_edit_post_link( get_the_ID() );
+			}
+			/* Restore original Post Data */
+			wp_reset_postdata();
+		}
 		
 		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_option_before', $qmn_quiz_options );
+		
 		
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 			return $this->render_result_page();
@@ -329,6 +368,7 @@ class QSM_New_Renderer {
 				'quiz_name' => $qmn_quiz_options->quiz_name,
 				'quiz_system' => $qmn_quiz_options->system,
 				'user_ip' => $this->get_user_ip(),
+				'quiz_post_data' => $quiz_post_data,
 			);
 
 			// Create renderer instance
@@ -336,13 +376,37 @@ class QSM_New_Renderer {
 			$auto_pagination_class = $qmn_quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 			$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
 			$randomness_class = ! empty( $randomness_order ) ? 'random' : '';
+			$container_classes = array( 
+				'qsm-quiz-container', 
+				'qmn_quiz_container', 
+				'qsm-quiz-container-' . esc_attr( $quiz_data['quiz_id'] ), 
+				'mlw_qmn_quiz', 
+				$auto_pagination_class, 
+				'quiz_theme_' . esc_attr( $saved_quiz_theme ), 
+				$randomness_class, 
+			);
+
+			$container_classes = array_filter($container_classes);
+
+			$container_attr = apply_filters(
+				'qsm_quiz_container_attributes',
+				array(
+					'class' => $container_classes, // array, not string
+					'data'  => array(
+						'quiz-id' => esc_attr( $quiz_id ),
+					),
+				),
+				$quiz_id,
+				$quiz_data
+			);
 			?>
 			<!-- // Render quiz container -->
-			<div class="qsm-quiz-container qmn_quiz_container qsm-quiz-container-<?php echo esc_attr( $quiz_data['quiz_id'] ); ?> mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme ); ?> <?php echo esc_attr( $randomness_class ); ?>" data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>">
+			<div <?php echo $this->qsm_render_html_attributes( $container_attr ); ?>>
+
 			
 			<?php
 			// Render quiz
-			$renderer->render();
+			$renderer->render( $shortcode_args );
 			?>
 			</div>
 			<?php
@@ -359,6 +423,42 @@ class QSM_New_Renderer {
 		$return_display = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 		
 		return $return_display;
+	}
+	public function qsm_render_html_attributes( $atts ) {
+
+        $output = array();
+
+        foreach ( $atts as $key => $value ) {
+
+            // CLASS ATTRIBUTES (ARRAY)
+            if ( $key === 'class' ) {
+                $value = array_filter( (array) $value ); // remove empty
+                if ( ! empty( $value ) ) {
+                    $output[] = 'class="' . esc_attr( implode( ' ', $value ) ) . '"';
+                }
+                continue;
+            }
+
+            // DATA ATTRIBUTES (ARRAY)
+            if ( $key === 'data' ) {
+                foreach ( (array) $value as $data_key => $data_value ) {
+                    if ( $data_value === '' ) continue;
+                    $output[] = 'data-' . esc_attr( $data_key ) . '="' . esc_attr( $data_value ) . '"';
+                }
+                continue;
+            }
+
+            // NORMAL ATTRIBUTE
+            if ( $value !== '' ) {
+                $output[] = esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+            }
+        }
+
+        return implode( ' ', $output );
+    }
+	
+	public static function get_qmn_quiz_options() {
+		return self::$qmn_quiz_options;
 	}
 
 	/**

@@ -457,7 +457,7 @@ class QSM_New_Pagination_Renderer {
 	/**
 	 * Render the complete quiz with new pagination system
 	 */
-	public function render() {
+	public function render( $shortcode_args = array() ) {
 		global $mlwQuizMasterNext, $qmn_allowed_visit, $qmn_json_data, $qmn_total_questions, $qmn_all_questions_count, $mlw_qmn_section_count, $quiz_answer_random_ids;
 		
 		// Initialize global variables
@@ -586,7 +586,7 @@ class QSM_New_Pagination_Renderer {
 			echo apply_filters( 'qmn_begin_quiz_questions', '', $this->options, $this->quiz_data );
 			
 			// Render question pages
-			$this->render_quiz_pages();
+			$this->render_quiz_pages( $shortcode_args );
 			
 			// Hook before comment section
 			echo apply_filters( 'qmn_before_comment_section', '', $this->options, $this->quiz_data );
@@ -625,7 +625,10 @@ class QSM_New_Pagination_Renderer {
 			do_action( 'qsm_after_end_quiz_form', $this->options, $this->quiz_data, array() );
 			
 			// Render navigation
-			echo $this->render_navigation();
+			
+			if ( apply_filters( 'qsm_should_render_default_navigation', true, $this->options, $this->quiz_data ) ) {
+    			echo $this->render_navigation();
+			}
 			
 			// Add JavaScript data
 			echo $this->render_javascript_data();
@@ -747,7 +750,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @return string
 	 */
-	private function render_quiz_pages() {
+	private function render_quiz_pages( $shortcode_args = array() ) {
 		global $qmn_total_questions;
 		$output = '';
 		$animation_effect = isset( $this->options->quiz_animation ) && '' !== $this->options->quiz_animation ? ' animated ' . $this->options->quiz_animation : '';
@@ -824,7 +827,7 @@ class QSM_New_Pagination_Renderer {
 								<?php
 							}
 						}
-						echo $this->display_question( $question['question_type_new'], $question_id, $this->options );
+						echo $this->display_question( $question['question_type_new'], $question_id, $this->options, $shortcode_args );
 						do_action('qsm_after_question', $question);
 						?>
 					</div>
@@ -872,7 +875,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param object $quiz_options  Quiz options
 	 * @return string
 	 */
-	private function display_question( $question_type, $question_id, $quiz_options ) {
+	private function display_question( $question_type, $question_id, $quiz_options, $shortcode_args = array() ) {
 		global $mlwQuizMasterNext;
 		
 		// Prepare question data for template
@@ -899,7 +902,7 @@ class QSM_New_Pagination_Renderer {
 		);
 
 		// Use the new question template function
-		$question_template = qsm_get_question_template( $question_type, $args );
+		$question_template = qsm_get_question_template( $question_type, $args,$shortcode_args );
 		if ( $question_template == false ) {
 			$question_type = array_filter($mlwQuizMasterNext->pluginHelper->question_types, function($item) use ($question_type) {
 				return $item['slug'] == $question_type;
@@ -1031,7 +1034,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @return string
 	 */
-	private function render_navigation() {
+	public function render_navigation() {
 		global $mlwQuizMasterNext;
 		
 		// Ensure quiz_texts is properly initialized
@@ -1064,6 +1067,182 @@ class QSM_New_Pagination_Renderer {
 		);
 		
 		return qsm_new_get_template_part( 'pagination', $args );
+	}
+	public function render_start_btn( $builder_args = array() ) {
+		global $mlwQuizMasterNext;
+		
+		// Ensure quiz_texts is properly initialized
+		if ( ! is_object( $this->quiz_texts ) ) {
+			$this->quiz_texts = (object) array();
+		}
+		
+		
+		// Prepare button texts with fallbacks
+		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		
+		$args = array(
+			'quiz_id' => $this->options->quiz_id,
+			'options' => $this->options,
+			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
+				"quiz_previous_button_text-{$this->options->quiz_id}" 
+			),
+			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				$start_button_text, 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
+				"quiz_submit_button_text-{$this->options->quiz_id}" 
+			),
+		);
+		$args = array_merge($args,$builder_args);
+		
+		return qsm_new_get_template_part( 'pagination/start-btn', $args );
+	}
+	public function render_prev_btn( $builder_args = array() ) {
+		global $mlwQuizMasterNext;
+		
+		// Ensure quiz_texts is properly initialized
+		if ( ! is_object( $this->quiz_texts ) ) {
+			$this->quiz_texts = (object) array();
+		}
+		
+		
+		// Prepare button texts with fallbacks
+		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		
+		$args = array(
+			'quiz_id' => $this->options->quiz_id,
+			'options' => $this->options,
+			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
+				"quiz_previous_button_text-{$this->options->quiz_id}" 
+			),
+			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				$start_button_text, 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
+				"quiz_submit_button_text-{$this->options->quiz_id}" 
+			),
+		);
+		$args = array_merge($args,$builder_args);
+		return qsm_new_get_template_part( 'pagination/prev-btn', $args );
+	}
+	public function render_next_btn( $builder_args = array() ) {
+		global $mlwQuizMasterNext;
+		
+		// Ensure quiz_texts is properly initialized
+		if ( ! is_object( $this->quiz_texts ) ) {
+			$this->quiz_texts = (object) array();
+		}
+		
+		
+		// Prepare button texts with fallbacks
+		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		
+		$args = array(
+			'quiz_id' => $this->options->quiz_id,
+			'options' => $this->options,
+			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
+				"quiz_previous_button_text-{$this->options->quiz_id}" 
+			),
+			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				$start_button_text, 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
+				"quiz_submit_button_text-{$this->options->quiz_id}" 
+			),
+		);
+		$args = array_merge($args,$builder_args);
+		return qsm_new_get_template_part( 'pagination/next-btn', $args );
+	}
+	public function render_submit_btn( $builder_args = array() ) {
+		global $mlwQuizMasterNext;
+		
+		// Ensure quiz_texts is properly initialized
+		if ( ! is_object( $this->quiz_texts ) ) {
+			$this->quiz_texts = (object) array();
+		}
+		
+		
+		// Prepare button texts with fallbacks
+		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		
+		$args = array(
+			'quiz_id' => $this->options->quiz_id,
+			'options' => $this->options,
+			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
+				"quiz_previous_button_text-{$this->options->quiz_id}" 
+			),
+			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				$start_button_text, 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
+				"quiz_submit_button_text-{$this->options->quiz_id}" 
+			),
+		);
+		$args = array_merge($args,$builder_args);
+		return qsm_new_get_template_part( 'pagination/submit', $args );
+	}
+	public function render_progress( $builder_args = array() ) {
+		global $mlwQuizMasterNext;
+		
+		// Ensure quiz_texts is properly initialized
+		if ( ! is_object( $this->quiz_texts ) ) {
+			$this->quiz_texts = (object) array();
+		}
+		
+		
+		// Prepare button texts with fallbacks
+		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		
+		$args = array(
+			'quiz_id' => $this->options->quiz_id,
+			'options' => $this->options,
+			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
+				"quiz_previous_button_text-{$this->options->quiz_id}" 
+			),
+			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				$start_button_text, 
+				"quiz_next_button_text-{$this->options->quiz_id}" 
+			),
+			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
+				"quiz_submit_button_text-{$this->options->quiz_id}" 
+			),
+		);
+		$args = array_merge($args,$builder_args);
+		return qsm_new_get_template_part( 'pagination/progress-bar', $args );
 	}
 
 	/**
@@ -1156,12 +1335,15 @@ class QSM_New_Pagination_Renderer {
 		
 		return $output;
 	}
-
+	
 	/**
 	 * Render JavaScript data
 	 * Enhanced to match $qmn_json_data structure from legacy system
 	 *
 	 * @return string
+	 */
+	/**
+	 * Called from shortcode — prepares & outputs QSM JS data.
 	 */
 	private function render_javascript_data() {
 		global $mlwQuizMasterNext;
@@ -1318,40 +1500,76 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$quiz_data['questions_settings'] = $questions_settings;
+		
+		// Output JavaScript with both legacy and new variable names for compatibility
+		// $output = '<script type="text/javascript">';
+		// $output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
+		// $output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
+		// $output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
+		// $output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
 	
-	// Output JavaScript with both legacy and new variable names for compatibility
-	$output = '<script type="text/javascript">';
-	$output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
-	$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
-	$output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-	$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-	
-	// Add encryption data if available
-	if ( ! empty( $encryption ) ) {
-		$output .= '
-		if (typeof encryptionKey === "undefined") {
-			var encryptionKey = {};
-		}
-		if (typeof data === "undefined") {
-			var data = {};
-		}
-		if (typeof jsonString === "undefined") {
-			var jsonString = {};
-		}
-		if (typeof encryptedData === "undefined") {
-			var encryptedData = {};
-		}
-		encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
+		// // Add encryption data if available
+		// if ( ! empty( $encryption ) ) {
+		// 	$output .= '
+		// 	if (typeof encryptionKey === "undefined") {
+		// 		var encryptionKey = {};
+		// 	}
+		// 	if (typeof data === "undefined") {
+		// 		var data = {};
+		// 	}
+		// 	if (typeof jsonString === "undefined") {
+		// 		var jsonString = {};
+		// 	}
+		// 	if (typeof encryptedData === "undefined") {
+		// 		var encryptedData = {};
+		// 	}
+		// 	encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
 
-		data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
-		jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
-		encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
-	}
+		// 	data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
+		// 	jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
+		// 	encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
+		// }
 	
-	$output .= '</script>';
+		// $output .= '</script>';
+		$quiz_id     = intval( $this->options->quiz_id );
+		$quiz_data   = $quiz_data;
+		$encryption  = $encryption;
+		
+		add_action( 'wp_footer', function() use ( $quiz_id, $quiz_data, $encryption ) { ?>
+    
+			<script type="text/javascript">
+				window.qsmQuizData = window.qsmQuizData || {};
+				window.qmn_quiz_data = window.qmn_quiz_data || {};
+
+				window.qsmQuizData[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $quiz_data ); ?>;
+				window.qmn_quiz_data[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $quiz_data ); ?>;
+
+				<?php if ( ! empty( $encryption ) ) : 
+					$key = hash( "sha256", time() . $quiz_id );
+				?>
+					if (typeof encryptionKey === 'undefined') { var encryptionKey = {}; }
+					if (typeof data === 'undefined') { var data = {}; }
+					if (typeof jsonString === 'undefined') { var jsonString = {}; }
+					if (typeof encryptedData === 'undefined') { var encryptedData = {}; }
+
+					encryptionKey[<?php echo $quiz_id; ?>] = "<?php echo $key; ?>";
+
+					data[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $encryption ); ?>;
+					jsonString[<?php echo $quiz_id; ?>] = JSON.stringify( data[<?php echo $quiz_id; ?>] );
+
+					encryptedData[<?php echo $quiz_id; ?>] =
+						CryptoJS.AES.encrypt(
+							jsonString[<?php echo $quiz_id; ?>],
+							encryptionKey[<?php echo $quiz_id; ?>]
+						).toString();
+				<?php endif; ?>
+			</script>
+
+		<?php });
 	
-	return $output;
+		return '';
 	}
+
 
 	/**
 	 * Render contact form and return HTML
