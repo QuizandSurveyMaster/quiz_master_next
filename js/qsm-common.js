@@ -21,6 +21,17 @@ jQuery(document).ready(function(){
 
 	});
 
+	jQuery(document).on('qsm_after_lazy_load', function (e, quizId, pageNumber, $page, data) {
+		if ( $page.find('.question-type-polar-s').length > 0 ) {
+			$page.find('.question-type-polar-s').each(function(){
+				let polarQuestion = jQuery(this).find('.slider-main-wrapper div');
+				let questionID    = polarQuestion.parents('.quiz_section').data('qid');
+				let page = 'question';
+				qsmPolarSliderEach(polarQuestion, questionID, page);
+			});
+		}
+	});
+
 	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
 		e.preventDefault();
 

@@ -100,6 +100,13 @@ class QSM_New_Renderer {
 		if ( ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
 			return;
 		}
+		// Enqueue required scripts
+		wp_enqueue_script( 'json2' );
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_style( 'dashicons' );
+		wp_enqueue_script( 'jquery-ui-tooltip' );
+		wp_enqueue_script( 'jquery-ui-slider' );
+		
 		wp_enqueue_style( 
 			'qmn_quiz_animation_style', 
 			QSM_PLUGIN_CSS_URL . '/animate.css', 
@@ -116,7 +123,6 @@ class QSM_New_Renderer {
 			true 
 		);
 		
-		wp_enqueue_script( 'jquery-ui-slider' );
 		// Enqueue slider script
 		wp_enqueue_script( 
 			'slider', 
@@ -138,7 +144,7 @@ class QSM_New_Renderer {
 		wp_enqueue_script( 
 			'qsm-quiz-navigation', 
 			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js', 
-			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption' ), 
+			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ), 
 			$mlwQuizMasterNext->version, 
 			true 
 		);
@@ -179,12 +185,6 @@ class QSM_New_Renderer {
 			true 
 		);
 		
-		// Enqueue required scripts
-		wp_enqueue_script( 'json2' );
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_style( 'dashicons' );
-		wp_enqueue_script( 'jquery-ui-tooltip' );
-
 		// Enqueue styles
 		wp_enqueue_style( 
 			'qsm-quiz-styles', 
@@ -192,9 +192,10 @@ class QSM_New_Renderer {
 			array(), 
 			$mlwQuizMasterNext->version 
 		);
+		
 		wp_enqueue_style( 
 			'qmn_quiz_common_style', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/common.css', 
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css', 
 			array(), 
 			$mlwQuizMasterNext->version 
 		);

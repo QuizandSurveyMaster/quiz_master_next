@@ -219,3 +219,13 @@ function qsm_register_template_hooks() {
 
 // Initialize template hooks
 // add_action( 'init', 'qsm_register_template_hooks' );
+
+// add_filter( 'qsm_pagination_header_elements', 'qsm_pagination_header_elements_callback', 10, 3 );
+
+function qsm_pagination_header_elements_callback( $elements, $quiz_id, $renderer ) {
+	return array(
+		// 'progress_bar',
+		'previous_button',
+		'next_button'
+	);
+}

@@ -207,7 +207,6 @@ var show_result_validation = true;
             // Start button click - bind to container (multiple selectors for compatibility)
             $container.on('click', this.config.selectors.startBtn, function(e) {
                 e.preventDefault();
-                console.log('Start button clicked for quiz:', quizId);
                 self.startQuiz(quizId);
                 // Validate current page before proceeding
                 if (!self.validateCurrentPage(quizId)) {
@@ -662,11 +661,9 @@ var show_result_validation = true;
             jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
                 if (quizData.data.end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
                     if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
-                        console.log(jQuery(this));
                         let question_id = jQuery(this).attr('name').split('question')[1],
                         value = jQuery(this).val(),
                         $this = jQuery(this).parents('.quiz_section');
-                        console.log(value);
                         if (value != "" && value != null) {
                             self.qsmSubmitQuizIfAnswerWrong(quizId, question_id, value, $this, quizData.form);
                         }
@@ -766,7 +763,6 @@ var show_result_validation = true;
                     $nextPage.attr('data-lazy-load') === '1' &&
                     !$nextPage.hasClass('qsm-loading')) {
                     
-                    console.log('QSM: Preloading page ' + pageNum + ' (user currently on page ' + currentPage + ')');
                     self.loadPageQuestions(quizId, $nextPage, pageNum);
                 }
             });
@@ -821,12 +817,7 @@ var show_result_validation = true;
                         
                         // Insert questions HTML
                         $page.prepend(response.data.html);
-                        if ( $page.find('.question-type-polar-s').length > 0 ) {
-                            let polarQuestion = $page.find('.question-type-polar-s').find('.slider-main-wrapper div');
-                            let questionID    = polarQuestion.parents('.quiz_section').data('qid');
-                            let page = 'question';
-                            qsmPolarSliderEach(polarQuestion, questionID, page);
-                        }
+
                         // Mark page as loaded
                         $page.removeClass('qsm-lazy-load-page qsm-loading');
                         $page.addClass('qsm-loaded-page');
@@ -840,8 +831,6 @@ var show_result_validation = true;
                         
                         // Trigger after lazy load event
                         $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
-                        
-                        console.log('QSM: Successfully loaded ' + response.data.question_count + ' questions for page ' + pageNumber);
                     } else {
                         self.handleLazyLoadError(quizId, $page, response.data ? response.data.message : 'Unknown error');
                     }
@@ -856,7 +845,6 @@ var show_result_validation = true;
          * Handle lazy load errors
          */
         handleLazyLoadError: function(quizId, $page, errorMessage) {
-            console.error('QSM Lazy Load Error:', errorMessage);
             
             // Hide spinner
             $page.find('.qsm-lazy-load-spinner').hide();
@@ -940,11 +928,11 @@ var show_result_validation = true;
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
 
-            let $pagination = quizData.pagination;
-            let $previousBtn = $pagination.find(this.config.selectors.previousBtn);
-            let $nextBtn = $pagination.find(this.config.selectors.nextBtn);
-            let $submitBtn = $pagination.find(this.config.selectors.submitBtn);
-            let $startBtn = $pagination.find(this.config.selectors.startBtn);
+            let $container = quizData.quizContainer;
+            let $previousBtn = $container.find(this.config.selectors.previousBtn);
+            let $nextBtn = $container.find(this.config.selectors.nextBtn);
+            let $submitBtn = $container.find(this.config.selectors.submitBtn);
+            let $startBtn = $container.find(this.config.selectors.startBtn);
             
             let currentPage = quizData.currentPage;
             let isFirstPage = (currentPage == 1);
@@ -993,7 +981,7 @@ var show_result_validation = true;
             let currentPage = quizData.form.find(this.config.selectors.currentPageField);
             currentPage.val(quizData.currentPage);
 
-            let $counter = quizData.pagination.find(this.config.selectors.pageCounter);
+            let $counter = quizData.quizContainer.find(this.config.selectors.pageCounter);
             if ($counter.length) {
                 // Don't show page counter for start page (welcome page)
                 if (quizData.currentPage === 1 && quizData.hasFirstPage) {
@@ -1404,6 +1392,7 @@ var show_result_validation = true;
                         $(document).trigger('qsm_after_quiz_submit', ['quizForm' + quizId]);
                     
                     } catch (e) {
+                        console.log(e);
                         self.displayError('Error processing quiz results: ' + e.message + '. Please check console for details.', quizId);
                     }
                 },
@@ -1549,7 +1538,6 @@ var show_result_validation = true;
                 return $container.data('quiz-id');
             }
             
-            console.log('Could not determine quiz ID for element:', $element);
             return null;
         },
 
@@ -1709,7 +1697,6 @@ var show_result_validation = true;
                 $(document).trigger('qsm_question_quick_result_js_after', [returnObject, correct_answer, answer, answer_array, answer_type, settings, decrypt, question_id]);
                 return returnObject;
             } catch (e) {
-                console.error('Error decrypting quiz data:', e);
                 return { correct_index: 0, success: '', message: '' };
             }
         },
@@ -1767,7 +1754,7 @@ var show_result_validation = true;
                     incorrect++;
                 }
 			});
-            console.log(quizData, incorrect);
+
 			if( quizData.end_quiz_if_wrong <= incorrect ) {
 				this.submit_status = true;
 			}else{
