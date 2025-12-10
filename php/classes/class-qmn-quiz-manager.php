@@ -550,7 +550,9 @@ class QMNQuizManager {
 		}
 		return $return_display;
 	}
-
+	/**
+	 * Display Quiz Result (supports old + new format)
+	 */
 	public function shortcode_display_result( $atts ) {
 
 		$args = shortcode_atts(
@@ -578,7 +580,18 @@ class QMNQuizManager {
 
 				wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
 				wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
-				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
+				// ---------------------------------------------------------------
+				// Detect new format (quiz_results empty)
+				// ---------------------------------------------------------------
+				$is_new_format = empty( $result_data['quiz_results'] );
+
+				if ( $is_new_format ) {
+					// Load answers and meta from new tables
+					$quiz_result  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $id );
+				} else {
+					// Load legacy serialized results
+					$quiz_result             = maybe_unserialize( $result_data['quiz_results'] );
+				}
 				$response_data = array(
 					'quiz_id'                   => $result_data['quiz_id'],
 					'quiz_name'                 => $result_data['quiz_name'],
@@ -1918,7 +1931,7 @@ class QMNQuizManager {
 				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
 				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
 				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
-				'quiz_results'    => maybe_serialize( $data['results_array'] ),
+				'quiz_results'    => '',
 				'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
 				'unique_id'       => $data['unique_id'],
 				'form_type'       => $data['form_type'],
@@ -1969,7 +1982,12 @@ class QMNQuizManager {
 				// Throw exception
 				throw new Exception( 'Database insert failed.' );
 			}
-			// If insert is successful, return response
+			// If insert is successful, insert per-question answers and meta into
+			// the new structured tables as well.
+			$inserted_result_id = $wpdb->insert_id;
+			if ( $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
+				$this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
+			}
 			return $res;
 		} catch ( Exception $e ) {
 			return false;
@@ -1977,6 +1995,297 @@ class QMNQuizManager {
 
 		return false;
 	}
+
+	/**
+     * Insert per-question answers and result meta for a single result
+     * into the structured tables (qsm_results_answers and qsm_results_meta).
+     *
+     * This mirrors the migration helper logic but is used for new
+     * submissions so that fresh results are immediately stored in the
+     * new schema.
+     *
+     * @param int   $result_id     Newly inserted result_id in mlw_results.
+     * @param int   $quiz_id       Quiz id of the inserted result.
+     * @param array $results_array Deserialized quiz_results array.
+     *
+     * @return bool True on success, false on transaction failure.
+     */
+    public function qsm_insert_result_answers_and_meta( $result_id, $quiz_id, $results_array ) {
+        global $wpdb, $mlwQuizMasterNext; // Added $mlwQuizMasterNext for dependency
+
+        $result_id = intval( $result_id );
+        $quiz_id   = intval( $quiz_id );
+
+        if ( ! $result_id || ! $quiz_id || empty( $results_array ) || ! is_array( $results_array ) ) {
+            return false;
+        }
+
+        $answers_table           = $wpdb->prefix . 'qsm_results_answers';
+        $results_meta_table_name = $wpdb->prefix . 'qsm_results_meta';
+        $unserializedResults     = $results_array;
+
+        // Ensure questions array exists
+        if ( ! isset( $unserializedResults[1] ) || ! is_array( $unserializedResults[1] ) ) {
+            return false;
+        }
+
+        // *************** TRANSACTION START ***************
+        // Ensure atomic operation for a single result's structured data
+        $wpdb->query( 'START TRANSACTION' );
+        $transaction_failed = false;
+        
+        $results_meta_table_data      = array();
+        $results_meta_table_ans_label = '';
+
+        try {
+            foreach ( $unserializedResults as $result_meta_key => $result_meta_value ) {
+
+                // ---------------------------------------------------------
+                //                      INSERT INTO qsm_results_answers
+                // ---------------------------------------------------------
+                if ( 1 == $result_meta_key ) {
+
+                    $answer_rows = array();
+
+                    foreach ( $result_meta_value as $question_key => $question_value ) {
+
+                        if ( ! is_array( $question_value ) || ! isset( $question_value['id'] ) ) {
+                            continue;
+                        }
+
+                        // Convert correct/incorrect/unanswered (Logic remains the same)
+                        $correcIncorrectUnanswered = 0;
+
+                        if ( 'correct' == $question_value['correct'] || ( isset( $question_value[0]['correct'] ) && 'correct' == $question_value[0]['correct'] ) ) {
+                            $correcIncorrectUnanswered = 1;
+                        } else {
+                            // The complex logic for determining 0 (incorrect) or 2 (unanswered)
+                            if ( empty( $question_value['user_answer'] ) ) {
+
+                                if ( '13' == $question_value['question_type'] && 'incorrect' == $question_value['correct'] && ( 0 == $question_value[1] || ! empty( $question_value[1] ) ) ) {
+                                    $correcIncorrectUnanswered = 0;
+                                } else {
+                                    if ( '13' != $question_value['question_type'] && 'incorrect' == $question_value['correct'] ) {
+                                        if ( '7' == $question_value['question_type'] && ! empty( $question_value[1] ) && $question_value[1] != $question_value[2] ) {
+                                            $correcIncorrectUnanswered = 0;
+                                        } else {
+                                            $correcIncorrectUnanswered = 2;
+                                        }
+                                    } else {
+                                        if ( empty( $question_value[1] ) ) {
+                                            $correcIncorrectUnanswered = 2;
+                                        }
+                                    }
+                                }
+                            } elseif ( 'incorrect' == $question_value['correct'] ) {
+
+                                $ans_loop    = 0;
+                                $is_unanswer = 0;
+
+                                if ( in_array( $question_value['question_type'], array( '14', '12', '3', '5' ), true ) ) {
+                                    foreach ( $question_value['user_answer'] as $ans_key => $ans_value ) {
+                                        if ( '' == $ans_value ) {
+                                            $is_unanswer++;
+                                        }
+                                        $ans_loop++;
+                                    }
+                                }
+
+                                if ( 0 != $is_unanswer && $ans_loop == $is_unanswer ) {
+                                    $correcIncorrectUnanswered = 2;
+                                } else {
+                                    $correcIncorrectUnanswered = 0;
+                                }
+
+                                if ( isset( $question_value['question_type'] ) &&
+                                    4 != $question_value['question_type'] &&
+                                    $question_value[1] == $question_value[2] ) {
+
+                                    if ( ( '17' == $question_value['question_type'] || '16' == $question_value['question_type'] ) &&
+                                        empty( $question_value['correct_answer'] ) ) {
+
+                                        if ( '16' == $question_value['question_type'] && empty( $question_value['user_answer'] ) ) {
+                                            $correcIncorrectUnanswered = 2;
+                                        }
+                                        if ( '17' == $question_value['question_type'] && empty( $question_value['user_answer'] ) ) {
+                                            $correcIncorrectUnanswered = 2;
+                                        }
+                                    } else {
+                                        $correcIncorrectUnanswered = 1;
+                                    }
+                                }
+                            }
+                        }
+                        // End complex logic
+
+                        // Gather and normalize fields
+                        $question_id          = intval( $question_value['id'] );
+                        $question_title       = isset( $question_value['question_title'] ) ? $question_value['question_title'] : ( isset( $question_value['question'] ) ? (string) $question_value['question'] : '' );
+                        $question_description = isset( $question_value[0] ) ? $question_value[0] : '';
+                        $question_comment     = isset( $question_value[3] ) ? $question_value[3] : '';
+                        $user_answer_comma    = isset( $question_value[1] ) ? $question_value[1] : '';
+                        $correct_answer_comma = isset( $question_value[2] ) ? $question_value[2] : '';
+                        $question_type        = isset( $question_value['question_type'] ) ? $question_value['question_type'] : '';
+
+                        // Determine answer_type dynamically (matching migration logic)
+                        $answerEditor = isset($mlwQuizMasterNext->pluginHelper) ? $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'answerEditor' ) : '';
+                        $answer_type  = '' != $answerEditor ? $answerEditor : 'text';
+
+                        // Normalize arrays and points
+                        $user_answer_to_store    = isset( $question_value['user_answer'] ) ? maybe_serialize( $question_value['user_answer'] ) : '';
+                        $correct_answer_to_store = isset( $question_value['correct_answer'] ) ? maybe_serialize( $question_value['correct_answer'] ) : '';
+                        $category                = isset( $question_value['category'] ) ? $question_value['category'] : '';
+                        
+                        if ( is_array( $category ) ) {
+                            $category = maybe_serialize( $category );
+                        }
+                        
+                        $multicategories         = isset( $question_value['multicategories'] ) ? maybe_serialize( $question_value['multicategories'] ) : '';
+                        $points                  = isset( $question_value['points'] ) ? floatval( $question_value['points'] ) : 0;
+
+                        // Other settings
+                        $other_settings = maybe_serialize(
+                            array(
+                                'user_compare_text' => isset( $question_value['user_compare_text'] ) ? $question_value['user_compare_text'] : '',
+                                'case_sensitive'    => isset( $question_value['case_sensitive'] ) ? $question_value['case_sensitive'] : '',
+                                'answer_limit_keys' => isset( $question_value['answer_limit_keys'] ) ? $question_value['answer_limit_keys'] : '',
+                            )
+                        );
+
+                        // Build row for insertion - CORRECT ORDER to match schema
+                        $answer_rows[] = array(
+                            $result_id,                       // 1. result_id %d
+                            $quiz_id,                         // 2. quiz_id %d
+                            $question_id,                     // 3. question_id %d
+                            $question_title,                  // 4. question_title %s
+                            $question_description,            // 5. question_description %s
+                            $question_comment,                // 6. question_comment %s <-- Moved up
+                            $question_type,                   // 7. question_type %s
+                            $answer_type,                     // 8. answer_type %s
+                            $correct_answer_to_store,         // 9. correct_answer %s
+                            $user_answer_to_store,            // 10. user_answer %s
+                            $user_answer_comma,               // 11. user_answer_comma %s
+                            $correct_answer_comma,            // 12. correct_answer_comma %s
+                            $points,                          // 13. points %f
+                            $correcIncorrectUnanswered,       // 14. correct %d
+                            $category,                        // 15. category %s
+                            $multicategories,                 // 16. multicategories %s
+                            $other_settings,                  // 17. other_settings %s
+                        );
+                    }
+
+                    // Bulk insert all question rows
+                    if ( ! empty( $answer_rows ) ) {
+
+                        $placeholders = array();
+                        $params       = array();
+
+                        foreach ( $answer_rows as $values ) {
+                            // 17 columns
+                            $placeholders[] =
+                                "( %d, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %f, %d, %s, %s, %s )";
+
+                            $params = array_merge( $params, $values );
+                        }
+
+                        $sql = "INSERT INTO {$answers_table}
+                            (result_id, quiz_id, question_id, question_title, question_description,
+                            question_comment, question_type, answer_type, correct_answer, user_answer,
+                            user_answer_comma, correct_answer_comma, points, correct,
+                            category, multicategories, other_settings)
+                            VALUES " . implode( ', ', $placeholders );
+                        
+                        $prepared = $wpdb->prepare( $sql, $params );
+                        $inserted = $wpdb->query( $prepared );
+
+                        if ( $inserted === false || $inserted === 0 ) {
+                            $transaction_failed = true;
+                            break; // Exit main foreach loop immediately
+                        }
+                    }
+
+                } 
+                // ---------------------------------------------------------
+                //                      INSERT META
+                // ---------------------------------------------------------
+                else {
+
+                    if ( 0 == $result_meta_key ) {
+                        $result_meta_key = 'total_seconds';
+                    } elseif ( 2 == $result_meta_key ) {
+                        $result_meta_key = 'quiz_comments';
+                    }
+
+                    if ( 'answer_label_points' == $result_meta_key ) {
+
+                        if ( '' != $result_meta_value ) {
+                            $results_meta_table_ans_label = $result_meta_value;
+                        }
+
+                    } else {
+                        $results_meta_table_data[ $result_meta_key ] = $result_meta_value;
+                    }
+                }
+            }
+            
+            // Check if question inserts failed before proceeding to meta
+            if ( $transaction_failed ) {
+                throw new Exception('Question inserts failed.');
+            }
+
+            // --- Insert result_meta to log processing ---
+            // add total questions
+            $results_meta_table_data['total_questions'] = isset( $results_array['total'] ) ? $results_array['total'] : 0;
+
+            // prepare meta insert
+            $results_table_meta = array(
+                'result_meta' => maybe_serialize( $results_meta_table_data ),
+            );
+
+            if ( ! empty( $results_meta_table_ans_label ) ) {
+                $results_table_meta['answer_label_points'] = $results_meta_table_ans_label;
+            }
+
+            if ( ! empty( $results_table_meta ) ) {
+                
+                $meta_rows          = array();
+                $meta_placeholders  = array();
+                $meta_params        = array();
+
+                foreach ( $results_table_meta as $meta_key => $meta_value ) {
+                    $meta_rows[]         = array( $result_id, $meta_key, $meta_value );
+                    $meta_placeholders[] = "( %d, %s, %s )";
+                }
+
+                foreach ( $meta_rows as $row_values ) {
+                    $meta_params = array_merge( $meta_params, $row_values );
+                }
+
+                $meta_sql = "INSERT INTO {$results_meta_table_name}
+                    (result_id, meta_key, meta_value)
+                    VALUES " . implode( ', ', $meta_placeholders );
+
+                $prepared_meta = $wpdb->prepare( $meta_sql, $meta_params );
+                $meta_inserted = $wpdb->query( $prepared_meta );
+                
+                if ( $meta_inserted === false || $meta_inserted === 0 ) {
+                    throw new Exception('Meta inserts failed.');
+                }
+            }
+            
+            // If we reach here, everything succeeded.
+            $wpdb->query( 'COMMIT' );
+            return true;
+
+        } catch ( Exception $e ) {
+            // An error occurred, rollback all changes for this result
+            $wpdb->query( 'ROLLBACK' );
+            // Log the error if necessary
+            // error_log('QSM Result Insert failed for result_id ' . $result_id . ': ' . $e->getMessage());
+            return false;
+        }
+    }
+
 
 	/**
 	 * Perform The Quiz/Survey Submission

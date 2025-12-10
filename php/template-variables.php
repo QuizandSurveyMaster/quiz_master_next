@@ -221,18 +221,25 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 			$content = str_replace( '%POLL_RESULTS_' . $question_id . '%', '', $content );
 			return $content;
 		}
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$total_query            = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$total_result           = $total_query['total_count'];
 		$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array,question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
 		$ser_answer_arry        = qmn_sanitize_input_data( $ser_answer['answer_array'] );
 		$question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
 		$ser_answer_arry_change = array_filter( array_merge( array( 0 ), $ser_answer_arry ) );
-		$total_quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+		$total_quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT result_id, quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$answer_array           = array();
 		if ( $total_quiz_results ) {
-			foreach ( $total_quiz_results as $key => $value ) {
-				$userdb = qmn_sanitize_input_data( $value['quiz_results'] );
+			foreach ( $total_quiz_results as $key => $row ) {
+        		$result_id      = intval( $row['result_id'] );
+				$is_new_format = empty( $row['quiz_results'] );
+				if ( $is_new_format ) {
+					// Load new format result structure
+					$userdb = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result_id );
+				} else {
+					$userdb = qmn_sanitize_input_data( $row['quiz_results'] );
+				}
 				if ( ! empty( $userdb ) ) {
 					$key            = array_search( $question_id, array_column( $userdb[1], 'id' ), true );
 					$answer_array[] = isset( $userdb[1][ $key ] ) ? $userdb[1][ $key ][1] : '';
@@ -946,14 +953,20 @@ function qmn_variable_category_average_points( $content, $mlw_quiz_array ) {
 add_filter( 'qmn_end_results', 'qsm_end_results_rank', 9999, 3 );
 function qsm_end_results_rank( $result_display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	while ( strpos( $result_display, '%RANK%' ) !== false ) {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$mlw_quiz_id     = $qmn_array_for_variables['quiz_id'];
 		$mlw_result_id   = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE quiz_id=%d AND deleted=0", $mlw_quiz_id ) );
 		$mlw_result_data = $wpdb->get_results( $wpdb->prepare( "SELECT result_id, correct_score, point_score, quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id=%d AND deleted=0", $mlw_quiz_id ) );
 		if ( ! empty( $mlw_result_data ) ) {
 			foreach ( $mlw_result_data as $key => $mlw_eaches ) {
 				$time_taken            = 0;
-				$mlw_qmn_results_array = qmn_sanitize_input_data( $mlw_eaches->quiz_results );
+				$is_new_format = empty( $mlw_eaches->quiz_results );
+				if ( $is_new_format ) {
+					// Load new format result structure
+					$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_eaches->result_id );
+				} else {
+					$mlw_qmn_results_array = qmn_sanitize_input_data( $mlw_eaches->quiz_results );
+				}
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$time_taken = $mlw_qmn_results_array[0];
 					if ( isset( $mlw_qmn_results_array['timer_ms'] ) && $mlw_qmn_results_array['timer_ms'] > 0 ) {

@@ -1427,5 +1427,121 @@ class QMNPluginHelper
         }
 
         return array_values( $normalized_modes );
+    }   
+
+
+	/**
+	 * Format new answers table rows and meta into structure similar to legacy output.
+	 *
+	 * @param int $result_id Result ID.
+	 *
+	 * @return array {
+	 *     @type array $answers Formatted answers array.
+	 *     @type array $meta    Parsed meta data (result_meta/answer_label_points).
+	 * }
+	 */
+	public function get_formated_result_data( $result_id ) {
+        global $wpdb;
+
+        $result_id     = intval( $result_id );
+        $answers_table = $wpdb->prefix . 'qsm_results_answers';
+        $meta_table    = $wpdb->prefix . 'qsm_results_meta';
+
+        // -------------------------------------------------------
+        // Fetch ANSWERS
+        // -------------------------------------------------------
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$answers_table}
+                WHERE result_id = %d
+                ORDER BY id ASC",
+                $result_id
+            ),
+            ARRAY_A
+        );
+
+        $question_answer_array = array();
+
+        foreach ( $rows as $row ) {
+
+            $row_array = array(
+                0                 => $row['question_description'],
+                1                 => $row['user_answer_comma'],
+                2                 => $row['correct_answer_comma'],
+                3                 => $row['question_comment'],
+
+                'user_answer'     => maybe_unserialize( $row['user_answer'] ),
+                'correct_answer'  => maybe_unserialize( $row['correct_answer'] ),
+                'correct'         => $row['correct'] ? 'correct' : 'incorrect',
+                'id'              => (int) $row['question_id'],
+                'points'          => (float) $row['points'],
+                'category'        => $row['category'],
+                'multicategories' => maybe_unserialize( $row['multicategories'] ),
+                'question_type'   => $row['question_type'],
+                'question_title'  => $row['question_title'],
+
+                // Defaults
+                'user_compare_text' => '',
+                'case_sensitive'    => '',
+                'answer_limit_keys' => '',
+
+                'answer_type'     => $row['answer_type'], // default 'text'
+                'other_settings'  => maybe_unserialize( $row['other_settings'] ),
+            );
+
+            if ( is_array( $row_array['other_settings'] ) && ! empty( $row_array['other_settings'] ) ) {
+                $row_array = array_merge( $row_array, $row_array['other_settings'] );
+            }
+            unset( $row_array['other_settings'] );
+            $question_answer_array[] = $row_array;
+        }
+
+        // -------------------------------------------------------
+        // Fetch META
+        // -------------------------------------------------------
+        $meta_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT meta_key, meta_value FROM {$meta_table}
+                WHERE result_id = %d",
+                $result_id
+            ),
+            ARRAY_A
+        );
+
+        $result_meta         = array();
+        $answer_label_points = '';
+
+        foreach ( $meta_rows as $meta_row ) {
+
+            if ( 'answer_label_points' === $meta_row['meta_key'] ) {
+                $answer_label_points = $meta_row['meta_value'];
+            }
+            elseif ( 'result_meta' === $meta_row['meta_key'] ) {
+                $result_meta = maybe_unserialize( $meta_row['meta_value'] );
+            }
+
+        }
+
+        $final_array = array(
+            0 => isset( $result_meta['total_seconds'] ) ? $result_meta['total_seconds'] : 0,
+            1 => $question_answer_array,
+            2 => isset( $result_meta['quiz_comments'] ) ? $result_meta['quiz_comments'] : '',
+        );
+
+        if ( '' !== $answer_label_points ) {
+            $final_array['answer_label_points'] = $answer_label_points;
+        }
+
+        foreach ( $result_meta as $meta_key => $meta_value ) {
+
+            // Skip already used keys
+            if ( in_array( $meta_key, array( 'total_seconds', 'quiz_comments' ), true ) ) {
+                continue;
+            }
+
+            $final_array[ $meta_key ] = $meta_value;
+        }
+        return $final_array;
     }
+
 }

@@ -90,10 +90,17 @@ add_action( 'init', 'qsm_results_overview_tab' );
  * @return void
  */
 function qsm_delete_results_attachments( $rows_before_update ) {
+	global $mlwQuizMasterNext;
     // Loop through each row in the results
     foreach ( $rows_before_update as $row ) {
         // Unserialize the quiz results
-        $mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
+		$is_new_format = empty( $row->quiz_results );
+		if ( $is_new_format ) {
+			// Load new format result structure
+			$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $row->result_id );
+		} else { 
+			$mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
+		}
         // Ensure the results array exists and has the expected structure
 		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
 			// Check if the question type is 11 and user answer is not empty
@@ -424,7 +431,13 @@ function qsm_results_overview_tab_content() {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
-				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				$is_new_format = empty( $mlw_quiz_info->quiz_results );
+				if ( $is_new_format ) {
+					// Load new format result structure
+					$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_quiz_info->result_id );
+				} else {
+					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				}
 				$hidden_questions        = ! empty( $mlw_qmn_results_array['hidden_questions'] ) && is_array($mlw_qmn_results_array['hidden_questions']) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );

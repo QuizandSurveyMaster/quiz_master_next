@@ -107,12 +107,18 @@ class QSMQuizApi {
 		$api_key_param = $request->get_header('authorization');
 		$verification = $this->qsm_verify_api_key_settings($api_key_param, 'get_result');
 		if ( $verification['success'] ) {
+			global $wpdb, $mlwQuizMasterNext;
 			if ( $request->get_param('result_id') ) {
-				global $wpdb;
 				$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
 
 				if ( $results_data ) {
-					$results_data->quiz_results = maybe_unserialize($results_data->quiz_results);
+					$is_new_format = empty( $results_data->quiz_results );
+					if ( $is_new_format ) {
+						// Load new format result structure
+						$results_data->quiz_results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $results_data->result_id );
+					} else {
+						$results_data->quiz_results = maybe_unserialize( $results_data->quiz_results );
+					}
 					$response = array(
 						'success' => true,
 						'data'    => $results_data,
@@ -124,7 +130,6 @@ class QSMQuizApi {
 					);
 				}
 			} else {
-				global $wpdb;
 				$limit = $request->get_param('limit');
 				$quiz_id = $request->get_param('quizId');
 				$name = $request->get_param('name');
@@ -168,7 +173,13 @@ class QSMQuizApi {
 				if ( $results ) {
 					$data = [];
 					foreach ( $results as $key => $value ) {
-						$value->quiz_results = maybe_unserialize($value->quiz_results);
+						$is_new_format = empty( $value->quiz_results );
+						if ( $is_new_format ) {
+							// Load new format result structure
+							$value->quiz_results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $value->result_id );
+						} else {
+							$value->quiz_results = maybe_unserialize( $value->quiz_results );
+						}
 						$data[] = $value;
 					}
 					$response = array(

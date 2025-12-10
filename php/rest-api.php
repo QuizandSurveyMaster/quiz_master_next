@@ -311,7 +311,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 	$quiz_id = isset( $request['id'] ) ? $request['id'] : 0;
 	if ( $quiz_id > 0 ) {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND quiz_id = %d LIMIT 0,40", $quiz_id ) );
 		if ( $mlw_quiz_data ) {
 			$result_data = array();
@@ -333,7 +333,14 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 				}
 				// Time to complete
 				$mlw_complete_time     = '';
-				$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				$is_new_format = empty( $mlw_quiz_info->quiz_results );
+				if ( $is_new_format ) {
+					// Load answers and meta from new tables
+					$mlw_qmn_results_array  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_quiz_info->result_id );
+				} else {
+					// Load legacy serialized results
+					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				}
 				if ( is_array( $mlw_qmn_results_array ) ) {
 						$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {

@@ -274,7 +274,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
  */
 
 function qsm_dashboard_recent_taken_quiz() {
-	global $wpdb;
+	global $wpdb, $mlwQuizMasterNext;
 	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
 	if($mlw_result_data['total_result'] != 0){
 	?>
@@ -335,7 +335,13 @@ function qsm_dashboard_recent_taken_quiz() {
 									|
 									<?php
 									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									$is_new_format = empty( $single_result_arr['quiz_results'] );
+									if ( $is_new_format ) {
+										// Load new format result structure
+										$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $single_result_arr['result_id'] );
+									} else {
+										$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									}
 									if ( is_array( $mlw_qmn_results_array ) ) {
 										$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 										if ( $mlw_complete_hours > 0 ) {
