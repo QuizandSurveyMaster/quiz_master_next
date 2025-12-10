@@ -97,7 +97,7 @@ function qsm_display_recent_quizzes( $attrs ) {
                                 </div>
                             </div>";
 				$result .= "<div class='clear'></div>";
-				$i++;
+				++$i;
 			}
 		}
 	}

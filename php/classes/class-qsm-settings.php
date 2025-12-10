@@ -277,7 +277,6 @@ class QSM_Quiz_Settings {
 			}
 			return true;
 		}
-
 	}
 
 	/**
@@ -444,7 +443,6 @@ class QSM_Quiz_Settings {
 			}
 		}
 		$this->settings = $settings_array;
-
 	}
 
 	/**

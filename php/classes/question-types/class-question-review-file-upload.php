@@ -88,8 +88,7 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 					$do_error = 1;
 					$do_error_message = $movefile['error'];
 				}
-			} else {
-				if ( ! empty ($file_upload_type) ) {
+			} elseif ( ! empty ($file_upload_type) ) {
 					$filestype = explode(',', $file_upload_type);
 					foreach ( $filestype as $file ) {
 						if ( strpos($file, '/') !== false ) {
@@ -113,7 +112,6 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 				} else {
 					$do_error = 1;
 					$do_error_message = __( 'File Upload Unsuccessful! (Please select file type)', 'quiz-master-next' );
-				}
 			}
 			if ( 1 == $do_error ) {
 				$qsm_global_result_warning_message .= '<div class="qsm-result-page-warning">' . $do_error_message . '</div>';

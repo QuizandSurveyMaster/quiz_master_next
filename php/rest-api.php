@@ -20,7 +20,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_questions',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -51,7 +53,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_question',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -60,7 +64,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_results',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -80,7 +86,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_emails',
-			'permission_callback' => '__return_true',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
 		)
 	);
 	register_rest_route(
@@ -94,25 +102,29 @@ function qsm_register_rest_routes() {
 			},
 		)
 	);
-		// Register rest api to get quiz list
+		// Register rest api to get quiz list (admin-only)
 		register_rest_route(
 			'qsm',
 			'/list_quiz',
 			array(
 				'methods'             => 'GET',
 				'callback'            => 'qsm_get_basic_info_quiz',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
 
-		// Register rest api to get result of quiz
+		// Register rest api to get result of quiz (admin-only)
 		register_rest_route(
 			'qsm',
 			'/list_results/(?P<id>\d+)',
 			array(
 				'methods'             => 'GET',
 				'callback'            => 'qsm_get_result_of_quiz',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
 		// Get questions for question bank
@@ -127,27 +139,30 @@ function qsm_register_rest_routes() {
 				},
 			)
 		);
-		// Get Categories of quiz
+		// Get Categories of quiz (admin-only)
 		register_rest_route(
 			'quiz-survey-master/v1',
 			'/quizzes/(?P<id>\d+)/categories',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_categories',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
-		// Get Categories of quiz
+		// Get quizzes list (admin-only REST).
 		register_rest_route(
 			'quiz-survey-master/v2',
 			'/quizzlist/',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_get_quizzes_list',
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'edit_qsm_quizzes' );
+				},
 			)
 		);
-
 }
 
 /**
@@ -214,7 +229,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		$total_pages = ceil( $total_count / $limit );
 		$pageno = isset( $parameters['page'] ) ? intval( $parameters['page'] ) : 1;
 		$offset = ( $pageno - 1 ) * $limit;
-		$questions = [];
+		$questions = array();
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
 				$query_result = array();
@@ -518,26 +533,27 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 			$question       = QSM_Questions::load_question( $request['id'] );
 			$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
 			if ( ! empty( $question ) ) {
-				$is_linking = $request['is_linking'];
-				$comma_separated_ids = '';
-				if ( 1 <= $is_linking ) {
-					if ( isset( $question['linked_question'] ) && '' == $question['linked_question'] ) {
-						$comma_separated_ids = $is_linking;
-					} else {
-						$linked_question = isset($question['linked_question']) ? $question['linked_question'] : '';
-						$exploded_question_array = explode(',', $linked_question);
-						if ( ! empty($linked_question) ) {
-							$exploded_question_array = array_merge([ $is_linking ], $exploded_question_array);
-						} else {
-							$exploded_question_array = [ $is_linking ];
-						}
-						$comma_separated_ids = implode(',', array_unique($exploded_question_array));
+				$is_linking = isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0;
+				$linked_ids = array();
+
+				if ( isset( $question['linked_question'] ) && '' !== $question['linked_question'] ) {
+					$existing_ids = array_map( 'intval', array_filter( array_map( 'trim', explode( ',', $question['linked_question'] ) ) ) );
+					if ( ! empty( $existing_ids ) ) {
+						$linked_ids = $existing_ids;
 					}
 				}
 
+				if ( 1 <= $is_linking ) {
+					$linked_ids[] = $is_linking;
+				}
+
+				$linked_ids = array_values( array_unique( array_filter( $linked_ids ) ) );
+
 				$quiz_name_by_question = array();
-				if ( ! empty($comma_separated_ids) ) {
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" .$comma_separated_ids. ")" );
+				if ( ! empty( $linked_ids ) ) {
+					$linked_ids  = array_map( 'intval', $linked_ids );
+					$ids_list    = implode( ',', $linked_ids );
+					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $ids_list . ")" );
 					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
@@ -561,7 +577,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'page'            => $question['page'],
 					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 					'link_quizzes'    => $quiz_name_by_question,
-					'merged_question' => $comma_separated_ids,
+					'merged_question' => implode( ',', $linked_ids ),
 				);
 			}
 			return $question;
@@ -616,7 +632,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 						}
 					}
 				}
-				$quiz_name_by_question = array_diff($quiz_name_by_question, [ $quiz_name ]); // remove current quiz id from the list
+				$quiz_name_by_question = array_diff($quiz_name_by_question, array( $quiz_name )); // remove current quiz id from the list
 				$question_data    = array(
 					'id'                      => $question['question_id'],
 					'quizID'                  => $question['quiz_id'],

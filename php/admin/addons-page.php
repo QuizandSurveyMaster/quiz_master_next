@@ -180,7 +180,7 @@ function qsm_generate_featured_addons() {
 								</a>
 							</div>
 						</div>
-					<?php $count++;
+					<?php ++$count;
 					} ?>
 				</div>
 			<?php } ?>

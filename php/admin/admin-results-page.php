@@ -123,7 +123,7 @@ function qsm_results_overview_tab_content() {
 	global $mlwQuizMasterNext;
 
 	// If nonce is correct, delete results.
-	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
+	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) && current_user_can( 'administrator' ) ) {
 
 		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
@@ -147,9 +147,9 @@ function qsm_results_overview_tab_content() {
 			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There was an error when deleting this result. Error from WordPress: %s', 'quiz-master-next' ), $error ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
-			qsm_delete_results_attachments($row_before_update);
+			qsm_delete_results_attachments( $row_before_update );
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From:", $mlw_delete_results_name, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Results Has Been Deleted From:', $mlw_delete_results_name, '' );
 		}
 	}
 
@@ -160,11 +160,11 @@ function qsm_results_overview_tab_content() {
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
 			$table_name = $wpdb->prefix . 'mlw_results';
-			$query = $wpdb->prepare(
-				"SELECT * FROM $table_name WHERE result_id IN (" . implode(',', array_fill(0, count($delete_results), '%d')) . ")",
+			$query      = $wpdb->prepare(
+				"SELECT * FROM $table_name WHERE result_id IN (" . implode( ',', array_fill( 0, count( $delete_results ), '%d' ) ) . ')',
 				$delete_results
 			);
-			$row_before_update = $wpdb->get_results($query);
+			$row_before_update = $wpdb->get_results( $query );
 
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
 			foreach ( $delete_results as $result ) {
@@ -181,8 +181,8 @@ function qsm_results_overview_tab_content() {
 					);
 				}
 			}
-			qsm_delete_results_attachments($row_before_update);
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", "", "" );
+			qsm_delete_results_attachments( $row_before_update );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Results Have Been Bulk Deleted', '', '' );
 		}
 	}
 
@@ -396,7 +396,7 @@ function qsm_results_overview_tab_content() {
 			'view_result_page' => __( 'Result Page', 'quiz-master-next' ),
 		) );
 
-		$values      = $quiz_infos   = [];
+		$values      = $quiz_infos   = array();
 		foreach ( $th_elements as $key => $th ) {
 			$values[ $key ]['title'] = $th;
 			$values[ $key ]['style'] = "";
@@ -458,8 +458,7 @@ function qsm_results_overview_tab_content() {
 				if ( isset( $values['score'] ) ) {
 					if ( 1 === intval( $form_type ) || 2 === intval( $form_type ) ) {
 						$values['score']['content'][] = esc_html__( 'Not Graded', 'quiz-master-next' );
-					} else {
-						if ( 0 === intval( $mlw_quiz_info->quiz_system ) ) {
+					} elseif ( 0 === intval( $mlw_quiz_info->quiz_system ) ) {
 							$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ) );
 						} elseif ( 1 === intval( $mlw_quiz_info->quiz_system ) ) {
 							$values['score']['content'][] = sprintf( '%1$s %2$s', esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
@@ -467,7 +466,6 @@ function qsm_results_overview_tab_content() {
 							$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s <br /> %6$s %7$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ), esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
 						} else {
 							$values['score']['content'][] = esc_html__( 'Not Graded', 'quiz-master-next' );
-						}
 					}
 				}
 
@@ -534,7 +532,7 @@ function qsm_results_overview_tab_content() {
 					$values['view_result_page']['content'][] = '<a target="_blank" class="button" href="' . esc_url( $quiz_page_url ) . '?result_id=' . esc_attr( $unique_id ) . '">' . esc_html__( 'View', 'quiz-master-next' ) . '</a>';
 				}
 				foreach ( $values as $k => $v ) {
-					if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url', 'view_result_page' ], true ) ) {
+					if ( ! in_array( $k, array( 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url', 'view_result_page' ), true ) ) {
 						$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 						if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
 							$values[ $k ]['content'][] = $content;
@@ -577,7 +575,9 @@ function qsm_results_overview_tab_content() {
 									if ( ( current_user_can( 'view_qsm_quiz_result' ) && get_current_user_id() == $quiz_infos[ $x ]->user ) || current_user_can( 'delete_others_qsm_quizzes' ) ) { ?>
 										<a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a>
 									<?php } ?>
-									<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+									<?php if ( current_user_can('administrator') ) { ?>
+										<a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $quiz_infos[ $x ]->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+									<?php } ?>
 									<?php if ( ! class_exists( 'QSM_Proctoring_Quiz' ) ) { ?>
 										<a class="qsm-quiz-proctor-addon" href="#"><?php esc_html_e( 'Proctor Reports', 'quiz-master-next' ); ?></a>
 									<?php } ?>
@@ -608,30 +608,30 @@ function qsm_results_overview_tab_content() {
 			</tbody>
 		</table>
 	</form>
-
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup " id="qsm-delete-result-page-popup" aria-hidden="false"  style="display:none">
-		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container" role="dialog" aria-modal="true">
-				<form action='' method='post'>
-					<header class="qsm-popup__header qsm-delete-result-page-popup-header">
-						<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title"></div>
-						<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
-					</header>
-					<main class="qsm-popup__content" id="modal-2-content">
-						<div class="qsm-result-page-delete-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
-							<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
-							<input type='hidden' id='result_id' name='result_id' value='' />
-							<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-					</main>
-					<footer class="qsm-popup__footer">
-						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-						<button type="submit" class="qsm-popup__btn qsm-delete-result-popup-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete Result', 'quiz-master-next' ); ?></button>
-					</footer>
-				</form>
+	<?php if ( current_user_can('administrator') ) { ?>
+		<div class="qsm-popup qsm-popup-slide qsm-standard-popup " id="qsm-delete-result-page-popup" aria-hidden="false"  style="display:none">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true">
+					<form action='' method='post'>
+						<header class="qsm-popup__header qsm-delete-result-page-popup-header">
+							<div class="qsm-popup__title qsm-upgrade-box-title" id="modal-2-title"></div>
+							<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
+						</header>
+						<main class="qsm-popup__content" id="modal-2-content">
+							<div class="qsm-result-page-delete-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
+								<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
+								<input type='hidden' id='result_id' name='result_id' value='' />
+								<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+						</main>
+						<footer class="qsm-popup__footer">
+							<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<button type="submit" class="qsm-popup__btn qsm-delete-result-popup-btn"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete Result', 'quiz-master-next' ); ?></button>
+						</footer>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
-
+	<?php } ?>
 	<!-- Popup for screen options -->
 	<div class="qsm-popup qsm-popup-slide" id="modal-results-screen-option" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -691,7 +691,7 @@ function qsm_results_overview_tab_content() {
 			"id"           => 'modal-proctor-quiz',
 			"title"        => __('Secure Your Quizzes with Proctoring', 'quiz-master-next'),
 			"description"  => __('Monitor and prevent cheating with the Quiz Proctor Addon.', 'quiz-master-next'),
-			"chart_image"  => plugins_url('', dirname(__FILE__)) . '/images/proctor_quiz_chart.png',
+			"chart_image"  => plugins_url('', __DIR__) . '/images/proctor_quiz_chart.png',
 			"information"  => __('QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today OR you can buy Quiz Proctor Addon separately.', 'quiz-master-next'),
 			"buy_btn_text" => __('Buy Quiz Proctor Addon', 'quiz-master-next'),
 			"doc_link"     => qsm_get_plugin_link( 'docs/add-ons/quiz-proctor/', 'quiz-documentation', 'plugin', 'quiz-proctor', 'qsm_plugin_upsell' ),
@@ -714,7 +714,7 @@ function qsm_export_results_tabs_content() {
 		"id"           => 'export-results',
 		"title"        => __( 'Effortlessly Export Quiz Data', 'quiz-master-next' ),
 		"description"  => __( 'Manage quiz results with the Export Results Addon.', 'quiz-master-next' ),
-		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/export_results.png',
+		"chart_image"  => plugins_url( '', __DIR__ ) . '/images/export_results.png',
 		"warning"      => __( 'Export Results Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Export Results Addon separately.', 'quiz-master-next' ),
 		"buy_btn_text" => __( 'Buy Export Results Addon', 'quiz-master-next' ),
@@ -734,7 +734,7 @@ function qsm_reporting_analysis_tabs_content() {
 		"id"           => 'reporting-analysis',
 		"title"        => __( 'Gain Powerful Insights with In-Depth Reports', 'quiz-master-next' ),
 		"description"  => __( 'Analyze performance trends with the Reporting & Analysis Addon.', 'quiz-master-next' ),
-		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/report_analysis_chart.png',
+		"chart_image"  => plugins_url( '', __DIR__ ) . '/images/report_analysis_chart.png',
 		"warning"      => __( 'Reporting & Analysis Addon required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Reporting & Analysis Addon separately.', 'quiz-master-next' ),
 		"buy_btn_text" => __( 'Buy Reporting & Analysis Addon', 'quiz-master-next' ),
@@ -755,7 +755,7 @@ function qsm_proctor_quiz_tabs_content() {
 		"id"           => 'proctoring-quiz',
 		"title"        => __('Secure Your Quizzes with Proctoring', 'quiz-master-next'),
 		"description"  => __('Monitor and prevent cheating with the Quiz Proctor Addon.', 'quiz-master-next'),
-		"chart_image"  => plugins_url( '', dirname( __FILE__ ) ) . '/images/proctor_quiz_chart.png',
+		"chart_image"  => plugins_url( '', __DIR__ ) . '/images/proctor_quiz_chart.png',
 		"warning"      => __( 'Missing Feature - Quiz Proctor Add-on required', 'quiz-master-next' ),
 		"information"  => __( 'QSM Addon Bundle is the best way to get all our add-ons at a discount. Upgrade to save 95% today. OR you can buy Proctoring Quiz Addon separately.', 'quiz-master-next' ),
 		"buy_btn_text" => __( 'Buy Quiz Proctor Addon', 'quiz-master-next' ),

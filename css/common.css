@@ -193,6 +193,9 @@ body .qsm-popup__btn-primary {
 }
 .qsm-deselect-answer {
 	float: right;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 .qsm-popup__btn-primary {
 	margin-right: 30px;
@@ -274,6 +277,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	font-weight: normal;
 	display: block;
 	margin-bottom: 10px;
+	position: relative;
 }
 .qsm-quiz-container .quiz_section .qsm-align-fill-in-blanks:not(.qsm_remove_bold) {
 	display: inline-block;
@@ -735,4 +739,10 @@ body .ui-tooltip.ui-widget-content {
 }
 .qsm-quiz-default-feature-image {
 	width: 100%;
+}
+.qsm-correct-answer-info {
+	color: green;
+}
+.qsm-incorrect-answer-info {
+	color: #dc3232;
 }

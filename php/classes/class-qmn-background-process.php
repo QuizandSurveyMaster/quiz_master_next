@@ -55,5 +55,4 @@ class QSM_Background_Request extends WP_Async_Request {
     public function really_long_running_task() {
         return sleep(5);
     }
-
 }
