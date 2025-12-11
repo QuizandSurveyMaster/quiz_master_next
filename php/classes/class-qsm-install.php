@@ -1674,6 +1674,22 @@ class QSM_Install {
 		flush_rewrite_rules();
 	}
 
+    /**
+     * Helper to add an index only if it doesn't exist.
+     */
+    private function maybe_add_index($table, $index_name, $sql) {
+        $exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(1) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = %s AND index_name = %s",
+                $table, $index_name
+            )
+        );
+
+        if ( ! $exists ) {
+            $wpdb->query($sql);
+        }
+    }
+
 	/**
 	 * Updates the plugin
 	 *
@@ -2138,6 +2154,75 @@ class QSM_Install {
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				dbDelta( $sql );
 			}
+
+			
+		$answers_table = $wpdb->prefix . 'qsm_results_answers';
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$answers_table}'" ) != $answers_table ) {
+			$charset_collate = $wpdb->get_charset_collate();
+			$sql_results_answers = "CREATE TABLE {$answers_table} (
+				`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`result_id` BIGINT(20) UNSIGNED NOT NULL,
+				`quiz_id` BIGINT(20) UNSIGNED NOT NULL,
+				`question_id` BIGINT(20) UNSIGNED NOT NULL,
+
+				`question_title` TEXT,
+				`question_description` LONGTEXT,        -- ONLY this is LONGTEXT
+				`question_comment` TEXT,
+
+				`question_type` VARCHAR(50),
+				`answer_type` VARCHAR(50) DEFAULT 'text',  
+
+				`correct_answer` TEXT,                 -- serialized array (TEXT is enough)
+				`user_answer` TEXT,                    -- serialized array
+
+				`user_answer_comma` TEXT,
+				`correct_answer_comma` TEXT,
+
+				`points` FLOAT DEFAULT 0,
+				`correct` TINYINT(1) DEFAULT 0,
+
+				`category` TEXT,
+				`multicategories` TEXT,                -- serialized array (TEXT OK)
+
+				`other_settings` TEXT,                 -- serialized array
+
+				PRIMARY KEY (`id`),
+				KEY `result_id` (`result_id`),
+				KEY `question_id` (`question_id`),
+				KEY `quiz_id` (`quiz_id`),
+				KEY `result_question` (`result_id`, `question_id`)
+			) ENGINE=InnoDB {$charset_collate};";
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql_results_answers);
+		}
+
+        // Ensure results meta table
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$results_meta_table}'" ) != $results_meta_table ) {
+			$charset_collate = $wpdb->get_charset_collate();
+			$sql_results_meta = "CREATE TABLE {$results_meta_table} (
+				`meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`result_id` BIGINT(20) UNSIGNED NOT NULL,
+				`meta_key` varchar(191) NOT NULL,
+				`meta_value` longtext,
+				PRIMARY KEY (`meta_id`),
+				KEY `result_id` (`result_id`),
+				KEY `meta_key` (`meta_key`)
+			) ENGINE=InnoDB {$charset_collate};";
+
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql_results_meta);
+		}       
+
+        // Add any missing indexes (safe checks)
+        $this->maybe_add_index($answers_table, 'idx_qra_result_id', "CREATE INDEX idx_qra_result_id ON {$answers_table} (result_id)");
+        $this->maybe_add_index($answers_table, 'idx_qra_result_correct', "CREATE INDEX idx_qra_result_correct ON {$answers_table} (result_id, correct)");
+
+        // Add useful indexes on mlw_results if missing
+        $mlw_results = $wpdb->prefix . 'mlw_results';
+        $this->maybe_add_index($mlw_results, 'idx_mrw_quiz_id', "CREATE INDEX idx_mrw_quiz_id ON {$mlw_results} (quiz_id)");
+        $this->maybe_add_index($mlw_results, 'idx_mrw_time_taken', "CREATE INDEX idx_mrw_time_taken ON {$mlw_results} (time_taken_real)");
+        $this->maybe_add_index($mlw_results, 'idx_mrw_user', "CREATE INDEX idx_mrw_user ON {$mlw_results} (`user`)");
 
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );

@@ -111,7 +111,7 @@ function qsm_migration_callback() {
 class QSM_Database_Migration {
 
     public $wpdb;
-    const BATCH_SIZE = 2; // You can change this value as needed
+    const BATCH_SIZE = 20; // You can change this value as needed
 
     public function __construct() {
         global $wpdb;
