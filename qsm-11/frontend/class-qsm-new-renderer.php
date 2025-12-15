@@ -149,6 +149,29 @@ class QSM_New_Renderer {
 			true 
 		);
 
+		// Ensure qmn_ajax_object is always available for frontend scripts.
+		// The new renderer enqueues scripts site-wide when enabled, but quiz-specific
+		// localization may only happen when a quiz is rendered. Provide a safe fallback.
+		wp_localize_script(
+			'qsm-quiz-navigation',
+			'qmn_ajax_object',
+			array(
+				'site_url'                  => site_url(),
+				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
+				'multicheckbox_limit_reach' => '',
+				'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
+				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
+				'start_date'                => current_time( 'h:i:s A m/d/Y' ),
+				'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
+				'remove_file'               => esc_html__( 'Removing file...', 'quiz-master-next' ),
+				'remove_file_success'       => esc_html__( 'File removed successfully', 'quiz-master-next' ),
+				'validate_success'          => esc_html__( 'File validated successfully', 'quiz-master-next' ),
+				'invalid_file_type'         => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
+				'invalid_file_size'         => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
+			)
+		);
+
 		// Enqueue common script
 		wp_enqueue_script( 
 			'qsm_common', 
