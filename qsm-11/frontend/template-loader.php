@@ -20,20 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Template output
  */
 function qsm_new_get_template_part( $slug, $args = array() ) {
-	// Debug: Log template requests
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Requesting template: ' . $slug );
-	}
 	
 	// Hook before template render
 	do_action( 'qsm_new_before_template_render', $slug, $args );
 	
 	$located = qsm_new_locate_template( $slug . '.php' );
-	
-	// Debug: Log template location result
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Template located at: ' . ( $located ? $located : 'NOT FOUND' ) );
-	}
 	
 	ob_start();
 	
@@ -220,3 +211,4 @@ function qsm_register_template_hooks() {
 
 // Initialize template hooks
 // add_action( 'init', 'qsm_register_template_hooks' );
+

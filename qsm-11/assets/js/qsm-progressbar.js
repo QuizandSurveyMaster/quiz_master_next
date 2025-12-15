@@ -24,16 +24,16 @@
         },
 
         initProgressBar: function(quizId, $container, $form, $initial_page = 1) {
-            
-            var data = window.qsmQuizData && window.qsmQuizData[quizId] ? window.qsmQuizData[quizId] : {};
+            var data = window.qmn_quiz_data && window.qmn_quiz_data[quizId] ? window.qmn_quiz_data[quizId] : {};
             if (!data.progress_bar || data.progress_bar == 0) return;
-            console.log("initProgressBar" , data);
+            
             // Look for progress bar in container first, then form (for new structure)
-            //var $bar = $container.find('.qsm-progress-bar');
-            //let $bar = jQuery('.qsm-pagination-'+quizId).find('.qsm-progress-bar');
-            let $bar = jQuery('.qsm-progress-bar-'+quizId);
-            console.log($bar);
+            let $bar = jQuery('.qsm-progress-bar-' + quizId);
+
             if (!$bar.length) return;
+
+            // Determine render mode: 'auto' | 'svg' | 'simple' (provided via data-progress-mode)
+            let mode = $bar.data('progress-mode') || 'auto';
 
             // Count pages - use same selectors as navigation system
             var $pages = $container.find('.qsm-page');
@@ -48,12 +48,43 @@
                 $form: $form,
                 $bar: $bar,
                 $fill: $bar.find('.qsm-progress-fill'),
-                $text: $bar.find('.qsm-progress-text'),
+                $text: $bar.find('.progressbar-text'),
                 totalPages: totalPages,
                 questionPages: questionPages,
                 hasFirstPage: hasFirstPage,
-                currentPage: $initial_page
+                currentPage: $initial_page,
+                mode: mode,
+                bar: null
             };
+			
+            jQuery(document).trigger('qsm_init_progressbar_before', [quizId, qmn_quiz_data]);
+
+            // Initialize ProgressBar.js Line only when library is available
+            if (window.ProgressBar && typeof ProgressBar.Line === 'function') {
+                window.qmn_quiz_data[quizId].bar = new ProgressBar.Line('#qsm_progress_bar_' + quizId, {
+                    strokeWidth: 2,
+                    easing: 'easeInOut',
+                    duration: 1400,
+                    color: '#3498db',
+                    trailColor: '#eee',
+                    trailWidth: 1,
+                    svgStyle: { width: '100%', height: '100%' },
+                    text: {
+                        style: {
+                            'position': 'absolute',
+                            'right': '10px',
+                            'font-size': '13px',
+                            'font-weight': 'bold'
+                        },
+                        autoStyleContainer: false
+                    },
+                    from: { color: '#3498db' },
+                    to: { color: '#ED6A5A' }
+                });
+            }
+			
+            jQuery(document).trigger('qsm_init_progressbar_after', [quizId, qmn_quiz_data]);
+
             $bar.show();
             this.updateProgress(quizId, $initial_page);
         },
@@ -119,12 +150,29 @@
             // Ensure progress bar stays visible during all page transitions
             // This is critical for single-page quizzes where bar might hide on navigation
             currentQuiz.$bar.show();
-            
-            currentQuiz.$fill.animate({ width: progress + '%' }, 300);
-            if (currentQuiz.$text.length) {
-                currentQuiz.$text.text(Math.round(progress) + '%');
+            // Use SVG ProgressBar.js when in svg mode and instance exists, otherwise fallback to simple width animation
+            let animate_value = progress / 100;
+            if (animate_value <= 1 && window.qmn_quiz_data && qmn_quiz_data[quizId] && qmn_quiz_data[quizId].bar) {
+                qmn_quiz_data[quizId].bar.animate(animate_value);
+                let old_text = currentQuiz.$text.text().replace(' %', '');
+                let new_text = Math.round(animate_value * 100);
+                if (!old_text || isNaN(parseInt(old_text, 10))) {
+                    old_text = 0;
+                }
+                jQuery({
+                    Counter: parseInt(old_text, 10)
+                }).animate({
+                    Counter: new_text
+                }, {
+                    duration: 1000,
+                    easing: 'swing',
+                    step: function () {
+                        currentQuiz.$text.text(Math.round(this.Counter) + ' %');
+                    }
+                });
             }
-        },
+        }
+
     };
 
     $(document).ready(function() {

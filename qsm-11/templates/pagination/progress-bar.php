@@ -12,14 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-extract( $args );
-if ( 1 == intval( $options->progress_bar ) && apply_filters( 'qsm_show_progress_bar', true, $quiz_id, $args ) ) : ?>
-    <div class="qsm-progress-bar qsm-progress-bar-<?php echo esc_attr( $quiz_id ); ?>">
-        <div class="qsm-progress-bar-container">
-            <div class="qsm-progress-fill"></div>
-        </div>
-        <div class="qsm-progress-text">0%</div>
-    </div>
-<?php endif; ?>
-	
-
+// Determine render mode for QSM-11 progress bar: auto|svg|simple (filterable)
+$progress_mode = apply_filters( 'qsm_progressbar_render_mode', 'auto', $quiz_id, $options );
+?>
+<div 
+    id="qsm_progress_bar_<?php echo esc_attr( $quiz_id ); ?>" 
+    class="qsm-progress-bar qsm-progress-bar-<?php echo esc_attr( $quiz_id ); ?>" 
+    data-progress-mode="<?php echo esc_attr( $progress_mode ); ?>">
+    <div class="progressbar-text"></div>
+</div>
