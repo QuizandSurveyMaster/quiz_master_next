@@ -20,20 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Template output
  */
 function qsm_new_get_template_part( $slug, $args = array() ) {
-	// Debug: Log template requests
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Requesting template: ' . $slug );
-	}
 	
 	// Hook before template render
 	do_action( 'qsm_new_before_template_render', $slug, $args );
 	
 	$located = qsm_new_locate_template( $slug . '.php' );
-	
-	// Debug: Log template location result
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Template located at: ' . ( $located ? $located : 'NOT FOUND' ) );
-	}
 	
 	ob_start();
 	
@@ -170,9 +161,10 @@ function qsm_get_question_type_templates() {
  *
  * @param string|int $question_type Question type ID
  * @param array      $args Template arguments
+ * @param array      $shortcode_args Shortcode arguments
  * @return string Template output
  */
-function qsm_get_question_template( $question_type, $args = array() ) {
+function qsm_get_question_template( $question_type, $args = array(), $shortcode_args = array() ) {
 	$question_types = qsm_get_question_type_templates();
 	$question_template_name = isset( $question_types[ $question_type ] ) ? $question_types[ $question_type ] : '';
 	
@@ -220,12 +212,3 @@ function qsm_register_template_hooks() {
 // Initialize template hooks
 // add_action( 'init', 'qsm_register_template_hooks' );
 
-// add_filter( 'qsm_pagination_header_elements', 'qsm_pagination_header_elements_callback', 10, 3 );
-
-function qsm_pagination_header_elements_callback( $elements, $quiz_id, $renderer ) {
-	return array(
-		// 'progress_bar',
-		'previous_button',
-		'next_button'
-	);
-}

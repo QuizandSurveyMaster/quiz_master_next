@@ -301,7 +301,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 }
 .qsm-progress-bar{
 	display: flex;
-	flex-direction: row;
+	flex-direction: row-reverse;
     align-items: center;
 	padding: 0;
 }
