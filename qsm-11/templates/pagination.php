@@ -34,7 +34,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	class="<?php echo esc_attr( 
 		apply_filters( 
 			'qsm_pagination_classes', 
-			'qsm-navigation qsm-pagination qmn_pagination border margin-bottom', 
+			'qsm-navigation qsm-pagination qmn_pagination border margin-bottom qsm-pagination-'.$quiz_id, 
 			$quiz_id, 
 			$renderer, 
 			$args 

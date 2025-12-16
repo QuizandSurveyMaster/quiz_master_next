@@ -91,7 +91,7 @@ var show_result_validation = true;
             });
         },
 
-        initQuizObject: function(quizId, $quizContainer,initialPage) {
+        initQuizObject: function(quizId, $quizContainer, initialPage) {
 
             // Get quiz data from backend config
             let quizData = this.getQuizData(quizId);
@@ -232,7 +232,7 @@ var show_result_validation = true;
             let currentQuiz = this.quizObjects[quizId];
             let $form = currentQuiz.form;
             let $container = currentQuiz.quizContainer;
-            let $pagination_container = $('.qsm-pagination-'+quizId);
+            let $pagination_container = $( '.qsm-pagination-' + quizId );
             let $start_btn = '.qsm-start-btn-'+quizId;
             let $prev_btn = '.qsm-previous-btn-'+quizId;
             let $next_btn = '.qsm-next-btn-'+quizId;

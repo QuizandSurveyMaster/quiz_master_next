@@ -450,8 +450,6 @@ class QSM_New_Pagination_Renderer {
 		if ( ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) )
 			&& ! empty( $questions )
 			&& ! isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) ) {
-			echo 'inside1';
-			
 			$question_sql = implode( ',', array_unique( array_keys( $questions ) ) );
 			?>
 			<script>
@@ -533,10 +531,20 @@ class QSM_New_Pagination_Renderer {
 				'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
 			);
 			$qmn_json_data = apply_filters( 'qsm_json_error_message', $qmn_json_data, $this->options );
-			
-			// Enqueue additional scripts
-			
-			// Localize qsm_quiz script
+
+			if ( ! wp_script_is( 'qsm-quiz-navigation', 'registered' ) ) {
+				wp_register_script(
+					'qsm-quiz-navigation',
+					QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js',
+					array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ),
+					$mlwQuizMasterNext->version,
+					true
+				);
+			}
+			if ( ! wp_script_is( 'qsm-quiz-navigation', 'enqueued' ) ) {
+				wp_enqueue_script( 'qsm-quiz-navigation' );
+			}
+
 			wp_localize_script(
 				'qsm-quiz-navigation',
 				'qmn_ajax_object',
@@ -556,7 +564,6 @@ class QSM_New_Pagination_Renderer {
 					'invalid_file_size' => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
 				)
 			);
-			
 			// Enqueue MathJax if not disabled
 			$disable_mathjax = isset( $this->options->disable_mathjax ) ? $this->options->disable_mathjax : '';
 			if ( 1 != $disable_mathjax ) {
@@ -1303,7 +1310,7 @@ class QSM_New_Pagination_Renderer {
 		// Register header elements before loading template
 		$this->register_pagination_header_elements( $args['quiz_id'], $this, $args );
 		
-		echo qsm_new_get_template_part( 'pagination-header', $args );
+		return qsm_new_get_template_part( 'pagination-header', $args );
 	}
 
 	/**
@@ -1335,7 +1342,7 @@ class QSM_New_Pagination_Renderer {
 				const d = new Date();
 				d.setTime(d.getTime() + (365*24*60*60*1000));
 				let expires = "expires="+ d.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_attr( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+expires+"; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+expires+"; path=/";
 			</script>
 			<?php
 		}
@@ -1378,15 +1385,18 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @return string
 	 */
-	/**
-	 * Called from shortcode — prepares & outputs QSM JS data.
-	 */
-	private function render_javascript_data() {
+	public function render_javascript_data() {
 		global $mlwQuizMasterNext;
-		
 		// Ensure mlwQuizMasterNext is available
 		if ( ! $mlwQuizMasterNext || ! isset( $mlwQuizMasterNext->pluginHelper ) ) {
 			return '<script>console.warn("QSM: mlwQuizMasterNext not available for quiz data localization");</script>';
+		}
+
+		if ( ! wp_script_is( 'qsm_encryption', 'registered' ) ) {
+			wp_register_script( 'qsm_encryption', QSM_PLUGIN_JS_URL . '/crypto-js.js', array( 'jquery' ), $mlwQuizMasterNext->version, true );
+		}
+		if ( ! wp_script_is( 'qsm_encryption', 'enqueued' ) ) {
+			wp_enqueue_script( 'qsm_encryption' );
 		}
 		
 		// Get quiz settings
@@ -1536,7 +1546,9 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$quiz_data['questions_settings'] = $questions_settings;
-	
+		// Ensure encryption library handle is available for wp_add_inline_script.
+		// In some flows, scripts may be enqueued by the new renderer, but this renderer
+		// can be used independently (shortcode). Register/enqueue as a fallback.
 		// Add encryption data if available
 		if ( ! empty( $encryption ) ) {
 			$qsm_inline_encrypt_js = '
@@ -1557,7 +1569,7 @@ class QSM_New_Pagination_Renderer {
 			data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
 			jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
 			encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
-			wp_add_inline_script('qsm_encryption', $qsm_inline_encrypt_js, 'after');
+			wp_add_inline_script( 'qsm_encryption', $qsm_inline_encrypt_js, 'after' );
 		}
 		
 		// Output JavaScript with both legacy and new variable names for compatibility
@@ -1565,7 +1577,7 @@ class QSM_New_Pagination_Renderer {
 		$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
 		$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
 		$output .= '</script>';
-	
+		
 		return $output;
 	}
 
