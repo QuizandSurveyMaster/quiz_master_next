@@ -69,8 +69,12 @@ class QMNQuizManager {
 	 * @return void
 	 */
 	public function add_hooks() {
-		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
-		add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
+		$qmn_global_settings	= (array) get_option( 'qmn-settings' );
+		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		if ( 0 === intval( $enable_new_render ) ) {
+			add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
+			add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
+		}
 		add_shortcode( 'qsm_result', array( $this, 'shortcode_display_result' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );

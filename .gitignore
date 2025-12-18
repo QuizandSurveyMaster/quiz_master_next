@@ -10,3 +10,4 @@ php/classes/composer.json
 phpcs.xml
 node_modules
 phpcs-report.csv
+*.md

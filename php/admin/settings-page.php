@@ -71,6 +71,7 @@ class QMNGlobalSettingsPage {
 	public function init() {
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
 		add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
+		add_settings_field( 'enable-new-render', __( 'Enable New Render', 'quiz-master-next' ), array( $this, 'enable_new_render' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -564,6 +565,23 @@ class QMNGlobalSettingsPage {
 			<input type="checkbox" name="qmn-settings[enable_qsm_log]" id="qmn-settings[enable_qsm_log]" value="1"' <?php checked( $enable_qsm_log, 1, true ); ?>/><span class="qsm-switch-slider round"></span>
 		</label>
 		<span class='global-sub-text' for='qmn-settings[enable_qsm_log]'><?php esc_html_e( "Enable this option to generate QSM error logs", 'quiz-master-next' );?></span>
+		<?php
+	}
+
+	/**
+	 * Generates Setting Field For QSM logs
+	 *
+	 * @since 8.1.9
+	 * @return void
+	 */
+	public function enable_new_render() {
+		$settings         = (array) get_option( 'qmn-settings' );
+		$enable_new_render = ! empty( $settings['enable_new_render'] ) ? esc_attr( $settings['enable_new_render'] ) : 0;
+		?>
+		<label class="qsm-checkbox-switch">
+			<input type="checkbox" name="qmn-settings[enable_new_render]" id="qmn-settings[enable_new_render]" value="1" <?php checked( $enable_new_render, 1, true ); ?>/><span class="qsm-switch-slider round"></span>
+		</label>
+		<span class='global-sub-text' for='qmn-settings[enable_new_render]'><?php esc_html_e( "Enable this option to use new render", 'quiz-master-next' );?></span>
 		<?php
 	}
 
