@@ -2006,7 +2006,7 @@ class QMNQuizManager {
 
 	/**
      * Insert per-question answers and result meta for a single result
-     * into the structured tables (qsm_results_answers and qsm_results_meta).
+     * into the structured tables (qsm_results_questions and qsm_results_meta).
      *
      * This mirrors the migration helper logic but is used for new
      * submissions so that fresh results are immediately stored in the
@@ -2028,7 +2028,7 @@ class QMNQuizManager {
             return false;
         }
 
-        $answers_table           = $wpdb->prefix . 'qsm_results_answers';
+        $answers_table           = $wpdb->prefix . 'qsm_results_questions';
         $results_meta_table_name = $wpdb->prefix . 'qsm_results_meta';
         $unserializedResults     = $results_array;
 
@@ -2049,7 +2049,7 @@ class QMNQuizManager {
             foreach ( $unserializedResults as $result_meta_key => $result_meta_value ) {
 
                 // ---------------------------------------------------------
-                //                      INSERT INTO qsm_results_answers
+                //                      INSERT INTO qsm_results_questions
                 // ---------------------------------------------------------
                 if ( 1 == $result_meta_key ) {
 

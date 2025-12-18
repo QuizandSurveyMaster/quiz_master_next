@@ -2156,7 +2156,7 @@ class QSM_Install {
 			}
 
 			
-		$answers_table = $wpdb->prefix . 'qsm_results_answers';
+		$answers_table = $wpdb->prefix . 'qsm_results_questions';
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$answers_table}'" ) != $answers_table ) {
 			$charset_collate = $wpdb->get_charset_collate();
 			$sql_results_answers = "CREATE TABLE {$answers_table} (

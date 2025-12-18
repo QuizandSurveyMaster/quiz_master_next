@@ -1394,7 +1394,7 @@ class QMNPluginHelper {
         global $wpdb;
 
         $result_id     = intval( $result_id );
-        $answers_table = $wpdb->prefix . 'qsm_results_answers';
+        $answers_table = $wpdb->prefix . 'qsm_results_questions';
         $meta_table    = $wpdb->prefix . 'qsm_results_meta';
 
         // -------------------------------------------------------

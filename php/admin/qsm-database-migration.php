@@ -111,7 +111,7 @@ function qsm_migration_callback() {
 class QSM_Database_Migration {
 
     public $wpdb;
-    const BATCH_SIZE = 20; // You can change this value as needed
+    const BATCH_SIZE = 100; // You can change this value as needed
 
     public function __construct() {
         global $wpdb;
@@ -126,7 +126,7 @@ class QSM_Database_Migration {
         $charset_collate = $this->wpdb->get_charset_collate();
 
         // Ensure answers table (use InnoDB for transactions)
-        $answers_table = $this->wpdb->prefix . 'qsm_results_answers';
+        $answers_table = $this->wpdb->prefix . 'qsm_results_questions';
         $sql_results_answers = "CREATE TABLE IF NOT EXISTS `{$answers_table}` (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `result_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -134,14 +134,14 @@ class QSM_Database_Migration {
             `question_id` BIGINT(20) UNSIGNED NOT NULL,
 
             `question_title` TEXT,
-            `question_description` LONGTEXT,        -- ONLY this is LONGTEXT
+            `question_description` LONGTEXT,
             `question_comment` TEXT,
 
             `question_type` VARCHAR(50),
             `answer_type` VARCHAR(50) DEFAULT 'text',  
 
-            `correct_answer` TEXT,                 -- serialized array (TEXT is enough)
-            `user_answer` TEXT,                    -- serialized array
+            `correct_answer` TEXT,
+            `user_answer` TEXT,
 
             `user_answer_comma` TEXT,
             `correct_answer_comma` TEXT,
@@ -150,9 +150,9 @@ class QSM_Database_Migration {
             `correct` TINYINT(1) DEFAULT 0,
 
             `category` TEXT,
-            `multicategories` TEXT,                -- serialized array (TEXT OK)
+            `multicategories` TEXT,
 
-            `other_settings` TEXT,                 -- serialized array
+            `other_settings` TEXT,
 
             PRIMARY KEY (`id`),
             KEY `result_id` (`result_id`),
@@ -290,7 +290,7 @@ class QSM_Database_Migration {
         $batch_size              = self::BATCH_SIZE;
 
         $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
-        $answers_table           = $this->wpdb->prefix . 'qsm_results_answers';
+        $answers_table           = $this->wpdb->prefix . 'qsm_results_questions';
         $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
         
         $results_processed   = 0;
@@ -530,7 +530,7 @@ class QSM_Database_Migration {
             return $stats;
         }
 
-        $answers_table           = $this->wpdb->prefix . 'qsm_results_answers';
+        $answers_table           = $this->wpdb->prefix . 'qsm_results_questions';
         $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
 
         // ----------------------------------------------
