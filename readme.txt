@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 10.3.2
+Stable tag: 10.3.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,10 @@ Yes, QSM allows you to collect and analyze user data from your quizzes and surve
 
 As a WordPress quiz maker, QSM is designed to be compatible with most other plugins and themes. However, in case of any conflicts or issues, our team provides comprehensive documentation, including common conflict solutions and guidelines for theme compatibility.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Quiz And Survey Master plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb395-726e-4cf4-86fd-84d1608504e1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 
 1. Dashboard
@@ -221,6 +225,9 @@ As a WordPress quiz maker, QSM is designed to be compatible with most other plug
 18. Database
 
 == Changelog ==
+= 10.3.3 ( December 19, 2025 ) =
+* Fix: Broken Access Control vulnerability
+
 = 10.3.2 ( December 04, 2025 ) =
 * Bug: Patch vulnerability with qsm_dashboard_delete_result function
 * Bug: Fixed SQL Injection via is_linking parameter
