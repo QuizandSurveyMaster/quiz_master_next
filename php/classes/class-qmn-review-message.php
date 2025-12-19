@@ -135,14 +135,10 @@ class QMN_Review_Message {
 			if ( 'remove_message' === $review_action ) {
 				$this->trigger = $this->check_message_trigger();
 				$update_trigger = -1;
-				if ( -1 !== $this->trigger ) {
-					exit;
-				} elseif ( 20 !== $this->trigger ) {
+				if ( 20 >= intval($this->trigger) ) {
 					$update_trigger = 100;
-				} elseif ( 100 !== $this->trigger ) {
+				} elseif ( 100 >= intval($this->trigger) ) {
 					$update_trigger = 1000;
-				} elseif ( 1000 !== $this->trigger ) {
-					$update_trigger = -1;
 				}
 				update_option( 'qmn_review_message_trigger', $update_trigger );
 			} elseif ( 'already_did' === $review_action ) {
