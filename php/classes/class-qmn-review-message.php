@@ -85,14 +85,24 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function display_admin_message() {
+		$already_did_url = wp_nonce_url(
+			add_query_arg( 'qmn_review_notice_check', 'already_did' ),
+			'qsm_review_already_did',
+			'qsm_review_nonce'
+		);
+		$remove_message_url = wp_nonce_url(
+			add_query_arg( 'qmn_review_notice_check', 'remove_message' ),
+			'qsm_review_remove',
+			'qsm_review_nonce'
+		);
 		?>
 		<div class='updated'><br />
             <?php
             /* translators: %s: count of quizzes */
             printf(esc_html__('Greetings! I just noticed that you now have more than %s quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next'), esc_html($this->trigger)); ?>
-			<br/><strong><em>~ <?php esc_html__('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
-			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'already_did')); ?>" class="button-secondary" ><?php esc_html_e('I already did ! ', 'quiz-master-next'); ?> </a>
-			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'remove_message')); ?>" class="button-secondary"><?php esc_html_e('No, this plugin is not good enough', 'quiz-master-next'); ?> </a>
+			<br/><strong><em>~ <?php esc_html_e('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
+			&nbsp;<a href="<?php echo esc_url( $already_did_url ); ?>" class="button-secondary"><?php esc_html_e('I already did ! ', 'quiz-master-next'); ?> </a>
+			&nbsp;<a href="<?php echo esc_url( $remove_message_url ); ?>" class="button-secondary"><?php esc_html_e('No, this plugin is not good enough', 'quiz-master-next'); ?> </a>
 			<br/><br/>
 		</div>
         <?php
@@ -104,22 +114,41 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function admin_notice_check() {
-		if ( isset( $_GET["qmn_review_notice_check"] ) && 'remove_message' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
-			$this->trigger = $this->check_message_trigger();
-			$update_trigger = -1;
-			if ( -1 !== $this->trigger ) {
-				exit;
-			} elseif ( 20 !== $this->trigger ) {
-				$update_trigger = 100;
-			} elseif ( 100 !== $this->trigger ) {
-				$update_trigger = 1000;
-			} elseif ( 1000 !== $this->trigger ) {
-				$update_trigger = -1;
-			}
-			update_option( 'qmn_review_message_trigger', $update_trigger );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
-		if ( isset( $_GET["qmn_review_notice_check"] ) && 'already_did' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
-			update_option( 'qmn_review_message_trigger', -1 );
+
+		if ( isset( $_GET['qmn_review_notice_check'] ) ) {
+			$review_action = sanitize_text_field( wp_unslash( $_GET['qmn_review_notice_check'] ) );
+			$nonce         = isset( $_GET['qsm_review_nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['qsm_review_nonce'] ) ) : '';
+			$nonce_action  = '';
+
+			if ( 'already_did' === $review_action ) {
+				$nonce_action = 'qsm_review_already_did';
+			} elseif ( 'remove_message' === $review_action ) {
+				$nonce_action = 'qsm_review_remove';
+			}
+
+			if ( empty( $nonce_action ) || empty( $nonce ) || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+				return;
+			}
+
+			if ( 'remove_message' === $review_action ) {
+				$this->trigger = $this->check_message_trigger();
+				$update_trigger = -1;
+				if ( -1 !== $this->trigger ) {
+					exit;
+				} elseif ( 20 !== $this->trigger ) {
+					$update_trigger = 100;
+				} elseif ( 100 !== $this->trigger ) {
+					$update_trigger = 1000;
+				} elseif ( 1000 !== $this->trigger ) {
+					$update_trigger = -1;
+				}
+				update_option( 'qmn_review_message_trigger', $update_trigger );
+			} elseif ( 'already_did' === $review_action ) {
+				update_option( 'qmn_review_message_trigger', -1 );
+			}
 		}
 	}
 }
