@@ -465,14 +465,12 @@ var show_result_validation = true;
             let self = this;
             let currentQuiz = this.quizObjects[quizId];
             let $container = currentQuiz.quizContainer;
-            console.log($container);
             $container.off('.qsmFileUpload');
 
             // File input change event - validation and upload
             $container.on('change.qsmFileUpload', '.quiz_section .mlw_answer_file_upload', async function() {
                 let $this = $(this);
                 let file_data = $this.prop('files')[0];
-                console.log(file_data, $this);
                 if (!file_data) {
                     await self.qsmRemoveUploadedFile($this.parent('.quiz_section, .qsm-question').find('.qsm-file-upload-container').find('.remove-uploaded-file'));
                     return false;
@@ -766,7 +764,7 @@ var show_result_validation = true;
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
-            console.log( " pageNumber ", pageNumber );   
+
             if ($targetPage.length > 0) {
                 $targetPage.show();
                 
@@ -844,7 +842,7 @@ var show_result_validation = true;
             // Get question IDs and other data from page attributes
             let questionIds = $page.attr('data-question-ids') || '';
             let questionStartNumber = parseInt($page.attr('data-question-start-number')) || 1;
-            console.log( quizData.data.ajax_url );
+
             // Prepare AJAX data
             let ajaxData = {
                 action: 'qsm_load_page_questions',
@@ -930,7 +928,7 @@ var show_result_validation = true;
          */
         nextPage: function(quizId) {
             let quizData = this.quizObjects[quizId];
-            console.log(quizData);
+
             if (!quizData) return;
 
             // Validate current page before proceeding
@@ -1002,7 +1000,6 @@ var show_result_validation = true;
             
             // Simple button visibility logic
             if (showStartButton) {
-                console.log($previousBtn);
                 // First page (welcome page) with start button
                 $startBtn.show();
                 $previousBtn.hide();
@@ -1012,9 +1009,6 @@ var show_result_validation = true;
                 // Regular navigation pages (question pages)
                 $startBtn.hide();
 
-                
-                
-                
                 // Previous button logic:
                 // - Hide on first page when no welcome page
                 // - Hide on page 2 when there IS a welcome page (can't go back from first question page to welcome)
@@ -1921,12 +1915,10 @@ var show_result_validation = true;
             
             if (this.quizObjects[quizId]) {
                 // Remove event listeners
-                this.quizObjects[quizId].form.off();
-                
+                this.quizObjects[quizId].form.off();                
 
                 // Delete instance
-                delete this.quizObjects[quizId];
-                console.log('destroy')
+                delete this.quizObjects[quizId];                
                 
                 // Trigger destroy event
                 $(document).trigger('qsm_navigation_destroyed', [quizId]);
