@@ -2661,8 +2661,8 @@ class QMNQuizManager {
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
 								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-									$points_earned += $results_array['points'] ? $results_array['points'] : 0;
-									$answer_points += $results_array['points'] ? $results_array['points'] : 0;
+									$points_earned += $results_array['points'] ? intval( $results_array['points'] ) : 0;
+									$answer_points += $results_array['points'] ? intval( $results_array['points'] ) : 0;
 								}
 
 								// If the user's answer was correct

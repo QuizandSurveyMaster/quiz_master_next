@@ -37,18 +37,12 @@
 
         initTimer: function(quizId, $form) {
             var data = this.getQuizData(quizId);
-            console.log('Timer data for quiz ' + quizId + ':', data);
+            
             if (!data.timer_limit || data.timer_limit <= 0) {
-                console.log('Timer not initialized - no timer limit set');
                 return;
             }
 
             var $timer = $form.find('.mlw_qmn_timer');
-            // if (!$timer.length) {
-            //     console.log('Timer not initialized - no timer element found');
-            //     return;
-            // }
-            
             var totalTime = data.timer_limit * 60;
             var consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId)) || 1;
             var remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
