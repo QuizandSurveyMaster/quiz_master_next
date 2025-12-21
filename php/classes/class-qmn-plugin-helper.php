@@ -1390,8 +1390,7 @@ class QMNPluginHelper {
 	 *     @type array $meta    Parsed meta data (result_meta/answer_label_points).
 	 * }
 	 */
-	public function get_formated_result_data( $result_id )
-	{
+	public function get_formated_result_data( $result_id ) {
         global $wpdb;
 
         $result_id     = intval( $result_id );
@@ -1416,28 +1415,28 @@ class QMNPluginHelper {
         foreach ( $rows as $row ) {
 
             $row_array = array(
-                0                 => $row['question_description'],
-                1                 => $row['user_answer_comma'],
-                2                 => $row['correct_answer_comma'],
-                3                 => $row['question_comment'],
+                0                   => $row['question_description'],
+                1                   => $row['user_answer_comma'],
+                2                   => $row['correct_answer_comma'],
+                3                   => $row['question_comment'],
 
-                'user_answer'     => maybe_unserialize( $row['user_answer'] ),
-                'correct_answer'  => maybe_unserialize( $row['correct_answer'] ),
-                'correct'         => $row['correct'] ? 'correct' : 'incorrect',
-                'id'              => (int) $row['question_id'],
-                'points'          => (float) $row['points'],
-                'category'        => $row['category'],
-                'multicategories' => maybe_unserialize( $row['multicategories'] ),
-                'question_type'   => $row['question_type'],
-                'question_title'  => $row['question_title'],
+                'user_answer'       => maybe_unserialize( $row['user_answer'] ),
+                'correct_answer'    => maybe_unserialize( $row['correct_answer'] ),
+                'correct'           => $row['correct'] ? 'correct' : 'incorrect',
+                'id'                => (int) $row['question_id'],
+                'points'            => (float) $row['points'],
+                'category'          => $row['category'],
+                'multicategories'   => maybe_unserialize( $row['multicategories'] ),
+                'question_type'     => $row['question_type'],
+                'question_title'    => $row['question_title'],
 
                 // Defaults
                 'user_compare_text' => '',
                 'case_sensitive'    => '',
                 'answer_limit_keys' => '',
 
-                'answer_type'     => $row['answer_type'], // default 'text'
-                'other_settings'  => maybe_unserialize( $row['other_settings'] ),
+                'answer_type'       => $row['answer_type'], // default 'text'
+                'other_settings'    => maybe_unserialize( $row['other_settings'] ),
             );
 
             if ( is_array( $row_array['other_settings'] ) && ! empty( $row_array['other_settings'] ) ) {
@@ -1463,15 +1462,13 @@ class QMNPluginHelper {
         $answer_label_points = '';
 
         foreach ( $meta_rows as $meta_row ) {
-
             if ( 'answer_label_points' === $meta_row['meta_key'] ) {
                 $answer_label_points = $meta_row['meta_value'];
             }
             elseif ( 'result_meta' === $meta_row['meta_key'] ) {
                 $result_meta = maybe_unserialize( $meta_row['meta_value'] );
             }
-
-        }
+		}
 
         $final_array = array(
             0 => isset( $result_meta['total_seconds'] ) ? $result_meta['total_seconds'] : 0,
@@ -1497,7 +1494,7 @@ class QMNPluginHelper {
 
     public function qsm_is_new_render_enabled() {
         $qmn_global_settings    = (array) get_option( 'qmn-settings' );
-		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
 		return $enable_new_render;
     }
 }

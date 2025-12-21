@@ -2,50 +2,47 @@
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
+    background: var(--qsm-information-color-light);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.qsm-migration-form {
-    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .qsm-migration-warning {
-    background: #fff3cd;
-    border-left: 4px solid #ffc107;
+    background: var(--qsm-warning-color-light);
     padding: 12px 15px;
     margin-bottom: 20px;
-    color: #856404;
+    color: var(--qsm-warning-color);
+    border: 1px solid var(--qsm-warning-color);
+    border-left: 4px solid var(--qsm-warning-color);
 }
 
-.qsm-migration-status {
+.qsm-database-migration-status {
     margin: 15px 0;
     padding: 10px;
     border-radius: 4px;
 }
 
-.qsm-migration-status.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+.qsm-database-migration-status.success {
+    background: var(--qsm-success-color-light);
+    color: var(--qsm-success-color);
+    border: 1px solid var(--qsm-success-color-light);
 }
 
-.qsm-migration-status.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+.qsm-database-migration-status.error {
+    background: var(--qsm-error-color-light);
+    color: var(--qsm-error-color);
+    border: 1px solid var(--qsm-error-color-light);
 }
 
-.qsm-migration-status.progress {
-    background: #cce5ff;
-    color: #004085;
-    border: 1px solid #b8daff;
+.qsm-database-migration-status.progress {
+    background: var(--qsm-information-color-light);
+    color: var(--qsm-information-color);
+    border: 1px solid var(--qsm-information-color-light);
 }
 
-.qsm-migration-button {
-    background: #007cba;
-    color: #fff;
+.qsm-database-migration-button {
+    background: var(--qsm-primary-button);
+    color: var(--qsm-white-color);
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
@@ -54,11 +51,30 @@
     transition: background 0.3s ease;
 }
 
-.qsm-migration-button:hover {
-    background: #0056b3;
+.qsm-database-migration-button:hover {
+    background: var(--qsm-primary-button);
 }
 
-.qsm-migration-button:disabled {
+.qsm-database-migration-button:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+.qsm-database-migration-progress-bar {
+    width: 100%;
+    background-color: var(--qsm-white-color);
+    border-radius: 4px;
+    height: 25px;
+    margin: 15px 0;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.qsm-database-migration-progress {
+    width: 0%;
+    height: 100%;
+    background-color: var(--qsm-information-color);
+    transition: width 0.3s ease-in-out;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
 }

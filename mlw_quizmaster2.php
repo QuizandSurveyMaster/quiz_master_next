@@ -278,7 +278,6 @@ class MLWQuizMasterNext {
 			include_once 'php/admin/functions.php';
 			include_once 'php/admin/stats-page.php';
 			include_once 'php/admin/create-quiz-page.php';
-			include_once 'php/admin/qsm-database-migration.php';
 			include_once 'php/admin/quizzes-page.php';
 			include_once 'php/admin/admin-dashboard.php';
 			include_once 'php/admin/quiz-options-page.php';
@@ -909,7 +908,6 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Extensions Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qmn_addons', 'qmn_addons_page', 34 );
 			add_submenu_page( 'qsm_dashboard', __( 'Free Add-ons', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Add-ons', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qsm-free-addon', 'qsm_display_optin_page', 90 );
 			add_submenu_page( 'qsm_dashboard', __( 'Create Quiz Page', 'quiz-master-next' ), '', $capabilities[1], 'qsm_create_quiz_page', 'qsm_create_quiz_page_callback' );
-			add_submenu_page( 'qsm_dashboard', __( 'Migration', 'quiz-master-next' ), __( 'Migration', 'quiz-master-next' ), $capabilities[6], 'qsm_migration', 'qsm_migration_callback' );
 		}
 	}
 

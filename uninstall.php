@@ -23,7 +23,7 @@ $qsm_tables = array(
 	'mlw_questions',
 	'mlw_qm_audit_trail',
 	'qsm_results_meta',
-	'qsm_results_questions'
+	'qsm_results_questions',
 );
 
 // Drop the tables associated with our plugin.

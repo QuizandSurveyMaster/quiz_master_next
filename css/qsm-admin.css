@@ -1,5 +1,14 @@
 :root {
+	--qsm-white-color: #FFFFFF;
 	--qsm-primary-button: #2272B1;
+	--qsm-information-color: #2271B1;
+	--qsm-information-color-light: #EFF6FF;
+	--qsm-success-color: #065F46;
+	--qsm-success-color-light: #ECFDF5;
+	--qsm-error-color: #991B1B;
+	--qsm-error-color-light: #FEF2F2;
+	--qsm-warning-color: #991B1B;
+	--qsm-warning-color-light: #FFF4D2;
 }
 .toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content div.updated, .toplevel_page_qsm_dashboard #wpbody-content div.updated, .qsm_page_qsm_create_quiz_page .notice-error, .toplevel_page_qsm_dashboard .notice-error {
 	display: none;
@@ -5160,6 +5169,13 @@ ul.qsm-wp-contributor.wp-people-group {
 	background: #fff4d2;
     border: 1px solid #FFF2EF;
     padding: 30px 20px;
+    border-radius: 6px;
+    margin: 20px auto;
+}
+.qsm-dashboard-information-container{
+	background: var(--qsm-information-color-light);
+    border: 1px solid var(--qsm-information-);
+	padding: 30px 20px;
     border-radius: 6px;
     margin: 20px auto;
 }

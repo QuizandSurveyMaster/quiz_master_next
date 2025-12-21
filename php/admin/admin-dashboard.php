@@ -52,6 +52,78 @@ function qsm_check_close_hidden_box( $widget_id ) {
 	}
 }
 
+/**
+ * Admin page UI and script enqueue + localization
+ */
+function qsm_migration_database_callback() { 
+	
+    if ( 1 != get_option( 'qsm_migration_results_processed' ) ) { 
+		global $mlwQuizMasterNext;
+
+		// Enqueue required scripts and styles; always enqueue to ensure localized data is available.
+		wp_enqueue_style(
+			'qsm-database-migration',
+			QSM_PLUGIN_CSS_URL . '/qsm-database-migration.css',
+			array(),
+			$mlwQuizMasterNext->version
+		);
+
+		wp_enqueue_script(
+			'qsm-database-migration',
+			QSM_PLUGIN_JS_URL . '/qsm-database-migration-script.js',
+			array( 'jquery' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+
+		// Localize script with translated strings & AJAX URL + nonce
+		wp_localize_script('qsm-database-migration', 'qsmMigrationData', array(
+			'ajax_url'            => admin_url('admin-ajax.php'),
+			'nonce'               => wp_create_nonce('qsm_migration_nonce'),
+			'confirmMessage'      => __('Are you sure you want to start the database migration? This process cannot be reversed.', 'quiz-master-next'),
+			'startMessage'        => __('Migration started...', 'quiz-master-next'),
+			'processingMessage'   => __('Migration in progress...', 'quiz-master-next'),
+			'successMessage'      => __('Migration completed successfully!', 'quiz-master-next'),
+			'errorMessage'        => __('An error occurred during migration.', 'quiz-master-next'),
+			'warningMessage'      => __('Before starting migration, please create a database backup.', 'quiz-master-next'),
+			'finalizingMigration' => __('Finalizing migration, retrying failed results...', 'quiz-master-next'),
+			// Labels for UI details
+			'labelTotalRecords'   => __('Total Results to Migrate:', 'quiz-master-next'),
+			'labelProcessed'      => __('Results Processed:', 'quiz-master-next'),
+			'labelInserted'       => __('Total Results Migrated:', 'quiz-master-next'),
+			'labelFailed'         => __('Total Results Failed:', 'quiz-master-next'),
+			'labelErrorNote'      => __('Migration stopped due to an error. Check browser console and server logs for details.', 'quiz-master-next'),
+			// 
+		));
+		?>
+				
+		<div class="qsm-dashboard-help-center">
+			<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Database Migration', 'quiz-master-next'); ?></h3>
+			<div class="qsm-database-migration-wrapper qsm-dashboard-page-common-style">
+				
+				<form id="qsm-database-migration-form" class="qsm-database-migration-form">
+					<div class="qsm-migration-warning">
+						<strong>⚠️ <?php echo esc_html__('Warning:', 'quiz-master-next'); ?></strong>
+						<?php echo esc_html__('Before starting the migration, please create a full database backup.', 'quiz-master-next'); ?>
+					</div>
+
+					<div class="qsm-database-migration-progress-bar">
+						<div class="qsm-database-migration-progress" style="width: 0%;"></div>
+					</div>
+
+					<div class="qsm-database-migration-status"></div>
+					<div class="qsm-database-migration-details"></div>
+
+					<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button button button-primary">
+						<?php echo esc_html__('Start Migration', 'quiz-master-next'); ?>
+					</button>
+				</form>
+			</div>
+		</div><!-- qsm-dashboard-help-center qsm-dashboard-warning-container -->
+		<?php
+	}
+}
+
 function qsm_check_plugins_compatibility() {
 	global $mlwQuizMasterNext;
 
@@ -75,6 +147,10 @@ function qsm_check_plugins_compatibility() {
 			<?php
 		}
 	}
+
+	qsm_migration_database_callback();
+
+	do_action( 'qsm_admin_dashboard_compatibility_after' );
 }
 
 function qsm_dashboard_display_change_log_section() {
@@ -568,3 +644,7 @@ function qsm_create_new_quiz_from_wizard() {
 }
 
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
+
+if ( 1 != get_option( 'qsm_migration_results_processed' ) ) {
+	include_once QSM_PLUGIN_PATH.'php/admin/qsm-database-migration.php';
+}

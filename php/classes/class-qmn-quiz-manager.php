@@ -69,8 +69,8 @@ class QMNQuizManager {
 	 * @return void
 	 */
 	public function add_hooks() {
-		$qmn_global_settings	= (array) get_option( 'qmn-settings' );
-		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
+		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
 		if ( 0 === intval( $enable_new_render ) ) {
 			add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
 			add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
@@ -2215,8 +2215,8 @@ class QMNQuizManager {
                             break; // Exit main foreach loop immediately
                         }
                     }
-
-                } 
+				}
+				
                 // ---------------------------------------------------------
                 //                      INSERT META
                 // ---------------------------------------------------------
@@ -2228,13 +2228,9 @@ class QMNQuizManager {
                         $result_meta_key = 'quiz_comments';
                     }
 
-                    if ( 'answer_label_points' == $result_meta_key ) {
-
-                        if ( '' != $result_meta_value ) {
-                            $results_meta_table_ans_label = $result_meta_value;
-                        }
-
-                    } else {
+                    if ( 'answer_label_points' == $result_meta_key && '' != $result_meta_value ) {
+                        $results_meta_table_ans_label = $result_meta_value;
+					} else {
                         $results_meta_table_data[ $result_meta_key ] = $result_meta_value;
                     }
                 }

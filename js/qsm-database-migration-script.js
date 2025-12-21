@@ -3,11 +3,11 @@ jQuery(function ($) {
 
     // All state, utilities and logic live inside this object
     QSM_Migration_Process = {
-        migrationForm: $('#qsm-migration-form'),
-        startButton: $('#qsm-start-migration'),
-        statusBox: $('.qsm-migration-status'),
-        detailsBox: $('.qsm-migration-details'),
-        progressBar: $('.qsm-migration-progress'),
+        migrationForm: $('#qsm-database-migration-form'),
+        startButton: $('#qsm-database-start-migration'),
+        statusBox: $('.qsm-database-migration-status'),
+        detailsBox: $('.qsm-database-migration-details'),
+        progressBar: $('.qsm-database-migration-progress'),
         totalRecords: 0,
         batchSize: 0,
         offset: 0, // This will track the total number of LOGGED records (migrated + failed)
@@ -30,12 +30,10 @@ jQuery(function ($) {
 
         disableUI: function () {
             QSM_Migration_Process.startButton.prop('disabled', true);
-            QSM_Migration_Process.migrationForm.addClass('qsm-migration-disabled');
         },
 
         enableUI: function () {
             QSM_Migration_Process.startButton.prop('disabled', false);
-            QSM_Migration_Process.migrationForm.removeClass('qsm-migration-disabled');
             // If completed, we can show a re-try button for failed if needed, but for now just leave it enabled
             // and relying on the PHP check for completion.
         },
@@ -162,7 +160,7 @@ jQuery(function ($) {
                         if (!self.processingFailedOnly) {
                              // Switch to a final pass that focuses only on failed IDs.
                             self.processingFailedOnly = true;
-                            QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage + ' Finalizing migration, retrying failed results...');
+                            QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage + qsmMigrationData.finalizingMigration);
                             QSM_Migration_Process.processBatch();
                             return;
                         } else {

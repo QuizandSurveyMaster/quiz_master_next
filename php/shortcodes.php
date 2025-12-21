@@ -150,7 +150,7 @@ function qsm_generate_fb_header_metadata() {
 				if ( ! isset( $results['contact'] ) ) {
 					$results['contact'] = array();
 				}
-			} elseif( '' != $results_data->quiz_results ){
+			} elseif ( '' != $results_data->quiz_results ) {
 				$template = str_replace( '%QUESTIONS_ANSWERS%', $results_data->quiz_results, $template );
 				$template = str_replace( '%TIMER%', '', $template );
 				$template = str_replace( '%COMMENT_SECTION%', '', $template );
