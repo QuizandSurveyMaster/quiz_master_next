@@ -1004,11 +1004,20 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
+	global $wpdb;
 	$json    = array(
 		'status' => 'error',
 	);
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+
+	// Map quiz to its post and enforce edit capabilities.
+	$post_id    = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", $quiz_id ) );
+	$post_author = get_post_field( 'post_author', $post_id, true );
+
+	if ( empty( $post_id ) || ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || intval( $post_author ) !== get_current_user_id() ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) ) {
+		wp_die( esc_html__( 'You are not allowed to edit this quiz, You need higher permission!', 'quiz-master-next' ) );
+	}
+
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 	$pages         = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages        = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
