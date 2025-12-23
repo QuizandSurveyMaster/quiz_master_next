@@ -90,8 +90,11 @@ function qsm_options_styling_tab_content() {
 	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
 		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) ) : '';
-
-		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
+		$should_activate_theme = apply_filters( 'qsm_activate_theme_before', true, $quiz_id, $theme_id );
+        if ( $should_activate_theme ) {
+            $mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
+        }
+        apply_filters( 'qsm_activate_theme_after', $quiz_id, $theme_id );
 		if ( isset($_POST['save_featured_image']) && 'Save' === $_POST['save_featured_image'] ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
