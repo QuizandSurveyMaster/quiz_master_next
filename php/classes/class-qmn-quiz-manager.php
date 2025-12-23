@@ -1904,7 +1904,7 @@ class QMNQuizManager {
 	 * @return boolean results added or not
 	 */
 	public function add_quiz_results( $data, $action = '' ) {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
 		}
@@ -1927,6 +1927,13 @@ class QMNQuizManager {
 				)
 			);
 
+			$db_results_array = maybe_serialize($data['results_array']);
+			
+			// If migrtation is processed then we will insert the data into new tables after the results table insert the record
+			if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+				$db_results_array =  '';
+			}
+
 			$record = array(
 				'quiz_id'         => $data['qmn_array_for_variables']['quiz_id'],
 				'quiz_name'       => $data['qmn_array_for_variables']['quiz_name'],
@@ -1943,7 +1950,7 @@ class QMNQuizManager {
 				'user_ip'         => $data['qmn_array_for_variables']['user_ip'],
 				'time_taken'      => $data['qmn_array_for_variables']['time_taken'],
 				'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $data['qmn_array_for_variables']['time_taken'] ) ),
-				'quiz_results'    => '',
+				'quiz_results'    => $db_results_array,
 				'deleted'         => ( isset( $data['deleted'] ) && 1 === intval( $data['deleted'] ) ) ? 1 : 0,
 				'unique_id'       => $data['unique_id'],
 				'form_type'       => $data['form_type'],
@@ -1996,9 +2003,26 @@ class QMNQuizManager {
 			}
 			// If insert is successful, insert per-question answers and meta into
 			// the new structured tables as well.
-			$inserted_result_id = $wpdb->insert_id;
-			if ( $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
-				$this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
+			if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+				$inserted_result_id = $wpdb->insert_id;
+				if ( $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
+					$structured_inserted = $this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
+					if ( false === $structured_inserted ) {
+						// Fallback: restore legacy blob so result data isn't lost.
+						$wpdb->update(
+							$table_name,
+							array( 'quiz_results' => maybe_serialize( $data['results_array'] ) ),
+							array( 'result_id' => $inserted_result_id ),
+							array( '%s' ),
+							array( '%d' )
+						);
+
+						$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
+						if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
+							$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' from ' . $wpdb->last_query, 0, 'error' );
+						}
+					}
+				}
 			}
 			return $res;
 		} catch ( Exception $e ) {
@@ -2032,9 +2056,9 @@ class QMNQuizManager {
             return false;
         }
 
-        $answers_table           = $wpdb->prefix . 'qsm_results_questions';
-        $results_meta_table_name = $wpdb->prefix . 'qsm_results_meta';
-        $unserializedResults     = $results_array;
+        $results_questions           = $wpdb->prefix . 'qsm_results_questions';
+        $results_meta_table          = $wpdb->prefix . 'qsm_results_meta';
+        $unserializedResults         = $results_array;
 
         // Ensure questions array exists
         if ( ! isset( $unserializedResults[1] ) || ! is_array( $unserializedResults[1] ) ) {
@@ -2048,6 +2072,19 @@ class QMNQuizManager {
         
         $results_meta_table_data      = array();
         $results_meta_table_ans_label = '';
+        $results_table_meta_contact   = '';
+        $results_table_meta_addons    = array();
+        $allowed_result_meta_keys     = array(
+            'total_seconds',
+            'quiz_comments',
+            'timer_ms',
+            'pagetime',
+            'hidden_questions',
+            'total_possible_points',
+            'total_attempted_questions',
+            'minimum_possible_points',
+            'quiz_start_date',
+        );
 
         try {
             foreach ( $unserializedResults as $result_meta_key => $result_meta_value ) {
@@ -2200,14 +2237,14 @@ class QMNQuizManager {
                             $params = array_merge( $params, $values );
                         }
 
-                        $sql = "INSERT INTO {$answers_table}
+                        $sql = "INSERT INTO {$results_questions}
                             (result_id, quiz_id, question_id, question_title, question_description,
                             question_comment, question_type, answer_type, correct_answer, user_answer,
                             user_answer_comma, correct_answer_comma, points, correct,
                             category, multicategories, other_settings)
                             VALUES " . implode( ', ', $placeholders );
                         
-                        $prepared = $wpdb->prepare( $sql, $params );
+                        $prepared = $wpdb->prepare( $sql, ...$params );
                         $inserted = $wpdb->query( $prepared );
 
                         if ( $inserted === false || $inserted === 0 ) {
@@ -2230,8 +2267,21 @@ class QMNQuizManager {
 
                     if ( 'answer_label_points' == $result_meta_key && '' != $result_meta_value ) {
                         $results_meta_table_ans_label = $result_meta_value;
-					} else {
+                        continue;
+                    }
+
+                    if ( 'contact' === $result_meta_key ) {
+                        $results_table_meta_contact = is_array( $result_meta_value ) ? maybe_serialize( $result_meta_value ) : $result_meta_value;
+                        continue;
+                    }
+
+                    if ( in_array( $result_meta_key, $allowed_result_meta_keys, true ) ) {
                         $results_meta_table_data[ $result_meta_key ] = $result_meta_value;
+                        continue;
+                    }
+
+                    if ( '' !== $result_meta_value && null !== $result_meta_value ) {
+                        $results_table_meta_addons[ $result_meta_key ] = is_array( $result_meta_value ) ? maybe_serialize( $result_meta_value ) : $result_meta_value;
                     }
                 }
             }
@@ -2254,6 +2304,16 @@ class QMNQuizManager {
                 $results_table_meta['answer_label_points'] = $results_meta_table_ans_label;
             }
 
+            if ( '' !== $results_table_meta_contact ) {
+                $results_table_meta['contact'] = $results_table_meta_contact;
+            }
+
+            if ( ! empty( $results_table_meta_addons ) ) {
+                foreach ( $results_table_meta_addons as $addon_meta_key => $addon_meta_value ) {
+                    $results_table_meta[ $addon_meta_key ] = $addon_meta_value;
+                }
+            }
+
             if ( ! empty( $results_table_meta ) ) {
                 
                 $meta_rows          = array();
@@ -2269,11 +2329,11 @@ class QMNQuizManager {
                     $meta_params = array_merge( $meta_params, $row_values );
                 }
 
-                $meta_sql = "INSERT INTO {$results_meta_table_name}
+                $meta_sql = "INSERT INTO {$results_meta_table}
                     (result_id, meta_key, meta_value)
                     VALUES " . implode( ', ', $meta_placeholders );
 
-                $prepared_meta = $wpdb->prepare( $meta_sql, $meta_params );
+                $prepared_meta = $wpdb->prepare( $meta_sql, ...$meta_params );
                 $meta_inserted = $wpdb->query( $prepared_meta );
                 
                 if ( $meta_inserted === false || $meta_inserted === 0 ) {
@@ -2406,6 +2466,10 @@ class QMNQuizManager {
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
+					$quiz_results_value = maybe_serialize( $results_array );
+					if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+						$quiz_results_value = '';
+					}
 					$results_update = $wpdb->update(
 						$table_name,
 						array(
@@ -2416,13 +2480,39 @@ class QMNQuizManager {
 							'user_ip'         => $qmn_array_for_variables['user_ip'],
 							'time_taken'      => $qmn_array_for_variables['time_taken'],
 							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => maybe_serialize( $results_array ),
+							'quiz_results'    => $quiz_results_value,
 						),
 						array( 'result_id' => $results_id )
 					);
 					if ( false === $results_update ) {
 						$error_details = $wpdb->last_error;
 						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' from ' . $wpdb->last_query, 0, 'error' );
+					} else {
+						if ( 1 == get_option( 'qsm_migration_results_processed' ) && ! empty( $results_array ) && is_array( $results_array ) ) {
+							$results_id_int = intval( $results_id );
+							if ( $results_id_int ) {
+								$results_questions           = $wpdb->prefix . 'qsm_results_questions';
+								$results_meta_table = $wpdb->prefix . 'qsm_results_meta';
+								$wpdb->delete( $results_questions, array( 'result_id' => $results_id_int ), array( '%d' ) );
+								$wpdb->delete( $results_meta_table, array( 'result_id' => $results_id_int ), array( '%d' ) );
+								$structured_inserted = $this->qsm_insert_result_answers_and_meta( $results_id_int, $qmn_array_for_variables['quiz_id'], $results_array );
+								if ( false === $structured_inserted ) {
+									// Fallback: restore legacy blob so result data isn't lost.
+									$wpdb->update(
+										$table_name,
+										array( 'quiz_results' => maybe_serialize( $results_array ) ),
+										array( 'result_id' => $results_id_int ),
+										array( '%s' ),
+										array( '%d' )
+									);
+
+									$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
+									if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
+										$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' from ' . $wpdb->last_query, 0, 'error' );
+									}
+								}
+							}
+						}
 					}
 				} else {
 					$http_referer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';

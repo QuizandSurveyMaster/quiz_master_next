@@ -30,6 +30,8 @@ class QSM_Database_Migration {
         
         $charset_collate = $this->wpdb->get_charset_collate();
 
+        $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
+
         $results_questions = $this->wpdb->prefix . 'qsm_results_questions';
         $sql_results_answers = "CREATE TABLE IF NOT EXISTS `{$results_questions}` (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -62,7 +64,8 @@ class QSM_Database_Migration {
             KEY `result_id` (`result_id`),
             KEY `question_id` (`question_id`),
             KEY `quiz_id` (`quiz_id`),
-            KEY `result_question` (`result_id`, `question_id`)
+            KEY `result_question` (`result_id`, `question_id`),
+            CONSTRAINT `qsm_fk_results_questions_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
         ) ENGINE=InnoDB {$charset_collate};";
 
         $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
@@ -73,7 +76,8 @@ class QSM_Database_Migration {
             `meta_value` longtext,
             PRIMARY KEY (`meta_id`),
             KEY `result_id` (`result_id`),
-            KEY `meta_key` (`meta_key`)
+            KEY `meta_key` (`meta_key`),
+            CONSTRAINT `qsm_fk_results_meta_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
         ) ENGINE=InnoDB {$charset_collate};";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -128,7 +132,7 @@ class QSM_Database_Migration {
         
         // --- Calculate Total Records to Migrate ---
         $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
-        $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
         
         // Count total results (the target count)
         $total_records = (int) $this->wpdb->get_var( "SELECT COUNT(*) FROM {$mlw_results_table}" );
@@ -137,7 +141,7 @@ class QSM_Database_Migration {
         $logged_records = (int) $this->wpdb->get_var(
             "SELECT COUNT(DISTINCT r.result_id)
             FROM {$mlw_results_table} r
-            INNER JOIN {$results_meta_table_name} m
+            INNER JOIN {$results_meta_table} m
                 ON m.result_id = r.result_id
                 AND m.meta_key = 'result_meta'"
         );
@@ -193,7 +197,7 @@ class QSM_Database_Migration {
 
         $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
         $results_questions           = $this->wpdb->prefix . 'qsm_results_questions';
-        $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
         
         $results_processed   = 0;
         $inserted_count      = 0;
@@ -223,7 +227,7 @@ class QSM_Database_Migration {
             $failed_ids = array_map( 'intval', (array) $failed_ids );
             
             $query = "SELECT r.* FROM {$mlw_results_table} r 
-            LEFT JOIN {$results_meta_table_name} m
+            LEFT JOIN {$results_meta_table} m
               ON m.result_id = r.result_id
               AND m.meta_key = 'result_meta'
               WHERE m.meta_id IS NULL";
@@ -347,7 +351,7 @@ class QSM_Database_Migration {
             $logged_records = (int) $this->wpdb->get_var(
                 "SELECT COUNT(DISTINCT r.result_id)
                 FROM {$mlw_results_table} r
-                INNER JOIN {$results_meta_table_name} m
+                INNER JOIN {$results_meta_table} m
                     ON m.result_id = r.result_id
                     AND m.meta_key = 'result_meta'"
             );
@@ -384,7 +388,7 @@ class QSM_Database_Migration {
 
     public function qsm_check_migration_status(){
         $results_table_name      = $this->wpdb->prefix . 'mlw_results';
-        $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
         
         $total_results = (int) $this->wpdb->get_var( "SELECT COUNT(*) FROM {$results_table_name}" );
 
@@ -392,7 +396,7 @@ class QSM_Database_Migration {
         $logged_records = (int) $this->wpdb->get_var(
             "SELECT COUNT(DISTINCT r.result_id)
             FROM {$results_table_name} r
-            INNER JOIN {$results_meta_table_name} m
+            INNER JOIN {$results_meta_table} m
                 ON m.result_id = r.result_id
                 AND m.meta_key = 'result_meta'"
         );
@@ -433,7 +437,7 @@ class QSM_Database_Migration {
         }
 
         $results_questions           = $this->wpdb->prefix . 'qsm_results_questions';
-        $results_meta_table_name = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
 
         // ----------------------------------------------
         // Parse quiz_results and insert per-question answers
@@ -450,9 +454,22 @@ class QSM_Database_Migration {
             // Continue below to insert result_meta to log processing.
         } else {
 
-            $results_meta_table_data     = array();
+            $results_meta_table_data      = array();
             $results_meta_table_ans_label = '';
-            
+            $results_table_meta_contact   = '';
+            $results_table_meta_addons    = array();
+            $allowed_result_meta_keys = array(
+                'total_seconds',
+                'quiz_comments',
+                'timer_ms',
+                'pagetime',
+                'hidden_questions',
+                'total_possible_points',
+                'total_attempted_questions',
+                'minimum_possible_points',
+                'quiz_start_date',
+            );
+
             foreach ( $unserializedResults as $result_meta_key => $result_meta_value ) {
                 if ( 1 == $result_meta_key ) {
                     // results question loop (answers table) – collect all rows then bulk insert
@@ -521,7 +538,7 @@ class QSM_Database_Migration {
                                     } else {
                                         $correcIncorrectUnanswered = 1;
                                     }
-}
+                                }
                             }
                         }
 
@@ -616,7 +633,7 @@ class QSM_Database_Migration {
                             VALUES " . implode( ', ', $placeholders );
 
                         // prepare & execute
-                        $prepared = $this->wpdb->prepare( $sql, $params );
+                        $prepared = $this->wpdb->prepare( $sql, ...$params );
                         $inserted = $this->wpdb->query( $prepared );
 
                         if ( $inserted === false || $inserted === 0 ) {
@@ -629,22 +646,48 @@ class QSM_Database_Migration {
                         }
                     }
                 } else {
-                    // results meta loop (non-question data)
+                    // -------------------------------
+                    // Normalize numeric meta keys
+                    // -------------------------------
                     if ( 0 == $result_meta_key ) {
                         $result_meta_key = 'total_seconds';
                     } elseif ( 2 == $result_meta_key ) {
                         $result_meta_key = 'quiz_comments';
                     }
+
                     if ( 'answer_label_points' == $result_meta_key ) {
                         if ( '' != $result_meta_value ) {
                             $results_meta_table_ans_label = $result_meta_value; // serialized value
                         }
-                    } else {
+                        continue;
+                    }
+
+                    // -------------------------------
+                    // Contact meta (separate meta row)
+                    // -------------------------------
+                    if ( 'contact' === $result_meta_key ) {
+                        $results_table_meta_contact = $result_meta_value;
+                        continue;
+                    }
+
+                    // -------------------------------
+                    // Allowed core meta → main meta row
+                    // -------------------------------
+                    if ( in_array( $result_meta_key, $allowed_result_meta_keys, true ) ) {
                         $results_meta_table_data[ $result_meta_key ] = $result_meta_value;
+                        continue;
+                    }
+
+                    // -------------------------------
+                    // Addon meta → individual meta rows
+                    // -------------------------------
+                    if ( '' !== $result_meta_value && null !== $result_meta_value ) {
+                        $results_table_meta_addons[ $result_meta_key ] = $result_meta_value;
                     }
                 }
             }
-        } // End question results processing
+        }
+        
 
         if ( $transaction_failed ) {
              // Rollback was already called inside the loop
@@ -658,8 +701,22 @@ class QSM_Database_Migration {
         $results_table_meta                       = array(
             'result_meta' => maybe_serialize( $results_meta_table_data ),
         );
+
         if ( ! empty( $results_meta_table_ans_label ) ) {
             $results_table_meta['answer_label_points'] = $results_meta_table_ans_label;  // already serialized
+        }
+
+        if ( !empty($results_table_meta_contact) ) { 
+            $results_table_meta['contact'] = maybe_serialize($results_table_meta_contact);
+        }
+
+        if ( ! empty( $results_table_meta_addons ) ) {
+            foreach ( $results_table_meta_addons as $addon_meta_key => $addon_meta_value ) {
+                if ( is_array( $addon_meta_value ) ) {
+                    $addon_meta_value = maybe_serialize( $addon_meta_value );
+                }
+                $results_table_meta[ $addon_meta_key ] = $addon_meta_value;
+            }
         }
 
         // Bulk insert all meta rows for this result in a single query
@@ -677,11 +734,11 @@ class QSM_Database_Migration {
                 $meta_params = array_merge( $meta_params, $row_values );
             }
 
-            $meta_sql = "INSERT INTO {$results_meta_table_name}
+            $meta_sql = "INSERT INTO {$results_meta_table}
                 (result_id, meta_key, meta_value)
                 VALUES " . implode( ', ', $meta_placeholders );
 
-            $prepared_meta = $this->wpdb->prepare( $meta_sql, $meta_params );
+            $prepared_meta = $this->wpdb->prepare( $meta_sql, ...$meta_params );
             $meta_inserted = $this->wpdb->query( $prepared_meta );
             
             if ( $meta_inserted === false || $meta_inserted === 0 ) {

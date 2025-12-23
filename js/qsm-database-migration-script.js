@@ -20,7 +20,10 @@ jQuery(function ($) {
             QSM_Migration_Process.progressBar.css('width', percent + '%');
         },
 
-        updateStatus: function (message) {
+        updateStatus: function (message, type) {
+            QSM_Migration_Process.statusBox
+                .removeClass('success error progress')
+                .addClass(type ? type : '');
             QSM_Migration_Process.statusBox.html(message);
         },
 
@@ -41,7 +44,7 @@ jQuery(function ($) {
         // Step 1: Start migration (initialize tables + get totals)
         start: function () {
             QSM_Migration_Process.disableUI();
-            QSM_Migration_Process.updateStatus(qsmMigrationData.startMessage);
+            QSM_Migration_Process.updateStatus(qsmMigrationData.startMessage, 'progress');
             QSM_Migration_Process.updateDetails('');
 
             // Reset state
@@ -58,7 +61,7 @@ jQuery(function ($) {
                 success: function (response) {
                     if (!response.success) {
                         QSM_Migration_Process.enableUI();
-                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage);
+                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
                         console.error(response.data);
                         return;
                     }
@@ -70,14 +73,14 @@ jQuery(function ($) {
                     QSM_Migration_Process.offset = data.processed_count; // Start from already processed count
 
                     if (data.already_done) {
-                        QSM_Migration_Process.updateStatus(data.message);
+                        QSM_Migration_Process.updateStatus(data.message, 'success');
                         QSM_Migration_Process.progressBar.css('width', '100%');
                         QSM_Migration_Process.enableUI();
                         return;
                     }
 
                     QSM_Migration_Process.updateProgress(QSM_Migration_Process.offset);
-                    QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage);
+                    QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage, 'progress');
 
                     QSM_Migration_Process.updateDetails(`
                         <div>${qsmMigrationData.labelTotalRecords} <strong>${QSM_Migration_Process.totalRecords}</strong></div>
@@ -89,7 +92,7 @@ jQuery(function ($) {
                 },
                 error: function (xhr) {
                     QSM_Migration_Process.enableUI();
-                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage);
+                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
                     console.error(xhr.responseText);
                 }
             });
@@ -103,15 +106,15 @@ jQuery(function ($) {
             if (self.offset >= self.totalRecords && !self.processingFailedOnly) {
                 // If we've processed everything in normal mode, switch to failed-only mode for final pass
                 self.processingFailedOnly = true;
-                QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage);
+                QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage, 'progress');
             }
-            
+
             // If we are in failed-only mode and total_records is 0, we are done (but the PHP handles this better)
             if (self.totalRecords === 0) {
-                 QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage);
-                 QSM_Migration_Process.progressBar.css('width', '100%');
-                 QSM_Migration_Process.enableUI();
-                 return;
+                QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
+                QSM_Migration_Process.progressBar.css('width', '100%');
+                QSM_Migration_Process.enableUI();
+                return;
             }
 
             $.ajax({
@@ -126,15 +129,15 @@ jQuery(function ($) {
                 success: function (response) {
                     if (!response.success) {
                         QSM_Migration_Process.enableUI();
-                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage);
+                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
                         console.error(response.data);
                         return;
                     }
 
                     const data = response.data;
-                    
+
                     // Update the running total of LOGGED records (migrated + failed)
-                    QSM_Migration_Process.offset = data.next_offset; 
+                    QSM_Migration_Process.offset = data.next_offset;
 
                     // Update detailed information
                     QSM_Migration_Process.updateDetails(`
@@ -149,23 +152,23 @@ jQuery(function ($) {
 
                     // Case 1: All done (final completion)
                     if (data.completed === true) {
-                        QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage);
+                        QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
                         QSM_Migration_Process.progressBar.css('width', '100%');
                         QSM_Migration_Process.enableUI();
                         return;
                     }
-                    
+
                     // Case 2: No records were processed in this batch (end of normal/failed-only pass)
                     if (data.results_processed === 0) {
                         if (!self.processingFailedOnly) {
-                             // Switch to a final pass that focuses only on failed IDs.
+                            // Switch to a final pass that focuses only on failed IDs.
                             self.processingFailedOnly = true;
-                            QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage + qsmMigrationData.finalizingMigration);
+                            QSM_Migration_Process.updateStatus(qsmMigrationData.processingMessage + qsmMigrationData.finalizingMigration, 'progress');
                             QSM_Migration_Process.processBatch();
                             return;
                         } else {
                             // In failed-only mode, 0 processed means no failed records left to retry.
-                            QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage);
+                            QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
                             QSM_Migration_Process.progressBar.css('width', '100%');
                             QSM_Migration_Process.enableUI();
                             return;
@@ -177,7 +180,7 @@ jQuery(function ($) {
                 },
                 error: function (xhr) {
                     QSM_Migration_Process.enableUI();
-                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage);
+                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
                     QSM_Migration_Process.detailsBox.append(`<div>${qsmMigrationData.labelErrorNote}</div>`);
                     console.error(xhr.responseText);
                 }

@@ -18,8 +18,7 @@
 
 .qsm-database-migration-status {
     margin: 15px 0;
-    padding: 10px;
-    border-radius: 4px;
+    font-weight: 500;
 }
 
 .qsm-database-migration-status.success {

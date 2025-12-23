@@ -1394,15 +1394,15 @@ class QMNPluginHelper {
         global $wpdb;
 
         $result_id     = intval( $result_id );
-        $answers_table = $wpdb->prefix . 'qsm_results_questions';
-        $meta_table    = $wpdb->prefix . 'qsm_results_meta';
+        $results_questions = $wpdb->prefix . 'qsm_results_questions';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
 
         // -------------------------------------------------------
         // Fetch ANSWERS
         // -------------------------------------------------------
         $rows = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM {$answers_table}
+                "SELECT * FROM {$results_questions}
                 WHERE result_id = %d
                 ORDER BY id ASC",
                 $result_id
@@ -1451,7 +1451,7 @@ class QMNPluginHelper {
         // -------------------------------------------------------
         $meta_rows = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT meta_key, meta_value FROM {$meta_table}
+                "SELECT meta_key, meta_value FROM {$results_meta_table}
                 WHERE result_id = %d",
                 $result_id
             ),
@@ -1460,6 +1460,7 @@ class QMNPluginHelper {
 
         $result_meta         = array();
         $answer_label_points = '';
+        $extra_meta          = array();
 
         foreach ( $meta_rows as $meta_row ) {
             if ( 'answer_label_points' === $meta_row['meta_key'] ) {
@@ -1468,6 +1469,9 @@ class QMNPluginHelper {
             elseif ( 'result_meta' === $meta_row['meta_key'] ) {
                 $result_meta = maybe_unserialize( $meta_row['meta_value'] );
             }
+			else {
+				$extra_meta[ $meta_row['meta_key'] ] = maybe_unserialize( $meta_row['meta_value'] );
+			}
 		}
 
         $final_array = array(
@@ -1489,6 +1493,13 @@ class QMNPluginHelper {
 
             $final_array[ $meta_key ] = $meta_value;
         }
+
+		foreach ( $extra_meta as $meta_key => $meta_value ) {
+			if ( isset( $final_array[ $meta_key ] ) ) {
+				continue;
+			}
+			$final_array[ $meta_key ] = $meta_value;
+		}
         return $final_array;
     } 
 
