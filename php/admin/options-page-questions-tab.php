@@ -934,6 +934,13 @@ function qsm_ajax_unlink_question_from_list() {
 		);
 	}
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
+	if ( $question_id && ! qsm_user_can_modify_question_ids( array( $question_id ) ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'You are not allowed to modify this question.', 'quiz-master-next' ),
+			)
+		);
+	}
 	if ( $question_id > 0 ) {
 		qsm_process_unlink_question_from_list_by_question_id( $question_id );
 		wp_send_json_success(
@@ -950,6 +957,50 @@ function qsm_ajax_unlink_question_from_list() {
 	}
 }
 add_action( 'wp_ajax_qsm_unlink_question_from_list', 'qsm_ajax_unlink_question_from_list' );
+
+/**
+ * Checks whether current user can modify given question IDs based on quiz ownership.
+ *
+ * @param array $question_ids Question IDs.
+ *
+ * @return bool
+ */
+function qsm_user_can_modify_question_ids( $question_ids ) {
+	global $wpdb;
+
+	$question_ids = array_filter( array_map( 'intval', (array) $question_ids ) );
+	if ( empty( $question_ids ) ) {
+		return false;
+	}
+
+	$placeholders = implode( ', ', array_fill( 0, count( $question_ids ), '%d' ) );
+	$quiz_ids     = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT DISTINCT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )",
+			$question_ids
+		)
+	);
+
+	$current_user = get_current_user_id();
+	foreach ( $quiz_ids as $quiz_id ) {
+		$post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", intval( $quiz_id ) ) );
+		// If quiz mapping is missing, only allow elevated users.
+		if ( empty( $post_id ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+			return false;
+		}
+
+		if ( ! empty( $post_id ) ) {
+			$post_author = intval( get_post_field( 'post_author', $post_id, true ) );
+			$owns_quiz   = ( $post_author === $current_user );
+
+			if ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || ! $owns_quiz ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
 
 /**
  * Unlinks a question from all quizzes it is associated with.
@@ -1179,6 +1230,18 @@ function qsm_delete_question_question_bank() {
 	}
 	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
+	if ( $question_arr && ! qsm_user_can_modify_question_ids( $question_arr ) ) {
+		echo wp_json_encode(
+			array(
+				'success' => false,
+				'message' => __(
+					'You are not allowed to modify these questions.',
+					'quiz-master-next'
+				),
+			)
+		);
+		wp_die();
+	}
 	$response     = array();
 	if ( $question_arr ) {
 		global $wpdb;
@@ -1218,6 +1281,9 @@ function qsm_delete_question_from_database() {
 		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
 	$base_question_id = $question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
+	if ( $question_id && ! qsm_user_can_modify_question_ids( array( $question_id ) ) ) {
+		wp_send_json_error( __( 'You are not allowed to modify this question.', 'quiz-master-next' ) );
+	}
 	if ( $question_id ) {
 
 		global $wpdb, $mlwQuizMasterNext;
@@ -1295,6 +1361,9 @@ function qsm_bulk_delete_question_from_database() {
 	$base_question_ids = $question_id = array_map( 'intval', $question_id );
 
 	if ( ! empty( $question_id ) ) {
+		if ( ! qsm_user_can_modify_question_ids( $question_id ) ) {
+			wp_send_json_error( __( 'You are not allowed to modify these questions.', 'quiz-master-next' ) );
+		}
 
 		$update_qpages_after_delete = array();
 		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( $question_id );
