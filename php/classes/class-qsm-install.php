@@ -2163,16 +2163,16 @@ class QSM_Install {
 				$charset_collate = $wpdb->get_charset_collate();
 				$sql_results_answers = "CREATE TABLE {$results_questions} (
 					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`result_id` BIGINT(20) UNSIGNED NOT NULL,
-					`quiz_id` BIGINT(20) UNSIGNED NOT NULL,
-					`question_id` BIGINT(20) UNSIGNED NOT NULL,
+					`result_id` MEDIUMINT(9) NOT NULL,
+					`quiz_id` MEDIUMINT(9) NOT NULL,
+					`question_id` MEDIUMINT(9) NOT NULL,
 
 					`question_title` TEXT,
 					`question_description` LONGTEXT,
 					`question_comment` TEXT,
 
 					`question_type` VARCHAR(50),
-					`answer_type` VARCHAR(50) DEFAULT 'text',  
+					`answer_type` VARCHAR(50) DEFAULT 'text',
 
 					`correct_answer` TEXT,
 					`user_answer` TEXT,
@@ -2193,8 +2193,13 @@ class QSM_Install {
 					KEY `question_id` (`question_id`),
 					KEY `quiz_id` (`quiz_id`),
 					KEY `result_question` (`result_id`, `question_id`),
-					CONSTRAINT `qsm_fk_results_questions_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
+
+					CONSTRAINT `qsm_fk_results_questions_result_id`
+						FOREIGN KEY (`result_id`)
+						REFERENCES `{$mlw_results_table}` (`result_id`)
+						ON DELETE CASCADE
 				) ENGINE=InnoDB {$charset_collate};";
+
 				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 				dbDelta($sql_results_answers);
 			}
@@ -2206,13 +2211,18 @@ class QSM_Install {
 				$charset_collate = $wpdb->get_charset_collate();
 				$sql_results_meta = "CREATE TABLE {$results_meta_table} (
 					`meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`result_id` BIGINT(20) UNSIGNED NOT NULL,
-					`meta_key` varchar(191) NOT NULL,
-					`meta_value` longtext,
+					`result_id` MEDIUMINT(9) NOT NULL,
+					`meta_key` VARCHAR(191) NOT NULL,
+					`meta_value` LONGTEXT,
+
 					PRIMARY KEY (`meta_id`),
 					KEY `result_id` (`result_id`),
 					KEY `meta_key` (`meta_key`),
-					CONSTRAINT `qsm_fk_results_meta_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
+
+					CONSTRAINT `qsm_fk_results_meta_result_id`
+						FOREIGN KEY (`result_id`)
+						REFERENCES `{$mlw_results_table}` (`result_id`)
+						ON DELETE CASCADE
 				) ENGINE=InnoDB {$charset_collate};";
 
 				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');

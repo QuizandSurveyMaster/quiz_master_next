@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QSM_Database_Migration {
 
     public $wpdb;
-    const BATCH_SIZE = 100;
+    const BATCH_SIZE = 10;
 
     public function __construct() {
         global $wpdb;
@@ -26,6 +26,26 @@ class QSM_Database_Migration {
         add_action('wp_ajax_qsm_process_migration_batch', array( $this, 'qsm_process_migration_batch_callback' ));
     }
 
+    private function qsm_is_migration_allowed() {
+        if ( function_exists( 'qsm_migration_evaluate_addon_requirements' ) ) {
+            $compatibility = qsm_migration_evaluate_addon_requirements();
+            return ! empty( $compatibility['allowed'] );
+        }
+
+        return true;
+    }
+
+    private function qsm_get_migration_block_message() {
+        if ( function_exists( 'qsm_migration_evaluate_addon_requirements' ) ) {
+            $compatibility = qsm_migration_evaluate_addon_requirements();
+            if ( ! empty( $compatibility['message'] ) ) {
+                return $compatibility['message'];
+            }
+        }
+
+        return __( 'Migration is currently disabled due to version compatibility requirements.', 'quiz-master-next' );
+    }
+
     function create_migration_tables() {
         
         $charset_collate = $this->wpdb->get_charset_collate();
@@ -33,18 +53,18 @@ class QSM_Database_Migration {
         $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
 
         $results_questions = $this->wpdb->prefix . 'qsm_results_questions';
-        $sql_results_answers = "CREATE TABLE IF NOT EXISTS `{$results_questions}` (
+        $sql_results_answers = "CREATE TABLE {$results_questions} (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `result_id` BIGINT(20) UNSIGNED NOT NULL,
-            `quiz_id` BIGINT(20) UNSIGNED NOT NULL,
-            `question_id` BIGINT(20) UNSIGNED NOT NULL,
+            `result_id` MEDIUMINT(9) NOT NULL,
+            `quiz_id` MEDIUMINT(9) NOT NULL,
+            `question_id` MEDIUMINT(9) NOT NULL,
 
             `question_title` TEXT,
             `question_description` LONGTEXT,
             `question_comment` TEXT,
 
             `question_type` VARCHAR(50),
-            `answer_type` VARCHAR(50) DEFAULT 'text',  
+            `answer_type` VARCHAR(50) DEFAULT 'text',
 
             `correct_answer` TEXT,
             `user_answer` TEXT,
@@ -65,19 +85,28 @@ class QSM_Database_Migration {
             KEY `question_id` (`question_id`),
             KEY `quiz_id` (`quiz_id`),
             KEY `result_question` (`result_id`, `question_id`),
-            CONSTRAINT `qsm_fk_results_questions_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
+
+            CONSTRAINT `qsm_fk_results_questions_result_id`
+                FOREIGN KEY (`result_id`)
+                REFERENCES `{$mlw_results_table}` (`result_id`)
+                ON DELETE CASCADE
         ) ENGINE=InnoDB {$charset_collate};";
 
         $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
-        $sql_results_meta = "CREATE TABLE IF NOT EXISTS `{$results_meta_table}` (
+        $sql_results_meta = "CREATE TABLE {$results_meta_table} (
             `meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `result_id` BIGINT(20) UNSIGNED NOT NULL,
-            `meta_key` varchar(191) NOT NULL,
-            `meta_value` longtext,
+            `result_id` MEDIUMINT(9) NOT NULL,
+            `meta_key` VARCHAR(191) NOT NULL,
+            `meta_value` LONGTEXT,
+
             PRIMARY KEY (`meta_id`),
             KEY `result_id` (`result_id`),
             KEY `meta_key` (`meta_key`),
-            CONSTRAINT `qsm_fk_results_meta_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE
+
+            CONSTRAINT `qsm_fk_results_meta_result_id`
+                FOREIGN KEY (`result_id`)
+                REFERENCES `{$mlw_results_table}` (`result_id`)
+                ON DELETE CASCADE
         ) ENGINE=InnoDB {$charset_collate};";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -125,6 +154,10 @@ class QSM_Database_Migration {
         // Capability check
         if ( ! current_user_can('manage_options') ) {
             wp_send_json_error(array( 'message' => __('You do not have permission to perform migrations.', 'quiz-master-next') ));
+        }
+
+        if ( ! $this->qsm_is_migration_allowed() ) {
+            wp_send_json_error( array( 'message' => $this->qsm_get_migration_block_message() ) );
         }
         
         // Ensure tables exist and indexes applied
@@ -189,6 +222,10 @@ class QSM_Database_Migration {
         // Check user capabilities
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_send_json_error( array( 'message' => __( 'You do not have permission to perform migrations.', 'quiz-master-next' ) ) );
+        }
+
+        if ( ! $this->qsm_is_migration_allowed() ) {
+            wp_send_json_error( array( 'message' => $this->qsm_get_migration_block_message() ) );
         }
 
         $current_processed_count = isset( $_POST['current_processed_count'] ) ? intval( $_POST['current_processed_count'] ) : 0;
@@ -636,7 +673,7 @@ class QSM_Database_Migration {
                         $prepared = $this->wpdb->prepare( $sql, ...$params );
                         $inserted = $this->wpdb->query( $prepared );
 
-                        if ( $inserted === false || $inserted === 0 ) {
+                        if ( $inserted == false || $inserted == 0 ) {
                             // Question insert failed: rollback for this result
                             $transaction_failed = true;
                             $this->wpdb->query( 'ROLLBACK' );
@@ -665,7 +702,7 @@ class QSM_Database_Migration {
                     // -------------------------------
                     // Contact meta (separate meta row)
                     // -------------------------------
-                    if ( 'contact' === $result_meta_key ) {
+                    if ( 'contact' == $result_meta_key ) {
                         $results_table_meta_contact = $result_meta_value;
                         continue;
                     }
@@ -681,7 +718,7 @@ class QSM_Database_Migration {
                     // -------------------------------
                     // Addon meta → individual meta rows
                     // -------------------------------
-                    if ( '' !== $result_meta_value && null !== $result_meta_value ) {
+                    if ( '' != $result_meta_value && null != $result_meta_value ) {
                         $results_table_meta_addons[ $result_meta_key ] = $result_meta_value;
                     }
                 }
