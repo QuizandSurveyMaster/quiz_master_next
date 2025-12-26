@@ -83,7 +83,7 @@ function qsm_register_data_exporters( $exporters ) {
 function qsm_data_exporter( $email, $page = 1 ) {
 
 	// Sets up variables.
-	global $wpdb;
+	global $wpdb, $mlwQuizMasterNext;
 	$export_items = array();
 	$done         = false;
 	$user         = get_user_by( 'email', $email );
@@ -119,11 +119,18 @@ function qsm_data_exporter( $email, $page = 1 ) {
 		$item_id = 'qsm-form-response-' . $result->result_id;
 
 		// Prepares our results array.
-		if ( is_serialized( $result->quiz_results ) ) {
-			$results_array = maybe_unserialize( $result->quiz_results );
-			if ( is_array( $results_array ) ) {
-				if ( ! isset( $results['contact'] ) ) {
-					$results['contact'] = array();
+		$is_new_format = empty( $result->quiz_results );
+		if ( $is_new_format ) {
+			// Load answers and meta from new tables
+			$results_array  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result->result_id );
+		} else {
+			// Load legacy serialized results 
+			if ( is_serialized( $result->quiz_results ) ) {
+				$results_array = maybe_unserialize( $result->quiz_results );
+				if ( is_array( $results_array ) ) {
+					if ( ! isset( $results['contact'] ) ) {
+						$results['contact'] = array();
+					}
 				}
 			}
 		}

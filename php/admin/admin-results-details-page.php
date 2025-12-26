@@ -75,18 +75,18 @@ function qsm_generate_results_details_tab() {
 
     if ( empty($results_data) ) {
         $resultpage_link = admin_url('admin.php?page=mlw_quiz_results');
-    ?>
-    <div id="qsm-dashboard-error-container">
-        <div class="qsm-dashboard-error-content">
-            <h3><?php esc_html_e('Quiz Result Not Available', 'quiz-master-next'); ?></h3>
-            <p><?php esc_html_e('The quiz result you are trying to view could not be found. Please return to the results page.', 'quiz-master-next'); ?></p>
-            <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn">
-                <?php esc_html_e('Back to All Results', 'quiz-master-next'); ?>
-            </a>
+        ?>
+        <div id="qsm-dashboard-error-container">
+            <div class="qsm-dashboard-error-content">
+                <h3><?php esc_html_e('Quiz Result Not Available', 'quiz-master-next'); ?></h3>
+                <p><?php esc_html_e('The quiz result you are trying to view could not be found. Please return to the results page.', 'quiz-master-next'); ?></p>
+                <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn">
+                    <?php esc_html_e('Back to All Results', 'quiz-master-next'); ?>
+                </a>
+            </div>
         </div>
-    </div>
-    <?php
-    return;
+        <?php
+        return;
     }
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );
@@ -129,7 +129,13 @@ function qsm_generate_results_details_tab() {
 
     // Prepare responses array.
     $total_hidden_questions = 0;
-    $results = maybe_unserialize( $results_data->quiz_results );
+    $is_new_format = empty( $results_data->quiz_results );
+    if ( $is_new_format ) {
+        // Load new format result structure
+        $mlw_qmn_results_array = $results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $results_data->result_id );
+    } else {
+        $mlw_qmn_results_array = $results = maybe_unserialize( $results_data->quiz_results );
+    }
     if ( is_array( $results ) ) {
         $total_hidden_questions = ! empty( $results['hidden_questions'] ) && is_array( $results['hidden_questions'] ) ? count( $results['hidden_questions'] ) : 0;
         if ( ! isset( $results["contact"] ) ) {
@@ -179,7 +185,6 @@ function qsm_generate_results_details_tab() {
     }
     if ( 1 === intval( $new_template_result_detail ) ) {
         $template = '';
-        $mlw_qmn_results_array = maybe_unserialize( $results_data->quiz_results );
         if ( is_array( $mlw_qmn_results_array ) ) {
             $span_start = '<span class="result-candidate-span"><label>';
             $span_end = '</label><span>';
@@ -306,7 +311,7 @@ function qsm_generate_results_details_tab() {
         }
     }
 
-    if ( ! is_array( maybe_unserialize( $results_data->quiz_results ) ) ) {
+    if ( ! is_array( maybe_unserialize( $results_data->quiz_results ) ) && '' != $results_data->quiz_results ) {
         $template = str_replace( "%QUESTIONS_ANSWERS%" , $results_data->quiz_results, $template );
         $template = str_replace( "%TIMER%" , '', $template );
         $template = str_replace( "%COMMENT_SECTION%" , '', $template );

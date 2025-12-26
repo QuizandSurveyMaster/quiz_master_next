@@ -347,6 +347,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						$mlwQuizMasterNext->alertManager->alerts = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['QSMAlertManager'] ) ), true );
 						unset( $_COOKIE['QSMAlertManager'] );
 					}
+					qsm_show_results_migration_warning();
 					$mlwQuizMasterNext->alertManager->showAlerts();
 					?>
 				</div>
