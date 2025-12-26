@@ -1433,7 +1433,13 @@ var show_result_validation = true;
                         if (typeof response === 'string') {
                             response = JSON.parse(response);
                         }
-                        
+                        if (window.qsm_results_data === undefined) {
+                            window.qsm_results_data = new Object();
+                        }
+                        window.qsm_results_data[quizId] = {
+                            'save_response': response.result_status['save_response'],
+                            'id': response.result_status['id']
+                        };
                         if (response.quizExpired) {
                             if (typeof MicroModal !== 'undefined') {
                                 MicroModal.show('modal-4');
