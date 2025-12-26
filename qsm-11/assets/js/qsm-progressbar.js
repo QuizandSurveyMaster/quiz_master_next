@@ -25,7 +25,38 @@
 
         initProgressBar: function(quizId, $container, $form, $initial_page = 1) {
             
-            var data = window.qsmQuizData && window.qsmQuizData[quizId] ? window.qsmQuizData[quizId] : {};
+          var data = {};
+            
+            // 1️ Primary source: global JS object
+            if (window.qsmQuizData && window.qsmQuizData[quizId] && typeof window.qsmQuizData[quizId] === 'object') {
+                data = window.qsmQuizData[quizId];
+            }
+
+            // 2️ Fallback: embedded JSON payload (base64)
+            if ((!data || Object.keys(data).length === 0) && typeof atob === 'function') {
+                var el = jQuery('#qsm-quiz-json-' + quizId);
+
+                if (el.length) {
+                    try {
+                        var encoded = el.text().trim();
+
+                        if (encoded) {
+                            var decoded = atob(encoded);
+                            var decodedData = JSON.parse(decoded);
+
+                            if (decodedData && decodedData.quiz_data) {
+                                data = decodedData.quiz_data;
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('QSM JSON fallback failed for quiz:', quizId, e);
+                    }
+                }
+            }
+
+            // 3️ Final guard (never undefined)
+            data = data || {};
+
             if (!data.progress_bar || data.progress_bar == 0) return;
             console.log("initProgressBar" , data);
             // Look for progress bar in container first, then form (for new structure)

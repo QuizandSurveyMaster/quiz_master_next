@@ -46,7 +46,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @var array
 	 */
-	private $pages;
+	public $pages;
 	
 	/**
 	 * Question pages array
@@ -104,7 +104,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array  $quiz_data Quiz data
 	 * @param array  $shortcode_args Shortcode arguments
 	 */
-	public function __construct( $options, $quiz_data, $shortcode_args ) {
+	public function __construct( $options, $quiz_data, $shortcode_args = array() ) {
 		global $mlwQuizMasterNext;
 		$this->options 			= $options;
 		$this->quiz_data 		= $quiz_data;
@@ -631,7 +631,7 @@ class QSM_New_Pagination_Renderer {
 			}
 			
 			// Add JavaScript data
-			echo $this->render_javascript_data();
+			$this->render_javascript_data();
 			
 			// Hook after rendering to prevent recursion
 			do_action( 'qsm_new_after_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
@@ -849,13 +849,23 @@ class QSM_New_Pagination_Renderer {
 			
 			// Show page count if enabled
 			?>
-			<span class="pages_count">
+			<span class="pages_count" style="display:none;">
 			<?php
 			$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
 			echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 			?>
 			</span>
+			
 			<?php
+			$page_args = array(
+				'current_page' => $pages_count,
+				'total_pages'  => $total_pages_count,
+				'quiz_id'      => $this->options->quiz_id,
+			);
+			if ( apply_filters( 'qsm_should_render_default_pages_count', true, $page_args,$this->options, $this->quiz_data ) ) {
+				echo $this->render_page_count($page_args);
+			}
+			
 
 			do_action( 'qsm_new_action_after_page', $pages_count, $page );
 
@@ -866,6 +876,17 @@ class QSM_New_Pagination_Renderer {
 		}
 		return;
 	}
+	public function render_page_count( $page_args, $builder_args = array() ) {
+
+		$page_args = is_array( $page_args ) ? $page_args : array();
+
+		// Merge page args + builder args into flat $args
+		$args = array_merge( $page_args, $builder_args );
+
+		return qsm_new_get_template_part( 'pagination/page-count', $args );
+	}
+
+
 
 	/**
 	 * Display a single question
@@ -1345,7 +1366,7 @@ class QSM_New_Pagination_Renderer {
 	/**
 	 * Called from shortcode — prepares & outputs QSM JS data.
 	 */
-	private function render_javascript_data() {
+	public function render_javascript_data() {
 		global $mlwQuizMasterNext;
 		
 		// Ensure mlwQuizMasterNext is available
@@ -1534,10 +1555,23 @@ class QSM_New_Pagination_Renderer {
 		$quiz_id     = intval( $this->options->quiz_id );
 		$quiz_data   = $quiz_data;
 		$encryption  = $encryption;
-		
-		add_action( 'wp_footer', function() use ( $quiz_id, $quiz_data, $encryption ) { ?>
+		$payload = [
+        'quiz_id'    => $quiz_id,
+        'quiz_data'  => $quiz_data,
+        'encryption' => $encryption,
+    	];
+		// Below Json is used in Tatsu iframe
+		if( isset($_GET['tatsu']) && $_GET['tatsu'] == '1'){			
+			?>
+			<script type="application/json" id="qsm-quiz-json-<?php echo esc_attr($quiz_id); ?>">
+				<?php echo base64_encode(wp_json_encode( $payload )); ?>
+			</script>
+		<?php
+		}
+		add_action('wp_footer',function() use ( $quiz_id, $quiz_data, $encryption ){
+		?>
     
-			<script type="text/javascript">
+			<script type="text/javascript" id="qsm-inline-quizdata-<?php echo esc_attr($quiz_id); ?>">
 				window.qsmQuizData = window.qsmQuizData || {};
 				window.qmn_quiz_data = window.qmn_quiz_data || {};
 
@@ -1565,8 +1599,8 @@ class QSM_New_Pagination_Renderer {
 				<?php endif; ?>
 			</script>
 
-		<?php });
-	
+		<?php
+		},1);
 		return '';
 	}
 

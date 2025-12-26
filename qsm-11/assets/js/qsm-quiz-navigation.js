@@ -65,12 +65,35 @@ var show_result_validation = true;
          * Get quiz data from either legacy or new variable
          * Provides backward compatibility
          */
-        getQuizData: function(quizId) {
-            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
+        getQuizData: function (quizId) {
+            var data = {};
+
+            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId] && typeof window.qmn_quiz_data[quizId] === 'object') {
                 return window.qmn_quiz_data[quizId];
             }
-            return {};
+            
+            var el = jQuery('#qsm-quiz-json-' + quizId);
+
+            if (el.length && typeof atob === 'function') {
+                try {
+                    var encoded = el.text().trim();
+
+                    if (encoded) {
+                        var decoded = atob(encoded);
+                        var parsed = JSON.parse(decoded);
+
+                        if (parsed && parsed.quiz_data) {
+                            return parsed.quiz_data;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('QSM: Failed to load quiz JSON fallback for quiz:', quizId, e);
+                }
+            }
+
+            return data;
         },
+
 
         /**
          * Initialize navigation for all quizzes on page
@@ -764,10 +787,13 @@ var show_result_validation = true;
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
+            currentPage = pageNumber - 1;
             console.log( " pageNumber ", pageNumber );   
+            console.log( " currentPage ", currentPage );   
+            jQuery('.pages_count').hide();
             if ($targetPage.length > 0) {
                 $targetPage.show();
-                
+                jQuery('.page_count_'+ currentPage).show();
                 // Check if this page needs lazy loading
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
                     this.loadPageQuestions(quizId, $targetPage, pageNumber);
