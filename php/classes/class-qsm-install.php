@@ -1691,6 +1691,21 @@ class QSM_Install {
         }
     }
 
+    private function maybe_add_foreign_key( $table, $constraint_name, $sql ) {
+        global $wpdb;
+        $exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(1) FROM information_schema.table_constraints WHERE constraint_schema = DATABASE() AND table_name = %s AND constraint_name = %s",
+                $table,
+                $constraint_name
+            )
+        );
+
+        if ( ! $exists ) {
+            $wpdb->query( $sql );
+        }
+    }
+
 	/**
 	 * Updates the plugin
 	 *
@@ -2156,88 +2171,78 @@ class QSM_Install {
 				dbDelta( $sql );
 			}
 
-		
+			$charset_collate = $wpdb->get_charset_collate();
+			$mlw_results_table = $wpdb->prefix . 'mlw_results';
 			$results_questions = $wpdb->prefix . 'qsm_results_questions';
 			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$results_questions}'" ) != $results_questions ) {
-				$mlw_results_table = $wpdb->prefix . 'mlw_results';
-				$charset_collate = $wpdb->get_charset_collate();
 				$sql_results_answers = "CREATE TABLE {$results_questions} (
 					`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`result_id` MEDIUMINT(9) NOT NULL,
 					`quiz_id` MEDIUMINT(9) NOT NULL,
 					`question_id` MEDIUMINT(9) NOT NULL,
-
 					`question_title` TEXT,
 					`question_description` LONGTEXT,
 					`question_comment` TEXT,
-
 					`question_type` VARCHAR(50),
 					`answer_type` VARCHAR(50) DEFAULT 'text',
-
 					`correct_answer` TEXT,
 					`user_answer` TEXT,
-
 					`user_answer_comma` TEXT,
 					`correct_answer_comma` TEXT,
-
 					`points` FLOAT DEFAULT 0,
 					`correct` TINYINT(1) DEFAULT 0,
-
 					`category` TEXT,
 					`multicategories` TEXT,
-
 					`other_settings` TEXT,
-
 					PRIMARY KEY (`id`),
 					KEY `result_id` (`result_id`),
 					KEY `question_id` (`question_id`),
 					KEY `quiz_id` (`quiz_id`),
-					KEY `result_question` (`result_id`, `question_id`),
-
-					CONSTRAINT `qsm_fk_results_questions_result_id`
-						FOREIGN KEY (`result_id`)
-						REFERENCES `{$mlw_results_table}` (`result_id`)
-						ON DELETE CASCADE
+					KEY `result_question` (`result_id`, `question_id`)
 				) ENGINE=InnoDB {$charset_collate};";
 
 				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 				dbDelta($sql_results_answers);
+
+				$this->maybe_add_foreign_key(
+					$results_questions,
+					'qsm_fk_results_questions_result_id',
+					"ALTER TABLE {$results_questions} ADD CONSTRAINT `qsm_fk_results_questions_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE"
+				);
 			}
 
 			// Ensure results meta table
 			$results_meta_table = $wpdb->prefix . 'qsm_results_meta';
 			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$results_meta_table}'" ) != $results_meta_table ) {
 				$mlw_results_table = $wpdb->prefix . 'mlw_results';
-				$charset_collate = $wpdb->get_charset_collate();
 				$sql_results_meta = "CREATE TABLE {$results_meta_table} (
 					`meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`result_id` MEDIUMINT(9) NOT NULL,
 					`meta_key` VARCHAR(191) NOT NULL,
 					`meta_value` LONGTEXT,
-
 					PRIMARY KEY (`meta_id`),
 					KEY `result_id` (`result_id`),
-					KEY `meta_key` (`meta_key`),
-
-					CONSTRAINT `qsm_fk_results_meta_result_id`
-						FOREIGN KEY (`result_id`)
-						REFERENCES `{$mlw_results_table}` (`result_id`)
-						ON DELETE CASCADE
+					KEY `meta_key` (`meta_key`)
 				) ENGINE=InnoDB {$charset_collate};";
 
 				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 				dbDelta($sql_results_meta);
-			}       
+
+				$this->maybe_add_foreign_key(
+					$results_meta_table,
+					'qsm_fk_results_meta_result_id',
+					"ALTER TABLE {$results_meta_table} ADD CONSTRAINT `qsm_fk_results_meta_result_id` FOREIGN KEY (`result_id`) REFERENCES `{$mlw_results_table}` (`result_id`) ON DELETE CASCADE"
+				);
+			}
 
 			// Add any missing indexes (safe checks)
 			$this->maybe_add_index($results_questions, 'idx_qra_result_id', "CREATE INDEX idx_qra_result_id ON {$results_questions} (result_id)");
 			$this->maybe_add_index($results_questions, 'idx_qra_result_correct', "CREATE INDEX idx_qra_result_correct ON {$results_questions} (result_id, correct)");
 
 			// Add useful indexes on mlw_results if missing
-			$mlw_results = $wpdb->prefix . 'mlw_results';
-			$this->maybe_add_index($mlw_results, 'idx_mrw_quiz_id', "CREATE INDEX idx_mrw_quiz_id ON {$mlw_results} (quiz_id)");
-			$this->maybe_add_index($mlw_results, 'idx_mrw_time_taken', "CREATE INDEX idx_mrw_time_taken ON {$mlw_results} (time_taken_real)");
-			$this->maybe_add_index($mlw_results, 'idx_mrw_user', "CREATE INDEX idx_mrw_user ON {$mlw_results} (`user`)");
+			$this->maybe_add_index($mlw_results_table, 'idx_mrw_quiz_id', "CREATE INDEX idx_mrw_quiz_id ON {$mlw_results_table} (quiz_id)");
+			$this->maybe_add_index($mlw_results_table, 'idx_mrw_time_taken', "CREATE INDEX idx_mrw_time_taken ON {$mlw_results_table} (time_taken_real)");
+			$this->maybe_add_index($mlw_results_table, 'idx_mrw_user', "CREATE INDEX idx_mrw_user ON {$mlw_results_table} (`user`)");
 
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
