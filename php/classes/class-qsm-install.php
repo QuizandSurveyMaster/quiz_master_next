@@ -2236,14 +2236,23 @@ class QSM_Install {
 			}
 
 			// Add any missing indexes (safe checks)
-			$this->maybe_add_index($results_questions, 'idx_qra_result_id', "CREATE INDEX idx_qra_result_id ON {$results_questions} (result_id)");
-			$this->maybe_add_index($results_questions, 'idx_qra_result_correct', "CREATE INDEX idx_qra_result_correct ON {$results_questions} (result_id, correct)");
+			$this->maybe_add_index(
+				$results_questions,
+				'idx_qra_result_id',
+				"CREATE INDEX idx_qra_result_id ON {$results_questions} (result_id)"
+			);
 
-			// Add useful indexes on mlw_results if missing
-			$this->maybe_add_index($mlw_results_table, 'idx_mrw_quiz_id', "CREATE INDEX idx_mrw_quiz_id ON {$mlw_results_table} (quiz_id)");
-			$this->maybe_add_index($mlw_results_table, 'idx_mrw_time_taken', "CREATE INDEX idx_mrw_time_taken ON {$mlw_results_table} (time_taken_real)");
-			$this->maybe_add_index($mlw_results_table, 'idx_mrw_user', "CREATE INDEX idx_mrw_user ON {$mlw_results_table} (`user`)");
+			$this->maybe_add_index(
+				$results_questions,
+				'idx_qra_result_question',
+				"CREATE INDEX idx_qra_result_question ON {$results_questions} (result_id, question_id)"
+			);
 
+			$this->maybe_add_index(
+				$results_meta_table,
+				'idx_qsm_meta_result_id',
+				"CREATE INDEX idx_qsm_meta_result_id ON {$results_meta_table} (result_id)"
+			);
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
 		}
