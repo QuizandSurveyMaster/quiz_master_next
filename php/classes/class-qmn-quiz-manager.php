@@ -1903,7 +1903,7 @@ class QMNQuizManager {
 	 *
 	 * @return boolean results added or not
 	 */
-	public function add_quiz_results( $data, $action = '' ) {
+	public function add_quiz_results( $data, $action = '', &$inserted_result_id = 0 ) {
 		global $wpdb, $mlwQuizMasterNext;
 		if ( empty( $wpdb ) || empty( $data['qmn_array_for_variables'] ) || empty( $data['results_array'] ) || empty( $data['unique_id'] ) || ! isset( $data['http_referer'] ) || ! isset( $data['form_type'] ) ) {
 			return false;
@@ -2001,10 +2001,10 @@ class QMNQuizManager {
 				// Throw exception
 				throw new Exception( 'Database insert failed.' );
 			}
+			$inserted_result_id = (int) $wpdb->insert_id;
 			// If insert is successful, insert per-question answers and meta into
 			// the new structured tables as well.
 			if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
-				$inserted_result_id = $wpdb->insert_id;
 				if ( $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
 					$structured_inserted = $this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
 					if ( false === $structured_inserted ) {
@@ -2527,8 +2527,9 @@ class QMNQuizManager {
 						'form_type'               => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
 						'http_referer'            => $http_referer,
 					);
-					$results_insert = $this->add_quiz_results( $insert_data );
-					$results_id     = $wpdb->insert_id;
+					$inserted_result_id = 0;
+					$results_insert      = $this->add_quiz_results( $insert_data, '', $inserted_result_id );
+					$results_id          = $inserted_result_id;
 					if ( false === $results_insert ) {
 						$quiz_submitted_data = qsm_printTableRows( $qmn_array_for_variables );
 						$error_details       = $wpdb->last_error;
