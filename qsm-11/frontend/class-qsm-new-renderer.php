@@ -78,7 +78,7 @@ class QSM_New_Renderer {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
 		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
-		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
 		if ( 1 === intval( $enable_new_render ) ) {
 			add_shortcode( 'mlw_quizmaster', array( $this, 'render_quiz_shortcode' ) );
 			add_shortcode( 'qsm', array( $this, 'render_quiz_shortcode' ) );
@@ -277,7 +277,7 @@ class QSM_New_Renderer {
 		
 		// Apply shortcode_atts and filter
 		$shortcode_args = shortcode_atts( array(
-			'quiz' => 0,
+			'quiz'            => 0,
 			'question_amount' => 0,
 		), $atts );
 		$shortcode_args = array_merge( $shortcode_args, $atts );
@@ -317,10 +317,10 @@ class QSM_New_Renderer {
 
 		// The Loop
 		$quiz_post_data = array(
-			'post_status' => '',
-			'post_id' => '',
+			'post_status'    => '',
+			'post_id'        => '',
 			'post_permalink' => '',
-			'edit_link' => '',
+			'edit_link'      => '',
 		);
 		if ( $the_query->have_posts() ) {
 			while ( $the_query->have_posts() ) {
@@ -360,10 +360,10 @@ class QSM_New_Renderer {
 		
 		// Prepare quiz data array
 		$qmn_array_for_variables = array(
-			'quiz_id' => $qmn_quiz_options->quiz_id,
-			'quiz_name' => $qmn_quiz_options->quiz_name,
+			'quiz_id'     => $qmn_quiz_options->quiz_id,
+			'quiz_name'   => $qmn_quiz_options->quiz_name,
 			'quiz_system' => $qmn_quiz_options->system,
-			'user_ip' => $this->get_user_ip(),
+			'user_ip'     => $this->get_user_ip(),
 		);
 		
 		// Initialize qmn_quiz_data object
@@ -381,10 +381,10 @@ class QSM_New_Renderer {
 		if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
 			// Prepare quiz data
 			$quiz_data = array(
-				'quiz_id' => $quiz_id,
-				'quiz_name' => $qmn_quiz_options->quiz_name,
-				'quiz_system' => $qmn_quiz_options->system,
-				'user_ip' => $this->get_user_ip(),
+				'quiz_id'        => $quiz_id,
+				'quiz_name'      => $qmn_quiz_options->quiz_name,
+				'quiz_system'    => $qmn_quiz_options->system,
+				'user_ip'        => $this->get_user_ip(),
 				'quiz_post_data' => $quiz_post_data,
 			);
 
@@ -404,7 +404,7 @@ class QSM_New_Renderer {
 				$auto_pagination_class, 
 				'quiz_theme_' . esc_attr( $saved_quiz_theme ), 
 				$randomness_class, 
-				'qsm-new-renderer'
+				'qsm-new-renderer',
 			);
 
 			$container_classes = array_filter($container_classes);
@@ -495,10 +495,10 @@ class QSM_New_Renderer {
 	 */
 	public function add_new_rendering_option( $options ) {
 		$options['enable_new_rendering'] = array(
-			'label' => __( 'Enable New Template System', 'quiz-master-next' ),
-			'type' => 'checkbox',
+			'label'   => __( 'Enable New Template System', 'quiz-master-next' ),
+			'type'    => 'checkbox',
 			'default' => 0,
-			'help' => __( 'Use the new template-based rendering system for better customization', 'quiz-master-next' ),
+			'help'    => __( 'Use the new template-based rendering system for better customization', 'quiz-master-next' ),
 		);
 		return $options;
 	}

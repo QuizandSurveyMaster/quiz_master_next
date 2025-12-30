@@ -66,7 +66,7 @@ function qsm_migration_get_required_addons() {
 		array(
 			'name'                   => 'Advanced Timer',
 			'required_addon_version' => '2.0.0',
-		)
+		),
 
 	);
 

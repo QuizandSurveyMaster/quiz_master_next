@@ -763,7 +763,7 @@ class QSM_Database_Migration {
             $results_table_meta['answer_label_points'] = $results_meta_table_ans_label;  // already serialized
         }
 
-        if ( !empty($results_table_meta_contact) ) { 
+        if ( ! empty($results_table_meta_contact) ) { 
             $results_table_meta['contact'] = maybe_serialize($results_table_meta_contact);
         }
 

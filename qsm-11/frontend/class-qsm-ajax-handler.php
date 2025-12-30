@@ -86,8 +86,8 @@ class QSM_Ajax_Handler {
 			);
 
 			wp_send_json_success( array(
-				'html' => $html,
-				'page_number' => $page_number,
+				'html'           => $html,
+				'page_number'    => $page_number,
 				'question_count' => count( $question_ids ),
 			) );
 
@@ -181,13 +181,13 @@ class QSM_Ajax_Handler {
 
 				// Render question using template
 				$args = array(
-					'quiz_id' => $quiz_id,
-					'id' => $question_id,
-					'class_object' => $renderer,
-					'question' => $question,
-					'answers' => $answer_array,
+					'quiz_id'           => $quiz_id,
+					'id'                => $question_id,
+					'class_object'      => $renderer,
+					'question'          => $question,
+					'answers'           => $answer_array,
 					'question_settings' => is_array( $question_settings ) ? $question_settings : array(),
-					'quiz_options' => $quiz_options_settings,
+					'quiz_options'      => $quiz_options_settings,
 				);
 
 				// Get question template

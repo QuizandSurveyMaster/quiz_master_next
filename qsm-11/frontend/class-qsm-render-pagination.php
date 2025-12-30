@@ -106,15 +106,15 @@ class QSM_New_Pagination_Renderer {
 	 */
 	public function __construct( $options, $quiz_data, $shortcode_args ) {
 		global $mlwQuizMasterNext;
-		$this->options 			= $options;
-		$this->quiz_data 		= $quiz_data;
-		$this->shortcode_args 	= $shortcode_args;
-		$this->quiz_settings 	= maybe_unserialize( $options->quiz_settings );
-		$this->quiz_options 	= (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );		
-		$this->quiz_texts 		= (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );		
-		$this->contact_fields 	= maybe_unserialize( $this->quiz_settings['contact_form'] );
-		$this->pages 			= maybe_unserialize( $this->quiz_settings['pages'] );
-		$qpages 				= maybe_unserialize( $this->quiz_settings['qpages'] );
+		$this->options          = $options;
+		$this->quiz_data        = $quiz_data;
+		$this->shortcode_args   = $shortcode_args;
+		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
+		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );       
+		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );      
+		$this->contact_fields   = maybe_unserialize( $this->quiz_settings['contact_form'] );
+		$this->pages            = maybe_unserialize( $this->quiz_settings['pages'] );
+		$qpages                 = maybe_unserialize( $this->quiz_settings['qpages'] );
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
@@ -190,9 +190,8 @@ class QSM_New_Pagination_Renderer {
 						$this->questions[ $question_array['question_id'] ] = $question_array;
 					}
 				}
-			}
-			
-		} catch ( Exception $e ) {
+			}       
+} catch ( Exception $e ) {
 			// Fallback to empty array
 			$this->questions = array();
 			
@@ -521,11 +520,11 @@ class QSM_New_Pagination_Renderer {
 
 			// Setup error messages in qmn_json_data
 			$qmn_json_data['error_messages'] = array(
-				'email_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->email_error_text, "quiz_email_error_text-{$this->options->quiz_id}" ),
-				'number_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->number_error_text, "quiz_number_error_text-{$this->options->quiz_id}" ),
+				'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->email_error_text, "quiz_email_error_text-{$this->options->quiz_id}" ),
+				'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->number_error_text, "quiz_number_error_text-{$this->options->quiz_id}" ),
 				'incorrect_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->incorrect_error_text, "quiz_incorrect_error_text-{$this->options->quiz_id}" ),
-				'empty_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->empty_error_text, "quiz_empty_error_text-{$this->options->quiz_id}" ),
-				'url_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->url_error_text, "quiz_url_error_text-{$this->options->quiz_id}" ),
+				'empty_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->empty_error_text, "quiz_empty_error_text-{$this->options->quiz_id}" ),
+				'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->url_error_text, "quiz_url_error_text-{$this->options->quiz_id}" ),
 				'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->minlength_error_text, "quiz_minlength_error_text-{$this->options->quiz_id}" ),
 				'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->maxlength_error_text, "quiz_maxlength_error_text-{$this->options->quiz_id}" ),
 				'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
@@ -549,19 +548,19 @@ class QSM_New_Pagination_Renderer {
 				'qsm-quiz-navigation',
 				'qmn_ajax_object',
 				array(
-					'site_url' => site_url(),
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'site_url'                  => site_url(),
+					'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 					'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->quiz_limit_choice, "quiz_quiz_limit_choice-{$this->options->quiz_id}" ),
-					'out_of_text' => esc_html__( ' out of ', 'quiz-master-next' ),
-					'quiz_time_over' => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
-					'security' => wp_create_nonce( 'qsm_submit_quiz' ),
-					'start_date' => current_time( 'h:i:s A m/d/Y' ),
-					'validate_process' => esc_html__( 'Validating file...', 'quiz-master-next' ),
-					'remove_file' => esc_html__( 'Removing file...', 'quiz-master-next' ),
-					'remove_file_success' => esc_html__( 'File removed successfully', 'quiz-master-next' ),
-					'validate_success' => esc_html__( 'File validated successfully', 'quiz-master-next' ),
-					'invalid_file_type' => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
-					'invalid_file_size' => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
+					'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
+					'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+					'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
+					'start_date'                => current_time( 'h:i:s A m/d/Y' ),
+					'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
+					'remove_file'               => esc_html__( 'Removing file...', 'quiz-master-next' ),
+					'remove_file_success'       => esc_html__( 'File removed successfully', 'quiz-master-next' ),
+					'validate_success'          => esc_html__( 'File validated successfully', 'quiz-master-next' ),
+					'invalid_file_type'         => esc_html__( 'Invalid file type. Allowed types: ', 'quiz-master-next' ),
+					'invalid_file_size'         => esc_html__( 'File is too large. Maximum size: ', 'quiz-master-next' ),
 				)
 			);
 			// Enqueue MathJax if not disabled
@@ -628,9 +627,9 @@ class QSM_New_Pagination_Renderer {
 	private function register_quiz_elements() {
 		// Get filterable priorities for container-level elements
 		$priorities = apply_filters( 'qsm_quiz_container_element_priorities', array(
-			'featured_image'  => 5,
-			'quiz_form'       => 10,
-			'navigation'      => 20,
+			'featured_image' => 5,
+			'quiz_form'      => 10,
+			'navigation'     => 20,
 		), $this );
 		
 		// Featured Image (Priority 5) - Only for default theme
@@ -742,12 +741,12 @@ class QSM_New_Pagination_Renderer {
 		
 		// Get filterable priorities for pagination elements
 		$priorities = apply_filters( 'qsm_pagination_element_priorities', array(
-			'page_counter'        => 10,
-			'previous_button'     => 20,
-			'progress_bar'        => 30,
-			'start_button'        => 40,
-			'next_button'         => 50,
-			'submit_button'       => 60,
+			'page_counter'    => 10,
+			'previous_button' => 20,
+			'progress_bar'    => 30,
+			'start_button'    => 40,
+			'next_button'     => 50,
+			'submit_button'   => 60,
 		), $this );
 		
 		// Only register element if it's NOT already in the header
@@ -805,12 +804,12 @@ class QSM_New_Pagination_Renderer {
 		
 		// Get priorities for header elements
 		$priorities = apply_filters( 'qsm_pagination_header_element_priorities', array(
-			'page_counter'        => 10,
-			'previous_button'     => 20,
-			'progress_bar'        => 30,
-			'start_button'        => 40,
-			'next_button'         => 50,
-			'submit_button'       => 60,
+			'page_counter'    => 10,
+			'previous_button' => 20,
+			'progress_bar'    => 30,
+			'start_button'    => 40,
+			'next_button'     => 50,
+			'submit_button'   => 60,
 		), $quiz_id, $this );
 		
 		// Register elements that are enabled for header
@@ -932,11 +931,11 @@ class QSM_New_Pagination_Renderer {
 		$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $this->quiz_data );
 
 		$args = array(
-			'quiz_id' => $this->options->quiz_id,
+			'quiz_id'                            => $this->options->quiz_id,
 			'object_class_qsm_render_pagination' => $this,
-			'animation_effect' => $animation_effect,
-			'message_before' => $message_before,
-			'show_contact_fields' => ( 0 == $this->quiz_options->contact_info_location && $this->contact_fields ),
+			'animation_effect'                   => $animation_effect,
+			'message_before'                     => $message_before,
+			'show_contact_fields'                => ( 0 == $this->quiz_options->contact_info_location && $this->contact_fields ),
 		);
 		
 		return qsm_new_get_template_part( 'pages/page-first', $args );
@@ -1089,19 +1088,19 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$args = array(
-			'quiz_id' => $this->options->quiz_id,
-			'id' => $question_id,
-			'class_object' => $this,
-			'question' => $question_data,
-			'answers' => $answer_array,
+			'quiz_id'           => $this->options->quiz_id,
+			'id'                => $question_id,
+			'class_object'      => $this,
+			'question'          => $question_data,
+			'answers'           => $answer_array,
 			'question_settings' => is_array( $question_settings ) ? $question_settings : array(),
-			'quiz_options' => $this->quiz_options,
+			'quiz_options'      => $this->quiz_options,
 		);
 
 		// Use the new question template function
 		$question_template = qsm_get_question_template( $question_type, $args,$shortcode_args );
 		if ( $question_template == false ) {
-			$question_type = array_filter($mlwQuizMasterNext->pluginHelper->question_types, function($item) use ($question_type) {
+			$question_type = array_filter($mlwQuizMasterNext->pluginHelper->question_types, function( $item ) use ( $question_type ) {
 				return $item['slug'] == $question_type;
 			});
 			$question_type = array_shift($question_type);
@@ -1217,9 +1216,9 @@ class QSM_New_Pagination_Renderer {
 		$show_contact_fields = ( 1 === $contact_info_location && $has_enabled_contact_fields );
 		
 		$args = array(
-			'quiz_id' => $this->options->quiz_id,
-			'renderer' => $this,
-			'message_after' => $message_after,
+			'quiz_id'             => $this->options->quiz_id,
+			'renderer'            => $this,
+			'message_after'       => $message_after,
 			'show_contact_fields' => $show_contact_fields,
 		);
 		
@@ -1243,23 +1242,23 @@ class QSM_New_Pagination_Renderer {
 		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
 		
 		$args = array(
-			'quiz_id' => $this->options->quiz_id,
-			'options' => $this->options,
-			'quiz_data' => $this->quiz_data,
-			'renderer' => $this,
+			'quiz_id'       => $this->options->quiz_id,
+			'options'       => $this->options,
+			'quiz_data'     => $this->quiz_data,
+			'renderer'      => $this,
 			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
 				"quiz_previous_button_text-{$this->options->quiz_id}" 
 			),
-			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'next_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
 				"quiz_next_button_text-{$this->options->quiz_id}" 
 			),
-			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'start_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$start_button_text, 
 				"quiz_next_button_text-{$this->options->quiz_id}" 
 			),
-			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'submit_text'   => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
 				"quiz_submit_button_text-{$this->options->quiz_id}" 
 			),
@@ -1285,23 +1284,23 @@ class QSM_New_Pagination_Renderer {
 		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
 		
 		$args = array(
-			'quiz_id' => $this->options->quiz_id,
-			'options' => $this->options,
-			'quiz_data' => $this->quiz_data,
-			'renderer' => $this,
+			'quiz_id'       => $this->options->quiz_id,
+			'options'       => $this->options,
+			'quiz_data'     => $this->quiz_data,
+			'renderer'      => $this,
 			'previous_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->previous_button_text ) ? $this->quiz_texts->previous_button_text : 'Previous', 
 				"quiz_previous_button_text-{$this->options->quiz_id}" 
 			),
-			'next_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'next_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Next', 
 				"quiz_next_button_text-{$this->options->quiz_id}" 
 			),
-			'start_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'start_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$start_button_text, 
 				"quiz_next_button_text-{$this->options->quiz_id}" 
 			),
-			'submit_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'submit_text'   => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				! empty( $this->quiz_texts->submit_button_text ) ? $this->quiz_texts->submit_button_text : 'Submit', 
 				"quiz_submit_button_text-{$this->options->quiz_id}" 
 			),
@@ -1405,19 +1404,19 @@ class QSM_New_Pagination_Renderer {
 		
 		// Get error messages from quiz texts with language support
 		$error_messages = array(
-			'email_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$this->options->email_error_text ?? 'Please enter a valid email address.', 
 				"quiz_email_error_text-{$this->options->quiz_id}" 
 			),
-			'url_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$this->options->url_error_text ?? 'Please enter a valid URL.', 
 				"quiz_url_error_text-{$this->options->quiz_id}" 
 			),
-			'empty_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'empty_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$this->options->empty_error_text ?? 'This field is required.', 
 				"quiz_empty_error_text-{$this->options->quiz_id}" 
 			),
-			'number_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
+			'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( 
 				$this->options->number_error_text ?? 'Please enter a valid number.', 
 				"quiz_number_error_text-{$this->options->quiz_id}" 
 			),
@@ -1457,64 +1456,64 @@ class QSM_New_Pagination_Renderer {
 		// Build comprehensive quiz data matching $qmn_json_data structure
 		$quiz_data = array(
 			// Core quiz info
-			'quiz_id' => $this->options->quiz_id,
-			'quiz_name' => $this->options->quiz_name,
+			'quiz_id'                            => $this->options->quiz_id,
+			'quiz_name'                          => $this->options->quiz_name,
 			
 			// Quiz behavior settings
-			'disable_answer' => $this->quiz_options->disable_answer_onselect ?? 0,
-			'ajax_show_correct' => $this->quiz_options->ajax_show_correct ?? 0,
-			'progress_bar' => $this->quiz_options->progress_bar ?? 0,
-			'contact_info_location' => $this->quiz_options->contact_info_location ?? 0,
-			'skip_validation_time_expire' => $this->quiz_options->skip_validation_time_expire ?? 0,
-			'timer_limit' => intval( $this->options->timer_limit ?? 0 ),
+			'disable_answer'                     => $this->quiz_options->disable_answer_onselect ?? 0,
+			'ajax_show_correct'                  => $this->quiz_options->ajax_show_correct ?? 0,
+			'progress_bar'                       => $this->quiz_options->progress_bar ?? 0,
+			'contact_info_location'              => $this->quiz_options->contact_info_location ?? 0,
+			'skip_validation_time_expire'        => $this->quiz_options->skip_validation_time_expire ?? 0,
+			'timer_limit'                        => intval( $this->options->timer_limit ?? 0 ),
 			'disable_scroll_next_previous_click' => $this->quiz_options->disable_scroll_next_previous_click ?? 0,
-			'disable_scroll_on_result' => $this->quiz_options->disable_scroll_on_result ?? 0,
-			'disable_first_page' => $this->quiz_options->disable_first_page ?? 0,
-			'enable_result_after_timer_end' => $this->quiz_options->enable_result_after_timer_end ?? 0,
-			'enable_quick_result_mc' => $this->quiz_options->enable_quick_result_mc ?? 0,
-			'end_quiz_if_wrong' => $this->quiz_options->end_quiz_if_wrong ?? 0,
-			'form_disable_autofill' => $this->quiz_options->form_disable_autofill ?? 0,
-			'disable_mathjax' => $this->quiz_options->disable_mathjax ?? 0,
-			'enable_quick_correct_answer_info' => $this->quiz_options->enable_quick_correct_answer_info ?? 0,
-			'not_allow_after_expired_time' => $this->quiz_options->not_allow_after_expired_time ?? 0,
-			'prevent_reload' => $this->quiz_options->prevent_reload ?? 0,
-			'limit_email_based_submission' => $this->quiz_options->limit_email_based_submission ?? 0,
-			'total_user_tries' => $this->quiz_options->total_user_tries ?? 0,
-			'randomness_order' => $this->randomness_order,
+			'disable_scroll_on_result'           => $this->quiz_options->disable_scroll_on_result ?? 0,
+			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
+			'enable_result_after_timer_end'      => $this->quiz_options->enable_result_after_timer_end ?? 0,
+			'enable_quick_result_mc'             => $this->quiz_options->enable_quick_result_mc ?? 0,
+			'end_quiz_if_wrong'                  => $this->quiz_options->end_quiz_if_wrong ?? 0,
+			'form_disable_autofill'              => $this->quiz_options->form_disable_autofill ?? 0,
+			'disable_mathjax'                    => $this->quiz_options->disable_mathjax ?? 0,
+			'enable_quick_correct_answer_info'   => $this->quiz_options->enable_quick_correct_answer_info ?? 0,
+			'not_allow_after_expired_time'       => $this->quiz_options->not_allow_after_expired_time ?? 0,
+			'prevent_reload'                     => $this->quiz_options->prevent_reload ?? 0,
+			'limit_email_based_submission'       => $this->quiz_options->limit_email_based_submission ?? 0,
+			'total_user_tries'                   => $this->quiz_options->total_user_tries ?? 0,
+			'randomness_order'                   => $this->randomness_order,
 			
 			// Text messages
-			'quick_result_correct_answer_text' => $correct_answer_text,
-			'quick_result_wrong_answer_text' => $wrong_answer_text,
-			'quiz_processing_message' => $quiz_processing_message,
-			'quiz_limit_choice' => $quiz_limit_choice,
+			'quick_result_correct_answer_text'   => $correct_answer_text,
+			'quick_result_wrong_answer_text'     => $wrong_answer_text,
+			'quiz_processing_message'            => $quiz_processing_message,
+			'quiz_limit_choice'                  => $quiz_limit_choice,
 			
 			// Time and scheduling
-			'scheduled_time_end' => strtotime( $this->quiz_options->scheduled_time_end ?? 'now' ),
+			'scheduled_time_end'                 => strtotime( $this->quiz_options->scheduled_time_end ?? 'now' ),
 			
 			// User context
-			'is_logged_in' => is_user_logged_in(),
+			'is_logged_in'                       => is_user_logged_in(),
 			
 			// Pages data
-			'qpages' => $this->get_quiz_properties('qpages'),
-			'first_page' => $this->should_show_first_page(),
+			'qpages'                             => $this->get_quiz_properties('qpages'),
+			'first_page'                         => $this->should_show_first_page(),
 			
 			// Questions data
-			'question_list' => $this->get_questions_data(),
+			'question_list'                      => $this->get_questions_data(),
 			
 			// Error messages
-			'error_messages' => $error_messages,
+			'error_messages'                     => $error_messages,
 			
 			// System data
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'qsm_quiz_nonce_' . $this->options->quiz_id ),
-			'lazy_load_nonce' => wp_create_nonce( 'qsm_lazy_load_' . $this->options->quiz_id ),
+			'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+			'nonce'                              => wp_create_nonce( 'qsm_quiz_nonce_' . $this->options->quiz_id ),
+			'lazy_load_nonce'                    => wp_create_nonce( 'qsm_lazy_load_' . $this->options->quiz_id ),
 			
 			// QSM-11 specific enhancements
-			'template_system' => 'qsm-11',
-			'version' => '2.0',
-			'scroll_to_top' => true,
-			'timer_auto_start' => false,
-			'render_type' => '11',
+			'template_system'                    => 'qsm-11',
+			'version'                            => '2.0',
+			'scroll_to_top'                      => true,
+			'timer_auto_start'                   => false,
+			'render_type'                        => '11',
 		);
 		
 		// Apply filters to allow customization (matching legacy filter)
@@ -1612,7 +1611,7 @@ class QSM_New_Pagination_Renderer {
 				?>
 				<div class="qsm_contact_div qsm-contact-type-<?php echo esc_attr( $this->contact_fields[ $i ]['type'] ); ?>">
 					<?php
-					QSM_Contact_Manager::generate_contact_field($this->contact_fields[ $i ], $i, (object) array_merge((array)$this->quiz_options, (array)$this->options), $value);
+					QSM_Contact_Manager::generate_contact_field($this->contact_fields[ $i ], $i, (object) array_merge( (array)$this->quiz_options, (array)$this->options), $value);
 					?>
 				</div>
 				<?php

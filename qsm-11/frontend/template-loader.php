@@ -194,12 +194,12 @@ function qsm_get_question_template( $question_type, $args = array(), $shortcode_
 function qsm_register_template_hooks() {
 	// Map old hooks to new template system
 	$hook_mappings = array(
-		'qsm_before_questions' => 'qsm_before_question_pages',
-		'qsm_after_questions' => 'qsm_after_question_pages',
+		'qsm_before_questions'  => 'qsm_before_question_pages',
+		'qsm_after_questions'   => 'qsm_after_question_pages',
 		'qsm_before_pagination' => 'qsm_before_pagination_render',
-		'qsm_after_pagination' => 'qsm_after_pagination_render',
+		'qsm_after_pagination'  => 'qsm_after_pagination_render',
 		'qsm_before_first_page' => 'qsm_before_first_page',
-		'qsm_after_last_page' => 'qsm_after_last_page',
+		'qsm_after_last_page'   => 'qsm_after_last_page',
 	);
 	
 	foreach ( $hook_mappings as $old_hook => $new_hook ) {

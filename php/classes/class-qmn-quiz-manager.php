@@ -1931,7 +1931,7 @@ class QMNQuizManager {
 			
 			// If migrtation is processed then we will insert the data into new tables after the results table insert the record
 			if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
-				$db_results_array =  '';
+				$db_results_array = '';
 			}
 
 			$record = array(

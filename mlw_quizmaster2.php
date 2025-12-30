@@ -801,7 +801,7 @@ class MLWQuizMasterNext {
 			return;
 		}
 		$roles    = (array) $user->roles;
-		if ( empty( $roles ) || !isset($roles[0]) || !is_string($roles[0]) ) {
+		if ( empty( $roles ) || ! isset($roles[0]) || ! is_string($roles[0]) ) {
 			return;
 		}
 		$rolename = $roles[0];
