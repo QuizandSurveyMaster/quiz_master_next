@@ -1122,7 +1122,7 @@ var show_result_validation = true;
                 let fieldValue = $field.val() || '';
                 
                 // Skip if field is not visible or doesn't have validation classes
-                if (!fieldClass || (!$field.is(':visible') && fieldClass.indexOf('mlwRequiredAccept') === -1)) {
+                if (!fieldClass || (!$field.is(':visible') && !$field.parent().is(':visible'))) {
                     return;
                 }
                 
@@ -1168,6 +1168,11 @@ var show_result_validation = true;
                     self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
                     show_result_validation = false;
                 }
+
+                if (fieldClass.indexOf('mlwRequiredPolar') !== -1 && $.trim(fieldValue) === '') {
+                    self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
+                    show_result_validation = false;
+                }
                 
                 if (fieldClass.indexOf('mlwRequiredNumber') !== -1 && (fieldValue === '' || isNaN(fieldValue))) {
                     self.displayError(errorMessages.number_error_text || 'Please enter a valid number.', $field, quizId);
@@ -1185,6 +1190,22 @@ var show_result_validation = true;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredRadio') !== -1) {
+                    let checkedVal = $field.find('input:checked').val();
+                    if (!checkedVal) {
+                        self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
+                        show_result_validation = false;
+                    }
+                }
+
+                if (fieldClass.indexOf('qsmRequiredSelect') !== -1) {
+                    let checkedVal = $field.find('select').val() || $field.filter('select').val();
+                    if (!checkedVal) {
+                        self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
+                        show_result_validation = false;
+                    }
+                }
+
+                if (fieldClass.indexOf('mlwRequiredCheck') !== -1) {
                     let checkedVal = $field.find('input:checked').val();
                     if (!checkedVal) {
                         self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
@@ -1213,27 +1234,11 @@ var show_result_validation = true;
             if (!quizData) return;
             
             // Add error class to field
-            $field.addClass('qsm-error');
-            
-            // Add error class to parent section
-            $field.closest('.qsm-question, .quiz_section').addClass('qsm-error');
+            $field.parents('.quiz_section').addClass('qmn_error');
             
             // Create error message element
-            let $errorMsg = $('<div class="qsm-error-message">' + message + '</div>');
-            
-            // Insert error message after field or its container
-            let $container = $field.closest('.qsm-question');
-            if ($container.length) {
-                $container.after($errorMsg);
-            } else {
-                $field.after($errorMsg);
-            }
-            
-            // Focus on first error field
-            if (!quizData.firstErrorFocused) {
-                $field.focus();
-                quizData.firstErrorFocused = true;
-            }
+			quizData.form.find('.qmn_error_message_section').addClass('qmn_error_message');
+			quizData.form.find('.qmn_error_message').text(message);
         },
 
         /**
@@ -1246,10 +1251,11 @@ var show_result_validation = true;
             quizData.firstErrorFocused = false;
             
             // Remove error messages
-            quizData.form.find('.qsm-error-message').remove();
+            quizData.form.find('.qmn_error_message').text('');
+            quizData.form.find('.qmn_error_message_section').removeClass('qmn_error_message');
             
             // Remove error classes
-            quizData.form.find('.qsm-error').removeClass('qsm-error');
+            quizData.form.find('.qmn_error').removeClass('qmn_error');
         },
 
         clearPageErrors: function(quizId) {
@@ -1257,13 +1263,13 @@ var show_result_validation = true;
             if (!quizData) return;
 
             let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-            $currentPage.find('.qsm-error').removeClass('qsm-error');
-            $currentPage.find('.qsm-error-message').remove();
+            $currentPage.find('.qmn_error').removeClass('qmn_error');
+            quizData.form.find('.qmn_error_message').text('');
+            quizData.form.find('.qmn_error_message_section').removeClass('qmn_error_message');
         },
 
         clearFieldError: function($field) {
-            $field.removeClass('qsm-error');
-            $field.siblings('.qsm-error-message').remove();
+            $field.removeClass('qmn_error');
         },
 
         /**
@@ -1507,46 +1513,6 @@ var show_result_validation = true;
 		    
 		    // Trigger after result is displayed - matches legacy qsm-quiz.js format
 		    jQuery(document).trigger('qsm_after_display_result', [response, 'quizForm' + quizId, $quizContainer]);
-        },
-
-        /**
-         * Display error message
-         */
-        displayError: function(message, quizId) {
-            let quizData = this.quizObjects[quizId];
-            if (!quizData) {
-                alert('Error: ' + message);
-                return;
-            }
-            
-            let $quizContainer = quizData.quizContainer;
-            
-            // Remove existing error messages
-            $quizContainer.find('.qsm-error-display').remove();
-            
-            // Create error message element
-            let $errorDiv = $('<div class="qsm-error-display">')
-                .html('<strong>Error:</strong> ' + message)
-                .css({
-                    'background-color': '#f8d7da',
-                    'color': '#721c24',
-                    'border': '1px solid #f5c6cb',
-                    'border-radius': '4px',
-                    'padding': '12px',
-                    'margin': '10px 0',
-                    'display': 'none'
-                });
-            
-            // Insert error message
-            $quizContainer.prepend($errorDiv);
-            $errorDiv.slideDown();
-            
-            // Auto-hide after 10 seconds
-            setTimeout(function() {
-                $errorDiv.slideUp(function() {
-                    $errorDiv.remove();
-                });
-            }, 10000);
         },
 
         /**

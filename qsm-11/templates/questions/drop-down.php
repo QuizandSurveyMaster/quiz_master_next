@@ -20,11 +20,7 @@ if ( ! is_array( $question_settings ) ) {
 }
 
 $required = isset( $question_settings['required'] ) ? $question_settings['required'] : 0;
-if ( 0 == $required ) {
-    $require_class = 'qsmRequiredSelect';
-} else {
-    $require_class = '';
-}
+$require_class = 0 == $required ? 'qsmRequiredSelect' : '';
 $new_question_title = isset( $question_settings['question_title'] ) ? $question_settings['question_title'] : '';
 $question_text = isset( $question['question_name'] ) ? $question['question_name'] : '';
 $processed_question_text = '';
