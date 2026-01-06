@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 10.3.3
+Stable tag: 10.3.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,11 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 10.3.4 ( January 06, 2026 ) =
+* Fix: Vulnerability where users can modify or delete quizzes/questions beyond their role permissions
+* Enhancement: Added support for using variable in quiz redirect URL
+
+
 = 10.3.3 ( December 19, 2025 ) =
 * Fix: Broken Access Control vulnerability
 
