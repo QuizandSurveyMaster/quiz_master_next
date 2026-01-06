@@ -238,12 +238,23 @@ function qsm_migration_database_callback() {
 
 				<div class="qsm-database-migration-progress-bar">
 					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
+					<div class="qsm-database-migration-progress-percent">0%</div>
 				</div>
 
 				<div class="qsm-database-migration-status"></div>
 				<div class="qsm-database-migration-details"></div>
 				<?php
+				$compatibility_addons = array();
 				if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
+					foreach ( $compatibility['addons'] as $addon ) {
+						if ( empty( $addon['is_installed'] ) ) {
+							continue;
+						}
+						$compatibility_addons[] = $addon;
+					}
+				}
+
+				if ( ! empty( $compatibility_addons ) ) {
 					$has_block = empty( $compatibility['allowed'] );
 					?>
 					<div class="qsm-migration-addon-compatibility">
@@ -264,7 +275,7 @@ function qsm_migration_database_callback() {
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ( $compatibility['addons'] as $addon ) :
+								<?php foreach ( $compatibility_addons as $addon ) :
 
 									$name              = isset( $addon['name'] ) ? $addon['name'] : '';
 									$required_version  = isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '';
@@ -306,7 +317,7 @@ function qsm_migration_database_callback() {
 }
 
 function qsm_check_plugins_compatibility() {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $wpdb;
 
 	if ( class_exists( 'QSM_Installer' ) ) {
 		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
@@ -329,7 +340,11 @@ function qsm_check_plugins_compatibility() {
 		}
 	}
 
-	if ( 1 != get_option( 'qsm_migration_results_processed' ) ) { 
+	$results_table = $wpdb->prefix . 'mlw_results';
+	$results_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$results_table}" );
+	if ( 0 == $results_count ) {
+		update_option( 'qsm_migration_results_processed', 1 );
+	} elseif ( 1 != get_option( 'qsm_migration_results_processed' ) ) { 
 		qsm_migration_database_callback();
 	}
 

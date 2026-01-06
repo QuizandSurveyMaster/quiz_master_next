@@ -8,16 +8,28 @@ jQuery(function ($) {
         statusBox: $('.qsm-database-migration-status'),
         detailsBox: $('.qsm-database-migration-details'),
         progressBar: $('.qsm-database-migration-progress'),
+        progressPercent: $('.qsm-database-migration-progress-percent'),
         totalRecords: 0,
         batchSize: 0,
         offset: 0, // This will track the total number of LOGGED records (migrated + failed)
         processingFailedOnly: false,
+
+        markCompletedUI: function () {
+            QSM_Migration_Process.progressBar
+                .css('width', '100%')
+                .addClass('qsm-migration-completed');
+
+            QSM_Migration_Process.progressPercent.text('100%');
+
+            QSM_Migration_Process.startButton.hide();
+        },
 
         // UI helpers
         updateProgress: function (processed) {
             if (QSM_Migration_Process.totalRecords === 0) return;
             const percent = Math.min(100, (processed / QSM_Migration_Process.totalRecords) * 100);
             QSM_Migration_Process.progressBar.css('width', percent + '%');
+            QSM_Migration_Process.progressPercent.text(Math.round(percent) + '%');
         },
 
         updateStatus: function (message, type) {
@@ -43,6 +55,9 @@ jQuery(function ($) {
 
         // Step 1: Start migration (initialize tables + get totals)
         start: function () {
+            QSM_Migration_Process.startButton.show();
+            QSM_Migration_Process.progressBar.removeClass('qsm-migration-completed');
+            QSM_Migration_Process.progressPercent.text('0%');
             QSM_Migration_Process.disableUI();
             QSM_Migration_Process.updateStatus(qsmMigrationData.startMessage, 'progress');
             QSM_Migration_Process.updateDetails('');
@@ -74,8 +89,7 @@ jQuery(function ($) {
 
                     if (data.already_done) {
                         QSM_Migration_Process.updateStatus(data.message, 'success');
-                        QSM_Migration_Process.progressBar.css('width', '100%');
-                        QSM_Migration_Process.enableUI();
+                        QSM_Migration_Process.markCompletedUI();
                         return;
                     }
 
@@ -112,8 +126,7 @@ jQuery(function ($) {
             // If we are in failed-only mode and total_records is 0, we are done (but the PHP handles this better)
             if (self.totalRecords === 0) {
                 QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
-                QSM_Migration_Process.progressBar.css('width', '100%');
-                QSM_Migration_Process.enableUI();
+                QSM_Migration_Process.markCompletedUI();
                 return;
             }
 
@@ -153,8 +166,7 @@ jQuery(function ($) {
                     // Case 1: All done (final completion)
                     if (data.completed === true) {
                         QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
-                        QSM_Migration_Process.progressBar.css('width', '100%');
-                        QSM_Migration_Process.enableUI();
+                        QSM_Migration_Process.markCompletedUI();
                         return;
                     }
 
@@ -169,8 +181,7 @@ jQuery(function ($) {
                         } else {
                             // In failed-only mode, 0 processed means no failed records left to retry.
                             QSM_Migration_Process.updateStatus(qsmMigrationData.successMessage, 'success');
-                            QSM_Migration_Process.progressBar.css('width', '100%');
-                            QSM_Migration_Process.enableUI();
+                            QSM_Migration_Process.markCompletedUI();
                             return;
                         }
                     }
@@ -196,5 +207,13 @@ jQuery(function ($) {
 
         QSM_Migration_Process.start();
     });
+
+    // If migration was already completed, PHP hides the whole form, but for safety
+    // we also hide the start button if the progress bar is already full.
+    if (QSM_Migration_Process.progressBar.length && QSM_Migration_Process.progressBar.css('width') !== '0px') {
+        if (QSM_Migration_Process.progressBar.hasClass('qsm-migration-completed')) {
+            QSM_Migration_Process.startButton.hide();
+        }
+    }
 
 });
