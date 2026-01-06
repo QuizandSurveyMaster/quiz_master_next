@@ -362,7 +362,7 @@ class QSM_Results_Pages {
 			if ( 'false' === $pages[ $i ]['redirect'] ) {
 				$pages[ $i ]['redirect'] = false;
 			} else {
-				$pages[ $i ]['redirect'] = esc_url( $pages[ $i ]['redirect'] );
+				$pages[ $i ]['redirect'] = false !== strpos( $pages[ $i ]['redirect'], '%RESULT_LINK%' ) ? $pages[ $i ]['redirect'] : esc_url( $pages[ $i ]['redirect'] );
 			}
 
 			/**
