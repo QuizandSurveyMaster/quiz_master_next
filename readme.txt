@@ -226,12 +226,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 = 10.3.4 ( January 06, 2026 ) =
-* Fix: Vulnerability where users can modify or delete quizzes/questions beyond their role permissions
+* Patch: Vulnerability where users can modify or delete quizzes/questions beyond their role permissions
 * Enhancement: Added support for using variable in quiz redirect URL
 
 
 = 10.3.3 ( December 19, 2025 ) =
-* Fix: Broken Access Control vulnerability
+* Patch: Broken Access Control vulnerability
 
 = 10.3.2 ( December 04, 2025 ) =
 * Bug: Patch vulnerability with qsm_dashboard_delete_result function
