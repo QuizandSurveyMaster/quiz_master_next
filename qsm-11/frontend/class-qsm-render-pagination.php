@@ -1561,7 +1561,7 @@ class QSM_New_Pagination_Renderer {
         'encryption' => $encryption,
     	];
 		// Below Json is used in Tatsu iframe
-		if( isset($_GET['tatsu']) && $_GET['tatsu'] == '1'){			
+		if( isset($_GET['tatsu']) && $_GET['tatsu'] == '1'){
 			?>
 			<script type="application/json" id="qsm-quiz-json-<?php echo esc_attr($quiz_id); ?>">
 				<?php echo base64_encode(wp_json_encode( $payload )); ?>
