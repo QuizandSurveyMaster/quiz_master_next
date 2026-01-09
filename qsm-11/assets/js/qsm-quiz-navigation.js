@@ -82,7 +82,7 @@ var show_result_validation = true;
                         let decoded = atob(encoded);
                         let parsed = JSON.parse(decoded);
 
-                        if (parsed && parsed.quiz_data) {
+                        if (parsed?.quiz_data) {
                             return parsed.quiz_data;
                         }
                     }
@@ -787,7 +787,7 @@ var show_result_validation = true;
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
-            currentPage = pageNumber - 1;
+            let currentPage = pageNumber - 1;
             console.log( " pageNumber ", pageNumber );   
             console.log( " currentPage ", currentPage );   
             jQuery('.pages_count').hide();
