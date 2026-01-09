@@ -66,21 +66,21 @@ var show_result_validation = true;
          * Provides backward compatibility
          */
         getQuizData: function (quizId) {
-            var data = {};
+        let data = {};
 
             if (window.qmn_quiz_data && window.qmn_quiz_data[quizId] && typeof window.qmn_quiz_data[quizId] === 'object') {
                 return window.qmn_quiz_data[quizId];
             }
             
-            var el = jQuery('#qsm-quiz-json-' + quizId);
+            let el = jQuery('#qsm-quiz-json-' + quizId);
 
             if (el.length && typeof atob === 'function') {
                 try {
-                    var encoded = el.text().trim();
+                    let encoded = el.text().trim();
 
                     if (encoded) {
-                        var decoded = atob(encoded);
-                        var parsed = JSON.parse(decoded);
+                        let decoded = atob(encoded);
+                        let parsed = JSON.parse(decoded);
 
                         if (parsed && parsed.quiz_data) {
                             return parsed.quiz_data;
