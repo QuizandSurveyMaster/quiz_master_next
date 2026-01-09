@@ -75,7 +75,9 @@ class QSM_New_Renderer {
 	 */
 	private function init_hooks() {
 		// Always enqueue scripts when new rendering is enabled
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		
+		
+
 		
 		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
 		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
@@ -83,18 +85,28 @@ class QSM_New_Renderer {
 			add_shortcode( 'mlw_quizmaster', array( $this, 'render_quiz_shortcode' ) );
 			add_shortcode( 'qsm', array( $this, 'render_quiz_shortcode' ) );
 		}
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ),99999 );
 		
 		// Add admin option to enable new rendering
 		add_filter( 'qsm_quiz_options', array( $this, 'add_new_rendering_option' ) );
 		
 		// Include AJAX handler for lazy loading
-		require_once QSM_PLUGIN_PATH . 'qsm-11/frontend/class-qsm-ajax-handler.php';
+		require_once QSM_PLUGIN_PATH . 'qsm-11/frontend/class-qsm-ajax-handler.php';		
 	}
+	
 
 	/**
 	 * Enqueue scripts and styles for new rendering system
 	 */
 	public function enqueue_scripts() {
+
+		global $mlwQuizMasterNext,$qsm_quiz_ids;
+		
+		wp_enqueue_style( 
+			'qmn_quiz_animation_style', 
+			QSM_PLUGIN_CSS_URL . '/animate.css', 
+			array(), 
+			$mlwQuizMasterNext->version 
 		global $mlwQuizMasterNext;
 		if ( ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
 			return;
@@ -165,6 +177,7 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version,
 			true
 		);
+		
 		
 		// Enqueue progress bar JavaScript
 		wp_enqueue_script(
@@ -263,6 +276,10 @@ class QSM_New_Renderer {
 		
 		$quiz_id = intval( $shortcode_args['quiz'] );
 		
+		if ( ! $quiz_id ) {
+			return '<p>Invalid quiz ID</p>';
+		}
+
 		wp_register_style( 'qmn_quiz_common_style', QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_style( 'qmn_quiz_common_style' );
 

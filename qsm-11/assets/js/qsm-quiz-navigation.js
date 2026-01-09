@@ -66,12 +66,35 @@ var show_result_validation = true;
          * Get quiz data from either legacy or new variable
          * Provides backward compatibility
          */
-        getQuizData: function(quizId) {
-            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
+        getQuizData: function (quizId) {
+        let data = {};
+
+            if (typeof window.qmn_quiz_data?.[quizId] === 'object') {                
                 return window.qmn_quiz_data[quizId];
             }
-            return {};
+            
+            let el = jQuery('#qsm-quiz-json-' + quizId);
+
+            if (el.length && typeof atob === 'function') {
+                try {
+                    let encoded = el.text().trim();
+
+                    if (encoded) {
+                        let decoded = atob(encoded);
+                        let parsed = JSON.parse(decoded);
+
+                        if (parsed?.quiz_data) {
+                            return parsed.quiz_data;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('QSM: Failed to load quiz JSON fallback for quiz:', quizId, e);
+                }
+            }
+
+            return data;
         },
+
 
         /**
          * Initialize navigation for all quizzes on page
@@ -760,12 +783,20 @@ var show_result_validation = true;
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
 
+            let currentPage = pageNumber - 1;
+            console.log( " pageNumber ", pageNumber );   
+            console.log( " currentPage ", currentPage );   
+            jQuery('.pages_count').hide();
+            if ($targetPage.length > 0) {
+                $targetPage.show();
+                jQuery('.page_count_'+ currentPage).show();
+
             if ($targetPage.length > 0) {
                 $targetPage.show();
 
                 // Trigger page timer init/update (used by Advanced Timer addon)
-                jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);
-                
+                jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);                
+
                 // Check if this page needs lazy loading
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
                     this.loadPageQuestions(quizId, $targetPage, pageNumber);
