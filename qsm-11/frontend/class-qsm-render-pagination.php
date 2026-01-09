@@ -903,8 +903,11 @@ class QSM_New_Pagination_Renderer {
 		// Check contact info location (1 = show on last page)
 		$contact_info_location = isset( $this->quiz_options->contact_info_location ) ? intval( $this->quiz_options->contact_info_location ) : 0;
 		$show_contact_on_last = ( 1 === $contact_info_location && $is_contact_fields_enabled );
+
+		// By default, do not show last page
+		$do_show_last_page = apply_filters( 'qsm_do_show_last_page_filter', 0, $this->options );
 		
-		return ( ! empty( $message_end_template ) || $show_contact_on_last );
+		return ( ! empty( $message_end_template ) || $show_contact_on_last ) || $do_show_last_page;
 	}
 
 	/**
