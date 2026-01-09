@@ -80,7 +80,7 @@ class QSM_New_Renderer {
 
 		
 		$qmn_global_settings    = (array) get_option( 'qmn-settings' );
-		$enable_new_render 		= ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
 		if ( 1 === intval( $enable_new_render ) ) {
 			add_shortcode( 'mlw_quizmaster', array( $this, 'render_quiz_shortcode' ) );
 			add_shortcode( 'qsm', array( $this, 'render_quiz_shortcode' ) );
@@ -89,9 +89,6 @@ class QSM_New_Renderer {
 		
 		// Add admin option to enable new rendering
 		add_filter( 'qsm_quiz_options', array( $this, 'add_new_rendering_option' ) );
-		
-		// Hook into main quiz container to add new CSS classes
-		add_filter( 'qsm_quiz_container_classes', array( $this, 'add_quiz_container_classes' ), 10, 2 );
 		
 		// Include AJAX handler for lazy loading
 		require_once QSM_PLUGIN_PATH . 'qsm-11/frontend/class-qsm-ajax-handler.php';		
@@ -102,6 +99,7 @@ class QSM_New_Renderer {
 	 * Enqueue scripts and styles for new rendering system
 	 */
 	public function enqueue_scripts() {
+
 		global $mlwQuizMasterNext,$qsm_quiz_ids;
 		
 		wp_enqueue_style( 
@@ -109,114 +107,118 @@ class QSM_New_Renderer {
 			QSM_PLUGIN_CSS_URL . '/animate.css', 
 			array(), 
 			$mlwQuizMasterNext->version 
-		);
-
-		// Enqueue MicroModal script
-		wp_enqueue_script( 
-			'micromodal_script', 
-			QSM_PLUGIN_JS_URL . '/micromodal.min.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-		
-		wp_enqueue_script( 'jquery-ui-slider' );
-		// Enqueue slider script
-		wp_enqueue_script( 
-			'slider', 
-			QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-
-		// Enqueue slider CSS
-		wp_enqueue_style( 
-			'slider', 
-			QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', 
-			array(), 
-			$mlwQuizMasterNext->version 
-		);
-
-		// Enqueue common script
-		wp_enqueue_script( 
-			'qsm-common', 
-			QSM_PLUGIN_JS_URL . '/qsm-common.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-
-		// Enqueue encryption script
-		wp_enqueue_script( 
-			'qsm_encryption', 
-			QSM_PLUGIN_JS_URL . '/crypto-js.js', 
-			array( 'jquery' ), 
-			$mlwQuizMasterNext->version, 
-			false 
-		);
-
-		// Enqueue navigation JavaScript
-		wp_enqueue_script( 
-			'qsm-quiz-navigation', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js', 
-			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-		
-		
-		// Enqueue progress bar JavaScript
-		wp_enqueue_script( 
-			'qsm-progressbar', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-progressbar.js', 
-			array( 'jquery', 'qsm-quiz-navigation' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-		
-		// Enqueue timer JavaScript
-		wp_enqueue_script( 
-			'qsm-quiz-timer', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-timer.js', 
-			array( 'jquery', 'qsm-quiz-navigation' ), 
-			$mlwQuizMasterNext->version, 
-			true 
-		);
-		
+		global $mlwQuizMasterNext;
+		if ( ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
+			return;
+		}
 		// Enqueue required scripts
 		wp_enqueue_script( 'json2' );
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_script( 'jquery-ui-tooltip' );
-
-		// Enqueue styles
-		wp_enqueue_style( 
-			'qsm-quiz-styles', 
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css', 
-			array(), 
-			$mlwQuizMasterNext->version 
+		wp_enqueue_script( 'jquery-ui-slider' );
+		
+		wp_enqueue_style(
+			'qmn_quiz_animation_style',
+			QSM_PLUGIN_CSS_URL . '/animate.css',
+			array(),
+			$mlwQuizMasterNext->version
 		);
-	}
 
-	/**
-	 * Check if new rendering is enabled
-	 *
-	 * @return bool
-	 */
-	private function is_new_rendering_enabled() {
-		$enabled = apply_filters( 'qsm_enable_new_rendering', false );
+		// Enqueue MicroModal script
+		wp_enqueue_script(
+			'micromodal_script',
+			QSM_PLUGIN_JS_URL . '/micromodal.min.js',
+			array( 'jquery' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
 		
-		// Also check for constant or GET parameter
-		if ( defined( 'QSM_ENABLE_NEW_RENDERING' ) && QSM_ENABLE_NEW_RENDERING ) {
-			$enabled = true;
-		}
+		// Enqueue slider script
+		wp_enqueue_script(
+			'slider',
+			QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js',
+			array( 'jquery' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+
+		// Enqueue slider CSS
+		wp_enqueue_style(
+			'slider',
+			QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css',
+			array(),
+			$mlwQuizMasterNext->version
+		);
+
+		// Enqueue ProgressBar.js library for configurable SVG progress bar rendering in QSM-11
+		wp_enqueue_script(
+			'progress-bar',
+			QSM_PLUGIN_JS_URL . '/progressbar.min.js',
+			array( 'jquery' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+
+		// Enqueue navigation JavaScript
+		wp_enqueue_script(
+			'qsm-quiz-navigation',
+			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js',
+			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+
+		// Enqueue common script
+		wp_enqueue_script(
+			'qsm_common',
+			QSM_PLUGIN_JS_URL . '/qsm-common.js',
+			array( 'jquery' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
 		
-		if ( isset( $_GET['qsm_new_rendering'] ) && $_GET['qsm_new_rendering'] == '1' ) {
-			$enabled = true;
-		}
 		
-		return $enabled;
+		// Enqueue progress bar JavaScript
+		wp_enqueue_script(
+			'qsm-progressbar',
+			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-progressbar.js',
+			array( 'jquery', 'qsm-quiz-navigation' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+		
+		// Enqueue timer JavaScript
+		wp_enqueue_script(
+			'qsm-quiz-timer',
+			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-timer.js',
+			array( 'jquery', 'qsm-quiz-navigation' ),
+			$mlwQuizMasterNext->version,
+			true
+		);
+		
+		// Enqueue styles
+		wp_enqueue_style(
+			'qsm-quiz-styles',
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css',
+			array(),
+			$mlwQuizMasterNext->version
+		);
+		
+		wp_enqueue_style(
+			'qmn_quiz_common_style',
+			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css',
+			array(),
+			$mlwQuizMasterNext->version
+		);
+		wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
+
+		wp_enqueue_style(
+			'qsm_primary_css',
+			QSM_PLUGIN_URL . 'templates/qmn_primary.css',
+			array(),
+			$mlwQuizMasterNext->version
+		);
 	}
 
 	private function render_result_page() {
@@ -227,12 +229,12 @@ class QSM_New_Renderer {
 		$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 		
 		// Get result from database
-		$result           = $wpdb->get_row( 
-			$wpdb->prepare( 
-				"SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", 
-				$result_unique_id 
-			), 
-			ARRAY_A 
+		$result           = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",
+				$result_unique_id
+			),
+			ARRAY_A
 		);
 		
 		if ( ! empty( $result ) && isset( $result['result_id'] ) ) {
@@ -265,24 +267,18 @@ class QSM_New_Renderer {
 		
 		// Apply shortcode_atts and filter
 		$shortcode_args = shortcode_atts( array(
-			'quiz' => 0,
+			'quiz'            => 0,
 			'question_amount' => 0,
 		), $atts );
 		$shortcode_args = array_merge( $shortcode_args, $atts );
 
 		$shortcode_args = apply_filters( 'qsm_shortcode_before', $shortcode_args, $atts );
 		
-		
 		$quiz_id = intval( $shortcode_args['quiz'] );
-		$question_amount = intval( $shortcode_args['question_amount'] );
 		
-		
-
 		if ( ! $quiz_id ) {
 			return '<p>Invalid quiz ID</p>';
 		}
-		
-
 
 		wp_register_style( 'qmn_quiz_common_style', QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_style( 'qmn_quiz_common_style' );
@@ -292,7 +288,8 @@ class QSM_New_Renderer {
 		if ( false === $has_proper_quiz['res'] ) {
 			return $has_proper_quiz['message'];
 		}
-			// Get quiz post based on quiz id
+		
+		// Get quiz post based on quiz id
 		$args      = array(
 			'posts_per_page' => 1,
 			'post_type'      => 'qsm_quiz',
@@ -308,10 +305,10 @@ class QSM_New_Renderer {
 
 		// The Loop
 		$quiz_post_data = array(
-			'post_status' => '',
-			'post_id' => '',
+			'post_status'    => '',
+			'post_id'        => '',
 			'post_permalink' => '',
-			'edit_link' => '',
+			'edit_link'      => '',
 		);
 		if ( $the_query->have_posts() ) {
 			while ( $the_query->have_posts() ) {
@@ -351,10 +348,10 @@ class QSM_New_Renderer {
 		
 		// Prepare quiz data array
 		$qmn_array_for_variables = array(
-			'quiz_id' => $qmn_quiz_options->quiz_id,
-			'quiz_name' => $qmn_quiz_options->quiz_name,
+			'quiz_id'     => $qmn_quiz_options->quiz_id,
+			'quiz_name'   => $qmn_quiz_options->quiz_name,
 			'quiz_system' => $qmn_quiz_options->system,
-			'user_ip' => $this->get_user_ip(),
+			'user_ip'     => $this->get_user_ip(),
 		);
 		
 		// Initialize qmn_quiz_data object
@@ -372,26 +369,31 @@ class QSM_New_Renderer {
 		if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
 			// Prepare quiz data
 			$quiz_data = array(
-				'quiz_id' => $quiz_id,
-				'quiz_name' => $qmn_quiz_options->quiz_name,
-				'quiz_system' => $qmn_quiz_options->system,
-				'user_ip' => $this->get_user_ip(),
+				'quiz_id'        => $quiz_id,
+				'quiz_name'      => $qmn_quiz_options->quiz_name,
+				'quiz_system'    => $qmn_quiz_options->system,
+				'user_ip'        => $this->get_user_ip(),
 				'quiz_post_data' => $quiz_post_data,
+				'render_type'    => '11'
 			);
 
+			echo apply_filters( 'qmn_begin_quiz', '', $qmn_quiz_options, $quiz_data );
+			$qmn_quiz_options = apply_filters( 'qmn_begin_quiz_options', $qmn_quiz_options, $quiz_data );
+			
 			// Create renderer instance
 			$renderer = new QSM_New_Pagination_Renderer( $qmn_quiz_options, $quiz_data, $shortcode_args );
 			$auto_pagination_class = $qmn_quiz_options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 			$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $qmn_quiz_options->randomness_order );
 			$randomness_class = ! empty( $randomness_order ) ? 'random' : '';
-			$container_classes = array( 
-				'qsm-quiz-container', 
-				'qmn_quiz_container', 
-				'qsm-quiz-container-' . esc_attr( $quiz_data['quiz_id'] ), 
-				'mlw_qmn_quiz', 
-				$auto_pagination_class, 
-				'quiz_theme_' . esc_attr( $saved_quiz_theme ), 
-				$randomness_class, 
+			$container_classes = array(
+				'qsm-quiz-container',
+				'qmn_quiz_container',
+				'qsm-quiz-container-' . esc_attr( $quiz_data['quiz_id'] ),
+				'mlw_qmn_quiz',
+				$auto_pagination_class,
+				'quiz_theme_' . esc_attr( $saved_quiz_theme ),
+				$randomness_class,
+				'qsm-new-renderer',
 			);
 
 			$container_classes = array_filter($container_classes);
@@ -432,6 +434,11 @@ class QSM_New_Renderer {
 		
 		return $return_display;
 	}
+
+	/*
+	 *
+	 *
+	*/
 	public function qsm_render_html_attributes( $atts ) {
 
         $output = array();
@@ -450,7 +457,9 @@ class QSM_New_Renderer {
             // DATA ATTRIBUTES (ARRAY)
             if ( $key === 'data' ) {
                 foreach ( (array) $value as $data_key => $data_value ) {
-                    if ( $data_value === '' ) continue;
+                    if ( $data_value === '' ) {
+						continue;
+					}
                     $output[] = 'data-' . esc_attr( $data_key ) . '="' . esc_attr( $data_value ) . '"';
                 }
                 continue;
@@ -467,37 +476,6 @@ class QSM_New_Renderer {
 	
 	public static function get_qmn_quiz_options() {
 		return self::$qmn_quiz_options;
-	}
-
-	/**
-	 * Add new rendering option to quiz settings
-	 *
-	 * @param array $options
-	 * @return array
-	 */
-	public function add_new_rendering_option( $options ) {
-		$options['enable_new_rendering'] = array(
-			'label' => __( 'Enable New Template System', 'quiz-master-next' ),
-			'type' => 'checkbox',
-			'default' => 0,
-			'help' => __( 'Use the new template-based rendering system for better customization', 'quiz-master-next' ),
-		);
-		return $options;
-	}
-
-	/**
-	 * Add CSS classes to quiz container when using new rendering
-	 *
-	 * @param array $classes Existing classes
-	 * @param int   $quiz_id Quiz ID
-	 * @return array
-	 */
-	public function add_quiz_container_classes( $classes, $quiz_id ) {
-		if ( $this->is_new_rendering_enabled() ) {
-			$classes[] = 'qsm-new-rendering';
-			$classes[] = 'qsm-new-quiz-container';
-		}
-		return $classes;
 	}
 
 	/**

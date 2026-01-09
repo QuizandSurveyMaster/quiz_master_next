@@ -222,8 +222,8 @@ class QSM_Tracking {
 		if ( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
 			update_option( 'qmn-tracking-notice', '1' );
 		} else {
-			$optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
-			$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
+			$optin_url  = wp_nonce_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ), 'qsm_tracking_optin', 'qsm_tracking_nonce' );
+			$optout_url = wp_nonce_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ), 'qsm_tracking_optout', 'qsm_tracking_nonce' );
 			echo '<div class="updated">';
 				echo '<p>' . esc_html__( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
 				echo '<p>' . esc_html__( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
@@ -241,18 +241,28 @@ class QSM_Tracking {
 	 * @return void
 	 */
   	public function admin_notice_check() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// Checks if the notice has been clicked on.
     	if ( isset( $_GET["qmn_track_check"] ) ) {
+			$track_check = sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) );
+			$nonce       = isset( $_GET['qsm_tracking_nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['qsm_tracking_nonce'] ) ) : '';
+			$nonce_action = ( 'opt_into_tracking' === $track_check ) ? 'qsm_tracking_optin' : 'qsm_tracking_optout';
+			if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $nonce_action ) ) {
+				return;
+			}
 
 			// Checks if user opted into tracking.
-      		if ( sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) ) == 'opt_into_tracking' ) {
-        		$settings = (array) get_option( 'qmn-settings' );
-        		$settings['tracking_allowed'] = '2';
-        		update_option( 'qmn-settings', $settings );
-      		} else {
-        		$settings = (array) get_option( 'qmn-settings' );
-        		$settings['tracking_allowed'] = '0';
-        		update_option( 'qmn-settings', $settings );
+			if ( $track_check == 'opt_into_tracking' ) {
+	        		$settings = (array) get_option( 'qmn-settings' );
+	        		$settings['tracking_allowed'] = '2';
+	        		update_option( 'qmn-settings', $settings );
+	      		} else {
+	        		$settings = (array) get_option( 'qmn-settings' );
+	        		$settings['tracking_allowed'] = '0';
+	        		update_option( 'qmn-settings', $settings );
 			}
 
 			// Prevents notice from being shown again.

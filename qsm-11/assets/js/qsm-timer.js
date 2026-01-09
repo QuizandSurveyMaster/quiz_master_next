@@ -5,6 +5,12 @@
 (function($) {
     
     window.QSMPagination = window.QSMPagination || {};
+
+    if (typeof qsm_timer_consumed_obj === 'undefined') {
+        window.qsm_timer_consumed_obj = {
+            qmn_count_upward_status : false
+        };
+    }
     
     QSMPagination.Timer = {
         quizObjects: {},
@@ -31,18 +37,12 @@
 
         initTimer: function(quizId, $form) {
             var data = this.getQuizData(quizId);
-            console.log('Timer data for quiz ' + quizId + ':', data);
+            
             if (!data.timer_limit || data.timer_limit <= 0) {
-                console.log('Timer not initialized - no timer limit set');
                 return;
             }
 
             var $timer = $form.find('.mlw_qmn_timer');
-            // if (!$timer.length) {
-            //     console.log('Timer not initialized - no timer element found');
-            //     return;
-            // }
-            
             var totalTime = data.timer_limit * 60;
             var consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId)) || 1;
             var remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
@@ -244,9 +244,7 @@
             
             // Trigger events
             $(document).trigger('qsm_timer_tick', [quizId, currentQuiz.remainingTime, currentQuiz.consumedTime]);
-            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, {
-                qmn_count_upward_status: false
-            }]);
+            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, qsm_timer_consumed_obj]);
             $(document).trigger('load_timer_faces', [quizId, currentQuiz.remainingTime, currentQuiz.totalTime, this.secondsToTimer(currentQuiz.remainingTime)]);
             
             if (currentQuiz.remainingTime <= 0) {

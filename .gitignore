@@ -9,4 +9,5 @@ php/classes/composer.json
 .vscode
 phpcs.xml
 node_modules
+phpcs-report.csv
 *.md

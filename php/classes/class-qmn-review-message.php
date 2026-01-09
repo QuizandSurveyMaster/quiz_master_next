@@ -85,15 +85,32 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function display_admin_message() {
+		$nonce        = wp_create_nonce( 'qsm_review_notice' );
+		$already_did_url = add_query_arg(
+			array(
+				'qmn_review_notice_check' => 'already_did',
+				'qsm_review_nonce'        => $nonce,
+			)
+		);
+		$remove_message_url = add_query_arg(
+			array(
+				'qmn_review_notice_check' => 'remove_message',
+				'qsm_review_nonce'        => $nonce,
+			)
+		);
 		?>
 		<div class='updated'><br />
-            <?php
-            /* translators: %s: count of quizzes */
-            printf(esc_html__('Greetings! I just noticed that you now have more than %s quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next'), esc_html($this->trigger)); ?>
-			<br/><strong><em>~ <?php esc_html__('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
-			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'already_did')); ?>" class="button-secondary" ><?php esc_html_e('I already did ! ', 'quiz-master-next'); ?> </a>
-			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'remove_message')); ?>" class="button-secondary"><?php esc_html_e('No, this plugin is not good enough', 'quiz-master-next'); ?> </a>
-			<br/><br/>
+            <p><?php
+				/* translators: %s: count of quizzes */
+				printf( esc_html__('🎉 %sNice work!%s You’ve already collected over %s quiz responses with Quiz & Survey Master.', 'quiz-master-next'), '<strong>', '</strong>', '<strong>' . number_format_i18n( $this->check_message_trigger() ) . '</strong>' ); ?>
+			</p>
+            <p><?php esc_html_e('If QSM has been helpful so far, would you consider leaving a quick review on WordPress?', 'quiz-master-next'); ?></p>
+            <p><?php esc_html_e('Your feedback helps other users discover the plugin and helps us keep improving it.', 'quiz-master-next'); ?></p>
+			<strong><em>~ <?php esc_html_e('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
+			&nbsp;<a href="https://wordpress.org/support/plugin/quiz-master-next/reviews/#new-post" class="button-primary" target="_blank"><?php esc_html_e('⭐ Leave a review', 'quiz-master-next'); ?> </a>
+			&nbsp;<a href="<?php echo esc_url( $already_did_url ); ?>" class="button-secondary"><?php esc_html_e("I've already reviewed", 'quiz-master-next'); ?> </a>
+			&nbsp;<a href="<?php echo esc_url( $remove_message_url ); ?>" class="button-secondary"><?php esc_html_e('Skip for now', 'quiz-master-next'); ?> </a>
+			<br /><br/>
 		</div>
         <?php
 	}
@@ -104,22 +121,30 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function admin_notice_check() {
-		if ( isset( $_GET["qmn_review_notice_check"] ) && 'remove_message' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
-			$this->trigger = $this->check_message_trigger();
-			$update_trigger = -1;
-			if ( -1 !== $this->trigger ) {
-				exit;
-			} elseif ( 20 !== $this->trigger ) {
-				$update_trigger = 100;
-			} elseif ( 100 !== $this->trigger ) {
-				$update_trigger = 1000;
-			} elseif ( 1000 !== $this->trigger ) {
-				$update_trigger = -1;
-			}
-			update_option( 'qmn_review_message_trigger', $update_trigger );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
-		if ( isset( $_GET["qmn_review_notice_check"] ) && 'already_did' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
-			update_option( 'qmn_review_message_trigger', -1 );
+
+		if ( isset( $_GET['qmn_review_notice_check'] ) ) {
+			$review_action = sanitize_text_field( wp_unslash( $_GET['qmn_review_notice_check'] ) );
+			$nonce         = isset( $_GET['qsm_review_nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['qsm_review_nonce'] ) ) : '';
+
+			if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'qsm_review_notice' ) ) {
+				return;
+			}
+
+			if ( 'remove_message' === $review_action ) {
+				$this->trigger = $this->check_message_trigger();
+				$update_trigger = -1;
+				if ( 20 >= intval($this->trigger) ) {
+					$update_trigger = 100;
+				} elseif ( 100 >= intval($this->trigger) ) {
+					$update_trigger = 1000;
+				}
+				update_option( 'qmn_review_message_trigger', $update_trigger );
+			} elseif ( 'already_did' === $review_action ) {
+				update_option( 'qmn_review_message_trigger', -1 );
+			}
 		}
 	}
 }

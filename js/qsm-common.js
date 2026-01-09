@@ -1,6 +1,7 @@
 //polar question type
 
-(function ($) {
+// (function ($) {
+jQuery(document).ready(function(){
 	let polarQuestions = jQuery('.question-type-polar-s');
 	if(polarQuestions.length >0){
 		let page = 'question';
@@ -9,6 +10,7 @@
 		}
 		qsmPolarSlider(page,polarQuestions);
 	}
+});
 	jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
 		event.preventDefault();
 		let parentDivClass    = 'qsm-quiz-container-'+quiz_form_id.replace(new RegExp(/[a-zA-Z]/g),'');
@@ -17,6 +19,17 @@
 			qsmPolarSlider('answer', polarQuestions);
 		}
 
+	});
+
+	jQuery(document).on('qsm_after_lazy_load', function (e, quizId, pageNumber, $page, data) {
+		if ( $page.find('.question-type-polar-s').length > 0 ) {
+			$page.find('.question-type-polar-s').each(function(){
+				let polarQuestion = jQuery(this).find('.slider-main-wrapper div');
+				let questionID    = polarQuestion.parents('.quiz_section').data('qid');
+				let page = 'question';
+				qsmPolarSliderEach(polarQuestion, questionID, page);
+			});
+		}
 	});
 
 	jQuery(document).on('submit', 'form[name="qsm-login-form"]', function (e) {
@@ -190,4 +203,4 @@
 			'.right-polar-title img').css('opacity', "0.5");
 		jQuery(document).trigger('qsm_polar_slider_create_after', [questionID]);
 	}
-}(jQuery));
+// }(jQuery));

@@ -20,20 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Template output
  */
 function qsm_new_get_template_part( $slug, $args = array() ) {
-	// Debug: Log template requests
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Requesting template: ' . $slug );
-	}
 	
 	// Hook before template render
 	do_action( 'qsm_new_before_template_render', $slug, $args );
 	
 	$located = qsm_new_locate_template( $slug . '.php' );
-	
-	// Debug: Log template location result
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( 'QSM Template Loader: Template located at: ' . ( $located ? $located : 'NOT FOUND' ) );
-	}
 	
 	ob_start();
 	
@@ -86,10 +77,7 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
 function qsm_new_locate_template( $template_name ) {
 	$template_path = 'qsm-11/templates/';
 	$default_path = QSM_PLUGIN_PATH . 'qsm-11/templates/';
-	
-	// Hook to allow custom template override paths
-	$template_override_path = apply_filters( 'qsm_new_template_override_path', $template_path, $template_name );
-	
+
 	$located = false;
 
 	// Look in QSM themes and addons (plugins that start with 'qsm')
@@ -146,7 +134,7 @@ function qsm_locate_template_in_qsm_plugins( $template_name ) {
 function qsm_get_question_type_templates() {
 	$question_types = array(
 		'0'  => 'multiple-choice',
-		'1'  => 'multiple-choice-horizontal', 
+		'1'  => 'multiple-choice-horizontal',
 		'2'  => 'drop-down',
 		'3'  => 'short-answer',
 		'4'  => 'multiple-response',
@@ -203,12 +191,12 @@ function qsm_get_question_template( $question_type, $args = array(), $shortcode_
 function qsm_register_template_hooks() {
 	// Map old hooks to new template system
 	$hook_mappings = array(
-		'qsm_before_questions' => 'qsm_before_question_pages',
-		'qsm_after_questions' => 'qsm_after_question_pages',
+		'qsm_before_questions'  => 'qsm_before_question_pages',
+		'qsm_after_questions'   => 'qsm_after_question_pages',
 		'qsm_before_pagination' => 'qsm_before_pagination_render',
-		'qsm_after_pagination' => 'qsm_after_pagination_render',
+		'qsm_after_pagination'  => 'qsm_after_pagination_render',
 		'qsm_before_first_page' => 'qsm_before_first_page',
-		'qsm_after_last_page' => 'qsm_after_last_page',
+		'qsm_after_last_page'   => 'qsm_after_last_page',
 	);
 	
 	foreach ( $hook_mappings as $old_hook => $new_hook ) {
@@ -220,3 +208,4 @@ function qsm_register_template_hooks() {
 
 // Initialize template hooks
 // add_action( 'init', 'qsm_register_template_hooks' );
+

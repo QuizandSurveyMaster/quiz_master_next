@@ -21,8 +21,7 @@ class QSM_Questions
      * @param  int $question_id The ID of the question.
      * @return array The data for the question.
      */
-    public static function load_question($question_id)
-    {
+    public static function load_question( $question_id ) {
         global $wpdb;
         $question_id = intval($question_id);
         $question    = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id), 'ARRAY_A');
@@ -56,8 +55,7 @@ class QSM_Questions
     /**
      *
      */
-    public static function load_question_data($question_id, $question_data)
-    {
+    public static function load_question_data( $question_id, $question_data ) {
         global $wpdb;
         return $wpdb->get_var("SELECT {$question_data} FROM {$wpdb->prefix}mlw_questions WHERE question_id = {$question_id} LIMIT 1");
     }
@@ -69,8 +67,7 @@ class QSM_Questions
      * @param  int $quiz_id The ID of the quiz.
      * @return array The array of questions.
      */
-    public static function load_questions_by_pages($quiz_id, $caller = '')
-    {
+    public static function load_questions_by_pages( $quiz_id, $caller = '' ) {
         // Prepares our variables.
         global $wpdb;
         global $mlwQuizMasterNext;
@@ -143,8 +140,7 @@ class QSM_Questions
      * @param  int $quiz_id The ID of the quiz.
      * @return array The array of questions.
      */
-    public static function load_questions($quiz_id, $caller = '')
-    {
+    public static function load_questions( $quiz_id, $caller = '' ) {
 
         global $wpdb;
         $question_array = array();
@@ -184,7 +180,7 @@ class QSM_Questions
         }
         $question_array = ! empty($caller) ? $question_array : array_filter(
             $question_array,
-            function ($question) {
+            function ( $question ) {
                 return ! isset($question['settings']['isPublished']) || 0 !== intval($question['settings']['isPublished']);
             }
         );
@@ -201,8 +197,7 @@ class QSM_Questions
      * @throws Exception Throws exception if wpdb query results in error.
      * @return int The ID of the question that was created.
      */
-    public static function create_question($data, $answers = array(), $settings = array())
-    {
+    public static function create_question( $data, $answers = array(), $settings = array() ) {
         return self::create_save_question($data, $answers, $settings);
     }
 
@@ -217,8 +212,7 @@ class QSM_Questions
      * @throws Exception Throws exception if wpdb query results in error.
      * @return int The ID of the question that was saved.
      */
-    public static function save_question($question_id, $data, $answers = array(), $settings = array())
-    {
+    public static function save_question( $question_id, $data, $answers = array(), $settings = array() ) {
         $data['ID'] = intval($question_id);
         return self::create_save_question($data, $answers, $settings, false);
     }
@@ -231,8 +225,7 @@ class QSM_Questions
      * @throws Exception Throws exception if wpdb query results in error.
      * @return bool True if successful
      */
-    public static function delete_question($question_id)
-    {
+    public static function delete_question( $question_id ) {
         global $wpdb;
 
         $results = $wpdb->update(
@@ -269,8 +262,7 @@ class QSM_Questions
      * @throws Exception Throws exception if wpdb query results in error.
      * @return int The ID of the question that was created/saved.
      */
-    private static function create_save_question($data, $answers, $settings, $is_creating = true)
-    {
+    private static function create_save_question( $data, $answers, $settings, $is_creating = true ) {
         global $wpdb, $mlwQuizMasterNext;
 
         // Prepare defaults and parse.
@@ -460,8 +452,7 @@ class QSM_Questions
      * @param  array $answers The answers for the question.
      * @return array sanitized $answers The answers for the question.
      */
-    public static function sanitize_answers($answers, $settings)
-    {
+    public static function sanitize_answers( $answers, $settings ) {
         global $mlwQuizMasterNext;
         foreach ( $answers as $key => $answer ) {
             if ( isset($answer[0]) ) {
@@ -484,8 +475,7 @@ class QSM_Questions
      * @param  int $quiz_id The ID of the quiz.
      * @return array The array of categories.
      */
-    public static function get_quiz_categories($quiz_id = 0)
-    {
+    public static function get_quiz_categories( $quiz_id = 0 ) {
         global $wpdb;
         $categories = array();
         if ( 0 !== $quiz_id ) {
@@ -512,8 +502,7 @@ class QSM_Questions
      * @param  int $quiz_id The ID of the quiz.
      * @return array The array of categories.
      */
-    public static function get_question_categories_from_quiz_id($quiz_id)
-    {
+    public static function get_question_categories_from_quiz_id( $quiz_id ) {
         $cat_array = array();
         $questions = self::load_questions_by_pages($quiz_id);
         foreach ( $questions as $single_question ) {
@@ -533,8 +522,7 @@ class QSM_Questions
      * @param  int $term_ids Term IDs of the quiz.
      * @return array The array of categories.
      */
-    public static function get_question_categories_from_term_ids($term_ids)
-    {
+    public static function get_question_categories_from_term_ids( $term_ids ) {
         $categories = array();
         if ( ! empty($term_ids) ) {
             $categories_names = array();
@@ -570,8 +558,7 @@ class QSM_Questions
      * @param  int $quiz_id The ID of the quiz.
      * @return array The array of categories.
      */
-    public static function get_question_categories($question_id = 0)
-    {
+    public static function get_question_categories( $question_id = 0 ) {
         global $wpdb;
         $categories_tree  = array();
         $categories_names = array();
@@ -609,8 +596,7 @@ class QSM_Questions
      *
      * @since 7.2.1
      */
-    public static function create_terms_tree(&$list, $parent)
-    {
+    public static function create_terms_tree( &$list, $parent ) {
         $taxTree = array();
         if ( is_array($parent) ) {
             foreach ( $parent as $ind => $val ) {

@@ -44,7 +44,8 @@ var show_result_validation = true;
                 errorMessage: '.qsm-error-message',
                 modalSubmitBtn: '.submit-the-form',
                 timerField: '#timer',
-                timerMsField: 'input[name="timer_ms"]'
+                timerMsField: 'input[name="timer_ms"]',
+                currentPageField: 'input[name="current_page"]'
             },
             classes: {
                 hidden: 'qsm-hidden',
@@ -112,7 +113,8 @@ var show_result_validation = true;
                 }
             });
         },
-        initQuizObject: function(quizId, $quizContainer,initialPage) {
+
+        initQuizObject: function(quizId, $quizContainer, initialPage) {
 
             // Get quiz data from backend config
             let quizData = this.getQuizData(quizId);
@@ -175,7 +177,6 @@ var show_result_validation = true;
 
             // Show first page
             this.showPage(quizId, quizObj.currentPage);
-            //this.showPage(quizId, 1);
 
             // Timer
             let self = this;
@@ -209,8 +210,8 @@ var show_result_validation = true;
             
             let $timerField = currentQuiz.quizContainer.find(this.config.selectors.timerField);
             if ($timerField.length) {
-                let timerValue = parseInt($timerField.val()) || 0;
-                if (isNaN(timerValue)) {
+                let timerValue = Number.parseInt($timerField.val()) || 0;
+                if (Number.isNaN(timerValue)) {
                     timerValue = 0;
                 }
                 timerValue++;
@@ -231,6 +232,7 @@ var show_result_validation = true;
             // Initialize navigation buttons and show page counter
             this.updateNavigationButtons(quizId);
             this.updatePageCounter(quizId);
+	        jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
         },
 
         /**
@@ -251,8 +253,6 @@ var show_result_validation = true;
             let self = this;
             let currentQuiz = this.quizObjects[quizId];
             let $form = currentQuiz.form;
-            let $container = currentQuiz.quizContainer;
-            let $pagination_container = jQuery('.qsm-pagination-'+quizId);
             let $start_btn = '.qsm-start-btn-'+quizId;
             let $prev_btn = '.qsm-previous-btn-'+quizId;
             let $next_btn = '.qsm-next-btn-'+quizId;
@@ -261,27 +261,25 @@ var show_result_validation = true;
             // =========================================
             // 🔥 Prevent duplicate click handlers
             // =========================================
-            jQuery(document).off('click', $start_btn);
-            jQuery(document).off('click', $prev_btn);
-            jQuery(document).off('click', $next_btn);
-            jQuery(document).off('click', $submit_btn);
+            $(document).off('click', $start_btn);
+            $(document).off('click', $prev_btn);
+            $(document).off('click', $next_btn);
+            $(document).off('click', $submit_btn);
             
             // Navigation button clicks - bind to container since navigation is outside form
-           jQuery(document).on('click', $prev_btn, function(e) {
+            $(document).on('click', $prev_btn, function(e) {
                 e.preventDefault();
-                console.log('Previous button clicked for quiz:', quizId);
                 self.previousPage(quizId);
             });
 
-           jQuery(document).on('click', $next_btn, function(e) {
+            $(document).on('click', $next_btn, function(e) {
                 e.preventDefault();
                 self.nextPage(quizId);
-                console.log('Next button clicked for quiz:', quizId);
             });
+
             // Start button click - bind to container (multiple selectors for compatibility)
-            jQuery(document).on('click', $start_btn, function(e) {
+            $(document).on('click', $start_btn, function(e) {
                 e.preventDefault();
-                console.log('Start button clicked for quiz:', quizId);
                 self.startQuiz(quizId);
                 // Validate current page before proceeding
                 if (!self.validateCurrentPage(quizId)) {
@@ -291,9 +289,8 @@ var show_result_validation = true;
             });
 
             // Submit button click - bind to container since submit button is in navigation
-           jQuery(document).on('click', $submit_btn, function(e) {
+            $(document).on('click', $submit_btn, function(e) {
                 e.preventDefault();
-                console.log('Submit button clicked for quiz:', quizId);
                 if (!self.validateForm(quizId)) {
                     return false;
                 }
@@ -304,7 +301,6 @@ var show_result_validation = true;
             
             $(document).on('click', this.config.selectors.modalSubmitBtn, function(e) {
                 e.preventDefault();
-                
                 if (!self.validateForm(quizId)) {
                     return false;
                 }
@@ -489,24 +485,24 @@ var show_result_validation = true;
             let self = this;
             let currentQuiz = this.quizObjects[quizId];
             let $container = currentQuiz.quizContainer;
-            
+            $container.off('.qsmFileUpload');
+
             // File input change event - validation and upload
-            $container.on('change', '.quiz_section .mlw_answer_file_upload, .qsm-question .mlw_answer_file_upload', async function() {
+            $container.on('change.qsmFileUpload', '.quiz_section .mlw_answer_file_upload', async function() {
                 let $this = $(this);
                 let file_data = $this.prop('files')[0];
-                
                 if (!file_data) {
                     await self.qsmRemoveUploadedFile($this.parent('.quiz_section, .qsm-question').find('.qsm-file-upload-container').find('.remove-uploaded-file'));
                     return false;
                 }
                 
-                let question_id = $this.parent('.quiz_section, .qsm-question').find('.mlw_answer_file_upload').attr("name").replace('qsm_file_question', '');
+                let question_id = $this.parent('.quiz_section').find('.mlw_answer_file_upload').attr("name").replace('qsm_file_question', '');
                 let quizData = self.getQuizData(quizId);
                 let file_upload_type = quizData.questions_settings && quizData.questions_settings[question_id] ? quizData.questions_settings[question_id].file_upload_type : '';
                 let file_upload_limit = quizData.questions_settings && quizData.questions_settings[question_id] ? quizData.questions_settings[question_id].file_upload_limit : 1;
                 file_upload_limit = file_upload_limit || 1; // Default 1MB
                 
-                let $file_upload_status = $this.parent('.quiz_section, .qsm-question').find('.qsm-file-upload-status');
+                let $file_upload_status = $this.parent('.quiz_section').find('.qsm-file-upload-status');
                 $file_upload_status.removeClass('qsm-error qsm-success qsm-processing');
                 $file_upload_status.addClass('qsm-processing');
                 
@@ -556,8 +552,8 @@ var show_result_validation = true;
                     // Validation passed - update UI to show success
                     $file_upload_status.removeClass('qsm-error qsm-processing');
                     $file_upload_status.addClass('qsm-success');
-                    $this.parent('.quiz_section, .qsm-question').find('.qsm-file-upload-name').html($this[0].files[0].name).show();
-                    $this.parent('.quiz_section, .qsm-question').find('.qsm-file-upload-container').find('.remove-uploaded-file').show();
+                    $this.parent('.quiz_section').find('.qsm-file-upload-name').html($this[0].files[0].name).show();
+                    $this.parent('.quiz_section').find('.qsm-file-upload-container').find('.remove-uploaded-file').show();
                     
                     let successMsg = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object.validate_success) ? qmn_ajax_object.validate_success : 'File uploaded successfully';
                     $file_upload_status.text(successMsg).show();
@@ -581,13 +577,13 @@ var show_result_validation = true;
             });
             
             // Remove file click event
-            $container.on('click', '.quiz_section .remove-uploaded-file, .qsm-question .remove-uploaded-file', async function() {
+            $container.on('click.qsmFileUpload', '.quiz_section .remove-uploaded-file', async function() {
                 await self.qsmRemoveUploadedFile($(this));
                 return false;
             });
             
             // Click on upload container to trigger file input
-            $container.on('click', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function(e) {
+            $container.on('click.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function(e) {
                 e.preventDefault();
                 // Don't trigger file upload if clicking on remove button
                 if (!$(e.target).hasClass('remove-uploaded-file')) {
@@ -596,24 +592,24 @@ var show_result_validation = true;
             });
             
             // Drag and drop events
-            $container.on('dragover', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function(e) {
+            $container.on('dragover.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 $(this).addClass('file-hover');
             });
             
-            $container.on('dragenter', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function(e) {
+            $container.on('dragenter.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
             });
             
-            $container.on('dragleave', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function(e) {
+            $container.on('dragleave.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 $(this).removeClass('file-hover');
             });
             
-            $container.on('drop', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function(e) {
+            $container.on('drop.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function(e) {
                 $(this).removeClass('file-hover');
                 if (e.originalEvent.dataTransfer) {
                     if (e.originalEvent.dataTransfer.files.length) {
@@ -626,7 +622,7 @@ var show_result_validation = true;
                 }
             });
             
-            $container.on('mouseleave', '.quiz_section .qsm-file-upload-container, .qsm-question .qsm-file-upload-container', function() {
+            $container.on('mouseleave.qsmFileUpload', '.quiz_section .qsm-file-upload-container', function() {
                 $(this).removeClass('file-hover');
             });
 
@@ -647,8 +643,8 @@ var show_result_validation = true;
 
             jQuery('.pagetime-goto-nextpage').click(function (e) {
                 e.preventDefault();
-                var quiz_id = jQuery(this).data('quiz_id');
-                var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
+                let quiz_id = jQuery(this).data('quiz_id');
+                let $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
                 if(!$container.find('.qsm-submit-btn').is(':visible')) {
                     this.nextPage(quiz_id);
                     this.scrollToQuiz(quiz_id);
@@ -663,11 +659,11 @@ var show_result_validation = true;
 
             jQuery(document).on('click', '.qsm_social_share_link', function (e) {
                 e.preventDefault();
-                var network = jQuery(this).attr('data-network');
-                var share_url = jQuery(this).attr('data-link');
-                var social_text = jQuery(this).attr('data-text');
-                var social_id = jQuery(this).attr('data-id');
-                var url = '';
+                let network = jQuery(this).attr('data-network');
+                let share_url = jQuery(this).attr('data-link');
+                let social_text = jQuery(this).attr('data-text');
+                let social_id = jQuery(this).attr('data-id');
+                let url = '';
                 if (network == 'facebook') {
                     url = "https://www.facebook.com/dialog/feed?" + "display=popup&" + "app_id=" + social_id +
                         "&" + "link=" + encodeURIComponent(share_url) + "&" + "name=" + social_text;
@@ -678,9 +674,9 @@ var show_result_validation = true;
                 if (network == 'linkedin') {
                     url = "https://www.linkedin.com/feed/?text=" + social_text;
                 }
-                var sTop = window.screen.height / 2 - (218);
-                var sLeft = window.screen.width / 2 - (313);
-                var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
+                let sTop = window.screen.height / 2 - (218);
+                let sLeft = window.screen.width / 2 - (313);
+                let sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
                 window.open(url, "Share", sqShareOptions);
                 return false;
             });
@@ -732,15 +728,14 @@ var show_result_validation = true;
             if (!quizData || pageNumber < 1 || pageNumber > quizData.totalPages) {
                 return;
             }
+			jQuery(document).trigger('qsm_go_to_page_before', [quizID, pageNumber]);
 
             jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
                 if (quizData.data.end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
                     if (jQuery(this).parents('.qmn_radio_answers, .qsm_check_answer')) {
-                        console.log(jQuery(this));
                         let question_id = jQuery(this).attr('name').split('question')[1],
                         value = jQuery(this).val(),
                         $this = jQuery(this).parents('.quiz_section');
-                        console.log(value);
                         if (value != "" && value != null) {
                             self.qsmSubmitQuizIfAnswerWrong(quizId, question_id, value, $this, quizData.form);
                         }
@@ -749,9 +744,6 @@ var show_result_validation = true;
             })
 
             updateHistory = updateHistory !== false; // Default to true
-
-            // Trigger before page change event
-            $(document).trigger('qsm_before_page_change', [quizId, quizData.currentPage, pageNumber]);
 
             // Update current page
             quizData.currentPage = pageNumber;
@@ -772,7 +764,7 @@ var show_result_validation = true;
             this.manageFocus(quizId);
 
             // Trigger after page change event
-            $(document).trigger('qsm_after_page_change', [quizId, pageNumber, quizData]);
+            $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
         },
         
         /**
@@ -782,11 +774,15 @@ var show_result_validation = true;
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
             
+            // Trigger before page show event
+            $(document).trigger('qsm_show_page_before', [quizId, pageNumber, quizData]);
+            
             // Hide all pages
             quizData.pages.hide();
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
+
             let currentPage = pageNumber - 1;
             console.log( " pageNumber ", pageNumber );   
             console.log( " currentPage ", currentPage );   
@@ -794,6 +790,13 @@ var show_result_validation = true;
             if ($targetPage.length > 0) {
                 $targetPage.show();
                 jQuery('.page_count_'+ currentPage).show();
+
+            if ($targetPage.length > 0) {
+                $targetPage.show();
+
+                // Trigger page timer init/update (used by Advanced Timer addon)
+                jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);                
+
                 // Check if this page needs lazy loading
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
                     this.loadPageQuestions(quizId, $targetPage, pageNumber);
@@ -802,6 +805,9 @@ var show_result_validation = true;
                 // Preemptively load next pages (load 2 pages ahead)
                 this.preloadNextPages(quizId, pageNumber);
             }
+            
+            // Trigger after page show event
+            $(document).trigger('qsm_show_page_after', [quizId, pageNumber, quizData]);
         },
         
         /**
@@ -838,7 +844,6 @@ var show_result_validation = true;
                     $nextPage.attr('data-lazy-load') === '1' &&
                     !$nextPage.hasClass('qsm-loading')) {
                     
-                    console.log('QSM: Preloading page ' + pageNum + ' (user currently on page ' + currentPage + ')');
                     self.loadPageQuestions(quizId, $nextPage, pageNum);
                 }
             });
@@ -865,8 +870,8 @@ var show_result_validation = true;
             
             // Get question IDs and other data from page attributes
             let questionIds = $page.attr('data-question-ids') || '';
-            let questionStartNumber = parseInt($page.attr('data-question-start-number')) || 1;
-            console.log( quizData.data.ajax_url );
+            let questionStartNumber = Number.parseInt($page.attr('data-question-start-number')) || 1;
+
             // Prepare AJAX data
             let ajaxData = {
                 action: 'qsm_load_page_questions',
@@ -892,8 +897,8 @@ var show_result_validation = true;
                         $page.find('.qsm-lazy-load-placeholder').remove();
                         
                         // Insert questions HTML
-                        $page.prepend(response.data.html);
-                        
+                        $page.find('.pages_count').before(response.data.html);
+
                         // Mark page as loaded
                         $page.removeClass('qsm-lazy-load-page qsm-loading');
                         $page.addClass('qsm-loaded-page');
@@ -907,8 +912,6 @@ var show_result_validation = true;
                         
                         // Trigger after lazy load event
                         $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
-                        
-                        console.log('QSM: Successfully loaded ' + response.data.question_count + ' questions for page ' + pageNumber);
                     } else {
                         self.handleLazyLoadError(quizId, $page, response.data ? response.data.message : 'Unknown error');
                     }
@@ -923,7 +926,6 @@ var show_result_validation = true;
          * Handle lazy load errors
          */
         handleLazyLoadError: function(quizId, $page, errorMessage) {
-            console.error('QSM Lazy Load Error:', errorMessage);
             
             // Hide spinner
             $page.find('.qsm-lazy-load-spinner').hide();
@@ -943,7 +945,7 @@ var show_result_validation = true;
             $page.find('.qsm-retry-load').on('click', function() {
                 $page.find('.qsm-error-message').remove();
                 $page.find('.qsm-lazy-load-placeholder').html('<div class="qsm-lazy-load-spinner" style="display: none;"></div>');
-                self.loadPageQuestions(quizId, $page, parseInt($page.attr('data-page')));
+                self.loadPageQuestions(quizId, $page, Number.parseInt($page.attr('data-page')));
             });
             
             // Trigger error event
@@ -955,7 +957,7 @@ var show_result_validation = true;
          */
         nextPage: function(quizId) {
             let quizData = this.quizObjects[quizId];
-            console.log(quizData);
+
             if (!quizData) return;
 
             // Validate current page before proceeding
@@ -1007,13 +1009,6 @@ var show_result_validation = true;
         updateNavigationButtons: function(quizId) {
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
-            
-            let $pagination = quizData.pagination;
-
-            // let $previousBtn = $pagination.find(this.config.selectors.previousBtn);
-            // let $nextBtn = $pagination.find(this.config.selectors.nextBtn);
-            // let $submitBtn = $pagination.find(this.config.selectors.submitBtn);
-            // let $startBtn = $pagination.find(this.config.selectors.startBtn);
 
             let $previousBtn = jQuery('.qsm-previous-btn-'+quizId);
             let $nextBtn = jQuery('.qsm-next-btn-'+quizId);
@@ -1027,7 +1022,6 @@ var show_result_validation = true;
             
             // Simple button visibility logic
             if (showStartButton) {
-                console.log($previousBtn);
                 // First page (welcome page) with start button
                 $startBtn.show();
                 $previousBtn.hide();
@@ -1037,9 +1031,6 @@ var show_result_validation = true;
                 // Regular navigation pages (question pages)
                 $startBtn.hide();
 
-                
-                
-                
                 // Previous button logic:
                 // - Hide on first page when no welcome page
                 // - Hide on page 2 when there IS a welcome page (can't go back from first question page to welcome)
@@ -1069,8 +1060,11 @@ var show_result_validation = true;
         updatePageCounter: function(quizId) {
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
+            
+            let currentPage = quizData.form.find(this.config.selectors.currentPageField);
+            currentPage.val(quizData.currentPage);
 
-            let $counter = quizData.pagination.find(this.config.selectors.pageCounter);
+            let $counter = quizData.quizContainer.find(this.config.selectors.pageCounter);
             if ($counter.length) {
                 // Don't show page counter for start page (welcome page)
                 if (quizData.currentPage === 1 && quizData.hasFirstPage) {
@@ -1118,8 +1112,6 @@ var show_result_validation = true;
             let quizData = this.quizObjects[quizId];
             if (!quizData) return false;
             
-            $(document).trigger('qsm_before_validation', [quizData.form, 'quizForm' + quizId]);
-            
             // Skip validation if timer limit is enabled and time expired
             if (quizData.data.timer_limit_val > 0 && quizData.data.hasOwnProperty('skip_validation_time_expire') && quizData.data.skip_validation_time_expire != 1) {
                 return true;
@@ -1150,7 +1142,7 @@ var show_result_validation = true;
                 let fieldValue = $field.val() || '';
                 
                 // Skip if field is not visible or doesn't have validation classes
-                if (!fieldClass || (!$field.is(':visible') && fieldClass.indexOf('mlwRequiredAccept') === -1)) {
+                if (!fieldClass || (!$field.is(':visible') && !$field.parent().is(':visible'))) {
                     return;
                 }
                 
@@ -1173,7 +1165,7 @@ var show_result_validation = true;
                 
                 // Min length validation
                 if (fieldClass.indexOf('mlwMinLength') !== -1 && fieldValue !== '') {
-                    let minLength = parseInt($field.attr('minlength')) || 0;
+                    let minLength = Number.parseInt($field.attr('minlength')) || 0;
                     if ($.trim(fieldValue).length < minLength) {
                         let message = (errorMessages.minlength_error_text || 'Minimum %minlength% characters required.').replace('%minlength%', minLength);
                         self.displayError(message, $field, quizId);
@@ -1183,7 +1175,7 @@ var show_result_validation = true;
                 
                 // Max length validation
                 if (fieldClass.indexOf('mlwMaxLength') !== -1 && fieldValue !== '') {
-                    let maxLength = parseInt($field.attr('maxlength')) || 0;
+                    let maxLength = Number.parseInt($field.attr('maxlength')) || 0;
                     if ($.trim(fieldValue).length > maxLength) {
                         let message = (errorMessages.maxlength_error_text || 'Maximum %maxlength% characters allowed.').replace('%maxlength%', maxLength);
                         self.displayError(message, $field, quizId);
@@ -1193,6 +1185,11 @@ var show_result_validation = true;
                 
                 // Required field validations
                 if (fieldClass.indexOf('mlwRequiredText') !== -1 && $.trim(fieldValue) === '') {
+                    self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
+                    show_result_validation = false;
+                }
+
+                if (fieldClass.indexOf('mlwRequiredPolar') !== -1 && $.trim(fieldValue) === '') {
                     self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
                     show_result_validation = false;
                 }
@@ -1213,6 +1210,22 @@ var show_result_validation = true;
                 }
                 
                 if (fieldClass.indexOf('mlwRequiredRadio') !== -1) {
+                    let checkedVal = $field.find('input:checked').val();
+                    if (!checkedVal) {
+                        self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
+                        show_result_validation = false;
+                    }
+                }
+
+                if (fieldClass.indexOf('qsmRequiredSelect') !== -1) {
+                    let checkedVal = $field.find('select').val() || $field.filter('select').val();
+                    if (!checkedVal) {
+                        self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
+                        show_result_validation = false;
+                    }
+                }
+
+                if (fieldClass.indexOf('mlwRequiredCheck') !== -1) {
                     let checkedVal = $field.find('input:checked').val();
                     if (!checkedVal) {
                         self.displayError(errorMessages.empty_error_text || 'Please select an option.', $field, quizId);
@@ -1241,27 +1254,11 @@ var show_result_validation = true;
             if (!quizData) return;
             
             // Add error class to field
-            $field.addClass('qsm-error');
-            
-            // Add error class to parent section
-            $field.closest('.qsm-question, .quiz_section').addClass('qsm-error');
+            $field.parents('.quiz_section').addClass('qmn_error');
             
             // Create error message element
-            let $errorMsg = $('<div class="qsm-error-message">' + message + '</div>');
-            
-            // Insert error message after field or its container
-            let $container = $field.closest('.qsm-question');
-            if ($container.length) {
-                $container.after($errorMsg);
-            } else {
-                $field.after($errorMsg);
-            }
-            
-            // Focus on first error field
-            if (!quizData.firstErrorFocused) {
-                $field.focus();
-                quizData.firstErrorFocused = true;
-            }
+			quizData.form.find('.qmn_error_message_section').addClass('qmn_error_message');
+			quizData.form.find('.qmn_error_message').text(message);
         },
 
         /**
@@ -1274,10 +1271,11 @@ var show_result_validation = true;
             quizData.firstErrorFocused = false;
             
             // Remove error messages
-            quizData.form.find('.qsm-error-message').remove();
+            quizData.form.find('.qmn_error_message').text('');
+            quizData.form.find('.qmn_error_message_section').removeClass('qmn_error_message');
             
             // Remove error classes
-            quizData.form.find('.qsm-error').removeClass('qsm-error');
+            quizData.form.find('.qmn_error').removeClass('qmn_error');
         },
 
         clearPageErrors: function(quizId) {
@@ -1285,13 +1283,13 @@ var show_result_validation = true;
             if (!quizData) return;
 
             let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-            $currentPage.find('.qsm-error').removeClass('qsm-error');
-            $currentPage.find('.qsm-error-message').remove();
+            $currentPage.find('.qmn_error').removeClass('qmn_error');
+            quizData.form.find('.qmn_error_message').text('');
+            quizData.form.find('.qmn_error_message_section').removeClass('qmn_error_message');
         },
 
         clearFieldError: function($field) {
-            $field.removeClass('qsm-error');
-            $field.siblings('.qsm-error-message').remove();
+            $field.removeClass('qmn_error');
         },
 
         /**
@@ -1303,7 +1301,7 @@ var show_result_validation = true;
         },
 
         isValidUrl: function(url) {
-            let regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            const regex = /^(https?|ftp):\/\/[^\s/?#]+(?:\?[^\s#]*)?(?:#[^\s]*)?$/i;
             return regex.test(url);
         },
 
@@ -1461,7 +1459,13 @@ var show_result_validation = true;
                         if (typeof response === 'string') {
                             response = JSON.parse(response);
                         }
-                        
+                        if (window.qsm_results_data === undefined) {
+                            window.qsm_results_data = new Object();
+                        }
+                        window.qsm_results_data[quizId] = {
+                            'save_response': response.result_status['save_response'],
+                            'id': response.result_status['id']
+                        };
                         if (response.quizExpired) {
                             if (typeof MicroModal !== 'undefined') {
                                 MicroModal.show('modal-4');
@@ -1481,6 +1485,7 @@ var show_result_validation = true;
                         $(document).trigger('qsm_after_quiz_submit', ['quizForm' + quizId]);
                     
                     } catch (e) {
+                        console.log(e);
                         self.displayError('Error processing quiz results: ' + e.message + '. Please check console for details.', quizId);
                     }
                 },
@@ -1525,46 +1530,9 @@ var show_result_validation = true;
             $('html, body').animate({
                 scrollTop: $resultDiv.offset().top - 50
             }, 500);
-        },
-
-        /**
-         * Display error message
-         */
-        displayError: function(message, quizId) {
-            let quizData = this.quizObjects[quizId];
-            if (!quizData) {
-                alert('Error: ' + message);
-                return;
-            }
-            
-            let $quizContainer = quizData.quizContainer;
-            
-            // Remove existing error messages
-            $quizContainer.find('.qsm-error-display').remove();
-            
-            // Create error message element
-            let $errorDiv = $('<div class="qsm-error-display">')
-                .html('<strong>Error:</strong> ' + message)
-                .css({
-                    'background-color': '#f8d7da',
-                    'color': '#721c24',
-                    'border': '1px solid #f5c6cb',
-                    'border-radius': '4px',
-                    'padding': '12px',
-                    'margin': '10px 0',
-                    'display': 'none'
-                });
-            
-            // Insert error message
-            $quizContainer.prepend($errorDiv);
-            $errorDiv.slideDown();
-            
-            // Auto-hide after 10 seconds
-            setTimeout(function() {
-                $errorDiv.slideUp(function() {
-                    $errorDiv.remove();
-                });
-            }, 10000);
+		    
+		    // Trigger after result is displayed - matches legacy qsm-quiz.js format
+		    jQuery(document).trigger('qsm_after_display_result', [response, 'quizForm' + quizId, $quizContainer]);
         },
 
         /**
@@ -1623,16 +1591,13 @@ var show_result_validation = true;
                 return $container.data('quiz-id');
             }
             
-            console.log('Could not determine quiz ID for element:', $element);
             return null;
         },
 
         /**
          * Show inline result feedback (matching legacy qsm_show_inline_result)
          */
-        qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index) {
-            index = index || null;
-            
+        qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index = null) {            
             $('.qsm-spinner-loader').remove();
             this.addSpinnerLoader($this, $i_this);
             
@@ -1676,10 +1641,9 @@ var show_result_validation = true;
         /**
          * Check answer correctness using encrypted data (matching legacy qsm_question_quick_result_js)
          */
-        qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index) {
+        qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index = null) {
             answer_type = answer_type || '';
             show_correct_info = show_correct_info || '';
-            ans_index = ans_index || null;
             
             if (typeof encryptedData === 'undefined' || typeof encryptedData[quiz_id] === 'undefined') {
                 return { correct_index: 0, success: '', message: '' };
@@ -1690,7 +1654,7 @@ var show_result_validation = true;
                 let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
                 let decrypt = JSON.parse(decryptedData);
                 
-                question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
+                question_id = typeof question_id !== 'undefined' ? Number.parseInt(question_id) : 0;
                 answer = typeof answer !== 'undefined' ? answer : '';
                 
                 let answer_array = decrypt[question_id].answer_array;
@@ -1716,7 +1680,7 @@ var show_result_validation = true;
                                 value[0] = value[0].toUpperCase();
                             }
                             
-                            if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+                            if (answer == value[0] && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
                                 got_ans = true;
                                 correct_answer = true;
                                 break;
@@ -1725,7 +1689,7 @@ var show_result_validation = true;
                             if (0 == correct_answer_logic) {
                                 for (let anskey in answer) {
                                     let ansvalue = answer[anskey];
-                                    if (parseInt(ansvalue) === parseInt(key) && 1 == value[2]) {
+                                    if (Number.parseInt(ansvalue) === Number.parseInt(key) && 1 == value[2]) {
                                         got_ans = true;
                                         correct_answer = true;
                                         break;
@@ -1743,7 +1707,7 @@ var show_result_validation = true;
                                     total_correct_answer++;
                                 }
                             }
-                        } else if (parseInt(answer) === parseInt(key) && 1 === parseInt(value[2])) {
+                        } else if (Number.parseInt(answer) === Number.parseInt(key) && 1 === Number.parseInt(value[2])) {
                             got_ans = true;
                             correct_answer = true;
                             break;
@@ -1783,7 +1747,6 @@ var show_result_validation = true;
                 $(document).trigger('qsm_question_quick_result_js_after', [returnObject, correct_answer, answer, answer_array, answer_type, settings, decrypt, question_id]);
                 return returnObject;
             } catch (e) {
-                console.error('Error decrypting quiz data:', e);
                 return { correct_index: 0, success: '', message: '' };
             }
         },
@@ -1841,7 +1804,7 @@ var show_result_validation = true;
                     incorrect++;
                 }
 			});
-            console.log(quizData, incorrect);
+
 			if( quizData.end_quiz_if_wrong <= incorrect ) {
 				this.submit_status = true;
 			}else{
@@ -1941,12 +1904,10 @@ var show_result_validation = true;
             
             if (this.quizObjects[quizId]) {
                 // Remove event listeners
-                this.quizObjects[quizId].form.off();
-                
+                this.quizObjects[quizId].form.off();                
 
                 // Delete instance
-                delete this.quizObjects[quizId];
-                console.log('destroy')
+                delete this.quizObjects[quizId];                
                 
                 // Trigger destroy event
                 $(document).trigger('qsm_navigation_destroyed', [quizId]);
