@@ -106,7 +106,6 @@
 .qsm-migration-addon-compatibility-table {
 	border-collapse: collapse;
 	background: var(--qsm-white-color);
-	margin-top: 12px;
 	font-size: 13px;
     margin: 15px 0;
 }

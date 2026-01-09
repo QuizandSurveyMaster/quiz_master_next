@@ -154,7 +154,6 @@ var show_result_validation = true;
 
             // Show first page
             this.showPage(quizId, quizObj.currentPage);
-            //this.showPage(quizId, 1);
 
             // Timer
             let self = this;
@@ -188,8 +187,8 @@ var show_result_validation = true;
             
             let $timerField = currentQuiz.quizContainer.find(this.config.selectors.timerField);
             if ($timerField.length) {
-                let timerValue = parseInt($timerField.val()) || 0;
-                if (isNaN(timerValue)) {
+                let timerValue = Number.parseInt($timerField.val()) || 0;
+                if (Number.isNaN(timerValue)) {
                     timerValue = 0;
                 }
                 timerValue++;
@@ -231,8 +230,6 @@ var show_result_validation = true;
             let self = this;
             let currentQuiz = this.quizObjects[quizId];
             let $form = currentQuiz.form;
-            let $container = currentQuiz.quizContainer;
-            let $pagination_container = $( '.qsm-pagination-' + quizId );
             let $start_btn = '.qsm-start-btn-'+quizId;
             let $prev_btn = '.qsm-previous-btn-'+quizId;
             let $next_btn = '.qsm-next-btn-'+quizId;
@@ -623,8 +620,8 @@ var show_result_validation = true;
 
             jQuery('.pagetime-goto-nextpage').click(function (e) {
                 e.preventDefault();
-                var quiz_id = jQuery(this).data('quiz_id');
-                var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
+                let quiz_id = jQuery(this).data('quiz_id');
+                let $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
                 if(!$container.find('.qsm-submit-btn').is(':visible')) {
                     this.nextPage(quiz_id);
                     this.scrollToQuiz(quiz_id);
@@ -639,11 +636,11 @@ var show_result_validation = true;
 
             jQuery(document).on('click', '.qsm_social_share_link', function (e) {
                 e.preventDefault();
-                var network = jQuery(this).attr('data-network');
-                var share_url = jQuery(this).attr('data-link');
-                var social_text = jQuery(this).attr('data-text');
-                var social_id = jQuery(this).attr('data-id');
-                var url = '';
+                let network = jQuery(this).attr('data-network');
+                let share_url = jQuery(this).attr('data-link');
+                let social_text = jQuery(this).attr('data-text');
+                let social_id = jQuery(this).attr('data-id');
+                let url = '';
                 if (network == 'facebook') {
                     url = "https://www.facebook.com/dialog/feed?" + "display=popup&" + "app_id=" + social_id +
                         "&" + "link=" + encodeURIComponent(share_url) + "&" + "name=" + social_text;
@@ -654,9 +651,9 @@ var show_result_validation = true;
                 if (network == 'linkedin') {
                     url = "https://www.linkedin.com/feed/?text=" + social_text;
                 }
-                var sTop = window.screen.height / 2 - (218);
-                var sLeft = window.screen.width / 2 - (313);
-                var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
+                let sTop = window.screen.height / 2 - (218);
+                let sLeft = window.screen.width / 2 - (313);
+                let sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
                 window.open(url, "Share", sqShareOptions);
                 return false;
             });
@@ -708,6 +705,7 @@ var show_result_validation = true;
             if (!quizData || pageNumber < 1 || pageNumber > quizData.totalPages) {
                 return;
             }
+			jQuery(document).trigger('qsm_go_to_page_before', [quizID, pageNumber]);
 
             jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
                 if (quizData.data.end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {
@@ -723,9 +721,6 @@ var show_result_validation = true;
             })
 
             updateHistory = updateHistory !== false; // Default to true
-
-            // Trigger before page change event
-            $(document).trigger('qsm_before_page_change', [quizId, quizData.currentPage, pageNumber]);
 
             // Update current page
             quizData.currentPage = pageNumber;
@@ -746,7 +741,7 @@ var show_result_validation = true;
             this.manageFocus(quizId);
 
             // Trigger after page change event
-            $(document).trigger('qsm_after_page_change', [quizId, pageNumber, quizData]);
+            $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
         },
         
         /**
@@ -767,6 +762,9 @@ var show_result_validation = true;
 
             if ($targetPage.length > 0) {
                 $targetPage.show();
+
+                // Trigger page timer init/update (used by Advanced Timer addon)
+                jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);
                 
                 // Check if this page needs lazy loading
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
@@ -841,7 +839,7 @@ var show_result_validation = true;
             
             // Get question IDs and other data from page attributes
             let questionIds = $page.attr('data-question-ids') || '';
-            let questionStartNumber = parseInt($page.attr('data-question-start-number')) || 1;
+            let questionStartNumber = Number.parseInt($page.attr('data-question-start-number')) || 1;
 
             // Prepare AJAX data
             let ajaxData = {
@@ -868,7 +866,7 @@ var show_result_validation = true;
                         $page.find('.qsm-lazy-load-placeholder').remove();
                         
                         // Insert questions HTML
-                        $page.prepend(response.data.html);
+                        $page.find('.pages_count').before(response.data.html);
 
                         // Mark page as loaded
                         $page.removeClass('qsm-lazy-load-page qsm-loading');
@@ -916,7 +914,7 @@ var show_result_validation = true;
             $page.find('.qsm-retry-load').on('click', function() {
                 $page.find('.qsm-error-message').remove();
                 $page.find('.qsm-lazy-load-placeholder').html('<div class="qsm-lazy-load-spinner" style="display: none;"></div>');
-                self.loadPageQuestions(quizId, $page, parseInt($page.attr('data-page')));
+                self.loadPageQuestions(quizId, $page, Number.parseInt($page.attr('data-page')));
             });
             
             // Trigger error event
@@ -980,13 +978,6 @@ var show_result_validation = true;
         updateNavigationButtons: function(quizId) {
             let quizData = this.quizObjects[quizId];
             if (!quizData) return;
-            
-            let $pagination = quizData.pagination;
-
-            // let $previousBtn = $pagination.find(this.config.selectors.previousBtn);
-            // let $nextBtn = $pagination.find(this.config.selectors.nextBtn);
-            // let $submitBtn = $pagination.find(this.config.selectors.submitBtn);
-            // let $startBtn = $pagination.find(this.config.selectors.startBtn);
 
             let $previousBtn = jQuery('.qsm-previous-btn-'+quizId);
             let $nextBtn = jQuery('.qsm-next-btn-'+quizId);
@@ -1090,8 +1081,6 @@ var show_result_validation = true;
             let quizData = this.quizObjects[quizId];
             if (!quizData) return false;
             
-            $(document).trigger('qsm_before_validation', [quizData.form, 'quizForm' + quizId]);
-            
             // Skip validation if timer limit is enabled and time expired
             if (quizData.data.timer_limit_val > 0 && quizData.data.hasOwnProperty('skip_validation_time_expire') && quizData.data.skip_validation_time_expire != 1) {
                 return true;
@@ -1145,7 +1134,7 @@ var show_result_validation = true;
                 
                 // Min length validation
                 if (fieldClass.indexOf('mlwMinLength') !== -1 && fieldValue !== '') {
-                    let minLength = parseInt($field.attr('minlength')) || 0;
+                    let minLength = Number.parseInt($field.attr('minlength')) || 0;
                     if ($.trim(fieldValue).length < minLength) {
                         let message = (errorMessages.minlength_error_text || 'Minimum %minlength% characters required.').replace('%minlength%', minLength);
                         self.displayError(message, $field, quizId);
@@ -1155,7 +1144,7 @@ var show_result_validation = true;
                 
                 // Max length validation
                 if (fieldClass.indexOf('mlwMaxLength') !== -1 && fieldValue !== '') {
-                    let maxLength = parseInt($field.attr('maxlength')) || 0;
+                    let maxLength = Number.parseInt($field.attr('maxlength')) || 0;
                     if ($.trim(fieldValue).length > maxLength) {
                         let message = (errorMessages.maxlength_error_text || 'Maximum %maxlength% characters allowed.').replace('%maxlength%', maxLength);
                         self.displayError(message, $field, quizId);
@@ -1281,7 +1270,7 @@ var show_result_validation = true;
         },
 
         isValidUrl: function(url) {
-            let regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            const regex = /^(https?|ftp):\/\/[^\s/?#]+(?:\?[^\s#]*)?(?:#[^\s]*)?$/i;
             return regex.test(url);
         },
 
@@ -1577,9 +1566,7 @@ var show_result_validation = true;
         /**
          * Show inline result feedback (matching legacy qsm_show_inline_result)
          */
-        qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index) {
-            index = index || null;
-            
+        qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index = null) {            
             $('.qsm-spinner-loader').remove();
             this.addSpinnerLoader($this, $i_this);
             
@@ -1623,10 +1610,9 @@ var show_result_validation = true;
         /**
          * Check answer correctness using encrypted data (matching legacy qsm_question_quick_result_js)
          */
-        qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index) {
+        qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index = null) {
             answer_type = answer_type || '';
             show_correct_info = show_correct_info || '';
-            ans_index = ans_index || null;
             
             if (typeof encryptedData === 'undefined' || typeof encryptedData[quiz_id] === 'undefined') {
                 return { correct_index: 0, success: '', message: '' };
@@ -1637,7 +1623,7 @@ var show_result_validation = true;
                 let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
                 let decrypt = JSON.parse(decryptedData);
                 
-                question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
+                question_id = typeof question_id !== 'undefined' ? Number.parseInt(question_id) : 0;
                 answer = typeof answer !== 'undefined' ? answer : '';
                 
                 let answer_array = decrypt[question_id].answer_array;
@@ -1663,7 +1649,7 @@ var show_result_validation = true;
                                 value[0] = value[0].toUpperCase();
                             }
                             
-                            if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+                            if (answer == value[0] && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
                                 got_ans = true;
                                 correct_answer = true;
                                 break;
@@ -1672,7 +1658,7 @@ var show_result_validation = true;
                             if (0 == correct_answer_logic) {
                                 for (let anskey in answer) {
                                     let ansvalue = answer[anskey];
-                                    if (parseInt(ansvalue) === parseInt(key) && 1 == value[2]) {
+                                    if (Number.parseInt(ansvalue) === Number.parseInt(key) && 1 == value[2]) {
                                         got_ans = true;
                                         correct_answer = true;
                                         break;
@@ -1690,7 +1676,7 @@ var show_result_validation = true;
                                     total_correct_answer++;
                                 }
                             }
-                        } else if (parseInt(answer) === parseInt(key) && 1 === parseInt(value[2])) {
+                        } else if (Number.parseInt(answer) === Number.parseInt(key) && 1 === Number.parseInt(value[2])) {
                             got_ans = true;
                             correct_answer = true;
                             break;

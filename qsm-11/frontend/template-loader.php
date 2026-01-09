@@ -77,10 +77,7 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
 function qsm_new_locate_template( $template_name ) {
 	$template_path = 'qsm-11/templates/';
 	$default_path = QSM_PLUGIN_PATH . 'qsm-11/templates/';
-	
-	// Hook to allow custom template override paths
-	$template_override_path = apply_filters( 'qsm_new_template_override_path', $template_path, $template_name );
-	
+
 	$located = false;
 
 	// Look in QSM themes and addons (plugins that start with 'qsm')
@@ -137,7 +134,7 @@ function qsm_locate_template_in_qsm_plugins( $template_name ) {
 function qsm_get_question_type_templates() {
 	$question_types = array(
 		'0'  => 'multiple-choice',
-		'1'  => 'multiple-choice-horizontal', 
+		'1'  => 'multiple-choice-horizontal',
 		'2'  => 'drop-down',
 		'3'  => 'short-answer',
 		'4'  => 'multiple-response',

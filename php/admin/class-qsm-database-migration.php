@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * QSM Database Migration 
+ * QSM Database Migration
  *
  * Behavior:
  * - Migration log table (one row per result_id) prevents duplicate migration
@@ -181,7 +181,7 @@ class QSM_Database_Migration {
         }
         
         // Ensure tables exist and indexes applied
-        $this->create_migration_tables();        
+        $this->create_migration_tables();
         
         // --- Calculate Total Records to Migrate ---
         $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
@@ -253,8 +253,7 @@ class QSM_Database_Migration {
         $batch_size              = self::BATCH_SIZE;
 
         $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
-        $results_questions           = $this->wpdb->prefix . 'qsm_results_questions';
-        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_meta_table      = $this->wpdb->prefix . 'qsm_results_meta';
         
         $results_processed   = 0;
         $inserted_count      = 0;
@@ -283,7 +282,7 @@ class QSM_Database_Migration {
             $failed_ids = get_option( 'qsm_migration_results_failed_ids', array() );
             $failed_ids = array_map( 'intval', (array) $failed_ids );
             
-            $query = "SELECT r.* FROM {$mlw_results_table} r 
+            $query = "SELECT r.* FROM {$mlw_results_table} r
             LEFT JOIN {$results_meta_table} m
               ON m.result_id = r.result_id
               AND m.meta_key = 'result_meta'
@@ -398,11 +397,6 @@ class QSM_Database_Migration {
             }
 
             update_option( 'qsm_migration_results_failed_ids', $stored_failed_ids );
-
-            // 4. Calculate status for UI
-            $total_results = (int) $this->wpdb->get_var(
-                "SELECT COUNT(*) FROM {$mlw_results_table}"
-            );
 
             // Count how many results have been *logged* (migrated or failed)
             $logged_records = (int) $this->wpdb->get_var(
@@ -530,7 +524,6 @@ class QSM_Database_Migration {
             foreach ( $unserializedResults as $result_meta_key => $result_meta_value ) {
                 if ( 1 == $result_meta_key ) {
                     // results question loop (answers table) – collect all rows then bulk insert
-                    $per_result_failed = 0;
                     $answer_rows       = array();
 
                     foreach ( $result_meta_value as $question_key => $question_value ) {
@@ -582,15 +575,11 @@ class QSM_Database_Migration {
                                 if ( isset( $question_value['question_type'] ) && 4 != $question_value['question_type'] && isset( $question_value[1] ) && isset( $question_value[2] ) && $question_value[1] == $question_value[2] ) {
                                     // Advanced question types conditions here
                                     if ( ( '17' == $question_value['question_type'] || '16' == $question_value['question_type'] ) && empty( $question_value['correct_answer'] ) ) {
-                                        if ( '16' == $question_value['question_type'] ) {
-                                            if ( empty( $question_value['user_answer'] ) ) {
-                                                $correcIncorrectUnanswered = 2;
-                                            }
+                                        if ( '16' == $question_value['question_type'] && empty( $question_value['user_answer'] ) ) {
+                                            $correcIncorrectUnanswered = 2;
                                         }
-                                        if ( '17' == $question_value['question_type'] ) {
-                                            if ( empty( $question_value['user_answer'] ) ) {
-                                                $correcIncorrectUnanswered = 2;
-                                            }
+                                        if ( '17' == $question_value['question_type'] && empty( $question_value['user_answer'] ) ) {
+                                            $correcIncorrectUnanswered = 2;
                                         }
                                     } else {
                                         $correcIncorrectUnanswered = 1;
@@ -612,7 +601,12 @@ class QSM_Database_Migration {
 
                         $question_comment = isset( $question_value[3] ) ? $question_value[3] : '';
 
-                        $question_title = isset( $question_value['question_title'] ) ? $question_value['question_title'] : ( isset( $question_value['question'] ) ? (string) $question_value['question'] : '' );
+                        $question_title = '';
+                        if ( isset( $question_value['question_title'] ) ) {
+                            $question_title = $question_value['question_title'];
+                        } elseif ( isset( $question_value['question'] ) ) {
+                            $question_title = (string) $question_value['question'];
+                        }
 
                         $question_type = isset( $question_value['question_type'] ) ? $question_value['question_type'] : '';
 
@@ -693,7 +687,7 @@ class QSM_Database_Migration {
                         $prepared = $this->wpdb->prepare( $sql, ...$params );
                         $inserted = $this->wpdb->query( $prepared );
 
-                        if ( $inserted == false || $inserted == 0 ) {
+                        if ( 0 == $inserted ) {
                             // Question insert failed: rollback for this result
                             $transaction_failed = true;
                             $this->wpdb->query( 'ROLLBACK' );
@@ -763,7 +757,7 @@ class QSM_Database_Migration {
             $results_table_meta['answer_label_points'] = $results_meta_table_ans_label;  // already serialized
         }
 
-        if ( ! empty($results_table_meta_contact) ) { 
+        if ( ! empty($results_table_meta_contact) ) {
             $results_table_meta['contact'] = maybe_serialize($results_table_meta_contact);
         }
 

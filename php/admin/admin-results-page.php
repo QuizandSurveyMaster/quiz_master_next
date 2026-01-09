@@ -99,7 +99,7 @@ function qsm_delete_results_attachments( $rows_before_update ) {
 		if ( $is_new_format ) {
 			// Load new format result structure
 			$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $row->result_id );
-		} else { 
+		} else {
 			$mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
 		}
         // Ensure the results array exists and has the expected structure

@@ -77,10 +77,10 @@ class QSM_Ajax_Handler {
 			}
 
 			// Render questions HTML
-			$html = self::render_page_questions( 
-				$quiz_id, 
-				$question_ids, 
-				$quiz_options, 
+			$html = self::render_page_questions(
+				$quiz_id,
+				$question_ids,
+				$quiz_options,
 				$randomness_order,
 				$question_start_number
 			);
@@ -213,8 +213,7 @@ class QSM_Ajax_Handler {
 			$current_question_number++;
 		}
 
-		$html = ob_get_clean();
-		return $html;
+		return ob_get_clean();
 	}
 }
 

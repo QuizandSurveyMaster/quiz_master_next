@@ -1501,7 +1501,7 @@ class QMNPluginHelper {
 			$final_array[ $meta_key ] = $meta_value;
 		}
         return $final_array;
-    } 
+    }
 
     public function qsm_is_new_render_enabled() {
         $qmn_global_settings    = (array) get_option( 'qmn-settings' );

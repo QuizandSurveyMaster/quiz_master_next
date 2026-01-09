@@ -124,7 +124,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
 			// Load answers and meta from new tables
 			$results_array  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result->result_id );
 		} else {
-			// Load legacy serialized results 
+			// Load legacy serialized results
 			if ( is_serialized( $result->quiz_results ) ) {
 				$results_array = maybe_unserialize( $result->quiz_results );
 				if ( is_array( $results_array ) ) {

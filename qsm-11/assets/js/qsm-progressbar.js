@@ -91,7 +91,7 @@
 
         bindEvents: function() {
             var self = this;
-            $(document).on('qsm_after_page_change', function(e, quizId, pageNumber) {
+            $(document).on('qsm_go_to_page_before', function(e, quizId, pageNumber) {
                 self.updateProgress(quizId, pageNumber);
             });
             $(document).on('qsm_quiz_initialized', function(e, quizId, instance) {

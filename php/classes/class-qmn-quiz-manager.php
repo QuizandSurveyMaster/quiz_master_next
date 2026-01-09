@@ -2004,12 +2004,11 @@ class QMNQuizManager {
 			$inserted_result_id = (int) $wpdb->insert_id;
 			// If insert is successful, insert per-question answers and meta into
 			// the new structured tables as well.
-			if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
-				if ( $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
-					$structured_inserted = $this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
-					if ( false === $structured_inserted ) {
-						// Fallback: restore legacy blob so result data isn't lost.
-						$wpdb->update(
+			if ( 1 == get_option( 'qsm_migration_results_processed' ) && $inserted_result_id && ! empty( $data['results_array'] ) && is_array( $data['results_array'] ) ) {
+				$structured_inserted = $this->qsm_insert_result_answers_and_meta( $inserted_result_id, $data['qmn_array_for_variables']['quiz_id'], $data['results_array'] );
+				if ( false === $structured_inserted ) {
+					// Fallback: restore legacy blob so result data isn't lost.
+					$wpdb->update(
 							$table_name,
 							array( 'quiz_results' => maybe_serialize( $data['results_array'] ) ),
 							array( 'result_id' => $inserted_result_id ),
@@ -2017,10 +2016,9 @@ class QMNQuizManager {
 							array( '%d' )
 						);
 
-						$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
-						if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
-							$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' from ' . $wpdb->last_query, 0, 'error' );
-						}
+					$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
+					if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
+						$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' - ' . $wpdb->last_query, 0, 'error' );
 					}
 				}
 			}
@@ -2169,7 +2167,12 @@ class QMNQuizManager {
 
                         // Gather and normalize fields
                         $question_id          = intval( $question_value['id'] );
-                        $question_title       = isset( $question_value['question_title'] ) ? $question_value['question_title'] : ( isset( $question_value['question'] ) ? (string) $question_value['question'] : '' );
+                        $question_title = '';
+                        if ( isset( $question_value['question_title'] ) ) {
+                            $question_title = $question_value['question_title'];
+                        } elseif ( isset( $question_value['question'] ) ) {
+                            $question_title = (string) $question_value['question'];
+                        }
                         $question_description = isset( $question_value[0] ) ? $question_value[0] : '';
                         $question_comment     = isset( $question_value[3] ) ? $question_value[3] : '';
                         $user_answer_comma    = isset( $question_value[1] ) ? $question_value[1] : '';
@@ -2486,7 +2489,7 @@ class QMNQuizManager {
 					);
 					if ( false === $results_update ) {
 						$error_details = $wpdb->last_error;
-						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' from ' . $wpdb->last_query, 0, 'error' );
+						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' - ' . $wpdb->last_query, 0, 'error' );
 					} else {
 						if ( 1 == get_option( 'qsm_migration_results_processed' ) && ! empty( $results_array ) && is_array( $results_array ) ) {
 							$results_id_int = intval( $results_id );
@@ -2508,7 +2511,7 @@ class QMNQuizManager {
 
 									$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
 									if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
-										$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' from ' . $wpdb->last_query, 0, 'error' );
+										$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' - ' . $wpdb->last_query, 0, 'error' );
 									}
 								}
 							}
@@ -2535,7 +2538,7 @@ class QMNQuizManager {
 						$error_details       = $wpdb->last_error;
 						$mlwQuizMasterNext->log_manager->add(
 							__( 'Error 0001 submission failed - Quiz ID:', 'quiz-master-next' ) . $qmn_array_for_variables['quiz_id'],
-							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $error_details . ' from ' . $wpdb->last_query,
+							'<b>Quiz data:</b> ' . $quiz_submitted_data . ' <br/><b>Quiz answers:</b> ' . maybe_serialize( $results_array ) . '<br><b>Error:</b>' . $error_details . ' - ' . $wpdb->last_query,
 							0,
 							'error',
 							array(
@@ -3596,9 +3599,9 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 add_filter( 'qmn_begin_quiz_form', 'qmn_timer_check', 15, 3 );
 
 function qmn_timer_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
-	global $qmn_allowed_visit;
+	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	global $qmn_json_data;
-	if ( $qmn_allowed_visit && 0 != $qmn_quiz_options->timer_limit ) {
+	if ( $qmn_allowed_visit && 0 != $qmn_quiz_options->timer_limit && method_exists( $mlwQuizMasterNext->pluginHelper, 'qsm_is_new_render_enabled' ) && ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
 		$qmn_json_data['timer_limit'] = $qmn_quiz_options->timer_limit;
 		$display                     .= '<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>';
 	}

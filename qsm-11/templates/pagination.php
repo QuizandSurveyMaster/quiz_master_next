@@ -31,40 +31,40 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 ?>
 
 <div 
-	class="<?php echo esc_attr( 
-		apply_filters( 
-			'qsm_pagination_classes', 
-			'qsm-navigation qsm-pagination qmn_pagination border margin-bottom qsm-pagination-'.$quiz_id, 
-			$quiz_id, 
-			$renderer, 
-			$args 
-		) 
+	class="<?php echo esc_attr(
+		apply_filters(
+			'qsm_pagination_classes',
+			'qsm-navigation qsm-pagination qmn_pagination border margin-bottom qsm-pagination-'.$quiz_id,
+			$quiz_id,
+			$renderer,
+			$args
+		)
 	); ?>" 
 	data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>"
-	<?php echo apply_filters( 
-			'qsm_pagination_attributes', 
-			'', 
-			$quiz_id, 
-			$renderer, 
-			$args 
+	<?php echo apply_filters(
+			'qsm_pagination_attributes',
+			'',
+			$quiz_id,
+			$renderer,
+			$args
 		); ?>>
 	<?php
 
-	// Hook before navigation buttons	
+	// Hook before navigation buttons
 	do_action( 'qsm_before_navigation_buttons', $quiz_id, $args );
 	
 	/**
 	 * Hook: qsm_pagination_content
-	 * 
+	 *
 	 * This hook renders all pagination elements in priority order.
 	 * Elements are registered with priorities to control order.
-	 * 
+	 *
 	 * @param int $quiz_id Quiz ID
 	 * @param QSM_New_Pagination_Renderer $renderer Renderer instance
 	 * @param array $args Template arguments
-	 * 
+	 *
 	 * @since 9.0
-	 * 
+	 *
 	 * Hooked functions:
 	 * - render_page_counter (Priority: 10)
 	 * - render_previous_button (Priority: 20)
@@ -74,7 +74,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 	 * - render_submit_button (Priority: 60)
 	 */
 	do_action( 'qsm_pagination_content', $quiz_id, $renderer, $args );
-	
+
 	// Hook after navigation buttons
 	do_action( 'qsm_after_navigation_buttons', $quiz_id, $args );
 	?>

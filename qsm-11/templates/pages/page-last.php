@@ -2,8 +2,6 @@
 /**
  * Template for quiz last page
  *
- * This template can be overridden by copying it to yourtheme/qsm/templates/frontend/page-last.php
- *
  * @package QSM
  * @version 1.0.0
  */

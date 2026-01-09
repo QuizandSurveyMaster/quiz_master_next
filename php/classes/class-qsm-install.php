@@ -2201,7 +2201,7 @@ class QSM_Install {
 					KEY `result_question` (`result_id`, `question_id`)
 				) ENGINE=InnoDB {$charset_collate};";
 
-				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				dbDelta($sql_results_answers);
 
 				$this->maybe_add_foreign_key(
@@ -2225,7 +2225,7 @@ class QSM_Install {
 					KEY `meta_key` (`meta_key`)
 				) ENGINE=InnoDB {$charset_collate};";
 
-				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				dbDelta($sql_results_meta);
 
 				$this->maybe_add_foreign_key(

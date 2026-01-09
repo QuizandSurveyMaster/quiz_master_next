@@ -42,22 +42,22 @@ if ( ! has_action( 'qsm_pagination_header_content' ) ) {
 	
 	/**
 	 * Hook: qsm_pagination_header_content
-	 * 
+	 *
 	 * This hook renders pagination elements at the TOP of the form.
 	 * Use this to display navigation elements before quiz content.
-	 * 
+	 *
 	 * @param int $quiz_id Quiz ID
 	 * @param QSM_New_Pagination_Renderer $renderer Renderer instance
 	 * @param array $args Template arguments
-	 * 
+	 *
 	 * @since 9.0
-	 * 
+	 *
 	 * Hooked functions can be registered dynamically:
 	 * - render_page_counter (Priority: 10)
 	 * - render_previous_button (Priority: 20)
 	 * - render_next_button (Priority: 30)
 	 * - render_progress_bar (Priority: 40)
-	 * 
+	 *
 	 * Use filter 'qsm_pagination_header_elements' to control which elements appear here
 	 */
 	do_action( 'qsm_pagination_header_content', $quiz_id, $renderer, $args );
