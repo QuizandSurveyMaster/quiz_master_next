@@ -68,7 +68,7 @@ var show_result_validation = true;
         getQuizData: function (quizId) {
         let data = {};
 
-            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId] && typeof window.qmn_quiz_data[quizId] === 'object') {
+            if (typeof window.qmn_quiz_data?.[quizId] === 'object') {                
                 return window.qmn_quiz_data[quizId];
             }
             
