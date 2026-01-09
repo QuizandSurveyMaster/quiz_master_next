@@ -705,7 +705,7 @@ var show_result_validation = true;
             if (!quizData || pageNumber < 1 || pageNumber > quizData.totalPages) {
                 return;
             }
-			jQuery(document).trigger('qsm_go_to_page_before', [quizID, pageNumber]);
+			jQuery(document).trigger('qsm_go_to_page_before', [quizId, pageNumber]);
 
             jQuery('.qsm-multiple-response-input:checked, .qmn-multiple-choice-input:checked , .qsm_select:visible').each(function () {
                 if (quizData.data.end_quiz_if_wrong > 0 && jQuery(this).parents().is(':visible') && jQuery(this).is('input, select')) {

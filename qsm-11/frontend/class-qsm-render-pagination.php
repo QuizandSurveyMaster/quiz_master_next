@@ -1099,12 +1099,32 @@ class QSM_New_Pagination_Renderer {
 		// Use the new question template function
 		$question_template = qsm_get_question_template( $question_type, $args, $shortcode_args );
 		if ( false == $question_template ) {
-			$question_type = array_filter($mlwQuizMasterNext->pluginHelper->question_types, function( $item ) use ( $question_type ) {
-				return $item['slug'] == $question_type;
-			});
-			$question_type = array_shift($question_type);
-			call_user_func($question_type['display'], intval($question_id), $question_data['question_name'], $answer_array);
+
+			// Backup lookup from plugin registered types
+			$type_lookup = array_filter(
+				$mlwQuizMasterNext->pluginHelper->question_types,
+				function ( $item ) use ( $question_type ) {
+					return isset($item['slug']) && $item['slug'] === $question_type;
+				}
+			);
+
+			$type_item = array_shift($type_lookup);
+
+			// Validate fallback before calling
+			if (
+				! empty($type_item)
+				&& ! empty($type_item['display'])
+				&& is_callable($type_item['display'])
+			) {
+				call_user_func(
+					$type_item['display'],
+					intval($question_id),
+					isset($question_data['question_name']) ? $question_data['question_name'] : '',
+					isset($answer_array) ? $answer_array : array()
+				);
+			}
 		}
+
 		return $question_template;
 	}
 
