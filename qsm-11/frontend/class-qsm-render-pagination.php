@@ -46,7 +46,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @var array
 	 */
-	public $pages;
+	private $pages;
 	
 	/**
 	 * Question pages array
@@ -104,7 +104,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array  $quiz_data Quiz data
 	 * @param array  $shortcode_args Shortcode arguments
 	 */
-	public function __construct( $options, $quiz_data, $shortcode_args = array() ) {
+	public function __construct( $options, $quiz_data, $shortcode_args ) {
 		global $mlwQuizMasterNext;
 		$this->options          = $options;
 		$this->quiz_data        = $quiz_data;
@@ -587,29 +587,6 @@ class QSM_New_Pagination_Renderer {
 			 */
 			do_action( 'qsm_render_quiz_elements', $this );
 		
-
-			// Hook before end quiz form
-			echo apply_filters( 'qmn_end_quiz_form', '', $this->options, $this->quiz_data );
-			do_action( 'qsm_before_end_quiz_form', $this->options, $this->quiz_data, array() );
-			
-			// Add hidden inputs
-			echo $this->render_hidden_inputs();
-
-			// End form here as it's handled by main quiz manager
-			echo $this->render_form_end();
-			
-			// Hook after end quiz form
-			do_action( 'qsm_after_end_quiz_form', $this->options, $this->quiz_data, array() );
-			
-			// Render navigation
-			
-			if ( apply_filters( 'qsm_should_render_default_navigation', true, $this->options, $this->quiz_data ) ) {
-    			echo $this->render_navigation();
-			}
-			
-			// Add JavaScript data
-			$this->render_javascript_data();			
-
 			// Hook after rendering to prevent recursion
 			do_action( 'qsm_new_after_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
 			
@@ -1065,23 +1042,13 @@ class QSM_New_Pagination_Renderer {
 			
 			// Show page count if enabled
 			?>
-			<span class="pages_count" style="display:none;">
+			<span class="pages_count">
 			<?php
 			$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
 			echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 			?>
 			</span>
-			
 			<?php
-			$page_args = array(
-				'current_page' => $pages_count,
-				'total_pages'  => $total_pages_count,
-				'quiz_id'      => $this->options->quiz_id,
-			);
-			if ( apply_filters( 'qsm_should_render_default_pages_count', true, $page_args,$this->options, $this->quiz_data ) ) {
-				echo $this->render_page_count($page_args);
-			}
-			
 
 			do_action( 'qsm_new_action_after_page', $pages_count, $page );
 
@@ -1091,17 +1058,6 @@ class QSM_New_Pagination_Renderer {
 			$pages_count++;
 		}
 	}
-	public function render_page_count( $page_args, $builder_args = array() ) {
-
-		$page_args = is_array( $page_args ) ? $page_args : array();
-
-		// Merge page args + builder args into flat $args
-		$args = array_merge( $page_args, $builder_args );
-
-		return qsm_new_get_template_part( 'pagination/page-count', $args );
-	}
-
-
 
 	/**
 	 * Display a single question
@@ -1429,11 +1385,6 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @return string
 	 */
-
-	/**
-	 * Called from shortcode — prepares & outputs QSM JS data.
-	 */
-
 	public function render_javascript_data() {
 		global $mlwQuizMasterNext;
 		// Ensure mlwQuizMasterNext is available
@@ -1633,87 +1584,6 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Output JavaScript with both legacy and new variable names for compatibility
-
-		// $output = '<script type="text/javascript">';
-		// $output .= 'if (typeof window.qsmQuizData === "undefined") { window.qsmQuizData = {}; }';
-		// $output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
-		// $output .= 'window.qsmQuizData[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-		// $output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
-	
-		// // Add encryption data if available
-		// if ( ! empty( $encryption ) ) {
-		// 	$output .= '
-		// 	if (typeof encryptionKey === "undefined") {
-		// 		var encryptionKey = {};
-		// 	}
-		// 	if (typeof data === "undefined") {
-		// 		var data = {};
-		// 	}
-		// 	if (typeof jsonString === "undefined") {
-		// 		var jsonString = {};
-		// 	}
-		// 	if (typeof encryptedData === "undefined") {
-		// 		var encryptedData = {};
-		// 	}
-		// 	encryptionKey[' . $quiz_data['quiz_id'] . '] = "' . hash('sha256', time() . $quiz_data['quiz_id']) . '";
-
-		// 	data[' . $quiz_data['quiz_id'] . '] = ' . wp_json_encode($encryption) . ';
-		// 	jsonString[' . $quiz_data['quiz_id'] . '] = JSON.stringify(data[' . $quiz_data['quiz_id'] . ']);
-		// 	encryptedData[' . $quiz_data['quiz_id'] . '] = CryptoJS.AES.encrypt(jsonString[' . $quiz_data['quiz_id'] . '], encryptionKey[' . $quiz_data['quiz_id'] . ']).toString();';
-		// }
-	
-		// $output .= '</script>';
-		$quiz_id     = intval( $this->options->quiz_id );
-		$quiz_data   = $quiz_data;
-		$encryption  = $encryption;
-		$payload = [
-        'quiz_id'    => $quiz_id,
-        'quiz_data'  => $quiz_data,
-        'encryption' => $encryption,
-    	];
-		// Below Json is used in Tatsu iframe
-		if( isset($_GET['tatsu']) && $_GET['tatsu'] == '1'){
-			?>
-			<script type="application/json" id="qsm-quiz-json-<?php echo esc_attr($quiz_id); ?>">
-				<?php echo base64_encode(wp_json_encode( $payload )); ?>
-			</script>
-		<?php
-		}
-		add_action('wp_footer',function() use ( $quiz_id, $quiz_data, $encryption ){
-		?>
-    
-			<script type="text/javascript" id="qsm-inline-quizdata-<?php echo esc_attr($quiz_id); ?>">
-				window.qsmQuizData = window.qsmQuizData || {};
-				window.qmn_quiz_data = window.qmn_quiz_data || {};
-
-				window.qsmQuizData[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $quiz_data ); ?>;
-				window.qmn_quiz_data[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $quiz_data ); ?>;
-
-				<?php if ( ! empty( $encryption ) ) : 
-					$key = hash( "sha256", time() . $quiz_id );
-				?>
-					if (typeof encryptionKey === 'undefined') { var encryptionKey = {}; }
-					if (typeof data === 'undefined') { var data = {}; }
-					if (typeof jsonString === 'undefined') { var jsonString = {}; }
-					if (typeof encryptedData === 'undefined') { var encryptedData = {}; }
-
-					encryptionKey[<?php echo $quiz_id; ?>] = "<?php echo $key; ?>";
-
-					data[<?php echo $quiz_id; ?>] = <?php echo wp_json_encode( $encryption ); ?>;
-					jsonString[<?php echo $quiz_id; ?>] = JSON.stringify( data[<?php echo $quiz_id; ?>] );
-
-					encryptedData[<?php echo $quiz_id; ?>] =
-						CryptoJS.AES.encrypt(
-							jsonString[<?php echo $quiz_id; ?>],
-							encryptionKey[<?php echo $quiz_id; ?>]
-						).toString();
-				<?php endif; ?>
-			</script>
-
-		<?php
-		},1);
-		return '';
-=======
 		$output = '<script type="text/javascript">';
 		$output .= 'if (typeof window.qmn_quiz_data === "undefined") { window.qmn_quiz_data = {}; }';
 		$output .= 'window.qmn_quiz_data[' . intval( $this->options->quiz_id ) . '] = ' . wp_json_encode( $quiz_data ) . ';';
