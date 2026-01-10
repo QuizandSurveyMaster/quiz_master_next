@@ -684,7 +684,7 @@ class QSM_New_Pagination_Renderer {
 		add_action( 'qsm_quiz_form_content', array( $this, 'render_quiz_top_marker' ), $priorities['quiz_top_marker'], 3 );
 		
 		// Quiz Timer (Priority 25)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_timer_element' ), $priorities['timer'], 3 );
+		// add_action( 'qsm_quiz_form_content', array( $this, 'render_timer_element' ), $priorities['timer'], 3 );
 		
 		// First Page (Priority 30) - conditional registration
 		if ( $this->should_show_first_page() ) {
@@ -1806,7 +1806,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_timer_element( $quiz_id, $renderer, $args ) {
-		echo apply_filters( 'qmn_begin_quiz_form', $this->render_quiz_timer(), $this->options, $this->quiz_data );
+		// echo apply_filters( 'qmn_begin_quiz_form', $this->render_quiz_timer(), $this->options, $this->quiz_data );
 	}
 
 	/**

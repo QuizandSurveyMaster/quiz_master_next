@@ -2,6 +2,7 @@
  * QSM Timer - Enhanced with LocalStorage, Resume Functionality, and Conditional Popups
  * @package QSM
  */
+var qsmTimerInterval = [];
 (function($) {
     
     window.QSMPagination = window.QSMPagination || {};

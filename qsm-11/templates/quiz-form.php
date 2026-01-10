@@ -47,6 +47,7 @@ $form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SER
      * 
      * @since 9.0
      */
+    echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
     do_action( 'qsm_quiz_form_content', $quiz_id, $renderer, $args );
     
     /**

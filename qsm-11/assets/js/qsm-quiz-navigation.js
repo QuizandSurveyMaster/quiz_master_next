@@ -759,13 +759,10 @@ var show_result_validation = true;
             
             // Show target page (convert to 0-based index for DOM)
             let $targetPage = quizData.pages.eq(pageNumber - 1);
-
+            // Trigger page timer init/update (used by Advanced Timer addon)
+            jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);
             if ($targetPage.length > 0) {
                 $targetPage.show();
-
-                // Trigger page timer init/update (used by Advanced Timer addon)
-                jQuery(document).trigger('end_page_timer_init_page_timer', [quizId, $targetPage]);
-                
                 // Check if this page needs lazy loading
                 if ($targetPage.hasClass('qsm-lazy-load-page') && $targetPage.attr('data-lazy-load') === '1') {
                     this.loadPageQuestions(quizId, $targetPage, pageNumber);

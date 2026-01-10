@@ -3601,7 +3601,7 @@ add_filter( 'qmn_begin_quiz_form', 'qmn_timer_check', 15, 3 );
 function qmn_timer_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	global $qmn_json_data;
-	if ( $qmn_allowed_visit && 0 != $qmn_quiz_options->timer_limit && method_exists( $mlwQuizMasterNext->pluginHelper, 'qsm_is_new_render_enabled' ) && ! $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) {
+	if ( $qmn_allowed_visit && 0 != $qmn_quiz_options->timer_limit ) {
 		$qmn_json_data['timer_limit'] = $qmn_quiz_options->timer_limit;
 		$display                     .= '<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>';
 	}
