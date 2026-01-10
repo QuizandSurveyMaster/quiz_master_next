@@ -2003,3 +2003,33 @@ function qsm_display_fullscreen_error() {
     </div>
     <?php
 }
+
+/**
+ * Display admin warning if QSM results migration is not completed.
+ */
+function qsm_show_results_migration_warning() {
+
+    // Do not show if migration already processed
+    if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+        return;
+    }
+
+    // Migration page URL
+    $migrate_url = admin_url( 'admin.php?page=qsm_dashboard' );
+    ?>
+    <div class="notice notice-warning qsm-display-database-migration-message">
+        <p>
+            <strong><?php esc_html_e( 'Action Required:', 'quiz-master-next' ); ?></strong>
+            <?php esc_html_e(
+                'Quiz and Survey Master requires a one-time database migration.',
+                'quiz-master-next'
+            ); ?>
+        </p>
+        <p>
+            <a href="<?php echo esc_url( $migrate_url ); ?>" class="button button-primary">
+                <?php esc_html_e( 'Run Migration', 'quiz-master-next' ); ?>
+            </a>
+        </p>
+    </div>
+    <?php
+}

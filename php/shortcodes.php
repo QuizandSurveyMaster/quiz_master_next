@@ -138,15 +138,29 @@ function qsm_generate_fb_header_metadata() {
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );
 		if ( $results_data ) {
 			// Prepare responses array.
-			$results = maybe_unserialize( $results_data->quiz_results );
+			$is_new_format = empty( $results_data->quiz_results );
+			if ( $is_new_format ) {
+				// Load answers and meta from new tables
+				$results  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result_id );
+			} else {
+				// Load legacy serialized results
+				$results = maybe_unserialize( $results_data->quiz_results );
+			}
 			if ( is_array( $results ) ) {
 				if ( ! isset( $results['contact'] ) ) {
 					$results['contact'] = array();
 				}
-			} else {
+			} elseif ( '' != $results_data->quiz_results ) {
 				$template = str_replace( '%QUESTIONS_ANSWERS%', $results_data->quiz_results, $template );
 				$template = str_replace( '%TIMER%', '', $template );
 				$template = str_replace( '%COMMENT_SECTION%', '', $template );
+				$results  = array(
+					0,
+					array(),
+					'',
+					'contact' => array(),
+				);
+			} else {
 				$results  = array(
 					0,
 					array(),
