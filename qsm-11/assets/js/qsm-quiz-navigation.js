@@ -1443,7 +1443,7 @@ var show_result_validation = true;
                         if (!response || typeof response !== 'object') {
                             throw new Error('Invalid response format received from server');
                         }
-                        
+
                         // Display results
                         self.displayResults(response, quizId);
                         
@@ -1478,27 +1478,31 @@ var show_result_validation = true;
             
             let $quizContainer = quizData.quizContainer;
             jQuery(document).trigger('qsm_before_display_result', [response, 'quizForm' + quizId, $quizContainer]);
-            // Clear existing content
-            $quizContainer.find('.qsm_results_page').remove();
+            if (response.redirect && response.redirect != '') {
+                window.location.replace(response.redirect);
+            } else {
+                // Clear existing content
+                $quizContainer.find('.qsm_results_page').remove();
+                
+                // Create results container
+                let $resultDiv = $('<div class="qsm_results_page qmn_results_page">');
             
-            // Create results container
-            let $resultDiv = $('<div class="qsm_results_page qmn_results_page">');
+                $quizContainer.find('.qsm-quiz-processing-box').remove();
+                $resultDiv.html(response.display);
+                $quizContainer.append($resultDiv);
+                $resultDiv.slideDown();
             
-            $quizContainer.find('.qsm-quiz-processing-box').remove();
-            $resultDiv.html(response.display);
-            $quizContainer.append($resultDiv);
-            $resultDiv.slideDown();
+                // Clean up localStorage
+                localStorage.removeItem('qsm_quiz_start_date_' + quizId);
             
-            // Clean up localStorage
-            localStorage.removeItem('qsm_quiz_start_date_' + quizId);
-            
-            // Scroll to results
-            $('html, body').animate({
-                scrollTop: $resultDiv.offset().top - 50
-            }, 500);
+                // Scroll to results
+                $('html, body').animate({
+                    scrollTop: $resultDiv.offset().top - 50
+                }, 500);
 		    
-		    // Trigger after result is displayed - matches legacy qsm-quiz.js format
-		    jQuery(document).trigger('qsm_after_display_result', [response, 'quizForm' + quizId, $quizContainer]);
+                // Trigger after result is displayed - matches legacy qsm-quiz.js format
+                jQuery(document).trigger('qsm_after_display_result', [response, 'quizForm' + quizId, $quizContainer]);
+            }
         },
 
         /**
