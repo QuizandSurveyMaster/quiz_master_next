@@ -149,7 +149,6 @@ class QSM_New_Pagination_Renderer {
 			$quiz_id = intval( $this->quiz_data['quiz_id'] );
 			
 			// Get questions directly from database
-			$limit_sql = '';
 			$order_by_sql = 'ORDER BY question_order ASC';
 			
 			// Check if questions should be randomized
@@ -157,23 +156,8 @@ class QSM_New_Pagination_Renderer {
 				$order_by_sql = 'ORDER BY RAND()';
 			}
 			
-			// Get question amount from shortcode args
-			$question_amount = isset( $this->shortcode_args['question_amount'] ) ? intval( $this->shortcode_args['question_amount'] ) : 0;
-			$question_from_total = isset( $this->quiz_options->question_from_total ) ? intval( $this->quiz_options->question_from_total ) : 0;
-			
-			// Apply limit based on pagination and question limits
-			if ( $this->quiz_options->pagination > 0 ) {
-				if ( 0 !== $question_amount ) {
-					// Shortcode parameter takes priority
-					$limit_sql = ' LIMIT ' . $question_amount;
-				} elseif ( 0 !== $question_from_total ) {
-					// Fall back to quiz option value
-					$limit_sql = ' LIMIT ' . $question_from_total;
-				}
-			}
-			
 			$questions_query = $wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0 {$order_by_sql}{$limit_sql}",
+				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0 {$order_by_sql}",
 				$quiz_id
 			);
 			
@@ -231,6 +215,14 @@ class QSM_New_Pagination_Renderer {
 		$questions_per_page = intval( $this->quiz_options->pagination );
 		$quiz_id = intval( $this->quiz_data['quiz_id'] );
 		$randomness_order = $this->randomness_order;
+		$question_amount = isset( $this->shortcode_args['question_amount'] ) ? intval( $this->shortcode_args['question_amount'] ) : 0;
+		$question_from_total = isset( $this->quiz_options->question_from_total ) ? intval( $this->quiz_options->question_from_total ) : 0;
+		$max_questions = 0;
+		if ( 0 !== $question_amount ) {
+			$max_questions = $question_amount;
+		} elseif ( 0 !== $question_from_total ) {
+			$max_questions = $question_from_total;
+		}
 		
 		// Check if multiple category system is enabled
 		$multiple_category_system = false;
@@ -426,6 +418,11 @@ class QSM_New_Pagination_Renderer {
 				// Shuffle questions
 				$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
 			}
+		}
+		
+		// Apply overall question limit after all filtering/randomization so category filters remain consistent.
+		if ( $this->quiz_options->pagination > 0 && $max_questions > 0 ) {
+			$question_ids = array_slice( $question_ids, 0, $max_questions );
 		}
 		
 		// Reorder questions array based on final question_ids order
