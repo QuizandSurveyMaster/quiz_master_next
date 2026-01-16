@@ -1489,6 +1489,7 @@ class QSM_New_Pagination_Renderer {
 			'contact_info_location'              => $this->quiz_options->contact_info_location ?? 0,
 			'skip_validation_time_expire'        => $this->quiz_options->skip_validation_time_expire ?? 0,
 			'timer_limit'                        => intval( $this->options->timer_limit ?? 0 ),
+			'timer_limit_val'                    => intval( $this->options->timer_limit ?? 0 ),
 			'disable_scroll_next_previous_click' => $this->quiz_options->disable_scroll_next_previous_click ?? 0,
 			'disable_scroll_on_result'           => $this->quiz_options->disable_scroll_on_result ?? 0,
 			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
