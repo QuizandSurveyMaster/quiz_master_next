@@ -978,8 +978,18 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
-					MathJax.typesetPromise();
+					if (typeof MathJax !== 'undefined') {
+						// MathJax v3
+						if (typeof MathJax.typesetPromise === 'function') {
+							MathJax.typesetPromise();
+						}
+						// MathJax v2 fallback
+						else if (MathJax.Hub && typeof MathJax.Hub.Queue === 'function') {
+							MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+						}
+					}
 				}
+
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 				if (disableScroll) {

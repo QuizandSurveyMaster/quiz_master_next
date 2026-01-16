@@ -52,8 +52,272 @@ function qsm_check_close_hidden_box( $widget_id ) {
 	}
 }
 
-function qsm_check_plugins_compatibility() {
+/**
+ * Required addons & versions for migration
+ */
+function qsm_migration_get_required_addons() {
+	$addons = array(
+
+		/* === User Dashboard addon requirement === */
+		array(
+			'name'                   => 'QSM - User Dashboard',
+			'required_addon_version' => '2.0.0',
+		),
+		array(
+			'name'                   => 'Advanced Timer',
+			'required_addon_version' => '2.0.0',
+		),
+
+	);
+
+	return apply_filters( 'qsm_migration_required_addons', $addons );
+}
+
+/**
+ * Get plugin path by plugin name
+ *
+ * @param string $plugin_name
+ * @param array  $installed_plugins
+ * @return string
+ */
+function qsm_get_plugin_path_by_name( $plugin_name, $installed_plugins ) {
+	foreach ( $installed_plugins as $path => $plugin ) {
+		if ( isset( $plugin['Name'] ) && $plugin['Name'] === $plugin_name ) {
+			return $path;
+		}
+	}
+	return '';
+}
+
+/**
+ * Evaluate addon compatibility for migration
+ */
+function qsm_migration_evaluate_addon_requirements( $required_addons = null ) {
+	if ( null === $required_addons ) {
+		$required_addons = qsm_migration_get_required_addons();
+	}
+
+	if ( empty( $required_addons ) || ! is_array( $required_addons ) ) {
+		return array(
+			'allowed' => true,
+			'addons'  => array(),
+		);
+	}
+
+	if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$installed_plugins  = get_plugins();
+	$evaluated_addons   = array();
+	$allowed            = true;
+	$blocked_addon_name = '';
+
+	foreach ( $required_addons as $addon ) {
+		$name = isset( $addon['name'] ) ? (string) $addon['name'] : '';
+
+		/* === Resolve plugin path dynamically === */
+		$path = '';
+		if ( ! empty( $addon['path'] ) ) {
+			$path = (string) $addon['path'];
+		} elseif ( ! empty( $name ) ) {
+			$path = qsm_get_plugin_path_by_name( $name, $installed_plugins );
+		}
+
+		$is_installed       = false;
+		$installed_version = '';
+
+		if ( ! empty( $path ) && isset( $installed_plugins[ $path ] ) ) {
+			$is_installed       = true;
+			$installed_version = isset( $installed_plugins[ $path ]['Version'] )
+				? (string) $installed_plugins[ $path ]['Version']
+				: '';
+		}
+
+		/* === Addon-only compatibility logic === */
+		$is_compatible = true;
+
+		// If addon is installed, enforce version requirement
+		if (
+			$is_installed &&
+			isset( $addon['required_addon_version'] ) &&
+			'' !== $addon['required_addon_version']
+		) {
+			$is_compatible = version_compare(
+				$installed_version,
+				$addon['required_addon_version'],
+				'>='
+			);
+		}
+
+		if ( ! $is_compatible && $allowed ) {
+			$allowed            = false;
+			$blocked_addon_name = $name;
+		}
+
+		$evaluated_addons[] = array(
+			'name'                   => $name,
+			'path'                   => $path,
+			'required_addon_version' => isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '',
+			'is_installed'           => $is_installed,
+			'installed_version'      => $installed_version,
+			'is_compatible'          => $is_compatible,
+		);
+	}
+
+	$result = array(
+		'allowed' => $allowed,
+		'addons'  => $evaluated_addons,
+	);
+
+	if ( ! $allowed ) {
+		$result['message'] = __(
+			'Please update the addons listed below to continue with the migration.',
+			'quiz-master-next'
+		);
+	}
+
+
+	return $result;
+}
+
+/**
+ * Admin page UI and script enqueue + localization
+ */
+function qsm_migration_database_callback() { 
+	
 	global $mlwQuizMasterNext;
+
+	// Enqueue required scripts and styles; always enqueue to ensure localized data is available.
+	wp_enqueue_style(
+		'qsm-database-migration',
+		QSM_PLUGIN_CSS_URL . '/qsm-database-migration.css',
+		array(),
+		$mlwQuizMasterNext->version
+	);
+
+	wp_enqueue_script(
+		'qsm-database-migration',
+		QSM_PLUGIN_JS_URL . '/qsm-database-migration-script.js',
+		array( 'jquery' ),
+		$mlwQuizMasterNext->version,
+		true
+	);
+	$compatibility = qsm_migration_evaluate_addon_requirements();
+
+	// Localize script with translated strings & AJAX URL + nonce
+	wp_localize_script('qsm-database-migration', 'qsmMigrationData', array(
+		'ajax_url'            => admin_url('admin-ajax.php'),
+		'nonce'               => wp_create_nonce('qsm_migration_nonce'),
+		'confirmMessage'      => __('Are you sure you want to start the database migration? This process cannot be reversed.', 'quiz-master-next'),
+		'startMessage'        => __('Migration started...', 'quiz-master-next'),
+		'processingMessage'   => __('Migration in progress...', 'quiz-master-next'),
+		'successMessage'      => __('Migration completed successfully!', 'quiz-master-next'),
+		'errorMessage'        => __('An error occurred during migration.', 'quiz-master-next'),
+		'warningMessage'      => __('Before starting migration, please create a database backup.', 'quiz-master-next'),
+		'finalizingMigration' => __('Finalizing migration, retrying failed results...', 'quiz-master-next'),
+		'blockedMessage'      => ! empty( $compatibility['message'] ) ? wp_kses_post( $compatibility['message'] ) : '',
+		// Labels for UI details
+		'labelTotalRecords'   => __('Total Results to Migrate:', 'quiz-master-next'),
+		'labelProcessed'      => __('Results Processed:', 'quiz-master-next'),
+		'labelInserted'       => __('Total Results Migrated:', 'quiz-master-next'),
+		'labelFailed'         => __('Total Results Failed:', 'quiz-master-next'),
+		'labelErrorNote'      => __('Migration stopped due to an error. Check browser console and server logs for details.', 'quiz-master-next'),
+	));
+	?>
+			
+	<div class="qsm-dashboard-help-center">
+		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__('Database Migration', 'quiz-master-next'); ?></h3>
+		<div class="qsm-database-migration-wrapper qsm-dashboard-page-common-style">
+			
+			<form id="qsm-database-migration-form" class="qsm-database-migration-form">
+				<div class="qsm-migration-warning">
+					<strong>⚠️ <?php echo esc_html__('Warning:', 'quiz-master-next'); ?></strong>
+					<?php echo esc_html__('Before starting the migration, please create a full database backup.', 'quiz-master-next'); ?>
+				</div>
+
+				<div class="qsm-database-migration-progress-bar">
+					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
+					<div class="qsm-database-migration-progress-percent">0%</div>
+				</div>
+
+				<div class="qsm-database-migration-status"></div>
+				<div class="qsm-database-migration-details"></div>
+				<?php
+				$compatibility_addons = array();
+				if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
+					foreach ( $compatibility['addons'] as $addon ) {
+						if ( empty( $addon['is_installed'] ) ) {
+							continue;
+						}
+						$compatibility_addons[] = $addon;
+					}
+				}
+
+				if ( ! empty( $compatibility_addons ) ) {
+					$has_block = empty( $compatibility['allowed'] );
+					?>
+					<div class="qsm-migration-addon-compatibility">
+
+						<?php if ( $has_block && ! empty( $compatibility['message'] ) ) { ?>
+							<div class="qsm-migration-addon-compatibility-message">
+								<?php echo wp_kses_post( $compatibility['message'] ); ?>
+							</div>
+						<?php } ?>
+
+						<table class="qsm-migration-addon-compatibility-table widefat striped">
+							<thead>
+								<tr>
+									<th><?php esc_html_e( 'Addon Name', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Required Version', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Installed Version', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Status', 'quiz-master-next' ); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ( $compatibility_addons as $addon ) :
+
+									$name              = isset( $addon['name'] ) ? $addon['name'] : '';
+									$required_version  = isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '';
+									$installed_version = isset( $addon['installed_version'] ) && $addon['installed_version']
+										? $addon['installed_version']
+										: esc_html__( 'Not Installed', 'quiz-master-next' );
+									$is_compatible     = ! empty( $addon['is_compatible'] );
+									?>
+									<tr class="<?php echo $is_compatible ? 'qsm-addon-compatible' : 'qsm-addon-not-compatible'; ?>">
+										<td><?php echo esc_html( $name ); ?></td>
+										<td><?php echo esc_html( $required_version ); ?></td>
+										<td><?php echo esc_html( $installed_version ); ?></td>
+										<td>
+											<span class="qsm-migration-addon-compatibility-status">
+												<?php
+												echo $is_compatible
+													? esc_html__( 'Compatible', 'quiz-master-next' )
+													: esc_html__( 'Update Required', 'quiz-master-next' );
+												?>
+											</span>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+
+					</div>
+					<?php
+				}
+				?>
+
+				<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button button button-primary" <?php echo empty( $compatibility['allowed'] ) ? 'disabled="disabled" aria-disabled="true"' : ''; ?> >
+					<?php echo esc_html__('Start Migration', 'quiz-master-next'); ?>
+				</button>
+			</form>
+		</div>
+	</div><!-- qsm-dashboard-help-center qsm-dashboard-warning-container -->
+	<?php
+}
+
+function qsm_check_plugins_compatibility() {
+	global $mlwQuizMasterNext, $wpdb;
 
 	if ( class_exists( 'QSM_Installer' ) ) {
 		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
@@ -75,6 +339,16 @@ function qsm_check_plugins_compatibility() {
 			<?php
 		}
 	}
+
+	$results_table = $wpdb->prefix . 'mlw_results';
+	$results_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$results_table}" );
+	if ( 0 == $results_count ) {
+		update_option( 'qsm_migration_results_processed', 1 );
+	} elseif ( 1 != get_option( 'qsm_migration_results_processed' ) ) { 
+		qsm_migration_database_callback();
+	}
+
+	do_action( 'qsm_admin_dashboard_compatibility_after' );
 }
 
 function qsm_dashboard_display_change_log_section() {
@@ -277,7 +551,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
  */
 
 function qsm_dashboard_recent_taken_quiz() {
-	global $wpdb;
+	global $wpdb, $mlwQuizMasterNext;
 	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
 	if ( 0 != $mlw_result_data['total_result'] ) {
 		?>
@@ -342,7 +616,13 @@ function qsm_dashboard_recent_taken_quiz() {
 									|
 									<?php
 									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									$is_new_format = empty( $single_result_arr['quiz_results'] );
+									if ( $is_new_format ) {
+										// Load new format result structure
+										$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $single_result_arr['result_id'] );
+									} else {
+										$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									}
 									if ( is_array( $mlw_qmn_results_array ) ) {
 										$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 										if ( $mlw_complete_hours > 0 ) {
@@ -562,3 +842,7 @@ function qsm_create_new_quiz_from_wizard() {
 }
 
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
+
+if ( 1 != get_option( 'qsm_migration_results_processed' ) ) {
+	include_once QSM_PLUGIN_PATH.'php/admin/class-qsm-database-migration.php';
+}

@@ -185,6 +185,9 @@ body .qsm-popup__btn-primary {
 	color: #fff !important;
 	display: flex;
 	justify-content: center;
+	width: 25px;
+	line-height: 30px;
+	position: relative;
 }
 .site .question-type-polar-s a.ui-state-focus:focus {
 	background: rgba(119, 113, 113, 1);
@@ -298,6 +301,31 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	flex-direction: row-reverse;
     align-items: center;
 	padding: 0;
+}
+.qsm-progress-bar-container {
+    position: relative;
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.qsm-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 4px;
+    width: 0%;
+    max-width: 100%;
+}
+
+.progressbar-text {
+    font-weight: bold;
+    font-size: 13px;
+    color: rgb(52, 152, 219);
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: center;
 }
 .quiz_section .mlw-file-upload-error-msg {
 	color: red;
