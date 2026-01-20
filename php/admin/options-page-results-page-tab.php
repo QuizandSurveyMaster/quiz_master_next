@@ -56,6 +56,14 @@ function qsm_options_results_tab_content() {
 
 <!-- Results Page Section -->
 <section class="qsm-quiz-result-tab" style="margin-top: 15px;">
+	<div class="qsm-tab-description">
+		<p class="qsm-tab-description-headline">
+			<?php esc_html_e( 'Define what users see after completing the quiz.', 'quiz-master-next' ); ?>
+		</p>
+		<p class="qsm-tab-description-subheadline">
+			<?php esc_html_e( 'Show different result pages or redirect users based on their answers, scores, or conditions.', 'quiz-master-next' ); ?>
+		</p>
+	</div>
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>

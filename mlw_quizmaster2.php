@@ -306,6 +306,10 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-emails.php';
 		include_once 'php/classes/class-qmn-quiz-manager.php';
 
+		// Load new rendering system files
+		include_once 'qsm-11/frontend/template-loader.php';
+		include_once 'qsm-11/frontend/class-qsm-render-pagination.php';
+		include_once 'qsm-11/frontend/class-qsm-new-renderer.php';
 		include_once 'php/template-variables.php';
 		include_once 'php/adverts-generate.php';
 		include_once 'php/question-types.php';
@@ -797,7 +801,7 @@ class MLWQuizMasterNext {
 			return;
 		}
 		$roles    = (array) $user->roles;
-		if ( empty( $roles ) || !isset($roles[0]) || !is_string($roles[0]) ) {
+		if ( empty( $roles ) || ! isset($roles[0]) || ! is_string($roles[0]) ) {
 			return;
 		}
 		$rolename = $roles[0];

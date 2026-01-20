@@ -163,6 +163,14 @@ class QSM_Fields {
 					</ul>
 				</div>
 				<div id="qsm_general" class="quiz_style_tab_content">
+					<div class="qsm-tab-description">
+						<p class="qsm-tab-description-headline">
+							<?php esc_html_e( 'Define the core behavior and rules of your quiz.', 'quiz-master-next' ); ?>
+						</p>
+						<p class="qsm-tab-description-subheadline">
+							<?php esc_html_e( 'Choose the quiz type, grading method, answer logic, access rules, and overall experience settings.', 'quiz-master-next' ); ?>
+						</p>
+					</div>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -180,6 +188,14 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
+					<div class="qsm-tab-description">
+						<p class="qsm-tab-description-headline">
+							<?php esc_html_e( 'Control how and when users can submit their quiz.', 'quiz-master-next' ); ?>
+						</p>
+						<p class="qsm-tab-description-subheadline">
+							<?php esc_html_e( 'Set time limits, response restrictions, attempt limits, retake rules, and what happens after submission.', 'quiz-master-next' ); ?>
+						</p>
+					</div>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -197,6 +213,14 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="display" class="quiz_style_tab_content" style="display:none">
+					<div class="qsm-tab-description">
+						<p class="qsm-tab-description-headline">
+							<?php esc_html_e( 'Customize how the quiz looks and behaves for users.', 'quiz-master-next' ); ?>
+						</p>
+						<p class="qsm-tab-description-subheadline">
+							<?php esc_html_e( 'Control progress indicators, question layout, result visibility, page animations, and visual experience settings.', 'quiz-master-next' ); ?>
+						</p>
+					</div>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -214,6 +238,14 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="legacy" class="quiz_style_tab_content" style="display:none">
+					<div class="qsm-tab-description">
+						<p class="qsm-tab-description-headline">
+							<?php esc_html_e( 'Access legacy settings from older versions of QSM.', 'quiz-master-next' ); ?>
+						</p>
+						<p class="qsm-tab-description-subheadline">
+							<?php esc_html_e( 'These options are deprecated and will be removed in a future update. Use newer settings available in other tabs.', 'quiz-master-next' ); ?>
+						</p>
+					</div>
 					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
 					<table class="form-table" style="width: 100%;">
 						<?php

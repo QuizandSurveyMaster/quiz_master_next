@@ -1,0 +1,220 @@
+.qsm-database-migration-wrapper {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--qsm-information-color-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qsm-migration-warning {
+    background: var(--qsm-warning-color-light);
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    color: var(--qsm-warning-color);
+    border: 1px solid var(--qsm-warning-color);
+    border-left: 4px solid var(--qsm-warning-color);
+}
+
+.qsm-database-migration-status {
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+.qsm-database-migration-status.success {
+    background: var(--qsm-success-color-light);
+    color: var(--qsm-success-color);
+    border: 1px solid var(--qsm-success-color-light);
+}
+
+.qsm-database-migration-status.error {
+    background: var(--qsm-error-color-light);
+    color: var(--qsm-error-color);
+    border: 1px solid var(--qsm-error-color-light);
+}
+
+.qsm-database-migration-status.progress {
+    background: var(--qsm-information-color-light);
+    color: var(--qsm-information-color);
+    border: 1px solid var(--qsm-information-color-light);
+}
+
+.qsm-database-migration-button {
+    background: var(--qsm-primary-button);
+    color: var(--qsm-white-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.qsm-database-migration-button:hover {
+    background: var(--qsm-primary-button);
+}
+
+.qsm-database-migration-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.qsm-database-migration-progress-bar {
+    width: 100%;
+    background-color: var(--qsm-white-color);
+    border-radius: 4px;
+    height: 25px;
+    margin: 15px 0;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.qsm-database-migration-progress-percent {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--qsm-black-color);
+}
+
+.qsm-database-migration-progress.qsm-migration-completed + .qsm-database-migration-progress-percent {
+    color: var(--qsm-white-color);
+    font-weight: 700;
+}
+
+.qsm-database-migration-progress {
+    width: 0%;
+    height: 100%;
+    background-color: var(--qsm-information-color);
+    transition: width 0.3s ease-in-out;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+}
+
+.qsm-database-migration-progress.qsm-migration-completed {
+    background-color: var(--qsm-success-color);
+    background-image: none;
+}
+
+/* =====================================
+ * Addon Compatibility Table
+ * ===================================== */
+
+.qsm-migration-addon-compatibility-table {
+	border-collapse: collapse;
+	background: var(--qsm-white-color);
+	font-size: 13px;
+    margin: 15px 0;
+}
+
+.qsm-migration-addon-compatibility-table th {
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.qsm-migration-addon-compatibility-table td,
+.qsm-migration-addon-compatibility-table th {
+	vertical-align: middle;
+	padding: 10px 12px;
+}
+
+/* -------------------------------------
+ * Row Status Backgrounds
+ * ------------------------------------- */
+
+.qsm-addon-compatible {
+	background-color: var(--qsm-success-color-light);
+}
+
+.qsm-addon-not-compatible {
+	background-color: var(--qsm-error-color-light);
+}
+
+/* -------------------------------------
+ * Addon Name
+ * ------------------------------------- */
+
+.qsm-migration-addon-compatibility-table td:first-child {
+	font-weight: 500;
+	color: #1d2327;
+}
+
+/* -------------------------------------
+ * Required Version
+ * ------------------------------------- */
+
+.qsm-migration-addon-compatibility-table td:nth-child(2) {
+	font-family: monospace;
+	font-size: 12px;
+	color: #374151;
+}
+
+/* -------------------------------------
+ * Installed Version
+ * ------------------------------------- */
+
+.qsm-migration-addon-compatibility-table td:nth-child(3) {
+	font-family: monospace;
+	font-size: 12px;
+}
+
+.qsm-addon-compatible td:nth-child(3) {
+	color: var(--qsm-success-color);
+}
+
+.qsm-addon-not-compatible td:nth-child(3) {
+	color: var(--qsm-error-color);
+}
+
+/* -------------------------------------
+ * Status Badge
+ * ------------------------------------- */
+
+.qsm-migration-addon-compatibility-status {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+/* Compatible */
+.qsm-addon-compatible .qsm-migration-addon-compatibility-status {
+	color: var(--qsm-success-color);
+	background-color: var(--qsm-success-color-light);
+	border: 1px solid rgba(6, 95, 70, 0.2);
+}
+
+/* Not Compatible / Update Required */
+.qsm-addon-not-compatible .qsm-migration-addon-compatibility-status {
+	color: var(--qsm-error-color);
+	background-color: var(--qsm-error-color-light);
+	border: 1px solid rgba(153, 27, 27, 0.2);
+}
+
+/* -------------------------------------
+ * Compatibility Message (Top Notice)
+ * ------------------------------------- */
+
+.qsm-migration-addon-compatibility-message {
+	background: var(--qsm-warning-color-light);
+	color: var(--qsm-warning-color);
+	border-left: 4px solid var(--qsm-warning-color);
+	padding: 12px 14px;
+	margin-bottom: 12px;
+	font-weight: 500;
+}
+
+/* -------------------------------------
+ * Disabled Start Migration Button (UX)
+ * ------------------------------------- */
+
+#qsm-database-start-migration[disabled] {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
