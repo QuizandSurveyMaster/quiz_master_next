@@ -847,6 +847,8 @@ jQuery('.quiz_text_tab').click(function (e) {
     if(current_id == 'qsm_variable_text'){  jQuery(".current_variable")[0].click();}
     if(current_id == 'qsm_custom_label'){ jQuery("#postbox-container-1").css("display", "none");}
     jQuery('#' + current_id).show();
+    jQuery('.qsm-text-tab-description').hide();
+    jQuery('.qsm-text-tab-description[data-id="' + current_id + '"]').show();
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) { var current_id = jQuery(this).attr('data-id'); if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}

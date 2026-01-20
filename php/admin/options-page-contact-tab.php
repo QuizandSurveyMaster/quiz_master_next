@@ -49,6 +49,14 @@ function qsm_options_contact_tab_content() {
 		</ul>
 	</div>
 	<div id="contact_form_setup" class="quiz_style_tab_content">
+		<div class="qsm-tab-description">
+			<p class="qsm-tab-description-headline">
+				<?php esc_html_e( 'Set up the contact information you want to collect from users.', 'quiz-master-next' ); ?>
+			</p>
+			<p class="qsm-tab-description-subheadline">
+				<?php esc_html_e( 'Add, reorder, enable, or disable fields like name, email, phone, or business to customize your contact form.', 'quiz-master-next' ); ?>
+			</p>
+		</div>
 		<h2 class="qsm-page-subheading" style="font-weight: 500;"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
 		<div id="poststuff" class="qsm-contact-form-builder-wrap">
 			<div class="contact-tab-content">
@@ -62,6 +70,14 @@ function qsm_options_contact_tab_content() {
 		</div>
 	</div>
 	<div id="contact_form_option" class="quiz_style_tab_content" style="display:none">
+		<div class="qsm-tab-description">
+			<p class="qsm-tab-description-headline">
+				<?php esc_html_e( 'Control when and how the contact form is shown to users.', 'quiz-master-next' ); ?>
+			</p>
+			<p class="qsm-tab-description-subheadline">
+				<?php esc_html_e( 'Choose where the form appears in the quiz flow and manage its behavior for logged-in users and autofill.', 'quiz-master-next' ); ?>
+			</p>
+		</div>
 		<table id="contactformsettings" class="form-table" style="width: 100%;">
 			<tbody>
 				<tr valign="top">
