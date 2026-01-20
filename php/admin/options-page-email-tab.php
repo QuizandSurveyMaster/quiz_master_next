@@ -64,6 +64,14 @@ function qsm_options_emails_tab_content() {
 
 <!-- Emails Section -->
 <section class="qsm-quiz-email-tab" style="margin-top: 15px;">
+	<div class="qsm-tab-description">
+		<p class="qsm-tab-description-headline">
+			<?php esc_html_e( 'Automate emails based on quiz behavior and results.', 'quiz-master-next' ); ?>
+		</p>
+		<p class="qsm-tab-description-subheadline">
+			<?php esc_html_e( 'Set conditions for when an email should be sent and define who receives it and what it contains.', 'quiz-master-next' ); ?>
+		</p>
+	</div>
 	<div id="qsm_emails">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>

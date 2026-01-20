@@ -5263,3 +5263,22 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	text-decoration: none;
 	box-shadow: none;
 }
+
+/* Tab Descriptions */
+.qsm-tab-description,
+.qsm-text-tab-description {
+	margin-bottom: 20px;
+}
+
+.qsm-tab-description-headline {
+	margin: 0 0 5px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.qsm-tab-description-subheadline {
+	margin: 0;
+	font-size: 13px;
+	color: #646970;
+}
