@@ -112,9 +112,9 @@ class QSM_New_Pagination_Renderer {
 		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
 		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );
 		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );
-		$this->contact_fields   = maybe_unserialize( $this->quiz_settings['contact_form'] );
-		$this->pages            = maybe_unserialize( $this->quiz_settings['pages'] );
-		$qpages                 = maybe_unserialize( $this->quiz_settings['qpages'] );
+		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? maybe_unserialize( $this->quiz_settings['contact_form'] ) : array();
+		$this->pages            = isset( $this->quiz_settings['pages'] ) ? maybe_unserialize( $this->quiz_settings['pages'] ) : array();
+		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? maybe_unserialize( $this->quiz_settings['qpages'] ) : array();
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
@@ -980,7 +980,7 @@ class QSM_New_Pagination_Renderer {
 			$question_ids_csv = implode( ',', $page );
 			?>
 			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
-			data-pid="<?php echo esc_attr( $pages_count ); ?>" 
+			data-pid="<?php echo esc_attr( $qpage_id ); ?>" 
 			data-apid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-page="<?php echo esc_attr( $pages_count ); ?>" 

@@ -46,14 +46,27 @@ class QSM_Ajax_Handler {
 		// Get remaining request parameters
 		$page_number = isset( $_POST['page_number'] ) ? intval( $_POST['page_number'] ) : 0;
 		$question_ids_serialized = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
-		$randomness_order = isset( $_POST['randomness_order'] ) ? json_decode( stripslashes( $_POST['randomness_order'] ), true ) : array();
+		$randomness_order = array();
+		if ( isset( $_POST['randomness_order'] ) ) {
+			$raw_randomness_order = wp_unslash( $_POST['randomness_order'] );
+			if ( is_string( $raw_randomness_order ) && $raw_randomness_order !== '' ) {
+				$decoded = json_decode( $raw_randomness_order, true );
+				if ( is_array( $decoded ) ) {
+					$randomness_order = $decoded;
+				}
+			} elseif ( is_array( $raw_randomness_order ) ) {
+				$randomness_order = $raw_randomness_order;
+			}
+		}
 		$question_start_number = isset( $_POST['question_start_number'] ) ? intval( $_POST['question_start_number'] ) : 1;
 		
 		// Normalize randomness order
 		if ( ! empty( $randomness_order ) ) {
 			$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $randomness_order );
 		}
-		
+		if ( ! is_array( $randomness_order ) ) {
+			$randomness_order = array();
+		}
 		// Validate parameters
 		if ( ! $page_number ) {
 			wp_send_json_error( array( 'message' => 'Invalid page number' ) );
@@ -110,6 +123,10 @@ class QSM_Ajax_Handler {
 	 */
 	private static function render_page_questions( $quiz_id, $question_ids, $quiz_options, $randomness_order, $question_start_number ) {
 		global $wpdb, $mlwQuizMasterNext, $qmn_total_questions;
+
+		if ( ! is_array( $randomness_order ) ) {
+			$randomness_order = array();
+		}
 		
 		// Get questions from database
 		$questions = array();
@@ -154,7 +171,7 @@ class QSM_Ajax_Handler {
 			$answer_array = maybe_unserialize( $question['answer_array'] );
 
 			// Apply answer randomization if enabled
-			if ( in_array( 'answers', $randomness_order ) ) {
+			if ( in_array( 'answers', $randomness_order, true ) ) {
 				$answer_array = QMNPluginHelper::qsm_shuffle_assoc( $answer_array );
 				global $quiz_answer_random_ids;
 				if ( ! isset( $quiz_answer_random_ids ) ) {
