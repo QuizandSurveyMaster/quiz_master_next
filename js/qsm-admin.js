@@ -3317,6 +3317,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $('#save-edit-question-spinner').removeClass('is-active');
                     }, 250);
                     setTimeout(QSMQuestion.removeNew, 250);
+					jQuery(document).trigger('qsm_admin_question_saved_success', [model]);
                 },
                 addNewAnswer: function (answer, questionType = false, $insertAfter = null) {
                     if (!questionType) {

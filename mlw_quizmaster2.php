@@ -451,6 +451,16 @@ class MLWQuizMasterNext {
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
+					wp_enqueue_style( 'wp-pointer' );
+					wp_enqueue_script( 'wp-pointer' );
+					wp_enqueue_script( 'qsm_admin_tour_js', plugins_url( 'js/qsm-admin-tour.js', __FILE__ ), array( 'jquery', 'wp-pointer' ), $this->version, true );
+					wp_localize_script(
+						'qsm_admin_tour_js',
+						'qsmAdminTourData',
+						array(
+							'quiz_id' => isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0,
+						)
+					);
 					break;
 				case 'style':
 					wp_enqueue_style( 'wp-color-picker' );
