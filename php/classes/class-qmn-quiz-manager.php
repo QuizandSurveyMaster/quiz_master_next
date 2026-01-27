@@ -782,17 +782,55 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
-				if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) && empty( $quiz_options->question_per_category ) && empty( $quiz_options->limit_category_checkbox ) ) {
-					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $quiz_id ] ) );
-					if ( ! preg_match( '/^\d+(,\d+)*$/', $question_sql ) ) {
-						$question_sql = implode( ',', $question_ids );
+
+			/**
+			 * If cookie exists, try to preserve question ids + order
+			 */
+			if ( isset($_COOKIE['question_ids_' . $quiz_id]) ) {
+				// raw cookie
+				$cookie_raw = wp_unslash($_COOKIE['question_ids_' . $quiz_id]);
+
+				// sanitize & keep only digits + commas
+				$cookie_raw = preg_replace('/[^0-9,]/', '', $cookie_raw);
+
+				// convert to array
+				$cookie_ids = array_filter(array_map('intval', explode(',', $cookie_raw)));
+
+				if ( !empty($cookie_ids) ) {
+
+					if ( !empty($cookie_ids) ) {
+
+						// finally preserve cookie ids
+						$question_ids = $cookie_ids;
+						$question_sql = implode(',', $question_ids);
+
+						// preserve exact order
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
+
+					} else {
+
+						if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+							shuffle($question_ids);
+						}
+						$question_sql = implode(',', $question_ids);
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 					}
+
 				} else {
-					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
-					$question_sql = implode( ',', $question_ids );
+
+					if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+						shuffle($question_ids);
+					}
+					$question_sql = implode(',', $question_ids);
+					$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 				}
-				$order_by_sql = 'ORDER BY FIELD(question_id,' . esc_sql( $question_sql ) . ')';
+
+			} elseif ( in_array('questions', $randomness_order, true) || in_array('pages', $randomness_order, true) ) {
+
+				// no cookie → apply randomness
+				shuffle($question_ids);
+				$question_sql = implode(',', $question_ids);
+				$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 			}
 			$query          = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions      = $wpdb->get_results( $query );
