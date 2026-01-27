@@ -2093,27 +2093,63 @@ class QMNQuizManager {
 			$qmn_array_for_variables                    = apply_filters( 'qsm_array_for_variables_before_db_query', $qmn_array_for_variables );
 			// If the store responses in database option is set to Yes.
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
-				// Inserts the responses in the database.
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
-					$results_update = $wpdb->update(
-						$table_name,
-						array(
-							'point_score'     => $qmn_array_for_variables['total_points'],
-							'correct_score'   => $qmn_array_for_variables['total_score'],
-							'correct'         => $qmn_array_for_variables['total_correct'],
-							'total'           => $qmn_array_for_variables['total_questions'],
-							'user_ip'         => $qmn_array_for_variables['user_ip'],
-							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => maybe_serialize( $results_array ),
-						),
-						array( 'result_id' => $results_id )
-					);
-					if ( false === $results_update ) {
-						$error_details = $wpdb->last_error;
-						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' from ' . $wpdb->last_query, 0, 'error' );
+
+					$record_exists = $wpdb->get_row( $wpdb->prepare( 
+						"SELECT user, user_ip FROM $table_name WHERE result_id = %s", 
+						$results_id 
+					) );
+
+					$is_authorized = false;
+					
+					if ( $record_exists ) {
+						$current_user_id = get_current_user_id();
+
+						if ( $current_user_id > 0 && (int)$record_exists->user == $current_user_id ) {
+							$is_authorized = true;
+						} 
+						
+						if ( ! $is_authorized ) {
+							// Check for extra authentication do not allow to update result without extra authentication if guest user
+							$extra_authentication = apply_filters('qsm_extra_authentication_update_results_before', '', $qmn_quiz_options, $qmn_array_for_variables);
+							if ( '' != $extra_authentication ) {
+								$is_authorized = true;
+							}
+						}
+					}
+
+					if ( ! $is_authorized ) { 
+						$quiz_submitted_data = qsm_printTableRows( $qmn_array_for_variables );
+
+						$mlwQuizMasterNext->log_manager->add(
+							__( 'Security Alert: Unauthorized attempt - Quiz ID:', 'quiz-master-next' ) . $qmn_array_for_variables['quiz_id'],
+							'<b>Target Result ID:</b> ' . $results_id . '<br/><b>User IP:</b> ' . $qmn_array_for_variables['user_ip'] . '<br/><b>Quiz data:</b> ' . $quiz_submitted_data,
+							0,
+							'warning'
+						);
+
+						$result_display .= '<div class="qsm-result-page-warning">' . __( 'Sorry, your submission was not successful. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
+					} else {
+						$results_update = $wpdb->update(
+							$table_name,
+							array(
+								'point_score'     => $qmn_array_for_variables['total_points'],
+								'correct_score'   => $qmn_array_for_variables['total_score'],
+								'correct'         => $qmn_array_for_variables['total_correct'],
+								'total'           => $qmn_array_for_variables['total_questions'],
+								'user_ip'         => $qmn_array_for_variables['user_ip'],
+								'time_taken'      => $qmn_array_for_variables['time_taken'],
+								'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
+								'quiz_results'    => maybe_serialize( $results_array ),
+							),
+							array( 'result_id' => $results_id )
+						);
+						if ( false === $results_update ) {
+							$error_details = $wpdb->last_error;
+							$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' from ' . $wpdb->last_query, 0, 'error' );
+						}
 					}
 				} else {
 					$http_referer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';

@@ -1454,6 +1454,10 @@ function qsm_is_substring_in_array( text, array ) {
 (function ($) {
     $(document).on('click', '.enable-multiple-category', function (e) {
         e.preventDefault();
+        const nonce = $(this).data('qsm-mc-nonce');
+        if (!nonce) {
+            return;
+        }
         $('.category-action').html('<span>' + qsm_admin_messages.updating_db + '</span>');
         $('.category-action').prev().hide();
         $('.category-action').prev().prev().hide();
@@ -1472,7 +1476,7 @@ function qsm_is_substring_in_array( text, array ) {
             data: {
                 action: 'enable_multiple_categories',
                 value: 'enable',
-                nonce: wpApiSettings.nonce
+                nonce: nonce
             },
             success: function (response) {
                 clearInterval(category_interval);
@@ -1488,6 +1492,10 @@ function qsm_is_substring_in_array( text, array ) {
 
     $(document).on('click', '.cancel-multiple-category', function (e) {
         e.preventDefault();
+        const nonce = $(this).data('qsm-mc-nonce');
+        if (!nonce) {
+            return;
+        }
         $('.category-action').html('');
         $.ajax({
             type: "POST",
@@ -1495,7 +1503,7 @@ function qsm_is_substring_in_array( text, array ) {
             data: {
                 action: 'enable_multiple_categories',
                 value: 'cancel',
-                nonce: wpApiSettings.nonce
+                nonce: nonce
             },
             success: function (response) {
                 if (response.success) {
