@@ -147,9 +147,10 @@
 		qsmTourState.onEnd = null;
 		qsmTourState.steps = [
 			{
-				selector: '#question_type',
+				selector: '.questionElements:visible #question_type',
+				fallbackSelectors: [ '.questionElements:visible', 'body' ],
 				content: '<h3>Create your first question</h3><p>Choose the question type and add answers.</p><h4>Question Type</h4><p>Choose how users will answer this question.</p>',
-				position: { edge: 'top', align: 'center' },
+				position: { edge: 'bottom', align: 'center' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 				showBack: false
@@ -157,28 +158,28 @@
 			{
 				selector: '#change-answer-editor',
 				content: '<h3>Answer Type</h3><p>Select the format of your answer options.</p>',
-				position: { edge: 'top', align: 'center' },
+				position: { edge: 'bottom', align: 'center' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 			},
 			{
 				selector: '#question_title',
 				content: '<h3>Question Title</h3><p>Write the question you want to ask your users.</p>',
-				position: { edge: 'top', align: 'center' },
+				position: { edge: 'bottom', align: 'center' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 			},
 			{
 				selector: '.qsm-show-question-desc-box',
 				content: '<h3>Edit Description</h3><p>Add extra instructions or context (optional).</p>',
-				position: { edge: 'top', align: 'left' },
+				position: { edge: 'bottom', align: 'left' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 			},
 			{
 				selector: '#answers',
 				content: '<h3>Add Answers</h3><p>Add all possible answers for this question.</p>',
-				position: { edge: 'top', align: 'left' },
+				position: { edge: 'bottom', align: 'left' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 			},
@@ -223,7 +224,7 @@
 
 		qsmTourState.started = true;
 		qsmTourState.index = startIndex || 0;
-		qsmWaitForSelector( '#question_type', 5000, function(){
+		qsmWaitForSelector( '.questionElements:visible #question_type', 5000, function(){
 			qsmOpenTourStep( qsmTourState.index );
 		});
 	}
@@ -297,6 +298,7 @@
 			},
 			{
 				selector: '.questionElements',
+				fallbackSelectors: [ 'body' ],
 				content: '<h3>🎉 Congratulations!</h3><p>You’ve created your first quiz question.</p><p>You can now add more questions using the same steps</p>',
 				position: { edge: 'left', align: 'center' },
 				showSkip: false,
@@ -368,11 +370,10 @@
 				}
 			},
 			{
-				// selector: '#answers',
+				selector: '#answers',
+				fallbackSelectors: [ '.questionElements', 'body' ],
 				content: '<h3>👍 Nice!</h3><p>Your question behavior is now set.</p>',
 				position: { edge: 'top', align: 'left' },
-				wizardStep: 2,
-				totalWizardSteps: 3,
 				showSkip: false,
 				showBack: false,
 				doneText: 'Done'
@@ -394,6 +395,28 @@
 		} catch (e) {
 			// ignore
 		}
+	}
+
+	function qsmGetTourTargetForStep( step ) {
+		var $target = $();
+		if ( step && step.selector ) {
+			$target = $( step.selector ).first();
+			if ( $target.length ) {
+				return $target;
+			}
+		}
+		if ( step && step.fallbackSelectors && step.fallbackSelectors.length ) {
+			for ( var i = 0; i < step.fallbackSelectors.length; i++ ) {
+				if ( !step.fallbackSelectors[i] ) {
+					continue;
+				}
+				$target = $( step.fallbackSelectors[i] ).first();
+				if ( $target.length ) {
+					return $target;
+				}
+			}
+		}
+		return $();
 	}
 
 	function qsmEnsureSpotlightStyles() {
@@ -526,6 +549,13 @@
 				qsmTourState.cleanupCurrent = null;
 			}
 			qsmTourState.started = false;
+			if ( typeof qsmTourState.onEnd === 'function' ) {
+				var onEnd = qsmTourState.onEnd;
+				qsmTourState.onEnd = null;
+				setTimeout(function(){
+					try { onEnd(); } catch (e) { /* ignore */ }
+				}, 0);
+			}
 			return;
 		}
 
@@ -537,8 +567,8 @@
 				stepIndex: stepIndex
 			});
 		}
-		var $target = $( step.selector ).first();
-		if ( $target.length === 0 ) {
+		var $target = qsmGetTourTargetForStep( step );
+		if ( !$target.length ) {
 			qsmOpenTourStep( stepIndex + 1 );
 			return;
 		}
@@ -549,7 +579,7 @@
 			} catch (e) {
 				// ignore
 			}
-			$target = $( step.selector ).first();
+			$target = qsmGetTourTargetForStep( step );
 			if ( !$target.length ) {
 				qsmOpenTourStep( stepIndex + 1 );
 				return;
@@ -649,8 +679,10 @@
 					t.element.pointer('close');
 				});
 
-				$counter.text( 'Step ' + currentStep + ' of ' + totalSteps );
-				$left.append( $counter );
+				if ( step.wizardStep || currentStep == totalSteps ) {
+					$counter.text( 'Step ' + currentStep + ' of ' + totalSteps );
+					$left.append( $counter );
+				}
 
 				if ( showSkip ) {
 					$right.append( $skip );
@@ -786,8 +818,6 @@
 					content: '<h3>✅ Great start!</h3><p>You’ve successfully created your first question.</p>',
 					position: { edge: 'left', align: 'center' },
 					doneText: 'Done',
-					wizardStep: 1,
-					totalWizardSteps: 3,
 					showSkip: false,
 					showBack: false
 				}
