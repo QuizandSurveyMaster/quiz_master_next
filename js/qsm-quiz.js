@@ -823,6 +823,12 @@ function qmnValidation(element, quiz_form_id) {
 				by_pass = false;
 			}
 			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || (0 == localStorage.getItem('mlw_time_quiz' + quiz_id) && by_pass == false) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
+				// Check if this is a contact field
+				var isContactField = jQuery(this).closest('.qsm_contact_div').length > 0;
+				var requiredErrorMsg = (isContactField && error_messages.contact_field_required_error_text) 
+					? error_messages.contact_field_required_error_text 
+					: error_messages.empty_error_text;
+
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
@@ -832,7 +838,7 @@ function qmnValidation(element, quiz_form_id) {
 					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && jQuery.trim(this.value) === "") {
-					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
+					qmnDisplayError(requiredErrorMsg, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code) {

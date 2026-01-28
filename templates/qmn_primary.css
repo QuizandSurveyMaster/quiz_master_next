@@ -169,7 +169,8 @@ label.inline .mlw_qmn_question,
 .quiz_section input[type="text"],
 .quiz_section input[type="email"],
 .quiz_section input[type="url"],
-.quiz_section input[type="number"] {
+.quiz_section input[type="number"],
+.quiz_section input[type="date"] {
   width: 70%;
   min-height: 35px;
   display: inline-block;
@@ -417,7 +418,8 @@ label.inline .mlw_qmn_question,
 .qmn_quiz_container input[type="text"],
 .qmn_quiz_container input[type="email"],
 .qmn_quiz_container input[type="url"],
-.qmn_quiz_container input[type="number"] {
+.qmn_quiz_container input[type="number"],
+.qmn_quiz_container input[type="date"] {
   background: #fff;
   border: 1px solid #3498db;
 }
@@ -433,7 +435,8 @@ label.inline .mlw_qmn_question,
 .qmn_quiz_container input[type="text"]:focus,
 .qmn_quiz_container input[type="email"]:focus,
 .qmn_quiz_container input[type="url"]:focus,
-.qmn_quiz_container input[type="number"]:focus {
+.qmn_quiz_container input[type="number"]:focus,
+.qmn_quiz_container input[type="date"]:focus {
   outline: 0;
   background: #fff;
   border: 1px solid #3498db;

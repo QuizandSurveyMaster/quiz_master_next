@@ -956,14 +956,16 @@ class QMNQuizManager {
 		wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 
 		global $qmn_json_data;
+		$default_texts = QMNPluginHelper::get_default_texts();
 		$qmn_json_data['error_messages'] = array(
-			'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->email_error_text, "quiz_email_error_text-{$options->quiz_id}" ),
-			'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->number_error_text, "quiz_number_error_text-{$options->quiz_id}" ),
+			'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->email_error_text) ? $options->email_error_text : $default_texts['email_error_text'], "quiz_email_error_text-{$options->quiz_id}" ),
+			'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->number_error_text) ? $options->number_error_text : $default_texts['number_error_text'], "quiz_number_error_text-{$options->quiz_id}" ),
 			'incorrect_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->incorrect_error_text, "quiz_incorrect_error_text-{$options->quiz_id}" ),
 			'empty_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->empty_error_text, "quiz_empty_error_text-{$options->quiz_id}" ),
-			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->url_error_text, "quiz_url_error_text-{$options->quiz_id}" ),
-			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->minlength_error_text, "quiz_minlength_error_text-{$options->quiz_id}" ),
-			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->maxlength_error_text, "quiz_maxlength_error_text-{$options->quiz_id}" ),
+			'contact_field_required_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty( $options->contact_field_required_error_text ) ? $options->contact_field_required_error_text : $default_texts['contact_field_required_error_text'], "quiz_contact_field_required_error_text-{$options->quiz_id}" ),
+			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->url_error_text) ? $options->url_error_text : $default_texts['url_error_text'], "quiz_url_error_text-{$options->quiz_id}" ),
+			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->minlength_error_text) ? $options->minlength_error_text : $default_texts['minlength_error_text'], "quiz_minlength_error_text-{$options->quiz_id}" ),
+			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->maxlength_error_text) ? $options->maxlength_error_text : $default_texts['maxlength_error_text'], "quiz_maxlength_error_text-{$options->quiz_id}" ),
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
 		);
 		$qmn_json_data                   = apply_filters( 'qsm_json_error_message', $qmn_json_data, $options );

@@ -1423,33 +1423,38 @@ class QSM_New_Pagination_Renderer {
 		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
 		
 		// Get error messages from quiz texts with language support
+		$default_texts = QMNPluginHelper::get_default_texts();
 		$error_messages = array(
 			'email_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->email_error_text ?? 'Please enter a valid email address.',
+				! empty( $this->options->email_error_text ) ? $this->options->email_error_text : $default_texts['email_error_text'],
 				"quiz_email_error_text-{$this->options->quiz_id}"
 			),
 			'url_error_text'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->url_error_text ?? 'Please enter a valid URL.',
+				! empty( $this->options->url_error_text ) ? $this->options->url_error_text : $default_texts['url_error_text'],
 				"quiz_url_error_text-{$this->options->quiz_id}"
 			),
 			'empty_error_text'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->empty_error_text ?? 'This field is required.',
+				$this->options->empty_error_text ?? $default_texts['empty_error_text'],
 				"quiz_empty_error_text-{$this->options->quiz_id}"
 			),
+			'contact_field_required_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
+				! empty( $this->options->contact_field_required_error_text ) ? $this->options->contact_field_required_error_text : $default_texts['contact_field_required_error_text'],
+				"quiz_contact_field_required_error_text-{$this->options->quiz_id}"
+			),
 			'number_error_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->number_error_text ?? 'Please enter a valid number.',
+				! empty($this->options->number_error_text) ? $this->options->number_error_text : $default_texts['number_error_text'],
 				"quiz_number_error_text-{$this->options->quiz_id}"
 			),
 			'incorrect_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->incorrect_error_text ?? 'Incorrect answer.',
+				$this->options->incorrect_error_text ?? $default_texts['incorrect_error_text'],
 				"quiz_incorrect_error_text-{$this->options->quiz_id}"
 			),
 			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->minlength_error_text ?? 'Minimum %minlength% characters required.',
+				! empty( $this->options->minlength_error_text ) ? $this->options->minlength_error_text : $default_texts['minlength_error_text'],
 				"quiz_minlength_error_text-{$this->options->quiz_id}"
 			),
 			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->maxlength_error_text ?? 'Maximum %maxlength% characters allowed.',
+				! empty( $this->options->maxlength_error_text ) ? $this->options->maxlength_error_text : $default_texts['maxlength_error_text'],
 				"quiz_maxlength_error_text-{$this->options->quiz_id}"
 			),
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
