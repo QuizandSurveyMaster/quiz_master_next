@@ -2135,9 +2135,9 @@ class QMNQuizManager {
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
 
-					$record_exists = $wpdb->get_row( $wpdb->prepare( 
-						"SELECT user, user_ip FROM $table_name WHERE result_id = %s", 
-						$results_id 
+					$record_exists = $wpdb->get_row( $wpdb->prepare(
+						"SELECT user, user_ip FROM $table_name WHERE result_id = %s",
+						$results_id
 					) );
 
 					$is_authorized = false;
@@ -2147,7 +2147,7 @@ class QMNQuizManager {
 
 						if ( $current_user_id > 0 && (int)$record_exists->user == $current_user_id ) {
 							$is_authorized = true;
-						} 
+						}
 						
 						if ( ! $is_authorized ) {
 							// Check for extra authentication do not allow to update result without extra authentication if guest user
@@ -2158,7 +2158,7 @@ class QMNQuizManager {
 						}
 					}
 
-					if ( ! $is_authorized ) { 
+					if ( ! $is_authorized ) {
 						$quiz_submitted_data = qsm_printTableRows( $qmn_array_for_variables );
 
 						$mlwQuizMasterNext->log_manager->add(
