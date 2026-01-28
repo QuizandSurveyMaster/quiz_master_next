@@ -174,7 +174,7 @@ function qsm_options_contact_tab_content() {
 						</fieldset>
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="contact_field_required_error_text"><?php esc_html_e( 'Required field error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -185,7 +185,7 @@ function qsm_options_contact_tab_content() {
 						<input type="text" id="contact_field_required_error_text" name="contact_field_required_error_text" value="<?php echo esc_attr( !empty( $quiz_options['contact_field_required_error_text'] ) ? $quiz_options['contact_field_required_error_text'] : __( 'Please complete all required fields!', 'quiz-master-next' ) ); ?>" class="regular-text" />
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="email_error_text"><?php esc_html_e( 'Invalid email error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -196,7 +196,7 @@ function qsm_options_contact_tab_content() {
 						<input type="text" id="email_error_text" name="email_error_text" value="<?php echo esc_attr( !empty( $quiz_options['email_error_text'] ) ? $quiz_options['email_error_text'] : __( 'Not a valid e-mail address!', 'quiz-master-next' ) ); ?>" class="regular-text" />
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="number_error_text"><?php esc_html_e( 'Invalid number error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -207,7 +207,7 @@ function qsm_options_contact_tab_content() {
 						<input type="text" id="number_error_text" name="number_error_text" value="<?php echo esc_attr( !empty( $quiz_options['number_error_text'] ) ? $quiz_options['number_error_text'] : __( 'This field must be a number!', 'quiz-master-next' ) ); ?>" class="regular-text" />
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="url_error_text"><?php esc_html_e( 'Invalid URL error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -218,7 +218,7 @@ function qsm_options_contact_tab_content() {
 						<input type="text" id="url_error_text" name="url_error_text" value="<?php echo esc_attr( !empty( $quiz_options['url_error_text'] ) ? $quiz_options['url_error_text'] : __( 'The entered URL is not valid!', 'quiz-master-next' ) ); ?>" class="regular-text" />
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="minlength_error_text"><?php esc_html_e( 'Minimum length error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
@@ -229,7 +229,7 @@ function qsm_options_contact_tab_content() {
 						<input type="text" id="minlength_error_text" name="minlength_error_text" value="<?php echo esc_attr( !empty( $quiz_options['minlength_error_text'] ) ? $quiz_options['minlength_error_text'] : __( 'Required atleast %minlength% characters.', 'quiz-master-next' ) ); ?>" class="regular-text" />
 					</td>
 				</tr>
-				<tr valign="top">
+				<tr>
 					<th scope="row" class="qsm-opt-tr">
 						<label for="maxlength_error_text"><?php esc_html_e( 'Maximum length error message', 'quiz-master-next' ); ?></label>
 						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">

@@ -824,8 +824,8 @@ function qmnValidation(element, quiz_form_id) {
 			}
 			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || (0 == localStorage.getItem('mlw_time_quiz' + quiz_id) && by_pass == false) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
 				// Check if this is a contact field
-				var isContactField = jQuery(this).closest('.qsm_contact_div').length > 0;
-				var requiredErrorMsg = (isContactField && error_messages.contact_field_required_error_text) 
+				let isContactField = jQuery(this).closest('.qsm_contact_div').length > 0;
+				let requiredErrorMsg = (isContactField && error_messages.contact_field_required_error_text) 
 					? error_messages.contact_field_required_error_text 
 					: error_messages.empty_error_text;
 
