@@ -1941,6 +1941,8 @@ var QSMContact;
                             settings[$(this).attr('name')] = ($(this).prop('checked') ? '1' : '0');
                         } else if ('radio' == $(this).attr('type') && $(this).prop('checked')) {
                             settings[$(this).attr('name')] = $(this).val();
+                        } else if ('text' == $(this).attr('type')) {
+                            settings[$(this).attr('name')] = $(this).val();
                         }
                     });
 

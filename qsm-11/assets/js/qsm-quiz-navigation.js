@@ -1150,8 +1150,13 @@ var show_result_validation = true;
                 }
                 
                 // Required field validations
+                let isContactField = $field.closest('.qsm_contact_div').length > 0;
+                let requiredErrorMsg = (isContactField && errorMessages.contact_field_required_error_text) 
+                    ? errorMessages.contact_field_required_error_text 
+                    : (errorMessages.empty_error_text || 'Please complete all required fields!');
+
                 if (fieldClass.indexOf('mlwRequiredText') !== -1 && $.trim(fieldValue) === '') {
-                    self.displayError(errorMessages.empty_error_text || 'This field is required.', $field, quizId);
+                    self.displayError(requiredErrorMsg, $field, quizId);
                     show_result_validation = false;
                 }
 

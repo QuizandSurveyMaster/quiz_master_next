@@ -1266,6 +1266,16 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+		// Registers contact_field_required_error_text setting
+		$field_array = array(
+			'id'         => 'contact_field_required_error_text',
+			'label'      => __( 'Required contact field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
 		// Registers email_error_text setting
 		$field_array = array(
 			'id'         => 'email_error_text',
