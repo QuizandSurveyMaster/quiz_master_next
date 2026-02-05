@@ -782,17 +782,55 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
-				if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) && empty( $quiz_options->question_per_category ) && empty( $quiz_options->limit_category_checkbox ) ) {
-					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $quiz_id ] ) );
-					if ( ! preg_match( '/^\d+(,\d+)*$/', $question_sql ) ) {
-						$question_sql = implode( ',', $question_ids );
+
+			/**
+			 * If cookie exists, try to preserve question ids + order
+			 */
+			if ( isset($_COOKIE['question_ids_' . $quiz_id]) ) {
+				// raw cookie
+				$cookie_raw = wp_unslash($_COOKIE['question_ids_' . $quiz_id]);
+
+				// sanitize & keep only digits + commas
+				$cookie_raw = preg_replace('/[^0-9,]/', '', $cookie_raw);
+
+				// convert to array
+				$cookie_ids = array_filter(array_map('intval', explode(',', $cookie_raw)));
+
+				if ( !empty($cookie_ids) ) {
+
+					if ( !empty($cookie_ids) ) {
+
+						// finally preserve cookie ids
+						$question_ids = $cookie_ids;
+						$question_sql = implode(',', $question_ids);
+
+						// preserve exact order
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
+
+					} else {
+
+						if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+							shuffle($question_ids);
+						}
+						$question_sql = implode(',', $question_ids);
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 					}
+
 				} else {
-					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
-					$question_sql = implode( ',', $question_ids );
+
+					if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+						shuffle($question_ids);
+					}
+					$question_sql = implode(',', $question_ids);
+					$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 				}
-				$order_by_sql = 'ORDER BY FIELD(question_id,' . esc_sql( $question_sql ) . ')';
+
+			} elseif ( in_array('questions', $randomness_order, true) || in_array('pages', $randomness_order, true) ) {
+
+				// no cookie → apply randomness
+				shuffle($question_ids);
+				$question_sql = implode(',', $question_ids);
+				$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 			}
 			$query          = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions      = $wpdb->get_results( $query );
@@ -847,9 +885,9 @@ class QMNQuizManager {
 			$question_sql = implode( ',', array_unique( $question_ids ) ); // Prevent duplicates
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
-				let expires = "expires=" + d.toUTCString();
+				const qsmCookieExpiry = new Date();
+				qsmCookieExpiry.setTime(qsmCookieExpiry.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				let expires = "expires=" + qsmCookieExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
 			</script>
 			<?php
@@ -1108,9 +1146,9 @@ class QMNQuizManager {
 			$question_list_str = implode( ',', $question_list_array );
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365*24*60*60*1000));
-				let expires = "expires="+ d.toUTCString();
+				const qsmExpiry = new Date();
+				qsmExpiry.setTime(qsmExpiry.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ qsmExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+expires+"; path=/";
 			</script>
 			<?php
@@ -2097,9 +2135,9 @@ class QMNQuizManager {
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
 
-					$record_exists = $wpdb->get_row( $wpdb->prepare( 
-						"SELECT user, user_ip FROM $table_name WHERE result_id = %s", 
-						$results_id 
+					$record_exists = $wpdb->get_row( $wpdb->prepare(
+						"SELECT user, user_ip FROM $table_name WHERE result_id = %s",
+						$results_id
 					) );
 
 					$is_authorized = false;
@@ -2109,7 +2147,7 @@ class QMNQuizManager {
 
 						if ( $current_user_id > 0 && (int)$record_exists->user == $current_user_id ) {
 							$is_authorized = true;
-						} 
+						}
 						
 						if ( ! $is_authorized ) {
 							// Check for extra authentication do not allow to update result without extra authentication if guest user
@@ -2120,7 +2158,7 @@ class QMNQuizManager {
 						}
 					}
 
-					if ( ! $is_authorized ) { 
+					if ( ! $is_authorized ) {
 						$quiz_submitted_data = qsm_printTableRows( $qmn_array_for_variables );
 
 						$mlwQuizMasterNext->log_manager->add(
