@@ -698,6 +698,9 @@ a#qsm-category-add-toggle {
 	text-align: right;
 	display: none;
 }
+.qsm-admin-bulk-actions.qsm-question-bank-page {
+	display: block;
+}
 input.qsm-admin-select-page-question {
     margin-left: 10px;
     margin-right: 10px;

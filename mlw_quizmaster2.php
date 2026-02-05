@@ -284,6 +284,7 @@ class MLWQuizMasterNext {
 			include_once 'php/admin/admin-results-page.php';
 			include_once 'php/admin/admin-results-details-page.php';
 			include_once 'php/admin/tools-page.php';
+			include_once 'php/admin/question-bank-page.php';
 			include_once 'php/classes/class-qsm-changelog-generator.php';
 			include_once 'php/admin/about-page.php';
 			include_once 'php/admin/dashboard-widgets.php';
@@ -900,6 +901,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), $capabilities[2], 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), $capabilities[2], 'qmn_stats', 'qmn_generate_stats_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), $capabilities[2], 'qsm_quiz_about', 'qsm_generate_about_page' );
+			add_submenu_page( 'qsm_dashboard', __( 'Question Bank', 'quiz-master-next' ), __( 'Question Bank', 'quiz-master-next' ), $capabilities[6], 'qsm_question_bank', 'qsm_render_question_bank_page', 2 );
 
 			add_submenu_page( 'qsm_dashboard', __( 'Extensions Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Extensions', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qmn_addons', 'qmn_addons_page', 34 );
 			add_submenu_page( 'qsm_dashboard', __( 'Free Add-ons', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Free Add-ons', 'quiz-master-next' ) . '</span>', $capabilities[2], 'qsm-free-addon', 'qsm_display_optin_page', 90 );
