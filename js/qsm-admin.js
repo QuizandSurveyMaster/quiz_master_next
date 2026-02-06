@@ -1993,6 +1993,7 @@ var QSMContact;
                 },
                 hideShowSettings: function (field) {
                     var type = field.find('.type-control').val();
+                    var useValue = field.find('.use-control').val();
                     if (field.find('.qsm-required-control').prop('checked')) {
                         field.find('.field-required-flag').show();
                     }
@@ -2008,6 +2009,9 @@ var QSMContact;
                     }
                     if ('email' == type) {
                         field.find('.qsm-contact-form-field-settings .qsm-email-option').show();
+                    }
+                    if ('phone' == useValue) {
+                        field.find('.qsm-contact-form-field-settings .qsm-phone-option').show();
                     }
                     if (['radio', 'select'].includes(type)) {
                         field.find('.qsm-contact-form-field-settings .qsm-field-options').show();
