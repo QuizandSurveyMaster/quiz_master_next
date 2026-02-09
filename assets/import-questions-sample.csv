@@ -1,19 +1,4 @@
-Item Type,Question Title,Question Description,Answer Text,Answer Point,Answer Correct/InCorrect,Answer Caption,Answer label,Question Answer Info,Comments,Hints,Question Type New,Required,Require all rows,Answer Editor,Feature Image Src,Match Answer,Case Sensitive,Answer Columns,Image Size-Width,Image Size-Height,Autofill,Text Limit,Limit Multiple Response,File Upload Limit,File Upload Type,Categories
-Question,Multiple Choice,What is the capital of France?,,,,,'Default',Paris is the capital of France.,Leave blank for none,,Multiple Choice,1,,text,,,0,0,3,,,,,General Knowledge
-Answer,,,Paris,10,1,,,,,,,,,,,,,,,,,,,,,
-Answer,,,Lyon,0,0,,,,,,,,,,,,,,,,,,,,,
-Answer,,,Marseille,0,0,,,,,,,,,,,,,,,,,,,,,
-Question,Multiple Response,Select all prime numbers under 10.,,,,,,'Primes under 10 are 2, 3, 5, 7.',,,Multiple Response,1,,text,,,,,,,2,,,1,,Math
-Answer,,,2,5,1,,,,,,,,,,,,,,,,,,,,,
-Answer,,,3,5,1,,,,,,,,,,,,,,,,,,,,,
-Answer,,,4,0,0,,,,,,,,,,,,,,,,,,,,,
-Answer,,,5,5,1,,,,,,,,,,,,,,,,,,,,,
-Answer,,,6,0,0,,,,,,,,,,,,,,,,,,,,,
-Question,Drop Down,Choose the correct continent for Brazil.,,,,,,,,,Drop Down,1,,text,,,,0,0,,,,,Geography
-Answer,,,South America,10,1,,,,,,,,,,,,,,,,,,,,,
-Answer,,,Europe,0,0,,,,,,,,,,,,,,,,,,,,,
-Question,Polar,How satisfied are you with our training?,,,,,,,,,Polar,1,,text,,,0,0,,400,50,,,,,Feedback
-Answer,,,Left (Not Satisfied),0,0,,,,,,,,,,,,,,,,,,,,,
-Answer,,,Right (Very Satisfied),10,1,,,,,,,,,,,,,,,,,,,,,
-Question,Opt-in,I agree to the terms and conditions.,,,,,,,,,Opt-in,1,,text,,,,,,,,,,,,,Compliance
-Answer,,,I Agree,0,1,,,,,,,,,,,,,,,,,,,,,
+question,description,question_type,option_1,option_2,option_3,option_4,correct_option,points,category,hint,grading_mode,answer_limit
+What is the capital of France?,Choose the correct capital city.,Multiple Choice,Paris,London,Berlin,Madrid,Paris,10,Geography,Known as the City of Light,auto,
+Which of the following are programming languages?,Select all that apply,Multiple Response,Python,HTML,Java,CSS,"1,3",5,Technology,Think about compiled language,auto,2
+What does HTML stand for?,Full form of HTML,Fill In The blank,,,,,,,Web Development,Used to structure web pages,manual,

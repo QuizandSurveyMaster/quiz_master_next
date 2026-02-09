@@ -214,9 +214,9 @@ function qsm_render_question_bank_page() {
 		</div>
 
 		<div class="qsm-question-bank-pagination" id="qsm-question-bank-pagination" style="display:none;">
+			<span class="qsm-question-bank-page-info" id="qsm-question-bank-page-info"></span>
 			<button type="button" class="button" id="qsm-question-bank-prev">&lsaquo; <?php esc_html_e( 'Previous', 'quiz-master-next' ); ?></button>
 			<div class="qsm-question-bank-page-buttons" id="qsm-question-bank-page-buttons"></div>
-			<span class="qsm-question-bank-page-info" id="qsm-question-bank-page-info"></span>
 			<button type="button" class="button" id="qsm-question-bank-next"><?php esc_html_e( 'Next', 'quiz-master-next' ); ?> &rsaquo;</button>
 		</div>
 	</div>
@@ -247,7 +247,6 @@ function qsm_question_bank_admin_assets( $hook ) {
 	wp_enqueue_editor();
 
 	wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qsm_question_bank_admin_css', QSM_PLUGIN_CSS_URL . '/qsm-question-bank.css', array( 'qsm_admin_question_css' ), $mlwQuizMasterNext->version );
 
 	wp_enqueue_script(
 		'qsm_question_bank_admin_js',
@@ -1037,17 +1036,29 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		return null;
 	}
 
-	$header_map = qsm_question_bank_normalize_headers( $header_row );
-	$questions  = array();
-	$current    = null;
-	$line       = 1;
-	$errors     = array();
+	$header_map    = qsm_question_bank_normalize_headers( $header_row );
+	$questions     = array();
+	$errors        = array();
+	$line          = 1;
+	$is_flat_csv   = qsm_question_bank_is_flat_format( $header_map );
+	$current       = null;
 
 	while ( ( $row = fgetcsv( $handle ) ) !== false ) {
 		$line++;
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
 			continue;
 		}
+
+		if ( $is_flat_csv ) {
+			$question = qsm_question_bank_build_flat_question( $row, $header_map, $line );
+			if ( is_wp_error( $question ) ) {
+				$errors[] = $question->get_error_message();
+				continue;
+			}
+			$questions[] = $question;
+			continue;
+		}
+
 		$item_type = strtolower( qsm_question_bank_get_value( $row, $header_map, 'item_type' ) );
 		if ( 'question' === $item_type ) {
 			if ( $current ) {
@@ -1068,7 +1079,7 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		}
 	}
 
-	if ( $current ) {
+	if ( ! $is_flat_csv && $current ) {
 		$questions[] = $current;
 	}
 
@@ -1288,6 +1299,169 @@ function qsm_question_bank_build_answer( $row, $header_map, $line ) {
 	}
 
 	return $answer;
+}
+
+/**
+ * Determines if the CSV follows the flat "one row per question" format.
+ *
+ * @since 10.4.0
+ * @param array $header_map Normalized header map.
+ * @return bool
+ */
+function qsm_question_bank_is_flat_format( $header_map ) {
+	if ( isset( $header_map['item_type'] ) ) {
+		return false;
+	}
+	$has_question_column = isset( $header_map['question'] ) || isset( $header_map['question_title'] );
+	if ( ! $has_question_column ) {
+		return false;
+	}
+	foreach ( $header_map as $key => $index ) {
+		if ( 0 === strpos( $key, 'option' ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Builds a question entry from the flat CSV structure.
+ *
+ * @since 10.4.0
+ * @param array $row        CSV row.
+ * @param array $header_map Header map.
+ * @param int   $line       Current line number.
+ * @return array|WP_Error
+ */
+function qsm_question_bank_build_flat_question( $row, $header_map, $line ) {
+	$question_title = qsm_question_bank_get_value( $row, $header_map, 'question' );
+	if ( '' === $question_title ) {
+		$question_title = qsm_question_bank_get_value( $row, $header_map, 'question_title' );
+	}
+	if ( '' === $question_title ) {
+		return new WP_Error( 'qsm_question_bank_missing_title', sprintf( __( 'Line %1$d: Question text is required.', 'quiz-master-next' ), $line ) );
+	}
+
+	$question_description = qsm_question_bank_get_value( $row, $header_map, 'description', $question_title );
+	$question_type        = qsm_question_bank_get_value( $row, $header_map, 'question_type', qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ) );
+	$hint                 = qsm_question_bank_get_value( $row, $header_map, 'hint', qsm_question_bank_get_value( $row, $header_map, 'hints' ) );
+	$categories_string    = qsm_question_bank_get_value( $row, $header_map, 'category', qsm_question_bank_get_value( $row, $header_map, 'categories' ) );
+	$categories           = qsm_question_bank_parse_categories( $categories_string );
+	$limit_multiple       = qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_limit' ), qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'limit_multiple_response' ), 0 ) );
+
+	$question = array(
+		'line'                    => $line,
+		'question_title'          => $question_title,
+		'question_description'    => $question_description,
+		'question_type'           => $question_type,
+		'answer_info'             => qsm_question_bank_get_value( $row, $header_map, 'question_answer_info' ),
+		'comments'                => qsm_question_bank_get_value( $row, $header_map, 'comments' ),
+		'hint'                    => $hint,
+		'required'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'required' ), true ),
+		'answer_editor'           => qsm_question_bank_get_value( $row, $header_map, 'answer_editor', 'text' ),
+		'feature_image_src'       => qsm_question_bank_get_value( $row, $header_map, 'feature_image_src' ),
+		'match_answer'            => qsm_question_bank_get_value( $row, $header_map, 'match_answer' ),
+		'case_sensitive'          => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'case_sensitive' ) ),
+		'answer_columns'          => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_columns' ), 1 ),
+		'image_width'             => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_width' ), '' ),
+		'image_height'            => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_height' ), '' ),
+		'autofill'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'autofill' ) ),
+		'text_limit'              => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'text_limit' ), 0 ),
+		'limit_multiple_response' => $limit_multiple,
+		'file_upload_limit'       => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'file_upload_limit' ), 4 ),
+		'file_upload_type'        => qsm_question_bank_get_value( $row, $header_map, 'file_upload_type', 'image,application/pdf' ),
+		'require_all_rows'        => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'require_all_rows' ) ),
+		'categories'              => $categories,
+		'answers'                 => array(),
+	);
+
+	$answers = qsm_question_bank_collect_flat_answers( $row, $header_map, $line, $question_type );
+	if ( is_wp_error( $answers ) ) {
+		return $answers;
+	}
+	$question['answers'] = $answers;
+
+	return $question;
+}
+
+/**
+ * Builds answers from the flat CSV option columns.
+ *
+ * @since 10.4.0
+ * @param array  $row           CSV row.
+ * @param array  $header_map    Header map.
+ * @param int    $line          Current line number.
+ * @param string $question_type Raw question type value.
+ * @return array|WP_Error
+ */
+function qsm_question_bank_collect_flat_answers( $row, $header_map, $line, $question_type ) {
+	$options = array();
+	for ( $i = 1; $i <= 20; $i++ ) {
+		$option_key = 'option_' . $i;
+		$value      = qsm_question_bank_get_value( $row, $header_map, $option_key );
+		if ( '' === $value ) {
+			$option_key = 'option' . $i;
+			$value      = qsm_question_bank_get_value( $row, $header_map, $option_key );
+		}
+		if ( '' === $value ) {
+			continue;
+		}
+		$options[] = array(
+			'value' => $value,
+			'index' => $i,
+		);
+	}
+
+	$correct_raw     = qsm_question_bank_get_value( $row, $header_map, 'correct_option' );
+	$correct_tokens  = qsm_question_bank_parse_delimited_list( $correct_raw );
+	$correct_numbers = array();
+	$correct_labels  = array();
+	foreach ( $correct_tokens as $token ) {
+		if ( is_numeric( $token ) ) {
+			$correct_numbers[] = (int) $token;
+			continue;
+		}
+		$correct_labels[] = strtolower( $token );
+	}
+
+	$points = qsm_question_bank_parse_float( qsm_question_bank_get_value( $row, $header_map, 'points' ) );
+	if ( $points <= 0 ) {
+		$points = 1;
+	}
+
+	$answers = array();
+	foreach ( $options as $option ) {
+		$answer_points = $points;
+		$label_key     = 'option_label_' . $option['index'];
+		$option_label  = qsm_question_bank_get_value( $row, $header_map, $label_key );
+		$is_correct    = in_array( $option['index'], $correct_numbers, true ) || in_array( strtolower( $option['value'] ), $correct_labels, true );
+		$answers[]     = array(
+			0 => $option['value'],
+			1 => $answer_points,
+			2 => $is_correct ? 1 : 0,
+			3 => '',
+			4 => $option_label,
+		);
+	}
+
+	return $answers;
+}
+
+/**
+ * Splits a delimited string into tokens.
+ *
+ * @since 10.4.0
+ * @param string $value Raw input string.
+ * @return array
+ */
+function qsm_question_bank_parse_delimited_list( $value ) {
+	if ( '' === $value ) {
+		return array();
+	}
+	$separators = array( ',', '|', ';' );
+	$normalized = str_replace( $separators, ',', strtolower( $value ) );
+	$parts      = array_filter( array_map( 'trim', explode( ',', $normalized ) ) );
+	return $parts;
 }
 
 /**

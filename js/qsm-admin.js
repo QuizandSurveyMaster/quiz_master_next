@@ -3305,6 +3305,18 @@ var QSM_Quiz_Broadcast_Channel;
                 answerFilter: function (ansData, $answer, answerType) {
 					return ansData;
 				},
+			closeEditPopup: function(){
+				var $questionElements = $('.questions .questionElements:visible');
+				if ( !$questionElements.length ) {
+					return;
+				}
+				$questionElements.slideUp('slow', function(){
+					$(this).remove();
+				});
+				$('.questions').sortable('enable');
+				$('.page').sortable('enable');
+				$('.qsm_tab_content .question').removeClass('opened');
+			},
                 saveSuccess: function (model) {
                     var template = wp.template('question');
                     var page = model.get('page') + 1;
@@ -3333,6 +3345,10 @@ var QSM_Quiz_Broadcast_Channel;
                         $('#save-edit-question-spinner').removeClass('is-active');
                     }, 250);
                     setTimeout(QSMQuestion.removeNew, 250);
+                    if ( is_question_bank_page ) {
+                        QSMAdmin.displayAlert(qsm_admin_messages.question_saved, 'success');
+                        QSMQuestion.closeEditPopup();
+                    }
                 },
                 addNewAnswer: function (answer, questionType = false, $insertAfter = null) {
                     if (!questionType) {

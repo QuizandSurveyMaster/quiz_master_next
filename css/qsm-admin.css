@@ -5439,7 +5439,16 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 
 .qsm-question-bank-pagination {
 	margin-top: 16px;
-	text-align: center;
+    text-align: center;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    position: relative;
+    right: 8px;
+}
+
+.qsm-question-bank-pagination > *:not(:last-child) {
+    margin-right: 5px;
 }
 
 .qsm-question-bank-admin .column-question {
