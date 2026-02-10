@@ -1661,6 +1661,16 @@ class QSM_Install {
 			dbDelta( $sql );
 		}
 
+		// Check if this is first-time activation
+		$is_first_activation = ! get_option( 'qsm_plugin_activated', false );
+		
+		if ( $is_first_activation ) {
+			// Set flag to prevent future redirects
+			update_option( 'qsm_plugin_activated', true );
+			// Set transient for redirect
+			set_transient( 'qsm_first_activation_redirect', true, 30 );
+		}
+
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->register_quiz_post_types();
 		// Will be removed

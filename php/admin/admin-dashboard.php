@@ -390,46 +390,81 @@ function qsm_dashboard_recent_taken_quiz() {
  * @return HTMl Dashboard for QSM
  */
 function qsm_generate_dashboard_page() {
-	// Only let admins and editors see this page.
-	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	qsm_display_header_section_links();
-	?>
-<div class="wrap">
-	<div class="qsm-dashboard-wrapper">
-		<div class="qsm-dashboard-container">
-			<div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style">
-				<div class="qsm-dashboard-page-header">
-					<h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz / Survey', 'quiz-master-next' ); ?></h3>
-					<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Design quizzes and surveys tailored to your needs.', 'quiz-master-next' ); ?></p>
-				</div>
-				<div class="">
-					<a class="button button-primary qsm-dashboard-section-create-quiz"  href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" ><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/></a>
-				</div>
-			</div>
+    // Only let admins and editors see this page.
+    if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+        return;
+    }
+    global $mlwQuizMasterNext;
+    qsm_display_header_section_links();
 
-			<?php
-			$qsm_admin_dd = qsm_get_parsing_script_data();
-			if ( $qsm_admin_dd ) {
-				$popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
-				$themes         = isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array();
-				qsm_check_plugins_compatibility();
-				qsm_dashboard_recent_taken_quiz();
-				qsm_dashboard_display_popular_theme_section( $themes );
-				qsm_dashboard_display_popular_addon_section( $popular_addons );
-				qsm_dashboard_display_change_log_section();
-				qsm_dashboard_display_need_help_section();
+    // Check if this is a first-time activation welcome
+	$is_welcome = isset( $_GET['qsmwelcome'] ) && 1 === absint( wp_unslash( $_GET['qsmwelcome'] ) );
+    ?>
+<div class="wrap">
+    <div class="qsm-dashboard-wrapper">
+		<?php 
+			if ( $is_welcome ) {
+				// Display welcome container
+				?>
+				<div class="qsm-welcome-container qsm-dashboard-page-common-style">
+					<div class="qsm-welcome-header">
+						<div class="qsm-welcome-logo">
+							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/icon-128x128.png' ); ?>" alt="QSM Logo" />
+						</div>
+						<h2 class="qsm-welcome-title"><?php echo esc_html__( '👋 Welcome to QSM – Create Smarter Quizzes Faster', 'quiz-master-next' ); ?></h2>
+					</div>
+					<div class="qsm-welcome-body">
+						<p><?php echo esc_html__( 'QSM helps you create quizzes, surveys, and tests quickly and easily.', 'quiz-master-next' ); ?></p>
+						<div class="qsm-welcome-highlights">
+							<ul>
+								<li><?php echo esc_html__( '🤖 AI-powered question and quiz generation', 'quiz-master-next' ); ?></li>
+								<li><?php echo esc_html__( '⚡ Fast quiz creation using the current editor', 'quiz-master-next' ); ?></li>
+								<li><?php echo esc_html__( '📊 Built-in reports and analytics', 'quiz-master-next' ); ?></li>
+								<li><?php echo esc_html__( '🔌 Extend functionality with QSM add-ons', 'quiz-master-next' ); ?></li>
+							</ul>
+						</div>
+					</div>
+					<div class="qsm-welcome-cta">
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_dashboard' ) ); ?>" class="button">
+							<?php echo esc_html__( "Let's Get You Started", 'quiz-master-next' ); ?>
+						</a>
+					</div>
+				</div>
+				<?php
 			} else {
-				qsm_display_fullscreen_error();
-			}
-			?>
-		</div>
-	</div>
-	<?php qsm_display_promotion_links_section(); ?>
+		?>
+        <div class="qsm-dashboard-container">
+            <div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style">
+                <div class="qsm-dashboard-page-header">
+                    <h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz / Survey', 'quiz-master-next' ); ?></h3>
+                    <p class="qsm-dashboard-card-description"><?php esc_html_e( 'Design quizzes and surveys tailored to your needs.', 'quiz-master-next' ); ?></p>
+                </div>
+                <div class="">
+                    <a class="button button-primary qsm-dashboard-section-create-quiz"  href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" ><?php echo $is_welcome ? esc_html__( 'Create a Quiz / Survey', 'quiz-master-next' ) : esc_html__( 'Get Started', 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/></a>
+                </div>
+            </div>
+
+            <?php
+            $qsm_admin_dd = qsm_get_parsing_script_data();
+            if ( $qsm_admin_dd ) {
+                $popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
+                $themes         = isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array();
+                qsm_check_plugins_compatibility();
+                qsm_dashboard_recent_taken_quiz();
+                qsm_dashboard_display_popular_theme_section( $themes );
+                qsm_dashboard_display_popular_addon_section( $popular_addons );
+                qsm_dashboard_display_change_log_section();
+                qsm_dashboard_display_need_help_section();
+            } else {
+                qsm_display_fullscreen_error();
+            }
+            ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php qsm_display_promotion_links_section(); ?>
 </div>
-	<?php
+    <?php
 }
 /**
  * @since 7.0

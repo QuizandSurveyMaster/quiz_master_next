@@ -1,3 +1,155 @@
+/* QSM Welcome Container Styles - Start */
+.qsm-welcome-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 40px;
+    margin: 50px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.qsm-welcome-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+}
+
+.qsm-welcome-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.qsm-welcome-logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.qsm-welcome-logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.qsm-welcome-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+	color: #fff;
+}
+
+.qsm-welcome-body {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.qsm-welcome-highlights {
+    margin: 20px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.qsm-welcome-highlights ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.qsm-welcome-highlights li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.qsm-welcome-highlights li::before {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+.qsm-welcome-cta {
+    position: relative;
+    z-index: 1;
+}
+
+.qsm-welcome-cta .button {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.qsm-welcome-cta .button:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.qsm-welcome-cta .button::after {
+    content: '→';
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.qsm-welcome-cta .button:hover::after {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .qsm-welcome-container {
+        padding: 30px 20px;
+    }
+    
+    .qsm-welcome-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .qsm-welcome-logo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .qsm-welcome-title {
+        font-size: 24px;
+    }
+    
+    .qsm-welcome-highlights li {
+        font-size: 14px;
+    }
+}
+/* QSM Welcome Container Styles - End */
+
 .qsm-create-btn-div{
 	cursor:not-allowed;
 }

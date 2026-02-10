@@ -357,6 +357,7 @@ class MLWQuizMasterNext {
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
+		add_action( 'admin_init', array( $this, 'qsm_first_activation_redirect' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
 	}
@@ -381,6 +382,25 @@ class MLWQuizMasterNext {
 		if ( class_exists('QSM_license') ) {
 			include_once 'php/classes/class-qsm-check-license.php';
 			$this->check_license = new QSM_Check_License();
+		}
+	}
+
+	/**
+	 * Handle first-time activation redirect to dashboard
+	 *
+	 * @since 10.3.6
+	 */
+	public function qsm_first_activation_redirect() {
+		// Check if we need to redirect
+		if ( get_transient( 'qsm_first_activation_redirect' ) ) {
+			// Delete the transient so we don't redirect again
+			delete_transient( 'qsm_first_activation_redirect' );
+			
+			// Only redirect if not already on the dashboard page
+			if ( ! isset( $_GET['page'] ) || 'qsm_dashboard' !== $_GET['page'] ) {
+				wp_redirect( admin_url( 'admin.php?page=qsm_dashboard&qsmwelcome=1' ) );
+				exit;
+			}
 		}
 	}
 

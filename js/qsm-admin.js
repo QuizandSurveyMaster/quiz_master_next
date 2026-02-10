@@ -431,6 +431,18 @@ var QSMAdminResultsAndEmail;
             if (jQuery('.qsm-date-picker').length) {
                 jQuery('.qsm-date-picker').datetimepicker({ format: 'm/d/Y H:i', step: 1});
             }
+            
+            // Remove welcome parameter from URL after loading for first-time activation
+            var qsmurl = window.location.href;
+            console.log(qsmurl)
+            if (qsmurl.indexOf('qsmwelcome=1') !== -1) {
+                qsmurl = qsmurl.replace(/[?&]qsmwelcome=1/, '');
+                if (qsmurl.indexOf('?') === -1 && qsmurl.indexOf('&') > -1) {
+                    qsmurl = qsmurl.replace('&', '?');
+                }
+                window.history.replaceState({}, document.title, qsmurl);
+            }
+
         });
         if ($('.qsm-text-label-wrapper').length > 0) {
             var element_position = $('.qsm-text-label-wrapper').offset().top;
