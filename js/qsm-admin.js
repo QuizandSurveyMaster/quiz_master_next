@@ -3305,18 +3305,18 @@ var QSM_Quiz_Broadcast_Channel;
                 answerFilter: function (ansData, $answer, answerType) {
 					return ansData;
 				},
-			closeEditPopup: function(){
-				var $questionElements = $('.questions .questionElements:visible');
-				if ( !$questionElements.length ) {
-					return;
-				}
-				$questionElements.slideUp('slow', function(){
-					$(this).remove();
-				});
-				$('.questions').sortable('enable');
-				$('.page').sortable('enable');
-				$('.qsm_tab_content .question').removeClass('opened');
-			},
+                closeEditPopup: function(){
+                    var $questionElements = $('.questions .questionElements:visible');
+                    if ( !$questionElements.length ) {
+                        return;
+                    }
+                    $questionElements.slideUp('slow', function(){
+                        $(this).remove();
+                    });
+                    $('.questions').sortable('enable');
+                    $('.page').sortable('enable');
+                    $('.qsm_tab_content .question').removeClass('opened');
+                },
                 saveSuccess: function (model) {
                     var template = wp.template('question');
                     var page = model.get('page') + 1;

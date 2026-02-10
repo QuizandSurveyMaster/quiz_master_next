@@ -29,6 +29,7 @@
 			isOpen: false,
 			isUploading: false,
 		},
+		bulkPanelToggleTimer: null,
 
 		init() {
 			this.$form = $('#qsm-question-bank-filters');
@@ -134,11 +135,18 @@
 			this.$list.on('click', '.edit-question-button', (event) => {
 				event.preventDefault();
 				this.handleEditClick(event);
+				if ( this.bulkState.isOpen ) {
+					this.toggleBulkPanel(false);
+				}
 			});
 
 			this.$createButton.on('click', (event) => {
 				event.preventDefault();
 				this.handleCreateQuestion();
+                QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
+				if ( this.bulkState.isOpen ) {
+					this.toggleBulkPanel(false);
+				}
 			});
 		},
 
@@ -570,7 +578,15 @@
 			}
 			this.$bulkImportButton.on('click', (event) => {
 				event.preventDefault();
-				this.toggleBulkPanel(true);
+				if ( this.bulkState.isUploading ) {
+					return;
+				}
+				if ( this.bulkState.isOpen ) {
+					this.toggleBulkPanel(false);
+				} else {
+					this.toggleBulkPanel(true);
+				}
+				QSMQuestion.closeEditPopup();
 			});
 			this.$bulkCancel.on('click', (event) => {
 				event.preventDefault();
@@ -611,15 +627,20 @@
 				return;
 			}
 			const targetState = forceOpen === null ? !this.bulkState.isOpen : forceOpen;
-			this.bulkState.isOpen = Boolean(targetState);
-			this.$bulkPanel.toggleClass('is-visible', this.bulkState.isOpen);
-			this.$bulkPanel.attr('aria-hidden', this.bulkState.isOpen ? 'false' : 'true');
-			if (this.bulkState.isOpen) {
-				this.showBulkStatus(this.getBulkMessage('bulkUploadOpened', 'Bulk upload ready.'), 'info');
-			} else {
-				this.resetBulkForm();
-				this.showBulkStatus(this.getBulkMessage('bulkUploadClosed', 'Bulk upload closed.'), 'info');
+			if ( this.bulkPanelToggleTimer ) {
+				clearTimeout( this.bulkPanelToggleTimer );
 			}
+			this.bulkPanelToggleTimer = setTimeout( () => {
+				this.bulkState.isOpen = Boolean(targetState);
+				this.$bulkPanel.toggleClass('is-visible', this.bulkState.isOpen);
+				this.$bulkPanel.attr('aria-hidden', this.bulkState.isOpen ? 'false' : 'true');
+				if (this.bulkState.isOpen) {
+					this.showBulkStatus(this.getBulkMessage('bulkUploadOpened', 'Bulk upload ready.'), 'info');
+				} else {
+					this.resetBulkForm();
+					this.showBulkStatus(this.getBulkMessage('bulkUploadClosed', 'Bulk upload closed.'), 'info');
+				}
+			}, 400 );
 		},
 
 		setBulkFile(file) {

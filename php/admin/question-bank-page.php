@@ -95,7 +95,7 @@ function qsm_render_question_bank_page() {
 	?>
 	<div class="wrap qsm-question-bank-admin">
 		<h1><?php esc_html_e( 'QSM Question Bank', 'quiz-master-next' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Browse, search, and filter every question across all of your quizzes without leaving the dashboard.', 'quiz-master-next' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Add, browse, search, and filter questions across all of your quizzes without leaving the dashboard.', 'quiz-master-next' ); ?></p>
 
 		<div class="qsm-question-bank-actions">
 			<button type="button" class="button button-primary qsm-question-bank-create" id="qsm-question-bank-create">
@@ -353,7 +353,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 		'unlinkNonce'           => wp_create_nonce( 'ajax-nonce-unlink-question' ),
 		'categories'            => $page_data['categories'],
 		'form_type'             => 0,
-		'quiz_system'           => 0,
+		'quiz_system'           => 3,
 		'question_bank_nonce'   => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce' => wp_create_nonce( 'delete_question_from_database' ),
 		'rest_user_nonce'       => $quiz_nonces[0],
