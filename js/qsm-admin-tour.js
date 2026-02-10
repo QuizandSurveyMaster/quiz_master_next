@@ -196,6 +196,19 @@
 				position: { edge: 'bottom', align: 'left' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
+				beforeOpen: function(){
+					var currentAnswers = $( '#answers .answers-single' ).length;
+					var targetAnswers = 4;
+					for ( var i = currentAnswers; i < targetAnswers; i++ ) {
+						var $addButton = $( '#answers .answers-single:last .qsm-add-answer-button' ).first();
+						if ( !$addButton.length ) {
+							$addButton = $( '.qsm-add-answer-button' ).first();
+						}
+						if ( $addButton.length ) {
+							$addButton.trigger( 'click' );
+						}
+					}
+				}
 			},
 			{
 				selector: '#answers .answers-single:first .remove-answer-icon',
@@ -204,15 +217,6 @@
 				wizardStep: 1,
 				totalWizardSteps: 3,
 				forceVisible: true,
-				beforeOpen: function(){
-					if ( !qsmTourState.addAnswerClicked ) {
-						var $button = $( '#answers .answers-single:first .remove-answer-icon .qsm-add-answer-button' ).first();
-						if ( $button.length ) {
-							$button.trigger( 'click' );
-						}
-						qsmTourState.addAnswerClicked = true;
-					}
-				}
 			},
 			{
 				selector: '#answers .answers-single:first .answer-text-div',
@@ -246,14 +250,6 @@
 				forceVisible: true
 			},
 			{
-				selector: '#answers .answers-single:nth-child(2) .remove-answer-icon',
-				content: '<h3>Add or remove answers</h3><p>Click <strong>+</strong> to add more answers.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
 				selector: '#answers .answers-single:nth-child(2) .answer-text-div',
 				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
 				position: { edge: 'left', align: 'center' },
@@ -264,7 +260,7 @@
 			{
 				selector: '#answers .answers-single:nth-child(2) .qsm-answer-labels',
 				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
-				position: { edge: 'right', align: 'center' },
+				position: { edge: 'left', align: 'center' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 			},
@@ -278,6 +274,68 @@
 			},
 			{
 				selector: '#answers .answers-single:nth-child(2) .answer-correct-div',
+				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(3) .answer-text-div',
+				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(3) .qsm-answer-labels',
+				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+			},
+			{
+				selector: '#answers .answers-single:nth-child(3) .answer-point-div',
+				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(3) .answer-correct-div',
+				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(4) .answer-text-div',
+				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(4) .qsm-answer-labels',
+				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+			},
+			{
+				selector: '#answers .answers-single:nth-child(4) .answer-point-div',
+				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
+				position: { edge: 'left', align: 'center' },
+				wizardStep: 1,
+				totalWizardSteps: 3,
+				forceVisible: true
+			},
+			{
+				selector: '#answers .answers-single:nth-child(4) .answer-correct-div',
 				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
 				position: { edge: 'left', align: 'center' },
 				wizardStep: 1,
@@ -395,7 +453,7 @@
 	function qsmStartQuestionBehaviorTour( startIndex ) {
 		qsmTourState.tourName = 'question_behavior';
 		qsmTourState.onEnd = qsmStartQuestionEnhancementsTour;
-		qsmTourState.steps = [
+		var behaviorSteps = [
 			{
 				selector: '#answer_limit_area',
 				content: '<h3>Control how this question works</h3><p>Decide how answers are selected and graded.</p><h4>Answer Limit</h4><p>Set how many answers users can select.</p>',
@@ -448,7 +506,7 @@
 				}
 			},
 			{
-				selector: '.post-body-content',
+				selector: '.questionElement:visible .post-body-content',
 				fallbackSelectors: [ 'body' ],
 				content: '<h3>👍 Nice!</h3><p>Your question behavior is now set.</p>',
 				position: { edge: 'top', align: 'left' },
@@ -457,6 +515,29 @@
 				doneText: 'Done'
 			}
 		];
+
+		behaviorSteps = behaviorSteps.filter( function( step ) {
+			if ( step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area' ) {
+				return jQuery( step.selector ).length > 0;
+			}
+			return true;
+		} );
+
+		var filteredSteps = behaviorSteps.filter( function( step ) {
+			return step.selector === '#answer_limit_area' || step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area';
+		} );
+		var totalWizardSteps = filteredSteps.length;
+		if ( totalWizardSteps ) {
+			var counter = 1;
+			behaviorSteps.forEach( function( step ) {
+				if ( step.selector === '#answer_limit_area' || step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area' ) {
+					step.wizardStep = counter++;
+					step.totalWizardSteps = totalWizardSteps;
+				}
+			} );
+		}
+
+		qsmTourState.steps = behaviorSteps;
 
 		qsmTourState.started = true;
 		qsmTourState.index = startIndex || 0;
