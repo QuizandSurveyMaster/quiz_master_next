@@ -17,8 +17,24 @@
 		waitingForFirstQuestionSave: false,
 		onEnd: null,
 		forceSetupWizard: false,
-		addAnswerClicked: false
+		addAnswerClicked: false,
+		waitingForEnhancementsSave: false,
+		enhancementFinalStep: null
 	};
+
+	var QSM_TOUR_ACTIVE_QUESTION_TARGETS = [
+		'.questions .question.opened',
+		'.qsm_tab_content .question.opened',
+		'.qsm-quiz-questions .question.opened',
+		'.question.opened',
+		'.questions .question:visible:first',
+		'.qsm_tab_content .question:visible:first',
+		'.qsm-quiz-questions .question:visible:first',
+		'.questionElements:visible',
+		'.questionElements',
+		'#save-popup-button',
+		'body'
+	];
 
 	function qsmOpenTourStepWithDelay( stepIndex ) {
 		if ( qsmNextTourStartTimer ) {
@@ -29,6 +45,35 @@
 			qsmNextTourStartTimer = null;
 			qsmOpenTourStep( stepIndex );
 		}, QSM_TOUR_START_DELAY );
+	}
+
+	function qsmGetActiveQuestionTarget() {
+		for ( var i = 0; i < QSM_TOUR_ACTIVE_QUESTION_TARGETS.length; i++ ) {
+			var selector = QSM_TOUR_ACTIVE_QUESTION_TARGETS[ i ];
+			if ( !selector ) {
+				continue;
+			}
+			var $candidate = $( selector ).first();
+			if ( $candidate.length ) {
+				return $candidate;
+			}
+		}
+		return $();
+	}
+
+	function qsmEnsurePointerStyles() {
+		if ( document.getElementById( 'qsm-tour-pointer-style' ) ) {
+			return;
+		}
+		var style = document.createElement( 'style' );
+		style.id = 'qsm-tour-pointer-style';
+		style.type = 'text/css';
+		style.textContent = '' +
+			'.wp-pointer.qsm-pointer-centered{position:fixed!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;max-width:420px;width:calc(100% - 40px);margin:0;z-index:10050;}' +
+			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow,' +
+			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow:before,' +
+			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow:after{display:none!important;}';
+		document.head.appendChild( style );
 	}
 
 	function qsmIsSetupWizardCompleted() {
@@ -126,6 +171,10 @@
 		return !qsmHasAnySavedQuestions();
 	}
 
+	window.qsmIsSetupWizardActive = function() {
+		return Boolean( qsmTourState.started || qsmTourState.pendingFirstQuestionTour || qsmTourState.forceSetupWizard || qsmShouldStartSetupWizard() );
+	};
+
 	function qsmMakeElementVisibleForTour( $el ) {
 		var $affected = $el.parentsUntil( 'body' ).addBack();
 		var previous = [];
@@ -184,163 +233,38 @@
 				totalWizardSteps: 3,
 			},
 			{
-				selector: '.qsm-show-question-desc-box',
-				content: '<h3>Edit Description</h3><p>Add extra instructions or context (optional).</p>',
-				position: { edge: 'bottom', align: 'left' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '#answers',
-				content: '<h3>Add Answers</h3><p>Add all possible answers for this question.</p>',
+				selector: '.questionElements .qsm-editor-wrap',
+				content: '<h3>Edit Description (Optional)</h3><p>Add extra instructions or context (optional).</p>',
 				position: { edge: 'bottom', align: 'left' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
 				beforeOpen: function(){
-					var currentAnswers = $( '#answers .answers-single' ).length;
-					var targetAnswers = 4;
-					for ( var i = currentAnswers; i < targetAnswers; i++ ) {
-						var $addButton = $( '#answers .answers-single:last .qsm-add-answer-button' ).first();
-						if ( !$addButton.length ) {
-							$addButton = $( '.qsm-add-answer-button' ).first();
-						}
-						if ( $addButton.length ) {
-							$addButton.trigger( 'click' );
-						}
+					var $area = $( '.qsm-show-question-desc-box' );
+					if ( $area.length ) {
+						$area.trigger( 'click' );
 					}
 				}
 			},
 			{
-				selector: '#answers .answers-single:first .remove-answer-icon',
-				content: '<h3>Add or remove answers</h3><p>Click <strong>+</strong> to add more answers.</p>',
-				position: { edge: 'left', align: 'center' },
+				selector: '#answers',
+				content: '<h3>Add Answers</h3><p>Add all possible answers for this question.</p>' +
+				'<p>Use the <b>+</b> and <b>-</b> buttons to add or remove answers.</p>' +
+				'<p>Assign <b>points</b> and mark the <b>correct answer</b>.</p>' +
+				'<p>Select the appropriate <b>label</b> (Optional).</p>',
+				position: { edge: 'bottom', align: 'left' },
 				wizardStep: 1,
 				totalWizardSteps: 3,
-				forceVisible: true,
-			},
-			{
-				selector: '#answers .answers-single:first .answer-text-div',
-				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:first .qsm-answer-labels',
-				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
-				position: { edge: 'right', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '#answers .answers-single:first .answer-point-div',
-				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:first .answer-correct-div',
-				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(2) .answer-text-div',
-				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(2) .qsm-answer-labels',
-				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '#answers .answers-single:nth-child(2) .answer-point-div',
-				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(2) .answer-correct-div',
-				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(3) .answer-text-div',
-				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(3) .qsm-answer-labels',
-				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '#answers .answers-single:nth-child(3) .answer-point-div',
-				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(3) .answer-correct-div',
-				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(4) .answer-text-div',
-				content: '<h3>Answer Text</h3><p>Write the answer text for this option.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(4) .qsm-answer-labels',
-				content: '<h3>Select Labels</h3><p>Optional labels for advanced organizational use cases.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '#answers .answers-single:nth-child(4) .answer-point-div',
-				content: '<h3>Points</h3><p>Assign points if this question is graded.</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
-			},
-			{
-				selector: '#answers .answers-single:nth-child(4) .answer-correct-div',
-				content: '<h3>Mark Correct Answer</h3><p>Select the correct answer(s).</p>',
-				position: { edge: 'left', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				forceVisible: true
+				pointerClass: 'qsm-pointer-wide',
+				beforeOpen: function(){
+					var currentAnswers = $('#answers').find('.answers-single');
+					if (currentAnswers.length) {
+						for (var i = currentAnswers.length; i < 4; i++) {
+							$('#new-answer-button').trigger('click');
+						}
+					} else {
+						$('#new-answer-button').trigger('click').trigger('click').trigger('click').trigger('click');
+					}
+				}
 			},
 			{
 				selector: '#save-popup-button',
@@ -367,15 +291,28 @@
 
 	function qsmStartQuestionEnhancementsTour( startIndex ) {
 		qsmTourState.tourName = 'question_enhancements';
+		qsmTourState.waitingForEnhancementsSave = false;
 		qsmTourState.onEnd = function(){
 			qsmMarkSetupWizardCompleted();
 			qsmTourState.forceSetupWizard = false;
 			qsmClearSetupWizardState();
 		};
+		qsmTourState.enhancementFinalStep = {
+			selector: '.questions .question.opened',
+			fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
+			content: '<h3>🎉 Congratulations!</h3><p>You’ve created your first quiz question.</p><p>You can now add more questions using the same steps</p>',
+			position: { edge: 'left', align: 'center' },
+			pointerClass: 'qsm-pointer-centered',
+			spotlight: false,
+			useActiveQuestionTarget: true,
+			showSkip: false,
+			showBack: false,
+			doneText: 'Done'
+		};
 		qsmTourState.steps = [
 			{
 				selector: '#correct_answer_info_area',
-				content: '<h3>Enhance your question</h3><p>Help users learn and engage better</p><h4>Correct Answer Info</h4><p>Add an explanation to support the correct answer.</p>',
+				content: '<h3>Enhance your question</h3><p>Help users learn and engage better</p><h4>Correct Answer Info (Optional)</h4><p>Add an explanation to support the correct answer.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 3,
 				totalWizardSteps: 3,
@@ -392,7 +329,7 @@
 			},
 			{
 				selector: '#comments_area',
-				content: '<h3>Comment Box</h3><p>Allow users to add comments for this question.</p>',
+				content: '<h3>Comment Box (Optional)</h3><p>Allow users to add comments for this question.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 3,
 				totalWizardSteps: 3,
@@ -409,7 +346,7 @@
 			},
 			{
 				selector: '#hint_area',
-				content: '<h3>Hint</h3><p>Provide a hint to guide users before answering.</p>',
+				content: '<h3>Hint (Optional)</h3><p>Provide a hint to guide users before answering.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 3,
 				totalWizardSteps: 3,
@@ -426,20 +363,25 @@
 			},
 			{
 				selector: '#featureImagediv',
-				content: '<h3>Featured Image</h3><p>Add an image to visually enhance this question.</p>',
+				content: '<h3>Featured Image (Optional)</h3><p>Add an image to visually enhance this question.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 3,
 				totalWizardSteps: 3,
 				skipText: 'Skip enhancements'
 			},
 			{
-				selector: '.questionElements',
-				fallbackSelectors: [ 'body' ],
-				content: '<h3>🎉 Congratulations!</h3><p>You’ve created your first quiz question.</p><p>You can now add more questions using the same steps</p>',
-				position: { edge: 'left', align: 'center' },
-				showSkip: false,
-				showBack: false,
-				doneText: 'Done'
+				selector: '#save-popup-button',
+				content: '<h3>Save your updates</h3><p>Click <strong>Save Question</strong> to apply these enhancements.</p>',
+				position: { edge: 'right', align: 'center' },
+				wizardStep: 3,
+				totalWizardSteps: 3,
+				showNext: false,
+				showBack: true,
+				showSkip: true,
+				beforeCloseOnClick: function(){
+					qsmTourState.waitingForEnhancementsSave = true;
+				},
+				closeOnClick: '#save-popup-button'
 			}
 		];
 
@@ -456,7 +398,7 @@
 		var behaviorSteps = [
 			{
 				selector: '#answer_limit_area',
-				content: '<h3>Control how this question works</h3><p>Decide how answers are selected and graded.</p><h4>Answer Limit</h4><p>Set how many answers users can select.</p>',
+				content: '<h3>Control how this question works</h3><p>Decide how answers are selected and graded.</p><h4>Answer Limit (Optional)</h4><p>Set how many answers users can select.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 2,
 				totalWizardSteps: 3,
@@ -473,7 +415,7 @@
 			},
 			{
 				selector: '#grading_mode_area',
-				content: '<h3>Grading Mode</h3><p>Choose how this question should be graded.</p><p>In quizzes, grading is typically based on <strong>Correct / Incorrect</strong> and (optionally) <strong>Points</strong> per answer.</p>',
+				content: '<h3>Grading Mode (Optional)</h3><p>Choose how this question should be graded.</p><p>In quizzes, grading is typically based on <strong>Correct / Incorrect</strong> and (optionally) <strong>Points</strong> per answer.</p>',
 				position: { edge: 'top', align: 'left' },
 				wizardStep: 2,
 				totalWizardSteps: 3,
@@ -490,7 +432,7 @@
 			},
 			{
 				selector: '#add_poll_type_area',
-				content: '<h3>Add Poll Type</h3><p>Turn this into a poll to show how others responded.</p>',
+				content: '<h3>Add Poll Type (Optional)</h3><p>Turn this into a poll to show how others responded.</p>',
 				position: { edge: 'top', align: 'center' },
 				wizardStep: 2,
 				totalWizardSteps: 3,
@@ -506,10 +448,13 @@
 				}
 			},
 			{
-				selector: '.questionElement:visible .post-body-content',
-				fallbackSelectors: [ 'body' ],
+				selector: '.questions .question.opened',
+				fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
 				content: '<h3>👍 Nice!</h3><p>Your question behavior is now set.</p>',
 				position: { edge: 'top', align: 'left' },
+				pointerClass: 'qsm-pointer-centered',
+				spotlight: false,
+				useActiveQuestionTarget: true,
 				showSkip: false,
 				showBack: false,
 				doneText: 'Done'
@@ -529,7 +474,7 @@
 		var totalWizardSteps = filteredSteps.length;
 		if ( totalWizardSteps ) {
 			var counter = 1;
-			behaviorSteps.forEach( function( step ) {
+		behaviorSteps.forEach( function( step ) {
 				if ( step.selector === '#answer_limit_area' || step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area' ) {
 					step.wizardStep = counter++;
 					step.totalWizardSteps = totalWizardSteps;
@@ -558,6 +503,12 @@
 
 	function qsmGetTourTargetForStep( step ) {
 		var $target = $();
+		if ( step && step.useActiveQuestionTarget ) {
+			$target = qsmGetActiveQuestionTarget();
+			if ( $target.length ) {
+				return $target;
+			}
+		}
 		if ( step && step.selector ) {
 			$target = $( step.selector ).first();
 			if ( $target.length ) {
@@ -903,6 +854,7 @@
 				return;
 			}
 			if ( step.pointerClass ) {
+				qsmEnsurePointerStyles();
 				$pointer.addClass( step.pointerClass );
 			}
 			if ( step.arrowCss && typeof step.arrowCss === 'object' ) {
@@ -965,26 +917,48 @@
 			}
 		});
 		$(document).on('qsm_admin_question_saved_success', function(){
-			if ( qsmTourState.tourName !== 'first_question' || ( !qsmTourState.started && !qsmTourState.waitingForFirstQuestionSave ) ) {
+			if ( qsmTourState.tourName === 'first_question' && ( qsmTourState.started || qsmTourState.waitingForFirstQuestionSave ) ) {
+				// Do NOT mark wizard complete here. Completion is marked after enhancements tour ends.
+				qsmTourState.waitingForFirstQuestionSave = false;
+				qsmSetSetupWizardState({ tourName: 'first_question', stepIndex: 0 });
+				qsmTourState.steps = [
+					{
+						selector: '.questions .question.opened',
+						fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
+						content: '<h3>✅ Great start!</h3><p>You’ve successfully created your first question.</p>',
+						position: { edge: 'left', align: 'center' },
+						pointerClass: 'qsm-pointer-centered',
+						spotlight: false,
+						useActiveQuestionTarget: true,
+						doneText: 'Done',
+						showSkip: false,
+						showBack: false
+					}
+				];
+				qsmTourState.index = 0;
+				qsmTourState.onEnd = qsmStartQuestionBehaviorTour;
+				qsmTourState.started = true;
+				qsmOpenTourStepWithDelay( 0 );
 				return;
 			}
-			// Do NOT mark wizard complete here. Completion is marked after enhancements tour ends.
-			qsmTourState.waitingForFirstQuestionSave = false;
-			qsmSetSetupWizardState({ tourName: 'first_question', stepIndex: 0 });
-			qsmTourState.steps = [
-				{
-					selector: '#save-popup-button',
-					content: '<h3>✅ Great start!</h3><p>You’ve successfully created your first question.</p>',
+			if ( qsmTourState.tourName === 'question_enhancements' && qsmTourState.waitingForEnhancementsSave ) {
+				qsmTourState.waitingForEnhancementsSave = false;
+				qsmTourState.steps = [ qsmTourState.enhancementFinalStep || {
+					selector: '.questions .question.opened',
+					fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
+					content: '<h3>🎉 All set!</h3><p>Your changes have been saved.</p>',
 					position: { edge: 'left', align: 'center' },
-					doneText: 'Done',
+					pointerClass: 'qsm-pointer-centered',
+					spotlight: false,
+					useActiveQuestionTarget: true,
 					showSkip: false,
-					showBack: false
-				}
-			];
-			qsmTourState.index = 0;
-			qsmTourState.onEnd = qsmStartQuestionBehaviorTour;
-			qsmTourState.started = true;
-			qsmOpenTourStepWithDelay( 0 );
+					showBack: false,
+					doneText: 'Done'
+				} ];
+				qsmTourState.index = 0;
+				qsmTourState.started = true;
+				qsmOpenTourStepWithDelay( 0 );
+			}
 		});
 
 		$(document).on('qsm_start_question_behavior_tour', function(){
