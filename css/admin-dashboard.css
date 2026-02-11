@@ -43,9 +43,9 @@
     width: 30px;
     height: 30px;
     border: none;
-    background: #f8f9fa;
+    background: #fff;
     border-radius: 50%;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     color: #6c757d;
     cursor: pointer;
@@ -54,12 +54,6 @@
     justify-content: center;
     transition: all 0.3s ease;
     z-index: 10;
-}
-
-.qsm-welcome-close-btn:hover {
-    background: #e9ecef;
-    color: #495057;
-    transform: scale(1.1);
 }
 
 .qsm-welcome-header {
