@@ -790,7 +790,9 @@ function qmnValidation(element, quiz_form_id) {
 				var phonePattern = jQuery(this).attr('data-phone-pattern');
 				if (typeof phonePattern !== 'undefined' && phonePattern !== '') {
 					try {
-						var pattern = new RegExp('^' + phonePattern + '$');
+                        var escapedPattern = phonePattern.replace(/[.+?^$|()\\]/g, '\\$&');
+                        escapedPattern = escapedPattern.replace(/ /g, '\\s+');
+                        var pattern = new RegExp('^' + escapedPattern + '$');
 						if (!pattern.test(phoneValue)) {
 							qmnDisplayError(error_messages.phone_error_text, jQuery(this), quiz_form_id);
 							show_result_validation = false;
