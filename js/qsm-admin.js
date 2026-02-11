@@ -900,6 +900,18 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options') || jQuery('body').has
             }
         });
     }
+    const processTemplates = function ( data, allowedTypes, updateOptions = false, updateType = '' ) {
+        if ( !Array.isArray( data ) ) return;
+        data.forEach( function ( filteredRow, key ) {
+            if ( allowedTypes.includes( filteredRow.template_type ) ) {
+                filteredRow.indexid = key;
+                QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
+                if ( updateOptions ) {
+                    QSMAdminResultsAndEmail.updateMyTemplateOptions( filteredRow, updateType );
+                }
+            }
+        } );
+    };
     if ( window.location.href.indexOf('tab=emails') > 0 || window.location.href.indexOf('tab=results-pages') > 0 || window.location.href.indexOf('tab=quiz-default-template') > 0 ) {
         QSMAdminResultsAndEmail = {
             insertTemplate: async function (button, data) {
@@ -939,19 +951,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options') || jQuery('body').has
                 jQuery(tableSelector).append(template(data));
             },
             loadMyTemplates: function ( type, isDefaultContext = false ) {
-                const processTemplates = function ( data, allowedTypes, updateOptions = false, updateType = '' ) {
-                    if ( !Array.isArray( data ) ) return;
-                    data.forEach( function ( filteredRow, key ) {
-                        if ( allowedTypes.includes( filteredRow.template_type ) ) {
-                            filteredRow.indexid = key;
-                            QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
-                            if ( updateOptions ) {
-                                QSMAdminResultsAndEmail.updateMyTemplateOptions( filteredRow, updateType );
-                            }
-                        }
-                    } );
-                };
-
                 if ( isDefaultContext ) {
                     if ( type === 'result' && typeof qsmDefaultResultsObject !== 'undefined' ) {
                         processTemplates( qsmDefaultResultsObject.my_tmpl_data, ['global_result'], true, 'global_result' );

@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.1.0
  */
 class QMNGlobalSettingsPage {
+	private const QSM_UPGRADE_BADGE_TEMPLATE = "<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>";
 
 	/**
 	 * Main Construct Function
@@ -73,7 +74,7 @@ class QMNGlobalSettingsPage {
 		?>
 		<div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title" tabindex="-1">
 					<header class="qsm-popup__header" style="display: block;">
 						<h2 class="qsm-popup__title"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h2>
 						<span class="description">
@@ -165,7 +166,7 @@ class QMNGlobalSettingsPage {
 			case 'Extra Template Variables':
 				$meta['classname'] = 'qsm-upgrade-popup-variable';
 				$meta['badge'] = sprintf(
-					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
 					qsm_get_plugin_link('extra-template-variables'),
 					esc_html__( 'PRO', 'quiz-master-next' )
 				);
@@ -173,7 +174,7 @@ class QMNGlobalSettingsPage {
 			case 'Advanced Leaderboard':
 				$meta['classname'] = 'qsm-upgrade-popup-variable';
 				$meta['badge'] = sprintf(
-					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
 					qsm_get_plugin_link('downloads/advanced-leaderboard/'),
 					esc_html__( 'PRO', 'quiz-master-next' )
 				);
@@ -181,7 +182,7 @@ class QMNGlobalSettingsPage {
 			case 'Analysis':
 				$meta['classname'] = 'qsm-upgrade-popup-variable';
 				$meta['badge'] = sprintf(
-					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
 					qsm_get_plugin_link('downloads/results-analysis/'),
 					esc_html__( 'PRO', 'quiz-master-next' )
 				);
@@ -189,10 +190,12 @@ class QMNGlobalSettingsPage {
 			case 'Advanced Assessment':
 				$meta['classname'] = 'qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable';
 				$meta['badge'] = sprintf(
-					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					self::UPGRADE_BADGE_TEMPLATE,
 					qsm_get_plugin_link( 'downloads/advanced-assessment/' ),
 					esc_html__( 'PRO', 'quiz-master-next' )
 				);
+				break;
+			default:
 				break;
 		}
 		return $meta;
