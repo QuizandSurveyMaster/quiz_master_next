@@ -485,6 +485,13 @@ class MLWQuizMasterNext {
 					break;
 			}
 		}
+		
+		if ( ! wp_script_is( 'select2-js', 'registered' ) ) {
+            wp_register_script( 'select2-js', QSM_PLUGIN_JS_URL . '/jquery.select2.min.js', array( 'jquery' ), $this->version, true );
+        }
+        if ( ! wp_style_is( 'select2-css', 'registered' ) ) {
+            wp_register_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
+        }
 		// load admin JS after all dependencies are loaded
 		/**  Fixed wpApiSettings is not defined js error by using 'wp-api-request' core script to allow the use of localized version of wpApiSettings. **/
 		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch', 'qsm-jquery-multiselect-js', 'wp-api-request', 'select2-js' ), $this->version, true );
