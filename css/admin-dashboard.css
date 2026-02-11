@@ -1,27 +1,65 @@
+/* QSM Welcome Modal Styles - Start */
+.qsm-welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.qsm-welcome-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    max-width: 700px;
+    width: 90%;
+}
+
+.qsm-dashboard-blurred {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
 /* QSM Welcome Container Styles - Start */
 .qsm-welcome-container {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #fff;
+    border: 1px solid #e1e5e9;
     border-radius: 12px;
     padding: 40px;
     margin: 50px 0;
-    color: white;
+    color: #1e293b;
     position: relative;
     overflow: hidden;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
 }
 
-.qsm-welcome-container::before {
-    content: '';
+.qsm-welcome-close-btn {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 200px;
-    background: rgba(255, 255, 255, 0.1);
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #f8f9fa;
     border-radius: 50%;
-    transform: translate(50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #6c757d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.qsm-welcome-close-btn:hover {
+    background: #e9ecef;
+    color: #495057;
+    transform: scale(1.1);
 }
 
 .qsm-welcome-header {
@@ -32,30 +70,29 @@
     z-index: 1;
 }
 
-.qsm-welcome-logo {
-    width: 60px;
+.qsm-welcome-logo { 
     height: 60px;
-    margin-right: 20px;
-    background: white;
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
+    flex-shrink: 0;
 }
 
 .qsm-welcome-logo img {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
+    position: relative;
+    left: -10px;
 }
 
 .qsm-welcome-title {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 600;
     margin: 0;
     line-height: 1.2;
-	color: #fff;
+    color: #1e293b;
 }
 
 .qsm-welcome-body {
@@ -95,34 +132,19 @@
     z-index: 1;
 }
 
-.qsm-welcome-cta .button {
-    background: white;
-    color: #667eea;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-size: 16px;
+.qsm-welcome-cta .button, .qsm-welcome-cta .button:hover { 
     font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.qsm-welcome-cta .button:hover {
-    background: #f8f9fa;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    padding: 3px 30px;
+    font-size: 15px;
+    height: 38px;
+    border-radius: 3px;
+    box-shadow: 0px 4px 4px 0px #00000014;
 }
 
 .qsm-welcome-cta .button::after {
     content: '→';
     margin-left: 8px;
     transition: transform 0.3s ease;
-}
-
-.qsm-welcome-cta .button:hover::after {
-    transform: translateX(4px);
 }
 
 @media (max-width: 768px) {

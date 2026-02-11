@@ -404,36 +404,40 @@ function qsm_generate_dashboard_page() {
     <div class="qsm-dashboard-wrapper">
 		<?php 
 			if ( $is_welcome ) {
-				// Display welcome container
+				// Display welcome popup modal
 				?>
-				<div class="qsm-welcome-container qsm-dashboard-page-common-style">
-					<div class="qsm-welcome-header">
-						<div class="qsm-welcome-logo">
-							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/icon-128x128.png' ); ?>" alt="QSM Logo" />
+				<div class="qsm-welcome-overlay"></div>
+				<div class="qsm-welcome-modal">
+					<div class="qsm-welcome-container qsm-dashboard-page-common-style">
+						<button class="qsm-welcome-close-btn" type="button">&times;</button>
+						<div class="qsm-welcome-header">
+							<div class="qsm-welcome-logo">
+								<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/icon-128x128.png' ); ?>" alt="QSM Logo" />
+							</div>
+							<h2 class="qsm-welcome-title"><?php echo esc_html__( '👋 Welcome to QSM – Create Smarter Quizzes Faster', 'quiz-master-next' ); ?></h2>
 						</div>
-						<h2 class="qsm-welcome-title"><?php echo esc_html__( '👋 Welcome to QSM – Create Smarter Quizzes Faster', 'quiz-master-next' ); ?></h2>
-					</div>
-					<div class="qsm-welcome-body">
-						<p><?php echo esc_html__( 'QSM helps you create quizzes, surveys, and tests quickly and easily.', 'quiz-master-next' ); ?></p>
-						<div class="qsm-welcome-highlights">
-							<ul>
-								<li><?php echo esc_html__( '🤖 AI-powered question and quiz generation', 'quiz-master-next' ); ?></li>
-								<li><?php echo esc_html__( '⚡ Fast quiz creation using the current editor', 'quiz-master-next' ); ?></li>
-								<li><?php echo esc_html__( '📊 Built-in reports and analytics', 'quiz-master-next' ); ?></li>
-								<li><?php echo esc_html__( '🔌 Extend functionality with QSM add-ons', 'quiz-master-next' ); ?></li>
-							</ul>
+						<div class="qsm-welcome-body">
+							<p><?php echo esc_html__( 'QSM helps you create quizzes, surveys, and tests quickly and easily.', 'quiz-master-next' ); ?></p>
+							<div class="qsm-welcome-highlights">
+								<ul>
+									<li><?php echo esc_html__( '🤖 AI-powered question and quiz generation', 'quiz-master-next' ); ?></li>
+									<li><?php echo esc_html__( '⚡ Fast quiz creation using the current editor', 'quiz-master-next' ); ?></li>
+									<li><?php echo esc_html__( '📊 Built-in reports and analytics', 'quiz-master-next' ); ?></li>
+									<li><?php echo esc_html__( '🔌 Extend functionality with QSM add-ons', 'quiz-master-next' ); ?></li>
+								</ul>
+							</div>
 						</div>
-					</div>
-					<div class="qsm-welcome-cta">
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_dashboard' ) ); ?>" class="button">
-							<?php echo esc_html__( "Let's Get You Started", 'quiz-master-next' ); ?>
-						</a>
+						<div class="qsm-welcome-cta">
+							<a href="#" class="button button-primary qsm-welcome-close">
+								<?php echo esc_html__( "Let's Get You Started", 'quiz-master-next' ); ?>
+							</a>
+						</div>
 					</div>
 				</div>
 				<?php
-			} else {
+			}
 		?>
-        <div class="qsm-dashboard-container">
+        <div class="qsm-dashboard-container <?php echo $is_welcome ? 'qsm-dashboard-blurred' : ''; ?>">
             <div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style">
                 <div class="qsm-dashboard-page-header">
                     <h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz / Survey', 'quiz-master-next' ); ?></h3>
@@ -461,7 +465,6 @@ function qsm_generate_dashboard_page() {
             ?>
         </div>
     </div>
-    <?php } ?>
     <?php qsm_display_promotion_links_section(); ?>
 </div>
     <?php
