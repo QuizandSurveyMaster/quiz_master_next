@@ -74,7 +74,7 @@ class QMNGlobalSettingsPage {
 		?>
 		<div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title" tabindex="-1">
+				<dialog class="qsm-popup__container" aria-modal="true" aria-labelledby="modal-3-title">
 					<header class="qsm-popup__header" style="display: block;">
 						<h2 class="qsm-popup__title"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h2>
 						<span class="description">
@@ -133,7 +133,7 @@ class QMNGlobalSettingsPage {
 						<button class="button button-default" data-micromodal-close=""
 							aria-label="Close this dialog window"><?php esc_html_e( 'Close [Esc]', 'quiz-master-next' ); ?></button>
 					</footer>
-				</div>
+				</dialog>
 			</div>
 		</div>
 		<?php
