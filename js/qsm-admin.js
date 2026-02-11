@@ -817,7 +817,7 @@ function deleteResults(id, quizName) {
 //quiz options style tab
 jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
-    var current_id = jQuery(this).attr('data-id');
+    let current_id = jQuery(this).attr('data-id');
     jQuery('.quiz_style_tab').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
@@ -827,7 +827,7 @@ jQuery('.quiz_style_tab').click(function (e) {
 //quiz options text tab custom label
 jQuery('.quiz_text_tab_custom').click(function (e) {
     e.preventDefault();
-    var current_id = jQuery(this).attr('data-id');
+    let current_id = jQuery(this).attr('data-id');
     jQuery('.quiz_text_tab_custom').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
@@ -850,7 +850,7 @@ jQuery('.quiz_text_tab').click(function (e) {
     jQuery(document).trigger('qsm_quiz_text_tab_after', [current_id]);
 });
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options') || jQuery('body').hasClass('qsm_page_qmn_global_settings')){
-    var current_id = jQuery(this).attr('data-id'); 
+    let current_id = jQuery(this).attr('data-id'); 
     if(current_id == 'qsm_general_text'){ jQuery(".current_general")[0].click();}
     if(current_id == 'qsm_variable_text'){ jQuery(".current_variable")[0].click();}
     if (window.location.href.indexOf('tab=style') > 0) {
@@ -939,54 +939,38 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options') || jQuery('body').has
                 jQuery(tableSelector).append(template(data));
             },
             loadMyTemplates: function ( type, isDefaultContext = false ) {
+                const processTemplates = function ( data, allowedTypes, updateOptions = false, updateType = '' ) {
+                    if ( !Array.isArray( data ) ) return;
+                    data.forEach( function ( filteredRow, key ) {
+                        if ( allowedTypes.includes( filteredRow.template_type ) ) {
+                            filteredRow.indexid = key;
+                            QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
+                            if ( updateOptions ) {
+                                QSMAdminResultsAndEmail.updateMyTemplateOptions( filteredRow, updateType );
+                            }
+                        }
+                    } );
+                };
+
                 if ( isDefaultContext ) {
-                    // Default template context (settings page) - ONLY load global templates
                     if ( type === 'result' && typeof qsmDefaultResultsObject !== 'undefined' ) {
-                        if ( Array.isArray( qsmDefaultResultsObject.my_tmpl_data ) ) {
-                            qsmDefaultResultsObject.my_tmpl_data.forEach( function ( filteredRow, key ) {
-                                // Only add global_result templates
-                                if ( filteredRow.template_type === 'global_result' ) {
-                                    filteredRow.indexid = key;
-                                    QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
-                                    QSMAdminResultsAndEmail.updateMyTemplateOptions( filteredRow, 'global_result' );
-                                }
-                            } );
-                        }
-                    } else if ( type === 'email' && typeof qsmDefaultEmailsObject !== 'undefined' ) {
-                        if ( Array.isArray( qsmDefaultEmailsObject.my_tmpl_data ) ) {
-                            qsmDefaultEmailsObject.my_tmpl_data.forEach( function ( filteredRow, key ) {
-                                // Only add global_email templates
-                                if ( filteredRow.template_type === 'global_email' ) {
-                                    filteredRow.indexid = key;
-                                    QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
-                                    QSMAdminResultsAndEmail.updateMyTemplateOptions( filteredRow, 'global_email' );
-                                }
-                            } );
-                        }
+                        processTemplates( qsmDefaultResultsObject.my_tmpl_data, ['global_result'], true, 'global_result' );
+                        return;
                     }
-                } else {
-                    // Quiz-specific context
-                    if ( type === 'result' && typeof qsmResultsObject !== 'undefined' ) {
-                        if ( Array.isArray( qsmResultsObject.my_tmpl_data ) ) {
-                            qsmResultsObject.my_tmpl_data.forEach( function ( filteredRow, key ) {
-                                // Only add if template_type matches
-                                if ( filteredRow.template_type === 'result' || filteredRow.template_type === 'global_result' ) {
-                                    filteredRow.indexid = key;
-                                    QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
-                                }
-                            } );
-                        }
-                    } else if ( type === 'email' && typeof qsmEmailsObject !== 'undefined' ) {
-                        if ( Array.isArray( qsmEmailsObject.my_tmpl_data ) ) {
-                            qsmEmailsObject.my_tmpl_data.forEach( function ( filteredRow, key ) {
-                                // Only add if template_type matches
-                                if ( filteredRow.template_type === 'email' || filteredRow.template_type === 'global_email' ) {
-                                    filteredRow.indexid = key;
-                                    QSMAdminResultsAndEmail.addTemplateRow( filteredRow );
-                                }
-                            } );
-                        }
+                    if ( type === 'email' && typeof qsmDefaultEmailsObject !== 'undefined' ) {
+                        processTemplates( qsmDefaultEmailsObject.my_tmpl_data, ['global_email'], true, 'global_email' );
+                        return;
                     }
+                    return;
+                }
+
+                if ( type === 'result' && typeof qsmResultsObject !== 'undefined' ) {
+                    processTemplates( qsmResultsObject.my_tmpl_data, ['result', 'global_result'] );
+                    return;
+                }
+                if ( type === 'email' && typeof qsmEmailsObject !== 'undefined' ) {
+                    processTemplates( qsmEmailsObject.my_tmpl_data, ['email', 'global_email'] );
+                    return;
                 }
             },
             updateMyTemplateOptions: function( newTemplate, type ) {
@@ -1015,14 +999,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options') || jQuery('body').has
                 jQuery('#'+popupId).attr('aria-hidden', true);
             },
             addDefaultTemplateOptions: function (type) {
-                var objectName = type === 'email' ? 'qsmDefaultEmailsObject' : 'qsmDefaultResultsObject';
-                var templateType = 'global_' + type;
-                var $selectBox = jQuery('[data-template-type="' + templateType + '"] .qsm-to-replace-page-template');
+                let objectName = type === 'email' ? 'qsmDefaultEmailsObject' : 'qsmDefaultResultsObject';
+                let templateType = 'global_' + type;
+                let $selectBox = jQuery('[data-template-type="' + templateType + '"] .qsm-to-replace-page-template');
                 
                 $selectBox.empty();
                 $selectBox.append('<option value="">'+qsm_admin_messages.select_template+'</option>');
                 
-                if (typeof window[objectName] !== 'undefined' && Array.isArray(window[objectName].my_tmpl_data)) {
+                if (window[objectName] !== undefined && Array.isArray(window[objectName].my_tmpl_data)) {
                     jQuery.each(window[objectName].my_tmpl_data, function(key, value) {
                         if (value.template_type === templateType) {
                             $selectBox.append(jQuery('<option>', {
@@ -2468,7 +2452,7 @@ var QSMContact;
                     const $emailBlock = jQuery(this).parents('.email-show');
                     let email_page = $emailBlock.data('email-page');
                     let editor = tinymce.get('email-template-' + (email_page));
-                    let updatedContent = qsmEmailsObject.default_email_template.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = qsmEmailsObject.default_email_template.replaceAll(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminEmails.displayEmailEditor( $emailBlock );
@@ -2486,15 +2470,17 @@ var QSMContact;
                     let all_dependency = qsmEmailsObject.dependency;
                     let $container = $('.qsm-email-template-dependency-addons');
                     $container.empty();
-                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                    if (scriptTemplate?.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
-                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let dependencyIds = new Set(
+                                templateDependency.split(',').map(id => Number.parseInt(id.trim()))
+                            );
                             let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
                             $usedAddonsDiv.append($('<h3>').text(qsmEmailsObject.used_addons));
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
-                                if (dependencyIds.includes(dependency.id)) {
+                                if (dependencyIds.has(dependency.id)) {
                                     let $anchor = $('<a>').addClass('qsm-email-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
                                     if (dependency.status === 'activated' || dependency.status === 'installed') {
@@ -2606,9 +2592,9 @@ var QSMContact;
 
             // Click handler for .qsm-view-templates-list
             $(document).on('click', '.qsm-view-templates-list', function() {
-                var type = $(this).data('type');
+                let type = $(this).data('type');
                 // Strip 'global_' prefix if present to match modal ID
-                var modalType = type.replace('global_', '');
+                let modalType = type.replace('global_', '');
                 MicroModal.show('qsm-' + modalType + '-page-templates');
                 // Initialize tab state - show QSM Templates, hide My Templates
                 $('.qsm-' + modalType + '-page-tmpl-header-links').removeClass('active');
@@ -2627,19 +2613,21 @@ var QSMContact;
                     jQuery('.qsm-preview-template-image-close').show();
                     let backgroundImage = jQuery(this).parents('.qsm-email-page-template-card').data('url');
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
-                    let scriptTemplate = (typeof qsmDefaultEmailsObject !== 'undefined') ? qsmDefaultEmailsObject.script_tmpl[indexId] : null;
-                    let all_dependency = (typeof qsmDefaultEmailsObject !== 'undefined') ? qsmDefaultEmailsObject.dependency : [];
+                    let scriptTemplate = (typeof qsmDefaultEmailsObject === 'undefined') ? null : qsmDefaultEmailsObject.script_tmpl[indexId];
+                    let all_dependency = (typeof qsmDefaultEmailsObject === 'undefined') ? [] : qsmDefaultEmailsObject.dependency;
                     let $container = $('.qsm-email-template-dependency-addons');
                     $container.empty();
-                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                    if (scriptTemplate?.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
-                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let dependencyIds = new Set(
+                                templateDependency.split(',').map(id => Number.parseInt(id.trim()))
+                            );
                             let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
-                            $usedAddonsDiv.append($('<h3>').text((typeof qsmDefaultEmailsObject !== 'undefined') ? qsmDefaultEmailsObject.used_addons : ''));
+                            $usedAddonsDiv.append($('<h3>').text((typeof qsmDefaultEmailsObject === 'undefined') ? '' : qsmDefaultEmailsObject.used_addons));
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
-                                if (dependencyIds.includes(dependency.id)) {
+                                if (dependencyIds.has(dependency.id)) {
                                     let $anchor = $('<a>').addClass('qsm-email-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
                                     if (dependency.status === 'activated' || dependency.status === 'installed') {
@@ -2669,9 +2657,9 @@ var QSMContact;
                     let editor_id = 'default_email_template';
                     let templateValue;
                     if (structure == 'default') {
-                        templateValue = (typeof qsmDefaultEmailsObject !== 'undefined') ? qsmDefaultEmailsObject.script_tmpl[indexid].template_content : '';
+                        templateValue = (typeof qsmDefaultEmailsObject === 'undefined') ? '' : qsmDefaultEmailsObject.script_tmpl[indexid].template_content;
                     } else if (structure == 'custom') {
-                        templateValue = (typeof qsmDefaultEmailsObject !== 'undefined') ? qsmDefaultEmailsObject.my_tmpl_data[indexid].template_content : '';
+                        templateValue = (typeof qsmDefaultEmailsObject === 'undefined') ? '' : qsmDefaultEmailsObject.my_tmpl_data[indexid].template_content;
                     }
                     let updatedContent = templateValue.replace(/%([^%]+)%/g, '<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     updatedContent = qsmConvertContentToShortcode(updatedContent).replace(/\\/g, '');
@@ -2686,8 +2674,8 @@ var QSMContact;
  
             // Tab switching
             $(document).on('click', '.qsm-page-tmpl-header-links', function() {
-                var tab = $(this).data('tab');
-                var type = $(this).closest('.qsm-popup').data('type');
+                let tab = $(this).data('tab');
+                let type = $(this).closest('.qsm-popup').data('type');
                 $('.qsm-' + type + '-page-tmpl-header-links').removeClass('active');
                 $(this).addClass('active');
                 if (tab === 'page') {
@@ -2701,7 +2689,7 @@ var QSMContact;
  
             // Back button from preview
             $(document).on('click', '.qsm-preview-template-image-close', function() {
-                var type = $(this).data('type');
+                let type = $(this).data('type');
                 $('.qsm-preview-' + type + '-page-template-container').hide();
                 $('.qsm-' + type + '-page-template-container').show();
             });
@@ -5170,7 +5158,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let $resultsPage = jQuery(this).parents('.results-page-show');
                     let resultPageIndex = $resultsPage.data('result-page');
                     let editor = tinymce.get('results-page-' + (resultPageIndex));
-                    let updatedContent = qsmResultsObject.default_result_template.replace(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
+                    let updatedContent = qsmResultsObject.default_result_template.replaceAll(/%([^%]+)%/g, '&nbsp;<qsmvariabletag>$1</qsmvariabletag>&nbsp;');
                     editor.setContent('');
                     editor.execCommand('mceInsertContent', false, updatedContent);
                     QSMAdminResults.displayResultEditor( $resultsPage );
@@ -5188,15 +5176,17 @@ var QSM_Quiz_Broadcast_Channel;
                     let all_dependency = qsmResultsObject.dependency;
                     let $container = $('.qsm-result-template-dependency-addons');
                     $container.empty();
-                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                    if (scriptTemplate?.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
-                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let dependencyIds = new Set(
+                                templateDependency.split(',').map(id => Number.parseInt(id.trim()))
+                            );
                             let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
                             $usedAddonsDiv.append($('<h3>').text(qsmResultsObject.used_addons));
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
-                                if (dependencyIds.includes(dependency.id)) {
+                                if (dependencyIds.has(dependency.id)) {
                                     let $anchor = $('<a>').addClass('qsm-result-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
                                     if (dependency.status === 'activated' || dependency.status === 'installed') {
@@ -5320,9 +5310,9 @@ var QSM_Quiz_Broadcast_Channel;
         if (window.location.href.indexOf('tab=quiz-default-template') > 0) {
             // Click handler for .qsm-view-templates-list
             $(document).on('click', '.qsm-view-templates-list', function() {
-                var type = $(this).data('type');
+                let type = $(this).data('type');
                 // Strip 'global_' prefix if present to match modal ID
-                var modalType = type.replace('global_', '');
+                let modalType = type.replace('global_', '');
                 MicroModal.show('qsm-' + modalType + '-page-templates');
                 // Initialize tab state - show QSM Templates, hide My Templates
                 $('.qsm-' + modalType + '-page-tmpl-header-links').removeClass('active');
@@ -5341,19 +5331,21 @@ var QSM_Quiz_Broadcast_Channel;
                     jQuery('.qsm-preview-template-image-close').show();
                     let backgroundImage = jQuery(this).parents('.qsm-result-page-template-card').data('url');
                     jQuery('.qsm-preview-template-image').attr('src', backgroundImage);
-                    let scriptTemplate = (typeof qsmDefaultResultsObject !== 'undefined') ? qsmDefaultResultsObject.script_tmpl[indexId] : null;
-                    let all_dependency = (typeof qsmDefaultResultsObject !== 'undefined') ? qsmDefaultResultsObject.dependency : [];
+                    let scriptTemplate = (typeof qsmDefaultResultsObject === 'undefined') ? null : qsmDefaultResultsObject.script_tmpl[indexId];
+                    let all_dependency = (typeof qsmDefaultResultsObject === 'undefined') ? [] : qsmDefaultResultsObject.dependency;
                     let $container = $('.qsm-result-template-dependency-addons');
                     $container.empty();
-                    if (scriptTemplate && scriptTemplate.hasOwnProperty('dependency') && scriptTemplate.dependency) {
+                    if (scriptTemplate?.dependency) {
                         let templateDependency = scriptTemplate.dependency;
                         if (templateDependency.trim() !== '') {
-                            let dependencyIds = templateDependency.split(',').map(id => parseInt(id.trim()));
+                            let dependencyIds = new Set(
+                                templateDependency.split(',').map(id => Number.parseInt(id.trim()))
+                            );
                             let $usedAddonsDiv = $('<div>').addClass('qsm-used-addons');
-                            $usedAddonsDiv.append($('<h3>').text((typeof qsmDefaultResultsObject !== 'undefined') ? qsmDefaultResultsObject.used_addons : ''));
+                            $usedAddonsDiv.append($('<h3>').text((typeof qsmDefaultResultsObject === 'undefined') ? '' : qsmDefaultResultsObject.used_addons));
                             let hasUsedAddons = false;
                             $.each(all_dependency, function(_, dependency) {
-                                if (dependencyIds.includes(dependency.id)) {
+                                if (dependencyIds.has(dependency.id)) {
                                     let $anchor = $('<a>').addClass('qsm-result-template-dependency-addon').attr('href', dependency.link).attr('target', '_blank').text(dependency.name);
                                     hasUsedAddons = true;
                                     if (dependency.status === 'activated' || dependency.status === 'installed') {
@@ -5400,8 +5392,8 @@ var QSM_Quiz_Broadcast_Channel;
  
             // Tab switching
             $(document).on('click', '.qsm-page-tmpl-header-links', function() {
-                var tab = $(this).data('tab');
-                var type = $(this).closest('.qsm-popup').data('type');
+                let tab = $(this).data('tab');
+                let type = $(this).closest('.qsm-popup').data('type');
                 $('.qsm-' + type + '-page-tmpl-header-links').removeClass('active');
                 $(this).addClass('active');
                 if (tab === 'page') {
@@ -5415,7 +5407,7 @@ var QSM_Quiz_Broadcast_Channel;
  
             // Back button from preview
             $(document).on('click', '.qsm-preview-template-image-close', function() {
-                var type = $(this).data('type');
+                let type = $(this).data('type');
                 $('.qsm-preview-' + type + '-page-template-container').hide();
                 $('.qsm-' + type + '-page-template-container').show();
             });

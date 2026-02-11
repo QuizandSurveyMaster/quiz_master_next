@@ -86,65 +86,45 @@ class QMNGlobalSettingsPage {
 						<?php
 						$variable_list = qsm_text_template_variable_list();
 						$variable_list = qsm_extra_template_and_leaderboard($variable_list);
+
 						$variable_list = apply_filters( 'qsm_text_variable_list_default_template', $variable_list );
-						
-						if ( $variable_list ) {
-							foreach ( $variable_list as $variable_name => $variable_value ) {
-								if ( ! is_array( $variable_value ) ) {
-									$variable_list['Other Variables'][ $variable_name ] = $variable_value;
+						$grouped_variables = $this->qsm_group_template_variables( $variable_list );
+						if ( $grouped_variables ) {
+							foreach ( $grouped_variables as $category_name => $category_variables ) {
+								if ( ! is_array( $category_variables ) ) {
+									continue;
 								}
-							}
-							foreach ( $variable_list as $category_name => $category_variables ) {
-								if ( is_array( $category_variables ) ) {
-									$upgrade_link = "";
-									$classname = "";
-									$qsm_badge = "";
-									if ( ( ! class_exists( 'QSM_Extra_Variables' ) ) && ( 'Extra Template Variables' == $category_name ) ) {
-										$upgrade_link = qsm_get_plugin_link('extra-template-variables');
-										$classname = "qsm-upgrade-popup-variable";
-										$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
-									}
-									if ( ( ! class_exists( 'Mlw_Qmn_Al_Widget' ) ) && ( 'Advanced Leaderboard' == $category_name ) ) {
-										$upgrade_link = qsm_get_plugin_link('downloads/advanced-leaderboard/');
-										$classname = "qsm-upgrade-popup-variable";
-										$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
-									}
-									if ( ( ! class_exists( 'QSM_Analysis' ) ) && ( 'Analysis' == $category_name ) ) {
-										$upgrade_link = qsm_get_plugin_link('downloads/results-analysis/');
-										$classname = "qsm-upgrade-popup-variable";
-										$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
-									}
-									if ( ( ! class_exists( 'QSM_Advanced_Assessment' ) ) && ( 'Advanced Assessment' == $category_name ) ) {
-										$upgrade_link = qsm_get_plugin_link( 'downloads/advanced-assessment/' );
-										$classname = "qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable";
-										$qsm_badge = "<a  href =".$upgrade_link." target='_blank' class='qsm-upgrade-popup-badge'>".esc_html__( 'PRO', 'quiz-master-next' )."</a>";
-									}
+								$upgrade_meta = $this->qsm_default_template_variable_upgrade_meta( $category_name );
+								$classname = $upgrade_meta['classname'];
+								$qsm_badge = $upgrade_meta['badge'];
+								$is_upgrade = $classname !== '';
+								?>
+								<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo wp_kses_post( $qsm_badge ); ?></div>
+								<?php
+								foreach ( $category_variables as $variable_key => $variable ) {
 									?>
-									<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo  wp_kses_post( $qsm_badge ) ; ?></div>
-									<?php
-									foreach ( $category_variables as $variable_key => $variable ) {
-										?>
-										<div class="popup-template-span-wrap">
-											<span class="qsm-text-template-span <?php echo esc_attr( $classname );?>">
-											<?php if ( false !== strpos( $classname, 'qsm-upgrade-popup-variable') ) {?>
-												<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
-													<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
-												</span>
-												<?php } else { ?>
-												<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
-													<span class='button click-to-copy'><?php esc_html_e('Click to Copy', 'quiz-master-next'); ?></span>
-													<span class="temp-var-seperator">
-														<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+									<div class="popup-template-span-wrap">
+										<span class="qsm-text-template-span <?php echo esc_attr( $classname ); ?>">
+										<?php if ( $is_upgrade ) { ?>
+											<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
+												<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+											</span>
+										<?php } else { ?>
+											<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+												<span class='button click-to-copy'><?php esc_html_e( 'Click to Copy', 'quiz-master-next' ); ?></span>
+												<span class="temp-var-seperator">
+													<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 														<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
 														</span>
 													</span>
 											<?php } ?>
-											</span>
-										</div>
+										</span>
+									</div>
 									<?php
-									}
 								}
 							}
+							?>
+						<?php
 						}
 						?>
 					</main>
@@ -156,6 +136,66 @@ class QMNGlobalSettingsPage {
 			</div>
 		</div>
 		<?php
+	}
+
+	private function qsm_group_template_variables( $variable_list ) {
+		$grouped = array();
+		if ( ! $variable_list ) {
+			return $grouped;
+		}
+		foreach ( $variable_list as $name => $value ) {
+			if ( is_array( $value ) ) {
+				$grouped[ $name ] = $value;
+				continue;
+			}
+			if ( ! isset( $grouped['Other Variables'] ) ) {
+				$grouped['Other Variables'] = array();
+			}
+			$grouped['Other Variables'][ $name ] = $value;
+		}
+		return $grouped;
+	}
+
+	private function qsm_default_template_variable_upgrade_meta( $category_name ) {
+		$meta = array(
+			'classname' => '',
+			'badge'     => '',
+		);
+		switch ( $category_name ) {
+			case 'Extra Template Variables':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					qsm_get_plugin_link('extra-template-variables'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Advanced Leaderboard':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					qsm_get_plugin_link('downloads/advanced-leaderboard/'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Analysis':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					qsm_get_plugin_link('downloads/results-analysis/'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Advanced Assessment':
+				$meta['classname'] = 'qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable';
+				$meta['badge'] = sprintf(
+					"<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>",
+					qsm_get_plugin_link( 'downloads/advanced-assessment/' ),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+		}
+		return $meta;
 	}
 
 	/**
