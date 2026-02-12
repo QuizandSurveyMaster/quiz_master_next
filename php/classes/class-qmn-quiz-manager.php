@@ -799,17 +799,55 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ',', $question_ids );
-			if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
-				if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) && empty( $quiz_options->question_per_category ) && empty( $quiz_options->limit_category_checkbox ) ) {
-					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $quiz_id ] ) );
-					if ( ! preg_match( '/^\d+(,\d+)*$/', $question_sql ) ) {
-						$question_sql = implode( ',', $question_ids );
+
+			/**
+			 * If cookie exists, try to preserve question ids + order
+			 */
+			if ( isset($_COOKIE['question_ids_' . $quiz_id]) ) {
+				// raw cookie
+				$cookie_raw = wp_unslash($_COOKIE['question_ids_' . $quiz_id]);
+
+				// sanitize & keep only digits + commas
+				$cookie_raw = preg_replace('/[^0-9,]/', '', $cookie_raw);
+
+				// convert to array
+				$cookie_ids = array_filter(array_map('intval', explode(',', $cookie_raw)));
+
+				if ( !empty($cookie_ids) ) {
+
+					if ( !empty($cookie_ids) ) {
+
+						// finally preserve cookie ids
+						$question_ids = $cookie_ids;
+						$question_sql = implode(',', $question_ids);
+
+						// preserve exact order
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
+
+					} else {
+
+						if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+							shuffle($question_ids);
+						}
+						$question_sql = implode(',', $question_ids);
+						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 					}
+
 				} else {
-					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
-					$question_sql = implode( ',', $question_ids );
+
+					if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
+						shuffle($question_ids);
+					}
+					$question_sql = implode(',', $question_ids);
+					$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 				}
-				$order_by_sql = 'ORDER BY FIELD(question_id,' . esc_sql( $question_sql ) . ')';
+
+			} elseif ( in_array('questions', $randomness_order, true) || in_array('pages', $randomness_order, true) ) {
+
+				// no cookie → apply randomness
+				shuffle($question_ids);
+				$question_sql = implode(',', $question_ids);
+				$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 			}
 			$query          = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
 			$questions      = $wpdb->get_results( $query );
@@ -864,9 +902,9 @@ class QMNQuizManager {
 			$question_sql = implode( ',', array_unique( $question_ids ) ); // Prevent duplicates
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
-				let expires = "expires=" + d.toUTCString();
+				const qsmCookieExpiry = new Date();
+				qsmCookieExpiry.setTime(qsmCookieExpiry.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				let expires = "expires=" + qsmCookieExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
 			</script>
 			<?php
@@ -967,6 +1005,7 @@ class QMNQuizManager {
 			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->minlength_error_text) ? $options->minlength_error_text : $default_texts['minlength_error_text'], "quiz_minlength_error_text-{$options->quiz_id}" ),
 			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( ! empty($options->maxlength_error_text) ? $options->maxlength_error_text : $default_texts['maxlength_error_text'], "quiz_maxlength_error_text-{$options->quiz_id}" ),
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
+			'phone_error_text'     => __( 'Phone number is invalid', 'quiz-master-next' ),
 		);
 		$qmn_json_data                   = apply_filters( 'qsm_json_error_message', $qmn_json_data, $options );
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
@@ -1127,9 +1166,9 @@ class QMNQuizManager {
 			$question_list_str = implode( ',', $question_list_array );
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365*24*60*60*1000));
-				let expires = "expires="+ d.toUTCString();
+				const qsmExpiry = new Date();
+				qsmExpiry.setTime(qsmExpiry.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ qsmExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+expires+"; path=/";
 			</script>
 			<?php
@@ -2467,53 +2506,89 @@ class QMNQuizManager {
 			$qmn_array_for_variables                    = apply_filters( 'qsm_array_for_variables_before_db_query', $qmn_array_for_variables );
 			// If the store responses in database option is set to Yes.
 			if ( 1 === intval( $qmn_quiz_options->store_responses ) ) {
-				// Inserts the responses in the database.
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
 					$results_id     = sanitize_text_field( wp_unslash( $_POST['update_result'] ) );
-					$quiz_results_value = maybe_serialize( $results_array );
-					if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
-						$quiz_results_value = '';
-					}
-					$results_update = $wpdb->update(
-						$table_name,
-						array(
-							'point_score'     => $qmn_array_for_variables['total_points'],
-							'correct_score'   => $qmn_array_for_variables['total_score'],
-							'correct'         => $qmn_array_for_variables['total_correct'],
-							'total'           => $qmn_array_for_variables['total_questions'],
-							'user_ip'         => $qmn_array_for_variables['user_ip'],
-							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => $quiz_results_value,
-						),
-						array( 'result_id' => $results_id )
-					);
-					if ( false === $results_update ) {
-						$error_details = $wpdb->last_error;
-						$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' - ' . $wpdb->last_query, 0, 'error' );
-					} else {
-						if ( 1 == get_option( 'qsm_migration_results_processed' ) && ! empty( $results_array ) && is_array( $results_array ) ) {
-							$results_id_int = intval( $results_id );
-							if ( $results_id_int ) {
-								$results_questions           = $wpdb->prefix . 'qsm_results_questions';
-								$results_meta_table = $wpdb->prefix . 'qsm_results_meta';
-								$wpdb->delete( $results_questions, array( 'result_id' => $results_id_int ), array( '%d' ) );
-								$wpdb->delete( $results_meta_table, array( 'result_id' => $results_id_int ), array( '%d' ) );
-								$structured_inserted = $this->qsm_insert_result_answers_and_meta( $results_id_int, $qmn_array_for_variables['quiz_id'], $results_array );
-								if ( false === $structured_inserted ) {
-									// Fallback: restore legacy blob so result data isn't lost.
-									$wpdb->update(
-										$table_name,
-										array( 'quiz_results' => maybe_serialize( $results_array ) ),
-										array( 'result_id' => $results_id_int ),
-										array( '%s' ),
-										array( '%d' )
-									);
 
-									$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
-									if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
-										$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' - ' . $wpdb->last_query, 0, 'error' );
+					$record_exists = $wpdb->get_row( $wpdb->prepare(
+						"SELECT user, user_ip FROM $table_name WHERE result_id = %s",
+						$results_id
+					) );
+
+					$is_authorized = false;
+					
+					if ( $record_exists ) {
+						$current_user_id = get_current_user_id();
+
+						if ( $current_user_id > 0 && (int)$record_exists->user == $current_user_id ) {
+							$is_authorized = true;
+						}
+						
+						if ( ! $is_authorized ) {
+							// Check for extra authentication do not allow to update result without extra authentication if guest user
+							$extra_authentication = apply_filters('qsm_extra_authentication_update_results_before', '', $qmn_quiz_options, $qmn_array_for_variables);
+							if ( '' != $extra_authentication ) {
+								$is_authorized = true;
+							}
+						}
+					}
+
+					if ( ! $is_authorized ) {
+						$quiz_submitted_data = qsm_printTableRows( $qmn_array_for_variables );
+
+						$mlwQuizMasterNext->log_manager->add(
+							__( 'Security Alert: Unauthorized attempt - Quiz ID:', 'quiz-master-next' ) . $qmn_array_for_variables['quiz_id'],
+							'<b>Target Result ID:</b> ' . $results_id . '<br/><b>User IP:</b> ' . $qmn_array_for_variables['user_ip'] . '<br/><b>Quiz data:</b> ' . $quiz_submitted_data,
+							0,
+							'warning'
+						);
+
+						$result_display .= '<div class="qsm-result-page-warning">' . __( 'Sorry, your submission was not successful. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
+					} else {
+						$quiz_results_value = maybe_serialize( $results_array );
+						if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+							$quiz_results_value = '';
+						}
+						$results_update = $wpdb->update(
+							$table_name,
+							array(
+								'point_score'     => $qmn_array_for_variables['total_points'],
+								'correct_score'   => $qmn_array_for_variables['total_score'],
+								'correct'         => $qmn_array_for_variables['total_correct'],
+								'total'           => $qmn_array_for_variables['total_questions'],
+								'user_ip'         => $qmn_array_for_variables['user_ip'],
+								'time_taken'      => $qmn_array_for_variables['time_taken'],
+								'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
+								'quiz_results'    => $quiz_results_value,
+							),
+							array( 'result_id' => $results_id )
+						);
+						if ( false === $results_update ) {
+							$error_details = $wpdb->last_error;
+							$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' - ' . $wpdb->last_query, 0, 'error' );
+						} else {
+							if ( 1 == get_option( 'qsm_migration_results_processed' ) && ! empty( $results_array ) && is_array( $results_array ) ) {
+								$results_id_int = intval( $results_id );
+								if ( $results_id_int ) {
+									$results_questions           = $wpdb->prefix . 'qsm_results_questions';
+									$results_meta_table = $wpdb->prefix . 'qsm_results_meta';
+									$wpdb->delete( $results_questions, array( 'result_id' => $results_id_int ), array( '%d' ) );
+									$wpdb->delete( $results_meta_table, array( 'result_id' => $results_id_int ), array( '%d' ) );
+									$structured_inserted = $this->qsm_insert_result_answers_and_meta( $results_id_int, $qmn_array_for_variables['quiz_id'], $results_array );
+									if ( false === $structured_inserted ) {
+										// Fallback: restore legacy blob so result data isn't lost.
+										$wpdb->update(
+											$table_name,
+											array( 'quiz_results' => maybe_serialize( $results_array ) ),
+											array( 'result_id' => $results_id_int ),
+											array( '%s' ),
+											array( '%d' )
+										);
+
+										$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
+										if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
+											$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' - ' . $wpdb->last_query, 0, 'error' );
+										}
 									}
 								}
 							}

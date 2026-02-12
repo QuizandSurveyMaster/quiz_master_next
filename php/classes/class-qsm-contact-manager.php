@@ -428,7 +428,7 @@ class QSM_Contact_Manager {
 			}elseif ( 'number' === $field["type"] ) {
 				$class .= 'mlwRequiredNumber';
 			}else {
-				$class .= 'mlwRequiredText qsm_required_text';
+				$class .= 'mlwRequiredText qsm_required_text ';
 				if ( 'checkbox' === $field["type"] ) {
 					$class .= ' mlwRequiredAccept';
 				}
@@ -438,6 +438,10 @@ class QSM_Contact_Manager {
 			case 'text':
 				if ( 'phone' === $field['use'] ) {
 					$class .= 'mlwPhoneNumber';
+				}
+				// Add phone pattern if set
+				if ( 'phone' === $field['use'] && isset( $field['phone_pattern'] ) && ! empty( $field['phone_pattern'] ) ) {
+					$fieldAttr .= " data-phone-pattern='" . esc_attr( $field['phone_pattern'] ) . "' ";
 				}
 				// Filer Value
 				if ( empty( $contact_disable_autofill ) ) {

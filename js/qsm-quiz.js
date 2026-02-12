@@ -785,6 +785,23 @@ function qmnValidation(element, quiz_form_id) {
 					}
 				}
 			}
+			if (jQuery(this).hasClass('mlwPhoneNumber') && this.value !== "") {
+				var phoneValue = jQuery.trim(this.value);
+				var phonePattern = jQuery(this).attr('data-phone-pattern');
+				if (typeof phonePattern !== 'undefined' && phonePattern !== '') {
+					try {
+                        var escapedPattern = phonePattern.replace(/[.+?^$|()\\]/g, '\\$&');
+                        escapedPattern = escapedPattern.replace(/ /g, '\\s+');
+                        var pattern = new RegExp('^' + escapedPattern + '$');
+						if (!pattern.test(phoneValue)) {
+							qmnDisplayError(error_messages.phone_error_text, jQuery(this), quiz_form_id);
+							show_result_validation = false;
+						}
+					} catch (e) {
+						console.warn('Invalid phone pattern:', phonePattern);
+					}
+				}
+			}
 			if (jQuery(this).attr('class').indexOf('mlwUrl') !== -1 && this.value !== "") {
 				// Remove any trailing and preceeding space.
 				if (!isUrlValid(jQuery.trim(this.value))) {

@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 10.3.4
+Stable tag: 10.3.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Create quizzes, surveys, and tests easily on WordPress with this versatile plugi
 
 **Quiz and Survey Master** is the easiest quiz and survey maker plugin for creating quizzes, surveys, and forms on your WordPress website. Create everything from fun trivia quizzes to in-depth customer satisfaction assessments, using a user-friendly **drag-and-drop quiz maker** interface. Go beyond basic questions with multimedia support for richer content, analyze results to gain valuable insights, and even integrate with email marketing services to capture leads. Quiz & Survey Master is a **powerful WordPress plugin** to increase user engagement, gather valuable data, and build a stronger connection with your audience.
 
-**Try Demo ➡️ [Get a personal sandbox demo with QSM](https://instawp.io/plugins/quiz-master-next?utm_source=wp.org&utm_medium=wp_org_description&utm_campaign=wp_org_to_qsm)**
+**Try Demo ➡️ [Get a personal sandbox demo with QSM](https://app.instawp.io/launch?s=qsm-wporg&d=v2)**
 
 https://youtu.be/G5w8F6XRgio
 
@@ -225,6 +225,10 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 10.3.5 ( January 28, 2026 ) =
+* Patch: Authentication validation issue affecting update results
+* Patch: Added authentication checks when enabling multi-category support for questions
+
 = 10.3.4 ( January 06, 2026 ) =
 * Patch: Vulnerability where users can modify or delete quizzes/questions beyond their role permissions
 * Enhancement: Added support for using variable in quiz redirect URL
