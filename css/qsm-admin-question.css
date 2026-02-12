@@ -292,6 +292,9 @@
 .page-new, .question-new {
 	background-color: #fff !important;
 }
+.qsm-question-bank-list .question-new {
+	background-color: unset !important;
+}
 .correct-header {
 	text-align: right;
 	display: none;

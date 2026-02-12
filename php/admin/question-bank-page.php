@@ -91,7 +91,6 @@ function qsm_render_question_bank_page() {
 	$types      = $page_data['question_types'];
 	$max_upload_size      = wp_max_upload_size();
 	$max_upload_size_text = size_format( $max_upload_size );
-	$sample_csv_url       = trailingslashit( QSM_PLUGIN_URL ) . 'assets/import-questions-sample.csv';
 	?>
 	<div class="wrap qsm-question-bank-admin">
 		<h1><?php esc_html_e( 'QSM Question Bank', 'quiz-master-next' ); ?></h1>
@@ -152,49 +151,6 @@ function qsm_render_question_bank_page() {
 				</button>
 			</div>
 		</form>
-
-		<div id="qsm-bulk-upload-panel" class="qsm-bulk-upload-panel" aria-hidden="true">
-			<div class="qsm-bulk-upload-header">
-				<div>
-					<h2><?php esc_html_e( 'Bulk upload questions', 'quiz-master-next' ); ?></h2>
-					<p>
-						<?php esc_html_e( 'Upload a CSV file that matches the Question Bank schema. Each question row should be followed by its answer rows.', 'quiz-master-next' ); ?>
-						<?php if ( $sample_csv_url ) : ?>
-							<a href="<?php echo esc_url( $sample_csv_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Download sample CSV', 'quiz-master-next' ); ?></a>
-						<?php endif; ?>
-					</p>
-				</div>
-			</div>
-
-			<form id="qsm-bulk-upload-form" class="qsm-bulk-upload-form" method="post" enctype="multipart/form-data">
-				<?php wp_nonce_field( 'qsm_bulk_upload_questions', 'qsm_bulk_upload_nonce' ); ?>
-
-				<div class="qsm-bulk-upload-dropzone" id="qsm-bulk-upload-dropzone">
-					<input type="file" id="qsm-bulk-upload-file" name="bulk_csv" accept=".csv,text/csv" />
-					<div class="qsm-dropzone-content">
-						<span class="dashicons dashicons-media-spreadsheet"></span>
-						<p>
-							<strong><?php esc_html_e( 'Drag & drop your CSV here', 'quiz-master-next' ); ?></strong>
-							<br />
-							<?php esc_html_e( 'or', 'quiz-master-next' ); ?> <button type="button" class="button-link qsm-bulk-upload-browse"><?php esc_html_e( 'select file', 'quiz-master-next' ); ?></button>
-						</p>
-						<p class="qsm-dropzone-file" id="qsm-bulk-upload-file-label"></p>
-					</div>
-				</div>
-
-				<div class="qsm-bulk-upload-actions">
-					<button type="submit" class="button button-primary" id="qsm-bulk-upload-submit">
-						<?php esc_html_e( 'Upload CSV', 'quiz-master-next' ); ?>
-					</button>
-					<button type="button" class="button" id="qsm-bulk-upload-cancel">
-						<?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?>
-					</button>
-				</div>
-
-				<div class="qsm-bulk-upload-status" id="qsm-bulk-upload-status" role="status" aria-live="polite"></div>
-				<div class="qsm-bulk-upload-summary" id="qsm-bulk-upload-summary"></div>
-			</form>
-		</div>
 
 		<div class="qsm-admin-bulk-actions qsm-question-bank-page">
 			<button id="qsm-bulk-delete-question" class="button button-danger"><?php esc_html_e( 'Delete Selected', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
@@ -382,10 +338,55 @@ function qsm_questions_bank_question_editor() {
 	// Load Question Types.
 	$question_types             = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 	$question_types_categorized = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
+	$sample_csv_url       = trailingslashit( QSM_PLUGIN_URL ) . 'assets/import-questions-sample.csv';
 
 	?>
+	<!-- Popup for bulk upload -->
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="qsm-bulk-upload-modal" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="qsm-bulk-upload-modal-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="qsm-bulk-upload-modal-title"><?php esc_html_e( 'Bulk upload questions', 'quiz-master-next' ); ?></h2>
+					<a class="qsm-popup__close" aria-label="<?php esc_attr_e( 'Close modal', 'quiz-master-next' ); ?>" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="qsm-bulk-upload-modal-content">
+					<p>
+						<?php esc_html_e( 'Upload a CSV file that matches the Question Bank schema. Each question row should be followed by its answer rows.', 'quiz-master-next' ); ?>
+						<?php if ( $sample_csv_url ) : ?>
+							<a href="<?php echo esc_url( $sample_csv_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Download sample CSV', 'quiz-master-next' ); ?></a>
+						<?php endif; ?>
+					</p>
+					<form id="qsm-bulk-upload-form" class="qsm-bulk-upload-form" method="post" enctype="multipart/form-data">
+						<?php wp_nonce_field( 'qsm_bulk_upload_questions', 'qsm_bulk_upload_nonce' ); ?>
+						<div class="qsm-bulk-upload-dropzone" id="qsm-bulk-upload-dropzone">
+							<input type="file" id="qsm-bulk-upload-file" name="bulk_csv" accept=".csv,text/csv" />
+							<div class="qsm-dropzone-content">
+								<span class="dashicons dashicons-media-spreadsheet"></span>
+								<p>
+									<strong><?php esc_html_e( 'Drag & drop your CSV here', 'quiz-master-next' ); ?></strong>
+									<br />
+									<?php esc_html_e( 'or', 'quiz-master-next' ); ?> <button type="button" class="button-link qsm-bulk-upload-browse"><?php esc_html_e( 'select file', 'quiz-master-next' ); ?></button>
+								</p>
+								<p class="qsm-dropzone-file" id="qsm-bulk-upload-file-label"></p>
+							</div>
+						</div>
+						<div class="qsm-bulk-upload-actions">
+							<button type="submit" class="button button-primary" id="qsm-bulk-upload-submit">
+								<?php esc_html_e( 'Upload CSV', 'quiz-master-next' ); ?>
+							</button>
+							<button type="button" class="button" id="qsm-bulk-upload-cancel" data-micromodal-close>
+								<?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?>
+							</button>
+						</div>
+						<div class="qsm-bulk-upload-status" id="qsm-bulk-upload-status" role="status" aria-live="polite"></div>
+						<div class="qsm-bulk-upload-summary" id="qsm-bulk-upload-summary"></div>
+					</form>
+				</main>
+			</div>
+		</div>
+	</div>
 	<!-- Popup for editing question -->
-	<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-1" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 				<header class="qsm-popup__header">
@@ -395,7 +396,7 @@ function qsm_questions_bank_question_editor() {
 					</h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-1-content">
+				<main class="qsm-popup__content questionElements" id="modal-1-content">
 					<input type="hidden" name="edit_question_id" id="edit_question_id" value="">
 					<input type="hidden" name="edit_quiz_id" id="edit_quiz_id" value="">
 					<div id="poststuff">

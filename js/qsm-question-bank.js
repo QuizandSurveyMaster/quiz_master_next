@@ -29,7 +29,6 @@
 			isOpen: false,
 			isUploading: false,
 		},
-		bulkPanelToggleTimer: null,
 
 		init() {
 			this.$form = $('#qsm-question-bank-filters');
@@ -58,7 +57,7 @@
 			this.$pageInfo = $('#qsm-question-bank-page-info');
 			this.$createButton = $('#qsm-question-bank-create');
 			this.$bulkImportButton = $('#qsm-bulk-question-import');
-			this.$bulkPanel = $('#qsm-bulk-upload-panel');
+			this.$bulkModal = $('#qsm-bulk-upload-modal');
 			this.$bulkForm = $('#qsm-bulk-upload-form');
 			this.$bulkFileInput = $('#qsm-bulk-upload-file');
 			this.$bulkDropzone = $('#qsm-bulk-upload-dropzone');
@@ -67,7 +66,7 @@
 			this.$bulkSummary = $('#qsm-bulk-upload-summary');
 			this.$bulkCancel = $('#qsm-bulk-upload-cancel');
 			this.$bulkSubmit = $('#qsm-bulk-upload-submit');
-			this.$bulkBrowse = this.$bulkPanel.find('.qsm-bulk-upload-browse');
+			this.$bulkBrowse = this.$bulkModal.find('.qsm-bulk-upload-browse');
 			this.bulkConfig = pageData?.bulkUpload || {};
 
 			this.questionTypeMap = this.prepareQuestionTypeMap();
@@ -133,8 +132,7 @@
 			});
 
 			this.$list.on('click', '.edit-question-button', (event) => {
-				event.preventDefault();
-				this.handleEditClick(event);
+				this.handleEditClick(event, false);
 				if ( this.bulkState.isOpen ) {
 					this.toggleBulkPanel(false);
 				}
@@ -142,7 +140,7 @@
 
 			this.$createButton.on('click', (event) => {
 				event.preventDefault();
-				this.handleCreateQuestion();
+				this.handleCreateQuestion(true);
                 QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
 				if ( this.bulkState.isOpen ) {
 					this.toggleBulkPanel(false);
@@ -401,7 +399,8 @@
 			return $('<div>').text(value ?? '').html();
 		},
 
-		handleEditClick(event) {
+		handleEditClick(event, useModal = false) {
+			event.preventDefault();
 			if (!this.editorReady) {
 				this.showNotice(pageData?.i18n?.loading || 'Preparing editor…', 'info');
 				return;
@@ -415,7 +414,7 @@
 			$button.addClass('is-loading');
 			this.ensureQuestionModel(questionId)
 				.then((model) => {
-					this.openModelInPopup(model, $button);
+					this.openModelInPopup(model, $button, useModal);
 				})
 				.catch((error) => {
 					this.showNotice(pageData?.i18n?.error || 'Unable to load question.', 'error');
@@ -435,7 +434,7 @@
 				});
 		},
 
-		handleCreateQuestion() {
+		handleCreateQuestion(useModal = false) {
 			if (!this.editorReady || !window.QSMQuestion || !QSMQuestion.questions) {
 				this.showNotice(pageData?.i18n?.loading || 'Preparing editor…', 'info');
 				return;
@@ -456,7 +455,8 @@
 				success: (model) => {
 					this.isCreating = false;
 					const $card = this.upsertQuestionCard(model, { prepend: true });
-					this.openModelInPopup(model, $card ? $card.find('.edit-question-button').first() : null);
+					const $trigger = useModal ? null : ($card ? $card.find('.edit-question-button').first() : null);
+					this.openModelInPopup(model, $trigger, useModal);
 				},
 				error: (error) => {
 					this.isCreating = false;
@@ -528,7 +528,7 @@
 			return `${base}${questionId}`;
 		},
 
-		openModelInPopup(model, $trigger) {
+		openModelInPopup(model, $trigger, useModal = false) {
 			if (!model) {
 				return;
 			}
@@ -538,7 +538,7 @@
 			if (!$button.length) {
 				return;
 			}
-			QSMQuestion.openEditPopup(model.id, $button);
+			QSMQuestion.openEditPopup(model.id, $button, useModal);
 		},
 
 		upsertQuestionCard(model, { prepend = false } = {}) {
@@ -573,19 +573,24 @@
 		},
 
 		initBulkUpload() {
-			if (!this.$bulkPanel.length || !this.$bulkImportButton.length) {
+			if (!this.$bulkModal.length || !this.$bulkImportButton.length) {
 				return;
 			}
+			this.bulkModalConfig = {
+				awaitOpenAnimation: true,
+				awaitCloseAnimation: true,
+				onClose: () => {
+					this.bulkState.isOpen = false;
+					this.resetBulkForm();
+					this.showBulkStatus(this.getBulkMessage('bulkUploadClosed', 'Bulk upload closed.'), 'info');
+				},
+			};
 			this.$bulkImportButton.on('click', (event) => {
 				event.preventDefault();
 				if ( this.bulkState.isUploading ) {
 					return;
 				}
-				if ( this.bulkState.isOpen ) {
-					this.toggleBulkPanel(false);
-				} else {
-					this.toggleBulkPanel(true);
-				}
+				this.toggleBulkPanel(true);
 				QSMQuestion.closeEditPopup();
 			});
 			this.$bulkCancel.on('click', (event) => {
@@ -623,24 +628,36 @@
 		},
 
 		toggleBulkPanel(forceOpen = null) {
-			if (!this.$bulkPanel.length) {
+			if (!this.$bulkModal.length) {
 				return;
 			}
 			const targetState = forceOpen === null ? !this.bulkState.isOpen : forceOpen;
-			if ( this.bulkPanelToggleTimer ) {
-				clearTimeout( this.bulkPanelToggleTimer );
-			}
-			this.bulkPanelToggleTimer = setTimeout( () => {
-				this.bulkState.isOpen = Boolean(targetState);
-				this.$bulkPanel.toggleClass('is-visible', this.bulkState.isOpen);
-				this.$bulkPanel.attr('aria-hidden', this.bulkState.isOpen ? 'false' : 'true');
-				if (this.bulkState.isOpen) {
-					this.showBulkStatus(this.getBulkMessage('bulkUploadOpened', 'Bulk upload ready.'), 'info');
-				} else {
-					this.resetBulkForm();
-					this.showBulkStatus(this.getBulkMessage('bulkUploadClosed', 'Bulk upload closed.'), 'info');
+			const shouldOpen = Boolean(targetState);
+			const hasMicroModal = 'undefined' !== typeof window.MicroModal;
+			if ( shouldOpen ) {
+				if ( this.bulkState.isOpen ) {
+					return;
 				}
-			}, 400 );
+				this.bulkState.isOpen = true;
+				this.showBulkStatus(this.getBulkMessage('bulkUploadOpened', 'Bulk upload ready.'), 'info');
+				if ( hasMicroModal ) {
+					window.MicroModal.show('qsm-bulk-upload-modal', this.bulkModalConfig);
+				} else {
+					this.$bulkModal.attr('aria-hidden', 'false').addClass('is-visible');
+				}
+				return;
+			}
+			if ( ! this.bulkState.isOpen ) {
+				return;
+			}
+			if ( hasMicroModal ) {
+				window.MicroModal.close('qsm-bulk-upload-modal');
+				return;
+			}
+			this.$bulkModal.attr('aria-hidden', 'true').removeClass('is-visible');
+			this.bulkState.isOpen = false;
+			this.resetBulkForm();
+			this.showBulkStatus(this.getBulkMessage('bulkUploadClosed', 'Bulk upload closed.'), 'info');
 		},
 
 		setBulkFile(file) {

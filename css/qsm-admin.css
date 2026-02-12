@@ -1346,7 +1346,7 @@ body .qsm-popup__btn-primary {
 	will-change: transform;
 }
 .qsm-popup select,
-.qsm-popup textarea,
+.qsm-popup textarea:not(.question-title),
 .qsm-popup input[type=text],
 .qsm-popup input[type=search],
 .qsm-popup input[type=number] {
@@ -1355,6 +1355,12 @@ body .qsm-popup__btn-primary {
 	border: 1px solid #dddddd;
 	border-radius: 1px;
 }
+.qsm-popup .questionElements input[type=text],
+.qsm-popup .questionElements select {
+	min-width: unset !important;
+	max-width: unset !important;
+}
+
 /** * Shortcode accordion */
 .sc-opener {
 	position: relative;
@@ -3671,6 +3677,9 @@ input#duplicate_questions {
 	width: 100%;
 	max-width: 100%;
 	min-width: auto;
+}
+.qsm-popup__content.questionElements .answers-single>div.answer-text-div{
+	width: 200px;
 }
 .qsm-quiz-warning-icon {
 	color: #b32d2e;
