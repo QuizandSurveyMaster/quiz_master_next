@@ -5,6 +5,7 @@
 	var QSM_SETUP_WIZARD_STATE_STORAGE_KEY = 'qsm_setup_wizard_state';
 
 	var QSM_TOUR_START_DELAY = 400;
+	var QSM_TOTAL_TOUR_STEPS = 9;
 	var qsmNextTourStartTimer = null;
 	var qsmTourState = {
 		steps: [],
@@ -19,7 +20,8 @@
 		forceSetupWizard: false,
 		addAnswerClicked: false,
 		waitingForEnhancementsSave: false,
-		enhancementFinalStep: null
+		enhancementFinalStep: null,
+		manualStart: false
 	};
 
 	var QSM_TOUR_ACTIVE_QUESTION_TARGETS = [
@@ -72,7 +74,11 @@
 			'.wp-pointer.qsm-pointer-centered{position:fixed!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;max-width:420px;width:calc(100% - 40px);margin:0;z-index:10050;}' +
 			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow,' +
 			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow:before,' +
-			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow:after{display:none!important;}';
+			'.wp-pointer.qsm-pointer-centered .wp-pointer-arrow:after{display:none!important;}' +
+			'.wp-pointer.qsm-pointer-congrats .wp-pointer-content h3{position:relative;padding-right:28px;}' +
+			'.wp-pointer.qsm-pointer-congrats .wp-pointer-content h3:after{content:"×";position:absolute;right:0;top:50%;transform:translate(-15px, -15px);font-size:22px;font-weight:700;color:white;pointer-events:none;}' +
+			'.wp-pointer.qsm-pointer-congrats .qsm-pointer-congrats-close-target{position:absolute;top:8px;right:8px;width:28px;height:28px;border:none;background:transparent;cursor:pointer;}' +
+			'.wp-pointer.qsm-pointer-congrats .qsm-pointer-congrats-close-target:focus{outline:2px solid #fff;}';
 		document.head.appendChild( style );
 	}
 
@@ -161,6 +167,13 @@
 		return $( '.questions .question' ).length > 0;
 	}
 
+	function qsmDisableFutureSetupTours() {
+		qsmMarkSetupWizardCompleted();
+		qsmTourState.forceSetupWizard = false;
+		qsmTourState.pendingFirstQuestionTour = false;
+		qsmClearSetupWizardState();
+	}
+
 	function qsmShouldStartSetupWizard() {
 		if ( qsmTourState.forceSetupWizard ) {
 			return true;
@@ -204,6 +217,13 @@
 		};
 	}
 
+	function qsmAnnotateGlobalSteps( steps, startingIndex ) {
+		var marker = startingIndex || 1;
+		steps.forEach( function( step ) {
+			step.globalStep = marker++;
+		} );
+	}
+
 	function qsmStartFirstQuestionTour( startIndex ) {
 		qsmTourState.tourName = 'first_question';
 		qsmTourState.waitingForFirstQuestionSave = false;
@@ -212,38 +232,14 @@
 			{
 				selector: '.questionElements:visible #question_type',
 				fallbackSelectors: [ '.questionElements:visible', 'body' ],
-				content: '<h3>Create your first question</h3><p>Choose the question type and add answers.</p><h4>Question Type</h4><p>Choose how users will answer this question.</p>',
+				content: '<h3>Create your first question</h3><p>Choose your question type.</p>',
 				position: { edge: 'bottom', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
 				showBack: false
-			},
-			{
-				selector: '#change-answer-editor',
-				content: '<h3>Answer Type</h3><p>Select the format of your answer options.</p>',
-				position: { edge: 'bottom', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
 			},
 			{
 				selector: '#question_title',
 				content: '<h3>Question Title</h3><p>Write the question you want to ask your users.</p>',
 				position: { edge: 'bottom', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-			},
-			{
-				selector: '.questionElements .qsm-editor-wrap',
-				content: '<h3>Edit Description (Optional)</h3><p>Add extra instructions or context (optional).</p>',
-				position: { edge: 'bottom', align: 'left' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
-				beforeOpen: function(){
-					var $area = $( '.qsm-show-question-desc-box' );
-					if ( $area.length ) {
-						$area.trigger( 'click' );
-					}
-				}
 			},
 			{
 				selector: '#answers',
@@ -252,8 +248,6 @@
 				'<p>Assign <b>points</b> and mark the <b>correct answer</b>.</p>' +
 				'<p>Select the appropriate <b>label</b> (Optional).</p>',
 				position: { edge: 'bottom', align: 'left' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
 				pointerClass: 'qsm-pointer-wide',
 				beforeOpen: function(){
 					var currentAnswers = $('#answers').find('.answers-single');
@@ -270,8 +264,6 @@
 				selector: '#save-popup-button',
 				content: '<h3>Save Question</h3><p>Click <strong>Save Question</strong> to save your first question.</p>',
 				position: { edge: 'right', align: 'center' },
-				wizardStep: 1,
-				totalWizardSteps: 3,
 				showNext: false,
 				showSkip: true,
 				showBack: true,
@@ -282,6 +274,7 @@
 			}
 		];
 
+		qsmAnnotateGlobalSteps( qsmTourState.steps, 1 );
 		qsmTourState.started = true;
 		qsmTourState.index = startIndex || 0;
 		qsmWaitForSelector( '.questionElements:visible #question_type', 5000, function(){
@@ -300,84 +293,48 @@
 		qsmTourState.enhancementFinalStep = {
 			selector: '.questions .question.opened',
 			fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-			content: '<h3>🎉 Congratulations!</h3><p>You’ve created your first quiz question.</p><p>You can now add more questions using the same steps</p>',
+			content: '<h3>🎉 Congratulations!</h3><p>Your advanced settings have been saved successfully.</p><p>The question logic and behavior are now updated.</p>',
 			position: { edge: 'left', align: 'center' },
-			pointerClass: 'qsm-pointer-centered',
+			pointerClass: 'qsm-pointer-centered qsm-pointer-congrats',
 			spotlight: false,
 			useActiveQuestionTarget: true,
 			showSkip: false,
 			showBack: false,
-			doneText: 'Done'
+			hideDoneButton: true
 		};
 		qsmTourState.steps = [
 			{
-				selector: '#correct_answer_info_area',
-				content: '<h3>Enhance your question</h3><p>Help users learn and engage better</p><h4>Correct Answer Info (Optional)</h4><p>Add an explanation to support the correct answer.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 3,
-				totalWizardSteps: 3,
-				skipText: 'Skip enhancements',
-				beforeOpen: function(){
-					var $area = $( '#correct_answer_info_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
-				selector: '#comments_area',
-				content: '<h3>Comment Box (Optional)</h3><p>Allow users to add comments for this question.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 3,
-				totalWizardSteps: 3,
-				skipText: 'Skip enhancements',
-				beforeOpen: function(){
-					var $area = $( '#comments_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
-				selector: '#hint_area',
-				content: '<h3>Hint (Optional)</h3><p>Provide a hint to guide users before answering.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 3,
-				totalWizardSteps: 3,
-				skipText: 'Skip enhancements',
-				beforeOpen: function(){
-					var $area = $( '#hint_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
 				selector: '#featureImagediv',
 				content: '<h3>Featured Image (Optional)</h3><p>Add an image to visually enhance this question.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 3,
-				totalWizardSteps: 3,
-				skipText: 'Skip enhancements'
+				position: { edge: 'right', align: 'center' },
+				skipText: 'Skip'
+			},
+			{
+				selector: '#categorydiv',
+				content: '<h3>Category (Optional)</h3><p>Assign this question to one or more categories to organize, filter, and reuse it across quizzes.</p>',
+				position: { edge: 'right', align: 'center' },
+				skipText: 'Skip'
+			},
+			{
+				selector: '#submitdiv .ui-sortable-handle',
+				content: '<h3>Published / Draft</h3><p>Use the toggle to switch between Draft and Published.</p><p>Set it to Published to make the question available in quizzes, or keep it as Draft to continue editing.</p>',
+				position: { edge: 'right', align: 'center' },
+				skipText: 'Skip',
+				spotlight: false
+			},
+			{
+				selector: '.qsm-question-misc-options.advanced-content',
+				content: '<h3>Advanced Settings</h3><p>Here you can configure advanced settings for this question.</p><p>Use this section to control evaluation and learner feedback.</p>',
+				position: { edge: 'bottom', align: 'center' },
+				skipText: 'Skip',
 			},
 			{
 				selector: '#save-popup-button',
-				content: '<h3>Save your updates</h3><p>Click <strong>Save Question</strong> to apply these enhancements.</p>',
+				content: '<h3>Save your updates</h3><p>Click “Save Question” to apply your changes and complete the setup</p>',
 				position: { edge: 'right', align: 'center' },
-				wizardStep: 3,
-				totalWizardSteps: 3,
 				showNext: false,
 				showBack: true,
-				showSkip: true,
+				showSkip: false,
 				beforeCloseOnClick: function(){
 					qsmTourState.waitingForEnhancementsSave = true;
 				},
@@ -385,109 +342,11 @@
 			}
 		];
 
+		qsmAnnotateGlobalSteps( qsmTourState.steps, 5 );
 		qsmTourState.started = true;
 		qsmTourState.index = startIndex || 0;
 		qsmWaitForSelector( '#answers', 5000, function(){
 			qsmOpenTourStepWithDelay( qsmTourState.index );
-		});
-	}
-
-	function qsmStartQuestionBehaviorTour( startIndex ) {
-		qsmTourState.tourName = 'question_behavior';
-		qsmTourState.onEnd = qsmStartQuestionEnhancementsTour;
-		var behaviorSteps = [
-			{
-				selector: '#answer_limit_area',
-				content: '<h3>Control how this question works</h3><p>Decide how answers are selected and graded.</p><h4>Answer Limit (Optional)</h4><p>Set how many answers users can select.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 2,
-				totalWizardSteps: 3,
-				skipText: 'Skip for now',
-				beforeOpen: function(){
-					var $area = $( '#answer_limit_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
-				selector: '#grading_mode_area',
-				content: '<h3>Grading Mode (Optional)</h3><p>Choose how this question should be graded.</p><p>In quizzes, grading is typically based on <strong>Correct / Incorrect</strong> and (optionally) <strong>Points</strong> per answer.</p>',
-				position: { edge: 'top', align: 'left' },
-				wizardStep: 2,
-				totalWizardSteps: 3,
-				skipText: 'Skip for now',
-				beforeOpen: function(){
-					var $area = $( '#grading_mode_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
-				selector: '#add_poll_type_area',
-				content: '<h3>Add Poll Type (Optional)</h3><p>Turn this into a poll to show how others responded.</p>',
-				position: { edge: 'top', align: 'center' },
-				wizardStep: 2,
-				totalWizardSteps: 3,
-				skipText: 'Skip for now',
-				beforeOpen: function(){
-					var $area = $( '#add_poll_type_area' );
-					if ( $area.length ) {
-						var $content = $area.find( '.qsm-toggle-box-content' ).first();
-						if ( $content.length && !$content.is( ':visible' ) ) {
-							$area.find( '.qsm-toggle-box-handle' ).first().trigger( 'click' );
-						}
-					}
-				}
-			},
-			{
-				selector: '.questions .question.opened',
-				fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-				content: '<h3>👍 Nice!</h3><p>Your question behavior is now set.</p>',
-				position: { edge: 'top', align: 'left' },
-				pointerClass: 'qsm-pointer-centered',
-				spotlight: false,
-				useActiveQuestionTarget: true,
-				showSkip: false,
-				showBack: false,
-				doneText: 'Done'
-			}
-		];
-
-		behaviorSteps = behaviorSteps.filter( function( step ) {
-			if ( step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area' ) {
-				return jQuery( step.selector ).length > 0;
-			}
-			return true;
-		} );
-
-		var filteredSteps = behaviorSteps.filter( function( step ) {
-			return step.selector === '#answer_limit_area' || step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area';
-		} );
-		var totalWizardSteps = filteredSteps.length;
-		if ( totalWizardSteps ) {
-			var counter = 1;
-		behaviorSteps.forEach( function( step ) {
-				if ( step.selector === '#answer_limit_area' || step.selector === '#grading_mode_area' || step.selector === '#add_poll_type_area' ) {
-					step.wizardStep = counter++;
-					step.totalWizardSteps = totalWizardSteps;
-				}
-			} );
-		}
-
-		qsmTourState.steps = behaviorSteps;
-
-		qsmTourState.started = true;
-		qsmTourState.index = startIndex || 0;
-		qsmWaitForSelector( '#answers', 5000, function(){
-			qsmOpenTourStep( qsmTourState.index );
 		});
 	}
 
@@ -548,67 +407,6 @@
 		document.head.appendChild( style );
 	}
 
-	function qsmEnsureWizardStepperStyles() {
-		if ( document.getElementById( 'qsm-tour-wizard-stepper-style' ) ) {
-			return;
-		}
-		var style = document.createElement( 'style' );
-		style.id = 'qsm-tour-wizard-stepper-style';
-		style.type = 'text/css';
-		style.textContent = '' +
-			'.wp-pointer.qsm-wizard-stepper-pointer .wp-pointer-content h3{' +
-				'display:flex;align-items:center;gap:6px;' +
-			'}' +
-			'.wp-pointer.qsm-wizard-stepper-pointer .wp-pointer-content h3:before{' +
-				'display:inline-flex;align-items:center;justify-content:center;' +
-				'width:22px;height:22px;border-radius:999px;' +
-				'background:#2271b1;color:#fff;font-size:12px;line-height:1;font-weight:700;' +
-				'content:"";' +
-			'}' +
-			'.wp-pointer.qsm-wizard-stepper-pointer.qsm-wizard-step-1 .wp-pointer-content h3:before{content:"1/3";}' +
-			'.wp-pointer.qsm-wizard-stepper-pointer.qsm-wizard-step-2 .wp-pointer-content h3:before{content:"2/3";}' +
-			'.wp-pointer.qsm-wizard-stepper-pointer.qsm-wizard-step-3 .wp-pointer-content h3:before{content:"3/3";}';
-		document.head.appendChild( style );
-	}
-
-	function qsmApplyWizardStepIndicator( $target, step, stepIndex ) {
-		if ( !step || !step.wizardStep ) {
-			return;
-		}
-		qsmEnsureWizardStepperStyles();
-
-		var api = $target.data( 'wpPointer' );
-		var $pointer = null;
-		if ( api && api.pointer ) {
-			$pointer = api.pointer;
-		} else {
-			$pointer = $( '.wp-pointer:visible' ).last();
-		}
-		if ( !$pointer || !$pointer.length ) {
-			return;
-		}
-
-		$pointer.removeClass( 'qsm-wizard-stepper-pointer qsm-wizard-step-1 qsm-wizard-step-2 qsm-wizard-step-3' );
-		$pointer.addClass( 'qsm-wizard-stepper-pointer' );
-		$pointer.addClass( 'qsm-wizard-step-' + step.wizardStep );
-
-		var $h3 = $pointer.find( '.wp-pointer-content h3' ).first();
-		if ( !$h3.length ) {
-			return;
-		}
-
-		// Remove any manually added counters inside the H3.
-		$h3.find( 'span' ).remove();
-		$h3.contents().filter(function(){
-			return this.nodeType === 3;
-		}).each(function(){
-			this.nodeValue = this.nodeValue.replace( /\s+/g, ' ' );
-		});
-		$h3.text( $.trim( $h3.text() ) );
-
-		// Step indicator is drawn using CSS (:before/:after) based on pointer classes.
-	}
-
 	function qsmApplySpotlight( $target ) {
 		qsmEnsureSpotlightStyles();
 
@@ -659,6 +457,7 @@
 				qsmTourState.cleanupCurrent = null;
 			}
 			qsmTourState.started = false;
+			qsmTourState.manualStart = false;
 			if ( typeof qsmTourState.onEnd === 'function' ) {
 				var onEnd = qsmTourState.onEnd;
 				qsmTourState.onEnd = null;
@@ -671,7 +470,7 @@
 
 		qsmTourState.index = stepIndex;
 		var step = qsmTourState.steps[ stepIndex ];
-		if ( step && step.wizardStep && qsmIsSetupWizardTourName( qsmTourState.tourName ) && !qsmIsSetupWizardCompleted() ) {
+		if ( !qsmTourState.manualStart && qsmIsSetupWizardTourName( qsmTourState.tourName ) && !qsmIsSetupWizardCompleted() ) {
 			qsmSetSetupWizardState({
 				tourName: qsmTourState.tourName,
 				stepIndex: stepIndex
@@ -732,6 +531,7 @@
 					return;
 				}
 				qsmTourState.started = false;
+				qsmTourState.manualStart = false;
 				if ( typeof qsmTourState.onEnd === 'function' ) {
 					var onEnd = qsmTourState.onEnd;
 					qsmTourState.onEnd = null;
@@ -744,18 +544,18 @@
 				var $buttons = $( '<div class="qsm-admin-tour-buttons"></div>' );
 				var $left = $( '<div class="qsm-admin-tour-buttons-left"></div>' );
 				var $right = $( '<div class="qsm-admin-tour-buttons-right"></div>' );
-				var totalSteps = qsmTourState.steps.length;
-				var currentStep = stepIndex + 1;
+				var totalSteps = QSM_TOTAL_TOUR_STEPS;
+				var currentStep = step.globalStep || (stepIndex + 1);
 				var $counter = $( '<span class="qsm-admin-tour-counter"></span>' );
-				var $back = $( '<button type="button" class="button">Back</button>' );
+				var $back = $( '<button type="button" class="button">Prev</button>' );
 				var $skip = $( '<button type="button" class="button">Skip</button>' );
 				var $next = $( '<button type="button" class="button button-primary">Next</button>' );
 				var $done = $( '<button type="button" class="button button-primary">Done</button>' );
 				var isLastStep = ( stepIndex >= qsmTourState.steps.length - 1 );
-				var showBack = ( true === step.showBack ) || isLastStep;
+				var showBack = ( stepIndex > 0 ) || ( true === step.showBack );
 				var showSkip = ( false !== step.showSkip ) && !isLastStep;
 				var showNext = ( false !== step.showNext ) && !isLastStep;
-				var showDone = isLastStep;
+				var showDone = ( stepIndex >= qsmTourState.steps.length - 1 ) && !step.hideDoneButton;
 				if ( step.doneText ) {
 					$done.text( step.doneText );
 				}
@@ -765,6 +565,9 @@
 
 				$back.on( 'click', function(e){
 					e.preventDefault();
+					if ( stepIndex <= 0 ) {
+						return;
+					}
 					qsmTourState.nextIndexOnClose = stepIndex - 1;
 					t.element.pointer('close');
 				});
@@ -789,8 +592,31 @@
 					t.element.pointer('close');
 				});
 
-				if ( step.wizardStep || currentStep == totalSteps ) {
-					$counter.text( 'Step ' + currentStep + ' of ' + totalSteps );
+				if ( Array.isArray( step.customButtons ) && step.customButtons.length ) {
+					step.customButtons.forEach( function( customButton ) {
+						var $custom = $( '<button type="button"></button>' );
+						$custom.text( customButton.text || '' );
+						$custom.addClass( customButton.className || 'button' );
+						$custom.on( 'click', function( event ) {
+							if ( typeof customButton.action === 'function' ) {
+								customButton.action( event, t );
+								return;
+							}
+							qsmTourState.started = false;
+							qsmTourState.nextIndexOnClose = null;
+							t.element.pointer('close');
+						});
+						$right.append( $custom );
+					} );
+					applyFooterContainerStyles( $right, false );
+					$buttons.append( $left );
+					$buttons.append( $right );
+					return $buttons;
+				}
+
+				if ( step.globalStep ) {
+					var counterTotal = step.globalStep <= 4 ? 4 : totalSteps;
+					$counter.text( 'Step ' + step.globalStep + ' of ' + counterTotal );
 					$left.append( $counter );
 				}
 
@@ -801,21 +627,15 @@
 					$right.append( $back );
 				}
 				if ( showDone ) {
-					$right.append( $done );
+					// $right.append( $done );
 				} else if ( showNext ) {
 					$right.append( $next );
 				}
 
-				$buttons.css({
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'space-between'
-				});
-				$right.css({
-					display: 'flex',
-					gap: '6px',
-					alignItems: 'center'
-				});
+				$buttons[0].style.display = 'flex';
+				$buttons[0].style.alignItems = 'center';
+				$buttons[0].style.justifyContent = 'space-between';
+				applyFooterContainerStyles( $right, true );
 				$buttons.append( $left );
 				$buttons.append( $right );
 
@@ -823,10 +643,7 @@
 			}
 		}).pointer('open');
 
-		// Apply wizard step indicator classes after pointer opens.
-		setTimeout(function(){
-			qsmApplyWizardStepIndicator( $target, step, stepIndex );
-		}, 0);
+		// Wizard step indicator removed.
 
 		if ( step.closeOnClick ) {
 			$(document).one( 'click.qsmTourCloseOnClick', step.closeOnClick, function(){
@@ -856,11 +673,37 @@
 			if ( step.pointerClass ) {
 				qsmEnsurePointerStyles();
 				$pointer.addClass( step.pointerClass );
+				if ( step.pointerClass.indexOf( 'qsm-pointer-congrats' ) !== -1 && !$pointer.find('.qsm-pointer-congrats-close-target').length ) {
+					var $closeButton = $( '<button type="button" class="qsm-pointer-congrats-close-target" aria-label="Close"></button>' );
+					$closeButton.on( 'click', function( e ) {
+						e.preventDefault();
+						qsmTourState.started = false;
+						qsmTourState.nextIndexOnClose = null;
+						try { $target.pointer('close'); } catch (err) { /* ignore */ }
+					});
+					$pointer.append( $closeButton );
+				}
 			}
 			if ( step.arrowCss && typeof step.arrowCss === 'object' ) {
 				$pointer.find( '.wp-pointer-arrow' ).css( step.arrowCss );
 			}
 		}, 0);
+	}
+
+	function applyFooterContainerStyles( $right, applyWidth ) {
+		if ( !$right || !$right.length ) {
+			return;
+		}
+		$right[0].style.display = 'flex';
+		$right[0].style.alignItems = 'center';
+		$right[0].style.justifyContent = 'space-around';
+		if ( applyWidth ) {
+			var buttonCount = $right.find('button').length;
+			if ( buttonCount > 0 ) {
+				$right[0].style.minWidth = '40%';
+				$right[0].style.width = (buttonCount < 3 ? '40%' : '60%');
+			}
+		}
 	}
 
 	function qsmWaitForSelector( selector, timeoutMs, cb ) {
@@ -890,12 +733,28 @@
 			qsmTourState.pendingFirstQuestionTour = true;
 		});
 
-		if ( !$( '#qsm-show-setup-wizard-again' ).length ) {
-			var $anchor = $( '#qsm-start-admin-tour' );
-			if ( $anchor.length ) {
-				$( '<a href="#" id="qsm-show-setup-wizard-again" style="margin-left:10px;">Show setup wizard again</a>' ).insertAfter( $anchor );
+		$(document).on('click', '#qsm-start-admin-tour', function(e){
+			e.preventDefault();
+			$('.qsm-help-tab-dropdown-list, .qsm-help-tab-handle').removeClass('opened');
+			qsmTourState.manualStart = true;
+			qsmTourState.forceSetupWizard = false;
+			qsmTourState.pendingFirstQuestionTour = false;
+			qsmTourState.started = false;
+			qsmTourState.waitingForFirstQuestionSave = false;
+			qsmTourState.onEnd = null;
+			var hasEditorVisible = $('.questionElements:visible #question_type').length > 0;
+			if ( hasEditorVisible ) {
+				qsmStartFirstQuestionTour();
+				return;
 			}
-		}
+			qsmTourState.pendingFirstQuestionTour = true;
+			var $editButton = $('.questions .question:first .edit-question-button');
+			if ( $editButton.length ) {
+				$editButton.trigger('click');
+			} else {
+				$('.questions .new-question-button').first().trigger('click');
+			}
+		});
 
 		$(document).on('click', '.questions .new-question-button', function(){
 			qsmTourState.pendingFirstQuestionTour = qsmShouldStartSetupWizard();
@@ -925,47 +784,50 @@
 					{
 						selector: '.questions .question.opened',
 						fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-						content: '<h3>✅ Great start!</h3><p>You’ve successfully created your first question.</p>',
+						content: '<h3>✅ Great start!</h3><p><b>Your question is ready with basic settings.</b></p><p>Now you can customize logic and behavior to unlock its full potential.</p>',
 						position: { edge: 'left', align: 'center' },
 						pointerClass: 'qsm-pointer-centered',
 						spotlight: false,
 						useActiveQuestionTarget: true,
-						doneText: 'Done',
-						showSkip: false,
-						showBack: false
+						customButtons: [
+							{
+								text: "I'll explore myself",
+								className: 'button',
+								action: function( event, pointerApi ) {
+									event.preventDefault();
+									qsmDisableFutureSetupTours();
+									qsmTourState.onEnd = null;
+									qsmTourState.started = false;
+									pointerApi.element.pointer('close');
+								}
+							},
+							{
+								text: 'Continue with Tour',
+								className: 'button button-primary',
+								action: function( event, pointerApi ) {
+									event.preventDefault();
+									pointerApi.element.pointer('close');
+									qsmTourState.nextIndexOnClose = null;
+									qsmStartQuestionEnhancementsTour();
+								}
+							}
+						]
 					}
 				];
 				qsmTourState.index = 0;
-				qsmTourState.onEnd = qsmStartQuestionBehaviorTour;
+				qsmTourState.onEnd = qsmStartQuestionEnhancementsTour;
 				qsmTourState.started = true;
 				qsmOpenTourStepWithDelay( 0 );
 				return;
 			}
 			if ( qsmTourState.tourName === 'question_enhancements' && qsmTourState.waitingForEnhancementsSave ) {
 				qsmTourState.waitingForEnhancementsSave = false;
-				qsmTourState.steps = [ qsmTourState.enhancementFinalStep || {
-					selector: '.questions .question.opened',
-					fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-					content: '<h3>🎉 All set!</h3><p>Your changes have been saved.</p>',
-					position: { edge: 'left', align: 'center' },
-					pointerClass: 'qsm-pointer-centered',
-					spotlight: false,
-					useActiveQuestionTarget: true,
-					showSkip: false,
-					showBack: false,
-					doneText: 'Done'
-				} ];
+				qsmTourState.steps = [ qsmTourState.enhancementFinalStep ];
 				qsmTourState.index = 0;
 				qsmTourState.started = true;
 				qsmOpenTourStepWithDelay( 0 );
 			}
 		});
 
-		$(document).on('qsm_start_question_behavior_tour', function(){
-			if ( qsmTourState.started ) {
-				return;
-			}
-			qsmStartQuestionBehaviorTour();
-		});
 	});
 })(jQuery);
