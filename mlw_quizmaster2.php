@@ -438,7 +438,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
 		// quiz option pages
-		if ( 'admin_page_mlw_quiz_options' === $hook ) {
+		if ( 'admin_page_mlw_quiz_options' === $hook || 'qsm_page_qmn_global_settings' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
@@ -474,6 +474,7 @@ class MLWQuizMasterNext {
 					break;
 				case 'results-pages':
 				case 'emails':
+				case 'quiz-default-template':
 					wp_enqueue_script( 'select2-js',  QSM_PLUGIN_JS_URL.'/jquery.select2.min.js', array( 'jquery' ), $this->version,true);
 					wp_enqueue_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
 					wp_enqueue_editor();
@@ -485,9 +486,16 @@ class MLWQuizMasterNext {
 					break;
 			}
 		}
+		
+		if ( ! wp_script_is( 'select2-js', 'registered' ) ) {
+            wp_register_script( 'select2-js', QSM_PLUGIN_JS_URL . '/jquery.select2.min.js', array( 'jquery' ), $this->version, true );
+        }
+        if ( ! wp_style_is( 'select2-css', 'registered' ) ) {
+            wp_register_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
+        }
 		// load admin JS after all dependencies are loaded
 		/**  Fixed wpApiSettings is not defined js error by using 'wp-api-request' core script to allow the use of localized version of wpApiSettings. **/
-		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch', 'qsm-jquery-multiselect-js', 'wp-api-request' ), $this->version, true );
+		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch', 'qsm-jquery-multiselect-js', 'wp-api-request', 'select2-js' ), $this->version, true );
 		wp_enqueue_style( 'jquer-multiselect-css', QSM_PLUGIN_CSS_URL . '/jquery.multiselect.min.css', array(), $this->version );
 		wp_enqueue_script( 'qsm-jquery-multiselect-js', QSM_PLUGIN_JS_URL . '/jquery.multiselect.min.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );

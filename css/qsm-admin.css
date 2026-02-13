@@ -1201,6 +1201,14 @@ ul.changelog li.update div.two:before {
 	text-decoration: none;
 	box-shadow: none;
 }
+.qsm-email-page-tmpl-header-links,
+.qsm-result-page-tmpl-header-links{
+	text-decoration: none;
+}
+.qsm-email-page-tmpl-header-links:focus,
+.qsm-result-page-tmpl-header-links:focus {
+	box-shadow: none;
+}
 .qsm-sub-text-tab-menu .subsubsub li a.current,
 .qsm-sub-tab-menu .subsubsub li a.current{
 	border-bottom: 3px solid #2271B1;
@@ -3984,6 +3992,10 @@ input#duplicate_questions {
 .option-page-result-page-tab-footer .result-tab-footer-buttons .qsm-show-all-variable-text {
 	margin: 0 10px 0 0;
 }
+.qsm-default-template-footer-buttons{
+	position: relative;
+	top: 10px;
+}
 
 .qsm-quiz-result-tab button.add-new-page,
 .qsm-quiz-email-tab button.add-new-email,
@@ -4190,7 +4202,7 @@ img.qsm-email-page-template-card-image {
 }
 .qsm-result-page-template-card-buttons img.qsm-common-svg-image-class,
 .qsm-email-page-template-card-buttons img.qsm-common-svg-image-class {
-	height: 14px;
+	height: 11px;
 }
 
 .qsm-result-page-template-header-tabs,
@@ -4252,7 +4264,9 @@ h2#qsm-email-page-templates-title {
 .qsm-more-settings-box-details a.qsm-delete-result-button:hover,
 .qsm-more-settings-box-details a.qsm-delete-email-button:hover,
 .qsm-my-template-rows-actions a.qsm-result-page-template-remove-button:hover,
-.qsm-my-template-rows-actions a.qsm-email-page-template-remove-button:hover {
+.qsm-my-template-rows-actions a.qsm-email-page-template-remove-button:hover,
+.qsm-my-template-rows-actions a.qsm-global_email-page-template-remove-button:hover,
+.qsm-my-template-rows-actions a.qsm-global_result-page-template-remove-button:hover {
 	background-color: #ffd4d4;
 }
 
@@ -4509,6 +4523,16 @@ body.folded .results-page-show .mce-tinymce.mce-container.mce-fullscreen, body.f
 .qsm-my-templates-table-body .qsm-my-template-rows-actions {
 	display: flex;
 	align-items: center;
+}
+.qsm_page_qmn_global_settings .qsm-my-templates-table-body .qsm-my-template-rows-actions{
+	justify-content: center;
+}
+.qsm_page_qmn_global_settings .qsm-my-templates-table{
+	position: relative;
+	text-align: center;
+}
+.qsm_page_qmn_global_settings .qsm-my-templates-table-body tr th {
+	text-align: center;
 }
 
 .qsm-my-templates-table-body .qsm-my-template-rows-actions a {
@@ -5256,6 +5280,10 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm-row-actions-links a:active, .qsm-row-actions-links a:focus {
 	text-decoration: none;
 	box-shadow: none;
+}
+.qsm_page_qmn_global_settings .qsm-default-template-header {
+	display: flex;
+	justify-content: flex-end;
 }
 /* ------- Question Bank Page CSS ------- */
 .qsm-question-bank-admin {

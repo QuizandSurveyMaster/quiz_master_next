@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.1.0
  */
 class QMNGlobalSettingsPage {
+	private const QSM_UPGRADE_BADGE_TEMPLATE = "<a href=%s target='_blank' class='qsm-upgrade-popup-badge'>%s</a>";
 
 	/**
 	 * Main Construct Function
@@ -58,8 +59,146 @@ class QMNGlobalSettingsPage {
 			return;
 		}
 		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'wp-tinymce' );
 		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL . '/jquery.datetimepicker.full.min.js', array(), $mlwQuizMasterNext->version, false );
 		wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL . '/jquery.datetimepicker.css', array(), $mlwQuizMasterNext->version );
+		add_action( 'admin_footer', array( $this, 'qsm_default_template_variables_popup' ) );
+	}
+
+	/**
+	 * Displays template variables popup for default templates
+	 *
+	 * @since 10.3.5
+	 */
+	public function qsm_default_template_variables_popup() {
+		?>
+		<div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+				<div class="qsm-popup__container" aria-modal="true" aria-labelledby="modal-3-title">
+					<header class="qsm-popup__header" style="display: block;">
+						<h2 class="qsm-popup__title"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h2>
+						<span class="description">
+							<?php esc_html_e( 'Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next' ); ?>
+							<br /><b><?php esc_html_e( 'Note: ', 'quiz-master-next' ); ?></b>
+							<?php esc_html_e( 'Always use uppercase while using these variables.', 'quiz-master-next' ); ?>
+						</span>
+					</header>
+					<main class="qsm-popup__content" id="show-all-variable-content">
+						<?php
+						$variable_list = qsm_text_template_variable_list();
+						$variable_list = qsm_extra_template_and_leaderboard($variable_list);
+
+						$variable_list = apply_filters( 'qsm_text_variable_list_default_template', $variable_list );
+						$grouped_variables = $this->qsm_group_template_variables( $variable_list );
+						if ( $grouped_variables ) {
+							foreach ( $grouped_variables as $category_name => $category_variables ) {
+								if ( ! is_array( $category_variables ) ) {
+									continue;
+								}
+								$upgrade_meta = $this->qsm_default_template_variable_upgrade_meta( $category_name );
+								$classname = $upgrade_meta['classname'];
+								$qsm_badge = $upgrade_meta['badge'];
+								$is_upgrade = $classname !== '';
+								?>
+								<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo wp_kses_post( $qsm_badge ); ?></div>
+								<?php
+								foreach ( $category_variables as $variable_key => $variable ) {
+									?>
+									<div class="popup-template-span-wrap">
+										<span class="qsm-text-template-span <?php echo esc_attr( $classname ); ?>">
+										<?php if ( $is_upgrade ) { ?>
+											<span class="button button-default template-variable qsm-tooltips-icon"><?php echo esc_attr( $variable_key ); ?>
+												<span class="qsm-tooltips qsm-upgrade-tooltip"><?php echo esc_html__( 'Available in pro', 'quiz-master-next' );?></span>
+											</span>
+										<?php } else { ?>
+											<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
+												<span class='button click-to-copy'><?php esc_html_e( 'Click to Copy', 'quiz-master-next' ); ?></span>
+												<span class="temp-var-seperator">
+													<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+														<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
+														</span>
+													</span>
+											<?php } ?>
+										</span>
+									</div>
+									<?php
+								}
+							}
+							?>
+						<?php
+						}
+						?>
+					</main>
+					<footer class="qsm-popup__footer" style="text-align: right;">
+						<button class="button button-default" data-micromodal-close=""
+							aria-label="Close this dialog window"><?php esc_html_e( 'Close [Esc]', 'quiz-master-next' ); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	private function qsm_group_template_variables( $variable_list ) {
+		$grouped = array();
+		if ( ! $variable_list ) {
+			return $grouped;
+		}
+		foreach ( $variable_list as $name => $value ) {
+			if ( is_array( $value ) ) {
+				$grouped[ $name ] = $value;
+				continue;
+			}
+			if ( ! isset( $grouped['Other Variables'] ) ) {
+				$grouped['Other Variables'] = array();
+			}
+			$grouped['Other Variables'][ $name ] = $value;
+		}
+		return $grouped;
+	}
+
+	private function qsm_default_template_variable_upgrade_meta( $category_name ) {
+		$meta = array(
+			'classname' => '',
+			'badge'     => '',
+		);
+		switch ( $category_name ) {
+			case 'Extra Template Variables':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
+					qsm_get_plugin_link('extra-template-variables'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Advanced Leaderboard':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
+					qsm_get_plugin_link('downloads/advanced-leaderboard/'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Analysis':
+				$meta['classname'] = 'qsm-upgrade-popup-variable';
+				$meta['badge'] = sprintf(
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
+					qsm_get_plugin_link('downloads/results-analysis/'),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			case 'Advanced Assessment':
+				$meta['classname'] = 'qsm-upgrade-popup-variable qsm-upgrade-popup-advanced-assessment-variable';
+				$meta['badge'] = sprintf(
+					self::QSM_UPGRADE_BADGE_TEMPLATE,
+					qsm_get_plugin_link( 'downloads/advanced-assessment/' ),
+					esc_html__( 'PRO', 'quiz-master-next' )
+				);
+				break;
+			default:
+				break;
+		}
+		return $meta;
 	}
 
 	/**
@@ -216,10 +355,14 @@ class QMNGlobalSettingsPage {
 	 */
 	public function quiz_default_global_option_init() {
 		register_setting( 'qsm-quiz-settings-group', 'qsm-quiz-settings' );
+		register_setting( 'qsm-quiz-default-template-group', 'qsm-quiz-default-template' );
 		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_general' );
 		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_quiz_submission' );
 		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_display' );
 		add_settings_section( 'qmn-global-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_contact' );
+		add_settings_section( 'qsm-default-template-section', '', array( $this, 'global_section' ), 'qsm_default_global_option_default_template' );
+		add_settings_field( 'default-email-template', __( 'Default Email Template', 'quiz-master-next' ), array( $this, 'qsm_default_email_template' ), 'qsm_default_global_option_default_template', 'qsm-default-template-section' );
+		add_settings_field( 'default-result-template', __( 'Default Result Template', 'quiz-master-next' ), array( $this, 'qsm_default_result_template' ), 'qsm_default_global_option_default_template', 'qsm-default-template-section' );
 		add_settings_field( 'quiz-type', __( 'Select Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option_general', 'qmn-global-section' );
 		add_settings_field( 'correct_answer_logic', __( 'Answer Settings', 'quiz-master-next' ), array( $this, 'correct_answer_logic' ), 'qsm_default_global_option_general', 'qmn-global-section' );
@@ -626,10 +769,11 @@ class QMNGlobalSettingsPage {
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-options" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-options' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
+				<a href="?page=qmn_global_settings&tab=quiz-default-template" class="nav-tab <?php echo ! empty( $_GET['tab'] ) && 'quiz-default-template' === $_GET['tab'] ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Quiz Default Template', 'quiz-master-next' ); ?></a>
 				<?php do_action( 'qsm_global_settings_page_add_tab_after' ); ?>
 			</h2>
 			<?php do_action( 'qsm_global_settings_page_added_tab_content' ); ?>
-			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] ) { ?>
+			<?php if ( empty( $_GET['tab'] ) || 'qmn_global_settings' === $_GET['tab'] || 'quiz-default-options' === $_GET['tab'] || 'quiz-default-template' === $_GET['tab'] ) { ?>
 
 				<form action="options.php" method="POST" class="qsm_global_settings">
 					<?php
@@ -675,6 +819,21 @@ class QMNGlobalSettingsPage {
 						</div>
 						<div id="contact_form" class="quiz_style_tab_content" style="display:none">
 							<?php do_settings_sections( 'qsm_default_global_option_contact' ); ?>
+						</div>
+						<?php
+					}
+					if ( ! empty( $_GET['tab'] ) && 'quiz-default-template' === $_GET['tab'] ) {
+						settings_fields( 'qsm-quiz-default-template-group' );
+						?>
+						<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
+							<ul class="subsubsub">
+								<li>
+									<a href="javascript:void(0)" data-id="qsm_quiz_default_template" class="current quiz_style_tab"><?php esc_html_e( 'Default Template', 'quiz-master-next' ); ?></a>
+								</li>
+							</ul>
+						</div>
+						<div id="qsm_quiz_default_template" class="quiz_style_tab_content">
+							<?php do_settings_sections( 'qsm_default_global_option_default_template' ); ?>
 						</div>
 						<?php
 					}
@@ -1438,6 +1597,130 @@ class QMNGlobalSettingsPage {
 		<?php
 	}
 	/* ====== Contact Tab End ==========*/
+
+	/* ====== Default Template Tab Start ==========*/
+	/**
+	 * Private helper method to generate default template fields for email or result.
+	 *
+	 * @param string $type The type of template ('email' or 'result').
+	 */
+	private function qsm_default_template( $type ) {
+		global $wpdb;
+		$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+		$user_id = get_current_user_id();
+
+		$default_text = ( 'email' === $type )
+			? '%QUESTIONS_ANSWERS_EMAIL%'
+			: __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' );
+		$settings = (array) get_option( 'qsm-quiz-default-template' );
+		$template = isset( $settings['default_' . $type . '_template'] ) ? htmlspecialchars_decode( $settings['default_' . $type . '_template'], ENT_QUOTES ) : $default_text;
+
+		$template_from_script = qsm_get_parsing_script_data( 'templates.json' );
+		$filter = ( 'email' === $type ) ? 'qsm_email_templates_list_before' : 'qsm_result_templates_list_before';
+		$template_from_script = apply_filters( $filter, $template_from_script, $quiz_id );
+
+		$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
+		$template_sql = "SELECT * FROM {$table_name} WHERE template_type='global_{$type}'";
+		$my_templates = $wpdb->get_results( $template_sql );
+
+		$qsm_dependency_list = qsm_get_dependency_plugin_list();
+
+		$js_data = array(
+			'quizID'            => $quiz_id,
+			'nonce'             => wp_create_nonce( 'wp_rest' ),
+			'qsm_user_ve'       => get_user_meta( $user_id, 'rich_editing', true ),
+			'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+			'my_tmpl_data'      => $my_templates,
+			'script_tmpl'       => $template_from_script,
+			'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
+			'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
+			'dependency'        => $qsm_dependency_list,
+			'required_addons'   => __( 'Required Add-ons', 'quiz-master-next' ),
+			'used_addons'       => __( 'Addons :', 'quiz-master-next' ),
+			'default_' . $type . '_template' => $template,
+		);
+
+		$object_name = ( 'email' === $type ) ? 'qsmDefaultEmailsObject' : 'qsmDefaultResultsObject';
+		wp_localize_script( 'qsm_admin_js', $object_name, $js_data );
+		?>
+		<header class="qsm-default-template-header">
+			<div class="qsm-template-btn-group">
+				<div class="qsm-actions-link-box">
+					<a href="javascript:void(0)" data-template-type="global_<?php echo esc_attr( $type ); ?>" class="qsm-insert-page-template-anchor" title="<?php esc_attr_e( 'Add Template', 'quiz-master-next' ); ?>" >
+						<div class="qsm-insert-template-wrap">
+							<div class="qsm-insert-template-options">
+								<label>
+									<input type="radio" name="qsm-template-action" value="new" class="qsm-insert-template-action" checked="checked">
+									<?php esc_html_e( 'New', 'quiz-master-next' ); ?>
+								</label>
+								<label>
+									<input type="radio" name="qsm-template-action" value="replace" class="qsm-insert-template-action">
+									<?php esc_html_e( 'Replace', 'quiz-master-next' ); ?>
+								</label>
+							</div>
+							<div class="qsm-insert-template-container">
+								<div class="qsm-insert-template-left">
+									<input placeholder="<?php esc_attr_e( 'Type Template name here ', 'quiz-master-next' ); ?>" type="text"  id="qsm-insert-page-template-title-<?php echo esc_attr( $type ); ?>" class="qsm-insert-page-template-title">
+									<div style="display: none;" class="qsm-to-replace-page-template-wrap">
+										<select class="qsm-to-replace-page-template"></select>
+									</div>
+									<p class="qsm-insert-template-response"></p>
+								</div>
+								<div class="qsm-insert-template-right">
+									<button data-id="global_<?php echo esc_attr( $type ); ?>" data-context="default" class="qsm-save-page-template-button button"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+								</div>
+							</div>
+						</div>
+						<img class="qsm-common-svg-image-class " src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/save-3-line.svg'); ?>" alt="save-3-line.svg"/>
+					</a>
+					<a href="javascript:void(0)" data-type="global_<?php echo esc_attr( $type ); ?>" class="qsm-view-templates-list" title="<?php esc_attr_e( 'Change Template', 'quiz-master-next' ); ?>" >
+						<img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/refresh-line.svg'); ?>" alt="refresh-line.svg"/>
+					</a>
+				</div>
+			<div>
+		</header>
+		<?php
+
+		wp_editor(
+			$template,
+			'default_' . $type . '_template',
+			array(
+				'textarea_name' => 'qsm-quiz-default-template[default_' . $type . '_template]',
+				'textarea_rows' => 15,
+				'media_buttons' => true,
+				'tinymce'       => array(
+					'plugins' => 'qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress',
+					'toolbar1' => 'formatselect,bold,italic,underline,|,bullist,numlist,|,link,image,|,qsmslashcommands,|,fullscreen',
+					'toolbar2' => '',
+				),
+				'quicktags' => true,
+			)
+		);
+
+		?>
+		<div class="qsm-default-template-footer-buttons">
+			<a class="button-secondary qsm-show-all-variable-text qsm-common-button-styles" href="javascript:void(0)"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?></a>
+			<span class="qsm-insert-template-variable-text">Or, Type /  to insert template variables</span>
+		</div>
+		<?php
+		qsm_result_and_email_popups_for_templates( $template_from_script, $my_templates, $type );
+		qsm_result_and_email_row_templates();
+	}
+
+	/**
+	 * Generates Setting Field For Default Email Template
+	 */
+	public function qsm_default_email_template() {
+		$this->qsm_default_template( 'email' );
+	}
+
+	/**
+	 * Generates Setting Field For Default Result Template
+	 */
+	public function qsm_default_result_template() {
+		$this->qsm_default_template( 'result' );
+	}
+	/* ====== Default Template Tab End ==========*/
 }
 
 $qmnGlobalSettingsPage = new QMNGlobalSettingsPage();
