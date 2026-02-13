@@ -7,6 +7,14 @@
 	var QSM_TOUR_START_DELAY = 400;
 	var QSM_TOTAL_TOUR_STEPS = 9;
 	var qsmNextTourStartTimer = null;
+	var QSM_ADVANCED_HELPER_TEXTS = {
+		answer_limit_area: 'Set how many answers users can select.',
+		grading_mode_area: 'Choose how this question should be graded.',
+		add_poll_type_area: 'Turn this into a poll to show how others responded.',
+		correct_answer_info_area: 'Add an explanation to support the correct answer.',
+		comments_area: 'Allow users to add comments for this question.',
+		hint_area: 'Provide a hint to guide users before answering.'
+	};
 	var qsmTourState = {
 		steps: [],
 		index: 0,
@@ -37,6 +45,60 @@
 		'#save-popup-button',
 		'body'
 	];
+
+	function qsmEnsureAdvancedHelperStyles() {
+		if ( document.getElementById( 'qsm-advanced-helper-style' ) ) {
+			return;
+		}
+		var style = document.createElement( 'style' );
+		style.id = 'qsm-advanced-helper-style';
+		style.type = 'text/css';
+		style.textContent = '.qsm-advanced-helper-text{margin-top:6px;margin-bottom:0;font-size:13px;color:#555;}';
+		document.head.appendChild( style );
+	}
+
+	function qsmApplyAdvancedHelperTexts( $container ) {
+		qsmEnsureAdvancedHelperStyles();
+		var $context = $container && $container.length ? $container : $( document );
+		Object.keys( QSM_ADVANCED_HELPER_TEXTS ).forEach( function( areaId ) {
+			var $area = $context.find( '#' + areaId ).first();
+			if ( !$area.length ) {
+				return;
+			}
+			var $content = $area.find( '.qsm-toggle-box-content' ).first();
+			if ( !$content.length ) {
+				return;
+			}
+			var helperData = $content.data( 'qsmHelperData' );
+			if ( helperData && helperData.updateVisibility ) {
+				helperData.updateVisibility();
+				return;
+			}
+			var helperText = QSM_ADVANCED_HELPER_TEXTS[ areaId ];
+			var $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
+			var $firstLabel = $content.find( 'label' ).first();
+			if ( $firstLabel.length ) {
+				$helper.insertAfter( $firstLabel );
+			} else {
+				$content.prepend( $helper );
+			}
+			var updateVisibility = function(){
+				$helper.toggle( $content.is( ':visible' ) );
+			};
+			updateVisibility();
+			var data = { helper: $helper, updateVisibility: updateVisibility };
+			if ( 'undefined' !== typeof MutationObserver ) {
+				var observer = new MutationObserver( updateVisibility );
+				observer.observe( $content[0], { attributes: true, attributeFilter: [ 'style', 'class' ] } );
+				data.observer = observer;
+			} else {
+				$area.on( 'click.qsmAdvancedHelper', '.qsm-toggle-box-handle', function(){
+					setTimeout( updateVisibility, 0 );
+				});
+			}
+			$content.data( 'qsmHelperData', data );
+		} );
+	}
 
 	function qsmOpenTourStepWithDelay( stepIndex ) {
 		if ( qsmNextTourStartTimer ) {
@@ -217,6 +279,70 @@
 		};
 	}
 
+	function qsmApplySpotlight( $target ) {
+		qsmEnsureSpotlightStyles();
+
+		var $overlay = $( '#qsm-tour-spotlight-overlay' );
+		if ( !$overlay.length ) {
+			$overlay = $( '<div id="qsm-tour-spotlight-overlay" class="qsm-tour-spotlight-overlay"></div>' );
+			$( 'body' ).append( $overlay );
+		}
+
+		var el = $target && $target[0] ? $target[0] : null;
+		var prev = null;
+		if ( el ) {
+			prev = {
+				position: el.style.position,
+				zIndex: el.style.zIndex,
+				boxShadow: el.style.boxShadow,
+				borderRadius: el.style.borderRadius
+			};
+		}
+
+		$target.addClass( 'qsm-tour-spotlight-target' );
+		if ( el ) {
+			if ( !prev.position || prev.position === 'static' ) {
+				el.style.position = 'relative';
+			}
+			el.style.zIndex = '9992';
+		}
+
+		return function restoreSpotlight(){
+			$( '#qsm-tour-spotlight-overlay' ).remove();
+			$target.removeClass( 'qsm-tour-spotlight-target' );
+			if ( el && prev ) {
+				el.style.position = prev.position;
+				el.style.zIndex = prev.zIndex;
+				el.style.boxShadow = prev.boxShadow;
+				el.style.borderRadius = prev.borderRadius;
+			}
+		};
+	}
+
+	function qsmApplySelectorBackground( $target, background ) {
+		if ( !$target || !$target.length || !background ) {
+			return null;
+		}
+		var styleValue = typeof background === 'string' ? background : background.color;
+		if ( !styleValue ) {
+			return null;
+		}
+		var previous = [];
+		$target.each( function() {
+			previous.push( { el: this, backgroundColor: this.style.backgroundColor } );
+			this.style.backgroundColor = styleValue;
+		} );
+		return function restoreSelectorBackground(){
+			previous.forEach( function( entry ) {
+				if ( entry.backgroundColor ) {
+					entry.el.style.backgroundColor = entry.backgroundColor;
+				} else {
+					entry.el.style.removeProperty( 'background-color' );
+				}
+			} );
+		};
+	}
+
 	function qsmAnnotateGlobalSteps( steps, startingIndex ) {
 		var marker = startingIndex || 1;
 		steps.forEach( function( step ) {
@@ -320,13 +446,17 @@
 				content: '<h3>Published / Draft</h3><p>Use the toggle to switch between Draft and Published.</p><p>Set it to Published to make the question available in quizzes, or keep it as Draft to continue editing.</p>',
 				position: { edge: 'right', align: 'center' },
 				skipText: 'Skip',
-				spotlight: false
+				applySelectorBackground: 'white',
 			},
 			{
 				selector: '.qsm-question-misc-options.advanced-content',
 				content: '<h3>Advanced Settings</h3><p>Here you can configure advanced settings for this question.</p><p>Use this section to control evaluation and learner feedback.</p>',
 				position: { edge: 'bottom', align: 'center' },
 				skipText: 'Skip',
+				beforeOpen: function(){
+					var $container = $( '.qsm-question-misc-options.advanced-content' );
+					qsmApplyAdvancedHelperTexts( $container );
+				}
 			},
 			{
 				selector: '#save-popup-button',
@@ -447,6 +577,30 @@
 		};
 	}
 
+	function qsmApplySelectorBackground( $target, background ) {
+		if ( !$target || !$target.length || !background ) {
+			return null;
+		}
+		var styleValue = typeof background === 'string' ? background : background.color;
+		if ( !styleValue ) {
+			return null;
+		}
+		var previous = [];
+		$target.each( function() {
+			previous.push( { el: this, backgroundColor: this.style.backgroundColor } );
+			this.style.backgroundColor = styleValue;
+		} );
+		return function restoreSelectorBackground(){
+			previous.forEach( function( entry ) {
+				if ( entry.backgroundColor ) {
+					entry.el.style.backgroundColor = entry.backgroundColor;
+				} else {
+					entry.el.style.removeProperty( 'background-color' );
+				}
+			} );
+		};
+	}
+
 	function qsmOpenTourStep( stepIndex ) {
 		if ( stepIndex < 0 ) {
 			stepIndex = 0;
@@ -505,6 +659,12 @@
 		}
 		if ( false !== step.spotlight ) {
 			cleanupFns.push( qsmApplySpotlight( $target ) );
+		}
+		if ( step.applySelectorBackground ) {
+			var backgroundCleanup = qsmApplySelectorBackground( $target, step.applySelectorBackground );
+			if ( backgroundCleanup ) {
+				cleanupFns.push( backgroundCleanup );
+			}
 		}
 		if ( cleanupFns.length ) {
 			qsmTourState.cleanupCurrent = function(){
