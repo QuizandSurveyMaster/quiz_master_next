@@ -759,6 +759,9 @@
 
 	$(function(){
 		window.qsmIsSetupWizardActive = qsmIsSetupWizardActive;
+		window.qsmIsSetupWizardPending = function(){
+			return Boolean( qsmTourState.pendingFirstQuestionTour && !qsmTourState.started );
+		};
 
 		if ( !$('body').hasClass('admin_page_mlw_quiz_options') ) {
 			return;
