@@ -263,6 +263,31 @@
 			}
 		},
 
+		primeQuestionModel(question) {
+			if (!window.QSMQuestion || !question) {
+				return null;
+			}
+			const id = parseInt(question.id, 10);
+			if (!id) {
+				return null;
+			}
+			if (!QSMQuestion.questions) {
+				if (window.Backbone && QSMQuestion.questionCollection) {
+					QSMQuestion.questions = new QSMQuestion.questionCollection();
+				} else {
+					return null;
+				}
+			}
+			let model = QSMQuestion.questions.get(id);
+			if (model) {
+				model.set(question);
+				return model;
+			}
+			model = new QSMQuestion.question(question);
+			QSMQuestion.questions.add(model, { merge: true });
+			return model;
+		},
+
 		fetchQuestions({ resetPage = false } = {}) {
 			if (this.isLoading) {
 				return;
@@ -301,7 +326,6 @@
 			const questions = Array.isArray(response?.questions) ? response.questions : [];
 			const pagination = response?.pagination || {};
 			this.state.totalPages = parseInt(pagination.total_pages, 10) || 1;
-
 			this.$list.empty();
 
 			if (!questions.length) {
@@ -312,6 +336,7 @@
 			this.$emptyNotice.hide();
 
 			questions.forEach((question) => {
+				this.primeQuestionModel(question);
 				const $question = this.buildQuestion(question);
 				this.$list.append($question);
 			});
