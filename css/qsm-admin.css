@@ -2235,6 +2235,9 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	max-width: 100%;
 	max-height: 90vh;
 }
+.qsm-question-bank-editor.qsm-standard-popup .qsm-popup__container {
+	width: 75%;
+}
 .qsm-theme-color-settings .qsm-popup__header .qsm-popup__title,
 .qsm-standard-popup .qsm-popup__header .qsm-popup__title {
 	padding: 10px 20px;
@@ -5430,7 +5433,7 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	gap: 10px;
 }
 
-.qsm-question-bank-admin .qsm-admin-bulk-actions {
+.qsm-question-bank-admin .qsm-admin-bulk-actions:not(.qsm-question-bank-page) {
 	display: none;
 }
 

@@ -386,14 +386,11 @@ function qsm_questions_bank_question_editor() {
 		</div>
 	</div>
 	<!-- Popup for editing question -->
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-1" aria-hidden="true">
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-question-bank-editor" id="modal-1" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Edit Question', 'quiz-master-next' ); ?> [
-						ID:
-						<span id="edit-question-id"></span> ]
-					</h2>
+					<h2 class="qsm-popup__title" id="modal-1-title"></h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content questionElements" id="modal-1-content">
@@ -832,6 +829,12 @@ function qsm_questions_bank_question_editor() {
 				<main class="qsm-popup__content" id="modal-7-content">
 					<form action='' method='post' id="delete-question-form">
 						<table class="modal-7-table qsm-popup-table">
+							<tr class="qsm-popup-table-row">
+								<td>
+									<h3><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></h3>
+									<?php esc_html_e( 'Remove this question from the quiz only.', 'quiz-master-next' ); ?></td>
+								<td><button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button></td>
+							<tr>
 							<tr class="qsm-popup-table-row">
 								<td>
 									<h3><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></h3>

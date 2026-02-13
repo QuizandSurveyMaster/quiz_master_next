@@ -227,6 +227,9 @@
 	left: -25px;
     visibility: hidden;
 }
+.qsm-question-bank-list .qsm-admin-select-question-input {
+    visibility: visible;
+}
 .question:hover .qsm-admin-select-question-input,
 .qsm-admin-select-question-input:checked {
     visibility: visible;
