@@ -560,8 +560,12 @@
 					qsmOpenTourStep( nextIndex );
 					return;
 				}
+				var awaitingAsyncStep = qsmTourState.waitingForFirstQuestionSave || qsmTourState.waitingForEnhancementsSave;
 				qsmTourState.started = false;
 				qsmTourState.manualStart = false;
+				if ( awaitingAsyncStep ) {
+					return;
+				}
 				if ( typeof qsmTourState.onEnd === 'function' ) {
 					var onEnd = qsmTourState.onEnd;
 					qsmTourState.onEnd = null;
