@@ -615,8 +615,16 @@
 				if ( this.bulkState.isUploading ) {
 					return;
 				}
+				var questionModalVisible = $('#modal-1').hasClass('is-visible');
+				var inlineEditorVisible = $('.questionElements:visible').length > 0;
+				if ( questionModalVisible || inlineEditorVisible ) {
+					if ( typeof QSMQuestion !== 'undefined' && typeof QSMQuestion.closeEditPopup === 'function' ) {
+						QSMQuestion.closeEditPopup(questionModalVisible);
+					} else if ( inlineEditorVisible ) {
+						$('.questionElements:visible').slideUp('fast');
+					}
+				}
 				this.toggleBulkPanel(true);
-				QSMQuestion.closeEditPopup();
 			});
 			this.$bulkCancel.on('click', (event) => {
 				event.preventDefault();

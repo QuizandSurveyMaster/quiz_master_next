@@ -5476,3 +5476,6 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm-question-bank-admin .column-actions {
 	width: 10%;
 }
+.qsm-question-bank-editor .answers-single .qsm-add-answer-button .dashicons-plus::before {
+	line-height: 1.7;
+}
