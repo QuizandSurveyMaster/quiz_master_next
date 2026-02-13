@@ -2,8 +2,7 @@
 	'use strict';
 
 	var QSM_SETUP_WIZARD_STORAGE_KEY = 'qsm_setup_wizard_completed';
-	var QSM_SETUP_WIZARD_STATE_STORAGE_KEY = 'qsm_setup_wizard_state';
-
+	
 	var QSM_TOUR_START_DELAY = 400;
 	var QSM_TOTAL_TOUR_STEPS = 9;
 	var qsmNextTourStartTimer = null;
@@ -53,7 +52,7 @@
 		var style = document.createElement( 'style' );
 		style.id = 'qsm-advanced-helper-style';
 		style.type = 'text/css';
-		style.textContent = '.qsm-advanced-helper-text{margin-top:6px;margin-bottom:0;font-size:13px;color:#555;}';
+		style.textContent = '.qsm-advanced-helper-text{margin-top:6px;margin-bottom:0;font-size:13px;color:#555;}.qsm-advanced-helper-label{padding:0 20px;bottom:8px;position:relative;color:gray;font-size:12px;display:block;}';
 		document.head.appendChild( style );
 	}
 
@@ -75,15 +74,11 @@
 				return;
 			}
 			var helperText = QSM_ADVANCED_HELPER_TEXTS[ areaId ];
+			var $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text"></span>' ).text( helperText );
 			var $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
-			var $firstLabel = $content.find( 'label' ).first();
-			if ( $firstLabel.length ) {
-				$helper.insertAfter( $firstLabel );
-			} else {
-				$content.prepend( $helper );
-			}
+			$content.before( $helperLabel );
 			var updateVisibility = function(){
-				$helper.toggle( $content.is( ':visible' ) );
+				$helperLabel.toggle( $content.is( ':visible' ) );
 			};
 			updateVisibility();
 			var data = { helper: $helper, updateVisibility: updateVisibility };
@@ -172,83 +167,19 @@
 		}
 	}
 
-	function qsmSetSetupWizardState( state ) {
-		try {
-			if ( !window.localStorage ) {
-				return;
-			}
-			if ( !state ) {
-				window.localStorage.removeItem( QSM_SETUP_WIZARD_STATE_STORAGE_KEY );
-				return;
-			}
-			window.localStorage.setItem( QSM_SETUP_WIZARD_STATE_STORAGE_KEY, JSON.stringify( state ) );
-		} catch (e) {
-			// ignore
-		}
-	}
-
-	function qsmGetSetupWizardState() {
-		try {
-			if ( !window.localStorage ) {
-				return null;
-			}
-			var raw = window.localStorage.getItem( QSM_SETUP_WIZARD_STATE_STORAGE_KEY );
-			if ( !raw ) {
-				return null;
-			}
-			return JSON.parse( raw );
-		} catch (e) {
-			return null;
-		}
-	}
-
-	function qsmClearSetupWizardState() {
-		qsmSetSetupWizardState( null );
-	}
-
-	function qsmIsSetupWizardTourName( tourName ) {
-		return tourName === 'first_question' || tourName === 'question_behavior' || tourName === 'question_enhancements';
-	}
-
-	function qsmStartWizardTourByName( tourName, startIndex ) {
-		if ( tourName === 'first_question' ) {
-			qsmStartFirstQuestionTour( startIndex );
-			return;
-		}
-		if ( tourName === 'question_behavior' ) {
-			qsmStartQuestionBehaviorTour( startIndex );
-			return;
-		}
-		if ( tourName === 'question_enhancements' ) {
-			qsmStartQuestionEnhancementsTour( startIndex );
-			return;
-		}
-	}
-
-	function qsmHasAnySavedQuestions() {
-		return $( '.questions .question' ).length > 0;
-	}
-
-	function qsmDisableFutureSetupTours() {
-		qsmMarkSetupWizardCompleted();
-		qsmTourState.forceSetupWizard = false;
-		qsmTourState.pendingFirstQuestionTour = false;
-		qsmClearSetupWizardState();
+	function qsmIsSetupWizardActive() {
+		return qsmTourState.started && ( qsmTourState.tourName === 'first_question' || qsmTourState.tourName === 'question_enhancements' );
 	}
 
 	function qsmShouldStartSetupWizard() {
 		if ( qsmTourState.forceSetupWizard ) {
 			return true;
 		}
-		if ( qsmIsSetupWizardCompleted() ) {
+		if ( qsmTourState.manualStart ) {
 			return false;
 		}
-		return !qsmHasAnySavedQuestions();
+		return !qsmIsSetupWizardCompleted();
 	}
-
-	window.qsmIsSetupWizardActive = function() {
-		return Boolean( qsmTourState.started || qsmTourState.pendingFirstQuestionTour || qsmTourState.forceSetupWizard || qsmShouldStartSetupWizard() );
-	};
 
 	function qsmMakeElementVisibleForTour( $el ) {
 		var $affected = $el.parentsUntil( 'body' ).addBack();
@@ -411,11 +342,7 @@
 	function qsmStartQuestionEnhancementsTour( startIndex ) {
 		qsmTourState.tourName = 'question_enhancements';
 		qsmTourState.waitingForEnhancementsSave = false;
-		qsmTourState.onEnd = function(){
-			qsmMarkSetupWizardCompleted();
-			qsmTourState.forceSetupWizard = false;
-			qsmClearSetupWizardState();
-		};
+		qsmTourState.onEnd = qsmFinalizeTourSession;
 		qsmTourState.enhancementFinalStep = {
 			selector: '.questions .question.opened',
 			fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
@@ -537,68 +464,15 @@
 		document.head.appendChild( style );
 	}
 
-	function qsmApplySpotlight( $target ) {
-		qsmEnsureSpotlightStyles();
-
-		var $overlay = $( '#qsm-tour-spotlight-overlay' );
-		if ( !$overlay.length ) {
-			$overlay = $( '<div id="qsm-tour-spotlight-overlay" class="qsm-tour-spotlight-overlay"></div>' );
-			$( 'body' ).append( $overlay );
-		}
-
-		var el = $target && $target[0] ? $target[0] : null;
-		var prev = null;
-		if ( el ) {
-			prev = {
-				position: el.style.position,
-				zIndex: el.style.zIndex,
-				boxShadow: el.style.boxShadow,
-				borderRadius: el.style.borderRadius
-			};
-		}
-
-		$target.addClass( 'qsm-tour-spotlight-target' );
-		if ( el ) {
-			if ( !prev.position || prev.position === 'static' ) {
-				el.style.position = 'relative';
-			}
-			el.style.zIndex = '9992';
-		}
-
-		return function restoreSpotlight(){
-			$( '#qsm-tour-spotlight-overlay' ).remove();
-			$target.removeClass( 'qsm-tour-spotlight-target' );
-			if ( el && prev ) {
-				el.style.position = prev.position;
-				el.style.zIndex = prev.zIndex;
-				el.style.boxShadow = prev.boxShadow;
-				el.style.borderRadius = prev.borderRadius;
-			}
-		};
+	function qsmFinalizeTourSession() {
+		qsmMarkSetupWizardCompleted();
+		qsmTourState.forceSetupWizard = false;
+		qsmTourState.pendingFirstQuestionTour = false;
+		qsmTourState.waitingForFirstQuestionSave = false;
 	}
 
-	function qsmApplySelectorBackground( $target, background ) {
-		if ( !$target || !$target.length || !background ) {
-			return null;
-		}
-		var styleValue = typeof background === 'string' ? background : background.color;
-		if ( !styleValue ) {
-			return null;
-		}
-		var previous = [];
-		$target.each( function() {
-			previous.push( { el: this, backgroundColor: this.style.backgroundColor } );
-			this.style.backgroundColor = styleValue;
-		} );
-		return function restoreSelectorBackground(){
-			previous.forEach( function( entry ) {
-				if ( entry.backgroundColor ) {
-					entry.el.style.backgroundColor = entry.backgroundColor;
-				} else {
-					entry.el.style.removeProperty( 'background-color' );
-				}
-			} );
-		};
+	function qsmDisableFutureSetupTours() {
+		qsmFinalizeTourSession();
 	}
 
 	function qsmOpenTourStep( stepIndex ) {
@@ -618,18 +492,14 @@
 				setTimeout(function(){
 					try { onEnd(); } catch (e) { /* ignore */ }
 				}, 0);
+				return;
 			}
+			qsmFinalizeTourSession();
 			return;
 		}
 
 		qsmTourState.index = stepIndex;
 		var step = qsmTourState.steps[ stepIndex ];
-		if ( !qsmTourState.manualStart && qsmIsSetupWizardTourName( qsmTourState.tourName ) && !qsmIsSetupWizardCompleted() ) {
-			qsmSetSetupWizardState({
-				tourName: qsmTourState.tourName,
-				stepIndex: stepIndex
-			});
-		}
 		var $target = qsmGetTourTargetForStep( step );
 		if ( !$target.length ) {
 			qsmOpenTourStep( stepIndex + 1 );
@@ -698,7 +568,9 @@
 					setTimeout(function(){
 						try { onEnd(); } catch (e) { /* ignore */ }
 					}, 0);
+					return;
 				}
+				qsmFinalizeTourSession();
 			},
 			buttons: function( event, t ) {
 				var $buttons = $( '<div class="qsm-admin-tour-buttons"></div>' );
@@ -882,9 +754,13 @@
 	}
 
 	$(function(){
+		window.qsmIsSetupWizardActive = qsmIsSetupWizardActive;
+
 		if ( !$('body').hasClass('admin_page_mlw_quiz_options') ) {
 			return;
 		}
+
+		qsmTourState.pendingFirstQuestionTour = qsmShouldStartSetupWizard();
 
 		$(document).on('click', '#qsm-show-setup-wizard-again', function(e){
 			e.preventDefault();
@@ -923,13 +799,6 @@
 			if ( qsmTourState.started ) {
 				return;
 			}
-			if ( !qsmIsSetupWizardCompleted() ) {
-				var wizardState = qsmGetSetupWizardState();
-				if ( wizardState && wizardState.tourName ) {
-					qsmStartWizardTourByName( wizardState.tourName, wizardState.stepIndex || 0 );
-					return;
-				}
-			}
 			if ( qsmTourState.pendingFirstQuestionTour ) {
 				qsmTourState.pendingFirstQuestionTour = false;
 				qsmStartFirstQuestionTour();
@@ -939,7 +808,6 @@
 			if ( qsmTourState.tourName === 'first_question' && ( qsmTourState.started || qsmTourState.waitingForFirstQuestionSave ) ) {
 				// Do NOT mark wizard complete here. Completion is marked after enhancements tour ends.
 				qsmTourState.waitingForFirstQuestionSave = false;
-				qsmSetSetupWizardState({ tourName: 'first_question', stepIndex: 0 });
 				qsmTourState.steps = [
 					{
 						selector: '.questions .question.opened',
