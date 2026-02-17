@@ -6,8 +6,8 @@ var QSMAdmin;
 var QSMAdminResultsAndEmail;
 
 function qsmShouldSuppressCreationAlerts() {
-    var isActive = typeof window.qsmIsSetupWizardActive === 'function' && window.qsmIsSetupWizardActive();
-    var isPending = typeof window.qsmIsSetupWizardPending === 'function' && window.qsmIsSetupWizardPending();
+    let isActive = typeof window.qsmIsSetupWizardActive === 'function' && window.qsmIsSetupWizardActive();
+    let isPending = typeof window.qsmIsSetupWizardPending === 'function' && window.qsmIsSetupWizardPending();
     return isActive || isPending;
 }
 

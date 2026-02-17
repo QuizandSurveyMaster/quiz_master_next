@@ -577,7 +577,6 @@
 				const $left = $( '<div class="qsm-admin-tour-buttons-left"></div>' );
 				const $right = $( '<div class="qsm-admin-tour-buttons-right"></div>' );
 				const totalSteps = QSM_TOTAL_TOUR_STEPS;
-				const currentStep = step.globalStep || (stepIndex + 1);
 				const $counter = $( '<span class="qsm-admin-tour-counter"></span>' );
 				const $back = $( '<button type="button" class="button">Prev</button>' );
 				const $skip = $( '<button type="button" class="button">Skip</button>' );
@@ -587,7 +586,6 @@
 				const showBack = ( stepIndex > 0 ) || ( true === step.showBack );
 				const showSkip = ( false !== step.showSkip ) && !isLastStep;
 				const showNext = ( false !== step.showNext ) && !isLastStep;
-				const showDone = ( stepIndex >= qsmTourState.steps.length - 1 ) && !step.hideDoneButton;
 				if ( step.doneText ) {
 					$done.text( step.doneText );
 				}
@@ -658,9 +656,7 @@
 				if ( showBack ) {
 					$right.append( $back );
 				}
-				if ( showDone ) {
-					// $right.append( $done );
-				} else if ( showNext ) {
+				if ( showNext ) {
 					$right.append( $next );
 				}
 
