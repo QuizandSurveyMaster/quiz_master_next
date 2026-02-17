@@ -1,12 +1,13 @@
+
 (function($){
 	'use strict';
 
-	var QSM_SETUP_WIZARD_STORAGE_KEY = 'qsm_setup_wizard_completed';
+	const QSM_SETUP_WIZARD_STORAGE_KEY = 'qsm_setup_wizard_completed';
 	
-	var QSM_TOUR_START_DELAY = 400;
-	var QSM_TOTAL_TOUR_STEPS = 9;
-	var qsmNextTourStartTimer = null;
-	var QSM_ADVANCED_HELPER_TEXTS = {
+	const QSM_TOUR_START_DELAY = 400;
+	const QSM_TOTAL_TOUR_STEPS = 9;
+	let qsmNextTourStartTimer = null;
+	const QSM_ADVANCED_HELPER_TEXTS = {
 		answer_limit_area: 'Set how many answers users can select.',
 		grading_mode_area: 'Choose how this question should be graded.',
 		add_poll_type_area: 'Turn this into a poll to show how others responded.',
@@ -14,7 +15,7 @@
 		comments_area: 'Allow users to add comments for this question.',
 		hint_area: 'Provide a hint to guide users before answering.'
 	};
-	var qsmTourState = {
+	const qsmTourState = {
 		steps: [],
 		index: 0,
 		started: false,
@@ -31,7 +32,7 @@
 		manualStart: false
 	};
 
-	var QSM_TOUR_ACTIVE_QUESTION_TARGETS = [
+	const QSM_TOUR_ACTIVE_QUESTION_TARGETS = [
 		'.questions .question.opened',
 		'.qsm_tab_content .question.opened',
 		'.qsm-quiz-questions .question.opened',
@@ -49,7 +50,7 @@
 		if ( document.getElementById( 'qsm-advanced-helper-style' ) ) {
 			return;
 		}
-		var style = document.createElement( 'style' );
+		const style = document.createElement( 'style' );
 		style.id = 'qsm-advanced-helper-style';
 		style.type = 'text/css';
 		style.textContent = '.qsm-advanced-helper-text{margin-top:6px;margin-bottom:0;font-size:13px;color:#555;}.qsm-advanced-helper-label{padding:0 20px;bottom:8px;position:relative;color:gray;font-size:12px;display:block;}';
@@ -58,32 +59,32 @@
 
 	function qsmApplyAdvancedHelperTexts( $container ) {
 		qsmEnsureAdvancedHelperStyles();
-		var $context = $container && $container.length ? $container : $( document );
+		const $context = $container && $container.length ? $container : $( document );
 		Object.keys( QSM_ADVANCED_HELPER_TEXTS ).forEach( function( areaId ) {
-			var $area = $context.find( '#' + areaId ).first();
+			const $area = $context.find( '#' + areaId ).first();
 			if ( !$area.length ) {
 				return;
 			}
-			var $content = $area.find( '.qsm-toggle-box-content' ).first();
+			const $content = $area.find( '.qsm-toggle-box-content' ).first();
 			if ( !$content.length ) {
 				return;
 			}
-			var helperData = $content.data( 'qsmHelperData' );
+			const helperData = $content.data( 'qsmHelperData' );
 			if ( helperData && helperData.updateVisibility ) {
 				helperData.updateVisibility();
 				return;
 			}
-			var helperText = QSM_ADVANCED_HELPER_TEXTS[ areaId ];
-			var $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text"></span>' ).text( helperText );
-			var $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
+			const helperText = QSM_ADVANCED_HELPER_TEXTS[ areaId ];
+			const $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text"></span>' ).text( helperText );
+			const $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
 			$content.before( $helperLabel );
-			var updateVisibility = function(){
+			const updateVisibility = function(){
 				$helperLabel.toggle( $content.is( ':visible' ) );
 			};
 			updateVisibility();
-			var data = { helper: $helper, updateVisibility: updateVisibility };
+			const data = { helper: $helper, updateVisibility: updateVisibility };
 			if ( 'undefined' !== typeof MutationObserver ) {
-				var observer = new MutationObserver( updateVisibility );
+				const observer = new MutationObserver( updateVisibility );
 				observer.observe( $content[0], { attributes: true, attributeFilter: [ 'style', 'class' ] } );
 				data.observer = observer;
 			} else {
@@ -107,12 +108,12 @@
 	}
 
 	function qsmGetActiveQuestionTarget() {
-		for ( var i = 0; i < QSM_TOUR_ACTIVE_QUESTION_TARGETS.length; i++ ) {
-			var selector = QSM_TOUR_ACTIVE_QUESTION_TARGETS[ i ];
+		for ( let i = 0; i < QSM_TOUR_ACTIVE_QUESTION_TARGETS.length; i++ ) {
+			const selector = QSM_TOUR_ACTIVE_QUESTION_TARGETS[ i ];
 			if ( !selector ) {
 				continue;
 			}
-			var $candidate = $( selector ).first();
+			const $candidate = $( selector ).first();
 			if ( $candidate.length ) {
 				return $candidate;
 			}
@@ -124,7 +125,7 @@
 		if ( document.getElementById( 'qsm-tour-pointer-style' ) ) {
 			return;
 		}
-		var style = document.createElement( 'style' );
+		const style = document.createElement( 'style' );
 		style.id = 'qsm-tour-pointer-style';
 		style.type = 'text/css';
 		style.textContent = '' +
@@ -141,29 +142,26 @@
 
 	function qsmIsSetupWizardCompleted() {
 		try {
-			return window.localStorage && window.localStorage.getItem( QSM_SETUP_WIZARD_STORAGE_KEY ) === '1';
+			return window.localStorage?.getItem( QSM_SETUP_WIZARD_STORAGE_KEY ) === '1';
 		} catch (e) {
+			console.debug( e );
 			return false;
 		}
 	}
 
 	function qsmMarkSetupWizardCompleted() {
 		try {
-			if ( window.localStorage ) {
-				window.localStorage.setItem( QSM_SETUP_WIZARD_STORAGE_KEY, '1' );
-			}
+			window.localStorage?.setItem( QSM_SETUP_WIZARD_STORAGE_KEY, '1' );
 		} catch (e) {
-			// ignore
+			console.debug( e );
 		}
 	}
 
 	function qsmResetSetupWizardCompleted() {
 		try {
-			if ( window.localStorage ) {
-				window.localStorage.removeItem( QSM_SETUP_WIZARD_STORAGE_KEY );
-			}
+			window.localStorage?.removeItem( QSM_SETUP_WIZARD_STORAGE_KEY );
 		} catch (e) {
-			// ignore
+			console.debug( e );
 		}
 	}
 
@@ -182,12 +180,12 @@
 	}
 
 	function qsmMakeElementVisibleForTour( $el ) {
-		var $affected = $el.parentsUntil( 'body' ).addBack();
-		var previous = [];
+		const $affected = $el.parentsUntil( 'body' ).addBack();
+		const previous = [];
 
 		$affected.each(function(){
-			var $node = $( this );
-			var styleAttr = $node.attr( 'style' );
+			const $node = $( this );
+			const styleAttr = $node.attr( 'style' );
 			previous.push({ el: $node, style: typeof styleAttr === 'undefined' ? null : styleAttr });
 
 			if ( $node.css( 'display' ) === 'none' ) {
@@ -200,7 +198,7 @@
 		});
 
 		return function restore(){
-			for ( var i = 0; i < previous.length; i++ ) {
+			for ( let i = 0; i < previous.length; i++ ) {
 				if ( previous[i].style === null ) {
 					previous[i].el.removeAttr( 'style' );
 				} else {
@@ -213,14 +211,14 @@
 	function qsmApplySpotlight( $target ) {
 		qsmEnsureSpotlightStyles();
 
-		var $overlay = $( '#qsm-tour-spotlight-overlay' );
+		let $overlay = $( '#qsm-tour-spotlight-overlay' );
 		if ( !$overlay.length ) {
 			$overlay = $( '<div id="qsm-tour-spotlight-overlay" class="qsm-tour-spotlight-overlay"></div>' );
 			$( 'body' ).append( $overlay );
 		}
 
-		var el = $target && $target[0] ? $target[0] : null;
-		var prev = null;
+		const el = $target?.[0] || null;
+		let prev = null;
 		if ( el ) {
 			prev = {
 				position: el.style.position,
@@ -254,11 +252,11 @@
 		if ( !$target || !$target.length || !background ) {
 			return null;
 		}
-		var styleValue = typeof background === 'string' ? background : background.color;
+		const styleValue = typeof background === 'string' ? background : background.color;
 		if ( !styleValue ) {
 			return null;
 		}
-		var previous = [];
+		const previous = [];
 		$target.each( function() {
 			previous.push( { el: this, backgroundColor: this.style.backgroundColor } );
 			this.style.backgroundColor = styleValue;
@@ -274,14 +272,14 @@
 		};
 	}
 
-	function qsmAnnotateGlobalSteps( steps, startingIndex ) {
-		var marker = startingIndex || 1;
+	function qsmAnnotateGlobalSteps( steps, startingIndex = 1 ) {
+		let marker = startingIndex;
 		steps.forEach( function( step ) {
 			step.globalStep = marker++;
 		} );
 	}
 
-	function qsmStartFirstQuestionTour( startIndex ) {
+	function qsmStartFirstQuestionTour( startIndex = 0 ) {
 		qsmTourState.tourName = 'first_question';
 		qsmTourState.waitingForFirstQuestionSave = false;
 		qsmTourState.onEnd = null;
@@ -307,9 +305,9 @@
 				position: { edge: 'bottom', align: 'left' },
 				pointerClass: 'qsm-pointer-wide',
 				beforeOpen: function(){
-					var currentAnswers = $('#answers').find('.answers-single');
+					const currentAnswers = $('#answers').find('.answers-single');
 					if (currentAnswers.length) {
-						for (var i = currentAnswers.length; i < 4; i++) {
+						for (let i = currentAnswers.length; i < 4; i++) {
 							$('#new-answer-button').trigger('click');
 						}
 					} else {
@@ -333,13 +331,13 @@
 
 		qsmAnnotateGlobalSteps( qsmTourState.steps, 1 );
 		qsmTourState.started = true;
-		qsmTourState.index = startIndex || 0;
+		qsmTourState.index = startIndex;
 		qsmWaitForSelector( '.questionElements:visible #question_type', 5000, function(){
 			qsmOpenTourStepWithDelay( qsmTourState.index );
 		});
 	}
 
-	function qsmStartQuestionEnhancementsTour( startIndex ) {
+	function qsmStartQuestionEnhancementsTour( startIndex = 0 ) {
 		qsmTourState.tourName = 'question_enhancements';
 		qsmTourState.waitingForEnhancementsSave = false;
 		qsmTourState.onEnd = qsmFinalizeTourSession;
@@ -381,7 +379,7 @@
 				position: { edge: 'bottom', align: 'center' },
 				skipText: 'Skip',
 				beforeOpen: function(){
-					var $container = $( '.qsm-question-misc-options.advanced-content' );
+					const $container = $( '.qsm-question-misc-options.advanced-content' );
 					qsmApplyAdvancedHelperTexts( $container );
 				}
 			},
@@ -401,7 +399,7 @@
 
 		qsmAnnotateGlobalSteps( qsmTourState.steps, 5 );
 		qsmTourState.started = true;
-		qsmTourState.index = startIndex || 0;
+		qsmTourState.index = startIndex;
 		qsmWaitForSelector( '#answers', 5000, function(){
 			qsmOpenTourStepWithDelay( qsmTourState.index );
 		});
@@ -409,16 +407,14 @@
 
 	function qsmScrollIntoView( $el ) {
 		try {
-			if ( $el && $el.length && $el[0] && typeof $el[0].scrollIntoView === 'function' ) {
-				$el[0].scrollIntoView({ block: 'center', inline: 'nearest' });
-			}
+			$el?.[0]?.scrollIntoView?.({ block: 'center', inline: 'nearest' });
 		} catch (e) {
-			// ignore
+			console.debug( e );
 		}
 	}
 
 	function qsmGetTourTargetForStep( step ) {
-		var $target = $();
+		let $target = $();
 		if ( step && step.useActiveQuestionTarget ) {
 			$target = qsmGetActiveQuestionTarget();
 			if ( $target.length ) {
@@ -432,7 +428,7 @@
 			}
 		}
 		if ( step && step.fallbackSelectors && step.fallbackSelectors.length ) {
-			for ( var i = 0; i < step.fallbackSelectors.length; i++ ) {
+			for ( let i = 0; i < step.fallbackSelectors.length; i++ ) {
 				if ( !step.fallbackSelectors[i] ) {
 					continue;
 				}
@@ -449,7 +445,7 @@
 		if ( document.getElementById( 'qsm-tour-spotlight-style' ) ) {
 			return;
 		}
-		var style = document.createElement( 'style' );
+		const style = document.createElement( 'style' );
 		style.id = 'qsm-tour-spotlight-style';
 		style.type = 'text/css';
 		style.textContent = '' +
@@ -487,10 +483,10 @@
 			qsmTourState.started = false;
 			qsmTourState.manualStart = false;
 			if ( typeof qsmTourState.onEnd === 'function' ) {
-				var onEnd = qsmTourState.onEnd;
+				const onEnd = qsmTourState.onEnd;
 				qsmTourState.onEnd = null;
 				setTimeout(function(){
-					try { onEnd(); } catch (e) { /* ignore */ }
+					try { onEnd(); } catch (e) { console.debug( e ); }
 				}, 0);
 				return;
 			}
@@ -499,8 +495,8 @@
 		}
 
 		qsmTourState.index = stepIndex;
-		var step = qsmTourState.steps[ stepIndex ];
-		var $target = qsmGetTourTargetForStep( step );
+		const step = qsmTourState.steps[ stepIndex ];
+		let $target = qsmGetTourTargetForStep( step );
 		if ( !$target.length ) {
 			qsmOpenTourStep( stepIndex + 1 );
 			return;
@@ -510,7 +506,7 @@
 			try {
 				step.beforeOpen( $target, stepIndex );
 			} catch (e) {
-				// ignore
+				console.debug( e );
 			}
 			$target = qsmGetTourTargetForStep( step );
 			if ( !$target.length ) {
@@ -523,7 +519,7 @@
 			qsmTourState.cleanupCurrent();
 			qsmTourState.cleanupCurrent = null;
 		}
-		var cleanupFns = [];
+		const cleanupFns = [];
 		if ( step.forceVisible || !$target.is( ':visible' ) ) {
 			cleanupFns.push( qsmMakeElementVisibleForTour( $target ) );
 		}
@@ -531,15 +527,15 @@
 			cleanupFns.push( qsmApplySpotlight( $target ) );
 		}
 		if ( step.applySelectorBackground ) {
-			var backgroundCleanup = qsmApplySelectorBackground( $target, step.applySelectorBackground );
+			const backgroundCleanup = qsmApplySelectorBackground( $target, step.applySelectorBackground );
 			if ( backgroundCleanup ) {
 				cleanupFns.push( backgroundCleanup );
 			}
 		}
 		if ( cleanupFns.length ) {
 			qsmTourState.cleanupCurrent = function(){
-				for ( var i = 0; i < cleanupFns.length; i++ ) {
-					try { cleanupFns[i](); } catch (e) { /* ignore */ }
+				for ( let i = 0; i < cleanupFns.length; i++ ) {
+					try { cleanupFns[i](); } catch (e) { console.debug( e ); }
 				}
 			};
 		}
@@ -554,44 +550,44 @@
 					qsmTourState.cleanupCurrent();
 					qsmTourState.cleanupCurrent = null;
 				}
-				var nextIndex = qsmTourState.nextIndexOnClose;
+				const nextIndex = qsmTourState.nextIndexOnClose;
 				qsmTourState.nextIndexOnClose = null;
 				if ( qsmTourState.started && null !== nextIndex ) {
 					qsmOpenTourStep( nextIndex );
 					return;
 				}
-				var awaitingAsyncStep = qsmTourState.waitingForFirstQuestionSave || qsmTourState.waitingForEnhancementsSave;
+				const awaitingAsyncStep = qsmTourState.waitingForFirstQuestionSave || qsmTourState.waitingForEnhancementsSave;
 				qsmTourState.started = false;
 				qsmTourState.manualStart = false;
 				if ( awaitingAsyncStep ) {
 					return;
 				}
 				if ( typeof qsmTourState.onEnd === 'function' ) {
-					var onEnd = qsmTourState.onEnd;
+					const onEnd = qsmTourState.onEnd;
 					qsmTourState.onEnd = null;
 					setTimeout(function(){
-						try { onEnd(); } catch (e) { /* ignore */ }
+						try { onEnd(); } catch (e) { console.debug( e ); }
 					}, 0);
 					return;
 				}
 				qsmFinalizeTourSession();
 			},
 			buttons: function( event, t ) {
-				var $buttons = $( '<div class="qsm-admin-tour-buttons"></div>' );
-				var $left = $( '<div class="qsm-admin-tour-buttons-left"></div>' );
-				var $right = $( '<div class="qsm-admin-tour-buttons-right"></div>' );
-				var totalSteps = QSM_TOTAL_TOUR_STEPS;
-				var currentStep = step.globalStep || (stepIndex + 1);
-				var $counter = $( '<span class="qsm-admin-tour-counter"></span>' );
-				var $back = $( '<button type="button" class="button">Prev</button>' );
-				var $skip = $( '<button type="button" class="button">Skip</button>' );
-				var $next = $( '<button type="button" class="button button-primary">Next</button>' );
-				var $done = $( '<button type="button" class="button button-primary">Done</button>' );
-				var isLastStep = ( stepIndex >= qsmTourState.steps.length - 1 );
-				var showBack = ( stepIndex > 0 ) || ( true === step.showBack );
-				var showSkip = ( false !== step.showSkip ) && !isLastStep;
-				var showNext = ( false !== step.showNext ) && !isLastStep;
-				var showDone = ( stepIndex >= qsmTourState.steps.length - 1 ) && !step.hideDoneButton;
+				const $buttons = $( '<div class="qsm-admin-tour-buttons"></div>' );
+				const $left = $( '<div class="qsm-admin-tour-buttons-left"></div>' );
+				const $right = $( '<div class="qsm-admin-tour-buttons-right"></div>' );
+				const totalSteps = QSM_TOTAL_TOUR_STEPS;
+				const currentStep = step.globalStep || (stepIndex + 1);
+				const $counter = $( '<span class="qsm-admin-tour-counter"></span>' );
+				const $back = $( '<button type="button" class="button">Prev</button>' );
+				const $skip = $( '<button type="button" class="button">Skip</button>' );
+				const $next = $( '<button type="button" class="button button-primary">Next</button>' );
+				const $done = $( '<button type="button" class="button button-primary">Done</button>' );
+				const isLastStep = ( stepIndex >= qsmTourState.steps.length - 1 );
+				const showBack = ( stepIndex > 0 ) || ( true === step.showBack );
+				const showSkip = ( false !== step.showSkip ) && !isLastStep;
+				const showNext = ( false !== step.showNext ) && !isLastStep;
+				const showDone = ( stepIndex >= qsmTourState.steps.length - 1 ) && !step.hideDoneButton;
 				if ( step.doneText ) {
 					$done.text( step.doneText );
 				}
@@ -630,7 +626,7 @@
 
 				if ( Array.isArray( step.customButtons ) && step.customButtons.length ) {
 					step.customButtons.forEach( function( customButton ) {
-						var $custom = $( '<button type="button"></button>' );
+						const $custom = $( '<button type="button"></button>' );
 						$custom.text( customButton.text || '' );
 						$custom.addClass( customButton.className || 'button' );
 						$custom.on( 'click', function( event ) {
@@ -651,7 +647,7 @@
 				}
 
 				if ( step.globalStep ) {
-					var counterTotal = step.globalStep <= 4 ? 4 : totalSteps;
+					const counterTotal = step.globalStep <= 4 ? 4 : totalSteps;
 					$counter.text( 'Step ' + step.globalStep + ' of ' + counterTotal );
 					$left.append( $counter );
 				}
@@ -684,21 +680,21 @@
 		if ( step.closeOnClick ) {
 			$(document).one( 'click.qsmTourCloseOnClick', step.closeOnClick, function(){
 				if ( typeof step.beforeCloseOnClick === 'function' ) {
-					try { step.beforeCloseOnClick(); } catch (e) { /* ignore */ }
+					try { step.beforeCloseOnClick(); } catch (e) { console.debug( e ); }
 				}
 				try {
 					$target.pointer('close');
 				} catch (e) {
-					// ignore
+					console.debug( e );
 				}
 			});
 		}
 
 		// Fine-tune pointer arrow position (beyond edge/align) if requested.
 		setTimeout(function(){
-			var api = $target.data( 'wpPointer' );
-			var $pointer = null;
-			if ( api && api.pointer ) {
+			const api = $target.data( 'wpPointer' );
+			let $pointer = null;
+			if ( api?.pointer ) {
 				$pointer = api.pointer;
 			} else {
 				$pointer = $( '.wp-pointer:visible' ).last();
@@ -710,12 +706,12 @@
 				qsmEnsurePointerStyles();
 				$pointer.addClass( step.pointerClass );
 				if ( step.pointerClass.indexOf( 'qsm-pointer-congrats' ) !== -1 && !$pointer.find('.qsm-pointer-congrats-close-target').length ) {
-					var $closeButton = $( '<button type="button" class="qsm-pointer-congrats-close-target" aria-label="Close"></button>' );
+					const $closeButton = $( '<button type="button" class="qsm-pointer-congrats-close-target" aria-label="Close"></button>' );
 					$closeButton.on( 'click', function( e ) {
 						e.preventDefault();
 						qsmTourState.started = false;
 						qsmTourState.nextIndexOnClose = null;
-						try { $target.pointer('close'); } catch (err) { /* ignore */ }
+						try { $target.pointer('close'); } catch (err) { console.debug( err ); }
 					});
 					$pointer.append( $closeButton );
 				}
@@ -734,7 +730,7 @@
 		$right[0].style.alignItems = 'center';
 		$right[0].style.justifyContent = 'space-around';
 		if ( applyWidth ) {
-			var buttonCount = $right.find('button').length;
+			const buttonCount = $right.find('button').length;
 			if ( buttonCount > 0 ) {
 				$right[0].style.minWidth = '40%';
 				$right[0].style.width = (buttonCount < 3 ? '40%' : '60%');
@@ -743,7 +739,7 @@
 	}
 
 	function qsmWaitForSelector( selector, timeoutMs, cb ) {
-		var start = Date.now();
+		const start = Date.now();
 		(function tick(){
 			if ( $( selector ).length ) {
 				cb();
@@ -785,13 +781,13 @@
 			qsmTourState.started = false;
 			qsmTourState.waitingForFirstQuestionSave = false;
 			qsmTourState.onEnd = null;
-			var hasEditorVisible = $('.questionElements:visible #question_type').length > 0;
+			const hasEditorVisible = $('.questionElements:visible #question_type').length > 0;
 			if ( hasEditorVisible ) {
 				qsmStartFirstQuestionTour();
 				return;
 			}
 			qsmTourState.pendingFirstQuestionTour = true;
-			var $editButton = $('.questions .question:first .edit-question-button');
+			const $editButton = $('.questions .question:first .edit-question-button');
 			if ( $editButton.length ) {
 				$editButton.trigger('click');
 			} else {
