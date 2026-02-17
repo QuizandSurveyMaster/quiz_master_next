@@ -4,6 +4,13 @@
 
 var QSMAdmin;
 var QSMAdminResultsAndEmail;
+
+function qsmShouldSuppressCreationAlerts() {
+    let isActive = typeof window.qsmIsSetupWizardActive === 'function' && window.qsmIsSetupWizardActive();
+    let isPending = typeof window.qsmIsSetupWizardPending === 'function' && window.qsmIsSetupWizardPending();
+    return isActive || isPending;
+}
+
 (function ($) {
 
     QSMAdmin = {
@@ -3307,7 +3314,9 @@ var QSM_Quiz_Broadcast_Channel;
                 addNewQuestion: function (model) {
                     var default_answers = parseInt(qsmQuestionSettings.default_answers);
                     var count = 0;
-                    QSMAdmin.displayAlert(qsm_admin_messages.question_created, 'success');
+                    if ( !qsmShouldSuppressCreationAlerts() ) {
+                        QSMAdmin.displayAlert(qsm_admin_messages.question_created, 'success');
+                    }
                     QSMQuestion.addQuestionToPage(model);
                     QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
                     QSMQuestion.countTotal();
@@ -3352,7 +3361,9 @@ var QSM_Quiz_Broadcast_Channel;
                     setTimeout(QSMQuestion.removeNew, 250);
                 },
                 createQuestion: function (page) {
-                    QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
+                    if ( !qsmShouldSuppressCreationAlerts() ) {
+                        QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
+                    }
                     QSMQuestion.questions.create({
                         quizID: qsmQuestionSettings.quizID,
                         page: page
@@ -3571,6 +3582,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $('#save-edit-question-spinner').removeClass('is-active');
                     }, 250);
                     setTimeout(QSMQuestion.removeNew, 250);
+					jQuery(document).trigger('qsm_admin_question_saved_success', [model]);
                 },
                 addNewAnswer: function (answer, questionType = false, $insertAfter = null) {
                     if (!questionType) {

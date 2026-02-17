@@ -310,6 +310,9 @@ class QSM_Contact_Manager {
 		 */
 		if ( empty( $fields ) && 'edit' == $type ) {
 			foreach ( $default_fields as $key => $field ) {
+				if ( ! is_array( $fields ) ) {
+					$fields = array();
+				}
 				$fields[] = $field;
 			}
 		}
