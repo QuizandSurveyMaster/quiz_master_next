@@ -125,7 +125,7 @@ class QMN_Log_Manager
 		$args = wp_parse_args( $log_data, $defaults );
 
 		// Generate unique post_name to avoid wp_unique_post_slug() performance issues
-		$args['post_name'] = 'qsm-log-entry-' . time() . '-' . mt_rand(1000, 9999);
+		$args['post_name'] = 'qsm-log-entry-' . uniqid();
 
 		// Check for duplicate log entries (same title, message, and type within last hour)
 		if ( ! empty( $args['post_title'] ) && ! empty( $args['post_content'] ) ) {
