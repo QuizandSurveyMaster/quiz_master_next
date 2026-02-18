@@ -5461,7 +5461,7 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	gap: 10px;
 }
 
-.qsm-question-bank-admin .qsm-admin-bulk-actions:not(.qsm-question-bank-page) {
+.qsm-question-bank-admin .qsm-admin-bulk-actions {
 	display: none;
 }
 

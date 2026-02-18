@@ -706,6 +706,7 @@ a#qsm-category-add-toggle {
 }
 .qsm-admin-bulk-actions.qsm-question-bank-page {
 	display: block;
+	text-align: left;
 }
 input.qsm-admin-select-page-question {
     margin-left: 10px;
