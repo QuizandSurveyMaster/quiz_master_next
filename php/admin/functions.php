@@ -1711,7 +1711,7 @@ function qsm_result_and_email_popups_for_templates( $template_from_script, $my_t
 									</div>
 									<div class="qsm-<?php echo esc_attr( $type ); ?>-page-template-card-buttons">
 										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-preview-button button button-secondary" data-indexid="<?php echo esc_html($key); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></button>
-										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
+										<button class="qsm-<?php echo esc_attr( $type ); ?>-page-template-use-button button button-secondary" data-structure="default" data-indexid="<?php echo esc_html($key); ?>"><img class="qsm-common-svg-image-class" src="<?php echo esc_url(QSM_PLUGIN_URL . 'assets/download-line-blue.svg'); ?>" alt="download-line-blue.svg" /><?php esc_html_e( 'Insert', 'quiz-master-next' ); ?></button>
 									</div>
 								</div>
 								<?php

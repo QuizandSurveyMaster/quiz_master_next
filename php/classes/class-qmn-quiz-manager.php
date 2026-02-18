@@ -365,7 +365,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-tooltip' );
-				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
+				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
 				wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 				$disable_mathjax = isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '';
 				if ( 1 != $disable_mathjax ) {
@@ -883,9 +883,9 @@ class QMNQuizManager {
 			$question_sql = implode( ',', array_unique( $question_ids ) ); // Prevent duplicates
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
-				let expires = "expires=" + d.toUTCString();
+				const qsmCookieExpiry = new Date();
+				qsmCookieExpiry.setTime(qsmCookieExpiry.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				let expires = "expires=" + qsmCookieExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
 			</script>
 			<?php
@@ -984,6 +984,7 @@ class QMNQuizManager {
 			'minlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->minlength_error_text, "quiz_minlength_error_text-{$options->quiz_id}" ),
 			'maxlength_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->maxlength_error_text, "quiz_maxlength_error_text-{$options->quiz_id}" ),
 			'recaptcha_error_text' => __( 'ReCaptcha is missing', 'quiz-master-next' ),
+			'phone_error_text'     => __( 'Phone number is invalid', 'quiz-master-next' ),
 		);
 		$qmn_json_data                   = apply_filters( 'qsm_json_error_message', $qmn_json_data, $options );
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
@@ -1144,9 +1145,9 @@ class QMNQuizManager {
 			$question_list_str = implode( ',', $question_list_array );
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365*24*60*60*1000));
-				let expires = "expires="+ d.toUTCString();
+				const qsmExpiry = new Date();
+				qsmExpiry.setTime(qsmExpiry.getTime() + (365*24*60*60*1000));
+				let expires = "expires="+ qsmExpiry.toUTCString();
 				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+expires+"; path=/";
 			</script>
 			<?php
