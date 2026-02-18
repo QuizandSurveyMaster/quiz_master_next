@@ -365,7 +365,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-tooltip' );
-				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
+				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
 				wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 				$disable_mathjax = isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '';
 				if ( 1 != $disable_mathjax ) {
