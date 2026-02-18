@@ -67,9 +67,8 @@ $new_question_title = isset( $question_settings['question_title'] ) ? $question_
 
 if ( strpos( $question_text, '%BLANK%' ) !== false ) {
     $processed_question_text = str_replace( '%BLANK%', $input_text, htmlspecialchars_decode( $question_text, ENT_QUOTES ) );
-    $class_object->display_question_title( $question_text, 'fill_in_blank', $new_question_title, $id );
     $processed_question_text = do_shortcode( $processed_question_text );
-    echo wp_kses_post( $processed_question_text );
+    $class_object->display_question_title( $processed_question_text, 'fill_in_blank', $new_question_title, $id );
 } else {
     $class_object->display_question_title( $question_text, 'fill_in_blank', $new_question_title, $id );
 }
