@@ -113,6 +113,13 @@ class QSM_New_Renderer {
 			$mlwQuizMasterNext->version
 		);
 
+		wp_enqueue_style( 
+			'jquery-redmond-theme',
+			QSM_PLUGIN_CSS_URL . '/jquery-ui.css', 
+			array(), 
+			$mlwQuizMasterNext->version 
+		);
+
 		// Enqueue MicroModal script
 		wp_enqueue_script(
 			'micromodal_script',
