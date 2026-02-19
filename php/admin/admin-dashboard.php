@@ -56,21 +56,22 @@ function qsm_check_close_hidden_box( $widget_id ) {
  * Required addons & versions for migration
  */
 function qsm_migration_get_required_addons() {
-	$addons = array(
-
-		/* === User Dashboard addon requirement === */
-		array(
-			'name'                   => 'QSM - User Dashboard',
-			'required_addon_version' => '2.0.0',
-		),
-		array(
-			'name'                   => 'Advanced Timer',
-			'required_addon_version' => '2.0.0',
-		),
-
-	);
-
-	return apply_filters( 'qsm_migration_required_addons', $addons );
+	$addons_data = qsm_get_parsing_script_data('required-to-migration-updated.json');
+	
+	if ( ! $addons_data ) {
+		return array(); // Return empty array if JSON file not found or invalid
+	}
+	
+	$migration_addons = array();
+	foreach ( $addons_data as $addon ) {
+		$migration_addons[] = array(
+			'name'                   => $addon['name'],
+			'path'                   => $addon['path'],
+			'required_addon_version' => $addon['required_version'],
+		);
+	}
+	
+	return $migration_addons;
 }
 
 /**

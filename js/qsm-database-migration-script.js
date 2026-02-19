@@ -76,7 +76,8 @@ jQuery(function ($) {
                 success: function (response) {
                     if (!response.success) {
                         QSM_Migration_Process.enableUI();
-                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
+                        const errorMessage = response && response.data && response.data.message ? response.data.message : qsmMigrationData.errorMessage;
+                        QSM_Migration_Process.updateStatus(errorMessage, 'error');
                         console.error(response.data);
                         return;
                     }
@@ -106,7 +107,20 @@ jQuery(function ($) {
                 },
                 error: function (xhr) {
                     QSM_Migration_Process.enableUI();
-                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
+                    let errorMessage = qsmMigrationData.errorMessage;
+
+                    if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
+                        errorMessage = xhr.responseJSON.data.message;
+                    } else {
+                        try {
+                            const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                            if (parsed && parsed.data && parsed.data.message) {
+                                errorMessage = parsed.data.message;
+                            }
+                        } catch (e) {}
+                    }
+
+                    QSM_Migration_Process.updateStatus(errorMessage, 'error');
                     console.error(xhr.responseText);
                 }
             });
@@ -142,7 +156,13 @@ jQuery(function ($) {
                 success: function (response) {
                     if (!response.success) {
                         QSM_Migration_Process.enableUI();
-                        QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
+                        let errorMessage = qsmMigrationData.errorMessage;
+
+                        if (response && response.data && response.data.message) {
+                            errorMessage = response.data.message;
+                        }
+
+                        QSM_Migration_Process.updateStatus(errorMessage, 'error');
                         console.error(response.data);
                         return;
                     }
@@ -191,7 +211,20 @@ jQuery(function ($) {
                 },
                 error: function (xhr) {
                     QSM_Migration_Process.enableUI();
-                    QSM_Migration_Process.updateStatus(qsmMigrationData.errorMessage, 'error');
+                    let errorMessage = qsmMigrationData.errorMessage;
+
+                    if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
+                        errorMessage = xhr.responseJSON.data.message;
+                    } else {
+                        try {
+                            const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                            if (parsed && parsed.data && parsed.data.message) {
+                                errorMessage = parsed.data.message;
+                            }
+                        } catch (e) {}
+                    }
+
+                    QSM_Migration_Process.updateStatus(errorMessage, 'error');
                     QSM_Migration_Process.detailsBox.append(`<div>${qsmMigrationData.labelErrorNote}</div>`);
                     console.error(xhr.responseText);
                 }
