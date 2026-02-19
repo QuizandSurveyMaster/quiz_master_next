@@ -414,7 +414,7 @@ function qsm_generate_dashboard_page() {
 							<div class="qsm-welcome-logo">
 								<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/icon-128x128.png' ); ?>" alt="QSM Logo" />
 							</div>
-							<h2 class="qsm-welcome-title"><?php echo esc_html__( '👋 Welcome to QSM – Create Smarter Quizzes Faster', 'quiz-master-next' ); ?></h2>
+							<h4 class="qsm-welcome-title"><?php echo esc_html__( '👋 Welcome to QSM – Create Smarter Quizzes Faster', 'quiz-master-next' ); ?></h4>
 						</div>
 						<div class="qsm-welcome-body">
 							<p><?php echo esc_html__( 'QSM helps you create quizzes, surveys, and tests quickly and easily.', 'quiz-master-next' ); ?></p>
@@ -429,7 +429,7 @@ function qsm_generate_dashboard_page() {
 						</div>
 						<div class="qsm-welcome-cta">
 							<a href="#" class="button button-primary qsm-welcome-close">
-								<?php echo esc_html__( "Let's Get You Started", 'quiz-master-next' ); ?>
+								<?php echo esc_html__( "Let's Get You Started", 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/>
 							</a>
 						</div>
 					</div>
@@ -444,7 +444,7 @@ function qsm_generate_dashboard_page() {
                     <p class="qsm-dashboard-card-description"><?php esc_html_e( 'Design quizzes and surveys tailored to your needs.', 'quiz-master-next' ); ?></p>
                 </div>
                 <div class="">
-                    <a class="button button-primary qsm-dashboard-section-create-quiz"  href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" ><?php echo $is_welcome ? esc_html__( 'Create a Quiz / Survey', 'quiz-master-next' ) : esc_html__( 'Get Started', 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/></a>
+                    <a class="button button-primary qsm-dashboard-section-create-quiz"  href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" ><?php echo esc_html__( 'Get Started', 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/></a>
                 </div>
             </div>
 

@@ -135,10 +135,12 @@
     box-shadow: 0px 4px 4px 0px #00000014;
 }
 
-.qsm-welcome-cta .button::after {
-    content: '→';
-    margin-left: 8px;
-    transition: transform 0.3s ease;
+a.button.button-primary.qsm-welcome-close img {
+	padding-left: 10px;
+    width: 20px;
+    padding-top: 2px;
+    display: inline-block;
+    vertical-align: text-bottom;
 }
 
 @media (max-width: 768px) {

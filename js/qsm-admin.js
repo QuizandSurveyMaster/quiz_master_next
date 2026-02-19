@@ -444,15 +444,19 @@ var QSMAdminResultsAndEmail;
             }
             
             // Handle welcome popup close
-            jQuery(document).on('click', '.qsm-welcome-close, .qsm-welcome-close-btn', function(e) {
-                e.preventDefault();
-                jQuery('.qsm-welcome-overlay').fadeOut(300, function() {
+            var qsmCloseWelcomeModal = function () {
+                jQuery('.qsm-welcome-overlay').fadeOut(300, function () {
                     jQuery(this).remove();
                 });
-                jQuery('.qsm-welcome-modal').fadeOut(300, function() {
+                jQuery('.qsm-welcome-modal').fadeOut(300, function () {
                     jQuery(this).remove();
                 });
                 jQuery('.qsm-dashboard-container').removeClass('qsm-dashboard-blurred');
+            };
+
+            jQuery(document).on('click', '.qsm-welcome-close, .qsm-welcome-close-btn, .qsm-welcome-overlay', function (e) {
+                e.preventDefault();
+                qsmCloseWelcomeModal();
             });
 
         });
