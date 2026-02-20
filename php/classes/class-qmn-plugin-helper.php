@@ -1392,6 +1392,16 @@ class QMNPluginHelper {
 	 * }
 	 */
 	public function get_formated_result_data( $result_id ) {
+
+		if ( 1 != get_option( 'qsm_migration_results_processed' ) ) {
+			return array(
+				0,
+				array(),
+				'',
+				'contact' => array(),
+			);
+		}
+
         global $wpdb;
 
         $result_id     = intval( $result_id );
