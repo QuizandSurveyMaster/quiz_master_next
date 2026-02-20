@@ -359,6 +359,48 @@ class MLWQuizMasterNext {
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+		add_action( 'wp_ajax_qsm_mark_setup_wizard_completed', array( $this, 'qsm_mark_setup_wizard_completed' ) );
+		add_action( 'wp_ajax_qsm_reset_setup_wizard_completed', array( $this, 'qsm_reset_setup_wizard_completed' ) );
+	}
+
+	/**
+	 * Marks setup wizard as completed for current user.
+	 *
+	 * @since 0.0.0
+	 * @return void
+	 */
+	public function qsm_mark_setup_wizard_completed() {
+		if ( ! function_exists( 'is_admin' ) || ! is_admin() || ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Unauthorized!', 'quiz-master-next' ),
+				)
+			);
+		}
+		check_ajax_referer( 'qsm_setup_wizard_nonce', 'nonce' );
+		$user_id = get_current_user_id();
+		update_user_meta( $user_id, 'qsm_setup_wizard_completed', 1 );
+		wp_send_json_success( array( 'completed' => 1 ) );
+	}
+
+	/**
+	 * Resets setup wizard completion for current user.
+	 *
+	 * @since 0.0.0
+	 * @return void
+	 */
+	public function qsm_reset_setup_wizard_completed() {
+		if ( ! function_exists( 'is_admin' ) || ! is_admin() || ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Unauthorized!', 'quiz-master-next' ),
+				)
+			);
+		}
+		check_ajax_referer( 'qsm_setup_wizard_nonce', 'nonce' );
+		$user_id = get_current_user_id();
+		delete_user_meta( $user_id, 'qsm_setup_wizard_completed' );
+		wp_send_json_success( array( 'completed' => 0 ) );
 	}
 
 	/**
@@ -511,6 +553,19 @@ class MLWQuizMasterNext {
 		$qsm_variables = function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : array();
 		$qsm_variables_name = array();
 		$qsm_quizzes = $wpdb->get_results("SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes");
+		$current_quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+		$other_quizzes_count = 0;
+		if ( is_array( $qsm_quizzes ) ) {
+			foreach ( $qsm_quizzes as $quiz_obj ) {
+				if ( ! isset( $quiz_obj->quiz_id ) ) {
+					continue;
+				}
+				if ( $current_quiz_id && intval( $quiz_obj->quiz_id ) === $current_quiz_id ) {
+					continue;
+				}
+				$other_quizzes_count++;
+			}
+		}
 		foreach ( $qsm_variables as $key => $value ) {
 			// Iterate over each key of the nested object
 			if ( is_array( $value ) && ! empty($value) ) {
@@ -611,6 +666,7 @@ class MLWQuizMasterNext {
 			'insert_variable'            => __("Insert QSM variables", 'quiz-master-next'),
 			'select_all'                 => __("Select All", 'quiz-master-next'),
 			'select'                     => __("Select", 'quiz-master-next'),
+			'quiz_count'                 => $other_quizzes_count,
 			'qsmQuizzesObject'           => $qsm_quizzes,
 			'arrow_up_image'             => esc_url(QSM_PLUGIN_URL . 'assets/arrow-up-s-line.svg'),
 			'arrow_down_image'           => esc_url(QSM_PLUGIN_URL . 'assets/arrow-down-s-line.svg'),
@@ -634,6 +690,53 @@ class MLWQuizMasterNext {
 			'warning_icon'               => esc_url(QSM_PLUGIN_URL . 'assets/warning-message.png'),
 			'info_icon'                  => esc_url(QSM_PLUGIN_URL . 'assets/info-message.png'),
 			'question_shuffle'           => __('Question shuffled successfully!', 'quiz-master-next'),
+			'guided_wizard'              => array(
+				'storage_key' => 'qsm_setup_wizard_completed',
+				'completed'   => (int) get_user_meta( get_current_user_id(), 'qsm_setup_wizard_completed', true ),
+				'nonce'       => wp_create_nonce( 'qsm_setup_wizard_nonce' ),
+				'guided_wizard' => __('Guided Wizard', 'quiz-master-next'),
+				'answer_limit_area'	=>	__('Set how many answers users can select.', 'quiz-master-next'),
+				'grading_mode_area'	=>	__('Choose how this question should be graded.', 'quiz-master-next'),
+				'add_poll_type_area'	=>	__('Turn this into a poll to show how others responded.', 'quiz-master-next'),
+				'correct_answer_info_area'	=>	__('Add an explanation to support the correct answer.', 'quiz-master-next'),
+				'comments_area'	=>	__('Allow users to add comments for this question.', 'quiz-master-next'),
+				'hint_area'	=>	__('Provide a hint to guide users before answering.', 'quiz-master-next'),
+				'first_question' => __('Create your first question', 'quiz-master-next'),
+				'question_type' => __('Choose your question type.', 'quiz-master-next'),
+				'question_title' => __('Question Title', 'quiz-master-next'),
+				'question_title_desc' => __('Write the question you want to ask your users.', 'quiz-master-next'),
+				'add_answer' => __('Add Answers', 'quiz-master-next'),
+				'add_answer_text' => __('Add all possible answers for this question.', 'quiz-master-next'),
+				'add_answer_desc1' => __('Use the', 'quiz-master-next'),
+				'add_answer_desc2' => __('buttons to add or remove answers.', 'quiz-master-next'),
+				'add_answer_desc3' => __('Assign', 'quiz-master-next'),
+				'add_answer_desc4' => __('points', 'quiz-master-next'),
+				'add_answer_desc5' => __('and mark the', 'quiz-master-next'),
+				'add_answer_desc6' => __('correct answer', 'quiz-master-next'),
+				'add_answer_desc7' => __('Select the appropriate', 'quiz-master-next'),
+				'add_answer_desc8' => __('label', 'quiz-master-next'),
+				'add_answer_desc9' => __('(Optional).', 'quiz-master-next'),
+				'save_question' => __('Save Question', 'quiz-master-next'),
+				'save_question_desc' => __('Click <strong>Save Question</strong> to save your first question.', 'quiz-master-next'),
+				'feature_image' => __( 'Featured Image (Optional)', 'quiz-master-next'),
+				'feature_image_desc' => __( 'Add an image to visually enhance this question.', 'quiz-master-next'),
+				'category' => __( 'Category (Optional)', 'quiz-master-next'),
+				'category_desc' => __( 'Assign this question to one or more categories to organize, filter, and reuse it across quizzes.', 'quiz-master-next'),
+				'question_status' => __( 'Published / Draft', 'quiz-master-next'),
+				'question_status_desc1' => __( 'Use the toggle to switch between Draft and Published.', 'quiz-master-next'),
+				'question_status_desc2' => __( 'Set it to Published to make the question available in quizzes, or keep it as Draft to continue editing.', 'quiz-master-next'),
+				'advance_setting' => __( 'Advanced Settings', 'quiz-master-next'),
+				'advance_setting_desc1' => __( 'Here you can configure advanced settings for this question.', 'quiz-master-next'),
+				'advance_setting_desc2' => __( 'Use this section to control evaluation and learner feedback.', 'quiz-master-next'),
+				'save_updates' => __( 'Save your updates', 'quiz-master-next'),
+				'save_updates_desc' => __( 'Click “Save Question” to apply your changes and complete the setup', 'quiz-master-next'),
+				'congrats2' => __( 'Congratulations!', 'quiz-master-next'),
+				'congrats2_desc1' => __( 'Your advanced settings have been saved successfully.', 'quiz-master-next'),
+				'congrats2_desc2' => __( 'The question logic and behavior are now updated.', 'quiz-master-next'),
+				'congrats1' => __( 'Great start!', 'quiz-master-next'),
+				'congrats1_desc1' => __( 'Your question is ready with basic settings.', 'quiz-master-next'),
+				'congrats1_desc2' => __( 'Now you can customize logic and behavior to unlock its full potential.', 'quiz-master-next'),
+			),
 		);
 		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
