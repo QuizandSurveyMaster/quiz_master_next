@@ -74,7 +74,7 @@
 				helperData.updateVisibility();
 				return;
 			}
-			const helperText = QSM_ADVANCED_HELPER_TEXTS[ areaId ];
+			const helperText = window.qsm_admin_messages?.guided_wizard?.[ areaId ] || QSM_ADVANCED_HELPER_TEXTS[ areaId ];
 			const $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text"></span>' ).text( helperText );
 			const $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
 			$content.before( $helperLabel );
@@ -140,9 +140,49 @@
 		document.head.appendChild( style );
 	}
 
+	function qsmUpdateWizardCompletionState( completed ) {
+		try {
+			if ( typeof window.qsm_admin_messages !== 'undefined' && window.qsm_admin_messages?.guided_wizard ) {
+				window.qsm_admin_messages.guided_wizard.completed = completed ? 1 : 0;
+			}
+		} catch (e) {
+			console.debug( e );
+		}
+	}
+
+	function qsmPersistWizardCompletionState( completed ) {
+		try {
+			const nonce = window.qsm_admin_messages?.guided_wizard?.nonce;
+			if ( !nonce || typeof window.ajaxurl === 'undefined' ) {
+				qsmUpdateWizardCompletionState( completed );
+				return;
+			}
+			$.post(
+				window.ajaxurl,
+				{
+					action: completed ? 'qsm_mark_setup_wizard_completed' : 'qsm_reset_setup_wizard_completed',
+					nonce: nonce
+				}
+			)
+				.done(function( response ){
+					qsmUpdateWizardCompletionState( completed );
+					if ( response?.data?.completed !== undefined ) {
+						qsmUpdateWizardCompletionState( response.data.completed === 1 || response.data.completed === '1' );
+					}
+				})
+				.fail(function( xhr ){
+					console.debug( xhr );
+					qsmUpdateWizardCompletionState( completed );
+				});
+		} catch (e) {
+			console.debug( e );
+			qsmUpdateWizardCompletionState( completed );
+		}
+	}
+
 	function qsmIsSetupWizardCompleted() {
 		try {
-			return window.localStorage?.getItem( QSM_SETUP_WIZARD_STORAGE_KEY ) === '1';
+			return window.qsm_admin_messages?.guided_wizard?.completed === 1 || window.qsm_admin_messages?.guided_wizard?.completed === '1';
 		} catch (e) {
 			console.debug( e );
 			return false;
@@ -150,23 +190,26 @@
 	}
 
 	function qsmMarkSetupWizardCompleted() {
-		try {
-			window.localStorage?.setItem( QSM_SETUP_WIZARD_STORAGE_KEY, '1' );
-		} catch (e) {
-			console.debug( e );
-		}
+		qsmPersistWizardCompletionState( true );
 	}
 
 	function qsmResetSetupWizardCompleted() {
-		try {
-			window.localStorage?.removeItem( QSM_SETUP_WIZARD_STORAGE_KEY );
-		} catch (e) {
-			console.debug( e );
-		}
+		qsmPersistWizardCompletionState( false );
 	}
 
 	function qsmIsSetupWizardActive() {
 		return qsmTourState.started && ( qsmTourState.tourName === 'first_question' || qsmTourState.tourName === 'question_enhancements' );
+	}
+
+	function qsmGetQuizCount() {
+		try {
+			const count = window.qsm_admin_messages?.quiz_count;
+			const parsed = parseInt( count, 10 );
+			return Number.isNaN( parsed ) ? 0 : parsed;
+		} catch (e) {
+			console.debug( e );
+			return 0;
+		}
 	}
 
 	function qsmShouldStartSetupWizard() {
@@ -174,6 +217,9 @@
 			return true;
 		}
 		if ( qsmTourState.manualStart ) {
+			return false;
+		}
+		if ( qsmGetQuizCount() !== 0 ) {
 			return false;
 		}
 		return !qsmIsSetupWizardCompleted();
@@ -287,21 +333,21 @@
 			{
 				selector: '.questionElements:visible #question_type',
 				fallbackSelectors: [ '.questionElements:visible', 'body' ],
-				content: '<h3>Create your first question</h3><p>Choose your question type.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.first_question +'</h3><p>'+ qsm_admin_messages.guided_wizard.question_type +'</p>',
 				position: { edge: 'bottom', align: 'center' },
 				showBack: false
 			},
 			{
 				selector: '#question_title',
-				content: '<h3>Question Title</h3><p>Write the question you want to ask your users.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.question_title +'</h3><p>'+ qsm_admin_messages.guided_wizard.question_title_desc +'</p>',
 				position: { edge: 'bottom', align: 'center' },
 			},
 			{
 				selector: '#answers',
-				content: '<h3>Add Answers</h3><p>Add all possible answers for this question.</p>' +
-				'<p>Use the <b>+</b> and <b>-</b> buttons to add or remove answers.</p>' +
-				'<p>Assign <b>points</b> and mark the <b>correct answer</b>.</p>' +
-				'<p>Select the appropriate <b>label</b> (Optional).</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.add_answer +'</h3><p>'+ qsm_admin_messages.guided_wizard.add_answer_text +'</p>' +
+				'<p>'+ qsm_admin_messages.guided_wizard.add_answer_desc1 +' <b>+</b> & <b>-</b> '+ qsm_admin_messages.guided_wizard.add_answer_desc2 +'</p>' +
+				'<p>'+ qsm_admin_messages.guided_wizard.add_answer_desc3 +' <b>'+ qsm_admin_messages.guided_wizard.add_answer_desc4 +'</b> '+ qsm_admin_messages.guided_wizard.add_answer_desc5 +' <b>'+ qsm_admin_messages.guided_wizard.add_answer_desc6 +'</b>.</p>' +
+				'<p>'+ qsm_admin_messages.guided_wizard.add_answer_desc7 +' <b>'+ qsm_admin_messages.guided_wizard.add_answer_desc8 +'</b> '+ qsm_admin_messages.guided_wizard.add_answer_desc9 +'</p>',
 				position: { edge: 'bottom', align: 'left' },
 				pointerClass: 'qsm-pointer-wide',
 				beforeOpen: function(){
@@ -317,7 +363,7 @@
 			},
 			{
 				selector: '#save-popup-button',
-				content: '<h3>Save Question</h3><p>Click <strong>Save Question</strong> to save your first question.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.save_question +'</h3><p>'+ qsm_admin_messages.guided_wizard.save_question_desc +'</p>',
 				position: { edge: 'right', align: 'center' },
 				showNext: false,
 				showSkip: true,
@@ -344,7 +390,7 @@
 		qsmTourState.enhancementFinalStep = {
 			selector: '.questions .question.opened',
 			fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-			content: '<h3>🎉 Congratulations!</h3><p>Your advanced settings have been saved successfully.</p><p>The question logic and behavior are now updated.</p>',
+			content: '<h3>🎉 '+ qsm_admin_messages.guided_wizard.congrats2 +'</h3><p>'+ qsm_admin_messages.guided_wizard.congrats2_desc1 +'</p><p>'+ qsm_admin_messages.guided_wizard.congrats2_desc2 +'</p>',
 			position: { edge: 'left', align: 'center' },
 			pointerClass: 'qsm-pointer-centered qsm-pointer-congrats',
 			spotlight: false,
@@ -356,26 +402,26 @@
 		qsmTourState.steps = [
 			{
 				selector: '#featureImagediv',
-				content: '<h3>Featured Image (Optional)</h3><p>Add an image to visually enhance this question.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.feature_image +'</h3><p>'+ qsm_admin_messages.guided_wizard.feature_image_desc +'</p>',
 				position: { edge: 'right', align: 'center' },
 				skipText: 'Skip'
 			},
 			{
 				selector: '#categorydiv',
-				content: '<h3>Category (Optional)</h3><p>Assign this question to one or more categories to organize, filter, and reuse it across quizzes.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.category +'</h3><p>'+ qsm_admin_messages.guided_wizard.category_desc +'</p>',
 				position: { edge: 'right', align: 'center' },
 				skipText: 'Skip'
 			},
 			{
 				selector: '#submitdiv .ui-sortable-handle',
-				content: '<h3>Published / Draft</h3><p>Use the toggle to switch between Draft and Published.</p><p>Set it to Published to make the question available in quizzes, or keep it as Draft to continue editing.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.question_status +'</h3><p>'+ qsm_admin_messages.guided_wizard.question_status_desc1 +'</p><p>'+ qsm_admin_messages.guided_wizard.question_status_desc2 +'</p>',
 				position: { edge: 'right', align: 'center' },
 				skipText: 'Skip',
 				applySelectorBackground: 'white',
 			},
 			{
 				selector: '.qsm-question-misc-options.advanced-content',
-				content: '<h3>Advanced Settings</h3><p>Here you can configure advanced settings for this question.</p><p>Use this section to control evaluation and learner feedback.</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.advance_setting +'</h3><p>'+ qsm_admin_messages.guided_wizard.advance_setting_desc1 +'</p><p>'+ qsm_admin_messages.guided_wizard.advance_setting_desc2 +'</p>',
 				position: { edge: 'bottom', align: 'center' },
 				skipText: 'Skip',
 				beforeOpen: function(){
@@ -385,7 +431,7 @@
 			},
 			{
 				selector: '#save-popup-button',
-				content: '<h3>Save your updates</h3><p>Click “Save Question” to apply your changes and complete the setup</p>',
+				content: '<h3>'+ qsm_admin_messages.guided_wizard.save_updates +'</h3><p>'+ qsm_admin_messages.guided_wizard.save_updates_desc +'</p>',
 				position: { edge: 'right', align: 'center' },
 				showNext: false,
 				showBack: true,
@@ -811,7 +857,7 @@
 					{
 						selector: '.questions .question.opened',
 						fallbackSelectors: [ '.questions .question.opened', '.question.opened', '.questionElements', '#save-popup-button', '.questions .question:first', 'body' ],
-						content: '<h3>✅ Great start!</h3><p><b>Your question is ready with basic settings.</b></p><p>Now you can customize logic and behavior to unlock its full potential.</p>',
+						content: '<h3>✅ '+ qsm_admin_messages.guided_wizard.congrats1 +'</h3><p><b>'+ qsm_admin_messages.guided_wizard.congrats1_desc1 +'</b></p><p>'+ qsm_admin_messages.guided_wizard.congrats1_desc2 +'</p>',
 						position: { edge: 'left', align: 'center' },
 						pointerClass: 'qsm-pointer-centered',
 						spotlight: false,
