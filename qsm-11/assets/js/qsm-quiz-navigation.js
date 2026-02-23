@@ -88,6 +88,7 @@ var show_result_validation = true;
                 if (quizId) {
                     self.initQuiz(quizId, $quizContainer,initialPage);
                 }
+
             });
         },
 
@@ -144,10 +145,13 @@ var show_result_validation = true;
          * Initialize a specific quiz
          */
         initQuiz: function(quizId, $quizContainer,initialPage) {
-            
-
             // Create quiz object
             let quizObj = this.initQuizObject(quizId, $quizContainer,initialPage);
+
+            // Set start date in localStorage
+            if ( null == localStorage.getItem('mlw_quiz_start_date' + quizId) ) {
+                localStorage.setItem('mlw_quiz_start_date' + quizId, qmn_ajax_object.start_date);
+            }
 
             // Initialize pagination UI
             this.initPagination(quizId);
@@ -1372,10 +1376,7 @@ var show_result_validation = true;
             formData.append('quiz_id', quizId);
             
             // Add quiz start date
-            let startDate = localStorage.getItem('qsm_quiz_start_date_' + quizId);
-            if (startDate) {
-                formData.append('quiz_start_date', startDate);
-            }
+            formData.append('quiz_start_date', localStorage.getItem('mlw_quiz_start_date' + quizId));
             
             // Add timer data if available
             let timerInfo = window.QSMPagination && window.QSMPagination.Timer ? 
@@ -1498,7 +1499,9 @@ var show_result_validation = true;
                 $resultDiv.slideDown();
             
                 // Clean up localStorage
-                localStorage.removeItem('qsm_quiz_start_date_' + quizId);
+                if( localStorage.getItem('mlw_quiz_start_date' + quizId) ) {
+                    localStorage.removeItem('mlw_quiz_start_date' + quizId);
+                }
             
                 // Scroll to results
                 $('html, body').animate({
