@@ -3902,12 +3902,8 @@ var QSM_Quiz_Broadcast_Channel;
                     //Append extra settings
                     var all_setting = question.get('settings');
                     var isQuestionBankPage = jQuery('body').hasClass('qsm_page_qsm_question_bank');
-                    if ( isQuestionBankPage ) {
-                        if ( all_setting && all_setting.isPublished !== undefined ) {
-                            $('#qsm-question-status').prop('disabled', false);
-                        } else {
-                            $('#qsm-question-status').prop('disabled', true).prop('checked', false).trigger('change');
-                        }
+                    if ( isQuestionBankPage && all_setting && all_setting.isPublished !== undefined ) {
+                        $(document).find('#qsm-question-status-text').text('Published');
                     }
                     if (!isQuestionBankPage && all_setting?.isPublished === undefined) {
                         $('#qsm-question-status').prop('checked', true).trigger('change');
