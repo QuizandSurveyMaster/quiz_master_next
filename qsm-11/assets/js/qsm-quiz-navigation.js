@@ -272,33 +272,26 @@ var show_result_validation = true;
             // Submit button click - bind to container since submit button is in navigation
             $(document).on('click', $submit_btn, function(e) {
                 e.preventDefault();
-                if (!self.validateForm(quizId)) {
-                    return false;
-                }
-                
-                self.submitForm(quizId);
+			    jQuery(document).trigger('qsm_quiz_submit_trigger', [quizId]);
+
+                self.submitFormWithRecaptcha(quizId);
                 return false;
             });
             
             $(document).on('click', this.config.selectors.modalSubmitBtn, function(e) {
                 e.preventDefault();
-                if (!self.validateForm(quizId)) {
-                    return false;
-                }
-                
-                self.submitForm(quizId);
+                jQuery(document).trigger('qsm_quiz_submit_trigger', [quizId]);
+
+                self.submitFormWithRecaptcha(quizId);
                 return false;
             });
 
             // Form submission
             $form.on('submit', function(e) {
                 e.preventDefault();
-                
-                if (!self.validateForm(quizId)) {
-                    return false;
-                }
-                
-                self.submitForm(quizId);
+                jQuery(document).trigger('qsm_quiz_submit_trigger', [quizId]);
+
+                self.submitFormWithRecaptcha(quizId);
                 return false;
             });
 
@@ -314,6 +307,35 @@ var show_result_validation = true;
             
             // Answer selection event handlers
             self.bindAnswerEvents(quizId);
+        },
+
+        submitFormWithRecaptcha: function(quizId) {
+            let quizData = this.quizObjects[quizId];
+            if (!quizData) return;
+
+            let $form = quizData.form;
+            let $recaptcha = $form.find('#qsm_grecaptcha_v3');
+
+            if (!$recaptcha.length) {
+                this.submitForm(quizId);
+                return;
+            }
+
+            let siteKey = $form.find('#qsm_grecaptcha_v3_sitekey').val();
+            let submitAction = $form.find('#qsm_grecaptcha_v3_nonce').val();
+
+            if (!siteKey || typeof window.grecaptcha === 'undefined' || !window.grecaptcha || typeof window.grecaptcha.execute !== 'function') {
+                this.submitForm(quizId);
+                return;
+            }
+
+            let self = this;
+            window.grecaptcha.ready(function () {
+                window.grecaptcha.execute(siteKey, { action: submitAction }).then(function (token) {
+                    $form.find('#qsm_grecaptcha_v3_response').val(token);
+                    self.submitForm(quizId);
+                });
+            });
         },
         
         /**
@@ -1336,7 +1358,9 @@ var show_result_validation = true;
             if (!quizData) return;
             
             let self = this;
-            
+            if (!self.validateForm(quizId)) {
+                return false;
+            }
             // Trigger before submit event
             $(document).trigger('qsm_before_quiz_submit', ['quizForm' + quizId]);
             
