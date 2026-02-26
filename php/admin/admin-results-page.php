@@ -619,10 +619,13 @@ function qsm_results_overview_tab_content() {
 							<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
 						</header>
 						<main class="qsm-popup__content" id="modal-2-content">
-							<div class="qsm-result-page-delete-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
-								<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
-								<input type='hidden' id='result_id' name='result_id' value='' />
-								<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+							<div class="qsm-result-page-delete-message">
+								<?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?><br/>
+								<p><em><?php esc_html_e( 'This will permanently remove all associated data and metadata', 'quiz-master-next' ); ?></em></p>
+							</div>
+							<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
+							<input type='hidden' id='result_id' name='result_id' value='' />
+							<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
 						</main>
 						<footer class="qsm-popup__footer">
 							<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>

@@ -523,7 +523,7 @@ class QSM_New_Pagination_Renderer {
 			if ( ! wp_script_is( 'qsm-quiz-navigation', 'registered' ) ) {
 				wp_register_script(
 					'qsm-quiz-navigation',
-					QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js',
+					QSM_PLUGIN_URL . 'renderer/assets/js/qsm-quiz-navigation.js',
 					array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ),
 					$mlwQuizMasterNext->version,
 					true
@@ -1535,7 +1535,7 @@ class QSM_New_Pagination_Renderer {
 			'lazy_load_nonce'                    => wp_create_nonce( 'qsm_lazy_load_' . $this->options->quiz_id ),
 			
 			// QSM-11 specific enhancements
-			'template_system'                    => 'qsm-11',
+			'template_system'                    => 'renderer',
 			'version'                            => '2.0',
 			'scroll_to_top'                      => true,
 			'timer_auto_start'                   => false,

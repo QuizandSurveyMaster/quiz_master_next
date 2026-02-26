@@ -88,7 +88,7 @@ class QSM_New_Renderer {
 		add_filter( 'qsm_quiz_options', array( $this, 'add_new_rendering_option' ) );
 		
 		// Include AJAX handler for lazy loading
-		require_once QSM_PLUGIN_PATH . 'qsm-11/frontend/class-qsm-ajax-handler.php';
+		require_once QSM_PLUGIN_PATH . 'renderer/frontend/class-qsm-ajax-handler.php';
 	}
 
 	/**
@@ -158,7 +158,7 @@ class QSM_New_Renderer {
 		// Enqueue navigation JavaScript
 		wp_enqueue_script(
 			'qsm-quiz-navigation',
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-quiz-navigation.js',
+			QSM_PLUGIN_URL . 'renderer/assets/js/qsm-quiz-navigation.js',
 			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ),
 			$mlwQuizMasterNext->version,
 			true
@@ -176,7 +176,7 @@ class QSM_New_Renderer {
 		// Enqueue progress bar JavaScript
 		wp_enqueue_script(
 			'qsm-progressbar',
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-progressbar.js',
+			QSM_PLUGIN_URL . 'renderer/assets/js/qsm-progressbar.js',
 			array( 'jquery', 'qsm-quiz-navigation' ),
 			$mlwQuizMasterNext->version,
 			true
@@ -185,7 +185,7 @@ class QSM_New_Renderer {
 		// Enqueue timer JavaScript
 		wp_enqueue_script(
 			'qsm-quiz-timer',
-			QSM_PLUGIN_URL . 'qsm-11/assets/js/qsm-timer.js',
+			QSM_PLUGIN_URL . 'renderer/assets/js/qsm-timer.js',
 			array( 'jquery', 'qsm-quiz-navigation' ),
 			$mlwQuizMasterNext->version,
 			true
@@ -194,14 +194,14 @@ class QSM_New_Renderer {
 		// Enqueue styles
 		wp_enqueue_style(
 			'qsm-quiz-styles',
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-quiz-style.css',
+			QSM_PLUGIN_URL . 'renderer/assets/css/qsm-quiz-style.css',
 			array(),
 			$mlwQuizMasterNext->version
 		);
 		
 		wp_enqueue_style(
 			'qmn_quiz_common_style',
-			QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css',
+			QSM_PLUGIN_URL . 'renderer/assets/css/qsm-common.css',
 			array(),
 			$mlwQuizMasterNext->version
 		);
@@ -270,7 +270,7 @@ class QSM_New_Renderer {
 		
 		$quiz_id = intval( $shortcode_args['quiz'] );
 		
-		wp_register_style( 'qmn_quiz_common_style', QSM_PLUGIN_URL . 'qsm-11/assets/css/qsm-common.css', array(), $mlwQuizMasterNext->version );
+		wp_register_style( 'qmn_quiz_common_style', QSM_PLUGIN_URL . 'renderer/assets/css/qsm-common.css', array(), $mlwQuizMasterNext->version );
 		wp_enqueue_style( 'qmn_quiz_common_style' );
 
 		// Check if quiz is setup properly (matching legacy flow)

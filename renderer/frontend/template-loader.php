@@ -40,7 +40,7 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
 		// Template not found, show error in debug mode
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			echo '<!-- QSM New Template not found: ' . esc_html( $slug ) . ' -->';
-			echo '<!-- Searched in: ' . esc_html( QSM_PLUGIN_PATH . 'qsm-11/templates/' . $slug . '.php' ) . ' -->';
+			echo '<!-- Searched in: ' . esc_html( QSM_PLUGIN_PATH . 'renderer/templates/' . $slug . '.php' ) . ' -->';
 		}
 		// Always show a fallback for pagination
 		if ( $slug === 'pagination' ) {
@@ -64,19 +64,19 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
  * Locate a template file with theme override support (New System)
  *
  * Looks for templates in the following order:
- * 1. yourtheme/qsm-11/templates/template-name.php
+ * 1. yourtheme/qsm-renderer/templates/template-name.php
  * 2. yourtheme/qsm/templates/template-name.php
  * 3. yourtheme/qsm/new-frontend/template-name.php
  * 4. QSM themes (qsm-theme-*)/templates/template-name.php
  * 5. QSM addons (qsm-/templates/template-name.php
- * 6. plugin/qsm-11/templates/template-name.php
+ * 6. plugin/qsm-renderer/templates/template-name.php
  *
  * @param string $template_name Template filename (can include subdirectories)
  * @return string|false Template path or false if not found
  */
 function qsm_new_locate_template( $template_name ) {
-	$template_path = 'qsm-11/templates/';
-	$default_path = QSM_PLUGIN_PATH . 'qsm-11/templates/';
+	$template_path = 'qsm-renderer/templates/';
+	$default_path = QSM_PLUGIN_PATH . 'renderer/templates/';
 
 	$located = false;
 
