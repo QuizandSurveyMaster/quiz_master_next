@@ -5178,8 +5178,11 @@ ul.qsm-wp-contributor.wp-people-group {
     color: #FfffFF;
     gap: 5px;
 }
-
-.qsm-result-page-delete-message, .qsm-tools-page-delete-questions-message, .qsm-tools-page-delete-results-message {
+.qsm-result-page-delete-message {
+    text-align: center;
+    font-size: 16px;
+}
+.qsm-tools-page-delete-questions-message, .qsm-tools-page-delete-results-message {
     display: flex;
     justify-content: center;
     font-size: 17px;

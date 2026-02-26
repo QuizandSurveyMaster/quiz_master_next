@@ -621,7 +621,11 @@ function qsm_get_deleted_results_records() {
                     <a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
                 </header>
                 <main class="qsm-popup__content" id="modal-2-content">
-                    <div class="qsm-tools-page-delete-results-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
+                    <div class="qsm-tools-page-delete-results-message">
+                        <?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?>
+                        <br />
+                        <em><?php esc_html_e( 'This will permanently remove all associated data and metadata', 'quiz-master-next' ); ?></em>
+                    </div>
                 </main>
                 <footer class="qsm-popup__footer">
                     <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
