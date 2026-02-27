@@ -7,6 +7,77 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Migration tools.
+ *
+ * @return void
+ */
+function qsm_tools_migration_settings() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$option_name = 'qsm_migration_results_processed';
+
+	if ( isset( $_POST['qsm_tools_migration_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_tools_migration_nonce'] ) ), 'qsm_tools_migration' ) ) {
+		if ( isset( $_POST['qsm_tools_remove_migration_flag'] ) ) {
+			$deleted = delete_option( $option_name );
+			$dashboard_url = admin_url( 'admin.php?page=qsm_dashboard' );
+			if ( $deleted ) {
+				?>
+				<div class="notice notice-success is-dismissible">
+					<p>
+						<strong><?php echo esc_html__( 'Success:', 'quiz-master-next' ); ?></strong>
+						<?php echo esc_html__( ' Migration window will now be displayed on the dashboard.', 'quiz-master-next' ); ?>
+						<a href="<?php echo esc_url( $dashboard_url ); ?>" class="button button-secondary" style="margin-left: 10px;"><?php echo esc_html__( 'View Dashboard', 'quiz-master-next' ); ?></a>
+					</p>
+				</div>
+				<?php
+			} else {
+				?>
+				<div class="notice notice-error is-dismissible">
+					<p>
+						<strong><?php echo esc_html__( 'Error:', 'quiz-master-next' ); ?></strong>
+						<?php echo esc_html__( ' Something went wrong. Please try again.', 'quiz-master-next' ); ?>
+					</p>
+				</div>
+				<?php
+			}
+		}
+	}
+
+	$current_value = get_option( $option_name, null );
+	?>
+	<h3><?php esc_html_e( 'Migration Settings', 'quiz-master-next' ); ?></h3>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>">
+		<?php wp_nonce_field( 'qsm_tools_migration', 'qsm_tools_migration_nonce' ); ?>
+		<p>
+			<?php esc_html_e( 'Here you can control the visibility of the database migration window on the QSM dashboard.', 'quiz-master-next' ); ?>
+		</p>
+		<p>
+			<?php
+			if ( null === $current_value ) {
+				esc_html_e( 'Current Status: Migration window is visible on dashboard.', 'quiz-master-next' );
+			} else {
+				esc_html_e( 'Current Status: Migration window is hidden from dashboard.', 'quiz-master-next' );
+			}
+			?>
+		</p>
+		<p>
+			<?php if ( null !== $current_value ) { ?>
+				<button type="submit" name="qsm_tools_remove_migration_flag" class="button button-primary">
+					<?php esc_html_e( 'Show Migration Window on Dashboard', 'quiz-master-next' ); ?>
+				</button>
+			<?php } else { ?>
+				<button type="submit" name="qsm_tools_remove_migration_flag" class="button" disabled="disabled">
+					<?php esc_html_e( 'Migration Window Already Visible', 'quiz-master-next' ); ?>
+				</button>
+			<?php } ?>
+		</p>
+	</form>
+	<?php
+}
+
 
 /**
  * Generates all of the quiz tools that are used
@@ -19,7 +90,7 @@ function qsm_generate_quiz_tools() {
 		return;
 	}
 	// Check the active tab
-    $active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'qsm_tools_page_audit_trail';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'qsm_tools_page_audit_trail';
 	global $mlwQuizMasterNext;
     ?>
     <div class="wrap">
@@ -30,6 +101,7 @@ function qsm_generate_quiz_tools() {
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_quiz_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_quiz_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Quiz', 'quiz-master-next'); ?></a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_questions_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_questions_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Questions', 'quiz-master-next'); ?></a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_results_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_results_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Results', 'quiz-master-next'); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>" class="nav-tab <?php echo 'qsm_tools_page_migration' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Migration', 'quiz-master-next' ); ?></a>
         </h2>
 		<div class="qsm-alerts">
 			<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
@@ -51,6 +123,10 @@ function qsm_generate_quiz_tools() {
         if ( ! empty($_GET['tab']) && 'qsm_tools_page_results_setting' === $active_tab ) {
             qsm_get_deleted_results_records();
         }
+
+		if ( ! empty( $_GET['tab'] ) && 'qsm_tools_page_migration' === $active_tab ) {
+			qsm_tools_migration_settings();
+		}
     ?>
 	<div style="clear:both"></div>
 

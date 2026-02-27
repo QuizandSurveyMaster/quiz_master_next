@@ -2058,8 +2058,21 @@ class QMNQuizManager {
 						);
 
 					$err = ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'Structured insert failed.';
+					
+					// Increment fallback count transient
+					$fallback_count = (int) get_transient( 'qsm_legacy_fallback_count' );
+					$fallback_count++;
+					set_transient( 'qsm_legacy_fallback_count', $fallback_count, 7 * DAY_IN_SECONDS );
+					
 					if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
-						$mlwQuizMasterNext->log_manager->add( 'Error 0002', $err . ' - ' . $wpdb->last_query, 0, 'error' );
+						$log_message = sprintf(
+							'Result ID: %d | Quiz ID: %d | Error: %s | Query: %s',
+							$inserted_result_id,
+							$data['qmn_array_for_variables']['quiz_id'],
+							$err,
+							$wpdb->last_query
+						);
+						$mlwQuizMasterNext->log_manager->add( 'Error 0002', $log_message, 0, 'error' );
 					}
 				}
 			}

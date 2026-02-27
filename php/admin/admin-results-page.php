@@ -30,7 +30,9 @@ function qsm_generate_admin_results_page() {
 				<?php } ?>
 			</h2>
 		</div>
-		<?php qsm_show_results_migration_warning(); ?>
+		<?php 
+			qsm_show_results_migration_warning();
+		?>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
