@@ -63,6 +63,7 @@
 	color: red;
 	font-size: 15px;
 }
+.qsm-question-bank-list-wrapper.qsm_tab_content,
 .page {
 	width: 100%;
 	background-color: #fafafa;
@@ -72,6 +73,10 @@
 	position: relative;
 	box-sizing: border-box;
 }
+.qsm-question-bank-list-wrapper.qsm_tab_content {
+	padding-bottom: 20px;
+}
+
 .page-header {
 	display: flex;
 	align-items: center;

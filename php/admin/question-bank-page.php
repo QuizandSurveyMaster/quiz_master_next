@@ -93,64 +93,67 @@ function qsm_render_question_bank_page() {
 	$max_upload_size_text = size_format( $max_upload_size );
 	?>
 	<div class="wrap qsm-question-bank-admin">
-		<h1><?php esc_html_e( 'QSM Question Bank', 'quiz-master-next' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Add, browse, search, and filter questions across all of your quizzes without leaving the dashboard.', 'quiz-master-next' ); ?></p>
-
-		<div class="qsm-question-bank-actions">
-			<button type="button" class="button button-primary qsm-question-bank-create" id="qsm-question-bank-create">
-				<?php esc_html_e( 'Add Single Question', 'quiz-master-next' ); ?>
-			</button>
-			<button type="button" class="button button-primary qsm-bulk-question-import" id="qsm-bulk-question-import">
-				<?php esc_html_e( 'Bulk Upload', 'quiz-master-next' ); ?>
-			</button>
-		</div>
-		<form id="qsm-question-bank-filters" class="qsm-question-bank-filters">
-			<div class="qsm-filter-group">
-				<label for="qsm-question-bank-search" class="screen-reader-text"><?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?></label>
-				<input type="search" id="qsm-question-bank-search" name="search" placeholder="<?php echo esc_attr__( 'Search questions…', 'quiz-master-next' ); ?>" />
-			</div>
-			<div class="qsm-filter-group">
-				<label for="qsm-question-bank-quiz"><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></label>
-				<select id="qsm-question-bank-quiz" name="quiz">
-					<option value=""><?php esc_html_e( 'All quizzes', 'quiz-master-next' ); ?></option>
-					<?php foreach ( $quizzes as $quiz ) : ?>
-						<option value="<?php echo esc_attr( $quiz['id'] ); ?>"><?php echo esc_html( $quiz['name'] ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-			<div class="qsm-filter-group">
-				<label for="qsm-question-bank-category"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
-				<select id="qsm-question-bank-category" name="category">
-					<option value=""><?php esc_html_e( 'All categories', 'quiz-master-next' ); ?></option>
-					<?php foreach ( $categories as $category ) :
-						$value = isset( $category['cat_id'] ) && '' !== $category['cat_id'] ? $category['cat_id'] : $category['category'];
-						?>
-						<option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $category['category'] ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-			<div class="qsm-filter-group">
-				<label for="qsm-question-bank-type"><?php esc_html_e( 'Question type', 'quiz-master-next' ); ?></label>
-				<select id="qsm-question-bank-type" name="type">
-					<option value=""><?php esc_html_e( 'All question types', 'quiz-master-next' ); ?></option>
-					<?php foreach ( $types as $type ) :
-						$slug = isset( $type['slug'] ) ? $type['slug'] : '';
-						$name = isset( $type['name'] ) ? $type['name'] : '';
-						if ( empty( $slug ) ) {
-							continue;
-						}
-						?>
-						<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $name ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-			<div class="qsm-filter-actions">
-				<button type="submit" class="button button-primary"><?php esc_html_e( 'Apply filters', 'quiz-master-next' ); ?></button>
-				<button type="button" class="button" id="qsm-question-bank-reset">
-					<?php esc_html_e( 'Reset', 'quiz-master-next' ); ?>
+		<div class="qsm-question-bank-header">
+			<h1><?php esc_html_e( 'QSM Question Bank', 'quiz-master-next' ); ?></h1>
+			<p class="description"><?php esc_html_e( 'Add, browse, search, and filter questions across all of your quizzes without leaving the dashboard.', 'quiz-master-next' ); ?></p>
+			<div class="qsm-question-bank-actions">
+				<button type="button" class="button button-primary qsm-question-bank-create" id="qsm-question-bank-create">
+					<span class="dashicons dashicons-plus-alt2"></span>
+					<?php esc_html_e( 'Add Single Question', 'quiz-master-next' ); ?>
+				</button>
+				<button type="button" class="button button-primary qsm-bulk-question-import" id="qsm-bulk-question-import">
+					<span class="dashicons dashicons-upload"></span>
+					<?php esc_html_e( 'Bulk Upload', 'quiz-master-next' ); ?>
 				</button>
 			</div>
-		</form>
+			<form id="qsm-question-bank-filters" class="qsm-question-bank-filters">
+				<div class="qsm-filter-group">
+					<label for="qsm-question-bank-search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
+					<input type="search" id="qsm-question-bank-search" name="search" placeholder="<?php echo esc_attr__( 'Search questions…', 'quiz-master-next' ); ?>" />
+				</div>
+				<div class="qsm-filter-group">
+					<label for="qsm-question-bank-quiz"><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></label>
+					<select id="qsm-question-bank-quiz" name="quiz">
+						<option value=""><?php esc_html_e( 'All quizzes', 'quiz-master-next' ); ?></option>
+						<?php foreach ( $quizzes as $quiz ) : ?>
+							<option value="<?php echo esc_attr( $quiz['id'] ); ?>"><?php echo esc_html( $quiz['name'] ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="qsm-filter-group">
+					<label for="qsm-question-bank-category"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
+					<select id="qsm-question-bank-category" name="category">
+						<option value=""><?php esc_html_e( 'All categories', 'quiz-master-next' ); ?></option>
+						<?php foreach ( $categories as $category ) :
+							$value = isset( $category['cat_id'] ) && '' !== $category['cat_id'] ? $category['cat_id'] : $category['category'];
+							?>
+							<option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $category['category'] ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="qsm-filter-group">
+					<label for="qsm-question-bank-type"><?php esc_html_e( 'Question type', 'quiz-master-next' ); ?></label>
+					<select id="qsm-question-bank-type" name="type">
+						<option value=""><?php esc_html_e( 'All question types', 'quiz-master-next' ); ?></option>
+						<?php foreach ( $types as $type ) :
+							$slug = isset( $type['slug'] ) ? $type['slug'] : '';
+							$name = isset( $type['name'] ) ? $type['name'] : '';
+							if ( empty( $slug ) ) {
+								continue;
+							}
+							?>
+							<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="qsm-filter-actions">
+					<button type="submit" class="button button-primary"><?php esc_html_e( 'Apply filters', 'quiz-master-next' ); ?></button>
+					<button type="button" class="button" id="qsm-question-bank-reset">
+						<?php esc_html_e( 'Reset', 'quiz-master-next' ); ?>
+					</button>
+				</div>
+			</form>
+		</div>
 
 		<div class="qsm-admin-bulk-actions qsm-question-bank-page">
 			<button id="qsm-bulk-delete-question" class="button button-danger"><?php esc_html_e( 'Delete Selected', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
