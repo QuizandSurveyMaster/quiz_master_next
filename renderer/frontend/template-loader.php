@@ -184,28 +184,3 @@ function qsm_get_question_template( $question_type, $args = array(), $shortcode_
 	
 	return qsm_new_get_template_part( $template_slug, $args );
 }
-
-/**
- * Register template hooks for backward compatibility
- */
-function qsm_register_template_hooks() {
-	// Map old hooks to new template system
-	$hook_mappings = array(
-		'qsm_before_questions'  => 'qsm_before_question_pages',
-		'qsm_after_questions'   => 'qsm_after_question_pages',
-		'qsm_before_pagination' => 'qsm_before_pagination_render',
-		'qsm_after_pagination'  => 'qsm_after_pagination_render',
-		'qsm_before_first_page' => 'qsm_before_first_page',
-		'qsm_after_last_page'   => 'qsm_after_last_page',
-	);
-	
-	foreach ( $hook_mappings as $old_hook => $new_hook ) {
-		add_action( $new_hook, function() use ( $old_hook ) {
-			do_action( $old_hook );
-		} );
-	}
-}
-
-// Initialize template hooks
-// add_action( 'init', 'qsm_register_template_hooks' );
-

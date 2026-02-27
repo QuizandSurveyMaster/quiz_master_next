@@ -485,4 +485,8 @@ class QSM_New_Renderer {
 }
 
 // Initialize the new renderer
-QSM_New_Renderer::get_instance();
+$qmn_global_settings = (array) get_option( 'qmn-settings' );
+$enable_new_render   = ! empty( $qmn_global_settings['enable_new_render'] ) ? absint( $qmn_global_settings['enable_new_render'] ) : 0;
+if ( 1 === intval( $enable_new_render ) ) {
+	QSM_New_Renderer::get_instance();
+}
