@@ -5507,16 +5507,13 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm-question-bank-editor .answers-single .qsm-add-answer-button .dashicons-plus::before {
 	line-height: 1.7;
 }
-.qsm-question-bank-create .dashicons-plus-alt2:before {
-    content: "\f543";
-}
-.qsm-bulk-question-import .dashicons-upload:before {
-    content: "\f317";
-}
-.qsm-bulk-question-import .dashicons-upload:before,
+.qsm-bulk-question-import .dashicons-cloud-upload:before,
 .qsm-question-bank-create .dashicons-plus-alt2:before {
     position: relative;
     top: 3px;
+}
+.qsm-bulk-question-import {
+	width: 150px;
 }
 .qsm-question-bank-header {
     padding: 20px 20px 10px;
