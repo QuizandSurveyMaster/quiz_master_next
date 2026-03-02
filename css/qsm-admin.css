@@ -230,13 +230,13 @@
 	line-height: 1.6;
 }
 
-a.button.button-primary.qsm-dashboard-section-create-quiz img {
+a.button.button-primary.qsm-dashboard-section-create-quiz img, a.button.button-primary.qsm-dashboard-section-migration img {
 	padding-left: 10px;
     width: 20px;
     padding-top: 2px;
 }
 
-a.button.button-primary.qsm-dashboard-section-create-quiz {
+a.button.button-primary.qsm-dashboard-section-create-quiz, a.button.button-primary.qsm-dashboard-section-migration {
 	display: grid;
     grid-template-columns: 1fr 1fr;
     max-width: min-content;

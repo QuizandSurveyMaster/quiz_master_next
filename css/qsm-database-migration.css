@@ -186,15 +186,16 @@
 /* Compatible */
 .qsm-addon-compatible .qsm-migration-addon-compatibility-status {
 	color: var(--qsm-success-color);
-	background-color: var(--qsm-success-color-light);
-	border: 1px solid rgba(6, 95, 70, 0.2);
 }
 
 /* Not Compatible / Update Required */
 .qsm-addon-not-compatible .qsm-migration-addon-compatibility-status {
 	color: var(--qsm-error-color);
-	background-color: var(--qsm-error-color-light);
-	border: 1px solid rgba(153, 27, 27, 0.2);
+}
+
+.qsm-migration-warning img {
+    top: 6px;
+    position: relative;
 }
 
 /* -------------------------------------
