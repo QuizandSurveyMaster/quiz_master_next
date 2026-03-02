@@ -102,7 +102,7 @@ function qsm_render_question_bank_page() {
 					<?php esc_html_e( 'Add Single Question', 'quiz-master-next' ); ?>
 				</button>
 				<button type="button" class="button button-primary qsm-bulk-question-import" id="qsm-bulk-question-import">
-					<span class="dashicons dashicons-upload"></span>
+					<span class="dashicons dashicons-cloud-upload"></span>
 					<?php esc_html_e( 'Bulk Upload', 'quiz-master-next' ); ?>
 				</button>
 			</div>

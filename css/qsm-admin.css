@@ -5523,5 +5523,5 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
     border: 1px solid #dadadb;
 	background-color: #fafafa;
     border-radius: 10px;
-    box-shadow: 0 0 10px 0px;
+    box-shadow: 0 0 1px 0px;
 }
