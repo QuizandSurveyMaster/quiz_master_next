@@ -217,5 +217,7 @@
 
 #qsm-database-start-migration[disabled] {
 	opacity: 0.6;
-	cursor: not-allowed;
+    cursor: not-allowed;
+    font-weight: bold;
+    background: black !important;
 }

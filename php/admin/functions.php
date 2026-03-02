@@ -2015,7 +2015,7 @@ function qsm_show_results_migration_warning() {
     }
 
     // Migration page URL
-    $migrate_url = admin_url( 'admin.php?page=qsm_dashboard' );
+    $migrate_url = admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' );
     ?>
     <div class="notice notice-warning qsm-display-database-migration-message">
         <p>
