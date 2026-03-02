@@ -279,6 +279,10 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			}
 
 			$question['settings']          = $settings;
+			$question['multicategories']   = isset( $question['multicategories'] ) ? maybe_unserialize( $question['multicategories'] ) : array();
+			if ( ! is_array( $question['multicategories'] ) ) {
+				$question['multicategories'] = array();
+			}
 			$question_data                 = array(
 				'id'                      => $question['question_id'],
 				'quizID'                  => $question['quiz_id'],
@@ -304,6 +308,8 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				'quiz_name'               => isset( $quiz_name['quiz_name'] ) ? $quiz_name['quiz_name'] : '',
 				'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 				'linked_question'         => array_filter( isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() ),
+				'settings'                => $question['settings'],
+				'multicategories'         => $question['multicategories'],
 			);
 			$question_data                 = apply_filters( 'qsm_rest_api_filter_question_data', $question_data, $question, $request );
 			$question_array['questions'][] = $question_data;

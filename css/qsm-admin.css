@@ -1354,7 +1354,7 @@ body .qsm-popup__btn-primary {
 	will-change: transform;
 }
 .qsm-popup select,
-.qsm-popup textarea,
+.qsm-popup textarea:not(.question-title),
 .qsm-popup input[type=text],
 .qsm-popup input[type=search],
 .qsm-popup input[type=number] {
@@ -1363,6 +1363,12 @@ body .qsm-popup__btn-primary {
 	border: 1px solid #dddddd;
 	border-radius: 1px;
 }
+.qsm-popup .questionElements input[type=text],
+.qsm-popup .questionElements select {
+	min-width: unset !important;
+	max-width: unset !important;
+}
+
 /** * Shortcode accordion */
 .sc-opener {
 	position: relative;
@@ -2236,6 +2242,9 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	min-width: 525px;
 	max-width: 100%;
 	max-height: 90vh;
+}
+.qsm-question-bank-editor.qsm-standard-popup .qsm-popup__container {
+	width: 75%;
 }
 .qsm-theme-color-settings .qsm-popup__header .qsm-popup__title,
 .qsm-standard-popup .qsm-popup__header .qsm-popup__title {
@@ -3679,6 +3688,9 @@ input#duplicate_questions {
 	width: 100%;
 	max-width: 100%;
 	min-width: auto;
+}
+.qsm-popup__content.questionElements .answers-single>div.answer-text-div{
+	width: 200px;
 }
 .qsm-quiz-warning-icon {
 	color: #b32d2e;
@@ -5272,4 +5284,241 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm_page_qmn_global_settings .qsm-default-template-header {
 	display: flex;
 	justify-content: flex-end;
+}
+/* ------- Question Bank Page CSS ------- */
+.qsm-question-bank-admin {
+	max-width: 1200px;
+}
+
+.qsm-bulk-upload-panel {
+	margin: 0 0 24px;
+	padding: 24px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	display: none;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.qsm-bulk-upload-panel.is-visible {
+	display: flex;
+}
+
+.qsm-bulk-upload-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+
+.qsm-bulk-upload-header h2 {
+	margin: 0 0 8px;
+}
+
+.qsm-bulk-upload-meta {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	padding: 12px 16px;
+	border-radius: 4px;
+}
+
+.qsm-bulk-upload-meta .dashicons {
+	font-size: 24px;
+	color: #2271b1;
+}
+
+.qsm-bulk-upload-form .qsm-bulk-upload-grid {
+	display: flex;
+	gap: 24px;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+}
+
+.qsm-bulk-upload-form .qsm-field {
+	flex: 1;
+	min-width: 220px;
+}
+
+.qsm-bulk-upload-dropzone {
+	position: relative;
+	border: 2px dashed #8c8f94;
+	border-radius: 6px;
+	padding: 30px;
+	text-align: center;
+	background: #fcfcfd;
+	transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.qsm-bulk-upload-dropzone.is-dragover {
+	border-color: #2271b1;
+	background: #f0f6fc;
+}
+
+.qsm-bulk-upload-dropzone input[type="file"] {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.qsm-dropzone-content {
+	pointer-events: none;
+}
+
+.qsm-dropzone-content .dashicons {
+	font-size: 40px;
+	color: #2271b1;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.qsm-bulk-upload-browse {
+	font-weight: 600;
+}
+
+.qsm-dropzone-file {
+	margin-top: 8px;
+	font-weight: 600;
+}
+
+.qsm-bulk-upload-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.qsm-bulk-upload-status {
+	margin-top: 12px;
+	padding: 10px 14px;
+	border-radius: 4px;
+	border: 1px solid transparent;
+	font-weight: 500;
+}
+
+.qsm-bulk-upload-status.is-info {
+	background: #f0f6fc;
+	border-color: #c5d9ed;
+	color: #1d2327;
+}
+
+.qsm-bulk-upload-status.is-success {
+	background: #edf7ed;
+	border-color: #bfd8bf;
+	color: #1f3d1f;
+}
+
+.qsm-bulk-upload-status.is-error {
+	background: #fceaea;
+	border-color: #efb5b5;
+	color: #8a1f1f;
+}
+
+.qsm-bulk-upload-summary {
+	margin-top: 8px;
+}
+
+.qsm-bulk-upload-summary ul {
+	margin: 0;
+	padding-left: 18px;
+}
+
+.qsm-bulk-upload-summary li {
+	margin: 4px 0;
+}
+
+.qsm-question-bank-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-bottom: 24px;
+	align-items: flex-end;
+	padding: 0;
+}
+
+.qsm-question-bank-filters .qsm-filter-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 180px;
+}
+
+.qsm-question-bank-filters .qsm-filter-group input[type="search"],
+.qsm-question-bank-filters .qsm-filter-group select {
+	min-width: 220px;
+}
+
+.qsm-question-bank-filters .qsm-filter-actions {
+	display: flex;
+	gap: 10px;
+}
+
+.qsm-question-bank-admin .qsm-admin-bulk-actions {
+	display: none;
+}
+
+.qsm-question-bank-admin .qsm-question-bank-actions {
+	margin: 15px 0;
+}
+
+.qsm-question-bank-table-wrapper {
+	position: relative;
+}
+
+.qsm-question-bank-loader {
+	margin-top: 16px;
+}
+
+.qsm-question-bank-pagination {
+	margin-top: 16px;
+    text-align: center;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    position: relative;
+    right: 8px;
+}
+
+.qsm-question-bank-pagination > *:not(:last-child) {
+    margin-right: 5px;
+}
+
+.qsm-question-bank-admin .column-question {
+	width: 45%;
+}
+
+.qsm-question-bank-admin .column-type,
+.qsm-question-bank-admin .column-quiz,
+.qsm-question-bank-admin .column-category {
+	width: 15%;
+}
+
+.qsm-question-bank-admin .column-actions {
+	width: 10%;
+}
+.qsm-question-bank-editor .answers-single .qsm-add-answer-button .dashicons-plus::before {
+	line-height: 1.7;
+}
+.qsm-bulk-question-import .dashicons-cloud-upload:before,
+.qsm-question-bank-create .dashicons-plus-alt2:before {
+    position: relative;
+    top: 3px;
+}
+.qsm-bulk-question-import {
+	width: 150px;
+}
+.qsm-question-bank-header {
+    padding: 20px 20px 10px;
+    border: 1px solid #dadadb;
+	background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 0 1px 0px;
 }
