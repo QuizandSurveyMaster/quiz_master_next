@@ -481,7 +481,13 @@
 					this.isCreating = false;
 					const $card = this.upsertQuestionCard(model, { prepend: true });
 					const $trigger = useModal ? null : ($card ? $card.find('.edit-question-button').first() : null);
-					this.openModelInPopup(model, $trigger, useModal);
+					this.ensureQuestionModel(model.id)
+						.then((freshModel) => {
+							this.openModelInPopup(freshModel, $trigger, useModal);
+						})
+						.catch(() => {
+							this.openModelInPopup(model, $trigger, useModal);
+						});
 				},
 				error: (error) => {
 					this.isCreating = false;

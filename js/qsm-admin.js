@@ -3418,7 +3418,22 @@ var QSM_Quiz_Broadcast_Channel;
                     var type = $context.find("#question_type").val();
                     var comments = $context.find("#comments").val();
                     let required = $context.find("input[name='required']").is(":checked") ? 0 : 1;
-                    let isPublished = $context.find("input[name='question_status']").is(":checked") ? 1 : 0;
+                    var isQuestionBankPage = jQuery('body').hasClass('qsm_page_qsm_question_bank');
+                    let isPublished;
+                    if ( isQuestionBankPage ) {
+                        const currentSettings = model.get('settings') || {};
+                        if ( typeof currentSettings.isPublished !== 'undefined' ) {
+                            isPublished = parseInt(currentSettings.isPublished, 10) ? 1 : 0;
+                        } else {
+                            isPublished = 1;
+                        }
+                    } else {
+                        if ( quizID && parseInt(quizID, 10) > 0 ) {
+                            isPublished = 1;
+                        } else {
+                            isPublished = $context.find("input[name='question_status']").is(":checked") ? 1 : 0;
+                        }
+                    }
                     advanced_option['required'] = required;
                     var category = $context.find(".category-radio:checked").val();
                     var type_arr = [];
@@ -3903,7 +3918,8 @@ var QSM_Quiz_Broadcast_Channel;
                     var all_setting = question.get('settings');
                     var isQuestionBankPage = jQuery('body').hasClass('qsm_page_qsm_question_bank');
                     if ( isQuestionBankPage && all_setting && all_setting.isPublished !== undefined ) {
-                        $(document).find('#qsm-question-status-text').text('Published');
+                        const statusLabel = parseInt(all_setting.isPublished, 10) === 1 ? 'Published' : 'Draft';
+                        $(document).find('#qsm-question-status-text').text(statusLabel);
                     }
                     if (!isQuestionBankPage && all_setting?.isPublished === undefined) {
                         $('#qsm-question-status').prop('checked', true).trigger('change');
