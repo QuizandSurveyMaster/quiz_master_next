@@ -450,7 +450,7 @@ function qsm_options_questions_tab_content() {
 											'type'     => 'text',
 											'default'  => '',
 											'priority' => '1',
-											'show'     => '2,4,10',
+											'show'     => '0,1,2,4,10',
 											'documentation_link' => qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys/adding-and-editing-questions/', 'quiz_editor', 'answer_limit', 'quizsurvey-answer_limit_doc' ),
 										),
 										'autofill'         => array(
