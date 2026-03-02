@@ -1515,4 +1515,24 @@ class QMNPluginHelper {
 		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
 		return $enable_new_render;
     }
+
+	/**
+	 * Check if the result is in the new format.
+	 *
+	 * @param mixed $results_row The result row to check.
+	 *
+	 * @return bool True if the result is in the new format, false otherwise.
+	 */
+	public function is_new_format_result($results_row) {
+
+		if (is_array($results_row) && isset($results_row['quiz_results'])) {
+			return empty($results_row['quiz_results']);
+		}
+
+		if (is_object($results_row) && isset($results_row->quiz_results)) {
+			return empty($results_row->quiz_results);
+		}
+
+		return false;
+	}
 }

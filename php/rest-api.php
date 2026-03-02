@@ -348,7 +348,7 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 				}
 				// Time to complete
 				$mlw_complete_time     = '';
-				$is_new_format = empty( $mlw_quiz_info->quiz_results );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $mlw_quiz_info );
 				if ( $is_new_format ) {
 					// Load answers and meta from new tables
 					$mlw_qmn_results_array  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_quiz_info->result_id );

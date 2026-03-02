@@ -587,7 +587,7 @@ class QMNQuizManager {
 				// ---------------------------------------------------------------
 				// Detect new format (quiz_results empty)
 				// ---------------------------------------------------------------
-				$is_new_format = empty( $result_data['quiz_results'] );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $result_data );
 
 				if ( $is_new_format ) {
 					// Load answers and meta from new tables

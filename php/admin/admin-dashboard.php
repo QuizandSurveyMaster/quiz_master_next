@@ -344,7 +344,7 @@ function qsm_dashboard_recent_taken_quiz() {
 									|
 									<?php
 									$mlw_complete_time     = '';
-									$is_new_format = empty( $single_result_arr['quiz_results'] );
+									$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $single_result_arr );
 									if ( $is_new_format ) {
 										// Load new format result structure
 										$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $single_result_arr['result_id'] );

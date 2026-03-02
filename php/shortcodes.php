@@ -138,7 +138,7 @@ function qsm_generate_fb_header_metadata() {
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );
 		if ( $results_data ) {
 			// Prepare responses array.
-			$is_new_format = empty( $results_data->quiz_results );
+			$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $results_data );
 			if ( $is_new_format ) {
 				// Load answers and meta from new tables
 				$results  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result_id );

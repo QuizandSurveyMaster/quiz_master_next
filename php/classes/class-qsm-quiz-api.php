@@ -110,7 +110,7 @@ class QSMQuizApi {
 				$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $request->get_param('result_id') ) );
 
 				if ( $results_data ) {
-					$is_new_format = empty( $results_data->quiz_results );
+					$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $results_data );
 					if ( $is_new_format ) {
 						// Load new format result structure
 						$results_data->quiz_results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $results_data->result_id );
@@ -171,7 +171,7 @@ class QSMQuizApi {
 				if ( $results ) {
 					$data = array();
 					foreach ( $results as $key => $value ) {
-						$is_new_format = empty( $value->quiz_results );
+						$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $value );
 						if ( $is_new_format ) {
 							// Load new format result structure
 							$value->quiz_results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $value->result_id );

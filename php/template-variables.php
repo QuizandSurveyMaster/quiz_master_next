@@ -233,7 +233,7 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 		if ( $total_quiz_results ) {
 			foreach ( $total_quiz_results as $key => $row ) {
         		$result_id      = intval( $row['result_id'] );
-				$is_new_format = empty( $row['quiz_results'] );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $row );
 				if ( $is_new_format ) {
 					// Load new format result structure
 					$userdb = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result_id );
@@ -958,7 +958,7 @@ function qsm_end_results_rank( $result_display, $qmn_quiz_options, $qmn_array_fo
 		if ( ! empty( $mlw_result_data ) ) {
 			foreach ( $mlw_result_data as $key => $mlw_eaches ) {
 				$time_taken            = 0;
-				$is_new_format = empty( $mlw_eaches->quiz_results );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $mlw_eaches );
 				if ( $is_new_format ) {
 					// Load new format result structure
 					$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_eaches->result_id );

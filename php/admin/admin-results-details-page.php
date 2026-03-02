@@ -129,7 +129,7 @@ function qsm_generate_results_details_tab() {
 
     // Prepare responses array.
     $total_hidden_questions = 0;
-    $is_new_format = empty( $results_data->quiz_results );
+    $is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $results_data );
     if ( $is_new_format ) {
         // Load new format result structure
         $mlw_qmn_results_array = $results = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $results_data->result_id );

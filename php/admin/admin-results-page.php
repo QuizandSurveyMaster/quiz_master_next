@@ -97,7 +97,7 @@ function qsm_delete_results_attachments( $rows_before_update ) {
     // Loop through each row in the results
     foreach ( $rows_before_update as $row ) {
         // Unserialize the quiz results
-		$is_new_format = empty( $row->quiz_results );
+		$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $row );
 		if ( $is_new_format ) {
 			// Load new format result structure
 			$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $row->result_id );
@@ -434,7 +434,7 @@ function qsm_results_overview_tab_content() {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
-				$is_new_format = empty( $mlw_quiz_info->quiz_results );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $mlw_quiz_info );
 				if ( $is_new_format ) {
 					// Load new format result structure
 					$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_quiz_info->result_id );

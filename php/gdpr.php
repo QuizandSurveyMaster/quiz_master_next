@@ -119,7 +119,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
 		$item_id = 'qsm-form-response-' . $result->result_id;
 
 		// Prepares our results array.
-		$is_new_format = empty( $result->quiz_results );
+		$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $result );
 		if ( $is_new_format ) {
 			// Load answers and meta from new tables
 			$results_array  = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result->result_id );
