@@ -308,8 +308,8 @@ class QSM_Questions
         $linked_questions_array = array();
 
         if ( ( $is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] ) || ! $is_creating ) {
-            // Convert the existing linked_question into an array
-            $linked_questions_array = array_filter(array_map('trim', explode(',', $linked_question)));
+            // Convert the existing linked_question into an array and cast to integers to prevent SQL injection
+            $linked_questions_array = array_filter(array_map('intval', explode(',', $linked_question)));
             // Add the new value if it's not already in the array
             if ( isset($data['is_linking']) && ! in_array($data['is_linking'], $linked_questions_array, true) ) {
                 $linked_questions_array[] = $data['is_linking'];
