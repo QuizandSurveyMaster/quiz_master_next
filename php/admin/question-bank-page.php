@@ -204,6 +204,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 	$page_data = qsm_get_question_bank_page_data();
 
 	wp_enqueue_editor();
+	wp_enqueue_media();
 
 	wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $mlwQuizMasterNext->version );
 
