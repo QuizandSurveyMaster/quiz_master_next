@@ -484,7 +484,7 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	left: 15px;
 	background: #fff;
 	border-radius: 50%;
-	line-height: 1;
+	line-height: 18px;
 	margin-top: 5px;
 }
 .qmn_question_answer img {
@@ -586,6 +586,16 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	}
 	.question-type-polar-s .slider-main-wrapper {
 		order: 3;
+	}
+}
+@media screen and (max-width: 600px) {
+	body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
+		line-height: 29px;
+	}
+}
+@media screen and (min-width: 601px) and (max-width: 900px) {
+	body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
+		line-height: 24px;
 	}
 }
 .qsm_tooltip {
@@ -752,7 +762,7 @@ body .ui-tooltip.ui-widget-content {
 .qsm-quiz-container input[type=checkbox],
 .qsm-quiz-container input[type=radio] {
 	vertical-align: top;
-	margin-top: 5px;
+	margin-top: 9px;
 }
 .quiz_section fieldset {
 	border: none;
