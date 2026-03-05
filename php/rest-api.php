@@ -27,6 +27,17 @@ function qsm_register_rest_routes() {
 	);
 	register_rest_route(
 		'quiz-survey-master/v1',
+		'/questions/(?P<id>\d+)/attach',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'qsm_rest_attach_question_to_quiz',
+			'permission_callback' => function () {
+				return current_user_can( 'edit_qsm_quizzes' );
+			},
+		)
+	);
+	register_rest_route(
+		'quiz-survey-master/v1',
 		'/questions/',
 		array(
 			'methods'             => WP_REST_Server::CREATABLE,
@@ -809,6 +820,80 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	return array(
 		'status' => 'error',
 		'msg'    => __( 'User not logged in', 'quiz-master-next' ),
+	);
+}
+
+/**
+ * REST API endpoint function for attaching an existing question to a quiz.
+ *
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array The status response.
+ */
+function qsm_rest_attach_question_to_quiz( WP_REST_Request $request ) {
+	if ( ! is_user_logged_in() ) {
+		return array(
+			'status' => 'error',
+			'msg'    => __( 'User not logged in', 'quiz-master-next' ),
+		);
+	}
+
+	$current_user = wp_get_current_user();
+	$quiz_id      = absint( $request['quizID'] );
+	$question_id  = absint( $request['id'] );
+	$stop         = qsm_verify_rest_user_nonce( $quiz_id, $current_user->ID, $request['rest_nonce'] );
+	if ( $stop ) {
+		return $stop;
+	}
+
+	if ( 0 === $quiz_id || 0 === $question_id ) {
+		return array(
+			'status' => 'error',
+			'msg'    => __( 'Invalid quiz or question ID.', 'quiz-master-next' ),
+		);
+	}
+
+	global $wpdb;
+	$questions_table      = $wpdb->prefix . 'mlw_questions';
+	$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
+
+	$max_order = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT MAX(question_order) FROM {$questions_table} WHERE quiz_id = %d AND deleted = 0",
+			$quiz_id
+		)
+	);
+	$max_order = is_numeric( $max_order ) ? intval( $max_order ) : 0;
+	$new_order = $max_order + 1;
+
+	$updated = $wpdb->update(
+		$questions_table,
+		array(
+			'quiz_id'         => $quiz_id,
+			'question_order'  => $new_order,
+			'deleted'         => 0,
+		),
+		array( 'question_id' => $question_id ),
+		array( '%d', '%d', '%d' ),
+		array( '%d' )
+	);
+
+	if ( false === $updated ) {
+		return array(
+			'status' => 'error',
+			'msg'    => __( 'Unable to attach the question to the quiz.', 'quiz-master-next' ),
+		);
+	}
+
+	$wpdb->update(
+		$question_terms_table,
+		array( 'quiz_id' => $quiz_id ),
+		array( 'question_id' => $question_id ),
+		array( '%d' ),
+		array( '%d' )
+	);
+
+	return array(
+		'status' => 'success',
 	);
 }
 
