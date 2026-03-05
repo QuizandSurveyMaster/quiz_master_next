@@ -138,9 +138,6 @@ function qsm_render_question_bank_page() {
 						<?php foreach ( $types as $type ) :
 							$slug = isset( $type['slug'] ) ? $type['slug'] : '';
 							$name = isset( $type['name'] ) ? $type['name'] : '';
-							if ( empty( $slug ) ) {
-								continue;
-							}
 							?>
 							<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $name ); ?></option>
 						<?php endforeach; ?>
