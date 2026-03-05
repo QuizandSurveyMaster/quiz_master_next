@@ -256,7 +256,6 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 .qsm-quiz-container input[type=checkbox],
 .qsm-quiz-container input[type=radio] {
 	cursor: pointer;
-	margin: 0;
 }
 .qmn_accept_answers input[type=checkbox] {
 	vertical-align: top;
