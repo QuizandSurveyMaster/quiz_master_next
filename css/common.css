@@ -759,11 +759,6 @@ body .ui-tooltip.ui-widget-content {
 .qsm-question-wrapper.qsm-active-question:not(.qsm-last-active-question){
 	border: 1px dotted #828282d1;
 }
-.qsm-quiz-container input[type=checkbox],
-.qsm-quiz-container input[type=radio] {
-	vertical-align: top;
-	margin-top: 9px;
-}
 .quiz_section fieldset {
 	border: none;
 	padding: 0;
