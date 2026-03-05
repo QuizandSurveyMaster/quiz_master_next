@@ -481,10 +481,10 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	position: absolute;
 	top: calc(100% - 40px);
-	left: 10px;
+	left: 15px;
 	background: #fff;
 	border-radius: 50%;
-	line-height: 20px;
+	line-height: 18px;
 	margin-top: 5px;
 }
 .qmn_question_answer img {
@@ -591,6 +591,11 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 @media screen and (max-width: 600px) {
 	body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 		line-height: 29px;
+	}
+}
+@media screen and (min-width: 601px) and (max-width: 900px) {
+	body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
+		line-height: 24px;
 	}
 }
 .qsm_tooltip {

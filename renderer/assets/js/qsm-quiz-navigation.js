@@ -1012,6 +1012,13 @@ var show_result_validation = true;
             let isLastPage = (currentPage == quizData.totalPages);
             let showStartButton = (isFirstPage && quizData.hasFirstPage);
             
+            let $featureImage = quizData.quizContainer.find('.qsm-quiz-default-feature-image');
+            if (showStartButton) {
+                $featureImage.show();
+            } else {
+                $featureImage.hide();
+            }
+
             // Simple button visibility logic
             if (showStartButton) {
                 // First page (welcome page) with start button
