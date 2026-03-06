@@ -263,6 +263,10 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		foreach ( $questions as $question ) {
 			$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
 			$question['page'] = isset( $question['page'] ) ? (int) $question['page'] : 0;
+			$categorysArray   = array();
+			if ( $migrated ) {
+				$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
+			}
 
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -283,6 +287,10 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			if ( ! is_array( $question['multicategories'] ) ) {
 				$question['multicategories'] = array();
 			}
+			$display_category              = $question['category'];
+			if ( $migrated && empty( $display_category ) && ! empty( $categorysArray['category_name'] ) ) {
+				$display_category = implode( ',', $categorysArray['category_name'] );
+			}
 			$question_data                 = array(
 				'id'                      => $question['question_id'],
 				'quizID'                  => $question['quiz_id'],
@@ -294,7 +302,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				'img_width'               => isset( $question['settings']['image_size-width'] ) ? $question['settings']['image_size-width'] : '',
 				'img_height'              => isset( $question['settings']['image_size-height'] ) ? $question['settings']['image_size-height'] : '',
 				'hint'                    => $question['hints'],
-				'category'                => $question['category'],
+				'category'                => $display_category,
 				'required'                => isset( $question['settings']['required'] ) ? $question['settings']['required'] : 0,
 				'answers'                 => $question['answers'],
 				'page'                    => $question['page'],
