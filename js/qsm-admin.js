@@ -3031,26 +3031,6 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                 },
                 questionBankSuccess: function (model) {
-                    if ( model && model.get && parseInt(model.get('is_linking'), 10) === 0 ) {
-                        $.ajax({
-                            url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + model.get('id') + '/attach',
-                            method: 'POST',
-                            headers: {
-                                'X-WP-Nonce': qsmQuestionSettings.nonce
-                            },
-                            data: {
-                                quizID: qsmTextTabObject.quiz_id,
-                                rest_nonce: qsmQuestionSettings.rest_user_nonce
-                            },
-                            success: function () {
-                                model.set('quizID', qsmTextTabObject.quiz_id);
-                                QSMQuestion.addNewQuestionFromQuestionBank(model);
-                            },
-                            error: QSMAdmin.displayError
-                        });
-                        return;
-                    }
-
                     var newModel = _.clone(model.attributes);
                     newModel.question_id = newModel.id;
                     newModel.quizID = qsmTextTabObject.quiz_id;
