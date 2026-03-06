@@ -256,6 +256,8 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 .qsm-quiz-container input[type=checkbox],
 .qsm-quiz-container input[type=radio] {
 	cursor: pointer;
+}
+.qsm-quiz-container input[type=checkbox]{
 	position: relative;
 	top: 2px;
 }
