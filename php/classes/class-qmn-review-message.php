@@ -102,7 +102,7 @@ class QMN_Review_Message {
 		<div class='updated'><br />
             <p><?php
 				/* translators: %s: count of quizzes */
-				printf( esc_html__('🎉 %sNice work!%s You’ve already collected over %s quiz responses with Quiz & Survey Master.', 'quiz-master-next'), '<strong>', '</strong>', '<strong>' . number_format_i18n( $this->check_message_trigger() ) . '</strong>' ); ?>
+				printf( esc_html__('🎉 %1$sNice work!%2$s You’ve already collected over %3$s quiz responses with Quiz & Survey Master.', 'quiz-master-next'), '<strong>', '</strong>', '<strong>' . number_format_i18n( $this->check_message_trigger() ) . '</strong>' ); ?>
 			</p>
             <p><?php esc_html_e('If QSM has been helpful so far, would you consider leaving a quick review on WordPress?', 'quiz-master-next'); ?></p>
             <p><?php esc_html_e('Your feedback helps other users discover the plugin and helps us keep improving it.', 'quiz-master-next'); ?></p>

@@ -502,19 +502,14 @@ function qsm_results_overview_tab_content() {
 
 				if ( isset( $values['start_date'] ) ) {
 					if ( isset($mlw_qmn_results_array['quiz_start_date']) ) {
-						$sdate    = gmdate( get_option( 'date_format' ), strtotime( $mlw_qmn_results_array['quiz_start_date'] ) );
-						$stime    = gmdate( "h:i:s A", strtotime( $mlw_qmn_results_array['quiz_start_date'] ) );
-						$values['start_date']['content'][] = $sdate .' '. $stime;
+						$values['start_date']['content'][] = $mlw_qmn_results_array['quiz_start_date'];
 					} else {
 						$values['start_date']['content'][] = ' ';
 					}
 				}
 
-				$date    = gmdate( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
-				$time    = gmdate( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
-
 				if ( isset( $values['time_taken'] ) ) {
-					$values['time_taken']['content'][] = $date .' '. $time;
+					$values['time_taken']['content'][] = $mlw_quiz_info->time_taken;
 				}
 				if ( isset( $values['ip'] ) ) {
 					$values['ip']['content'][] = $mlw_quiz_info->user_ip;

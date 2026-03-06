@@ -263,6 +263,10 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		foreach ( $questions as $question ) {
 			$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
 			$question['page'] = isset( $question['page'] ) ? (int) $question['page'] : 0;
+			$categorysArray   = array();
+			if ( $migrated ) {
+				$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
+			}
 
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -279,6 +283,14 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			}
 
 			$question['settings']          = $settings;
+			$question['multicategories']   = isset( $question['multicategories'] ) ? maybe_unserialize( $question['multicategories'] ) : array();
+			if ( ! is_array( $question['multicategories'] ) ) {
+				$question['multicategories'] = array();
+			}
+			$display_category              = $question['category'];
+			if ( $migrated && empty( $display_category ) && ! empty( $categorysArray['category_name'] ) ) {
+				$display_category = implode( ',', $categorysArray['category_name'] );
+			}
 			$question_data                 = array(
 				'id'                      => $question['question_id'],
 				'quizID'                  => $question['quiz_id'],
@@ -290,7 +302,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				'img_width'               => isset( $question['settings']['image_size-width'] ) ? $question['settings']['image_size-width'] : '',
 				'img_height'              => isset( $question['settings']['image_size-height'] ) ? $question['settings']['image_size-height'] : '',
 				'hint'                    => $question['hints'],
-				'category'                => $question['category'],
+				'category'                => $display_category,
 				'required'                => isset( $question['settings']['required'] ) ? $question['settings']['required'] : 0,
 				'answers'                 => $question['answers'],
 				'page'                    => $question['page'],
@@ -304,6 +316,8 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				'quiz_name'               => isset( $quiz_name['quiz_name'] ) ? $quiz_name['quiz_name'] : '',
 				'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 				'linked_question'         => array_filter( isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() ),
+				'settings'                => $question['settings'],
+				'multicategories'         => $question['multicategories'],
 			);
 			$question_data                 = apply_filters( 'qsm_rest_api_filter_question_data', $question_data, $question, $request );
 			$question_array['questions'][] = $question_data;
@@ -561,6 +575,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					}
 				}
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
+				$settings         = isset( $question['settings'] ) && is_array( $question['settings'] ) ? $question['settings'] : array();
 				$question         = array(
 					'id'              => $question['question_id'],
 					'quizID'          => $question['quiz_id'],
@@ -571,11 +586,14 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'hint'            => $question['hints'],
 					'category'        => ( isset( $categorysArray['category_name'] ) && ! empty( $categorysArray['category_name'] ) ? implode( ',', $categorysArray['category_name'] ) : '' ),
 					'multicategories' => $question['multicategories'],
-					'required'        => isset($question['settings']['required']) ? $question['settings']['required'] : '',
-					'answerEditor'    => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : '',
+					'required'        => isset( $settings['required'] ) ? $settings['required'] : '',
+					'answerEditor'    => isset( $settings['answerEditor'] ) ? $settings['answerEditor'] : '',
 					'answers'         => $question['answers'],
 					'page'            => $question['page'],
-					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+					'question_title'  => isset( $settings['question_title'] ) ? $settings['question_title'] : '',
+					'featureImageID'  => isset( $settings['featureImageID'] ) ? $settings['featureImageID'] : '',
+					'featureImageSrc' => isset( $settings['featureImageSrc'] ) ? $settings['featureImageSrc'] : '',
+					'settings'        => $settings,
 					'link_quizzes'    => $quiz_name_by_question,
 					'merged_question' => implode( ',', $linked_ids ),
 				);

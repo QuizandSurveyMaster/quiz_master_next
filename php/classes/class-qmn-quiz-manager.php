@@ -369,7 +369,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-tooltip' );
-				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
+				wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
 				wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 				$disable_mathjax = isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '';
 				if ( 1 != $disable_mathjax ) {
@@ -803,9 +803,9 @@ class QMNQuizManager {
 			/**
 			 * If cookie exists, try to preserve question ids + order
 			 */
-			if ( isset($_COOKIE['question_ids_' . $quiz_id]) ) {
+			if ( isset($_COOKIE[ 'question_ids_' . $quiz_id ]) ) {
 				// raw cookie
-				$cookie_raw = wp_unslash($_COOKIE['question_ids_' . $quiz_id]);
+				$cookie_raw = wp_unslash($_COOKIE[ 'question_ids_' . $quiz_id ]);
 
 				// sanitize & keep only digits + commas
 				$cookie_raw = preg_replace('/[^0-9,]/', '', $cookie_raw);
@@ -813,9 +813,9 @@ class QMNQuizManager {
 				// convert to array
 				$cookie_ids = array_filter(array_map('intval', explode(',', $cookie_raw)));
 
-				if ( !empty($cookie_ids) ) {
+				if ( ! empty($cookie_ids) ) {
 
-					if ( !empty($cookie_ids) ) {
+					if ( ! empty($cookie_ids) ) {
 
 						// finally preserve cookie ids
 						$question_ids = $cookie_ids;
@@ -832,7 +832,6 @@ class QMNQuizManager {
 						$question_sql = implode(',', $question_ids);
 						$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 					}
-
 				} else {
 
 					if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
@@ -841,7 +840,6 @@ class QMNQuizManager {
 					$question_sql = implode(',', $question_ids);
 					$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 				}
-
 			} elseif ( in_array('questions', $randomness_order, true) || in_array('pages', $randomness_order, true) ) {
 
 				// no cookie → apply randomness
