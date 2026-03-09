@@ -33,7 +33,7 @@ $limited_answers    = ! empty( $answer_limit ) ? $mlwQuizMasterNext->pluginHelpe
 $answers            = isset( $limited_answers['final'] ) ? $limited_answers['final'] : $answers;
 $answer_limit_keys  = isset( $limited_answers['answer_limit_keys'] ) ? $limited_answers['answer_limit_keys'] : '';
 
-$class_object->display_question_title( $question_text, '', $new_question_title, $id );
+$class_object->display_question_title( $processed_question_text, '', $new_question_title, $id );
 
 $show = true;
 
