@@ -159,7 +159,7 @@ class QSM_New_Renderer {
 		wp_enqueue_script(
 			'qsm-quiz-navigation',
 			QSM_PLUGIN_URL . 'renderer/assets/js/qsm-quiz-navigation.js',
-			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'qsm_encryption', 'jquery-touch-punch', 'jquery-ui-sortable' ),
+			array( 'wp-util', 'underscore', 'jquery', 'backbone', 'jquery-ui-tooltip', 'jquery-touch-punch', 'jquery-ui-sortable' ),
 			$mlwQuizMasterNext->version,
 			true
 		);

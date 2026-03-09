@@ -23,12 +23,12 @@ var qsmTimerInterval = [];
         },
 
         init: function() {
-            var self = this;
+            const self = this;
             // Look for both new and legacy form selectors
             $('.qsm-quiz-container').each(function() {
-                var $container = $(this);
-                var $form = $container.find('.qsm-quiz-form');
-                var quizId = $container.data('quiz-id');
+                const $container = $(this);
+                const $form = $container.find('.qsm-quiz-form');
+                const quizId = $container.data('quiz-id');
                 if (quizId && !self.quizObjects[quizId]) {
                     self.initTimer(quizId, $form);
                 }
@@ -37,16 +37,16 @@ var qsmTimerInterval = [];
         },
 
         initTimer: function(quizId, $form) {
-            var data = this.getQuizData(quizId);
+            const data = this.getQuizData(quizId);
             
             if (!data.timer_limit || data.timer_limit <= 0) {
                 return;
             }
 
-            var $timer = $form.find('.mlw_qmn_timer');
-            var totalTime = data.timer_limit * 60;
-            var consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId)) || 1;
-            var remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
+            const $timer = $form.find('.mlw_qmn_timer');
+            const totalTime = data.timer_limit * 60;
+            const consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || 1;
+            const remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
             
             this.quizObjects[quizId] = {
                 form: $form,
@@ -81,7 +81,7 @@ var qsmTimerInterval = [];
         },
 
         bindEvents: function() {
-            var self = this;
+            const self = this;
             
             // QSM-11 events
             $(document).on('qsm_quiz_initialized', function(e, quizId, instance) {
@@ -115,7 +115,7 @@ var qsmTimerInterval = [];
         },
 
         start: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.isActive) return;
             
             currentQuiz.isActive = true;
@@ -147,7 +147,7 @@ var qsmTimerInterval = [];
         },
 
         stop: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz) return;
             
             if (this.intervals[quizId]) {
@@ -168,7 +168,7 @@ var qsmTimerInterval = [];
         },
 
         expire: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             currentQuiz.warnings.expired = true;
@@ -180,7 +180,7 @@ var qsmTimerInterval = [];
             currentQuiz.timer?.addClass('qsm-timer-expired qsm-timer--danger');
             
             // Disable form inputs (matching legacy behavior)
-            var $quizForm = currentQuiz.form;
+            const $quizForm = currentQuiz.form;
             $quizForm.find('.mlw_qmn_quiz input:radio').attr('disabled', true);
             $quizForm.find('.mlw_qmn_quiz input:checkbox').attr('disabled', true);
             $quizForm.find('.mlw_qmn_quiz select').attr('disabled', true);
@@ -189,17 +189,17 @@ var qsmTimerInterval = [];
             $quizForm.find('.mlw_answer_number').attr('readonly', true);
             
             // Add timer ended class and error message
-            var $container = $quizForm.closest('.qmn_quiz_container, .qsm-quiz-container');
+            const $container = $quizForm.closest('.qmn_quiz_container, .qsm-quiz-container');
             $container.addClass('qsm_timer_ended');
             
             // Add error message if not already present
             if (!$container.find('.qmn_error_message').length) {
-                var errorMsg = currentQuiz.data.quiz_time_over || 'Time is up!';
+                const errorMsg = currentQuiz.data.quiz_time_over || 'Time is up!';
                 $container.prepend('<p class="qmn_error_message" style="color: red;">' + errorMsg + '</p>');
             }
             
             // Handle auto-submit or show modal
-            if (currentQuiz.data.enable_result_after_timer_end == 1) {
+            if (Number(currentQuiz.data.enable_result_after_timer_end) === 1) {
                 // Auto-submit the form
                 setTimeout(function() {
                     $container.find('.qsm-submit-btn, .qsm_submit_btn').trigger('click');
@@ -218,7 +218,7 @@ var qsmTimerInterval = [];
         },
 
         tick: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             // Check for scheduled time expiration
@@ -254,10 +254,10 @@ var qsmTimerInterval = [];
         },
 
         updateDisplay: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
-            var display = this.secondsToTimer(currentQuiz.remainingTime);
+            const display = this.secondsToTimer(currentQuiz.remainingTime);
             
             if (currentQuiz.timer) {
                 currentQuiz.timer.text(display);
@@ -270,9 +270,9 @@ var qsmTimerInterval = [];
         },
 
         calculateInitialTime: function(quizId, totalTime, consumedTime) {
-            var timerStarted = localStorage.getItem('mlw_started_quiz' + quizId) || localStorage.getItem('qsm_started_quiz_' + quizId);
-            var storedConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId)) || consumedTime || 1;
-            var remainingTime = totalTime;
+            const timerStarted = localStorage.getItem('mlw_started_quiz' + quizId) || localStorage.getItem('qsm_started_quiz_' + quizId);
+            const storedConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || consumedTime || 1;
+            let remainingTime = totalTime;
             
             if (timerStarted === 'yes' && storedConsumed > 1) {
                 remainingTime = totalTime - storedConsumed + 1;
@@ -283,14 +283,14 @@ var qsmTimerInterval = [];
         },
 
         checkWarnings: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz) return;
             
-            var percentConsumed = ((currentQuiz.totalTime - currentQuiz.remainingTime) / currentQuiz.totalTime) * 100;
-            var percentRemaining = (currentQuiz.remainingTime / currentQuiz.totalTime) * 100;
+            const percentConsumed = ((currentQuiz.totalTime - currentQuiz.remainingTime) / currentQuiz.totalTime) * 100;
+            const percentRemaining = (currentQuiz.remainingTime / currentQuiz.totalTime) * 100;
             
             // Check for 90% time consumed warning (matching legacy behavior)
-            var ninetyPercent = currentQuiz.totalTime - (currentQuiz.totalTime * 90 / 100);
+            const ninetyPercent = currentQuiz.totalTime - (currentQuiz.totalTime * 90 / 100);
             if (currentQuiz.remainingTime <= ninetyPercent && !currentQuiz.warnings.ninety) {
                 currentQuiz.warnings.ninety = true;
                 this.showNinetyPercentWarning(quizId);
@@ -307,14 +307,16 @@ var qsmTimerInterval = [];
         },
 
         secondsToTimer: function(seconds) {
-            seconds = parseInt(seconds);
+            seconds = parseInt(seconds, 10);
             if (seconds < 0) seconds = 0;
+
+            const safeSeconds = seconds;
             
-            var hours = Math.floor(seconds / 3600);
-            var minutes = Math.floor((seconds % 3600) / 60);
-            var secs = seconds % 60;
+            const hours = Math.floor(safeSeconds / 3600);
+            const minutes = Math.floor((safeSeconds % 3600) / 60);
+            const secs = safeSeconds % 60;
             
-            var formattedTime = '';
+            let formattedTime = '';
             
             // Hours
             if (hours === 0) {
@@ -363,7 +365,7 @@ var qsmTimerInterval = [];
 
         // Public API methods for external access
         getTimerInfo: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return null;
             
             return {
@@ -378,8 +380,8 @@ var qsmTimerInterval = [];
         },
 
         getAllTimers: function() {
-            var timers = {};
-            var self = this;
+            const timers = {};
+            const self = this;
             Object.keys(this.quizObjects).forEach(function(quizId) {
                 timers[quizId] = self.getTimerInfo(quizId);
             });
@@ -389,7 +391,7 @@ var qsmTimerInterval = [];
         // New methods for enhanced functionality
         getQuizData: function(quizId) {
             // Try multiple data sources for compatibility
-            var data = {};
+            let data = {};
             
             if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
                 data = window.qmn_quiz_data[quizId];
@@ -399,7 +401,7 @@ var qsmTimerInterval = [];
         },
         
         updateLegacyQuizData: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             // Ensure qmn_quiz_data exists and update it
@@ -422,18 +424,18 @@ var qsmTimerInterval = [];
             // Check if timer should auto-start based on various conditions
             if (data.timer_auto_start) return true;
             if (!data.first_page && !data.disable_first_page) return true;
-            if (data.disable_first_page == 1) return true;
+            if (Number(data.disable_first_page) === 1) return true;
             
             return false;
         },
         
         checkScheduledTimeExpiration: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return false;
             
-            var data = currentQuiz.data;
+            const data = currentQuiz.data;
             if (data.not_allow_after_expired_time === '1' && data.scheduled_time_end) {
-                var systemTime = Math.round(new Date().getTime() / 1000);
+                const systemTime = Math.round(new Date().getTime() / 1000);
                 if (systemTime > data.scheduled_time_end) {
                     MicroModal.show('modal-4');
                     return true;
@@ -444,10 +446,10 @@ var qsmTimerInterval = [];
         },
         
         showNinetyPercentWarning: function(quizId) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
-            var $container = currentQuiz.form.closest('.qmn_quiz_container, .qsm-quiz-container');
+            const $container = currentQuiz.form.closest('.qmn_quiz_container, .qsm-quiz-container');
             $container.find('.qsm_ninety_warning').fadeIn();
         },
     };

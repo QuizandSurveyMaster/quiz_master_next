@@ -101,7 +101,7 @@ var show_result_validation = true;
             let $pages = $quizContainer.find(this.config.selectors.page);
 
             // Determine if first page is disabled
-            let hasFirstPage = (quizData.disable_first_page != 1);
+            let hasFirstPage = (Number(quizData.disable_first_page) !== 1);
 
             // Question pages count (excluding intro page)
             let questionPages = hasFirstPage ? $pages.length - 1 : $pages.length;
@@ -149,7 +149,7 @@ var show_result_validation = true;
             let quizObj = this.initQuizObject(quizId, $quizContainer,initialPage);
 
             // Set start date in localStorage
-            if ( null == localStorage.getItem('mlw_quiz_start_date' + quizId) ) {
+            if ( localStorage.getItem('mlw_quiz_start_date' + quizId) == null ) {
                 localStorage.setItem('mlw_quiz_start_date' + quizId, qmn_ajax_object.start_date);
             }
 
@@ -329,11 +329,10 @@ var show_result_validation = true;
                 return;
             }
 
-            let self = this;
             window.grecaptcha.ready(function () {
                 window.grecaptcha.execute(siteKey, { action: submitAction }).then(function (token) {
                     $form.find('#qsm_grecaptcha_v3_response').val(token);
-                    self.submitForm(quizId);
+                    this.submitForm(quizId);
                 });
             });
         },
@@ -363,12 +362,12 @@ var show_result_validation = true;
                 let quizData = self.getQuizData(quizId);
                 
                 // Quick result / inline feedback
-                if (quizData.enable_quick_result_mc == 1) {
+                if (Number(quizData.enable_quick_result_mc) === 1) {
                     self.qsmShowInlineResult(quizId, question_id, value, $this, inputType, $i_this);
-                } else if (quizData.enable_quick_correct_answer_info != 0) {
+                } else if (Number(quizData.enable_quick_correct_answer_info) !== 0) {
                     let data = self.qsmQuestionQuickResultJs(question_id, value, inputType, quizData.enable_quick_correct_answer_info, quizId);
                     $this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
-                    if (value && value.length > 0 && data.success != '') {
+                    if (value && value.length > 0 && data.success !== '') {
                         $this.append('<div class="qsm-inline-correct-info">' + self.qsmCheckShortcode(data.message) + '</div>');
                     }
                 }
@@ -400,9 +399,9 @@ var show_result_validation = true;
                 }
                 
                 // Quick result / inline feedback
-                if (quizData.enable_quick_result_mc == 1) {
+                if (Number(quizData.enable_quick_result_mc) === 1) {
                     self.qsmShowInlineResult(quizId, question_id, checkedValues, $this, 'checkbox', $i_this);
-                } else if (quizData.enable_quick_correct_answer_info != 0) {
+                } else if (Number(quizData.enable_quick_correct_answer_info) !== 0) {
                     let data = self.qsmQuestionQuickResultJs(question_id, checkedValues, 'checkbox', quizData.enable_quick_correct_answer_info, quizId);
                     $this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
                     if (checkedValues.length > 0 && data.success != '') {
@@ -415,7 +414,7 @@ var show_result_validation = true;
             });
             
             // File upload functionality (matching legacy: .mlw_answer_file_upload)
-            self.bindFileUploadEvents(quizId);
+            this.bindFileUploadEvents(quizId);
             
             // Text, number, and fill-blank inputs (matching legacy: .mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank)
             let qsm_inline_result_timer;
@@ -464,9 +463,9 @@ var show_result_validation = true;
                     }
                     
                     if (showFeedback) {
-                        if (quizData.enable_quick_result_mc == 1) {
+                        if (Number(quizData.enable_quick_result_mc) === 1) {
                             self.qsmShowInlineResult(quizId, question_id, sendValue, $this, 'input', $i_this, $this.find('.qmn_fill_blank').index($i_this));
-                        } else if (quizData.enable_quick_correct_answer_info != 0) {
+                        } else if (Number(quizData.enable_quick_correct_answer_info) !== 0) {
                             let data = self.qsmQuestionQuickResultJs(question_id, sendValue, 'input', quizData.enable_quick_correct_answer_info, quizId, $this.find('.qmn_fill_blank').index($i_this));
                             $this.find('.quick-question-res-p, .qsm-inline-correct-info').remove();
                             if (value.length > 0 && data.success != '') {
@@ -564,7 +563,7 @@ var show_result_validation = true;
                     trigger_type = 'success';
                 }
                 
-                // Trigger event for any listeners
+                // Trigger after file upload event
                 const obj = {
                     type: trigger_type,
                     message: trigger_message,
@@ -984,7 +983,7 @@ var show_result_validation = true;
                 // First page enabled: Can't go back past page 2 (first question page, not welcome page)
                 minPage = 2;
             } else {
-                // First page disabled: Can't go back past page 1 (first question page)
+                // No first page, so all pages are question pages
                 minPage = 1;
             }
             
@@ -1626,7 +1625,7 @@ var show_result_validation = true;
             }
             
             // Render MathJax if enabled
-            if (quizData.disable_mathjax != 1 && typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+            if (Number(quizData.disable_mathjax) !== 1 && typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
             
@@ -1777,7 +1776,7 @@ var show_result_validation = true;
             }
             
             // Render MathJax if enabled
-            if (quizData.disable_mathjax != 1 && typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+            if (Number(quizData.disable_mathjax) !== 1 && typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
         },
@@ -1796,7 +1795,7 @@ var show_result_validation = true;
          */
         changes: function(data, question_id, quiz_id) {
             let quizData = this.getQuizData(quiz_id);
-            answers = qsmLogicModel.get('answers');
+			let answers = qsmLogicModel.get('answers');
 			
             answers.push({
 				'q_id': question_id,
@@ -1814,7 +1813,7 @@ var show_result_validation = true;
                 }
 			});
 
-			if( quizData.end_quiz_if_wrong <= incorrect ) {
+			if( Number(quizData.end_quiz_if_wrong) <= incorrect ) {
 				this.submit_status = true;
 			}else{
 				this.submit_status = false;

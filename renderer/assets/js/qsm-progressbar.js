@@ -9,12 +9,12 @@
         quizObjects: {},
 
         init: function() {
-            var self = this;
+            const self = this;
             // Look for quiz containers first (new structure)
             $('.qsm-quiz-container').each(function() {
-                var $container = $(this);
-                var $form = $container.find('.qsm-quiz-form');
-                var quizId = $container.data('quiz-id');
+                const $container = $(this);
+                const $form = $container.find('.qsm-quiz-form');
+                const quizId = $container.data('quiz-id');
                 if (quizId && !self.quizObjects[quizId]) {
                     self.initProgressBar(quizId, $container, $form);
                 }
@@ -24,8 +24,8 @@
         },
 
         initProgressBar: function(quizId, $container, $form, $initial_page = 1) {
-            var data = window.qmn_quiz_data && window.qmn_quiz_data[quizId] ? window.qmn_quiz_data[quizId] : {};
-            if (!data.progress_bar || data.progress_bar == 0) return;
+            const data = window.qmn_quiz_data && window.qmn_quiz_data[quizId] ? window.qmn_quiz_data[quizId] : {};
+            if (!data.progress_bar || Number(data.progress_bar) === 0) return;
             
             // Look for progress bar in container first, then form (for new structure)
             let $bar = jQuery('.qsm-progress-bar-' + quizId);
@@ -36,12 +36,12 @@
             let mode = $bar.data('progress-mode') || 'auto';
 
             // Count pages - use same selectors as navigation system
-            var $pages = $container.find('.qsm-page');
-            var totalPages = Math.max($pages.length, 1);
+            const $pages = $container.find('.qsm-page');
+            const totalPages = Math.max($pages.length, 1);
             
             // Calculate question pages (exclude first page if present)
-            var hasFirstPage = (data.disable_first_page != 1);
-            var questionPages = hasFirstPage ? totalPages - 1 : totalPages;
+            const hasFirstPage = (Number(data.disable_first_page) !== 1);
+            const questionPages = hasFirstPage ? totalPages - 1 : totalPages;
             
             this.quizObjects[quizId] = {
                 $container: $container,
@@ -61,7 +61,7 @@
 
             // Initialize ProgressBar.js Line only when library is available
             if (window.ProgressBar && typeof ProgressBar.Line === 'function') {
-                window.qmn_quiz_data[quizId].bar = new ProgressBar.Line('#qsm_progress_bar_' + quizId, {
+				window.qmn_quiz_data[quizId].bar = new ProgressBar.Line('#qsm_progress_bar_' + quizId, {
                     strokeWidth: 2,
                     easing: 'easeInOut',
                     duration: 1400,
@@ -90,7 +90,7 @@
         },
 
         bindEvents: function() {
-            var self = this;
+            const self = this;
             $(document).on('qsm_go_to_page_before', function(e, quizId, pageNumber) {
                 self.updateProgress(quizId, pageNumber);
             });
@@ -103,14 +103,14 @@
         },
 
         updateProgress: function(quizId, currentPage) {
-            var currentQuiz = this.quizObjects[quizId];
+            const currentQuiz = this.quizObjects[quizId];
             if (!currentQuiz) {
                 return;
             }
 
             // If currentPage is not provided, try to get it from navigation system
             if (typeof currentPage === 'undefined' && window.QSMPagination && window.QSMPagination.Navigation) {
-                var navInstance = window.QSMPagination.Navigation.quizObjects[quizId];
+                const navInstance = window.QSMPagination.Navigation.quizObjects[quizId];
                 if (navInstance) {
                     currentPage = navInstance.currentPage;
                 }
@@ -124,12 +124,12 @@
             currentQuiz.currentPage = currentPage;
             
             // Calculate progress based on question pages only (exclude first page)
-            var effectiveCurrentPage = 0;
-            var effectiveTotalPages = currentQuiz.questionPages;
+            let effectiveCurrentPage = 0;
+            const effectiveTotalPages = currentQuiz.questionPages;
             
             if (currentQuiz.hasFirstPage) {
                 // First page exists - only count progress from page 2 onwards
-                if (currentPage == 1) {
+                if (Number(currentPage) === 1) {
                     // On start page (welcome page) - 0% progress
                     effectiveCurrentPage = 0;
                 } else {
@@ -142,7 +142,7 @@
             }
             
             // Safeguard against division by zero and ensure valid percentage
-            var progress = 0;
+            let progress = 0;
             if (effectiveTotalPages > 0) {
                 progress = Math.max(0, Math.min(100, (effectiveCurrentPage / effectiveTotalPages) * 100));
             }
