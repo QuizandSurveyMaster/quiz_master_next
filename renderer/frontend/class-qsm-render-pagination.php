@@ -980,8 +980,7 @@ class QSM_New_Pagination_Renderer {
 			$question_ids_csv = implode( ',', $page );
 			?>
 			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
-			data-pid="<?php echo esc_attr( $qpage_id ); ?>" 
-			data-apid="<?php echo esc_attr( $pages_count ); ?>" 
+			<?php echo ( $this->quiz_options->pagination <= 0 ) ? 'data-pid="' . esc_attr( $qpage_id ) . '"' : 'data-apid="' . esc_attr( $pages_count ) . '"'; ?>
 			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-page="<?php echo esc_attr( $pages_count ); ?>" 
 			data-lazy-load="<?php echo esc_attr( $should_lazy_load ? '1' : '0' ); ?>"
