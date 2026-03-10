@@ -990,6 +990,7 @@ class QSM_New_Pagination_Renderer {
 			<?php
 			
 			// Hook before page
+			do_action( 'qsm_after_welcome_page', $this->options, $this->quiz_data, 'single' );
 			if ( $this->quiz_options->pagination > 0 ) {
 				echo apply_filters( 'qsm_auto_page_begin_pagination', '', $pages_count, $this->options, $this->questions );
 			} else {
