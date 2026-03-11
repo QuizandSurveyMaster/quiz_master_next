@@ -648,8 +648,8 @@ var show_result_validation = true;
                 let quiz_id = jQuery(this).data('quiz_id');
                 let $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
                 if(!$container.find('.qsm-submit-btn').is(':visible')) {
-                    this.nextPage(quiz_id);
-                    this.scrollToQuiz(quiz_id);
+                    QSMPagination.Navigation.nextPage(quiz_id);
+                    QSMPagination.Navigation.scrollToQuiz(quiz_id);
                 }else{
                     $container.find(".mlw_custom_next").hide();
                 }
