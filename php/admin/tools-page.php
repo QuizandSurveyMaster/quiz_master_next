@@ -284,14 +284,6 @@ function qsm_tools_migration_settings() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-
-	global $wpdb;
-	$results_table = $wpdb->prefix . 'mlw_results';
-	$results_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$results_table}" );
-	if ( 0 === $results_count ) {
-		update_option( 'qsm_migration_results_processed', 1 );
-	}
-
 	qsm_migration_database_callback();
 }
 

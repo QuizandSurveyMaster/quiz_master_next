@@ -2263,6 +2263,10 @@ class QSM_Install {
 				'idx_qsm_meta_result_id',
 				"CREATE INDEX idx_qsm_meta_result_id ON {$results_meta_table} (result_id)"
 			);
+			$results_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$mlw_results_table}" );
+			if ( 0 === $results_count ) {
+				update_option( 'qsm_migration_results_processed', 1 );
+			}
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
 		}
