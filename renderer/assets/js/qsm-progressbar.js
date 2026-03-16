@@ -3,8 +3,6 @@
  * @package QSM
  */
 (function($) {
-    window.QSMPagination = window.QSMPagination || {};
-    
     QSMPagination.ProgressBar = {
         quizObjects: {},
 
@@ -24,7 +22,7 @@
         },
 
         initProgressBar: function(quizId, $container, $form, $initial_page = 1) {
-            const data = window.qmn_quiz_data && window.qmn_quiz_data[quizId] ? window.qmn_quiz_data[quizId] : {};
+            const data = qmn_quiz_data && qmn_quiz_data[quizId] ? qmn_quiz_data[quizId] : {};
             if (!data.progress_bar || Number(data.progress_bar) === 0) return;
             
             // Look for progress bar in container first, then form (for new structure)
@@ -109,8 +107,8 @@
             }
 
             // If currentPage is not provided, try to get it from navigation system
-            if (typeof currentPage === 'undefined' && window.QSMPagination && window.QSMPagination.Navigation) {
-                const navInstance = window.QSMPagination.Navigation.quizObjects[quizId];
+            if (typeof currentPage === 'undefined' && QSMPagination && QSMPagination.Navigation) {
+                const navInstance = QSMPagination.Navigation.quizObjects[quizId];
                 if (navInstance) {
                     currentPage = navInstance.currentPage;
                 }
