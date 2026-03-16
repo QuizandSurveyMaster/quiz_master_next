@@ -364,7 +364,7 @@ class QSM_New_Renderer {
 				'quiz_system'    => $qmn_quiz_options->system,
 				'user_ip'        => $this->get_user_ip(),
 				'quiz_post_data' => $quiz_post_data,
-				'render_type'    => '11'
+				'render_type'    => '11',
 			);
 
 			echo apply_filters( 'qmn_begin_quiz', '', $qmn_quiz_options, $quiz_data );

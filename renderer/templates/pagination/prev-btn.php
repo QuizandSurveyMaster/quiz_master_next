@@ -23,7 +23,7 @@ if ( apply_filters( 'qsm_show_previous_button', true, $quiz_id, $args ) ) {
             'mlw_qmn_quiz_link',
             'mlw_previous',
             'qsm-secondary',
-            'qsm-previous-btn-'.esc_attr($quiz_id)
+            'qsm-previous-btn-'.esc_attr($quiz_id),
         ),
         $quiz_id,
         $args

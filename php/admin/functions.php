@@ -2074,7 +2074,7 @@ function qsm_show_legacy_fallback_notice() {
     // Dismiss URL with nonce
     $dismiss_url = add_query_arg(
         array(
-            'qsm_dismiss_legacy_fallback' => wp_create_nonce( 'qsm_dismiss_legacy_fallback' )
+            'qsm_dismiss_legacy_fallback' => wp_create_nonce( 'qsm_dismiss_legacy_fallback' ),
         )
     );
     ?>

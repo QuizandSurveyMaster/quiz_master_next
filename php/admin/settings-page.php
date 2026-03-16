@@ -1631,7 +1631,7 @@ class QMNGlobalSettingsPage {
 			? '%QUESTIONS_ANSWERS_EMAIL%'
 			: __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' );
 		$settings = (array) get_option( 'qsm-quiz-default-template' );
-		$template = isset( $settings['default_' . $type . '_template'] ) ? htmlspecialchars_decode( $settings['default_' . $type . '_template'], ENT_QUOTES ) : $default_text;
+		$template = isset( $settings[ 'default_' . $type . '_template' ] ) ? htmlspecialchars_decode( $settings[ 'default_' . $type . '_template' ], ENT_QUOTES ) : $default_text;
 
 		$template_from_script = qsm_get_parsing_script_data( 'templates.json' );
 		$filter = ( 'email' === $type ) ? 'qsm_email_templates_list_before' : 'qsm_result_templates_list_before';
@@ -1644,17 +1644,17 @@ class QMNGlobalSettingsPage {
 		$qsm_dependency_list = qsm_get_dependency_plugin_list();
 
 		$js_data = array(
-			'quizID'            => $quiz_id,
-			'nonce'             => wp_create_nonce( 'wp_rest' ),
-			'qsm_user_ve'       => get_user_meta( $user_id, 'rich_editing', true ),
-			'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
-			'my_tmpl_data'      => $my_templates,
-			'script_tmpl'       => $template_from_script,
-			'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
-			'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
-			'dependency'        => $qsm_dependency_list,
-			'required_addons'   => __( 'Required Add-ons', 'quiz-master-next' ),
-			'used_addons'       => __( 'Addons :', 'quiz-master-next' ),
+			'quizID'                         => $quiz_id,
+			'nonce'                          => wp_create_nonce( 'wp_rest' ),
+			'qsm_user_ve'                    => get_user_meta( $user_id, 'rich_editing', true ),
+			'rest_user_nonce'                => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+			'my_tmpl_data'                   => $my_templates,
+			'script_tmpl'                    => $template_from_script,
+			'add_tmpl_nonce'                 => wp_create_nonce( 'qsm_add_template' ),
+			'remove_tmpl_nonce'              => wp_create_nonce( 'qsm_remove_template' ),
+			'dependency'                     => $qsm_dependency_list,
+			'required_addons'                => __( 'Required Add-ons', 'quiz-master-next' ),
+			'used_addons'                    => __( 'Addons :', 'quiz-master-next' ),
 			'default_' . $type . '_template' => $template,
 		);
 
@@ -1707,11 +1707,11 @@ class QMNGlobalSettingsPage {
 				'textarea_rows' => 15,
 				'media_buttons' => true,
 				'tinymce'       => array(
-					'plugins' => 'qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress',
+					'plugins'  => 'qsmslashcommands link image lists charmap colorpicker textcolor hr fullscreen wordpress',
 					'toolbar1' => 'formatselect,bold,italic,underline,|,bullist,numlist,|,link,image,|,qsmslashcommands,|,fullscreen',
 					'toolbar2' => '',
 				),
-				'quicktags' => true,
+				'quicktags'     => true,
 			)
 		);
 

@@ -20,7 +20,7 @@ if ( apply_filters( 'qsm_show_submit_button', true, $quiz_id, $args ) ) :
             'qsm-btn',
             'qsm-submit-btn',
             'qsm-primary',
-            'qsm-submit-btn-'.esc_attr($quiz_id)
+            'qsm-submit-btn-'.esc_attr($quiz_id),
         ),
         $quiz_id,
         $args

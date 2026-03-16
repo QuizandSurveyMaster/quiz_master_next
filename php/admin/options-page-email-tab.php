@@ -43,17 +43,17 @@ function qsm_options_emails_tab_content() {
 	$default_email_template = isset( $default_templates['default_email_template'] ) ? htmlspecialchars_decode( $default_templates['default_email_template'], ENT_QUOTES ) : '%QUESTIONS_ANSWERS_EMAIL%';
 	
 	$js_data = array(
-		'quizID'            => $quiz_id,
-		'nonce'             => wp_create_nonce( 'wp_rest' ),
-		'qsm_user_ve'       => get_user_meta( $user_id, 'rich_editing', true ),
-		'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
-		'my_tmpl_data'      => $my_email_templates,
-		'script_tmpl'       => $template_from_script,
-		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
-		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
-		'dependency'        => $qsm_dependency_list,
-		'required_addons'   => __('Required Add-ons', 'quiz-master-next'),
-		'used_addons'       => __('Addons :', 'quiz-master-next'),
+		'quizID'                 => $quiz_id,
+		'nonce'                  => wp_create_nonce( 'wp_rest' ),
+		'qsm_user_ve'            => get_user_meta( $user_id, 'rich_editing', true ),
+		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'my_tmpl_data'           => $my_email_templates,
+		'script_tmpl'            => $template_from_script,
+		'add_tmpl_nonce'         => wp_create_nonce( 'qsm_add_template' ),
+		'remove_tmpl_nonce'      => wp_create_nonce( 'qsm_remove_template' ),
+		'dependency'             => $qsm_dependency_list,
+		'required_addons'        => __('Required Add-ons', 'quiz-master-next'),
+		'used_addons'            => __('Addons :', 'quiz-master-next'),
 		'default_email_template' => $default_email_template,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );

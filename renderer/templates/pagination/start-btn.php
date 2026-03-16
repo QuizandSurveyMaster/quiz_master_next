@@ -22,7 +22,7 @@ if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) :
             'qsm-btn',
             'mlw_custom_start',
             'qsm-primary',
-            'qsm-start-btn-'.$quiz_id
+            'qsm-start-btn-'.$quiz_id,
         ),
         $quiz_id,
         $args

@@ -63,11 +63,11 @@ function qsm_get_question_bank_page_data() {
 	$per_page   = $per_page > 0 ? $per_page : 20;
 
 	$data = array(
-		'quizzes'                         => $quizzes,
-		'categories'                      => $question_categories,
-		'question_types'                  => is_array( $question_types ) ? $question_types : array(),
-		'per_page'                        => $per_page,
-		'quiz_ids_of_questions_table'     => $quiz_ids_from_questions_table,
+		'quizzes'                     => $quizzes,
+		'categories'                  => $question_categories,
+		'question_types'              => is_array( $question_types ) ? $question_types : array(),
+		'per_page'                    => $per_page,
+		'quiz_ids_of_questions_table' => $quiz_ids_from_questions_table,
 	);
 
 	return $data;
@@ -254,15 +254,15 @@ function qsm_question_bank_admin_assets( $hook ) {
 	$max_upload_size   = wp_max_upload_size();
 
 	$localized = array(
-		'restUrl'        => esc_url_raw( rest_url( 'quiz-survey-master/v1/bank_questions/0/' ) ),
-		'nonce'          => wp_create_nonce( 'wp_rest' ),
-		'quizzes'        => $page_data['quizzes'],
-		'categories'     => $page_data['categories'],
-		'questionTypes'  => $page_data['question_types'],
-		'quizNonces'     => $quiz_nonces,
-		'editQuizBase'   => admin_url( 'admin.php?page=mlw_quiz_options&tab=questions&quiz_id=' ),
-		'perPage'        => $page_data['per_page'],
-		'i18n'           => array(
+		'restUrl'       => esc_url_raw( rest_url( 'quiz-survey-master/v1/bank_questions/0/' ) ),
+		'nonce'         => wp_create_nonce( 'wp_rest' ),
+		'quizzes'       => $page_data['quizzes'],
+		'categories'    => $page_data['categories'],
+		'questionTypes' => $page_data['question_types'],
+		'quizNonces'    => $quiz_nonces,
+		'editQuizBase'  => admin_url( 'admin.php?page=mlw_quiz_options&tab=questions&quiz_id=' ),
+		'perPage'       => $page_data['per_page'],
+		'i18n'          => array(
 			'questionPlaceholder' => __( 'Untitled question', 'quiz-master-next' ),
 			'quizUnknown'         => __( 'Unknown quiz', 'quiz-master-next' ),
 			'allQuizzes'          => __( 'All quizzes', 'quiz-master-next' ),
@@ -284,8 +284,8 @@ function qsm_question_bank_admin_assets( $hook ) {
 			'bulkUploadSuccess'   => __( 'Upload complete! We are processing your questions.', 'quiz-master-next' ),
 			'bulkUploadError'     => __( 'Upload failed. Please try again.', 'quiz-master-next' ),
 		),
-		'bulkUpload'     => array(
-			'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+		'bulkUpload'    => array(
+			'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
 			'action'          => 'qsm_question_bank_import',
 			'nonce'           => $bulk_upload_nonce,
 			'sample'          => esc_url_raw( $sample_csv_url ),
@@ -966,7 +966,10 @@ function qsm_question_bank_import() {
 		$file_details,
 		array(
 			'test_form' => false,
-			'mimes'     => array( 'csv' => 'text/csv', 'txt' => 'text/plain' ),
+			'mimes'     => array(
+				'csv' => 'text/csv',
+				'txt' => 'text/plain',
+			),
 		)
 	);
 
@@ -1242,23 +1245,23 @@ function qsm_question_bank_initialize_question( $row, $header_map, $line ) {
 	$categories           = qsm_question_bank_parse_categories( $categories_string );
 
 	return array(
-		'line'                 => $line,
-		'question_title'       => $question_title,
-		'question_description' => $question_description,
-		'question_type'        => qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ),
-		'answer_info'          => qsm_question_bank_get_value( $row, $header_map, 'question_answer_info' ),
-		'comments'             => qsm_question_bank_get_value( $row, $header_map, 'comments' ),
-		'hint'                 => qsm_question_bank_get_value( $row, $header_map, 'hints' ),
-		'required'             => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'required' ), true ),
-		'answer_editor'        => qsm_question_bank_get_value( $row, $header_map, 'answer_editor', 'text' ),
-		'feature_image_src'    => qsm_question_bank_get_value( $row, $header_map, 'feature_image_src' ),
-		'match_answer'         => qsm_question_bank_get_value( $row, $header_map, 'match_answer' ),
-		'case_sensitive'       => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'case_sensitive' ) ),
-		'answer_columns'       => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_columns' ), 1 ),
-		'image_width'          => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_width' ), '' ),
-		'image_height'         => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_height' ), '' ),
-		'autofill'             => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'autofill' ) ),
-		'text_limit'           => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'text_limit' ), 0 ),
+		'line'                    => $line,
+		'question_title'          => $question_title,
+		'question_description'    => $question_description,
+		'question_type'           => qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ),
+		'answer_info'             => qsm_question_bank_get_value( $row, $header_map, 'question_answer_info' ),
+		'comments'                => qsm_question_bank_get_value( $row, $header_map, 'comments' ),
+		'hint'                    => qsm_question_bank_get_value( $row, $header_map, 'hints' ),
+		'required'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'required' ), true ),
+		'answer_editor'           => qsm_question_bank_get_value( $row, $header_map, 'answer_editor', 'text' ),
+		'feature_image_src'       => qsm_question_bank_get_value( $row, $header_map, 'feature_image_src' ),
+		'match_answer'            => qsm_question_bank_get_value( $row, $header_map, 'match_answer' ),
+		'case_sensitive'          => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'case_sensitive' ) ),
+		'answer_columns'          => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_columns' ), 1 ),
+		'image_width'             => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_width' ), '' ),
+		'image_height'            => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_height' ), '' ),
+		'autofill'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'autofill' ) ),
+		'text_limit'              => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'text_limit' ), 0 ),
 		'limit_multiple_response' => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'limit_multiple_response' ), 0 ),
 		'file_upload_limit'       => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'file_upload_limit' ), 4 ),
 		'file_upload_type'        => qsm_question_bank_get_value( $row, $header_map, 'file_upload_type', 'image,application/pdf' ),

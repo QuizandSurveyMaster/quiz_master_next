@@ -24,7 +24,7 @@ if ( apply_filters( 'qsm_show_next_button', true, $quiz_id, $args ) ) :
             'mlw_next',
             'mlw_custom_next',
             'qsm-primary',
-            'qsm-next-btn-'.esc_attr($quiz_id)
+            'qsm-next-btn-'.esc_attr($quiz_id),
         ),
         $quiz_id,
         $args
