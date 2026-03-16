@@ -974,12 +974,12 @@ function qsm_user_can_modify_question_ids( $question_ids ) {
 	}
 
 	$placeholders = implode( ', ', array_fill( 0, count( $question_ids ), '%d' ) );
-	$quiz_ids     = $wpdb->get_col(
-		$wpdb->prepare(
-			"SELECT DISTINCT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )",
-			$question_ids
-		)
+	$query_args   = array_merge(
+		array( "SELECT DISTINCT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )" ),
+		$question_ids
 	);
+	$prepared_query = call_user_func_array( array( $wpdb, 'prepare' ), $query_args );
+	$quiz_ids       = $wpdb->get_col( $prepared_query );
 
 	$current_user = get_current_user_id();
 	foreach ( $quiz_ids as $quiz_id ) {

@@ -1033,14 +1033,14 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		return null;
 	}
 
-	$handle = fopen( $file_path, 'r' );
+		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Reading the uploaded CSV from its temporary path.
 	if ( false === $handle ) {
 		return null;
 	}
 
 	$header_row = fgetcsv( $handle );
 	if ( empty( $header_row ) ) {
-		fclose( $handle );
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing the CSV handle opened above.
 		return null;
 	}
 
@@ -1051,8 +1051,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 	$is_flat_csv   = qsm_question_bank_is_flat_format( $header_map );
 	$current       = null;
 
-	// Assignment in condition is intentional for reading CSV file line by line
-	while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+		// Assignment in condition is intentional for reading CSV file line by line.
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Iteratively reading CSV rows.
 		$line++;
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
 			continue;
@@ -1094,7 +1094,7 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$questions[] = $current;
 	}
 
-	fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing the CSV handle opened above.
 
 	if ( empty( $questions ) ) {
 		return array(

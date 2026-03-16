@@ -399,9 +399,21 @@ class QSM_New_Renderer {
 				$quiz_id,
 				$quiz_data
 			);
+			$container_attr_html = $this->qsm_render_html_attributes( $container_attr );
+			$allowed_container_attr = array(
+				'div' => array(
+					'class'    => true,
+					'id'       => true,
+					'role'     => true,
+					'aria-*'   => true,
+					'data-*'   => true,
+					'tabindex' => true,
+					'style'    => true,
+				),
+			);
 			?>
 			<!-- // Render quiz container -->
-			<div <?php echo $this->qsm_render_html_attributes( $container_attr ); ?>>
+			<?php echo wp_kses( '<div ' . $container_attr_html . '>', $allowed_container_attr ); ?>
 			<?php
 			// Render quiz
 			$renderer->render( $shortcode_args );

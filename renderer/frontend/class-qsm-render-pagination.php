@@ -1015,7 +1015,7 @@ class QSM_New_Pagination_Renderer {
 								<?php
 							}
 						}
-						echo $this->display_question( $question['question_type_new'], $question_id, $this->options, $shortcode_args );
+						echo $this->display_question( $question['question_type_new'], intval( $question_id ), $this->options, $shortcode_args );
 						do_action('qsm_after_question', $question);
 						?>
 					</div>

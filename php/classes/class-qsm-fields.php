@@ -844,7 +844,16 @@ class QSM_Fields {
 						<select class="category_selection_random" multiple="" id="qsm-option-<?php echo esc_attr( $field['id'] ); ?>">
 							<?php
 							if ( $multiple_category_system ) {
-								echo self::get_category_hierarchical_options( $categories_tree, $explode_cat );
+								echo wp_kses(
+									self::get_category_hierarchical_options( $categories_tree, $explode_cat ),
+									array(
+										'option' => array(
+											'value'     => true,
+											'selected'  => true,
+											'aria-label' => true,
+										),
+									)
+								);
 							} else {
 								foreach ( $cat_array as $single_cat ) {
 									?>
@@ -872,16 +881,31 @@ class QSM_Fields {
 		<?php
 	}
 
-	public static function get_category_hierarchical_options( $categories = array(), $selected = array(), $prefix = '' ) {
+	public static function get_category_hierarchical_options( $categories = array(), $selected = array(), $depth = 0 ) {
 		$options = '';
-		if ( ! empty( $categories ) ) {
-			foreach ( $categories as $cat ) {
-				$options .= '<option value="' . $cat->term_id . '" ' . ( in_array( intval( $cat->term_id ), array_map( 'intval', $selected ), true ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
-				if ( ! empty( $cat->children ) ) {
-					$options .= self::get_category_hierarchical_options( $cat->children, $selected, $prefix . '&nbsp;&nbsp;&nbsp;' );
-				}
+		if ( empty( $categories ) ) {
+			return $options;
+		}
+
+		$selected_ints = array_map( 'intval', (array) $selected );
+		$indent        = str_repeat( '&nbsp;', max( 0, intval( $depth ) ) * 3 );
+
+		foreach ( $categories as $cat ) {
+			$term_id      = isset( $cat->term_id ) ? intval( $cat->term_id ) : 0;
+			$is_selected  = in_array( $term_id, $selected_ints, true );
+			$selected_attr = selected( $is_selected, true, false );
+			$label         = $indent . esc_html( $cat->name );
+			$options      .= sprintf(
+				'<option value="%1$s"%2$s>%3$s</option>',
+				esc_attr( $term_id ),
+				$selected_attr,
+				$label
+			);
+			if ( ! empty( $cat->children ) ) {
+				$options .= self::get_category_hierarchical_options( $cat->children, $selected_ints, $depth + 1 );
 			}
 		}
+
 		return $options;
 	}
 
