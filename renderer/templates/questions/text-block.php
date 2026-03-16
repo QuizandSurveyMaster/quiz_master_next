@@ -11,10 +11,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-// Extract args
-extract( $args );
-
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();

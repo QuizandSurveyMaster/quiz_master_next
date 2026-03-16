@@ -33,7 +33,7 @@ if ( $first_point > $second_point ) {
     $check_point = $first_point;
 }
 $total_answer      = count( $answers );
-$id                = esc_attr( intval( $id ) );
+$question_id      = isset( $args['id'] ) ? esc_attr( intval( $args['id'] ) ) : 0;
 $answar1           = $first_point;
 $answar2           = $second_point;
 $slider_data_atts  = '';
@@ -45,10 +45,10 @@ $slider_data_atts .= ' data-is_required=' . $required . ' ';
 $mlw_require_class = 0 == $required ? 'mlwRequiredText mlwRequiredPolar' : '';
 
 $new_question_title = isset( $question_settings['question_title'] ) ? $question_settings['question_title'] : '';
-qsm_question_title_func( $question['question_name'], '', $new_question_title, $id );
+qsm_question_title_func( $question['question_name'], '', $new_question_title, $question_id );
 $show = true;
-$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $id );
-echo apply_filters( 'qmn_polar_display_front_before', '', $id, $question, $answers );
+$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $question_id );
+echo apply_filters( 'qmn_polar_display_front_before', '', $question_id, $question, $answers );
 if ( $show ) {
 ?>
 <span class="mlw_qmn_question question-type-polar-s">
@@ -67,19 +67,19 @@ if ( $show ) {
         <span class="qsm_image_caption">
             <?php
             $caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
-            $caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-0', 'QSM Answers' );
+            $caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $question_id . '-0', 'QSM Answers' );
             echo esc_html( $caption_text );
             ?>
         </span>
         <?php
     } else {
-        $left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $id . '-0', "QSM Answers" );
+        $left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], 'answer-' . $question_id . '-0', "QSM Answers" );
         echo wp_kses_post( do_shortcode( $left_title ) );
     }
     ?> </div>
     <div class='slider-main-wrapper'>
-        <input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
-        <div id="slider-<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
+        <input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $question_id ); ?>' name='question<?php echo esc_attr( $question_id ); ?>' value=''/>
+        <div id="slider-<?php echo esc_attr( $question_id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
     </div>
     <div class='right-polar-title'><?php
     if ( 'image' === $answerEditor ) {
@@ -96,17 +96,17 @@ if ( $show ) {
         <span class="qsm_image_caption">
             <?php
             $caption_text = trim( htmlspecialchars_decode( $answers[1][3], ENT_QUOTES ) );
-            $caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-1', 'QSM Answers' );
+            $caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $question_id . '-1', 'QSM Answers' );
             echo esc_html( $caption_text );
             ?>
         </span>
         <?php
     } else {
-        $right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $id . '-1', "QSM Answers" );
+        $right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], 'answer-' . $question_id . '-1', "QSM Answers" );
         echo wp_kses_post( do_shortcode( $right_title ) );
     }
     ?></div>
 </span>
 <?php
 }
-echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
+echo apply_filters( 'qmn_polar_display_front', '', $question_id, $question, $answers );

@@ -32,7 +32,7 @@ add_action( 'wp_dashboard_setup', 'qmn_add_dashboard_widget' );
  */
 function qmn_snapshot_dashboard_widget() {
 	global $wpdb;
-	$mlw_qmn_today_taken        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", gmdate( 'Y-m-d', current_time( 'timestamp' ) ), gmdate( 'Y-m-d', current_time( 'timestamp' ) ) ) );
+	$mlw_qmn_today_taken        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", gmdate( 'Y-m-d', time() ), gmdate( 'Y-m-d', time() ) ) );
 	$mlw_last_week              = mktime( 0, 0, 0, gmdate( 'm' ), gmdate( 'd' ) - 7, gmdate( 'Y' ) );
 	$mlw_last_week              = gmdate( 'Y-m-d', $mlw_last_week );
 	$mlw_qmn_last_weekday_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_week, $mlw_last_week ) );

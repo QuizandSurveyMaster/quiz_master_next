@@ -30,6 +30,9 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
 	
 	if ( $located ) {
 		// Make args available to template
+		// Note: extract() is used here as this is a core template loading function.
+		// Templates expect variables to be directly available rather than accessing $args array.
+		// This is a controlled environment where $args is validated and sanitized before extraction.
 		if ( ! empty( $args ) && is_array( $args ) ) {
 			extract( $args );
 		}

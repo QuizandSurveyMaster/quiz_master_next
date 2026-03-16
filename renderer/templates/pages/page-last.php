@@ -24,7 +24,7 @@ do_action( 'qsm_before_last_page', $quiz_id, $args );
 
 <section 
 	class="<?php echo esc_attr( apply_filters( 'qsm_last_page_classes', $last_page_class, $quiz_id, $args ) ); ?>" 
-	data-page="<?php echo ++$last_page_count; ?>" 
+	data-page="<?php echo esc_attr( ++$last_page_count ); ?>" 
 	data-page-type="last" 
 	style="display: none;"
 >

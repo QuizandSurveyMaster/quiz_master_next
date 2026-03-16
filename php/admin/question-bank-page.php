@@ -952,8 +952,9 @@ function qsm_question_bank_import() {
 		wp_send_json_error(
 			array(
 				'message' => sprintf(
-					__( 'The selected file exceeds the maximum upload size of %s.', 'quiz-master-next' ),
-					size_format( $max_size )
+				/* translators: %s: Maximum file size */
+				__( 'The selected file exceeds the maximum upload size of %s.', 'quiz-master-next' ),
+				size_format( $max_size )
 				),
 			)
 		);
@@ -976,7 +977,9 @@ function qsm_question_bank_import() {
 	if ( isset( $uploaded_file['error'] ) ) {
 		wp_send_json_error(
 			array(
-				'message' => sprintf( __( 'Upload failed: %s', 'quiz-master-next' ), $uploaded_file['error'] ),
+				'message' => sprintf(
+				/* translators: %s: Upload error message */
+				__( 'Upload failed: %s', 'quiz-master-next' ), $uploaded_file['error'] ),
 			)
 		);
 	}
@@ -1048,6 +1051,7 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 	$is_flat_csv   = qsm_question_bank_is_flat_format( $header_map );
 	$current       = null;
 
+	// Assignment in condition is intentional for reading CSV file line by line
 	while ( ( $row = fgetcsv( $handle ) ) !== false ) {
 		$line++;
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
@@ -1072,7 +1076,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 			$current = qsm_question_bank_initialize_question( $row, $header_map, $line );
 		} elseif ( 'answer' === $item_type ) {
 			if ( ! $current ) {
-				$errors[] = sprintf( __( 'Line %1$d: Answer row found before any question row.', 'quiz-master-next' ), $line );
+				/* translators: %1$d: Line number in CSV file */
+			$errors[] = sprintf( __( 'Line %1$d: Answer row found before any question row.', 'quiz-master-next' ), $line );
 				continue;
 			}
 			$answer = qsm_question_bank_build_answer( $row, $header_map, $line );
@@ -1080,7 +1085,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 				$current['answers'][] = $answer;
 			}
 		} else {
-			$errors[] = sprintf( __( 'Line %1$d: Unknown item type "%2$s".', 'quiz-master-next' ), $line, $item_type );
+			/* translators: %1$d: Line number in CSV file, %2$s: Item type found */
+		$errors[] = sprintf( __( 'Line %1$d: Unknown item type "%2$s".', 'quiz-master-next' ), $line, $item_type );
 		}
 	}
 
@@ -1110,7 +1116,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$type_value = qsm_question_bank_map_question_type( $question['question_type'], $types_map );
 		if ( '' === $type_value ) {
 			$failed++;
-			$errors[] = sprintf( __( 'Question %1$d: Unable to determine question type.', 'quiz-master-next' ), $question_index + 1 );
+			/* translators: %1$d: Question number */
+		$errors[] = sprintf( __( 'Question %1$d: Unable to determine question type.', 'quiz-master-next' ), $question_index + 1 );
 			continue;
 		}
 		$question['question_type'] = $type_value;
@@ -1344,7 +1351,8 @@ function qsm_question_bank_build_flat_question( $row, $header_map, $line ) {
 		$question_title = qsm_question_bank_get_value( $row, $header_map, 'question_title' );
 	}
 	if ( '' === $question_title ) {
-		return new WP_Error( 'qsm_question_bank_missing_title', sprintf( __( 'Line %1$d: Question text is required.', 'quiz-master-next' ), $line ) );
+		/* translators: %1$d: Line number in CSV file */
+	return new WP_Error( 'qsm_question_bank_missing_title', sprintf( __( 'Line %1$d: Question text is required.', 'quiz-master-next' ), $line ) );
 	}
 
 	$question_description = qsm_question_bank_get_value( $row, $header_map, 'description', $question_title );
