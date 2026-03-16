@@ -4,9 +4,6 @@
  */
 var qsmTimerInterval = [];
 (function($) {
-    
-    window.QSMPagination = window.QSMPagination || {};
-
     if (typeof qsm_timer_consumed_obj === 'undefined') {
         window.qsm_timer_consumed_obj = {
             qmn_count_upward_status : false
@@ -143,7 +140,7 @@ var qsmTimerInterval = [];
             $('.qsm-quiz-container-' + quizId).find('.stoptimer-p').show();
             
             // Trigger legacy events
-            $(document).trigger('qsm_activate_time_after', [quizId, window.qmn_quiz_data]);
+            $(document).trigger('qsm_activate_time_after', [quizId, qmn_quiz_data]);
         },
 
         stop: function(quizId) {
@@ -212,7 +209,7 @@ var qsmTimerInterval = [];
             
             // Trigger events
             $(document).trigger('qsm_timer_expired', [quizId, currentQuiz]);
-            $(document).trigger('qsm_timer_ended', [quizId, window.qmn_quiz_data, {
+            $(document).trigger('qsm_timer_ended', [quizId, qmn_quiz_data, {
                 qmn_count_upward_status: false
             }]);
         },
@@ -245,7 +242,7 @@ var qsmTimerInterval = [];
             
             // Trigger events
             $(document).trigger('qsm_timer_tick', [quizId, currentQuiz.remainingTime, currentQuiz.consumedTime]);
-            $(document).trigger('qmn_timer_consumed_seconds', [quizId, window.qmn_quiz_data, qsm_timer_consumed_obj]);
+            $(document).trigger('qmn_timer_consumed_seconds', [quizId, qmn_quiz_data, qsm_timer_consumed_obj]);
             $(document).trigger('load_timer_faces', [quizId, currentQuiz.remainingTime, currentQuiz.totalTime, this.secondsToTimer(currentQuiz.remainingTime)]);
             
             if (currentQuiz.remainingTime <= 0) {
@@ -360,7 +357,7 @@ var qsmTimerInterval = [];
             document.title = this.originalTitle;
             
             // Trigger events
-            $(document).trigger('qsm_end_timer', [quizId, window.qmn_quiz_data]);
+            $(document).trigger('qsm_end_timer', [quizId, qmn_quiz_data]);
         },
 
         // Public API methods for external access
@@ -393,8 +390,8 @@ var qsmTimerInterval = [];
             // Try multiple data sources for compatibility
             let data = {};
             
-            if (window.qmn_quiz_data && window.qmn_quiz_data[quizId]) {
-                data = window.qmn_quiz_data[quizId];
+            if (qmn_quiz_data && qmn_quiz_data[quizId]) {
+                data = qmn_quiz_data[quizId];
             }
             
             return data;
@@ -405,19 +402,19 @@ var qsmTimerInterval = [];
             if (!currentQuiz || currentQuiz.warnings.expired) return;
             
             // Ensure qmn_quiz_data exists and update it
-            if (typeof window.qmn_quiz_data === 'undefined') {
-                window.qmn_quiz_data = {};
+            if (typeof qmn_quiz_data === 'undefined') {
+                qmn_quiz_data = {};
             }
             
-            if (!window.qmn_quiz_data[quizId]) {
-                window.qmn_quiz_data[quizId] = currentQuiz.data;
+            if (!qmn_quiz_data[quizId]) {
+                qmn_quiz_data[quizId] = currentQuiz.data;
             }
             
             // Update timer-specific properties
-            window.qmn_quiz_data[quizId].timerStatus = currentQuiz.timerStatus;
-            window.qmn_quiz_data[quizId].timerRemaning = currentQuiz.remainingTime;
-            window.qmn_quiz_data[quizId].timerConsumed = currentQuiz.consumedTime;
-            window.qmn_quiz_data[quizId].timerInterval = currentQuiz.timerInterval;
+            qmn_quiz_data[quizId].timerStatus = currentQuiz.timerStatus;
+            qmn_quiz_data[quizId].timerRemaning = currentQuiz.remainingTime;
+            qmn_quiz_data[quizId].timerConsumed = currentQuiz.consumedTime;
+            qmn_quiz_data[quizId].timerInterval = currentQuiz.timerInterval;
         },
         
         shouldAutoStart: function(quizId, data) {
