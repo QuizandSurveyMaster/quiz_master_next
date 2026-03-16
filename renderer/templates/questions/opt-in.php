@@ -12,9 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Extract args
-extract( $args );
-
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();
@@ -24,7 +21,7 @@ global $mlwQuizMasterNext;
 
 // Get required status
 $required = isset( $question_settings['required'] ) ? $question_settings['required'] : '';
-$mlw_require_class = $required == 0 ? 'mlwRequiredAccept' : '';
+$mlw_require_class = 0 == $required ? 'mlwRequiredAccept' : '';
 ?>
 <div class="qmn_accept_answers">
     <input type="checkbox" id="mlwAcceptance<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( 'question' . $id ); ?>" class="<?php echo esc_attr( $mlw_require_class ); ?>" />

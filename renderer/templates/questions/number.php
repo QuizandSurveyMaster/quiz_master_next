@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $mlwQuizMasterNext;
 
-// Extract variables passed to template
-extract( $args );
-
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();

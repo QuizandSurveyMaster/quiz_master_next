@@ -98,7 +98,7 @@ class QMNGlobalSettingsPage {
 								$upgrade_meta = $this->qsm_default_template_variable_upgrade_meta( $category_name );
 								$classname = $upgrade_meta['classname'];
 								$qsm_badge = $upgrade_meta['badge'];
-								$is_upgrade = $classname !== '';
+								$is_upgrade = '' != $classname;
 								?>
 								<div><h2 class="qsm-upgrade-popup-category-name"><?php echo esc_attr( $category_name );?></h2><?php echo wp_kses_post( $qsm_badge ); ?></div>
 								<?php

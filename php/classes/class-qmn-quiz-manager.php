@@ -805,7 +805,7 @@ class QMNQuizManager {
 			 */
 			if ( isset($_COOKIE[ 'question_ids_' . $quiz_id ]) ) {
 				// raw cookie
-				$cookie_raw = wp_unslash($_COOKIE[ 'question_ids_' . $quiz_id ]);
+				$cookie_raw = sanitize_text_field( wp_unslash($_COOKIE[ 'question_ids_' . $quiz_id ]) );
 
 				// sanitize & keep only digits + commas
 				$cookie_raw = preg_replace('/[^0-9,]/', '', $cookie_raw);
@@ -2302,7 +2302,7 @@ class QMNQuizManager {
                         $prepared = $wpdb->prepare( $sql, ...$params );
                         $inserted = $wpdb->query( $prepared );
 
-                        if ( $inserted === false || $inserted === 0 ) {
+                        if ( false == $inserted || 0 == $inserted ) {
                             $transaction_failed = true;
                             break; // Exit main foreach loop immediately
                         }
@@ -2391,7 +2391,7 @@ class QMNQuizManager {
                 $prepared_meta = $wpdb->prepare( $meta_sql, ...$meta_params );
                 $meta_inserted = $wpdb->query( $prepared_meta );
                 
-                if ( $meta_inserted === false || $meta_inserted === 0 ) {
+                if ( false == $meta_inserted || 0 == $meta_inserted ) {
                     throw new Exception('Meta inserts failed.');
                 }
             }

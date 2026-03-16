@@ -272,6 +272,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 			'error'               => __( 'Unable to load questions. Please try again.', 'quiz-master-next' ),
 			'viewQuiz'            => __( 'Edit in quiz builder', 'quiz-master-next' ),
 			'noResults'           => __( 'No questions match your filters. Try adjusting your search criteria.', 'quiz-master-next' ),
+			/* translators: 1: Current page number, 2: Total number of pages. */
 			'pageOf'              => __( 'Page %1$s of %2$s', 'quiz-master-next' ),
 			'previous'            => __( 'Previous', 'quiz-master-next' ),
 			'next'                => __( 'Next', 'quiz-master-next' ),
@@ -945,8 +946,7 @@ function qsm_question_bank_import() {
 
 	$raw_quiz = isset( $_POST['bulk_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['bulk_quiz'] ) ) : '';
 	$quiz_id  = absint( $raw_quiz );
-
-	$file_details = $_FILES['bulk_csv'];
+	$file_details = $_FILES['bulk_csv']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$max_size     = wp_max_upload_size();
 	if ( ! empty( $file_details['size'] ) && $file_details['size'] > $max_size ) {
 		wp_send_json_error(

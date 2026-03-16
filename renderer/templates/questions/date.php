@@ -13,8 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 global $mlwQuizMasterNext, $qmn_total_questions;
 
-// Extract variables passed to template
-extract( $args );
 
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {

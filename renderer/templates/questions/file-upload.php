@@ -17,8 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param array $args Template arguments
  */
-extract( $args );
-
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();
@@ -35,7 +33,7 @@ $is_theme_active = array_filter($active_themes, function( $subarray ) use ( $the
 
 $hide = $is_theme_active ? true : false;
 
-$mlw_require_class = $required == 0 ? 'mlwRequiredFileUpload' : '';
+$mlw_require_class = 0 == $required ? 'mlwRequiredFileUpload' : '';
 
 $new_question_title = isset( $question_settings['question_title'] ) ? $question_settings['question_title'] : '';
 qsm_question_title_func( $question['question_name'], '', $new_question_title, $id );

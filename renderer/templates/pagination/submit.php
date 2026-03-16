@@ -46,5 +46,3 @@ if ( apply_filters( 'qsm_show_submit_button', true, $quiz_id, $args ) ) :
             $args
         ); ?>>
 <?php endif; ?>
-	
-

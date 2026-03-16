@@ -2041,7 +2041,7 @@ function qsm_handle_legacy_fallback_dismiss() {
 
     if (
         isset( $_GET['qsm_dismiss_legacy_fallback'] ) &&
-        wp_verify_nonce( $_GET['qsm_dismiss_legacy_fallback'], 'qsm_dismiss_legacy_fallback' )
+        wp_verify_nonce( sanitize_text_field ( wp_unslash( $_GET['qsm_dismiss_legacy_fallback'] ) ), 'qsm_dismiss_legacy_fallback' )
     ) {
 
         set_transient( 'qsm_legacy_fallback_notice_shown', true, 7 * DAY_IN_SECONDS );
@@ -2084,16 +2084,17 @@ function qsm_show_legacy_fallback_notice() {
             <strong><?php esc_html_e( 'Migration Notice:', 'quiz-master-next' ); ?></strong>
             <?php
             printf(
-                esc_html(
-                    _n(
-                        'We detected %d result that has fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
-                        'We detected %d results that have fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
-                        $fallback_count,
-                        'quiz-master-next'
-                    )
-                ),
-                (int) $fallback_count
-            );
+				esc_html(
+					/* translators: %d: Number of results that fell back to legacy format during database migration. */
+					_n(
+						'We detected %d result that has fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
+						'We detected %d results that have fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
+						$fallback_count,
+						'quiz-master-next'
+					)
+				),
+				(int) $fallback_count
+			);
             ?>
         </p>
 

@@ -220,7 +220,7 @@ class QSM_New_Renderer {
 		
 		ob_start();
 		
-		$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
+		$result_unique_id = isset($_GET['result_id']) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : '';
 		
 		// Get result from database
 		$result           = $wpdb->get_row(
@@ -402,8 +402,6 @@ class QSM_New_Renderer {
 			?>
 			<!-- // Render quiz container -->
 			<div <?php echo $this->qsm_render_html_attributes( $container_attr ); ?>>
-
-			
 			<?php
 			// Render quiz
 			$renderer->render( $shortcode_args );
@@ -436,7 +434,7 @@ class QSM_New_Renderer {
         foreach ( $atts as $key => $value ) {
 
             // CLASS ATTRIBUTES (ARRAY)
-            if ( $key === 'class' ) {
+            if ( 'class' == $key ) {
                 $value = array_filter( (array) $value ); // remove empty
                 if ( ! empty( $value ) ) {
                     $output[] = 'class="' . esc_attr( implode( ' ', $value ) ) . '"';
@@ -445,9 +443,9 @@ class QSM_New_Renderer {
             }
 
             // DATA ATTRIBUTES (ARRAY)
-            if ( $key === 'data' ) {
+            if ( 'data' == $key ) {
                 foreach ( (array) $value as $data_key => $data_value ) {
-                    if ( $data_value === '' ) {
+                    if ( '' == $data_value ) {
 						continue;
 					}
                     $output[] = 'data-' . esc_attr( $data_key ) . '="' . esc_attr( $data_value ) . '"';
@@ -456,7 +454,7 @@ class QSM_New_Renderer {
             }
 
             // NORMAL ATTRIBUTE
-            if ( $value !== '' ) {
+            if ( '' != $value ) {
                 $output[] = esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
             }
         }

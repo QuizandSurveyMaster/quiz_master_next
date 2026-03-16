@@ -12,9 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Extract variables passed to template
-extract( $args );
-
 // Ensure question_settings is an array
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();
@@ -45,7 +42,7 @@ $slider_data_atts .= ' data-answer2=' . $answar2 . ' ';
 $slider_data_atts .= ' data-is_reverse=' . intval( $is_reverse ) . ' ';
 $slider_data_atts .= ' data-is_required=' . $required . ' ';
 
-$mlw_require_class = $required == 0 ? 'mlwRequiredText mlwRequiredPolar' : '';
+$mlw_require_class = 0 == $required ? 'mlwRequiredText mlwRequiredPolar' : '';
 
 $new_question_title = isset( $question_settings['question_title'] ) ? $question_settings['question_title'] : '';
 qsm_question_title_func( $question['question_name'], '', $new_question_title, $id );

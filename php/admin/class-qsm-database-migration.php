@@ -741,9 +741,9 @@ class QSM_Database_Migration {
         
 
         if ( $transaction_failed ) {
-             // Rollback was already called inside the loop
-             $stats['failed_ids'][] = $result_id;
-             return $stats;
+            // Rollback was already called inside the loop
+            $stats['failed_ids'][] = $result_id;
+            return $stats;
         }
 
         // --- Insert result_meta to mark as processed ---
@@ -792,7 +792,7 @@ class QSM_Database_Migration {
             $prepared_meta = $this->wpdb->prepare( $meta_sql, ...$meta_params );
             $meta_inserted = $this->wpdb->query( $prepared_meta );
             
-            if ( $meta_inserted === false || $meta_inserted === 0 ) {
+            if ( false == $meta_inserted || 0 == $meta_inserted ) {
                 $transaction_failed = true;
                 $this->wpdb->query( 'ROLLBACK' );
             }

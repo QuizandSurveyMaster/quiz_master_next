@@ -46,5 +46,3 @@ if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) :
         ) ); ?>
     </a>
 <?php endif; ?>
-	
-

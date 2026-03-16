@@ -12,14 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-extract( $args );
-
 if ( ! is_array( $question_settings ) ) {
     $question_settings = array();
 }
 
 $required = isset( $question_settings['required'] ) ? $question_settings['required'] : '';
-$mlw_require_class = $required == 0 ? 'mlwRequiredCaptcha' : '';
+$mlw_require_class = 0 == $required ? 'mlwRequiredCaptcha' : '';
 $new_question_title = isset( $question_settings['question_title'] ) ? $question_settings['question_title'] : '';
 ?>
 <span class="mlw_qmn_question">

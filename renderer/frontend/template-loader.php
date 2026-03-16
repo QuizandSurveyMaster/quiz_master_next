@@ -43,7 +43,7 @@ function qsm_new_get_template_part( $slug, $args = array() ) {
 			echo '<!-- Searched in: ' . esc_html( QSM_PLUGIN_PATH . 'renderer/templates/' . $slug . '.php' ) . ' -->';
 		}
 		// Always show a fallback for pagination
-		if ( $slug === 'pagination' ) {
+		if ( 'pagination' == $slug ) {
 			echo '<div class="qsm-pagination qsm-navigation qmn_pagination border margin-bottom">';
 			echo '<a href="javascript:void(0);" class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous qsm-secondary">Previous</a>';
 			echo '<a href="javascript:void(0);" class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next mlw_custom_next qsm-primary">Next</a>';
@@ -174,7 +174,7 @@ function qsm_get_question_template( $question_type, $args = array(), $shortcode_
 	$located = qsm_new_locate_template( $template_slug . '.php' );
 	
 	// Fallback to multiple-choice if template not found
-	if ( ! $located && $question_template_name !== 'multiple-choice' ) {
+	if ( ! $located && 'multiple-choice' != $question_template_name ) {
 		$template_slug = 'questions/multiple-choice';
 		$located = qsm_new_locate_template( $template_slug . '.php' );
 	}

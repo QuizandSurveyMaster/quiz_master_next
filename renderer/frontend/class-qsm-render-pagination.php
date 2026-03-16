@@ -152,7 +152,7 @@ class QSM_New_Pagination_Renderer {
 			$order_by_sql = 'ORDER BY question_order ASC';
 			
 			// Check if questions should be randomized
-			if ( in_array( 'questions', $this->randomness_order ) || in_array( 'pages', $this->randomness_order ) ) {
+			if ( in_array( 'questions', $this->randomness_order, true ) || in_array( 'pages', $this->randomness_order, true ) ) {
 				$order_by_sql = 'ORDER BY RAND()';
 			}
 			
@@ -178,11 +178,6 @@ class QSM_New_Pagination_Renderer {
 		} catch ( Exception $e ) {
 			// Fallback to empty array
 			$this->questions = array();
-			
-			// Log error if debug is enabled
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'QSM New Rendering: Failed to load questions - ' . $e->getMessage() );
-			}
 		}
 	}
 
@@ -192,10 +187,10 @@ class QSM_New_Pagination_Renderer {
 	private function setup_pages() {
 		// If pagination value is greater than 0
 		if ( $this->quiz_options->pagination <= 0 ) {
-			if ( in_array( 'pages', $this->randomness_order ) ) {
+			if ( in_array( 'pages', $this->randomness_order, true ) ) {
 				shuffle( $this->pages );
 			}
-			if ( in_array( 'questions', $this->randomness_order ) ) {
+			if ( in_array( 'questions', $this->randomness_order, true ) ) {
 				foreach ( $this->pages as &$page ) {
 					shuffle( $page );
 				}
@@ -371,7 +366,7 @@ class QSM_New_Pagination_Renderer {
 								$category
 							) );
 							
-							if ( $has_term && ! in_array( $qid, $exclude_ids ) ) {
+							if ( $has_term && ! in_array( $qid, $exclude_ids, true ) ) {
 								$category_questions[] = $qid;
 							}
 						}
@@ -402,7 +397,7 @@ class QSM_New_Pagination_Renderer {
 		$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $this->quiz_options );
 		
 		// STEP 4: Apply randomness_order at the end
-		if ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) ) {
+		if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
 			// Check if we should use cookie to maintain order
 			if ( isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) && empty( $this->quiz_options->question_per_category ) && empty( $this->quiz_options->limit_category_checkbox ) ) {
 				$cookie_ids = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $quiz_id ] ) );
@@ -435,7 +430,7 @@ class QSM_New_Pagination_Renderer {
 		$questions = $ordered_questions;
 		
 		// Store cookie for randomized questions if needed
-		if ( ( in_array( 'questions', $randomness_order ) || in_array( 'pages', $randomness_order ) )
+		if ( ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) )
 			&& ! empty( $questions )
 			&& ! isset( $_COOKIE[ 'question_ids_' . $quiz_id ] ) ) {
 			$question_sql = implode( ',', array_unique( array_keys( $questions ) ) );
@@ -562,7 +557,7 @@ class QSM_New_Pagination_Renderer {
 			}
 			
 			// Initialize quiz answer random IDs if randomizing answers
-			if ( in_array( 'answers', $this->randomness_order ) ) {
+			if ( in_array( 'answers', $this->randomness_order, true ) ) {
 				$quiz_answer_random_ids = array();
 			}
 
@@ -739,27 +734,27 @@ class QSM_New_Pagination_Renderer {
 		), $this );
 		
 		// Only register element if it's NOT already in the header
-		if ( ! in_array( 'page_counter', $header_elements ) ) {
+		if ( ! in_array( 'page_counter', $header_elements, true ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'render_page_counter' ), $priorities['page_counter'], 3 );
 		}
 		
-		if ( ! in_array( 'previous_button', $header_elements ) ) {
+		if ( ! in_array( 'previous_button', $header_elements, true ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_previous_button_element' ), $priorities['previous_button'], 3 );
 		}
 		
-		if ( ! in_array( 'progress_bar', $header_elements ) && isset( $this->options->progress_bar ) && 0 != intval( $this->options->progress_bar ) ) {
+		if ( ! in_array( 'progress_bar', $header_elements, true ) && isset( $this->options->progress_bar ) && 0 != intval( $this->options->progress_bar ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_progress_bar_element' ), $priorities['progress_bar'], 3 );
 		}
 		
-		if ( ! in_array( 'start_button', $header_elements ) ) {
+		if ( ! in_array( 'start_button', $header_elements, true ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_start_button_element' ), $priorities['start_button'], 3 );
 		}
 		
-		if ( ! in_array( 'next_button', $header_elements ) ) {
+		if ( ! in_array( 'next_button', $header_elements, true ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_next_button_element' ), $priorities['next_button'], 3 );
 		}
 		
-		if ( ! in_array( 'submit_button', $header_elements ) ) {
+		if ( ! in_array( 'submit_button', $header_elements, true ) ) {
 			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_submit_button_element' ), $priorities['submit_button'], 3 );
 		}
 	}
@@ -1039,7 +1034,6 @@ class QSM_New_Pagination_Renderer {
 				// Increment question count for lazy loaded pages
 				$qmn_total_questions += count( $page );
 			}
-			
 			// Show page count if enabled
 			?>
 			<span class="pages_count">
@@ -1049,9 +1043,7 @@ class QSM_New_Pagination_Renderer {
 			?>
 			</span>
 			<?php
-
 			do_action( 'qsm_new_action_after_page', $pages_count, $page );
-
 			?>
 			</section>
 			<?php
@@ -1076,7 +1068,7 @@ class QSM_New_Pagination_Renderer {
 		
 		$answer_array = maybe_unserialize( $question_data['answer_array'] );
 		
-		if ( in_array( 'answers', $this->randomness_order ) ) {
+		if ( in_array( 'answers', $this->randomness_order, true ) ) {
 			$answer_array = QMNPluginHelper::qsm_shuffle_assoc($answer_array);
 			global $quiz_answer_random_ids;
 			$answer_ids = array_keys( $answer_array );
@@ -1387,7 +1379,7 @@ class QSM_New_Pagination_Renderer {
 		$output .= '<input type="hidden" name="current_page" class="current_page_hidden" value="0"/>';
 		
 		// Answer randomization IDs (if randomizing answers)
-		if ( in_array( 'answers', $this->randomness_order ) && ! empty( $quiz_answer_random_ids ) ) {
+		if ( in_array( 'answers', $this->randomness_order, true ) && ! empty( $quiz_answer_random_ids ) ) {
 			$output .= '<input type="hidden" name="quiz_answer_random_ids" id="quiz_answer_random_ids_' . esc_attr( $this->quiz_data['quiz_id'] ) . '" value="' . esc_attr( maybe_serialize( $quiz_answer_random_ids ) ) . '" />';
 		}
 		
@@ -1566,7 +1558,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		$questions_settings = array();
 		foreach ( $this->questions as $key => $question ) {
-			if ( ! in_array($question['question_id'], $question_ids) ) {
+			if ( ! in_array($question['question_id'], $question_ids, true) ) {
 				continue;
 			}
 			$unserialized_settings = maybe_unserialize( $question['question_settings'] );

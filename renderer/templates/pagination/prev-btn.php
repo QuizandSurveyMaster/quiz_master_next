@@ -49,5 +49,3 @@ if ( apply_filters( 'qsm_show_previous_button', true, $quiz_id, $args ) ) {
         ); ?>
     </a>
 <?php } ?>
-	
-

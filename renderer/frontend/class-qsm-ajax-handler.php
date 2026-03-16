@@ -48,8 +48,8 @@ class QSM_Ajax_Handler {
 		$question_ids_serialized = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 		$randomness_order = array();
 		if ( isset( $_POST['randomness_order'] ) ) {
-			$raw_randomness_order = wp_unslash( $_POST['randomness_order'] );
-			if ( is_string( $raw_randomness_order ) && $raw_randomness_order !== '' ) {
+			$raw_randomness_order = sanitize_text_field( wp_unslash( $_POST['randomness_order'] ) );
+			if ( is_string( $raw_randomness_order ) && '' != $raw_randomness_order ) {
 				$decoded = json_decode( $raw_randomness_order, true );
 				if ( is_array( $decoded ) ) {
 					$randomness_order = $decoded;
