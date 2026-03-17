@@ -39,6 +39,7 @@ if ( apply_filters( 'qsm_show_submit_button', true, $quiz_id, $args ) ) :
         ); ?>"
         class="<?php echo esc_attr( $submit_button_class ); ?>" 
         data-action="submit"
+        style="display:none;"
         <?php echo apply_filters(
             'qsm_submit_button_attributes',
             '',

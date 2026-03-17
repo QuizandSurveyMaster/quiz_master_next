@@ -32,6 +32,7 @@ if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) :
     <a href="javascript:void(0);" 
         class="<?php echo esc_attr( $start_button_class ); ?>" 
         data-action="start"
+        style="display:none;"
         <?php echo apply_filters(
             'qsm_start_button_attributes',
             '',
