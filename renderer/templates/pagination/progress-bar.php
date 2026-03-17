@@ -18,6 +18,7 @@ $progress_mode = apply_filters( 'qsm_progressbar_render_mode', 'auto', $quiz_id,
 <div 
     id="qsm_progress_bar_<?php echo esc_attr( $quiz_id ); ?>" 
     class="qsm-progress-bar qsm-progress-bar-<?php echo esc_attr( $quiz_id ); ?>" 
+    style="display:none;"
     data-progress-mode="<?php echo esc_attr( $progress_mode ); ?>">
     <div class="progressbar-text"></div>
 </div>

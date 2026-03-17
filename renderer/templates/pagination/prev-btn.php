@@ -33,6 +33,7 @@ if ( apply_filters( 'qsm_show_previous_button', true, $quiz_id, $args ) ) {
     <a href="javascript:void(0);" 
         class="<?php echo esc_attr( $previous_button_class ); ?>" 
         data-action="previous"
+        style="display:none;"
         <?php echo apply_filters(
             'qsm_previous_button_attributes',
             '',
