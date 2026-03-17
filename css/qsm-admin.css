@@ -1923,6 +1923,9 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	left: calc(100% - 10px);
 	bottom: 30px;
 }
+.quiz_text_tab_content .qsm-text-label-wrapper{
+	width: 100%;
+}
 .qsm-text-label-wrapper>h2 {
 	font-size: 24px;
 	padding-bottom: 10px;
@@ -5554,11 +5557,4 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 }
 .qsm-bulk-question-import {
 	width: 150px;
-}
-.qsm-question-bank-header {
-    padding: 20px 20px 10px;
-    border: 1px solid #dadadb;
-	background-color: #fafafa;
-    border-radius: 10px;
-    box-shadow: 0 0 1px 0px;
 }
