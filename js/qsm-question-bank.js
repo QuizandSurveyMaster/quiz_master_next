@@ -4,6 +4,21 @@
 	const pageData = window.qsmQuestionBankData || {};
 
 	const QuestionBankPage = {
+		closeActiveEditorPopups() {
+			const questionModalVisible = $('#modal-1').hasClass('is-visible');
+			const inlineEditorVisible = $('.questionElements:visible').length > 0;
+			if (!questionModalVisible && !inlineEditorVisible) {
+				return;
+			}
+			if (typeof QSMQuestion !== 'undefined' && typeof QSMQuestion.closeEditPopup === 'function') {
+				QSMQuestion.closeEditPopup(questionModalVisible);
+				return;
+			}
+			if (inlineEditorVisible) {
+				$('.questionElements:visible').slideUp('fast');
+			}
+		},
+
 		state: {
 			page: 1,
 			totalPages: 1,
@@ -140,6 +155,7 @@
 
 			this.$createButton.on('click', (event) => {
 				event.preventDefault();
+				this.closeActiveEditorPopups();
 				this.handleCreateQuestion(true);
                 QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
 				if ( this.bulkState.isOpen ) {
@@ -621,15 +637,7 @@
 				if ( this.bulkState.isUploading ) {
 					return;
 				}
-				var questionModalVisible = $('#modal-1').hasClass('is-visible');
-				var inlineEditorVisible = $('.questionElements:visible').length > 0;
-				if ( questionModalVisible || inlineEditorVisible ) {
-					if ( typeof QSMQuestion !== 'undefined' && typeof QSMQuestion.closeEditPopup === 'function' ) {
-						QSMQuestion.closeEditPopup(questionModalVisible);
-					} else if ( inlineEditorVisible ) {
-						$('.questionElements:visible').slideUp('fast');
-					}
-				}
+				this.closeActiveEditorPopups();
 				this.toggleBulkPanel(true);
 			});
 			this.$bulkCancel.on('click', (event) => {
