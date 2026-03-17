@@ -1512,8 +1512,7 @@ class QMNPluginHelper {
 
     public function qsm_is_new_render_enabled() {
         $qmn_global_settings    = (array) get_option( 'qmn-settings' );
-		$enable_new_render      = ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
-		return $enable_new_render;
+		return ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
     }
 
 	/**

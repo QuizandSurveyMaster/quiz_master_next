@@ -42,7 +42,7 @@ var qsmTimerInterval = [];
 
             const $timer = $form.find('.mlw_qmn_timer');
             const totalTime = data.timer_limit * 60;
-            const consumedTime = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || 1;
+            const consumedTime = Number.parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || 1;
             const remainingTime = this.calculateInitialTime(quizId, totalTime, consumedTime);
             
             this.quizObjects[quizId] = {
@@ -268,7 +268,7 @@ var qsmTimerInterval = [];
 
         calculateInitialTime: function(quizId, totalTime, consumedTime) {
             const timerStarted = localStorage.getItem('mlw_started_quiz' + quizId) || localStorage.getItem('qsm_started_quiz_' + quizId);
-            const storedConsumed = parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || consumedTime || 1;
+            const storedConsumed = Number.parseInt(localStorage.getItem('mlw_time_consumed_quiz' + quizId), 10) || consumedTime || 1;
             let remainingTime = totalTime;
             
             if (timerStarted === 'yes' && storedConsumed > 1) {
@@ -304,7 +304,7 @@ var qsmTimerInterval = [];
         },
 
         secondsToTimer: function(seconds) {
-            seconds = parseInt(seconds, 10);
+            seconds = Number.parseInt(seconds, 10);
             if (seconds < 0) seconds = 0;
 
             const safeSeconds = seconds;

@@ -130,7 +130,7 @@ class QSM_New_Pagination_Renderer {
 			if ( isset( $this->options->quiz_id ) ) {
 				$this->quiz_data['quiz_id'] = $this->options->quiz_id;
 			} else {
-				throw new Exception( 'Quiz ID not found in options or quiz_data' );
+				throw new Exception( __('Quiz ID not found in options or quiz_data', 'quiz-master-next') );
 			}
 		}
 		
@@ -1247,7 +1247,13 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Prepare button texts with fallbacks
-		$start_button_text = ! empty( $this->quiz_texts->start_quiz_survey_text ) ? $this->quiz_texts->start_quiz_survey_text : ( ! empty( $this->quiz_texts->next_button_text ) ? $this->quiz_texts->next_button_text : 'Start' );
+		$start_button_text = __('Start', 'quiz-master-next');
+		if ( ! empty( $this->quiz_texts->next_button_text ) ) {
+			$start_button_text = $this->quiz_texts->next_button_text;
+		}
+		if ( ! empty( $this->quiz_texts->start_quiz_survey_text ) ) {
+			$start_button_text = $this->quiz_texts->start_quiz_survey_text;
+		}
 
 		$args = array(
 			'quiz_id'       => $this->options->quiz_id,
@@ -1289,7 +1295,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Prepare button texts with fallbacks
-		$start_button_text = 'Start';
+		$start_button_text = __('Start', 'quiz-master-next');
 		if ( ! empty( $this->quiz_texts->start_quiz_survey_text ) ) {
 			$start_button_text = $this->quiz_texts->start_quiz_survey_text;
 		} elseif ( ! empty( $this->quiz_texts->next_button_text ) ) {

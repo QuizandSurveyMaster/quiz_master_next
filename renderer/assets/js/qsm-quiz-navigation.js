@@ -425,7 +425,7 @@ var QSMPagination;
                     if ($i_this.hasClass('qmn_fill_blank')) {
                         value = $this.find('.qmn_fill_blank').map(function() {
                             let val = $(this).val();
-                            return val ? val : null;
+                            return val || null;
                         }).get().filter(function(v) { return v !== null; });
                     } else {
                         value = $i_this.val();
@@ -1195,7 +1195,7 @@ var QSMPagination;
                         show_result_validation = false;
                     }
                     
-                    if (fieldClass.indexOf('mlwRequiredNumber') !== -1 && (fieldValue === '' || isNaN(fieldValue))) {
+                    if (fieldClass.indexOf('mlwRequiredNumber') !== -1 && (fieldValue === '' || Number.isNaN(fieldValue))) {
                         self.displayError(errorMessages.number_error_text || 'Please enter a valid number.', $field, quizId);
                         show_result_validation = false;
                     }

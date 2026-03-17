@@ -112,12 +112,10 @@ jQuery(function ($) {
                     if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
                         errorMessage = xhr.responseJSON.data.message;
                     } else {
-                        try {
-                            const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
-                            if (parsed && parsed.data && parsed.data.message) {
-                                errorMessage = parsed.data.message;
-                            }
-                        } catch (e) {}
+                        const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                        if (parsed && parsed.data && parsed.data.message) {
+                            errorMessage = parsed.data.message;
+                        }
                     }
 
                     QSM_Migration_Process.updateStatus(errorMessage, 'error');
@@ -216,12 +214,10 @@ jQuery(function ($) {
                     if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
                         errorMessage = xhr.responseJSON.data.message;
                     } else {
-                        try {
-                            const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
-                            if (parsed && parsed.data && parsed.data.message) {
-                                errorMessage = parsed.data.message;
-                            }
-                        } catch (e) {}
+                        const parsed = xhr && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                        if (parsed && parsed.data && parsed.data.message) {
+                            errorMessage = parsed.data.message;
+                        }
                     }
 
                     QSM_Migration_Process.updateStatus(errorMessage, 'error');

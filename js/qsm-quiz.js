@@ -1572,10 +1572,13 @@ jQuery(function () {
 		let $this = $i_this.parents('.quiz_section');
 		let value;
 		if ($i_this.hasClass('qmn_fill_blank')) {
-			value = $this.find('.qmn_fill_blank').map(function() {
-				let val = jQuery(this).val();
-				return val ? val : null;
-			}).get().filter(function(v) { return v !== null; });
+			let $fill_blank_clicks = $this.find('.qmn_fill_blank').map(function () {
+				var val = $(this).val();
+				return val || null;
+			}).get().filter(function (v) {
+				return v !== null;
+			});
+			value = $fill_blank_clicks;
 		} else {
 			value = $i_this.val();
 		}
@@ -1849,7 +1852,7 @@ jQuery(function () {
 	});
 
 	jQuery(document).on('keyup', '.mlwPhoneNumber', function (e) {
-		this.value = this.value.replace(/[^- +()0-9\.]/g, '');
+		this.value = this.value.replace(/[^- +()0-9.]/g, '');
 	});
 
 	jQuery(document).on('click', '.qsm_social_share_link', function (e) {
