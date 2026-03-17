@@ -1150,6 +1150,24 @@ var QSMPagination;
                             show_result_validation = false;
                         }
                     }
+
+                    if (fieldClass.indexOf('mlwPhoneNumber') !== -1 && fieldValue !== '') {
+                        let phoneValue = $.trim(fieldValue);
+                        let phonePattern = $field.attr('data-phone-pattern');
+                        if (typeof phonePattern !== 'undefined' && phonePattern !== '') {
+                            try {
+                                let escapedPattern = phonePattern.replace(/[.+?^$|()\\]/g, '\\$&');
+                                escapedPattern = escapedPattern.replace(/ /g, '\\s+');
+                                let pattern = new RegExp('^' + escapedPattern + '$');
+                                if (!pattern.test(phoneValue)) {
+                                    self.displayError(errorMessages.phone_error_text || 'Please enter a valid phone number.', $field, quizId);
+                                    show_result_validation = false;
+                                }
+                            } catch (e) {
+                                console.warn('Invalid phone pattern:', phonePattern);
+                            }
+                        }
+                    }
                     
                     // URL validation
                     if (fieldClass.indexOf('mlwUrl') !== -1 && fieldValue !== '') {
