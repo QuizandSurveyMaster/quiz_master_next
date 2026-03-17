@@ -185,6 +185,9 @@ body .qsm-popup__btn-primary {
 	color: #fff !important;
 	display: flex;
 	justify-content: center;
+	width: 25px;
+	line-height: 30px;
+	position: relative;
 }
 .site .question-type-polar-s a.ui-state-focus:focus {
 	background: rgba(119, 113, 113, 1);
@@ -247,6 +250,10 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 .qsm-quiz-container input[type=radio] {
 	cursor: pointer;
 }
+.qsm-quiz-container input[type=checkbox]{
+	position: relative;
+	top: 2px;
+}
 .qmn_accept_answers input[type=checkbox] {
 	vertical-align: top;
 	position: relative;
@@ -298,6 +305,31 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	flex-direction: row-reverse;
     align-items: center;
 	padding: 0;
+}
+.qsm-progress-bar-container {
+    position: relative;
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.qsm-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 4px;
+    width: 0%;
+    max-width: 100%;
+}
+
+.progressbar-text {
+    font-weight: bold;
+    font-size: 13px;
+    color: rgb(52, 152, 219);
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: center;
 }
 .quiz_section .mlw-file-upload-error-msg {
 	color: red;
@@ -453,10 +485,10 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	position: absolute;
 	top: calc(100% - 40px);
-	left: 15px;
+	left: 10px;
 	background: #fff;
 	border-radius: 50%;
-	line-height: 1;
+	line-height: 22px;
 	margin-top: 5px;
 }
 .qmn_question_answer img {
@@ -558,6 +590,11 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	}
 	.question-type-polar-s .slider-main-wrapper {
 		order: 3;
+	}
+}
+@media screen and (max-width: 600px) {
+	body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
+		line-height: 29px;
 	}
 }
 .qsm_tooltip {
@@ -720,11 +757,6 @@ body .ui-tooltip.ui-widget-content {
 }
 .qsm-question-wrapper.qsm-active-question:not(.qsm-last-active-question){
 	border: 1px dotted #828282d1;
-}
-.qsm-quiz-container input[type=checkbox],
-.qsm-quiz-container input[type=radio] {
-	vertical-align: top;
-	margin-top: 5px;
 }
 .quiz_section fieldset {
 	border: none;

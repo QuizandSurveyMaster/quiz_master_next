@@ -30,6 +30,9 @@ function qsm_generate_admin_results_page() {
 				<?php } ?>
 			</h2>
 		</div>
+		<?php 
+			qsm_show_results_migration_warning();
+		?>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
@@ -90,10 +93,17 @@ add_action( 'init', 'qsm_results_overview_tab' );
  * @return void
  */
 function qsm_delete_results_attachments( $rows_before_update ) {
+	global $mlwQuizMasterNext;
     // Loop through each row in the results
     foreach ( $rows_before_update as $row ) {
         // Unserialize the quiz results
-        $mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
+		$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $row );
+		if ( $is_new_format ) {
+			// Load new format result structure
+			$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $row->result_id );
+		} else {
+			$mlw_qmn_results_array = maybe_unserialize( $row->quiz_results );
+		}
         // Ensure the results array exists and has the expected structure
 		foreach ( $mlw_qmn_results_array[1] as $key => $value ) {
 			// Check if the question type is 11 and user answer is not empty
@@ -424,7 +434,13 @@ function qsm_results_overview_tab_content() {
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				$quiz_infos[]            = $mlw_quiz_info;
 				$mlw_complete_time       = '';
-				$mlw_qmn_results_array   = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $mlw_quiz_info );
+				if ( $is_new_format ) {
+					// Load new format result structure
+					$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $mlw_quiz_info->result_id );
+				} else {
+					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
+				}
 				$hidden_questions        = ! empty( $mlw_qmn_results_array['hidden_questions'] ) && is_array($mlw_qmn_results_array['hidden_questions']) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
@@ -600,10 +616,13 @@ function qsm_results_overview_tab_content() {
 							<a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
 						</header>
 						<main class="qsm-popup__content" id="modal-2-content">
-							<div class="qsm-result-page-delete-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
-								<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
-								<input type='hidden' id='result_id' name='result_id' value='' />
-								<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+							<div class="qsm-result-page-delete-message">
+								<?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?><br/>
+								<p><em><?php esc_html_e( 'This will permanently remove all associated data and metadata', 'quiz-master-next' ); ?></em></p>
+							</div>
+							<?php wp_nonce_field( 'delete_results', 'delete_results_nonce' ); ?>
+							<input type='hidden' id='result_id' name='result_id' value='' />
+							<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
 						</main>
 						<footer class="qsm-popup__footer">
 							<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>

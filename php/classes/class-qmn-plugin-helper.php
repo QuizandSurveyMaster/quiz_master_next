@@ -659,42 +659,43 @@ class QMNPluginHelper {
 	 */
 	public static function get_default_texts() {
 		$defaults = array(
-			'message_before'                   => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-			'message_comment'                  => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
-			'message_end_template'             => '',
-			'question_answer_template'         => __( '%QUESTION%<br />%USER_ANSWERS_DEFAULT%<br/>%CORRECT_ANSWER_INFO%', 'quiz-master-next' ),
-			'question_answer_email_template'   => __( '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%', 'quiz-master-next' ),
-			'total_user_tries_text'            => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
-			'require_log_in_text'              => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
-			'limit_total_entries_text'         => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
-			'scheduled_timeframe_text'         => '',
-			'twitter_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'facebook_sharing_text'            => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'linkedin_sharing_text'            => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'submit_button_text'               => __( 'Submit', 'quiz-master-next' ),
-			'retake_quiz_button_text'          => __( 'Retake Quiz', 'quiz-master-next' ),
-			'previous_button_text'             => __( 'Previous', 'quiz-master-next' ),
-			'next_button_text'                 => __( 'Next', 'quiz-master-next' ),
-			'deselect_answer_text'             => __( 'Deselect Answer', 'quiz-master-next' ),
-			'empty_error_text'                 => __( 'Please complete all required fields!', 'quiz-master-next' ),
-			'email_error_text'                 => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
-			'number_error_text'                => __( 'This field must be a number!', 'quiz-master-next' ),
-			'incorrect_error_text'             => __( 'The entered text is not correct!', 'quiz-master-next' ),
-			'url_error_text'                   => __( 'The entered URL is not valid!', 'quiz-master-next' ),
-			'minlength_error_text'             => __( 'Required atleast %minlength% characters.', 'quiz-master-next' ),
-			'maxlength_error_text'             => __( 'Minimum %maxlength% characters allowed.', 'quiz-master-next' ),
-			'comment_field_text'               => __( 'Comments', 'quiz-master-next' ),
-			'hint_text'                        => __( 'Hint', 'quiz-master-next' ),
-			'quick_result_correct_answer_text' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
-			'quick_result_wrong_answer_text'   => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
-			'quiz_processing_message'          => '',
-			'quiz_limit_choice'                => __( 'Limit of choice is reached.', 'quiz-master-next' ),
-			'name_field_text'                  => __( 'Name', 'quiz-master-next' ),
-			'business_field_text'              => __( 'Business', 'quiz-master-next' ),
-			'email_field_text'                 => __( 'Email', 'quiz-master-next' ),
-			'phone_field_text'                 => __( 'Phone Number', 'quiz-master-next' ),
-			'start_quiz_text'                  => __( 'Start Quiz', 'quiz-master-next' ),
-			'start_survey_text'                => __( 'Start Survey', 'quiz-master-next' ),
+			'message_before'                    => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+			'message_comment'                   => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+			'message_end_template'              => '',
+			'question_answer_template'          => __( '%QUESTION%<br />%USER_ANSWERS_DEFAULT%<br/>%CORRECT_ANSWER_INFO%', 'quiz-master-next' ),
+			'question_answer_email_template'    => __( '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%', 'quiz-master-next' ),
+			'total_user_tries_text'             => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
+			'require_log_in_text'               => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
+			'limit_total_entries_text'          => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
+			'scheduled_timeframe_text'          => '',
+			'twitter_sharing_text'              => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'facebook_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'linkedin_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'submit_button_text'                => __( 'Submit', 'quiz-master-next' ),
+			'retake_quiz_button_text'           => __( 'Retake Quiz', 'quiz-master-next' ),
+			'previous_button_text'              => __( 'Previous', 'quiz-master-next' ),
+			'next_button_text'                  => __( 'Next', 'quiz-master-next' ),
+			'deselect_answer_text'              => __( 'Deselect Answer', 'quiz-master-next' ),
+			'empty_error_text'                  => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'email_error_text'                  => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'number_error_text'                 => __( 'This field must be a number!', 'quiz-master-next' ),
+			'incorrect_error_text'              => __( 'The entered text is not correct!', 'quiz-master-next' ),
+			'url_error_text'                    => __( 'The entered URL is not valid!', 'quiz-master-next' ),
+			'minlength_error_text'              => __( 'Required atleast %minlength% characters.', 'quiz-master-next' ),
+			'maxlength_error_text'              => __( 'Maximum %maxlength% characters allowed.', 'quiz-master-next' ),
+			'contact_field_required_error_text' => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'comment_field_text'                => __( 'Comments', 'quiz-master-next' ),
+			'hint_text'                         => __( 'Hint', 'quiz-master-next' ),
+			'quick_result_correct_answer_text'  => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
+			'quick_result_wrong_answer_text'    => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
+			'quiz_processing_message'           => '',
+			'quiz_limit_choice'                 => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+			'name_field_text'                   => __( 'Name', 'quiz-master-next' ),
+			'business_field_text'               => __( 'Business', 'quiz-master-next' ),
+			'email_field_text'                  => __( 'Email', 'quiz-master-next' ),
+			'phone_field_text'                  => __( 'Phone Number', 'quiz-master-next' ),
+			'start_quiz_text'                   => __( 'Start Quiz', 'quiz-master-next' ),
+			'start_survey_text'                 => __( 'Start Survey', 'quiz-master-next' ),
 		);
 		return apply_filters( 'qsm_default_texts', $defaults );
 	}
@@ -1375,5 +1376,162 @@ class QMNPluginHelper {
 		}
 
 		return array_values( $normalized_modes );
+	}
+
+      
+
+
+	/**
+	 * Format new answers table rows and meta into structure similar to legacy output.
+	 *
+	 * @param int $result_id Result ID.
+	 *
+	 * @return array {
+	 *     @type array $answers Formatted answers array.
+	 *     @type array $meta    Parsed meta data (result_meta/answer_label_points).
+	 * }
+	 */
+	public function get_formated_result_data( $result_id ) {
+
+        global $wpdb;
+
+        $result_id     = intval( $result_id );
+        $results_questions = $wpdb->prefix . 'qsm_results_questions';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
+
+        // -------------------------------------------------------
+        // Fetch ANSWERS
+        // -------------------------------------------------------
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$results_questions}
+                WHERE result_id = %d
+                ORDER BY id ASC",
+                $result_id
+            ),
+            ARRAY_A
+        );
+
+        $question_answer_array = array();
+
+		if ( ! empty( $rows ) ) {
+			foreach ( $rows as $row ) {
+
+				$row_array = array(
+					0                   => $row['question_description'],
+					1                   => $row['user_answer_comma'],
+					2                   => $row['correct_answer_comma'],
+					3                   => $row['question_comment'],
+
+					'user_answer'       => maybe_unserialize( $row['user_answer'] ),
+					'correct_answer'    => maybe_unserialize( $row['correct_answer'] ),
+					'correct'           => $row['correct'] ? 'correct' : 'incorrect',
+					'id'                => (int) $row['question_id'],
+					'points'            => (float) $row['points'],
+					'category'          => $row['category'],
+					'multicategories'   => maybe_unserialize( $row['multicategories'] ),
+					'question_type'     => $row['question_type'],
+					'question_title'    => $row['question_title'],
+
+					// Defaults
+					'user_compare_text' => '',
+					'case_sensitive'    => '',
+					'answer_limit_keys' => '',
+
+					'answer_type'       => $row['answer_type'], // default 'text'
+					'other_settings'    => maybe_unserialize( $row['other_settings'] ),
+				);
+
+				if ( is_array( $row_array['other_settings'] ) && ! empty( $row_array['other_settings'] ) ) {
+					$row_array = array_merge( $row_array, $row_array['other_settings'] );
+				}
+				unset( $row_array['other_settings'] );
+				$question_answer_array[] = $row_array;
+			}
+		}
+
+        // -------------------------------------------------------
+        // Fetch META
+        // -------------------------------------------------------
+        $meta_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT meta_key, meta_value FROM {$results_meta_table}
+                WHERE result_id = %d",
+                $result_id
+            ),
+            ARRAY_A
+        );
+
+        $result_meta         = array();
+        $answer_label_points = '';
+        $extra_meta          = array();
+
+		if ( ! empty( $meta_rows ) ) {
+			foreach ( $meta_rows as $meta_row ) {
+				if ( 'answer_label_points' === $meta_row['meta_key'] ) {
+					$answer_label_points = $meta_row['meta_value'];
+				}
+				elseif ( 'result_meta' === $meta_row['meta_key'] ) {
+					$result_meta = maybe_unserialize( $meta_row['meta_value'] );
+				}
+				else {
+					$extra_meta[ $meta_row['meta_key'] ] = maybe_unserialize( $meta_row['meta_value'] );
+				}
+			}
+		}
+
+        $final_array = array(
+            0         => isset( $result_meta['total_seconds'] ) ? $result_meta['total_seconds'] : 0,
+            1         => $question_answer_array,
+            2         => isset( $result_meta['quiz_comments'] ) ? $result_meta['quiz_comments'] : '',
+			'contact' => array(),
+        );
+
+        if ( '' !== $answer_label_points ) {
+            $final_array['answer_label_points'] = $answer_label_points;
+        }
+
+        foreach ( $result_meta as $meta_key => $meta_value ) {
+
+            // Skip already used keys
+            if ( in_array( $meta_key, array( 'total_seconds', 'quiz_comments' ), true ) ) {
+                continue;
+            }
+
+            $final_array[ $meta_key ] = $meta_value;
+        }
+
+		foreach ( $extra_meta as $meta_key => $meta_value ) {
+			if ( isset( $final_array[ $meta_key ] ) ) {
+				continue;
+			}
+			$final_array[ $meta_key ] = $meta_value;
+		}
+        return $final_array;
+    }
+
+    public function qsm_is_new_render_enabled() {
+        $qmn_global_settings    = (array) get_option( 'qmn-settings' );
+		return ! empty( $qmn_global_settings['enable_new_render'] ) ? esc_attr( $qmn_global_settings['enable_new_render'] ) : 0;
+    }
+
+	/**
+	 * Check if the result is in the new format.
+	 *
+	 * @param mixed $results_row The result row to check.
+	 *
+	 * @return bool True if the result is in the new format, false otherwise.
+	 */
+	public function is_new_format_result( $results_row ) {
+
+		if ( is_array($results_row) && isset($results_row['quiz_results']) ) {
+			return empty($results_row['quiz_results']);
+		}
+
+		if ( is_object($results_row) && isset($results_row->quiz_results) ) {
+			return empty($results_row->quiz_results);
+		}
+
+		return false;
 	}
 }

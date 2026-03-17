@@ -255,7 +255,7 @@ class QSM_Tracking {
 			}
 
 			// Checks if user opted into tracking.
-			if ( $track_check == 'opt_into_tracking' ) {
+			if ( 'opt_into_tracking' == $track_check ) {
 	        		$settings = (array) get_option( 'qmn-settings' );
 	        		$settings['tracking_allowed'] = '2';
 	        		update_option( 'qmn-settings', $settings );

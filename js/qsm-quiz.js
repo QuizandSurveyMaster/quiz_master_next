@@ -840,6 +840,12 @@ function qmnValidation(element, quiz_form_id) {
 				by_pass = false;
 			}
 			if (localStorage.getItem('mlw_time_quiz' + quiz_id) === null || (0 == localStorage.getItem('mlw_time_quiz' + quiz_id) && by_pass == false) || localStorage.getItem('mlw_time_quiz' + quiz_id) > 0.08 || by_pass === false) {
+				// Check if this is a contact field
+				let isContactField = jQuery(this).closest('.qsm_contact_div').length > 0;
+				let requiredErrorMsg = (isContactField && error_messages.contact_field_required_error_text) 
+					? error_messages.contact_field_required_error_text 
+					: error_messages.empty_error_text;
+
 				if (jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value === "" && +this.value != NaN) {
 					qmnDisplayError(error_messages.number_error_text, jQuery(this), quiz_form_id);
 					show_result_validation = false;
@@ -849,7 +855,7 @@ function qmnValidation(element, quiz_form_id) {
 					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && jQuery.trim(this.value) === "") {
-					qmnDisplayError(error_messages.empty_error_text, jQuery(this), quiz_form_id);
+					qmnDisplayError(requiredErrorMsg, jQuery(this), quiz_form_id);
 					show_result_validation = false;
 				}
 				if (jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code) {
@@ -995,8 +1001,18 @@ function qmnFormSubmit(quiz_form_id, $this) {
 				qmnDisplayResults(response, quiz_form_id, $container, quiz_id);
 				// run MathJax on the new content
 				if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
-					MathJax.typesetPromise();
+					if (typeof MathJax !== 'undefined') {
+						// MathJax v3
+						if (typeof MathJax.typesetPromise === 'function') {
+							MathJax.typesetPromise();
+						}
+						// MathJax v2 fallback
+						else if (MathJax.Hub && typeof MathJax.Hub.Queue === 'function') {
+							MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+						}
+					}
 				}
+
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 				if (disableScroll) {
@@ -1556,10 +1572,13 @@ jQuery(function () {
 		let $this = $i_this.parents('.quiz_section');
 		let value;
 		if ($i_this.hasClass('qmn_fill_blank')) {
-			value = $this.find('.qmn_fill_blank').map(function() {
-				let val = jQuery(this).val();
-				return val ? val : null;
-			}).get().filter(function(v) { return v !== null; });
+			let $fill_blank_clicks = $this.find('.qmn_fill_blank').map(function () {
+				var val = $(this).val();
+				return val || null;
+			}).get().filter(function (v) {
+				return v !== null;
+			});
+			value = $fill_blank_clicks;
 		} else {
 			value = $i_this.val();
 		}
@@ -1833,7 +1852,7 @@ jQuery(function () {
 	});
 
 	jQuery(document).on('keyup', '.mlwPhoneNumber', function (e) {
-		this.value = this.value.replace(/[^- +()0-9\.]/g, '');
+		this.value = this.value.replace(/[^- +()0-9.]/g, '');
 	});
 
 	jQuery(document).on('click', '.qsm_social_share_link', function (e) {

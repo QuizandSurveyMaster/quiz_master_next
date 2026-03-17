@@ -169,7 +169,7 @@ class QMN_Log_Manager
 		global $wpdb;
 		
 		// Look for logs with same title, content, and type within last hour
-		$one_hour_ago = date( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
+		$one_hour_ago = gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
 		
 		// Build query and params separately to ensure placeholder safety
 		$params = array( $title, $content, $one_hour_ago );
