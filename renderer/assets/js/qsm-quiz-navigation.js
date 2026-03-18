@@ -1151,20 +1151,17 @@ var QSMPagination;
                         }
                     }
 
-                    if (fieldClass.indexOf('mlwPhoneNumber') !== -1 && fieldValue !== '') {
+                    // Phone number validation
+                    if (fieldClass.includes('mlwPhoneNumber') && fieldValue !== '') {
                         let phoneValue = $.trim(fieldValue);
                         let phonePattern = $field.attr('data-phone-pattern');
-                        if (typeof phonePattern !== 'undefined' && phonePattern !== '') {
-                            try {
-                                let escapedPattern = phonePattern.replace(/[.+?^$|()\\]/g, '\\$&');
-                                escapedPattern = escapedPattern.replace(/ /g, '\\s+');
-                                let pattern = new RegExp('^' + escapedPattern + '$');
+                        if (phonePattern !== undefined && phonePattern !== '') {
+                            let escapedPattern = phonePattern.replaceAll(/[.+?^$|()\\]/g, String.raw`\$&`);
+                            escapedPattern = escapedPattern.replaceAll(/ /g, String.raw`\s+`);
+                            let pattern = new RegExp(String.raw`^${escapedPattern}$`);
                                 if (!pattern.test(phoneValue)) {
                                     self.displayError(errorMessages.phone_error_text || 'Please enter a valid phone number.', $field, quizId);
                                     show_result_validation = false;
-                                }
-                            } catch (e) {
-                                console.warn('Invalid phone pattern:', phonePattern);
                             }
                         }
                     }
