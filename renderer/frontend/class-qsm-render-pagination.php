@@ -1569,7 +1569,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		$questions_settings = array();
 		foreach ( $this->questions as $key => $question ) {
-			if ( ! in_array($question['question_id'], $question_ids, true) ) {
+			if ( ! in_array($question['question_id'], $question_ids) ) {
 				continue;
 			}
 			$unserialized_settings = maybe_unserialize( $question['question_settings'] );
