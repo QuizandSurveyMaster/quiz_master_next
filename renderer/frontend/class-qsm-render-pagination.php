@@ -1404,7 +1404,7 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	public function render_javascript_data() {
-		global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext, $qmn_json_data;
 		// Ensure mlwQuizMasterNext is available
 		if ( ! $mlwQuizMasterNext || ! isset( $mlwQuizMasterNext->pluginHelper ) ) {
 			return '<script>console.warn("QSM: mlwQuizMasterNext not available for quiz data localization");</script>';
@@ -1421,9 +1421,9 @@ class QSM_New_Pagination_Renderer {
 		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
 		
 		// Get error messages from quiz texts with language support
-		$default_texts  = QMNPluginHelper::get_default_texts();
+		$default_texts   = QMNPluginHelper::get_default_texts();
 		$quiz_texts_obj = is_object( $this->quiz_texts ) ? $this->quiz_texts : (object) array();
-		$error_messages = array(
+		$qmn_json_data['error_messages'] = array_merge( $qmn_json_data['error_messages'], array(
 			'email_error_text'                  => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
 				! empty( $quiz_texts_obj->email_error_text ) ? $quiz_texts_obj->email_error_text : $default_texts['email_error_text'],
 				"quiz_email_error_text-{$this->options->quiz_id}"
@@ -1461,7 +1461,7 @@ class QSM_New_Pagination_Renderer {
 				"quiz_phone_error_text-{$this->options->quiz_id}"
 			),
 			'recaptcha_error_text'              => __( 'ReCaptcha is missing', 'quiz-master-next' ),
-		);
+		));
 		
 		// Get text messages with language support
 		$correct_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support(
@@ -1530,7 +1530,7 @@ class QSM_New_Pagination_Renderer {
 			'question_list'                      => $this->get_questions_data(),
 			
 			// Error messages
-			'error_messages'                     => $error_messages,
+			'error_messages'                     => $qmn_json_data['error_messages'],
 			
 			// System data
 			'ajax_url'                           => admin_url( 'admin-ajax.php' ),
