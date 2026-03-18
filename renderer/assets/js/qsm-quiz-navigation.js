@@ -1150,6 +1150,21 @@ var QSMPagination;
                             show_result_validation = false;
                         }
                     }
+
+                    // Phone number validation
+                    if (fieldClass.includes('mlwPhoneNumber') && fieldValue !== '') {
+                        let phoneValue = $.trim(fieldValue);
+                        let phonePattern = $field.attr('data-phone-pattern');
+                        if (phonePattern !== undefined && phonePattern !== '') {
+                            let escapedPattern = phonePattern.replaceAll(/[.+?^$|()\\]/g, String.raw`\$&`);
+                            escapedPattern = escapedPattern.replaceAll(/ /g, String.raw`\s+`);
+                            let pattern = new RegExp(String.raw`^${escapedPattern}$`);
+                                if (!pattern.test(phoneValue)) {
+                                    self.displayError(errorMessages.phone_error_text || 'Please enter a valid phone number.', $field, quizId);
+                                    show_result_validation = false;
+                            }
+                        }
+                    }
                     
                     // URL validation
                     if (fieldClass.indexOf('mlwUrl') !== -1 && fieldValue !== '') {
