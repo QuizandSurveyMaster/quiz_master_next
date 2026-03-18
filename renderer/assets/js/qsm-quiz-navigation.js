@@ -259,11 +259,11 @@ var QSMPagination;
                 // Start button click - bind to container (multiple selectors for compatibility)
                 $(document).on('click', $start_btn, function(e) {
                     e.preventDefault();
-                    self.startQuiz(quizId);
                     // Validate current page before proceeding
                     if (!self.validateCurrentPage(quizId)) {
                         return;
                     }
+                    self.startQuiz(quizId);
                     self.nextPage(quizId);
                 });
 
