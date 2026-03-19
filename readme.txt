@@ -226,29 +226,29 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 = 11.0.0 ( March 19, 2026 ) =
-* Feature: Introduced a new quiz rendering system with fully customizable quiz elements
-* Feature: Added advanced customization options for quiz templates including pagination settings
+* Feature: Introduced a new quiz rendering system with fully customizable elements
+* Feature: Added advanced customization options for quiz templates, including pagination settings
 * Feature: Added control over question layout within quiz templates
 * Feature: Added customization options for timer behavior and display
-* Feature: Added support for progress bar customization in quizzes
+* Feature: Added support for progress bar customization
 * Feature: Introduced a complete Question Bank management system
-* Feature: Added filtering capability within the Question Bank
-* Feature: Added edit functionality for existing questions in the Question Bank
-* Feature: Added delete  and duplicate option for managing and quickly reuse questions
+* Feature: Added filtering capabilities within the Question Bank
+* Feature: Added edit functionality for existing questions
+* Feature: Added options to delete and duplicate questions for quick reuse
 * Feature: Added ability to create questions directly in the Question Bank without assigning them to a quiz
-* Feature: Added bulk import functionality to upload multiple questions using a CSV file
-* Feature: Added a guided tour to assist users in creating and managing questions
+* Feature: Added bulk import functionality to upload questions via CSV
+* Feature: Added a guided tour for creating and managing questions
 * Feature: Added option to customize contact form error messages
-* Feature: Added support to modify default email templates
-* Feature: Added support to customize result templates
+* Feature: Added option to modify default email templates
+* Feature: Added support for customizing result templates
 * Enhancement: Improved database structure for quiz results
-* Enhancement: Split result data into main result table and result meta table for better organization
-* Enhancement: Optimized storage and retrieval of quiz result data
-* Enhancement: Improved UI for multiple choice and  multi-response question type
-* Enhancement: Added validation for phone number fields to improve data accuracy
-* Bug: Fixed issue causing repeated loop insertions in log entries
-* Bug: Fixed incorrect timestamp handling in result submission date
-* Bug: Fixed SQL injection vulnerability related to merged_question parameter
+* Enhancement: Split result data into main result and result meta tables for better organization
+* Enhancement: Optimized storage and retrieval of quiz results
+* Enhancement: Improved UI for multiple choice and multi-response question types
+* Enhancement: Added validation for phone number fields
+* Bug: Fixed repeated log insertion issue
+* Bug: Fixed incorrect timestamp handling in result submissions
+* Patch: Fixed SQL injection vulnerability related to merged_question parameter
 
 = 10.3.5 ( January 28, 2026 ) =
 * Patch: Authentication validation issue affecting update results
