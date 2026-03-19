@@ -259,11 +259,11 @@ var QSMPagination;
                 // Start button click - bind to container (multiple selectors for compatibility)
                 $(document).on('click', $start_btn, function(e) {
                     e.preventDefault();
-                    self.startQuiz(quizId);
                     // Validate current page before proceeding
                     if (!self.validateCurrentPage(quizId)) {
                         return;
                     }
+                    self.startQuiz(quizId);
                     self.nextPage(quizId);
                 });
 
@@ -1148,6 +1148,21 @@ var QSMPagination;
                         if (!self.isValidEmail(email)) {
                             self.displayError(errorMessages.email_error_text || 'Please enter a valid email address.', $field, quizId);
                             show_result_validation = false;
+                        }
+                    }
+
+                    // Phone number validation
+                    if (fieldClass.includes('mlwPhoneNumber') && fieldValue !== '') {
+                        let phoneValue = $.trim(fieldValue);
+                        let phonePattern = $field.attr('data-phone-pattern');
+                        if (phonePattern !== undefined && phonePattern !== '') {
+                            let escapedPattern = phonePattern.replaceAll(/[.+?^$|()\\]/g, String.raw`\$&`);
+                            escapedPattern = escapedPattern.replaceAll(/ /g, String.raw`\s+`);
+                            let pattern = new RegExp(String.raw`^${escapedPattern}$`);
+                                if (!pattern.test(phoneValue)) {
+                                    self.displayError(errorMessages.phone_error_text || 'Please enter a valid phone number.', $field, quizId);
+                                    show_result_validation = false;
+                            }
                         }
                     }
                     

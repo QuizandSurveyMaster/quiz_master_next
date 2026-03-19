@@ -34,6 +34,7 @@ if ( apply_filters( 'qsm_show_next_button', true, $quiz_id, $args ) ) :
     <a href="javascript:void(0);" 
             class="<?php echo esc_attr( $next_button_class ); ?>" 
             data-action="next"
+            style="display:none;"
             <?php echo apply_filters(
                 'qsm_next_button_attributes',
                 '',

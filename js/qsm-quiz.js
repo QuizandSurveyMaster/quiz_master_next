@@ -786,19 +786,15 @@ function qmnValidation(element, quiz_form_id) {
 				}
 			}
 			if (jQuery(this).hasClass('mlwPhoneNumber') && this.value !== "") {
-				var phoneValue = jQuery.trim(this.value);
-				var phonePattern = jQuery(this).attr('data-phone-pattern');
-				if (typeof phonePattern !== 'undefined' && phonePattern !== '') {
-					try {
-                        var escapedPattern = phonePattern.replace(/[.+?^$|()\\]/g, '\\$&');
-                        escapedPattern = escapedPattern.replace(/ /g, '\\s+');
-                        var pattern = new RegExp('^' + escapedPattern + '$');
-						if (!pattern.test(phoneValue)) {
-							qmnDisplayError(error_messages.phone_error_text, jQuery(this), quiz_form_id);
-							show_result_validation = false;
-						}
-					} catch (e) {
-						console.warn('Invalid phone pattern:', phonePattern);
+				let phoneValue = jQuery.trim(this.value);
+				let phonePattern = jQuery(this).attr('data-phone-pattern');
+				if (phonePattern !== undefined && phonePattern !== '') {
+					let escapedPattern = phonePattern.replaceAll(/[.+?^$|()\\]/g, String.raw`\$&`);
+					escapedPattern = escapedPattern.replaceAll(/ /g, String.raw`\s+`);
+					let pattern = new RegExp(String.raw`^${escapedPattern}$`);
+					if (!pattern.test(phoneValue)) {
+						qmnDisplayError(error_messages.phone_error_text, jQuery(this), quiz_form_id);
+						show_result_validation = false;
 					}
 				}
 			}

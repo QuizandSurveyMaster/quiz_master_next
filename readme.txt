@@ -225,7 +225,7 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
-= 11.0.0 ( March 18, 2026 ) =
+= 11.0.0 ( March 19, 2026 ) =
 * Feature: Introduced a new quiz rendering system with fully customizable quiz elements
 * Feature: Added advanced customization options for quiz templates including pagination settings
 * Feature: Added control over question layout within quiz templates

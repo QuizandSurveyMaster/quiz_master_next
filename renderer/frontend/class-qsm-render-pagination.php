@@ -1404,7 +1404,7 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	public function render_javascript_data() {
-		global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext, $qmn_json_data;
 		// Ensure mlwQuizMasterNext is available
 		if ( ! $mlwQuizMasterNext || ! isset( $mlwQuizMasterNext->pluginHelper ) ) {
 			return '<script>console.warn("QSM: mlwQuizMasterNext not available for quiz data localization");</script>';
@@ -1421,42 +1421,47 @@ class QSM_New_Pagination_Renderer {
 		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
 		
 		// Get error messages from quiz texts with language support
-		$default_texts = QMNPluginHelper::get_default_texts();
-		$error_messages = array(
+		$default_texts   = QMNPluginHelper::get_default_texts();
+		$quiz_texts_obj = is_object( $this->quiz_texts ) ? $this->quiz_texts : (object) array();
+		$qmn_json_data['error_messages'] = array_merge( $qmn_json_data['error_messages'], array(
 			'email_error_text'                  => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty( $this->options->email_error_text ) ? $this->options->email_error_text : $default_texts['email_error_text'],
+				! empty( $quiz_texts_obj->email_error_text ) ? $quiz_texts_obj->email_error_text : $default_texts['email_error_text'],
 				"quiz_email_error_text-{$this->options->quiz_id}"
 			),
 			'url_error_text'                    => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty( $this->options->url_error_text ) ? $this->options->url_error_text : $default_texts['url_error_text'],
+				! empty( $quiz_texts_obj->url_error_text ) ? $quiz_texts_obj->url_error_text : $default_texts['url_error_text'],
 				"quiz_url_error_text-{$this->options->quiz_id}"
 			),
 			'empty_error_text'                  => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->empty_error_text ?? $default_texts['empty_error_text'],
+				! empty( $quiz_texts_obj->empty_error_text ) ? $quiz_texts_obj->empty_error_text : $default_texts['empty_error_text'],
 				"quiz_empty_error_text-{$this->options->quiz_id}"
 			),
 			'contact_field_required_error_text' => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty( $this->options->contact_field_required_error_text ) ? $this->options->contact_field_required_error_text : $default_texts['contact_field_required_error_text'],
+				! empty( $quiz_texts_obj->contact_field_required_error_text ) ? $quiz_texts_obj->contact_field_required_error_text : $default_texts['contact_field_required_error_text'],
 				"quiz_contact_field_required_error_text-{$this->options->quiz_id}"
 			),
 			'number_error_text'                 => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty($this->options->number_error_text) ? $this->options->number_error_text : $default_texts['number_error_text'],
+				! empty( $quiz_texts_obj->number_error_text ) ? $quiz_texts_obj->number_error_text : $default_texts['number_error_text'],
 				"quiz_number_error_text-{$this->options->quiz_id}"
 			),
 			'incorrect_error_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				$this->options->incorrect_error_text ?? $default_texts['incorrect_error_text'],
+				! empty( $quiz_texts_obj->incorrect_error_text ) ? $quiz_texts_obj->incorrect_error_text : $default_texts['incorrect_error_text'],
 				"quiz_incorrect_error_text-{$this->options->quiz_id}"
 			),
 			'minlength_error_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty( $this->options->minlength_error_text ) ? $this->options->minlength_error_text : $default_texts['minlength_error_text'],
+				! empty( $quiz_texts_obj->minlength_error_text ) ? $quiz_texts_obj->minlength_error_text : $default_texts['minlength_error_text'],
 				"quiz_minlength_error_text-{$this->options->quiz_id}"
 			),
 			'maxlength_error_text'              => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
-				! empty( $this->options->maxlength_error_text ) ? $this->options->maxlength_error_text : $default_texts['maxlength_error_text'],
+				! empty( $quiz_texts_obj->maxlength_error_text ) ? $quiz_texts_obj->maxlength_error_text : $default_texts['maxlength_error_text'],
 				"quiz_maxlength_error_text-{$this->options->quiz_id}"
 			),
+			'phone_error_text'                  => $mlwQuizMasterNext->pluginHelper->qsm_language_support(
+				! empty( $quiz_texts_obj->phone_error_text ) ? $quiz_texts_obj->phone_error_text : __( 'Phone number is invalid', 'quiz-master-next' ),
+				"quiz_phone_error_text-{$this->options->quiz_id}"
+			),
 			'recaptcha_error_text'              => __( 'ReCaptcha is missing', 'quiz-master-next' ),
-		);
+		));
 		
 		// Get text messages with language support
 		$correct_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support(
@@ -1525,7 +1530,7 @@ class QSM_New_Pagination_Renderer {
 			'question_list'                      => $this->get_questions_data(),
 			
 			// Error messages
-			'error_messages'                     => $error_messages,
+			'error_messages'                     => $qmn_json_data['error_messages'],
 			
 			// System data
 			'ajax_url'                           => admin_url( 'admin-ajax.php' ),
@@ -1564,7 +1569,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		$questions_settings = array();
 		foreach ( $this->questions as $key => $question ) {
-			if ( ! in_array($question['question_id'], $question_ids, true) ) {
+			if ( ! in_array($question['question_id'], $question_ids) ) {
 				continue;
 			}
 			$unserialized_settings = maybe_unserialize( $question['question_settings'] );
