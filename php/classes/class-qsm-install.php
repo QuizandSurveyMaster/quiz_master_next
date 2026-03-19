@@ -1527,6 +1527,12 @@ class QSM_Install {
 			if ( ! $multiple_category ) {
 				add_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 			}
+			// enabling new render by default for fresh installation
+			$settings = get_option( 'qmn-settings' );
+			if ( false === $settings ) {
+				$settings = array( 'enable_new_render' => 1 );
+				add_option( 'qmn-settings', $settings );
+			}
 			update_option( 'qsm_update_db_column', 1 );
 			update_option( 'qsm_update_quiz_db_column', 1 );
 			update_option( 'qsm_update_db_column_charset_utf8mb4_unicode_ci', 1 );

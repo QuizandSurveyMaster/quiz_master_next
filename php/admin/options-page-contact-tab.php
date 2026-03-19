@@ -382,7 +382,7 @@ function qsm_options_contact_tab_template() {
 				<div class="qsm-contact-form-group qsm-phone-option">
 					<label class="qsm-contact-form-label"><?php esc_html_e('Phone Pattern', 'quiz-master-next');?></label>
 					<input type="text" class="qsm-contact-form-control" name="phone_pattern" value="{{data.phone_pattern}}" placeholder="E.g. [0-9]{5} [0-9]{5}">
-					<em><?php esc_html_e('Setup pattern for phone format. Examples: +91 [0-9]{5} [0-9]{5} for with country code, [0-9]{5} [0-9]{5} for without country code', 'quiz-master-next');?></em>
+					<em><?php esc_html_e('Setup pattern for phone format. Examples: +1 [0-9]{5} [0-9]{5} for with country code, [0-9]{5} [0-9]{5} for without country code', 'quiz-master-next');?></em>
 				</div>
 			</div>
 		</div>
