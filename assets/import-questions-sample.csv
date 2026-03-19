@@ -1,0 +1,4 @@
+question,description,question_type,option_1,option_2,option_3,option_4,correct_option,points,category,hint,grading_mode,answer_limit
+What is the capital of France?,Choose the correct capital city.,Multiple Choice,Paris,London,Berlin,Madrid,Paris,10,Geography,Known as the City of Light,auto,
+Which of the following are programming languages?,Select all that apply,Multiple Response,Python,HTML,Java,CSS,"1,3",5,Technology,Think about compiled language,auto,2
+What does HTML stand for?,Full form of HTML,Fill In The blank,,,,,,,Web Development,Used to structure web pages,manual,

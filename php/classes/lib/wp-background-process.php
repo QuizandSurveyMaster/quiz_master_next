@@ -59,7 +59,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 		$this->cron_interval_identifier = $this->identifier . '_cron_interval';
 
 		add_action( $this->cron_hook_identifier, array( $this, 'handle_cron_healthcheck' ) );
-		add_filter( 'cron_schedules', array( $this, 'schedule_cron_healthcheck' ) );
+		add_filter( 'cron_schedules', array( $this, 'schedule_cron_healthcheck' ) ); // phpcs:ignore WordPress.WP.CronInterval.ChangeDetected -- Bundled library registers a dynamic interval identifier.
 	}
 
 	/**

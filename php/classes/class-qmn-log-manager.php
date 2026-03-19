@@ -124,14 +124,25 @@ class QMN_Log_Manager
 		);
 		$args = wp_parse_args( $log_data, $defaults );
 
+		// Generate unique post_name to avoid wp_unique_post_slug() performance issues
+		$args['post_name'] = 'qsm-log-entry-' . uniqid();
+
+		// Check for duplicate log entries (same title, message, and type within last hour)
+		if ( ! empty( $args['post_title'] ) && ! empty( $args['post_content'] ) ) {
+			$duplicate_check = $this->check_duplicate_log( $args['post_title'], $args['post_content'], $args['log_type'] );
+			if ( $duplicate_check ) {
+				return $duplicate_check; // Return existing log ID instead of creating duplicate
+			}
+		}
+
 		// Hook called before a QSM log is inserted
 		do_action( 'wp_pre_insert_qmn_log' );
 
 		// store the log entry
 		$log_id = wp_insert_post( $args );
 		// set the log type, if any
-		if ( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
-			wp_set_object_terms( $log_id, $log_data['log_type'], 'qmn_log_type', false );
+		if ( ! empty( $args['log_type'] ) && $this->valid_type( $args['log_type'] ) ) {
+			wp_set_object_terms( $log_id, $args['log_type'], 'qmn_log_type', false );
 		}
 		// set log meta, if any
 		if ( $log_id && ! empty( $log_meta ) ) {
@@ -143,6 +154,58 @@ class QMN_Log_Manager
 		// Hook called after a QSM log is inserted
 		do_action( 'wp_post_insert_qmn_log', $log_id );
 		return $log_id;
+	}
+
+	/**
+	 * Checks for duplicate log entries within the last hour
+	 *
+	 * @since 9.0.2
+	 * @param string $title The log title
+	 * @param string $content The log content/message
+	 * @param string $type The log type
+	 * @return bool|int False if no duplicate found, existing log ID if duplicate found
+	 */
+	private function check_duplicate_log( $title, $content, $type ) {
+		global $wpdb;
+		
+		// Look for logs with same title, content, and type within last hour
+		$one_hour_ago = gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
+		
+		// Build query and params separately to ensure placeholder safety
+		$params = array( $title, $content, $one_hour_ago );
+		
+		$sql = "
+			SELECT p.ID 
+			FROM {$wpdb->posts} p
+			WHERE p.post_type = 'qmn_log'
+			AND p.post_status = 'publish'
+			AND p.post_title = %s
+			AND p.post_content = %s
+			AND p.post_date >= %s
+		";
+		
+		// Only join for log type if it exists
+		if ( $type ) {
+			$sql .= "
+				AND EXISTS (
+					SELECT 1 
+					FROM {$wpdb->term_relationships} tr
+					INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+					INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+					WHERE tr.object_id = p.ID
+					AND tt.taxonomy = 'qmn_log_type'
+					AND t.slug = %s
+				)
+			";
+			$params[] = $type;
+		}
+		
+		$sql .= " LIMIT 1";
+		
+		$query = $wpdb->prepare( $sql, $params );
+		$existing_log_id = $wpdb->get_var( $query );
+		
+		return $existing_log_id ? (int) $existing_log_id : false;
 	}
 
 	/**

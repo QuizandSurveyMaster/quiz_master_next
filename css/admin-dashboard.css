@@ -953,12 +953,21 @@ h2.hndle.ui-sortable-handle {
 #quiz_settings .input-group {
 	box-shadow: 0 0 3px rgba(10, 10, 10, 0.2);
 }
-.qsm-dashboard-create-quiz-section {
+.qsm-dashboard-create-quiz-section, .qsm-dashboard-migration-section.qsm-dashboard-page-common-style {
 	display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 10px;
     align-items: center;
 	margin-top: 60px;
+}
+.qsm-dashboard-migration-section.qsm-dashboard-page-common-style {
+	background: var(--qsm-information-color-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    align-items: center;
 }
 .qsm-dashboard-time-range-selector {
 	float: right;
