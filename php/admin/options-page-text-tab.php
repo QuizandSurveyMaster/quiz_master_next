@@ -43,6 +43,32 @@ function mlw_options_text_tab_content() {
 			<?php do_action( 'qsm_add_list_menu_text_tab_after', $variable_list ); ?>
 		</ul>
 	</div>
+	<div class="qsm-text-subtab-description">
+		<div class="qsm-text-tab-description qsm-general-text-tab" data-id="qsm_general_text">
+			<p class="qsm-tab-description-headline">
+				<?php esc_html_e( 'Manage the text shown to users at different stages of the quiz.', 'quiz-master-next' ); ?>
+			</p>
+			<p class="qsm-tab-description-subheadline">
+				<?php esc_html_e( 'Customize welcome messages, instructions, system messages, and sharing text to guide users through the quiz experience.', 'quiz-master-next' ); ?>
+			</p>
+		</div>
+		<div class="qsm-text-tab-description qsm-variable-text-tab" data-id="qsm_variable_text" style="display:none;">
+				<p class="qsm-tab-description-headline">
+					<?php esc_html_e( 'Customize how quiz data is displayed using dynamic variables.', 'quiz-master-next' ); ?>
+				</p>
+				<p class="qsm-tab-description-subheadline">
+					<?php esc_html_e( 'Control the format and content of question, answer, score, and result variables used across emails and result pages.', 'quiz-master-next' ); ?>
+				</p>
+		</div>
+		<div class="qsm-text-tab-description qsm-custom-label-tab" data-id="qsm_custom_label" style="display:none;">
+			<p class="qsm-tab-description-headline">
+				<?php esc_html_e( 'Customize the labels and system messages used across the quiz.', 'quiz-master-next' ); ?>
+			</p>
+			<p class="qsm-tab-description-subheadline">
+				<?php esc_html_e( 'Edit button text, validation messages, and other interface labels to match your tone and terminology.', 'quiz-master-next' ); ?>
+			</p>
+		</div>
+	</div>
 	<div class="qsm-text-main-wrap">
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">

@@ -1,0 +1,20 @@
+/**
+ * Pagination Header Styles
+ * 
+ * Styles for the optional pagination header (top navigation)
+ * These styles ensure the header doesn't break the quiz design
+ * 
+ * @package QSM
+ * @version 1.0.0
+ */
+
+/* =========================================================================
+ * Pagination Header Container
+ * ========================================================================= */
+
+.qsm-pagination-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+	clear: both;
+}

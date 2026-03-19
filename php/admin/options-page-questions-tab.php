@@ -353,7 +353,7 @@ function qsm_options_questions_tab_content() {
 									}
 									?>
 								</div>
-								<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo apply_filters( 'qsm_polar_class', esc_attr( $polar_class . $show_answer_option ) ); ?>">
+								<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( apply_filters( 'qsm_polar_class', $polar_class . $show_answer_option ) ); ?>">
 									<div class="correct-header"><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></div>
 									<div class="answers" id="answers">
 
@@ -974,12 +974,12 @@ function qsm_user_can_modify_question_ids( $question_ids ) {
 	}
 
 	$placeholders = implode( ', ', array_fill( 0, count( $question_ids ), '%d' ) );
-	$quiz_ids     = $wpdb->get_col(
-		$wpdb->prepare(
-			"SELECT DISTINCT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )",
-			$question_ids
-		)
+	$query_args   = array_merge(
+		array( "SELECT DISTINCT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )" ),
+		$question_ids
 	);
+	$prepared_query = call_user_func_array( array( $wpdb, 'prepare' ), $query_args );
+	$quiz_ids       = $wpdb->get_col( $prepared_query );
 
 	$current_user = get_current_user_id();
 	foreach ( $quiz_ids as $quiz_id ) {

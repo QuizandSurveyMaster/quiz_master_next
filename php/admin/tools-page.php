@@ -7,6 +7,289 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! class_exists( 'QSM_Database_Migration' ) ) {
+	include_once QSM_PLUGIN_PATH . 'php/admin/class-qsm-database-migration.php';
+}
+
+/**
+ * Required addons & versions for migration.
+ *
+ * @return array
+ */
+function qsm_migration_get_required_addons() {
+	$addons_data = qsm_get_parsing_script_data( 'required-to-migration-updated.json' );
+
+	if ( ! $addons_data ) {
+		return array();
+	}
+
+	$migration_addons = array();
+	foreach ( $addons_data as $addon ) {
+		$migration_addons[] = array(
+			'name'                   => $addon['name'],
+			'path'                   => $addon['path'],
+			'required_addon_version' => $addon['required_version'],
+		);
+	}
+
+	return $migration_addons;
+}
+
+/**
+ * Get plugin path by plugin name.
+ *
+ * @param string $plugin_name
+ * @param array  $installed_plugins
+ * @return string
+ */
+function qsm_get_plugin_path_by_name( $plugin_name, $installed_plugins ) {
+	foreach ( $installed_plugins as $path => $plugin ) {
+		if ( isset( $plugin['Name'] ) && $plugin['Name'] === $plugin_name ) {
+			return $path;
+		}
+	}
+	return '';
+}
+
+/**
+ * Evaluate addon compatibility for migration.
+ *
+ * @param array|null $required_addons
+ * @return array
+ */
+function qsm_migration_evaluate_addon_requirements( $required_addons = null ) {
+	if ( null === $required_addons ) {
+		$required_addons = qsm_migration_get_required_addons();
+	}
+
+	if ( empty( $required_addons ) || ! is_array( $required_addons ) ) {
+		return array(
+			'allowed' => true,
+			'addons'  => array(),
+		);
+	}
+
+	if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$installed_plugins  = get_plugins();
+	$evaluated_addons   = array();
+	$allowed            = true;
+	$blocked_addon_name = '';
+
+	foreach ( $required_addons as $addon ) {
+		$name = isset( $addon['name'] ) ? (string) $addon['name'] : '';
+
+		$path = '';
+		if ( ! empty( $addon['path'] ) ) {
+			$path = (string) $addon['path'];
+		} elseif ( ! empty( $name ) ) {
+			$path = qsm_get_plugin_path_by_name( $name, $installed_plugins );
+		}
+
+		$is_installed       = false;
+		$installed_version = '';
+
+		if ( ! empty( $path ) && isset( $installed_plugins[ $path ] ) ) {
+			$is_installed       = true;
+			$installed_version = isset( $installed_plugins[ $path ]['Version'] )
+				? (string) $installed_plugins[ $path ]['Version']
+				: '';
+		}
+
+		$is_compatible = true;
+		if (
+			$is_installed &&
+			isset( $addon['required_addon_version'] ) &&
+			'' !== $addon['required_addon_version']
+		) {
+			$is_compatible = version_compare(
+				$installed_version,
+				$addon['required_addon_version'],
+				'>='
+			);
+		}
+
+		if ( ! $is_compatible && $allowed ) {
+			$allowed            = false;
+			$blocked_addon_name = $name;
+		}
+
+		$evaluated_addons[] = array(
+			'name'                   => $name,
+			'path'                   => $path,
+			'required_addon_version' => isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '',
+			'is_installed'           => $is_installed,
+			'installed_version'      => $installed_version,
+			'is_compatible'          => $is_compatible,
+		);
+	}
+
+	$result = array(
+		'allowed' => $allowed,
+		'addons'  => $evaluated_addons,
+	);
+
+	if ( ! $allowed ) {
+		$result['message'] = __(
+			'Please update the addons listed below to continue with the migration.',
+			'quiz-master-next'
+		);
+	}
+
+	return $result;
+}
+
+/**
+ * Admin page UI and script enqueue + localization.
+ *
+ * @return void
+ */
+function qsm_migration_database_callback() {
+	global $mlwQuizMasterNext;
+
+	wp_enqueue_style(
+		'qsm-database-migration',
+		QSM_PLUGIN_CSS_URL . '/qsm-database-migration.css',
+		array(),
+		$mlwQuizMasterNext->version
+	);
+
+	wp_enqueue_script(
+		'qsm-database-migration',
+		QSM_PLUGIN_JS_URL . '/qsm-database-migration-script.js',
+		array( 'jquery' ),
+		$mlwQuizMasterNext->version,
+		true
+	);
+	$compatibility = qsm_migration_evaluate_addon_requirements();
+
+	wp_localize_script( 'qsm-database-migration', 'qsmMigrationData', array(
+		'ajax_url'            => admin_url( 'admin-ajax.php' ),
+		'nonce'               => wp_create_nonce( 'qsm_migration_nonce' ),
+		'confirmMessage'      => __( 'Are you sure? After migration, any quiz results submitted on QSM 11 won’t be accessible if you downgrade to an earlier version. Your existing data will remain safe, but it’s recommended to take a database backup before proceeding.', 'quiz-master-next' ),
+		'startMessage'        => __( 'Migration started...', 'quiz-master-next' ),
+		'processingMessage'   => __( 'Migration in progress...', 'quiz-master-next' ),
+		'successMessage'      => __( 'Migration completed successfully!', 'quiz-master-next' ),
+		'errorMessage'        => __( 'An error occurred during migration.', 'quiz-master-next' ),
+		'warningMessage'      => __( 'Before starting migration, please create a database backup.', 'quiz-master-next' ),
+		'finalizingMigration' => __( 'Finalizing migration, retrying failed results...', 'quiz-master-next' ),
+		'blockedMessage'      => ! empty( $compatibility['message'] ) ? wp_kses_post( $compatibility['message'] ) : '',
+		'labelTotalRecords'   => __( 'Total Results to Migrate:', 'quiz-master-next' ),
+		'labelProcessed'      => __( 'Results Processed:', 'quiz-master-next' ),
+		'labelInserted'       => __( 'Total Results Migrated:', 'quiz-master-next' ),
+		'labelFailed'         => __( 'Total Results Failed:', 'quiz-master-next' ),
+		'labelErrorNote'      => __( 'Migration stopped due to an error. Check browser console and server logs for details.', 'quiz-master-next' ),
+	) );
+	?>
+
+	<div class="qsm-dashboard-help-center">
+		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__( 'Database Migration', 'quiz-master-next' ); ?></h3>
+		<div class="qsm-database-migration-wrapper qsm-dashboard-page-common-style">
+
+			<form id="qsm-database-migration-form" class="qsm-database-migration-form">
+				<div class="qsm-migration-warning">
+					<p class="qsm-migration-warning-heading">
+						<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#2C77BE"/>
+						</svg>
+						<strong><?php echo esc_html__( 'Before You Continue', 'quiz-master-next' ); ?></strong>
+					</p>
+					<p><?php echo esc_html__( 'Your data will remain safe during migration. However, we strongly recommend taking a full database backup as a precaution to prevent any potential data loss.', 'quiz-master-next' ); ?></p>
+				</div>
+				<?php
+				$compatibility_addons = array();
+				if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
+					foreach ( $compatibility['addons'] as $addon ) {
+						if ( empty( $addon['is_installed'] ) ) {
+							continue;
+						}
+						$compatibility_addons[] = $addon;
+					}
+				}
+
+				if ( ! empty( $compatibility_addons ) ) {
+					$has_block = empty( $compatibility['allowed'] );
+					?>
+					<div class="qsm-migration-addon-compatibility">
+
+						<?php if ( $has_block && ! empty( $compatibility['message'] ) ) { ?>
+							<div class="qsm-migration-addon-compatibility-message">
+								<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/warning-message.png' ); ?>" alt="warning-message.png"/>
+								<?php echo wp_kses_post( $compatibility['message'] ); ?>
+							</div>
+						<?php } ?>
+
+						<table class="qsm-migration-addon-compatibility-table widefat striped">
+							<thead>
+								<tr>
+									<th><?php esc_html_e( 'Addon Name', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Required Version', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Installed Version', 'quiz-master-next' ); ?></th>
+									<th><?php esc_html_e( 'Status', 'quiz-master-next' ); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ( $compatibility_addons as $addon ) :
+
+									$name              = isset( $addon['name'] ) ? $addon['name'] : '';
+									$required_version  = isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '';
+									$installed_version = isset( $addon['installed_version'] ) && $addon['installed_version']
+										? $addon['installed_version']
+										: esc_html__( 'Not Installed', 'quiz-master-next' );
+									$is_compatible     = ! empty( $addon['is_compatible'] );
+									?>
+									<tr class="<?php echo $is_compatible ? 'qsm-addon-compatible' : 'qsm-addon-not-compatible'; ?>">
+										<td><?php echo esc_html( $name ); ?></td>
+										<td><?php echo esc_html( $required_version ); ?></td>
+										<td><?php echo esc_html( $installed_version ); ?></td>
+										<td>
+											<span class="qsm-migration-addon-compatibility-status">
+												<?php
+												echo $is_compatible
+													? esc_html__( 'Compatible', 'quiz-master-next' )
+													: esc_html__( 'Update Required', 'quiz-master-next' );
+												?>
+											</span>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+
+					</div>
+					<?php
+				}
+				?>
+				<div class="qsm-database-migration-progress-bar">
+					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
+					<div class="qsm-database-migration-progress-percent">0%</div>
+				</div>
+
+				<div class="qsm-database-migration-status"></div>
+				<div class="qsm-database-migration-details"></div>
+				<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button button button-primary" <?php echo empty( $compatibility['allowed'] ) ? 'disabled="disabled" aria-disabled="true"' : ''; ?> >
+					<?php echo esc_html__( 'Start Migration', 'quiz-master-next' ); ?>
+				</button>
+			</form>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Migration tools.
+ *
+ * @return void
+ */
+function qsm_tools_migration_settings() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	qsm_migration_database_callback();
+}
+
 
 /**
  * Generates all of the quiz tools that are used
@@ -19,7 +302,7 @@ function qsm_generate_quiz_tools() {
 		return;
 	}
 	// Check the active tab
-    $active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'qsm_tools_page_audit_trail';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'qsm_tools_page_audit_trail';
 	global $mlwQuizMasterNext;
     ?>
     <div class="wrap">
@@ -30,6 +313,7 @@ function qsm_generate_quiz_tools() {
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_quiz_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_quiz_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Quiz', 'quiz-master-next'); ?></a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_questions_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_questions_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Questions', 'quiz-master-next'); ?></a>
             <a href="<?php echo esc_url(admin_url('admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_results_setting')); ?>" class="nav-tab <?php echo 'qsm_tools_page_results_setting' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Deleted Results', 'quiz-master-next'); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>" class="nav-tab <?php echo 'qsm_tools_page_migration' === $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Migration', 'quiz-master-next' ); ?></a>
         </h2>
 		<div class="qsm-alerts">
 			<?php $mlwQuizMasterNext->alertManager->showAlerts() ?>
@@ -51,6 +335,10 @@ function qsm_generate_quiz_tools() {
         if ( ! empty($_GET['tab']) && 'qsm_tools_page_results_setting' === $active_tab ) {
             qsm_get_deleted_results_records();
         }
+
+		if ( ! empty( $_GET['tab'] ) && 'qsm_tools_page_migration' === $active_tab ) {
+			qsm_tools_migration_settings();
+		}
     ?>
 	<div style="clear:both"></div>
 
@@ -621,7 +909,11 @@ function qsm_get_deleted_results_records() {
                     <a class="qsm-popup__close qsm-popup-upgrade-close" aria-label="Close modal" data-micromodal-close></a>
                 </header>
                 <main class="qsm-popup__content" id="modal-2-content">
-                    <div class="qsm-tools-page-delete-results-message"><?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?></div>
+                    <div class="qsm-tools-page-delete-results-message">
+                        <?php esc_html_e( 'Are you sure you want to delete these results?', 'quiz-master-next' ); ?>
+                        <br />
+                        <em><?php esc_html_e( 'This will permanently remove all associated data and metadata', 'quiz-master-next' ); ?></em>
+                    </div>
                 </main>
                 <footer class="qsm-popup__footer">
                     <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
