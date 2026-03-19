@@ -2018,18 +2018,11 @@ function qsm_show_results_migration_warning() {
     $migrate_url = admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' );
     ?>
     <div class="notice notice-warning qsm-display-database-migration-message">
-        <p>
-            <strong><?php esc_html_e( 'Action Required:', 'quiz-master-next' ); ?></strong>
-            <?php esc_html_e(
-                'Quiz and Survey Master requires a one-time database migration.',
-                'quiz-master-next'
-            ); ?>
-        </p>
-        <p>
-            <a href="<?php echo esc_url( $migrate_url ); ?>" class="button button-primary">
-                <?php esc_html_e( 'Run Migration', 'quiz-master-next' ); ?>
-            </a>
-        </p>
+        <p><strong><?php esc_html_e( 'Action Required', 'quiz-master-next' ); ?></strong></p>
+        <p><?php esc_html_e( 'Complete a one-time database migration to ensure your quizzes and results work smoothly with the new version and its improved rendering experience. After migration, new quiz results will not be compatible with older versions of QSM. If you downgrade later, these results may not be accessible.', 'quiz-master-next' ); ?> </p>
+		<p><a href="<?php echo esc_url( $migrate_url ); ?>" class="button button-primary">
+			<?php esc_html_e( 'Go To Migration', 'quiz-master-next' ); ?>
+		</a></p>
     </div>
     <?php
 }

@@ -168,7 +168,7 @@ function qsm_migration_database_callback() {
 	wp_localize_script( 'qsm-database-migration', 'qsmMigrationData', array(
 		'ajax_url'            => admin_url( 'admin-ajax.php' ),
 		'nonce'               => wp_create_nonce( 'qsm_migration_nonce' ),
-		'confirmMessage'      => __( 'Warning: After migration, any quiz results submitted on QSM 11 will not be accessible if you downgrade to an earlier version. Are you sure you want to proceed?', 'quiz-master-next' ),
+		'confirmMessage'      => __( 'Are you sure? After migration, any quiz results submitted on QSM 11 won’t be accessible if you downgrade to an earlier version. Your existing data will remain safe, but it’s recommended to take a database backup before proceeding.', 'quiz-master-next' ),
 		'startMessage'        => __( 'Migration started...', 'quiz-master-next' ),
 		'processingMessage'   => __( 'Migration in progress...', 'quiz-master-next' ),
 		'successMessage'      => __( 'Migration completed successfully!', 'quiz-master-next' ),
@@ -190,18 +190,14 @@ function qsm_migration_database_callback() {
 
 			<form id="qsm-database-migration-form" class="qsm-database-migration-form">
 				<div class="qsm-migration-warning">
-					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/warning-message.png' ); ?>" alt="warning-message.png"/>
-					<strong><?php echo esc_html__( 'Warning:', 'quiz-master-next' ); ?></strong>
-					<?php echo esc_html__( 'After migration, any quiz results submitted on QSM 11 will not be accessible if you downgrade to an earlier version. We strongly recommend taking a full database backup before proceeding.', 'quiz-master-next' ); ?>
+					<p class="qsm-migration-warning-heading">
+						<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#2C77BE"/>
+						</svg>
+						<strong><?php echo esc_html__( 'Before You Continue', 'quiz-master-next' ); ?></strong>
+					</p>
+					<p><?php echo esc_html__( 'Your data will remain safe during migration. However, we strongly recommend taking a full database backup as a precaution to prevent any potential data loss.', 'quiz-master-next' ); ?></p>
 				</div>
-
-				<div class="qsm-database-migration-progress-bar">
-					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
-					<div class="qsm-database-migration-progress-percent">0%</div>
-				</div>
-
-				<div class="qsm-database-migration-status"></div>
-				<div class="qsm-database-migration-details"></div>
 				<?php
 				$compatibility_addons = array();
 				if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
@@ -220,6 +216,7 @@ function qsm_migration_database_callback() {
 
 						<?php if ( $has_block && ! empty( $compatibility['message'] ) ) { ?>
 							<div class="qsm-migration-addon-compatibility-message">
+								<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/warning-message.png' ); ?>" alt="warning-message.png"/>
 								<?php echo wp_kses_post( $compatibility['message'] ); ?>
 							</div>
 						<?php } ?>
@@ -265,7 +262,13 @@ function qsm_migration_database_callback() {
 					<?php
 				}
 				?>
+				<div class="qsm-database-migration-progress-bar">
+					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
+					<div class="qsm-database-migration-progress-percent">0%</div>
+				</div>
 
+				<div class="qsm-database-migration-status"></div>
+				<div class="qsm-database-migration-details"></div>
 				<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button button button-primary" <?php echo empty( $compatibility['allowed'] ) ? 'disabled="disabled" aria-disabled="true"' : ''; ?> >
 					<?php echo esc_html__( 'Start Migration', 'quiz-master-next' ); ?>
 				</button>
