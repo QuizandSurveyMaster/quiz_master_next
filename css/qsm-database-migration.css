@@ -2,18 +2,22 @@
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: var(--qsm-information-color-light);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .qsm-migration-warning {
-    background: var(--qsm-warning-color-light);
     padding: 12px 15px;
     margin-bottom: 20px;
-    color: var(--qsm-warning-color);
-    border: 1px solid var(--qsm-warning-color);
-    border-left: 4px solid var(--qsm-warning-color);
+    border: 1px solid #d4d4d3;
+    border-radius: 5px;
+}
+p.qsm-migration-warning-heading {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    font-size: 14px;
+    margin: 0;
 }
 
 .qsm-database-migration-status {
@@ -61,7 +65,7 @@
 
 .qsm-database-migration-progress-bar {
     width: 100%;
-    background-color: var(--qsm-white-color);
+    background-color: var(--qsm-information-color-light);
     border-radius: 4px;
     height: 25px;
     margin: 15px 0;
@@ -203,12 +207,14 @@
  * ------------------------------------- */
 
 .qsm-migration-addon-compatibility-message {
-	background: var(--qsm-warning-color-light);
-	color: var(--qsm-warning-color);
-	border-left: 4px solid var(--qsm-warning-color);
-	padding: 12px 14px;
-	margin-bottom: 12px;
-	font-weight: 500;
+	background: #FDF6ED;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #fad8af;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
 }
 
 /* -------------------------------------

@@ -592,13 +592,29 @@ function qsm_display_migration_tools_redirect_button() {
 	<div class="qsm-dashboard-migration-section qsm-dashboard-page-common-style">
 		<div class="qsm-dashboard-page-header">
 			<h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Database Migration', 'quiz-master-next' ); ?></h3>
-			<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Migrate database for better performance and features.', 'quiz-master-next' ); ?></p>
 		</div>
-		<div class="">
-			<a class="button button-primary qsm-dashboard-section-migration" href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>">
-				<?php esc_html_e( 'Go to Migration', 'quiz-master-next' ); ?>
-				<img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/>
-			</a>
+		<div class="qsm-db-migration-container">
+			<div class="qsm-migration-notice qsm-migration-info">
+				<div class="qsm-migration-notice-header">
+					<strong><?php esc_html_e( 'You’ve updated to QSM 11', 'quiz-master-next' ); ?></strong>
+				</div>
+				<p><?php esc_html_e( 'Complete a one-time database migration to ensure your quizzes and results work smoothly with the new version and its improved rendering experience.', 'quiz-master-next' ); ?></p>
+			</div>
+			<div class="qsm-migration-notice qsm-migration-warning">
+				<div class="qsm-migration-notice-header">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#F59E0B"/>
+					</svg>
+					<strong><?php esc_html_e( 'Important', 'quiz-master-next' ); ?></strong>
+				</div>
+				<p><?php esc_html_e( 'After migration, new quiz results will not be compatible with older versions of QSM. If you downgrade later, these results may not be accessible.', 'quiz-master-next' ); ?></p>
+			</div>
+			<div class="qsm-migration-action">
+				<a class="button button-primary qsm-dashboard-section-migration" href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>">
+					<?php esc_html_e( 'Go To Migration', 'quiz-master-next' ); ?>
+				</a>
+				<p class="qsm-migration-note"><?php esc_html_e( 'Your data will remain safe during migration', 'quiz-master-next' ); ?></p>
+			</div>
 		</div>
 	</div>
 	<?php
