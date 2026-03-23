@@ -75,6 +75,8 @@ function qsm_check_plugins_compatibility() {
 			<?php
 		}
 	}
+
+	do_action( 'qsm_admin_dashboard_compatibility_after' );
 }
 
 function qsm_dashboard_display_change_log_section() {
@@ -277,7 +279,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
  */
 
 function qsm_dashboard_recent_taken_quiz() {
-	global $wpdb;
+	global $wpdb, $mlwQuizMasterNext;
 	$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
 	if ( 0 != $mlw_result_data['total_result'] ) {
 		?>
@@ -342,7 +344,13 @@ function qsm_dashboard_recent_taken_quiz() {
 									|
 									<?php
 									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									$is_new_format = $mlwQuizMasterNext->pluginHelper->is_new_format_result( $single_result_arr );
+									if ( $is_new_format ) {
+										// Load new format result structure
+										$mlw_qmn_results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $single_result_arr['result_id'] );
+									} else {
+										$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+									}
 									if ( is_array( $mlw_qmn_results_array ) ) {
 										$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 										if ( $mlw_complete_hours > 0 ) {
@@ -411,6 +419,8 @@ function qsm_generate_dashboard_page() {
 			</div>
 
 			<?php
+			qsm_display_migration_tools_redirect_button();
+
 			$qsm_admin_dd = qsm_get_parsing_script_data();
 			if ( $qsm_admin_dd ) {
 				$popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
@@ -562,3 +572,50 @@ function qsm_create_new_quiz_from_wizard() {
 }
 
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
+
+/**
+ * Displays a redirect button to the migration tools page on the dashboard.
+ *
+ * This function outputs a styled section on the dashboard that encourages users
+ * to perform a database migration. It includes a heading, a brief description,
+ * and a button that links to the migration tools page.
+ *
+ * @since 11.0.0
+ * @return void
+ */
+function qsm_display_migration_tools_redirect_button() {
+	// Only show this section if the migration has not been completed.
+	if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+		return;
+	}
+	?>
+	<div class="qsm-dashboard-migration-section qsm-dashboard-page-common-style">
+		<div class="qsm-dashboard-page-header">
+			<h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Database Migration', 'quiz-master-next' ); ?></h3>
+		</div>
+		<div class="qsm-db-migration-container">
+			<div class="qsm-migration-notice qsm-migration-info">
+				<div class="qsm-migration-notice-header">
+					<strong><?php esc_html_e( 'You’ve updated to QSM 11', 'quiz-master-next' ); ?></strong>
+				</div>
+				<p><?php esc_html_e( 'Complete a one-time database migration to ensure your quizzes and results work smoothly with the new version and its improved rendering experience.', 'quiz-master-next' ); ?></p>
+			</div>
+			<div class="qsm-migration-notice qsm-migration-warning">
+				<div class="qsm-migration-notice-header">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#F59E0B"/>
+					</svg>
+					<strong><?php esc_html_e( 'Important', 'quiz-master-next' ); ?></strong>
+				</div>
+				<p><?php esc_html_e( 'After migration, new quiz results will not be compatible with older versions of QSM. If you downgrade later, these results may not be accessible.', 'quiz-master-next' ); ?></p>
+			</div>
+			<div class="qsm-migration-action">
+				<a class="button button-primary qsm-dashboard-section-migration" href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ) ); ?>">
+					<?php esc_html_e( 'Go To Migration', 'quiz-master-next' ); ?>
+				</a>
+				<p class="qsm-migration-note"><?php esc_html_e( 'Your data will remain safe during migration', 'quiz-master-next' ); ?></p>
+			</div>
+		</div>
+	</div>
+	<?php
+}

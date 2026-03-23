@@ -63,11 +63,11 @@ function qsm_get_question_bank_page_data() {
 	$per_page   = $per_page > 0 ? $per_page : 20;
 
 	$data = array(
-		'quizzes'                         => $quizzes,
-		'categories'                      => $question_categories,
-		'question_types'                  => is_array( $question_types ) ? $question_types : array(),
-		'per_page'                        => $per_page,
-		'quiz_ids_of_questions_table'     => $quiz_ids_from_questions_table,
+		'quizzes'                     => $quizzes,
+		'categories'                  => $question_categories,
+		'question_types'              => is_array( $question_types ) ? $question_types : array(),
+		'per_page'                    => $per_page,
+		'quiz_ids_of_questions_table' => $quiz_ids_from_questions_table,
 	);
 
 	return $data;
@@ -254,15 +254,15 @@ function qsm_question_bank_admin_assets( $hook ) {
 	$max_upload_size   = wp_max_upload_size();
 
 	$localized = array(
-		'restUrl'        => esc_url_raw( rest_url( 'quiz-survey-master/v1/bank_questions/0/' ) ),
-		'nonce'          => wp_create_nonce( 'wp_rest' ),
-		'quizzes'        => $page_data['quizzes'],
-		'categories'     => $page_data['categories'],
-		'questionTypes'  => $page_data['question_types'],
-		'quizNonces'     => $quiz_nonces,
-		'editQuizBase'   => admin_url( 'admin.php?page=mlw_quiz_options&tab=questions&quiz_id=' ),
-		'perPage'        => $page_data['per_page'],
-		'i18n'           => array(
+		'restUrl'       => esc_url_raw( rest_url( 'quiz-survey-master/v1/bank_questions/0/' ) ),
+		'nonce'         => wp_create_nonce( 'wp_rest' ),
+		'quizzes'       => $page_data['quizzes'],
+		'categories'    => $page_data['categories'],
+		'questionTypes' => $page_data['question_types'],
+		'quizNonces'    => $quiz_nonces,
+		'editQuizBase'  => admin_url( 'admin.php?page=mlw_quiz_options&tab=questions&quiz_id=' ),
+		'perPage'       => $page_data['per_page'],
+		'i18n'          => array(
 			'questionPlaceholder' => __( 'Untitled question', 'quiz-master-next' ),
 			'quizUnknown'         => __( 'Unknown quiz', 'quiz-master-next' ),
 			'allQuizzes'          => __( 'All quizzes', 'quiz-master-next' ),
@@ -272,6 +272,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 			'error'               => __( 'Unable to load questions. Please try again.', 'quiz-master-next' ),
 			'viewQuiz'            => __( 'Edit in quiz builder', 'quiz-master-next' ),
 			'noResults'           => __( 'No questions match your filters. Try adjusting your search criteria.', 'quiz-master-next' ),
+			/* translators: 1: Current page number, 2: Total number of pages. */
 			'pageOf'              => __( 'Page %1$s of %2$s', 'quiz-master-next' ),
 			'previous'            => __( 'Previous', 'quiz-master-next' ),
 			'next'                => __( 'Next', 'quiz-master-next' ),
@@ -284,8 +285,8 @@ function qsm_question_bank_admin_assets( $hook ) {
 			'bulkUploadSuccess'   => __( 'Upload complete! We are processing your questions.', 'quiz-master-next' ),
 			'bulkUploadError'     => __( 'Upload failed. Please try again.', 'quiz-master-next' ),
 		),
-		'bulkUpload'     => array(
-			'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+		'bulkUpload'    => array(
+			'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
 			'action'          => 'qsm_question_bank_import',
 			'nonce'           => $bulk_upload_nonce,
 			'sample'          => esc_url_raw( $sample_csv_url ),
@@ -945,15 +946,15 @@ function qsm_question_bank_import() {
 
 	$raw_quiz = isset( $_POST['bulk_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['bulk_quiz'] ) ) : '';
 	$quiz_id  = absint( $raw_quiz );
-
-	$file_details = $_FILES['bulk_csv'];
+	$file_details = $_FILES['bulk_csv']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$max_size     = wp_max_upload_size();
 	if ( ! empty( $file_details['size'] ) && $file_details['size'] > $max_size ) {
 		wp_send_json_error(
 			array(
 				'message' => sprintf(
-					__( 'The selected file exceeds the maximum upload size of %s.', 'quiz-master-next' ),
-					size_format( $max_size )
+				/* translators: %s: Maximum file size */
+				__( 'The selected file exceeds the maximum upload size of %s.', 'quiz-master-next' ),
+				size_format( $max_size )
 				),
 			)
 		);
@@ -966,14 +967,19 @@ function qsm_question_bank_import() {
 		$file_details,
 		array(
 			'test_form' => false,
-			'mimes'     => array( 'csv' => 'text/csv', 'txt' => 'text/plain' ),
+			'mimes'     => array(
+				'csv' => 'text/csv',
+				'txt' => 'text/plain',
+			),
 		)
 	);
 
 	if ( isset( $uploaded_file['error'] ) ) {
 		wp_send_json_error(
 			array(
-				'message' => sprintf( __( 'Upload failed: %s', 'quiz-master-next' ), $uploaded_file['error'] ),
+				'message' => sprintf(
+				/* translators: %s: Upload error message */
+				__( 'Upload failed: %s', 'quiz-master-next' ), $uploaded_file['error'] ),
 			)
 		);
 	}
@@ -1027,14 +1033,14 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		return null;
 	}
 
-	$handle = fopen( $file_path, 'r' );
+		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Reading the uploaded CSV from its temporary path.
 	if ( false === $handle ) {
 		return null;
 	}
 
 	$header_row = fgetcsv( $handle );
 	if ( empty( $header_row ) ) {
-		fclose( $handle );
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing the CSV handle opened above.
 		return null;
 	}
 
@@ -1045,7 +1051,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 	$is_flat_csv   = qsm_question_bank_is_flat_format( $header_map );
 	$current       = null;
 
-	while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+		// Assignment in condition is intentional for reading CSV file line by line.
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Iteratively reading CSV rows.
 		$line++;
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
 			continue;
@@ -1069,7 +1076,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 			$current = qsm_question_bank_initialize_question( $row, $header_map, $line );
 		} elseif ( 'answer' === $item_type ) {
 			if ( ! $current ) {
-				$errors[] = sprintf( __( 'Line %1$d: Answer row found before any question row.', 'quiz-master-next' ), $line );
+				/* translators: %1$d: Line number in CSV file */
+			$errors[] = sprintf( __( 'Line %1$d: Answer row found before any question row.', 'quiz-master-next' ), $line );
 				continue;
 			}
 			$answer = qsm_question_bank_build_answer( $row, $header_map, $line );
@@ -1077,7 +1085,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 				$current['answers'][] = $answer;
 			}
 		} else {
-			$errors[] = sprintf( __( 'Line %1$d: Unknown item type "%2$s".', 'quiz-master-next' ), $line, $item_type );
+			/* translators: %1$d: Line number in CSV file, %2$s: Item type found */
+		$errors[] = sprintf( __( 'Line %1$d: Unknown item type "%2$s".', 'quiz-master-next' ), $line, $item_type );
 		}
 	}
 
@@ -1085,7 +1094,7 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$questions[] = $current;
 	}
 
-	fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing the CSV handle opened above.
 
 	if ( empty( $questions ) ) {
 		return array(
@@ -1107,7 +1116,8 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$type_value = qsm_question_bank_map_question_type( $question['question_type'], $types_map );
 		if ( '' === $type_value ) {
 			$failed++;
-			$errors[] = sprintf( __( 'Question %1$d: Unable to determine question type.', 'quiz-master-next' ), $question_index + 1 );
+			/* translators: %1$d: Question number */
+		$errors[] = sprintf( __( 'Question %1$d: Unable to determine question type.', 'quiz-master-next' ), $question_index + 1 );
 			continue;
 		}
 		$question['question_type'] = $type_value;
@@ -1242,23 +1252,23 @@ function qsm_question_bank_initialize_question( $row, $header_map, $line ) {
 	$categories           = qsm_question_bank_parse_categories( $categories_string );
 
 	return array(
-		'line'                 => $line,
-		'question_title'       => $question_title,
-		'question_description' => $question_description,
-		'question_type'        => qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ),
-		'answer_info'          => qsm_question_bank_get_value( $row, $header_map, 'question_answer_info' ),
-		'comments'             => qsm_question_bank_get_value( $row, $header_map, 'comments' ),
-		'hint'                 => qsm_question_bank_get_value( $row, $header_map, 'hints' ),
-		'required'             => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'required' ), true ),
-		'answer_editor'        => qsm_question_bank_get_value( $row, $header_map, 'answer_editor', 'text' ),
-		'feature_image_src'    => qsm_question_bank_get_value( $row, $header_map, 'feature_image_src' ),
-		'match_answer'         => qsm_question_bank_get_value( $row, $header_map, 'match_answer' ),
-		'case_sensitive'       => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'case_sensitive' ) ),
-		'answer_columns'       => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_columns' ), 1 ),
-		'image_width'          => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_width' ), '' ),
-		'image_height'         => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_height' ), '' ),
-		'autofill'             => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'autofill' ) ),
-		'text_limit'           => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'text_limit' ), 0 ),
+		'line'                    => $line,
+		'question_title'          => $question_title,
+		'question_description'    => $question_description,
+		'question_type'           => qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ),
+		'answer_info'             => qsm_question_bank_get_value( $row, $header_map, 'question_answer_info' ),
+		'comments'                => qsm_question_bank_get_value( $row, $header_map, 'comments' ),
+		'hint'                    => qsm_question_bank_get_value( $row, $header_map, 'hints' ),
+		'required'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'required' ), true ),
+		'answer_editor'           => qsm_question_bank_get_value( $row, $header_map, 'answer_editor', 'text' ),
+		'feature_image_src'       => qsm_question_bank_get_value( $row, $header_map, 'feature_image_src' ),
+		'match_answer'            => qsm_question_bank_get_value( $row, $header_map, 'match_answer' ),
+		'case_sensitive'          => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'case_sensitive' ) ),
+		'answer_columns'          => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'answer_columns' ), 1 ),
+		'image_width'             => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_width' ), '' ),
+		'image_height'            => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'image_size_height' ), '' ),
+		'autofill'                => qsm_question_bank_parse_boolean( qsm_question_bank_get_value( $row, $header_map, 'autofill' ) ),
+		'text_limit'              => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'text_limit' ), 0 ),
 		'limit_multiple_response' => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'limit_multiple_response' ), 0 ),
 		'file_upload_limit'       => qsm_question_bank_parse_int( qsm_question_bank_get_value( $row, $header_map, 'file_upload_limit' ), 4 ),
 		'file_upload_type'        => qsm_question_bank_get_value( $row, $header_map, 'file_upload_type', 'image,application/pdf' ),
@@ -1341,7 +1351,8 @@ function qsm_question_bank_build_flat_question( $row, $header_map, $line ) {
 		$question_title = qsm_question_bank_get_value( $row, $header_map, 'question_title' );
 	}
 	if ( '' === $question_title ) {
-		return new WP_Error( 'qsm_question_bank_missing_title', sprintf( __( 'Line %1$d: Question text is required.', 'quiz-master-next' ), $line ) );
+		/* translators: %1$d: Line number in CSV file */
+	return new WP_Error( 'qsm_question_bank_missing_title', sprintf( __( 'Line %1$d: Question text is required.', 'quiz-master-next' ), $line ) );
 	}
 
 	$question_description = qsm_question_bank_get_value( $row, $header_map, 'description', $question_title );

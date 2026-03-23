@@ -2003,3 +2003,105 @@ function qsm_display_fullscreen_error() {
     </div>
     <?php
 }
+
+/**
+ * Display admin warning if QSM results migration is not completed.
+ */
+function qsm_show_results_migration_warning() {
+
+    // Do not show if migration already processed
+    if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+        return;
+    }
+
+    // Migration page URL
+    $migrate_url = admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' );
+    ?>
+    <div class="notice notice-warning qsm-display-database-migration-message">
+        <p><strong><?php esc_html_e( 'Action Required', 'quiz-master-next' ); ?></strong></p>
+        <p><?php esc_html_e( 'Complete a one-time database migration to ensure your quizzes and results work smoothly with the new version and its improved rendering experience. After migration, new quiz results will not be compatible with older versions of QSM. If you downgrade later, these results may not be accessible.', 'quiz-master-next' ); ?> </p>
+		<p><a href="<?php echo esc_url( $migrate_url ); ?>" class="button button-primary">
+			<?php esc_html_e( 'Go To Migration', 'quiz-master-next' ); ?>
+		</a></p>
+    </div>
+    <?php
+}
+
+/**
+ * Handle legacy fallback notice dismissal.
+ */
+function qsm_handle_legacy_fallback_dismiss() {
+
+    if (
+        isset( $_GET['qsm_dismiss_legacy_fallback'] ) &&
+        wp_verify_nonce( sanitize_text_field ( wp_unslash( $_GET['qsm_dismiss_legacy_fallback'] ) ), 'qsm_dismiss_legacy_fallback' )
+    ) {
+
+        set_transient( 'qsm_legacy_fallback_notice_shown', true, 7 * DAY_IN_SECONDS );
+
+        wp_safe_redirect( remove_query_arg( 'qsm_dismiss_legacy_fallback' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'qsm_handle_legacy_fallback_dismiss' );
+
+/**
+ * Display dismissible admin notice when results fall back to legacy format.
+ */
+function qsm_show_legacy_fallback_notice() {
+
+    // If notice already dismissed
+    if ( get_transient( 'qsm_legacy_fallback_notice_shown' ) ) {
+        return;
+    }
+
+    // Check fallback count
+    $fallback_count = get_transient( 'qsm_legacy_fallback_count' );
+    if ( ! $fallback_count || $fallback_count <= 0 ) {
+        return;
+    }
+
+    // Migration page URL
+    $migrate_url = admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' );
+
+    // Dismiss URL with nonce
+    $dismiss_url = add_query_arg(
+        array(
+            'qsm_dismiss_legacy_fallback' => wp_create_nonce( 'qsm_dismiss_legacy_fallback' ),
+        )
+    );
+    ?>
+
+    <div class="notice notice-warning is-dismissible qsm-legacy-fallback-notice">
+        <p>
+            <strong><?php esc_html_e( 'Migration Notice:', 'quiz-master-next' ); ?></strong>
+            <?php
+            printf(
+				esc_html(
+					/* translators: %d: Number of results that fell back to legacy format during database migration. */
+					_n(
+						'We detected %d result that has fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
+						'We detected %d results that have fallen back to legacy format during database migration. Running the migration again may resolve this issue.',
+						$fallback_count,
+						'quiz-master-next'
+					)
+				),
+				(int) $fallback_count
+			);
+            ?>
+        </p>
+
+        <p>
+            <a href="<?php echo esc_url( $migrate_url ); ?>" class="button button-primary">
+                <?php esc_html_e( 'Run Migration Again', 'quiz-master-next' ); ?>
+            </a>
+
+            <a href="<?php echo esc_url( $dismiss_url ); ?>" class="button" style="margin-left:10px;">
+                <?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?>
+            </a>
+        </p>
+    </div>
+
+    <?php
+}
+add_action( 'admin_notices', 'qsm_show_legacy_fallback_notice' );

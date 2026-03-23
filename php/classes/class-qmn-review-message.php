@@ -98,12 +98,17 @@ class QMN_Review_Message {
 				'qsm_review_nonce'        => $nonce,
 			)
 		);
+		$count_collected = esc_html( number_format_i18n( $this->check_message_trigger() ) );
+		/* translators: %s: count of quizzes */
+		$message        = sprintf(
+			__( '🎉 %1$sNice work!%2$s You’ve already collected over %3$s quiz responses with Quiz & Survey Master.', 'quiz-master-next' ),
+			'<strong>',
+			'</strong>',
+			'<strong>' . $count_collected . '</strong>'
+		);
 		?>
 		<div class='updated'><br />
-            <p><?php
-				/* translators: %s: count of quizzes */
-				printf( esc_html__('🎉 %1$sNice work!%2$s You’ve already collected over %3$s quiz responses with Quiz & Survey Master.', 'quiz-master-next'), '<strong>', '</strong>', '<strong>' . number_format_i18n( $this->check_message_trigger() ) . '</strong>' ); ?>
-			</p>
+            <p><?php echo wp_kses_post( $message ); ?></p>
             <p><?php esc_html_e('If QSM has been helpful so far, would you consider leaving a quick review on WordPress?', 'quiz-master-next'); ?></p>
             <p><?php esc_html_e('Your feedback helps other users discover the plugin and helps us keep improving it.', 'quiz-master-next'); ?></p>
 			<strong><em>~ <?php esc_html_e('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
