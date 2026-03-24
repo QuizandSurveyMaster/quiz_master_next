@@ -28,7 +28,7 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
 		}
         if ( false !== $answer_key ) {
             $this->answer_status = 'correct';
-            $this->points       += intval( $this->answer_array[ $answer_key ][1] );
+            $this->points       += floatval( $this->answer_array[ $answer_key ][1] );
         }
     }
 }
