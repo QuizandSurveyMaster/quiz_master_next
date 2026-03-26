@@ -154,7 +154,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
@@ -196,7 +195,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
@@ -392,7 +390,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
@@ -423,7 +420,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
@@ -653,7 +649,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
@@ -684,7 +679,6 @@ class QSM_Abilities {
 				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
-						'readonly'   => true,
 						'idempotent' => true,
 					),
 				),
