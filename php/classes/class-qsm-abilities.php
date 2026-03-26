@@ -100,16 +100,14 @@ class QSM_Abilities {
 	 */
 	private function register_quiz_abilities() {
 
-		// list-quizzes.
 		wp_register_ability(
 			self::NAMESPACE . '/list-quizzes',
 			array(
 				'label'               => __( 'List Quizzes', 'quiz-master-next' ),
 				'description'         => __( 'Returns a list of all quizzes and surveys. Use this to discover available quizzes before fetching details or results. Supports optional ordering and pagination.', 'quiz-master-next' ),
 				'category'            => 'qsm-quizzes',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'order_by' => array(
 							'type'        => 'string',
 							'enum'        => array( 'quiz_id', 'title', 'last_activity', 'quiz_views', 'quiz_taken' ),
@@ -133,7 +131,7 @@ class QSM_Abilities {
 							'minimum'     => 0,
 							'description' => __( 'Number of quizzes to skip for pagination.', 'quiz-master-next' ),
 						),
-					),
+					)
 				),
 				'output_schema'       => array(
 					'type'  => 'array',
@@ -146,37 +144,30 @@ class QSM_Abilities {
 							'quiz_views'    => array( 'type' => 'integer', 'description' => __( 'Number of times the quiz page has been viewed.', 'quiz-master-next' ) ),
 							'last_activity' => array( 'type' => 'string',  'description' => __( 'Date/time of the last submission (MySQL datetime).', 'quiz-master-next' ) ),
 						),
-						'required' => array( 'quiz_id', 'quiz_name' ),
+						'required'   => array( 'quiz_id', 'quiz_name' ),
 					),
 				),
 				'execute_callback'    => array( $this, 'execute_list_quizzes' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 
-		// get-quiz.
 		wp_register_ability(
 			self::NAMESPACE . '/get-quiz',
 			array(
 				'label'               => __( 'Get Quiz', 'quiz-master-next' ),
 				'description'         => __( 'Returns the full settings and metadata for a single quiz identified by its ID. Use list-quizzes first to obtain valid quiz IDs.', 'quiz-master-next' ),
 				'category'            => 'qsm-quizzes',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'The ID of the quiz to retrieve.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id' ),
+					array( 'quiz_id' )
 				),
 				'output_schema'       => array(
 					'type'       => 'object',
@@ -188,29 +179,22 @@ class QSM_Abilities {
 						'last_activity' => array( 'type' => 'string',  'description' => __( 'Date/time of last submission.', 'quiz-master-next' ) ),
 						'quiz_settings' => array( 'type' => 'object',  'description' => __( 'Serialised quiz settings array.', 'quiz-master-next' ) ),
 					),
-					'required' => array( 'quiz_id', 'quiz_name' ),
+					'required'   => array( 'quiz_id', 'quiz_name' ),
 				),
 				'execute_callback'    => array( $this, 'execute_get_quiz' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 
-		// create-quiz.
 		wp_register_ability(
 			self::NAMESPACE . '/create-quiz',
 			array(
 				'label'               => __( 'Create Quiz', 'quiz-master-next' ),
 				'description'         => __( 'Creates a new quiz or survey with the given name. Returns the ID of the newly created quiz. Use this when you need to build a new quiz programmatically.', 'quiz-master-next' ),
 				'category'            => 'qsm-quizzes',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_name' => array(
 							'type'        => 'string',
 							'minLength'   => 1,
@@ -222,39 +206,23 @@ class QSM_Abilities {
 							'description' => __( 'Theme ID to apply to the new quiz. Defaults to 0 (primary theme).', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_name' ),
+					array( 'quiz_name' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'quiz_id' => array(
-							'type'        => 'integer',
-							'description' => __( 'ID of the newly created quiz.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'quiz_id' ),
-				),
+				'output_schema'       => $this->make_id_output_schema( 'quiz_id', __( 'ID of the newly created quiz.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_create_quiz' ),
 				'permission_callback' => array( $this, 'permission_create_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => false ) ),
 			)
 		);
 
-		// delete-quiz.
 		wp_register_ability(
 			self::NAMESPACE . '/delete-quiz',
 			array(
 				'label'               => __( 'Delete Quiz', 'quiz-master-next' ),
 				'description'         => __( 'Soft-deletes a quiz by its ID so it no longer appears in the quiz list. The quiz data is retained in the database and can be recovered by a site administrator. This is a destructive operation — confirm the quiz ID before proceeding.', 'quiz-master-next' ),
 				'category'            => 'qsm-quizzes',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_id'   => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
@@ -265,75 +233,44 @@ class QSM_Abilities {
 							'description' => __( 'Name of the quiz. Used for audit logging only.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id', 'quiz_name' ),
+					array( 'quiz_id', 'quiz_name' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'success' => array(
-							'type'        => 'boolean',
-							'description' => __( 'True if the quiz was deleted successfully.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'success' ),
-				),
+				'output_schema'       => $this->make_success_output_schema( __( 'True if the quiz was deleted successfully.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_delete_quiz' ),
 				'permission_callback' => array( $this, 'permission_delete_quiz' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'destructive' => true,
-						'idempotent'  => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'destructive' => true, 'idempotent' => false ) ),
 			)
 		);
 
-		// duplicate-quiz.
 		wp_register_ability(
 			self::NAMESPACE . '/duplicate-quiz',
 			array(
 				'label'               => __( 'Duplicate Quiz', 'quiz-master-next' ),
 				'description'         => __( 'Creates a full copy of an existing quiz. Optionally copies all questions as well. Returns the ID of the new duplicate quiz.', 'quiz-master-next' ),
 				'category'            => 'qsm-quizzes',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
-						'quiz_id'                     => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
+						'quiz_id'                  => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'ID of the quiz to duplicate.', 'quiz-master-next' ),
 						),
-						'quiz_name'                   => array(
+						'quiz_name'                => array(
 							'type'        => 'string',
 							'description' => __( 'Name for the duplicated quiz. Defaults to "Copy of <original name>".', 'quiz-master-next' ),
 						),
-						'is_duplicating_questions'    => array(
+						'is_duplicating_questions' => array(
 							'type'        => 'boolean',
 							'default'     => true,
 							'description' => __( 'Whether to copy the questions into the new quiz.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id', 'quiz_name' ),
+					array( 'quiz_id', 'quiz_name' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'quiz_id' => array(
-							'type'        => 'integer',
-							'description' => __( 'ID of the newly duplicated quiz.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'quiz_id' ),
-				),
+				'output_schema'       => $this->make_id_output_schema( 'quiz_id', __( 'ID of the newly duplicated quiz.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_duplicate_quiz' ),
 				'permission_callback' => array( $this, 'permission_create_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => false ) ),
 			)
 		);
 	}
@@ -360,82 +297,77 @@ class QSM_Abilities {
 				'answers'       => array( 'type' => 'array',   'description' => __( 'Array of answer options.', 'quiz-master-next' ) ),
 				'settings'      => array( 'type' => 'object',  'description' => __( 'Question settings (required, category, points, etc.).', 'quiz-master-next' ) ),
 			),
-			'required' => array( 'question_id', 'question_name' ),
+			'required'   => array( 'question_id', 'question_name' ),
 		);
 
-		// list-questions.
+		$answers_input_schema = array(
+			'type'        => 'array',
+			'description' => __( 'Each answer is an object with text, points, correct, and feedback fields.', 'quiz-master-next' ),
+			'items'       => array(
+				'type'       => 'object',
+				'properties' => array(
+					'text'     => array( 'type' => 'string' ),
+					'points'   => array( 'type' => 'number' ),
+					'correct'  => array( 'type' => 'integer' ),
+					'feedback' => array( 'type' => 'string' ),
+				),
+			),
+		);
+
 		wp_register_ability(
 			self::NAMESPACE . '/list-questions',
 			array(
 				'label'               => __( 'List Questions', 'quiz-master-next' ),
 				'description'         => __( 'Returns all active questions for a given quiz. Use this to inspect the questions in a quiz before creating or updating them.', 'quiz-master-next' ),
 				'category'            => 'qsm-questions',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'ID of the quiz whose questions to retrieve.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id' ),
+					array( 'quiz_id' )
 				),
-				'output_schema'       => array(
-					'type'  => 'array',
-					'items' => $question_output_schema,
-				),
+				'output_schema'       => array( 'type' => 'array', 'items' => $question_output_schema ),
 				'execute_callback'    => array( $this, 'execute_list_questions' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 
-		// get-question.
 		wp_register_ability(
 			self::NAMESPACE . '/get-question',
 			array(
 				'label'               => __( 'Get Question', 'quiz-master-next' ),
 				'description'         => __( 'Returns the full data for a single question by its ID, including answers and settings.', 'quiz-master-next' ),
 				'category'            => 'qsm-questions',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'question_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'The ID of the question to retrieve.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'question_id' ),
+					array( 'question_id' )
 				),
 				'output_schema'       => $question_output_schema,
 				'execute_callback'    => array( $this, 'execute_get_question' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 
-		// create-question.
 		wp_register_ability(
 			self::NAMESPACE . '/create-question',
 			array(
 				'label'               => __( 'Create Question', 'quiz-master-next' ),
 				'description'         => __( 'Adds a new question to a quiz. Provide the quiz ID, question text, question type, and answer options. Returns the ID of the created question.', 'quiz-master-next' ),
 				'category'            => 'qsm-questions',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_id'       => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
@@ -451,49 +383,29 @@ class QSM_Abilities {
 							'default'     => '0',
 							'description' => __( 'Question type identifier (e.g. "0" for multiple choice, "1" for true/false, "8" for open-ended).', 'quiz-master-next' ),
 						),
-						'answers'       => array(
-							'type'        => 'array',
-							'description' => __( 'Array of answer option arrays for the question.', 'quiz-master-next' ),
-							'items'       => array( 'type' => 'object', 'properties' => array( 'text' => array( 'type' => 'string' ), 'points' => array( 'type' => 'number' ), 'correct' => array( 'type' => 'integer' ), 'feedback' => array( 'type' => 'string' ) ) ),
-						),
+						'answers'       => $answers_input_schema,
 						'settings'      => array(
 							'type'        => 'object',
 							'description' => __( 'Optional question settings such as required, points, category.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id', 'question_name' ),
+					array( 'quiz_id', 'question_name' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'question_id' => array(
-							'type'        => 'integer',
-							'description' => __( 'ID of the newly created question.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'question_id' ),
-				),
+				'output_schema'       => $this->make_id_output_schema( 'question_id', __( 'ID of the newly created question.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_create_question' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => false ) ),
 			)
 		);
 
-		// update-question.
 		wp_register_ability(
 			self::NAMESPACE . '/update-question',
 			array(
 				'label'               => __( 'Update Question', 'quiz-master-next' ),
 				'description'         => __( 'Updates an existing question\'s text, answers, or settings. Only the fields provided will be updated. Returns the question ID on success.', 'quiz-master-next' ),
 				'category'            => 'qsm-questions',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'question_id'   => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
@@ -507,76 +419,41 @@ class QSM_Abilities {
 							'type'        => 'string',
 							'description' => __( 'New question type identifier.', 'quiz-master-next' ),
 						),
-						'answers'       => array(
-							'type'        => 'array',
-							'description' => __( 'New answer options array (replaces existing answers).', 'quiz-master-next' ),
-							'items'       => array( 'type' => 'object', 'properties' => array( 'text' => array( 'type' => 'string' ), 'points' => array( 'type' => 'number' ), 'correct' => array( 'type' => 'integer' ), 'feedback' => array( 'type' => 'string' ) ) ),
-						),
+						'answers'       => $answers_input_schema,
 						'settings'      => array(
 							'type'        => 'object',
 							'description' => __( 'New settings (replaces existing settings).', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'question_id' ),
+					array( 'question_id' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'question_id' => array(
-							'type'        => 'integer',
-							'description' => __( 'ID of the updated question.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'question_id' ),
-				),
+				'output_schema'       => $this->make_id_output_schema( 'question_id', __( 'ID of the updated question.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_update_question' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => false ) ),
 			)
 		);
 
-		// delete-question.
 		wp_register_ability(
 			self::NAMESPACE . '/delete-question',
 			array(
 				'label'               => __( 'Delete Question', 'quiz-master-next' ),
 				'description'         => __( 'Soft-deletes a question by its ID. The question will no longer appear in the quiz but the data is retained. This is a destructive operation — confirm the question ID before proceeding.', 'quiz-master-next' ),
 				'category'            => 'qsm-questions',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'question_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'ID of the question to delete.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'question_id' ),
+					array( 'question_id' )
 				),
-				'output_schema'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'success' => array(
-							'type'        => 'boolean',
-							'description' => __( 'True if the question was deleted successfully.', 'quiz-master-next' ),
-						),
-					),
-					'required' => array( 'success' ),
-				),
+				'output_schema'       => $this->make_success_output_schema( __( 'True if the question was deleted successfully.', 'quiz-master-next' ) ),
 				'execute_callback'    => array( $this, 'execute_delete_question' ),
 				'permission_callback' => array( $this, 'permission_edit_quizzes' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'destructive' => true,
-						'idempotent'  => false,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'destructive' => true, 'idempotent' => false ) ),
 			)
 		);
 	}
@@ -606,19 +483,17 @@ class QSM_Abilities {
 				'user_id'       => array( 'type' => 'integer', 'description' => __( 'WordPress user ID of the respondent (0 if anonymous).', 'quiz-master-next' ) ),
 				'user_name'     => array( 'type' => 'string',  'description' => __( 'Name of the respondent.', 'quiz-master-next' ) ),
 			),
-			'required' => array( 'result_id', 'quiz_id' ),
+			'required'   => array( 'result_id', 'quiz_id' ),
 		);
 
-		// list-results.
 		wp_register_ability(
 			self::NAMESPACE . '/list-results',
 			array(
 				'label'               => __( 'List Quiz Results', 'quiz-master-next' ),
 				'description'         => __( 'Returns up to 40 recent submission results for a given quiz. Each result includes score, time taken, and respondent information.', 'quiz-master-next' ),
 				'category'            => 'qsm-results',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'quiz_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
@@ -638,50 +513,35 @@ class QSM_Abilities {
 							'description' => __( 'Number of results to skip for pagination.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'quiz_id' ),
+					array( 'quiz_id' )
 				),
-				'output_schema'       => array(
-					'type'  => 'array',
-					'items' => $result_output_schema,
-				),
+				'output_schema'       => array( 'type' => 'array', 'items' => $result_output_schema ),
 				'execute_callback'    => array( $this, 'execute_list_results' ),
 				'permission_callback' => array( $this, 'permission_view_results' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 
-		// get-result.
 		wp_register_ability(
 			self::NAMESPACE . '/get-result',
 			array(
 				'label'               => __( 'Get Quiz Result', 'quiz-master-next' ),
 				'description'         => __( 'Returns the full data for a single quiz submission by its result ID, including score breakdown and respondent details.', 'quiz-master-next' ),
 				'category'            => 'qsm-results',
-				'input_schema'        => array(
-					'type'       => 'object',
-					'properties' => array(
+				'input_schema'        => $this->make_input_schema(
+					array(
 						'result_id' => array(
 							'type'        => 'integer',
 							'minimum'     => 1,
 							'description' => __( 'The ID of the result to retrieve.', 'quiz-master-next' ),
 						),
 					),
-					'required' => array( 'result_id' ),
+					array( 'result_id' )
 				),
 				'output_schema'       => $result_output_schema,
 				'execute_callback'    => array( $this, 'execute_get_result' ),
 				'permission_callback' => array( $this, 'permission_view_results' ),
-				'meta'                => array(
-					'show_in_rest' => true,
-					'annotations'  => array(
-						'idempotent' => true,
-					),
-				),
+				'meta'                => $this->make_meta( array( 'idempotent' => true ) ),
 			)
 		);
 	}
@@ -752,11 +612,10 @@ class QSM_Abilities {
 			return new WP_Error( 'qsm_quiz_not_found', __( 'Quiz not found.', 'quiz-master-next' ), array( 'status' => 404 ) );
 		}
 
-		$quiz['quiz_id']    = intval( $quiz['quiz_id'] );
-		$quiz['quiz_taken'] = intval( $quiz['quiz_taken'] );
-		$quiz['quiz_views'] = intval( $quiz['quiz_views'] );
-
-		$settings = maybe_unserialize( $quiz['quiz_settings'] );
+		$quiz['quiz_id']       = intval( $quiz['quiz_id'] );
+		$quiz['quiz_taken']    = intval( $quiz['quiz_taken'] );
+		$quiz['quiz_views']    = intval( $quiz['quiz_views'] );
+		$settings              = maybe_unserialize( $quiz['quiz_settings'] );
 		$quiz['quiz_settings'] = is_array( $settings ) ? $settings : array();
 
 		return $quiz;
@@ -790,15 +649,15 @@ class QSM_Abilities {
 	 *
 	 * @since  9.1.0
 	 * @param  array $input Validated input data.
-	 * @return array|WP_Error
+	 * @return array
 	 */
 	public function execute_delete_quiz( $input ) {
 		global $mlwQuizMasterNext;
 
-		$quiz_id   = intval( $input['quiz_id'] );
-		$quiz_name = sanitize_text_field( $input['quiz_name'] );
-
-		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
+		$mlwQuizMasterNext->quizCreator->delete_quiz(
+			intval( $input['quiz_id'] ),
+			sanitize_text_field( $input['quiz_name'] )
+		);
 
 		return array( 'success' => true );
 	}
@@ -813,13 +672,13 @@ class QSM_Abilities {
 	public function execute_duplicate_quiz( $input ) {
 		global $mlwQuizMasterNext;
 
-		$quiz_id    = intval( $input['quiz_id'] );
-		$quiz_name  = sanitize_text_field( $input['quiz_name'] );
-		$copy_questions = isset( $input['is_duplicating_questions'] ) ? (bool) $input['is_duplicating_questions'] : true;
+		$mlwQuizMasterNext->quizCreator->duplicate_quiz(
+			intval( $input['quiz_id'] ),
+			sanitize_text_field( $input['quiz_name'] ),
+			isset( $input['is_duplicating_questions'] ) ? (bool) $input['is_duplicating_questions'] : true
+		);
 
-		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, $copy_questions );
 		$new_quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
-
 		if ( ! $new_quiz_id ) {
 			return new WP_Error( 'qsm_duplicate_quiz_failed', __( 'Failed to duplicate quiz.', 'quiz-master-next' ) );
 		}
@@ -839,10 +698,7 @@ class QSM_Abilities {
 	 * @return array
 	 */
 	public function execute_list_questions( $input ) {
-		$quiz_id   = intval( $input['quiz_id'] );
-		$questions = QSM_Questions::load_questions( $quiz_id );
-
-		return array_values( (array) $questions );
+		return array_values( (array) QSM_Questions::load_questions( intval( $input['quiz_id'] ) ) );
 	}
 
 	/**
@@ -897,9 +753,8 @@ class QSM_Abilities {
 	 */
 	public function execute_update_question( $input ) {
 		$question_id = intval( $input['question_id'] );
+		$existing    = QSM_Questions::load_question( $question_id );
 
-		// Load existing question to merge data.
-		$existing = QSM_Questions::load_question( $question_id );
 		if ( empty( $existing ) ) {
 			return new WP_Error( 'qsm_question_not_found', __( 'Question not found.', 'quiz-master-next' ), array( 'status' => 404 ) );
 		}
@@ -973,22 +828,11 @@ class QSM_Abilities {
 			ARRAY_A
 		);
 
-		if ( $rows === null ) {
+		if ( null === $rows ) {
 			return new WP_Error( 'qsm_db_error', __( 'Database error while retrieving results.', 'quiz-master-next' ) );
 		}
 
-		foreach ( $rows as &$row ) {
-			$row['result_id']     = intval( $row['result_id'] );
-			$row['quiz_id']       = intval( $row['quiz_id'] );
-			$row['correct']       = intval( $row['correct'] );
-			$row['total']         = intval( $row['total'] );
-			$row['correct_score'] = floatval( $row['correct_score'] );
-			$row['point_score']   = floatval( $row['point_score'] );
-			$row['user_id']       = intval( $row['user_id'] );
-		}
-		unset( $row );
-
-		return $rows;
+		return array_map( array( $this, 'cast_result_row' ), $rows );
 	}
 
 	/**
@@ -1001,13 +845,12 @@ class QSM_Abilities {
 	public function execute_get_result( $input ) {
 		global $wpdb;
 
-		$result_id = intval( $input['result_id'] );
-		$row       = $wpdb->get_row(
+		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT result_id, quiz_id, correct, total, correct_score, point_score, time_taken, user_id, user_name
 				 FROM {$wpdb->prefix}mlw_results
 				 WHERE result_id = %d AND deleted = '0' LIMIT 1",
-				$result_id
+				intval( $input['result_id'] )
 			),
 			ARRAY_A
 		);
@@ -1016,6 +859,97 @@ class QSM_Abilities {
 			return new WP_Error( 'qsm_result_not_found', __( 'Result not found.', 'quiz-master-next' ), array( 'status' => 404 ) );
 		}
 
+		return $this->cast_result_row( $row );
+	}
+
+	// -------------------------------------------------------------------------
+	// Helpers
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Builds the standard meta array for ability registration.
+	 *
+	 * @since  9.1.0
+	 * @param  array $annotations Annotations to set (e.g. idempotent, destructive).
+	 * @return array
+	 */
+	private function make_meta( array $annotations = array() ) {
+		return array(
+			'show_in_rest' => true,
+			'annotations'  => $annotations,
+		);
+	}
+
+	/**
+	 * Wraps a properties map in the standard JSON Schema object envelope.
+	 *
+	 * @since  9.1.0
+	 * @param  array $properties Schema properties array.
+	 * @param  array $required   List of required property names.
+	 * @return array JSON Schema object definition.
+	 */
+	private function make_input_schema( array $properties, array $required = array() ) {
+		$schema = array(
+			'type'       => 'object',
+			'properties' => $properties,
+		);
+
+		if ( ! empty( $required ) ) {
+			$schema['required'] = $required;
+		}
+
+		return $schema;
+	}
+
+	/**
+	 * Builds an output schema that returns a single integer ID field.
+	 *
+	 * @since  9.1.0
+	 * @param  string $field       The name of the ID field (e.g. 'quiz_id').
+	 * @param  string $description Human-readable description for the field.
+	 * @return array JSON Schema object definition.
+	 */
+	private function make_id_output_schema( $field, $description ) {
+		return array(
+			'type'       => 'object',
+			'properties' => array(
+				$field => array(
+					'type'        => 'integer',
+					'description' => $description,
+				),
+			),
+			'required'   => array( $field ),
+		);
+	}
+
+	/**
+	 * Builds an output schema that returns a boolean success flag.
+	 *
+	 * @since  9.1.0
+	 * @param  string $description Human-readable description for the success field.
+	 * @return array JSON Schema object definition.
+	 */
+	private function make_success_output_schema( $description ) {
+		return array(
+			'type'       => 'object',
+			'properties' => array(
+				'success' => array(
+					'type'        => 'boolean',
+					'description' => $description,
+				),
+			),
+			'required'   => array( 'success' ),
+		);
+	}
+
+	/**
+	 * Casts numeric string fields in a result row to their correct types.
+	 *
+	 * @since  9.1.0
+	 * @param  array $row Raw DB row.
+	 * @return array
+	 */
+	private function cast_result_row( array $row ) {
 		$row['result_id']     = intval( $row['result_id'] );
 		$row['quiz_id']       = intval( $row['quiz_id'] );
 		$row['correct']       = intval( $row['correct'] );
@@ -1023,13 +957,8 @@ class QSM_Abilities {
 		$row['correct_score'] = floatval( $row['correct_score'] );
 		$row['point_score']   = floatval( $row['point_score'] );
 		$row['user_id']       = intval( $row['user_id'] );
-
 		return $row;
 	}
-
-	// -------------------------------------------------------------------------
-	// Helpers
-	// -------------------------------------------------------------------------
 
 	/**
 	 * Normalizes answers from either object or array format into QSM's expected array format.
@@ -1045,7 +974,6 @@ class QSM_Abilities {
 		$normalized = array();
 		foreach ( $answers as $answer ) {
 			if ( isset( $answer['text'] ) ) {
-				// Object format from OpenAPI schema.
 				$normalized[] = array(
 					$answer['text'],
 					isset( $answer['points'] ) ? floatval( $answer['points'] ) : 0,
@@ -1053,7 +981,6 @@ class QSM_Abilities {
 					isset( $answer['feedback'] ) ? $answer['feedback'] : '',
 				);
 			} else {
-				// Already in QSM array format.
 				$normalized[] = $answer;
 			}
 		}
