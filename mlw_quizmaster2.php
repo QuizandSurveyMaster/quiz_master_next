@@ -126,6 +126,14 @@ class MLWQuizMasterNext {
 	public $qsm_api;
 
 	/**
+	 * Holds the abilities API registration handler.
+	 *
+	 * @var object
+	 * @since 11.0.0
+	 */
+	public $abilities_api;
+
+	/**
 	 * Holds quiz_data
 	 *
 	 * @var object
@@ -339,7 +347,9 @@ class MLWQuizMasterNext {
 
 		include_once 'php/rest-api.php';
 		include_once 'php/classes/class-qsm-quiz-api.php';
+		include_once 'php/classes/class-qsm-abilities-api.php';
 		$this->qsm_api = new QSMQuizApi();
+		$this->abilities_api = new QSM_Abilities_API();
 	}
 
 	/**
