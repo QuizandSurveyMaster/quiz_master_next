@@ -342,7 +342,7 @@ class MLWQuizMasterNext {
 		$this->qsm_api = new QSMQuizApi();
 
 		include_once 'php/classes/class-qsm-abilities.php';
-		new QSM_Abilities();
+		$this->abilities = new QSM_Abilities();
 	}
 
 	/**
