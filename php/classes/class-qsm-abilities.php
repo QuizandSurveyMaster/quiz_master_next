@@ -877,9 +877,9 @@ class QSM_Abilities {
 	 */
 	public function execute_create_question( $input ) {
 		$data = array(
-			'quiz_id'       => intval( $input['quiz_id'] ),
-			'question_name' => sanitize_text_field( $input['question_name'] ),
-			'question_type' => isset( $input['question_type'] ) ? sanitize_text_field( $input['question_type'] ) : '0',
+			'quiz_id' => intval( $input['quiz_id'] ),
+			'name'    => sanitize_text_field( $input['question_name'] ),
+			'type'    => isset( $input['question_type'] ) ? sanitize_text_field( $input['question_type'] ) : '0',
 		);
 
 		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $input['answers'] : array();
@@ -912,10 +912,10 @@ class QSM_Abilities {
 
 		$data = array();
 		if ( isset( $input['question_name'] ) ) {
-			$data['question_name'] = sanitize_text_field( $input['question_name'] );
+			$data['name'] = sanitize_text_field( $input['question_name'] );
 		}
 		if ( isset( $input['question_type'] ) ) {
-			$data['question_type'] = sanitize_text_field( $input['question_type'] );
+			$data['type'] = sanitize_text_field( $input['question_type'] );
 		}
 
 		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $input['answers'] : $existing['answers'];
