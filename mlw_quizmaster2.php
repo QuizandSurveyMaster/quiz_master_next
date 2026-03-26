@@ -340,9 +340,6 @@ class MLWQuizMasterNext {
 		include_once 'php/rest-api.php';
 		include_once 'php/classes/class-qsm-quiz-api.php';
 		$this->qsm_api = new QSMQuizApi();
-
-		include_once 'php/classes/class-qsm-abilities.php'; // NOSONAR
-		$this->abilities = new QSM_Abilities();
 	}
 
 	/**
