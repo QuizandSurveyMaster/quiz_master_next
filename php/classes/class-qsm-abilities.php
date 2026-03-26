@@ -31,6 +31,13 @@ class QSM_Abilities {
 	const NAMESPACE = 'quiz-master-next';
 
 	/**
+	 * Columns selected from the results table.
+	 *
+	 * @var string
+	 */
+	const RESULT_COLUMNS = 'result_id, quiz_id, correct, total, correct_score, point_score, time_taken, user_id, user_name';
+
+	/**
 	 * Hooks into the WordPress Abilities API init actions.
 	 *
 	 * @since 9.1.0
@@ -622,7 +629,7 @@ class QSM_Abilities {
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT result_id, quiz_id, correct, total, correct_score, point_score, time_taken, user_id, user_name
+				"SELECT " . self::RESULT_COLUMNS . "
 				 FROM {$wpdb->prefix}mlw_results
 				 WHERE deleted = '0' AND quiz_id = %d
 				 ORDER BY result_id DESC
@@ -653,7 +660,7 @@ class QSM_Abilities {
 
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT result_id, quiz_id, correct, total, correct_score, point_score, time_taken, user_id, user_name
+				"SELECT " . self::RESULT_COLUMNS . "
 				 FROM {$wpdb->prefix}mlw_results
 				 WHERE result_id = %d AND deleted = '0' LIMIT 1",
 				intval( $input['result_id'] )
