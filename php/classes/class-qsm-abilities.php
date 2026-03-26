@@ -454,7 +454,7 @@ class QSM_Abilities {
 						'answers'       => array(
 							'type'        => 'array',
 							'description' => __( 'Array of answer option arrays for the question.', 'quiz-master-next' ),
-							'items'       => array( 'type' => 'array' ),
+							'items'       => array( 'type' => 'object', 'properties' => array( 'text' => array( 'type' => 'string' ), 'points' => array( 'type' => 'number' ), 'correct' => array( 'type' => 'integer' ), 'feedback' => array( 'type' => 'string' ) ) ),
 						),
 						'settings'      => array(
 							'type'        => 'object',
@@ -510,7 +510,7 @@ class QSM_Abilities {
 						'answers'       => array(
 							'type'        => 'array',
 							'description' => __( 'New answer options array (replaces existing answers).', 'quiz-master-next' ),
-							'items'       => array( 'type' => 'array' ),
+							'items'       => array( 'type' => 'object', 'properties' => array( 'text' => array( 'type' => 'string' ), 'points' => array( 'type' => 'number' ), 'correct' => array( 'type' => 'integer' ), 'feedback' => array( 'type' => 'string' ) ) ),
 						),
 						'settings'      => array(
 							'type'        => 'object',
@@ -876,7 +876,7 @@ class QSM_Abilities {
 			'type'    => isset( $input['question_type'] ) ? sanitize_text_field( $input['question_type'] ) : '0',
 		);
 
-		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $input['answers'] : array();
+		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $this->normalize_answers( $input['answers'] ) : array();
 		$settings = isset( $input['settings'] ) && is_array( $input['settings'] ) ? $input['settings'] : array();
 
 		try {
@@ -912,7 +912,7 @@ class QSM_Abilities {
 			$data['type'] = sanitize_text_field( $input['question_type'] );
 		}
 
-		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $input['answers'] : $existing['answers'];
+		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $this->normalize_answers( $input['answers'] ) : $existing['answers'];
 		$settings = isset( $input['settings'] ) && is_array( $input['settings'] ) ? $input['settings'] : $existing['settings'];
 
 		try {
@@ -1025,6 +1025,39 @@ class QSM_Abilities {
 		$row['user_id']       = intval( $row['user_id'] );
 
 		return $row;
+	}
+
+	// -------------------------------------------------------------------------
+	// Helpers
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Normalizes answers from either object or array format into QSM's expected array format.
+	 *
+	 * Accepts both the legacy array format [text, points, correct, feedback] and the
+	 * OpenAPI-friendly object format {text, points, correct, feedback}.
+	 *
+	 * @since  9.1.0
+	 * @param  array $answers Raw answers from input.
+	 * @return array Normalized answers in QSM array format.
+	 */
+	private function normalize_answers( array $answers ) {
+		$normalized = array();
+		foreach ( $answers as $answer ) {
+			if ( isset( $answer['text'] ) ) {
+				// Object format from OpenAPI schema.
+				$normalized[] = array(
+					$answer['text'],
+					isset( $answer['points'] ) ? floatval( $answer['points'] ) : 0,
+					isset( $answer['correct'] ) ? intval( $answer['correct'] ) : 0,
+					isset( $answer['feedback'] ) ? $answer['feedback'] : '',
+				);
+			} else {
+				// Already in QSM array format.
+				$normalized[] = $answer;
+			}
+		}
+		return $normalized;
 	}
 
 	// -------------------------------------------------------------------------
