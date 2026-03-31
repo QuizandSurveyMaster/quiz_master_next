@@ -19,6 +19,13 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 
 		const QUERY_VAR = 'qsm_embed_quiz_id';
 
+		/**
+		 * Holds the single running instance.
+		 *
+		 * @var QSM_Embed|null
+		 */
+		private static $instance = null;
+
 		public function __construct() {
 			add_action( 'init', array( $this, 'add_rewrite_rule' ) );
 			add_filter( 'query_vars', array( $this, 'add_query_var' ) );
@@ -26,10 +33,15 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 		}
 
 		/**
-		 * Bootstrap the class by creating the single instance.
+		 * Bootstrap the class and store the single instance.
+		 *
+		 * @return self
 		 */
 		public static function init() {
-			new self();
+			if ( null === self::$instance ) {
+				self::$instance = new self();
+			}
+			return self::$instance;
 		}
 
 		/**
