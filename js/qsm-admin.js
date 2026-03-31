@@ -1407,7 +1407,7 @@ jQuery(document).ready(function () {
             e.preventDefault();
             var embed_text = $(this).siblings('.sc-embed').text();
             var link_text = $(this).siblings('.sc-link').text();
-            var embed_url = $(this).siblings('.sc-embed-iframe').text().trim();
+            let embed_url = $(this).siblings('.sc-embed-iframe').text().trim();
             $('#sc-shortcode-model-text').val(embed_text);
             $('#sc-shortcode-model-text-link').val(link_text);
             $('#sc-embed-iframe-text').val(embed_url);
@@ -1424,10 +1424,10 @@ jQuery(document).ready(function () {
             document.execCommand("copy");
         });
         $(document).on('click', '#sc-copy-embed-iframe', function () {
-            var copyText = document.getElementById("sc-embed-iframe-text");
+            let copyText = document.getElementById("sc-embed-iframe-text");
             copyText.select();
             document.execCommand("copy");
-            var $btn = $(this);
+            let $btn = $(this);
             $btn.addClass('qsm-copied');
             setTimeout(function () { $btn.removeClass('qsm-copied'); }, 1500);
         });
