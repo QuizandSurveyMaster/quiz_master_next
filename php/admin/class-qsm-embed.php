@@ -26,6 +26,13 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 		}
 
 		/**
+		 * Bootstrap the class by creating the single instance.
+		 */
+		public static function init() {
+			new self();
+		}
+
+		/**
 		 * Register the rewrite rule:  qsm-embed/{quiz_id}  →  index.php?qsm_embed_quiz_id={quiz_id}
 		 */
 		public function add_rewrite_rule() {
@@ -91,7 +98,7 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 		 * @param int $quiz_id
 		 */
 		private function render_embed_page( $quiz_id ) {
-			?>
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -100,16 +107,8 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 <title><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></title>
 <?php wp_head(); ?>
 <style>
-	html, body {
-		margin: 0;
-		padding: 0;
-		background: transparent;
-	}
-	.qsm-embed-wrapper {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 16px;
-	}
+	html, body { margin: 0; padding: 0; background: transparent; }
+	.qsm-embed-wrapper { width: 100%; box-sizing: border-box; padding: 16px; }
 	#wpadminbar { display: none !important; }
 </style>
 </head>
@@ -120,7 +119,7 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 <?php wp_footer(); ?>
 </body>
 </html>
-			<?php
+<?php
 		}
 
 		/**
@@ -142,7 +141,6 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 		 * without requiring a manual Settings → Permalinks save.
 		 */
 		public static function on_activation() {
-			// Set a flag so the already-running instance flushes on the next init.
 			update_option( 'qsm_embed_flush_needed', true );
 		}
 
@@ -151,5 +149,5 @@ if ( ! class_exists( 'QSM_Embed' ) ) {
 		}
 	}
 
-	new QSM_Embed();
+	QSM_Embed::init();
 }
