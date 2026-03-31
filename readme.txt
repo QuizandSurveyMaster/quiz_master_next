@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 10.3.4
+Stable tag: 11.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,35 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.0.0 ( March 19, 2026 ) =
+* Feature: Introduced a new quiz rendering system with fully customizable elements
+* Feature: Added advanced customization options for quiz templates, including pagination settings
+* Feature: Added control over question layout within quiz templates
+* Feature: Added customization options for timer behavior and display
+* Feature: Added support for progress bar customization
+* Feature: Introduced a complete Question Bank management system
+* Feature: Added filtering capabilities within the Question Bank
+* Feature: Added edit functionality for existing questions
+* Feature: Added options to delete and duplicate questions for quick reuse
+* Feature: Added ability to create questions directly in the Question Bank without assigning them to a quiz
+* Feature: Added bulk import functionality to upload questions via CSV
+* Feature: Added a guided tour for creating and managing questions
+* Feature: Added option to customize contact form error messages
+* Feature: Added option to modify default email templates
+* Feature: Added support for customizing result templates
+* Enhancement: Improved database structure for quiz results
+* Enhancement: Split result data into main result and result meta tables for better organization
+* Enhancement: Optimized storage and retrieval of quiz results
+* Enhancement: Improved UI for multiple choice and multi-response question types
+* Enhancement: Added validation for phone number fields
+* Bug: Fixed repeated log insertion issue
+* Bug: Fixed incorrect timestamp handling in result submissions
+* Patch: Fixed SQL injection vulnerability related to merged_question parameter
+
+= 10.3.5 ( January 28, 2026 ) =
+* Patch: Authentication validation issue affecting update results
+* Patch: Added authentication checks when enabling multi-category support for questions
+
 = 10.3.4 ( January 06, 2026 ) =
 * Patch: Vulnerability where users can modify or delete quizzes/questions beyond their role permissions
 * Enhancement: Added support for using variable in quiz redirect URL

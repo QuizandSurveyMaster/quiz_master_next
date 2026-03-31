@@ -960,6 +960,76 @@ h2.hndle.ui-sortable-handle {
     align-items: center;
 	margin-top: 60px;
 }
+.qsm-dashboard-migration-section.qsm-dashboard-page-common-style {
+	border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    margin-top: 20px;
+    padding: 24px;
+}
+.qsm-dashboard-migration-section .qsm-dashboard-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+.qsm-db-migration-container{
+	border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    display: grid;
+    gap: 15px;
+}
+.qsm-migration-notice {
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid;
+}
+.qsm-migration-warning {
+	background-color: #FDF6ED;
+	border-color: #fad8af;
+}
+.qsm-migration-info {
+    border-color: #e5e7eb;
+}
+.qsm-migration-notice-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.qsm-migration-notice-header strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+.qsm-migration-notice p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4b5563;
+}
+.qsm-migration-notice p + p {
+    margin-top: 8px;
+}
+.qsm-migration-action {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+}
+.qsm-dashboard-section-migration {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+.qsm-migration-note {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #6b7280;
+    text-align: center;
+}
 .qsm-dashboard-time-range-selector {
 	float: right;
 	margin-bottom: 5px;

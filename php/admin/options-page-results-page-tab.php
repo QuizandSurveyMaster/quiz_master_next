@@ -38,17 +38,22 @@ function qsm_options_results_tab_content() {
 
 	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 
+	// Get default result template from global settings
+	$default_templates = (array) get_option( 'qsm-quiz-default-template' );
+	$default_result_template = isset( $default_templates['default_result_template'] ) ? $default_templates['default_result_template'] : __( 'Thanks for submitting your response! Here are your quiz results. <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' );
+
 	$js_data = array(
-		'quizID'            => $quiz_id,
-		'nonce'             => wp_create_nonce( 'wp_rest' ),
-		'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
-		'my_tmpl_data'      => $my_result_templates,
-		'script_tmpl'       => $template_from_script,
-		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
-		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
-		'dependency'        => $qsm_dependency_list,
-		'required_addons'   => __('Required Add-ons', 'quiz-master-next'),
-		'used_addons'       => __('Addons :', 'quiz-master-next'),
+		'quizID'                  => $quiz_id,
+		'nonce'                   => wp_create_nonce( 'wp_rest' ),
+		'rest_user_nonce'         => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'my_tmpl_data'            => $my_result_templates,
+		'script_tmpl'             => $template_from_script,
+		'add_tmpl_nonce'          => wp_create_nonce( 'qsm_add_template' ),
+		'remove_tmpl_nonce'       => wp_create_nonce( 'qsm_remove_template' ),
+		'dependency'              => $qsm_dependency_list,
+		'required_addons'         => __('Required Add-ons', 'quiz-master-next'),
+		'used_addons'             => __('Addons :', 'quiz-master-next'),
+		'default_result_template' => $default_result_template,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
 	do_action( 'qsm_options_results_tab_content_before' );
@@ -56,6 +61,14 @@ function qsm_options_results_tab_content() {
 
 <!-- Results Page Section -->
 <section class="qsm-quiz-result-tab" style="margin-top: 15px;">
+	<div class="qsm-tab-description">
+		<p class="qsm-tab-description-headline">
+			<?php esc_html_e( 'Define what users see after completing the quiz.', 'quiz-master-next' ); ?>
+		</p>
+		<p class="qsm-tab-description-subheadline">
+			<?php esc_html_e( 'Show different result pages or redirect users based on their answers, scores, or conditions.', 'quiz-master-next' ); ?>
+		</p>
+	</div>
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>

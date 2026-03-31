@@ -97,6 +97,9 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					$shortcode_links .= '<div class="sc-content sc-embed">[qsm quiz=' . $quiz_id . ']</div>';
 					$shortcode_links .= '<div class="sc-content sc-link">[qsm_link id=' . $quiz_id . ']' . __( 'Click here', 'quiz-master-next' ) . '[/qsm_link]</div>';
 					echo wp_kses_post( $shortcode_links );
+					$embed_url   = esc_url( QSM_Embed::get_embed_url( $quiz_id ) );
+					$iframe_code = '<iframe src="' . $embed_url . '" width="100%" height="600" frameborder="0"></iframe>';
+					echo '<div class="sc-content sc-embed-iframe">' . esc_html( $iframe_code ) . '</div>';
 					break;
 
 				case 'total_questions':
@@ -347,6 +350,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						$mlwQuizMasterNext->alertManager->alerts = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['QSMAlertManager'] ) ), true );
 						unset( $_COOKIE['QSMAlertManager'] );
 					}
+					qsm_show_results_migration_warning();
 					$mlwQuizMasterNext->alertManager->showAlerts();
 					?>
 				</div>
@@ -507,26 +511,29 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-												<div class="qsm-row" style="margin-bottom: 30px;">
-													<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
-													<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
-													<button class="button button-primary" id="sc-copy-shortcode"><span
-															class="dashicons dashicons-admin-page"></span></button>
-												</div>
-												<div class="qsm-row">
-													<lable  style="padding-right:15px;"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
-													<input type="text" value="" id="sc-shortcode-model-text-link"  class="sc-shortcode-input">
-													<button class="button button-primary" id="sc-copy-shortcode-link"><span
-															class="dashicons dashicons-admin-page"></span></button>
-															<div class="qsm-popup-nonce-validation">
-															<div class="qsm-popup-upgrade-warning">
-																<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
-																<span><?php esc_html_e( "If you're using a cache plugin, please exclude the page from your cache where you're about to use the quiz's shortcode to avoid", 'quiz-master-next' ); ?>
-																<a><?php esc_html_e("Nonce Validation Issue." , 'quiz-master-next') ;?></a></span>
-															</div>
-															</div>
-												</div>
-											</main>
+								<div class="qsm-row" style="margin-bottom: 30px;">
+									<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
+									<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
+									<button class="button button-primary" id="sc-copy-shortcode"><span class="dashicons dashicons-admin-page"></span></button>
+								</div>
+								<div class="qsm-row">
+									<lable style="padding-right:15px;"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
+									<input type="text" value="" id="sc-shortcode-model-text-link" class="sc-shortcode-input">
+									<button class="button button-primary" id="sc-copy-shortcode-link"><span class="dashicons dashicons-admin-page"></span></button>
+								</div>
+								<div class="qsm-row" style="margin-top: 30px;">
+									<lable style="padding-right:20px;"><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></lable>
+									<input type="text" value="" id="sc-embed-iframe-text" class="sc-shortcode-input" readonly>
+									<button class="button button-primary" id="sc-copy-embed-iframe"><span class="dashicons dashicons-admin-page"></span></button>
+									<div class="qsm-popup-nonce-validation">
+										<div class="qsm-popup-upgrade-warning">
+											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
+											<span><?php esc_html_e( "If you're using a cache plugin, please exclude the page from your cache where you're about to use the quiz's shortcode to avoid", 'quiz-master-next' ); ?>
+											<a><?php esc_html_e("Nonce Validation Issue." , 'quiz-master-next') ;?></a></span>
+										</div>
+									</div>
+								</div>
+							</main>
 						</div>
 					</div>
 				</div>

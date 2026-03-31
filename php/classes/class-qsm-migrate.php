@@ -23,7 +23,8 @@ class QSM_Migrate {
 	 * @return void
 	 */
 	public function enable_multiple_categories() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) ) {
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $nonce, 'qsm_enable_multiple_categories' ) ) {
 			wp_send_json_error();
 		}
 		global $wpdb;

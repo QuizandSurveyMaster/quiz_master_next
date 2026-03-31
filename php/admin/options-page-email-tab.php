@@ -37,18 +37,24 @@ function qsm_options_emails_tab_content() {
 	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
 	$my_email_templates = $wpdb->get_results($temlpate_sql);
 	$qsm_dependency_list = qsm_get_dependency_plugin_list();
+	
+	// Get default email template from global settings
+	$default_templates = (array) get_option( 'qsm-quiz-default-template' );
+	$default_email_template = isset( $default_templates['default_email_template'] ) ? htmlspecialchars_decode( $default_templates['default_email_template'], ENT_QUOTES ) : '%QUESTIONS_ANSWERS_EMAIL%';
+	
 	$js_data = array(
-		'quizID'            => $quiz_id,
-		'nonce'             => wp_create_nonce( 'wp_rest' ),
-		'qsm_user_ve'       => get_user_meta( $user_id, 'rich_editing', true ),
-		'rest_user_nonce'   => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
-		'my_tmpl_data'      => $my_email_templates,
-		'script_tmpl'       => $template_from_script,
-		'add_tmpl_nonce'    => wp_create_nonce( 'qsm_add_template' ),
-		'remove_tmpl_nonce' => wp_create_nonce( 'qsm_remove_template' ),
-		'dependency'        => $qsm_dependency_list,
-		'required_addons'   => __('Required Add-ons', 'quiz-master-next'),
-		'used_addons'       => __('Addons :', 'quiz-master-next'),
+		'quizID'                 => $quiz_id,
+		'nonce'                  => wp_create_nonce( 'wp_rest' ),
+		'qsm_user_ve'            => get_user_meta( $user_id, 'rich_editing', true ),
+		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'my_tmpl_data'           => $my_email_templates,
+		'script_tmpl'            => $template_from_script,
+		'add_tmpl_nonce'         => wp_create_nonce( 'qsm_add_template' ),
+		'remove_tmpl_nonce'      => wp_create_nonce( 'qsm_remove_template' ),
+		'dependency'             => $qsm_dependency_list,
+		'required_addons'        => __('Required Add-ons', 'quiz-master-next'),
+		'used_addons'            => __('Addons :', 'quiz-master-next'),
+		'default_email_template' => $default_email_template,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 	do_action( 'qsm_options_email_tab_content_before' );
@@ -64,6 +70,14 @@ function qsm_options_emails_tab_content() {
 
 <!-- Emails Section -->
 <section class="qsm-quiz-email-tab" style="margin-top: 15px;">
+	<div class="qsm-tab-description">
+		<p class="qsm-tab-description-headline">
+			<?php esc_html_e( 'Automate emails based on quiz behavior and results.', 'quiz-master-next' ); ?>
+		</p>
+		<p class="qsm-tab-description-subheadline">
+			<?php esc_html_e( 'Set conditions for when an email should be sent and define who receives it and what it contains.', 'quiz-master-next' ); ?>
+		</p>
+	</div>
 	<div id="qsm_emails">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
