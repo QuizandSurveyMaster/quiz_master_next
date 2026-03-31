@@ -1407,8 +1407,10 @@ jQuery(document).ready(function () {
             e.preventDefault();
             var embed_text = $(this).siblings('.sc-embed').text();
             var link_text = $(this).siblings('.sc-link').text();
+            var embed_url = $(this).siblings('.sc-embed-iframe').text().trim();
             $('#sc-shortcode-model-text').val(embed_text);
             $('#sc-shortcode-model-text-link').val(link_text);
+            $('#sc-embed-iframe-text').val(embed_url);
             MicroModal.show('modal-6');
         });
         $(document).on('click', '#sc-copy-shortcode', function () {
@@ -1420,6 +1422,14 @@ jQuery(document).ready(function () {
             var copyText = document.getElementById("sc-shortcode-model-text-link");
             copyText.select();
             document.execCommand("copy");
+        });
+        $(document).on('click', '#sc-copy-embed-iframe', function () {
+            var copyText = document.getElementById("sc-embed-iframe-text");
+            copyText.select();
+            document.execCommand("copy");
+            var $btn = $(this);
+            $btn.addClass('qsm-copied');
+            setTimeout(function () { $btn.removeClass('qsm-copied'); }, 1500);
         });
         $('#bulk-delete-quiz-button').on('click', function (event) {
             event.preventDefault();

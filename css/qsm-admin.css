@@ -1589,7 +1589,8 @@ input:checked+.qsm-switch-slider:before {
 .qsm-switch-slider.round:before {
 	border-radius: 50%;
 }
-input#sc-shortcode-model-text, input#sc-shortcode-model-text-link {
+input#sc-shortcode-model-text, input#sc-shortcode-model-text-link,
+input#sc-embed-iframe-text{
 	height: 30px;
 }
 div#modal-6 label {
