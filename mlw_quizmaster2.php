@@ -340,6 +340,8 @@ class MLWQuizMasterNext {
 		include_once 'php/rest-api.php';
 		include_once 'php/classes/class-qsm-quiz-api.php';
 		$this->qsm_api = new QSMQuizApi();
+
+		include_once 'php/admin/class-qsm-embed.php';
 	}
 
 	/**
@@ -1400,6 +1402,8 @@ class MLWQuizMasterNext {
 global $mlwQuizMasterNext;
 $mlwQuizMasterNext = new MLWQuizMasterNext();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
+register_activation_hook( __FILE__, array( 'QSM_Embed', 'on_activation' ) );
+register_deactivation_hook( __FILE__, array( 'QSM_Embed', 'on_deactivation' ) );
 
 /**
  * Displays QSM Admin bar menu

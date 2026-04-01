@@ -301,6 +301,22 @@ function qsm_find_key_from_array( $search_value, $array ) {
 	return false;
 }
 
+if ( ! function_exists( 'qsm_fill_blank_is_correct_response' ) ) {
+	function qsm_fill_blank_is_correct_response( $user_answer, $correct_answer, $case_sensitive = 0 ) {
+		if ( ! is_string( $correct_answer ) || '' === trim( $correct_answer ) ) {
+			return false;
+		}
+		$possible = array_filter( array_map( 'trim', array_map( 'sanitize_text_field', explode( ',', $correct_answer ) ) ), 'strlen' );
+		$user = trim( sanitize_text_field( $user_answer ) );
+		foreach ( $possible as $answer ) {
+			if ( 1 === intval( $case_sensitive ) ? $user === $answer : mb_strtoupper( $user ) === mb_strtoupper( $answer ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
 /**
  * Adds Social sharing links
  */
@@ -1222,21 +1238,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
-							$show_user_answer = $new_array_user_answer[ $key ];
-
-							$is_answer_correct = 0;
-							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
-								$decode_single_user_answer = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
-							} else {
-								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-								$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
-							}
-
-							if ( $decode_show_user_answer == $decode_single_user_answer ) {
-								$is_answer_correct = 1;
-							}
-							$index = $key + 1;
+							$show_user_answer   = isset( $new_array_user_answer[ $key ] ) ? $new_array_user_answer[ $key ] : '';
+							$case_sensitive_flag = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
+							$localized_answer   = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' );
+							$is_answer_correct  = qsm_fill_blank_is_correct_response( $show_user_answer, $localized_answer, $case_sensitive_flag );
+							$index              = $key + 1;
 							if ( $is_answer_correct ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
@@ -1245,7 +1251,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $localized_answer ) . '</span>';
 							}
 						}
 					} else {
