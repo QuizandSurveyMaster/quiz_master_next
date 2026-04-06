@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 11.0.0
+Stable tag: 11.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.0.1 ( April 05, 2026 ) =
+* Bug: Resolved real time result issue with fill in the blank questions
+* Feature: Added support for embedded iframe links, enabling quizzes to be used on external websites
+* Feature: Introduced QSM APIs to retrieve quiz data and questions, and to create new questions
+* Enhancement: Improved query performance for the quiz dashboard widget
+
 = 11.0.0 ( March 19, 2026 ) =
 * Feature: Introduced a new quiz rendering system with fully customizable elements
 * Feature: Added advanced customization options for quiz templates, including pagination settings
