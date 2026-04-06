@@ -1569,7 +1569,7 @@ jQuery(function () {
 		let value;
 		if ($i_this.hasClass('qmn_fill_blank')) {
 			let $fill_blank_clicks = $this.find('.qmn_fill_blank').map(function () {
-				var val = $(this).val();
+				var val = jQuery(this).val();
 				return val || null;
 			}).get().filter(function (v) {
 				return v !== null;

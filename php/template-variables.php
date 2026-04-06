@@ -301,6 +301,57 @@ function qsm_find_key_from_array( $search_value, $array ) {
 	return false;
 }
 
+if ( ! function_exists( 'qsm_fill_blank_prepare_for_matching' ) ) {
+	function qsm_fill_blank_prepare_for_matching( $value, $case_sensitive = 0 ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+		$decoded   = html_entity_decode( $value, ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$sanitized = trim( sanitize_text_field( $decoded ) );
+		if ( '' === $sanitized ) {
+			return '';
+		}
+		return ( 1 === intval( $case_sensitive ) ) ? $sanitized : mb_strtoupper( $sanitized );
+	}
+}
+ 
+if ( ! function_exists( 'qsm_fill_blank_get_possible_answers' ) ) {
+	function qsm_fill_blank_get_possible_answers( $correct_answer ) {
+		if ( ! is_string( $correct_answer ) || '' === trim( $correct_answer ) ) {
+			return array();
+		}
+		$decoded       = html_entity_decode( $correct_answer, ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$raw_answers   = explode( ',', $decoded );
+		$clean_answers = array();
+		foreach ( $raw_answers as $raw_answer ) {
+			$sanitized = trim( sanitize_text_field( $raw_answer ) );
+			if ( '' !== $sanitized ) {
+				$clean_answers[] = $sanitized;
+			}
+		}
+		return $clean_answers;
+	}
+}
+
+if ( ! function_exists( 'qsm_fill_blank_is_correct_response' ) ) {
+	function qsm_fill_blank_is_correct_response( $user_answer, $correct_answer, $case_sensitive = 0 ) {
+		$possible_answers = qsm_fill_blank_get_possible_answers( $correct_answer );
+		if ( empty( $possible_answers ) ) {
+			return false;
+		}
+		$prepared_user_answer = qsm_fill_blank_prepare_for_matching( $user_answer, $case_sensitive );
+		if ( '' === $prepared_user_answer ) {
+			return false;
+		}
+		foreach ( $possible_answers as $possible_answer ) {
+			if ( $prepared_user_answer === qsm_fill_blank_prepare_for_matching( $possible_answer, $case_sensitive ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
 /**
  * Adds Social sharing links
  */
@@ -1219,24 +1270,27 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && 14 == $answer['question_type'] ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
+					$case_sensitive = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
+					$qsm_norm       = function( $v ) use ( $case_sensitive ) {
+						$v = htmlspecialchars_decode( (string) $v, ENT_QUOTES );
+						return 1 === $case_sensitive ? $v : mb_strtoupper( $v );
+					};
+					$qsm_split      = function( $v ) use ( $qsm_norm ) {
+						$parts = array_map( 'trim', explode( ',', (string) $v ) );
+						$parts = array_values( array_filter( $parts, function( $p ) {
+							return '' !== $p;
+						} ) );
+						$parts = empty( $parts ) ? array( '' ) : $parts;
+						return array_map( $qsm_norm, $parts );
+					};
 
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
-							$show_user_answer = $new_array_user_answer[ $key ];
-
-							$is_answer_correct = 0;
-							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$decode_show_user_answer   = htmlspecialchars_decode( $show_user_answer, ENT_QUOTES );
-								$decode_single_user_answer = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
-							} else {
-								$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-								$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
-							}
-
-							if ( $decode_show_user_answer == $decode_single_user_answer ) {
-								$is_answer_correct = 1;
-							}
-							$index = $key + 1;
+							$show_user_answer   = isset( $new_array_user_answer[ $key ] ) ? $new_array_user_answer[ $key ] : '';
+							$case_sensitive_flag = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
+							$localized_answer   = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' );
+							$is_answer_correct  = qsm_fill_blank_is_correct_response( $show_user_answer, $localized_answer, $case_sensitive_flag );
+							$index              = $key + 1;
 							if ( $is_answer_correct ) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
@@ -1245,28 +1299,21 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $localized_answer ) . '</span>';
 							}
 						}
 					} else {
 						$options        = array();
 						$question_correct_fill_answer_text = '';
 						foreach ( $total_answers as $key => $single_answer ) {
-							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
-							} else {
-								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
-							}
+							$single_correct_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' );
+							$options              = array_merge( $options, $qsm_split( $single_correct_answer ) );
 							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . ($key + 1) . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 						}
 						$is_any_incorrect = false;
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-									$key = array_search(  $show_user_answer , $options ,true);
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
-								}
+								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
@@ -1279,11 +1326,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							}
 						} else {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-									$key = array_search(  $show_user_answer , $options,true );
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );
-								}
+								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
