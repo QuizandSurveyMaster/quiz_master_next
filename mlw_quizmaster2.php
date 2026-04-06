@@ -342,6 +342,8 @@ class MLWQuizMasterNext {
 		$this->qsm_api = new QSMQuizApi();
 
 		include_once 'php/admin/class-qsm-embed.php';
+		include_once 'php/classes/class-qsm-abilities.php';
+		$this->abilities = new QSM_Abilities();
 	}
 
 	/**
