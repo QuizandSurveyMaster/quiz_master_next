@@ -225,10 +225,10 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
-= 11.1.0 ( April 05, 2026 ) =
-* Bug: Resolved real time result issue with fill in the blank questions
+= 11.1.0 ( April 06, 2026 ) =
 * Feature: Added support for embedded iframe links, enabling quizzes to be used on external websites
 * Feature: Introduced QSM APIs to retrieve quiz data and questions, and to create new questions
+* Bug: Resolved real time result issue with fill in the blank questions
 * Enhancement: Improved query performance for the quiz dashboard widget
 
 = 11.0.0 ( March 19, 2026 ) =
