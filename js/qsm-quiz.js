@@ -2171,9 +2171,9 @@ jQuery(document).keydown(function(event) {
         if (event.keyCode === 37 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
         }
-        if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {
-				jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
-				jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+        if (event.keyCode === 13 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="tel"]:focus, input[type="url"]:focus').length === 0) {
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
         }
         if (event.keyCode === 40 && jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question:visible .qmn_radio_answers:not(.qsm_multiple_grid_answers)').length) {
             event.preventDefault();
