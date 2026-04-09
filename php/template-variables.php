@@ -518,7 +518,12 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_NAME%', ( isset( $mlw_quiz_array['user_name'] ) ? html_entity_decode( $mlw_quiz_array['user_name'] ) : '' ), $content );
+	$user_name = '';
+	if ( isset( $mlw_quiz_array['user_name'] ) ) {
+		// Decode HTML entities then escape to prevent XSS via entity injection
+		$user_name = esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) );
+	}
+	$content = str_replace( '%USER_NAME%', $user_name, $content );
 	return $content;
 }
 
@@ -561,17 +566,20 @@ function mlw_qmn_variable_user_full_name( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_user_business( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_BUSINESS%', ( isset( $mlw_quiz_array['user_business'] ) ? $mlw_quiz_array['user_business'] : '' ), $content );
+	$user_business = isset( $mlw_quiz_array['user_business'] ) ? esc_html( $mlw_quiz_array['user_business'] ) : '';
+	$content = str_replace( '%USER_BUSINESS%', $user_business, $content );
 	return $content;
 }
 
 function mlw_qmn_variable_user_phone( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_PHONE%', ( isset( $mlw_quiz_array['user_phone'] ) ? $mlw_quiz_array['user_phone'] : '' ), $content );
+	$user_phone = isset( $mlw_quiz_array['user_phone'] ) ? esc_html( $mlw_quiz_array['user_phone'] ) : '';
+	$content = str_replace( '%USER_PHONE%', $user_phone, $content );
 	return $content;
 }
 
 function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_EMAIL%', ( isset( $mlw_quiz_array['user_email'] ) ? $mlw_quiz_array['user_email'] : '' ), $content );
+	$user_email = isset( $mlw_quiz_array['user_email'] ) ? esc_html( $mlw_quiz_array['user_email'] ) : '';
+	$content = str_replace( '%USER_EMAIL%', $user_email, $content );
 	return $content;
 }
 
@@ -589,7 +597,8 @@ function qsm_contact_field_variable( $content, $results_array ) {
 			$contact_index = intval( $contact_key ) - 1;
 
 			if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
-				$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
+				$contact_value = esc_html( $results_array['contact'][ $contact_index ]['value'] );
+				$content = str_replace( '%CONTACT_' . $contact_key . '%', $contact_value, $content );
 			} else {
 				$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
 			}
