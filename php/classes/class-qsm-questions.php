@@ -310,9 +310,9 @@ class QSM_Questions
         if ( ( $is_creating && isset($data['is_linking']) && 1 <= $data['is_linking'] ) || ! $is_creating ) {
             // Convert the existing linked_question into an array and cast to integers to prevent SQL injection
             $linked_questions_array = array_filter(array_map('intval', explode(',', $linked_question)));
-            // Add the new value if it's not already in the array
-            if ( isset($data['is_linking']) && ! in_array($data['is_linking'], $linked_questions_array, true) ) {
-                $linked_questions_array[] = $data['is_linking'];
+            // Add the new value if it's not already in the array (cast to int to prevent SQL injection)
+            if ( isset($data['is_linking']) && ! in_array(intval($data['is_linking']), $linked_questions_array, true) ) {
+                $linked_questions_array[] = intval($data['is_linking']);
             }
             $linked_questions_array = array_filter($linked_questions_array);
             // Join back into a comma-separated string
@@ -381,9 +381,10 @@ class QSM_Questions
         $quiz_questions_array[ intval($data['quiz_id']) ] = $question_id;
         $linked_questions_array[] = $question_id;
         if ( isset($linked_question) && "" != $linked_question ) {
-            // preparing array for quiz question id
-            $imploded_question_ids = implode(',', array_unique($linked_questions_array));
-            if ( ! empty($linked_questions_array) ) {
+            // preparing array for quiz question id - sanitize to prevent SQL injection
+            $sanitized_linked_ids = array_map('intval', array_unique($linked_questions_array));
+            $imploded_question_ids = implode(',', $sanitized_linked_ids);
+            if ( ! empty($sanitized_linked_ids) ) {
                 $quiz_results = $wpdb->get_results("SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $imploded_question_ids . ")");
                 foreach ( $quiz_results as $key => $value ) {
                     $quiz_questions_array[ $value->quiz_id ] = $value->question_id;
