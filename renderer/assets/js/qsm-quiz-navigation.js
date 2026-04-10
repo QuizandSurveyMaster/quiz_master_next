@@ -1333,7 +1333,12 @@ var QSMPagination;
                 }
 
                 // Allow Enter to go to next page (except in textareas)
-                if (e.keyCode === 13 && !$(e.target).is('textarea')) {
+                const tag = e.target.tagName.toLowerCase();
+                const isEditable =
+                    tag === 'textarea' ||
+                    (tag === 'input' && !['button', 'submit', 'checkbox', 'radio'].includes(e.target.type));
+
+                if (e.keyCode === 13 && !isEditable) {
                     e.preventDefault();
                     this.nextPage(quizId);
                     return;
