@@ -896,10 +896,13 @@ class QSM_New_Pagination_Renderer {
 		$contact_info_location = isset( $this->quiz_options->contact_info_location ) ? intval( $this->quiz_options->contact_info_location ) : 0;
 		$show_contact_on_last = ( 1 === $contact_info_location && $is_contact_fields_enabled );
 
+		// Check if comment section is enabled (0 = enabled)
+		$comment_section_enabled = isset( $this->options->comment_section ) && 0 == $this->options->comment_section && '' !== $this->options->comment_section;
+
 		// By default, do not show last page
 		$do_show_last_page = apply_filters( 'qsm_do_show_last_page_filter', 0, $this->options );
 		
-		return ( ! empty( $message_end_template ) || $show_contact_on_last ) || $do_show_last_page;
+		return ( ! empty( $message_end_template ) || $show_contact_on_last || $comment_section_enabled ) || $do_show_last_page;
 	}
 
 	/**
@@ -1016,8 +1019,25 @@ class QSM_New_Pagination_Renderer {
 							}
 						}
 						echo $this->display_question( $question['question_type_new'], intval( $question_id ), $this->options, $shortcode_args );
-						do_action('qsm_after_question', $question);
+					
+					// Render question comment field if enabled
+					if ( isset( $question['comments'] ) && 0 == $question['comments'] ) {
+						global $mlwQuizMasterNext;
+						$comment_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->comment_field_text, "quiz_comment_field_text-{$this->options->quiz_id}" );
 						?>
+						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $comment_placeholder ); ?>" onclick="qmnClearField(this)" />
+						<?php
+					}
+					if ( isset( $question['comments'] ) && 2 == $question['comments'] ) {
+						global $mlwQuizMasterNext;
+						$comment_placeholder = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->comment_field_text, "quiz_comment_field_text-{$this->options->quiz_id}" );
+						?>
+						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $comment_placeholder ); ?>" onclick="qmnClearField(this)" ></textarea>
+						<?php
+					}
+					
+					do_action('qsm_after_question', $question);
+					?>
 					</div>
 					<?php
 				}
