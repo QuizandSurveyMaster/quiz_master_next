@@ -343,6 +343,13 @@ var QSMPagination;
                 let currentQuiz = this.quizObjects[quizId];
                 let $container = currentQuiz.quizContainer;
 
+                // Track active question wrapper for keyboard navigation
+                $container.off('click.qsmActiveQuestion');
+                $container.on('click.qsmActiveQuestion', '.qsm-question-wrapper', function() {
+                    $container.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                    $(this).addClass('qsm-active-question');
+                });
+
                 // Multiple choice radio buttons and dropdowns (matching legacy: .qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date)
                 $container.on('change', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date', function(e) {
                     let $i_this = $(this);
@@ -1325,10 +1332,22 @@ var QSMPagination;
              * Handle keyboard navigation
              */
             handleKeyboardNavigation: function(e, quizId) {
+                let quizData = this.quizObjects[quizId];
+                if (!quizData) {
+                    return;
+                }
+
+                // Don't interfere with keyboard navigation inside contact fields
+                if ($(e.target).is('input, textarea, select') && $(e.target).closest('div.qsm_contact_div').length > 0) {
+                    return;
+                }
+
+                let isTypingField = $(e.target).is('textarea, select, input[type="text"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], input[type="password"], [contenteditable="true"]');
+
                 // Allow Ctrl+Enter to submit form
                 if (e.ctrlKey && e.keyCode === 13) {
                     e.preventDefault();
-                    this.quizObjects[quizId].form.trigger('submit');
+                    quizData.form.trigger('submit');
                     return;
                 }
 
@@ -1341,6 +1360,55 @@ var QSMPagination;
                 if (e.keyCode === 13 && !isEditable) {
                     e.preventDefault();
                     this.nextPage(quizId);
+                    return;
+                }
+
+                // Left/Right arrow keys to navigate pages (avoid interfering with typing/caret movement)
+                if ((e.keyCode === 37 || e.keyCode === 39) && !isTypingField) {
+                    e.preventDefault();
+                    if (e.keyCode === 39) {
+                        this.nextPage(quizId);
+                    } else {
+                        this.previousPage(quizId);
+                    }
+                    return;
+                }
+
+                // Tab / Shift+Tab cycles questions on current page
+                if (e.keyCode === 9) {
+                    e.preventDefault();
+
+                    let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
+                    let $visibleWrappers = $currentPage.find('.qsm-question-wrapper:visible');
+                    if (!$visibleWrappers.length) {
+                        return;
+                    }
+
+                    let $active = $visibleWrappers.filter('.qsm-active-question').first();
+                    if (!$active.length) {
+                        $active = $visibleWrappers.first();
+                    }
+
+                    let $next;
+                    if (e.shiftKey) {
+                        $next = $active.prevAll('.qsm-question-wrapper:visible').first();
+                        if (!$next.length) {
+                            $next = $visibleWrappers.last();
+                        }
+                    } else {
+                        $next = $active.nextAll('.qsm-question-wrapper:visible').first();
+                        if (!$next.length) {
+                            $next = $visibleWrappers.first();
+                        }
+                    }
+
+                    $visibleWrappers.removeClass('qsm-active-question qsm-last-active-question');
+                    $next.addClass('qsm-active-question');
+
+                    let $focusTarget = $next.find('input, select, textarea, button, a[href]').filter(':visible').first();
+                    if ($focusTarget.length) {
+                        $focusTarget.focus();
+                    }
                     return;
                 }
             },
