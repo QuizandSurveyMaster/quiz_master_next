@@ -157,6 +157,8 @@ var QSMPagination;
                 // Show first page
                 this.showPage(quizId, quizObj.currentPage);
 
+                this.manageFocus(quizId);
+
                 // Timer
                 let self = this;
                 setInterval(function() {
@@ -767,9 +769,6 @@ var QSMPagination;
                     this.scrollToQuiz(quizId);
                 }
 
-                // Focus management for accessibility
-                this.manageFocus(quizId);
-
                 // Trigger after page change event
                 $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
             },
@@ -971,6 +970,9 @@ var QSMPagination;
                 // Go to next page
                 this.goToPage(quizId, quizData.currentPage + 1);
 
+                // Manage focus for accessibility
+                this.manageFocus(quizId);
+                
                 // Trigger next button click event (for legacy compatibility)
                 $(document).trigger('qsm_next_button_click_after', [quizId]);
             },
@@ -994,7 +996,10 @@ var QSMPagination;
                 
                 if (quizData.currentPage < minPage) return;
                 this.goToPage(quizId, quizData.currentPage - 1);
-
+                
+                // Manage focus for accessibility
+                this.manageFocus(quizId);
+                
                 // Trigger previous button click event (for legacy compatibility)
                 $(document).trigger('qsm_previous_button_click_after', [quizId]);
             },
@@ -1350,15 +1355,42 @@ var QSMPagination;
                     quizData.form.trigger('submit');
                     return;
                 }
-
-                // Allow Enter to go to next page (except in textareas)
                 const tag = e.target.tagName.toLowerCase();
                 const isEditable =
                     tag === 'textarea' ||
-                    (tag === 'input' && !['button', 'submit', 'checkbox', 'radio'].includes(e.target.type));
+                    (tag === 'input' && (
+                        e.target.type === 'text' || 
+                        e.target.type === 'email' || 
+                        e.target.type === 'number' || 
+                        e.target.type === 'search' || 
+                        e.target.type === 'tel' || 
+                        e.target.type === 'url' || 
+                        e.target.type === 'password' ||
+                        e.target.type === 'file'
+                    )) && !['button', 'submit', 'checkbox', 'radio'].includes(e.target.type);
 
                 if (e.keyCode === 13 && !isEditable) {
                     e.preventDefault();
+
+                    let $container = quizData.quizContainer;
+                    let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
+                    let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible');
+                    let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next-btn-' + quizId + ':visible');
+
+                    if ($submitBtn.length) {
+                        $submitBtn.first().trigger('click');
+                        return;
+                    }
+                    if ($startBtn.length) {
+                        $startBtn.first().trigger('click');
+                        return;
+                    }
+                    if ($nextBtn.length) {
+                        $nextBtn.first().trigger('click');
+                        return;
+                    }
+
+                    // Fallback
                     this.nextPage(quizId);
                     return;
                 }
@@ -1433,13 +1465,8 @@ var QSMPagination;
                 if (!quizData) return;
 
                 let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                let $firstInput = $currentPage.find('input, select, textarea').first();
                 
-                if ($firstInput.length) {
-                    setTimeout(function() {
-                        $firstInput.focus();
-                    }, this.config.animation.duration + 50);
-                }
+                $currentPage.css('outline', 'none').attr('tabindex', '-1').focus();
             },
 
             /**
