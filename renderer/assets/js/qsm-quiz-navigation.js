@@ -1398,7 +1398,13 @@ var QSMPagination;
                 // Left/Right arrow keys to navigate pages (avoid interfering with typing/caret movement)
                 if ((e.keyCode === 37 || e.keyCode === 39) && !isTypingField) {
                     e.preventDefault();
+                    let $container = quizData.quizContainer;
                     if (e.keyCode === 39) {
+                        let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
+                        if ($startBtn.length) {
+                            $startBtn.first().trigger('click');
+                            return;
+                        }
                         this.nextPage(quizId);
                     } else {
                         this.previousPage(quizId);
@@ -1408,17 +1414,33 @@ var QSMPagination;
 
                 // Tab / Shift+Tab cycles questions on current page
                 if (e.keyCode === 9) {
-                    e.preventDefault();
-
                     let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
                     let $visibleWrappers = $currentPage.find('.qsm-question-wrapper:visible');
+                    let $contactFields = $currentPage.find('.qsm_contact_div').find('input, select, textarea, button, a[href]').filter(':visible');
+
                     if (!$visibleWrappers.length) {
+                        if ($contactFields.length) {
+                            e.preventDefault();
+                            if (e.shiftKey) {
+                                $contactFields.last().focus();
+                            } else {
+                                $contactFields.first().focus();
+                            }
+                        }
                         return;
                     }
+
+                    e.preventDefault();
 
                     let $active = $visibleWrappers.filter('.qsm-active-question').first();
                     if (!$active.length) {
                         $active = $visibleWrappers.first();
+                    }
+
+                    if (!e.shiftKey && $contactFields.length && $active.is($visibleWrappers.last())) {
+                        $visibleWrappers.removeClass('qsm-active-question qsm-last-active-question');
+                        $contactFields.first().focus();
+                        return;
                     }
 
                     let $next;
