@@ -1370,134 +1370,144 @@ var QSMPagination;
                     )) && !['button', 'submit', 'checkbox', 'radio'].includes(e.target.type);
 
                 if (e.keyCode === 13 && !isEditable) {
-                    e.preventDefault();
+                e.preventDefault();
 
-                    let $container = quizData.quizContainer;
+                let $container = quizData.quizContainer;
+                let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
+                let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible');
+                let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next-btn-' + quizId + ':visible');
+
+                // Priority order: Start button → Next button → Submit button (only on last page)
+                if ($startBtn.length) {
+                    $startBtn.first().trigger('click');
+                    return;
+                }
+                if ($nextBtn.length) {
+                    $nextBtn.first().trigger('click');
+                    return;
+                }
+                // Only submit if on last page (no next button)
+                if ($submitBtn.length && !$nextBtn.length) {
+                    $submitBtn.first().trigger('click');
+                    return;
+                }
+
+                // Fallback
+                this.nextPage(quizId);
+                return;
+            }
+
+            // Left/Right arrow keys to navigate pages (avoid interfering with typing/caret movement)
+            // Arrow keys should NEVER submit, only navigate
+            if ((e.keyCode === 37 || e.keyCode === 39) && !isTypingField) {
+                e.preventDefault();
+                let $container = quizData.quizContainer;
+                if (e.keyCode === 39) {
+                    // Arrow Right - check for start button or next page
                     let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
-                    let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible');
                     let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next-btn-' + quizId + ':visible');
-
-                    if ($submitBtn.length) {
-                        $submitBtn.first().trigger('click');
-                        return;
-                    }
+                    
                     if ($startBtn.length) {
                         $startBtn.first().trigger('click');
                         return;
                     }
+                    // Only navigate to next page if next button exists, never submit
                     if ($nextBtn.length) {
-                        $nextBtn.first().trigger('click');
-                        return;
-                    }
-
-                    // Fallback
-                    this.nextPage(quizId);
-                    return;
-                }
-
-                // Left/Right arrow keys to navigate pages (avoid interfering with typing/caret movement)
-                if ((e.keyCode === 37 || e.keyCode === 39) && !isTypingField) {
-                    e.preventDefault();
-                    let $container = quizData.quizContainer;
-                    if (e.keyCode === 39) {
-                        let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
-                        if ($startBtn.length) {
-                            $startBtn.first().trigger('click');
-                            return;
-                        }
                         this.nextPage(quizId);
-                    } else {
-                        this.previousPage(quizId);
                     }
-                    return;
+                } else {
+                    // Arrow Left - navigate to previous page
+                    this.previousPage(quizId);
+                }
+                return;
+            }
+
+            // Tab / Shift+Tab cycles through individual elements: question inputs → contact fields → navigation buttons
+            if (e.keyCode === 9) {
+                let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
+                let $container = quizData.quizContainer;
+
+                // Get all individual focusable elements from questions (inputs, selects, textareas, buttons, radios, checkboxes)
+                let $questionInputs = $currentPage.find('.qsm-question-wrapper:visible').find('input, select, textarea, button, a[href]').filter(':visible');
+
+                // Contact form fields
+                let $contactFields = $currentPage.find('.qsm_contact_div').find('input, select, textarea, button, a[href]').filter(':visible');
+
+                // Navigation buttons
+                let $prevBtn = $container.find('.qsm-previous-btn:visible, .qsm-previous:visible, .qsm-previous-btn-' + quizId + ':visible').first();
+                let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next:visible, .qsm-next-btn-' + quizId + ':visible').first();
+                let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible').first();
+                let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible').first();
+
+                // Build ordered list of all individual focusable elements
+                let focusOrder = [];
+
+                // Add question inputs (each individual element)
+                $questionInputs.each(function() { focusOrder.push($(this)); });
+
+                // Add contact fields
+                $contactFields.each(function() { focusOrder.push($(this)); });
+
+                // Add navigation buttons
+                if ($prevBtn.length) focusOrder.push($prevBtn);
+                if ($startBtn.length) {
+                    focusOrder.push($startBtn);
+                } else if ($submitBtn.length) {
+                    focusOrder.push($submitBtn);
+                } else if ($nextBtn.length) {
+                    focusOrder.push($nextBtn);
                 }
 
-                // Tab / Shift+Tab cycles through individual elements: question inputs → contact fields → navigation buttons
-                if (e.keyCode === 9) {
-                    let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                    let $container = quizData.quizContainer;
+                if (focusOrder.length === 0) return;
 
-                    // Get all individual focusable elements from questions (inputs, selects, textareas, buttons, radios, checkboxes)
-                    let $questionInputs = $currentPage.find('.qsm-question-wrapper:visible').find('input, select, textarea, button, a[href]').filter(':visible');
-
-                    // Contact form fields
-                    let $contactFields = $currentPage.find('.qsm_contact_div').find('input, select, textarea, button, a[href]').filter(':visible');
-
-                    // Navigation buttons
-                    let $prevBtn = $container.find('.qsm-previous-btn:visible, .qsm-previous:visible, .qsm-previous-btn-' + quizId + ':visible').first();
-                    let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next:visible, .qsm-next-btn-' + quizId + ':visible').first();
-                    let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible').first();
-                    let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible').first();
-
-                    // Build ordered list of all individual focusable elements
-                    let focusOrder = [];
-
-                    // Add question inputs (each individual element)
-                    $questionInputs.each(function() { focusOrder.push($(this)); });
-
-                    // Add contact fields
-                    $contactFields.each(function() { focusOrder.push($(this)); });
-
-                    // Add navigation buttons
-                    if ($prevBtn.length) focusOrder.push($prevBtn);
-                    if ($startBtn.length) {
-                        focusOrder.push($startBtn);
-                    } else if ($submitBtn.length) {
-                        focusOrder.push($submitBtn);
-                    } else if ($nextBtn.length) {
-                        focusOrder.push($nextBtn);
+                // Find current focus position
+                let currentIndex = -1;
+                let $activeElement = $(document.activeElement);
+                for (let i = 0; i < focusOrder.length; i++) {
+                    if (focusOrder[i].is($activeElement)) {
+                        currentIndex = i;
+                        break;
                     }
+                }
 
-                    if (focusOrder.length === 0) return;
-
-                    // Find current focus position
-                    let currentIndex = -1;
-                    let $activeElement = $(document.activeElement);
-                    for (let i = 0; i < focusOrder.length; i++) {
-                        if (focusOrder[i].is($activeElement)) {
-                            currentIndex = i;
-                            break;
-                        }
-                    }
-
-                    // If no focusable element is focused, start from beginning
-                    if (currentIndex === -1) {
-                        e.preventDefault();
-                        focusOrder[0].focus();
-                        // Update active question highlighting
-                        let $wrapper = focusOrder[0].closest('.qsm-question-wrapper');
-                        if ($wrapper.length) {
-                            $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
-                            $wrapper.addClass('qsm-active-question');
-                        }
-                        return;
-                    }
-
+                // If no focusable element is focused, start from beginning
+                if (currentIndex === -1) {
                     e.preventDefault();
-
-                    // Calculate next index
-                    let nextIndex;
-                    if (e.shiftKey) {
-                        nextIndex = currentIndex - 1;
-                        if (nextIndex < 0) nextIndex = focusOrder.length - 1;
-                    } else {
-                        nextIndex = currentIndex + 1;
-                        if (nextIndex >= focusOrder.length) nextIndex = 0;
-                    }
-
-                    // Focus the next element
-                    focusOrder[nextIndex].focus();
-
-                    // Update active question highlighting for the newly focused element
-                    let $nextWrapper = focusOrder[nextIndex].closest('.qsm-question-wrapper');
-                    if ($nextWrapper.length) {
+                    focusOrder[0].focus();
+                    // Update active question highlighting
+                    let $wrapper = focusOrder[0].closest('.qsm-question-wrapper');
+                    if ($wrapper.length) {
                         $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
-                        $nextWrapper.addClass('qsm-active-question');
+                        $wrapper.addClass('qsm-active-question');
                     }
-
                     return;
                 }
-            },
+
+                e.preventDefault();
+
+                // Calculate next index
+                let nextIndex;
+                if (e.shiftKey) {
+                    nextIndex = currentIndex - 1;
+                    if (nextIndex < 0) nextIndex = focusOrder.length - 1;
+                } else {
+                    nextIndex = currentIndex + 1;
+                    if (nextIndex >= focusOrder.length) nextIndex = 0;
+                }
+
+                // Focus the next element
+                focusOrder[nextIndex].focus();
+
+                // Update active question highlighting for the newly focused element
+                let $nextWrapper = focusOrder[nextIndex].closest('.qsm-question-wrapper');
+                if ($nextWrapper.length) {
+                    $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                    $nextWrapper.addClass('qsm-active-question');
+                }
+
+                return;
+            }
+        },
 
             /**
              * Scroll to quiz form
