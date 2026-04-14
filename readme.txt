@@ -227,8 +227,8 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 == Changelog ==
 = 11.1.1 ( April 14, 2026 ) =
 * Bug: Resolved a key navigation issue with new rendering
-* Enhancement: Strengthened validation for user input in text and paragraph fields
-* Enhancement: Improved security checks for contact field values
+* Enhancement: Strengthened security checks for contact field values
+* Patch: Fixed shortcode injection vulnerability that could allow unauthorized access to quiz results
 * Patch: Addressed an SQL injection vulnerability related to the merged_question parameter
 
 = 11.1.0 ( April 06, 2026 ) =
