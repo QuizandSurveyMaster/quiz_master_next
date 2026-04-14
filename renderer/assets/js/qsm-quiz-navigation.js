@@ -1412,57 +1412,89 @@ var QSMPagination;
                     return;
                 }
 
-                // Tab / Shift+Tab cycles questions on current page
+                // Tab / Shift+Tab cycles through individual elements: question inputs → contact fields → navigation buttons
                 if (e.keyCode === 9) {
                     let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                    let $visibleWrappers = $currentPage.find('.qsm-question-wrapper:visible');
+                    let $container = quizData.quizContainer;
+
+                    // Get all individual focusable elements from questions (inputs, selects, textareas, buttons, radios, checkboxes)
+                    let $questionInputs = $currentPage.find('.qsm-question-wrapper:visible').find('input, select, textarea, button, a[href]').filter(':visible');
+
+                    // Contact form fields
                     let $contactFields = $currentPage.find('.qsm_contact_div').find('input, select, textarea, button, a[href]').filter(':visible');
 
-                    if (!$visibleWrappers.length) {
-                        if ($contactFields.length) {
-                            e.preventDefault();
-                            if (e.shiftKey) {
-                                $contactFields.last().focus();
-                            } else {
-                                $contactFields.first().focus();
-                            }
+                    // Navigation buttons
+                    let $prevBtn = $container.find('.qsm-previous-btn:visible, .qsm-previous:visible, .qsm-previous-btn-' + quizId + ':visible').first();
+                    let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next:visible, .qsm-next-btn-' + quizId + ':visible').first();
+                    let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible').first();
+                    let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible').first();
+
+                    // Build ordered list of all individual focusable elements
+                    let focusOrder = [];
+
+                    // Add question inputs (each individual element)
+                    $questionInputs.each(function() { focusOrder.push($(this)); });
+
+                    // Add contact fields
+                    $contactFields.each(function() { focusOrder.push($(this)); });
+
+                    // Add navigation buttons
+                    if ($prevBtn.length) focusOrder.push($prevBtn);
+                    if ($startBtn.length) {
+                        focusOrder.push($startBtn);
+                    } else if ($submitBtn.length) {
+                        focusOrder.push($submitBtn);
+                    } else if ($nextBtn.length) {
+                        focusOrder.push($nextBtn);
+                    }
+
+                    if (focusOrder.length === 0) return;
+
+                    // Find current focus position
+                    let currentIndex = -1;
+                    let $activeElement = $(document.activeElement);
+                    for (let i = 0; i < focusOrder.length; i++) {
+                        if (focusOrder[i].is($activeElement)) {
+                            currentIndex = i;
+                            break;
+                        }
+                    }
+
+                    // If no focusable element is focused, start from beginning
+                    if (currentIndex === -1) {
+                        e.preventDefault();
+                        focusOrder[0].focus();
+                        // Update active question highlighting
+                        let $wrapper = focusOrder[0].closest('.qsm-question-wrapper');
+                        if ($wrapper.length) {
+                            $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                            $wrapper.addClass('qsm-active-question');
                         }
                         return;
                     }
 
                     e.preventDefault();
 
-                    let $active = $visibleWrappers.filter('.qsm-active-question').first();
-                    if (!$active.length) {
-                        $active = $visibleWrappers.first();
-                    }
-
-                    if (!e.shiftKey && $contactFields.length && $active.is($visibleWrappers.last())) {
-                        $visibleWrappers.removeClass('qsm-active-question qsm-last-active-question');
-                        $contactFields.first().focus();
-                        return;
-                    }
-
-                    let $next;
+                    // Calculate next index
+                    let nextIndex;
                     if (e.shiftKey) {
-                        $next = $active.prevAll('.qsm-question-wrapper:visible').first();
-                        if (!$next.length) {
-                            $next = $visibleWrappers.last();
-                        }
+                        nextIndex = currentIndex - 1;
+                        if (nextIndex < 0) nextIndex = focusOrder.length - 1;
                     } else {
-                        $next = $active.nextAll('.qsm-question-wrapper:visible').first();
-                        if (!$next.length) {
-                            $next = $visibleWrappers.first();
-                        }
+                        nextIndex = currentIndex + 1;
+                        if (nextIndex >= focusOrder.length) nextIndex = 0;
                     }
 
-                    $visibleWrappers.removeClass('qsm-active-question qsm-last-active-question');
-                    $next.addClass('qsm-active-question');
+                    // Focus the next element
+                    focusOrder[nextIndex].focus();
 
-                    let $focusTarget = $next.find('input, select, textarea, button, a[href]').filter(':visible').first();
-                    if ($focusTarget.length) {
-                        $focusTarget.focus();
+                    // Update active question highlighting for the newly focused element
+                    let $nextWrapper = focusOrder[nextIndex].closest('.qsm-question-wrapper');
+                    if ($nextWrapper.length) {
+                        $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                        $nextWrapper.addClass('qsm-active-question');
                     }
+
                     return;
                 }
             },
