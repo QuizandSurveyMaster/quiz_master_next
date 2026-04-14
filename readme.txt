@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 11.1.0
+Stable tag: 11.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.1.1 ( April 14, 2026 ) =
+* Bug: Resolved a key navigation issue with new rendering
+* Enhancement: Strengthened security checks for contact field values
+* Patch: Fixed shortcode injection vulnerability that could allow unauthorized access to quiz results
+* Patch: Addressed an SQL injection vulnerability related to the merged_question parameter
+
 = 11.1.0 ( April 06, 2026 ) =
 * Feature: Added support for embedded iframe links, enabling quizzes to be used on external websites
 * Feature: Introduced QSM APIs to retrieve quiz data and questions, and to create new questions

@@ -2162,18 +2162,19 @@ jQuery(document).keydown(function(event) {
 			lastVisibleWrapper.addClass('qsm-last-active-question');
 			return;
 		}
-        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0) {
+		const inputSelector = 'textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="tel"]:focus, input[type="url"]:focus';
+        if ([39, 37, 13, 9].includes(event.keyCode) && jQuery(inputSelector).length === 0) {
             event.preventDefault();
         }
-        if (event.keyCode === 39 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
+        if (event.keyCode === 39 && jQuery(inputSelector).length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
         }
-        if (event.keyCode === 37 && jQuery('textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus').length === 0 ) {
+        if (event.keyCode === 37 && jQuery(inputSelector).length === 0 ) {
             jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_previous:visible').click();
         }
-        if (event.keyCode === 13 && jQuery('textarea:focus').length === 0) {
-				jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
-				jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
+        if (event.keyCode === 13 && jQuery(inputSelector).length === 0) {
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.qsm-submit-btn:visible').click();
+			jQuery('.qsm-quiz-container.qsm-recently-active').find('.mlw_next:visible').click();
         }
         if (event.keyCode === 40 && jQuery('.qsm-quiz-container.qsm-recently-active .qsm-question-wrapper.qsm-active-question:visible .qmn_radio_answers:not(.qsm_multiple_grid_answers)').length) {
             event.preventDefault();
