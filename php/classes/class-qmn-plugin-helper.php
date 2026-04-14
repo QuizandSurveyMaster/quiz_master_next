@@ -1484,7 +1484,6 @@ class QMNPluginHelper {
             0         => isset( $result_meta['total_seconds'] ) ? $result_meta['total_seconds'] : 0,
             1         => $question_answer_array,
             2         => isset( $result_meta['quiz_comments'] ) ? $result_meta['quiz_comments'] : '',
-			'contact' => array(),
         );
 
         if ( '' !== $answer_label_points ) {
@@ -1506,6 +1505,10 @@ class QMNPluginHelper {
 				continue;
 			}
 			$final_array[ $meta_key ] = $meta_value;
+		}
+
+		if ( ! isset( $final_array['contact'] ) ) {
+			$final_array['contact'] = array();
 		}
         return $final_array;
     }

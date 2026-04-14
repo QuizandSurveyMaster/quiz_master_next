@@ -157,6 +157,8 @@ var QSMPagination;
                 // Show first page
                 this.showPage(quizId, quizObj.currentPage);
 
+                this.manageFocus(quizId);
+
                 // Timer
                 let self = this;
                 setInterval(function() {
@@ -342,6 +344,13 @@ var QSMPagination;
                 let self = this;
                 let currentQuiz = this.quizObjects[quizId];
                 let $container = currentQuiz.quizContainer;
+
+                // Track active question wrapper for keyboard navigation
+                $container.off('click.qsmActiveQuestion');
+                $container.on('click.qsmActiveQuestion', '.qsm-question-wrapper', function() {
+                    $container.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                    $(this).addClass('qsm-active-question');
+                });
 
                 // Multiple choice radio buttons and dropdowns (matching legacy: .qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date)
                 $container.on('change', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date', function(e) {
@@ -760,9 +769,6 @@ var QSMPagination;
                     this.scrollToQuiz(quizId);
                 }
 
-                // Focus management for accessibility
-                this.manageFocus(quizId);
-
                 // Trigger after page change event
                 $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
             },
@@ -964,6 +970,9 @@ var QSMPagination;
                 // Go to next page
                 this.goToPage(quizId, quizData.currentPage + 1);
 
+                // Manage focus for accessibility
+                this.manageFocus(quizId);
+                
                 // Trigger next button click event (for legacy compatibility)
                 $(document).trigger('qsm_next_button_click_after', [quizId]);
             },
@@ -987,7 +996,10 @@ var QSMPagination;
                 
                 if (quizData.currentPage < minPage) return;
                 this.goToPage(quizId, quizData.currentPage - 1);
-
+                
+                // Manage focus for accessibility
+                this.manageFocus(quizId);
+                
                 // Trigger previous button click event (for legacy compatibility)
                 $(document).trigger('qsm_previous_button_click_after', [quizId]);
             },
@@ -1325,20 +1337,177 @@ var QSMPagination;
              * Handle keyboard navigation
              */
             handleKeyboardNavigation: function(e, quizId) {
-                // Allow Ctrl+Enter to submit form
-                if (e.ctrlKey && e.keyCode === 13) {
-                    e.preventDefault();
-                    this.quizObjects[quizId].form.trigger('submit');
+                let quizData = this.quizObjects[quizId];
+                if (!quizData) {
                     return;
                 }
 
-                // Allow Enter to go to next page (except in textareas)
-                if (e.keyCode === 13 && !$(e.target).is('textarea')) {
-                    e.preventDefault();
-                    this.nextPage(quizId);
+                // Don't interfere with keyboard navigation inside contact fields
+                if ($(e.target).is('input, textarea, select') && $(e.target).closest('div.qsm_contact_div').length > 0) {
                     return;
                 }
-            },
+
+                let isTypingField = $(e.target).is('textarea, select, input[type="text"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], input[type="password"], [contenteditable="true"]');
+
+                // Allow Ctrl+Enter to submit form
+                if (e.ctrlKey && e.keyCode === 13) {
+                    e.preventDefault();
+                    quizData.form.trigger('submit');
+                    return;
+                }
+                const tag = e.target.tagName.toLowerCase();
+                const isEditable =
+                    tag === 'textarea' ||
+                    (tag === 'input' && (
+                        e.target.type === 'text' || 
+                        e.target.type === 'email' || 
+                        e.target.type === 'number' || 
+                        e.target.type === 'search' || 
+                        e.target.type === 'tel' || 
+                        e.target.type === 'url' || 
+                        e.target.type === 'password' ||
+                        e.target.type === 'file'
+                    )) && !['button', 'submit', 'checkbox', 'radio'].includes(e.target.type);
+
+                if (e.keyCode === 13 && !isEditable) {
+                e.preventDefault();
+
+                let $container = quizData.quizContainer;
+                let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
+                let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible');
+                let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next-btn-' + quizId + ':visible');
+
+                // Priority order: Start button → Next button → Submit button (only on last page)
+                if ($startBtn.length) {
+                    $startBtn.first().trigger('click');
+                    return;
+                }
+                if ($nextBtn.length) {
+                    $nextBtn.first().trigger('click');
+                    return;
+                }
+                // Only submit if on last page (no next button)
+                if ($submitBtn.length && !$nextBtn.length) {
+                    $submitBtn.first().trigger('click');
+                    return;
+                }
+
+                // Fallback
+                this.nextPage(quizId);
+                return;
+            }
+
+            // Left/Right arrow keys to navigate pages (avoid interfering with typing/caret movement)
+            // Arrow keys should NEVER submit, only navigate
+            if ((e.keyCode === 37 || e.keyCode === 39) && !isTypingField) {
+                e.preventDefault();
+                let $container = quizData.quizContainer;
+                if (e.keyCode === 39) {
+                    // Arrow Right - check for start button or next page
+                    let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible');
+                    let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next-btn-' + quizId + ':visible');
+                    
+                    if ($startBtn.length) {
+                        $startBtn.first().trigger('click');
+                        return;
+                    }
+                    // Only navigate to next page if next button exists, never submit
+                    if ($nextBtn.length) {
+                        this.nextPage(quizId);
+                    }
+                } else {
+                    // Arrow Left - navigate to previous page
+                    this.previousPage(quizId);
+                }
+                return;
+            }
+
+            // Tab / Shift+Tab cycles through individual elements: question inputs → contact fields → navigation buttons
+            if (e.keyCode === 9) {
+                let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
+                let $container = quizData.quizContainer;
+
+                // Get all individual focusable elements from questions (inputs, selects, textareas, buttons, radios, checkboxes)
+                let $questionInputs = $currentPage.find('.qsm-question-wrapper:visible').find('input, select, textarea, button, a[href]').filter(':visible');
+
+                // Contact form fields
+                let $contactFields = $currentPage.find('.qsm_contact_div').find('input, select, textarea, button, a[href]').filter(':visible');
+
+                // Navigation buttons
+                let $prevBtn = $container.find('.qsm-previous-btn:visible, .qsm-previous:visible, .qsm-previous-btn-' + quizId + ':visible').first();
+                let $nextBtn = $container.find('.qsm-next-btn:visible, .qsm-next:visible, .qsm-next-btn-' + quizId + ':visible').first();
+                let $submitBtn = $container.find('.qsm-submit-btn:visible, .qsm-submit-btn-' + quizId + ':visible').first();
+                let $startBtn = $container.find('.qsm-start-btn:visible, .qsm-start-btn-' + quizId + ':visible').first();
+
+                // Build ordered list of all individual focusable elements
+                let focusOrder = [];
+
+                // Add question inputs (each individual element)
+                $questionInputs.each(function() { focusOrder.push($(this)); });
+
+                // Add contact fields
+                $contactFields.each(function() { focusOrder.push($(this)); });
+
+                // Add navigation buttons
+                if ($prevBtn.length) focusOrder.push($prevBtn);
+                if ($startBtn.length) {
+                    focusOrder.push($startBtn);
+                } else if ($submitBtn.length) {
+                    focusOrder.push($submitBtn);
+                } else if ($nextBtn.length) {
+                    focusOrder.push($nextBtn);
+                }
+
+                if (focusOrder.length === 0) return;
+
+                // Find current focus position
+                let currentIndex = -1;
+                let $activeElement = $(document.activeElement);
+                for (let i = 0; i < focusOrder.length; i++) {
+                    if (focusOrder[i].is($activeElement)) {
+                        currentIndex = i;
+                        break;
+                    }
+                }
+
+                // If no focusable element is focused, start from beginning
+                if (currentIndex === -1) {
+                    e.preventDefault();
+                    focusOrder[0].focus();
+                    // Update active question highlighting
+                    let $wrapper = focusOrder[0].closest('.qsm-question-wrapper');
+                    if ($wrapper.length) {
+                        $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                        $wrapper.addClass('qsm-active-question');
+                    }
+                    return;
+                }
+
+                e.preventDefault();
+
+                // Calculate next index
+                let nextIndex;
+                if (e.shiftKey) {
+                    nextIndex = currentIndex - 1;
+                    if (nextIndex < 0) nextIndex = focusOrder.length - 1;
+                } else {
+                    nextIndex = currentIndex + 1;
+                    if (nextIndex >= focusOrder.length) nextIndex = 0;
+                }
+
+                // Focus the next element
+                focusOrder[nextIndex].focus();
+
+                // Update active question highlighting for the newly focused element
+                let $nextWrapper = focusOrder[nextIndex].closest('.qsm-question-wrapper');
+                if ($nextWrapper.length) {
+                    $currentPage.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
+                    $nextWrapper.addClass('qsm-active-question');
+                }
+
+                return;
+            }
+        },
 
             /**
              * Scroll to quiz form
@@ -1360,13 +1529,8 @@ var QSMPagination;
                 if (!quizData) return;
 
                 let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                let $firstInput = $currentPage.find('input, select, textarea').first();
                 
-                if ($firstInput.length) {
-                    setTimeout(function() {
-                        $firstInput.focus();
-                    }, this.config.animation.duration + 50);
-                }
+                $currentPage.css('outline', 'none').attr('tabindex', '-1').focus();
             },
 
             /**

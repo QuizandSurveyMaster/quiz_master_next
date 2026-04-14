@@ -577,6 +577,20 @@ class QMNQuizManager {
 			global $wpdb;
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
+				$current_user_id = get_current_user_id();
+				$result_user_id  = intval( $result_data['user'] );
+				$can_view_result = false;
+				if ( current_user_can( 'manage_options' ) || current_user_can( 'qsm_view_results' ) ) {
+					$can_view_result = true;
+				} elseif ( $current_user_id > 0 && $current_user_id === $result_user_id ) {
+					$can_view_result = true;
+				}
+				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
+				if ( ! $can_view_result ) {
+					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
+					$content = ob_get_clean();
+					return $content;
+				}
 				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css, array(), $mlwQuizMasterNext->version );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
@@ -2862,7 +2876,7 @@ class QMNQuizManager {
 
 								// If a comment was submitted
 								if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-									$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
+									$comment = htmlspecialchars( strip_shortcodes( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) ), ENT_QUOTES );
 								} else {
 									$comment = '';
 								}
@@ -2948,7 +2962,7 @@ class QMNQuizManager {
 							}
 							// If a comment was submitted.
 							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-								$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
+								$comment = htmlspecialchars( strip_shortcodes( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) ), ENT_QUOTES );
 							} else {
 								$comment = '';
 							}
@@ -3036,7 +3050,7 @@ class QMNQuizManager {
 	public function check_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$qmn_quiz_comments = '';
 		if ( isset( $_POST['mlwQuizComments'] ) ) {
-			$qmn_quiz_comments = sanitize_textarea_field( wp_unslash( $_POST['mlwQuizComments'] ) );
+			$qmn_quiz_comments = strip_shortcodes( sanitize_textarea_field( wp_unslash( $_POST['mlwQuizComments'] ) ) );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
 	}
