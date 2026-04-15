@@ -98,6 +98,35 @@ class QSM_New_Pagination_Renderer {
 	private $shortcode_args;
 
 	/**
+	 * Actions registered by this instance (for cleanup to support multiple quizzes per page)
+	 *
+	 * @var array
+	 */
+	private $registered_hooks = array();
+
+	/**
+	 * Register an action and track it so it can be unregistered after render().
+	 *
+	 * Why: each renderer instance hooks onto global actions. Without cleanup,
+	 * a second quiz on the same page would trigger the first quiz's callbacks too,
+	 * duplicating content across forms.
+	 */
+	private function track_add_action( $hook, $method, $priority, $accepted_args = 1 ) {
+		add_action( $hook, array( $this, $method ), $priority, $accepted_args );
+		$this->registered_hooks[] = array( $hook, $method, $priority );
+	}
+
+	/**
+	 * Remove all actions registered by this instance during render().
+	 */
+	private function unregister_quiz_elements() {
+		foreach ( $this->registered_hooks as $h ) {
+			remove_action( $h[0], array( $this, $h[1] ), $h[2] );
+		}
+		$this->registered_hooks = array();
+	}
+
+	/**
 	 * Constructor
 	 *
 	 * @param object $options Quiz options
@@ -578,13 +607,18 @@ class QSM_New_Pagination_Renderer {
 			 * @since 9.0
 			 */
 			do_action( 'qsm_render_quiz_elements', $this );
-		
+
 			// Hook after rendering to prevent recursion
 			do_action( 'qsm_new_after_pagination_render', $this->options->quiz_id, $this->options, $this->quiz_data );
-			
+
+			// Unregister this instance's hooks so a second quiz on the same page
+			// doesn't trigger this instance's callbacks during its own render.
+			$this->unregister_quiz_elements();
+
 			$rendering = false;
-			
+
 		} catch ( Exception $e ) {
+			$this->unregister_quiz_elements();
 			$rendering = false;
 			
 			// Debug output
@@ -617,16 +651,16 @@ class QSM_New_Pagination_Renderer {
 		), $this );
 		
 		// Featured Image (Priority 5) - Only for default theme
-		add_action( 'qsm_render_quiz_elements', array( $this, 'render_featured_image_element' ), $priorities['featured_image'] );
-		
+		$this->track_add_action( 'qsm_render_quiz_elements', 'render_featured_image_element', $priorities['featured_image'] );
+
 		// Quiz Form Template (Priority 10) - Loads quiz-form.php template
-		add_action( 'qsm_render_quiz_elements', array( $this, 'render_quiz_form_element' ), $priorities['quiz_form'] );
-		
+		$this->track_add_action( 'qsm_render_quiz_elements', 'render_quiz_form_element', $priorities['quiz_form'] );
+
 		// Navigation/Pagination (Priority 20) - Outside form
-		add_action( 'qsm_render_quiz_elements', array( $this, 'render_navigation_element' ), $priorities['navigation'] );
-		
+		$this->track_add_action( 'qsm_render_quiz_elements', 'render_navigation_element', $priorities['navigation'] );
+
 		// JavaScript Data (Priority 30) - Quiz configuration
-		add_action( 'qsm_render_quiz_elements', array( $this, 'render_javascript_data_element' ), 2 );
+		$this->track_add_action( 'qsm_render_quiz_elements', 'render_javascript_data_element', 2 );
 		
 		// Register form content elements on the qsm_quiz_form_content hook
 		$this->register_quiz_form_content_elements();
@@ -667,35 +701,35 @@ class QSM_New_Pagination_Renderer {
 		), $this );
 		
 		// Pagination Header (Priority 3) - renders top navigation if enabled
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_pagination_header_element' ), $priorities['pagination_header'], 3 );
-		
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_pagination_header_element', $priorities['pagination_header'], 3 );
+
 		// Error Message Container Top (Priority 10)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_error_message_top' ), $priorities['error_message_top'], 3 );
-		
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_error_message_top', $priorities['error_message_top'], 3 );
+
 		// Quiz Top Marker (Priority 15)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_quiz_top_marker' ), $priorities['quiz_top_marker'], 3 );
-		
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_quiz_top_marker', $priorities['quiz_top_marker'], 3 );
+
 		// Quiz Timer (Priority 25)
 		// add_action( 'qsm_quiz_form_content', array( $this, 'render_timer_element' ), $priorities['timer'], 3 );
-		
+
 		// First Page (Priority 30) - conditional registration
 		if ( $this->should_show_first_page() ) {
-			add_action( 'qsm_quiz_form_content', array( $this, 'render_first_page_element' ), $priorities['first_page'], 3 );
+			$this->track_add_action( 'qsm_quiz_form_content', 'render_first_page_element', $priorities['first_page'], 3 );
 		}
-		
+
 		// Quiz Pages (Priority 40)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_quiz_pages_element' ), $priorities['quiz_pages'], 3 );
-		
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_quiz_pages_element', $priorities['quiz_pages'], 3 );
+
 		// Last Page (Priority 50) - conditional registration
 		if ( $this->should_show_last_page() ) {
-			add_action( 'qsm_quiz_form_content', array( $this, 'render_last_page_element' ), $priorities['last_page'], 3 );
+			$this->track_add_action( 'qsm_quiz_form_content', 'render_last_page_element', $priorities['last_page'], 3 );
 		}
-		
+
 		// Bottom Error Message Container (Priority 65)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_error_message_bottom_element' ), $priorities['error_message_bottom'], 3 );
-		
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_error_message_bottom_element', $priorities['error_message_bottom'], 3 );
+
 		// Hidden Inputs (Priority 80)
-		add_action( 'qsm_quiz_form_content', array( $this, 'render_hidden_inputs_element' ), $priorities['hidden_inputs'], 3 );
+		$this->track_add_action( 'qsm_quiz_form_content', 'render_hidden_inputs_element', $priorities['hidden_inputs'], 3 );
 	}
 
 	/**
@@ -735,27 +769,27 @@ class QSM_New_Pagination_Renderer {
 		
 		// Only register element if it's NOT already in the header
 		if ( ! in_array( 'page_counter', $header_elements, true ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'render_page_counter' ), $priorities['page_counter'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'render_page_counter', $priorities['page_counter'], 3 );
 		}
-		
+
 		if ( ! in_array( 'previous_button', $header_elements, true ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_previous_button_element' ), $priorities['previous_button'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'qsm_render_previous_button_element', $priorities['previous_button'], 3 );
 		}
-		
+
 		if ( ! in_array( 'progress_bar', $header_elements, true ) && isset( $this->options->progress_bar ) && 0 != intval( $this->options->progress_bar ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_progress_bar_element' ), $priorities['progress_bar'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'qsm_render_progress_bar_element', $priorities['progress_bar'], 3 );
 		}
-		
+
 		if ( ! in_array( 'start_button', $header_elements, true ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_start_button_element' ), $priorities['start_button'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'qsm_render_start_button_element', $priorities['start_button'], 3 );
 		}
-		
+
 		if ( ! in_array( 'next_button', $header_elements, true ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_next_button_element' ), $priorities['next_button'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'qsm_render_next_button_element', $priorities['next_button'], 3 );
 		}
-		
+
 		if ( ! in_array( 'submit_button', $header_elements, true ) ) {
-			add_action( 'qsm_pagination_content', array( $this, 'qsm_render_submit_button_element' ), $priorities['submit_button'], 3 );
+			$this->track_add_action( 'qsm_pagination_content', 'qsm_render_submit_button_element', $priorities['submit_button'], 3 );
 		}
 	}
 
