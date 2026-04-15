@@ -436,10 +436,10 @@ class QSM_New_Pagination_Renderer {
 			$question_sql = implode( ',', array_unique( array_keys( $questions ) ) );
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
-				let expires = "expires=" + d.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
+				var qsmCookieExpiryQRPOne = new Date();
+				qsmCookieExpiryQRPOne.setTime(qsmCookieExpiryQRPOne.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				var qmsExpiresQRPOne = "expires=" + qsmCookieExpiryQRPOne.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/";
 			</script>
 			<?php
 		}
@@ -1377,10 +1377,10 @@ class QSM_New_Pagination_Renderer {
 		if ( $this->quiz_options->pagination <= 0 ) {
 			?>
 			<script>
-				const d = new Date();
-				d.setTime(d.getTime() + (365*24*60*60*1000));
-				let expires = "expires="+ d.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+expires+"; path=/";
+				var qsmCookieExpiryQRPTwo = new Date();
+				qsmCookieExpiryQRPTwo.setTime(qsmCookieExpiryQRPTwo.getTime() + (365*24*60*60*1000));
+				var qmsExpiresQRPTwo = "expires="+ qsmCookieExpiryQRPTwo.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/";
 			</script>
 			<?php
 		}
