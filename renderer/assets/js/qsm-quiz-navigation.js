@@ -345,11 +345,10 @@ var QSMPagination;
                 let currentQuiz = this.quizObjects[quizId];
                 let $container = currentQuiz.quizContainer;
 
-                // Track active question wrapper for keyboard navigation
+                // Remove active-question highlight when using mouse (border is for keyboard navigation only)
                 $container.off('click.qsmActiveQuestion');
                 $container.on('click.qsmActiveQuestion', '.qsm-question-wrapper', function() {
                     $container.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
-                    $(this).addClass('qsm-active-question');
                 });
 
                 // Multiple choice radio buttons and dropdowns (matching legacy: .qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date)
