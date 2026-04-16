@@ -762,6 +762,9 @@ body .ui-tooltip.ui-widget-content {
     border-radius: 0.25rem;
     margin-bottom: 1rem;
 }
+.qsm-question-wrapper.qsm-active-question:not(.qsm-last-active-question){
+	border: 1px dotted #828282d1;
+}
 .quiz_section fieldset {
 	border: none;
 	padding: 0;
