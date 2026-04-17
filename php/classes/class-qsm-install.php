@@ -560,6 +560,16 @@ class QSM_Install {
 					),
 					'default'     => 0,
 				),
+				'inline_correct_info_after_title' => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Place inline correct answer info directly after the question heading', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
+				),
 			),
 			'help'            => '',
 			'option_tab'      => 'display',

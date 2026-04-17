@@ -325,6 +325,7 @@ class QMNGlobalSettingsPage {
 			'enable_quick_result_mc'                 => 0,
 			'end_quiz_if_wrong'                      => 0,
 			'enable_quick_correct_answer_info'       => 0,
+			'inline_correct_info_after_title'        => 0,
 			'show_question_featured_image_in_result' => 0,
 			'enable_retake_quiz_button'              => 1,
 			'enable_pagination_quiz'                 => 0,
@@ -1323,6 +1324,7 @@ class QMNGlobalSettingsPage {
 		$qsm_progress_bar = ( isset( $globalQuizsetting['progress_bar'] ) && '' !== $globalQuizsetting['progress_bar'] ? $globalQuizsetting['progress_bar'] : 0 );
 		$qsm_enable_quick_result_mc = ( isset( $globalQuizsetting['enable_quick_result_mc'] ) && '' !== $globalQuizsetting['enable_quick_result_mc'] ? $globalQuizsetting['enable_quick_result_mc'] : 0 );
 		$qsm_enable_quick_correct_answer_info = ( isset( $globalQuizsetting['enable_quick_correct_answer_info'] ) && '' !== $globalQuizsetting['enable_quick_correct_answer_info'] ? $globalQuizsetting['enable_quick_correct_answer_info'] : 0 );
+		$qsm_inline_correct_info_after_title = ( isset( $globalQuizsetting['inline_correct_info_after_title'] ) && '' !== $globalQuizsetting['inline_correct_info_after_title'] ? $globalQuizsetting['inline_correct_info_after_title'] : 0 );
 		?>
 		<fieldset class="buttonset buttonset-hide">
 			<label class="qsm-option-label" for="progress_bar-1">

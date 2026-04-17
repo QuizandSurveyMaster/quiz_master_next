@@ -447,6 +447,7 @@ class QMNQuizManager {
 			$wrong_answer_text       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz_quick_result_wrong_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$quiz_processing_message = isset( $qmn_quiz_options->quiz_processing_message ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" ) : '';
 			$quiz_limit_choice       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_limit_choice, "quiz_quiz_limit_choice-{$qmn_array_for_variables['quiz_id']}" );
+			$inline_correct_after_title = ! empty( $qmn_quiz_options->inline_correct_info_after_title );
 			$qmn_json_data           = array(
 				'quiz_id'                            => $qmn_array_for_variables['quiz_id'],
 				'quiz_name'                          => $qmn_array_for_variables['quiz_name'],
@@ -470,6 +471,7 @@ class QMNQuizManager {
 				'quick_result_wrong_answer_text'     => $wrong_answer_text,
 				'quiz_processing_message'            => $quiz_processing_message,
 				'quiz_limit_choice'                  => $quiz_limit_choice,
+				'inline_correct_info_after_title'    => $inline_correct_after_title ? 1 : 0,
 				'not_allow_after_expired_time'       => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 				'prevent_reload'                     => $qmn_quiz_options->prevent_reload,
