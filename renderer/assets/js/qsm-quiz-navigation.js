@@ -1782,7 +1782,7 @@ var QSMPagination;
              * Show inline result feedback (matching legacy qsm_show_inline_result)
              */
             qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index = null) {
-                if ($i_this && $i_this.hasClass && $i_this.hasClass('mlw_answer_date')) {
+                if ($i_this?.hasClass?.('mlw_answer_date')) {
                     if (!/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) {
                         return;
                     }
