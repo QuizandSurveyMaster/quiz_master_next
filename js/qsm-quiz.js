@@ -1940,6 +1940,11 @@ function qsm_check_shortcode(message = null) {
 }
 
 function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
+	if ($i_this?.hasClass?.('mlw_answer_date')) {
+		if (!/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) {
+			return;
+		}
+	}
 	jQuery('.qsm-spinner-loader').remove();
 	addSpinnerLoader($this,$i_this);
 	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID, index);
