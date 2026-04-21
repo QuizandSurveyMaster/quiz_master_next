@@ -2084,10 +2084,10 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 						value[0] = value[0].toUpperCase();
 					}
 
-					let isDateQuestion = 12 === parseInt(decrypt[question_id].question_type_new);
+					let isDateQuestion = 12 === Number.parseInt(decrypt[question_id].question_type_new);
 					let correctValue = isDateQuestion ? qsm_format_date_answer(value[0]) : value[0];
 
-					if (answer == correctValue && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+					if (answer == correctValue && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
 						got_ans = true;
 						correct_answer = true;
 						break;

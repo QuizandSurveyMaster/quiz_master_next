@@ -23,7 +23,7 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
         $user_answer_value = $this->user_answer['input'];
         $correct_answers   = $this->correct_answer;
         if ( 12 === intval( $this->question_type ) ) {
-            $correct_answers = array_map( array( $this, 'format_date_answer' ), $correct_answers );
+            $correct_answers = array_map( array( $this, 'formatDateAnswer' ), $correct_answers );
         }
 		if ( 1 === intval($case_sensitive ) ) {
 			$answer_key = array_search( $user_answer_value, $correct_answers, true );
@@ -36,14 +36,8 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
         }
     }
 
-    private function format_date_answer( $value ) {
-        if ( ! is_string( $value ) ) {
-            return $value;
-        }
-        if ( preg_match( '/^[1-9]\d{3}-\d{2}-\d{2}$/', $value ) ) {
-            return $value;
-        }
-        if ( preg_match( '/^(\d{2})-(\d{2})-([1-9]\d{3})$/', $value, $m ) ) {
+    private function formatDateAnswer( $value ) {
+        if ( is_string( $value ) && preg_match( '/^(\d{2})-(\d{2})-([1-9]\d{3})$/', $value, $m ) ) {
             return $m[3] . '-' . $m[2] . '-' . $m[1];
         }
         return $value;
