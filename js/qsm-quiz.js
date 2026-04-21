@@ -2041,15 +2041,15 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 }
 
 function qsm_format_date_answer(v) {
-	if (typeof v !== 'string') {
-		return v;
-	}
-	if (/^[1-9]\d{3}-\d{2}-\d{2}$/.test(v)) {
-		return v;
-	}
-	let m = /^(\d{2})-(\d{2})-([1-9]\d{3})$/.exec(v);
-	if (m) {
-		return m[3] + '-' + m[2] + '-' + m[1];
+	if (typeof v === 'string') {
+		let ymd = /^([1-9]\d{3})[-/](\d{2})[-/](\d{2})$/.exec(v);
+		if (ymd) {
+			return ymd[1] + '-' + ymd[2] + '-' + ymd[3];
+		}
+		let dmy = /^(\d{2})[-/](\d{2})[-/]([1-9]\d{3})$/.exec(v);
+		if (dmy) {
+			return dmy[3] + '-' + dmy[2] + '-' + dmy[1];
+		}
 	}
 	return v;
 }
