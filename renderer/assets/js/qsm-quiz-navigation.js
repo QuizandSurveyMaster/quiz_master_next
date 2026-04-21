@@ -1830,6 +1830,23 @@ var QSMPagination;
             /**
              * Check answer correctness using encrypted data (matching legacy qsm_question_quick_result_js)
              */
+            /**
+             * Format date answer to YYYY-MM-DD.
+             */
+            qsmFormatDateAnswer: function(v) {
+                if (typeof v !== 'string') {
+                    return v;
+                }
+                if (/^[1-9]\d{3}-\d{2}-\d{2}$/.test(v)) {
+                    return v;
+                }
+                let m = /^(\d{2})-(\d{2})-([1-9]\d{3})$/.exec(v);
+                if (m) {
+                    return m[3] + '-' + m[2] + '-' + m[1];
+                }
+                return v;
+            },
+
             qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index = null) {
                 answer_type = answer_type || '';
                 show_correct_info = show_correct_info || '';
@@ -1869,7 +1886,10 @@ var QSMPagination;
                                     value[0] = value[0].toUpperCase();
                                 }
                                 
-                                if (answer == value[0] && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+                                let isDateQuestion = 12 === Number.parseInt(decrypt[question_id].question_type_new);
+                                let correctValue = isDateQuestion ? this.qsmFormatDateAnswer(value[0]) : value[0];
+
+                                if (answer == correctValue && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
                                     got_ans = true;
                                     correct_answer = true;
                                     break;
