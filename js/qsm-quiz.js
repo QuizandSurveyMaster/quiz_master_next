@@ -1940,6 +1940,11 @@ function qsm_check_shortcode(message = null) {
 }
 
 function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
+	if ($i_this?.hasClass?.('mlw_answer_date')) {
+		if (!/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) {
+			return;
+		}
+	}
 	jQuery('.qsm-spinner-loader').remove();
 	addSpinnerLoader($this,$i_this);
 	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID, index);
@@ -2035,6 +2040,20 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 	}
 }
 
+function qsm_format_date_answer(v) {
+	if (typeof v === 'string') {
+		let ymd = /^([1-9]\d{3})[-/](\d{2})[-/](\d{2})$/.exec(v);
+		if (ymd) {
+			return ymd[1] + '-' + ymd[2] + '-' + ymd[3];
+		}
+		let dmy = /^(\d{2})[-/](\d{2})[-/]([1-9]\d{3})$/.exec(v);
+		if (dmy) {
+			return dmy[3] + '-' + dmy[2] + '-' + dmy[1];
+		}
+	}
+	return v;
+}
+
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='', ans_index=null) {
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
@@ -2065,7 +2084,10 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 						value[0] = value[0].toUpperCase();
 					}
 
-					if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+					let isDateQuestion = 12 === Number.parseInt(decrypt[question_id].question_type_new);
+					let correctValue = isDateQuestion ? qsm_format_date_answer(value[0]) : value[0];
+
+					if (answer == correctValue && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
 						got_ans = true;
 						correct_answer = true;
 						break;

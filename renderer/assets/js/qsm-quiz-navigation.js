@@ -345,11 +345,10 @@ var QSMPagination;
                 let currentQuiz = this.quizObjects[quizId];
                 let $container = currentQuiz.quizContainer;
 
-                // Track active question wrapper for keyboard navigation
+                // Remove active-question highlight when using mouse (border is for keyboard navigation only)
                 $container.off('click.qsmActiveQuestion');
                 $container.on('click.qsmActiveQuestion', '.qsm-question-wrapper', function() {
                     $container.find('.qsm-question-wrapper').removeClass('qsm-active-question qsm-last-active-question');
-                    $(this).addClass('qsm-active-question');
                 });
 
                 // Multiple choice radio buttons and dropdowns (matching legacy: .qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date)
@@ -1782,7 +1781,12 @@ var QSMPagination;
             /**
              * Show inline result feedback (matching legacy qsm_show_inline_result)
              */
-            qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index = null) {            
+            qsmShowInlineResult: function(quizId, question_id, value, $this, answer_type, $i_this, index = null) {
+                if ($i_this?.hasClass?.('mlw_answer_date')) {
+                    if (!/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) {
+                        return;
+                    }
+                }
                 $('.qsm-spinner-loader').remove();
                 this.addSpinnerLoader($this, $i_this);
                 
@@ -1826,6 +1830,23 @@ var QSMPagination;
             /**
              * Check answer correctness using encrypted data (matching legacy qsm_question_quick_result_js)
              */
+            /**
+             * Format date answer to YYYY-MM-DD.
+             */
+            qsmFormatDateAnswer: function(v) {
+                if (typeof v === 'string') {
+                    let ymd = /^([1-9]\d{3})[-/](\d{2})[-/](\d{2})$/.exec(v);
+                    if (ymd) {
+                        return ymd[1] + '-' + ymd[2] + '-' + ymd[3];
+                    }
+                    let dmy = /^(\d{2})[-/](\d{2})[-/]([1-9]\d{3})$/.exec(v);
+                    if (dmy) {
+                        return dmy[3] + '-' + dmy[2] + '-' + dmy[1];
+                    }
+                }
+                return v;
+            },
+
             qsmQuestionQuickResultJs: function(question_id, answer, answer_type, show_correct_info, quiz_id, ans_index = null) {
                 answer_type = answer_type || '';
                 show_correct_info = show_correct_info || '';
@@ -1865,7 +1886,10 @@ var QSMPagination;
                                     value[0] = value[0].toUpperCase();
                                 }
                                 
-                                if (answer == value[0] && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+                                let isDateQuestion = 12 === Number.parseInt(decrypt[question_id].question_type_new);
+                                let correctValue = isDateQuestion ? this.qsmFormatDateAnswer(value[0]) : value[0];
+
+                                if (answer == correctValue && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
                                     got_ans = true;
                                     correct_answer = true;
                                     break;
