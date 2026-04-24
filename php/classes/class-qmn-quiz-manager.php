@@ -584,14 +584,11 @@ class QMNQuizManager {
 					$can_view_result = true;
 				} elseif ( $current_user_id > 0 && $current_user_id === $result_user_id ) {
 					$can_view_result = true;
-				} elseif ( ! empty( $_GET['result_id'] ) && ! empty( $result_data['unique_id'] ) ) {
-					$url_token = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
-					if ( hash_equals( (string) $result_data['unique_id'], $url_token ) ) {
-						$can_view_result = true;
-					}
 				}
 				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
-				if ( ! $can_view_result ) {
+				$qmn_settings             = (array) get_option( 'qmn-settings' );
+				$result_link_availability = ! empty( $qmn_settings['result_link_availability'] ) ? $qmn_settings['result_link_availability'] : 0;
+				if ( ! $can_view_result && $result_link_availability ) {
 					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
 					$content = ob_get_clean();
 					return $content;
