@@ -246,7 +246,7 @@ class QMNGlobalSettingsPage {
 		<fieldset>
 			<label>
 				<input type="checkbox" name="qmn-settings[result_link_visibility]" value="1" <?php checked( $result_link_visibility, '1' ); ?>>
-				<?php esc_html_e( 'Hide quiz results from result links for non-logged-in users', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'Restrict public access to results', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
 		<?php
