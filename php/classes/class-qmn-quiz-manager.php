@@ -586,9 +586,9 @@ class QMNQuizManager {
 					$can_view_result = true;
 				}
 				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
-				$qmn_settings             = (array) get_option( 'qmn-settings' );
-				$result_link_availability = ! empty( $qmn_settings['result_link_availability'] ) ? $qmn_settings['result_link_availability'] : 0;
-				if ( ! $can_view_result && $result_link_availability ) {
+				$qmn_settings           = (array) get_option( 'qmn-settings' );
+				$result_link_visibility = ! empty( $qmn_settings['result_link_visibility'] ) ? $qmn_settings['result_link_visibility'] : 0;
+				if ( ! $can_view_result && $result_link_visibility ) {
 					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
 					$content = ob_get_clean();
 					return $content;

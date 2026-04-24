@@ -218,7 +218,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-preloader', __( 'Enable preloader', 'quiz-master-next' ), array( $this, 'qsm_enable_preloader' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'duplicate-quiz-with-theme', __( 'Duplicate Quiz Controls', 'quiz-master-next' ), array( $this, 'qsm_duplicate_quiz_with_theme' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'result-link-availability', __( 'Result Link Availability', 'quiz-master-next' ), array( $this, 'qsm_result_link_availability' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'result-link-visibility', __( 'Result Link Visibility', 'quiz-master-next' ), array( $this, 'result_link_visibility_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -235,18 +235,18 @@ class QMNGlobalSettingsPage {
 	}
 
 	/**
-	 * Generates Setting Field For Result Link Availability
+	 * Generates Setting Field For Result Link Visibility
 	 *
 	 * @return void
 	 */
-	public function qsm_result_link_availability() {
-		$settings                 = (array) get_option( 'qmn-settings' );
-		$result_link_availability = isset( $settings['result_link_availability'] ) ? $settings['result_link_availability'] : '0';
+	public function result_link_visibility_field() {
+		$settings               = (array) get_option( 'qmn-settings' );
+		$result_link_visibility = isset( $settings['result_link_visibility'] ) ? $settings['result_link_visibility'] : '0';
 		?>
 		<fieldset>
 			<label>
-				<input type="checkbox" name="qmn-settings[result_link_availability]" value="1" <?php checked( $result_link_availability, '1' ); ?>>
-				<?php esc_html_e( 'Enable Result Link Availability', 'quiz-master-next' ); ?>
+				<input type="checkbox" name="qmn-settings[result_link_visibility]" value="1" <?php checked( $result_link_visibility, '1' ); ?>>
+				<?php esc_html_e( 'Enable Result Link Visibility', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
 		<?php
