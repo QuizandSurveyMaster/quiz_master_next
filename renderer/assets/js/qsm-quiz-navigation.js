@@ -1337,7 +1337,7 @@ var QSMPagination;
              */
             handleKeyboardNavigation: function(e, quizId) {
                 let qsm_keypress_navigation_action = { allowed: true };
-                jQuery(document).trigger('qsm_keyboard_navigation_action_start', [event, qsm_keypress_navigation_action]);
+                jQuery(document).trigger('qsm_keyboard_navigation_action_start', [e, qsm_keypress_navigation_action]);
                 if(qsm_keypress_navigation_action.allowed === false){
                     return;
                 }
