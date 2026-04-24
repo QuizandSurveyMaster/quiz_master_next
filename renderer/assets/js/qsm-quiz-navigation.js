@@ -1336,11 +1336,15 @@ var QSMPagination;
              * Handle keyboard navigation
              */
             handleKeyboardNavigation: function(e, quizId) {
+                let qsm_keypress_navigation_action = { allowed: true };
+                jQuery(document).trigger('qsm_keyboard_navigation_action_start', [event, qsm_keypress_navigation_action]);
+                if(qsm_keypress_navigation_action.allowed === false){
+                    return;
+                }
                 let quizData = this.quizObjects[quizId];
                 if (!quizData) {
                     return;
                 }
-
                 // Don't interfere with keyboard navigation inside contact fields
                 if ($(e.target).is('input, textarea, select') && $(e.target).closest('div.qsm_contact_div').length > 0) {
                     return;
