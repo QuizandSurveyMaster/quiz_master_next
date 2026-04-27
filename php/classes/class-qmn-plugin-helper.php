@@ -1229,6 +1229,10 @@ class QMNPluginHelper {
 		$html = preg_replace( '/<span class="qsm-text-correct-option(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 		$html = preg_replace( '/<span class="qmn_user_correct_answer(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 
+		$override = 'width:auto !important;height:auto !important;max-width:100% !important;display:block !important;';
+		$html = preg_replace( '/(<img\b[^>]*\sstyle\s*=\s*["\'])([^"\']*)/i', '$1$2;' . $override, $html );
+		$html = preg_replace( '/<img\b(?![^>]*\bstyle=)/i', '<img style="' . $override . '"', $html );
+
 		return $html;
 	}
 
