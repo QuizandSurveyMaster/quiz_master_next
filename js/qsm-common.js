@@ -204,3 +204,35 @@ jQuery(document).ready(function(){
 		jQuery(document).trigger('qsm_polar_slider_create_after', [questionID]);
 	}
 // }(jQuery));
+
+function qmnClearField(field) {
+	if (field.defaultValue == field.value) field.value = '';
+}
+
+function checkMaxLength(obj) {
+	var value = obj.value;
+	var maxlength = obj.maxLength;
+	if (value.length > parseInt(maxlength)) {
+		obj.value = value.slice(0, parseInt(maxlength));
+	}
+}
+
+function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
+	var sTop = window.screen.height / 2 - (218);
+	var sLeft = window.screen.width / 2 - (313);
+	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
+	var pageUrlEncoded = encodeURIComponent(share_url);
+	var url = '';
+	if (network == 'facebook') {
+		url = "https://www.facebook.com/dialog/share?" + "app_id=" + facebook_id + "&display=popup" +
+			"&hashtag=" + encodeURIComponent(mlw_qmn_social_text) + "&href=" + pageUrlEncoded;
+	}
+	if (network === 'linkedin') {
+		url = "https://www.linkedin.com/sharing/share-offsite/?text=" + encodeURIComponent(mlw_qmn_social_text) + "&url=" + pageUrlEncoded;
+	}
+	if (network == 'twitter') {
+		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
+	}
+	window.open(url, "Share", sqShareOptions);
+	return false;
+}

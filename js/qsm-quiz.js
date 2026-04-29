@@ -715,10 +715,6 @@ function qsmTimeInMS() {
 	return n;
 }
 
-function qmnClearField(field) {
-	if (field.defaultValue == field.value) field.value = '';
-}
-
 var qsmPagescrolling = false;
 function qsmScrollTo($element) {
     if ($element.length > 0 && !qsmPagescrolling) {
@@ -1445,27 +1441,6 @@ jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after
 	});
 	jQuery(document).trigger('qsm_after_iframe_section',[quiz_id]);
 });
-function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
-	var sTop = window.screen.height / 2 - (218);
-	var sLeft = window.screen.width / 2 - (313);
-	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
-	var pageUrl = window.location.href;
-	var pageUrlEncoded = encodeURIComponent(share_url);
-	var url = '';
-	if (network == 'facebook') {
-		url = "https://www.facebook.com/dialog/share?" + "app_id=" + facebook_id + "&display=popup" +
-			"&hashtag=" + encodeURIComponent(mlw_qmn_social_text) + "&href=" + pageUrlEncoded;
-	}
-    if (network === 'linkedin') {
-        url = "https://www.linkedin.com/sharing/share-offsite/?text=" + encodeURIComponent(mlw_qmn_social_text) + "&url=" + pageUrlEncoded;
-    }
-	if (network == 'twitter') {
-		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
-	}
-	window.open(url, "Share", sqShareOptions);
-	return false;
-}
-
 function maxLengthCheck(object) {
 	if (object.value.length > object.maxLength) {
 		object.value = object.value.slice(0, object.maxLength)
@@ -2018,14 +1993,6 @@ jQuery(document).ready(function () {
 
 var quizType = 'default';
 
-//check max lengh
-function checkMaxLength(obj){
-    var value = obj.value;
-    var maxlength = obj.maxLength;
-    if (value.length > parseInt(maxlength)) {
-        obj.value = value.slice(0, parseInt(maxlength));
-    }
-}
 let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
