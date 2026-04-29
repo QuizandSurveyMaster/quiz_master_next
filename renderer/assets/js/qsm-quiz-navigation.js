@@ -1340,7 +1340,6 @@ var QSMPagination;
                 if (!quizData) {
                     return;
                 }
-
                 // Don't interfere with keyboard navigation inside contact fields
                 if ($(e.target).is('input, textarea, select') && $(e.target).closest('div.qsm_contact_div').length > 0) {
                     return;
