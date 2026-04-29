@@ -210,19 +210,19 @@ function qmnClearField(field) {
 }
 
 function checkMaxLength(obj) {
-	var value = obj.value;
-	var maxlength = obj.maxLength;
-	if (value.length > parseInt(maxlength)) {
-		obj.value = value.slice(0, parseInt(maxlength));
+	let value = obj.value;
+	let maxlength = obj.maxLength;
+	if (value.length > Number.parseInt(maxlength)) {
+		obj.value = value.slice(0, Number.parseInt(maxlength));
 	}
 }
 
 function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
-	var sTop = window.screen.height / 2 - (218);
-	var sLeft = window.screen.width / 2 - (313);
-	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
-	var pageUrlEncoded = encodeURIComponent(share_url);
-	var url = '';
+	let sTop = window.screen.height / 2 - (218);
+	let sLeft = window.screen.width / 2 - (313);
+	let sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
+	let pageUrlEncoded = encodeURIComponent(share_url);
+	let url = '';
 	if (network == 'facebook') {
 		url = "https://www.facebook.com/dialog/share?" + "app_id=" + facebook_id + "&display=popup" +
 			"&hashtag=" + encodeURIComponent(mlw_qmn_social_text) + "&href=" + pageUrlEncoded;
