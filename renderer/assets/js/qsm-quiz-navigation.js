@@ -1340,6 +1340,13 @@ var QSMPagination;
                 if (!quizData) {
                     return;
                 }
+
+                let qsm_keypress_navigation_action = { allowed: true };
+                $(document).trigger('qsm_keyboard_navigation_action_start', [e, qsm_keypress_navigation_action]);
+                if (qsm_keypress_navigation_action.allowed === false) {
+                    return;
+                }
+
                 // Don't interfere with keyboard navigation inside contact fields
                 if ($(e.target).is('input, textarea, select') && $(e.target).closest('div.qsm_contact_div').length > 0) {
                     return;
