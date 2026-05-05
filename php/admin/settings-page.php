@@ -580,10 +580,10 @@ class QMNGlobalSettingsPage {
 		$duplicate_quiz_with_theme = ! empty( $settings['duplicate_quiz_with_theme'] ) ? esc_attr( $settings['duplicate_quiz_with_theme'] ) : 0;
 		?>
 		<label for="qmn-settings-duplicate_quiz_with_theme" class="qsm-checkbox-switch">
-			<input type="checkbox" name="qmn-settings[duplicate_quiz_with_theme]" id="qmn-settings-duplicate_quiz_with_theme" value="1" <?php checked( $duplicate_quiz_with_theme, 1, true ); ?> />
+			<input type="checkbox" name="qmn-settings[duplicate_quiz_with_theme]" id="qmn-settings-duplicate_quiz_with_theme" aria-labelledby="qsm-duplicate-quiz-text" value="1" <?php checked( $duplicate_quiz_with_theme, 1, true ); ?> />
 			<span class="qsm-switch-slider round"></span>
 		</label>
-		<span class="global-sub-text"><?php esc_html_e( 'Enable quiz duplication along with theme settings', 'quiz-master-next'); ?></span>
+		<span id="qsm-duplicate-quiz-text" class="global-sub-text"><?php esc_html_e( 'Enable quiz duplication along with theme settings', 'quiz-master-next'); ?></span>
 		<?php
 	}
 
@@ -600,17 +600,17 @@ class QMNGlobalSettingsPage {
 		?>
 		<p>
 			<label for="qmn-settings-cpt_archive" class="qsm-checkbox-switch">
-				<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings-cpt_archive" value="1" <?php checked( $cpt_archive, 1, true ); ?> />
+				<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings-cpt_archive" aria-labelledby="qsm-cpt-archive-text" value="1" <?php checked( $cpt_archive, 1, true ); ?> />
 				<span class="qsm-switch-slider round"></span>
 			</label>
-			<span class='global-sub-text'><?php esc_html_e( 'Disable Quiz Archive', 'quiz-master-next'); ?></span>
+			<span id="qsm-cpt-archive-text" class='global-sub-text'><?php esc_html_e( 'Disable Quiz Archive', 'quiz-master-next'); ?></span>
 		</p>
 		<p>
 			<label for="qmn-settings-qsm-quiz-public-link" class="qsm-checkbox-switch">
-				<input type="checkbox" name="qmn-settings[disable_quiz_public_link]" id="qmn-settings-qsm-quiz-public-link" value="1" <?php echo checked( $cpt_link, 1, true ); ?> />
+				<input type="checkbox" name="qmn-settings[disable_quiz_public_link]" id="qmn-settings-qsm-quiz-public-link" aria-labelledby="qsm-public-link-text" value="1" <?php echo checked( $cpt_link, 1, true ); ?> />
 				<span class="qsm-switch-slider round"></span>
 			</label>
-			<span class='global-sub-text'><?php esc_html_e( 'Disable Quiz Public link', 'quiz-master-next'); ?></span>
+			<span id="qsm-public-link-text" class='global-sub-text'><?php esc_html_e( 'Disable Quiz Public link', 'quiz-master-next'); ?></span>
 		</p>
 		<?php
 	}
