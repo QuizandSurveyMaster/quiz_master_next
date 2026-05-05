@@ -586,7 +586,9 @@ class QMNQuizManager {
 					$can_view_result = true;
 				}
 				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
-				if ( ! $can_view_result ) {
+				$qmn_settings           = (array) get_option( 'qmn-settings' );
+				$result_link_visibility = ! empty( $qmn_settings['result_link_visibility'] ) ? $qmn_settings['result_link_visibility'] : 0;
+				if ( ! $can_view_result && $result_link_visibility ) {
 					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
 					$content = ob_get_clean();
 					return $content;
@@ -914,10 +916,10 @@ class QMNQuizManager {
 			$question_sql = implode( ',', array_unique( $question_ids ) ); // Prevent duplicates
 			?>
 			<script>
-				const qsmCookieExpiry = new Date();
-				qsmCookieExpiry.setTime(qsmCookieExpiry.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
-				let expires = "expires=" + qsmCookieExpiry.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + expires + "; path=/";
+				var qsmCookieExpiryQQMOne = new Date();
+				qsmCookieExpiryQQMOne.setTime(qsmCookieExpiryQQMOne.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
+				var qmsExpiresQQMOne = "expires=" + qsmCookieExpiryQQMOne.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQQMOne + "; path=/";
 			</script>
 			<?php
 		}
@@ -1178,10 +1180,10 @@ class QMNQuizManager {
 			$question_list_str = implode( ',', $question_list_array );
 			?>
 			<script>
-				const qsmExpiry = new Date();
-				qsmExpiry.setTime(qsmExpiry.getTime() + (365*24*60*60*1000));
-				let expires = "expires="+ qsmExpiry.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+expires+"; path=/";
+				var qsmCookieExpiryQQMTwo = new Date();
+				qsmCookieExpiryQQMTwo.setTime(qsmCookieExpiryQQMTwo.getTime() + (365*24*60*60*1000));
+				var qmsExpiresQQMTwo = "expires="+ qsmCookieExpiryQQMTwo.toUTCString();
+				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+qmsExpiresQQMTwo+"; path=/";
 			</script>
 			<?php
 		}
