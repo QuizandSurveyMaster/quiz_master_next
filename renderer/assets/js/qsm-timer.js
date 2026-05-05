@@ -178,9 +178,9 @@ var qsmTimerInterval = [];
             
             // Disable form inputs (matching legacy behavior)
             const $quizForm = currentQuiz.form;
-            $quizForm.find('.mlw_qmn_quiz input:radio').attr('disabled', true);
-            $quizForm.find('.mlw_qmn_quiz input:checkbox').attr('disabled', true);
-            $quizForm.find('.mlw_qmn_quiz select').attr('disabled', true);
+            $quizForm.find('input[type="radio"]').attr('disabled', true);
+            $quizForm.find('input[type="checkbox"]').attr('disabled', true);
+            $quizForm.find('select').attr('disabled', true);
             $quizForm.find('.mlw_qmn_question_comment').attr('disabled', true);
             $quizForm.find('.mlw_answer_open_text').attr('disabled', true);
             $quizForm.find('.mlw_answer_number').attr('readonly', true);
