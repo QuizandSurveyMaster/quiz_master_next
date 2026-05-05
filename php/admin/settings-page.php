@@ -243,12 +243,11 @@ class QMNGlobalSettingsPage {
 		$settings               = (array) get_option( 'qmn-settings' );
 		$result_link_visibility = isset( $settings['result_link_visibility'] ) ? $settings['result_link_visibility'] : '0';
 		?>
-		<fieldset>
-			<label>
-				<input type="checkbox" name="qmn-settings[result_link_visibility]" value="1" <?php checked( $result_link_visibility, '1' ); ?>>
-				<?php esc_html_e( 'Restrict public access to results', 'quiz-master-next' ); ?>
-			</label>
-		</fieldset>
+		<label class="qsm-checkbox-switch">
+			<input type="checkbox" name="qmn-settings[result_link_visibility]" value="1" <?php checked( $result_link_visibility, '1' ); ?>>
+			<span class="qsm-switch-slider round"></span>
+		</label>
+		<span class="global-sub-text"><?php esc_html_e( 'Restrict public access to results', 'quiz-master-next' ); ?></span>
 		<?php
 	}
 
@@ -580,12 +579,11 @@ class QMNGlobalSettingsPage {
 		$settings = (array) get_option( 'qmn-settings' );
 		$duplicate_quiz_with_theme = ! empty( $settings['duplicate_quiz_with_theme'] ) ? esc_attr( $settings['duplicate_quiz_with_theme'] ) : 0;
 		?>
-		<fieldset>
-			<label for="qmn-settings-duplicate_quiz_with_theme">
-				<input type="checkbox" name="qmn-settings[duplicate_quiz_with_theme]" id="qmn-settings-duplicate_quiz_with_theme" value="1" <?php checked( $duplicate_quiz_with_theme, 1, true ); ?> />
-				<?php esc_html_e( 'Enable quiz duplication along with theme settings', 'quiz-master-next'); ?>
-			</label>
-		</fieldset>
+		<label for="qmn-settings-duplicate_quiz_with_theme" class="qsm-checkbox-switch">
+			<input type="checkbox" name="qmn-settings[duplicate_quiz_with_theme]" id="qmn-settings-duplicate_quiz_with_theme" value="1" <?php checked( $duplicate_quiz_with_theme, 1, true ); ?> />
+			<span class="qsm-switch-slider round"></span>
+		</label>
+		<span class="global-sub-text"><?php esc_html_e( 'Enable quiz duplication along with theme settings', 'quiz-master-next'); ?></span>
 		<?php
 	}
 
@@ -600,16 +598,20 @@ class QMNGlobalSettingsPage {
 		$cpt_archive = ! empty( $settings['cpt_archive'] ) ? esc_attr( $settings['cpt_archive'] ) : 0;
 		$cpt_link = ! empty( $settings['disable_quiz_public_link'] ) ? esc_attr( $settings['disable_quiz_public_link'] ) : 0;
 		?>
-		<fieldset>
-			<label for="qmn-settings-cpt_archive">
+		<p>
+			<label for="qmn-settings-cpt_archive" class="qsm-checkbox-switch">
 				<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings-cpt_archive" value="1" <?php checked( $cpt_archive, 1, true ); ?> />
-				<?php esc_html_e( 'Disable Quiz Archive', 'quiz-master-next'); ?>
-			</label><br/>
-			<label for="qmn-settings-qsm-quiz-public-link">
-				<input type="checkbox" name="qmn-settings[disable_quiz_public_link]" id="qmn-settings-qsm-quiz-public-link" value="1" <?php echo checked( $cpt_link, 1, true ); ?> />
-				<?php esc_html_e( 'Disable Quiz Public link', 'quiz-master-next'); ?>
+				<span class="qsm-switch-slider round"></span>
 			</label>
-		</fieldset>
+			<span class='global-sub-text'><?php esc_html_e( 'Disable Quiz Archive', 'quiz-master-next'); ?></span>
+		</p>
+		<p>
+			<label for="qmn-settings-qsm-quiz-public-link" class="qsm-checkbox-switch">
+				<input type="checkbox" name="qmn-settings[disable_quiz_public_link]" id="qmn-settings-qsm-quiz-public-link" value="1" <?php echo checked( $cpt_link, 1, true ); ?> />
+				<span class="qsm-switch-slider round"></span>
+			</label>
+			<span class='global-sub-text'><?php esc_html_e( 'Disable Quiz Public link', 'quiz-master-next'); ?></span>
+		</p>
 		<?php
 	}
 
