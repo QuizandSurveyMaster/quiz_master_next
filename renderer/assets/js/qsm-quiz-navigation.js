@@ -225,7 +225,7 @@ var QSMPagination;
              * remain functional under the new renderer.
              */
             initHintTooltip: function($quizContainer) {
-                if (!$quizContainer || !$quizContainer.length || typeof $quizContainer.tooltip !== 'function') {
+                if (!$quizContainer?.length || typeof $quizContainer?.tooltip !== 'function') {
                     return;
                 }
                 $quizContainer.tooltip({
