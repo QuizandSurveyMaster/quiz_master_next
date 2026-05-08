@@ -177,6 +177,9 @@ var QSMPagination;
                 // Bind events
                 this.bindEvents(quizId);
 
+                // Initialize hint tooltip on this quiz container
+                this.initHintTooltip(quizObj.quizContainer);
+
                 // Mark as initialized
                 quizObj.runtime.initialized = true;
 
@@ -214,6 +217,34 @@ var QSMPagination;
                 this.updateNavigationButtons(quizId);
                 this.updatePageCounter(quizId);
                 jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
+            },
+
+            /**
+             * Initialize jQuery UI tooltip for question hints.
+             * Mirrors the legacy qsm-quiz.js tooltip wiring so hints
+             * remain functional under the new renderer.
+             */
+            initHintTooltip: function($quizContainer) {
+                if (!$quizContainer || !$quizContainer.length || typeof $quizContainer.tooltip !== 'function') {
+                    return;
+                }
+                $quizContainer.tooltip({
+                    position: {
+                        my: "center top+10",
+                        at: "center bottom",
+                        classes: {
+                            "ui-tooltip": "hint-qsm-tooltip"
+                        },
+                        using: function(position, feedback) {
+                            $(this).css(position);
+                            $("<div>")
+                                .addClass("qsm-tooltip-arrow")
+                                .addClass(feedback.vertical)
+                                .addClass(feedback.horizontal)
+                                .appendTo(this);
+                        }
+                    }
+                });
             },
 
             /**
