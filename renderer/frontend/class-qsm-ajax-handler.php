@@ -147,7 +147,11 @@ class QSM_Ajax_Handler {
 		
 		// Get quiz settings
 		$quiz_settings = maybe_unserialize( $quiz_options->quiz_settings );
-		$quiz_options_settings = (object) maybe_unserialize( $quiz_settings['quiz_options'] ?? '[]' );
+		$quiz_options_arr = maybe_unserialize( $quiz_settings['quiz_options'] ?? '[]' );
+		$quiz_text_arr    = maybe_unserialize( $quiz_settings['quiz_text'] ?? '[]' );
+		$quiz_options_arr = is_array( $quiz_options_arr ) ? $quiz_options_arr : array();
+		$quiz_text_arr    = is_array( $quiz_text_arr ) ? $quiz_text_arr : array();
+		$quiz_options_settings = (object) array_merge( $quiz_options_arr, $quiz_text_arr );
 
 		// Create renderer instance for template methods (pass class_object to templates)
 		$quiz_data = array( 'quiz_id' => $quiz_id );
@@ -221,6 +225,12 @@ class QSM_Ajax_Handler {
 					}
 				} else {
 					echo $question_template; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+
+				if ( ! empty( $question['hints'] ) ) {
+					$hint_data  = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+					$hint_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_options_settings->hint_text ?? __( 'Hint', 'quiz-master-next' ), "quiz_hint_text-{$quiz_id}" );
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_attr( $hint_data ) . '">' . esc_html( $hint_label ) . '</div>';
 				}
 
 				do_action( 'qsm_after_question', $question );
