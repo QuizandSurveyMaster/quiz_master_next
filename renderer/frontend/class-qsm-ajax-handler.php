@@ -229,8 +229,31 @@ class QSM_Ajax_Handler {
 
 				if ( ! empty( $question['hints'] ) ) {
 					$hint_data  = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
-					$hint_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $quiz_options_settings->hint_text ?? __( 'Hint', 'quiz-master-next' ), "quiz_hint_text-{$quiz_id}" );
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_attr( $hint_data ) . '">' . esc_html( $hint_label ) . '</div>';
+					$hint_show  = __( 'Show Hint', 'quiz-master-next' );
+					$hint_hide  = __( 'Hide Hint', 'quiz-master-next' );
+					$panel_id   = 'qsm-hint-panel-' . intval( $question_id );
+					?>
+					<div class="qsm-hint-wrapper" data-question-id="<?php echo esc_attr( $question_id ); ?>">
+						<button type="button" class="qsm-hint-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $panel_id ); ?>">
+							<span class="qsm-hint-icon" aria-hidden="true">
+								<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+									<path d="M9 18h6"></path>
+									<path d="M10 22h4"></path>
+									<path d="M12 2a7 7 0 0 0-4 12.7c.7.6 1 1.4 1 2.3v1h6v-1c0-.9.3-1.7 1-2.3A7 7 0 0 0 12 2z"></path>
+								</svg>
+							</span>
+							<span class="qsm-hint-label" data-show="<?php echo esc_attr( $hint_show ); ?>" data-hide="<?php echo esc_attr( $hint_hide ); ?>"><?php echo esc_html( $hint_show ); ?></span>
+							<span class="qsm-hint-chevron" aria-hidden="true">
+								<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+									<polyline points="6 9 12 15 18 9"></polyline>
+								</svg>
+							</span>
+						</button>
+						<div id="<?php echo esc_attr( $panel_id ); ?>" class="qsm-hint-panel" role="region" aria-hidden="true" hidden>
+							<div class="qsm-hint-content"><?php echo $hint_data; ?></div>
+						</div>
+					</div>
+					<?php
 				}
 
 				do_action( 'qsm_after_question', $question );

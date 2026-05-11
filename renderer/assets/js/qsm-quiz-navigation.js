@@ -177,8 +177,7 @@ var QSMPagination;
                 // Bind events
                 this.bindEvents(quizId);
 
-                // Initialize hint tooltip on this quiz container
-                this.initHintTooltip(quizObj.quizContainer);
+                this.bindHintToggle(quizObj.quizContainer);
 
                 // Mark as initialized
                 quizObj.runtime.initialized = true;
@@ -219,32 +218,54 @@ var QSMPagination;
                 jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
             },
 
-            /**
-             * Initialize jQuery UI tooltip for question hints.
-             * Mirrors the legacy qsm-quiz.js tooltip wiring so hints
-             * remain functional under the new renderer.
-             */
-            initHintTooltip: function($quizContainer) {
-                if (!$quizContainer?.length || typeof $quizContainer?.tooltip !== 'function') {
+            bindHintToggle: function($quizContainer) {
+                if (!$quizContainer || !$quizContainer.length) {
                     return;
                 }
-                $quizContainer.tooltip({
-                    position: {
-                        my: "center top+10",
-                        at: "center bottom",
-                        classes: {
-                            "ui-tooltip": "hint-qsm-tooltip"
-                        },
-                        using: function(position, feedback) {
-                            $(this).css(position);
-                            $("<div>")
-                                .addClass("qsm-tooltip-arrow")
-                                .addClass(feedback.vertical)
-                                .addClass(feedback.horizontal)
-                                .appendTo(this);
+                $quizContainer.off('click.qsmHint')
+                    .on('click.qsmHint', '.qsm-hint-toggle', function(e) {
+                        e.preventDefault();
+                        var $toggle  = $(this);
+                        var $wrapper = $toggle.closest('.qsm-hint-wrapper');
+                        var $panel   = $wrapper.find('.qsm-hint-panel').first();
+                        var $label   = $toggle.find('.qsm-hint-label');
+                        var isOpen   = $wrapper.hasClass('is-open');
+
+                        $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each(function() {
+                            var $other       = $(this);
+                            var $otherToggle = $other.find('.qsm-hint-toggle');
+                            var $otherPanel  = $other.find('.qsm-hint-panel').first();
+                            var $otherLabel  = $otherToggle.find('.qsm-hint-label');
+                            $other.removeClass('is-open');
+                            $otherToggle.attr('aria-expanded', 'false');
+                            $otherPanel.attr('aria-hidden', 'true');
+                            $otherLabel.text($otherLabel.data('show') || $otherLabel.text());
+                            window.setTimeout(function() {
+                                if (!$other.hasClass('is-open')) {
+                                    $otherPanel.attr('hidden', 'hidden');
+                                }
+                            }, 260);
+                        });
+
+                        if (isOpen) {
+                            $wrapper.removeClass('is-open');
+                            $toggle.attr('aria-expanded', 'false');
+                            $panel.attr('aria-hidden', 'true');
+                            $label.text($label.data('show') || $label.text());
+                            window.setTimeout(function() {
+                                if (!$wrapper.hasClass('is-open')) {
+                                    $panel.attr('hidden', 'hidden');
+                                }
+                            }, 260);
+                        } else {
+                            $panel.removeAttr('hidden');
+                            $panel[0] && $panel[0].offsetHeight; // eslint-disable-line no-unused-expressions
+                            $wrapper.addClass('is-open');
+                            $toggle.attr('aria-expanded', 'true');
+                            $panel.attr('aria-hidden', 'false');
+                            $label.text($label.data('hide') || $label.text());
                         }
-                    }
-                });
+                    });
             },
 
             /**
