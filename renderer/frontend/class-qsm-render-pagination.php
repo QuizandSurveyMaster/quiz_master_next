@@ -1073,7 +1073,7 @@ class QSM_New_Pagination_Renderer {
 					if ( ! empty( $question['hints'] ) ) {
 						global $mlwQuizMasterNext;
 						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
-						self::render_hint_toggle( $question_id, $hint_data );
+						self::renderHintToggle( $question_id, $hint_data );
 					}
 
 					do_action('qsm_after_question', $question);
@@ -2104,7 +2104,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param int    $question_id Question ID.
 	 * @param string $hint_data   HTML pre-sanitized via wp_kses_post().
 	 */
-	public static function render_hint_toggle( $question_id, $hint_data ) {
+	public static function renderHintToggle( $question_id, $hint_data ) {
 		if ( '' === trim( (string) $hint_data ) ) {
 			return;
 		}

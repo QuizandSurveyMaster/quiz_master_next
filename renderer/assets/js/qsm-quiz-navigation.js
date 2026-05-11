@@ -238,7 +238,7 @@ var QSMPagination;
                 const $panel  = $wrapper.find('.qsm-hint-panel').first();
                 const $label  = $toggle.find('.qsm-hint-label');
                 $panel.removeAttr('hidden');
-                void ($panel[0]?.offsetHeight);
+                $panel[0]?.getBoundingClientRect();
                 $wrapper.addClass('is-open');
                 $toggle.attr('aria-expanded', 'true');
                 $panel.attr('aria-hidden', 'false');
@@ -249,22 +249,21 @@ var QSMPagination;
                 if (!$quizContainer?.length) {
                     return;
                 }
-                const self = this;
                 $quizContainer.off('click.qsmHint')
-                    .on('click.qsmHint', '.qsm-hint-toggle', function(e) {
+                    .on('click.qsmHint', '.qsm-hint-toggle', (e) => {
                         e.preventDefault();
-                        const $toggle  = $(this);
+                        const $toggle  = $(e.currentTarget);
                         const $wrapper = $toggle.closest('.qsm-hint-wrapper');
                         const isOpen   = $wrapper.hasClass('is-open');
 
-                        $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each(function() {
-                            self.closeHintWrapper($(this));
+                        $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each((_, el) => {
+                            this.closeHintWrapper($(el));
                         });
 
                         if (isOpen) {
-                            self.closeHintWrapper($wrapper);
+                            this.closeHintWrapper($wrapper);
                         } else {
-                            self.openHintWrapper($wrapper);
+                            this.openHintWrapper($wrapper);
                         }
                     });
             },
