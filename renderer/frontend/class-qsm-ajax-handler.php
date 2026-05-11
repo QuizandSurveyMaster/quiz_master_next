@@ -229,7 +229,7 @@ class QSM_Ajax_Handler {
 
 				if ( ! empty( $question['hints'] ) ) {
 					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
-					QSM_New_Pagination_Renderer::renderHintToggle( $question_id, $hint_data );
+					QSM_New_Renderer::renderHintToggle( $question_id, $hint_data );
 				}
 
 				do_action( 'qsm_after_question', $question );
