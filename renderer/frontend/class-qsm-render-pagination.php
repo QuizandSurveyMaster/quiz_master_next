@@ -1093,9 +1093,9 @@ class QSM_New_Pagination_Renderer {
 									</svg>
 								</span>
 							</button>
-							<div id="<?php echo esc_attr( $panel_id ); ?>" class="qsm-hint-panel" role="region" aria-hidden="true" hidden>
+							<section id="<?php echo esc_attr( $panel_id ); ?>" class="qsm-hint-panel" aria-label="<?php esc_attr_e( 'Hint', 'quiz-master-next' ); ?>" aria-hidden="true" hidden>
 								<div class="qsm-hint-content"><?php echo $hint_data; ?></div>
-							</div>
+							</section>
 						</div>
 						<?php
 					}

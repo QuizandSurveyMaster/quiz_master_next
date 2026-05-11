@@ -609,24 +609,20 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 .qsm-quiz-container.qsm-new-renderer {
 	--qsm-hint-accent: #3498db;
 	--qsm-hint-accent-hover: #2980b9;
-	--qsm-hint-fg: #3498db;
 	--qsm-hint-panel-bg: #f1f6fc;
 	--qsm-hint-panel-fg: #1f2937;
 	--qsm-hint-panel-border: #e0eaf5;
 	--qsm-hint-accent-bar: #3498db;
-	--qsm-hint-focus-ring: rgba(52, 152, 219, 0.28);
 }
 
 .qsm-quiz-container.qsm-new-renderer.quiz_theme_dark,
 .qsm-quiz-container.qsm-new-renderer[data-theme="dark"] {
 	--qsm-hint-accent: #5dade2;
 	--qsm-hint-accent-hover: #85c1e9;
-	--qsm-hint-fg: #5dade2;
 	--qsm-hint-panel-bg: #1e2733;
 	--qsm-hint-panel-fg: #e6edf3;
 	--qsm-hint-panel-border: #2c3a4d;
 	--qsm-hint-accent-bar: #5dade2;
-	--qsm-hint-focus-ring: rgba(93, 173, 226, 0.35);
 }
 
 .qsm-quiz-container.qsm-new-renderer.quiz_theme_corporate,
@@ -634,12 +630,10 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 .qsm-quiz-container.qsm-new-renderer[data-theme="corporate"] {
 	--qsm-hint-accent: #2c3e50;
 	--qsm-hint-accent-hover: #1a2733;
-	--qsm-hint-fg: #2c3e50;
 	--qsm-hint-panel-bg: #f4f6f8;
 	--qsm-hint-panel-fg: #1f2933;
 	--qsm-hint-panel-border: #cfd8dc;
 	--qsm-hint-accent-bar: #2c3e50;
-	--qsm-hint-focus-ring: rgba(44, 62, 80, 0.25);
 }
 
 .qsm-hint-wrapper {
@@ -667,32 +661,29 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	-webkit-tap-highlight-color: transparent;
 	transition: color 0.15s ease;
 }
-.qsm-hint-wrapper .qsm-hint-toggle:hover,
-.qsm-hint-wrapper .qsm-hint-toggle:focus {
+.qsm-hint-wrapper .qsm-hint-toggle:hover {
 	color: var(--qsm-hint-accent-hover);
 	background: transparent;
 	text-decoration: none;
-	outline: none;
 }
+.qsm-hint-wrapper .qsm-hint-toggle:focus,
 .qsm-hint-wrapper .qsm-hint-toggle:focus-visible {
-	box-shadow: 0 0 0 3px var(--qsm-hint-focus-ring);
+	color: var(--qsm-hint-accent-hover);
+	outline: none;
+	box-shadow: none;
 }
 
-.qsm-hint-wrapper .qsm-hint-icon,
 .qsm-hint-wrapper .qsm-hint-chevron {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	color: inherit;
 	flex: 0 0 auto;
+	transition: transform 0.25s ease;
 }
 .qsm-hint-wrapper .qsm-hint-icon svg,
 .qsm-hint-wrapper .qsm-hint-chevron svg {
 	display: block;
-}
-
-.qsm-hint-wrapper .qsm-hint-chevron {
-	transition: transform 0.25s ease;
 }
 .qsm-hint-wrapper.is-open .qsm-hint-chevron {
 	transform: rotate(180deg);
@@ -728,7 +719,7 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 .qsm-hint-wrapper .qsm-hint-content {
 	font-size: 14px;
 	line-height: 1.55;
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .qsm_quiz_processing_box {

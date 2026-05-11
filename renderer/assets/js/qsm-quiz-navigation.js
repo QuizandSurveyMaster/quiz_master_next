@@ -218,52 +218,53 @@ var QSMPagination;
                 jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
             },
 
+            closeHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $wrapper.removeClass('is-open');
+                $toggle.attr('aria-expanded', 'false');
+                $panel.attr('aria-hidden', 'true');
+                $label.text($label.data('show') || $label.text());
+                window.setTimeout(function() {
+                    if (!$wrapper.hasClass('is-open')) {
+                        $panel.attr('hidden', 'hidden');
+                    }
+                }, 260);
+            },
+
+            openHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $panel.removeAttr('hidden');
+                void ($panel[0]?.offsetHeight);
+                $wrapper.addClass('is-open');
+                $toggle.attr('aria-expanded', 'true');
+                $panel.attr('aria-hidden', 'false');
+                $label.text($label.data('hide') || $label.text());
+            },
+
             bindHintToggle: function($quizContainer) {
-                if (!$quizContainer || !$quizContainer.length) {
+                if (!$quizContainer?.length) {
                     return;
                 }
+                const self = this;
                 $quizContainer.off('click.qsmHint')
                     .on('click.qsmHint', '.qsm-hint-toggle', function(e) {
                         e.preventDefault();
-                        var $toggle  = $(this);
-                        var $wrapper = $toggle.closest('.qsm-hint-wrapper');
-                        var $panel   = $wrapper.find('.qsm-hint-panel').first();
-                        var $label   = $toggle.find('.qsm-hint-label');
-                        var isOpen   = $wrapper.hasClass('is-open');
+                        const $toggle  = $(this);
+                        const $wrapper = $toggle.closest('.qsm-hint-wrapper');
+                        const isOpen   = $wrapper.hasClass('is-open');
 
                         $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each(function() {
-                            var $other       = $(this);
-                            var $otherToggle = $other.find('.qsm-hint-toggle');
-                            var $otherPanel  = $other.find('.qsm-hint-panel').first();
-                            var $otherLabel  = $otherToggle.find('.qsm-hint-label');
-                            $other.removeClass('is-open');
-                            $otherToggle.attr('aria-expanded', 'false');
-                            $otherPanel.attr('aria-hidden', 'true');
-                            $otherLabel.text($otherLabel.data('show') || $otherLabel.text());
-                            window.setTimeout(function() {
-                                if (!$other.hasClass('is-open')) {
-                                    $otherPanel.attr('hidden', 'hidden');
-                                }
-                            }, 260);
+                            self.closeHintWrapper($(this));
                         });
 
                         if (isOpen) {
-                            $wrapper.removeClass('is-open');
-                            $toggle.attr('aria-expanded', 'false');
-                            $panel.attr('aria-hidden', 'true');
-                            $label.text($label.data('show') || $label.text());
-                            window.setTimeout(function() {
-                                if (!$wrapper.hasClass('is-open')) {
-                                    $panel.attr('hidden', 'hidden');
-                                }
-                            }, 260);
+                            self.closeHintWrapper($wrapper);
                         } else {
-                            $panel.removeAttr('hidden');
-                            $panel[0] && $panel[0].offsetHeight; // eslint-disable-line no-unused-expressions
-                            $wrapper.addClass('is-open');
-                            $toggle.attr('aria-expanded', 'true');
-                            $panel.attr('aria-hidden', 'false');
-                            $label.text($label.data('hide') || $label.text());
+                            self.openHintWrapper($wrapper);
                         }
                     });
             },
