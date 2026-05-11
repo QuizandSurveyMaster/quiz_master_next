@@ -177,8 +177,7 @@ var QSMPagination;
                 // Bind events
                 this.bindEvents(quizId);
 
-                // Initialize hint tooltip on this quiz container
-                this.initHintTooltip(quizObj.quizContainer);
+                this.bindHintToggle(quizObj.quizContainer);
 
                 // Mark as initialized
                 quizObj.runtime.initialized = true;
@@ -219,32 +218,54 @@ var QSMPagination;
                 jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
             },
 
-            /**
-             * Initialize jQuery UI tooltip for question hints.
-             * Mirrors the legacy qsm-quiz.js tooltip wiring so hints
-             * remain functional under the new renderer.
-             */
-            initHintTooltip: function($quizContainer) {
-                if (!$quizContainer?.length || typeof $quizContainer?.tooltip !== 'function') {
+            closeHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $wrapper.removeClass('is-open');
+                $toggle.attr('aria-expanded', 'false');
+                $panel.attr('aria-hidden', 'true');
+                $label.text($label.data('show') || $label.text());
+                window.setTimeout(function() {
+                    if (!$wrapper.hasClass('is-open')) {
+                        $panel.attr('hidden', 'hidden');
+                    }
+                }, 260);
+            },
+
+            openHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $panel.removeAttr('hidden');
+                $panel[0]?.getBoundingClientRect();
+                $wrapper.addClass('is-open');
+                $toggle.attr('aria-expanded', 'true');
+                $panel.attr('aria-hidden', 'false');
+                $label.text($label.data('hide') || $label.text());
+            },
+
+            bindHintToggle: function($quizContainer) {
+                if (!$quizContainer?.length) {
                     return;
                 }
-                $quizContainer.tooltip({
-                    position: {
-                        my: "center top+10",
-                        at: "center bottom",
-                        classes: {
-                            "ui-tooltip": "hint-qsm-tooltip"
-                        },
-                        using: function(position, feedback) {
-                            $(this).css(position);
-                            $("<div>")
-                                .addClass("qsm-tooltip-arrow")
-                                .addClass(feedback.vertical)
-                                .addClass(feedback.horizontal)
-                                .appendTo(this);
+                $quizContainer.off('click.qsmHint')
+                    .on('click.qsmHint', '.qsm-hint-toggle', (e) => {
+                        e.preventDefault();
+                        const $toggle  = $(e.currentTarget);
+                        const $wrapper = $toggle.closest('.qsm-hint-wrapper');
+                        const isOpen   = $wrapper.hasClass('is-open');
+
+                        $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each((_, el) => {
+                            this.closeHintWrapper($(el));
+                        });
+
+                        if (isOpen) {
+                            this.closeHintWrapper($wrapper);
+                        } else {
+                            this.openHintWrapper($wrapper);
                         }
-                    }
-                });
+                    });
             },
 
             /**

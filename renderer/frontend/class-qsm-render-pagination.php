@@ -1072,9 +1072,8 @@ class QSM_New_Pagination_Renderer {
 
 					if ( ! empty( $question['hints'] ) ) {
 						global $mlwQuizMasterNext;
-						$hint_data  = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
-						$hint_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->hint_text, "quiz_hint_text-{$this->options->quiz_id}" );
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip" title="' . esc_attr( $hint_data ) . '">' . esc_html( $hint_label ) . '</div>';
+						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+						QSM_New_Renderer::renderHintToggle( $question_id, $hint_data );
 					}
 
 					do_action('qsm_after_question', $question);
