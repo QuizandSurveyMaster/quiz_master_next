@@ -225,7 +225,7 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
-= 11.1.2 ( May 05, 2026 ) =
+= 11.1.2 ( May 12, 2026 ) =
 * Feature: Added option to enable/disable public result sharing links
 * Patch: Addressed an SQL injection vulnerability related to the 'order' and 'limit' parameters
 * Bug: Fixed multiple quiz display issue on same page
