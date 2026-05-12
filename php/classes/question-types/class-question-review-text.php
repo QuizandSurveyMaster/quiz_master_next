@@ -21,14 +21,30 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
 		global $mlwQuizMasterNext;
 		$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'case_sensitive' );
         $user_answer_value = $this->user_answer['input'];
+        $correct_answers   = $this->correct_answer;
+        if ( 12 === intval( $this->question_type ) ) {
+            $correct_answers = array_map( array( $this, 'formatDateAnswer' ), $correct_answers );
+        }
 		if ( 1 === intval($case_sensitive ) ) {
-			$answer_key = array_search( $user_answer_value, $this->correct_answer, true );
+			$answer_key = array_search( $user_answer_value, $correct_answers, true );
 		}else {
-			$answer_key = array_search( $this->prepare_for_string_matching( $user_answer_value ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
+			$answer_key = array_search( $this->prepare_for_string_matching( $user_answer_value ), array_map( array( $this, 'prepare_for_string_matching' ), $correct_answers ), true );
 		}
         if ( false !== $answer_key ) {
             $this->answer_status = 'correct';
             $this->points       += floatval( $this->answer_array[ $answer_key ][1] );
         }
+    }
+
+    private function formatDateAnswer( $value ) {
+        if ( is_string( $value ) ) {
+            if ( preg_match( '#^([1-9]\d{3})[-/](\d{2})[-/](\d{2})$#', $value, $m ) ) {
+                return $m[1] . '-' . $m[2] . '-' . $m[3];
+            }
+            if ( preg_match( '#^(\d{2})[-/](\d{2})[-/]([1-9]\d{3})$#', $value, $m ) ) {
+                return $m[3] . '-' . $m[2] . '-' . $m[1];
+            }
+        }
+        return $value;
     }
 }

@@ -437,10 +437,48 @@ class QSM_Database_Migration {
         }
     }
 
+    /**
+     * Clean up failed IDs by removing those that no longer exist in the results table
+     */
+    private function qsm_cleanup_failed_ids() {
+        $stored_failed_ids = get_option( 'qsm_migration_results_failed_ids', array() );
+
+        if ( empty( $stored_failed_ids ) ) {
+            return;
+        }
+
+        $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
+        $failed_ids = array_map( 'intval', (array) $stored_failed_ids );
+
+        if ( empty( $failed_ids ) ) {
+            return;
+        }
+
+        // Check which failed IDs exist in the results table
+        $placeholders = implode( ',', array_fill( 0, count( $failed_ids ), '%d' ) );
+        $existing_ids = $this->wpdb->get_col(
+            $this->wpdb->prepare(
+                "SELECT result_id FROM {$mlw_results_table} WHERE result_id IN ($placeholders)",
+                $failed_ids
+            )
+        );
+
+        // Remove IDs that no longer exist
+        $existing_ids = array_map( 'intval', $existing_ids );
+        $cleaned_failed_ids = array_intersect( $failed_ids, $existing_ids );
+
+        // Update the option if any IDs were removed
+        if ( count( $cleaned_failed_ids ) !== count( $failed_ids ) ) {
+            update_option( 'qsm_migration_results_failed_ids', array_values( $cleaned_failed_ids ) );
+        }
+    }
+
     public function qsm_check_migration_status(){
         $results_table_name      = $this->wpdb->prefix . 'mlw_results';
         $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
-        
+        // Clean up failed IDs that no longer exist in the results table
+        $this->qsm_cleanup_failed_ids();
+
         $total_results = (int) $this->wpdb->get_var( "SELECT COUNT(*) FROM {$results_table_name}" );
 
         // Count how many results have been *logged* (migrated or failed)

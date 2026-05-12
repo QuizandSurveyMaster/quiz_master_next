@@ -715,10 +715,6 @@ function qsmTimeInMS() {
 	return n;
 }
 
-function qmnClearField(field) {
-	if (field.defaultValue == field.value) field.value = '';
-}
-
 var qsmPagescrolling = false;
 function qsmScrollTo($element) {
     if ($element.length > 0 && !qsmPagescrolling) {
@@ -1445,27 +1441,6 @@ jQuery(document).on('qsm_next_button_click_after qsm_previous_button_click_after
 	});
 	jQuery(document).trigger('qsm_after_iframe_section',[quiz_id]);
 });
-function qmnSocialShare(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url) {
-	var sTop = window.screen.height / 2 - (218);
-	var sLeft = window.screen.width / 2 - (313);
-	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
-	var pageUrl = window.location.href;
-	var pageUrlEncoded = encodeURIComponent(share_url);
-	var url = '';
-	if (network == 'facebook') {
-		url = "https://www.facebook.com/dialog/share?" + "app_id=" + facebook_id + "&display=popup" +
-			"&hashtag=" + encodeURIComponent(mlw_qmn_social_text) + "&href=" + pageUrlEncoded;
-	}
-    if (network === 'linkedin') {
-        url = "https://www.linkedin.com/sharing/share-offsite/?text=" + encodeURIComponent(mlw_qmn_social_text) + "&url=" + pageUrlEncoded;
-    }
-	if (network == 'twitter') {
-		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
-	}
-	window.open(url, "Share", sqShareOptions);
-	return false;
-}
-
 function maxLengthCheck(object) {
 	if (object.value.length > object.maxLength) {
 		object.value = object.value.slice(0, object.maxLength)
@@ -1940,6 +1915,11 @@ function qsm_check_shortcode(message = null) {
 }
 
 function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, $i_this, index = null) {
+	if ($i_this?.hasClass?.('mlw_answer_date')) {
+		if (!/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) {
+			return;
+		}
+	}
 	jQuery('.qsm-spinner-loader').remove();
 	addSpinnerLoader($this,$i_this);
 	let data = qsm_question_quick_result_js(question_id, value, answer_type, qmn_quiz_data[quizID].enable_quick_correct_answer_info,quizID, index);
@@ -2013,14 +1993,6 @@ jQuery(document).ready(function () {
 
 var quizType = 'default';
 
-//check max lengh
-function checkMaxLength(obj){
-    var value = obj.value;
-    var maxlength = obj.maxLength;
-    if (value.length > parseInt(maxlength)) {
-        obj.value = value.slice(0, parseInt(maxlength));
-    }
-}
 let submit_status = true;
 function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, answer_type = '') {
 	let quiz_id = $quizForm.closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
@@ -2033,6 +2005,20 @@ function qsm_submit_quiz_if_answer_wrong(question_id, value, $this, $quizForm, a
 	if (1 != qmn_quiz_data[quiz_id].disable_mathjax) {
 		MathJax.typesetPromise();
 	}
+}
+
+function qsm_format_date_answer(v) {
+	if (typeof v === 'string') {
+		let ymd = /^([1-9]\d{3})[-/](\d{2})[-/](\d{2})$/.exec(v);
+		if (ymd) {
+			return ymd[1] + '-' + ymd[2] + '-' + ymd[3];
+		}
+		let dmy = /^(\d{2})[-/](\d{2})[-/]([1-9]\d{3})$/.exec(v);
+		if (dmy) {
+			return dmy[3] + '-' + dmy[2] + '-' + dmy[1];
+		}
+	}
+	return v;
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='', ans_index=null) {
@@ -2065,7 +2051,10 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 						value[0] = value[0].toUpperCase();
 					}
 
-					if (answer == value[0] && (1 === parseInt(value[2]) || 14 === parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
+					let isDateQuestion = 12 === Number.parseInt(decrypt[question_id].question_type_new);
+					let correctValue = isDateQuestion ? qsm_format_date_answer(value[0]) : value[0];
+
+					if (answer == correctValue && (1 === Number.parseInt(value[2]) || 14 === Number.parseInt(decrypt[question_id].question_type_new)) && (!settings['matchAnswer'] || 'random' === settings['matchAnswer'] || key == ans_index)) {
 						got_ans = true;
 						correct_answer = true;
 						break;

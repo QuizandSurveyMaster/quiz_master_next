@@ -138,8 +138,8 @@ class QSMQuizApi {
 				$s = $request->get_param('s');
 
 				$query = "SELECT * FROM {$wpdb->prefix}mlw_results WHERE 1=1";
-				$limit = empty($limit) ? 10 : $limit;
-				$order = empty($order) ? 'ASC' : $order;
+				$limit = empty($limit) ? 10 : absint($limit);
+				$order = in_array(strtoupper($order), array('ASC', 'DESC'), true) ? strtoupper($order) : 'ASC';
 
 				if ( ! empty($quiz_id) ) {
 					$query .= $wpdb->prepare(" AND quiz_id = %s", $quiz_id);
@@ -166,7 +166,8 @@ class QSMQuizApi {
 					$query .= $wpdb->prepare( " AND time_taken_real >= %s", $from_date );
 				}
 
-				$results = $wpdb->get_results($query .= " ORDER BY result_id {$order} LIMIT {$limit}");
+				$query .= $wpdb->prepare(" ORDER BY result_id {$order} LIMIT %d", $limit);
+				$results = $wpdb->get_results($query);
 
 				if ( $results ) {
 					$data = array();
@@ -237,7 +238,7 @@ class QSMQuizApi {
 				}
 			} else {
 				global $wpdb;
-				$limit     = $request->get_param( 'limit' ) ? $request->get_param( 'limit' ) : 10;
+				$limit     = $request->get_param( 'limit' ) ? absint( $request->get_param( 'limit' ) ) : 10;
 				$quiz_name = $request->get_param('quiz_name');
 				$from_date = $request->get_param('from_date');
 				$query = "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE 1=1";
@@ -251,7 +252,8 @@ class QSMQuizApi {
 					$query .= $wpdb->prepare( " AND last_activity >= %s", $from_date );
 				}
 
-				$results = $wpdb->get_results($query .= " LIMIT {$limit}");
+				$query .= $wpdb->prepare( " LIMIT %d", $limit );
+				$results = $wpdb->get_results($query);
 				if ( $results ) {
 
 					$data = array();
@@ -369,7 +371,7 @@ class QSMQuizApi {
 				global $wpdb;
 				$question_name = $request->get_param('question_name' );
 				$quiz_id = $request->get_param('quizId' );
-				$limit     = $request->get_param( 'limit' ) ? $request->get_param( 'limit' ) : 10;
+				$limit     = $request->get_param( 'limit' ) ? absint( $request->get_param( 'limit' ) ) : 10;
 
 				$query = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE 1=1";
 
@@ -382,7 +384,8 @@ class QSMQuizApi {
 					$query .= $wpdb->prepare( " AND quiz_id=%d", $quiz_id );
 				}
 
-				$results = $wpdb->get_results($query .= " LIMIT {$limit}");
+				$query .= $wpdb->prepare( " LIMIT %d", $limit );
+				$results = $wpdb->get_results($query);
 
 				if ( $results ) {
 
