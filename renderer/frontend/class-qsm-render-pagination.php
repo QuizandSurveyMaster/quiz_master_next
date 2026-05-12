@@ -1069,7 +1069,13 @@ class QSM_New_Pagination_Renderer {
 						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $comment_placeholder ); ?>" onclick="qmnClearField(this)" ></textarea>
 						<?php
 					}
-					
+
+					if ( ! empty( $question['hints'] ) ) {
+						global $mlwQuizMasterNext;
+						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+						QSM_New_Renderer::renderHintToggle( $question_id, $hint_data );
+					}
+
 					do_action('qsm_after_question', $question);
 					?>
 					</div>
