@@ -98,10 +98,21 @@ class QSM_Ajax_Handler {
 				$question_start_number
 			);
 
+			global $quiz_answer_random_ids;
+			$response_random_ids = array();
+			if ( in_array( 'answers', $randomness_order, true ) && ! empty( $quiz_answer_random_ids ) ) {
+				foreach ( $question_ids as $qid ) {
+					if ( isset( $quiz_answer_random_ids[ $qid ] ) ) {
+						$response_random_ids[ $qid ] = array_map( 'intval', (array) $quiz_answer_random_ids[ $qid ] );
+					}
+				}
+			}
+
 			wp_send_json_success( array(
-				'html'           => $html,
-				'page_number'    => $page_number,
-				'question_count' => count( $question_ids ),
+				'html'                    => $html,
+				'page_number'             => $page_number,
+				'question_count'          => count( $question_ids ),
+				'quiz_answer_random_ids'  => $response_random_ids,
 			) );
 
 		} catch ( Exception $e ) {

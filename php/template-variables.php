@@ -1214,16 +1214,32 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
 			$total_answers = ! empty( $answer['answer_limit_keys'] ) ? $mlwQuizMasterNext->pluginHelper->qsm_get_limited_options_by_keys( $total_answers, $answer['answer_limit_keys'] ) : $total_answers;
+			$random_ids_for_question = array();
 			if ( ! empty( $_POST['quiz_answer_random_ids'] ) ) {
-				$answers_random = array();
-				$quiz_answer_random_ids = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
-				$quiz_answer_random_ids = qsm_safe_unserialize( $quiz_answer_random_ids );
+				$quiz_answer_random_ids_raw = sanitize_text_field( wp_unslash( $_POST['quiz_answer_random_ids'] ) );
+				$quiz_answer_random_ids     = qsm_safe_unserialize( $quiz_answer_random_ids_raw );
 				if ( ! empty( $quiz_answer_random_ids[ $answer['id'] ] ) && is_array( $quiz_answer_random_ids[ $answer['id'] ] ) ) {
-					foreach ( $quiz_answer_random_ids[ $answer['id'] ] as $key ) {
+					$random_ids_for_question = $quiz_answer_random_ids[ $answer['id'] ];
+				}
+			}
+			// Lazy-loaded pages append their shuffled order here so the result
+			// page can render answers in the order the user saw.
+			if ( empty( $random_ids_for_question ) && ! empty( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] ) ) {
+				$lazy_keys = wp_unslash( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] );
+				if ( is_array( $lazy_keys ) ) {
+					$random_ids_for_question = array_map( 'intval', $lazy_keys );
+				}
+			}
+			if ( ! empty( $random_ids_for_question ) ) {
+				$answers_random = array();
+				foreach ( $random_ids_for_question as $key ) {
+					if ( isset( $total_answers[ $key ] ) ) {
 						$answers_random[ $key ] = $total_answers[ $key ];
 					}
 				}
-				$total_answers = $answers_random;
+				if ( ! empty( $answers_random ) ) {
+					$total_answers = $answers_random;
+				}
 			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
