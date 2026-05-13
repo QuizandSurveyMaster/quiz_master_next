@@ -941,7 +941,7 @@ var QSMPagination;
                         if (response.success && response.data.html) {
                             // Remove placeholder
                             $page.find('.qsm-lazy-load-placeholder').remove();
-                            
+
                             // Insert questions HTML
                             $page.find('.pages_count').before(response.data.html);
 
@@ -949,13 +949,19 @@ var QSMPagination;
                             $page.removeClass('qsm-lazy-load-page qsm-loading');
                             $page.addClass('qsm-loaded-page');
                             $page.attr('data-lazy-load', '0');
-                            
+
+                            // Persist answer randomization order from the AJAX response
+                            // so the server can render results in the order the user saw.
+                            if (response.data.quiz_answer_random_ids) {
+                                self.appendLazyAnswerRandomIds(quizId, response.data.quiz_answer_random_ids);
+                            }
+
                             // Re-bind events for newly loaded questions
                             self.bindAnswerEvents(quizId);
-                            
+
                             // Initialize any new file upload fields
                             self.bindFileUploadEvents(quizId);
-                            
+
                             // Trigger after lazy load event
                             $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
                         } else {
@@ -968,6 +974,39 @@ var QSMPagination;
                 });
             },
             
+            /**
+             * Inject hidden inputs that carry the shuffled answer key order for
+             * lazy-loaded questions, so result rendering can match the order the
+             * user actually saw.
+             */
+            appendLazyAnswerRandomIds: function(quizId, randomIdsMap) {
+                if (!randomIdsMap || typeof randomIdsMap !== 'object') {
+                    return;
+                }
+                let $form = $('#quizForm' + quizId);
+                if (!$form.length) {
+                    $form = $('form.qmn_quiz_container[data-quiz-id="' + quizId + '"]');
+                }
+                if (!$form.length) {
+                    return;
+                }
+                Object.keys(randomIdsMap).forEach(function(questionId) {
+                    let keys = randomIdsMap[questionId];
+                    if (!Array.isArray(keys)) {
+                        return;
+                    }
+                    $form.find('input[data-qsm-lazy-answer-qid="' + questionId + '"]').remove();
+                    keys.forEach(function(key) {
+                        $('<input>', {
+                            type: 'hidden',
+                            name: 'qsm_lazy_answer_random_ids[' + questionId + '][]',
+                            value: key,
+                            'data-qsm-lazy-answer-qid': questionId
+                        }).appendTo($form);
+                    });
+                });
+            },
+
             /**
              * Handle lazy load errors
              */
