@@ -635,7 +635,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$quiz_name_by_question = array();
 				$procesed_question_ids[] = $question['question_id'];
 				$stored_quiz_names[ $question['question_id'] ] = $quiz_name;
-				$linked_question_ids = array_filter( isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() );
+				$linked_question_ids = array_filter( array_map( 'intval', isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() ) );
 				if ( ! empty($linked_question_ids) ) {
 					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $linked_question_ids ) . ")" );
 					foreach ( $quiz_results as $value ) {
@@ -718,7 +718,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'category'        => $request['category'],
 					'multicategories' => $request['multicategories'],
 					'linked_question' => $request['merged_question'],
-					'is_linking'      => $request['is_linking'],
+					'is_linking'      => isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0,
 				);
 				$settings       = array(
 					'required'       => $request['required'],

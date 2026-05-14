@@ -35,10 +35,11 @@ abstract class QSM_Question_Review {
 
 	public function sanitize_answer_from_post( $data ) {
 		if ( 'text_area' === $this->input_field ) {
-			return sanitize_textarea_field( wp_unslash( $data ) );
+			$sanitized = sanitize_textarea_field( wp_unslash( $data ) );
 		} else {
-			return sanitize_text_field( wp_unslash( $data ) );
+			$sanitized = sanitize_text_field( wp_unslash( $data ) );
 		}
+		return strip_shortcodes( $sanitized );
 	}
 
 	public function sanitize_answer_from_db( $data ) {

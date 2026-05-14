@@ -117,4 +117,4 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 </fieldset>
 <input type="hidden" name="answer_limit_keys_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $answer_limit_keys ); ?>" />
 <?php
-echo apply_filters( 'qmn_horizontal_multiple_choice_display_front', '', $id, $question, $answers );
+echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );

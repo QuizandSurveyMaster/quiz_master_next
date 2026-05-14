@@ -199,12 +199,12 @@ class QSM_Contact_Manager {
 		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== intval( $options->user_name ) || 2 !== intval( $options->user_comp ) || 2 !== intval( $options->user_email ) || 2 !== intval( $options->user_phone ) ) ) {
 			$responses[] = array(
 				'label' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->name_field_text, "quiz_name_field_text-{$options->quiz_id}" ),
-				'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserName"] ) ) : 'None',
+				'value' => isset( $_POST["mlwUserName"] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST["mlwUserName"] ) ) ) : 'None',
 				'use'   => 'name',
 			);
 			$responses[] = array(
 				'label' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->business_field_text, "quiz_business_field_text-{$options->quiz_id}" ),
-				'value' => isset( $_POST["mlwUserComp"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserComp"] ) ) : 'None',
+				'value' => isset( $_POST["mlwUserComp"] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST["mlwUserComp"] ) ) ) : 'None',
 				'use'   => 'comp',
 			);
 			$responses[] = array(
@@ -214,7 +214,7 @@ class QSM_Contact_Manager {
 			);
 			$responses[] = array(
 				'label' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->phone_field_text, "quiz_phone_field_text-{$options->quiz_id}" ),
-				'value' => isset( $_POST["mlwUserPhone"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserPhone"] ) ) : 'None',
+				'value' => isset( $_POST["mlwUserPhone"] ) ? strip_shortcodes( sanitize_text_field( wp_unslash( $_POST["mlwUserPhone"] ) ) ) : 'None',
 				'use'   => 'phone',
 			);
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
@@ -224,7 +224,7 @@ class QSM_Contact_Manager {
 					$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $fields[ $i ]['label'], "quiz_contact_field_text-{$i}-{$options->quiz_id}" );
 					$field_array = array(
 						'label' => $field_label,
-						'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) : 'None',
+						'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) ) : 'None',
 					);
 					if ( isset( $fields[ $i ]['use'] ) ) {
 						$field_array['use'] = $fields[ $i ]['use'];

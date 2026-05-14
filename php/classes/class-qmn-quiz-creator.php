@@ -323,7 +323,7 @@ class QMNQuizCreator {
 		}
 
 		if ( $qsm_delete ) {
-			$question_results = $wpdb->get_results( "SELECT `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id` = 60" );
+			$question_results = $wpdb->get_results( $wpdb->prepare( "SELECT `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `quiz_id` = %d", $quiz_id ) );
 			// Loop through each result and unlink question by its ID
 			foreach ( $question_results as $result ) {
 				$question_id = $result->question_id;

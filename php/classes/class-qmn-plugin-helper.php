@@ -1229,6 +1229,10 @@ class QMNPluginHelper {
 		$html = preg_replace( '/<span class="qsm-text-correct-option(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 		$html = preg_replace( '/<span class="qmn_user_correct_answer(.*?)">(.*?)<\/span>/', "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;&nbsp;$2</span>", $html );
 
+		$override = 'width:auto;height:auto;max-width:100%;display:block;';
+		$html = preg_replace( '/(<img\b[^>]*\sstyle\s*=\s*["\'])([^"\']*)/i', '$1$2;' . $override, $html );
+		$html = preg_replace( '/<img\b(?![^>]*\bstyle=)/i', '<img style="' . $override . '"', $html );
+
 		return $html;
 	}
 
@@ -1484,7 +1488,6 @@ class QMNPluginHelper {
             0         => isset( $result_meta['total_seconds'] ) ? $result_meta['total_seconds'] : 0,
             1         => $question_answer_array,
             2         => isset( $result_meta['quiz_comments'] ) ? $result_meta['quiz_comments'] : '',
-			'contact' => array(),
         );
 
         if ( '' !== $answer_label_points ) {
@@ -1506,6 +1509,10 @@ class QMNPluginHelper {
 				continue;
 			}
 			$final_array[ $meta_key ] = $meta_value;
+		}
+
+		if ( ! isset( $final_array['contact'] ) ) {
+			$final_array['contact'] = array();
 		}
         return $final_array;
     }

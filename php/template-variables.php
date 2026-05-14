@@ -301,15 +301,50 @@ function qsm_find_key_from_array( $search_value, $array ) {
 	return false;
 }
 
+if ( ! function_exists( 'qsm_fill_blank_prepare_for_matching' ) ) {
+	function qsm_fill_blank_prepare_for_matching( $value, $case_sensitive = 0 ) {
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+		$decoded   = html_entity_decode( $value, ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$sanitized = trim( sanitize_text_field( $decoded ) );
+		if ( '' === $sanitized ) {
+			return '';
+		}
+		return ( 1 === intval( $case_sensitive ) ) ? $sanitized : mb_strtoupper( $sanitized );
+	}
+}
+ 
+if ( ! function_exists( 'qsm_fill_blank_get_possible_answers' ) ) {
+	function qsm_fill_blank_get_possible_answers( $correct_answer ) {
+		if ( ! is_string( $correct_answer ) || '' === trim( $correct_answer ) ) {
+			return array();
+		}
+		$decoded       = html_entity_decode( $correct_answer, ENT_QUOTES, get_bloginfo( 'charset' ) );
+		$raw_answers   = explode( ',', $decoded );
+		$clean_answers = array();
+		foreach ( $raw_answers as $raw_answer ) {
+			$sanitized = trim( sanitize_text_field( $raw_answer ) );
+			if ( '' !== $sanitized ) {
+				$clean_answers[] = $sanitized;
+			}
+		}
+		return $clean_answers;
+	}
+}
+
 if ( ! function_exists( 'qsm_fill_blank_is_correct_response' ) ) {
 	function qsm_fill_blank_is_correct_response( $user_answer, $correct_answer, $case_sensitive = 0 ) {
-		if ( ! is_string( $correct_answer ) || '' === trim( $correct_answer ) ) {
+		$possible_answers = qsm_fill_blank_get_possible_answers( $correct_answer );
+		if ( empty( $possible_answers ) ) {
 			return false;
 		}
-		$possible = array_filter( array_map( 'trim', array_map( 'sanitize_text_field', explode( ',', $correct_answer ) ) ), 'strlen' );
-		$user = trim( sanitize_text_field( $user_answer ) );
-		foreach ( $possible as $answer ) {
-			if ( 1 === intval( $case_sensitive ) ? $user === $answer : mb_strtoupper( $user ) === mb_strtoupper( $answer ) ) {
+		$prepared_user_answer = qsm_fill_blank_prepare_for_matching( $user_answer, $case_sensitive );
+		if ( '' === $prepared_user_answer ) {
+			return false;
+		}
+		foreach ( $possible_answers as $possible_answer ) {
+			if ( $prepared_user_answer === qsm_fill_blank_prepare_for_matching( $possible_answer, $case_sensitive ) ) {
 				return true;
 			}
 		}
@@ -483,7 +518,12 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_NAME%', ( isset( $mlw_quiz_array['user_name'] ) ? html_entity_decode( $mlw_quiz_array['user_name'] ) : '' ), $content );
+	$user_name = '';
+	if ( isset( $mlw_quiz_array['user_name'] ) ) {
+		// Decode HTML entities then escape to prevent XSS via entity injection
+		$user_name = esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) );
+	}
+	$content = str_replace( '%USER_NAME%', $user_name, $content );
 	return $content;
 }
 
@@ -526,17 +566,20 @@ function mlw_qmn_variable_user_full_name( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_user_business( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_BUSINESS%', ( isset( $mlw_quiz_array['user_business'] ) ? $mlw_quiz_array['user_business'] : '' ), $content );
+	$user_business = isset( $mlw_quiz_array['user_business'] ) ? esc_html( $mlw_quiz_array['user_business'] ) : '';
+	$content = str_replace( '%USER_BUSINESS%', $user_business, $content );
 	return $content;
 }
 
 function mlw_qmn_variable_user_phone( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_PHONE%', ( isset( $mlw_quiz_array['user_phone'] ) ? $mlw_quiz_array['user_phone'] : '' ), $content );
+	$user_phone = isset( $mlw_quiz_array['user_phone'] ) ? esc_html( $mlw_quiz_array['user_phone'] ) : '';
+	$content = str_replace( '%USER_PHONE%', $user_phone, $content );
 	return $content;
 }
 
 function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%USER_EMAIL%', ( isset( $mlw_quiz_array['user_email'] ) ? $mlw_quiz_array['user_email'] : '' ), $content );
+	$user_email = isset( $mlw_quiz_array['user_email'] ) ? esc_html( $mlw_quiz_array['user_email'] ) : '';
+	$content = str_replace( '%USER_EMAIL%', $user_email, $content );
 	return $content;
 }
 
@@ -554,7 +597,8 @@ function qsm_contact_field_variable( $content, $results_array ) {
 			$contact_index = intval( $contact_key ) - 1;
 
 			if ( isset( $results_array['contact'][ $contact_index ]['value'] ) ) {
-				$content = str_replace( '%CONTACT_' . $contact_key . '%', $results_array['contact'][ $contact_index ]['value'], $content );
+				$contact_value = esc_html( $results_array['contact'][ $contact_index ]['value'] );
+				$content = str_replace( '%CONTACT_' . $contact_key . '%', $contact_value, $content );
 			} else {
 				$content = str_replace( '%CONTACT_' . $contact_key . '%', '', $content );
 			}
@@ -1235,6 +1279,19 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && 14 == $answer['question_type'] ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
+					$case_sensitive = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
+					$qsm_norm       = function( $v ) use ( $case_sensitive ) {
+						$v = htmlspecialchars_decode( (string) $v, ENT_QUOTES );
+						return 1 === $case_sensitive ? $v : mb_strtoupper( $v );
+					};
+					$qsm_split      = function( $v ) use ( $qsm_norm ) {
+						$parts = array_map( 'trim', explode( ',', (string) $v ) );
+						$parts = array_values( array_filter( $parts, function( $p ) {
+							return '' !== $p;
+						} ) );
+						$parts = empty( $parts ) ? array( '' ) : $parts;
+						return array_map( $qsm_norm, $parts );
+					};
 
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
@@ -1258,21 +1315,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$options        = array();
 						$question_correct_fill_answer_text = '';
 						foreach ( $total_answers as $key => $single_answer ) {
-							if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-								$options[] = htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES );
-							} else {
-								$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ), ENT_QUOTES ) );
-							}
+							$single_correct_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' );
+							$options              = array_merge( $options, $qsm_split( $single_correct_answer ) );
 							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . ($key + 1) . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 						}
 						$is_any_incorrect = false;
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-									$key = array_search(  $show_user_answer , $options ,true);
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options ,true);
-								}
+								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
@@ -1285,11 +1335,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							}
 						} else {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
-								if ( isset($answer['case_sensitive']) && 1 === intval( $answer['case_sensitive'] ) ) {
-									$key = array_search(  $show_user_answer , $options,true );
-								}else {
-									$key = array_search( mb_strtoupper( $show_user_answer ), $options,true );
-								}
+								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 
 								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
