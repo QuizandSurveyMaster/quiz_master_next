@@ -1117,6 +1117,10 @@ add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_
  * @return void
  */
 function qsm_load_all_quiz_questions_ajax() {
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		wp_send_json_error();
+	}
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
@@ -1485,6 +1489,9 @@ function qsm_get_unique_linked_question_ids_to_remove( $question_ids ) {
 
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
+	if ( ! current_user_can( 'manage_qsm_quiz_categories' ) ) {
+		wp_send_json_error();
+	}
 	$category = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent   = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
 	$parent   = ( -1 == $parent ) ? 0 : $parent;

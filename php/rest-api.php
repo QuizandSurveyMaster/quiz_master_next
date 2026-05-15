@@ -516,6 +516,12 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		$stop         = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
+			if ( ! qsm_user_can_edit_quiz( $request['id'] ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+				);
+			}
 			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
 				$request['pages'] = array();
 			}
@@ -770,6 +776,12 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		$stop         = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
+			if ( ! qsm_user_can_edit_quiz( $request['quizID'] ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+				);
+			}
 			try {
 				$id                          = intval( $request['id'] );
 				$data                        = array(
@@ -869,6 +881,48 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
 		);
 	}
 	return false;
+}
+
+/**
+ * Verifies that the current user is allowed to edit the given quiz.
+ *
+ * Resolves the QSM quiz_id to its CPT post and checks ownership against
+ * the same capability model used elsewhere in the plugin. Elevated users
+ * with edit_others_qsm_quizzes always pass.
+ *
+ * @param int $quiz_id The QSM quiz id (mlw_quizzes.quiz_id).
+ * @return bool True if the user can edit this quiz, false otherwise.
+ */
+function qsm_user_can_edit_quiz( $quiz_id ) {
+	global $wpdb;
+
+	$quiz_id = intval( $quiz_id );
+	if ( $quiz_id <= 0 ) {
+		return false;
+	}
+
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return true;
+	}
+
+	$post_id = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1",
+			$quiz_id
+		)
+	);
+
+	// If quiz mapping is missing, only elevated users (handled above) may proceed.
+	if ( empty( $post_id ) ) {
+		return false;
+	}
+
+	$post_author = intval( get_post_field( 'post_author', $post_id, true ) );
+	if ( $post_author !== get_current_user_id() ) {
+		return false;
+	}
+
+	return current_user_can( 'edit_qsm_quiz', $post_id );
 }
 
 /**

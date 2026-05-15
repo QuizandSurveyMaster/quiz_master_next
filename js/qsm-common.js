@@ -49,6 +49,7 @@ jQuery(document).ready(function(){
                 action: 'qsm_ajax_login',
                 username: username,
                 password: password,
+                nonce: qmn_common_ajax_object.login_nonce,
             },
 			success: function (response) {
                 if ( response.success ) {
