@@ -144,11 +144,11 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 					}
 				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr .= htmlspecialchars_decode($answer);
+						$answerstr .= wp_kses_post( htmlspecialchars_decode($answer) );
 					}
 				}elseif ( 'image' === $question_settings['answerEditor'] ) {
 					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr .= '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode($answer, ENT_QUOTES ) . '"/></span>';
+						$answerstr .= '<span class="qmn_image_option" ><img src="' . esc_url( htmlspecialchars_decode($answer, ENT_QUOTES ) ) . '"/></span>';
 					}
 				}else {
 					$answerstr .= implode(", ",$answers['user_answer']);
@@ -271,9 +271,9 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
  */
 function qsm_answers_type_evaluated( $answer, $question_settings ) {
 	if ( 'rich' === $question_settings['answerEditor'] ) {
-		$answer = htmlspecialchars_decode( $answer );
+		$answer = wp_kses_post( htmlspecialchars_decode( $answer ) );
 	} elseif ( 'image' === $question_settings['answerEditor'] ) {
-		$answer = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode( $answer, ENT_QUOTES ) . '"/></span>';
+		$answer = '<span class="qmn_image_option" ><img src="' . esc_url( htmlspecialchars_decode( $answer, ENT_QUOTES ) ) . '"/></span>';
 	}
 	return $answer;
 }
