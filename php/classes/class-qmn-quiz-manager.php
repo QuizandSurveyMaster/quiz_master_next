@@ -1769,9 +1769,21 @@ class QMNQuizManager {
 	public function ajax_submit_results() {
 		$quiz_id = ! empty( $_REQUEST['qmn_quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qmn_quiz_id'] ) ) : 0;
 		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_submit_quiz_' . intval( $quiz_id ) ) ) {
+			global $mlwQuizMasterNext;
+			if ( isset( $mlwQuizMasterNext ) && isset( $mlwQuizMasterNext->log_manager ) ) {
+				$mlwQuizMasterNext->log_manager->add(
+					__( 'Nonce validation failed - Quiz ID:', 'quiz-master-next' ) . $quiz_id,
+					__( 'A quiz submission was rejected because the security nonce was invalid or expired.', 'quiz-master-next' ),
+					0,
+					'error',
+					array(
+						'error_type' => 'nonce_failed',
+					)
+				);
+			}
 			echo wp_json_encode(
 				array(
-					'display'       => apply_filters( 'qsm_nonce_failed_message', htmlspecialchars_decode( 'Nonce Validation failed!' ) ),
+					'display'       => apply_filters( 'qsm_nonce_failed_message', __( 'Sorry, your session has expired or the security check failed. Please refresh the page and try again.', 'quiz-master-next' ) ),
 					'redirect'      => false,
 					'result_status' => array(
 						'save_response' => false,
@@ -2567,7 +2579,14 @@ class QMNQuizManager {
 							__( 'Security Alert: Unauthorized attempt - Quiz ID:', 'quiz-master-next' ) . $qmn_array_for_variables['quiz_id'],
 							'<b>Target Result ID:</b> ' . $results_id . '<br/><b>User IP:</b> ' . $qmn_array_for_variables['user_ip'] . '<br/><b>Quiz data:</b> ' . $quiz_submitted_data,
 							0,
-							'warning'
+							'warning',
+							array(
+								'result_insert_data' => maybe_serialize( array(
+									'qmn_array_for_variables' => $qmn_array_for_variables,
+									'results_array'           => $results_array,
+								) ),
+								'error_type'         => 'unauthorized_attempt',
+							)
 						);
 
 						$result_display .= '<div class="qsm-result-page-warning">' . __( 'Sorry, your submission was not successful. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
@@ -2592,7 +2611,20 @@ class QMNQuizManager {
 						);
 						if ( false === $results_update ) {
 							$error_details = $wpdb->last_error;
-							$mlwQuizMasterNext->log_manager->add( 'Error 0001', $error_details . ' - ' . $wpdb->last_query, 0, 'error' );
+							$mlwQuizMasterNext->log_manager->add(
+								__( 'Error 0001 update failed - Quiz ID:', 'quiz-master-next' ) . $qmn_array_for_variables['quiz_id'],
+								$error_details . ' - ' . $wpdb->last_query,
+								0,
+								'error',
+								array(
+									'result_insert_data' => maybe_serialize( array(
+										'qmn_array_for_variables' => $qmn_array_for_variables,
+										'results_array'           => $results_array,
+									) ),
+									'error_type'         => 'db_update_failed',
+								)
+							);
+							$result_display .= '<div class="qsm-result-page-warning">' . __( 'Sorry, there was a problem saving your updated responses. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
 						} else {
 							if ( 1 == get_option( 'qsm_migration_results_processed' ) && ! empty( $results_array ) && is_array( $results_array ) ) {
 								$results_id_int = intval( $results_id );
@@ -2647,6 +2679,7 @@ class QMNQuizManager {
 							'error',
 							array(
 								'result_insert_data' => maybe_serialize( $insert_data ),
+								'error_type'         => 'db_insert_failed',
 							)
 						);
 						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] . ' - ' . $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
@@ -2717,7 +2750,10 @@ class QMNQuizManager {
 					)->dispatch();
 				} else {
 					// Sends the emails.
-					QSM_Emails::send_emails( $transient_id );
+					$email_success = QSM_Emails::send_emails( $transient_id );
+					if ( false === $email_success ) {
+						$result_display .= '<div class="qsm-result-page-warning">' . __( 'Your quiz was submitted successfully, but we were unable to send the confirmation email. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
+					}
 				}
 			}
 			/**

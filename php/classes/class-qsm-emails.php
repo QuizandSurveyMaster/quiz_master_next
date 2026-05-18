@@ -35,6 +35,7 @@ class QSM_Emails {
 
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 		$email_send = 0;
+		$email_failed = false;
 		$default_email_content = '';
 		// Cycles through each possible email.
 		foreach ( $emails as $index => $email ) {
@@ -162,19 +163,27 @@ class QSM_Emails {
 				}
 				if ( $show ) {
 					do_action( 'qsm_send_result_email_before', $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
-					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
+					if ( ! self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index ) ) {
+						$email_failed = true;
+					}
 					++$email_send;
 				}
 			} else {
-				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index );
+				if ( ! self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'], $index ) ) {
+					$email_failed = true;
+				}
 				++$email_send;
 			}
 		}
 		if ( 0 == $email_send && ! empty( $default_email_content ) ) {
-			self::send_results_email( $response_data, $default_email_to, $default_email_subject, $default_email_content, $default_email_reply_to, $default_index );
+			if ( ! self::send_results_email( $response_data, $default_email_to, $default_email_subject, $default_email_content, $default_email_reply_to, $default_index ) ) {
+				$email_failed = true;
+			}
 		}
 		delete_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'] );
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
+
+		return ! $email_failed;
 	}
 
 	/**
@@ -282,10 +291,20 @@ class QSM_Emails {
 						set_transient( 'qsm_already_sent_emails_' . $response_data['quiz_id'], $already_sent_emails, 3600 );
 					}
 				} else {
-					$mlwQuizMasterNext->log_manager->add( 'There has been an error in wp_mail. Please check SMTP details mail not sending. Error Code: 0001', 0, 'error' );
+					$mlwQuizMasterNext->log_manager->add(
+						'There has been an error in wp_mail. Please check SMTP details mail not sending. Error Code: 0001',
+						__( 'Failed to send email to: ', 'quiz-master-next' ) . $to_email,
+						0,
+						'error',
+						array(
+							'error_type' => 'email_failed',
+						)
+					);
+					$has_failure = true;
 				}
 			}
 		}
+		return ! isset( $has_failure );
 	}
 
 	/**

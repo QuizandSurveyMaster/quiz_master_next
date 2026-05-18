@@ -123,8 +123,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 						continue;
 					}
 
-					$data['qmn_array_for_variables']['post_id'] = $postID;
-					$this->table_data[]                         = $data['qmn_array_for_variables'];
+					$data['qmn_array_for_variables']['post_id']    = $postID;
+					$data['qmn_array_for_variables']['error_type'] = get_post_meta( $postID, '_qmn_log_error_type', true );
+					$this->table_data[]                            = $data['qmn_array_for_variables'];
 				}
 			}
 
@@ -169,6 +170,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				$columns['user_ip'] = __( 'IP Address', 'quiz-master-next' );
 			}
 
+			$columns['error_type']        = __( 'Error Type', 'quiz-master-next' );
 			$columns['submission_action'] = __( 'Action', 'quiz-master-next' );
 
 			return $columns;
@@ -269,6 +271,17 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 					break;
 				case 'user_ip':
 					$column_value = $submission['user_ip'];
+					break;
+				case 'error_type':
+					$error_type   = ! empty( $submission['error_type'] ) ? $submission['error_type'] : '';
+					$error_labels = array(
+						'db_insert_failed'     => __( 'Database Insert Failed', 'quiz-master-next' ),
+						'db_update_failed'     => __( 'Database Update Failed', 'quiz-master-next' ),
+						'unauthorized_attempt' => __( 'Unauthorized Attempt', 'quiz-master-next' ),
+						'nonce_failed'         => __( 'Security Check Failed', 'quiz-master-next' ),
+						'email_failed'         => __( 'Email Delivery Failed', 'quiz-master-next' ),
+					);
+					$column_value = isset( $error_labels[ $error_type ] ) ? $error_labels[ $error_type ] : __( 'Unknown', 'quiz-master-next' );
 					break;
 				case 'submission_action':
 					$column_value = '<span id="action-link-' . esc_attr( $submission['post_id'] ) . '">';
