@@ -379,7 +379,7 @@ class QMNQuizManager {
 
 				$result_id      = $result['result_id'];
 				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
-				$return_display = str_replace( '%FB_RESULT_ID%', $result_unique_id, $return_display );
+				$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 			} else {
 				$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
 			}
@@ -2738,7 +2738,7 @@ class QMNQuizManager {
 			$result_display .= apply_filters( 'qmn_captcha_varification_failed_msg', __( 'Captcha verification failed.', 'quiz-master-next' ), $qmn_quiz_options, $qmn_array_for_variables );
 		}
 
-		$result_display = str_replace( '%FB_RESULT_ID%', $unique_id, $result_display );
+		$result_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $unique_id ) ), $result_display );
 
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
