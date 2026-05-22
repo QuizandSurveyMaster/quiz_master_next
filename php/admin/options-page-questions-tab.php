@@ -96,6 +96,7 @@ function qsm_options_questions_tab_content() {
 		'qsm_user_ve'           => get_user_meta( $user_id, 'rich_editing', true ),
 		'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),
 		'unlinkNonce'           => wp_create_nonce( 'ajax-nonce-unlink-question' ),
+		'loadAllQuestionsNonce' => wp_create_nonce( 'qsm_load_all_quiz_questions' ),
 		'categories'            => $question_categories,
 		'form_type'             => $form_type,
 		'quiz_system'           => $quiz_system,
@@ -1118,7 +1119,14 @@ add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_
  */
 function qsm_load_all_quiz_questions_ajax() {
 	global $wpdb;
-	global $mlwQuizMasterNext;
+
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_load_all_quiz_questions' ) ) {
+		wp_send_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
+	}
+
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		wp_send_json_error( __( 'You do not have permission to view questions.', 'quiz-master-next' ) );
+	}
 
 	// Loads questions.
 	$questions = $wpdb->get_results( "SELECT question_id, question_name FROM {$wpdb->prefix}mlw_questions WHERE deleted = '0' ORDER BY question_id DESC" );
@@ -1133,8 +1141,7 @@ function qsm_load_all_quiz_questions_ajax() {
 	}
 
 	// Echos JSON and dies.
-	echo wp_json_encode( $question_json );
-	wp_die();
+	wp_send_json( $question_json );
 }
 
 add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
