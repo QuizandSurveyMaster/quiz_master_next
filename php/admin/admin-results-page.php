@@ -560,13 +560,15 @@ function qsm_results_overview_tab_content() {
 				$co = ! empty( $quiz_infos ) ? count( $quiz_infos ) : 0;
 				if ( $co > 0 ) {
 					for ( $x = 0; $x < $co; $x++ ) {
+						$qsm_row_class = apply_filters( 'qsm_admin_results_table_row_class', '', $quiz_infos[ $x ] );
 						?>
-						<tr>
+						<tr<?php echo '' !== $qsm_row_class ? ' class="' . esc_attr( $qsm_row_class ) . '"' : ''; ?>>
 							<td style="text-align: center;">
 								<input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" />
 							</td>
 							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class', '', $quiz_infos[ $x ]->result_id ); ?>">
 								<strong><a class="row-title" href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></a></strong>
+								<?php do_action( 'qsm_admin_results_quiz_name_after', $quiz_infos[ $x ] ); ?>
 								<div class="row-actions">
 									<span class="qsm-row-actions-links" style="color: green;">
 									<?php do_action('qsm_admin_quiz_results_page_rowactions_before', $quiz_infos[ $x ]);

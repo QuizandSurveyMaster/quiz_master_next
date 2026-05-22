@@ -1731,7 +1731,8 @@ class QSM_Install {
 		global $wpdb, $mlwQuizMasterNext;
 		$results_table_name = $wpdb->prefix . 'mlw_results';
 		$data = $mlwQuizMasterNext->version;
-		if ( ! get_option( 'qmn_original_version' ) ) {
+		$is_first_install = ! get_option( 'qmn_original_version' );
+		if ( $is_first_install ) {
 			add_option( 'qmn_original_version', $data );
 		}
 		if ( get_option( 'mlw_quiz_master_version' ) != $data ) {
@@ -2278,6 +2279,21 @@ class QSM_Install {
 		}
 		if ( ! get_option( 'mlw_advert_shows' ) ) {
 			add_option( 'mlw_advert_shows', 'true' );
+		}
+
+		/**
+		 * Always redirect option last for new installation
+		 */
+		if (
+			$is_first_install
+			&& ! isset( $_GET['activate-multi'] )
+			&& ! wp_doing_ajax()
+			&& ! is_network_admin()
+			&& current_user_can( 'manage_options' )
+			&& ! headers_sent()
+		) {
+			wp_safe_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
+			exit;
 		}
 	}
 
