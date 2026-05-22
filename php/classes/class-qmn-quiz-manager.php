@@ -246,6 +246,10 @@ class QMNQuizManager {
 	 * ajax login function
 	 */
 	public function qsm_ajax_login() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_ajax_login_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		}
+
 		$username = ! empty( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
 		$password = ! empty( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
 
@@ -254,7 +258,7 @@ class QMNQuizManager {
 		if ( ! $user ) {
 			$user = get_user_by( 'email', $username );
 			if ( ! $user ) {
-				wp_send_json_error( array( 'message' => __( 'User not found! Please try again.', 'quiz-master-next' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
 			}
 		}
 
@@ -3552,6 +3556,7 @@ function qmn_require_login_check( $display, $qmn_quiz_options, $qmn_array_for_va
 			'qmn_common_ajax_object',
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'qsm_ajax_login_nonce' ),
 			)
 		);
 	}
