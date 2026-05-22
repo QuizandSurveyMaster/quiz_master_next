@@ -1054,6 +1054,13 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		// Assignment in condition is intentional for reading CSV file line by line.
 		while ( ( $row = fgetcsv( $handle ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Iteratively reading CSV rows.
 		$line++;
+		$row = array_map(
+			function ( $cell ) {
+				$cell = mb_convert_encoding( $cell, 'UTF-8', 'UTF-8, Windows-1252, ISO-8859-1' );
+				return wp_check_invalid_utf8( $cell, true );
+			},
+			$row
+		);
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
 			continue;
 		}
