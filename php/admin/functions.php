@@ -2105,3 +2105,60 @@ function qsm_show_legacy_fallback_notice() {
     <?php
 }
 add_action( 'admin_notices', 'qsm_show_legacy_fallback_notice' );
+
+
+
+/**
+ * Fallback function for QSM Demos
+ * 
+ * @since 2.0.2
+ * @return void
+ */
+function qsm_render_remote_quizzes_fallback() {
+	$required_version = '2.0.2';
+	$current_version  = '0.0.0';
+
+	// Check if plugin exists
+	if ( class_exists( 'QSM_Installer' ) ) {
+		$installer_data = get_plugin_data( WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php' );
+		$current_version = isset( $installer_data['Version'] ) ? $installer_data['Version'] : '0.0.0';
+	}
+
+	// Show notice if NOT installed OR version is lower
+	if ( ! class_exists( 'QSM_Installer' ) || version_compare( $current_version, $required_version, '<' ) ) {
+		?>
+		<div class="wrap">
+			<h1><?php _e( 'Explore Interactive Demos', 'quiz-master-next' ); ?></h1>
+			<hr class="wp-header-end">
+			
+			<div class="notice notice-warning">
+				<h3><?php _e( 'QSM Installer Required / Update Needed', 'quiz-master-next' ); ?></h3>
+				<p>
+					<?php
+					if ( ! class_exists( 'QSM_Installer' ) ) {
+						_e( 'QSM Installer plugin is not installed. Please install it to access QSM Demos.', 'quiz-master-next' );
+					} else {
+						printf(
+							__( 'Your QSM Installer version (%s) is outdated. Please update to version %s or higher.', 'quiz-master-next' ),
+							'<strong>' . esc_html( $current_version ) . '</strong>',
+							'<strong>' . esc_html( $required_version ) . '</strong>'
+						);
+					}
+					?>
+				</p>
+				<p>
+					<a href="https://quizandsurveymaster.com/downloads/qsm-installer/" target="_blank" class="button button-primary">
+						<span class="dashicons dashicons-update" style="vertical-align: middle;"></span>
+						<?php _e( 'Install / Update QSM Installer', 'quiz-master-next' ); ?>
+					</a>
+				</p>
+			</div>
+		</div>
+		<?php
+		return; // Exit early when showing notice
+	}
+
+	// Only fire action hook when installer is installed AND version is sufficient
+	do_action( 'qsm_render_remote_quiz_demos_after' );
+
+}
