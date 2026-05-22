@@ -980,6 +980,7 @@ class QSM_Install {
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
+				'%QSM_START_QUIZ_DATE%',
 				'%QSM_END_QUIZ_DATE%',
 				'%QUIZ_NAME%',
 				'%QUIZ_LINK%',
@@ -1056,6 +1057,7 @@ class QSM_Install {
 			'type'      => 'editor',
 			'default'   => 0,
 			'variables' => array(
+				'%QSM_START_QUIZ_DATE%',
 				'%QSM_END_QUIZ_DATE%',
 				'%QUIZ_NAME%',
 				'%QUIZ_LINK%',
