@@ -1056,7 +1056,14 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$line++;
 		$row = array_map(
 			function ( $cell ) {
-				$cell = mb_convert_encoding( $cell, 'UTF-8', 'UTF-8, Windows-1252, ISO-8859-1' );
+				if ( ! preg_match( '//u', $cell ) ) {
+					$converted = function_exists( 'mb_convert_encoding' )
+						? mb_convert_encoding( $cell, 'UTF-8', 'Windows-1252, ISO-8859-1' )
+						: ( function_exists( 'iconv' ) ? iconv( 'Windows-1252', 'UTF-8//IGNORE', $cell ) : $cell );
+					if ( false !== $converted ) {
+						$cell = $converted;
+					}
+				}
 				return wp_check_invalid_utf8( $cell, true );
 			},
 			$row
