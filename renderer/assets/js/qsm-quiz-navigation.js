@@ -177,6 +177,8 @@ var QSMPagination;
                 // Bind events
                 this.bindEvents(quizId);
 
+                this.bindHintToggle(quizObj.quizContainer);
+
                 // Mark as initialized
                 quizObj.runtime.initialized = true;
 
@@ -214,6 +216,56 @@ var QSMPagination;
                 this.updateNavigationButtons(quizId);
                 this.updatePageCounter(quizId);
                 jQuery(document).trigger('qsm_init_pagination_after', [quizId, qmn_quiz_data]);
+            },
+
+            closeHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $wrapper.removeClass('is-open');
+                $toggle.attr('aria-expanded', 'false');
+                $panel.attr('aria-hidden', 'true');
+                $label.text($label.data('show') || $label.text());
+                window.setTimeout(function() {
+                    if (!$wrapper.hasClass('is-open')) {
+                        $panel.attr('hidden', 'hidden');
+                    }
+                }, 260);
+            },
+
+            openHintWrapper: function($wrapper) {
+                const $toggle = $wrapper.find('.qsm-hint-toggle');
+                const $panel  = $wrapper.find('.qsm-hint-panel').first();
+                const $label  = $toggle.find('.qsm-hint-label');
+                $panel.removeAttr('hidden');
+                $panel[0]?.getBoundingClientRect();
+                $wrapper.addClass('is-open');
+                $toggle.attr('aria-expanded', 'true');
+                $panel.attr('aria-hidden', 'false');
+                $label.text($label.data('hide') || $label.text());
+            },
+
+            bindHintToggle: function($quizContainer) {
+                if (!$quizContainer?.length) {
+                    return;
+                }
+                $quizContainer.off('click.qsmHint')
+                    .on('click.qsmHint', '.qsm-hint-toggle', (e) => {
+                        e.preventDefault();
+                        const $toggle  = $(e.currentTarget);
+                        const $wrapper = $toggle.closest('.qsm-hint-wrapper');
+                        const isOpen   = $wrapper.hasClass('is-open');
+
+                        $quizContainer.find('.qsm-hint-wrapper.is-open').not($wrapper).each((_, el) => {
+                            this.closeHintWrapper($(el));
+                        });
+
+                        if (isOpen) {
+                            this.closeHintWrapper($wrapper);
+                        } else {
+                            this.openHintWrapper($wrapper);
+                        }
+                    });
             },
 
             /**
@@ -889,7 +941,7 @@ var QSMPagination;
                         if (response.success && response.data.html) {
                             // Remove placeholder
                             $page.find('.qsm-lazy-load-placeholder').remove();
-                            
+
                             // Insert questions HTML
                             $page.find('.pages_count').before(response.data.html);
 
@@ -897,13 +949,19 @@ var QSMPagination;
                             $page.removeClass('qsm-lazy-load-page qsm-loading');
                             $page.addClass('qsm-loaded-page');
                             $page.attr('data-lazy-load', '0');
-                            
+
+                            // Persist answer randomization order from the AJAX response
+                            // so the server can render results in the order the user saw.
+                            if (response.data.quiz_answer_random_ids) {
+                                self.appendLazyAnswerRandomIds(quizId, response.data.quiz_answer_random_ids);
+                            }
+
                             // Re-bind events for newly loaded questions
                             self.bindAnswerEvents(quizId);
-                            
+
                             // Initialize any new file upload fields
                             self.bindFileUploadEvents(quizId);
-                            
+
                             // Trigger after lazy load event
                             $(document).trigger('qsm_after_lazy_load', [quizId, pageNumber, $page, response.data]);
                         } else {
@@ -916,6 +974,39 @@ var QSMPagination;
                 });
             },
             
+            /**
+             * Inject hidden inputs that carry the shuffled answer key order for
+             * lazy-loaded questions, so result rendering can match the order the
+             * user actually saw.
+             */
+            appendLazyAnswerRandomIds: function(quizId, randomIdsMap) {
+                if (!randomIdsMap || typeof randomIdsMap !== 'object') {
+                    return;
+                }
+                let $form = $('#quizForm' + quizId);
+                if (!$form.length) {
+                    $form = $('form.qmn_quiz_container[data-quiz-id="' + quizId + '"]');
+                }
+                if (!$form.length) {
+                    return;
+                }
+                Object.keys(randomIdsMap).forEach(function(questionId) {
+                    let keys = randomIdsMap[questionId];
+                    if (!Array.isArray(keys)) {
+                        return;
+                    }
+                    $form.find('input[data-qsm-lazy-answer-qid="' + questionId + '"]').remove();
+                    keys.forEach(function(key) {
+                        $('<input>', {
+                            type: 'hidden',
+                            name: 'qsm_lazy_answer_random_ids[' + questionId + '][]',
+                            value: key,
+                            'data-qsm-lazy-answer-qid': questionId
+                        }).appendTo($form);
+                    });
+                });
+            },
+
             /**
              * Handle lazy load errors
              */

@@ -98,10 +98,21 @@ class QSM_Ajax_Handler {
 				$question_start_number
 			);
 
+			global $quiz_answer_random_ids;
+			$response_random_ids = array();
+			if ( in_array( 'answers', $randomness_order, true ) && ! empty( $quiz_answer_random_ids ) ) {
+				foreach ( $question_ids as $qid ) {
+					if ( isset( $quiz_answer_random_ids[ $qid ] ) ) {
+						$response_random_ids[ $qid ] = array_map( 'intval', (array) $quiz_answer_random_ids[ $qid ] );
+					}
+				}
+			}
+
 			wp_send_json_success( array(
-				'html'           => $html,
-				'page_number'    => $page_number,
-				'question_count' => count( $question_ids ),
+				'html'                    => $html,
+				'page_number'             => $page_number,
+				'question_count'          => count( $question_ids ),
+				'quiz_answer_random_ids'  => $response_random_ids,
 			) );
 
 		} catch ( Exception $e ) {
@@ -147,7 +158,11 @@ class QSM_Ajax_Handler {
 		
 		// Get quiz settings
 		$quiz_settings = maybe_unserialize( $quiz_options->quiz_settings );
-		$quiz_options_settings = (object) maybe_unserialize( $quiz_settings['quiz_options'] ?? '[]' );
+		$quiz_options_arr = maybe_unserialize( $quiz_settings['quiz_options'] ?? '[]' );
+		$quiz_text_arr    = maybe_unserialize( $quiz_settings['quiz_text'] ?? '[]' );
+		$quiz_options_arr = is_array( $quiz_options_arr ) ? $quiz_options_arr : array();
+		$quiz_text_arr    = is_array( $quiz_text_arr ) ? $quiz_text_arr : array();
+		$quiz_options_settings = (object) array_merge( $quiz_options_arr, $quiz_text_arr );
 
 		// Create renderer instance for template methods (pass class_object to templates)
 		$quiz_data = array( 'quiz_id' => $quiz_id );
@@ -221,6 +236,11 @@ class QSM_Ajax_Handler {
 					}
 				} else {
 					echo $question_template; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+
+				if ( ! empty( $question['hints'] ) ) {
+					$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+					QSM_New_Renderer::renderHintToggle( $question_id, $hint_data );
 				}
 
 				do_action( 'qsm_after_question', $question );

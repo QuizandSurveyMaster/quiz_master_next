@@ -872,7 +872,7 @@ class QSM_New_Pagination_Renderer {
 	public function render_quiz_timer() {
 		ob_start();
 		// Only render timer if timer limit is set
-		$timer_limit = isset( $this->quiz_options->timer_limit ) ? intval( $this->quiz_options->timer_limit ) : 0;
+		$timer_limit = isset( $this->quiz_options->timer_limit ) ? floatval( $this->quiz_options->timer_limit ) : 0;
 		if ( $timer_limit > 0 ) {
 		?>
 		<div class="qsm-timer qsm-quiz-timer-<?php echo esc_attr( $this->options->quiz_id ); ?>">
@@ -1069,7 +1069,13 @@ class QSM_New_Pagination_Renderer {
 						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $comment_placeholder ); ?>" onclick="qmnClearField(this)" ></textarea>
 						<?php
 					}
-					
+
+					if ( ! empty( $question['hints'] ) ) {
+						global $mlwQuizMasterNext;
+						$hint_data = wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) );
+						QSM_New_Renderer::renderHintToggle( $question_id, $hint_data );
+					}
+
 					do_action('qsm_after_question', $question);
 					?>
 					</div>
@@ -1547,8 +1553,8 @@ class QSM_New_Pagination_Renderer {
 			'progress_bar'                       => $this->quiz_options->progress_bar ?? 0,
 			'contact_info_location'              => $this->quiz_options->contact_info_location ?? 0,
 			'skip_validation_time_expire'        => $this->quiz_options->skip_validation_time_expire ?? 0,
-			'timer_limit'                        => intval( $this->options->timer_limit ?? 0 ),
-			'timer_limit_val'                    => intval( $this->options->timer_limit ?? 0 ),
+			'timer_limit'                        => floatval( $this->options->timer_limit ?? 0 ),
+			'timer_limit_val'                    => floatval( $this->options->timer_limit ?? 0 ),
 			'disable_scroll_next_previous_click' => $this->quiz_options->disable_scroll_next_previous_click ?? 0,
 			'disable_scroll_on_result'           => $this->quiz_options->disable_scroll_on_result ?? 0,
 			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
