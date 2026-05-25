@@ -1057,9 +1057,13 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		$row = array_map(
 			function ( $cell ) {
 				if ( ! preg_match( '//u', $cell ) ) {
-					$converted = function_exists( 'mb_convert_encoding' )
-						? mb_convert_encoding( $cell, 'UTF-8', 'Windows-1252, ISO-8859-1' )
-						: ( function_exists( 'iconv' ) ? iconv( 'Windows-1252', 'UTF-8//IGNORE', $cell ) : $cell );
+					if ( function_exists( 'mb_convert_encoding' ) ) {
+						$converted = mb_convert_encoding( $cell, 'UTF-8', 'Windows-1252, ISO-8859-1' );
+					} elseif ( function_exists( 'iconv' ) ) {
+						$converted = iconv( 'Windows-1252', 'UTF-8//IGNORE', $cell );
+					} else {
+						$converted = $cell;
+					}
 					if ( false !== $converted ) {
 						$cell = $converted;
 					}
