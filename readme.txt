@@ -225,7 +225,7 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
-= 11.1.3 ( May 22, 2026 ) =
+= 11.1.3 ( May 25, 2026 ) =
 * Bug: Resolved result display issues with random questions and answers
 * Patch: Fixed a Cross-Site Scripting (XSS) vulnerability in rich answer type questions
 * Enhancement: Improved the question hints UI in the new quiz renderer
