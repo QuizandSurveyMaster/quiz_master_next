@@ -809,8 +809,6 @@ function qsm_text_template_variable_list() {
 			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
 			'%QUESTIONS_ANSWERS_EMAIL%'   => __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' ),
-			'%QSM_START_QUIZ_DATE%'       => __( 'The scheduled start date/time of the quiz.', 'quiz-master-next' ),
-			'%QSM_END_QUIZ_DATE%'         => __( 'The scheduled end date/time of the quiz.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list   = apply_filters( 'qsm_text_variable_list', $variable_list );

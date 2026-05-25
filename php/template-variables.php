@@ -35,8 +35,6 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_nam
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_business', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_phone', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_email', 10, 2 );
-add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_admin_email', 10, 2 );
-add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question_answers', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer', 10, 2 );
@@ -55,7 +53,6 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_ful
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result', 10, 3 );
 add_filter( 'qmn_end_results', 'qsm_variable_poll_result', 10, 3 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name', 10, 2 );
-add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_links', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user', 10, 2 );
@@ -583,70 +580,6 @@ function mlw_qmn_variable_user_phone( $content, $mlw_quiz_array ) {
 function mlw_qmn_variable_user_email( $content, $mlw_quiz_array ) {
 	$user_email = isset( $mlw_quiz_array['user_email'] ) ? esc_html( $mlw_quiz_array['user_email'] ) : '';
 	$content = str_replace( '%USER_EMAIL%', $user_email, $content );
-	return $content;
-}
-
-
-/**
- * Replaces %QSM_END_QUIZ_DATE% with the quiz's scheduled end date/time,
- * formatted using the site's WordPress date and time format settings.
- */
-function qsm_variable_start_end_quiz_time( $content, $mlw_quiz_array ) {
-	$has_end   = strpos( $content, '%QSM_END_QUIZ_DATE%' ) !== false;
-	$has_start = strpos( $content, '%QSM_START_QUIZ_DATE%' ) !== false;
-
-	if ( ! $has_end && ! $has_start ) {
-		return $content;
-	}
-
-	global $mlwQuizMasterNext;
-
-	if ( $has_end ) {
-		$end_time_raw = '';
-		if ( isset( $mlw_quiz_array['scheduled_time_end'] ) && '' !== $mlw_quiz_array['scheduled_time_end'] ) {
-			$end_time_raw = $mlw_quiz_array['scheduled_time_end'];
-		} else {
-			$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options', array() );
-			if ( isset( $quiz_options['scheduled_time_end'] ) ) {
-				$end_time_raw = $quiz_options['scheduled_time_end'];
-			}
-		}
-		$end_formatted = '';
-		if ( '' !== $end_time_raw ) {
-			$timestamp = strtotime( $end_time_raw );
-			if ( $timestamp ) {
-				$end_formatted = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp );
-			}
-		}
-		$content = str_replace( '%QSM_END_QUIZ_DATE%', $end_formatted, $content );
-	}
-
-	if ( $has_start ) {
-		$start_time_raw = '';
-		if ( isset( $mlw_quiz_array['scheduled_time_start'] ) && '' !== $mlw_quiz_array['scheduled_time_start'] ) {
-			$start_time_raw = $mlw_quiz_array['scheduled_time_start'];
-		} else {
-			$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options', array() );
-			if ( isset( $quiz_options['scheduled_time_start'] ) ) {
-				$start_time_raw = $quiz_options['scheduled_time_start'];
-			}
-		}
-		$start_formatted = '';
-		if ( '' !== $start_time_raw ) {
-			$timestamp = strtotime( $start_time_raw );
-			if ( $timestamp ) {
-				$start_formatted = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp );
-			}
-		}
-		$content = str_replace( '%QSM_START_QUIZ_DATE%', $start_formatted, $content );
-	}
-
-	return $content;
-}
-
-function qsm_variable_admin_email( $content, $mlw_quiz_array ) {
-	$admin_email = esc_html( get_option( 'admin_email', '' ) );
-	$content     = str_replace( '%QSM_ADMIN_EMAIL%', $admin_email, $content );
 	return $content;
 }
 
