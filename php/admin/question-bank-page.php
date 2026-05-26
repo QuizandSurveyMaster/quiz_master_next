@@ -316,6 +316,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 		'single_question_nonce' => wp_create_nonce( 'delete_question_from_database' ),
 		'rest_user_nonce'       => $quiz_nonces[0],
 		'default_answers'       => is_array( $default_answers ) ? $default_answers : array(),
+		'can_manage_categories' => current_user_can( 'manage_qsm_quiz_categories' ) ? 'true' : 'false',
 	);
 
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $qsm_question_settings );
