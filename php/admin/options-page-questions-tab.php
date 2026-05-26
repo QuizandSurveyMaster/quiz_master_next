@@ -1496,6 +1496,9 @@ function qsm_save_new_category() {
 	$parent   = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
 	$parent   = ( -1 == $parent ) ? 0 : $parent;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
+		if ( ! current_user_can( 'manage_qsm_quiz_categories' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You are not allowed to manage quiz categories.', 'quiz-master-next' ) ) );
+		}
 		$term_array = wp_insert_term(
 			$category,
 			'qsm_category',
