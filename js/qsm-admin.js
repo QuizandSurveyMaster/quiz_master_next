@@ -5005,7 +5005,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $('#new-category-name').val('');
                         $('#qsm-parent-category').val(-1);
                         // Re-enable button and restore label on close.
-                        var $btn = $('#save-multi-category-button');
+                        let $btn = $('#save-multi-category-button');
                         $btn.prop('disabled', false).text($btn.data('original-text') || 'Save');
                     }
                 });
@@ -5023,7 +5023,7 @@ var QSM_Quiz_Broadcast_Channel;
                     return false;
                 }
 
-                var $btn = $(this);
+                let $btn = $(this);
 
                 // Store original label once.
                 if (!$btn.data('original-text')) {
@@ -5034,7 +5034,7 @@ var QSM_Quiz_Broadcast_Channel;
                 new_category = $('#new-category-name').val().trim();
                 parent_category = $('#qsm-parent-category option:selected').val();
 
-                var $info = $('#modal-9-content .info');
+                let $info = $('#modal-9-content .info');
 
                 if (new_category == '') {
                     $info.html(qsm_admin_messages.category_not_empty)
@@ -5072,7 +5072,7 @@ var QSM_Quiz_Broadcast_Channel;
                                 $btn.prop('disabled', false).text($btn.data('original-text'));
 
                                 // Handle wp_send_json_error() (permission denied).
-                                var parsed;
+                                let parsed;
                                 try { parsed = JSON.parse(response); } catch(ex) { parsed = response; }
 
                                 if (parsed && parsed.success === false) {
@@ -5082,7 +5082,7 @@ var QSM_Quiz_Broadcast_Channel;
                                     return;
                                 }
 
-                                var result = parsed;
+                                let result = parsed;
                                 if (result && result.term_id > 0) {
                                     // Update dropdowns and checklists.
                                     $('#qsm-parent-category').append('<option class="level-0" value="' + result.term_id + '">' + new_category + '</option>');
