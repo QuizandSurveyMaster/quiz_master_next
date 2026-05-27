@@ -10,6 +10,7 @@
 	--qsm-warning-color: #991B1B;
 	--qsm-warning-color-light: #FFF4D2;
 	--qsm-black-color: #1E1E1E;
+	--qsm-common-popup-border-color:#d4d4d4;
 
 }
 .toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content div.updated, .toplevel_page_qsm_dashboard #wpbody-content div.updated, .qsm_page_qsm_create_quiz_page .notice-error, .toplevel_page_qsm_dashboard .notice-error {
@@ -129,9 +130,6 @@
     bottom: 10px;
     color: #fff;
     right: calc(100% - 370px);
-    font-weight: 500;
-    font-size: 12px;
-    padding: 1px 10px;
 }
 
 /* Popular Quizzes Table over */
@@ -241,9 +239,13 @@ a.button.button-primary.qsm-dashboard-section-create-quiz, a.button.button-prima
     grid-template-columns: 1fr 1fr;
     max-width: min-content;
     align-items: center;
-    padding: 5px 20px;
     font-size: 15px;
     font-weight: 500;
+}
+
+.qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button {
+    line-height: 2.15384615;
+    min-height: 30px;
 }
 
 .qsm-dashboard-help-center-grid .qsm-dashboard-help-arrow {
@@ -631,6 +633,9 @@ span.qsm-quiz-name {
 .qsm-help-page .handle-order-higher, .qsm-help-page .handle-order-lower,
 .qsm-tools-page .handle-order-higher, .qsm-tools-page .handle-order-lower {
 	display: none;
+}
+.qsm-tools-page-wrapper #prev_page, .qsm-tools-page-wrapper #next_page {
+	margin: 3px 0;
 }
 @media screen and (min-width: 1200px) {
 	.qsm-quiz-page-wrapper-with-ads {
@@ -1593,6 +1598,9 @@ input#sc-shortcode-model-text, input#sc-shortcode-model-text-link,
 input#sc-embed-iframe-text{
 	height: 30px;
 }
+#modal-3 .qsm-popup__container .qsm-popup__footer {
+	border-top: 1px solid var(--qsm-common-popup-border-color);
+}
 div#modal-6 label {
 	display: block;
 	font-size: 14px;
@@ -1601,8 +1609,7 @@ div#modal-6 label {
 	color: #999;
 	font-style: italic;
 }
-#modal-6 .qsm-popup__content {
-	padding: 20px 0 0 20px;
+#modal-6 .qsm-popup__content { 
 	box-shadow: inset 0 0 10px 0px #ddd;
 }
 
@@ -1610,8 +1617,19 @@ div#modal-6 label {
 	max-width: 600px;
 }
 
-#modal-6 .button>span.dashicons {
-	line-height: 29px;
+#modal-6 .qsm-shortcode-popup-row {
+	display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#modal-6 .qsm-shortcode-popup-row:last-child {
+	margin-bottom: 0;
+}
+
+#modal-6 .qsm-shortcode-popup-row lable{
+	min-width: 120px;
 }
 .qsm-list-shortcode-view span.dashicons {
 	font-size: 24px;
@@ -2058,7 +2076,12 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	width: auto;
 	height: 25px;
 }
-.nav-tab-wrapper .qsm-import-export-btn{float: right;}
+.nav-tab-wrapper .qsm-import-export-btn{
+	float: right;
+	min-height: 32px;
+    line-height: 2.30769231;
+    padding: 0 12px;
+}
 .qsm-option-tab-dropdown {
 	position: relative;
 	display: inline-block;
@@ -2216,12 +2239,6 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	margin: 0;
 	line-height: 30px;
 }
-.result-tab-content a.button>span.dashicons {
-	line-height: 29px;
-	font-size: 18px;
-	margin-left: -4px;
-	margin-right: -4px;
-}
 .result-page-wrapper .tablenav-pages {
 	margin-left: 10px;
 }
@@ -2285,7 +2302,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	box-shadow: none;
 }
 .qsm-standard-popup .qsm-popup__header {
-	border-bottom: 1px solid #d4d4d4;
+	border-bottom: 1px solid var(--qsm-common-popup-border-color);
 }
 .qsm-standard-popup .qsm-popup__content a {
 	outline: none;
@@ -2304,6 +2321,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	border-top: 1px solid var(--qsm-common-popup-border-color);
 }
 #duplicate-quiz-form, #delete-quiz-form {
 	margin: 10px 0;
@@ -2778,6 +2796,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	color: #92400e;
 	font-size: 15px;
 	align-items: center;
+	gap: 5px;
 }
 .qsm-upgrade-box .qsm-popup-upgrade-warning img {
 	width: auto;
@@ -2823,18 +2842,14 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	text-align: center;
 	text-decoration-skip-ink: none;
 }
-#modal-6 .sc-shortcode-input {
-	padding: 5px;
+#modal-6 .sc-shortcode-input { 
 	width: 400px;
 	max-width: 400px!important;
 }
-.qsm-popup-nonce-validation {
-	padding: 12px;
-	width: 90%;
-}
+
 .qsm-popup-nonce-validation .qsm-popup-upgrade-warning {
 	font-size: 12px;
-	padding: 5px;
+	padding: 10px;
 }
 .qsm-popup-nonce-validation .qsm-popup-upgrade-warning img {
 	width: auto;
@@ -3472,6 +3487,9 @@ input#duplicate_questions {
 	border-radius: 10px;
 	padding: 0 10px;
 }
+.market-theme-url a.qsm-theme-buynow-btn, .market-theme-url a.qsm-theme-buynow-btn:hover {
+	background-color: #FFFFFF;
+}
 #theme-browser .market-theme:hover .market-theme-url {
 	opacity: 1;
 }
@@ -3798,6 +3816,7 @@ input#duplicate_questions {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	border-top: 1px solid var(--qsm-common-popup-border-color);
 }
 #move-question-error {
 	color: red;
@@ -3880,7 +3899,7 @@ input#duplicate_questions {
 }
 .custom-addpn-news-ads .qsm-bundles-bottom a span {
 	position: relative;
-    top: 5px;
+    top: 2px;
 }
 .qsm-primary-acnhor .custom-addpn-news-ads .qsm-bundles-title {
 	display: flex;
@@ -4826,9 +4845,6 @@ body .qsm_tab_content .qsm-small-input-field input[type="text"] {
 .qsm-image-field {
     display: flex;
 }
-.qsm-image-field span {
-    padding-top: 4px;
-}
 fieldset#enable_quick_correct_answer_info {
     margin-top: 8px;
 }
@@ -5183,6 +5199,7 @@ ul.qsm-wp-contributor.wp-people-group {
 	display: flex;
     justify-content: space-between;
     align-items: center;
+	border-top: 1px solid var(--qsm-common-popup-border-color);
 }
 
 #qsm-delete-result-page-popup .qsm-delete-result-popup-btn, #qsm-delete-questions-tools-page-popup .qsm-delete-questions-tools-page-btn, #qsm-delete-results-tools-page-popup .qsm-delete-results-tools-page-btn {
@@ -5384,6 +5401,17 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	margin-bottom: 16px;
 }
 
+button#insert-media-button {
+    font-size: 11px;
+    padding: 0 5px;
+    min-height: 26px;
+    margin: 0;
+    border-radius: 1px;
+    line-height: 2.15384615;
+    top: 12px;
+    position: relative;
+}
+
 .qsm-bulk-upload-form .qsm-field {
 	flex: 1;
 	min-width: 220px;
@@ -5554,7 +5582,6 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 .qsm-bulk-question-import .dashicons-cloud-upload:before,
 .qsm-question-bank-create .dashicons-plus-alt2:before {
     position: relative;
-    top: 3px;
 }
 .qsm-bulk-question-import {
 	width: 150px;

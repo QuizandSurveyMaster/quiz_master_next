@@ -511,20 +511,22 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-								<div class="qsm-row" style="margin-bottom: 30px;">
+								<div class="qsm-row qsm-shortcode-popup-row" >
 									<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
 									<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
 									<button class="button button-primary" id="sc-copy-shortcode"><span class="dashicons dashicons-admin-page"></span></button>
 								</div>
-								<div class="qsm-row">
-									<lable style="padding-right:15px;"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
+								<div class="qsm-row qsm-shortcode-popup-row">
+									<lable ><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
 									<input type="text" value="" id="sc-shortcode-model-text-link" class="sc-shortcode-input">
 									<button class="button button-primary" id="sc-copy-shortcode-link"><span class="dashicons dashicons-admin-page"></span></button>
 								</div>
-								<div class="qsm-row" style="margin-top: 30px;">
-									<lable style="padding-right:20px;"><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></lable>
+								<div class="qsm-row qsm-shortcode-popup-row">
+									<lable><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></lable>
 									<input type="text" value="" id="sc-embed-iframe-text" class="sc-shortcode-input" readonly>
 									<button class="button button-primary" id="sc-copy-embed-iframe"><span class="dashicons dashicons-admin-page"></span></button>
+								</div>
+								<div class="qsm-row qsm-shortcode-popup-row">
 									<div class="qsm-popup-nonce-validation">
 										<div class="qsm-popup-upgrade-warning">
 											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">

@@ -73,14 +73,6 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary {
     width: 18px;
 }
 
-a.qsm-dashboard-journy-create-quiz.button-primary {
-    padding: 3px 30px;
-    font-size: 15px;
-    height: 38px;
-    border-radius: 3px;
-    box-shadow: 0px 4px 4px 0px #00000014;
-}
-
 .qsm-dashboard-header-pagination {
     display: flex;
     margin-bottom: 10px;
@@ -102,7 +94,7 @@ a.qsm-dashboard-journy-next-step-proceed .qsm-dashboard-help-image {
     width: 18px;
 }
 
-a.qsm-dashboard-journy-next-step-proceed.button-primary {
+a.qsm-dashboard-journy-next-step-proceed.button-primary, a.qsm-dashboard-journy-create-quiz.button-primary {
     font-size: 15px;
     height: 38px;
     width: 116px;
@@ -112,6 +104,11 @@ a.qsm-dashboard-journy-next-step-proceed.button-primary {
     justify-content: center;
     align-items: center;
 }
+
+a.qsm-dashboard-journy-create-quiz.button-primary {
+    width: auto;
+}
+
 
 a.qsm-dashboard-journy-previous-step .qsm-dashboard-help-image,
 a.qsm-dashboard-journy-previous-dashboard .qsm-dashboard-help-image {
@@ -501,6 +498,8 @@ input.qsm-dashboard-addon-toggle:checked+.qsm-dashboard-addon-slider .qsm-dashbo
 .qsm-quiz-steps-card .qsm-quiz-steps-content .qsm-quiz-steps-action-buttons>a {
     font-size: 11px;
     padding-top: 2px;
+    line-height: 2.15384615;
+    min-height: 30px;
 }
 .qsm-dashboard-quiz-form .input-group .buttonset label:not(.qsm-create-quiz-switch-label) {
     border: 1px solid #D1D5DB;
