@@ -777,6 +777,9 @@
 				.always(() => {
 					this.bulkState.isUploading = false;
 					this.$bulkSubmit.prop('disabled', false).removeClass('is-busy');
+					this.$bulkFileInput.val('');
+					this.bulkState.file = null;
+					this.$bulkFileLabel.text('');
 				});
 		},
 

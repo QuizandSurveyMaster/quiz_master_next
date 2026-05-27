@@ -59,10 +59,31 @@
 }
 #modal-9-content .info {
 	width: 100%;
-	margin: 5px 0 0;
-	color: red;
-	font-size: 15px;
+	margin: 8px 0 0;
+	font-size: 14px;
+	padding: 6px 10px;
+	border-radius: 3px;
+	display: none;
 }
+#modal-9-content .info:not(:empty) {
+	display: block;
+	box-sizing: border-box;
+}
+#modal-9-content .info--error {
+	color: #9b1c1c;
+	background-color: #fde8e8;
+	border: 1px solid #f5c6cb;
+}
+#modal-9-content .info--success {
+	color: #166534;
+	background-color: #dcfce7;
+	border: 1px solid #a7f3d0;
+}
+#save-multi-category-button:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
 .qsm-question-bank-list-wrapper.qsm_tab_content,
 .page {
 	width: 100%;
