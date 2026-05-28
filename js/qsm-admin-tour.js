@@ -771,11 +771,12 @@
 		$right[0].style.display = 'flex';
 		$right[0].style.alignItems = 'center';
 		$right[0].style.justifyContent = 'space-around';
+		$right[0].style.gap = '1px';
 		if ( applyWidth ) {
 			const buttonCount = $right.find('button').length;
 			if ( buttonCount > 0 ) {
-				$right[0].style.minWidth = '40%';
-				$right[0].style.width = (buttonCount < 3 ? '40%' : '60%');
+				$right[0].style.minWidth = '35%';
+				$right[0].style.width = (buttonCount < 3 ? '40%' : '65%');
 			}
 		}
 	}
