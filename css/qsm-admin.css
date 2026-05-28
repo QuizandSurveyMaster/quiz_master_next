@@ -1624,6 +1624,10 @@ div#modal-6 label {
     margin-bottom: 15px;
 }
 
+#modal-6  span.qsm-shortcode-popup-row-span.dashicons.dashicons-admin-page {
+	color: var(--qsm-white-color);
+}
+
 #modal-6 .qsm-shortcode-popup-row:last-child {
 	margin-bottom: 0;
 }
