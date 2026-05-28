@@ -1679,7 +1679,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
                         //Add stylesheet
                         editor.settings.extended_valid_elements = 'qsmvariabletag,qsmextrashortcodetag';
                         editor.settings.custom_elements = '~qsmvariabletag,~qsmextrashortcodetag';
-                        editor.settings.content_style = 'qsmvariabletag, qsmextrashortcodetag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover, qsmextrashortcodetag:hover{ border: 1px solid #2271B1; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
+                        editor.settings.content_style = 'qsmvariabletag, qsmextrashortcodetag { color: #1E1E1E; background: #DCEDFA; margin: 0 3px; padding: 5px 8px; font-family: Arial, Helvetica, sans-serif;font-size: 12px;border-top: 1px solid #fff; line-height: 2.3; } qsmvariabletag:hover, qsmextrashortcodetag:hover{ border: 1px solid #3858e9; background-color: #fff; box-shadow: 0px 4px 4px 0px #00000033; }';
                         //Auto complete commands
                         let commands = [];
                         for (let qsm_var_group in qsm_admin_messages.qsm_variables) {

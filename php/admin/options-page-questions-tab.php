@@ -648,12 +648,14 @@ function qsm_options_questions_tab_content() {
 													}
 													?>
 													<div class="clear clearfix"></div>
-													<div id="publishing-action">
-														<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
-														<button id="save-popup-button" class="button button-primary">Save Question</button>
-													</div>
-													<div id="delete-action" style="float: none;">
-														<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+													<div id="qsm-question-publishing-action">
+														<div id="delete-action" style="float: none;">
+															<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+														</div>
+														<div id="publishing-action">
+															<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
+															<button id="save-popup-button" class="button button-primary">Save Question</button>
+														</div>
 													</div>
 												</div>
 											</div>

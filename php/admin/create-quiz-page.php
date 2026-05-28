@@ -158,7 +158,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 								<p class="qsm-dashboard-addon-status"></p>
 							</div>
 							<div class="qsm-quiz-steps-action-buttons">
-								<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary" disabled="disabled"><?php echo esc_html__( 'Selected', 'quiz-master-next' ); ?></a>
+								<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary qsm-dashboard-demo-button" disabled="disabled"><?php echo esc_html__( 'Selected', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 					</div>
@@ -220,7 +220,7 @@ function qsm_dashboard_display_theme_section( $all_themes, $installer_option, $i
 											</a>
 										<?php
 										} elseif ( $is_activated || $is_installed ) { ?>
-											<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary">
+											<a href="javascript:void(0)" class="qsm-theme-action-btn button button-secondary qsm-dashboard-demo-button">
 												<?php if ( $is_activated ) {
 													echo esc_html__( 'Select', 'quiz-master-next' );
 												} elseif ( $is_installed ) {
