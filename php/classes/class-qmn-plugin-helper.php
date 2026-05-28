@@ -667,7 +667,7 @@ class QMNPluginHelper {
 			'total_user_tries_text'             => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
 			'require_log_in_text'               => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
 			'limit_total_entries_text'          => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
-			'scheduled_timeframe_text'          => '',
+			'scheduled_timeframe_text'          => __( 'This quiz has expired and is no longer available.', 'quiz-master-next' ),
 			'twitter_sharing_text'              => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
 			'facebook_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
 			'linkedin_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),

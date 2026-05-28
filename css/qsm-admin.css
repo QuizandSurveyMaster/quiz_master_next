@@ -329,6 +329,18 @@ span.qsm-quiz-name {
 #qsm-add-installer div.qsm-quiz-page-addon {
 	width: 100%;
 }
+
+.qsm-addon-page-list .qsm-installer-action button.button, .qsm-popular-themes .qsm-installer-action button.button {
+    align-items: normal;
+}
+.wp-core-ui .qsm-addon-page-list .qsm-installer-action .dashicons.dashicons-update.button {
+    align-items: normal;
+}
+.qsm-card-group .qsm-installer-container span.dashicons.dashicons-update {
+    line-height: 1 !important;
+    top: 8px;
+    position: relative;
+}
 .qsm-addon-browse-addons {
 	background: #fff;
 	padding: 0;
@@ -617,9 +629,6 @@ span.qsm-quiz-name {
 }
 .qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link a {
 	background: #fff;
-}
-.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link span.dashicons {
-	margin-top: 4px;
 }
 .qsm-active-addons {
 	width: 100%;
