@@ -424,7 +424,10 @@ function qsm_display_question_option( $key, $single_option ) {
 						?>
 					</ul>
 				</div>
-				<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
+				<?php if ( current_user_can( 'manage_qsm_quiz_categories' ) ) : ?>
+			<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
+			<?php endif; ?>
+
 			</div>
 			<?php
 			break;
@@ -1023,7 +1026,7 @@ function qsm_get_default_wizard_themes() {
 					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 					<div class="market-theme-url">
 						<a class="button button-primary" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_demo ); ?>"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>"><?php echo in_array( $theme_name, $pro_themes, true ) ? esc_html__( 'Buy Now', 'quiz-master-next' ) : esc_html__( 'Download', 'quiz-master-next' ); ?>
+						<a class="button qsm-theme-buynow-btn" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>"><?php echo in_array( $theme_name, $pro_themes, true ) ? esc_html__( 'Buy Now', 'quiz-master-next' ) : esc_html__( 'Download', 'quiz-master-next' ); ?>
 						</a>
 					</div>
 				</div>

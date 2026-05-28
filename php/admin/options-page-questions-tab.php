@@ -86,24 +86,25 @@ function qsm_options_questions_tab_content() {
 	}
 	$qpages    = apply_filters( 'qsm_filter_quiz_page_attributes', $qpages, $pages );
 	$json_data = array(
-		'quizID'                => $quiz_id,
-		'answerText'            => __( 'Answer', 'quiz-master-next' ),
-		'linked_view'           => __( 'View', 'quiz-master-next' ),
-		'linked_close'          => __( 'Close', 'quiz-master-next' ),
-		'nonce'                 => wp_create_nonce( 'wp_rest' ),
-		'pages'                 => $pages,
-		'qpages'                => $qpages,
-		'qsm_user_ve'           => get_user_meta( $user_id, 'rich_editing', true ),
-		'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),
-		'unlinkNonce'           => wp_create_nonce( 'ajax-nonce-unlink-question' ),
-		'loadAllQuestionsNonce' => wp_create_nonce( 'qsm_load_all_quiz_questions' ),
-		'categories'            => $question_categories,
-		'form_type'             => $form_type,
-		'quiz_system'           => $quiz_system,
-		'question_bank_nonce'   => wp_create_nonce( 'delete_question_question_bank_nonce' ),
-		'single_question_nonce' => wp_create_nonce( 'delete_question_from_database' ),
-		'rest_user_nonce'       => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
-		'default_answers'       => $default_answers,
+		'quizID'                  => $quiz_id,
+		'answerText'              => __( 'Answer', 'quiz-master-next' ),
+		'linked_view'             => __( 'View', 'quiz-master-next' ),
+		'linked_close'            => __( 'Close', 'quiz-master-next' ),
+		'nonce'                   => wp_create_nonce( 'wp_rest' ),
+		'pages'                   => $pages,
+		'qpages'                  => $qpages,
+		'qsm_user_ve'             => get_user_meta( $user_id, 'rich_editing', true ),
+		'saveNonce'               => wp_create_nonce( 'ajax-nonce-sandy-page' ),
+		'unlinkNonce'             => wp_create_nonce( 'ajax-nonce-unlink-question' ),
+		'loadAllQuestionsNonce'   => wp_create_nonce( 'qsm_load_all_quiz_questions' ),
+		'categories'              => $question_categories,
+		'form_type'               => $form_type,
+		'quiz_system'             => $quiz_system,
+		'question_bank_nonce'     => wp_create_nonce( 'delete_question_question_bank_nonce' ),
+		'single_question_nonce'   => wp_create_nonce( 'delete_question_from_database' ),
+		'rest_user_nonce'         => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
+		'default_answers'         => $default_answers,
+		'can_manage_categories'   => current_user_can( 'manage_qsm_quiz_categories' ) ? 'true' : 'false',
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
@@ -647,12 +648,14 @@ function qsm_options_questions_tab_content() {
 													}
 													?>
 													<div class="clear clearfix"></div>
-													<div id="publishing-action">
-														<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
-														<button id="save-popup-button" class="button button-primary">Save Question</button>
-													</div>
-													<div id="delete-action" style="float: none;">
-														<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+													<div id="qsm-question-publishing-action">
+														<div id="delete-action" style="float: none;">
+															<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+														</div>
+														<div id="publishing-action">
+															<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
+															<button id="save-popup-button" class="button button-primary">Save Question</button>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -1496,6 +1499,9 @@ function qsm_save_new_category() {
 	$parent   = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
 	$parent   = ( -1 == $parent ) ? 0 : $parent;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
+		if ( ! current_user_can( 'manage_qsm_quiz_categories' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You are not allowed to manage quiz categories.', 'quiz-master-next' ) ) );
+		}
 		$term_array = wp_insert_term(
 			$category,
 			'qsm_category',
