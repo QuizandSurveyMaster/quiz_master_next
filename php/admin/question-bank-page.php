@@ -316,6 +316,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 		'single_question_nonce' => wp_create_nonce( 'delete_question_from_database' ),
 		'rest_user_nonce'       => $quiz_nonces[0],
 		'default_answers'       => is_array( $default_answers ) ? $default_answers : array(),
+		'can_manage_categories' => current_user_can( 'manage_qsm_quiz_categories' ) ? 'true' : 'false',
 	);
 
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $qsm_question_settings );
@@ -747,12 +748,14 @@ function qsm_questions_bank_question_editor() {
 													}
 													?>
 													<div class="clear clearfix"></div>
-													<div id="publishing-action">
-														<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
-														<button id="save-popup-button" class="button button-primary">Save Question</button>
-													</div>
-													<div id="delete-action" style="float: none;">
-														<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+													<div id="qsm-question-publishing-action">
+														<div id="delete-action" style="float: none;">
+															<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
+														</div>
+														<div id="publishing-action">
+															<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
+															<button id="save-popup-button" class="button button-primary">Save Question</button>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -1054,6 +1057,24 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		// Assignment in condition is intentional for reading CSV file line by line.
 		while ( ( $row = fgetcsv( $handle ) ) !== false ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- Iteratively reading CSV rows.
 		$line++;
+		$row = array_map(
+			function ( $cell ) {
+				if ( ! preg_match( '//u', $cell ) ) {
+					if ( function_exists( 'mb_convert_encoding' ) ) {
+						$converted = mb_convert_encoding( $cell, 'UTF-8', 'Windows-1252, ISO-8859-1' );
+					} elseif ( function_exists( 'iconv' ) ) {
+						$converted = iconv( 'Windows-1252', 'UTF-8//IGNORE', $cell );
+					} else {
+						$converted = $cell;
+					}
+					if ( false !== $converted ) {
+						$cell = $converted;
+					}
+				}
+				return wp_check_invalid_utf8( $cell, true );
+			},
+			$row
+		);
 		if ( qsm_question_bank_row_is_empty( $row ) ) {
 			continue;
 		}

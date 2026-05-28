@@ -361,7 +361,18 @@ class QSM_Results_Pages {
 			if ( 'false' === $pages[ $i ]['redirect'] ) {
 				$pages[ $i ]['redirect'] = false;
 			} else {
-				$pages[ $i ]['redirect'] = false !== strpos( $pages[ $i ]['redirect'], '%RESULT_LINK%' ) ? $pages[ $i ]['redirect'] : esc_url( $pages[ $i ]['redirect'] );
+				$raw_redirect    = (string) $pages[ $i ]['redirect'];
+				$has_placeholder = false !== strpos( $raw_redirect, '%RESULT_LINK%' );
+				if ( $has_placeholder ) {
+					// Stash the placeholder behind a safe URL so esc_url_raw doesn't drop it,
+					// then restore the literal placeholder after sanitization.
+					$stash_token  = 'https://qsm-placeholder.invalid/result-link';
+					$stashed      = str_replace( '%RESULT_LINK%', $stash_token, $raw_redirect );
+					$sanitized    = esc_url_raw( $stashed );
+					$pages[ $i ]['redirect'] = str_replace( $stash_token, '%RESULT_LINK%', $sanitized );
+				} else {
+					$pages[ $i ]['redirect'] = esc_url( $raw_redirect );
+				}
 			}
 
 			/**
