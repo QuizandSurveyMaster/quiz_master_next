@@ -424,7 +424,10 @@ function qsm_display_question_option( $key, $single_option ) {
 						?>
 					</ul>
 				</div>
-				<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
+				<?php if ( current_user_can( 'manage_qsm_quiz_categories' ) ) : ?>
+			<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
+			<?php endif; ?>
+
 			</div>
 			<?php
 			break;
