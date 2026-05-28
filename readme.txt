@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 11.1.2
+Stable tag: 11.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.1.3 ( May 25, 2026 ) =
+* Bug: Resolved result display issues with random questions and answers
+* Patch: Fixed a Cross-Site Scripting (XSS) vulnerability in rich answer type questions
+* Enhancement: Improved the question hints UI in the new quiz renderer
+* Enhancement: Strengthened security validation to get all the questions and user login functions
+
 = 11.1.2 ( May 12, 2026 ) =
 * Feature: Added option to enable/disable public result sharing links
 * Patch: Addressed an SQL injection vulnerability related to the 'order' and 'limit' parameters

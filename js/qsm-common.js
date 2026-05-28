@@ -41,7 +41,6 @@ jQuery(document).ready(function(){
 		form.find('input[type="submit"]').attr('disabled', true);
 		jQuery(".qsm-login-form-warning").remove();
 
-		// Make a request to the WordPress REST API to log in
 		jQuery.ajax({
 			url: qmn_common_ajax_object.ajaxurl,
 			method: 'POST',
@@ -49,6 +48,7 @@ jQuery(document).ready(function(){
                 action: 'qsm_ajax_login',
                 username: username,
                 password: password,
+                nonce: qmn_common_ajax_object.nonce,
             },
 			success: function (response) {
                 if ( response.success ) {
