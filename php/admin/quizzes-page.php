@@ -311,7 +311,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				if ( class_exists( 'QSM_Export_Import' ) ) {
 					?><a class="button button-primary" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" style="position: relative;top: 0px;" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 				} else {
-					?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
+					?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;line-height: 2.15384615;min-height: 32px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 				}
 			}
 		}
