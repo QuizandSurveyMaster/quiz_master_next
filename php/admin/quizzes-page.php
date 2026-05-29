@@ -512,17 +512,17 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<div class="qsm-row qsm-shortcode-popup-row" >
-									<label><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></label>
+									<label for="sc-shortcode-model-text"><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
 									<button class="button button-primary" id="sc-copy-shortcode"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
 								</div>
 								<div class="qsm-row qsm-shortcode-popup-row">
-									<label ><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></label>
+									<label for="sc-shortcode-model-text-link"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-shortcode-model-text-link" class="sc-shortcode-input">
 									<button class="button button-primary" id="sc-copy-shortcode-link"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
 								</div>
 								<div class="qsm-row qsm-shortcode-popup-row">
-									<label><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></label>
+									<label for="sc-embed-iframe-text"><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-embed-iframe-text" class="sc-shortcode-input" readonly>
 									<button class="button button-primary" id="sc-copy-embed-iframe"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
 								</div>
