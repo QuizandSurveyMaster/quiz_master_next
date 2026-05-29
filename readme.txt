@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 11.1.3
+Stable tag: 11.1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.1.4 ( May 29, 2026 ) =
+* Bug: Fixed issues with bulk question imports and file reset functionality
+* Patch: Resolved an IDOR vulnerability in REST endpoints that could allow unauthorized quiz and question modifications
+* Enhancement: Improved QSM Core UI compatibility with WordPress 7.0
+* Enhancement: Added category permission validation with enhanced UI error handling
+
 = 11.1.3 ( May 25, 2026 ) =
 * Bug: Resolved result display issues with random questions and answers
 * Patch: Fixed a Cross-Site Scripting (XSS) vulnerability in rich answer type questions
