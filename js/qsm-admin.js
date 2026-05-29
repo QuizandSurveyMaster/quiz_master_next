@@ -5067,35 +5067,32 @@ var QSM_Quiz_Broadcast_Channel;
                         jQuery.ajax(ajaxurl, {
                             data: new_category_data,
                             method: 'POST',
+                            dataType: 'json',
                             success: function (response) {
                                 // Re-enable button regardless of outcome.
                                 $btn.prop('disabled', false).text($btn.data('original-text'));
 
                                 // Handle wp_send_json_error() (permission denied).
-                                let parsed;
-                                try { parsed = JSON.parse(response); } catch(ex) { parsed = response; }
-
-                                if (parsed && parsed.success === false) {
+                                if (response?.success === false) {
                                     $info.html(qsm_admin_messages.category_permission_error || 'You do not have permission to create categories.')
                                         .removeClass('info--success')
                                         .addClass('info--error');
                                     return;
                                 }
 
-                                let result = parsed;
-                                if (result && result.term_id > 0) {
+                                if (response?.term_id > 0) {
                                     // Update dropdowns and checklists.
-                                    $('#qsm-parent-category').append('<option class="level-0" value="' + result.term_id + '">' + new_category + '</option>');
+                                    $('#qsm-parent-category').append('<option class="level-0" value="' + response.term_id + '">' + new_category + '</option>');
                                     if (parent_category == -1) {
-                                        $('.qsm_category_checklist').prepend('<li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" checked="checked" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li>');
+                                        $('.qsm_category_checklist').prepend('<li id="qsm_category-' + response.term_id + '"><label class="selectit"><input value="' + response.term_id + '" type="checkbox" checked="checked" name="tax_input[qsm_category][]"  id="in-qsm_category-' + response.term_id + '"> ' + new_category + '</label></li>');
                                     } else {
                                         if ($('.qsm_category_checklist li#qsm_category-' + parent_category).children('ul').length > 0) {
-                                            $('.qsm_category_checklist li#qsm_category-' + parent_category).children('ul').append('<li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li>');
+                                            $('.qsm_category_checklist li#qsm_category-' + parent_category).children('ul').append('<li id="qsm_category-' + response.term_id + '"><label class="selectit"><input value="' + response.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + response.term_id + '"> ' + new_category + '</label></li>');
                                         } else {
-                                            $('.qsm_category_checklist li#qsm_category-' + parent_category).append('<ul class="children"><li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li></ul>');
+                                            $('.qsm_category_checklist li#qsm_category-' + parent_category).append('<ul class="children"><li id="qsm_category-' + response.term_id + '"><label class="selectit"><input value="' + response.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + response.term_id + '"> ' + new_category + '</label></li></ul>');
                                         }
-                                        $('.qsm_category_checklist li#qsm_category-' + result.term_id).children('label').children('input').prop('checked', true);
-                                        $('.qsm_category_checklist li#qsm_category-' + result.term_id).parents('li').each(function () {
+                                        $('.qsm_category_checklist li#qsm_category-' + response.term_id).children('label').children('input').prop('checked', true);
+                                        $('.qsm_category_checklist li#qsm_category-' + response.term_id).parents('li').each(function () {
                                             $(this).children('label').children('input').prop('checked', true);
                                         });
                                     }
