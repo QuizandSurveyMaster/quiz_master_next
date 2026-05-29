@@ -226,10 +226,10 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 = 11.1.4 ( May 29, 2026 ) =
-* Bug: Fixed bulk question import and file reset issues
+* Bug: Fixed issues with bulk question imports and file reset functionality
+* Patch: Resolved an IDOR vulnerability in REST endpoints that could allow unauthorized quiz and question modifications
 * Enhancement: Improved QSM Core UI compatibility with WordPress 7.0
-* Enhancement: Added proper category permission checks with improved UI error handling
-* Security: Fixed IDOR vulnerability in REST endpoints allowing unauthorized quiz and question updates
+* Enhancement: Added category permission validation with enhanced UI error handling
 
 = 11.1.3 ( May 25, 2026 ) =
 * Bug: Resolved result display issues with random questions and answers
