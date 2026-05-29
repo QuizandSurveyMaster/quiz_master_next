@@ -305,7 +305,7 @@ function qsm_generate_quiz_tools() {
 	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'qsm_tools_page_audit_trail';
 	global $mlwQuizMasterNext;
     ?>
-    <div class="wrap">
+    <div class="wrap qsm-tools-page-wrapper">
         <h1><?php esc_html_e('QSM Tools', 'quiz-master-next'); ?></h1>
 
         <h2 class="nav-tab-wrapper">

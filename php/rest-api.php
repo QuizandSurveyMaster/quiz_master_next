@@ -31,8 +31,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => 'qsm_rest_create_question',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['quizID'] );
 			},
 		)
 	);
@@ -42,8 +43,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_question',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['quizID'] );
 			},
 		)
 	);
@@ -75,8 +77,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_results',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
@@ -97,8 +100,8 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => 'qsm_rest_save_emails',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' ) && qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
@@ -514,6 +517,12 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
+		if ( ! qsm_current_user_can_edit_quiz( $request['id'] ) ) {
+			return array(
+				'status' => 'error',
+				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+			);
+		}
 		$stop         = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
 			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
@@ -705,6 +714,12 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
 		$current_user = wp_get_current_user();
+		if ( ! qsm_current_user_can_edit_quiz( $request['quizID'] ) ) {
+			return array(
+				'status' => 'error',
+				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+			);
+		}
 		if ( 0 !== $current_user ) {
 			try {
 				$data           = array(
@@ -768,6 +783,12 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
+		if ( ! qsm_current_user_can_edit_quiz( $request['quizID'] ) ) {
+			return array(
+				'status' => 'error',
+				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+			);
+		}
 		$stop         = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
 			try {
@@ -869,6 +890,45 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
 		);
 	}
 	return false;
+}
+
+/**
+ * Resolve a quiz_id to its backing post_id.
+ *
+ * @param int $quiz_id The mlw_quizzes.quiz_id value.
+ * @return int|false Post ID or false if not found.
+ */
+function qsm_get_post_id_for_quiz( $quiz_id ) {
+	global $wpdb;
+	$quiz_id = intval( $quiz_id );
+	if ( 0 === $quiz_id ) {
+		return false;
+	}
+	$post_id = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1",
+			$quiz_id
+		)
+	);
+	return $post_id ? intval( $post_id ) : false;
+}
+
+/**
+ * Check whether the current user is authorized to edit a given quiz.
+ *
+ * Requires the per-quiz edit_qsm_quiz capability against the backing post,
+ * which (via the meta-cap map in mlw_quizmaster2.php) enforces authorship
+ * and lets edit_others_qsm_quizzes act as an override.
+ *
+ * @param int $quiz_id The mlw_quizzes.quiz_id value.
+ * @return bool
+ */
+function qsm_current_user_can_edit_quiz( $quiz_id ) {
+	$post_id = qsm_get_post_id_for_quiz( $quiz_id );
+	if ( ! $post_id ) {
+		return current_user_can( 'edit_others_qsm_quizzes' );
+	}
+	return current_user_can( 'edit_qsm_quiz', $post_id );
 }
 
 /**

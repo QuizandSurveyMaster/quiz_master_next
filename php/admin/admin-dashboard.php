@@ -263,7 +263,7 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 					</div>
 					<div class="qsm-dashboard-themes-details-wrapper">
 						<h3><?php echo esc_html( $single_theme['name'] ); ?></h3>
-						<a class="button button-secondary" target="_blank" href="<?php echo esc_url( $theme_demo ); ?>" class="qsm-dashboard-themes-button"><?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?></a>
+						<a class="button button-secondary qsm-dashboard-demo-button" target="_blank" href="<?php echo esc_url( $theme_demo ); ?>"><?php echo esc_html__( 'Demo', 'quiz-master-next' ); ?></a>
 					</div>
 				</div>
 			<?php } ?>

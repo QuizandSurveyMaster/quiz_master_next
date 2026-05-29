@@ -311,7 +311,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				if ( class_exists( 'QSM_Export_Import' ) ) {
 					?><a class="button button-primary" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" style="position: relative;top: 0px;" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 				} else {
-					?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
+					?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;line-height: 2.15384615;min-height: 32px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 				}
 			}
 		}
@@ -511,20 +511,22 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-								<div class="qsm-row" style="margin-bottom: 30px;">
-									<lable><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></lable>
+								<div class="qsm-row qsm-shortcode-popup-row" >
+									<label for="sc-shortcode-model-text"><?php esc_html_e( 'Embed Shortcode', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-shortcode-model-text" class="sc-shortcode-input">
-									<button class="button button-primary" id="sc-copy-shortcode"><span class="dashicons dashicons-admin-page"></span></button>
+									<button class="button button-primary" id="sc-copy-shortcode"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
 								</div>
-								<div class="qsm-row">
-									<lable style="padding-right:15px;"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></lable>
+								<div class="qsm-row qsm-shortcode-popup-row">
+									<label for="sc-shortcode-model-text-link"><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-shortcode-model-text-link" class="sc-shortcode-input">
-									<button class="button button-primary" id="sc-copy-shortcode-link"><span class="dashicons dashicons-admin-page"></span></button>
+									<button class="button button-primary" id="sc-copy-shortcode-link"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
 								</div>
-								<div class="qsm-row" style="margin-top: 30px;">
-									<lable style="padding-right:20px;"><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></lable>
+								<div class="qsm-row qsm-shortcode-popup-row">
+									<label for="sc-embed-iframe-text"><?php esc_html_e( 'Embed Iframe', 'quiz-master-next' ); ?></label>
 									<input type="text" value="" id="sc-embed-iframe-text" class="sc-shortcode-input" readonly>
-									<button class="button button-primary" id="sc-copy-embed-iframe"><span class="dashicons dashicons-admin-page"></span></button>
+									<button class="button button-primary" id="sc-copy-embed-iframe"><span class="qsm-shortcode-popup-row-span dashicons dashicons-admin-page"></span></button>
+								</div>
+								<div class="qsm-row qsm-shortcode-popup-row">
 									<div class="qsm-popup-nonce-validation">
 										<div class="qsm-popup-upgrade-warning">
 											<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/warning.png' ); ?>" alt="warning">
