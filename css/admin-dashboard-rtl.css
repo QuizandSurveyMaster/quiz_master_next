@@ -1,4 +1,4 @@
-.popover-count {
+﻿.popover-count {
     top: -2px !important;
     right: unset!important;
     left: 9px!important;
@@ -316,7 +316,7 @@
 }
 
 #model-wizard .qsm-addon-browse-addons .qsm-addon-anchor-left .qsm-add-addon a.active {
-	background: #3858e9;
+	background: var(--qsm-info-or-bg-color);
 }
 
 #model-wizard .qsm-addon-news-ads {
