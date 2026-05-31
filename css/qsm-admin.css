@@ -256,8 +256,19 @@ a.button.button-primary.qsm-dashboard-section-migration {
 	align-items: center;
 	font-size: 15px;
 	font-weight: 500;
+	padding: 5px 20px;
 }
 
+body[class*="version-7-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-7-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-8-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-8-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-9-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-9-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-10-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-10-"] a.button.button-primary.qsm-dashboard-section-migration {
+    padding: 0px 20px;
+}
 /* WP 7+ */
 body[class*="version-7-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button,
 body[class*="version-8-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button,
