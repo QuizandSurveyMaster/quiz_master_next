@@ -61,7 +61,7 @@ add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_total_quest
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_points', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
-add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_admin_email', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_admin_email', 10, 2 );
 
 /**
  * Changed the display structure to new structure.
