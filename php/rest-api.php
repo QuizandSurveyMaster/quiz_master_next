@@ -464,6 +464,12 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
+		if ( ! qsm_current_user_can_edit_quiz( $request['id'] ) ) {
+			return array(
+				'status' => 'error',
+				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+			);
+		}
 		$stop         = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
 			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
