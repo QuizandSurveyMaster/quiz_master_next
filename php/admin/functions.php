@@ -1559,6 +1559,11 @@ add_action('wp_ajax_qsm_insert_quiz_template', 'qsm_insert_quiz_template_callbac
 function qsm_insert_quiz_template_callback() {
     global $wpdb;
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to manage quiz templates.', 'quiz-master-next' ) ) );
+		wp_die();
+	}
+
 	// validate nonce
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_add_template' ) && is_user_logged_in() ) {
 
@@ -1581,6 +1586,9 @@ function qsm_insert_quiz_template_callback() {
 			},
 			$filtered_content
 		);
+		// Strip executable HTML (e.g. <script>, on* handlers) before persisting.
+		// Runs after the custom-tag passes above so %VARIABLE% / shortcode text are preserved.
+		$filtered_content = wp_kses_post( $filtered_content );
 
 		$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 
@@ -1643,6 +1651,12 @@ add_action( 'wp_ajax_qsm_remove_my_templates', 'qsm_remove_my_templates_handler'
  */
 function qsm_remove_my_templates_handler() {
     global $wpdb;
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to manage quiz templates.', 'quiz-master-next' ) ) );
+		wp_die();
+	}
+
 	if ( ! isset( $_POST['nonce'] ) ||
         ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' )
     ) {
