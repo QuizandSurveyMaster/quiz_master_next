@@ -329,8 +329,14 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'qsm_quiz_structure_data' ),
-					'permission_callback' => function () {
-						return current_user_can( 'edit_qsm_quizzes' );
+					'permission_callback' => function ( WP_REST_Request $request ) {
+						if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+							return false;
+						}
+						$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
+						return function_exists( 'qsm_current_user_can_edit_quiz' )
+							? qsm_current_user_can_edit_quiz( $quiz_id )
+							: false;
 					},
 				)
 			);
@@ -435,6 +441,13 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 
 			if ( empty( $quiz_id ) && ! is_numeric( $quiz_id ) ) {
 				$result['msg'] = __( 'Invalid quiz id', 'quiz-master-next' );
+				return $result;
+			}
+
+			// Defense-in-depth: refuse to leak quiz structure or a usable rest_nonce
+			// for a quiz the current user is not authorized to edit.
+			if ( function_exists( 'qsm_current_user_can_edit_quiz' ) && ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+				$result['msg'] = __( 'Unauthorized!', 'quiz-master-next' );
 				return $result;
 			}
 
@@ -601,6 +614,16 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					'status' => 'error',
 					'msg'    => __( 'Missing quiz_id or post_id', 'quiz-master-next' ),
 					'post'   => $_POST,
+				);
+			}
+
+			// Enforce per-quiz ownership: the route's permission_callback only checks
+			// the broad edit_qsm_quizzes cap, so a contributor could otherwise rename
+			// or publish a quiz they do not own by passing its id in the request body.
+			if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
 				);
 			}
 
