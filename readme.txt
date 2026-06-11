@@ -226,6 +226,8 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 = 11.1.5 ( June 11, 2026 ) =
+* Feature: Added the %QSM_ADMIN_EMAIL% template variable to include the admin email in email templates
+* Feature: Added %QSM_START_QUIZ_DATE% and %QSM_END_QUIZ_DATE% template variables to display the quiz start and end dates
 * Enhancement: Improved validation and security measures when saving quiz email templates
 * Enhancement: Strengthened security checks for saving email and result templates
 
