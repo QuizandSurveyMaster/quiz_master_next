@@ -59,6 +59,9 @@ add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_use
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_social_share', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_total_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_points', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_admin_email', 10, 2 );
 
 /**
  * Changed the display structure to new structure.
@@ -1813,4 +1816,73 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 	$question_display .= "<div class='mlw_qmn_question' >" . do_shortcode(  $question_title  ) . '</div>';
 
 	return wp_kses_post( $question_display );
+}
+
+/**
+ * Replaces %QSM_START_QUIZ_DATE% and %QSM_END_QUIZ_DATE% with the quiz's
+ * scheduled start/end date-time, formatted using the site's date/time settings.
+ */
+function qsm_variable_start_end_quiz_time( $content, $mlw_quiz_array ) {
+	$has_start = strpos( $content, '%QSM_START_QUIZ_DATE%' ) !== false;
+	$has_end   = strpos( $content, '%QSM_END_QUIZ_DATE%' ) !== false;
+
+	if ( ! $has_start && ! $has_end ) {
+		return $content;
+	}
+
+	global $mlwQuizMasterNext;
+	$date_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+
+	if ( $has_start ) {
+		$start_time_raw = '';
+		if ( isset( $mlw_quiz_array['scheduled_time_start'] ) && '' !== $mlw_quiz_array['scheduled_time_start'] ) {
+			$start_time_raw = $mlw_quiz_array['scheduled_time_start'];
+		} else {
+			$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options', array() );
+			if ( isset( $quiz_options['scheduled_time_start'] ) ) {
+				$start_time_raw = $quiz_options['scheduled_time_start'];
+			}
+		}
+		$start_formatted = '';
+		if ( '' !== $start_time_raw ) {
+			$timestamp = strtotime( $start_time_raw );
+			if ( $timestamp ) {
+				$start_formatted = date_i18n( $date_format, $timestamp );
+			}
+		}
+		$content = str_replace( '%QSM_START_QUIZ_DATE%', $start_formatted, $content );
+	}
+
+	if ( $has_end ) {
+		$end_time_raw = '';
+		if ( isset( $mlw_quiz_array['scheduled_time_end'] ) && '' !== $mlw_quiz_array['scheduled_time_end'] ) {
+			$end_time_raw = $mlw_quiz_array['scheduled_time_end'];
+		} else {
+			$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options', array() );
+			if ( isset( $quiz_options['scheduled_time_end'] ) ) {
+				$end_time_raw = $quiz_options['scheduled_time_end'];
+			}
+		}
+		$end_formatted = '';
+		if ( '' !== $end_time_raw ) {
+			$timestamp = strtotime( $end_time_raw );
+			if ( $timestamp ) {
+				$end_formatted = date_i18n( $date_format, $timestamp );
+			}
+		}
+		$content = str_replace( '%QSM_END_QUIZ_DATE%', $end_formatted, $content );
+	}
+
+	return $content;
+}
+
+/**
+ * Replaces %QSM_ADMIN_EMAIL% with the site's administrator email address.
+ */
+function qsm_variable_admin_email( $content, $mlw_quiz_array ) {
+	if ( strpos( $content, '%QSM_ADMIN_EMAIL%' ) === false ) {
+		return $content;
+	}
+	$admin_email = esc_html( get_option( 'admin_email', '' ) );
+	return str_replace( '%QSM_ADMIN_EMAIL%', $admin_email, $content );
 }

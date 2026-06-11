@@ -984,6 +984,8 @@ class QSM_Install {
 				'%QUIZ_LINK%',
 				'%CURRENT_DATE%',
 				'%TOTAL_QUESTIONS%',
+				'%QSM_START_QUIZ_DATE%',
+				'%QSM_END_QUIZ_DATE%',
 			),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -1059,6 +1061,8 @@ class QSM_Install {
 				'%QUIZ_LINK%',
 				'%CURRENT_DATE%',
 				'%TOTAL_QUESTIONS%',
+				'%QSM_START_QUIZ_DATE%',
+				'%QSM_END_QUIZ_DATE%',
 			),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );

@@ -301,7 +301,7 @@ function qsm_options_emails_tab_template() {
 				</div>
 				<div class="qsm-email-page-then-box-styles-wrap">
 					<div class="qsm-email-page-common-section qsm-email-page-then-box-styles" >
-						<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
+						<label><?php esc_html_e( 'Send to: Use %USER_EMAIL% for the user or %QSM_ADMIN_EMAIL% for the admin. Separate multiple emails with commas.', 'quiz-master-next' ); ?></label>
 						<?php do_action( 'qsm_after_send_email_label' ); ?>
 						<input type="email" class="qsm-to-email" value="{{ data.to }}">
 						<label class="qsm-email-reply-to">
