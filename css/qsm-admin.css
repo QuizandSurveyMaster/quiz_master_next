@@ -1,7 +1,8 @@
-:root {
+﻿:root {
 	--qsm-white-color: #FFFFFF;
 	--qsm-primary-button: #2272B1;
-	--qsm-information-color: #3858e9;
+	--qsm-information-color: #2271B1;
+	--qsm-information-color-wp-7: #3858e9;
 	--qsm-information-color-light: #EFF6FF;
 	--qsm-success-color: #065F46;
 	--qsm-success-color-light: #ECFDF5;
@@ -12,6 +13,16 @@
 	--qsm-black-color: #1E1E1E;
 	--qsm-common-popup-border-color:#d4d4d4;
 
+	/* Default: WP < 7 */
+	--qsm-info-or-bg-color: var(--qsm-information-color);
+}
+
+/* WP 7+ */
+body[class*="version-7-"],
+body[class*="version-8-"],
+body[class*="version-9-"],
+body[class*="version-10-"] {
+	--qsm-info-or-bg-color: var(--qsm-information-color-wp-7);
 }
 .toplevel_page_qsm_dashboard #wpbody-content>.notice, .toplevel_page_qsm_dashboard #wpbody-content>.error, .toplevel_page_qsm_dashboard #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content>.notice, .qsm_page_qsm_create_quiz_page #wpbody-content>.error, .qsm_page_qsm_create_quiz_page #wpbody-content .wrap>div.error, .qsm_page_qsm_create_quiz_page #wpbody-content div.updated, .toplevel_page_qsm_dashboard #wpbody-content div.updated, .qsm_page_qsm_create_quiz_page .notice-error, .toplevel_page_qsm_dashboard .notice-error {
 	display: none;
@@ -127,9 +138,12 @@
 
 .qsm-dashboard-recently-taken-quiz .qsm-dashboard-view-all-results {
 	position: absolute;
-    bottom: 10px;
-    color: #fff;
-    right: calc(100% - 370px);
+	bottom: 10px;
+	color: #fff;
+	right: calc(100% - 370px);
+	font-weight: 500;
+	font-size: 12px;
+	padding: 1px 10px;
 }
 
 /* Popular Quizzes Table over */
@@ -234,18 +248,34 @@ a.button.button-primary.qsm-dashboard-section-create-quiz img, a.button.button-p
     padding-top: 2px;
 }
 
-a.button.button-primary.qsm-dashboard-section-create-quiz, a.button.button-primary.qsm-dashboard-section-migration {
+a.button.button-primary.qsm-dashboard-section-create-quiz,
+a.button.button-primary.qsm-dashboard-section-migration {
 	display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: min-content;
-    align-items: center;
-    font-size: 15px;
-    font-weight: 500;
+	grid-template-columns: 1fr 1fr;
+	max-width: min-content;
+	align-items: center;
+	font-size: 15px;
+	font-weight: 500;
+	padding: 5px 20px;
 }
 
-.qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button {
-    line-height: 2.15384615;
-    min-height: 30px;
+body[class*="version-7-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-7-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-8-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-8-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-9-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-9-"] a.button.button-primary.qsm-dashboard-section-migration,
+body[class*="version-10-"] a.button.button-primary.qsm-dashboard-section-create-quiz, 
+body[class*="version-10-"] a.button.button-primary.qsm-dashboard-section-migration {
+    padding: 0px 20px;
+}
+/* WP 7+ */
+body[class*="version-7-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button,
+body[class*="version-8-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button,
+body[class*="version-9-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button,
+body[class*="version-10-"] .qsm-dashboard-themes-details-wrapper .qsm-dashboard-demo-button {
+	line-height: 2.15384615;
+	min-height: 30px;
 }
 
 .qsm-dashboard-help-center-grid .qsm-dashboard-help-arrow {
@@ -559,7 +589,7 @@ span.qsm-quiz-name {
 	max-height: 40px;
 }
 .qsm-addon-news-ads .qsm-info-widget:nth-child(4) .bundle-icon {
-	background: #3858e9;
+	background: var(--qsm-info-or-bg-color);
 }
 .qsm-addon-news-ads .qsm-info-widget:nth-child(2) .bundle-icon {
 	background: #00b592;
@@ -1176,7 +1206,7 @@ ul.changelog li.update div.two:before {
 .currentli,
 .currentli_general,
 .currentli_variable {
-	border-left:4px solid #3858e9;
+	border-left:4px solid var(--qsm-info-or-bg-color);
 	background-color: #E9F1F7;
 }
 .qsm-custom-label-left-menu a {
@@ -1190,7 +1220,7 @@ ul.changelog li.update div.two:before {
 .qsm-custom-label-left-menu.currentli_general a,
 .qsm-custom-label-left-menu.currentli_variable a,
 .qsm-custom-label-left-menu.currentli a {
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 }
 .qsm-sub-tab-menu a,
 .qsm-sub-text-tab-menu a,
@@ -1236,8 +1266,8 @@ ul.changelog li.update div.two:before {
 }
 .qsm-sub-text-tab-menu .subsubsub li a.current,
 .qsm-sub-tab-menu .subsubsub li a.current{
-	border-bottom: 3px solid #3858e9;
-	color: #3858e9;
+	border-bottom: 3px solid var(--qsm-info-or-bg-color);
+	color: var(--qsm-info-or-bg-color);
 }
 .qsm-upgrade-box .subsubsub li a.current {
 	border-bottom: 3px solid #1D4ED8;
@@ -1280,7 +1310,7 @@ ul.changelog li.update div.two:before {
 	font-weight: 600;
 	font-size: 1.25rem;
 	line-height: 1.25;
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 	box-sizing: border-box;
 }
 .qsm-theme-color-settings .qsm-popup__content label {
@@ -1610,8 +1640,20 @@ input#sc-embed-iframe-text{
 #modal-3 .qsm-popup__container .qsm-popup__footer {
 	border-top: 1px solid var(--qsm-common-popup-border-color);
 }
-#modal-6 .qsm-popup__content { 
+#modal-6 .qsm-popup__content {
 	box-shadow: inset 0 0 10px 0px #ddd;
+}
+
+#modal-6 .button > span.dashicons {
+	line-height: 29px;
+}
+
+/* WP 7+ */
+body[class*="version-7-"] #modal-6 .button > span.dashicons,
+body[class*="version-8-"] #modal-6 .button > span.dashicons,
+body[class*="version-9-"] #modal-6 .button > span.dashicons,
+body[class*="version-10-"] #modal-6 .button > span.dashicons {
+	line-height: 34px;
 }
 
 #modal-6 .qsm-popup__container {
@@ -1620,16 +1662,16 @@ input#sc-embed-iframe-text{
 
 #modal-6 .qsm-shortcode-popup-row {
 	display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 15px;
 }
 
 #modal-6 span.qsm-shortcode-popup-row-span.dashicons.dashicons-admin-page {
 	color: var(--qsm-white-color);
 }
 
-#modal-6 .qsm-shortcode-popup-row:last-child {
+#modal-6 .qsm-shortcode-popup-row:last-child {	
 	margin-bottom: 0;
 }
 
@@ -1768,6 +1810,12 @@ td.scheduled_time_start {
 	width: auto;
 }
 
+.quiz_style_tab_content span.dashicons.dashicons-format-image {
+    line-height: 1.4;
+}
+body[class*="version-7-"] .quiz_style_tab_content span.dashicons.dashicons-format-image {
+    line-height: 1.9;
+}
 
 #post-body-content .qsm-popup-upgrade-warning img {
 	width: auto;
@@ -1930,8 +1978,8 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	vertical-align: middle;
 	width: unset;
 	height: 10px;
-	color: #3858e9;
-	border: 0.5px solid #3858e9;
+	color: var(--qsm-info-or-bg-color);
+	border: 0.5px solid var(--qsm-info-or-bg-color);
 	border-radius: 50%;
 	font-size: 8px;
 	display: none;
@@ -2085,8 +2133,26 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 .nav-tab-wrapper .qsm-import-export-btn{
 	float: right;
 	min-height: 32px;
-    line-height: 2.30769231;
-    padding: 0 12px;
+	line-height: 2.30769231;
+	padding: 0 12px;
+}
+
+.result-tab-content a.button > span.dashicons {
+	line-height: 29px;
+	font-size: 18px;
+	margin-left: -4px;
+	margin-right: -4px;
+}
+
+/* WP 7+ */
+body[class*="version-7-"] .result-tab-content a.button > span.dashicons,
+body[class*="version-8-"] .result-tab-content a.button > span.dashicons,
+body[class*="version-9-"] .result-tab-content a.button > span.dashicons,
+body[class*="version-10-"] .result-tab-content a.button > span.dashicons {
+	line-height: revert;
+	font-size: revert;
+	margin-left: revert;
+	margin-right: revert;
 }
 .qsm-option-tab-dropdown {
 	position: relative;
@@ -2870,7 +2936,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 	border: 1px solid #EFF6FF;
     background: #EFF6FF;
     overflow: auto;
-    border-left-color: #3858e9;
+    border-left-color: var(--qsm-info-or-bg-color);
     border-left-width: 6px;
     display: flex;
     align-items: end;
@@ -3025,7 +3091,7 @@ div.qsm-linked-list-inside span.qsm-unlink-the-question {
 }
 .qsm-text-template-span .button {
 	padding: 5px 10px;
-    border: 1px solid #3858e9;
+    border: 1px solid var(--qsm-info-or-bg-color);
     min-height: unset;
     font-size: 12px;
     background: unset;
@@ -3174,7 +3240,7 @@ ul.qsm-welcome-panel-menu li {
 
 .qsm-create-quiz-bundle-button {
 	padding: 7px 18px;
-    background-color: #3858e9;
+    background-color: var(--qsm-info-or-bg-color);
     color: #ffffff;
     font-size: 14px;
     border: none;
@@ -3742,13 +3808,6 @@ input#duplicate_questions {
 	color: #2f87cc;
 	font-size: 15px;
 }
-.qsm-theme-color-settings .quiz-theme-option-image-button {
-	padding: 1px 9px;
-	font-size: 11px;
-}
-.qsm-theme-color-settings .quiz-theme-option-image-button .dashicons {
-	line-height: 24px;
-}
 .qsm-theme-color-settings .wp-picker-container .wp-color-result.button,
 .qsm-theme-color-settings footer.qsm-popup__footer .button {
 	margin: 0 0 0 10px;
@@ -4043,7 +4102,7 @@ input#duplicate_questions {
 .results-page-show .wp-media-buttons button.button,
 .qsm-email-content .wp-media-buttons button.button,
 .qsm-row .right-bar .insert-media, .qsm-common-button-styles {
-	border: 1px solid #3858e9;
+	border: 1px solid var(--qsm-info-or-bg-color);
     font-weight: 500;
 }
 
@@ -4385,7 +4444,7 @@ h2#qsm-email-page-templates-title {
 
 .qsm-response-toaster.qsm-response-info, .footer-bar-notice.qsm-response-info {
 	background-color: #EFF6FF;
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 }
 
 .footer-bar-notice.qsm-response-info img {
@@ -5034,12 +5093,12 @@ button.button.qsm-extra-shortcode-popup span.dashicons.dashicons-shortcode {
 }
 
 .email-show .qsm-email-page-content-buttons button.button {
-    border-color: #3858e9;
+    border-color: var(--qsm-info-or-bg-color);
 	font-weight: 500;
 }
 .results-page-show .quicktags-toolbar input[type="button"],
 .email-show .quicktags-toolbar input[type="button"] {
-	border-color: #3858e9;
+	border-color: var(--qsm-info-or-bg-color);
 }
 span.qsm-insert-template-variable-text {
 	line-height: 2;
@@ -5198,7 +5257,7 @@ ul.qsm-wp-contributor.wp-people-group {
 }
 #qsm-delete-result-page-popup.qsm-standard-popup .qsm-popup__header .qsm-popup__title {
 	padding: 0;
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 }
 
 #qsm-delete-result-page-popup .qsm-popup__footer, #qsm-delete-questions-tools-page-popup .qsm-popup__footer, #qsm-delete-results-tools-page-popup .qsm-popup__footer {
@@ -5397,7 +5456,7 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 
 .qsm-bulk-upload-meta .dashicons {
 	font-size: 24px;
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 }
 
 .qsm-bulk-upload-form .qsm-bulk-upload-grid {
@@ -5405,17 +5464,6 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 	gap: 24px;
 	flex-wrap: wrap;
 	margin-bottom: 16px;
-}
-
-button#insert-media-button {
-    font-size: 11px;
-    padding: 0 5px;
-    min-height: 26px;
-    margin: 0;
-    border-radius: 1px;
-    line-height: 2.15384615;
-    top: 12px;
-    position: relative;
 }
 
 .qsm-bulk-upload-form .qsm-field {
@@ -5434,7 +5482,7 @@ button#insert-media-button {
 }
 
 .qsm-bulk-upload-dropzone.is-dragover {
-	border-color: #3858e9;
+	border-color: var(--qsm-info-or-bg-color);
 	background: #f0f6fc;
 }
 
@@ -5454,7 +5502,7 @@ button#insert-media-button {
 
 .qsm-dropzone-content .dashicons {
 	font-size: 40px;
-	color: #3858e9;
+	color: var(--qsm-info-or-bg-color);
 	display: block;
 	margin-bottom: 10px;
 }
@@ -5545,6 +5593,22 @@ button#insert-media-button {
 
 .qsm-question-bank-admin .qsm-question-bank-actions {
 	margin: 15px 0;
+}
+
+button#qsm-question-bank-create span.dashicons.dashicons-plus-alt2, button#qsm-bulk-question-import .dashicons.dashicons-cloud-upload {
+    line-height: 1.4;
+}
+
+body[class*="version-7-"] button#qsm-question-bank-create span.dashicons.dashicons-plus-alt2, body[class*="version-7-"] button#qsm-bulk-question-import .dashicons.dashicons-cloud-upload {
+    line-height: 1.9;
+}
+
+.qsm-installer-container span.dashicons.dashicons-download {
+    line-height: 1.6;
+}
+
+body[class*="version-7-"] .qsm-installer-container span.dashicons.dashicons-download {
+    line-height: 2.1;
 }
 
 .qsm-question-bank-table-wrapper {
