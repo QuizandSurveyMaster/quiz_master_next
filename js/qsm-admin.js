@@ -2895,6 +2895,7 @@ var QSM_Quiz_Broadcast_Channel;
                         quizID: 1,
                         pagekey: qsmRandomID(8),
                         hide_prevbtn: 0,
+                        question_limit: 0,
                         questions: null,
                     }
                 }),
@@ -3257,7 +3258,8 @@ var QSM_Quiz_Broadcast_Channel;
                             id: newPageID,
                             quizID: qsmQuestionSettings.quizID,
                             pagekey: qsmRandomID(8),
-                            hide_prevbtn: 0
+                            hide_prevbtn: 0,
+                            question_limit: 0
                         });
                     }
                     var pageInfo = QSMQuestion.qpages.get(pageID);

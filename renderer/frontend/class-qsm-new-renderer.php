@@ -314,6 +314,9 @@ class QSM_New_Renderer {
 		
 		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_option_before', $qmn_quiz_options );
+		// Route to manual pages (capping each page) when that option is on, before any
+		// pagination-dependent filter (e.g. qmn_pagination_check on qmn_begin_quiz) runs.
+		$qmn_quiz_options = qsm_apply_manual_pagination_override( $qmn_quiz_options );
 		
 		
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {

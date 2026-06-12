@@ -319,6 +319,7 @@ class QMNGlobalSettingsPage {
 			'progress_bar'                           => 0,
 			'require_log_in'                         => 0,
 			'pagination'                             => 0,
+			'apply_pagination_to_manual_pages'       => 0,
 			'timer_limit'                            => 0,
 			'enable_result_after_timer_end'          => 0,
 			'skip_validation_time_expire'            => 0,

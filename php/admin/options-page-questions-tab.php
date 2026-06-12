@@ -59,28 +59,31 @@ function qsm_options_questions_tab_content() {
 	$qpages          = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
-			'id'           => 1,
-			'quizID'       => $quiz_id,
-			'pagekey'      => '',
-			'hide_prevbtn' => 0,
-			'questions'    => array(),
+			'id'             => 1,
+			'quizID'         => $quiz_id,
+			'pagekey'        => '',
+			'hide_prevbtn'   => 0,
+			'question_limit' => 0,
+			'questions'      => array(),
 		);
 		foreach ( $pages as $k => $val ) {
-			$qpage                 = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
-			$qpage['id']           = $k + 1;
-			$qpage['pagekey']      = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
-			$qpage['hide_prevbtn'] = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
-			$pages[ $k ]           = array_values( $val );
-			$qpage['questions']    = array_values( $val );
-			$qpages[]              = $qpage;
+			$qpage                   = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
+			$qpage['id']             = $k + 1;
+			$qpage['pagekey']        = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
+			$qpage['hide_prevbtn']   = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
+			$qpage['question_limit'] = ( isset( $qpage['question_limit'] ) && ! empty( $qpage['question_limit'] ) ) ? intval( $qpage['question_limit'] ) : 0;
+			$pages[ $k ]             = array_values( $val );
+			$qpage['questions']      = array_values( $val );
+			$qpages[]                = $qpage;
 		}
 	} else {
 		$defaultQPage = array(
-			'id'           => 1,
-			'quizID'       => $quiz_id,
-			'pagekey'      => uniqid(),
-			'hide_prevbtn' => 0,
-			'questions'    => array(),
+			'id'             => 1,
+			'quizID'         => $quiz_id,
+			'pagekey'        => uniqid(),
+			'hide_prevbtn'   => 0,
+			'question_limit' => 0,
+			'questions'      => array(),
 		);
 		$qpages[]     = $defaultQPage;
 	}
@@ -741,6 +744,11 @@ function qsm_options_questions_tab_content() {
 							<label class="qsm-page-setting-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></label>
 							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
 							<span class="qsm-page-setting-span"><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
+						</div>
+						<div class="qsm-row">
+							<label class="qsm-page-setting-label" for="question_limit"><?php esc_html_e( 'Limit questions', 'quiz-master-next' ); ?></label>
+							<input name="question_limit" id="question_limit" type="number" step="1" min="0" class="small-text" value="0" />
+							<span class="qsm-page-setting-span"><?php esc_html_e( 'Set 0 to show all', 'quiz-master-next' ); ?></span>
 						</div>
 						<?php if ( 'yes' == $display_advance ) { ?>
 						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr( $background ); ?>">
