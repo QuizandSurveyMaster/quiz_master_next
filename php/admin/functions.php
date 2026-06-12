@@ -812,6 +812,9 @@ function qsm_text_template_variable_list() {
 			'%ANSWER_X%'                  => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
 			'%QUESTIONS_ANSWERS_EMAIL%'   => __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' ),
+			'%QSM_START_QUIZ_DATE%'       => __( 'The scheduled start date/time of the quiz.', 'quiz-master-next' ),
+			'%QSM_END_QUIZ_DATE%'         => __( 'The scheduled end date/time of the quiz.', 'quiz-master-next' ),
+
 		),
 	);
 	$variable_list   = apply_filters( 'qsm_text_variable_list', $variable_list );
@@ -1556,6 +1559,11 @@ add_action('wp_ajax_qsm_insert_quiz_template', 'qsm_insert_quiz_template_callbac
 function qsm_insert_quiz_template_callback() {
     global $wpdb;
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to manage quiz templates.', 'quiz-master-next' ) ) );
+		wp_die();
+	}
+
 	// validate nonce
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_add_template' ) && is_user_logged_in() ) {
 
@@ -1578,6 +1586,9 @@ function qsm_insert_quiz_template_callback() {
 			},
 			$filtered_content
 		);
+		// Strip executable HTML (e.g. <script>, on* handlers) before persisting.
+		// Runs after the custom-tag passes above so %VARIABLE% / shortcode text are preserved.
+		$filtered_content = wp_kses_post( $filtered_content );
 
 		$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
 
@@ -1640,6 +1651,12 @@ add_action( 'wp_ajax_qsm_remove_my_templates', 'qsm_remove_my_templates_handler'
  */
 function qsm_remove_my_templates_handler() {
     global $wpdb;
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to manage quiz templates.', 'quiz-master-next' ) ) );
+		wp_die();
+	}
+
 	if ( ! isset( $_POST['nonce'] ) ||
         ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_remove_template' )
     ) {

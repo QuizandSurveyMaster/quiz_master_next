@@ -79,6 +79,9 @@
 	background-color: #dcfce7;
 	border: 1px solid #a7f3d0;
 }
+#modal-9 .qsm-popup__footer {
+	border-top: 1px solid var(--qsm-common-popup-border-color);
+}
 #save-multi-category-button:disabled {
 	opacity: 0.65;
 	cursor: not-allowed;
@@ -116,19 +119,17 @@
 }
 .page-header .page-header-buttons {
 	display: flex;
-    min-width: 246px;
 	gap: 10px;
-    justify-content: space-between;
 	align-items: center;
 }
 .page-header-icons{
 	display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    border-radius: 5px;
-    border: 1px solid #8a8a8a;
-    justify-content: space-around;
-    min-height: 28px;
+	align-items: center;
+	flex-wrap: wrap;
+	border-radius: 5px;
+	border: 1px solid #8a8a8a;
+	justify-content: space-around;
+	min-height: 28px;
 	height: max-content;
 }
 .page-header-icons a {
@@ -183,13 +184,36 @@
 }
 .page-footer a.button .dashicons,
 .new-answer-button a#new-answer-button .dashicons {
+	line-height: 32px;
+}
+
+/* WP 7+: reset line-height, not needed */
+body[class*="version-7-"] .page-footer a.button .dashicons,
+body[class*="version-7-"] .new-answer-button a#new-answer-button .dashicons,
+body[class*="version-8-"] .page-footer a.button .dashicons,
+body[class*="version-8-"] .new-answer-button a#new-answer-button .dashicons,
+body[class*="version-9-"] .page-footer a.button .dashicons,
+body[class*="version-9-"] .new-answer-button a#new-answer-button .dashicons,
+body[class*="version-10-"] .page-footer a.button .dashicons,
+body[class*="version-10-"] .new-answer-button a#new-answer-button .dashicons {
 	line-height: 42px;
 }
 .question-create-page {
 	text-align: center;
 }
+
 .question-create-page .new-page-button .dashicons {
+	line-height: 30px;
+	font-size: 16px;
+}
+
+/* WP 7+ only */
+body[class*="version-7-"] .question-create-page .new-page-button .dashicons,
+body[class*="version-8-"] .question-create-page .new-page-button .dashicons,
+body[class*="version-9-"] .question-create-page .new-page-button .dashicons,
+body[class*="version-10-"] .question-create-page .new-page-button .dashicons {
 	font-size: 20px;
+	line-height: 38px;
 }
 .page-header a {
 	text-decoration: none;
@@ -407,15 +431,24 @@ input#image_size-width {
 }
 .qsm-editor-wrap .wp-media-buttons {
 	float: right;
-	margin: 16px 0 -3px 5px;
+	margin: 6px 0 -3px 5px;
 }
 .qsm-editor-wrap .wp-media-buttons button {
-	font-size: 11px;
-    padding: 0 5px;
-    min-height: 26px;
-    margin: 0;
+	padding: 0 5px;
+    min-height: 28px;
     border-radius: 1px;
-    line-height: 2.15384615;
+    line-height: 2.153846;
+    position: relative;
+    top: -3px;
+    margin: 0px 0px -8px 0;
+}
+
+body[class*="version-7-"] .qsm-editor-wrap .wp-media-buttons button,
+body[class*="version-8-"] .qsm-editor-wrap .wp-media-buttons button,
+body[class*="version-9-"] .qsm-editor-wrap .wp-media-buttons button,
+body[class*="version-10-"] .qsm-editor-wrap .wp-media-buttons button {
+	line-height: 2.15384615;
+	top: 8px;
 }
 .qsm-editor-wrap .wp-media-buttons button .wp-media-buttons-icon {
 	width:18px;
@@ -458,7 +491,33 @@ input#image_size-width {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+/* WP 7+ */
+body[class*="version-7-"] #modal-page-1 .qsm-popup__footer,
+body[class*="version-7-"] #modal-2 .qsm-popup__footer,
+body[class*="version-7-"] #modal-7 .qsm-popup__footer,
+body[class*="version-8-"] #modal-page-1 .qsm-popup__footer,
+body[class*="version-8-"] #modal-2 .qsm-popup__footer,
+body[class*="version-8-"] #modal-7 .qsm-popup__footer,
+body[class*="version-9-"] #modal-page-1 .qsm-popup__footer,
+body[class*="version-9-"] #modal-2 .qsm-popup__footer,
+body[class*="version-9-"] #modal-7 .qsm-popup__footer,
+body[class*="version-10-"] #modal-page-1 .qsm-popup__footer,
+body[class*="version-10-"] #modal-2 .qsm-popup__footer,
+body[class*="version-10-"] #modal-7 .qsm-popup__footer {
 	border-top: 1px solid var(--qsm-common-popup-border-color);
+}
+
+/* WP 7+ only */
+body[class*="version-7-"] .questionElements #qsm-question-publishing-action,
+body[class*="version-8-"] .questionElements #qsm-question-publishing-action,
+body[class*="version-9-"] .questionElements #qsm-question-publishing-action,
+body[class*="version-10-"] .questionElements #qsm-question-publishing-action {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	width: auto;
 }
 #modal-2 #question-bank {
 	display: inline-block;

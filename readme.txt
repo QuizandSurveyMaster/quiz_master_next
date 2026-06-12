@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 5.4
-Stable tag: 11.1.4
+Stable tag: 11.1.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.1.5 ( June 12, 2026 ) =
+* Feature: Added the %QSM_ADMIN_EMAIL% template variable to include the admin email in email templates
+* Feature: Added %QSM_START_QUIZ_DATE% and %QSM_END_QUIZ_DATE% template variables to display the quiz start and end dates
+* Enhancement: Improved validation and security measures when saving quiz email templates
+* Enhancement: Strengthened security checks for saving email and result templates
+
 = 11.1.4 ( May 29, 2026 ) =
 * Bug: Fixed issues with bulk question imports and file reset functionality
 * Patch: Resolved an IDOR vulnerability in REST endpoints that could allow unauthorized quiz and question modifications
