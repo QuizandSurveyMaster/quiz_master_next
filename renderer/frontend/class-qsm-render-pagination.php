@@ -1099,7 +1099,9 @@ class QSM_New_Pagination_Renderer {
 					$question = $this->questions[ $question_id ];
 					?>
 					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+						<?php if ( 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
+						<?php } ?>
 						<?php
 						if ( $this->quiz_options->show_category_on_front ) {
 							$categories = QSM_Questions::get_question_categories( $question_id );
@@ -1153,13 +1155,17 @@ class QSM_New_Pagination_Renderer {
 				$qmn_total_questions += count( $page );
 			}
 			// Show page count if enabled
+			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
+				?>
+				<span class="pages_count">
+				<?php
+				$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
+				?>
+				</span>
+				<?php
+			}
 			?>
-			<span class="pages_count">
-			<?php
-			$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
-			echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
-			?>
-			</span>
 			<?php
 			do_action( 'qsm_new_action_after_page', $pages_count, $page );
 			?>

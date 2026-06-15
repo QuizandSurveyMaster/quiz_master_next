@@ -945,11 +945,18 @@ var QSMPagination;
                     data: ajaxData,
                     success: function(response) {
                         if (response.success && response.data.html) {
-                            // Remove placeholder
-                            $page.find('.qsm-lazy-load-placeholder').remove();
-
-                            // Insert questions HTML
-                            $page.find('.pages_count').before(response.data.html);
+                            // Insert questions HTML where the placeholder sits, then remove it.
+                            // The placeholder is the stable anchor: .pages_count may be absent
+                            // when the "show pagination count" option is disabled.
+                            let $placeholder = $page.find('.qsm-lazy-load-placeholder');
+                            if ($placeholder.length) {
+                                $placeholder.before(response.data.html);
+                                $placeholder.remove();
+                            } else if ($page.find('.pages_count').length) {
+                                $page.find('.pages_count').before(response.data.html);
+                            } else {
+                                $page.append(response.data.html);
+                            }
 
                             // Mark page as loaded
                             $page.removeClass('qsm-lazy-load-page qsm-loading');
