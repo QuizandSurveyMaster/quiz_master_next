@@ -2964,15 +2964,6 @@ body[class*="version-10-"] .result-tab-content a.button > span.dashicons {
     color: #555555;
 }
 /** * Style tab design */
-.wp-upload-form {
-	background: #fafafa;
-	border: 1px solid #ccd0d4;
-	padding: 30px;
-	margin: 0 0 30px auto;
-	display: inline-flex;
-	justify-content: space-between;
-	align-items: center;
-}
 @media (min-width: 768px) and (max-width: 1199px) {
 	.qsm-news-ads .qsm-info-widget {
 		float: left;
