@@ -355,7 +355,8 @@ class QSM_New_Renderer {
 		</script>';
 		
 		if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
-			$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) ) . '</style>';
+			$custom_css      = wp_strip_all_tags( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) );
+			$return_display .= '<style type="text/css">' . $custom_css . '</style>';
 		}
 
 		// Apply filters before rendering
