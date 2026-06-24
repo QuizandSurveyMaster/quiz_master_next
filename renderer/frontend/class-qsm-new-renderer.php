@@ -354,6 +354,11 @@ class QSM_New_Renderer {
 			}
 		</script>';
 		
+		if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
+			$custom_css      = wp_strip_all_tags( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) );
+			$return_display .= '<style type="text/css">' . $custom_css . '</style>';
+		}
+
 		// Apply filters before rendering
 		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_options_before', $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
