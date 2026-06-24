@@ -354,6 +354,10 @@ class QSM_New_Renderer {
 			}
 		</script>';
 		
+		if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
+			$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) ) . '</style>';
+		}
+
 		// Apply filters before rendering
 		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_options_before', $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
