@@ -241,7 +241,7 @@ class QSM_New_Renderer {
 
 			$result_id      = $result['result_id'];
 			$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
-			$return_display = str_replace( '%FB_RESULT_ID%', $result_unique_id, $return_display );
+			$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 		} else {
 			$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
 		}
