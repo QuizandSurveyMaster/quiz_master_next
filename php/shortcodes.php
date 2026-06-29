@@ -1,6 +1,64 @@
 <?php
 
 /**
+ * Resolve a QSM quiz_id to the qsm_quiz post ID for the CURRENT request language.
+ *
+ * QSM keeps a single internal quiz_id across all languages, while WPML
+ * create a separate qsm_quiz post per language. This helper finds the base post
+ * that carries the quiz_id meta (without any language filtering) and then maps it
+ * to the post for the language currently being viewed.
+ *
+ * On a single-language site (no WPML) it simply returns that base post,
+ * so the historical behaviour is unchanged.
+ *
+ * @since 11.1.6
+ * @param int $quiz_id QSM internal quiz_id.
+ * @return int Post ID for the current language, or 0 if none found.
+ */
+function qsm_get_translated_quiz_post_id( $quiz_id ) {
+	$quiz_id = intval( $quiz_id );
+	if ( $quiz_id < 1 ) {
+		return 0;
+	}
+
+	// 1. Find the base qsm_quiz post WITHOUT language filtering, so the post that
+	//    carries the quiz_id meta is always found regardless of the active language.
+	$base_query = new WP_Query(
+		array(
+			'post_type'              => 'qsm_quiz',
+			'meta_key'               => 'quiz_id',
+			'meta_value'             => $quiz_id,
+			'posts_per_page'         => 1,
+			'post_status'            => 'publish',
+			'fields'                 => 'ids',
+			'suppress_filters'       => true, // Bypass WPML language SQL filter.
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
+	);
+
+	if ( empty( $base_query->posts ) ) {
+		return 0;
+	}
+	$base_post_id = (int) $base_query->posts[0];
+
+	// 2. Map the base post to the post for the CURRENT language.
+	// WPML.
+	if ( has_filter( 'wpml_object_id' ) ) {
+		$current_lang = apply_filters( 'wpml_current_language', null );
+		// The "true" flag returns the original post when no translation exists (graceful fallback).
+		$translated_id = apply_filters( 'wpml_object_id', $base_post_id, 'qsm_quiz', true, $current_lang );
+		if ( $translated_id ) {
+			return (int) $translated_id;
+		}
+	}
+
+	// 3. No multilingual plugin (or no translation found) -> base post.
+	return $base_post_id;
+}
+
+/**
  * Displays a link to a quiz using ID. Used [qsm_link id=1]Click Here[/qsm_link]
  *
  * @since 5.1.0
@@ -23,24 +81,11 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	$class = $args['class'];
 	$target = $args['target'];
 
-	// Find the permalink by finding the post with the meta_key 'quiz_id' of supplied quiz
-	$permalink = '';
-	$my_query  = new WP_Query(
-		array(
-			'post_type'      => 'qsm_quiz',
-			'meta_key'       => 'quiz_id',
-			'meta_value'     => $id,
-			'posts_per_page' => 1,
-			'post_status'    => 'publish',
-		)
-	);
-	if ( $my_query->have_posts() ) {
-		while ( $my_query->have_posts() ) {
-			$my_query->the_post();
-			$permalink = get_permalink();
-		}
-	}
-	wp_reset_postdata();
+	// Find the permalink for the quiz, resolved to the CURRENT language when a
+	// multilingual plugin (WPML) is active. On single-language sites this
+	// returns the same post as before, so behaviour is unchanged.
+	$post_id   = qsm_get_translated_quiz_post_id( $id );
+	$permalink = $post_id ? get_permalink( $post_id ) : '';
 
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
@@ -228,30 +273,11 @@ add_action( 'wp_head', 'qsm_generate_fb_header_metadata' );
  * Get the post id from quiz id
  */
 function qsm_get_post_id_from_quiz_id( $quiz_id ) {
-	$args      = array(
-		'posts_per_page' => 1,
-		'post_type'      => 'qsm_quiz',
-		'meta_query'     => array(
-			array(
-				'key'     => 'quiz_id',
-				'value'   => $quiz_id,
-				'compare' => '=',
-			),
-		),
-	);
-	$the_query = new WP_Query( $args );
-
-	// The Loop
-	$post_permalink = '';
-	if ( $the_query->have_posts() ) {
-		while ( $the_query->have_posts() ) {
-			$the_query->the_post();
-			$post_permalink = get_the_permalink( get_the_ID() );
-		}
-		/* Restore original Post Data */
-		wp_reset_postdata();
-	}
-	return $post_permalink;
+	// Resolve the quiz post for the CURRENT language (WPML aware) so the
+	// Open Graph share URL points to the correct translated page. On single-language
+	// sites this returns the same permalink as before.
+	$post_id = qsm_get_translated_quiz_post_id( $quiz_id );
+	return $post_id ? get_the_permalink( $post_id ) : '';
 }
 
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div', 11, 3 );

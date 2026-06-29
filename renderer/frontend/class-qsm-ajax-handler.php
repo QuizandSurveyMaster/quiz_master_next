@@ -198,7 +198,9 @@ class QSM_Ajax_Handler {
 
 			?>
 			<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+				<?php if ( isset( $quiz_options_settings->question_numbering ) && 1 === intval( $quiz_options_settings->question_numbering ) ) { ?>
 				<span class='mlw_qmn_question_number'><?php echo esc_html( $current_question_number ); ?>.&nbsp;</span>
+				<?php } ?>
 				<?php
 				// Show category if enabled
 				if ( isset( $quiz_options_settings->show_category_on_front ) && $quiz_options_settings->show_category_on_front ) {

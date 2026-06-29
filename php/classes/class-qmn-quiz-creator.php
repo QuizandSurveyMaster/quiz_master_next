@@ -328,6 +328,20 @@ class QMNQuizCreator {
 			foreach ( $question_results as $result ) {
 				$question_id = $result->question_id;
 				qsm_process_unlink_question_from_list_by_question_id( $question_id );
+				// When the quiz is permanently removed from the database, also let
+				// extensions clean up after each of its questions before deletion.
+				if ( $qsm_delete_from_db && $qsm_delete_questions_from_qb ) {
+					do_action( 'qsm_question_deleted', $question_id );
+				}
+			}
+			// Permanently delete the quiz's questions from the question bank and db
+			// quiz itself is being deleted from the database (not just soft-deleted).
+			if ( $qsm_delete_from_db && $qsm_delete_questions_from_qb) {
+				$wpdb->delete(
+					$wpdb->prefix . 'mlw_questions',
+					array( 'quiz_id' => $quiz_id ),
+					array( '%d' )
+				);
 			}
 			if ( ! empty( $quiz_post_id ) ) {
 				if ( $qsm_delete_from_db ) {

@@ -999,6 +999,9 @@ class QMNQuizManager {
 	public function display_quiz( $options, $quiz_data, $question_amount, $shortcode_args = array() ) {
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
+		// Route to manual pages (capping each page) when that option is on, before any
+		// pagination-dependent filter (e.g. qmn_pagination_check) runs on qmn_begin_quiz.
+		$options = qsm_apply_manual_pagination_override( $options );
 		echo apply_filters( 'qmn_begin_quiz', '', $options, $quiz_data );
 		$options = apply_filters( 'qmn_begin_quiz_options', $options, $quiz_data );
 		if ( ! $qmn_allowed_visit ) {
@@ -1190,6 +1193,28 @@ class QMNQuizManager {
 				document.cookie = "question_ids_<?php echo esc_attr( $options->quiz_id ); ?> = <?php echo esc_attr( $question_list_str ); ?>; "+qmsExpiresQQMTwo+"; path=/";
 			</script>
 			<?php
+		}
+		// Limit the number of questions shown per manually-created page. Applied after the
+		// in-page shuffle above, so when "Randomize questions" is on this keeps the first N
+		// of the shuffled set; otherwise it keeps the first N in editor order. 0 = show all.
+		// Global per-page cap from the "Questions Per Page" value, present only when the
+		// "apply to manual pages" option is on (see qsm_apply_manual_pagination_override()).
+		$manual_page_cap = isset( $options->qsm_manual_page_cap ) ? intval( $options->qsm_manual_page_cap ) : 0;
+		if ( is_array( $pages ) && is_array( $qpages ) && empty( $options->question_per_category ) ) {
+			foreach ( $pages as $page_key => &$page_question_ids ) {
+				if ( ! is_array( $page_question_ids ) ) {
+					continue;
+				}
+				// A page's own "Limit questions" wins; otherwise fall back to the global cap.
+				$page_limit = isset( $qpages[ $page_key ]['question_limit'] ) ? intval( $qpages[ $page_key ]['question_limit'] ) : 0;
+				if ( $page_limit <= 0 ) {
+					$page_limit = $manual_page_cap;
+				}
+				if ( $page_limit > 0 && count( $page_question_ids ) > $page_limit ) {
+					$page_question_ids = array_slice( $page_question_ids, 0, $page_limit );
+				}
+			}
+			unset( $page_question_ids );
 		}
 		if ( 1 < count( $pages ) && 1 !== intval( $options->disable_first_page ) && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
@@ -3670,6 +3695,33 @@ function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_vari
 		}
 	}
 	return $display;
+}
+
+/**
+ * Apply the "limit questions per page on manual pages" override to a quiz options object.
+ *
+ * When the quiz has both a "Questions Per Page" value and the
+ * "apply_pagination_to_manual_pages" option enabled, the quiz should render using its
+ * manually-created pages (not auto-pagination), capping each page at that value. To make
+ * the whole rendering stack (both renderers and the front-end navigation JS) treat the
+ * quiz as manual, we stash the value as $options->qsm_manual_page_cap and zero out
+ * $options->pagination. The per-page cap is then applied while building the pages, where a
+ * page's own "Limit questions" value still takes precedence over this global cap.
+ *
+ * Idempotent: once pagination has been zeroed it does nothing on subsequent calls.
+ *
+ * @param object $options Quiz options object (must expose pagination + apply_pagination_to_manual_pages).
+ * @return object The same options object, possibly mutated.
+ */
+function qsm_apply_manual_pagination_override( $options ) {
+	if ( is_object( $options )
+		&& ! empty( $options->apply_pagination_to_manual_pages )
+		&& isset( $options->pagination )
+		&& intval( $options->pagination ) > 0 ) {
+		$options->qsm_manual_page_cap = intval( $options->pagination );
+		$options->pagination          = 0;
+	}
+	return $options;
 }
 
 add_filter( 'qmn_begin_quiz', 'qmn_pagination_check', 10, 3 );

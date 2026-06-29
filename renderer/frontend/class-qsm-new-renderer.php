@@ -241,7 +241,7 @@ class QSM_New_Renderer {
 
 			$result_id      = $result['result_id'];
 			$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
-			$return_display = str_replace( '%FB_RESULT_ID%', $result_unique_id, $return_display );
+			$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 		} else {
 			$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
 		}
@@ -314,6 +314,9 @@ class QSM_New_Renderer {
 		
 		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_option_before', $qmn_quiz_options );
+		// Route to manual pages (capping each page) when that option is on, before any
+		// pagination-dependent filter (e.g. qmn_pagination_check on qmn_begin_quiz) runs.
+		$qmn_quiz_options = qsm_apply_manual_pagination_override( $qmn_quiz_options );
 		
 		
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
@@ -351,6 +354,11 @@ class QSM_New_Renderer {
 			}
 		</script>';
 		
+		if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
+			$custom_css      = wp_strip_all_tags( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) );
+			$return_display .= '<style type="text/css">' . $custom_css . '</style>';
+		}
+
 		// Apply filters before rendering
 		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_options_before', $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );

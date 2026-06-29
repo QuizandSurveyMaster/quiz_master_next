@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 7.0
 Requires PHP: 5.4
-Stable tag: 11.1.5
+Stable tag: 11.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,13 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.2.0 (June 29, 2026) =
+* Feature: Added the ability to configure page limits for individual pages when using manual pagination
+* Bug: Resolved an issue where the progress bar was not displaying correctly for flashcard questions
+* Patch: Fixed a stored Cross-Site Scripting (XSS) vulnerability involving the "question_title" and "unique_id" parameters
+* Enhancement: Added support for translating quiz links generated with the "quiz_link" shortcode in WPML
+* Enhancement: Improved Media page UI compatibility with WordPress 7
+
 = 11.1.5 ( June 12, 2026 ) =
 * Feature: Added the %QSM_ADMIN_EMAIL% template variable to include the admin email in email templates
 * Feature: Added %QSM_START_QUIZ_DATE% and %QSM_END_QUIZ_DATE% template variables to display the quiz start and end dates
