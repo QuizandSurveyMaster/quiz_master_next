@@ -207,6 +207,10 @@ body[class*="version-10-"] .new-answer-button a#new-answer-button .dashicons {
 	font-size: 16px;
 }
 
+[class*=branch-7].wp-core-ui .question-create-page .new-page-button .dashicons {
+    color: #fff;
+    line-height: 1;
+}
 /* WP 7+ only */
 body[class*="version-7-"] .question-create-page .new-page-button .dashicons,
 body[class*="version-8-"] .question-create-page .new-page-button .dashicons,

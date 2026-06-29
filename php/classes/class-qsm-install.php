@@ -579,6 +579,16 @@ class QSM_Install {
 					'prefix_text' => __( 'Show ', 'quiz-master-next' ),
 					'suffix_text' => __( 'Questions Per Page', 'quiz-master-next' ) . '<label class="qsm-opt-desc"><i>' . __( "Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.", 'quiz-master-next' ) . '</i></label>',
 				),
+				'apply_pagination_to_manual_pages' => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Apply the above limit to your manually created pages instead of auto-paginating. Each page is capped at this number (pages with fewer questions are unchanged). A page\'s own "Limit questions" value takes priority.', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 0,
+				),
 				'question_numbering'     => array(
 					'type'    => 'checkbox',
 					'options' => array(

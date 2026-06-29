@@ -56,6 +56,21 @@ class QSM_New_Pagination_Renderer {
 	private $qpages;
 
 	/**
+	 * Per-page question limit, keyed by page position. 0 = show all.
+	 *
+	 * @var array
+	 */
+	private $page_limits = array();
+
+	/**
+	 * Global per-page cap derived from "Questions Per Page" when the
+	 * "apply_pagination_to_manual_pages" option is on. 0 = no global cap.
+	 *
+	 * @var int
+	 */
+	private $manual_page_cap = 0;
+
+	/**
 	 * Quiz settings
 	 *
 	 * @var array
@@ -140,6 +155,11 @@ class QSM_New_Pagination_Renderer {
 		$this->shortcode_args   = $shortcode_args;
 		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
 		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );
+		// When "apply to manual pages" is on with a "Questions Per Page" value, render the
+		// manual pages and cap each one. This zeroes pagination so setup/render below take
+		// the manual path; the stashed cap is applied in apply_page_question_limit().
+		$this->quiz_options     = qsm_apply_manual_pagination_override( $this->quiz_options );
+		$this->manual_page_cap  = isset( $this->quiz_options->qsm_manual_page_cap ) ? intval( $this->quiz_options->qsm_manual_page_cap ) : 0;
 		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );
 		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? maybe_unserialize( $this->quiz_settings['contact_form'] ) : array();
 		$this->pages            = isset( $this->quiz_settings['pages'] ) ? maybe_unserialize( $this->quiz_settings['pages'] ) : array();
@@ -147,6 +167,8 @@ class QSM_New_Pagination_Renderer {
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
+				// Per-page question limit, keyed by page position to match $this->pages.
+				$this->page_limits[ $key ] = isset( $qpage['question_limit'] ) ? intval( $qpage['question_limit'] ) : 0;
 				if ( isset( $qpage['id'] ) ) {
 					$this->qpages[ $qpage['id'] ] = $qpage;
 				}
@@ -216,17 +238,53 @@ class QSM_New_Pagination_Renderer {
 	private function setup_pages() {
 		// If pagination value is greater than 0
 		if ( $this->quiz_options->pagination <= 0 ) {
-			if ( in_array( 'pages', $this->randomness_order, true ) ) {
-				shuffle( $this->pages );
-			}
+			// Shuffle the questions within each page first (when enabled) so the per-page
+			// limit below keeps a random subset; otherwise it keeps the first N in order.
 			if ( in_array( 'questions', $this->randomness_order, true ) ) {
 				foreach ( $this->pages as &$page ) {
 					shuffle( $page );
 				}
+				unset( $page );
+			}
+			$this->apply_page_question_limit();
+			// Randomize the page order last so each page still maps to its configured limit.
+			if ( in_array( 'pages', $this->randomness_order, true ) ) {
+				shuffle( $this->pages );
 			}
 		} else {
 			$this->create_auto_pagination();
 		}
+	}
+
+	/**
+	 * Limit the number of questions shown on each manually-created page.
+	 *
+	 * Applied after the in-page question shuffle so, when "Randomize questions" is on,
+	 * the first N of the shuffled page are kept; otherwise the first N in editor order.
+	 * Pages with a limit of 0 (or none configured) are left unchanged.
+	 */
+	private function apply_page_question_limit() {
+		if ( ! is_array( $this->pages ) || ! empty( $this->quiz_options->question_per_category ) ) {
+			return;
+		}
+		// Nothing to do without per-page limits or a global cap from "Questions Per Page".
+		if ( empty( $this->page_limits ) && $this->manual_page_cap <= 0 ) {
+			return;
+		}
+		foreach ( $this->pages as $page_index => &$page ) {
+			if ( ! is_array( $page ) ) {
+				continue;
+			}
+			// A page's own "Limit questions" wins; otherwise fall back to the global cap.
+			$page_limit = isset( $this->page_limits[ $page_index ] ) ? intval( $this->page_limits[ $page_index ] ) : 0;
+			if ( $page_limit <= 0 ) {
+				$page_limit = $this->manual_page_cap;
+			}
+			if ( $page_limit > 0 && count( $page ) > $page_limit ) {
+				$page = array_slice( $page, 0, $page_limit );
+			}
+		}
+		unset( $page );
 	}
 
 	/**
@@ -1041,7 +1099,9 @@ class QSM_New_Pagination_Renderer {
 					$question = $this->questions[ $question_id ];
 					?>
 					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
+						<?php if ( 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
+						<?php } ?>
 						<?php
 						if ( $this->quiz_options->show_category_on_front ) {
 							$categories = QSM_Questions::get_question_categories( $question_id );
@@ -1095,13 +1155,17 @@ class QSM_New_Pagination_Renderer {
 				$qmn_total_questions += count( $page );
 			}
 			// Show page count if enabled
+			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
+				?>
+				<span class="pages_count">
+				<?php
+				$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
+				?>
+				</span>
+				<?php
+			}
 			?>
-			<span class="pages_count">
-			<?php
-			$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
-			echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
-			?>
-			</span>
 			<?php
 			do_action( 'qsm_new_action_after_page', $pages_count, $page );
 			?>

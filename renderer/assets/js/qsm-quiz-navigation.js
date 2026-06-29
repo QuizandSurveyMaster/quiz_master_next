@@ -397,6 +397,12 @@ var QSMPagination;
                 let currentQuiz = this.quizObjects[quizId];
                 let $container = currentQuiz.quizContainer;
 
+                // bindAnswerEvents() runs again on every lazy-loaded page navigation.
+                // The handlers below are delegated on the persistent $container, so without
+                // removing the previous bindings they stack up and fire qsm_after_select_answer
+                // once per navigation (1x on Q1, 2x on Q2, ...). Namespace + off prevents that.
+                $container.off('.qsmAnswerEvents');
+
                 // Remove active-question highlight when using mouse (border is for keyboard navigation only)
                 $container.off('click.qsmActiveQuestion');
                 $container.on('click.qsmActiveQuestion', '.qsm-question-wrapper', function() {
@@ -404,7 +410,7 @@ var QSMPagination;
                 });
 
                 // Multiple choice radio buttons and dropdowns (matching legacy: .qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date)
-                $container.on('change', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date', function(e) {
+                $container.on('change.qsmAnswerEvents', '.qmn-multiple-choice-input, .qsm_dropdown, .mlw_answer_date', function(e) {
                     let $i_this = $(this);
                     let value = $i_this.val();
                     let $this = $i_this.closest('.quiz_section, .qsm-question');
@@ -440,7 +446,7 @@ var QSMPagination;
                 });
                 
                 // Multiple response checkboxes (matching legacy: .qsm-multiple-response-input)
-                $container.on('change', '.qsm-multiple-response-input', function(e) {
+                $container.on('change.qsmAnswerEvents', '.qsm-multiple-response-input', function(e) {
                     let $i_this = $(this);
                     let question_id = $i_this.attr('name').split('question')[1];
                     let $this = $i_this.closest('.quiz_section, .qsm-question');
@@ -476,7 +482,7 @@ var QSMPagination;
                 
                 // Text, number, and fill-blank inputs (matching legacy: .mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank)
                 let qsm_inline_result_timer;
-                $container.on('keyup', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank', function(e) {
+                $container.on('keyup.qsmAnswerEvents', '.mlw_answer_open_text, .mlw_answer_number, .qmn_fill_blank', function(e) {
                     let $i_this = $(this);
                     let question_id = $i_this.attr('name').split('question')[1];
                     let $this = $i_this.closest('.quiz_section, .qsm-question');
@@ -939,11 +945,18 @@ var QSMPagination;
                     data: ajaxData,
                     success: function(response) {
                         if (response.success && response.data.html) {
-                            // Remove placeholder
-                            $page.find('.qsm-lazy-load-placeholder').remove();
-
-                            // Insert questions HTML
-                            $page.find('.pages_count').before(response.data.html);
+                            // Insert questions HTML where the placeholder sits, then remove it.
+                            // The placeholder is the stable anchor: .pages_count may be absent
+                            // when the "show pagination count" option is disabled.
+                            let $placeholder = $page.find('.qsm-lazy-load-placeholder');
+                            if ($placeholder.length) {
+                                $placeholder.before(response.data.html);
+                                $placeholder.remove();
+                            } else if ($page.find('.pages_count').length) {
+                                $page.find('.pages_count').before(response.data.html);
+                            } else {
+                                $page.append(response.data.html);
+                            }
 
                             // Mark page as loaded
                             $page.removeClass('qsm-lazy-load-page qsm-loading');

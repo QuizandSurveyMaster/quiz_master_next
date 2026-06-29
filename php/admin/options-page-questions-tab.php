@@ -59,28 +59,31 @@ function qsm_options_questions_tab_content() {
 	$qpages          = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
-			'id'           => 1,
-			'quizID'       => $quiz_id,
-			'pagekey'      => '',
-			'hide_prevbtn' => 0,
-			'questions'    => array(),
+			'id'             => 1,
+			'quizID'         => $quiz_id,
+			'pagekey'        => '',
+			'hide_prevbtn'   => 0,
+			'question_limit' => 0,
+			'questions'      => array(),
 		);
 		foreach ( $pages as $k => $val ) {
-			$qpage                 = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
-			$qpage['id']           = $k + 1;
-			$qpage['pagekey']      = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
-			$qpage['hide_prevbtn'] = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
-			$pages[ $k ]           = array_values( $val );
-			$qpage['questions']    = array_values( $val );
-			$qpages[]              = $qpage;
+			$qpage                   = isset( $db_qpages[ $k ] ) ? $db_qpages[ $k ] : $defaultQPage;
+			$qpage['id']             = $k + 1;
+			$qpage['pagekey']        = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
+			$qpage['hide_prevbtn']   = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
+			$qpage['question_limit'] = ( isset( $qpage['question_limit'] ) && ! empty( $qpage['question_limit'] ) ) ? intval( $qpage['question_limit'] ) : 0;
+			$pages[ $k ]             = array_values( $val );
+			$qpage['questions']      = array_values( $val );
+			$qpages[]                = $qpage;
 		}
 	} else {
 		$defaultQPage = array(
-			'id'           => 1,
-			'quizID'       => $quiz_id,
-			'pagekey'      => uniqid(),
-			'hide_prevbtn' => 0,
-			'questions'    => array(),
+			'id'             => 1,
+			'quizID'         => $quiz_id,
+			'pagekey'        => uniqid(),
+			'hide_prevbtn'   => 0,
+			'question_limit' => 0,
+			'questions'      => array(),
 		);
 		$qpages[]     = $defaultQPage;
 	}
@@ -741,6 +744,11 @@ function qsm_options_questions_tab_content() {
 							<label class="qsm-page-setting-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></label>
 							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
 							<span class="qsm-page-setting-span"><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
+						</div>
+						<div class="qsm-row">
+							<label class="qsm-page-setting-label" for="question_limit"><?php esc_html_e( 'Limit questions', 'quiz-master-next' ); ?></label>
+							<input name="question_limit" id="question_limit" type="number" step="1" min="0" class="small-text" value="0" />
+							<span class="qsm-page-setting-span"><?php esc_html_e( 'Set 0 to show all', 'quiz-master-next' ); ?></span>
 						</div>
 						<?php if ( 'yes' == $display_advance ) { ?>
 						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr( $background ); ?>">
@@ -1554,7 +1562,7 @@ function qsm_options_questions_tab_template() {
 					<div><span class="dashicons dashicons-move"></span></div>
 					<div class="question-content-title-box">
 						<div class="question-content-text">
-							{{{data.question}}}
+							{{data.question}}
 						</div>
 						<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 					</div>
@@ -1577,7 +1585,7 @@ function qsm_options_questions_tab_template() {
 			<div class="question-bank-selection">
 				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 			</div>
-			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
+			<div><p>{{data.question}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
 			<div>
 				<a href="javascript:void(0)" class="button import-button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add', 'quiz-master-next' ); ?></a>
 				<a href="javascript:void(0)" data-questions="{{data.linked_question}}" class="button link-question" data-question-id="{{data.id}}"><?php esc_html_e( 'Link', 'quiz-master-next' ); ?></a>
