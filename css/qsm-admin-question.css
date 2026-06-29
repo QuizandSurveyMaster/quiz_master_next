@@ -202,9 +202,12 @@ body[class*="version-10-"] .new-answer-button a#new-answer-button .dashicons {
 	text-align: center;
 }
 
-[class*=branch-7].wp-core-ui .question-create-page .new-page-button .dashicons {
+.question-create-page .new-page-button .dashicons {
 	line-height: 30px;
 	font-size: 16px;
+}
+
+[class*=branch-7].wp-core-ui .question-create-page .new-page-button .dashicons {
     color: #fff;
     line-height: 1;
 }
