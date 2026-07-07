@@ -137,10 +137,19 @@ function qsm_options_questions_tab_content() {
 	if ( ! empty( $question_ids ) ) {
 		/**
 		 * Check for invalid Questions.
+		 * Cast every ID to int to prevent SQL injection (CVE-2026-13767).
 		 */
+		$question_ids       = array_map( 'intval', $question_ids );
+		$question_ids       = array_filter( $question_ids, function( $id ) { return $id > 0; } );
 		$q_types            = array();
 		$invalid_types      = array();
-		$question_types_new = $wpdb->get_results( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $question_ids ) . ')' );
+		if ( ! empty( $question_ids ) ) {
+			$placeholders       = implode( ',', array_fill( 0, count( $question_ids ), '%d' ) );
+			// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+			$question_types_new = $wpdb->get_results( $wpdb->prepare( "SELECT `question_type_new` as type FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$placeholders})", $question_ids ) );
+		} else {
+			$question_types_new = array();
+		}
 		if ( ! empty( $question_types_new ) ) {
 			foreach ( $question_types_new as $data ) {
 				$q_types[] = $data->type;
@@ -1085,16 +1094,20 @@ function qsm_ajax_save_pages() {
 	$pages         = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages        = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$all_questions = array();
-	//merge duplicate questions
+	// Validate & merge duplicate questions.
+	// CVE-2026-13767: Cast every question ID to a positive integer before
+	// storing so attacker-controlled strings can never be persisted and
+	// later interpolated into SQL.
 	foreach ( $pages as $page_key => $questions ) {
 		$page_questions = array();
 		$questions      = array_unique( $questions );
 		foreach ( $questions as $id ) {
-			if ( ! in_array( $id, $all_questions, true ) ) {
+			$id = intval( $id );
+			if ( $id > 0 && ! in_array( $id, $all_questions, true ) ) {
 				$page_questions[] = $id;
 			}
 		}
-		$all_questions      = array_merge( $all_questions, $questions );
+		$all_questions      = array_merge( $all_questions, array_values( $page_questions ) );
 		$pages[ $page_key ] = $page_questions;
 		if ( isset( $qpages[ $page_key ] ) ) {
 			$qpages[ $page_key ]['questions'] = $page_questions;
