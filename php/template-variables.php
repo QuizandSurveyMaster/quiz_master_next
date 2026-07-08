@@ -165,6 +165,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_poin
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_admin_email', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_last_result', 10, 2 );
 
 /**
  * Changed the display structure to new structure.
@@ -621,6 +622,89 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 		$content = str_replace( '%RESULT_LINK%', $result_link, $content );
 	}
 	return $content;
+}
+
+/**
+ * Fetches the current quiz taker's most recent, non-deleted result for a quiz.
+ *
+ * Uses the same identity logic as the attempts-limit check: match by user id when
+ * logged in, otherwise fall back to the IP address recorded on the submission.
+ *
+ * @since 10.2.1
+ * @param int    $quiz_id The quiz id.
+ * @param string $user_ip The visitor IP (used only for guests).
+ * @return object|null Row exposing result_id and unique_id, or null when none is found.
+ */
+function qsm_get_last_result_for_current_user( $quiz_id, $user_ip = '' ) {
+	global $wpdb;
+	$quiz_id = intval( $quiz_id );
+	if ( ! $quiz_id ) {
+		return null;
+	}
+	if ( is_user_logged_in() ) {
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT result_id, unique_id FROM {$wpdb->prefix}mlw_results WHERE user = %d AND deleted = 0 AND quiz_id = %d ORDER BY result_id DESC LIMIT 1",
+				get_current_user_id(),
+				$quiz_id
+			)
+		);
+	}
+	if ( '' === $user_ip ) {
+		return null;
+	}
+	return $wpdb->get_row(
+		$wpdb->prepare(
+			"SELECT result_id, unique_id FROM {$wpdb->prefix}mlw_results WHERE user_ip = %s AND deleted = 0 AND quiz_id = %d ORDER BY result_id DESC LIMIT 1",
+			$user_ip,
+			$quiz_id
+		)
+	);
+}
+
+/**
+ * Replaces %LAST_RESULT% with the taker's last submitted results page.
+ *
+ * Lets a taker who has used up their attempts keep viewing their most recent
+ * result inline instead of only seeing the "limited attempts" message. We render
+ * the results-page template whose conditions match the stored result; when no
+ * template matches (or the quiz has none), we fall back to the full [qsm_result]
+ * view. The result was matched to the current user/IP, so in that fallback we
+ * temporarily allow it to be viewed regardless of the global result-link
+ * visibility setting.
+ *
+ * @since 10.2.1
+ * @param string       $content        The text being processed.
+ * @param array|object $mlw_quiz_array The quiz variable data (expects quiz_id, user_ip).
+ * @return string The content with %LAST_RESULT% replaced.
+ */
+function qsm_variable_last_result( $content, $mlw_quiz_array ) {
+	if ( false === strpos( $content, '%LAST_RESULT%' ) ) {
+		return $content;
+	}
+	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : ( isset( $mlw_quiz_array['quiz_id'] ) ? $mlw_quiz_array['quiz_id'] : 0 );
+	$user_ip = ( is_array( $mlw_quiz_array ) && isset( $mlw_quiz_array['user_ip'] ) ) ? $mlw_quiz_array['user_ip'] : '';
+	$last    = qsm_get_last_result_for_current_user( $quiz_id, $user_ip );
+	$display = '';
+	if ( $last && ! empty( $last->result_id ) ) {
+		$result_id = intval( $last->result_id );
+
+		// Prefer the results-page template whose conditions match this stored result.
+		$response_data = class_exists( 'QMNQuizManager' ) ? QMNQuizManager::build_response_data_from_result( $result_id ) : false;
+		$matched       = ( $response_data && class_exists( 'QSM_Results_Pages' ) ) ? QSM_Results_Pages::get_matched_page( $response_data ) : false;
+
+		if ( $matched ) {
+			$pages   = QSM_Results_Pages::generate_pages( $response_data );
+			$display = is_array( $pages ) && isset( $pages['display'] ) ? $pages['display'] : '';
+		} else {
+			// No matching results template (or none configured): fall back to the full result view.
+			add_filter( 'qsm_can_view_result', '__return_true', 999 );
+			$display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
+			remove_filter( 'qsm_can_view_result', '__return_true', 999 );
+		}
+	}
+	// Handle the wpautop-wrapped token first so the results markup isn't nested inside a <p>.
+	return str_replace( array( '<p>%LAST_RESULT%</p>', '%LAST_RESULT%' ), $display, $content );
 }
 
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
