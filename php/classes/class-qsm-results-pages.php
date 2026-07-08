@@ -195,6 +195,156 @@ class QSM_Results_Pages {
 	}
 
 	/**
+	 * Tests whether every condition on a results page passes for a submission.
+	 *
+	 * Mirrors the per-condition evaluation used by generate_pages(): a page is
+	 * shown only when all of its conditions pass. Kept as a standalone helper so
+	 * callers (e.g. %LAST_RESULT%) can find the matching page without rendering.
+	 *
+	 * @since 10.2.1
+	 * @param array $conditions    The conditions attached to a results page.
+	 * @param int   $index         The index of the page (exposed to the check filter).
+	 * @param array $response_data The data for the user's submission.
+	 * @return bool True when all conditions pass, false otherwise.
+	 */
+	public static function conditions_pass( $conditions, $index, $response_data ) {
+		if ( empty( $conditions ) ) {
+			return false;
+		}
+
+		// Assume the page shows, then let any failing condition disqualify it.
+		$show = true;
+		foreach ( $conditions as $condition ) {
+			$value          = $condition['value'];
+			$main_condition = '';
+			if ( isset( $condition['category'] ) ) {
+				$main_condition = $condition['category'];
+			}
+			if ( ! empty( $condition['extra_condition'] ) && 'category' == $main_condition ) {
+				$category = $condition['extra_condition'];
+				if ( false !== strpos( $category, 'qsm-cat-' ) ) {
+					$cat_id = intval( str_replace( 'qsm-cat-', '', $category ) );
+					$term   = get_term( $cat_id );
+					if ( $term ) {
+						$category = $term->name;
+					}
+				}
+			} else {
+				$category = $main_condition;
+			}
+
+			// First, determine which value we need to test.
+			switch ( $condition['criteria'] ) {
+				case 'score':
+					if ( '' == $main_condition || 'quiz' == $main_condition ) {
+						$test = $response_data['total_score'];
+					} else {
+						$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
+					}
+					break;
+
+				case 'points':
+					if ( '' == $main_condition || 'quiz' == $main_condition ) {
+						$test = $response_data['total_points'];
+					} else {
+						$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
+					}
+					break;
+
+				default:
+					$test = 0;
+					break;
+			}
+
+			// Then, determine how to test the value.
+			switch ( $condition['operator'] ) {
+				case 'greater-equal':
+					if ( $test < $value ) {
+						$show = false;
+					}
+					break;
+
+				case 'greater':
+					if ( $test <= $value ) {
+						$show = false;
+					}
+					break;
+
+				case 'less-equal':
+					if ( $test > $value ) {
+						$show = false;
+					}
+					break;
+
+				case 'less':
+					if ( $test >= $value ) {
+						$show = false;
+					}
+					break;
+
+				case 'not-equal':
+					if ( $test == $value ) {
+						$show = false;
+					}
+					break;
+
+				case 'equal':
+					if ( $test != $value ) {
+						$show = false;
+					}
+					break;
+			}
+
+			$response_data['result_page_index'] = $index;
+			$show                               = apply_filters( 'qsm_results_page_condition_check', $show, $condition, $response_data );
+			if ( ! $show ) {
+				break;
+			}
+		}
+
+		return $show;
+	}
+
+	/**
+	 * Finds the results page whose conditions match a submission.
+	 *
+	 * Only conditional pages are considered a match — default (condition-less)
+	 * pages are skipped, so the caller can tell whether a real results-page
+	 * template applies. Mirrors generate_pages()'s "last match wins" behaviour.
+	 *
+	 * @since 10.2.1
+	 * @param array $response_data The data for the user's submission (needs quiz_id).
+	 * @return array|false Array with 'index' and 'content' of the matched page, or false.
+	 */
+	public static function get_matched_page( $response_data ) {
+		if ( empty( $response_data['quiz_id'] ) ) {
+			return false;
+		}
+
+		global $mlwQuizMasterNext;
+		$pages = self::load_pages( $response_data['quiz_id'] );
+		if ( empty( $pages ) || ! is_array( $pages ) ) {
+			return false;
+		}
+
+		$matched = false;
+		foreach ( $pages as $index => $page ) {
+			if ( empty( $page['conditions'] ) ) {
+				continue;
+			}
+			if ( self::conditions_pass( $page['conditions'], $index, $response_data ) ) {
+				// Keep cycling so the last matching page wins, as generate_pages() does.
+				$matched = array(
+					'index'   => $index,
+					'content' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" ),
+				);
+			}
+		}
+
+		return $matched;
+	}
+
+	/**
 	 * Loads the results pages for a single quiz.
 	 *
 	 * @since 6.2.0
