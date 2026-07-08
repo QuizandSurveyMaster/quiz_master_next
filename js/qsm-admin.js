@@ -3737,7 +3737,7 @@ var QSM_Quiz_Broadcast_Channel;
                     if (answer['answerType'] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
                         var textarea_id = 'answer-' + answer['question_id'] + '-' + answer['index'];
                         wp.editor.remove(textarea_id);
-                        var settings = QSMQuestion.getEditorSettings();
+                        let settings = QSMQuestion.getEditorSettings();
                         jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize(textarea_id, settings);
                         var anser = QSMQuestion.prepareQuestionText(answer[0]);
@@ -4041,7 +4041,7 @@ var QSM_Quiz_Broadcast_Channel;
                 prepareEditor: function () {
                     // Fresh, deep-cloned settings per initialize() so the two editors and
                     // the teardown/re-init on each popup open don't share a mutated object.
-                    var settings = QSMQuestion.getEditorSettings();
+                    let settings = QSMQuestion.getEditorSettings();
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                     wp.editor.initialize('question-text', settings);
                     wp.editor.initialize('correct_answer_info', QSMQuestion.getEditorSettings());
@@ -4050,7 +4050,7 @@ var QSM_Quiz_Broadcast_Channel;
                     // Settings come from PHP ( qsm_get_question_editor_settings() ) via
                     // wp_localize_script, which exposes the `qsm_question_editor_settings`
                     // filter. Fall back to the historical literals for defensiveness.
-                    var defaults = {
+                    let defaults = {
                         mediaButtons: true,
                         tinymce: {
                             forced_root_block: '',
@@ -4059,7 +4059,7 @@ var QSM_Quiz_Broadcast_Channel;
                         },
                         quicktags: true,
                     };
-                    var localized = (typeof qsmQuestionSettings !== 'undefined' && qsmQuestionSettings.editor_settings) ? qsmQuestionSettings.editor_settings : defaults;
+                    let localized = (typeof qsmQuestionSettings !== 'undefined' && qsmQuestionSettings.editor_settings) ? qsmQuestionSettings.editor_settings : defaults;
                     return jQuery.extend(true, {}, localized);
                 },
                 sync_child_parent_category: function (questionID) {
