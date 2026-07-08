@@ -3,6 +3,47 @@ $themes_data = array();
 global $pro_themes;
 $pro_themes  = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'qsm-theme-fortune', 'qsm-theme-pixel', 'qsm-theme-sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma', 'Fortune', 'Pixel', 'Sapience' );
 
+if ( ! function_exists( 'qsm_get_question_editor_settings' ) ) {
+	/**
+	 * Returns the TinyMCE settings passed to wp.editor.initialize() for the QSM
+	 * question and rich-answer editors.
+	 *
+	 * These editors are initialized client-side ( via wp.editor.initialize ), so the
+	 * standard WordPress editor filters ( tiny_mce_before_init, mce_buttons,
+	 * mce_external_plugins, etc. ) do not apply to them. This helper is the single
+	 * source of truth for their toolbars and exposes the `qsm_question_editor_settings`
+	 * filter so integrations ( e.g. Advanced Editor Tools ) can add external_plugins,
+	 * extend toolbar1/toolbar2, or register buttons without editing plugin core.
+	 *
+	 * The defaults mirror the toolbars previously hard-coded in js/qsm-admin.js, so an
+	 * install with no filter hooked behaves identically to before.
+	 *
+	 * @since 11.2.0
+	 * @param string $context Editor context. 'question' ( default ) or 'answer'.
+	 * @return array Settings array for wp.editor.initialize().
+	 */
+	function qsm_get_question_editor_settings( $context = 'question' ) {
+		$settings = array(
+			'mediaButtons' => true,
+			'tinymce'      => array(
+				'forced_root_block' => '',
+				'toolbar1'          => 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
+				'toolbar2'          => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code',
+			),
+			'quicktags'    => true,
+		);
+
+		/**
+		 * Filter the TinyMCE settings for the QSM question / rich-answer editors.
+		 *
+		 * @since 11.2.0
+		 * @param array  $settings Settings passed to wp.editor.initialize().
+		 * @param string $context  'question' or 'answer'.
+		 */
+		return apply_filters( 'qsm_question_editor_settings', $settings, $context );
+	}
+}
+
 /**
  * @since 6.4.5
  * @param

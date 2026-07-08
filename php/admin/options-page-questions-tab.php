@@ -88,6 +88,12 @@ function qsm_options_questions_tab_content() {
 		$qpages[]     = $defaultQPage;
 	}
 	$qpages    = apply_filters( 'qsm_filter_quiz_page_attributes', $qpages, $pages );
+
+	// TinyMCE settings for the JS-initialized question / rich-answer editors. See
+	// qsm_get_question_editor_settings() for the shared defaults and the
+	// `qsm_question_editor_settings` filter used to make them extensible.
+	$qsm_editor_settings = qsm_get_question_editor_settings();
+
 	$json_data = array(
 		'quizID'                  => $quiz_id,
 		'answerText'              => __( 'Answer', 'quiz-master-next' ),
@@ -97,6 +103,7 @@ function qsm_options_questions_tab_content() {
 		'pages'                   => $pages,
 		'qpages'                  => $qpages,
 		'qsm_user_ve'             => get_user_meta( $user_id, 'rich_editing', true ),
+		'editor_settings'         => $qsm_editor_settings,
 		'saveNonce'               => wp_create_nonce( 'ajax-nonce-sandy-page' ),
 		'unlinkNonce'             => wp_create_nonce( 'ajax-nonce-unlink-question' ),
 		'loadAllQuestionsNonce'   => wp_create_nonce( 'qsm_load_all_quiz_questions' ),
