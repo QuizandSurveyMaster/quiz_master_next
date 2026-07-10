@@ -744,7 +744,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 				$settings       = array(
 					'required'       => $request['required'],
 					'answerEditor'   => 'text',
-					'question_title' => $request['question_title'],
+					'question_title' => sanitize_text_field( wp_strip_all_tags( html_entity_decode( $request['question_title'] ) ) ),
 				);
 				$intial_answers = $request['answers'];
 				$answers        = array();
