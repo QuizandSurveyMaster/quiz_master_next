@@ -21,12 +21,12 @@ var QSMPagination;
  */
 if (typeof window.qsmCheckMR !== 'function') {
     window.qsmCheckMR = function(event, limit) {
-        var $section = jQuery(event).parents('.quiz_section');
-        var checked = $section.find(':checkbox:checked').length;
+        let $section = jQuery(event).parents('.quiz_section');
+        let checked = $section.find(':checkbox:checked').length;
         if (checked > limit) {
             event.checked = false;
             if ($section.find('.multi-checkbox-limit-reach').length == 0) {
-                var message = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object.multicheckbox_limit_reach) ? qmn_ajax_object.multicheckbox_limit_reach : '';
+                let message = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object.multicheckbox_limit_reach) ? qmn_ajax_object.multicheckbox_limit_reach : '';
                 $section.append('<span class="multi-checkbox-limit-reach">' + message + '</span>');
             }
         } else {
