@@ -90,6 +90,11 @@ class QMNQuizManager {
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action( 'wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
+		// Fresh login nonce. Served via admin-ajax (never page-cached) so the
+		// login form always submits a currently-valid nonce.
+		add_action( 'wp_ajax_nopriv_qsm_get_login_nonce', array( $this, 'qsm_get_login_nonce' ) );
+		add_action( 'wp_ajax_qsm_get_login_nonce', array( $this, 'qsm_get_login_nonce' ) );
+
 		// Failed submission resubmit or trash
 		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
 
@@ -242,34 +247,53 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Return a fresh nonce for the AJAX login form.
+	 *
+	 * Delivered through admin-ajax.php, which is never page-cached, so the login
+	 * form always has a currently-valid nonce even when the surrounding page
+	 * HTML (with its baked-in nonce) is served from a full-page cache.
+	 */
+	public function qsm_get_login_nonce() {
+		wp_send_json_success(
+			array(
+				'nonce' => wp_create_nonce( 'qsm_ajax_login_nonce' ),
+			)
+		);
+	}
+
+	/**
 	 * @version 8.2.0
 	 * ajax login function
 	 */
 	public function qsm_ajax_login() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_ajax_login_nonce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		// Verify the nonce first.
+		if ( ! check_ajax_referer( 'qsm_ajax_login_nonce', 'nonce', false ) ) {
+			wp_send_json_error(
+				array(
+					'code'    => 'invalid_nonce',
+					'message' => __( 'Your session has expired. Please refresh the page and try again.', 'quiz-master-next' ),
+				)
+			);
 		}
 
 		$username = ! empty( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
-		$password = ! empty( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+		$password = isset( $_POST['password'] ) ? wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( '' === $username || '' === $password ) {
+			wp_send_json_error( array( 'message' => __( 'Please enter both a username and a password.', 'quiz-master-next' ) ) );
+		}
 
 		$user = get_user_by( 'login', $username );
 
 		if ( ! $user ) {
 			$user = get_user_by( 'email', $username );
-			if ( ! $user ) {
-				wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
-			}
 		}
 
-		$user_id = $user->ID;
-
-		// Check the password
-		if ( ! wp_check_password( $password, $user->user_pass, $user_id ) ) {
+		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user->ID ) ) {
 			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
-		} else {
-			wp_send_json_success();
 		}
+
+		wp_send_json_success();
 	}
 
 	/**
