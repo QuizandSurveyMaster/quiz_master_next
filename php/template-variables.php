@@ -682,7 +682,11 @@ function qsm_variable_last_result( $content, $mlw_quiz_array ) {
 	if ( false === strpos( $content, '%LAST_RESULT%' ) ) {
 		return $content;
 	}
-	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : ( isset( $mlw_quiz_array['quiz_id'] ) ? $mlw_quiz_array['quiz_id'] : 0 );
+	if ( is_object( $mlw_quiz_array ) ) {
+		$quiz_id = $mlw_quiz_array->quiz_id;
+	} else {
+		$quiz_id = isset( $mlw_quiz_array['quiz_id'] ) ? $mlw_quiz_array['quiz_id'] : 0;
+	}
 	$user_ip = ( is_array( $mlw_quiz_array ) && isset( $mlw_quiz_array['user_ip'] ) ) ? $mlw_quiz_array['user_ip'] : '';
 	$last    = qsm_get_last_result_for_current_user( $quiz_id, $user_ip );
 	$display = '';
