@@ -41,23 +41,46 @@ jQuery(document).ready(function(){
 		form.find('input[type="submit"]').attr('disabled', true);
 		jQuery(".qsm-login-form-warning").remove();
 
+		function qsmShowLoginError(message) {
+			form.append('<div class="qsm-result-page-warning qsm-login-form-warning">' + message + '</div>');
+			form.find('input[type="submit"]').attr('disabled', false);
+		}
+
+		function qsmDoLogin(nonce) {
+			jQuery.ajax({
+				url: qmn_common_ajax_object.ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'qsm_ajax_login',
+					username: username,
+					password: password,
+					nonce: nonce,
+				},
+				success: function (response) {
+					if ( response.success ) {
+						form.get(0).submit();
+					} else {
+						qsmShowLoginError(response.data.message);
+					}
+				}
+			});
+		}
+
 		jQuery.ajax({
 			url: qmn_common_ajax_object.ajaxurl,
 			method: 'POST',
-			data: {
-                action: 'qsm_ajax_login',
-                username: username,
-                password: password,
-                nonce: qmn_common_ajax_object.nonce,
-            },
+			data: { action: 'qsm_get_login_nonce' },
 			success: function (response) {
-                if ( response.success ) {
-                    form.get(0).submit();
+				if ( response && response.success && response.data && response.data.nonce ) {
+					qsmDoLogin(response.data.nonce);
 				} else {
-                    form.append('<div class="qsm-result-page-warning qsm-login-form-warning">' + response.data.message + '</div>');
-					form.find('input[type="submit"]').attr('disabled', false);
+					// Fall back to the nonce printed on the page.
+					qsmDoLogin(qmn_common_ajax_object.nonce);
 				}
-            }
+			},
+			error: function () {
+				qsmDoLogin(qmn_common_ajax_object.nonce);
+			}
 		});
 	});
 

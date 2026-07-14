@@ -306,6 +306,7 @@ function qsm_question_bank_admin_assets( $hook ) {
 		'pages'                 => array(),
 		'qpages'                => array(),
 		'qsm_user_ve'           => $rich_editing,
+		'editor_settings'       => qsm_get_question_editor_settings(),
 		'nonce'                 => wp_create_nonce( 'wp_rest' ),
 		'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),
 		'unlinkNonce'           => wp_create_nonce( 'ajax-nonce-unlink-question' ),

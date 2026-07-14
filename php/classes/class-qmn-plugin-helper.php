@@ -616,7 +616,10 @@ class QMNPluginHelper {
 				}
 			}
 		}
-		return $ids;
+		// CVE-2026-13767: Cast every stored ID to a positive integer so that
+		// attacker-planted strings can never propagate into SQL queries.
+		$ids = array_filter( array_map( 'intval', $ids ), function( $id ) { return $id > 0; } );
+		return array_values( $ids );
 	}
 
 	/**

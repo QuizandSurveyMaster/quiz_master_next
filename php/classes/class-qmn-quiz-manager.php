@@ -90,6 +90,11 @@ class QMNQuizManager {
 		add_action( 'init', array( $this, 'qsm_process_background_email' ) );
 		add_action( 'wp_ajax_nopriv_qsm_ajax_login', array( $this, 'qsm_ajax_login' ) );
 
+		// Fresh login nonce. Served via admin-ajax (never page-cached) so the
+		// login form always submits a currently-valid nonce.
+		add_action( 'wp_ajax_nopriv_qsm_get_login_nonce', array( $this, 'qsm_get_login_nonce' ) );
+		add_action( 'wp_ajax_qsm_get_login_nonce', array( $this, 'qsm_get_login_nonce' ) );
+
 		// Failed submission resubmit or trash
 		add_action( 'wp_ajax_qsm_action_failed_submission_table', array( $this, 'process_action_failed_submission_table' ) );
 
@@ -242,34 +247,53 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Return a fresh nonce for the AJAX login form.
+	 *
+	 * Delivered through admin-ajax.php, which is never page-cached, so the login
+	 * form always has a currently-valid nonce even when the surrounding page
+	 * HTML (with its baked-in nonce) is served from a full-page cache.
+	 */
+	public function qsm_get_login_nonce() {
+		wp_send_json_success(
+			array(
+				'nonce' => wp_create_nonce( 'qsm_ajax_login_nonce' ),
+			)
+		);
+	}
+
+	/**
 	 * @version 8.2.0
 	 * ajax login function
 	 */
 	public function qsm_ajax_login() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_ajax_login_nonce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		// Verify the nonce first.
+		if ( ! check_ajax_referer( 'qsm_ajax_login_nonce', 'nonce', false ) ) {
+			wp_send_json_error(
+				array(
+					'code'    => 'invalid_nonce',
+					'message' => __( 'Your session has expired. Please refresh the page and try again.', 'quiz-master-next' ),
+				)
+			);
 		}
 
 		$username = ! empty( $_POST['username'] ) ? sanitize_user( wp_unslash( $_POST['username'] ) ) : '';
-		$password = ! empty( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+		$password = isset( $_POST['password'] ) ? wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( '' === $username || '' === $password ) {
+			wp_send_json_error( array( 'message' => __( 'Please enter both a username and a password.', 'quiz-master-next' ) ) );
+		}
 
 		$user = get_user_by( 'login', $username );
 
 		if ( ! $user ) {
 			$user = get_user_by( 'email', $username );
-			if ( ! $user ) {
-				wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
-			}
 		}
 
-		$user_id = $user->ID;
-
-		// Check the password
-		if ( ! wp_check_password( $password, $user->user_pass, $user_id ) ) {
+		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user->ID ) ) {
 			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
-		} else {
-			wp_send_json_success();
 		}
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -652,6 +676,64 @@ class QMNQuizManager {
 		}
 		$content = ob_get_clean();
 		return $content;
+	}
+
+	/**
+	 * Rebuilds the results $response_data array from a stored result.
+	 *
+	 * Provides the same submission array that shortcode_display_result() feeds to
+	 * QSM_Results_Pages so callers can evaluate results-page conditions against a
+	 * saved result without going through the shortcode. Handles both the newer
+	 * structured tables and the legacy serialized format.
+	 *
+	 * @since 10.2.1
+	 * @param int $result_id The mlw_results result_id.
+	 * @return array|false The response data array, or false when the result is missing.
+	 */
+	public static function build_response_data_from_result( $result_id ) {
+		global $wpdb, $mlwQuizMasterNext;
+		$result_id = intval( $result_id );
+		if ( ! $result_id ) {
+			return false;
+		}
+		$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ), ARRAY_A );
+		if ( empty( $result_data ) ) {
+			return false;
+		}
+
+		// Detect new format (quiz_results empty) and load answers/meta accordingly.
+		if ( $mlwQuizMasterNext->pluginHelper->is_new_format_result( $result_data ) ) {
+			$quiz_result = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $result_id );
+		} else {
+			$quiz_result = maybe_unserialize( $result_data['quiz_results'] );
+		}
+
+		return array(
+			'quiz_id'                   => $result_data['quiz_id'],
+			'quiz_name'                 => $result_data['quiz_name'],
+			'quiz_system'               => $result_data['quiz_system'],
+			'form_type'                 => $result_data['form_type'],
+			'quiz_payment_id'           => '',
+			'user_ip'                   => $result_data['user_ip'],
+			'user_name'                 => $result_data['name'],
+			'user_business'             => $result_data['business'],
+			'user_email'                => $result_data['email'],
+			'user_phone'                => $result_data['phone'],
+			'user_id'                   => $result_data['user'],
+			'timer'                     => 0,
+			'time_taken'                => $result_data['time_taken'],
+			'contact'                   => $quiz_result['contact'],
+			'total_points'              => $result_data['point_score'],
+			'total_score'               => $result_data['correct_score'],
+			'total_correct'             => $result_data['correct'],
+			'total_questions'           => $result_data['total'],
+			'question_answers_array'    => $quiz_result[1],
+			'comments'                  => '',
+			'result_id'                 => $result_id,
+			'total_possible_points'     => $quiz_result['total_possible_points'],
+			'minimum_possible_points'   => $quiz_result['minimum_possible_points'],
+			'total_attempted_questions' => $quiz_result['total_attempted_questions'],
+		);
 	}
 
 	/**
@@ -1933,9 +2015,11 @@ class QMNQuizManager {
 
 			// If user has already reached the limit for this quiz
 			if ( $mlw_qmn_user_try_count >= $options->total_user_tries ) {
+				$limit_reached_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" );
+				$limit_reached_text = apply_filters( 'mlw_qmn_template_variable_quiz_page', $limit_reached_text, array( 'quiz_id' => $options->quiz_id, 'user_ip' => $this->get_user_ip() ) );
 				echo wp_json_encode(
 					array(
-						'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
+						'display'       => $limit_reached_text,
 						'redirect'      => false,
 						'result_status' => array(
 							'save_response' => false,
@@ -1956,9 +2040,11 @@ class QMNQuizManager {
 			if ( ! empty( $user_email ) ) {
 				$mlw_qmn_email_based_submission_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE email=%s AND deleted=0 AND quiz_id=%d", $user_email, $options->quiz_id ) );
 				if ( $mlw_qmn_email_based_submission_count >= $options->total_user_tries ) {
+					$limit_reached_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" );
+					$limit_reached_text = apply_filters( 'mlw_qmn_template_variable_quiz_page', $limit_reached_text, array( 'quiz_id' => $options->quiz_id, 'user_ip' => $this->get_user_ip() ) );
 					echo wp_json_encode(
 						array(
-							'display'       => $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$options->quiz_id}" ),
+							'display'       => $limit_reached_text,
 							'redirect'      => false,
 							'result_status' => array(
 								'save_response' => false,
