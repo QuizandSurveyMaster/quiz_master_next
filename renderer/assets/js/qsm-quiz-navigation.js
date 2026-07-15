@@ -1864,12 +1864,8 @@ if (typeof window.qsmCheckMR !== 'function') {
 
                 // Use the admin-configured "Quiz Submit/Processing Message" if set,
                 // falling back to the translatable default from the localized object.
-                let defaultMessage = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object.processing_message)
-                            ? qmn_ajax_object.processing_message
-                            : 'Processing your quiz...';
-                let processingMessage = (quizData.data && quizData.data.quiz_processing_message)
-                            ? quizData.data.quiz_processing_message
-                            : defaultMessage;
+                let defaultMessage = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object?.processing_message) || 'Processing your quiz...';
+                let processingMessage = quizData.data?.quiz_processing_message || defaultMessage;
 
                 let loadingHtml = '<div class="qsm-quiz-processing-box">';
                 loadingHtml += '<div class="qsm-spinner-loader"></div>';
