@@ -225,7 +225,7 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
-= 11.2.1 (July 14, 2026) =
+= 11.2.1 (July 15, 2026) =
 * Feature: Added an option to display the latest result in the Limited Entry Attempts feature.
 * Bug: Fixed a JavaScript bug affecting the answer limit for Multiple Choice question types.
 * Patch: Improved API request validation for the question_title parameter.  
