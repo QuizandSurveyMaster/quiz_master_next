@@ -4,7 +4,7 @@ Tags: quiz, survey, test, exam, online assessment
 Requires at least: 4.9
 Tested up to: 7.0
 Requires PHP: 5.4
-Stable tag: 11.2.0
+Stable tag: 11.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database
 
 == Changelog ==
+= 11.2.1 (July 15, 2026) =
+* Feature: Added an option to display the latest result in the Limited Entry Attempts feature.
+* Bug: Fixed a JavaScript bug affecting the answer limit for Multiple Choice question types.
+* Patch: Improved API request validation for the question_title parameter.  
+* Enhancement: Improved Answer Editor filters and Results Answer attributes.
+
 = 11.2.0 (June 29, 2026) =
 * Feature: Added the ability to configure page limits for individual pages when using manual pagination
 * Bug: Resolved an issue where the progress bar was not displaying correctly for flashcard questions

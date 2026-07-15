@@ -3737,15 +3737,7 @@ var QSM_Quiz_Broadcast_Channel;
                     if (answer['answerType'] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
                         var textarea_id = 'answer-' + answer['question_id'] + '-' + answer['index'];
                         wp.editor.remove(textarea_id);
-                        var settings = {
-                            mediaButtons: true,
-                            tinymce: {
-                                forced_root_block: '',
-                                toolbar1: 'formatselect,bold,italic,underline,bullist,numlist,blockquote,alignleft,aligncenter,alignright,alignjustify,link,wp_more,fullscreen,wp_adv',
-                                toolbar2: 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help,wp_code'
-                            },
-                            quicktags: true,
-                        };
+                        let settings = QSMQuestion.getEditorSettings();
                         jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
                         wp.editor.initialize(textarea_id, settings);
                         var anser = QSMQuestion.prepareQuestionText(answer[0]);
@@ -4047,7 +4039,18 @@ var QSM_Quiz_Broadcast_Channel;
                     return jQuery('<textarea />').html(question).text();
                 },
                 prepareEditor: function () {
-                    var settings = {
+                    // Fresh, deep-cloned settings per initialize() so the two editors and
+                    // the teardown/re-init on each popup open don't share a mutated object.
+                    let settings = QSMQuestion.getEditorSettings();
+                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
+                    wp.editor.initialize('question-text', settings);
+                    wp.editor.initialize('correct_answer_info', QSMQuestion.getEditorSettings());
+                },
+                getEditorSettings: function () {
+                    // Settings come from PHP ( qsm_get_question_editor_settings() ) via
+                    // wp_localize_script, which exposes the `qsm_question_editor_settings`
+                    // filter. Fall back to the historical literals for defensiveness.
+                    let defaults = {
                         mediaButtons: true,
                         tinymce: {
                             forced_root_block: '',
@@ -4056,9 +4059,8 @@ var QSM_Quiz_Broadcast_Channel;
                         },
                         quicktags: true,
                     };
-                    jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
-                    wp.editor.initialize('question-text', settings);
-                    wp.editor.initialize('correct_answer_info', settings);
+                    let localized = (typeof qsmQuestionSettings !== 'undefined' && qsmQuestionSettings.editor_settings) ? qsmQuestionSettings.editor_settings : defaults;
+                    return jQuery.extend(true, {}, localized);
                 },
                 sync_child_parent_category: function (questionID) {
                     $('.qsm_category_checklist').find('input').each(function (index, input) {

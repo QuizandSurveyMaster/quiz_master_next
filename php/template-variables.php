@@ -16,6 +16,109 @@ require 'template-variables/qsm-tempvar-question-answers.php';
 // Template variable files for backward compatibility ( @since QSM 7.3.8 )
 require 'backward-compatibility/qsm-backward-compatibility-template-variables.php';
 
+if ( ! function_exists( 'qsm_answer_status_describedby' ) ) {
+	/**
+	 * Returns an ` answerstatus="..."` attribute string that marks a results-page answer span with
+	 * its correct/incorrect status.
+	 *
+	 * The status is resolved server-side because the same CSS class can mean different things
+	 * depending on the grading mode.
+	 *
+	 * @since 11.2.0
+	 * @param string $status One of: correct, your-correct, your-incorrect, your-answer.
+	 * @return string The attribute string ( leading space included ), or '' for an unknown/neutral status.
+	 */
+	function qsm_answer_status_describedby( $status ) {
+		$map = array(
+			'correct'        => 'correct',
+			'your-correct'   => 'your-correct',
+			'your-incorrect' => 'your-incorrect',
+			'your-answer'    => 'your',
+		);
+		if ( empty( $status ) || ! isset( $map[ $status ] ) ) {
+			return '';
+		}
+		return ' answerstatus="' . esc_attr( $map[ $status ] ) . '"';
+	}
+}
+
+if ( ! function_exists( 'qsm_answer_status_add_describedby' ) ) {
+	/**
+	 * Post-processes a rendered question's answer HTML and adds aria-describedby to any answer
+	 * status span that does not already have one.
+	 *
+	 * The core renderer tags its own spans at emission time ( including the one grading-mode
+	 * ambiguous case ), so this only fills the gaps left by add-on question types ( advanced
+	 * question types, ultimate, flashcards, etc. ) which reuse the same status CSS classes but
+	 * do not add the attribute themselves. Those add-on spans consistently use graded semantics,
+	 * so the mapping below is correct for them; spans already labelled are left untouched.
+	 *
+	 * Hooked on `qmn_variable_question_answers`, this covers every question type from every
+	 * add-on ( installed now or later ) without editing each add-on plugin.
+	 *
+	 * @since 11.2.0
+	 * @param string $html The rendered answer HTML for a single question.
+	 * @return string
+	 */
+	function qsm_answer_status_add_describedby( $html, $mlw_quiz_array = null, $question_obj = null ) {
+		if ( '' === $html || ! is_string( $html ) ) {
+			return $html;
+		}
+		if ( false === strpos( $html, 'qsm-text-' ) && false === strpos( $html, 'qmn_user_' ) ) {
+			return $html;
+		}
+		return preg_replace_callback(
+			'/<span\b([^>]*)>/i',
+			function ( $m ) {
+				$attrs = $m[1];
+				// Leave spans that are already labelled ( e.g. by the core renderer ) untouched.
+				if ( false !== stripos( $attrs, 'answerstatus' ) ) {
+					return $m[0];
+				}
+				$status = '';
+				if ( preg_match( '/\bqsm-text-user-correct-answer\b/', $attrs ) || preg_match( '/\bqmn_user_correct_answer\b/', $attrs ) ) {
+					$status = 'your-correct';
+				} elseif ( preg_match( '/\bqsm-text-wrong-option\b/', $attrs ) || preg_match( '/\bqmn_user_incorrect_answer\b/', $attrs ) ) {
+					$status = 'your-incorrect';
+				} elseif ( preg_match( '/\bqsm-text-correct-option\b/', $attrs ) ) {
+					$status = 'correct';
+				}
+				if ( '' === $status ) {
+					return $m[0];
+				}
+				return '<span' . $attrs . qsm_answer_status_describedby( $status ) . '>';
+			},
+			$html
+		);
+	}
+	add_filter( 'qmn_variable_question_answers', 'qsm_answer_status_add_describedby', 20, 3 );
+}
+
+if ( ! function_exists( 'qsm_allow_answerstatus_attribute' ) ) {
+	/**
+	 * Permit the custom `answerstatus` attribute through wp_kses_post so the results-page answer
+	 * status markers survive sanitisation. KSES strips unknown attributes by default, which would
+	 * otherwise remove `answerstatus` from every answer span.
+	 *
+	 * @since 11.2.0
+	 * @param array  $tags    Allowed tags and their attributes.
+	 * @param string $context The KSES context.
+	 * @return array
+	 */
+	function qsm_allow_answerstatus_attribute( $tags, $context ) {
+		if ( 'post' !== $context ) {
+			return $tags;
+		}
+		foreach ( array( 'span', 'div', 'p', 'li', 'img' ) as $tag ) {
+			if ( isset( $tags[ $tag ] ) && is_array( $tags[ $tag ] ) ) {
+				$tags[ $tag ]['answerstatus'] = true;
+			}
+		}
+		return $tags;
+	}
+	add_filter( 'wp_kses_allowed_html', 'qsm_allow_answerstatus_attribute', 10, 2 );
+}
+
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qmn_variable_category_points', 10, 2 );
@@ -62,6 +165,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_poin
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_start_end_quiz_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_admin_email', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_quiz_page', 'qsm_variable_last_result', 10, 2 );
 
 /**
  * Changed the display structure to new structure.
@@ -518,6 +622,93 @@ function mlw_qmn_variable_quiz_links( $content, $mlw_quiz_array ) {
 		$content = str_replace( '%RESULT_LINK%', $result_link, $content );
 	}
 	return $content;
+}
+
+/**
+ * Fetches the current quiz taker's most recent, non-deleted result for a quiz.
+ *
+ * Uses the same identity logic as the attempts-limit check: match by user id when
+ * logged in, otherwise fall back to the IP address recorded on the submission.
+ *
+ * @since 10.2.1
+ * @param int    $quiz_id The quiz id.
+ * @param string $user_ip The visitor IP (used only for guests).
+ * @return object|null Row exposing result_id and unique_id, or null when none is found.
+ */
+function qsm_get_last_result_for_current_user( $quiz_id, $user_ip = '' ) {
+	global $wpdb;
+	$quiz_id = intval( $quiz_id );
+	if ( ! $quiz_id ) {
+		return null;
+	}
+	if ( is_user_logged_in() ) {
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT result_id, unique_id FROM {$wpdb->prefix}mlw_results WHERE user = %d AND deleted = 0 AND quiz_id = %d ORDER BY result_id DESC LIMIT 1",
+				get_current_user_id(),
+				$quiz_id
+			)
+		);
+	}
+	if ( '' === $user_ip ) {
+		return null;
+	}
+	return $wpdb->get_row(
+		$wpdb->prepare(
+			"SELECT result_id, unique_id FROM {$wpdb->prefix}mlw_results WHERE user_ip = %s AND deleted = 0 AND quiz_id = %d ORDER BY result_id DESC LIMIT 1",
+			$user_ip,
+			$quiz_id
+		)
+	);
+}
+
+/**
+ * Replaces %LAST_RESULT% with the taker's last submitted results page.
+ *
+ * Lets a taker who has used up their attempts keep viewing their most recent
+ * result inline instead of only seeing the "limited attempts" message. We render
+ * the results-page template whose conditions match the stored result; when no
+ * template matches (or the quiz has none), we fall back to the full [qsm_result]
+ * view. The result was matched to the current user/IP, so in that fallback we
+ * temporarily allow it to be viewed regardless of the global result-link
+ * visibility setting.
+ *
+ * @since 10.2.1
+ * @param string       $content        The text being processed.
+ * @param array|object $mlw_quiz_array The quiz variable data (expects quiz_id, user_ip).
+ * @return string The content with %LAST_RESULT% replaced.
+ */
+function qsm_variable_last_result( $content, $mlw_quiz_array ) {
+	if ( false === strpos( $content, '%LAST_RESULT%' ) ) {
+		return $content;
+	}
+	if ( is_object( $mlw_quiz_array ) ) {
+		$quiz_id = $mlw_quiz_array->quiz_id;
+	} else {
+		$quiz_id = isset( $mlw_quiz_array['quiz_id'] ) ? $mlw_quiz_array['quiz_id'] : 0;
+	}
+	$user_ip = ( is_array( $mlw_quiz_array ) && isset( $mlw_quiz_array['user_ip'] ) ) ? $mlw_quiz_array['user_ip'] : '';
+	$last    = qsm_get_last_result_for_current_user( $quiz_id, $user_ip );
+	$display = '';
+	if ( $last && ! empty( $last->result_id ) ) {
+		$result_id = intval( $last->result_id );
+
+		// Prefer the results-page template whose conditions match this stored result.
+		$response_data = class_exists( 'QMNQuizManager' ) ? QMNQuizManager::build_response_data_from_result( $result_id ) : false;
+		$matched       = ( $response_data && class_exists( 'QSM_Results_Pages' ) ) ? QSM_Results_Pages::get_matched_page( $response_data ) : false;
+
+		if ( $matched ) {
+			$pages   = QSM_Results_Pages::generate_pages( $response_data );
+			$display = is_array( $pages ) && isset( $pages['display'] ) ? $pages['display'] : '';
+		} else {
+			// No matching results template (or none configured): fall back to the full result view.
+			add_filter( 'qsm_can_view_result', '__return_true', 999 );
+			$display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
+			remove_filter( 'qsm_can_view_result', '__return_true', 999 );
+		}
+	}
+	// Handle the wpautop-wrapped token first so the results markup isn't nested inside a <p>.
+	return str_replace( array( '<p>%LAST_RESULT%</p>', '%LAST_RESULT%' ), $display, $content );
 }
 
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
@@ -1132,6 +1323,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 	}
 
+	$user_answer_status = '';
 	if ( is_admin() && isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'qsm_quiz_result_details' ) {
 		$user_answer_class     = '';
 		$question_answer_class = '';
@@ -1140,24 +1332,29 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( 'correct' === $answer['correct'] ) {
 					$user_answer_class     = 'qmn_user_correct_answer';
 					$question_answer_class = 'qmn_question_answer_correct';
+					$user_answer_status    = 'your-correct';
 				} else {
 					$user_answer_class     = 'qmn_user_incorrect_answer';
 					$question_answer_class = 'qmn_question_answer_incorrect';
+					$user_answer_status    = 'your-incorrect';
 				}
 			}
 		}
 	} elseif ( isset( $mlw_quiz_array['form_type'] ) && '1' === $mlw_quiz_array['form_type'] || '2' === $mlw_quiz_array['form_type'] ) {
 			$user_answer_class     = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
+			$user_answer_status    = 'your-answer';
 		} elseif ( 'correct' === $answer['correct'] ) {
 				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
+				$user_answer_status    = 'your-correct';
 			} else {
 				$user_answer_class     = 'qmn_user_incorrect_answer';
 				$question_answer_class = 'qmn_question_answer_incorrect';
+				$user_answer_status    = 'your-incorrect';
 	}
 	$user_answer_class = 11 != $answer['question_type'] ? $user_answer_class : '';
-	$open_span_tag                 = '<span class="' . $user_answer_class . '">';
+	$open_span_tag                 = '<span class="' . $user_answer_class . '"' . qsm_answer_status_describedby( $user_answer_status ) . '>';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
@@ -1262,30 +1459,30 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								if ( 'correct' === $answer['correct'] ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $user_given_answer . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer"' . qsm_answer_status_describedby( 'your-correct' ) . '>' . $user_given_answer . '</span>';
 									$do_show_wrong              = false;
 									break;
 								}
 							}
 						} elseif ( isset( $single_answer[2] ) && 'correct' === $answer['correct'] ) {
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option"' . qsm_answer_status_describedby( 'correct' ) . '>' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
 								break;
 						}
 					}
 					if ( $do_show_wrong ) {
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
-							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $user_given_answer . '</span>';
+							$question_with_answer_text .= '<span class="qsm-text-wrong-option"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>' . $user_given_answer . '</span>';
 							foreach ( $total_answers as $single_answer_key => $single_answer ) {
 								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$hide_correct_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'hide_correct_answer' );
 								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && 1 != $hide_correct_answer ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $questionid . '-' . $single_answer_key, 'QSM Answers' ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option"' . qsm_answer_status_describedby( 'correct' ) . '>' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $questionid . '-' . $single_answer_key, 'QSM Answers' ) . '</span>';
 									break;
 								}
 							}
 						} else {
-							$question_with_answer_text .= '<span class="qsm-text-simple-option">' . $user_given_answer . '</span>';
+							$question_with_answer_text .= '<span class="qsm-text-simple-option"' . qsm_answer_status_describedby( 'your-answer' ) . '>' . $user_given_answer . '</span>';
 						}
 					}
 				} elseif ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] ) {
@@ -1320,14 +1517,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$is_answer_correct  = qsm_fill_blank_is_correct_response( $show_user_answer, $localized_answer, $case_sensitive_flag );
 							$index              = $key + 1;
 							if ( $is_answer_correct ) {
-								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer"' . qsm_answer_status_describedby( 'your-correct' ) . '>(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
 								if ( '' === $show_user_answer ) {
 									$show_user_answer = $quiz_options->no_answer_text;
 								}
 
-								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $localized_answer ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-wrong-option"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>(' . $index . ') ' . $show_user_answer . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option"' . qsm_answer_status_describedby( 'correct' ) . '>(' . $index . ') ' . strval( $localized_answer ) . '</span>';
 							}
 						}
 					} else {
@@ -1336,20 +1533,20 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						foreach ( $total_answers as $key => $single_answer ) {
 							$single_correct_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' );
 							$options              = array_merge( $options, $qsm_split( $single_correct_answer ) );
-							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option">(' . ($key + 1) . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
+							$question_correct_fill_answer_text .= '<span class="qsm-text-correct-option"' . qsm_answer_status_describedby( 'correct' ) . '>(' . ($key + 1) . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $answer['id'] . '-' . $key, 'QSM Answers' ) ) . '</span>';
 						}
 						$is_any_incorrect = false;
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
 								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 								if ( false !== $key ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer"' . qsm_answer_status_describedby( 'your-correct' ) . '>' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
 									$is_any_incorrect = true;
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = $quiz_options->no_answer_text;
 									}
-									$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-wrong-option"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>' . $show_user_answer . '</span>';
 								}
 							}
 						} else {
@@ -1357,13 +1554,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$key = array_search( $qsm_norm( $show_user_answer ), $options, true );
 
 								if ( false !== $key ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer"' . qsm_answer_status_describedby( 'your-correct' ) . '>' . $show_user_answer . '</span>';
 								} else {
 									$is_any_incorrect = true;
 									if ( '' === $show_user_answer ) {
 										$show_user_answer = $quiz_options->no_answer_text;
 									}
-									$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-wrong-option"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>' . $show_user_answer . '</span>';
 								}
 							}
 						}
