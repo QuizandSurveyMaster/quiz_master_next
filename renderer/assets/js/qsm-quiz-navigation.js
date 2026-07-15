@@ -1861,12 +1861,23 @@ if (typeof window.qsmCheckMR !== 'function') {
             showLoading: function(quizId) {
                 let quizData = this.quizObjects[quizId];
                 if (!quizData) return;
-                
+
+                // Use the admin-configured "Quiz Submit/Processing Message" if set,
+                // falling back to the translatable default from the localized object.
+                let defaultMessage = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object.processing_message)
+                            ? qmn_ajax_object.processing_message
+                            : 'Processing your quiz...';
+                let processingMessage = (quizData.data && quizData.data.quiz_processing_message)
+                            ? quizData.data.quiz_processing_message
+                            : defaultMessage;
+
                 let loadingHtml = '<div class="qsm-quiz-processing-box">';
                 loadingHtml += '<div class="qsm-spinner-loader"></div>';
-                loadingHtml += '<div class="qsm-processing-message">Processing your quiz...</div>';
+                if (processingMessage !== '') {
+                    loadingHtml += '<div class="qsm-processing-message">' + processingMessage + '</div>';
+                }
                 loadingHtml += '</div>';
-                
+
                 quizData.quizContainer.html(loadingHtml);
             },
 

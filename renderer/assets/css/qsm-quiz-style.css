@@ -722,14 +722,16 @@ body .qsm-results-page .mlw_qmn_question .qmn_image_option:before {
 	overflow-wrap: break-word;
 }
 
-.qsm_quiz_processing_box {
+.qsm_quiz_processing_box,
+.qsm-quiz-processing-box {
 	display: inline-block;
 	width: 100%;
 	box-sizing: border-box;
 	padding: 20px;
 	text-align: center;
 }
-.qsm_quiz_processing_box .qsm_quiz_processing_message {
+.qsm_quiz_processing_box .qsm_quiz_processing_message,
+.qsm-quiz-processing-box .qsm-processing-message {
 	margin: 10px 0;
 }
 .qsm-text-correct-option.not-opted {

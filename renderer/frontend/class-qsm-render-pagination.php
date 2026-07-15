@@ -624,6 +624,7 @@ class QSM_New_Pagination_Renderer {
 					'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->quiz_limit_choice, "quiz_quiz_limit_choice-{$this->options->quiz_id}" ),
 					'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
 					'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+					'processing_message'        => esc_html__( 'Processing your quiz...', 'quiz-master-next' ),
 					'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 					'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 					'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
