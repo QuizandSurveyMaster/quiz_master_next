@@ -33,7 +33,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$slider_data_atts .= ' data-answer1=' . $answar1 . ' ';
 	$slider_data_atts .= ' data-answer2=' . $answar2 . ' ';
 	$slider_data_atts .= ' data-is_reverse=' . intval( $is_reverse ) . ' ';
-	$slider_data_atts .= ' data-is_required=' . $required . ' ';
+	$slider_data_atts .= ' data-is_required=' . intval( $required ) . ' ';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText mlwRequiredPolar';
 	} else {
