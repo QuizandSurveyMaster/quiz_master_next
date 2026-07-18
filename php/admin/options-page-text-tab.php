@@ -289,6 +289,17 @@ function qsm_update_text_message() {
 	global $mlwQuizMasterNext;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_save_text_message_nonce' ) ) {
 		$quiz_id             = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+		// The nonce above is global (not bound to a quiz), so enforce a per-quiz
+		// ownership check before writing to prevent a cross-quiz IDOR write.
+		if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+			echo wp_json_encode(
+				array(
+					'success' => false,
+					'message' => __( 'You are not allowed to edit this quiz.', 'quiz-master-next' ),
+				)
+			);
+			exit;
+		}
 		$text_id             = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
 		$message             = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
 		$settings            = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );

@@ -66,8 +66,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_results',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
@@ -89,8 +90,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_emails',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
