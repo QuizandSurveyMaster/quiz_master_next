@@ -880,26 +880,36 @@ class QMNQuizManager {
 						if ( empty( $category ) || empty( $category_question_limit['question_limit_key'][ $key ] ) ) {
 							continue;
 						}
-						$limit       = $category_question_limit['question_limit_key'][ $key ];
-						$exclude_ids = 0;
+						// Security (SQLi): the quiz id, category (term) id, per-category limit and the
+						// exclude-id list all derive from the Contributor-settable select_category_question
+						// quiz option, so cast every value to an int before it reaches the query — otherwise
+						// this Mode-2 branch is SQL injection (sibling of the Mode-1 randon_category fix above).
+						$limit       = intval( $category_question_limit['question_limit_key'][ $key ] );
+						$exclude_ids = '0';
 						if ( ! empty( $tq_ids ) && ! empty( ( array_column( array_merge( ...array_map( 'array_merge', $tq_ids ) ), 'question_id' ) ) ) ) {
-							$exclude_ids = implode( ',', array_column( array_merge( ...array_map( 'array_merge', $tq_ids ) ), 'question_id' ) );
+							$exclude_ids = implode( ',', array_filter( array_map( 'absint', array_column( array_merge( ...array_map( 'array_merge', $tq_ids ) ), 'question_id' ) ) ) );
+							$exclude_ids = '' !== $exclude_ids ? $exclude_ids : '0';
 						}
 						$category_order_sql = '';
 						if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) ) {
 							$category_order_sql = 'ORDER BY rand()';
 						}
 						$tq_ids[] = $wpdb->get_results(
-							"SELECT DISTINCT q.`question_id`
-							FROM `{$wpdb->prefix}mlw_questions` AS q
-							JOIN `{$wpdb->prefix}mlw_question_terms` AS qt ON q.`question_id` = qt.`question_id`
-							WHERE qt.`quiz_id` = $quiz_id
-								AND qt.`term_id` = $category
-								AND qt.`taxonomy` = 'qsm_category'
-								AND qt.`question_id` NOT IN ($exclude_ids)
-								AND q.`deleted` = 0
-							" . esc_sql( $category_order_sql ) . "
-							LIMIT $limit",
+							$wpdb->prepare(
+								"SELECT DISTINCT q.`question_id`
+								FROM `{$wpdb->prefix}mlw_questions` AS q
+								JOIN `{$wpdb->prefix}mlw_question_terms` AS qt ON q.`question_id` = qt.`question_id`
+								WHERE qt.`quiz_id` = %d
+									AND qt.`term_id` = %d
+									AND qt.`taxonomy` = 'qsm_category'
+									AND qt.`question_id` NOT IN ($exclude_ids)
+									AND q.`deleted` = 0
+								" . esc_sql( $category_order_sql ) . "
+								LIMIT %d",
+								intval( $quiz_id ),
+								intval( $category ),
+								$limit
+							),
 							ARRAY_A
 						);
 					}
