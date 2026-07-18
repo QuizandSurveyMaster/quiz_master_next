@@ -822,9 +822,20 @@ class QMNQuizManager {
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
 
 				if ( ! empty( $category_ids ) ) {
-					$term_ids    = implode( ',', $category_ids );
-					$question_id = implode( ',', $question_ids );
-					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
+					// Security (CVE-2026-15963): the randon_category quiz option is a
+					// user-controlled, comma-separated list of category (term) IDs. Category and
+					// question IDs are always integers, so cast every value to a positive int
+					// before it is interpolated into the raw SQL IN() lists below — otherwise a
+					// Contributor+/Custom+ user can inject SQL via randon_category.
+					$term_ids    = implode( ',', array_filter( array_map( 'absint', $category_ids ) ) );
+					$question_id = implode( ',', array_filter( array_map( 'absint', $question_ids ) ) );
+					if ( '' !== $quiz_options->randon_category ) {
+						$term_ids = implode( ',', array_filter( array_map( 'absint', explode( ',', $quiz_options->randon_category ) ) ) );
+					}
+					// Guard against an empty IN() list (e.g. a non-numeric randon_category value),
+					// which would otherwise be a SQL syntax error; '0' safely matches no rows.
+					$term_ids    = '' !== $term_ids ? $term_ids : '0';
+					$question_id = '' !== $question_id ? $question_id : '0';
 					$tq_ids      = $wpdb->get_results(
 						"SELECT DISTINCT qt.term_id, qt.question_id
 						FROM {$wpdb->prefix}mlw_question_terms AS qt
