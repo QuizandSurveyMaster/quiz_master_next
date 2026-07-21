@@ -66,8 +66,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_results',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
@@ -89,8 +90,9 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_emails',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				return current_user_can( 'edit_qsm_quizzes' )
+					&& qsm_current_user_can_edit_quiz( $request['id'] );
 			},
 		)
 	);
@@ -149,8 +151,9 @@ function qsm_register_rest_routes() {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_categories',
-				'permission_callback' => function () {
-					return current_user_can( 'edit_qsm_quizzes' );
+				'permission_callback' => function ( WP_REST_Request $request ) {
+					return current_user_can( 'edit_qsm_quizzes' )
+						&& qsm_current_user_can_edit_quiz( $request['id'] );
 				},
 			)
 		);
@@ -560,6 +563,16 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$question       = QSM_Questions::load_question( $request['id'] );
+			// Security (IDOR): the {id} in this route is a QUESTION id, so authorise against
+			// the question's OWNING quiz ($question['quiz_id']) — NOT $request['id'] — before
+			// disclosing it. The flat-cap permission_callback alone lets any Contributor read
+			// another author's question; mirrors the internal checks in the save_* callbacks.
+			if ( ! empty( $question ) && ! qsm_current_user_can_edit_quiz( $question['quiz_id'] ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+				);
+			}
 			$categorysArray = QSM_Questions::get_question_categories( $question['question_id'] );
 			if ( ! empty( $question ) ) {
 				$is_linking = isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0;
