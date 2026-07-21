@@ -4355,6 +4355,69 @@ var QSM_Quiz_Broadcast_Channel;
                     $('#delete-question-button').attr('data-question-iid', 'all-questions');
                 });
 
+                // open bulk edit modal for the selected questions
+                $(document).on('click', '#qsm-bulk-edit-question', function (event) {
+                    event.preventDefault();
+                    let count = $('.qsm-admin-select-question-input:checked').length;
+                    if (!count) {
+                        return;
+                    }
+                    // reset fields to "no change" each time the modal opens
+                    $('#qsm-bulk-edit-required, #qsm-bulk-edit-category, #qsm-bulk-edit-status').val('');
+                    $('.qsm-bulk-edit-info').html('');
+                    $('#modal-11 .qsm-selected-question-count').html(count);
+                    MicroModal.show('modal-11');
+                });
+
+                // apply the bulk edit changes
+                $(document).on('click', '#qsm-bulk-edit-apply', function (event) {
+                    event.preventDefault();
+                    let $button = $(this);
+                    let checkedValues = $('.qsm-admin-select-question-input:checked')
+                        .map(function () {
+                            return $(this).val();
+                        })
+                        .get();
+                    if (!checkedValues.length) {
+                        return;
+                    }
+                    let question_ids = checkedValues.join(',');
+                    let required = $('#qsm-bulk-edit-required').val();
+                    let category = $('#qsm-bulk-edit-category').val();
+                    let status = $('#qsm-bulk-edit-status').val();
+                    if ('' === required && '' === category && '' === status) {
+                        $('.qsm-bulk-edit-info').html(qsm_admin_messages.bulk_edit_select_field || 'Please choose at least one field to update.');
+                        return;
+                    }
+                    $button.prop('disabled', true);
+                    $.ajax({
+                        url: ajaxurl,
+                        method: 'POST',
+                        data: {
+                            'action': 'qsm_bulk_edit_questions',
+                            'question_id': question_ids,
+                            'question_required': required,
+                            'question_category': category,
+                            'question_status': status,
+                            'nonce': qsmQuestionSettings.bulk_edit_nonce
+                        },
+                        success: function (response) {
+                            $button.prop('disabled', false);
+                            MicroModal.close('modal-11');
+                            if (response.success) {
+                                QSMAdmin.displayAlert(response.data, 'success');
+                                location.reload();
+                            } else {
+                                QSMAdmin.displayAlert(response.data, 'error');
+                            }
+                        },
+                        error: function () {
+                            $button.prop('disabled', false);
+                            QSMAdmin.displayAlert('Something went wrong. Please try again.', 'error');
+                        }
+                    });
+                });
+
                 $(document).on('click', '.qsm-admin-select-page-question', function () {
                     let isChecked = $(this).prop('checked');
                     let checkboxesToToggle = $(this).closest('.page').find('.qsm-admin-select-question-input');
