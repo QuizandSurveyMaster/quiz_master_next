@@ -295,7 +295,11 @@ function qsm_options_questions_tab_content() {
 									if ( empty( $cat['category'] ) ) {
 										continue;
 									}
-									$cat_value = $multiple_category_enabled ? ( isset( $cat['cat_id'] ) ? $cat['cat_id'] : '' ) : $cat['category'];
+									if ( $multiple_category_enabled ) {
+										$cat_value = isset( $cat['cat_id'] ) ? $cat['cat_id'] : '';
+									} else {
+										$cat_value = $cat['category'];
+									}
 									if ( '' === (string) $cat_value ) {
 										continue;
 									}

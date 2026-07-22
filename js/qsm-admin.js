@@ -3353,7 +3353,7 @@ var QSM_Quiz_Broadcast_Channel;
                     // When a default Question Type other than the base type is inherited, run the
                     // question-type change logic so the type-specific fields/answers are set up
                     // exactly as if the author had picked the type themselves (task CU-86d3t3jcn).
-                    var inherited_type = model.get('type');
+                    const inherited_type = model.get('type');
                     if (inherited_type && '0' != inherited_type) {
                         $('#question_type').trigger('change');
                     }
@@ -3394,7 +3394,7 @@ var QSM_Quiz_Broadcast_Channel;
                 // Returns the saved per-quiz "Default Question Settings" (type/category/required)
                 // or false when none are configured. See task CU-86d3t3jcn.
                 getDefaultQuestionSettings: function () {
-                    var defaults = qsmQuestionSettings.default_question_settings;
+                    const defaults = qsmQuestionSettings.default_question_settings;
                     if (!defaults || typeof defaults !== 'object' || $.isEmptyObject(defaults)) {
                         return false;
                     }
@@ -3404,22 +3404,22 @@ var QSM_Quiz_Broadcast_Channel;
                     if ( !qsmShouldSuppressCreationAlerts() ) {
                         QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
                     }
-                    var attributes = {
+                    const attributes = {
                         quizID: qsmQuestionSettings.quizID,
                         page: page
                     };
                     // Apply the quiz's Default Question Settings so a newly added question
                     // inherits the configured Question Type, Category and Required status.
-                    var defaults = QSMQuestion.getDefaultQuestionSettings();
+                    const defaults = QSMQuestion.getDefaultQuestionSettings();
                     if (defaults) {
-                        if (typeof defaults.type !== 'undefined' && '' !== defaults.type) {
+                        if (defaults.type !== undefined && '' !== defaults.type) {
                             attributes.type = String(defaults.type);
                         }
-                        if (typeof defaults.required !== 'undefined' && '' !== defaults.required) {
-                            attributes.required = parseInt(defaults.required, 10);
+                        if (defaults.required !== undefined && '' !== defaults.required) {
+                            attributes.required = Number.parseInt(defaults.required, 10);
                         }
-                        if (typeof defaults.category !== 'undefined' && '' !== defaults.category) {
-                            if (parseInt(qsmQuestionSettings.multiple_category_enabled, 10)) {
+                        if (defaults.category !== undefined && '' !== defaults.category) {
+                            if (Number.parseInt(qsmQuestionSettings.multiple_category_enabled, 10)) {
                                 attributes.multicategories = [String(defaults.category)];
                                 attributes.category = '';
                             } else {
@@ -4263,14 +4263,14 @@ var QSM_Quiz_Broadcast_Channel;
                 // ---- Default Question Settings popup (task CU-86d3t3jcn) ----
                 // Fills the popup fields from the currently saved defaults.
                 function qsmPopulateDefaultQuestionSettings() {
-                    var defaults = qsmQuestionSettings.default_question_settings;
+                    let defaults = qsmQuestionSettings.default_question_settings;
                     if (!defaults || typeof defaults !== 'object') {
                         defaults = {};
                     }
-                    $('#qsm-default-question-type').val(('undefined' !== typeof defaults.type && '' !== defaults.type) ? String(defaults.type) : '0');
-                    $('#qsm-default-question-category').val(('undefined' !== typeof defaults.category && '' !== defaults.category) ? String(defaults.category) : '');
+                    $('#qsm-default-question-type').val((defaults.type !== undefined && '' !== defaults.type) ? String(defaults.type) : '0');
+                    $('#qsm-default-question-category').val((defaults.category !== undefined && '' !== defaults.category) ? String(defaults.category) : '');
                     // required: 0 = required (checkbox on), 1/unset = not required.
-                    $('#qsm-default-question-required').prop('checked', 'undefined' !== typeof defaults.required && 0 === parseInt(defaults.required, 10));
+                    $('#qsm-default-question-required').prop('checked', defaults.required !== undefined && 0 === Number.parseInt(defaults.required, 10));
                 }
 
                 // Open the popup.
@@ -4302,7 +4302,7 @@ var QSM_Quiz_Broadcast_Channel;
                             required: settings.required
                         },
                         success: function (response) {
-                            if (response && response.status === 'success') {
+                            if (response?.status === 'success') {
                                 qsmQuestionSettings.default_question_settings = response.settings;
                                 QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_saved, 'success');
                                 MicroModal.close('modal-default-question-settings');
@@ -4335,7 +4335,7 @@ var QSM_Quiz_Broadcast_Channel;
                             reset: '1'
                         },
                         success: function (response) {
-                            if (response && response.status === 'success') {
+                            if (response?.status === 'success') {
                                 qsmQuestionSettings.default_question_settings = response.settings;
                                 QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_reset, 'success');
                             } else {
