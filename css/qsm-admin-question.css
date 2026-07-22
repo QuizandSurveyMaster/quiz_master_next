@@ -934,3 +934,57 @@ input.qsm-admin-select-page-question {
 #placeholder_text{
 	width: 100%;
 }
+/* Default Question Settings — toolbar button + popup (task CU-86d3t3jcn) */
+.question-controls .qsm-default-question-settings-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	margin-left: 10px;
+	color: #3c56d6;
+	border-color: #c3ccf5;
+	white-space: nowrap;
+}
+.question-controls .qsm-default-question-settings-button .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+}
+#modal-default-question-settings .qsm-popup__container {
+	max-width: 460px;
+}
+.qsm-default-question-settings-desc {
+	margin: 0 0 18px;
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.5;
+}
+.qsm-default-question-settings-field {
+	margin-bottom: 16px;
+}
+.qsm-default-question-settings-field > label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+.qsm-default-question-settings-field select {
+	width: 100%;
+}
+.qsm-default-question-settings-required > label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 400;
+}
+.qsm-default-question-settings-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 20px;
+}
+#qsm-reset-default-question-settings {
+	color: #3c56d6;
+	text-decoration: none;
+	font-weight: 600;
+	cursor: pointer;
+}
