@@ -951,7 +951,7 @@ input.qsm-admin-select-page-question {
 	line-height: 16px;
 }
 #modal-default-question-settings .qsm-popup__container {
-	max-width: 460px;
+	max-width: 380px;
 }
 .qsm-default-question-settings-desc {
 	margin: 0 0 18px;
@@ -969,6 +969,8 @@ input.qsm-admin-select-page-question {
 }
 .qsm-default-question-settings-field select {
 	width: 100%;
+	max-width: 100% !important;
+	box-sizing: border-box;
 }
 .qsm-default-question-settings-required > label {
 	display: inline-flex;
@@ -980,7 +982,7 @@ input.qsm-admin-select-page-question {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	gap: 20px;
+	gap: 40px;
 }
 #qsm-reset-default-question-settings {
 	color: #3c56d6;
