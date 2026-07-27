@@ -357,7 +357,7 @@ function qsm_questions_bank_question_editor() {
 					<p>
 						<?php esc_html_e( 'Upload a CSV file that matches the Question Bank schema. Each question row should be followed by its answer rows.', 'quiz-master-next' ); ?>
 						<?php if ( $sample_csv_url ) : ?>
-							<a href="<?php echo esc_url( $sample_csv_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Download sample CSV', 'quiz-master-next' ); ?></a>
+							<a href="<?php echo esc_url( $sample_csv_url ); ?>" download="import-questions-sample.csv" rel="noopener noreferrer"><?php esc_html_e( 'Download sample CSV', 'quiz-master-next' ); ?></a>
 						<?php endif; ?>
 					</p>
 					<form id="qsm-bulk-upload-form" class="qsm-bulk-upload-form" method="post" enctype="multipart/form-data">
