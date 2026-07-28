@@ -667,7 +667,18 @@ class QMNQuizManager {
 					'total_attempted_questions' => $quiz_result['total_attempted_questions'],
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
-				return $data['display'];
+
+				// Inject the quiz's custom Style-tab CSS. The live result page adds this
+				// in the renderer, but the shared RESULT_LINK page renders through this
+				// shortcode and would otherwise lose the custom styling.
+				$custom_style = '';
+				$quiz_stye    = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_stye FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $result_data['quiz_id'] ) );
+				if ( ! empty( $quiz_stye ) ) {
+					$custom_css   = wp_strip_all_tags( htmlspecialchars_decode( $quiz_stye, ENT_QUOTES ) );
+					$custom_style = '<style type="text/css">' . $custom_css . '</style>';
+				}
+
+				return $custom_style . $data['display'];
 			} else {
 				esc_html_e( 'Invalid result id!', 'quiz-master-next' );
 			}
