@@ -537,7 +537,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPOne = new Date();
 				qsmCookieExpiryQRPOne.setTime(qsmCookieExpiryQRPOne.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
 				var qmsExpiresQRPOne = "expires=" + qsmCookieExpiryQRPOne.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}
@@ -635,6 +635,7 @@ class QSM_New_Pagination_Renderer {
 					'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->quiz_limit_choice, "quiz_quiz_limit_choice-{$this->options->quiz_id}" ),
 					'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
 					'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+					'processing_message'        => esc_html__( 'Processing your quiz...', 'quiz-master-next' ),
 					'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 					'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 					'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
@@ -1495,7 +1496,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPTwo = new Date();
 				qsmCookieExpiryQRPTwo.setTime(qsmCookieExpiryQRPTwo.getTime() + (365*24*60*60*1000));
 				var qmsExpiresQRPTwo = "expires="+ qsmCookieExpiryQRPTwo.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}

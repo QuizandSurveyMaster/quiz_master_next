@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 4.9
 Tested up to: 7.0.2
 Requires PHP: 5.4
-Stable tag: 11.2.2
+Stable tag: 11.2.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Quiz maker & survey maker for WordPress. Build quizzes, surveys, exams & assessm
 
 == Description ==
 
-**Quiz and Survey Master (QSM) is a free quiz maker and survey maker for WordPress** — trusted by **40,000+ websites** and rated **4.7★ from 1,200+ reviews**. Build unlimited quizzes, surveys, exams, assessments, and trivia quizzes with a drag-and-drop builder, score-based results pages, and built-in lead capture — no code required.
+**Quiz and Survey Master (QSM) is a free quiz maker and survey maker for WordPress** — trusted by **40,000+ websites** and rated **4.7★ from 1,200+ reviews**. QSM is the all-in-one **WordPress quiz plugin** for building unlimited quizzes, surveys, exams, assessments, and trivia quizzes — with a drag-and-drop builder, score-based results pages, and built-in lead capture. No code required.
 
 Whether you're an educator scoring exams, a marketer running a lead-gen quiz, or a business gathering survey feedback, QSM gives you everything you need to build quizzes and surveys that grow with you.
 
@@ -27,9 +27,17 @@ Whether you're an educator scoring exams, a marketer running a lead-gen quiz, or
 * **Flexible grading** — points, percentages, and custom grading systems for exams and certifications.
 * **Fully responsive** — every quiz and survey looks great on mobile, tablet, and desktop.
 
+= Popular ways to use QSM =
+
+* **Graded exams & online assessments** — score answers automatically, set pass marks, and show a tailored results page.
+* **Personality & outcome quizzes** — map score ranges to different results ("Which plan is right for you?").
+* **Trivia quizzes** — engage visitors and keep them on your site longer.
+* **Lead-generation quizzes** — capture an email before or after the quiz and follow up automatically.
+* **Surveys, feedback forms & polls** — gather customer feedback, NPS, and market research from the same builder.
+
 = A complete WordPress survey maker =
 
-Turn QSM into a powerful survey tool to gather feedback and market research. Build survey forms in minutes, share them anywhere, and analyze responses in your dashboard.
+Turn QSM into a powerful survey tool to gather feedback and market research. Build survey forms, feedback forms, and polls in minutes, share them anywhere, and analyze responses in your dashboard.
 
 * Unlimited surveys and questions
 * Custom styling, text blocks, button labels, and template variables
@@ -41,7 +49,7 @@ QSM's **built-in contact form** turns quiz-takers into email subscribers — cap
 
 = Reporting & analytics =
 
-Track every submission with detailed **quiz reporting and analytics** — scores, response breakdowns, and results — so you can see exactly how people engage.
+Track every submission with detailed **quiz reporting and analytics** — scores, response breakdowns, and results — so you can see exactly how people engage with your quizzes, surveys, and polls.
 
 = Built for =
 
@@ -89,26 +97,34 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Screenshots ==
 
-1. Dashboard
-2. Create New Quiz Or Survey
-3. Adding Questions / Answers
-4. Questions
-5. All Quizzes & Surveys
-6. Contact Field
-7. Style Tab
-8. Featured Image
-9. Frontend View with Answer
-10. Answer
-11. Stats
-12. Reporting and analysis result
-13. Customizing Themes
-14. QSM Breeze Theme
-15. QSM Fragrance Theme
-16. QSM Ivory Theme
-17. QSM Pool Theme
-18. Database
+1. Quiz and survey dashboard — manage every quiz, survey, and exam in one place
+2. Create a new quiz or survey with the drag-and-drop builder
+3. Add questions and answers — 12+ question types
+4. Question bank and per-question settings
+5. All your quizzes and surveys at a glance
+6. Built-in contact form to capture leads
+7. Style tab — customize colors, fonts, and layout
+8. Featured images for quizzes and questions
+9. Front-end quiz view with answer feedback
+10. Score-based answer and results display
+11. Quiz stats — track submissions and completion
+12. Reporting and analytics — scores and response breakdowns
+13. Customize quiz themes to match your brand
+14. QSM Breeze premium theme
+15. QSM Fragrance premium theme
+16. QSM Ivory premium theme
+17. QSM Pool premium theme
+18. Database and submission records
 
 == Changelog ==
+= 11.2.3 (July 29, 2026) =
+* Feature: Added default settings for newly created questions.
+* Bug: Resolved the processing message display configuration issue.
+* Bug: Fixed a cookie-related issue affecting embedded quizzes with randomized questions.
+* Patch: Improved API request validation for JavaScript alerts involving the question_title parameter.
+* Enhancement: Added support for loading custom CSS on the results page.
+* Enhancement: Improved bulk import functionality with CSV question download handling.
+
 = 11.2.2 (July 18, 2026) =
 * Security: Fixed a Contributor+ stored XSS in the Polar question type where the "required" setting was emitted into an unquoted HTML attribute (CVE-2026-14824). Credit: Meher Sudhakar Abbireddi.
 * Security: Fixed a Contributor+ cross-quiz IDOR write in the quiz text-message AJAX handler by enforcing a per-quiz ownership check (CVE-2026-14825). Credit: Revanth Hari Narayana Matte.
