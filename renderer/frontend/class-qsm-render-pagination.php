@@ -537,7 +537,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPOne = new Date();
 				qsmCookieExpiryQRPOne.setTime(qsmCookieExpiryQRPOne.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
 				var qmsExpiresQRPOne = "expires=" + qsmCookieExpiryQRPOne.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}
@@ -1496,7 +1496,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPTwo = new Date();
 				qsmCookieExpiryQRPTwo.setTime(qsmCookieExpiryQRPTwo.getTime() + (365*24*60*60*1000));
 				var qmsExpiresQRPTwo = "expires="+ qsmCookieExpiryQRPTwo.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}
