@@ -3350,6 +3350,13 @@ var QSM_Quiz_Broadcast_Channel;
                             count++;
                         }
                     }
+                    // When a default Question Type other than the base type is inherited, run the
+                    // question-type change logic so the type-specific fields/answers are set up
+                    // exactly as if the author had picked the type themselves (task CU-86d3t3jcn).
+                    const inherited_type = model.get('type');
+                    if (inherited_type && '0' != inherited_type) {
+                        $('#question_type').trigger('change');
+                    }
                     $('.save-page-button').trigger('click');
                 },
                 addQuestionToPage: function (model) {
@@ -3384,14 +3391,43 @@ var QSM_Quiz_Broadcast_Channel;
                     }));
                     setTimeout(QSMQuestion.removeNew, 250);
                 },
+                // Returns the saved per-quiz "Default Question Settings" (type/category/required)
+                // or false when none are configured. See task CU-86d3t3jcn.
+                getDefaultQuestionSettings: function () {
+                    const defaults = qsmQuestionSettings.default_question_settings;
+                    if (!defaults || typeof defaults !== 'object' || $.isEmptyObject(defaults)) {
+                        return false;
+                    }
+                    return defaults;
+                },
                 createQuestion: function (page) {
                     if ( !qsmShouldSuppressCreationAlerts() ) {
                         QSMAdmin.displayAlert(qsm_admin_messages.creating_question, 'info');
                     }
-                    QSMQuestion.questions.create({
+                    const attributes = {
                         quizID: qsmQuestionSettings.quizID,
                         page: page
-                    }, {
+                    };
+                    // Apply the quiz's Default Question Settings so a newly added question
+                    // inherits the configured Question Type, Category and Required status.
+                    const defaults = QSMQuestion.getDefaultQuestionSettings();
+                    if (defaults) {
+                        if (defaults.type !== undefined && '' !== defaults.type) {
+                            attributes.type = String(defaults.type);
+                        }
+                        if (defaults.required !== undefined && '' !== defaults.required) {
+                            attributes.required = Number.parseInt(defaults.required, 10);
+                        }
+                        if (defaults.category !== undefined && '' !== defaults.category) {
+                            if (Number.parseInt(qsmQuestionSettings.multiple_category_enabled, 10)) {
+                                attributes.multicategories = [String(defaults.category)];
+                                attributes.category = '';
+                            } else {
+                                attributes.category = String(defaults.category);
+                            }
+                        }
+                    }
+                    QSMQuestion.questions.create(attributes, {
                         headers: {
                             'X-WP-Nonce': qsmQuestionSettings.nonce
                         },
@@ -4222,6 +4258,94 @@ var QSM_Quiz_Broadcast_Channel;
                 $('.questions').on('click', '.add-question-bank-button', function (event) {
                     event.preventDefault();
                     QSMQuestion.openQuestionBank($(this).parents('.page').index());
+                });
+
+                // ---- Default Question Settings popup (task CU-86d3t3jcn) ----
+                // Fills the popup fields from the currently saved defaults.
+                function qsmPopulateDefaultQuestionSettings() {
+                    let defaults = qsmQuestionSettings.default_question_settings;
+                    if (!defaults || typeof defaults !== 'object') {
+                        defaults = {};
+                    }
+                    $('#qsm-default-question-type').val((defaults.type !== undefined && '' !== defaults.type) ? String(defaults.type) : '0');
+                    $('#qsm-default-question-category').val((defaults.category !== undefined && '' !== defaults.category) ? String(defaults.category) : '');
+                    // required: 0 = required (checkbox on), 1/unset = not required.
+                    $('#qsm-default-question-required').prop('checked', defaults.required !== undefined && 0 === Number.parseInt(defaults.required, 10));
+                }
+
+                // Open the popup.
+                $('.question-controls').on('click', '.qsm-default-question-settings-button', function (event) {
+                    event.preventDefault();
+                    qsmPopulateDefaultQuestionSettings();
+                    MicroModal.show('modal-default-question-settings');
+                });
+
+                // Save the defaults.
+                $(document).on('click', '#qsm-save-default-question-settings', function (event) {
+                    event.preventDefault();
+                    var $button = $(this);
+                    var settings = {
+                        type: $('#qsm-default-question-type').val(),
+                        category: $('#qsm-default-question-category').val(),
+                        required: $('#qsm-default-question-required').is(':checked') ? 1 : 0
+                    };
+                    $button.prop('disabled', true);
+                    $.ajax({
+                        url: ajaxurl,
+                        method: 'POST',
+                        data: {
+                            action: 'qsm_save_default_question_settings',
+                            nonce: qsmQuestionSettings.default_question_settings_nonce,
+                            quiz_id: qsmQuestionSettings.quizID,
+                            type: settings.type,
+                            category: settings.category,
+                            required: settings.required
+                        },
+                        success: function (response) {
+                            if (response?.status === 'success') {
+                                qsmQuestionSettings.default_question_settings = response.settings;
+                                QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_saved, 'success');
+                                MicroModal.close('modal-default-question-settings');
+                            } else {
+                                QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_error, 'error');
+                            }
+                        },
+                        error: function () {
+                            QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_error, 'error');
+                        },
+                        complete: function () {
+                            $button.prop('disabled', false);
+                        }
+                    });
+                });
+
+                // Reset the defaults back to the system defaults.
+                $(document).on('click', '#qsm-reset-default-question-settings', function (event) {
+                    event.preventDefault();
+                    $('#qsm-default-question-type').val('0');
+                    $('#qsm-default-question-category').val('');
+                    $('#qsm-default-question-required').prop('checked', false);
+                    $.ajax({
+                        url: ajaxurl,
+                        method: 'POST',
+                        data: {
+                            action: 'qsm_save_default_question_settings',
+                            nonce: qsmQuestionSettings.default_question_settings_nonce,
+                            quiz_id: qsmQuestionSettings.quizID,
+                            reset: '1'
+                        },
+                        success: function (response) {
+                            if (response?.status === 'success') {
+                                qsmQuestionSettings.default_question_settings = response.settings;
+                                QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_reset, 'success');
+                            } else {
+                                QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_error, 'error');
+                            }
+                        },
+                        error: function () {
+                            QSMAdmin.displayAlert(qsm_admin_messages.default_question_settings_error, 'error');
+                        }
+                    });
                 });
 
                 //Show more question on load more

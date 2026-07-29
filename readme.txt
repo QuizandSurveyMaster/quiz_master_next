@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 4.9
 Tested up to: 7.0.2
 Requires PHP: 5.4
-Stable tag: 11.2.2
+Stable tag: 11.2.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,14 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+= 11.2.3 (July 29, 2026) =
+* Feature: Added default settings for newly created questions.
+* Bug: Resolved the processing message display configuration issue.
+* Bug: Fixed a cookie-related issue affecting embedded quizzes with randomized questions.
+* Patch: Improved API request validation for JavaScript alerts involving the question_title parameter.
+* Enhancement: Added support for loading custom CSS on the results page.
+* Enhancement: Improved bulk import functionality with CSV question download handling.
+
 = 11.2.2 (July 18, 2026) =
 * Security: Fixed a Contributor+ stored XSS in the Polar question type where the "required" setting was emitted into an unquoted HTML attribute (CVE-2026-14824). Credit: Meher Sudhakar Abbireddi.
 * Security: Fixed a Contributor+ cross-quiz IDOR write in the quiz text-message AJAX handler by enforcing a per-quiz ownership check (CVE-2026-14825). Credit: Revanth Hari Narayana Matte.

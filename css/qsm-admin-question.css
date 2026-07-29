@@ -91,7 +91,7 @@
 .page {
 	width: 100%;
 	background-color: #fafafa;
-	margin: 20px 0;
+	margin: 10px 0;
 	padding-bottom: 90px;
 	border: 1px solid #dadadb;
 	position: relative;
@@ -933,4 +933,70 @@ input.qsm-admin-select-page-question {
 }
 #placeholder_text{
 	width: 100%;
+}
+/* Default Question Settings — toolbar button + popup (task CU-86d3t3jcn) */
+.question-controls .qsm-default-question-settings-button,
+.question-controls .qsm-default-question-settings-button:hover,
+.question-controls .qsm-default-question-settings-button:focus,
+.question-controls .qsm-default-question-settings-button:active {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: var(--qsm-info-or-bg-color);
+	white-space: nowrap;
+}
+.question-controls .qsm-default-question-settings-button .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+}
+.admin_page_mlw_quiz_options .qsm_tab_content {
+	padding: 0px;
+}
+.mlw_quiz_options .search-box {
+	gap: 10px;
+}
+.mlw_quiz_options .question-controls {
+	margin-top: 10px;
+}
+#modal-default-question-settings .qsm-popup__container {
+	max-width: 380px;
+}
+.qsm-default-question-settings-desc {
+	margin: 0 0 18px;
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.5;
+}
+.qsm-default-question-settings-field {
+	margin-bottom: 16px;
+}
+.qsm-default-question-settings-field > label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+.qsm-default-question-settings-field select {
+	width: 100%;
+	max-width: 100% !important;
+	box-sizing: border-box;
+}
+.qsm-default-question-settings-required > label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 400;
+}
+.qsm-default-question-settings-footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 40px;
+}
+#qsm-reset-default-question-settings {
+	color: #3c56d6;
+	text-decoration: none;
+	font-weight: 600;
+	cursor: pointer;
 }
