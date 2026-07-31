@@ -1049,6 +1049,7 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 	}
 
 	$header_map    = qsm_question_bank_normalize_headers( $header_row );
+	$header_count  = count( $header_row );
 	$questions     = array();
 	$errors        = array();
 	$line          = 1;
@@ -1081,6 +1082,13 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		}
 
 		if ( $is_flat_csv ) {
+			$column_count = count( $row );
+			$row          = qsm_question_bank_realign_flat_row( $row, $header_map, $header_count );
+			if ( $column_count > $header_count && count( $row ) > $header_count ) {
+				/* translators: %1$d: Line number, %2$d: Columns found, %3$d: Columns expected */
+				$errors[] = sprintf( __( 'Line %1$d: Found %2$d columns but expected %3$d. A field likely contains a comma that is not wrapped in double quotes; wrap such fields in quotes and upload again.', 'quiz-master-next' ), $line, $column_count, $header_count );
+				continue;
+			}
 			$question = qsm_question_bank_build_flat_question( $row, $header_map, $line );
 			if ( is_wp_error( $question ) ) {
 				$errors[] = $question->get_error_message();
@@ -1356,6 +1364,61 @@ function qsm_question_bank_is_flat_format( $header_map ) {
 		}
 	}
 	return false;
+}
+
+/**
+ * Realigns a flat CSV row whose column count exceeds the header.
+ *
+ * A free-text field (typically the description) that contains a comma which was
+ * not wrapped in double quotes gets split into extra columns, shifting every
+ * following column and making the question type unreadable. This anchors the
+ * leading question column from the left and the fixed block of structured
+ * columns (question_type onward) from the right, then folds the surplus in
+ * between back into the description cell.
+ *
+ * The realigned row is only returned when its question type then resolves to a
+ * known type — that confirms the structured tail is correctly aligned, so
+ * mismatched options or answers are never silently imported. Otherwise the
+ * original row is returned unchanged and the caller reports a clear error.
+ *
+ * @since 10.4.0
+ * @param array $row          Raw CSV row.
+ * @param array $header_map   Normalized header map.
+ * @param int   $header_count Number of header columns.
+ * @return array
+ */
+function qsm_question_bank_realign_flat_row( $row, $header_map, $header_count ) {
+	if ( count( $row ) <= $header_count ) {
+		return $row;
+	}
+	if ( ! isset( $header_map['description'] ) || ! isset( $header_map['question_type'] ) ) {
+		return $row;
+	}
+
+	$description_index = (int) $header_map['description'];
+	$prefix_length     = $description_index;                          // Columns before the description cell.
+	$tail_length       = $header_count - ( $description_index + 1 );  // Structured columns after description.
+	if ( $prefix_length < 1 || $tail_length < 1 ) {
+		return $row;
+	}
+
+	$surplus_length = count( $row ) - $prefix_length - $tail_length;
+	if ( $surplus_length < 1 ) {
+		return $row;
+	}
+
+	$prefix      = array_slice( $row, 0, $prefix_length );
+	$description = implode( ',', array_slice( $row, $prefix_length, $surplus_length ) );
+	$tail        = array_slice( $row, $prefix_length + $surplus_length );
+	$realigned   = array_values( array_merge( $prefix, array( $description ), $tail ) );
+
+	$type_index = (int) $header_map['question_type'];
+	$type_value = isset( $realigned[ $type_index ] ) ? trim( $realigned[ $type_index ] ) : '';
+	if ( '' === qsm_question_bank_map_question_type( $type_value, qsm_question_bank_question_types_map() ) ) {
+		return $row; // Could not confidently realign — leave the caller to flag it.
+	}
+
+	return $realigned;
 }
 
 /**
