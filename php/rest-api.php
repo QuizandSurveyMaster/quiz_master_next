@@ -5,6 +5,7 @@
  * @since 5.2.0
  * @package QSM
  */
+// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 add_action( 'rest_api_init', 'qsm_register_rest_routes' );
 

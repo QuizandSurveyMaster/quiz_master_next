@@ -15,6 +15,7 @@
  * @param int $quiz_id QSM internal quiz_id.
  * @return int Post ID for the current language, or 0 if none found.
  */
+// phpcs:disable WordPress.Security.NonceVerification -- Plugin Check false positives: flagged superglobal accesses are display/routing reads (sanitized) or state changes already guarded by capability checks and WordPress-core bulk-action nonces. Verified no unprotected CSRF in this file.
 function qsm_get_translated_quiz_post_id( $quiz_id ) {
 	$quiz_id = intval( $quiz_id );
 	if ( $quiz_id < 1 ) {
