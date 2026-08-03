@@ -181,7 +181,7 @@ class QSM_New_Pagination_Renderer {
 			if ( isset( $this->options->quiz_id ) ) {
 				$this->quiz_data['quiz_id'] = $this->options->quiz_id;
 			} else {
-				throw new Exception( __('Quiz ID not found in options or quiz_data', 'quiz-master-next') );
+				throw new Exception( esc_html__('Quiz ID not found in options or quiz_data', 'quiz-master-next') );
 			}
 		}
 		
@@ -1094,6 +1094,7 @@ class QSM_New_Pagination_Renderer {
 			// Hook before page
 			do_action( 'qsm_after_welcome_page', $this->options, $this->quiz_data, 'single' );
 			if ( $this->quiz_options->pagination > 0 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qsm_auto_page_begin_pagination', '', $pages_count, $this->options, $this->questions );
 			} else {
 				do_action( 'qsm_action_before_page', $qpage_id, $qpage );
@@ -1124,6 +1125,7 @@ class QSM_New_Pagination_Renderer {
 								<?php
 							}
 						}
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 						echo $this->display_question( $question['question_type_new'], intval( $question_id ), $this->options, $shortcode_args );
 					
 					// Render question comment field if enabled
@@ -1172,6 +1174,7 @@ class QSM_New_Pagination_Renderer {
 				<span class="pages_count">
 				<?php
 				$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 				</span>
@@ -1900,6 +1903,7 @@ class QSM_New_Pagination_Renderer {
 		);
 		
 		// Load quiz form template
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'quiz-form', $args );
 	}
 
@@ -1912,6 +1916,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_pagination_header_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_pagination_header();
 	}
 
@@ -1960,6 +1965,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_first_page_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_first_page();
 	}
 
@@ -1972,6 +1978,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_quiz_pages_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qmn_begin_quiz_questions', '', $this->options, $this->quiz_data );
 		$this->render_quiz_pages();
 	}
@@ -1985,6 +1992,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_last_page_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_last_page();
 		do_action( 'qsm_after_all_section' );
 	}
@@ -1998,6 +2006,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_error_message_bottom_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qmn_before_error_message', '', $this->options, $this->quiz_data );
 		echo '<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>';
 	}
@@ -2011,6 +2020,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param array $args Template arguments
 	 */
 	public function render_hidden_inputs_element( $quiz_id, $renderer, $args ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_hidden_inputs();
 	}
 
@@ -2021,6 +2031,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param QSM_New_Pagination_Renderer $renderer
 	 */
 	public function render_form_end_element( $renderer ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_form_end();
 	}
 
@@ -2035,6 +2046,7 @@ class QSM_New_Pagination_Renderer {
 		$this->register_pagination_elements();
 		
 		// Render pagination template
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_navigation();
 	}
 
@@ -2073,6 +2085,7 @@ class QSM_New_Pagination_Renderer {
 		}
 
 		$args = array_merge($args, $builder_args);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'pagination/prev-btn', $args );
 	}
 
@@ -2094,6 +2107,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$args = array_merge($args, $builder_args);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'pagination/progress-bar', $args );
 	}
 
@@ -2115,6 +2129,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$args = array_merge($args, $builder_args);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'pagination/start-btn', $args );
 	}
 
@@ -2136,6 +2151,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$args = array_merge($args, $builder_args);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'pagination/next-btn', $args );
 	}
 
@@ -2157,6 +2173,7 @@ class QSM_New_Pagination_Renderer {
 		}
 
 		$args = array_merge($args, $builder_args);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo qsm_new_get_template_part( 'pagination/submit', $args );
 	}
 
@@ -2171,6 +2188,7 @@ class QSM_New_Pagination_Renderer {
 	 * @param QSM_New_Pagination_Renderer $renderer
 	 */
 	public function render_javascript_data_element( $renderer ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 		echo $this->render_javascript_data();
 	}
 }

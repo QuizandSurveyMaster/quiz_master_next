@@ -566,7 +566,7 @@ function qsm_results_overview_tab_content() {
 							<td style="text-align: center;">
 								<input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>" />
 							</td>
-							<td class="<?php echo apply_filters( 'qsm_results_quiz_name_class', '', $quiz_infos[ $x ]->result_id ); ?>">
+							<td class="<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qsm_results_quiz_name_class', '', $quiz_infos[ $x ]->result_id ); ?>">
 								<strong><a class="row-title" href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $quiz_infos[ $x ]->result_id ); ?>"><?php echo esc_html( $quiz_infos[ $x ]->quiz_name ); ?></a></strong>
 								<?php do_action( 'qsm_admin_results_quiz_name_after', $quiz_infos[ $x ] ); ?>
 								<div class="row-actions">

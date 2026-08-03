@@ -33,7 +33,7 @@ if ( apply_filters( 'qsm_show_start_button', true, $quiz_id, $args ) ) :
         class="<?php echo esc_attr( $start_button_class ); ?>" 
         data-action="start"
         style="display:none;"
-        <?php echo apply_filters(
+        <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters(
             'qsm_start_button_attributes',
             '',
             $quiz_id,

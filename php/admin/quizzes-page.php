@@ -332,6 +332,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						if ( current_user_can( 'create_qsm_quizzes' ) ) {
 							$add_button = '<a href="' . esc_url(admin_url('admin.php?page=qsm_create_quiz_page')) . '" class="add-new-h2">' . esc_html__('Add New', 'quiz-master-next') . '</a>';
 						}
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 						echo apply_filters( 'qsm_add_quiz_after', ! empty( $add_button ) ? $add_button : '' ); ?>
 					</h1>
 					<?php

@@ -36,4 +36,5 @@ $class_object->display_question_title( $question['question_name'], '', $new_ques
 ?>
 <input <?php echo esc_attr( $autofill_att ); ?> type="text" class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $min_text_attr ); ?> <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> Placeholder="<?php echo esc_attr($placeholder_text); ?>" />
 <?php
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_small_open_display_front', '', $id, $question, $answers );

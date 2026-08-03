@@ -41,7 +41,7 @@ do_action( 'qsm_before_pagination_render', $quiz_id, $args );
 		)
 	); ?>" 
 	data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>"
-	<?php echo apply_filters(
+	<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters(
 			'qsm_pagination_attributes',
 			'',
 			$quiz_id,

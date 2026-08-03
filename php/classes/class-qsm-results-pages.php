@@ -184,6 +184,7 @@ class QSM_Results_Pages {
 			$response_data['result_page_index'] = $page_index;
 			//last chance to filter $page
 			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page', $response_data, $page_index );
 			?>

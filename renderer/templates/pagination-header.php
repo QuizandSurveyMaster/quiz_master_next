@@ -34,7 +34,7 @@ if ( ! has_action( 'qsm_pagination_header_content' ) ) {
 
 <div class="<?php echo esc_attr( apply_filters( 'qsm_pagination_header_classes', 'qsm-pagination-header qsm-navigation-header', $quiz_id, $renderer, $args ) ); ?>" 
     data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>"
-    <?php echo apply_filters( 'qsm_pagination_header_attributes', '', $quiz_id, $renderer, $args ); ?>>
+    <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qsm_pagination_header_attributes', '', $quiz_id, $renderer, $args ); ?>>
 	<?php
 
 	// Hook before pagination header content	
