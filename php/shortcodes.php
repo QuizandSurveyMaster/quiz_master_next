@@ -31,7 +31,8 @@ function qsm_get_translated_quiz_post_id( $quiz_id ) {
 			'posts_per_page'         => 1,
 			'post_status'            => 'publish',
 			'fields'                 => 'ids',
-			'suppress_filters'       => true, // Bypass WPML language SQL filter.
+			// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters -- Intentional: bypass the WPML language SQL filter so the quiz_id meta lookup resolves regardless of the active language.
+			'suppress_filters'       => true,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
