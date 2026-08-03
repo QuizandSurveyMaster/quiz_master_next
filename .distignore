@@ -1,0 +1,30 @@
+# Files/dirs that must NOT ship in the distributed plugin (wp.org SVN / zip).
+# Keeps the download lean and clears Plugin Check (application_detected,
+# unexpected_markdown_file, etc.). Consumed by `wp dist-archive` / deploy tooling.
+
+# Version control / CI
+/.git
+/.github
+/.gitignore
+/.gitattributes
+/.distignore
+
+# Dev tooling & dependency manifests
+/composer.json
+/composer.lock
+/package.json
+/package-lock.json
+/codeception.dist.yml
+/phpcs.xml
+/phpcs.xml.dist
+/phpunit.xml
+/phpunit.xml.dist
+/deploy.sh
+/tests
+/bin
+/node_modules
+
+# Repo docs not meant for the plugin root
+/README.md
+/CONTRIBUTING.md
+/ISSUE_TEMPLATE.md
