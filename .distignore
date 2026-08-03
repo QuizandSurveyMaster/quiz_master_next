@@ -8,6 +8,8 @@
 /.gitignore
 /.gitattributes
 /.distignore
+/.env
+/.env.sample
 
 # Dev tooling & dependency manifests
 /composer.json

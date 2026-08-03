@@ -99,8 +99,8 @@ class QMN_Review_Message {
 			)
 		);
 		$count_collected = esc_html( number_format_i18n( $this->check_message_trigger() ) );
-		/* translators: %s: count of quizzes */
 		$message        = sprintf(
+			/* translators: 1: opening <strong> tag, 2: closing </strong> tag, 3: number of collected quiz responses */
 			__( '🎉 %1$sNice work!%2$s You’ve already collected over %3$s quiz responses with Quiz & Survey Master.', 'quiz-master-next' ),
 			'<strong>',
 			'</strong>',
