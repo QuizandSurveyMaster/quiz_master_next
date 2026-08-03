@@ -1080,14 +1080,25 @@ class QSM_New_Pagination_Renderer {
 			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render );
 			$lazy_load_class = $should_lazy_load ? 'qsm-lazy-load-page' : 'qsm-loaded-page';
 			$question_ids_csv = implode( ',', $page );
+			// First question number shown on this page when "Show question numbers"
+			// (question_numbering) is on. It is derived from the number of questions
+			// on the preceding pages (each page's own questions-per-page) plus this
+			// page's position: $qmn_total_questions is the running count of questions
+			// already rendered on earlier pages, so the first question here is that
+			// + 1. This one calculation covers auto pagination (a fixed number of
+			// questions per page) and manual pagination (a different number per page)
+			// alike, and because it is stamped server-side per page it stays correct
+			// for whichever page the navigator jumps to, without loading the pages in
+			// between.
+			$page_start_number = $qmn_total_questions + 1;
 			?>
-			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
+			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>"
 			<?php echo ( $this->quiz_options->pagination <= 0 ) ? 'data-pid="' . esc_attr( $qpage_id ) . '"' : 'data-apid="' . esc_attr( $pages_count ) . '"'; ?>
 			data-qpid="<?php echo esc_attr( $pages_count ); ?>" 
 			data-page="<?php echo esc_attr( $pages_count ); ?>" 
 			data-lazy-load="<?php echo esc_attr( $should_lazy_load ? '1' : '0' ); ?>"
 			data-question-ids="<?php echo esc_attr( $question_ids_csv ); ?>"
-			data-question-start-number="<?php echo esc_attr( $qmn_total_questions + 1 ); ?>"
+			data-question-start-number="<?php echo esc_attr( $page_start_number ); ?>"
 			style="display: <?php echo esc_attr( $display_current_page ); ?>;">
 			<?php
 			
@@ -1101,12 +1112,15 @@ class QSM_New_Pagination_Renderer {
 			
 			// Only render questions if not lazy loading, or if within initial page limit
 			if ( ! $should_lazy_load ) {
-				// Render questions in this page
+				// Render questions in this page. Inline pages number questions with the
+				// running $qmn_total_questions (which begins at $page_start_number for
+				// this page), so the printed sequence matches the numbers the lazy AJAX
+				// handler assigns to later pages.
 				foreach ( $page as $question_id ) {
 					if ( ! isset( $this->questions[ $question_id ] ) ) {
 						continue;
 					}
-					
+
 					$qmn_total_questions += 1;
 					$question = $this->questions[ $question_id ];
 					?>
