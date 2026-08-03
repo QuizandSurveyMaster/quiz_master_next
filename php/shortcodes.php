@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * Resolve a QSM quiz_id to the qsm_quiz post ID for the CURRENT request language.
