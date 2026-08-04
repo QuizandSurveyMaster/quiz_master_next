@@ -148,15 +148,6 @@ class QSM_Ajax_Handler {
 			), ARRAY_A );
 
 			if ( $question ) {
-				// Skip unpublished (draft) questions, mirroring load_questions() in
-				// the pagination renderer, so a lazy-loaded page renders and numbers
-				// exactly the same set of questions the inline pages do. Without this
-				// an unpublished question would render on lazy pages only, throwing
-				// off the "Show question numbers" sequence after the jump.
-				$question_settings = maybe_unserialize( $question['question_settings'] );
-				if ( isset( $question_settings['isPublished'] ) && 1 !== intval( $question_settings['isPublished'] ) ) {
-					continue;
-				}
 				$questions[ $question_id ] = $question;
 			}
 		}
