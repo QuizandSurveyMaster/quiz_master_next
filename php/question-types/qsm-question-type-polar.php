@@ -43,6 +43,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	$show = true;
 	$show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $id );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_polar_display_front_before', '', $id, $question, $answers );
 	if ( $show ) {
 	?>
@@ -104,6 +105,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	</span>
 	<?php
 	}
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
 }
 

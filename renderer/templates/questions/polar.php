@@ -48,6 +48,7 @@ $new_question_title = isset( $question_settings['question_title'] ) ? $question_
 qsm_question_title_func( $question['question_name'], '', $new_question_title, $question_id );
 $show = true;
 $show = apply_filters( 'qsm_check_advance_polar_show_status', $show, $question_id );
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_polar_display_front_before', '', $question_id, $question, $answers );
 if ( $show ) {
 ?>
@@ -109,4 +110,5 @@ if ( $show ) {
 </span>
 <?php
 }
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_polar_display_front', '', $question_id, $question, $answers );

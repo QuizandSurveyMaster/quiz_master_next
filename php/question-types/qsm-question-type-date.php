@@ -25,6 +25,7 @@ function qmn_date_display( $id, $question, $answers ) {
 	?>
 	<input type="date" class="mlw_answer_date <?php echo esc_attr( $mlw_require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>" value="" />
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_date_display_front', '', $id, $question, $answers );
 }
 

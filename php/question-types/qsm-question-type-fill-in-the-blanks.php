@@ -58,6 +58,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	} else {
 		qsm_question_title_func( $question, 'fill_in_blank', $new_question_title, $id );
 	}
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_fill_blank_display_front', '', $id, $question, $answers );
 }
 

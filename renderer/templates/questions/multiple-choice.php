@@ -99,6 +99,7 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 					?>
 					</label>
 					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qsm_multiple_choice_display_loop', ' ', $id, $question, $answers );
 					?>
 				</div>
@@ -106,6 +107,7 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 				}
 				//}
 			}
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 			echo apply_filters( 'qsm_multiple_choice_display_after_loop', ' ', $id, $question, $answers );
 			?>
 			<label style="display: none !important;" for="<?php echo esc_attr( 'question' . $id . '_none' ); ?>"><?php esc_attr_e( 'None', 'quiz-master-next' ); ?></label>
@@ -117,4 +119,5 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 </fieldset>
 <input type="hidden" name="answer_limit_keys_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $answer_limit_keys ); ?>" />
 <?php
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );

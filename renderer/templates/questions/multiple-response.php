@@ -96,4 +96,5 @@ $class_object->display_question_title( $question['question_name'], '', $new_ques
 </fieldset>
 <input type="hidden" name="answer_limit_keys_<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $answer_limit_keys ); ?>" />
 <?php
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_multiple_response_display_front', '', $id, $question, $answers );

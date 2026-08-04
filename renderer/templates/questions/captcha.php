@@ -29,4 +29,5 @@ $new_question_title = isset( $question_settings['question_title'] ) ? $question_
 <input type="text" class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" id="mlw_captcha_text" name="mlw_user_captcha"/>
 <input type="hidden" name="mlw_code_captcha" id="mlw_code_captcha" value="none" />
 <?php
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qmn_captcha_display_front', '', $id, $question, $answers );
