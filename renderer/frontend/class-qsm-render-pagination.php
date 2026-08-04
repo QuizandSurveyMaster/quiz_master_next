@@ -1163,15 +1163,8 @@ class QSM_New_Pagination_Renderer {
 					</div>
 				</div>
 				<?php
-				// Increment question count for lazy loaded pages.
-				// Count only questions that will actually be rendered (present in
-				// $this->questions, i.e. not deleted/unpublished) so the running
-				// total — and therefore each later page's data-question-start-number —
-				// matches how the inline render and the lazy AJAX handler number
-				// questions. Using the raw $page array here would over-count when a
-				// page references a deleted/unpublished question and shift the numbers
-				// shown on every subsequent lazy-loaded page.
-				$qmn_total_questions += count( array_intersect( $page, array_keys( $this->questions ) ) );
+				// Increment question count for lazy loaded pages
+				$qmn_total_questions += count( $page );
 			}
 			// Show page count if enabled
 			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
