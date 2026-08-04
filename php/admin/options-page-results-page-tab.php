@@ -4,8 +4,6 @@
  *
  * @package QSM
  */
-// phpcs:disable WordPress.Security.NonceVerification -- Plugin Check false positives: flagged superglobal accesses are display/routing reads (sanitized) or state changes already guarded by capability checks and WordPress-core bulk-action nonces. Verified no unprotected CSRF in this file.
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

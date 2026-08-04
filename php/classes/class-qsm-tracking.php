@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 

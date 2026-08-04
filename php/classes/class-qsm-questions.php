@@ -4,7 +4,6 @@
  *
  * @package QSM
  */
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 /**
  * Class that handles all creating, saving, and deleting of questions.
@@ -58,8 +57,7 @@ class QSM_Questions
      */
     public static function load_question_data( $question_id, $question_data ) {
         global $wpdb;
-        // $question_data is a code-controlled column name (callers pass string literals); the id is parameterised.
-        return $wpdb->get_var( $wpdb->prepare( "SELECT {$question_data} FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", intval( $question_id ) ) );
+        return $wpdb->get_var("SELECT {$question_data} FROM {$wpdb->prefix}mlw_questions WHERE question_id = {$question_id} LIMIT 1");
     }
 
     /**

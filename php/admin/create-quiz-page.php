@@ -2,7 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 // Add AJAX action for logged-in users
 add_action('wp_ajax_qsm_activate_plugin', 'qsm_activate_plugin_ajax_activate_plugin');

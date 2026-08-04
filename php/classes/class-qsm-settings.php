@@ -1,6 +1,4 @@
 <?php
-// phpcs:disable WordPress.Security.NonceVerification -- Plugin Check false positives: flagged superglobal accesses are display/routing reads (sanitized) or state changes already guarded by capability checks and WordPress-core bulk-action nonces. Verified no unprotected CSRF in this file.
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -265,7 +263,7 @@ class QSM_Quiz_Settings {
 			return false;
 		} else {
 			global $wpdb;
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = %d AND meta_key = 'quiz_id'", intval( $this->quiz_id ) ), ARRAY_A );
+			$results = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = $this->quiz_id AND meta_key = 'quiz_id'", ARRAY_A );
 			if ( ! empty( $results ) ) {
 				foreach ( $results as $result ) {
 					// update post_modified

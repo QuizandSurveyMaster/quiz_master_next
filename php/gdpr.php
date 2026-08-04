@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 5.3.1
  * @package QSM
  */
-// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- Plugin Check false positives: every flagged query uses code-controlled table identifiers (wp prefix), is already built with $wpdb->prepare(), or interpolates values cast to int (absint) first. Verified no request input reaches these unsanitized.
 
 // Add our actions and filters to functions below.
 add_action( 'admin_init', 'qsm_register_suggested_privacy_content', 20 );
