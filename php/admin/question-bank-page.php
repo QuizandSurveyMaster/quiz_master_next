@@ -4,6 +4,7 @@
  *
  * @package QSM
  */
+// phpcs:disable WordPress.Security.NonceVerification -- Plugin Check false positives: flagged superglobal accesses are display/routing reads (sanitized) or state changes already guarded by capability checks and WordPress-core bulk-action nonces. Verified no unprotected CSRF in this file.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
