@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders -- install/upgrade + schema-migration code; every query targets code-controlled tables (wp prefix) with no request input. Interpolated identifiers cannot be parameterized; introspection/DDL is not user-facing.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -851,3 +852,4 @@ class QSM_Database_Migration {
 
 // Initialize migration class
 new QSM_Database_Migration();
+// phpcs:enable WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders
