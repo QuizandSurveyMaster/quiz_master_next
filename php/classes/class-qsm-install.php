@@ -1985,8 +1985,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'scheduled_timeframe' ) ) != 'scheduled_timeframe' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD scheduled_timeframe TEXT NOT NULL AFTER limit_total_entries_text';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET scheduled_timeframe = %s", "" );
-				$results    = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
+				$results    = $wpdb->query( $wpdb->prepare( "UPDATE {$table_name} SET scheduled_timeframe = %s", "" ) );
 			}
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'scheduled_timeframe_text' ) ) != 'scheduled_timeframe_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD scheduled_timeframe_text TEXT NOT NULL AFTER scheduled_timeframe';
@@ -2033,32 +2032,28 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'question_answer_info' ) ) != 'question_answer_info' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD question_answer_info TEXT NOT NULL AFTER correct_answer';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET question_answer_info = %s", "" );
-				$results    = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
+				$results    = $wpdb->query( $wpdb->prepare( "UPDATE {$table_name} SET question_answer_info = %s", "" ) );
 			}
 
 			// Update 2.5.1
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'answer_array' ) ) != 'answer_array' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD answer_array TEXT NOT NULL AFTER question_name';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET answer_array = %s", "" );
-				$results    = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
+				$results    = $wpdb->query( $wpdb->prepare( "UPDATE {$table_name} SET answer_array = %s", "" ) );
 			}
 
 			// Update 3.1.1
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'question_settings' ) ) != 'question_settings' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD question_settings TEXT NOT NULL AFTER question_type';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET question_settings = %s", "" );
-				$results    = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
+				$results    = $wpdb->query( $wpdb->prepare( "UPDATE {$table_name} SET question_settings = %s", "" ) );
 			}
 
 			// Update 4.0.0
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'category' ) ) != 'category' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD category TEXT NOT NULL AFTER question_settings';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET category = %s", "" );
-				$results    = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
+				$results    = $wpdb->query( $wpdb->prepare( "UPDATE {$table_name} SET category = %s", "" ) );
 			}
 
 			// Update 4.0.0
