@@ -212,8 +212,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		$question_ids = array();
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
-				$query    = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
-				$term_ids = $wpdb->get_results( $query, 'ARRAY_A' );
+				$term_ids = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category ), 'ARRAY_A'  );
 				foreach ( $term_ids as $term_id ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
@@ -244,20 +243,17 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				$query_result = array();
 				foreach ( $question_ids as $question_id ) {
 					$query = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d";
-					$query = $wpdb->prepare( $query, $question_id, $quiz_filter, $offset, $limit );
-					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
+					$question_data = $wpdb->get_row( $wpdb->prepare( $query, $question_id, $quiz_filter, $offset, $limit ), 'ARRAY_A'  );
 					if ( ! is_null( $question_data ) ) {
 						$query_result[] = $question_data;
 					}
 				}
 				$questions = $query_result;
 			} else {
-				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
-				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
+				$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit ), 'ARRAY_A'  );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
-			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
+			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit ), 'ARRAY_A'  );
 		}
 
 		$question_array               = array();
@@ -598,7 +594,9 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 				if ( ! empty( $linked_ids ) ) {
 					$linked_ids  = array_map( 'intval', $linked_ids );
 					$ids_list    = implode( ',', $linked_ids );
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $ids_list . ")" );
+					$qsm_ids          = array_map( 'absint', $linked_ids );
+					$qsm_placeholders = implode( ',', array_fill( 0, count( $qsm_ids ), '%d' ) );
+					$quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$qsm_ids ) );
 					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
@@ -668,7 +666,9 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$stored_quiz_names[ $question['question_id'] ] = $quiz_name;
 				$linked_question_ids = array_filter( array_map( 'intval', isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() ) );
 				if ( ! empty($linked_question_ids) ) {
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $linked_question_ids ) . ")" );
+					$qsm_ids          = array_map( 'absint', $linked_question_ids );
+					$qsm_placeholders = implode( ',', array_fill( 0, count( $qsm_ids ), '%d' ) );
+					$quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$qsm_ids ) );
 					foreach ( $quiz_results as $value ) {
 						if ( ! in_array($value->question_id, $procesed_question_ids, true) ) {
 							$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );

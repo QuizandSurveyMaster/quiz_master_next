@@ -206,8 +206,7 @@ class QSM_Theme_Settings {
 	 */
 	public function get_active_quiz_theme( $quiz_id ) {
 		global $wpdb;
-		$query  = $wpdb->prepare( "SELECT theme_id FROM {$wpdb->prefix}$this->settings_table WHERE quiz_id = %d AND active_theme = 1", $quiz_id );
-		$result = $wpdb->get_var( $query );
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT theme_id FROM {$wpdb->prefix}$this->settings_table WHERE quiz_id = %d AND active_theme = 1", $quiz_id ) );
 		return $result ? $result : 0;
 	}
 
@@ -217,8 +216,7 @@ class QSM_Theme_Settings {
 	public function get_active_quiz_theme_path( $quiz_id ) {
 		global $wpdb;
 		global $mlwQuizMasterNext;
-		$query  = $wpdb->prepare( "SELECT a.theme FROM {$wpdb->prefix}$this->themes_table AS a, {$wpdb->prefix}$this->settings_table AS b WHERE b.quiz_id = %d AND b.active_theme = 1 AND b.theme_id = a.id", $quiz_id );
-		$result = $wpdb->get_var( $query );
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT a.theme FROM {$wpdb->prefix}$this->themes_table AS a, {$wpdb->prefix}$this->settings_table AS b WHERE b.quiz_id = %d AND b.active_theme = 1 AND b.theme_id = a.id", $quiz_id ) );
 		$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
 		$theme_path = 'default';
 		$themes = array();
@@ -238,8 +236,7 @@ class QSM_Theme_Settings {
 	 */
 	public function get_active_theme_settings( $quiz_id, $theme_id ) {
 		global $wpdb;
-		$query  = $wpdb->prepare( "SELECT quiz_theme_settings FROM {$wpdb->prefix}$this->settings_table WHERE quiz_id = %d AND theme_id = %d", $quiz_id, $theme_id );
-		$result = $wpdb->get_var( $query );
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_theme_settings FROM {$wpdb->prefix}$this->settings_table WHERE quiz_id = %d AND theme_id = %d", $quiz_id, $theme_id ) );
 		return maybe_unserialize( $result );
 	}
 

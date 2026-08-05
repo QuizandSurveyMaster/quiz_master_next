@@ -1660,8 +1660,7 @@ class QMNGlobalSettingsPage {
 		$template_from_script = apply_filters( $filter, $template_from_script, $quiz_id );
 
 		$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-		$template_sql = "SELECT * FROM {$table_name} WHERE template_type='global_{$type}'";
-		$my_templates = $wpdb->get_results( $template_sql );
+		$my_templates = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE template_type = %s", 'global_' . $type ) );
 
 		$qsm_dependency_list = qsm_get_dependency_plugin_list();
 

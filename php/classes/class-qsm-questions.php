@@ -385,7 +385,8 @@ class QSM_Questions
             $sanitized_linked_ids = array_map('intval', array_unique($linked_questions_array));
             $imploded_question_ids = implode(',', $sanitized_linked_ids);
             if ( ! empty($sanitized_linked_ids) ) {
-                $quiz_results = $wpdb->get_results("SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $imploded_question_ids . ")");
+                $qsm_placeholders = implode(',', array_fill(0, count($sanitized_linked_ids), '%d'));
+                $quiz_results = $wpdb->get_results($wpdb->prepare("SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$sanitized_linked_ids));
                 foreach ( $quiz_results as $key => $value ) {
                     $quiz_questions_array[ $value->quiz_id ] = $value->question_id;
                 }
