@@ -754,7 +754,7 @@ class QMNQuizCreator {
 					$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 				} else {
 					foreach ( $logic_rules as $logic_data ) {
-						$value_array[] = $wpdb->prepare( '(%d, %s)', $mlw_new_id, maybe_serialize( $logic_data ) );
+						$value_array[] = stripslashes( $wpdb->prepare( '(%d, %s)', $mlw_new_id, maybe_serialize( $logic_data ) ) );
 					}
 					$values = implode( ',', $value_array );
 					$query  = "INSERT INTO `{$logic_table}` (quiz_id, logic) VALUES {$values}";

@@ -51,7 +51,7 @@ class QSM_Migrate {
 						$values_array[] = "($data->question_id, $data->quiz_id, $term_id, 'qsm_category')";
 					}
 					$values          = join( ',', $values_array );
-					$insert_query    = $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values );
+					$insert_query    = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
 					$result          = $wpdb->query( $insert_query );
 					if ( $result > 0 ) {
 						update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
