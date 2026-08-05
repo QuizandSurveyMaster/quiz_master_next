@@ -730,8 +730,7 @@ class QSM_Database_Migration {
                             VALUES " . implode( ', ', $placeholders );
 
                         // prepare & execute
-                        $prepared = $wpdb->prepare( $sql, ...$params );
-                        $inserted = $wpdb->query( $prepared );
+                        $inserted = $wpdb->query( $wpdb->prepare( $sql, ...$params ) );
 
                         if ( 0 == $inserted ) {
                             // Question insert failed: rollback for this result
@@ -835,8 +834,7 @@ class QSM_Database_Migration {
                 (result_id, meta_key, meta_value)
                 VALUES " . implode( ', ', $meta_placeholders );
 
-            $prepared_meta = $wpdb->prepare( $meta_sql, ...$meta_params );
-            $meta_inserted = $wpdb->query( $prepared_meta );
+            $meta_inserted = $wpdb->query( $wpdb->prepare( $meta_sql, ...$meta_params ) );
             
             if ( false == $meta_inserted || 0 == $meta_inserted ) {
                 $transaction_failed = true;

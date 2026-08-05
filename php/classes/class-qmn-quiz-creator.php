@@ -591,8 +591,7 @@ class QMNQuizCreator {
 		$update_q_pages       = maybe_unserialize( $update_quiz_settings['qpages'] );
 		// get logic data from logic table first or else from quiz_settings
 		if ( ! is_null( $logic_table_exists ) ) {
-			$query       = $wpdb->prepare( "SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id );
-			$logic_data  = $wpdb->get_results( $query );
+			$logic_data  = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id ) );
 			$logic_rules = array();
 			if ( ! empty( $logic_data ) ) {
 				foreach ( $logic_data as $data ) {
@@ -718,8 +717,7 @@ class QMNQuizCreator {
 				// Copying categories for multiple categories table
 				$new_question_id = $wpdb->insert_id;
 				if ( ! is_null( $question_term_exists ) ) {
-					$query    = $wpdb->prepare( "SELECT DISTINCT term_id FROM $question_term WHERE question_id = %d AND quiz_id = %d", $mlw_question->question_id, $quiz_id );
-					$term_ids = $wpdb->get_results( $query, ARRAY_N );
+					$term_ids = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT term_id FROM $question_term WHERE question_id = %d AND quiz_id = %d", $mlw_question->question_id, $quiz_id ), ARRAY_N  );
 
 					if ( ! is_null( $term_ids ) ) {
 						foreach ( $term_ids as $term_id ) {

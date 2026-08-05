@@ -1483,8 +1483,7 @@ function qsm_delete_question_from_database() {
 		);
 
 		// Prepare the query
-		$query   = $wpdb->prepare( $query, $question_ids_to_delete );
-		$results = $wpdb->query( $query );
+		$results = $wpdb->query( $wpdb->prepare( $query, $question_ids_to_delete ) );
 		if ( $results ) {
 			if ( ! empty( $update_qpages_after_delete ) ) {
 				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
