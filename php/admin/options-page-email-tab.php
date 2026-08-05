@@ -34,8 +34,7 @@ function qsm_options_emails_tab_content() {
 	$template_from_script = qsm_get_parsing_script_data( 'templates.json' );
 	$template_from_script = apply_filters( 'qsm_email_templates_list_before', $template_from_script, $quiz_id );
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='email'";
-	$my_email_templates = $wpdb->get_results($temlpate_sql);
+	$my_email_templates = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE template_type = %s", 'email' ) );
 	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 	
 	// Get default email template from global settings
