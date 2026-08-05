@@ -1483,7 +1483,8 @@ function qsm_delete_question_from_database() {
 		);
 
 		// Prepare the query
-		$results = $wpdb->query( $wpdb->prepare( $query, $question_ids_to_delete ) );
+		$query   = $wpdb->prepare( $query, $question_ids_to_delete );
+		$results = $wpdb->query( $query );
 		if ( $results ) {
 			if ( ! empty( $update_qpages_after_delete ) ) {
 				foreach ( $update_qpages_after_delete as $quiz_id => $aftervalue ) {
@@ -1593,9 +1594,7 @@ function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
 	$qpages_array       = array();
 	if ( ! empty( $comma_seprated_ids ) ) {
 		global $wpdb, $mlwQuizMasterNext;
-		$qsm_ids          = array_map( 'absint', array_unique( $connected_question_ids ) );
-		$qsm_placeholders = implode( ',', array_fill( 0, count( $qsm_ids ), '%d' ) );
-		$quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$qsm_ids ) );
+		$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $comma_seprated_ids . ')' );
 		if ( ! empty( $quiz_results ) ) {
 			foreach ( $quiz_results as $single_quiz ) {
 				$quiz_id = $single_quiz->quiz_id;

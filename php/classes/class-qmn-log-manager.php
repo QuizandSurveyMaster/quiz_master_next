@@ -202,7 +202,8 @@ class QMN_Log_Manager
 		
 		$sql .= " LIMIT 1";
 		
-		$existing_log_id = $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
+		$query = $wpdb->prepare( $sql, $params );
+		$existing_log_id = $wpdb->get_var( $query );
 		
 		return $existing_log_id ? (int) $existing_log_id : false;
 	}

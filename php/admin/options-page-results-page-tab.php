@@ -33,7 +33,8 @@ function qsm_options_results_tab_content() {
 	$template_from_script = qsm_get_parsing_script_data( 'templates.json' );
 	$template_from_script = apply_filters( 'qsm_result_templates_list_before', $template_from_script, $quiz_id );
 	$table_name = $wpdb->prefix . 'mlw_quiz_output_templates';
-	$my_result_templates = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE template_type = %s", 'result' ) );
+	$temlpate_sql = "SELECT * FROM {$table_name} WHERE template_type='result'";
+	$my_result_templates = $wpdb->get_results($temlpate_sql);
 
 	$qsm_dependency_list = qsm_get_dependency_plugin_list();
 

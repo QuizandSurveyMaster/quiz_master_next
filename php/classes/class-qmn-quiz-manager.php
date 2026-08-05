@@ -808,7 +808,8 @@ class QMNQuizManager {
 		$category_question_ids = array();
 		if ( $multiple_category_system && ! empty( $exploded_arr ) ) {
 			$term_ids      = implode( ', ', $exploded_arr );
-			$question_data = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d AND term_id IN (%1s)", $quiz_id, $term_ids ), ARRAY_N  );
+			$query         = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d AND term_id IN (%1s)", $quiz_id, $term_ids );
+			$question_data = $wpdb->get_results( $query, ARRAY_N );
 			foreach ( $question_data as $q_data ) {
 				$category_question_ids[] = $q_data[0];
 			}
@@ -980,7 +981,8 @@ class QMNQuizManager {
 				$question_sql = implode(',', $question_ids);
 				$order_by_sql = "ORDER BY FIELD(question_id, ".esc_sql($question_sql).")";
 			}
-			$questions      = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) ) );
+			$query          = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", esc_sql( $question_sql ), esc_sql( $cat_query ), esc_sql( $order_by_sql ), esc_sql( $limit_sql ) );
+			$questions      = $wpdb->get_results( $query );
 			$question_order = array();
 			if ( ! empty( $question_ids ) ) {
 				foreach ( $question_ids as $question_id_order ) {
@@ -2460,7 +2462,8 @@ class QMNQuizManager {
                             category, multicategories, other_settings)
                             VALUES " . implode( ', ', $placeholders );
                         
-                        $inserted = $wpdb->query( $wpdb->prepare( $sql, ...$params ) );
+                        $prepared = $wpdb->prepare( $sql, ...$params );
+                        $inserted = $wpdb->query( $prepared );
 
                         if ( false == $inserted || 0 == $inserted ) {
                             $transaction_failed = true;
@@ -2548,7 +2551,8 @@ class QMNQuizManager {
                     (result_id, meta_key, meta_value)
                     VALUES " . implode( ', ', $meta_placeholders );
 
-                $meta_inserted = $wpdb->query( $wpdb->prepare( $meta_sql, ...$meta_params ) );
+                $prepared_meta = $wpdb->prepare( $meta_sql, ...$meta_params );
+                $meta_inserted = $wpdb->query( $prepared_meta );
                 
                 if ( false == $meta_inserted || 0 == $meta_inserted ) {
                     throw new Exception('Meta inserts failed.');
