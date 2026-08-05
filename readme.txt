@@ -2,7 +2,7 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 4.9
-Tested up to: 7.0.2
+Tested up to: 7.0
 Requires PHP: 5.4
 Stable tag: 11.2.3
 License: GPLv2
