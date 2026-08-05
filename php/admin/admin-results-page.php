@@ -243,9 +243,9 @@ function qsm_results_overview_tab_content() {
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id         = intval( $_GET['quiz_id'] );
-		$mlw_quiz_data   = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
+		$mlw_quiz_data   = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) );
 	} else {
-		$mlw_quiz_data = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
+		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
 	}
 	apply_filters('qsm_user_role_permission_page_view_results',true);
 	?>
