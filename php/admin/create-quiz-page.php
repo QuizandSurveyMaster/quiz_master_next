@@ -60,8 +60,7 @@ function qsm_get_activated_themes_ajax() {
     $theme_slug = isset($_POST['slug']) ? sanitize_text_field(wp_unslash( $_POST['slug'] ) ) : "";
 	$theme_slug = 'qsm-theme-'.$theme_slug;
 	global $wpdb;
-	$query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}mlw_themes WHERE theme = %s", $theme_slug);
-	$id = $wpdb->get_var($query);
+	$id = $wpdb->get_var( $wpdb->prepare("SELECT id FROM {$wpdb->prefix}mlw_themes WHERE theme = %s", $theme_slug) );
 	wp_send_json_success(array( 'id' => $id ));
     wp_die();
 }

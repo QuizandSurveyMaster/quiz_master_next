@@ -493,8 +493,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					// checking if logic is updated to tables
 					$logic_updated = get_option( 'logic_rules_quiz_' . $quiz['quiz_id'] );
 					if ( $logic_updated ) {
-						$query      = $wpdb->prepare( "SELECT logic FROM {$wpdb->prefix}mlw_logic where quiz_id = %d", $quiz['quiz_id'] );
-						$logic_data = $wpdb->get_results( $query, ARRAY_N );
+						$logic_data = $wpdb->get_results( $wpdb->prepare( "SELECT logic FROM {$wpdb->prefix}mlw_logic where quiz_id = %d", $quiz['quiz_id'] ), ARRAY_N  );
 						$logics     = array();
 						if ( ! empty( $logic_data ) ) {
 							foreach ( $logic_data as $logic ) {
@@ -512,8 +511,7 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					}
 
 					// get themes setting
-					$query       = $wpdb->prepare( "SELECT A.theme, B.quiz_theme_settings, B.active_theme FROM {$wpdb->prefix}mlw_themes A, {$wpdb->prefix}mlw_quiz_theme_settings B where A.id = B.theme_id and B.quiz_id = %d", $quiz['quiz_id'] );
-					$themes_data = $wpdb->get_results( $query, ARRAY_N );
+					$themes_data = $wpdb->get_results( $wpdb->prepare( "SELECT A.theme, B.quiz_theme_settings, B.active_theme FROM {$wpdb->prefix}mlw_themes A, {$wpdb->prefix}mlw_quiz_theme_settings B where A.id = B.theme_id and B.quiz_id = %d", $quiz['quiz_id'] ), ARRAY_N  );
 					if ( ! empty( $themes_data ) ) {
 						$themes = array();
 						foreach ( $themes_data as $data ) {
