@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 /**
  * This file handles elements needed for GDPR. This requires WordPress 4.9.6 or later. This includes:
  *
