@@ -1,7 +1,7 @@
 === Quiz and Survey Master (QSM) – Quiz Maker & Survey Maker ===
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, quiz maker, survey maker, exam
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 5.4
 Stable tag: 11.2.3
