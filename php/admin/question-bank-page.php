@@ -1629,6 +1629,71 @@ function qsm_question_bank_parse_categories( $value ) {
 }
 
 /**
+ * Returns the untranslated (English) question type names mapped to their slug.
+ *
+ * Registered question type names are passed through __() at registration time,
+ * so on a translated site the runtime names no longer match the English labels
+ * used in exported/sample CSV files. This map keeps the import working
+ * regardless of the active site language.
+ *
+ * @since 11.2.4
+ * @return array Normalized English name => question type slug.
+ */
+function qsm_question_bank_untranslated_question_types_map() {
+	$types = array(
+		'multiple choice'                => '0',
+		'multiple choice (horizontal)'   => '1',
+		'drop down'                      => '2',
+		'short answer'                   => '3',
+		'multiple response'              => '4',
+		'paragraph'                      => '5',
+		'text/html section'              => '6',
+		'number'                         => '7',
+		'opt-in'                         => '8',
+		'captcha'                        => '9',
+		'multiple response (horizontal)' => '10',
+		'file upload'                    => '11',
+		'date'                           => '12',
+		'polar'                          => '13',
+		'fill in the blank'              => '14',
+		'matching pairs'                 => '15',
+		'radio grid'                     => '16',
+		'checkbox grid'                  => '17',
+	);
+
+	// Commonly used variations of the labels above.
+	$aliases = array(
+		'dropdown'            => '2',
+		'drop-down'           => '2',
+		'text/html'           => '6',
+		'text html section'   => '6',
+		'opt in'              => '8',
+		'optin'               => '8',
+		'fill in the blanks'  => '14',
+		'fill in blank'       => '14',
+	);
+
+	$map = array();
+	foreach ( array_merge( $types, $aliases ) as $name => $slug ) {
+		$map[ qsm_question_bank_normalize_type_name( $name ) ] = $slug;
+	}
+
+	return apply_filters( 'qsm_question_bank_untranslated_question_types_map', $map );
+}
+
+/**
+ * Normalizes a question type name for comparison.
+ *
+ * @since 11.2.4
+ * @param string $name Raw name.
+ * @return string
+ */
+function qsm_question_bank_normalize_type_name( $name ) {
+	$name = strtolower( trim( (string) $name ) );
+	return preg_replace( '/\s+/', ' ', $name );
+}
+
+/**
  * Returns map of available question types.
  *
  * @since 10.4.0
@@ -1653,7 +1718,7 @@ function qsm_question_bank_question_types_map() {
 	}
 	foreach ( $types as $type ) {
 		$slug = isset( $type['slug'] ) ? (string) $type['slug'] : '';
-		$name = isset( $type['name'] ) ? strtolower( $type['name'] ) : '';
+		$name = isset( $type['name'] ) ? qsm_question_bank_normalize_type_name( $type['name'] ) : '';
 		if ( '' !== $slug ) {
 			$cache['by_slug'][ $slug ] = true;
 		}
@@ -1661,6 +1726,14 @@ function qsm_question_bank_question_types_map() {
 			$cache['by_name'][ $name ] = $slug;
 		}
 	}
+
+	// Accept the English labels too, so imports do not depend on the site language.
+	foreach ( qsm_question_bank_untranslated_question_types_map() as $name => $slug ) {
+		if ( isset( $cache['by_slug'][ $slug ] ) && ! isset( $cache['by_name'][ $name ] ) ) {
+			$cache['by_name'][ $name ] = $slug;
+		}
+	}
+
 	return $cache;
 }
 
@@ -1677,7 +1750,7 @@ function qsm_question_bank_map_question_type( $value, $types_map ) {
 	if ( '' === $value ) {
 		return '';
 	}
-	$lower = strtolower( $value );
+	$lower = qsm_question_bank_normalize_type_name( $value );
 	if ( isset( $types_map['by_name'][ $lower ] ) ) {
 		return (string) $types_map['by_name'][ $lower ];
 	}
