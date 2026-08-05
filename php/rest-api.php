@@ -594,7 +594,9 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 				if ( ! empty( $linked_ids ) ) {
 					$linked_ids  = array_map( 'intval', $linked_ids );
 					$ids_list    = implode( ',', $linked_ids );
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . $ids_list . ")" );
+					$qsm_ids          = array_map( 'absint', $linked_ids );
+					$qsm_placeholders = implode( ',', array_fill( 0, count( $qsm_ids ), '%d' ) );
+					$quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$qsm_ids ) );
 					foreach ( $quiz_results as $value ) {
 						$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
 						$quiz_name_in_loop = isset( $quiz_name_in_loop['quiz_name'] ) ? $quiz_name_in_loop['quiz_name'] : '';
@@ -664,7 +666,9 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$stored_quiz_names[ $question['question_id'] ] = $quiz_name;
 				$linked_question_ids = array_filter( array_map( 'intval', isset( $question['linked_question'] ) ? explode(',', $question['linked_question']) : array() ) );
 				if ( ! empty($linked_question_ids) ) {
-					$quiz_results = $wpdb->get_results( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN (" . implode( ',', $linked_question_ids ) . ")" );
+					$qsm_ids          = array_map( 'absint', $linked_question_ids );
+					$qsm_placeholders = implode( ',', array_fill( 0, count( $qsm_ids ), '%d' ) );
+					$quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT `quiz_id`, `question_id` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` IN ({$qsm_placeholders})", ...$qsm_ids ) );
 					foreach ( $quiz_results as $value ) {
 						if ( ! in_array($value->question_id, $procesed_question_ids, true) ) {
 							$quiz_name_in_loop        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $value->quiz_id ), ARRAY_A );
