@@ -857,42 +857,6 @@ if (typeof window.qsmCheckMR !== 'function') {
             },
 
             /**
-             * Navigate to a QUESTION page by its 1-based question-page number.
-             *
-             * goToPage() indexes ALL `.qsm-page` sections (a welcome/first page and a
-             * trailing last page are included when present), while callers such as the
-             * Quiz Navigator addon think in question-page numbers (the `data-page` /
-             * `data-qpid` on `.qsm-question-page`). Translating with a fixed offset (e.g.
-             * always +1 for a welcome page) is wrong whenever that welcome page is not
-             * rendered — the jump then lands on the next section and lazy-loads the wrong
-             * page's questions. Resolve the target section's real position instead so the
-             * correct page (and its questions) always loads, regardless of which
-             * non-question pages exist.
-             *
-             * @param {number} quizId
-             * @param {number} questionPageNumber 1-based question-page number (data-page)
-             */
-            goToQuestionPage: function(quizId, questionPageNumber) {
-                let quizData = this.quizObjects[quizId];
-                if (!quizData) return;
-
-                let $target = quizData.quizContainer
-                    .find('.qsm-question-page[data-page="' + questionPageNumber + '"]').first();
-                if (!$target.length) {
-                    // Older markup uses data-qpid for the same 1-based question-page number.
-                    $target = quizData.quizContainer
-                        .find('.qsm-question-page[data-qpid="' + questionPageNumber + '"]').first();
-                }
-
-                // Position of the target within the full `.qsm-page` set drives goToPage's
-                // 1-based index. Fall back to positional if the section can't be found.
-                let index = quizData.pages.index($target);
-                let pageNumber = index >= 0 ? index + 1 : parseInt(questionPageNumber, 10);
-
-                this.goToPage(quizId, pageNumber);
-            },
-
-            /**
              * Show specific page (helper method)
              */
             showPage: function(quizId, pageNumber) {
