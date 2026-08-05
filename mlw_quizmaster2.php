@@ -1273,7 +1273,9 @@ class MLWQuizMasterNext {
      */
     public function qsm_check_table_structure( $table_name, $expected_columns ) {
         global $wpdb;
-        $columns = $wpdb->get_results("SHOW COLUMNS FROM $table_name");
+        // Identifier-only query: there is no value to bind, so escape the table
+        // identifier instead of using a placeholder (callers pass $wpdb->prefix names).
+        $columns = $wpdb->get_results( 'SHOW COLUMNS FROM `' . esc_sql( $table_name ) . '`' );
         if ( ! $columns ) {
             return esc_html__("Table ", "quiz-master-next") . $table_name . esc_html__(" does not exist.", "quiz-master-next");
         }

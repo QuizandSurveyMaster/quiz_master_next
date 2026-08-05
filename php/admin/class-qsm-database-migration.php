@@ -47,11 +47,12 @@ class QSM_Database_Migration {
     }
 
     function create_migration_tables() {
-        
+        global $wpdb;
+
         $charset_collate = $this->wpdb->get_charset_collate();
         $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
         $results_questions = $this->wpdb->prefix . 'qsm_results_questions';
-        if ( $this->wpdb->get_var( "SHOW TABLES LIKE '{$results_questions}'" ) != $results_questions ) {
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $results_questions ) ) ) != $results_questions ) {
             $sql_results_answers = "CREATE TABLE {$results_questions} (
                 `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `result_id` MEDIUMINT(9) NOT NULL,
@@ -90,7 +91,7 @@ class QSM_Database_Migration {
 
         // Ensure results meta table
         $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
-        if ( $this->wpdb->get_var( "SHOW TABLES LIKE '{$results_meta_table}'" ) != $results_meta_table ) {
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $results_meta_table ) ) ) != $results_meta_table ) {
             $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
             $sql_results_meta = "CREATE TABLE {$results_meta_table} (
                 `meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
