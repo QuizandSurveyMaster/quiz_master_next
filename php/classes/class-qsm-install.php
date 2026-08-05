@@ -1970,7 +1970,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'last_activity' ) ) != 'last_activity' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD last_activity DATETIME NOT NULL AFTER theme_selected';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", gmdate( 'Y-m-d H:i:s' ) );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity= %s", gmdate( 'Y-m-d H:i:s' ) );
 				$results    = $wpdb->query( $update_sql );
 			}
 
@@ -1978,25 +1978,25 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'require_log_in' ) ) != 'require_log_in' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD require_log_in INT NOT NULL AFTER last_activity';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET require_log_in='%d'", '0' );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET require_log_in= %d", '0' );
 				$results    = $wpdb->query( $update_sql );
 			}
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'require_log_in_text' ) ) != 'require_log_in_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD require_log_in_text TEXT NOT NULL AFTER require_log_in';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( 'UPDATE ' . $table_name . " SET require_log_in_text='%s'", 'Enter Text Here' );
+				$update_sql = $wpdb->prepare( 'UPDATE ' . $table_name . " SET require_log_in_text= %s", 'Enter Text Here' );
 				$results    = $wpdb->query( $update_sql );
 			}
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'limit_total_entries' ) ) != 'limit_total_entries' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD limit_total_entries INT NOT NULL AFTER require_log_in_text';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries='%d'", '0' );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries= %d", '0' );
 				$results    = $wpdb->query( $update_sql );
 			}
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'limit_total_entries_text' ) ) != 'limit_total_entries_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD limit_total_entries_text TEXT NOT NULL AFTER limit_total_entries';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries_text='%s'", 'Enter Text Here' );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries_text= %s", 'Enter Text Here' );
 				$results    = $wpdb->query( $update_sql );
 			}
 
@@ -2016,7 +2016,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'scheduled_timeframe_text' ) ) != 'scheduled_timeframe_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD scheduled_timeframe_text TEXT NOT NULL AFTER scheduled_timeframe';
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET scheduled_timeframe_text='%s'", 'Enter Text Here' );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET scheduled_timeframe_text= %s", 'Enter Text Here' );
 				$results    = $wpdb->query( $update_sql );
 			}
 
@@ -2130,7 +2130,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", 'user_ip' ) ) != 'user_ip' ) {
 				$sql        = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
 				$results    = $mlwQuizMasterNext->wpdb_alter_table_query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET user_ip='%s'", 'Unknown' );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET user_ip= %s", 'Unknown' );
 				$results    = $wpdb->query( $update_sql );
 			}
 			// Update 7.1.11
