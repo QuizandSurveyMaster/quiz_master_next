@@ -1077,9 +1077,17 @@ class QSM_New_Pagination_Renderer {
 			}
 			
 			// Determine if this page should be lazy loaded
-			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render );
+			$page_question_ids = array();
+			foreach ( $page as $page_question_id ) {
+				if ( isset( $this->questions[ $page_question_id ] ) ) {
+					$page_question_ids[] = $page_question_id;
+				}
+			}
+			$question_ids_csv = implode( ',', $page_question_ids );
+
+			// Determine if this page should be lazy loaded.
+			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render ) && ! empty( $page_question_ids );
 			$lazy_load_class = $should_lazy_load ? 'qsm-lazy-load-page' : 'qsm-loaded-page';
-			$question_ids_csv = implode( ',', $page );
 			?>
 			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
 			<?php echo ( $this->quiz_options->pagination <= 0 ) ? 'data-pid="' . esc_attr( $qpage_id ) . '"' : 'data-apid="' . esc_attr( $pages_count ) . '"'; ?>
@@ -1163,8 +1171,10 @@ class QSM_New_Pagination_Renderer {
 					</div>
 				</div>
 				<?php
-				// Increment question count for lazy loaded pages
-				$qmn_total_questions += count( $page );
+				// Increment question count for lazy loaded pages. Count the renderable IDs
+				// only, so the running total matches what the AJAX handler will actually
+				// render and data-question-start-number stays in step across pages.
+				$qmn_total_questions += count( $page_question_ids );
 			}
 			// Show page count if enabled
 			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
