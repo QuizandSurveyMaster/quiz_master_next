@@ -2289,7 +2289,6 @@ class QSM_Install {
 			if ( 0 === $results_count ) {
 				update_option( 'qsm_migration_results_processed', 1 );
 			}
-
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
 		}
