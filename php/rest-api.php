@@ -938,19 +938,44 @@ function qsm_get_post_id_for_quiz( $quiz_id ) {
 /**
  * Check whether the current user is authorized to edit a given quiz.
  *
- * Requires the per-quiz edit_qsm_quiz capability against the backing post,
- * which (via the meta-cap map in mlw_quizmaster2.php) enforces authorship
- * and lets edit_others_qsm_quizzes act as an override.
+ * Authorship is compared explicitly rather than delegated to
+ * current_user_can( 'edit_qsm_quiz', $post_id ). That check is NOT
+ * authorship-aware: 'edit_qsm_quiz' is granted to every role as a plain
+ * primitive capability (see QMNQuizMasterNext::qsm_add_user_capabilities(),
+ * where the contributor set is merged into each role), and it is not
+ * registered as a meta capability for the qsm_quiz post type. WordPress
+ * therefore ignores the $post_id argument and the check returns true for
+ * every quiz, which allowed a Contributor to read and write other authors'
+ * quizzes.
  *
+ * Only edit_others_qsm_quizzes (editor/administrator) may act on a quiz the
+ * current user does not own.
+ *
+ * @since 11.2.4
  * @param int $quiz_id The mlw_quizzes.quiz_id value.
  * @return bool
  */
 function qsm_current_user_can_edit_quiz( $quiz_id ) {
+	if ( ! is_user_logged_in() ) {
+		return false;
+	}
+
+	// Users allowed to edit other people's quizzes bypass the ownership test.
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return true;
+	}
+
 	$post_id = qsm_get_post_id_for_quiz( $quiz_id );
 	if ( ! $post_id ) {
-		return current_user_can( 'edit_others_qsm_quizzes' );
+		// No backing post means ownership cannot be established: fail closed.
+		return false;
 	}
-	return current_user_can( 'edit_qsm_quiz', $post_id );
+
+	$post_author = intval( get_post_field( 'post_author', $post_id ) );
+
+	return $post_author > 0
+		&& get_current_user_id() === $post_author
+		&& current_user_can( 'edit_qsm_quizzes' );
 }
 
 /**
