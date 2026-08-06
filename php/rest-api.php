@@ -193,10 +193,17 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$parameters = $request->get_params();
 		global $wpdb;
-		$quiz_filter = '%%';
+		$quiz_filter = '%';
 		if ( ! empty( $parameters['quizID'] ) ) {
-			$quiz_filter = sanitize_text_field( wp_unslash( $parameters['quizID'] ) );
+			// esc_like(): the quiz id is matched with LIKE, so an unescaped
+			// value lets "%" or "1%" widen the filter back to every quiz.
+			$quiz_filter = $wpdb->esc_like( sanitize_text_field( wp_unslash( $parameters['quizID'] ) ) );
 		}
+		// Security (IDOR): the question bank spans every quiz on the site, so
+		// the result set — not just the quizID filter — has to be limited to
+		// the quizzes the caller may edit. Applied in SQL so the pagination
+		// count matches the rows actually returned.
+		$access_sql = qsm_quiz_access_sql();
 		$category = isset( $parameters['category'] ) ? sanitize_text_field( wp_unslash( $parameters['category'] ) ) : '';
 		$search   = isset( $parameters['search'] ) ? sanitize_text_field( wp_unslash( $parameters['search'] ) ) : '';
 		$que_type = isset( $parameters['type'] ) ? sanitize_text_field( wp_unslash( $parameters['type'] ) ) : '';
@@ -227,13 +234,13 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
 				$question_ids = array_unique( $question_ids );
-				$query = "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN (" . implode( ',', $question_ids ) . ") AND quiz_id LIKE %s $search_sql";
+				$query = "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN (" . implode( ',', $question_ids ) . ") AND quiz_id LIKE %s $search_sql$access_sql";
 				$query = $wpdb->prepare( $query, $quiz_filter );
 			} else {
-				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql", $category, $quiz_filter );
+				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql", $category, $quiz_filter );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql", $quiz_filter );
+			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql", $quiz_filter );
 		}
 		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
 		$total_count = isset( $total_count_query['total_question'] ) ? $total_count_query['total_question'] : 0;
@@ -252,7 +259,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			if ( $migrated && is_numeric( $category ) ) {
 				$query_result = array();
 				foreach ( $question_ids as $question_id ) {
-					$query = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d";
+					$query = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d";
 					$query = $wpdb->prepare( $query, $question_id, $quiz_filter, $offset, $limit );
 					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
 					if ( ! is_null( $question_data ) ) {
@@ -261,11 +268,11 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				}
 				$questions = $query_result;
 			} else {
-				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
+				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
 				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
 			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 		}
 
@@ -991,6 +998,67 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 }
 
 /**
+ * Returns the ids of every quiz the current user owns.
+ *
+ * Resolved in one query so a listing can be scoped in SQL instead of one
+ * ownership lookup per row. Callers must handle the edit_others_qsm_quizzes
+ * case themselves: this only ever reports the user's own quizzes.
+ *
+ * @since 11.2.4
+ * @return array Quiz ids (int), empty when the user owns none.
+ */
+function qsm_get_editable_quiz_ids() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		return array();
+	}
+
+	global $wpdb;
+
+	// Mirrors qsm_get_post_id_for_quiz(): a quiz's owner is the author of the
+	// post carrying its 'quiz_id' meta.
+	$quiz_ids = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT pm.meta_value FROM {$wpdb->postmeta} pm
+			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+			WHERE pm.meta_key = 'quiz_id' AND p.post_author = %d",
+			get_current_user_id()
+		)
+	);
+
+	return array_values( array_unique( array_filter( array_map( 'intval', (array) $quiz_ids ) ) ) );
+}
+
+/**
+ * Builds the SQL fragment restricting a question query to the quizzes the
+ * current user may edit.
+ *
+ * The PHP-side companion, qsm_filter_questions_by_quiz_access(), drops rows
+ * after they are fetched, which is fine for an unpaginated listing but makes a
+ * paginated one report a row count it does not return. Constraining the query
+ * itself keeps COUNT(), LIMIT and the returned rows consistent.
+ *
+ * Returns an empty string for users who may edit other people's quizzes, so
+ * their queries are unchanged.
+ *
+ * @since 11.2.4
+ * @param string $column The quiz id column to constrain. Must not be user input.
+ * @return string A SQL fragment beginning with ' AND ', or '' for no restriction.
+ */
+function qsm_quiz_access_sql( $column = 'quiz_id' ) {
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return '';
+	}
+
+	$quiz_ids = qsm_get_editable_quiz_ids();
+	if ( empty( $quiz_ids ) ) {
+		// Owns nothing: match no rows rather than every row.
+		return ' AND 1 = 0';
+	}
+
+	return " AND $column IN (" . implode( ',', $quiz_ids ) . ')';
+}
+
+/**
  * Filters a question list down to the quizzes the current user may edit.
  *
  * Used by the unscoped listings, which load questions across every quiz on the
@@ -999,7 +1067,8 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
  *
  * Ownership is resolved once per quiz, so the cost is one lookup per distinct
  * quiz rather than per question. Users who may edit other people's quizzes get
- * the unfiltered list.
+ * the unfiltered list. Prefer qsm_quiz_access_sql() where the query is
+ * paginated, so the row count stays consistent with the rows returned.
  *
  * @since 11.2.4
  * @param array $questions Questions keyed by question id, each with a quiz_id.
