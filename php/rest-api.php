@@ -23,8 +23,17 @@ function qsm_register_rest_routes() {
 		array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => 'qsm_rest_get_questions',
-			'permission_callback' => function () {
-				return current_user_can( 'edit_qsm_quizzes' );
+			'permission_callback' => function ( WP_REST_Request $request ) {
+				if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+					return false;
+				}
+				// Security (IDOR): a quiz-scoped read must pass the same per-quiz
+				// ownership check the sibling create/save routes on this path use,
+				// otherwise any Contributor can read another author's question set.
+				// The unscoped listing (no quizID) is filtered to the quizzes the
+				// user may edit inside qsm_rest_get_questions().
+				$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
+				return 0 === $quiz_id || qsm_current_user_can_edit_quiz( $quiz_id );
 			},
 		)
 	);
@@ -654,7 +663,10 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			if ( 0 !== $quiz_id ) {
 				$questions = QSM_Questions::load_questions_by_pages( $quiz_id, 'admin' );
 			} else {
-				$questions = QSM_Questions::load_questions( 0, 'admin' );
+				// Security (IDOR): without a quizID this loads every question on the
+				// site, across all authors. Restrict it to the quizzes the current
+				// user is allowed to edit.
+				$questions = qsm_filter_questions_by_quiz_access( QSM_Questions::load_questions( 0, 'admin' ) );
 			}
 			global $wpdb;
 			$stored_quiz_names = $procesed_question_ids = $question_array = array();
@@ -976,6 +988,44 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 	return $post_author > 0
 		&& get_current_user_id() === $post_author
 		&& current_user_can( 'edit_qsm_quizzes' );
+}
+
+/**
+ * Filters a question list down to the quizzes the current user may edit.
+ *
+ * Used by the unscoped listings, which load questions across every quiz on the
+ * site and would otherwise disclose other authors' questions to any user
+ * holding the flat edit_qsm_quizzes capability.
+ *
+ * Ownership is resolved once per quiz, so the cost is one lookup per distinct
+ * quiz rather than per question. Users who may edit other people's quizzes get
+ * the unfiltered list.
+ *
+ * @since 11.2.4
+ * @param array $questions Questions keyed by question id, each with a quiz_id.
+ * @return array The questions belonging to quizzes the user may edit.
+ */
+function qsm_filter_questions_by_quiz_access( $questions ) {
+	if ( ! is_array( $questions ) || empty( $questions ) ) {
+		return array();
+	}
+
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return $questions;
+	}
+
+	$can_edit = array();
+	foreach ( $questions as $key => $question ) {
+		$quiz_id = isset( $question['quiz_id'] ) ? intval( $question['quiz_id'] ) : 0;
+		if ( ! isset( $can_edit[ $quiz_id ] ) ) {
+			$can_edit[ $quiz_id ] = qsm_current_user_can_edit_quiz( $quiz_id );
+		}
+		if ( ! $can_edit[ $quiz_id ] ) {
+			unset( $questions[ $key ] );
+		}
+	}
+
+	return $questions;
 }
 
 /**
