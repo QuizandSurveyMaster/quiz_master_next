@@ -1738,101 +1738,6 @@ class QSM_Install {
     }
 
 	/**
-	 * Records an owner for quizzes created before the quiz_author_id column.
-	 *
-	 * quiz_author_id was added in 7.3.8 with no backfill, so older quizzes hold
-	 * 0. Ownership for those has to fall back to the author of the post
-	 * carrying the 'quiz_id' meta -- a mapping any user who can edit a post
-	 * could forge, which is precisely what qsm_current_user_can_edit_quiz()
-	 * avoids everywhere else. Copying the author onto the plugin's own column
-	 * once retires that fallback instead of leaving it load-bearing forever.
-	 *
-	 * A quiz is backfilled only when its candidate posts AGREE on one author.
-	 * Picking a "best" post among disagreeing ones would let a forged mapping
-	 * be written permanently onto the very column the rest of the fix treats as
-	 * authoritative, which is worse than the fallback it replaces:
-	 * quiz_author_id also drives the admin quiz list, so a wrong value hands
-	 * the quiz over rather than merely failing to protect it. Where the
-	 * candidates disagree the quiz is left alone and keeps the runtime
-	 * fallback.
-	 *
-	 * A candidate must carry the shortcode QMNQuizCreator writes into the
-	 * genuine post's content; a post that merely holds the meta key does not.
-	 * Requiring it means a quiz whose genuine post is gone is left on the
-	 * fallback rather than migrated on the word of whatever post remains. That
-	 * is no worse than today for those quizzes, and it is the difference
-	 * between failing to improve them and permanently recording the wrong
-	 * owner.
-	 *
-	 * Runs once, guarded by an option, and never overwrites a recorded author.
-	 *
-	 * @since 11.2.4
-	 * @return void
-	 */
-	private function backfill_quiz_author_ids() {
-		global $wpdb;
-
-		if ( get_option( 'qsm_quiz_author_backfilled' ) ) {
-			return;
-		}
-
-		$quizzes_table = $wpdb->prefix . 'mlw_quizzes';
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '{$quizzes_table}'" ) !== $quizzes_table ) {
-			return;
-		}
-
-		// One pass over every unowned quiz's candidate posts: a per-quiz query
-		// would put thousands of round trips into a single upgrade request on a
-		// large site.
-		$candidates = $wpdb->get_results(
-			"SELECT pm.meta_value AS quiz_id, p.post_author, p.post_content
-			FROM {$quizzes_table} q
-			INNER JOIN {$wpdb->postmeta} pm ON pm.meta_key = 'quiz_id' AND pm.meta_value = q.quiz_id
-			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-			WHERE ( q.quiz_author_id IS NULL OR CAST( q.quiz_author_id AS UNSIGNED ) = 0 )
-				AND p.post_type = 'qsm_quiz' AND p.post_status != 'trash'"
-		);
-
-		// Keep only the posts QMNQuizCreator actually generated, then count the
-		// survivors per quiz so contested mappings can be dropped.
-		$genuine = array();
-		foreach ( (array) $candidates as $candidate ) {
-			$quiz_id = intval( $candidate->quiz_id );
-			if ( 0 === $quiz_id ) {
-				continue;
-			}
-			$shortcode = '[mlw_quizmaster quiz=' . $quiz_id . ']';
-			if ( false === strpos( (string) $candidate->post_content, $shortcode ) ) {
-				continue;
-			}
-			if ( ! isset( $genuine[ $quiz_id ] ) ) {
-				$genuine[ $quiz_id ] = array();
-			}
-			$genuine[ $quiz_id ][] = intval( $candidate->post_author );
-		}
-
-		foreach ( $genuine as $quiz_id => $authors ) {
-			$authors = array_unique( $authors );
-			// More than one genuine post, or none: leave it to the runtime check.
-			if ( 1 !== count( $authors ) ) {
-				continue;
-			}
-			$author = intval( reset( $authors ) );
-			if ( $author > 0 ) {
-				$wpdb->update(
-					$quizzes_table,
-					array( 'quiz_author_id' => $author ),
-					array( 'quiz_id' => $quiz_id ),
-					array( '%d' ),
-					array( '%d' )
-				);
-			}
-		}
-
-		update_option( 'qsm_quiz_author_backfilled', 1 );
-	}
-
-	/**
 	 * Updates the plugin
 	 *
 	 * @since 4.7.1
@@ -2384,9 +2289,6 @@ class QSM_Install {
 			if ( 0 === $results_count ) {
 				update_option( 'qsm_migration_results_processed', 1 );
 			}
-
-			// Update 11.2.4 - record an owner for quizzes that predate quiz_author_id.
-			$this->backfill_quiz_author_ids();
 
 			// Update QSM versoin at last
 			update_option( 'mlw_quiz_master_version', $data );
