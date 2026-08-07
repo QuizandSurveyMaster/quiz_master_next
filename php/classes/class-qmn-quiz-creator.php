@@ -474,8 +474,10 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
-		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
+		// current_user_can( 'edit_qsm_quiz', ... ) is not authorship-aware, so it
+		// would let any contributor duplicate — and thereby read the settings of —
+		// another author's quiz. Use the ownership-aware helper instead.
+		if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
 			return;
 		}
