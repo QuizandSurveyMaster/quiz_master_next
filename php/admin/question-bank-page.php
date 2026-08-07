@@ -24,7 +24,10 @@ function qsm_get_question_bank_page_data() {
 
 	global $wpdb, $mlwQuizMasterNext;
 
-	$quiz_results = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted = 0 ORDER BY quiz_name ASC' );
+	// Scope the Question Bank listing to the quizzes the current user may edit.
+	// Users with edit_others_qsm_quizzes get the unfiltered list ('' access sql).
+	$qb_access    = function_exists( 'qsm_quiz_access_sql' ) ? qsm_quiz_access_sql() : '';
+	$quiz_results = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted = 0' . $qb_access . ' ORDER BY quiz_name ASC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 	$quizzes      = array();
 	if ( ! empty( $quiz_results ) ) {
 		foreach ( $quiz_results as $quiz ) {
@@ -34,7 +37,7 @@ function qsm_get_question_bank_page_data() {
 			);
 		}
 	}
-	$quiz_ids_from_questions_table = $wpdb->get_results( 'SELECT DISTINCT quiz_id FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0 ORDER BY quiz_id ASC' );
+	$quiz_ids_from_questions_table = $wpdb->get_results( 'SELECT DISTINCT quiz_id FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0' . $qb_access . ' ORDER BY quiz_id ASC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 
 	$question_categories = $wpdb->get_results( 'SELECT DISTINCT category FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 ORDER BY category ASC', 'ARRAY_A' );
 	$enabled              = get_option( 'qsm_multiple_category_enabled' );
@@ -950,6 +953,19 @@ function qsm_question_bank_import() {
 
 	$raw_quiz = isset( $_POST['bulk_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['bulk_quiz'] ) ) : '';
 	$quiz_id  = absint( $raw_quiz );
+
+	// IDOR (CWE-639, same class as CVE-2026-14825): edit_qsm_quizzes is a flat
+	// capability every role holds, so without a per-quiz ownership check a
+	// Contributor could bulk-import questions into another author's quiz. Gate
+	// the target quiz with the same helper the REST write routes use.
+	if ( $quiz_id && ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'You are not allowed to import questions into this quiz.', 'quiz-master-next' ),
+			),
+			403
+		);
+	}
 	$file_details = $_FILES['bulk_csv']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$max_size     = wp_max_upload_size();
 	if ( ! empty( $file_details['size'] ) && $file_details['size'] > $max_size ) {

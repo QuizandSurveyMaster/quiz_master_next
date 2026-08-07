@@ -30,7 +30,11 @@ add_action( 'init', 'qsm_settings_questions_tab', 5 );
  */
 function qsm_options_questions_tab_content() {
 	global $wpdb, $mlwQuizMasterNext;
-	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name	FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC' );
+	// Scope the import-from-bank quiz picker to the quizzes the current user may
+	// edit, so a Contributor is not shown (and cannot pull from) other authors'
+	// quizzes. Users with edit_others_qsm_quizzes get the unfiltered list.
+	$qb_access           = function_exists( 'qsm_quiz_access_sql' ) ? qsm_quiz_access_sql() : '';
+	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0' . $qb_access . ' ORDER BY quiz_id DESC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
