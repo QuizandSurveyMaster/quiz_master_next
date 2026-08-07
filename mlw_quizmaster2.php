@@ -382,6 +382,37 @@ class MLWQuizMasterNext {
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
 		add_action( 'wp_ajax_qsm_mark_setup_wizard_completed', array( $this, 'qsm_mark_setup_wizard_completed' ) );
 		add_action( 'wp_ajax_qsm_reset_setup_wizard_completed', array( $this, 'qsm_reset_setup_wizard_completed' ) );
+		add_filter( 'is_protected_meta', array( $this, 'qsm_protect_quiz_meta' ), 10, 3 );
+	}
+
+	/**
+	 * Marks the 'quiz_id' post meta as protected.
+	 *
+	 * The key ties a post to a quiz and is what the plugin resolves ownership
+	 * against. Without a leading underscore WordPress considers it public, so
+	 * the classic Custom Fields metabox would let anyone who can edit a post --
+	 * a Contributor editing their own draft, for instance -- attach another
+	 * author's quiz id to it and be mistaken for that quiz's owner. Protecting
+	 * the key makes wp-admin's add_meta() refuse it and hides it from the
+	 * metabox, while leaving the plugin's own add_post_meta() call in
+	 * QMNQuizCreator (which does not consult protection) unaffected.
+	 *
+	 * This shuts the entry point. It is not the whole defence -- ownership is
+	 * read from mlw_quizzes.quiz_author_id in qsm_current_user_can_edit_quiz()
+	 * so that a forged mapping arriving by some other route still grants
+	 * nothing.
+	 *
+	 * @since 11.2.4
+	 * @param bool   $protected Whether the key is protected.
+	 * @param string $meta_key  The meta key being checked.
+	 * @param string $meta_type The object type the meta belongs to.
+	 * @return bool
+	 */
+	public function qsm_protect_quiz_meta( $protected, $meta_key, $meta_type ) {
+		if ( 'post' === $meta_type && 'quiz_id' === $meta_key ) {
+			return true;
+		}
+		return $protected;
 	}
 
 	/**

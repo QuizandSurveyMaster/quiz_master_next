@@ -151,8 +151,16 @@ function qsm_register_rest_routes() {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_bank_questions',
-				'permission_callback' => function () {
-					return current_user_can( 'edit_qsm_quizzes' );
+				'permission_callback' => function ( WP_REST_Request $request ) {
+					// IDOR (CWE-639): gate the specific quiz named by quizID, the
+					// same per-quiz ownership check the sibling routes enforce.
+					// The unscoped bank (no quizID) is additionally constrained to
+					// the caller's own quizzes inside the handler via
+					// qsm_quiz_access_sql(), so neither a foreign quizID nor an
+					// unfiltered request can disclose another author's questions.
+					return current_user_can( 'edit_qsm_quizzes' )
+						&& ( empty( $request->get_param( 'quizID' ) )
+							|| qsm_current_user_can_edit_quiz( $request->get_param( 'quizID' ) ) );
 				},
 			)
 		);
@@ -936,6 +944,17 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
 /**
  * Resolve a quiz_id to its backing post_id.
  *
+ * The 'quiz_id' meta key is not protected (no leading underscore), so any user
+ * who can edit a post could otherwise attach it to a post of their own and be
+ * mistaken for the quiz's owner. The lookup is therefore constrained to
+ * genuine, non-trashed qsm_quiz posts -- the only shape QMNQuizCreator ever
+ * creates -- and ordered so that the result is deterministic rather than
+ * whatever row the engine happens to yield first.
+ *
+ * This narrows the forgery surface but does not close it on its own; ownership
+ * decisions must go through qsm_current_user_can_edit_quiz(), which prefers the
+ * plugin's own mlw_quizzes.quiz_author_id column.
+ *
  * @param int $quiz_id The mlw_quizzes.quiz_id value.
  * @return int|false Post ID or false if not found.
  */
@@ -947,11 +966,46 @@ function qsm_get_post_id_for_quiz( $quiz_id ) {
 	}
 	$post_id = $wpdb->get_var(
 		$wpdb->prepare(
-			"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1",
+			"SELECT pm.post_id FROM {$wpdb->postmeta} pm
+			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+			WHERE pm.meta_key = 'quiz_id' AND pm.meta_value = %d
+				AND p.post_type = 'qsm_quiz' AND p.post_status != 'trash'
+			ORDER BY p.ID ASC LIMIT 1",
 			$quiz_id
 		)
 	);
 	return $post_id ? intval( $post_id ) : false;
+}
+
+/**
+ * Returns the author recorded against a quiz by the plugin itself.
+ *
+ * mlw_quizzes.quiz_author_id is written by QMNQuizCreator when a quiz is
+ * created or duplicated and is not reachable through the generic WordPress
+ * meta APIs, which makes it the trustworthy ownership signal. It is also what
+ * QMNPluginHelper::get_quizzes() already filters the admin quiz list on.
+ *
+ * The column was added in 7.3.8 with no backfill, so quizzes created before
+ * that upgrade hold an empty value. Callers must treat 0 as "not recorded"
+ * rather than "owned by nobody".
+ *
+ * @since 11.2.4
+ * @param int $quiz_id The mlw_quizzes.quiz_id value.
+ * @return int User ID, or 0 when the quiz is unknown or predates the column.
+ */
+function qsm_get_quiz_author_id( $quiz_id ) {
+	global $wpdb;
+	$quiz_id = intval( $quiz_id );
+	if ( 0 === $quiz_id ) {
+		return 0;
+	}
+	$author_id = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT quiz_author_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d LIMIT 1",
+			$quiz_id
+		)
+	);
+	return intval( $author_id );
 }
 
 /**
@@ -970,6 +1024,14 @@ function qsm_get_post_id_for_quiz( $quiz_id ) {
  * Only edit_others_qsm_quizzes (editor/administrator) may act on a quiz the
  * current user does not own.
  *
+ * Ownership itself is read from mlw_quizzes.quiz_author_id where the plugin
+ * recorded it. Deriving it from the 'quiz_id' post meta instead is unsafe: the
+ * key is unprotected, so a user who can edit any post could attach another
+ * author's quiz id to it and be treated as that quiz's owner. The post-author
+ * path survives only as a fallback for quizzes created before quiz_author_id
+ * existed (7.3.8), where denying outright would lock legitimate owners out of
+ * their own quizzes.
+ *
  * @since 11.2.4
  * @param int $quiz_id The mlw_quizzes.quiz_id value.
  * @return bool
@@ -984,25 +1046,43 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 		return true;
 	}
 
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		return false;
+	}
+
+	$current_user = get_current_user_id();
+
+	// Preferred signal: the author the plugin itself recorded. Not writable
+	// through the WordPress meta APIs, so it cannot be forged by a Contributor.
+	$quiz_author = qsm_get_quiz_author_id( $quiz_id );
+	if ( $quiz_author > 0 ) {
+		return $current_user === $quiz_author;
+	}
+
+	// Legacy quiz (pre-7.3.8, no recorded author): fall back to the author of
+	// the backing qsm_quiz post.
 	$post_id = qsm_get_post_id_for_quiz( $quiz_id );
 	if ( ! $post_id ) {
-		// No backing post means ownership cannot be established: fail closed.
+		// Ownership cannot be established: fail closed.
 		return false;
 	}
 
 	$post_author = intval( get_post_field( 'post_author', $post_id ) );
 
-	return $post_author > 0
-		&& get_current_user_id() === $post_author
-		&& current_user_can( 'edit_qsm_quizzes' );
+	return $post_author > 0 && $current_user === $post_author;
 }
 
 /**
  * Returns the ids of every quiz the current user owns.
  *
- * Resolved in one query so a listing can be scoped in SQL instead of one
- * ownership lookup per row. Callers must handle the edit_others_qsm_quizzes
- * case themselves: this only ever reports the user's own quizzes.
+ * Resolved in bulk so a listing can be scoped in SQL instead of one ownership
+ * lookup per row. Callers must handle the edit_others_qsm_quizzes case
+ * themselves: this only ever reports the user's own quizzes.
+ *
+ * Mirrors qsm_current_user_can_edit_quiz() exactly -- quiz_author_id where the
+ * plugin recorded it, the backing qsm_quiz post's author only for quizzes that
+ * predate the column. Keeping the two in step matters: a listing that is more
+ * generous than the per-quiz gate is the same disclosure by another route.
  *
  * @since 11.2.4
  * @return array Quiz ids (int), empty when the user owns none.
@@ -1014,14 +1094,26 @@ function qsm_get_editable_quiz_ids() {
 
 	global $wpdb;
 
-	// Mirrors qsm_get_post_id_for_quiz(): a quiz's owner is the author of the
-	// post carrying its 'quiz_id' meta.
+	$current_user  = get_current_user_id();
+	$quizzes_table = $wpdb->prefix . 'mlw_quizzes';
+
+	// Two ownership sources in one round trip: the recorded author, and -- for
+	// legacy quizzes only -- the author of the backing qsm_quiz post. Deliberately
+	// not memoised: qsm_quiz_access_sql() calls this several times per request,
+	// but a stale answer in an authorization helper is a worse bug than the
+	// query it saves.
 	$quiz_ids = $wpdb->get_col(
 		$wpdb->prepare(
-			"SELECT pm.meta_value FROM {$wpdb->postmeta} pm
+			"SELECT quiz_id FROM {$quizzes_table} WHERE quiz_author_id = %d
+			UNION
+			SELECT q.quiz_id FROM {$quizzes_table} q
+			INNER JOIN {$wpdb->postmeta} pm ON pm.meta_key = 'quiz_id' AND pm.meta_value = q.quiz_id
 			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-			WHERE pm.meta_key = 'quiz_id' AND p.post_author = %d",
-			get_current_user_id()
+			WHERE ( q.quiz_author_id IS NULL OR CAST( q.quiz_author_id AS UNSIGNED ) = 0 )
+				AND p.post_type = 'qsm_quiz' AND p.post_status != 'trash'
+				AND p.post_author = %d",
+			$current_user,
+			$current_user
 		)
 	);
 
