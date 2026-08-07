@@ -151,8 +151,16 @@ function qsm_register_rest_routes() {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'qsm_rest_get_bank_questions',
-				'permission_callback' => function () {
-					return current_user_can( 'edit_qsm_quizzes' );
+				'permission_callback' => function ( WP_REST_Request $request ) {
+					// IDOR (CWE-639): gate the specific quiz named by quizID, the
+					// same per-quiz ownership check the sibling routes enforce.
+					// The unscoped bank (no quizID) is additionally constrained to
+					// the caller's own quizzes inside the handler via
+					// qsm_quiz_access_sql(), so neither a foreign quizID nor an
+					// unfiltered request can disclose another author's questions.
+					return current_user_can( 'edit_qsm_quizzes' )
+						&& ( empty( $request->get_param( 'quizID' ) )
+							|| qsm_current_user_can_edit_quiz( $request->get_param( 'quizID' ) ) );
 				},
 			)
 		);
