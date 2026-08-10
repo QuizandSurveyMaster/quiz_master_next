@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 5.4
-Stable tag: 11.2.3
+Stable tag: 11.2.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,14 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+= 11.2.4 (August 10, 2026) =
+* Security: Fixed a Contributor+ ownership bypass by validating author records instead of post meta.
+* Security: Fixed a Contributor+ information disclosure issue in REST endpoints by enforcing per-quiz ownership checks
+* Security: Restricted the Question Bank picker and CSV import to quizzes owned by the current user
+* Security: Added direct file access protection and sanitized lazy-loaded answer IDs.
+* Bug: Fixed missing translations for question type names during Question Bank import.
+* Bug: Fixed quiz navigator jumping to incorrect pages and question numbers in the new renderer.
+
 = 11.2.3 (July 29, 2026) =
 * Feature: Added default settings for newly created questions.
 * Bug: Resolved the processing message display configuration issue.
