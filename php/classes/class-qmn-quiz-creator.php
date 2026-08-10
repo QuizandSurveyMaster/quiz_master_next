@@ -665,7 +665,8 @@ class QMNQuizCreator {
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
 				'post_content' => "[mlw_quizmaster quiz=$mlw_new_id]",
-				'post_status'  => 'publish',
+				// Duplicates start as drafts, same as a newly created quiz.
+				'post_status'  => 'draft',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'qsm_quiz',
 			);

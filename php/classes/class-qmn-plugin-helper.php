@@ -839,6 +839,9 @@ class QMNPluginHelper {
 		$results_array = array();
 		global $wpdb;
 		$question = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', intval( $question_id ) ) );
+		if ( ! $question ) {
+			return array( 'null_review' => true );
+		}
 		$answers  = maybe_unserialize( $question->answer_array );
 		if ( empty( $answers ) || ! is_array( $answers ) ) {
 			$mlw_answer_array_correct                                  = array( 0, 0, 0, 0, 0, 0 );
