@@ -147,9 +147,18 @@ class QSM_Ajax_Handler {
 				$question_id
 			), ARRAY_A );
 
-			if ( $question ) {
-				$questions[ $question_id ] = $question;
+			if ( ! $question ) {
+				continue;
 			}
+
+			// Mirror the published check the renderer applies in load_questions(), so a
+			// stale or tampered question ID list cannot surface an unpublished question.
+			$question_settings = maybe_unserialize( $question['question_settings'] );
+			if ( isset( $question_settings['isPublished'] ) && 1 !== intval( $question_settings['isPublished'] ) ) {
+				continue;
+			}
+
+			$questions[ $question_id ] = $question;
 		}
 
 		if ( empty( $questions ) ) {

@@ -855,7 +855,7 @@ if (typeof window.qsmCheckMR !== 'function') {
                 // Trigger after page change event
                 $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
             },
-            
+
             /**
              * Show specific page (helper method)
              */

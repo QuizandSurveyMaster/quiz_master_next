@@ -30,7 +30,11 @@ add_action( 'init', 'qsm_settings_questions_tab', 5 );
  */
 function qsm_options_questions_tab_content() {
 	global $wpdb, $mlwQuizMasterNext;
-	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name	FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC' );
+	// Scope the import-from-bank quiz picker to the quizzes the current user may
+	// edit, so a Contributor is not shown (and cannot pull from) other authors'
+	// quizzes. Users with edit_others_qsm_quizzes get the unfiltered list.
+	$qb_access           = function_exists( 'qsm_quiz_access_sql' ) ? qsm_quiz_access_sql() : '';
+	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0' . $qb_access . ' ORDER BY quiz_id DESC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
@@ -1099,21 +1103,15 @@ function qsm_user_can_modify_question_ids( $question_ids ) {
 	$prepared_query = call_user_func_array( array( $wpdb, 'prepare' ), $query_args );
 	$quiz_ids       = $wpdb->get_col( $prepared_query );
 
-	$current_user = get_current_user_id();
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) ) {
+		return false;
+	}
+
 	foreach ( $quiz_ids as $quiz_id ) {
-		$post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", intval( $quiz_id ) ) );
-		// If quiz mapping is missing, only allow elevated users.
-		if ( empty( $post_id ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		// Ownership is resolved centrally: deriving it here from the 'quiz_id'
+		// post meta would reintroduce the forgeable mapping the helper avoids.
+		if ( ! qsm_current_user_can_edit_quiz( intval( $quiz_id ) ) ) {
 			return false;
-		}
-
-		if ( ! empty( $post_id ) ) {
-			$post_author = intval( get_post_field( 'post_author', $post_id, true ) );
-			$owns_quiz   = ( $post_author === $current_user );
-
-			if ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || ! $owns_quiz ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
-				return false;
-			}
 		}
 	}
 
@@ -1173,17 +1171,13 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
-	global $wpdb;
 	$json    = array(
 		'status' => 'error',
 	);
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 
-	// Map quiz to its post and enforce edit capabilities.
-	$post_id    = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", $quiz_id ) );
-	$post_author = get_post_field( 'post_author', $post_id, true );
-
-	if ( empty( $post_id ) || ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || intval( $post_author ) !== get_current_user_id() ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) ) {
+	// Enforce edit permission through the central ownership helper.
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 		wp_die( esc_html__( 'You are not allowed to edit this quiz, You need higher permission!', 'quiz-master-next' ) );
 	}
 
@@ -1241,7 +1235,7 @@ add_action( 'wp_ajax_qsm_save_default_question_settings', 'qsm_ajax_save_default
  * @since 11.2.3
  */
 function qsm_ajax_save_default_question_settings() {
-	global $mlwQuizMasterNext, $wpdb;
+	global $mlwQuizMasterNext;
 
 	$json    = array( 'status' => 'error' );
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
@@ -1250,11 +1244,8 @@ function qsm_ajax_save_default_question_settings() {
 		wp_send_json( $json );
 	}
 
-	// Map quiz to its post and enforce edit capabilities (mirrors qsm_ajax_save_pages).
-	$post_id     = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", $quiz_id ) );
-	$post_author = get_post_field( 'post_author', $post_id, true );
-
-	if ( empty( $post_id ) || ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || intval( $post_author ) !== get_current_user_id() ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) ) {
+	// Enforce edit permission through the central ownership helper (mirrors qsm_ajax_save_pages).
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 		wp_send_json( $json );
 	}
 
