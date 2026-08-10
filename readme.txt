@@ -118,14 +118,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 = 11.2.4 (August 10, 2026) =
-* Security: Fixed a Contributor+ cross-quiz ownership bypass by deriving quiz ownership from the quiz author record instead of the forgeable "quiz_id" post meta.
-* Security: Fixed a Contributor+ cross-quiz information disclosure in the questions and question bank REST GET endpoints by enforcing a per-quiz ownership check.
-* Security: Fixed a Contributor+ cross-quiz access issue in the Question Bank quiz picker and CSV bulk import by scoping them to the user's own quizzes.
-* Security: Added direct file access guards across plugin files and sanitized lazily loaded answer IDs.
-* Bug: Fixed a newly created quiz inheriting data from a previously deleted quiz that reused the same quiz ID.
-* Bug: Fixed question type names not being translated when importing questions in the Question Bank.
-* Bug: Fixed the quiz navigator jumping to the wrong page and question numbers on the new renderer.
-* Enhancement: Improved WordPress.org release compliance with packaging exclusions and Plugin Check guideline fixes.
+* Security: Fixed a Contributor+ ownership bypass by validating author records instead of post meta.
+* Security: Fixed a Contributor+ information disclosure issue in REST endpoints by enforcing per-quiz ownership checks
+* Security: Restricted the Question Bank picker and CSV import to quizzes owned by the current user
+* Security: Added direct file access protection and sanitized lazy-loaded answer IDs.
+* Bug: Fixed missing translations for question type names during Question Bank import.
+* Bug: Fixed quiz navigator jumping to incorrect pages and question numbers in the new renderer.
 
 = 11.2.3 (July 29, 2026) =
 * Feature: Added default settings for newly created questions.
