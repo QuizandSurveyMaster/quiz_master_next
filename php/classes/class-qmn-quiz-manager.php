@@ -2981,6 +2981,10 @@ class QMNQuizManager {
 						// When the questions are the same...
 						if ( $page_question_id == $question_id ) {
 							global $mlwQuizMasterNext;
+							// Skip questions that are still listed in the pages setting but no longer exist.
+							if ( ! isset( $questions[ $page_question_id ] ) ) {
+								break;
+							}
 							$case_sensitive    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 							$question          = $questions[ $page_question_id ];
 							$question_type_new = $question['question_type_new'];
