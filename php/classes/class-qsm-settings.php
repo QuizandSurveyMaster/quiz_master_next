@@ -303,7 +303,7 @@ class QSM_Quiz_Settings {
 			// Load the old options system
 			$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
 			// If no options are present
-			if ( ! isset( $settings_array['quiz_options'] ) ) {
+			if ( $quiz_options && ! isset( $settings_array['quiz_options'] ) ) {
 				$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
 
 				// Sets up older scheduled timeframe settings
@@ -343,7 +343,7 @@ class QSM_Quiz_Settings {
 				);
 			}
 			// If no text is present
-			if ( ! isset( $settings_array['quiz_text'] ) ) {
+			if ( $quiz_options && ! isset( $settings_array['quiz_text'] ) ) {
 				$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
 				// Sets up older pagination text
 				if ( ! is_array( $pagination_text ) ) {
@@ -405,11 +405,11 @@ class QSM_Quiz_Settings {
 				);
 			}
 			// If no leadboard is present
-			if ( ! isset( $settings_array['quiz_leaderboards'] ) ) {
+			if ( $quiz_options && ! isset( $settings_array['quiz_leaderboards'] ) ) {
 				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
 			}
 			// Update new settings system
-			$results = $wpdb->update(
+			$results = ! $quiz_options ? false : $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_settings' => maybe_serialize( $settings_array ) ),
 				array( 'quiz_id' => $this->quiz_id ),
@@ -455,6 +455,11 @@ class QSM_Quiz_Settings {
 
 		// Load the old options system
 		$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ), ARRAY_A );
+
+		// The quiz row can be missing, e.g. when the id points at a deleted quiz.
+		if ( ! is_array( $quiz_options ) ) {
+			$quiz_options = array();
+		}
 
 		/**
 		 * Merges all options and settings
