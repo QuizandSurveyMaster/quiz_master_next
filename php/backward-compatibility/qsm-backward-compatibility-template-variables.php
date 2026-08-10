@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';

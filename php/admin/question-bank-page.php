@@ -24,7 +24,10 @@ function qsm_get_question_bank_page_data() {
 
 	global $wpdb, $mlwQuizMasterNext;
 
-	$quiz_results = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted = 0 ORDER BY quiz_name ASC' );
+	// Scope the Question Bank listing to the quizzes the current user may edit.
+	// Users with edit_others_qsm_quizzes get the unfiltered list ('' access sql).
+	$qb_access    = function_exists( 'qsm_quiz_access_sql' ) ? qsm_quiz_access_sql() : '';
+	$quiz_results = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted = 0' . $qb_access . ' ORDER BY quiz_name ASC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 	$quizzes      = array();
 	if ( ! empty( $quiz_results ) ) {
 		foreach ( $quiz_results as $quiz ) {
@@ -34,7 +37,7 @@ function qsm_get_question_bank_page_data() {
 			);
 		}
 	}
-	$quiz_ids_from_questions_table = $wpdb->get_results( 'SELECT DISTINCT quiz_id FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0 ORDER BY quiz_id ASC' );
+	$quiz_ids_from_questions_table = $wpdb->get_results( 'SELECT DISTINCT quiz_id FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0' . $qb_access . ' ORDER BY quiz_id ASC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 
 	$question_categories = $wpdb->get_results( 'SELECT DISTINCT category FROM ' . $wpdb->prefix . 'mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 ORDER BY category ASC', 'ARRAY_A' );
 	$enabled              = get_option( 'qsm_multiple_category_enabled' );
@@ -950,6 +953,19 @@ function qsm_question_bank_import() {
 
 	$raw_quiz = isset( $_POST['bulk_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['bulk_quiz'] ) ) : '';
 	$quiz_id  = absint( $raw_quiz );
+
+	// IDOR (CWE-639, same class as CVE-2026-14825): edit_qsm_quizzes is a flat
+	// capability every role holds, so without a per-quiz ownership check a
+	// Contributor could bulk-import questions into another author's quiz. Gate
+	// the target quiz with the same helper the REST write routes use.
+	if ( $quiz_id && ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'You are not allowed to import questions into this quiz.', 'quiz-master-next' ),
+			),
+			403
+		);
+	}
 	$file_details = $_FILES['bulk_csv']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$max_size     = wp_max_upload_size();
 	if ( ! empty( $file_details['size'] ) && $file_details['size'] > $max_size ) {
@@ -1629,6 +1645,71 @@ function qsm_question_bank_parse_categories( $value ) {
 }
 
 /**
+ * Returns the untranslated (English) question type names mapped to their slug.
+ *
+ * Registered question type names are passed through __() at registration time,
+ * so on a translated site the runtime names no longer match the English labels
+ * used in exported/sample CSV files. This map keeps the import working
+ * regardless of the active site language.
+ *
+ * @since 11.2.4
+ * @return array Normalized English name => question type slug.
+ */
+function qsm_question_bank_untranslated_question_types_map() {
+	$types = array(
+		'multiple choice'                => '0',
+		'multiple choice (horizontal)'   => '1',
+		'drop down'                      => '2',
+		'short answer'                   => '3',
+		'multiple response'              => '4',
+		'paragraph'                      => '5',
+		'text/html section'              => '6',
+		'number'                         => '7',
+		'opt-in'                         => '8',
+		'captcha'                        => '9',
+		'multiple response (horizontal)' => '10',
+		'file upload'                    => '11',
+		'date'                           => '12',
+		'polar'                          => '13',
+		'fill in the blank'              => '14',
+		'matching pairs'                 => '15',
+		'radio grid'                     => '16',
+		'checkbox grid'                  => '17',
+	);
+
+	// Commonly used variations of the labels above.
+	$aliases = array(
+		'dropdown'            => '2',
+		'drop-down'           => '2',
+		'text/html'           => '6',
+		'text html section'   => '6',
+		'opt in'              => '8',
+		'optin'               => '8',
+		'fill in the blanks'  => '14',
+		'fill in blank'       => '14',
+	);
+
+	$map = array();
+	foreach ( array_merge( $types, $aliases ) as $name => $slug ) {
+		$map[ qsm_question_bank_normalize_type_name( $name ) ] = $slug;
+	}
+
+	return apply_filters( 'qsm_question_bank_untranslated_question_types_map', $map );
+}
+
+/**
+ * Normalizes a question type name for comparison.
+ *
+ * @since 11.2.4
+ * @param string $name Raw name.
+ * @return string
+ */
+function qsm_question_bank_normalize_type_name( $name ) {
+	$name = strtolower( trim( (string) $name ) );
+	return preg_replace( '/\s+/', ' ', $name );
+}
+
+/**
  * Returns map of available question types.
  *
  * @since 10.4.0
@@ -1653,7 +1734,7 @@ function qsm_question_bank_question_types_map() {
 	}
 	foreach ( $types as $type ) {
 		$slug = isset( $type['slug'] ) ? (string) $type['slug'] : '';
-		$name = isset( $type['name'] ) ? strtolower( $type['name'] ) : '';
+		$name = isset( $type['name'] ) ? qsm_question_bank_normalize_type_name( $type['name'] ) : '';
 		if ( '' !== $slug ) {
 			$cache['by_slug'][ $slug ] = true;
 		}
@@ -1661,6 +1742,14 @@ function qsm_question_bank_question_types_map() {
 			$cache['by_name'][ $name ] = $slug;
 		}
 	}
+
+	// Accept the English labels too, so imports do not depend on the site language.
+	foreach ( qsm_question_bank_untranslated_question_types_map() as $name => $slug ) {
+		if ( isset( $cache['by_slug'][ $slug ] ) && ! isset( $cache['by_name'][ $name ] ) ) {
+			$cache['by_name'][ $name ] = $slug;
+		}
+	}
+
 	return $cache;
 }
 
@@ -1677,7 +1766,7 @@ function qsm_question_bank_map_question_type( $value, $types_map ) {
 	if ( '' === $value ) {
 		return '';
 	}
-	$lower = strtolower( $value );
+	$lower = qsm_question_bank_normalize_type_name( $value );
 	if ( isset( $types_map['by_name'][ $lower ] ) ) {
 		return (string) $types_map['by_name'][ $lower ];
 	}

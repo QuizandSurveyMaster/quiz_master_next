@@ -223,6 +223,15 @@ class QMNQuizCreator {
 		);
 		if ( false !== $results ) {
 			$new_quiz     = $wpdb->insert_id;
+
+			/*
+			 * quiz_id is an AUTO_INCREMENT value, and MySQL before 8.0 resets it to
+			 * MAX(quiz_id) + 1 when the server restarts. A new quiz can therefore be
+			 * handed an ID that a deleted quiz used to own. Discard anything still
+			 * keyed to that ID so this quiz starts clean.
+			 */
+			self::purge_quiz_state( $new_quiz );
+
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
 				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
@@ -350,6 +359,11 @@ class QMNQuizCreator {
 					wp_trash_post( $quiz_post_id );
 				}
 			}
+			// Only a permanent delete frees the quiz ID. A soft delete keeps the row,
+			// so the quiz still owns its featured image, logic flag and theme settings.
+			if ( $qsm_delete_from_db ) {
+				self::purge_quiz_state( $quiz_id );
+			}
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );
 		} else {
@@ -358,6 +372,47 @@ class QMNQuizCreator {
 		}
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
+	}
+
+	/**
+	 * Removes the per-quiz data that is keyed by quiz ID but stored outside the
+	 * quiz row: the featured image option, the logic rules flag, and the quiz's
+	 * theme settings.
+	 *
+	 * Call this when a quiz ID stops being in use, and again when one starts being
+	 * used, so a recycled ID never inherits the previous quiz's leftovers.
+	 *
+	 * @access public
+	 * @since  11.2.4
+	 * @param  int $quiz_id The ID of the quiz.
+	 * @return void
+	 */
+	public static function purge_quiz_state( $quiz_id ) {
+		global $wpdb;
+
+		$quiz_id = absint( $quiz_id );
+		if ( ! $quiz_id ) {
+			return;
+		}
+
+		delete_option( "quiz_featured_image_$quiz_id" );
+		delete_option( "logic_rules_quiz_$quiz_id" );
+
+		$themes_settings_table = $wpdb->prefix . 'mlw_quiz_theme_settings';
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $themes_settings_table ) ) ) {
+			$wpdb->delete( $themes_settings_table, array( 'quiz_id' => $quiz_id ), array( '%d' ) );
+		}
+
+		/**
+		 * Fires when a quiz ID's out-of-table data is discarded.
+		 *
+		 * Addons storing options keyed by quiz ID, such as retake_quiz_option_{id}
+		 * or qsm_mailerlite_tag_{id}, should clean up here.
+		 *
+		 * @since 11.2.4
+		 * @param int $quiz_id The ID of the quiz.
+		 */
+		do_action( 'qsm_purge_quiz_state', $quiz_id );
 	}
 
 	/**
@@ -419,8 +474,10 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
-		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_qsm_quiz', $quiz_post_id ) ) {
+		// current_user_can( 'edit_qsm_quiz', ... ) is not authorship-aware, so it
+		// would let any contributor duplicate — and thereby read the settings of —
+		// another author's quiz. Use the ownership-aware helper instead.
+		if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
 			return;
 		}

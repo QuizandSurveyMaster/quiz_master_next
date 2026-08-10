@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 $themes_data = array();
 global $pro_themes;
 $pro_themes  = array( 'qsm-theme-pool', 'qsm-theme-breeze', 'qsm-theme-fragrance', 'qsm-theme-ivory', 'qsm-theme-sigma', 'qsm-theme-fortune', 'qsm-theme-pixel', 'qsm-theme-sapience', 'Breeze', 'Fragrance', 'Pool', 'Ivory', 'Sigma', 'Fortune', 'Pixel', 'Sapience' );

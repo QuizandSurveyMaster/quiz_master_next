@@ -1424,11 +1424,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			}
 			// Lazy-loaded pages append their shuffled order here so the result
 			// page can render answers in the order the user saw.
-			if ( empty( $random_ids_for_question ) && ! empty( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] ) ) {
-				$lazy_keys = wp_unslash( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] );
-				if ( is_array( $lazy_keys ) ) {
-					$random_ids_for_question = array_map( 'intval', $lazy_keys );
-				}
+			if ( empty( $random_ids_for_question ) && ! empty( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] ) && is_array( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] ) ) {
+				// Sanitize on access: ids are cast to int via array_map( 'intval', ... ).
+				$random_ids_for_question = array_map( 'intval', wp_unslash( $_POST['qsm_lazy_answer_random_ids'][ $answer['id'] ] ) );
 			}
 			if ( ! empty( $random_ids_for_question ) ) {
 				$answers_random = array();
