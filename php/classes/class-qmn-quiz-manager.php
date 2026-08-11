@@ -469,6 +469,28 @@ class QMNQuizManager {
 					}
 				}
 			}
+			/*
+			 * `pages` and `qpages` are separate settings and can drift apart (a quiz saved
+			 * before qpages carried ids, a page added by a filter). display_pages() falls
+			 * back to the page position for data-pid, so without an entry here that page is
+			 * rendered with a pid missing from this payload and JS reading its settings (the
+			 * page timer) reads them off undefined. Backfill a timer-less entry.
+			 */
+			$pages_arr               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+			if ( is_array( $pages_arr ) ) {
+				foreach ( $pages_arr as $key => $page ) {
+					// Same lookup + fallback display_pages() uses.
+					$qpage    = isset( $qpages_arr[ $key ] ) ? $qpages_arr[ $key ] : array();
+					$qpage_id = isset( $qpage['id'] ) ? $qpage['id'] : $key;
+					if ( ! isset( $qpages[ $qpage_id ] ) ) {
+						$qpages[ $qpage_id ] = array(
+							'id'               => $qpage_id,
+							'pagetimer'        => 0,
+							'pagetimer_second' => 0,
+						);
+					}
+				}
+			}
 			$correct_answer_text     = sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text );
 			$correct_answer_text     = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_answer_text, "quiz_quick_result_correct_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$wrong_answer_text       = sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text );
