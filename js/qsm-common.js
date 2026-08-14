@@ -57,11 +57,30 @@ jQuery(document).ready(function(){
 					nonce: nonce,
 				},
 				success: function (response) {
-					if ( response.success ) {
+					// A "fallback" error means the pre-flight check declined to
+					// answer (rate limited, or a 2FA/lockout veto it cannot
+					// resolve). Submit the form so wp-login.php handles the login
+					// normally instead of dead-ending here.
+					if ( response?.success || response?.data?.fallback ) {
 						form.get(0).submit();
-					} else {
-						qsmShowLoginError(response.data.message);
+						return;
 					}
+
+					// Only nopriv is registered for this action, so an already
+					// logged-in caller — a cached logged-out page, or a login in
+					// another tab — gets admin-ajax's bare "0" with HTTP 200.
+					// Anything we cannot read as an error goes to wp-login.php
+					// rather than leaving the submit button disabled forever.
+					if ( ! response?.data?.message ) {
+						form.get(0).submit();
+						return;
+					}
+
+					qsmShowLoginError(response.data.message);
+				},
+				error: function () {
+					// Never block a legitimate login on a failed pre-flight check.
+					form.get(0).submit();
 				}
 			});
 		}
