@@ -313,6 +313,9 @@ class QMNQuizManager {
 	 * - Failures are throttled per client IP. Once the limit is reached the endpoint
 	 *   stops answering and tells the browser to submit the form to wp-login.php,
 	 *   which degrades to the normal WordPress login instead of denying service.
+	 * - Only a plain wrong-credentials result is reported inline. Any other veto
+	 *   (2FA challenge, lockout) also defers to wp-login.php, which owns those
+	 *   flows and can actually complete them.
 	 *
 	 * @since 11.2.5 Routed through wp_authenticate() and rate limited.
 	 */
@@ -377,20 +380,27 @@ class QMNQuizManager {
 				set_transient( $key, $attempts + 1, $window );
 			}
 
-			// Credential errors always get the same message so this endpoint does
-			// not confirm whether an account exists. Errors raised by other
-			// plugins (lockouts, 2FA challenges) are passed through, since the
-			// user needs to see them to recover.
-			$generic_codes = array( 'invalid_username', 'invalid_email', 'incorrect_password', 'authentication_failed' );
-			$message       = in_array( $user->get_error_code(), $generic_codes, true )
-				? __( 'Incorrect username or password! Please try again.', 'quiz-master-next' )
-				: wp_kses_post( $user->get_error_message() );
+			// A plain wrong-credentials result is the one case this endpoint
+			// answers, and every such code gets the same message so it never
+			// confirms whether an account exists.
+			$credential_codes = array( 'invalid_username', 'invalid_email', 'incorrect_password', 'authentication_failed' );
 
-			if ( '' === trim( wp_strip_all_tags( $message ) ) ) {
-				$message = __( 'Incorrect username or password! Please try again.', 'quiz-master-next' );
+			if ( in_array( $user->get_error_code(), $credential_codes, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
 			}
 
-			wp_send_json_error( array( 'message' => $message ) );
+			// Anything else came from another plugin vetoing the attempt — a 2FA
+			// challenge, a lockout notice, a custom gate. Those flows are owned by
+			// wp-login.php (that is where the OTP field and the lockout screen
+			// live), so defer to it rather than dead-ending the user here on an
+			// error this form cannot resolve.
+			wp_send_json_error(
+				array(
+					'code'     => $user->get_error_code(),
+					'fallback' => true,
+					'message'  => __( 'Please complete your sign in.', 'quiz-master-next' ),
+				)
+			);
 		}
 
 		if ( '' !== $key ) {
