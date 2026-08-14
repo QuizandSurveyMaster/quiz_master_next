@@ -338,13 +338,23 @@ class QMNQuizManager {
 		}
 
 		/**
-		 * Filter how many failed pre-flight login checks a client IP may make
-		 * before this endpoint stops answering and defers to wp-login.php.
+		 * Filter how many pre-flight login checks a client IP may make before this
+		 * endpoint stops answering and defers to wp-login.php.
+		 *
+		 * Successful checks count too, so this is deliberately generous: several
+		 * people can share one IP behind a school or office NAT, and exhausting the
+		 * budget only costs them the inline error message, never the ability to log
+		 * in. The number does not have to be brute-force-proof on its own — running
+		 * out sends the client to wp-login.php, which is not a credential oracle.
+		 *
+		 * A limit of 0 blocks every pre-flight check (the endpoint always defers to
+		 * wp-login.php). To switch the throttle off, filter it to a very high
+		 * number rather than to 0.
 		 *
 		 * @since 11.2.5
-		 * @param int $limit Maximum failures per window.
+		 * @param int $limit Maximum checks per window.
 		 */
-		$limit = (int) apply_filters( 'qsm_login_attempt_limit', 5 );
+		$limit = max( 0, (int) apply_filters( 'qsm_login_attempt_limit', 20 ) );
 
 		/**
 		 * Filter the window, in seconds, over which failed pre-flight login
@@ -361,7 +371,7 @@ class QMNQuizManager {
 
 		// Out of attempts: answer nothing about the credentials and let the form
 		// post to wp-login.php, where core and any login hardening still apply.
-		if ( $limit > 0 && $attempts >= $limit ) {
+		if ( $attempts >= $limit ) {
 			wp_send_json_error(
 				array(
 					'code'     => 'too_many_attempts',
@@ -371,15 +381,21 @@ class QMNQuizManager {
 			);
 		}
 
+		// Count the attempt BEFORE authenticating, and never clear the counter on
+		// success. Counting afterwards would leave the slow password hash inside
+		// the read-modify-write window, so a burst of concurrent requests would
+		// all read the same count and spend one attempt between them; clearing on
+		// success would let anyone holding a single valid account (their own, on
+		// any site with open registration) reset the counter between guesses.
+		if ( '' !== $key ) {
+			set_transient( $key, $attempts + 1, $window );
+		}
+
 		// wp_authenticate() runs the `authenticate` filter chain and fires
 		// `wp_login_failed`, so login limiters and 2FA plugins are honoured.
 		$user = wp_authenticate( $username, $password );
 
 		if ( is_wp_error( $user ) ) {
-			if ( '' !== $key ) {
-				set_transient( $key, $attempts + 1, $window );
-			}
-
 			// A plain wrong-credentials result is the one case this endpoint
 			// answers, and every such code gets the same message so it never
 			// confirms whether an account exists.
@@ -401,10 +417,6 @@ class QMNQuizManager {
 					'message'  => __( 'Please complete your sign in.', 'quiz-master-next' ),
 				)
 			);
-		}
-
-		if ( '' !== $key ) {
-			delete_transient( $key );
 		}
 
 		wp_send_json_success();
