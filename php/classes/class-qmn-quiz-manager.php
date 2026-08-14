@@ -262,8 +262,59 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Resolve the client IP used to throttle failed login pre-flight checks.
+	 *
+	 * Only REMOTE_ADDR is trusted. Proxy headers such as X-Forwarded-For are
+	 * attacker-supplied and would let a single client reset the counter at will,
+	 * so sites behind a reverse proxy must supply the real IP through the
+	 * `qsm_login_client_ip` filter instead.
+	 *
+	 * @since 11.2.5
+	 * @return string The client IP, or an empty string when it cannot be resolved.
+	 */
+	private function qsm_login_client_ip() {
+		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+		/**
+		 * Filter the client IP used to throttle failed login pre-flight checks.
+		 *
+		 * @since 11.2.5
+		 * @param string $ip The IP resolved from REMOTE_ADDR.
+		 */
+		$ip = apply_filters( 'qsm_login_client_ip', $ip );
+
+		return is_string( $ip ) ? $ip : '';
+	}
+
+	/**
+	 * Transient key holding the failed pre-flight login count for a client IP.
+	 *
+	 * @since 11.2.5
+	 * @param  string $ip The client IP.
+	 * @return string The transient key, or an empty string when there is no IP to key on.
+	 */
+	private function qsm_login_attempts_key( $ip ) {
+		return '' === $ip ? '' : 'qsm_login_attempts_' . md5( $ip );
+	}
+
+	/**
 	 * @version 8.2.0
 	 * ajax login function
+	 *
+	 * This endpoint only pre-checks the submitted credentials so the quiz page can
+	 * show an inline error; the browser still submits the form to wp-login.php to
+	 * establish the session. Because it is reachable unauthenticated, it must not
+	 * become a credential oracle:
+	 *
+	 * - Authentication runs through wp_authenticate(), so the `authenticate` filter
+	 *   chain (login limiters, 2FA) can veto the attempt and `wp_login_failed`
+	 *   fires for plugins that count failures. Calling wp_check_password() directly
+	 *   bypassed all of that (CWE-307).
+	 * - Failures are throttled per client IP. Once the limit is reached the endpoint
+	 *   stops answering and tells the browser to submit the form to wp-login.php,
+	 *   which degrades to the normal WordPress login instead of denying service.
+	 *
+	 * @since 11.2.5 Routed through wp_authenticate() and rate limited.
 	 */
 	public function qsm_ajax_login() {
 		// Verify the nonce first.
@@ -283,14 +334,67 @@ class QMNQuizManager {
 			wp_send_json_error( array( 'message' => __( 'Please enter both a username and a password.', 'quiz-master-next' ) ) );
 		}
 
-		$user = get_user_by( 'login', $username );
+		/**
+		 * Filter how many failed pre-flight login checks a client IP may make
+		 * before this endpoint stops answering and defers to wp-login.php.
+		 *
+		 * @since 11.2.5
+		 * @param int $limit Maximum failures per window.
+		 */
+		$limit = (int) apply_filters( 'qsm_login_attempt_limit', 5 );
 
-		if ( ! $user ) {
-			$user = get_user_by( 'email', $username );
+		/**
+		 * Filter the window, in seconds, over which failed pre-flight login
+		 * checks are counted for a client IP.
+		 *
+		 * @since 11.2.5
+		 * @param int $window Window length in seconds.
+		 */
+		$window = (int) apply_filters( 'qsm_login_attempt_window', 15 * MINUTE_IN_SECONDS );
+
+		$ip       = $this->qsm_login_client_ip();
+		$key      = $this->qsm_login_attempts_key( $ip );
+		$attempts = '' === $key ? 0 : (int) get_transient( $key );
+
+		// Out of attempts: answer nothing about the credentials and let the form
+		// post to wp-login.php, where core and any login hardening still apply.
+		if ( $limit > 0 && $attempts >= $limit ) {
+			wp_send_json_error(
+				array(
+					'code'     => 'too_many_attempts',
+					'fallback' => true,
+					'message'  => __( 'Too many login attempts. Please wait a moment and try again.', 'quiz-master-next' ),
+				)
+			);
 		}
 
-		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user->ID ) ) {
-			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		// wp_authenticate() runs the `authenticate` filter chain and fires
+		// `wp_login_failed`, so login limiters and 2FA plugins are honoured.
+		$user = wp_authenticate( $username, $password );
+
+		if ( is_wp_error( $user ) ) {
+			if ( '' !== $key ) {
+				set_transient( $key, $attempts + 1, $window );
+			}
+
+			// Credential errors always get the same message so this endpoint does
+			// not confirm whether an account exists. Errors raised by other
+			// plugins (lockouts, 2FA challenges) are passed through, since the
+			// user needs to see them to recover.
+			$generic_codes = array( 'invalid_username', 'invalid_email', 'incorrect_password', 'authentication_failed' );
+			$message       = in_array( $user->get_error_code(), $generic_codes, true )
+				? __( 'Incorrect username or password! Please try again.', 'quiz-master-next' )
+				: wp_kses_post( $user->get_error_message() );
+
+			if ( '' === trim( wp_strip_all_tags( $message ) ) ) {
+				$message = __( 'Incorrect username or password! Please try again.', 'quiz-master-next' );
+			}
+
+			wp_send_json_error( array( 'message' => $message ) );
+		}
+
+		if ( '' !== $key ) {
+			delete_transient( $key );
 		}
 
 		wp_send_json_success();

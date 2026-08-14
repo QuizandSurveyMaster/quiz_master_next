@@ -57,11 +57,18 @@ jQuery(document).ready(function(){
 					nonce: nonce,
 				},
 				success: function (response) {
-					if ( response.success ) {
+					// A "fallback" error means the pre-flight check declined to
+					// answer (rate limited). Submit the form so wp-login.php
+					// handles the login normally instead of dead-ending here.
+					if ( response.success || ( response.data && response.data.fallback ) ) {
 						form.get(0).submit();
 					} else {
 						qsmShowLoginError(response.data.message);
 					}
+				},
+				error: function () {
+					// Never block a legitimate login on a failed pre-flight check.
+					form.get(0).submit();
 				}
 			});
 		}
