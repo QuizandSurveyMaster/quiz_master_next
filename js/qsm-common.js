@@ -61,7 +61,7 @@ jQuery(document).ready(function(){
 					// answer (rate limited, or a 2FA/lockout veto it cannot
 					// resolve). Submit the form so wp-login.php handles the login
 					// normally instead of dead-ending here.
-					if ( response && ( response.success || ( response.data && response.data.fallback ) ) ) {
+					if ( response?.success || response?.data?.fallback ) {
 						form.get(0).submit();
 						return;
 					}
@@ -71,7 +71,7 @@ jQuery(document).ready(function(){
 					// another tab — gets admin-ajax's bare "0" with HTTP 200.
 					// Anything we cannot read as an error goes to wp-login.php
 					// rather than leaving the submit button disabled forever.
-					if ( ! response || ! response.data || ! response.data.message ) {
+					if ( ! response?.data?.message ) {
 						form.get(0).submit();
 						return;
 					}
