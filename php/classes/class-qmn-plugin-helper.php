@@ -257,10 +257,13 @@ class QMNPluginHelper {
 		}
 		$user_str = '';
 		if ( in_array( 'author', (array) $user_role, true ) ) {
+			// Bind the id rather than interpolating it: the fragments below are
+			// spliced into the query through %1s/%2s/%3s, which substitute without
+			// quoting, so an unbound value here would reach SQL verbatim.
 			if ( $user_id && '' === $delete ) {
-				$user_str = "WHERE quiz_author_id = '$user_id'";
+				$user_str = $wpdb->prepare( 'WHERE quiz_author_id = %d', $user_id );
 			} elseif ( $user_id && '' !== $delete ) {
-				$user_str = " AND quiz_author_id = '$user_id'";
+				$user_str = $wpdb->prepare( ' AND quiz_author_id = %d', $user_id );
 			}
 		}
 		if ( '' !== $where && '' !== $user_str ) {
@@ -275,7 +278,13 @@ class QMNPluginHelper {
 		}
 		// Get quizzes and return them
 		$delete  = apply_filters( 'quiz_query_delete_clause', $delete );
-		$quizzes = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit ) ) );
+		// No stripslashes() here. It used to wrap this prepare() and removed the very
+		// backslashes prepare() had just added, so any quote inside $where or
+		// $user_str came back out unescaped -- an injection waiting for the first
+		// caller (this is a public method add-ons call) to pass request data through
+		// $where. The fragments are all built above from bound values or a fixed
+		// switch, so nothing needs unescaping.
+		$quizzes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit ) );
 		return $quizzes;
 	}
 

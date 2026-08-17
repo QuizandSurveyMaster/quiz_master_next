@@ -238,6 +238,25 @@ function mlw_options_text_tab_content() {
  */
 function qsm_get_question_text_message() {
 	global $mlwQuizMasterNext;
+
+	// This handler had no nonce and no capability check at all, so any logged-in
+	// user -- a Subscriber included -- could read quiz text settings through it.
+	// Pair it with the nonce its sibling save handler already uses.
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_save_text_message_nonce' ) ) {
+		echo wp_json_encode( array(
+			'success' => false,
+			'message' => __( 'Nonce verification failed.', 'quiz-master-next' ),
+		) );
+		exit;
+	}
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		echo wp_json_encode( array(
+			'success' => false,
+			'message' => __( 'You are not allowed to perform this action.', 'quiz-master-next' ),
+		) );
+		exit;
+	}
+
 	$text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
 	if ( '' === $text_id ) {
 		echo wp_json_encode( array(

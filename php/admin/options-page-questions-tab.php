@@ -1048,6 +1048,11 @@ function qsm_options_questions_tab_content() {
  * @return void
  */
 function qsm_ajax_unlink_question_from_list() {
+	// A nonce proves the request was not forged; it does not say the caller may
+	// edit quizzes at all. Per-question ownership is checked further down.
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You are not allowed to modify this question.', 'quiz-master-next' ) ), 403 );
+	}
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-unlink-question' ) ) {
 		wp_send_json_error(
 			array(
@@ -1104,6 +1109,14 @@ function qsm_user_can_modify_question_ids( $question_ids ) {
 	$quiz_ids       = $wpdb->get_col( $prepared_query );
 
 	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) ) {
+		return false;
+	}
+
+	// Fail closed on ids that resolved to nothing. An empty $quiz_ids used to skip
+	// the loop below and return true, so a request naming only unknown question
+	// ids was "authorized" -- the wrong default for a gate, even where there
+	// happens to be no row to act on.
+	if ( empty( $quiz_ids ) ) {
 		return false;
 	}
 
@@ -1315,28 +1328,19 @@ function qsm_send_data_sendy() {
 		die( 'Busted!' );
 	}
 
-	$sendy_url = 'http://sendy.expresstech.io';
+	// This posts a person's name and email to an external list, so it is an
+	// administrator action, not something any logged-in user may trigger.
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( __( 'You are not allowed to perform this action.', 'quiz-master-next' ), 403 );
+	}
+
+	// https: this carries a name and an email address, which must not travel in
+	// cleartext.
+	$sendy_url = 'https://sendy.expresstech.io';
 	$list      = '4v8zvoyXyTHSS80jeavOpg';
 	$name      = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$email     = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
-	// subscribe
-	$postdata = http_build_query(
-		array(
-			'name'    => $name,
-			'email'   => $email,
-			'list'    => $list,
-			'boolean' => 'true',
-		)
-	);
-	$opts     = array(
-		'http' => array(
-			'method'  => 'POST',
-			'header'  => 'Content-type: application/x-www-form-urlencoded',
-			'content' => $postdata,
-		),
-	);
-	$context  = stream_context_create( $opts );
 	$result   = wp_remote_post(
 		$sendy_url . '/subscribe',
 		array(
@@ -1359,7 +1363,10 @@ function qsm_send_data_sendy() {
 add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
 function qsm_dashboard_delete_result() {
 	$result_id = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
-	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) && $result_id && current_user_can( 'administrator' ) ) {
+	// 'administrator' is a ROLE, not a capability. current_user_can() only accepts
+	// it by accident (WP stores role names alongside caps), and it fails for
+	// multi-role users and for custom roles granted administrator-equivalent caps.
+	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wp_rest' ) && $result_id && current_user_can( 'manage_options' ) ) {
 		global $wpdb;
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_results',
