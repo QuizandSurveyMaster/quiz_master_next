@@ -337,6 +337,16 @@ class QSM_Abilities {
 	public function execute_list_quizzes( $input ) {
 		global $mlwQuizMasterNext;
 
+		// Scope the listing to the caller's own quizzes. permission_edit_quizzes()
+		// only proves the flat edit_qsm_quizzes capability, which every role from
+		// Contributor up holds, so without this the ability enumerates every quiz
+		// on the site. Constrained in SQL rather than after the fetch so LIMIT and
+		// OFFSET still describe the rows actually returned.
+		$access_where = $this->quiz_access_where();
+		if ( false === $access_where ) {
+			return array();
+		}
+
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(
 			false,
 			isset( $input['order_by'] ) ? sanitize_key( $input['order_by'] ) : 'quiz_id',
@@ -344,7 +354,8 @@ class QSM_Abilities {
 			array(),
 			'',
 			isset( $input['limit'] ) ? intval( $input['limit'] ) : '',
-			isset( $input['offset'] ) ? intval( $input['offset'] ) : ''
+			isset( $input['offset'] ) ? intval( $input['offset'] ) : '',
+			$access_where
 		);
 
 		$result = array();
@@ -370,6 +381,11 @@ class QSM_Abilities {
 	 */
 	public function execute_get_quiz( $input ) {
 		global $wpdb;
+
+		$access = $this->require_quiz_access( $input );
+		if ( is_wp_error( $access ) ) {
+			return $access;
+		}
 
 		$quiz = $wpdb->get_row(
 			$wpdb->prepare(
@@ -404,6 +420,11 @@ class QSM_Abilities {
 	 * @return array
 	 */
 	public function execute_list_questions( $input ) {
+		$access = $this->require_quiz_access( $input );
+		if ( is_wp_error( $access ) ) {
+			return $access;
+		}
+
 		return array_values( (array) QSM_Questions::load_questions( intval( $input['quiz_id'] ) ) );
 	}
 
@@ -415,6 +436,11 @@ class QSM_Abilities {
 	 * @return array|WP_Error
 	 */
 	public function execute_create_question( $input ) {
+		$access = $this->require_quiz_access( $input );
+		if ( is_wp_error( $access ) ) {
+			return $access;
+		}
+
 		$data = array(
 			'quiz_id' => intval( $input['quiz_id'] ),
 			'name'    => sanitize_text_field( $input['question_name'] ),
@@ -436,6 +462,71 @@ class QSM_Abilities {
 	// -------------------------------------------------------------------------
 	// Helpers
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Denies an ability that names a quiz the current user does not own.
+	 *
+	 * The abilities are registered with a permission_callback that receives no
+	 * input (see register_abilities()), so it can only ever prove the flat
+	 * edit_qsm_quizzes capability -- a capability every role from Contributor up
+	 * holds. It structurally cannot check the quiz_id the caller supplied, which
+	 * makes a per-object check inside each execute callback the only place the
+	 * ownership rule can live. Without it these abilities are the same IDOR class
+	 * as CVE-2026-14825 / CVE-2026-14826 on a newer surface.
+	 *
+	 * Ownership is resolved by qsm_current_user_can_edit_quiz(), the same helper
+	 * the REST write routes use, so the two surfaces cannot drift apart.
+	 *
+	 * @since  9.1.0
+	 * @param  array $input Validated input data, expected to carry quiz_id.
+	 * @return true|WP_Error True when access is allowed, WP_Error otherwise.
+	 */
+	protected function require_quiz_access( $input ) {
+		$quiz_id = isset( $input['quiz_id'] ) ? intval( $input['quiz_id'] ) : 0;
+
+		if ( $quiz_id > 0 && function_exists( 'qsm_current_user_can_edit_quiz' ) && qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+			return true;
+		}
+
+		// Fail closed: a missing quiz id, or a helper that could not be loaded, is
+		// a denial rather than a pass.
+		return new WP_Error(
+			'qsm_quiz_forbidden',
+			__( 'You are not allowed to access this quiz.', 'quiz-master-next' ),
+			array( 'status' => 403 )
+		);
+	}
+
+	/**
+	 * Builds the quiz listing restriction for the current user.
+	 *
+	 * Mirrors require_quiz_access() for the unscoped listing: users who may edit
+	 * other people's quizzes see everything, everyone else is limited to the
+	 * quizzes qsm_get_editable_quiz_ids() reports for them. Returning false means
+	 * "owns nothing", which the caller turns into an empty list.
+	 *
+	 * @since  9.1.0
+	 * @return string|false A SQL fragment for get_quizzes(), '' for no restriction,
+	 *                      or false when the user owns no quiz at all.
+	 */
+	protected function quiz_access_where() {
+		if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+			return '';
+		}
+
+		if ( ! function_exists( 'qsm_get_editable_quiz_ids' ) ) {
+			return false;
+		}
+
+		// Every id is cast to int by the helper, so the IN() list carries no
+		// caller-supplied text into the query.
+		$quiz_ids = array_filter( array_map( 'absint', qsm_get_editable_quiz_ids() ) );
+		if ( empty( $quiz_ids ) ) {
+			return false;
+		}
+
+		return 'quiz_id IN (' . implode( ',', $quiz_ids ) . ')';
+	}
 
 	/**
 	 * Builds the standard meta array for ability registration.
