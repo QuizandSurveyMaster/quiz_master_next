@@ -110,7 +110,11 @@ class QMNQuizManager {
 	 * @return void
 	 */
 	public function has_alter_table_issue_solved() {
-		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_check_db' ) || ! function_exists( 'is_admin' ) || ! is_admin() ) {
+		// is_admin() is TRUE for every admin-ajax.php request whatever the caller's
+		// role -- it reports the request context, not the user -- so it was never an
+		// authorization check here. This handler runs stored ALTER TABLE statements,
+		// which is an administrator action.
+		if ( empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_check_db' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error(
 				array(
 					'status'  => 'error',
@@ -156,7 +160,11 @@ class QMNQuizManager {
 	 */
 	public function process_action_failed_submission_table() {
 
-		if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! function_exists( 'is_admin' ) || ! is_admin() || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_failed_submission' ) ) {
+		// Same as has_alter_table_issue_solved(): is_admin() is true for every
+		// admin-ajax request and authorized nothing. The failed-submission screen
+		// this backs is registered under the delete_others_qsm_quizzes menu
+		// capability, so gate the handler on a real capability instead.
+		if ( empty( $_POST['post_id'] ) || empty( $_POST['quiz_action'] ) || ! current_user_can( 'manage_options' ) || empty( $_POST['qmnnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qmnnonce'] ) ), 'qmn_failed_submission' ) ) {
 			wp_send_json_error(
 				array(
 					'status'  => 'error',
@@ -1983,6 +1991,28 @@ class QMNQuizManager {
 			wp_die();
 		}
 
+		// "Require user login" was only ever enforced where the quiz is DISPLAYED
+		// (qmn_require_login_check, on the qmn_begin_shortcode filter), never here.
+		// This endpoint is registered for nopriv and its nonce can be minted by
+		// anyone through qsm_create_quiz_nonce, so a logged-out visitor could skip
+		// the page entirely and post results straight to a login-only quiz.
+		if ( ! empty( $options->require_log_in ) && 1 == $options->require_log_in && ! is_user_logged_in() ) {
+			$login_message = isset( $options->require_log_in_text ) && '' !== $options->require_log_in_text
+				? htmlspecialchars_decode( $options->require_log_in_text, ENT_QUOTES )
+				: __( 'You must be logged in to take this quiz.', 'quiz-master-next' );
+			$login_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $login_message, "quiz_require_log_in_text-{$options->quiz_id}" );
+			echo wp_json_encode(
+				array(
+					'display'       => $login_message,
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			wp_die();
+		}
+
 		$qsm_option                    = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 		$qsm_option                    = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr                       = $qsm_option['quiz_options']['scheduled_time_end'];
@@ -3659,7 +3689,25 @@ class QMNQuizManager {
 	 * @singce 8.1.7
 	 */
 	public function qsm_create_quiz_nonce() {
-		$quiz_id = ! empty( $_REQUEST['quiz_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['quiz_id'] ) ) : 0;
+		global $wpdb;
+
+		$quiz_id = ! empty( $_REQUEST['quiz_id'] ) ? intval( wp_unslash( $_REQUEST['quiz_id'] ) ) : 0;
+
+		// This endpoint exists so a full-page-cached quiz can still obtain a fresh
+		// submission nonce, which means it hands out a credential to anyone who
+		// asks. It must therefore refuse the quizzes the caller could not have
+		// reached through the page: a nonce minted here is the only thing
+		// ajax_submit_results() checks before it starts trusting the request.
+		$quiz = $quiz_id ? $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, deleted, require_log_in FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) ) : null;
+
+		if ( ! $quiz || ! empty( $quiz->deleted ) ) {
+			wp_send_json_error( array( 'message' => __( 'Quiz not found.', 'quiz-master-next' ) ) );
+		}
+
+		if ( ! empty( $quiz->require_log_in ) && 1 == $quiz->require_log_in && ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'You must be logged in to take this quiz.', 'quiz-master-next' ) ) );
+		}
+
 		wp_send_json_success(
 			array(
 				'nonce'      => wp_create_nonce( 'qsm_submit_quiz_' . $quiz_id ),
