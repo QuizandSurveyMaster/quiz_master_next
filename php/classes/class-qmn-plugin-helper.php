@@ -561,7 +561,7 @@ class QMNPluginHelper {
 						<?php
 					}
 				}
-				if ( $quiz_options->show_category_on_front ) {
+				if ( ! empty( $quiz_options->show_category_on_front ) ) {
 					$categories = QSM_Questions::get_question_categories( $question_id );
 					if ( ! empty( $categories['category_name'] ) ) {
 						$cat_name = implode( ',', $categories['category_name'] );
