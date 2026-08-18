@@ -1158,7 +1158,7 @@ class QSM_New_Pagination_Renderer {
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php } ?>
 						<?php
-						if ( $this->quiz_options->show_category_on_front ) {
+						if ( ! empty( $this->quiz_options->show_category_on_front ) ) {
 							$categories = QSM_Questions::get_question_categories( $question_id );
 							if ( ! empty( $categories['category_name'] ) ) {
 								$cat_name = implode( ',', $categories['category_name'] );
