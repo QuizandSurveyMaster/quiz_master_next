@@ -278,7 +278,21 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 					$post_status = 'publish' === $post_status;
 				}
 			}
-			return $post_status ? $qmnQuizManager->display_shortcode( $attributes ) : '';
+			if ( ! $post_status ) {
+				return '';
+			}
+
+			// Route through the new renderer when it is enabled, so a block renders the
+			// same markup as the [qsm] shortcode. Without this the block always used the
+			// legacy output, because the new renderer only replaces the shortcode handler.
+			if ( ! empty( $mlwQuizMasterNext ) && 1 === intval( $mlwQuizMasterNext->pluginHelper->qsm_is_new_render_enabled() ) && class_exists( 'QSM_New_Renderer' ) ) {
+				$new_renderer = QSM_New_Renderer::get_instance();
+				if ( $new_renderer ) {
+					return $new_renderer->render_quiz_shortcode( $attributes );
+				}
+			}
+
+			return $qmnQuizManager->display_shortcode( $attributes );
 		}
 
 		/**
