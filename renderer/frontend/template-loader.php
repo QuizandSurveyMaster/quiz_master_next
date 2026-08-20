@@ -83,23 +83,9 @@ function qsm_new_locate_template( $template_name ) {
 
 	$located = false;
 
-	// Look in the active child theme, then the parent theme, so a theme can override any template.
-	$theme_template = locate_template(
-		array(
-			$template_path . $template_name,
-			'qsm/templates/' . $template_name,
-			'qsm/new-frontend/' . $template_name,
-		)
-	);
-	if ( $theme_template ) {
-		$located = $theme_template;
-	}
-
 	// Look in QSM themes and addons (plugins that start with 'qsm')
-	if ( ! $located ) {
-		$located = qsm_locate_template_in_qsm_plugins( $template_name );
-	}
-
+	$located = qsm_locate_template_in_qsm_plugins( $template_name );
+	
 	// Look in plugin templates folder
 	if ( ! $located && file_exists( $default_path . $template_name ) ) {
 		$located = $default_path . $template_name;
