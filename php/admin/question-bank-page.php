@@ -1204,9 +1204,9 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
  * both the Questions tab and the front end. Without this the imported questions
  * exist in the question bank yet never appear in the quiz.
  *
- * A quiz with no `pages` yet is left alone on purpose: load_questions_by_pages()
- * falls back to every question owned by the quiz in that case, and writing a
- * layout here would hide any question that predates it.
+ * A quiz whose layout holds no question IDs is left alone on purpose:
+ * load_questions_by_pages() falls back to every question owned by the quiz in
+ * that case, and writing a layout here would hide any question that predates it.
  *
  * @since 11.2.4
  * @param int   $quiz_id      Quiz the questions were imported into.
@@ -1222,53 +1222,85 @@ function qsm_question_bank_attach_to_quiz_pages( $quiz_id, $question_ids ) {
 		return false;
 	}
 
-	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+	// prepare_quiz() returns false without switching quizzes when the row is
+	// gone, which would point every read and write below at whichever quiz was
+	// prepared last.
+	if ( ! $mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id ) ) {
+		return false;
+	}
 	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), 'admin' );
-	if ( ! is_array( $pages ) || empty( $pages ) ) {
+	if ( ! is_array( $pages ) ) {
 		return false;
 	}
 	$pages = array_values( $pages );
 
-	// Never list the same question twice — that is what produces duplicates in
-	// the editor after a re-import.
+	// Collect the IDs the layout already holds — both to dedupe against and to
+	// decide whether a layout exists at all.
 	$existing = array();
 	foreach ( $pages as $page_questions ) {
 		foreach ( (array) $page_questions as $existing_id ) {
 			$existing[] = intval( $existing_id );
 		}
 	}
+
+	// load_questions_by_pages() falls back to every question owned by the quiz
+	// when the layout contains NO IDs — not merely when `pages` is empty, since
+	// emptying a page by unlinking leaves array( array() ) behind. Writing a
+	// layout while that fallback is active would switch it off and hide every
+	// question outside this import, so leave the quiz alone.
+	if ( empty( $existing ) ) {
+		return false;
+	}
+
+	// Never list the same question twice — that is what produces duplicates in
+	// the editor after a re-import.
 	$new_ids = array_values( array_diff( $question_ids, $existing ) );
 	if ( empty( $new_ids ) ) {
 		return false;
 	}
 
-	// Append to the last page so an existing layout keeps its shape.
-	$last_page           = count( $pages ) - 1;
-	$pages[ $last_page ] = array_merge( array_values( (array) $pages[ $last_page ] ), $new_ids );
-
 	$qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array(), 'admin' );
 	$qpages = is_array( $qpages ) ? array_values( $qpages ) : array();
+
+	// Append to the last page so an existing layout keeps its shape — unless
+	// that page caps how many questions it renders ("Limit questions"), which
+	// would drop most of the import on the front end. Start a fresh page then.
+	$last_page  = count( $pages ) - 1;
+	$last_limit = isset( $qpages[ $last_page ]['question_limit'] ) ? intval( $qpages[ $last_page ]['question_limit'] ) : 0;
+	if ( $last_limit > 0 ) {
+		$pages[] = $new_ids;
+	} else {
+		$pages[ $last_page ] = array_merge( array_values( (array) $pages[ $last_page ] ), $new_ids );
+	}
+
 	foreach ( $pages as $page_key => $page_questions ) {
 		$qpage = isset( $qpages[ $page_key ] ) && is_array( $qpages[ $page_key ] ) ? $qpages[ $page_key ] : array();
 		$qpage = array_merge(
 			array(
 				'id'             => $page_key + 1,
 				'quizID'         => $quiz_id,
-				'pagekey'        => uniqid(),
+				'pagekey'        => '',
 				'hide_prevbtn'   => 0,
 				'question_limit' => 0,
 			),
 			$qpage
 		);
 		$qpage['id']         = $page_key + 1;
+		$qpage['pagekey']    = ! empty( $qpage['pagekey'] ) ? $qpage['pagekey'] : uniqid();
 		$qpage['questions']  = $page_questions;
 		$qpages[ $page_key ] = $qpage;
 	}
 	// Drop any qpage that no longer has a matching page, so the two stay 1:1.
 	$qpages = array_slice( $qpages, 0, count( $pages ) );
+
+	// `pages` is the authoritative list — the Questions tab rebuilds `qpages`
+	// from it on every render — so write it first and report on it. That way a
+	// failure on the second write cannot leave `qpages` listing questions that
+	// `pages` does not.
+	$updated = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 
-	return (bool) $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+	return (bool) $updated;
 }
 
 /**
