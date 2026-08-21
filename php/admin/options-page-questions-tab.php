@@ -138,16 +138,19 @@ function qsm_options_questions_tab_content() {
 	$question_types_categorized = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
 
 	// Display warning if using competing options.
-	$pagination = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' );
-	if ( 0 != $pagination ) {
+	// intval(): the stored value is a string, and a quiz that never had the
+	// option set holds '' — which PHP 8 no longer treats as equal to 0, so the
+	// warning showed on quizzes where the option is plainly off.
+	$pagination = intval( $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' ) );
+	if ( 0 !== $pagination ) {
 		?>
 		<div class="notice notice-warning">
 			<p><?php esc_html_e( 'This quiz has the "How many questions per page would you like?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?></p>
 		</div>
 		<?php
 	}
-	$from_total = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'question_from_total' );
-	if ( 0 != $from_total ) {
+	$from_total = intval( $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'question_from_total' ) );
+	if ( 0 !== $from_total ) {
 		?>
 		<div class="notice notice-warning">
 			<p><?php esc_html_e( 'This quiz has the "How many questions should be loaded for quiz?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?></p>

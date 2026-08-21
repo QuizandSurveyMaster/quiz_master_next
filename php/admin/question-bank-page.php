@@ -1169,6 +1169,13 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		}
 	}
 
+	// The rows above only set mlw_questions.quiz_id. The quiz editor and the
+	// front end both read a quiz's question list out of its `pages` setting
+	// (QSM_Questions::load_questions_by_pages()), so a quiz that already has a
+	// page layout would never show the questions we just imported. Add them to
+	// that layout here.
+	qsm_question_bank_attach_to_quiz_pages( $quiz_id, $imported_ids );
+
 	$total_questions = count( $questions );
 	/* translators: %d: number of imported questions */
 	$message = sprintf( _n( '%d question imported.', '%d questions imported.', $created, 'quiz-master-next' ), $created );
@@ -1187,6 +1194,79 @@ function qsm_question_bank_process_csv( $file_path, $quiz_id ) {
 		),
 		'imported_ids' => $imported_ids,
 	);
+}
+
+/**
+ * Adds freshly imported questions to the target quiz's page layout.
+ *
+ * Importing writes mlw_questions.quiz_id, but a quiz renders whatever is listed
+ * in its `pages` setting — see QSM_Questions::load_questions_by_pages(), used by
+ * both the Questions tab and the front end. Without this the imported questions
+ * exist in the question bank yet never appear in the quiz.
+ *
+ * A quiz with no `pages` yet is left alone on purpose: load_questions_by_pages()
+ * falls back to every question owned by the quiz in that case, and writing a
+ * layout here would hide any question that predates it.
+ *
+ * @since 11.2.4
+ * @param int   $quiz_id      Quiz the questions were imported into.
+ * @param array $question_ids Question IDs created by this import.
+ * @return bool True when the layout was updated.
+ */
+function qsm_question_bank_attach_to_quiz_pages( $quiz_id, $question_ids ) {
+	global $mlwQuizMasterNext;
+
+	$quiz_id      = intval( $quiz_id );
+	$question_ids = array_values( array_filter( array_map( 'intval', (array) $question_ids ) ) );
+	if ( $quiz_id < 1 || empty( $question_ids ) || ! isset( $mlwQuizMasterNext->pluginHelper ) ) {
+		return false;
+	}
+
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), 'admin' );
+	if ( ! is_array( $pages ) || empty( $pages ) ) {
+		return false;
+	}
+	$pages = array_values( $pages );
+
+	// Never list the same question twice — that is what produces duplicates in
+	// the editor after a re-import.
+	$existing = array();
+	foreach ( $pages as $page_questions ) {
+		foreach ( (array) $page_questions as $existing_id ) {
+			$existing[] = intval( $existing_id );
+		}
+	}
+	$new_ids = array_values( array_diff( $question_ids, $existing ) );
+	if ( empty( $new_ids ) ) {
+		return false;
+	}
+
+	// Append to the last page so an existing layout keeps its shape.
+	$last_page           = count( $pages ) - 1;
+	$pages[ $last_page ] = array_merge( array_values( (array) $pages[ $last_page ] ), $new_ids );
+
+	$qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array(), 'admin' );
+	$qpages = is_array( $qpages ) ? array_values( $qpages ) : array();
+	foreach ( $pages as $page_key => $page_questions ) {
+		$qpage = isset( $qpages[ $page_key ] ) && is_array( $qpages[ $page_key ] ) ? $qpages[ $page_key ] : array();
+		$qpage = array_merge(
+			array(
+				'id'             => $page_key + 1,
+				'quizID'         => $quiz_id,
+				'pagekey'        => uniqid(),
+				'hide_prevbtn'   => 0,
+				'question_limit' => 0,
+			),
+			$qpage
+		);
+		$qpage['id']         = $page_key + 1;
+		$qpage['questions']  = $page_questions;
+		$qpages[ $page_key ] = $qpage;
+	}
+	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
+
+	return (bool) $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 }
 
 /**
@@ -1286,6 +1366,10 @@ function qsm_question_bank_ensure_categories( $categories ) {
 function qsm_question_bank_initialize_question( $row, $header_map, $line ) {
 	$question_title       = qsm_question_bank_get_value( $row, $header_map, 'question_title' );
 	$question_description = qsm_question_bank_get_value( $row, $header_map, 'question_description', $question_title );
+	// Present-but-blank column: see the note in qsm_question_bank_build_flat_question().
+	if ( '' === $question_description ) {
+		$question_description = $question_title;
+	}
 	$categories_string    = qsm_question_bank_get_value( $row, $header_map, 'categories' );
 	$categories           = qsm_question_bank_parse_categories( $categories_string );
 
@@ -1394,6 +1478,13 @@ function qsm_question_bank_build_flat_question( $row, $header_map, $line ) {
 	}
 
 	$question_description = qsm_question_bank_get_value( $row, $header_map, 'description', $question_title );
+	// The default above only applies when the column is absent. A CSV that HAS
+	// a "description" column but leaves the cell blank would otherwise import a
+	// question whose question_name — the text the quiz actually renders — is
+	// empty, so fall back to the question text in that case too.
+	if ( '' === $question_description ) {
+		$question_description = $question_title;
+	}
 	$question_type        = qsm_question_bank_get_value( $row, $header_map, 'question_type', qsm_question_bank_get_value( $row, $header_map, 'question_type_new' ) );
 	$hint                 = qsm_question_bank_get_value( $row, $header_map, 'hint', qsm_question_bank_get_value( $row, $header_map, 'hints' ) );
 	$categories_string    = qsm_question_bank_get_value( $row, $header_map, 'category', qsm_question_bank_get_value( $row, $header_map, 'categories' ) );
