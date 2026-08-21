@@ -1264,6 +1264,8 @@ function qsm_question_bank_attach_to_quiz_pages( $quiz_id, $question_ids ) {
 		$qpage['questions']  = $page_questions;
 		$qpages[ $page_key ] = $qpage;
 	}
+	// Drop any qpage that no longer has a matching page, so the two stay 1:1.
+	$qpages = array_slice( $qpages, 0, count( $pages ) );
 	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 
 	return (bool) $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
