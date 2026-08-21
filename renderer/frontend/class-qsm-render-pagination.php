@@ -53,7 +53,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @var array
 	 */
-	private $qpages;
+	private $qpages = array();
 
 	/**
 	 * Per-page question limit, keyed by page position. 0 = show all.
@@ -187,6 +187,41 @@ class QSM_New_Pagination_Renderer {
 		
 		$this->load_questions();
 		$this->setup_pages();
+		$this->normalize_qpages();
+	}
+
+	/**
+	 * Make sure every page that gets rendered has a qpages entry.
+	 *
+	 * `pages` and `qpages` are separate quiz settings and can drift apart — a quiz
+	 * saved before qpages carried ids, or pages added through the qsm_display_pages
+	 * filter. The page markup falls back to the page position for data-pid (see
+	 * render_quiz_pages()), so such a page is rendered with a pid that has no entry
+	 * in the qpages payload handed to the front end, and JS reading its settings
+	 * (the page timer) reads them off undefined. Backfill a timer-less entry for
+	 * those pages so every rendered data-pid resolves.
+	 */
+	private function normalize_qpages() {
+		if ( ! is_array( $this->qpages ) ) {
+			$this->qpages = array();
+		}
+		// Auto pagination identifies its pages by data-apid, not data-pid.
+		if ( ! is_array( $this->pages ) || $this->quiz_options->pagination > 0 ) {
+			return;
+		}
+		foreach ( $this->pages as $index => $page ) {
+			// Same key, lookup and fallback the page markup uses.
+			$position = intval( $index ) + 1;
+			$qpage    = isset( $this->qpages[ $position ] ) ? $this->qpages[ $position ] : array();
+			$qpage_id = isset( $qpage['id'] ) ? $qpage['id'] : $position;
+			if ( ! isset( $this->qpages[ $qpage_id ] ) ) {
+				$this->qpages[ $qpage_id ] = array(
+					'id'               => $qpage_id,
+					'pagetimer'        => 0,
+					'pagetimer_second' => 0,
+				);
+			}
+		}
 	}
 
 	/**
@@ -1123,7 +1158,7 @@ class QSM_New_Pagination_Renderer {
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php } ?>
 						<?php
-						if ( $this->quiz_options->show_category_on_front ) {
+						if ( ! empty( $this->quiz_options->show_category_on_front ) ) {
 							$categories = QSM_Questions::get_question_categories( $question_id );
 							if ( ! empty( $categories['category_name'] ) ) {
 								$cat_name = implode( ',', $categories['category_name'] );

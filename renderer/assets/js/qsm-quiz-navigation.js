@@ -183,7 +183,9 @@ if (typeof window.qsmCheckMR !== 'function') {
                 // Show first page
                 this.showPage(quizId, quizObj.currentPage);
 
-                this.manageFocus(quizId);
+                // Prepare the page for keyboard focus, but do not move focus to it
+                // on load — that would scroll the browser down to the quiz.
+                this.manageFocus(quizId, false);
 
                 // Timer
                 let self = this;
@@ -1658,14 +1660,27 @@ if (typeof window.qsmCheckMR !== 'function') {
 
             /**
              * Manage focus for accessibility
+             *
+             * @param {number}  quizId
+             * @param {boolean} moveFocus Pass false to prepare the page for keyboard
+             *                            focus without actually moving focus to it.
              */
-            manageFocus: function(quizId) {
+            manageFocus: function(quizId, moveFocus) {
                 let quizData = this.quizObjects[quizId];
                 if (!quizData) return;
 
                 let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                
-                $currentPage.css('outline', 'none').attr('tabindex', '-1').focus();
+
+                $currentPage.css('outline', 'none').attr('tabindex', '-1');
+
+                // Only move focus for a user-initiated page change. Focusing the
+                // page on initial load makes the browser scroll it into view, so a
+                // page with the quiz below the fold jumps down as soon as it loads.
+                if (false === moveFocus) {
+                    return;
+                }
+
+                $currentPage.focus();
             },
 
             /**
