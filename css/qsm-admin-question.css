@@ -990,13 +990,20 @@ input.qsm-admin-select-page-question {
 }
 .qsm-default-question-settings-footer {
 	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	gap: 40px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 40px;
+    border-top: 1px solid var(--qsm-common-popup-border-color);
+    padding: 10px 20px !important;
 }
 #qsm-reset-default-question-settings {
 	color: #3c56d6;
 	text-decoration: none;
 	font-weight: 600;
 	cursor: pointer;
+}
+button#qsm-save-default-question-settings {
+    min-height: 32px;
+    line-height: 2.30769231;
+    padding: 0 12px;
 }

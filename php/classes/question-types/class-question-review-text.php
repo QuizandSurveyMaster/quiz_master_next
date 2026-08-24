@@ -20,7 +20,7 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
     public function set_answer_status() {
 		global $mlwQuizMasterNext;
 		$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'case_sensitive' );
-        $user_answer_value = $this->user_answer['input'];
+        $user_answer_value = $this->user_answer['input'] ?? '';
         $correct_answers   = $this->correct_answer;
         if ( 12 === intval( $this->question_type ) ) {
             $correct_answers = array_map( array( $this, 'formatDateAnswer' ), $correct_answers );
