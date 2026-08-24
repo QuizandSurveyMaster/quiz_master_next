@@ -118,7 +118,7 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 
-= 11.2.5 (August 21, 2026) =
+= 11.2.5 (August 24, 2026) =
 * Bug: Fixed missing page timer settings for pages without a qpages entry.
 * Bug: Fixed JavaScript errors when the questions-per-page setting is 0.
 * Bug: Fixed PHP warnings that occurred when duplicating or submitting a quiz.
