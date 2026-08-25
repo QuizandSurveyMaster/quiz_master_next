@@ -67,6 +67,13 @@ class QSMQuizApi {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'regenerate_api_key_nonce' ) ) {
 			wp_send_json_error( __('Invalid nonce.', 'quiz-master-next' ) );
 		}
+
+		// The key this mints unlocks every quiz and every stored result, so minting
+		// one is an administrator action. The nonce above only proves the request
+		// was not forged; it says nothing about the caller's role.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to regenerate the API key.', 'quiz-master-next' ), 403 );
+		}
 		$api_key = bin2hex(random_bytes(16));
 		$api_key = password_hash($api_key, PASSWORD_BCRYPT);
 		wp_send_json_success( $api_key );
@@ -85,13 +92,23 @@ class QSMQuizApi {
 		);
 
 		$qsm_api_settings = (array) get_option( 'qmn-settings' );
-		if ( ($api_key && "" != $api_key) && (isset($qsm_api_settings['api_key']) && ("" != $qsm_api_settings['api_key'] && $api_key == $qsm_api_settings['api_key'])) && (isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ]) ) {
+		$stored_key       = isset( $qsm_api_settings['api_key'] ) ? (string) $qsm_api_settings['api_key'] : '';
+		$api_key          = is_string( $api_key ) ? $api_key : '';
+
+		// These four routes are registered with permission_callback __return_true,
+		// so this comparison is the only thing standing between an anonymous
+		// request and every quiz and every stored result (names, emails, answers).
+		// hash_equals() compares in constant time, so the key cannot be recovered
+		// byte by byte from response timing, and it is type-safe where == was not.
+		$key_matches = '' !== $stored_key && '' !== $api_key && hash_equals( $stored_key, $api_key );
+
+		if ( $key_matches && ( isset($qsm_api_settings[ $type ]) && "1" == $qsm_api_settings[ $type ] ) ) {
 			$response['success'] = true;
-		} elseif ( ! isset($qsm_api_settings['api_key']) || "" == $qsm_api_settings['api_key'] ) {
+		} elseif ( '' === $stored_key ) {
 				$response['message'] = __('The API key is not configured.', 'quiz-master-next');
-			} elseif ( ! $api_key ) {
+			} elseif ( '' === $api_key ) {
 				$response['message'] = __('Please provide an API key.', 'quiz-master-next');
-			} elseif ( $api_key != $qsm_api_settings['api_key'] ) {
+			} elseif ( ! $key_matches ) {
 				$response['message'] = __('The provided API key is invalid. Please verify and try again.', 'quiz-master-next');
 			} elseif ( ! isset($qsm_api_settings[ $type ]) || "" == $qsm_api_settings[ $type ] ) {
 				$response['message'] = __('Admin does not allow process your request, please contact administrator.', 'quiz-master-next');
