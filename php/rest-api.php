@@ -221,16 +221,22 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			$migrated = true;
 		}
 
-		$search_sql = '';
+		// The search and type filters are optional, so they are built as a SQL
+		// fragment spliced into each query below. Keep the fragment as PLACEHOLDERS
+		// and carry its values in $search_args, so every query is prepared exactly
+		// once. Preparing the fragment separately and interpolating the result would
+		// feed already-substituted values back through prepare() a second time.
+		$search_sql  = '';
+		$search_args = array();
 		if ( ! empty( $search ) ) {
-			$search_sql .= $wpdb->prepare(
-				" AND (question_settings LIKE %s OR question_name LIKE %s)",
-				'%' . $wpdb->esc_like( $search ) . '%',
-				'%' . $wpdb->esc_like( $search ) . '%'
-			);
+			$search_sql   .= ' AND (question_settings LIKE %s OR question_name LIKE %s)';
+			$search_like   = '%' . $wpdb->esc_like( $search ) . '%';
+			$search_args[] = $search_like;
+			$search_args[] = $search_like;
 		}
 		if ( ! empty( $que_type ) ) {
-			$search_sql .= $wpdb->prepare( " AND question_type_new = %s", $que_type );
+			$search_sql   .= ' AND question_type_new = %s';
+			$search_args[] = $que_type;
 		}
 
 		$question_ids     = array();
@@ -249,12 +255,12 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 					$category_id_list = implode( ',', $question_ids );
 				}
 				$query = "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN ($category_id_list) AND quiz_id LIKE %s $search_sql$access_sql";
-				$query = $wpdb->prepare( $query, $quiz_filter );
+				$query = $wpdb->prepare( $query, array_merge( array( $quiz_filter ), $search_args ) );
 			} else {
-				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql", $category, $quiz_filter );
+				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql", array_merge( array( $category, $quiz_filter ), $search_args ) );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql", $quiz_filter );
+			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql", array_merge( array( $quiz_filter ), $search_args ) );
 		}
 		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
 		$total_count = isset( $total_count_query['total_question'] ) ? $total_count_query['total_question'] : 0;
@@ -275,13 +281,13 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				// applied the page OFFSET to every single-row query, so page 1 returned
 				// the whole category and every "Load more" page after it returned nothing.
 				$query     = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN ($category_id_list) AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d";
-				$questions = $wpdb->get_results( $wpdb->prepare( $query, $quiz_filter, $offset, $limit ), 'ARRAY_A' );
+				$questions = $wpdb->get_results( $wpdb->prepare( $query, array_merge( array( $quiz_filter ), $search_args, array( $offset, $limit ) ) ), 'ARRAY_A' );
 			} else {
-				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
+				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", array_merge( array( $category, $quiz_filter ), $search_args, array( $offset, $limit ) ) );
 				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", array_merge( array( $quiz_filter ), $search_args, array( $offset, $limit ) ) );
 			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 		}
 
