@@ -35,9 +35,9 @@ function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $
         }
         if ( isset($single_answer[2]) && 1 == $single_answer[2] && $is_answer_correct ) {
             $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answers_from_response ' . $image_class . '"' . qsm_answer_status_describedby( 'your-correct' ) . '>' . $show_user_answer . '</span>';
-        } elseif ( isset($single_answer[2]) && 1 === $single_answer[2] ) {
+        } elseif ( isset($single_answer[2]) && 1 === intval( $single_answer[2] ) ) {
             $question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '"' . qsm_answer_status_describedby( 'correct' ) . '>' . $show_user_answer . '</span>';
-        } elseif ( $is_answer_correct && 1 !== $single_answer[2] ) {
+        } elseif ( $is_answer_correct && 1 !== intval( $single_answer[2] ) ) {
             $question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>' . $show_user_answer . '</span>';
         } else {
             $question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
@@ -87,7 +87,7 @@ function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, 
             $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '"' . qsm_answer_status_describedby( 'your-correct' ) . '>' . $show_user_answer . '</span>';
         } elseif ( isset($single_answer[2]) && 1 == $single_answer[2] ) {
             $question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '"' . qsm_answer_status_describedby( 'correct' ) . '>' . $show_user_answer . '</span>';
-        } elseif ( $answer_value == $single_answer_option && 1 !== $single_answer[2] ) {
+        } elseif ( $answer_value == $single_answer_option && 1 !== intval( $single_answer[2] ) ) {
             $question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '"' . qsm_answer_status_describedby( 'your-incorrect' ) . '>' . $show_user_answer . '</span>';
         } else {
             $question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
