@@ -236,6 +236,57 @@ function mlw_options_text_tab_content() {
  * @global object $mlwQuizMasterNext
  * @since 7.0
  */
+/**
+ * Sends a JSON failure response for the text tab AJAX endpoints and stops.
+ *
+ * @since 11.2.5
+ * @param  string $message Human readable reason.
+ * @return void
+ */
+function qsm_text_tab_json_error( $message ) {
+	echo wp_json_encode(
+		array(
+			'success' => false,
+			'message' => $message,
+		)
+	);
+	exit;
+}
+
+/**
+ * Builds the "allowed variables" markup for one text tab setting.
+ *
+ * @since 11.2.5
+ * @param  array      $quiz_text_arr The registered quiz_text setting fields.
+ * @param  int|string $key           Index of the field within $quiz_text_arr.
+ * @return string HTML, or '' when the field is unknown.
+ */
+function qsm_text_tab_allowed_variables_html( $quiz_text_arr, $key ) {
+	if ( ! isset( $quiz_text_arr[ $key ] ) ) {
+		return '';
+	}
+
+	$variable_list = qsm_text_template_variable_list();
+	/**
+	 * Filter allowed variables for Text Tab options.
+	 */
+	$quiz_text_allowed_variables = apply_filters( 'qsm_text_allowed_variables', $quiz_text_arr[ $key ]['variables'], $key );
+
+	$allowed_text = '';
+	foreach ( $quiz_text_allowed_variables as $variable ) {
+		$allowed_text .= '<span class="qsm-text-template-span">';
+		$allowed_text .= '<button class="button button-default">' . $variable . '</button>';
+		if ( isset( $variable_list[ $variable ] ) ) {
+			$allowed_text .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+			$allowed_text .= '<span class="qsm-tooltips">' . $variable_list[ $variable ] . '</span>';
+			$allowed_text .= '</span>';
+		}
+		$allowed_text .= '</span>';
+	}
+
+	return $allowed_text;
+}
+
 function qsm_get_question_text_message() {
 	global $mlwQuizMasterNext;
 
@@ -243,58 +294,30 @@ function qsm_get_question_text_message() {
 	// user -- a Subscriber included -- could read quiz text settings through it.
 	// Pair it with the nonce its sibling save handler already uses.
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_save_text_message_nonce' ) ) {
-		echo wp_json_encode( array(
-			'success' => false,
-			'message' => __( 'Nonce verification failed.', 'quiz-master-next' ),
-		) );
-		exit;
+		qsm_text_tab_json_error( __( 'Nonce verification failed.', 'quiz-master-next' ) );
 	}
 	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
-		echo wp_json_encode( array(
-			'success' => false,
-			'message' => __( 'You are not allowed to perform this action.', 'quiz-master-next' ),
-		) );
-		exit;
+		qsm_text_tab_json_error( __( 'You are not allowed to perform this action.', 'quiz-master-next' ) );
 	}
 
 	$text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
 	if ( '' === $text_id ) {
-		echo wp_json_encode( array(
-			'success' => false,
-			'message' => __( 'Text id is missing.', 'quiz-master-next' ),
-		) );
-		exit;
-	} else {
-		$settings        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
-		$settings        = ! empty( $settings ) ? $settings : '';
-		$quiz_text_arr   = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
-		$key             = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
-		$allowed_text    = '';
-		if ( isset( $quiz_text_arr[ $key ] ) ) {
-			$variable_list               = qsm_text_template_variable_list();
-			/**
-			 * Filter allowed variables for Text Tab options.
-			 */
-			$quiz_text_allowed_variables = apply_filters( 'qsm_text_allowed_variables', $quiz_text_arr[ $key ]['variables'], $key );
-			foreach ( $quiz_text_allowed_variables as $variable ) {
-				$allowed_text    .= '<span class="qsm-text-template-span">';
-				$allowed_text    .= '<button class="button button-default">' . $variable . '</button>';
-				if ( isset( $variable_list[ $variable ] ) ) {
-					$allowed_text    .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
-					$allowed_text    .= '<span class="qsm-tooltips">' . $variable_list[ $variable ] . '</span>';
-					$allowed_text    .= '</span>';
-				}
-				$allowed_text .= '</span>';
-			}
-		}
-		$return = array(
-			'text_message'          => $settings,
-			'allowed_variable_text' => $allowed_text,
-			'success'               => true,
-		);
-		echo wp_json_encode( $return );
-		exit;
+		qsm_text_tab_json_error( __( 'Text id is missing.', 'quiz-master-next' ) );
 	}
+
+	$settings      = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
+	$settings      = ! empty( $settings ) ? $settings : '';
+	$quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
+	$key           = array_search( $text_id, array_column( $quiz_text_arr, 'id' ), true );
+
+	echo wp_json_encode(
+		array(
+			'text_message'          => $settings,
+			'allowed_variable_text' => qsm_text_tab_allowed_variables_html( $quiz_text_arr, $key ),
+			'success'               => true,
+		)
+	);
+	exit;
 }
 
 add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_message' );

@@ -284,8 +284,7 @@ class QMNPluginHelper {
 		// caller (this is a public method add-ons call) to pass request data through
 		// $where. The fragments are all built above from bound values or a fixed
 		// switch, so nothing needs unescaping.
-		$quizzes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit ) );
-		return $quizzes;
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit ) );
 	}
 
 	/**
