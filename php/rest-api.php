@@ -274,14 +274,23 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				// One page of the category, not one query per question. The old loop
 				// applied the page OFFSET to every single-row query, so page 1 returned
 				// the whole category and every "Load more" page after it returned nothing.
-				$query     = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN ($category_id_list) AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d";
+				//
+				// question_id is a tiebreaker, not decoration: question_order is scoped
+				// per quiz while the bank spans every quiz, so the column is massively
+				// tied (measured on qsm-main: 592 of 686 bank rows share
+				// question_order = 1, across 97 quizzes). Ordering on a non-unique
+				// column alone leaves row order inside the tie group unspecified, and
+				// LIMIT/OFFSET then slices that unstable order -- so "Load more" would
+				// duplicate and omit questions, the same class of paging bug this
+				// function is being fixed for.
+				$query     = "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN ($category_id_list) AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC, question_id ASC LIMIT %d, %d";
 				$questions = $wpdb->get_results( $wpdb->prepare( $query, $quiz_filter, $offset, $limit ), 'ARRAY_A' );
 			} else {
-				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
+				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC, question_id ASC LIMIT %d, %d", $category, $quiz_filter, $offset, $limit );
 				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND quiz_id LIKE %s $search_sql$access_sql ORDER BY question_order ASC, question_id ASC LIMIT %d, %d", $quiz_filter, $offset, $limit );
 			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 		}
 
