@@ -291,7 +291,7 @@ function qsmShouldSuppressCreationAlerts() {
             jQuery(this).parent().addClass('currentli_general');
             jQuery('#' + text_id).show();
             jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
-            jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
+            jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, nonce: jQuery('#qsm_save_text_message_nonce').val(), action: 'qsm_get_question_text_message' }, function (response) {
                 var data = jQuery.parseJSON(response);
                 if (data.success === true) {
                     var text_msg = data.text_message;
@@ -317,7 +317,7 @@ function qsmShouldSuppressCreationAlerts() {
 			jQuery(this).parent().addClass('currentli_variable');
 			jQuery('#' + text_id).show();
 			jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
-			jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message' }, function (response) {
+			jQuery.post(ajaxurl, { text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, nonce: jQuery('#qsm_save_text_message_nonce').val(), action: 'qsm_get_question_text_message' }, function (response) {
 				var data = jQuery.parseJSON(response);
 				if (data.success === true) {
 					var text_msg = data.text_message;

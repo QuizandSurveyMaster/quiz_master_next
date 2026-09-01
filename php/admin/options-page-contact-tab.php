@@ -293,6 +293,9 @@ function qsm_contact_form_admin_ajax() {
 add_action( 'wp_ajax_qsm_show_disabled_contact_fields', 'qsm_show_disabled_contact_fields' );
 function qsm_show_disabled_contact_fields() {
 	global $wpdb, $mlwQuizMasterNext;
+	if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You are not allowed to perform this action.', 'quiz-master-next' ) ), 403 );
+	}
 	$user_id = get_current_user_id();
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 	if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) && isset( $_POST['show'] ) ) {
