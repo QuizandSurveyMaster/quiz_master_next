@@ -531,8 +531,9 @@ class QMNQuizManager {
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 				}
 
-				$result_id      = $result['result_id'];
-				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
+				// Hand the TOKEN on, not the primary key: the inner shortcode has to be able to
+				// tell a validated share link from a guessed id.
+				$return_display = do_shortcode( '[qsm_result unique_id="' . esc_attr( $result_unique_id ) . '"]' );
 				$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 			} else {
 				$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
@@ -737,20 +738,59 @@ class QMNQuizManager {
 
 		$args = shortcode_atts(
 			array(
-				'id' => 0,
+				'id'        => 0,
+				'unique_id' => '',
 			),
 			$atts
 		);
 
-		$id = intval( $args['id'] );
+		global $mlwQuizMasterNext;
+		global $wpdb;
+
+		/*
+		 * The `id` attribute is author-supplied: it only ever reaches us from page
+		 * content, or from an internal caller that has already validated a share token.
+		 * It stays trusted.
+		 *
+		 * `?result_id=` in the URL is not. It is ALWAYS resolved as the unguessable
+		 * `unique_id` share token, never as the sequential mlw_results primary key.
+		 * Looking it up by primary key let an unauthenticated visitor walk
+		 * ?result_id=1,2,3... and read every stored result, including the submitter's
+		 * name, email, phone and IP address.
+		 */
+		$id             = intval( $args['id'] );
+		$token          = sanitize_text_field( $args['unique_id'] );
+		$trusted_source = ( $id > 0 );
 
 		ob_start();
-		if ( 0 === $id ) {
-			$id = (int) isset( $_GET['result_id'] ) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : 0;
+
+		if ( 0 === $id && '' === $token && isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
+			$token = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 		}
-		if ( $id && is_numeric( $id ) ) {
-			global $mlwQuizMasterNext;
-			global $wpdb;
+
+		if ( '' !== $token ) {
+			$id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s LIMIT 1",
+					$token
+				)
+			);
+
+			if ( $id > 0 ) {
+				$trusted_source = true;
+			} elseif ( is_numeric( $token ) && apply_filters( 'qsm_allow_numeric_result_id', false, $token ) ) {
+				/*
+				 * Transition escape hatch for sites that published numeric result links
+				 * before this was tightened. Off by default and deliberately filter-only,
+				 * with no UI setting, because switching it on restores the old behaviour
+				 * in full: sequential ids become guessable again on that site.
+				 */
+				$id             = intval( $token );
+				$trusted_source = true;
+			}
+		}
+
+		if ( $id ) {
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
 				$current_user_id = get_current_user_id();
@@ -764,7 +804,22 @@ class QMNQuizManager {
 				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
 				$qmn_settings           = (array) get_option( 'qmn-settings' );
 				$result_link_visibility = ! empty( $qmn_settings['result_link_visibility'] ) ? $qmn_settings['result_link_visibility'] : 0;
-				if ( ! $can_view_result && $result_link_visibility ) {
+
+				/*
+				 * A valid share token -- or an id an editor placed in page content -- is itself
+				 * the authorization to view this result. That is what the sharing feature is
+				 * for. Result Link Visibility stays the strict mode layered on top: with it on,
+				 * even a valid share link requires an owner or a capability holder.
+				 *
+				 * Granting explicitly, rather than making the deny conditional, is what stops
+				 * this failing open: before, an unauthorized viewer simply fell through to the
+				 * render whenever the setting was off, which is the default.
+				 */
+				if ( ! $can_view_result && $trusted_source && ! $result_link_visibility ) {
+					$can_view_result = true;
+				}
+
+				if ( ! $can_view_result ) {
 					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
 					$content = ob_get_clean();
 					return $content;
