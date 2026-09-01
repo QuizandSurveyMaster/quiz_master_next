@@ -239,8 +239,9 @@ class QSM_New_Renderer {
 				wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 			}
 
-			$result_id      = $result['result_id'];
-			$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
+			// Hand the TOKEN on, not the primary key: the inner shortcode has to be able to
+			// tell a validated share link from a guessed id.
+			$return_display = do_shortcode( '[qsm_result unique_id="' . esc_attr( $result_unique_id ) . '"]' );
 			$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 		} else {
 			$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
