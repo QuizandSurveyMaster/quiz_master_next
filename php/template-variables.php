@@ -1626,11 +1626,17 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			// unpublished, or taken off every page. Its options cannot be listed any
 			// more, but what the user answered is stored on the result itself, so show
 			// that rather than leaving the question with an empty answer.
-			$stored_answer = isset( $answer[1] ) ? (string) $answer[1] : '';
-			if ( '' === trim( str_replace( ',', '', wp_strip_all_tags( $stored_answer ) ) ) && isset( $quiz_options->no_answer_text ) ) {
-				$stored_answer = $quiz_options->no_answer_text;
+			$stored_answer  = isset( $answer[1] ) ? (string) $answer[1] : '';
+			$file_extension = substr( $stored_answer, -4 );
+			if ( isset( $answer['question_type'] ) && 11 == $answer['question_type'] && in_array( $file_extension, array( '.jpg', 'jpeg', '.png', '.gif' ), true ) ) {
+				// An uploaded image is still an image, so keep showing it as one.
+				$question_with_answer_text .= $open_span_tag . '<img src="' . esc_url( $stored_answer ) . '"/></span>';
+			} else {
+				if ( '' === trim( str_replace( ',', '', wp_strip_all_tags( $stored_answer ) ) ) && isset( $quiz_options->no_answer_text ) ) {
+					$stored_answer = $quiz_options->no_answer_text;
+				}
+				$question_with_answer_text .= $open_span_tag . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $stored_answer, ENT_QUOTES ) ) ) . '</span>';
 			}
-			$question_with_answer_text .= $open_span_tag . preg_replace( "/[\n\r]+/", '', nl2br( htmlspecialchars_decode( $stored_answer, ENT_QUOTES ) ) ) . '</span>';
 		}
 		$mlw_question_answer_display = str_replace( '%USER_ANSWERS_DEFAULT%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
