@@ -90,17 +90,37 @@ function qsm_generate_results_details_tab() {
     }
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );
-	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+	// False when the quiz was deleted from the database. The result itself still holds
+	// everything needed to display it, only the per quiz settings are unavailable.
+	$quiz_loaded = $mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
     $quiz_post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d", $quiz_id ) );
     $post_author = get_post_field( 'post_author', $quiz_post_id, true );
-    if ( ( ! current_user_can( 'view_qsm_quiz_result' ) || intval($post_author) != get_current_user_id()) && ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
+    // The quiz can be gone while the result is not, in which case there is no author
+    // to compare against and only a user who may see other people's quizzes can view it.
+    $quiz_exists = ! empty( $quiz_post_id );
+    if ( ( ! current_user_can( 'view_qsm_quiz_result' ) || ! $quiz_exists || intval($post_author) != get_current_user_id()) && ! current_user_can( 'delete_others_qsm_quizzes' ) ) {
+        $resultpage_link = admin_url('admin.php?page=mlw_quiz_results');
+        ?>
+        <div id="qsm-dashboard-error-container">
+            <div class="qsm-dashboard-error-content">
+                <h3><?php esc_html_e('Quiz Result Not Available', 'quiz-master-next'); ?></h3>
+                <p><?php esc_html_e('You do not have permission to view this quiz result.', 'quiz-master-next'); ?></p>
+                <a href="<?php echo esc_url($resultpage_link); ?>" class="qsm-dashboard-error-btn">
+                    <?php esc_html_e('Back to All Results', 'quiz-master-next'); ?>
+                </a>
+            </div>
+        </div>
+        <?php
         return;
     }
 
     //Get the data for comments
     $quiz_options = $mlwQuizMasterNext->quiz_settings->get_setting( 'quiz_options');
-    $comments_enabled = $quiz_options['comment_section'];
+    // get_setting() returns false when the quiz no longer exists, so the per quiz
+    // options fall back to their defaults instead of being read off a boolean.
+    $quiz_options = is_array( $quiz_options ) ? $quiz_options : array();
+    $comments_enabled = isset( $quiz_options['comment_section'] ) ? $quiz_options['comment_section'] : '';
 
     $previous_results = $wpdb->get_var( $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id < %d)",  $result_id));
     $next_results     = $wpdb->get_var( $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > %d)", $result_id));
@@ -111,6 +131,9 @@ function qsm_generate_results_details_tab() {
 		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 		wp_add_inline_script( 'math_jax', $mlwQuizMasterNext::$default_MathJax_script, 'before' );
 	}
+    if ( ! $quiz_loaded ) {
+        echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'The quiz this result belongs to has been deleted. The stored result is shown below, without the quiz specific settings.', 'quiz-master-next' ) . '</p></div>';
+    }
     echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
     echo '<h3 class="result-page-title">'.esc_html__('Quiz Result','quiz-master-next').' - '. esc_html( $results_data->quiz_name ) .'</h3>';
     do_action( 'qsm_above_admin_results' );

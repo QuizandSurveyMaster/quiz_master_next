@@ -362,6 +362,15 @@ class QSM_Results_Pages {
 
 		global $wpdb;
 		$results = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+
+		// The quiz itself can be gone while its results are still viewable, e.g. after
+		// it was deleted from the database. There is no results page to load then, and
+		// returning no pages lets generate_pages() fall back to its own default so the
+		// questions and answers still render.
+		if ( is_null( $results ) ) {
+			return $pages;
+		}
+
 		$results = maybe_unserialize( $results );
 
 		// Checks if the results is an array.
@@ -401,6 +410,12 @@ class QSM_Results_Pages {
 		global $wpdb;
 		global $mlwQuizMasterNext;
 		$data      = $wpdb->get_row( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+
+		// Nothing to convert, and nothing to write back, when the quiz no longer exists.
+		if ( empty( $data ) ) {
+			return $pages;
+		}
+
 		$system    = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		$old_pages = maybe_unserialize( $data['message_after'] );
 
