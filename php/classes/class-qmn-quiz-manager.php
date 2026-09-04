@@ -503,17 +503,27 @@ class QMNQuizManager {
 		$question_amount = intval( $shortcode_args['question_amount'] );
 
 		// Check, if quiz is setup properly.
-		$has_proper_quiz = $mlwQuizMasterNext->pluginHelper->has_proper_quiz( $quiz );
-		if ( false === $has_proper_quiz['res'] ) {
+		$has_proper_quiz  = $mlwQuizMasterNext->pluginHelper->has_proper_quiz( $quiz );
+		$is_proper_quiz   = ( false !== $has_proper_quiz['res'] );
+		$showing_result   = ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] );
+
+		// A stored result stays viewable after its quiz was deleted from the database,
+		// so only stop here when the quiz is still there to say something about itself,
+		// e.g. a quiz that was moved to the trash keeps reporting that.
+		$quiz_row_exists = true;
+		if ( ! $is_proper_quiz && $showing_result ) {
+			$quiz_row_exists = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d LIMIT 1", $quiz ) );
+		}
+		if ( ! $is_proper_quiz && ( ! $showing_result || $quiz_row_exists ) ) {
 			return $has_proper_quiz['message'];
 		}
 
-		$qmn_quiz_options = $has_proper_quiz['qmn_quiz_options'];
+		$qmn_quiz_options = $is_proper_quiz ? $has_proper_quiz['qmn_quiz_options'] : null;
 		$qmn_quiz_options = apply_filters( 'qsm_quiz_option_before', $qmn_quiz_options );
 		$return_display   = '';
 
 		ob_start();
-		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
+		if ( $showing_result ) {
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			$result           = $wpdb->get_row( $wpdb->prepare( "SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id ), ARRAY_A );
 			if ( ! empty( $result ) && isset( $result['result_id'] ) ) {

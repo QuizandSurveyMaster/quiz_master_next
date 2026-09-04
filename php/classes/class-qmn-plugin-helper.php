@@ -1124,8 +1124,10 @@ class QMNPluginHelper {
 	public function convert_to_preferred_date_format( $qsm_qna_array ) {
 		global $mlwQuizMasterNext;
 		$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-		$qsm_quiz_settings   = maybe_unserialize( $quiz_options->quiz_settings );
-		$qsm_quiz_options    = maybe_unserialize( $qsm_quiz_settings['quiz_options'] );
+		// The quiz may no longer exist, e.g. when viewing a result whose quiz was
+		// deleted from the database, so fall back to the plugin/WordPress format.
+		$qsm_quiz_settings   = isset( $quiz_options->quiz_settings ) ? maybe_unserialize( $quiz_options->quiz_settings ) : array();
+		$qsm_quiz_options    = isset( $qsm_quiz_settings['quiz_options'] ) ? maybe_unserialize( $qsm_quiz_settings['quiz_options'] ) : array();
 		$qsm_global_settings = get_option( 'qsm-quiz-settings' );
 		// check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
 		if ( isset( $qsm_quiz_options['preferred_date_format'] ) ) {
