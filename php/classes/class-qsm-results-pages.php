@@ -361,17 +361,18 @@ class QSM_Results_Pages {
 		}
 
 		global $wpdb;
-		$results = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		$quiz = $wpdb->get_row( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 
 		// The quiz itself can be gone while its results are still viewable, e.g. after
 		// it was deleted from the database. There is no results page to load then, and
 		// returning no pages lets generate_pages() fall back to its own default so the
-		// questions and answers still render.
-		if ( is_null( $results ) ) {
+		// questions and answers still render. The row is what is tested, not the column:
+		// message_after is nullable on installs that went through the 7.3.11 upgrade.
+		if ( is_null( $quiz ) ) {
 			return $pages;
 		}
 
-		$results = maybe_unserialize( $results );
+		$results = maybe_unserialize( $quiz['message_after'] );
 
 		// Checks if the results is an array.
 		if ( is_array( $results ) ) {

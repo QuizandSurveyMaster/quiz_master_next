@@ -507,9 +507,14 @@ class QMNQuizManager {
 		$is_proper_quiz   = ( false !== $has_proper_quiz['res'] );
 		$showing_result   = ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] );
 
-		// A stored result stays viewable after its quiz was deleted, so only stop here
-		// when the quiz is needed to take the quiz itself.
-		if ( ! $is_proper_quiz && ! $showing_result ) {
+		// A stored result stays viewable after its quiz was deleted from the database,
+		// so only stop here when the quiz is still there to say something about itself,
+		// e.g. a quiz that was moved to the trash keeps reporting that.
+		$quiz_row_exists = true;
+		if ( ! $is_proper_quiz && $showing_result ) {
+			$quiz_row_exists = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d LIMIT 1", $quiz ) );
+		}
+		if ( ! $is_proper_quiz && ( ! $showing_result || $quiz_row_exists ) ) {
 			return $has_proper_quiz['message'];
 		}
 
@@ -539,8 +544,6 @@ class QMNQuizManager {
 				$result_id      = $result['result_id'];
 				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
 				$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
-			} elseif ( ! $is_proper_quiz ) {
-				$return_display = $has_proper_quiz['message'];
 			} else {
 				$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
 			}
