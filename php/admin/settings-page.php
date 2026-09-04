@@ -214,6 +214,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'auto-delete-results', __( 'Auto delete results after (days)', 'quiz-master-next' ), array( $this, 'auto_delete_results_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'enable-preloader', __( 'Enable preloader', 'quiz-master-next' ), array( $this, 'qsm_enable_preloader' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -770,6 +771,19 @@ class QMNGlobalSettingsPage {
 		echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="qsm-switch-slider round"></span></label>';
 		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+	}
+
+	/**
+	 * Generates Setting Field For Auto Deleting Old Results
+	 *
+	 * @since 11.2.6
+	 * @return void
+	 */
+	public function auto_delete_results_field() {
+		$settings = (array) get_option( 'qmn-settings' );
+		$days     = isset( $settings['auto_delete_results_days'] ) ? intval( $settings['auto_delete_results_days'] ) : 0;
+		echo '<input type="number" min="0" step="1" name="qmn-settings[auto_delete_results_days]" id="qmn-settings[auto_delete_results_days]" value="' . esc_attr( $days ) . '" />';
+		echo "<span class='global-sub-text' for='qmn-settings[auto_delete_results_days]'>" . esc_html__( 'Results older than this many days are permanently deleted once a day. Set 0 to keep results forever.', 'quiz-master-next' ) . '</span>';
 	}
 
 		/**
