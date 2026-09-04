@@ -104,10 +104,19 @@ class QSM_Results_Cleanup {
 			return 0;
 		}
 
+		// `time_taken_real` is stored as gmdate() of a site local time string, so on
+		// current installs it holds the site local wall clock. Results saved by much
+		// older versions cannot be assumed to follow that, so the cut off is anchored
+		// on whichever `now` is earlier. Deletion is permanent and a result is only
+		// removed once it is past the retention period under both readings.
+		$now_local = current_time( 'mysql' );
+		$now_gmt   = current_time( 'mysql', true );
+		$now       = $now_gmt < $now_local ? $now_gmt : $now_local;
+
 		$result_ids = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE time_taken_real <> '0000-00-00 00:00:00' AND time_taken_real < DATE_SUB( %s, INTERVAL %d DAY ) LIMIT %d",
-				current_time( 'mysql' ),
+				$now,
 				$days,
 				$batch_size
 			)
@@ -120,8 +129,14 @@ class QSM_Results_Cleanup {
 		$result_ids   = array_map( 'absint', $result_ids );
 		$placeholders = implode( ',', array_fill( 0, count( $result_ids ), '%d' ) );
 
-		// The child rows are removed first so nothing is orphaned on installs
-		// where the foreign keys could not be created.
+		// The result itself goes first: the foreign keys are added best effort by
+		// QSM_Install, so on an install that has them the child rows cascade away,
+		// and if the run is interrupted what is left behind is unreachable rows
+		// rather than a result with its answers already gone.
+		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}mlw_results WHERE result_id IN ( $placeholders )", $result_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$deleted = intval( $deleted );
+
+		// Removes the child rows on installs where the foreign keys are missing.
 		foreach ( array( 'qsm_results_questions', 'qsm_results_meta' ) as $child_table ) {
 			$table = $wpdb->prefix . $child_table;
 			if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
@@ -129,9 +144,6 @@ class QSM_Results_Cleanup {
 			}
 			$wpdb->query( $wpdb->prepare( "DELETE FROM `$table` WHERE result_id IN ( $placeholders )", $result_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
-
-		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}mlw_results WHERE result_id IN ( $placeholders )", $result_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$deleted = intval( $deleted );
 
 		if ( $deleted > 0 && isset( $mlwQuizMasterNext->log_manager ) ) {
 			$mlwQuizMasterNext->log_manager->add(
