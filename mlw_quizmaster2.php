@@ -314,6 +314,8 @@ class MLWQuizMasterNext {
 			include_once 'php/gdpr.php';
 		}
 		include_once 'php/classes/class-qsm-questions.php';
+		include_once 'php/classes/class-qsm-results-cleanup.php';
+		QSM_Results_Cleanup::init();
 		include_once 'php/classes/class-qsm-contact-manager.php';
 		include_once 'php/classes/class-qsm-results-pages.php';
 		include_once 'php/classes/class-qsm-emails.php';
@@ -1452,6 +1454,7 @@ $mlwQuizMasterNext = new MLWQuizMasterNext();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
 register_activation_hook( __FILE__, array( 'QSM_Embed', 'on_activation' ) );
 register_deactivation_hook( __FILE__, array( 'QSM_Embed', 'on_deactivation' ) );
+register_deactivation_hook( __FILE__, array( 'QSM_Results_Cleanup', 'on_deactivation' ) );
 
 /**
  * Displays QSM Admin bar menu
