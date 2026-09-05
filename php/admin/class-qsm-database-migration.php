@@ -47,11 +47,12 @@ class QSM_Database_Migration {
     }
 
     function create_migration_tables() {
-        
-        $charset_collate = $this->wpdb->get_charset_collate();
-        $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
-        $results_questions = $this->wpdb->prefix . 'qsm_results_questions';
-        if ( $this->wpdb->get_var( "SHOW TABLES LIKE '{$results_questions}'" ) != $results_questions ) {
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+        $mlw_results_table = $wpdb->prefix . 'mlw_results';
+        $results_questions = $wpdb->prefix . 'qsm_results_questions';
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $results_questions ) ) ) != $results_questions ) {
             $sql_results_answers = "CREATE TABLE {$results_questions} (
                 `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `result_id` MEDIUMINT(9) NOT NULL,
@@ -89,9 +90,9 @@ class QSM_Database_Migration {
         }
 
         // Ensure results meta table
-        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
-        if ( $this->wpdb->get_var( "SHOW TABLES LIKE '{$results_meta_table}'" ) != $results_meta_table ) {
-            $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( $results_meta_table ) ) ) != $results_meta_table ) {
+            $mlw_results_table = $wpdb->prefix . 'mlw_results';
             $sql_results_meta = "CREATE TABLE {$results_meta_table} (
                 `meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `result_id` MEDIUMINT(9) NOT NULL,
@@ -136,21 +137,23 @@ class QSM_Database_Migration {
      * Helper to add an index only if it doesn't exist.
      */
     private function maybe_add_index( $table, $index_name, $sql ) {
-        $exists = $this->wpdb->get_var(
-            $this->wpdb->prepare(
+        global $wpdb;
+        $exists = $wpdb->get_var(
+            $wpdb->prepare(
                 "SELECT COUNT(1) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = %s AND index_name = %s",
                 $table, $index_name
             )
         );
 
         if ( ! $exists ) {
-            $this->wpdb->query($sql);
+            $wpdb->query($sql);
         }
     }
 
     private function maybe_add_foreign_key( $table, $constraint_name, $sql ) {
-        $exists = $this->wpdb->get_var(
-            $this->wpdb->prepare(
+        global $wpdb;
+        $exists = $wpdb->get_var(
+            $wpdb->prepare(
                 "SELECT COUNT(1) FROM information_schema.table_constraints WHERE constraint_schema = DATABASE() AND table_name = %s AND constraint_name = %s",
                 $table,
                 $constraint_name
@@ -158,7 +161,7 @@ class QSM_Database_Migration {
         );
 
         if ( ! $exists ) {
-            $this->wpdb->query( $sql );
+            $wpdb->query( $sql );
         }
     }
 
@@ -166,6 +169,7 @@ class QSM_Database_Migration {
      * AJAX callback to initiate migration: create tables & return totals
      */
     public function qsm_initial_migration_start_callback() {
+        global $wpdb;
         // Verify nonce
         if ( ! check_ajax_referer('qsm_migration_nonce', 'nonce', false) ) {
             wp_send_json_error(array( 'message' => __('Security check failed.', 'quiz-master-next') ));
@@ -184,14 +188,14 @@ class QSM_Database_Migration {
         $this->create_migration_tables();
         
         // --- Calculate Total Records to Migrate ---
-        $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
-        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
+        $mlw_results_table       = $wpdb->prefix . 'mlw_results';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
         
         // Count total results (the target count)
-        $total_records = (int) $this->wpdb->get_var( "SELECT COUNT(*) FROM {$mlw_results_table}" );
+        $total_records = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$mlw_results_table}" );
 
         // Count how many results have been *logged* (migrated or failed)
-        $logged_records = (int) $this->wpdb->get_var(
+        $logged_records = (int) $wpdb->get_var(
             "SELECT COUNT(DISTINCT r.result_id)
             FROM {$mlw_results_table} r
             INNER JOIN {$results_meta_table} m
@@ -234,6 +238,7 @@ class QSM_Database_Migration {
      * Expects POST parameter: offset (int) - this is the running count of processed records for UI only.
      */
     public function qsm_process_migration_batch_callback() {
+        global $wpdb;
         // Verify nonce
         if ( ! check_ajax_referer( 'qsm_migration_nonce', 'nonce', false ) ) {
             wp_send_json_error( array( 'message' => __( 'Security check failed.', 'quiz-master-next' ) ) );
@@ -252,8 +257,8 @@ class QSM_Database_Migration {
         $process_failed_only     = ! empty( $_POST['process_failed_only'] );
         $batch_size              = self::BATCH_SIZE;
 
-        $mlw_results_table       = $this->wpdb->prefix . 'mlw_results';
-        $results_meta_table      = $this->wpdb->prefix . 'qsm_results_meta';
+        $mlw_results_table       = $wpdb->prefix . 'mlw_results';
+        $results_meta_table      = $wpdb->prefix . 'qsm_results_meta';
         
         $results_processed   = 0;
         $inserted_count      = 0;
@@ -333,7 +338,7 @@ class QSM_Database_Migration {
                 $prepared_sql = $query;
             }
 
-            $results = $this->wpdb->get_results( $prepared_sql );
+            $results = $wpdb->get_results( $prepared_sql );
 
             if ( empty( $results ) ) {
                 // Nothing left to process in this batch (either normal or failed-only mode)
@@ -399,7 +404,7 @@ class QSM_Database_Migration {
             update_option( 'qsm_migration_results_failed_ids', $stored_failed_ids );
 
             // Count how many results have been *logged* (migrated or failed)
-            $logged_records = (int) $this->wpdb->get_var(
+            $logged_records = (int) $wpdb->get_var(
                 "SELECT COUNT(DISTINCT r.result_id)
                 FROM {$mlw_results_table} r
                 INNER JOIN {$results_meta_table} m
@@ -441,13 +446,14 @@ class QSM_Database_Migration {
      * Clean up failed IDs by removing those that no longer exist in the results table
      */
     private function qsm_cleanup_failed_ids() {
+        global $wpdb;
         $stored_failed_ids = get_option( 'qsm_migration_results_failed_ids', array() );
 
         if ( empty( $stored_failed_ids ) ) {
             return;
         }
 
-        $mlw_results_table = $this->wpdb->prefix . 'mlw_results';
+        $mlw_results_table = $wpdb->prefix . 'mlw_results';
         $failed_ids = array_map( 'intval', (array) $stored_failed_ids );
 
         if ( empty( $failed_ids ) ) {
@@ -456,8 +462,8 @@ class QSM_Database_Migration {
 
         // Check which failed IDs exist in the results table
         $placeholders = implode( ',', array_fill( 0, count( $failed_ids ), '%d' ) );
-        $existing_ids = $this->wpdb->get_col(
-            $this->wpdb->prepare(
+        $existing_ids = $wpdb->get_col(
+            $wpdb->prepare(
                 "SELECT result_id FROM {$mlw_results_table} WHERE result_id IN ($placeholders)",
                 $failed_ids
             )
@@ -474,15 +480,16 @@ class QSM_Database_Migration {
     }
 
     public function qsm_check_migration_status(){
-        $results_table_name      = $this->wpdb->prefix . 'mlw_results';
-        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
+        global $wpdb;
+        $results_table_name      = $wpdb->prefix . 'mlw_results';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
         // Clean up failed IDs that no longer exist in the results table
         $this->qsm_cleanup_failed_ids();
 
-        $total_results = (int) $this->wpdb->get_var( "SELECT COUNT(*) FROM {$results_table_name}" );
+        $total_results = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$results_table_name}" );
 
         // Count how many results have been *logged* (migrated or failed)
-        $logged_records = (int) $this->wpdb->get_var(
+        $logged_records = (int) $wpdb->get_var(
             "SELECT COUNT(DISTINCT r.result_id)
             FROM {$results_table_name} r
             INNER JOIN {$results_meta_table} m
@@ -503,6 +510,7 @@ class QSM_Database_Migration {
 
     
     function qsm_do_process_result_row( $row ) {
+        global $wpdb;
         global $mlwQuizMasterNext;
 
         $stats = array(
@@ -525,8 +533,8 @@ class QSM_Database_Migration {
             return $stats;
         }
 
-        $results_questions           = $this->wpdb->prefix . 'qsm_results_questions';
-        $results_meta_table = $this->wpdb->prefix . 'qsm_results_meta';
+        $results_questions           = $wpdb->prefix . 'qsm_results_questions';
+        $results_meta_table = $wpdb->prefix . 'qsm_results_meta';
 
         // ----------------------------------------------
         // Parse quiz_results and insert per-question answers
@@ -534,7 +542,7 @@ class QSM_Database_Migration {
         $unserializedResults = maybe_unserialize( $row->quiz_results );
 
         // *************** TRANSACTION START ***************
-        $this->wpdb->query( 'START TRANSACTION' );
+        $wpdb->query( 'START TRANSACTION' );
         $transaction_failed = false;
 
         if ( ! is_array( $unserializedResults ) || ! isset( $unserializedResults[1] ) || ! is_array( $unserializedResults[1] ) ) {
@@ -722,13 +730,12 @@ class QSM_Database_Migration {
                             VALUES " . implode( ', ', $placeholders );
 
                         // prepare & execute
-                        $prepared = $this->wpdb->prepare( $sql, ...$params );
-                        $inserted = $this->wpdb->query( $prepared );
+                        $inserted = $wpdb->query( $wpdb->prepare( $sql, ...$params ) );
 
                         if ( 0 == $inserted ) {
                             // Question insert failed: rollback for this result
                             $transaction_failed = true;
-                            $this->wpdb->query( 'ROLLBACK' );
+                            $wpdb->query( 'ROLLBACK' );
                             break; // Exit the loop over result_meta_key (questions)
                         } else {
                             $stats['inserted_count']++;
@@ -827,12 +834,11 @@ class QSM_Database_Migration {
                 (result_id, meta_key, meta_value)
                 VALUES " . implode( ', ', $meta_placeholders );
 
-            $prepared_meta = $this->wpdb->prepare( $meta_sql, ...$meta_params );
-            $meta_inserted = $this->wpdb->query( $prepared_meta );
+            $meta_inserted = $wpdb->query( $wpdb->prepare( $meta_sql, ...$meta_params ) );
             
             if ( false == $meta_inserted || 0 == $meta_inserted ) {
                 $transaction_failed = true;
-                $this->wpdb->query( 'ROLLBACK' );
+                $wpdb->query( 'ROLLBACK' );
             }
         }
         
@@ -840,7 +846,7 @@ class QSM_Database_Migration {
         if ( $transaction_failed ) {
             $stats['failed_ids'][] = $result_id;
         } else {
-            $this->wpdb->query( 'COMMIT' );
+            $wpdb->query( 'COMMIT' );
             $stats['success_ids'][] = $result_id;
         }
 
