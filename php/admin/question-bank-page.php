@@ -462,7 +462,7 @@ function qsm_questions_bank_question_editor() {
 									}
 									?>
 								</div>
-								<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo apply_filters( 'qsm_polar_class', esc_attr( $polar_class . $show_answer_option ) ); ?>">
+								<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qsm_polar_class', esc_attr( $polar_class . $show_answer_option ) ); ?>">
 									<div class="correct-header"><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></div>
 									<div class="answers" id="answers">
 

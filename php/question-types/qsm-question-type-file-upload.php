@@ -47,6 +47,7 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 		<div class="qsm-file-upload-status"></div>
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
 		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
 }
 

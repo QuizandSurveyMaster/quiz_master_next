@@ -37,10 +37,10 @@ do_action( 'qsm_before_last_page', $quiz_id, $args );
 	<?php endif; ?>
 	<?php if ( $show_contact_fields && isset( $renderer ) ) : ?>
 		<div class="qsm-contact-form-wrapper">
-			<?php echo $renderer->render_contact_form(); ?>
+			<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed render HTML; dynamic values escaped within the renderer */ echo $renderer->render_contact_form(); ?>
 		</div>
 	<?php endif; ?>
-	<?php echo apply_filters( 'qmn_before_comment_section', '', $options, $quiz_data ); ?>	
+	<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qmn_before_comment_section', '', $options, $quiz_data ); ?>	
 	<?php if ( 0 == $options->comment_section && "" !== $options->comment_section ) : ?>
 		<?php
 		$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
@@ -49,7 +49,7 @@ do_action( 'qsm_before_last_page', $quiz_id, $args );
 		<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo wp_kses_post( do_shortcode( $message_comments ) ); ?></label><br />
 		<textarea cols="60" rows="10" id="mlwQuizComments" name="mlwQuizComments" class="qmn_comment_section"></textarea>
 	<?php endif; ?>
-	<?php echo apply_filters( 'qmn_after_comment_section', '', $options, $quiz_data ); ?>	
+	<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qmn_after_comment_section', '', $options, $quiz_data ); ?>	
 	</div>
 	<?php do_action( 'qsm_after_last_page_content', $quiz_id, $args ); ?>
 	<?php do_action( 'mlw_qmn_end_quiz_section' ); ?>

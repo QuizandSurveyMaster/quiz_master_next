@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
 // Get form action URL
 $form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
@@ -32,7 +33,7 @@ $form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SER
     novalidate 
     enctype="multipart/form-data"
     data-quiz-id="<?php echo esc_attr( $quiz_id ); ?>"
-    <?php echo apply_filters( 'qsm_quiz_form_attributes', '', $quiz_id, $options ); ?>
+    <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'qsm_quiz_form_attributes', '', $quiz_id, $options ); ?>
 >
     <?php
     /**
@@ -47,6 +48,7 @@ $form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SER
      * 
      * @since 9.0
      */
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
     echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
     do_action( 'qsm_quiz_form_content', $quiz_id, $renderer, $args );
     
@@ -60,6 +62,7 @@ $form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SER
      * 
      * @since 9.0
      */
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
     echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 
 	do_action( 'qsm_before_end_quiz_form', $options, $quiz_data, array() );

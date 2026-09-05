@@ -35,7 +35,7 @@ if ( apply_filters( 'qsm_show_next_button', true, $quiz_id, $args ) ) :
             class="<?php echo esc_attr( $next_button_class ); ?>" 
             data-action="next"
             style="display:none;"
-            <?php echo apply_filters(
+            <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters(
                 'qsm_next_button_attributes',
                 '',
                 $quiz_id,

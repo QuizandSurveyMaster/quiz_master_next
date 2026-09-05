@@ -1319,6 +1319,7 @@ class QMNQuizManager {
 		// Route to manual pages (capping each page) when that option is on, before any
 		// pagination-dependent filter (e.g. qmn_pagination_check) runs on qmn_begin_quiz.
 		$options = qsm_apply_manual_pagination_override( $options );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qmn_begin_quiz', '', $options, $quiz_data );
 		$options = apply_filters( 'qmn_begin_quiz_options', $options, $quiz_data );
 		if ( ! $qmn_allowed_visit ) {
@@ -1409,6 +1410,7 @@ class QMNQuizManager {
 			?>
 			<?php
 		}
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
 			$quiz_form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 		?>
@@ -1419,6 +1421,7 @@ class QMNQuizManager {
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span>
 				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qmn_begin_quiz_form', '', $options, $quiz_data );
 				// If deprecated pagination setting is not used, use new system...
 				$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
@@ -1433,13 +1436,17 @@ class QMNQuizManager {
 					$questions = $this->load_questions( $quiz_data['quiz_id'], $options, true, $question_amount );
 					$answers   = $this->create_answer_array( $questions );
 					$this->display_begin_section( $options, $quiz_data );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qmn_begin_quiz_questions', '', $options, $quiz_data );
 					$this->display_questions( $options, $questions, $answers );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qmn_before_comment_section', '', $options, $quiz_data );
 					$this->display_comment_section( $options, $quiz_data );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qmn_after_comment_section', '', $options, $quiz_data );
 					$this->display_end_section( $options, $quiz_data );
 				}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qmn_before_error_message', '', $options, $quiz_data );
 				?>
 					<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
@@ -1461,6 +1468,7 @@ class QMNQuizManager {
 						<input type="hidden" name="main_payment_id" value="<?php echo esc_attr( $payment_id ); ?>" />
 						<?php
 					}
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 					do_action( 'qsm_before_end_quiz_form', $options, $quiz_data, $shortcode_args );
 					?>
@@ -1468,6 +1476,7 @@ class QMNQuizManager {
 				<?php do_action( 'qsm_after_end_quiz_form', $options, $quiz_data, $shortcode_args ); ?>
 		</div>
 		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qmn_end_quiz', '', $options, $quiz_data );
 	}
 
@@ -1549,6 +1558,7 @@ class QMNQuizManager {
 					</div>
 			<?php
 			if ( 0 == $options->contact_info_location ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 				echo QSM_Contact_Manager::display_fields( $options );
 			}
 			do_action( 'qsm_after_begin_message', $options, $quiz_data );
@@ -1578,6 +1588,7 @@ class QMNQuizManager {
 						</div>
 				<?php
 				if ( 0 == $options->contact_info_location ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 					echo QSM_Contact_Manager::display_fields( $options );
 				}
 				?>
@@ -1621,7 +1632,7 @@ class QMNQuizManager {
 				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 				?>
 					<div class="quiz_section qsm-quiz-comment-section" style="display:none">
-						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
+						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 						<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 					</div>
 				<?php
@@ -1638,6 +1649,7 @@ class QMNQuizManager {
 						</div>
 				<?php
 				if ( 1 == $options->contact_info_location ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 					echo QSM_Contact_Manager::display_fields( $options );
 				}
 				?>
@@ -1701,6 +1713,7 @@ class QMNQuizManager {
 					<span class="pages_count">
 					<?php
 					$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 					?>
 					</span>
@@ -1715,7 +1728,7 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page">
 				<div class="quiz_section qsm-quiz-comment-section" style="display:none">
-					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
+					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/attributes, core default is an empty string */ echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 					<textarea id="mlwQuizComments" name="mlwQuizComments" class="qsm-comments qmn_comment_section"></textarea>
 				</div>
 			</section>
@@ -1740,6 +1753,7 @@ class QMNQuizManager {
 					</div>
 					<?php
 					if ( 1 == $options->contact_info_location ) {
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 						echo QSM_Contact_Manager::display_fields( $options );
 					}
 					?>
@@ -1815,6 +1829,7 @@ class QMNQuizManager {
 				</div>
 					<?php
 					if ( 0 == $qmn_quiz_options->contact_info_location ) {
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 						echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 					}
 					do_action( 'qsm_after_begin_message', $qmn_quiz_options, $qmn_array_for_variables );
@@ -1861,8 +1876,10 @@ class QMNQuizManager {
 					<div class="qsm-auto-page-row qsm-question-page qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" data-apid="<?php echo esc_attr( $current_page_number ); ?>" data-qpid="<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
 					<?php
 					++$current_page_number;
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 					echo apply_filters( 'qsm_auto_page_begin_pagination', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 				}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
 			$category_class      = '';
@@ -1918,6 +1935,7 @@ class QMNQuizManager {
 			<span class="pages_count" style="display: none;">
 				<?php
 				$text_c = esc_html__( '1 out of ', 'quiz-master-next' ) . $total_pagination;
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 			</span>
@@ -1994,6 +2012,7 @@ class QMNQuizManager {
 					<?php
 				}
 				if ( 1 === intval( $qmn_quiz_options->contact_info_location ) ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-composed template/render HTML; dynamic values are escaped within the renderer/template
 					echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 				}
 				?>

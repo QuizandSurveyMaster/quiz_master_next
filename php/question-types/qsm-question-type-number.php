@@ -30,6 +30,7 @@ function qmn_number_display( $id, $question, $answers ) {
 	?>
 	<input type="number" class="mlw_answer_number <?php echo esc_attr( $mlw_require_class ); ?>" id="question<?php echo esc_attr( $id ); ?>" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>" oninput="checkMaxLength(this)" <?php endif; ?> <?php echo esc_attr( $min_num_attr ); ?> placeholder="<?php echo esc_attr( $placeholder_text ); ?>" />
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_number_display_front', '', $id, $question, $answers );
 }
 

@@ -376,6 +376,7 @@ class QSM_New_Renderer {
 				'render_type'    => '11',
 			);
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 			echo apply_filters( 'qmn_begin_quiz', '', $qmn_quiz_options, $quiz_data );
 			$qmn_quiz_options = apply_filters( 'qmn_begin_quiz_options', $qmn_quiz_options, $quiz_data );
 			
@@ -430,6 +431,7 @@ class QSM_New_Renderer {
 			</div>
 			<?php
 			// Apply end quiz filter
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 			echo apply_filters( 'qmn_end_quiz', '', $qmn_quiz_options, $quiz_data );
 		} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 			// Display results - delegate to legacy system

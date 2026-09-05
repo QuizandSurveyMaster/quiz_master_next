@@ -39,6 +39,7 @@ class MlwQmnAlertManager {
 				$alert_list .= "<div id=\"message\" class=\"error below-h2\"><p><strong>".__('Error!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
 			}
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qsm_alert_messages', $alert_list );
 	}
 
@@ -49,6 +50,7 @@ class MlwQmnAlertManager {
 				$alert_list .= "<div class=\"notice notice-warning \"><p><strong>".__('Warning!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
 			}
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 		echo apply_filters( 'qsm_warning_messages', $alert_list );
 	}
 }

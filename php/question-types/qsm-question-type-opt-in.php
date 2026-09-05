@@ -36,6 +36,7 @@ function qmn_accept_display( $id, $question, $answers ) {
 		</label>
 	</div>
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- output of a QSM extensibility filter; hooked add-ons return intended HTML/form markup, core default is an empty string
 	echo apply_filters( 'qmn_accept_display_front', '', $id, $question, $answers );
 }
 
