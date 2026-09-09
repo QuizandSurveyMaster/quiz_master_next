@@ -431,6 +431,13 @@ class QMNQuizManager {
 			wp_send_json_error();
 		}
 
+		// The nonce is per-user, so it is a CSRF control, not an authorization one:
+		// it says "this user asked", never "this user may". This dumps the whole
+		// audit trail, so require the capability the Tools screen requires.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		global $wpdb;
 		$export_tool_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_qm_audit_trail" );
 		// file creation
@@ -465,6 +472,12 @@ class QMNQuizManager {
 
 	public function qsm_clear_audit_data() {
 		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_tools_' . get_current_user_id() ) ) {
+			wp_send_json_error();
+		}
+
+		// TRUNCATEs the audit trail -- i.e. destroys the forensic record. Same
+		// reasoning as qsm_export_data(): a per-user nonce authorizes nothing.
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error();
 		}
 
