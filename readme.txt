@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.2.4
+Stable tag: 11.2.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,19 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+
+= 11.2.6 (September 04, 2026) =
+* Security: Improved validation of user inputs and query parameters to prevent unauthenticated enumeration of quiz results.
+
+= 11.2.5 (August 24, 2026) =
+* Bug: Fixed missing page timer settings for pages without a qpages entry.
+* Bug: Fixed JavaScript errors when the questions-per-page setting is 0.
+* Bug: Fixed PHP warnings that occurred when duplicating or submitting a quiz.
+* Enhancement: Prevented automatic scrolling to the quiz section when loading a homepage.
+* Security: Improved QSM login security by adding login attempt rate limiting to prevent repeated failed password attempts.
+* Enhancement: Set duplicated quizzes to Draft status instead of Published.
+* Enhancement: Improved the Default Questions popup UI in the admin panel.
+
 = 11.2.4 (August 10, 2026) =
 * Security: Fixed a Contributor+ ownership bypass by validating author records instead of post meta.
 * Security: Fixed a Contributor+ information disclosure issue in REST endpoints by enforcing per-quiz ownership checks

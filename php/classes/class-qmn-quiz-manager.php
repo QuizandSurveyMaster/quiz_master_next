@@ -262,8 +262,62 @@ class QMNQuizManager {
 	}
 
 	/**
+	 * Resolve the client IP used to throttle failed login pre-flight checks.
+	 *
+	 * Only REMOTE_ADDR is trusted. Proxy headers such as X-Forwarded-For are
+	 * attacker-supplied and would let a single client reset the counter at will,
+	 * so sites behind a reverse proxy must supply the real IP through the
+	 * `qsm_login_client_ip` filter instead.
+	 *
+	 * @since 11.2.5
+	 * @return string The client IP, or an empty string when it cannot be resolved.
+	 */
+	private function qsm_login_client_ip() {
+		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+		/**
+		 * Filter the client IP used to throttle failed login pre-flight checks.
+		 *
+		 * @since 11.2.5
+		 * @param string $ip The IP resolved from REMOTE_ADDR.
+		 */
+		$ip = apply_filters( 'qsm_login_client_ip', $ip );
+
+		return is_string( $ip ) ? $ip : '';
+	}
+
+	/**
+	 * Transient key holding the failed pre-flight login count for a client IP.
+	 *
+	 * @since 11.2.5
+	 * @param  string $ip The client IP.
+	 * @return string The transient key, or an empty string when there is no IP to key on.
+	 */
+	private function qsm_login_attempts_key( $ip ) {
+		return '' === $ip ? '' : 'qsm_login_attempts_' . md5( $ip );
+	}
+
+	/**
 	 * @version 8.2.0
 	 * ajax login function
+	 *
+	 * This endpoint only pre-checks the submitted credentials so the quiz page can
+	 * show an inline error; the browser still submits the form to wp-login.php to
+	 * establish the session. Because it is reachable unauthenticated, it must not
+	 * become a credential oracle:
+	 *
+	 * - Authentication runs through wp_authenticate(), so the `authenticate` filter
+	 *   chain (login limiters, 2FA) can veto the attempt and `wp_login_failed`
+	 *   fires for plugins that count failures. Calling wp_check_password() directly
+	 *   bypassed all of that (CWE-307).
+	 * - Failures are throttled per client IP. Once the limit is reached the endpoint
+	 *   stops answering and tells the browser to submit the form to wp-login.php,
+	 *   which degrades to the normal WordPress login instead of denying service.
+	 * - Only a plain wrong-credentials result is reported inline. Any other veto
+	 *   (2FA challenge, lockout) also defers to wp-login.php, which owns those
+	 *   flows and can actually complete them.
+	 *
+	 * @since 11.2.5 Routed through wp_authenticate() and rate limited.
 	 */
 	public function qsm_ajax_login() {
 		// Verify the nonce first.
@@ -283,14 +337,86 @@ class QMNQuizManager {
 			wp_send_json_error( array( 'message' => __( 'Please enter both a username and a password.', 'quiz-master-next' ) ) );
 		}
 
-		$user = get_user_by( 'login', $username );
+		/**
+		 * Filter how many pre-flight login checks a client IP may make before this
+		 * endpoint stops answering and defers to wp-login.php.
+		 *
+		 * Successful checks count too, so this is deliberately generous: several
+		 * people can share one IP behind a school or office NAT, and exhausting the
+		 * budget only costs them the inline error message, never the ability to log
+		 * in. The number does not have to be brute-force-proof on its own — running
+		 * out sends the client to wp-login.php, which is not a credential oracle.
+		 *
+		 * A limit of 0 blocks every pre-flight check (the endpoint always defers to
+		 * wp-login.php). To switch the throttle off, filter it to a very high
+		 * number rather than to 0.
+		 *
+		 * @since 11.2.5
+		 * @param int $limit Maximum checks per window.
+		 */
+		$limit = max( 0, (int) apply_filters( 'qsm_login_attempt_limit', 20 ) );
 
-		if ( ! $user ) {
-			$user = get_user_by( 'email', $username );
+		/**
+		 * Filter the window, in seconds, over which failed pre-flight login
+		 * checks are counted for a client IP.
+		 *
+		 * @since 11.2.5
+		 * @param int $window Window length in seconds.
+		 */
+		$window = (int) apply_filters( 'qsm_login_attempt_window', 15 * MINUTE_IN_SECONDS );
+
+		$ip       = $this->qsm_login_client_ip();
+		$key      = $this->qsm_login_attempts_key( $ip );
+		$attempts = '' === $key ? 0 : (int) get_transient( $key );
+
+		// Out of attempts: answer nothing about the credentials and let the form
+		// post to wp-login.php, where core and any login hardening still apply.
+		if ( $attempts >= $limit ) {
+			wp_send_json_error(
+				array(
+					'code'     => 'too_many_attempts',
+					'fallback' => true,
+					'message'  => __( 'Too many login attempts. Please wait a moment and try again.', 'quiz-master-next' ),
+				)
+			);
 		}
 
-		if ( ! $user || ! wp_check_password( $password, $user->user_pass, $user->ID ) ) {
-			wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+		// Count the attempt BEFORE authenticating, and never clear the counter on
+		// success. Counting afterwards would leave the slow password hash inside
+		// the read-modify-write window, so a burst of concurrent requests would
+		// all read the same count and spend one attempt between them; clearing on
+		// success would let anyone holding a single valid account (their own, on
+		// any site with open registration) reset the counter between guesses.
+		if ( '' !== $key ) {
+			set_transient( $key, $attempts + 1, $window );
+		}
+
+		// wp_authenticate() runs the `authenticate` filter chain and fires
+		// `wp_login_failed`, so login limiters and 2FA plugins are honoured.
+		$user = wp_authenticate( $username, $password );
+
+		if ( is_wp_error( $user ) ) {
+			// A plain wrong-credentials result is the one case this endpoint
+			// answers, and every such code gets the same message so it never
+			// confirms whether an account exists.
+			$credential_codes = array( 'invalid_username', 'invalid_email', 'incorrect_password', 'authentication_failed' );
+
+			if ( in_array( $user->get_error_code(), $credential_codes, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Incorrect username or password! Please try again.', 'quiz-master-next' ) ) );
+			}
+
+			// Anything else came from another plugin vetoing the attempt — a 2FA
+			// challenge, a lockout notice, a custom gate. Those flows are owned by
+			// wp-login.php (that is where the OTP field and the lockout screen
+			// live), so defer to it rather than dead-ending the user here on an
+			// error this form cannot resolve.
+			wp_send_json_error(
+				array(
+					'code'     => $user->get_error_code(),
+					'fallback' => true,
+					'message'  => __( 'Please complete your sign in.', 'quiz-master-next' ),
+				)
+			);
 		}
 
 		wp_send_json_success();
@@ -405,8 +531,9 @@ class QMNQuizManager {
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 				}
 
-				$result_id      = $result['result_id'];
-				$return_display = do_shortcode( '[qsm_result id="' . $result_id . '"]' );
+				// Hand the TOKEN on, not the primary key: the inner shortcode has to be able to
+				// tell a validated share link from a guessed id.
+				$return_display = do_shortcode( '[qsm_result unique_id="' . esc_attr( $result_unique_id ) . '"]' );
 				$return_display = str_replace( '%FB_RESULT_ID%', esc_js( esc_attr( $result_unique_id ) ), $return_display );
 			} else {
 				$return_display = esc_html__( 'Result id is wrong!', 'quiz-master-next' );
@@ -466,6 +593,28 @@ class QMNQuizManager {
 					unset( $qpage['questions'] );
 					if ( isset( $qpage['id'] ) ) {
 						$qpages[ $qpage['id'] ] = $qpage;
+					}
+				}
+			}
+			/*
+			 * `pages` and `qpages` are separate settings and can drift apart (a quiz saved
+			 * before qpages carried ids, a page added by a filter). display_pages() falls
+			 * back to the page position for data-pid, so without an entry here that page is
+			 * rendered with a pid missing from this payload and JS reading its settings (the
+			 * page timer) reads them off undefined. Backfill a timer-less entry.
+			 */
+			$pages_arr               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+			if ( is_array( $pages_arr ) ) {
+				foreach ( $pages_arr as $key => $page ) {
+					// Same lookup + fallback display_pages() uses.
+					$qpage    = isset( $qpages_arr[ $key ] ) ? $qpages_arr[ $key ] : array();
+					$qpage_id = isset( $qpage['id'] ) ? $qpage['id'] : $key;
+					if ( ! isset( $qpages[ $qpage_id ] ) ) {
+						$qpages[ $qpage_id ] = array(
+							'id'               => $qpage_id,
+							'pagetimer'        => 0,
+							'pagetimer_second' => 0,
+						);
 					}
 				}
 			}
@@ -589,20 +738,59 @@ class QMNQuizManager {
 
 		$args = shortcode_atts(
 			array(
-				'id' => 0,
+				'id'        => 0,
+				'unique_id' => '',
 			),
 			$atts
 		);
 
-		$id = intval( $args['id'] );
+		global $mlwQuizMasterNext;
+		global $wpdb;
+
+		/*
+		 * The `id` attribute is author-supplied: it only ever reaches us from page
+		 * content, or from an internal caller that has already validated a share token.
+		 * It stays trusted.
+		 *
+		 * `?result_id=` in the URL is not. It is ALWAYS resolved as the unguessable
+		 * `unique_id` share token, never as the sequential mlw_results primary key.
+		 * Looking it up by primary key let an unauthenticated visitor walk
+		 * ?result_id=1,2,3... and read every stored result, including the submitter's
+		 * name, email, phone and IP address.
+		 */
+		$id             = intval( $args['id'] );
+		$token          = sanitize_text_field( $args['unique_id'] );
+		$trusted_source = ( $id > 0 );
 
 		ob_start();
-		if ( 0 === $id ) {
-			$id = (int) isset( $_GET['result_id'] ) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : 0;
+
+		if ( 0 === $id && '' === $token && isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
+			$token = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 		}
-		if ( $id && is_numeric( $id ) ) {
-			global $mlwQuizMasterNext;
-			global $wpdb;
+
+		if ( '' !== $token ) {
+			$id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s LIMIT 1",
+					$token
+				)
+			);
+
+			if ( $id > 0 ) {
+				$trusted_source = true;
+			} elseif ( is_numeric( $token ) && apply_filters( 'qsm_allow_numeric_result_id', false, $token ) ) {
+				/*
+				 * Transition escape hatch for sites that published numeric result links
+				 * before this was tightened. Off by default and deliberately filter-only,
+				 * with no UI setting, because switching it on restores the old behaviour
+				 * in full: sequential ids become guessable again on that site.
+				 */
+				$id             = intval( $token );
+				$trusted_source = true;
+			}
+		}
+
+		if ( $id ) {
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
 				$current_user_id = get_current_user_id();
@@ -616,7 +804,22 @@ class QMNQuizManager {
 				$can_view_result = apply_filters( 'qsm_can_view_result', $can_view_result, $id, $result_data, $current_user_id );
 				$qmn_settings           = (array) get_option( 'qmn-settings' );
 				$result_link_visibility = ! empty( $qmn_settings['result_link_visibility'] ) ? $qmn_settings['result_link_visibility'] : 0;
-				if ( ! $can_view_result && $result_link_visibility ) {
+
+				/*
+				 * A valid share token -- or an id an editor placed in page content -- is itself
+				 * the authorization to view this result. That is what the sharing feature is
+				 * for. Result Link Visibility stays the strict mode layered on top: with it on,
+				 * even a valid share link requires an owner or a capability holder.
+				 *
+				 * Granting explicitly, rather than making the deny conditional, is what stops
+				 * this failing open: before, an unauthorized viewer simply fell through to the
+				 * render whenever the setting was off, which is the default.
+				 */
+				if ( ! $can_view_result && $trusted_source && ! $result_link_visibility ) {
+					$can_view_result = true;
+				}
+
+				if ( ! $can_view_result ) {
 					esc_html_e( 'You do not have permission to view this result.', 'quiz-master-next' );
 					$content = ob_get_clean();
 					return $content;
@@ -2981,6 +3184,10 @@ class QMNQuizManager {
 						// When the questions are the same...
 						if ( $page_question_id == $question_id ) {
 							global $mlwQuizMasterNext;
+							// Skip questions that are still listed in the pages setting but no longer exist.
+							if ( ! isset( $questions[ $page_question_id ] ) ) {
+								break;
+							}
 							$case_sensitive    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 							$question          = $questions[ $page_question_id ];
 							$question_type_new = $question['question_type_new'];

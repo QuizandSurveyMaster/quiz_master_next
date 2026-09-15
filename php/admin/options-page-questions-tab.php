@@ -1171,11 +1171,12 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
+	global $wpdb;
 	$json    = array(
 		'status' => 'error',
 	);
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-
+	$post_id    = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", $quiz_id ) );
 	// Enforce edit permission through the central ownership helper.
 	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 		wp_die( esc_html__( 'You are not allowed to edit this quiz, You need higher permission!', 'quiz-master-next' ) );
