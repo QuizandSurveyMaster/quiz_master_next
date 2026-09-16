@@ -89,6 +89,21 @@ class QSM_Ajax_Handler {
 				wp_send_json_error( array( 'message' => 'Quiz not found' ) );
 			}
 
+			// A deleted quiz has no questions to serve, and its lazy-load nonce
+			// stays valid for the rest of the nonce lifetime after deletion.
+			if ( ! empty( $quiz_options->deleted ) ) {
+				wp_send_json_error( array( 'message' => 'Quiz not found' ) );
+			}
+
+			// Honour the backing post's password. post_password_required() returns
+			// false once the visitor has entered the password, so a legitimate
+			// reader is unaffected; without this, the questions of a
+			// password-protected quiz are readable through this endpoint by anyone
+			// holding the (shared, anonymous) lazy-load nonce.
+			if ( self::quiz_password_required( $quiz_id ) ) {
+				wp_send_json_error( array( 'message' => 'This quiz is password protected.' ) );
+			}
+
 			// Render questions HTML
 			$html = self::render_page_questions(
 				$quiz_id,
@@ -123,6 +138,41 @@ class QSM_Ajax_Handler {
 	}
 
 	/**
+	 * Whether the quiz's backing post is password protected for this visitor.
+	 *
+	 * Mirrors the check QMNQuizManager::ajax_submit_results() applies to the
+	 * submission endpoint, so reading a quiz's questions is not easier than
+	 * submitting to it. Users who may edit quizzes are exempt, matching the
+	 * exemption the submission endpoint already makes for them.
+	 *
+	 * @param  int $quiz_id Quiz ID.
+	 * @return bool True when the questions must not be served.
+	 */
+	private static function quiz_password_required( $quiz_id ) {
+		if ( current_user_can( 'edit_qsm_quizzes' ) ) {
+			return false;
+		}
+
+		$post_ids = get_posts(
+			array(
+				'post_type'   => 'qsm_quiz',
+				'meta_key'    => 'quiz_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Mirrors the submission endpoint's lookup.
+				'meta_value'  => intval( $quiz_id ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Mirrors the submission endpoint's lookup.
+				'fields'      => 'ids',
+				'numberposts' => 1,
+			)
+		);
+
+		if ( empty( $post_ids[0] ) ) {
+			return false;
+		}
+
+		$post_obj = get_post( $post_ids[0] );
+
+		return $post_obj instanceof WP_Post && post_password_required( $post_obj );
+	}
+
+	/**
 	 * Render questions for a specific page
 	 *
 	 * @param int    $quiz_id              Quiz ID
@@ -139,12 +189,21 @@ class QSM_Ajax_Handler {
 			$randomness_order = array();
 		}
 		
-		// Get questions from database
+		// Get questions from database.
+		//
+		// Security: the question ids arrive in the request body and are entirely
+		// attacker-controlled, while the nonce only proves the caller can see the
+		// quiz named by $quiz_id -- for a logged-out visitor that nonce is the same
+		// value every anonymous visitor of any public quiz receives. Constraining
+		// the lookup to this quiz is therefore what keeps the endpoint from
+		// rendering any question on the site (questions belonging to quizzes behind
+		// a login, a membership plugin or a password) to an unauthenticated caller.
 		$questions = array();
 		foreach ( $question_ids as $question_id ) {
 			$question = $wpdb->get_row( $wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d AND deleted = 0",
-				$question_id
+				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d AND quiz_id = %d AND deleted = 0",
+				$question_id,
+				$quiz_id
 			), ARRAY_A );
 
 			if ( ! $question ) {
