@@ -139,8 +139,15 @@ function qsm_register_rest_routes() {
 			array(
 				'methods'             => 'GET',
 				'callback'            => 'qsm_get_result_of_quiz',
-				'permission_callback' => function () {
-					return current_user_can( 'edit_qsm_quizzes' );
+				'permission_callback' => function ( WP_REST_Request $request ) {
+					// edit_qsm_quizzes alone is flat -- every role from Contributor up
+					// holds it -- so this route needs the same per-quiz ownership test
+					// its siblings use. The handler currently builds the result set and
+					// exit()s without emitting it, so nothing leaks today; gate it now
+					// so restoring the missing return cannot turn it into a disclosure
+					// of every respondent's score and timing for any quiz.
+					return current_user_can( 'edit_qsm_quizzes' )
+						&& qsm_current_user_can_edit_quiz( $request['id'] );
 				},
 			)
 		);
@@ -441,7 +448,10 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
  */
 function qsm_get_basic_info_quiz( WP_REST_Request $request ) {
 	global $mlwQuizMasterNext;
-	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+	// Same reasoning as qsm_get_quizzes_list(): scope the rows rather than deny
+	// the route. qsm_quiz_access_sql() returns a fragment beginning with ' AND ',
+	// which get_quizzes() appends after its own WHERE.
+	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, 'quiz_id', 'DESC', array(), '', '', '', qsm_quiz_access_condition( 'quiz_id' ) );
 	if ( $quizzes ) {
 		$quiz_data = array();
 		foreach ( $quizzes as $quiz ) {
@@ -1067,7 +1077,10 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 		return false;
 	}
 
-	$post_author = intval( get_post_field( 'post_author', $post_id ) );
+	// 'raw' context: get_post_field() defaults to 'display', which runs
+	// apply_filters( "post_author", ... ) and would put a third-party filter
+	// inside the authorization decision.
+	$post_author = intval( get_post_field( 'post_author', $post_id, 'raw' ) );
 
 	return $post_author > 0 && $current_user === $post_author;
 }
@@ -1137,6 +1150,24 @@ function qsm_get_editable_quiz_ids() {
  * @return string A SQL fragment beginning with ' AND ', or '' for no restriction.
  */
 function qsm_quiz_access_sql( $column = 'quiz_id' ) {
+	$condition = qsm_quiz_access_condition( $column );
+
+	return '' === $condition ? '' : ' AND ' . $condition;
+}
+
+/**
+ * The same restriction as qsm_quiz_access_sql(), without the leading ' AND '.
+ *
+ * Callers that build their own WHERE clause -- or that hand a bare condition to
+ * QMNPluginHelper::get_quizzes()'s $where argument, which supplies the AND
+ * itself -- need the condition on its own. Keeping both forms in one place stops
+ * the two from drifting.
+ *
+ * @since 11.2.5
+ * @param string $column The quiz id column to constrain. Must not be user input.
+ * @return string A bare SQL condition, or '' for no restriction.
+ */
+function qsm_quiz_access_condition( $column = 'quiz_id' ) {
 	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
 		return '';
 	}
@@ -1144,10 +1175,10 @@ function qsm_quiz_access_sql( $column = 'quiz_id' ) {
 	$quiz_ids = qsm_get_editable_quiz_ids();
 	if ( empty( $quiz_ids ) ) {
 		// Owns nothing: match no rows rather than every row.
-		return ' AND 1 = 0';
+		return '1 = 0';
 	}
 
-	return " AND $column IN (" . implode( ',', $quiz_ids ) . ')';
+	return "$column IN (" . implode( ',', $quiz_ids ) . ')';
 }
 
 /**
@@ -1197,7 +1228,11 @@ function qsm_filter_questions_by_quiz_access( $questions ) {
  */
 function qsm_get_quizzes_list() {
 	global $wpdb;
-	$quizzes         = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'" );
+	// Scoped, not blocked: this backs the Gutenberg block's quiz picker, which
+	// every quiz author legitimately opens, so a 403 would be a regression.
+	// Filtering the rows closes the enumeration without breaking the caller.
+	$access          = qsm_quiz_access_sql( 'quiz_id' );
+	$quizzes         = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'{$access}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $access is built from int-cast quiz ids by qsm_quiz_access_sql().
 	$qsm_quiz_list[] = array(
 		'label' => __( 'Select the quiz', 'quiz-master-next' ),
 		'value' => '',
