@@ -60,19 +60,12 @@ function qsm_check_plugins_compatibility() {
 		$plugin_data = get_plugin_data( $plugin_path );
 
 		/*
-		 * Warn below 2.1, the release that added the installer's own update
-		 * check. Compared against '2.1' rather than '2.1.0' on purpose:
-		 * version_compare() reads a missing trailing segment as SMALLER, so
-		 * version_compare( '2.1', '2.1.0', '<' ) is true and an installer whose
-		 * header reads "2.1" would be told it is behind a version it already
-		 * is. Against '2.1', all of 2.1, 2.1.0 and 2.1.1 read as current.
-		 *
-		 * The version is also required to be non-empty: get_plugin_data()
-		 * returns a blank one when the file is missing (the path below is
-		 * hardcoded, so a renamed plugin folder lands here), and an empty
-		 * string compares as older than everything.
+		 * The version is required to be non-empty: get_plugin_data() returns a
+		 * blank one when the file is missing (the path above is hardcoded, so a
+		 * renamed plugin folder lands here), and an empty string compares as
+		 * older than everything.
 		 */
-		if ( ! empty( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.1', '<' ) ) {
+		if ( ! empty( $plugin_data['Version'] ) && qsm_installer_update_is_due( $plugin_data['Version'] ) ) {
 			$account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
 			?>
 			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">
