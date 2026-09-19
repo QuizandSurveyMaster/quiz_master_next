@@ -5325,7 +5325,7 @@ var QSM_Quiz_Broadcast_Channel;
                                 jQuery(document).trigger('qsm_after_save_results');
                                 QSMAdmin.displayAlert(qsm_admin_messages.results_page_saved, 'success');
                             } else {
-                                QSMAdmin.displayAlert( qsm_admin_messages.results_page_save_error + ' ' + qsm_admin_messages.results_page_saved, 'error');
+                                QSMAdmin.displayAlert( qsm_admin_messages.results_page_save_error, 'error');
                             }
                         })
                         .fail(QSMAdmin.displayjQueryError);
