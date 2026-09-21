@@ -59,8 +59,13 @@ function qsm_check_plugins_compatibility() {
 		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
 		$plugin_data = get_plugin_data( $plugin_path );
 
-		// Check if the plugin version is below 2.0.0
-		if ( isset( $plugin_data['Version'] ) && version_compare( $plugin_data['Version'], '2.0.0', '<' ) ) {
+		/*
+		 * The version is required to be non-empty: get_plugin_data() returns a
+		 * blank one when the file is missing (the path above is hardcoded, so a
+		 * renamed plugin folder lands here), and an empty string compares as
+		 * older than everything.
+		 */
+		if ( ! empty( $plugin_data['Version'] ) && qsm_installer_update_is_due( $plugin_data['Version'] ) ) {
 			$account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
 			?>
 			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">

@@ -3482,20 +3482,19 @@ var QSM_Quiz_Broadcast_Channel;
                     var comments = $context.find("#comments").val();
                     let required = $context.find("input[name='required']").is(":checked") ? 0 : 1;
                     var isQuestionBankPage = jQuery('body').hasClass('qsm_page_qsm_question_bank');
+                    // The Question Bank editor shows the status as a read-only label, so only the
+                    // quiz Questions tab has a toggle to read.
+                    const $questionStatus = isQuestionBankPage ? $() : $context.find("input[name='question_status']");
                     let isPublished;
-                    if ( isQuestionBankPage ) {
-                        const currentSettings = model.get('settings') || {};
-                        if ( typeof currentSettings.isPublished !== 'undefined' ) {
-                            isPublished = parseInt(currentSettings.isPublished, 10) ? 1 : 0;
-                        } else {
-                            isPublished = 1;
-                        }
+                    if ( $questionStatus.length ) {
+                        isPublished = $questionStatus.is(":checked") ? 1 : 0;
                     } else {
-                        if ( quizID && parseInt(quizID, 10) > 0 ) {
-                            isPublished = 1;
-                        } else {
-                            isPublished = $context.find("input[name='question_status']").is(":checked") ? 1 : 0;
-                        }
+                        // No status control in this editor context - keep the status the question
+                        // already has instead of silently unpublishing it.
+                        const currentSettings = ( model && model.get('settings') ) || {};
+                        isPublished = typeof currentSettings.isPublished !== 'undefined'
+                            ? ( parseInt(currentSettings.isPublished, 10) ? 1 : 0 )
+                            : 1;
                     }
                     advanced_option['required'] = required;
                     var category = $context.find(".category-radio:checked").val();
@@ -3586,6 +3585,9 @@ var QSM_Quiz_Broadcast_Channel;
 					model.set('answers', answers);
 					model.set('required', required);
 					model.set('is_published', isPublished);
+					// Keep the local copy of the question settings in step, so re-opening the
+					// editor before a page reload shows the status that was just saved.
+					model.set('settings', _.extend({}, model.get('settings') || {}, { isPublished: isPublished }));
                     jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
