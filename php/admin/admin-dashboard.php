@@ -71,7 +71,21 @@ function qsm_check_plugins_compatibility() {
 			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">
 				<div class="qsm-dashboard-error-content">
 					<h3><?php esc_html_e( 'Update Available', 'quiz-master-next' ); ?></h3>
-					<p><?php esc_html_e( 'We recommend downloading the latest version of the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next' ); ?></p>
+					<p>
+						<?php esc_html_e( 'We recommend downloading the latest version of the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next' ); ?>
+						<?php
+						/*
+						 * Name the version they are on. Without it the notice is
+						 * unactionable for support: "update the installer" does not
+						 * say whether the customer already did.
+						 */
+						printf(
+							/* translators: %s: QSM Installer version currently installed on this site. */
+							esc_html__( 'You are currently running version %s.', 'quiz-master-next' ),
+							'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>'
+						);
+						?>
+					</p>
 					<a href="<?php echo esc_url( $account_url ); ?>" class="qsm-dashboard-error-btn" target="_blank">
 						<?php esc_html_e( 'Get Latest QSM Installer', 'quiz-master-next' ); ?>
 					</a>
