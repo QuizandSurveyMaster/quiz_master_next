@@ -2075,15 +2075,29 @@ function qsm_normalize_version( $version ) {
 }
 
 /**
- * Whether the installed QSM Installer is behind the published one.
+ * The newest QSM Installer the store has published, as the installer knows it.
  *
  * The number deliberately does not live in QSM. The installer asks the store
  * what the newest release is and caches the answer for a day, so this reads
  * that answer rather than keeping a second copy that would need a QSM release
  * every time the installer ships one.
  *
- * An installer too old to answer is by definition below the floor, which is
- * the one case the constant covers.
+ * @since 10.3.1
+ * @return string Empty when the installer cannot say - too old to have the
+ *                check at all, or it has not asked yet.
+ */
+function qsm_installer_published_version() {
+	if ( ! class_exists( 'QSM_Installer_Update_Check' ) || ! method_exists( 'QSM_Installer_Update_Check', 'cached' ) ) {
+		return '';
+	}
+
+	$published = QSM_Installer_Update_Check::cached();
+
+	return ! empty( $published['latest_version'] ) ? (string) $published['latest_version'] : '';
+}
+
+/**
+ * Whether the installed QSM Installer is behind the published one.
  *
  * @since 10.3.1
  * @param  string $installed The version from the installer's plugin header.
@@ -2091,17 +2105,17 @@ function qsm_normalize_version( $version ) {
  */
 function qsm_installer_update_is_due( $installed ) {
 	if ( class_exists( 'QSM_Installer_Update_Check' ) && method_exists( 'QSM_Installer_Update_Check', 'cached' ) ) {
-		$published = QSM_Installer_Update_Check::cached();
+		$published = qsm_installer_published_version();
 
 		// It can answer but has not asked the store yet - its own page-load
 		// check fills this in. Claiming nothing beats guessing.
-		if ( empty( $published['latest_version'] ) ) {
+		if ( '' === $published ) {
 			return false;
 		}
 
 		return version_compare(
 			qsm_normalize_version( $installed ),
-			qsm_normalize_version( $published['latest_version'] ),
+			qsm_normalize_version( $published ),
 			'<'
 		);
 	}
