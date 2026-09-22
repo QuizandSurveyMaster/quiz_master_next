@@ -79,11 +79,23 @@ function qsm_check_plugins_compatibility() {
 						 * unactionable for support: "update the installer" does not
 						 * say whether the customer already did.
 						 */
-						printf(
-							/* translators: %s: QSM Installer version currently installed on this site. */
-							esc_html__( 'You are currently running version %s.', 'quiz-master-next' ),
-							'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>'
-						);
+						$published = qsm_installer_published_version();
+						if ( '' !== $published ) {
+							printf(
+								/* translators: 1: installed QSM Installer version, 2: newest version published by the store. */
+								esc_html__( 'You are currently running version %1$s; version %2$s is available.', 'quiz-master-next' ),
+								'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>',
+								'<strong>' . esc_html( $published ) . '</strong>'
+							);
+						} else {
+							// Reached only on an installer too old to report the
+							// published version. Name what we do know.
+							printf(
+								/* translators: %s: QSM Installer version currently installed on this site. */
+								esc_html__( 'You are currently running version %s.', 'quiz-master-next' ),
+								'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>'
+							);
+						}
 						?>
 					</p>
 					<a href="<?php echo esc_url( $account_url ); ?>" class="qsm-dashboard-error-btn" target="_blank">
