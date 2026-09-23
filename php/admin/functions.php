@@ -2120,6 +2120,21 @@ function qsm_installer_update_is_due( $installed ) {
 		);
 	}
 
+	return qsm_installer_is_below_floor( $installed );
+}
+
+/**
+ * Whether the installed QSM Installer is older than the floor release.
+ *
+ * Needs nothing but the version string - no cached store answer, no visit to
+ * the Extensions page first - so an installer this old is flagged on the very
+ * first dashboard load.
+ *
+ * @since 10.3.1
+ * @param  string $installed The version from the installer's plugin header.
+ * @return bool
+ */
+function qsm_installer_is_below_floor( $installed ) {
 	return version_compare(
 		qsm_normalize_version( $installed ),
 		qsm_normalize_version( QSM_INSTALLER_SELF_CHECK_VERSION ),

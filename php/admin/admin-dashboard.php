@@ -64,8 +64,17 @@ function qsm_check_plugins_compatibility() {
 		 * blank one when the file is missing (the path above is hardcoded, so a
 		 * renamed plugin folder lands here), and an empty string compares as
 		 * older than everything.
+		 *
+		 * Two ways to be due, either is enough:
+		 *  - below the floor release - decided from the version alone, so it
+		 *    shows on the first dashboard load with no page visit needed;
+		 *  - behind what the store publishes - which needs the installer's own
+		 *    cached answer, filled in once the Extensions page has been opened.
+		 * Without the first, an installer that reports an old version but
+		 * already carries the update check stayed silent until that visit.
 		 */
-		if ( ! empty( $plugin_data['Version'] ) && qsm_installer_update_is_due( $plugin_data['Version'] ) ) {
+		if ( ! empty( $plugin_data['Version'] )
+			&& ( qsm_installer_is_below_floor( $plugin_data['Version'] ) || qsm_installer_update_is_due( $plugin_data['Version'] ) ) ) {
 			$account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
 			?>
 			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">
@@ -80,7 +89,18 @@ function qsm_check_plugins_compatibility() {
 						 * say whether the customer already did.
 						 */
 						$published = qsm_installer_published_version();
-						if ( '' !== $published ) {
+
+						// Only name the store's version when it is actually newer.
+						// The below-floor case forces this notice on by itself, so
+						// the store's answer can be the very version they run (a
+						// store not yet updated) - and "2.0.2 is available" to
+						// somebody on 2.0.2 is wrong.
+						$newer = '' !== $published && version_compare(
+							qsm_normalize_version( $plugin_data['Version'] ),
+							qsm_normalize_version( $published ),
+							'<'
+						);
+						if ( $newer ) {
 							printf(
 								/* translators: 1: installed QSM Installer version, 2: newest version published by the store. */
 								esc_html__( 'You are currently running version %1$s; version %2$s is available.', 'quiz-master-next' ),
@@ -88,8 +108,10 @@ function qsm_check_plugins_compatibility() {
 								'<strong>' . esc_html( $published ) . '</strong>'
 							);
 						} else {
-							// Reached only on an installer too old to report the
-							// published version. Name what we do know.
+							// The store's number is not known yet: the installer is
+							// too old to report it, or has not been asked - the
+							// below-floor case gets here before any page visit.
+							// Name what we do know.
 							printf(
 								/* translators: %s: QSM Installer version currently installed on this site. */
 								esc_html__( 'You are currently running version %s.', 'quiz-master-next' ),
