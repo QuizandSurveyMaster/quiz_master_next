@@ -755,7 +755,7 @@ function qsmShouldSuppressCreationAlerts() {
         e.preventDefault();
         MicroModal.show('qsm_fetch_audit_data');
         var qsm_get_setting_data = jQuery(this).attr('data-auditid');
-        var qsm_audit_text = qsm_get_setting_data;
+        let qsm_audit_text = qsm_get_setting_data;
         try {
             qsm_audit_text = JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2);
         } catch (err) {}
@@ -1678,7 +1678,7 @@ function qsm_is_substring_in_array( text, array ) {
  * Only bites when the browser fails WP's emoji support test (twemoji loaded), e.g. WP 7.1 / Emoji 17.
  */
 function qsmPinTextareaValue( id ) {
-    var $textarea = jQuery( '#' + id );
+    const $textarea = jQuery( '#' + id );
     $textarea.val( $textarea.val() );
 }
 
