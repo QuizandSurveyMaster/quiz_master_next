@@ -755,7 +755,12 @@ function qsmShouldSuppressCreationAlerts() {
         e.preventDefault();
         MicroModal.show('qsm_fetch_audit_data');
         var qsm_get_setting_data = jQuery(this).attr('data-auditid');
-        jQuery('.qsm_setting__data').html('<p>' + JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2) + '</p>');
+        var qsm_audit_text = qsm_get_setting_data;
+        try {
+            qsm_audit_text = JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2);
+        } catch (err) {}
+        // Audit data can hold visitor-submitted values: insert as text, never as HTML.
+        jQuery('.qsm_setting__data').empty().append(jQuery('<p>').text(qsm_audit_text));
     });
 
     jQuery(document).on('click', '.qsm-toggle-box-handle', function (e) {

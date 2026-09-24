@@ -2850,6 +2850,9 @@ class QMNQuizManager {
 		if ( isset( $_POST['qsm_hidden_questions'] ) ) {
 			$hidden_questions = sanitize_text_field( wp_unslash( $_POST['qsm_hidden_questions'] ) );
 			$hidden_questions = json_decode( $hidden_questions, true );
+			// Only question ids ("12") and category ids ("c3") are valid here. json_decode()
+			// turns \u003c escapes back into markup that sanitize_text_field() never saw.
+			$hidden_questions = is_array( $hidden_questions ) ? array_values( array_filter( $hidden_questions, 'qsm_is_valid_hidden_question_id' ) ) : array();
 		}
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
@@ -2999,7 +3002,7 @@ class QMNQuizManager {
 								'result_insert_data' => maybe_serialize( $insert_data ),
 							)
 						);
-						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] . ' - ' . $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables ) );
+						$mlwQuizMasterNext->audit_manager->new_audit( 'Submit Quiz by ' . $qmn_array_for_variables['user_name'] . ' - ' . $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'], wp_json_encode( $qmn_array_for_variables, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) );
 						$result_display .= '<div class="qsm-result-page-warning">' . __( 'Sorry, your submission was not successful. Please contact the website administrator.', 'quiz-master-next' ) . '</div>';
 					}
 				}
@@ -4152,6 +4155,20 @@ add_filter(
 		return $exts;
 	}
 );
+
+/**
+ * Whether a value posted in qsm_hidden_questions is a question id (12, "12") or a
+ * category id ("c3"). Keeps the original type so existing comparisons behave as before.
+ *
+ * @param mixed $id Posted value.
+ * @return bool
+ */
+function qsm_is_valid_hidden_question_id( $id ) {
+	if ( is_int( $id ) ) {
+		return $id > 0;
+	}
+	return is_string( $id ) && 1 === preg_match( '/^c?[0-9]+$/D', $id );
+}
 
 // Print table rows
 function qsm_printTableRows( $array, $prefix = '' ) {
