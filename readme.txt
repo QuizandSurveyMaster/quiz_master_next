@@ -122,6 +122,8 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 * Bug: Respect the Draft/Published status when saving quiz questions.
 * Bug: Enforce the question limit when pagination is disabled.
 * Bug: Ensure quiz responses are saved correctly when the quiz page is cached.
+* Enhancement: Improved icon display consistency when reloading pages.
+* Security: Improved input handling in the Audit Trail to prevent potential cross-site scripting issues.
 
 = 11.2.6 (September 04, 2026) =
 * Security: Improved validation of user inputs and query parameters to prevent unauthenticated enumeration of quiz results.
