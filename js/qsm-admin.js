@@ -755,7 +755,12 @@ function qsmShouldSuppressCreationAlerts() {
         e.preventDefault();
         MicroModal.show('qsm_fetch_audit_data');
         var qsm_get_setting_data = jQuery(this).attr('data-auditid');
-        jQuery('.qsm_setting__data').html('<p>' + JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2) + '</p>');
+        let qsm_audit_text = qsm_get_setting_data;
+        try {
+            qsm_audit_text = JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2);
+        } catch (err) {}
+        // Audit data can hold visitor-submitted values: insert as text, never as HTML.
+        jQuery('.qsm_setting__data').empty().append(jQuery('<p>').text(qsm_audit_text));
     });
 
     jQuery(document).on('click', '.qsm-toggle-box-handle', function (e) {
@@ -1662,6 +1667,21 @@ function qsm_is_substring_in_array( text, array ) {
 }(jQuery));
 
 
+/**
+ * Pin a template-rendered <textarea>'s current value before wp.editor.initialize().
+ *
+ * With quicktags on, wp.editor.initialize() moves the textarea into a new wrapper. WordPress'
+ * wp-emoji MutationObserver sees it added and runs twemoji over it, replacing each emoji in the
+ * textarea's text node with an <img>. A textarea's value is its child TEXT only, so the emoji
+ * vanish before TinyMCE reads them, and the next save writes them out of the DB. Setting the
+ * value from script marks it dirty, which detaches it from later child-node changes.
+ * Only bites when the browser fails WP's emoji support test (twemoji loaded), e.g. WP 7.1 / Emoji 17.
+ */
+function qsmPinTextareaValue( id ) {
+    const $textarea = jQuery( '#' + id );
+    $textarea.val( $textarea.val() );
+}
+
 function qsmConvertContentToShortcode( contentToConvert ){
     let updatedContent = contentToConvert
     .replace(/\[qsm([^\]]*)\](.*?)\[\/qsm([^\]]*)\]/gs, function(match, attributes, content, closingAttributes) {
@@ -2399,6 +2419,7 @@ var QSMContact;
                             quicktags: true,
                         };
                         jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
+                        qsmPinTextareaValue('email-template-' + QSMAdminEmails.total);
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
                     const $emailBlock = jQuery(`#email-template-${QSMAdminEmails.total}`).closest('.email-show');
@@ -3482,20 +3503,19 @@ var QSM_Quiz_Broadcast_Channel;
                     var comments = $context.find("#comments").val();
                     let required = $context.find("input[name='required']").is(":checked") ? 0 : 1;
                     var isQuestionBankPage = jQuery('body').hasClass('qsm_page_qsm_question_bank');
+                    // The Question Bank editor shows the status as a read-only label, so only the
+                    // quiz Questions tab has a toggle to read.
+                    const $questionStatus = isQuestionBankPage ? $() : $context.find("input[name='question_status']");
                     let isPublished;
-                    if ( isQuestionBankPage ) {
-                        const currentSettings = model.get('settings') || {};
-                        if ( typeof currentSettings.isPublished !== 'undefined' ) {
-                            isPublished = parseInt(currentSettings.isPublished, 10) ? 1 : 0;
-                        } else {
-                            isPublished = 1;
-                        }
+                    if ( $questionStatus.length ) {
+                        isPublished = $questionStatus.is(":checked") ? 1 : 0;
                     } else {
-                        if ( quizID && parseInt(quizID, 10) > 0 ) {
-                            isPublished = 1;
-                        } else {
-                            isPublished = $context.find("input[name='question_status']").is(":checked") ? 1 : 0;
-                        }
+                        // No status control in this editor context - keep the status the question
+                        // already has instead of silently unpublishing it.
+                        const currentSettings = ( model && model.get('settings') ) || {};
+                        isPublished = typeof currentSettings.isPublished !== 'undefined'
+                            ? ( parseInt(currentSettings.isPublished, 10) ? 1 : 0 )
+                            : 1;
                     }
                     advanced_option['required'] = required;
                     var category = $context.find(".category-radio:checked").val();
@@ -3586,6 +3606,9 @@ var QSM_Quiz_Broadcast_Channel;
 					model.set('answers', answers);
 					model.set('required', required);
 					model.set('is_published', isPublished);
+					// Keep the local copy of the question settings in step, so re-opening the
+					// editor before a page reload shows the status that was just saved.
+					model.set('settings', _.extend({}, model.get('settings') || {}, { isPublished: isPublished }));
                     jQuery(document).trigger('qsm_save_question_before', [questionID, CurrentElement, model, advanced_option]);
                     $('.questionElements .advanced-content > .qsm-row:not(.core-option)').each(function () {
                         if ($(this).find('input[type="text"]').length > 0) {
@@ -5408,6 +5431,7 @@ var QSM_Quiz_Broadcast_Channel;
                         quicktags: true,
                     };
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
+                    qsmPinTextareaValue('results-page-' + QSMAdminResults.total);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
                     const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');

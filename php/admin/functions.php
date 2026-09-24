@@ -2034,6 +2034,114 @@ function qsm_display_promotion_links_section() {
 	<?php
 }
 
+/**
+ * The installer release that first knew how to check for its own updates.
+ *
+ * A floor, not a pointer at the current release - it records a fact about the
+ * past and never needs moving. Anything at or above it reports what the store
+ * publishes for itself (see qsm_installer_update_is_due()), so shipping a new
+ * installer does not mean editing QSM.
+ */
+if ( ! defined( 'QSM_INSTALLER_SELF_CHECK_VERSION' ) ) {
+	define( 'QSM_INSTALLER_SELF_CHECK_VERSION', '2.1' );
+}
+
+/**
+ * Pad a version to at least three segments.
+ *
+ * version_compare() reads a missing trailing segment as SMALLER, so
+ * version_compare( '2.1', '2.1.0', '<' ) is true - and "2.1" and "2.1.0" are
+ * the same release to everyone who writes them. Padding makes them compare
+ * equal. Anything that is not plain dotted numbers is handed back untouched
+ * for version_compare() to judge on its own terms.
+ *
+ * @since 10.3.1
+ * @param  string $version A version string.
+ * @return string
+ */
+function qsm_normalize_version( $version ) {
+	$version = trim( (string) $version );
+
+	if ( ! preg_match( '/^\d+(\.\d+)*$/', $version ) ) {
+		return $version;
+	}
+
+	$parts = explode( '.', $version );
+	while ( count( $parts ) < 3 ) {
+		$parts[] = '0';
+	}
+
+	return implode( '.', $parts );
+}
+
+/**
+ * The newest QSM Installer the store has published, as the installer knows it.
+ *
+ * The number deliberately does not live in QSM. The installer asks the store
+ * what the newest release is and caches the answer for a day, so this reads
+ * that answer rather than keeping a second copy that would need a QSM release
+ * every time the installer ships one.
+ *
+ * @since 10.3.1
+ * @return string Empty when the installer cannot say - too old to have the
+ *                check at all, or it has not asked yet.
+ */
+function qsm_installer_published_version() {
+	if ( ! class_exists( 'QSM_Installer_Update_Check' ) || ! method_exists( 'QSM_Installer_Update_Check', 'cached' ) ) {
+		return '';
+	}
+
+	$published = QSM_Installer_Update_Check::cached();
+
+	return ! empty( $published['latest_version'] ) ? (string) $published['latest_version'] : '';
+}
+
+/**
+ * Whether the installed QSM Installer is behind the published one.
+ *
+ * @since 10.3.1
+ * @param  string $installed The version from the installer's plugin header.
+ * @return bool True when the customer should be told to update.
+ */
+function qsm_installer_update_is_due( $installed ) {
+	if ( class_exists( 'QSM_Installer_Update_Check' ) && method_exists( 'QSM_Installer_Update_Check', 'cached' ) ) {
+		$published = qsm_installer_published_version();
+
+		// It can answer but has not asked the store yet - its own page-load
+		// check fills this in. Claiming nothing beats guessing.
+		if ( '' === $published ) {
+			return false;
+		}
+
+		return version_compare(
+			qsm_normalize_version( $installed ),
+			qsm_normalize_version( $published ),
+			'<'
+		);
+	}
+
+	return qsm_installer_is_below_floor( $installed );
+}
+
+/**
+ * Whether the installed QSM Installer is older than the floor release.
+ *
+ * Needs nothing but the version string - no cached store answer, no visit to
+ * the Extensions page first - so an installer this old is flagged on the very
+ * first dashboard load.
+ *
+ * @since 10.3.1
+ * @param  string $installed The version from the installer's plugin header.
+ * @return bool
+ */
+function qsm_installer_is_below_floor( $installed ) {
+	return version_compare(
+		qsm_normalize_version( $installed ),
+		qsm_normalize_version( QSM_INSTALLER_SELF_CHECK_VERSION ),
+		'<'
+	);
+}
+
 function qsm_get_parsing_script_data( $file_name = 'parsing_script.json' ) {
     global $wp_filesystem;
     if ( empty($wp_filesystem) ) {

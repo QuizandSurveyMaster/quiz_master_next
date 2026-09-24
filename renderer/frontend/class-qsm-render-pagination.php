@@ -286,6 +286,10 @@ class QSM_New_Pagination_Renderer {
 			if ( in_array( 'pages', $this->randomness_order, true ) ) {
 				shuffle( $this->pages );
 			}
+			// "Limit Number of Questions" is a quiz-wide cap, not a per-page one, so it has
+			// to be applied here too -- create_auto_pagination() (the pagination > 0 branch)
+			// is the only other place it is honoured.
+			$this->apply_total_question_limit();
 		} else {
 			$this->create_auto_pagination();
 		}
@@ -320,6 +324,109 @@ class QSM_New_Pagination_Renderer {
 			}
 		}
 		unset( $page );
+	}
+
+	/**
+	 * Apply the quiz-wide "Limit Number of Questions" cap to the manual pages.
+	 *
+	 * The pagination > 0 branch caps in create_auto_pagination(); this is the manual-pages
+	 * equivalent, and it deliberately mirrors that branch rather than truncating page by
+	 * page: the candidates are flattened across every page first, so when randomization is
+	 * on the subset is sampled from the whole quiz instead of a prefix of page one.
+	 *
+	 * Unlike apply_page_question_limit(), this runs even when question_per_category is set.
+	 * The manual branch performs no category selection at all, so there is nothing for the
+	 * cap to conflict with -- and the paginated branch likewise applies the cap after its
+	 * category filtering.
+	 *
+	 * Pages keep their array keys so the positional $this->qpages lookup in
+	 * render_question_pages() still resolves.
+	 */
+	private function apply_total_question_limit() {
+		if ( ! is_array( $this->pages ) || empty( $this->pages ) ) {
+			return;
+		}
+
+		$question_amount = isset( $this->shortcode_args['question_amount'] ) ? intval( $this->shortcode_args['question_amount'] ) : 0;
+		$max_questions   = 0;
+		if ( 0 !== $question_amount ) {
+			$max_questions = $question_amount;
+		} elseif ( isset( $this->quiz_options->question_from_total ) ) {
+			$max_questions = intval( $this->quiz_options->question_from_total );
+		}
+		if ( $max_questions <= 0 ) {
+			return;
+		}
+
+		// Only questions that survived load_questions() can render, so a page entry left
+		// behind by a deleted or unpublished question must not consume a slot.
+		$known = ( is_array( $this->questions ) && ! empty( $this->questions ) ) ? array_map( 'intval', array_keys( $this->questions ) ) : array();
+
+		$candidates = array();
+		foreach ( $this->pages as $page ) {
+			if ( ! is_array( $page ) ) {
+				continue;
+			}
+			foreach ( $page as $question_id ) {
+				$question_id = intval( $question_id );
+				if ( empty( $known ) || in_array( $question_id, $known, true ) ) {
+					$candidates[] = $question_id;
+				}
+			}
+		}
+		$candidates = array_values( array_unique( $candidates ) );
+		if ( count( $candidates ) <= $max_questions ) {
+			return;
+		}
+
+		$randomized = in_array( 'questions', $this->randomness_order, true ) || in_array( 'pages', $this->randomness_order, true );
+		$kept       = array();
+
+		if ( $randomized ) {
+			// Reuse the selection this visitor has already been shown, the way
+			// create_auto_pagination() does -- re-rolling on every render would let a second
+			// render (another tab, a reload) replace the question_ids cookie that
+			// check_answers() grades against, so questions the taker answered would be
+			// dropped from the score.
+			if ( isset( $_COOKIE[ 'question_ids_' . intval( $this->quiz_data['quiz_id'] ) ] ) ) {
+				$cookie_raw = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . intval( $this->quiz_data['quiz_id'] ) ] ) );
+				$cookie_raw = preg_replace( '/[^0-9,]/', '', $cookie_raw );
+				$cookie_ids = array_filter( array_map( 'intval', explode( ',', $cookie_raw ) ) );
+				$kept       = array_values( array_intersect( $cookie_ids, $candidates ) );
+			}
+			if ( empty( $kept ) ) {
+				shuffle( $candidates );
+				$kept = $candidates;
+			}
+		} else {
+			$kept = $candidates;
+		}
+		$kept = array_slice( $kept, 0, $max_questions );
+
+		foreach ( $this->pages as $page_index => $page ) {
+			if ( ! is_array( $page ) || empty( $page ) ) {
+				// An intentionally question-less page is an interstitial; leave it alone.
+				continue;
+			}
+			$page = array_values( array_intersect( array_map( 'intval', $page ), $kept ) );
+			if ( empty( $page ) ) {
+				unset( $this->pages[ $page_index ] );
+				continue;
+			}
+			$this->pages[ $page_index ] = $page;
+		}
+
+		// Keep $this->questions in step with the pages, the way create_auto_pagination() does,
+		// so question counts and the per-question JSON payload only cover what is rendered.
+		if ( is_array( $this->questions ) && ! empty( $this->questions ) ) {
+			$this->questions = array_filter(
+				$this->questions,
+				function ( $question_id ) use ( $kept ) {
+					return in_array( intval( $question_id ), $kept, true );
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+		}
 	}
 
 	/**
@@ -549,7 +656,8 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Apply overall question limit after all filtering/randomization so category filters remain consistent.
-		if ( $this->quiz_options->pagination > 0 && $max_questions > 0 ) {
+		// (This branch only runs when pagination > 0; the manual-pages branch caps in apply_total_question_limit().)
+		if ( $max_questions > 0 ) {
 			$question_ids = array_slice( $question_ids, 0, $max_questions );
 		}
 		

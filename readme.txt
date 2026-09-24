@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.2.6
+Stable tag: 11.2.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,13 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+
+= 11.2.7 (September 21, 2026) =
+* Bug: Respect the Draft/Published status when saving quiz questions.
+* Bug: Enforce the question limit when pagination is disabled.
+* Bug: Ensure quiz responses are saved correctly when the quiz page is cached.
+* Enhancement: Improved icon display consistency when reloading pages.
+* Security: Improved input handling in the Audit Trail to prevent potential cross-site scripting issues.
 
 = 11.2.6 (September 04, 2026) =
 * Security: Improved validation of user inputs and query parameters to prevent unauthenticated enumeration of quiz results.
