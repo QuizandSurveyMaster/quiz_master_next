@@ -1667,6 +1667,21 @@ function qsm_is_substring_in_array( text, array ) {
 }(jQuery));
 
 
+/**
+ * Pin a template-rendered <textarea>'s current value before wp.editor.initialize().
+ *
+ * With quicktags on, wp.editor.initialize() moves the textarea into a new wrapper. WordPress'
+ * wp-emoji MutationObserver sees it added and runs twemoji over it, replacing each emoji in the
+ * textarea's text node with an <img>. A textarea's value is its child TEXT only, so the emoji
+ * vanish before TinyMCE reads them, and the next save writes them out of the DB. Setting the
+ * value from script marks it dirty, which detaches it from later child-node changes.
+ * Only bites when the browser fails WP's emoji support test (twemoji loaded), e.g. WP 7.1 / Emoji 17.
+ */
+function qsmPinTextareaValue( id ) {
+    var $textarea = jQuery( '#' + id );
+    $textarea.val( $textarea.val() );
+}
+
 function qsmConvertContentToShortcode( contentToConvert ){
     let updatedContent = contentToConvert
     .replace(/\[qsm([^\]]*)\](.*?)\[\/qsm([^\]]*)\]/gs, function(match, attributes, content, closingAttributes) {
@@ -2404,6 +2419,7 @@ var QSMContact;
                             quicktags: true,
                         };
                         jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
+                        qsmPinTextareaValue('email-template-' + QSMAdminEmails.total);
                         wp.editor.initialize('email-template-' + QSMAdminEmails.total, settings);
                     }
                     const $emailBlock = jQuery(`#email-template-${QSMAdminEmails.total}`).closest('.email-show');
@@ -5415,6 +5431,7 @@ var QSM_Quiz_Broadcast_Channel;
                         quicktags: true,
                     };
                     jQuery(document).trigger('qsm_tinyMCE_settings_after', [settings]);
+                    qsmPinTextareaValue('results-page-' + QSMAdminResults.total);
                     wp.editor.initialize('results-page-' + QSMAdminResults.total, settings);
                     jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect, QSMAdminResults.total, singlePage]);
                     const $resultsPage = jQuery(`#results-page-${QSMAdminResults.total}`).closest('.results-page-show');
