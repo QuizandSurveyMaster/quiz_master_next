@@ -1314,10 +1314,14 @@ class QMNPluginHelper {
 	public function qsm_get_limited_options( $options, $limit ) {
 		$correct   = array_filter( $options, fn( $o, $k ) => 1 == $o[2], ARRAY_FILTER_USE_BOTH );
 		$incorrect = array_filter( $options, fn( $o, $k ) => 0 == $o[2], ARRAY_FILTER_USE_BOTH );
-		shuffle( $incorrect );
-		$final = array_merge( $correct, array_slice( $incorrect, 0, $limit - count( $correct ) ) );
-		shuffle( $final );
-		$final_keys = array_map( fn( $k ) => array_search( $k, array_values( $options ), true ), $final );
+		$incorrect_keys = array_keys( $incorrect );
+		shuffle( $incorrect_keys );
+		$final_keys = array_merge( array_keys( $correct ), array_slice( $incorrect_keys, 0, $limit - count( $correct ) ) );
+		shuffle( $final_keys );
+		$final = array();
+		foreach ( $final_keys as $final_key ) {
+			$final[ $final_key ] = $options[ $final_key ];
+		}
 		return array(
 			'final'             => $final,
 			'answer_limit_keys' => implode( ',', $final_keys ),
