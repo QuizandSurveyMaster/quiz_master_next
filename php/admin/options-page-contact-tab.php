@@ -252,6 +252,45 @@ function qsm_options_contact_tab_content() {
 	add_action( 'admin_footer', 'qsm_options_contact_tab_template' );
 }
 
+/**
+ * The quiz_options keys the contact tab is allowed to write.
+ *
+ * Mirrors the inputs rendered inside #contactformsettings, which is what the
+ * admin JS collects into settings[]. Anything else posted under that key belongs
+ * to another tab and is dropped.
+ *
+ * Add-ons that render extra inputs into that table -- the
+ * 'qsm_contact_form_location_after' hook puts them inside the collected
+ * container -- must register their keys through the filter, or their values will
+ * be silently discarded.
+ *
+ * @since 11.2.5
+ * @return array List of allowed quiz_options keys.
+ */
+function qsm_contact_form_allowed_settings() {
+	$allowed = array(
+		'contact_info_location',
+		'loggedin_user_contact',
+		'contact_disable_autofill',
+		'disable_first_page',
+		'enable_server_side_validation',
+		'contact_field_required_error_text',
+		'email_error_text',
+		'number_error_text',
+		'url_error_text',
+		'minlength_error_text',
+		'maxlength_error_text',
+	);
+
+	/**
+	 * Filter the quiz_options keys the contact tab may write.
+	 *
+	 * @since 11.2.5
+	 * @param array $allowed List of allowed quiz_options keys.
+	 */
+	return (array) apply_filters( 'qsm_contact_form_allowed_settings', $allowed );
+}
+
 add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 /**
  * Saves the contact form from the quiz settings tab
@@ -268,6 +307,24 @@ function qsm_contact_form_admin_ajax() {
 		die( 'Busted!' );
 	}
 
+	// The nonce above authenticates the request but authorizes nothing: its action
+	// string is built from the quiz id the CALLER supplied, so it says only "this
+	// user asked for this quiz", never "this user may edit this quiz". Gate the
+	// write with the same per-quiz ownership check the REST write routes and
+	// qsm_update_text_message() use -- edit_qsm_quizzes on its own is a flat
+	// capability every role from Contributor up holds.
+	if ( ! current_user_can( 'edit_qsm_quizzes' )
+		|| ! function_exists( 'qsm_current_user_can_edit_quiz' )
+		|| ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+		echo wp_json_encode(
+			array(
+				'status'  => false,
+				'message' => __( 'You are not allowed to edit this quiz.', 'quiz-master-next' ),
+			)
+		);
+		die();
+	}
+
 	$results = $data     = array();
 	if ( isset( $_POST['contact_form'] ) ) {
 		$data = qsm_sanitize_rec_array( wp_unslash( $_POST['contact_form'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -278,7 +335,15 @@ function qsm_contact_form_admin_ajax() {
 	if ( isset( $_POST['settings'] ) ) {
 		$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 		$settings        = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$allowed         = qsm_contact_form_allowed_settings();
 		foreach ( $settings as $key => $val ) {
+			// Only the keys this tab actually renders may be written. The request
+			// carries whatever the client puts in settings[], and the whole
+			// quiz_options array lives behind this one endpoint, so an unfiltered
+			// merge let the contact tab rewrite unrelated options.
+			if ( ! in_array( $key, $allowed, true ) ) {
+				continue;
+			}
 			$quiz_options[ $key ] = $val;
 		}
 		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );
