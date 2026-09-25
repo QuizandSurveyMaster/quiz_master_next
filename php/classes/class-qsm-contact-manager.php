@@ -222,9 +222,18 @@ class QSM_Contact_Manager {
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 				if ( 'true' === $fields[ $i ]["enable"] || true === $fields[ $i ]["enable"] ) {
 					$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $fields[ $i ]['label'], "quiz_contact_field_text-{$i}-{$options->quiz_id}" );
+
+					/*
+					 * htmlspecialchars(), not htmlentities(). Called with default arguments both
+					 * use the same flags and charset on every PHP version and encode exactly the
+					 * same ASCII characters (& < > " '), so the HTML escaping here is unchanged.
+					 * The only difference is that htmlentities() also turned every non-ASCII
+					 * letter into a named entity -- "Jönsson" was stored as "J&ouml;nsson" and
+					 * reached results screens, emails and every integration add-on that way.
+					 */
 					$field_array = array(
 						'label' => $field_label,
-						'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) ) : 'None',
+						'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlspecialchars( strip_shortcodes( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) ) : 'None',
 					);
 					if ( isset( $fields[ $i ]['use'] ) ) {
 						$field_array['use'] = $fields[ $i ]['use'];
