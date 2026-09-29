@@ -20,6 +20,7 @@ import {
 	SelectControl,
 	Placeholder,
 	ExternalLink,
+	Notice,
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import './editor.scss';
@@ -74,6 +75,23 @@ export default function Edit( props ) {
 	}, [] );
 
 	const { getBlock } = useSelect( blockEditorStore );
+
+	//same quiz already embedded earlier on this page: only the first embed saves the quiz
+	const isDuplicateEmbed = useSelect( ( select ) => {
+		if ( qsmIsEmpty( quizID ) || '0' == quizID ) {
+			return false;
+		}
+		const { getClientIdsWithDescendants, getBlockName, getBlockAttributes } = select( blockEditorStore );
+		for ( const blockClientId of getClientIdsWithDescendants() ) {
+			if ( blockClientId === clientId ) {
+				return false;
+			}
+			if ( 'qsm/quiz' === getBlockName( blockClientId ) && quizID == getBlockAttributes( blockClientId )?.quizID ) {
+				return true;
+			}
+		}
+		return false;
+	}, [ quizID, clientId ] );
 
 	/**Initialize block from server */
 	useEffect( () => {
@@ -492,7 +510,7 @@ export default function Edit( props ) {
 
 	//saving Quiz on save page
 	useEffect( () => {
-		if ( isSavingPage ) {
+		if ( isSavingPage && ! isDuplicateEmbed ) {
 			let quizData =  getQuizDataToSave();
 			//save quiz status
 			setSaveQuiz( true );
@@ -716,7 +734,14 @@ export default function Edit( props ) {
 	{ ( qsmIsEmpty( quizID ) || '0' == quizID ) ?
     <div { ...blockProps }> { quizPlaceholder() } </div>
 	:
+	<>
+	{ isDuplicateEmbed &&
+		<Notice status="warning" isDismissible={ false }>
+			{ __( 'This quiz is already embedded above on this page. Changes made in this copy are not saved; edit the quiz in the first block, or remove this one.', 'quiz-master-next' ) }
+		</Notice>
+	}
 	<div { ...innerBlocksProps } />
+	</>
 	}
 
 	</>
