@@ -315,6 +315,14 @@ class QSM_Questions
                 $linked_questions_array[] = intval($data['is_linking']);
             }
             $linked_questions_array = array_filter($linked_questions_array);
+            // REST callers: only keep linked questions in quizzes the user can edit, so they are
+            // neither rewritten below nor stored (a stored link is also followed on delete).
+            if ( ! empty($data['restrict_linked_to_editable']) ) {
+                $authorised_id          = $is_creating ? array() : array( intval($data['ID']) );
+                $linked_questions_array = function_exists('qsm_filter_editable_question_ids')
+                    ? qsm_filter_editable_question_ids($linked_questions_array, $authorised_id)
+                    : array_values(array_intersect($linked_questions_array, $authorised_id));
+            }
             // Join back into a comma-separated string
             $linked_question = implode(',', $linked_questions_array);
         } elseif ( isset($data['is_linking']) && 0 == $data['is_linking'] ) {
@@ -393,12 +401,7 @@ class QSM_Questions
             $values['linked_question'] = $imploded_question_ids;
         }
         $question_terms_table = $wpdb->prefix . 'mlw_question_terms';
-        // Linked questions the caller is not allowed to touch (see qsm_get_uneditable_question_ids()).
-        $skip_linked_ids = isset($data['skip_linked_ids']) ? array_map('intval', (array) $data['skip_linked_ids']) : array();
         foreach ( $quiz_questions_array as $quiz_id => $question_id_loop ) {
-            if ( intval($question_id_loop) !== intval($base_question_id) && in_array(intval($question_id_loop), $skip_linked_ids, true) ) {
-                continue;
-            }
             $values['quiz_id'] = intval($quiz_id);
             $wpdb->update(
                 $wpdb->prefix . 'mlw_questions',

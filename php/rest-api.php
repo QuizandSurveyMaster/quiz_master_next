@@ -784,9 +784,8 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'linked_question' => $request['merged_question'],
 					'is_linking'      => isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0,
 				);
-				$linked_ids              = is_scalar( $request['merged_question'] ) ? explode( ',', (string) $request['merged_question'] ) : array();
-				$linked_ids[]            = $data['is_linking'];
-				$data['skip_linked_ids'] = qsm_get_uneditable_question_ids( $linked_ids );
+				// Linked questions are filtered inside QSM_Questions, on the ids it parses.
+				$data['restrict_linked_to_editable'] = true;
 				$settings       = array(
 					'required'       => $request['required'],
 					'answerEditor'   => 'text',
@@ -864,7 +863,8 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'category'        => $request['category'],
 					'multicategories' => $request['multicategories'],
 					'linked_question' => $request['merged_question'],
-					'skip_linked_ids' => qsm_get_uneditable_question_ids( $request['merged_question'] ),
+					// Linked questions are filtered inside QSM_Questions, on the ids it parses.
+					'restrict_linked_to_editable' => true,
 				);
 				$settings                    = array();
 				$settings['answerEditor']    = $request['answerEditor'];
@@ -1085,47 +1085,102 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 }
 
 /**
- * Returns the question ids, out of $question_ids, that sit in a quiz the
- * current user may not edit.
- *
- * The question save/create routes authorise against the quizID in the request,
- * but QSM_Questions also rewrites every linked question listed in
- * merged_question / is_linking, and each of those keeps its own quiz. Checking
- * only the request's quiz let a user who owns any quiz overwrite questions in
- * another author's quiz. Callers pass the result to QSM_Questions as
- * skip_linked_ids so those rows are left untouched.
- *
- * Users with edit_others_qsm_quizzes can edit every quiz, so for them this is
- * always empty and linked-question syncing behaves exactly as before.
+ * Maps each existing question id to the quiz it belongs to.
  *
  * @since 11.2.8
- * @param array|string $question_ids Question ids, as an array or comma-separated string.
- * @return int[]
+ * @param array $question_ids Question ids.
+ * @return array question_id => quiz_id, only for rows that exist.
  */
-function qsm_get_uneditable_question_ids( $question_ids ) {
+function qsm_get_question_quiz_ids( $question_ids ) {
 	global $wpdb;
-	if ( ! is_array( $question_ids ) ) {
-		$question_ids = explode( ',', (string) $question_ids );
-	}
-	$question_ids = array_values( array_unique( array_filter( array_map( 'absint', $question_ids ) ) ) );
-	if ( empty( $question_ids ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+	$question_ids = array_values( array_unique( array_filter( array_map( 'intval', (array) $question_ids ) ) ) );
+	if ( empty( $question_ids ) ) {
 		return array();
 	}
 	$placeholders = implode( ',', array_fill( 0, count( $question_ids ), '%d' ) );
 	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is only %d tokens.
-	$rows       = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )", $question_ids ) );
-	$can_edit   = array();
-	$uneditable = array();
+	$rows = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )", $question_ids ) );
+	$map  = array();
 	foreach ( (array) $rows as $row ) {
-		$quiz_id = intval( $row->quiz_id );
+		$map[ intval( $row->question_id ) ] = intval( $row->quiz_id );
+	}
+	return $map;
+}
+
+/**
+ * Returns the question ids, out of $question_ids, that exist and sit in a quiz
+ * the current user may not edit. Used to refuse a question save whose URL
+ * question belongs to another author's quiz.
+ *
+ * @since 11.2.8
+ * @param array $question_ids Question ids.
+ * @return int[]
+ */
+function qsm_get_uneditable_question_ids( $question_ids ) {
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return array();
+	}
+	$uneditable = array();
+	$can_edit   = array();
+	foreach ( qsm_get_question_quiz_ids( $question_ids ) as $question_id => $quiz_id ) {
 		if ( ! isset( $can_edit[ $quiz_id ] ) ) {
 			$can_edit[ $quiz_id ] = qsm_current_user_can_edit_quiz( $quiz_id );
 		}
 		if ( ! $can_edit[ $quiz_id ] ) {
-			$uneditable[] = intval( $row->question_id );
+			$uneditable[] = $question_id;
 		}
 	}
 	return $uneditable;
+}
+
+/**
+ * Keeps only the question ids the current user may write to or delete: ids of
+ * existing questions whose quiz the user can edit, plus any id in $always_keep.
+ * An allowlist, so anything the lookup cannot resolve is dropped rather than
+ * let through.
+ *
+ * Linked questions (merged_question / is_linking / linked_question) each keep
+ * their own quiz. Checking only the request's quiz let a user who owns any quiz
+ * overwrite, or delete, questions in another author's quiz by linking them.
+ *
+ * Users with edit_others_qsm_quizzes can edit every quiz, so for them the list
+ * is returned unchanged and linked-question syncing behaves exactly as before.
+ *
+ * @since 11.2.8
+ * @param array $question_ids Question ids (as parsed by the caller).
+ * @param array $always_keep  Ids already authorised by the caller.
+ * @return array
+ */
+function qsm_filter_editable_question_ids( $question_ids, $always_keep = array() ) {
+	$question_ids = (array) $question_ids;
+	if ( current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return $question_ids;
+	}
+	$always_keep = array_map( 'intval', (array) $always_keep );
+	$quiz_ids    = qsm_get_question_quiz_ids( $question_ids );
+	$can_edit    = array();
+	$allowed     = array();
+	foreach ( $question_ids as $question_id ) {
+		$question_id = intval( $question_id );
+		if ( $question_id <= 0 || in_array( $question_id, $allowed, true ) ) {
+			continue;
+		}
+		if ( in_array( $question_id, $always_keep, true ) ) {
+			$allowed[] = $question_id;
+			continue;
+		}
+		if ( ! isset( $quiz_ids[ $question_id ] ) ) {
+			continue;
+		}
+		$quiz_id = $quiz_ids[ $question_id ];
+		if ( ! isset( $can_edit[ $quiz_id ] ) ) {
+			$can_edit[ $quiz_id ] = qsm_current_user_can_edit_quiz( $quiz_id );
+		}
+		if ( $can_edit[ $quiz_id ] ) {
+			$allowed[] = $question_id;
+		}
+	}
+	return $allowed;
 }
 
 /**
