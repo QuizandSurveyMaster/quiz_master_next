@@ -19,7 +19,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
 	$mlw_class = apply_filters( 'qsm_horizontal_multiple_response_classes', $mlw_class, $id );
-	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
+	$limit_multiple_response = absint( $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' ) );
 	$limit_mr_text           = '';
 	if ( $limit_multiple_response > 0 ) {
 		$limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';

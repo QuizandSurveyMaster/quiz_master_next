@@ -393,7 +393,12 @@ class QSM_Questions
             $values['linked_question'] = $imploded_question_ids;
         }
         $question_terms_table = $wpdb->prefix . 'mlw_question_terms';
+        // Linked questions the caller is not allowed to touch (see qsm_get_uneditable_question_ids()).
+        $skip_linked_ids = isset($data['skip_linked_ids']) ? array_map('intval', (array) $data['skip_linked_ids']) : array();
         foreach ( $quiz_questions_array as $quiz_id => $question_id_loop ) {
+            if ( intval($question_id_loop) !== intval($base_question_id) && in_array(intval($question_id_loop), $skip_linked_ids, true) ) {
+                continue;
+            }
             $values['quiz_id'] = intval($quiz_id);
             $wpdb->update(
                 $wpdb->prefix . 'mlw_questions',

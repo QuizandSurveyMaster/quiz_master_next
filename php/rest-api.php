@@ -784,6 +784,9 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'linked_question' => $request['merged_question'],
 					'is_linking'      => isset( $request['is_linking'] ) ? intval( $request['is_linking'] ) : 0,
 				);
+				$linked_ids              = is_scalar( $request['merged_question'] ) ? explode( ',', (string) $request['merged_question'] ) : array();
+				$linked_ids[]            = $data['is_linking'];
+				$data['skip_linked_ids'] = qsm_get_uneditable_question_ids( $linked_ids );
 				$settings       = array(
 					'required'       => $request['required'],
 					'answerEditor'   => 'text',
@@ -838,6 +841,14 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
 			);
 		}
+		// The row written is the question in the URL, which keeps its own
+		// quiz_id: authorise against that quiz too, not only the request's quizID.
+		if ( in_array( intval( $request['id'] ), qsm_get_uneditable_question_ids( array( $request['id'] ) ), true ) ) {
+			return array(
+				'status' => 'error',
+				'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+			);
+		}
 		$stop         = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
 			try {
@@ -853,6 +864,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'category'        => $request['category'],
 					'multicategories' => $request['multicategories'],
 					'linked_question' => $request['merged_question'],
+					'skip_linked_ids' => qsm_get_uneditable_question_ids( $request['merged_question'] ),
 				);
 				$settings                    = array();
 				$settings['answerEditor']    = $request['answerEditor'];
@@ -863,7 +875,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				$settings['isPublished']     = sanitize_text_field( $request['is_published'] );
 				if ( isset( $request['other_settings'] ) && is_array( $request['other_settings'] ) ) {
 					foreach ( $request['other_settings'] as $setting_key => $setting_value ) {
-						$settings[ $setting_key ] = $setting_value;
+						$settings[ $setting_key ] = qsm_sanitize_question_numeric_setting( $setting_key, $setting_value );
 					}
 				}
 				$intial_answers = $request['answers'];
@@ -1070,6 +1082,74 @@ function qsm_current_user_can_edit_quiz( $quiz_id ) {
 	$post_author = intval( get_post_field( 'post_author', $post_id ) );
 
 	return $post_author > 0 && $current_user === $post_author;
+}
+
+/**
+ * Returns the question ids, out of $question_ids, that sit in a quiz the
+ * current user may not edit.
+ *
+ * The question save/create routes authorise against the quizID in the request,
+ * but QSM_Questions also rewrites every linked question listed in
+ * merged_question / is_linking, and each of those keeps its own quiz. Checking
+ * only the request's quiz let a user who owns any quiz overwrite questions in
+ * another author's quiz. Callers pass the result to QSM_Questions as
+ * skip_linked_ids so those rows are left untouched.
+ *
+ * Users with edit_others_qsm_quizzes can edit every quiz, so for them this is
+ * always empty and linked-question syncing behaves exactly as before.
+ *
+ * @since 11.2.8
+ * @param array|string $question_ids Question ids, as an array or comma-separated string.
+ * @return int[]
+ */
+function qsm_get_uneditable_question_ids( $question_ids ) {
+	global $wpdb;
+	if ( ! is_array( $question_ids ) ) {
+		$question_ids = explode( ',', (string) $question_ids );
+	}
+	$question_ids = array_values( array_unique( array_filter( array_map( 'absint', $question_ids ) ) ) );
+	if ( empty( $question_ids ) || current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		return array();
+	}
+	$placeholders = implode( ',', array_fill( 0, count( $question_ids ), '%d' ) );
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is only %d tokens.
+	$rows       = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )", $question_ids ) );
+	$can_edit   = array();
+	$uneditable = array();
+	foreach ( (array) $rows as $row ) {
+		$quiz_id = intval( $row->quiz_id );
+		if ( ! isset( $can_edit[ $quiz_id ] ) ) {
+			$can_edit[ $quiz_id ] = qsm_current_user_can_edit_quiz( $quiz_id );
+		}
+		if ( ! $can_edit[ $quiz_id ] ) {
+			$uneditable[] = intval( $row->question_id );
+		}
+	}
+	return $uneditable;
+}
+
+/**
+ * Casts the numeric question settings that end up in HTML attributes.
+ *
+ * min_text_length, limit_text and limit_multiple_response were stored verbatim
+ * from other_settings, and the question templates concatenate them into
+ * attributes. Empty stays empty so the editor shows the same blank field it
+ * does today; anything else becomes a non-negative integer.
+ *
+ * @since 11.2.8
+ * @param string $key   Setting key.
+ * @param mixed  $value Submitted value.
+ * @return mixed
+ */
+function qsm_sanitize_question_numeric_setting( $key, $value ) {
+	$numeric_keys = array( 'min_text_length', 'limit_text', 'limit_multiple_response' );
+	if ( ! in_array( $key, $numeric_keys, true ) ) {
+		return $value;
+	}
+	if ( ! is_scalar( $value ) || '' === trim( (string) $value ) ) {
+		return '';
+	}
+	return absint( $value );
 }
 
 /**

@@ -20,7 +20,7 @@ if ( ! is_array( $question_settings ) ) {
 $limit_mr_text = '';
 global $mlwQuizMasterNext;
 $required                = isset( $question_settings['required'] ) ? $question_settings['required'] : 0;
-$limit_multiple_response = isset( $question_settings['limit_multiple_response'] ) ? $question_settings['limit_multiple_response'] : 0;
+$limit_multiple_response = isset( $question_settings['limit_multiple_response'] ) ? absint( $question_settings['limit_multiple_response'] ) : 0;
 if ( $limit_multiple_response > 0 ) {
     $limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';
 }
