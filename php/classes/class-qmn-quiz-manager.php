@@ -2186,8 +2186,8 @@ class QMNQuizManager {
 			wp_die();
 		}
 
-		$qsm_option                    = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
-		$qsm_option                    = array_map( 'maybe_unserialize', $qsm_option );
+		$qsm_option                    = isset( $options->quiz_settings ) ? qsm_unserialize_no_objects( $options->quiz_settings ) : array();
+		$qsm_option                    = is_array( $qsm_option ) ? array_map( 'qsm_unserialize_no_objects', $qsm_option ) : array();
 		$dateStr                       = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone                      = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate                     = strtotime( $dateStr . ' ' . $timezone );
