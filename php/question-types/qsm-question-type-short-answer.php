@@ -20,7 +20,8 @@ function qmn_small_open_display( $id, $question, $answers ) {
 	$min_text_length    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'min_text_length' );
 	$placeholder_text = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'placeholder_text' );
 	$autofill_att   = $autofill ? "autocomplete='off' " : '';
-	$min_text_attr  = $min_text_length ? "minlength=" . $min_text_length . "" : '';
+	$min_text_length = absint( $min_text_length );
+	$min_text_attr  = $min_text_length ? "minlength=" . $min_text_length : '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
 	} else {
