@@ -515,6 +515,10 @@ class QMNQuizManager {
 		ob_start();
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
+			// Security: the unique_id is later concatenated into a shortcode string passed to
+			// do_shortcode(), so strip shortcode delimiters to prevent arbitrary shortcode
+			// injection (CVE-2026-103917). Legitimate tokens are uniqid() hex with no brackets.
+			$result_unique_id = str_replace( array( '[', ']' ), '', $result_unique_id );
 			$result           = $wpdb->get_row( $wpdb->prepare( "SELECT `result_id`, `quiz_id` FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id ), ARRAY_A );
 			if ( ! empty( $result ) && isset( $result['result_id'] ) ) {
 
@@ -2864,6 +2868,9 @@ class QMNQuizManager {
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$unique_id                           = ! empty( $_REQUEST['qsm_unique_key'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qsm_unique_key'] ) ) : uniqid();
+			// Security: never persist shortcode delimiters in a unique_id — it is rendered via
+			// do_shortcode() on the public result page (CVE-2026-103917). uniqid() has none.
+			$unique_id                           = str_replace( array( '[', ']' ), '', $unique_id );
 			$results_id                          = 0;
 			// Creates our results array.
 			$results_array = array(
