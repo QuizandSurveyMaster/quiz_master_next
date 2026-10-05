@@ -22,7 +22,8 @@ $required   = isset( $question_settings['required'] ) ? $question_settings['requ
 $limit_text = isset( $question_settings['limit_text'] ) ? $question_settings['limit_text'] : '';
 $min_length = isset( $question_settings['min_text_length'] ) ? $question_settings['min_text_length'] : '';
 $placeholder_text = isset( $question_settings['placeholder_text'] ) ? $question_settings['placeholder_text'] : '';
-$min_length_attr    = $min_length ? "minlength=" . $min_length . "" : '';
+$min_length         = absint( $min_length );
+$min_length_attr    = $min_length ? "minlength=" . $min_length : '';
 if ( 0 == $required ) {
     $mlw_require_class = 'mlwRequiredText';
 } else {

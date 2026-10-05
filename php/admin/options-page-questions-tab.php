@@ -1456,7 +1456,8 @@ function qsm_delete_question_from_database() {
 
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
-		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) );
+		// Links stored before 11.2.8 may point into other authors' quizzes: only follow the ones this user may delete.
+		$connected_question_ids     = qsm_filter_editable_question_ids( qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) ), array( $question_id ) );
 		$question_ids_to_delete     = array_merge( $connected_question_ids, array( $question_id ) );
 		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
 		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );
@@ -1534,7 +1535,8 @@ function qsm_bulk_delete_question_from_database() {
 		}
 
 		$update_qpages_after_delete = array();
-		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( $question_id );
+		// Links stored before 11.2.8 may point into other authors' quizzes: only follow the ones this user may delete.
+		$connected_question_ids     = qsm_filter_editable_question_ids( qsm_get_unique_linked_question_ids_to_remove( $question_id ), $question_id );
 		$question_ids_to_delete     = array_merge( $connected_question_ids, $question_id );
 		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
 		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );

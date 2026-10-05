@@ -1338,10 +1338,12 @@ class QMNPluginHelper {
 	 */
 	public function qsm_get_randomization_modes( $randomness_order ) {
 
-		// If stored as serialized (from DB), unserialize it
-		if ( is_serialized( $randomness_order ) ) {
-			$randomness_order = maybe_unserialize( $randomness_order );
-		}
+		// If stored as serialized (from DB), unserialize it without allowing
+		// objects. A contributor-controlled quiz option value is stored verbatim
+		// as this element, so a serialized-object payload here must not be
+		// instantiated (PHP Object Injection). Rejected payloads come back null
+		// and fall through to the "None" default below.
+		$randomness_order = qsm_safe_unserialize( $randomness_order );
 
 		$normalized_modes = array();
 		$valid_modes      = array( 'questions', 'pages', 'answers' );

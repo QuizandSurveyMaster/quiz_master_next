@@ -25,7 +25,8 @@ $limit_text         = isset( $question_settings['limit_text'] ) ? $question_sett
 $min_text_length    = isset( $question_settings['min_text_length'] ) ? $question_settings['min_text_length'] : '';
 $placeholder_text   = isset( $question_settings['placeholder_text'] ) ? $question_settings['placeholder_text'] : '';
 $autofill_att       = $autofill ? "autocomplete='off' " : '';
-$min_text_attr      = $min_text_length ? "minlength=" . $min_text_length . "" : '';
+$min_text_length    = absint( $min_text_length );
+$min_text_attr      = $min_text_length ? "minlength=" . $min_text_length : '';
 
 // Get required class
 $mlw_require_class  = 0 == $required ? 'mlwRequiredText' : '';
