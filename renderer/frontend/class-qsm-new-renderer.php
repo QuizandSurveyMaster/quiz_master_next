@@ -221,7 +221,11 @@ class QSM_New_Renderer {
 		ob_start();
 		
 		$result_unique_id = isset($_GET['result_id']) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : '';
-		
+		// Security: the unique_id is later concatenated into a shortcode string passed to
+		// do_shortcode(), so strip shortcode delimiters to prevent arbitrary shortcode
+		// injection (CVE-2026-103917). Legitimate tokens are uniqid() hex with no brackets.
+		$result_unique_id = str_replace( array( '[', ']' ), '', $result_unique_id );
+
 		// Get result from database
 		$result           = $wpdb->get_row(
 			$wpdb->prepare(

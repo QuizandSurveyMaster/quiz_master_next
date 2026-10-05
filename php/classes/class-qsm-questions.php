@@ -315,6 +315,14 @@ class QSM_Questions
                 $linked_questions_array[] = intval($data['is_linking']);
             }
             $linked_questions_array = array_filter($linked_questions_array);
+            // REST callers: only keep linked questions in quizzes the user can edit, so they are
+            // neither rewritten below nor stored (a stored link is also followed on delete).
+            if ( ! empty($data['restrict_linked_to_editable']) ) {
+                $authorised_id          = $is_creating ? array() : array( intval($data['ID']) );
+                $linked_questions_array = function_exists('qsm_filter_editable_question_ids')
+                    ? qsm_filter_editable_question_ids($linked_questions_array, $authorised_id)
+                    : array_values(array_intersect($linked_questions_array, $authorised_id));
+            }
             // Join back into a comma-separated string
             $linked_question = implode(',', $linked_questions_array);
         } elseif ( isset($data['is_linking']) && 0 == $data['is_linking'] ) {

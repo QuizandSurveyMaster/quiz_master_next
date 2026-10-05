@@ -24,7 +24,7 @@ if ( 0 == $required ) {
     $mlw_class = 'mlwRequiredRadio';
 }
 $mlw_class = apply_filters( 'qsm_horizontal_multiple_response_classes', $mlw_class, $id );
-$limit_multiple_response = isset( $question_settings['limit_multiple_response'] ) ? $question_settings['limit_multiple_response'] : 0;
+$limit_multiple_response = isset( $question_settings['limit_multiple_response'] ) ? absint( $question_settings['limit_multiple_response'] ) : 0;
 $limit_mr_text           = '';
 if ( $limit_multiple_response > 0 ) {
     $limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';

@@ -42,6 +42,21 @@ export const qsmStripTags = ( text ) => {
 	return  div.innerText;
 }
 
+//append a value to form data, expanding arrays/objects to key[i][j] so PHP receives them as arrays
+const qsmAppendFormValue = ( data, key, value ) => {
+	if ( null !== value && 'object' === typeof value && ! ( value instanceof Blob ) ) {
+		let keys = Object.keys( value );
+		if ( 0 === keys.length ) {
+			//keep the key present (as before) so the server still sees an empty value
+			data.append( key, '' );
+			return;
+		}
+		keys.forEach( ( childKey ) => qsmAppendFormValue( data, key + '[' + childKey + ']', value[ childKey ] ) );
+		return;
+	}
+	data.append( key, value );
+}
+
 //prepare form data
 export const qsmFormData = ( obj = false ) => {
 	let newData = new FormData();
@@ -50,7 +65,7 @@ export const qsmFormData = ( obj = false ) => {
 	if ( false !== obj ) {
 		for ( let k in obj ) {
 			if ( obj.hasOwnProperty( k ) ) {
-			   newData.append( k, obj[k] );
+				qsmAppendFormValue( newData, k, obj[k] );
 			}
 		}
 	}

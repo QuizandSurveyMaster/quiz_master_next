@@ -37,6 +37,26 @@ class QSM_Quiz_Settings {
 	private $registered_fields;
 
 	/**
+	 * Unserializes a stored setting value without allowing object instantiation.
+	 *
+	 * Quiz settings are stored as serialized arrays, so individual elements are
+	 * unserialized a second time when read. A scalar option value supplied by a
+	 * contributor survives verbatim as a nested element, so a serialized-object
+	 * payload placed there would otherwise be instantiated on read (PHP Object
+	 * Injection). Refusing classes keeps the legitimate array/scalar round-trip
+	 * intact while returning any object payload as an inert __PHP_Incomplete_Class.
+	 *
+	 * @param mixed $value The stored value to unserialize.
+	 * @return mixed The unserialized value, never a live object.
+	 */
+	private function safe_unserialize( $value ) {
+		if ( is_string( $value ) && is_serialized( $value ) ) {
+			return unserialize( trim( $value ), array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- allowed_classes:false blocks object injection
+		}
+		return maybe_unserialize( $value );
+	}
+
+	/**
 	 * Prepares the settings for the supplied quiz
 	 *
 	 * @since 5.0.0
@@ -101,12 +121,12 @@ class QSM_Quiz_Settings {
 		}
 
 		// Maybe unserailize
-		$section_settings = maybe_unserialize( $section_settings );
+		$section_settings = $this->safe_unserialize( $section_settings );
 
 		// Check if setting exists
 		if ( isset( $section_settings[ $setting ] ) ) {
 			// Try to unserialize it and then return it
-			return maybe_unserialize( $section_settings[ $setting ] );
+			return $this->safe_unserialize( $section_settings[ $setting ] );
 		} else {
 			// Return the default if no setting exists
 			return $default;
@@ -143,7 +163,7 @@ class QSM_Quiz_Settings {
 		// Check if setting exists
 		if ( isset( $this->settings[ $setting ] ) ) {
 			// Try to unserialize it and then return it
-			return maybe_unserialize( $this->settings[ $setting ] );
+			return $this->safe_unserialize( $this->settings[ $setting ] );
 		} else {
 			// Return the default if no setting exists
 			return $default;
@@ -291,7 +311,7 @@ class QSM_Quiz_Settings {
 		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
 
 		// unserializes array
-		$settings_array = maybe_unserialize( $settings );
+		$settings_array = $this->safe_unserialize( $settings );
 
 		// If the value is not an array, create an empty array
 		if ( ! is_array( $settings_array ) ) {

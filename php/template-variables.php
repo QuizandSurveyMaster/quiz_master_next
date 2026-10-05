@@ -1958,6 +1958,27 @@ function qsm_safe_unserialize( $value ) {
 }
 
 /**
+ * Unserialize a value while blocking object instantiation but preserving any
+ * legitimate nested serialized payload.
+ *
+ * Unlike qsm_safe_unserialize(), this keeps nested serialized elements intact,
+ * so it is safe to use on a stored SECTION array (whose elements may themselves
+ * be serialized, e.g. selectinput / category_select_key). It only differs from
+ * maybe_unserialize() by refusing to instantiate objects (PHP Object Injection).
+ *
+ * @param mixed $value Serialized string or any other value.
+ * @return mixed Unserialized value; an object payload comes back as an inert
+ *               __PHP_Incomplete_Class instead of a live object.
+ */
+function qsm_unserialize_no_objects( $value ) {
+	if ( is_string( $value ) && is_serialized( $value ) ) {
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- allowed_classes:false blocks object injection
+		return unserialize( trim( $value ), array( 'allowed_classes' => false ) );
+	}
+	return maybe_unserialize( $value );
+}
+
+/**
  * Replace minimum points variable with actual miniumum points
  *
  * @since 7.0.2

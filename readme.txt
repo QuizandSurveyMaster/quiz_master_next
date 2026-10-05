@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.2.7
+Stable tag: 11.2.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,12 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+
+= 11.2.8 (October 5, 2026) =
+* Bug: Fixed issue where the QSM block creates blank question copies when a quiz is embedded twice.
+* Security: Fixed stored XSS via question length settings and resolved a question-save IDOR vulnerability.
+* Security: Blocked PHP Object Injection vulnerabilities via the quiz option element.
+* Security: Prevented unauthenticated shortcode injection flaws via the result unique_id.
 
 = 11.2.7 (September 21, 2026) =
 * Bug: Respect the Draft/Published status when saving quiz questions.
