@@ -870,7 +870,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				$settings['answerEditor']    = $request['answerEditor'];
 				$settings['question_title']  = sanitize_text_field( wp_strip_all_tags( html_entity_decode( $request['question_title'] ) ) );
 				$settings['featureImageID']  = sanitize_text_field( $request['featureImageID'] );
-				$settings['featureImageSrc'] = esc_url_raw( (string) $request['featureImageSrc'] );
+				$settings['featureImageSrc'] = is_scalar( $request['featureImageSrc'] ) ? esc_url_raw( (string) $request['featureImageSrc'] ) : '';
 				$settings['matchAnswer']     = sanitize_text_field( $request['matchAnswer'] );
 				$settings['isPublished']     = sanitize_text_field( $request['is_published'] );
 				if ( isset( $request['other_settings'] ) && is_array( $request['other_settings'] ) ) {
