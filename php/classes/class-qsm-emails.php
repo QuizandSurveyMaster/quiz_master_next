@@ -43,6 +43,8 @@ class QSM_Emails {
 
 			// kses converts ampersands to &amp; core.trac.wordpress.org/ticket/11311.
 			$email_subject = str_replace( '&amp;', '&', $email_subject );
+			// The subject is a plain-text header, so emoji stored as entities must go out as characters.
+			$email_subject = self::decode_emoji_entities( $email_subject );
 
 			$email_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['content'], "quiz-email-content-{$index}-{$response_data['quiz_id']}" );
 			// Checks if any conditions are present. Else, send it always.
@@ -289,6 +291,27 @@ class QSM_Emails {
 	}
 
 	/**
+	 * Turns emoji stored as HTML entities (see save_emails() on utf8mb3 tables)
+	 * back into characters, for places that are not HTML.
+	 *
+	 * @param string $text The text to decode.
+	 * @return string The decoded text.
+	 */
+	public static function decode_emoji_entities( $text ) {
+		if ( ! is_string( $text ) || false === strpos( $text, '&#x' ) ) {
+			return $text;
+		}
+		// Only non-ASCII code points, so a decoded entity can never become markup.
+		return preg_replace_callback(
+			'/&#x([0-9a-f]{2,6});/i',
+			function( $matches ) {
+				return hexdec( $matches[1] ) < 0x80 ? $matches[0] : html_entity_decode( $matches[0], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			},
+			$text
+		);
+	}
+
+	/**
 	 * Loads the emails for a single quiz.
 	 *
 	 * @since 6.2.0
@@ -499,6 +522,15 @@ class QSM_Emails {
 			return false;
 		}
 
+		/*
+		 * Sites whose QSM tables were never converted to utf8mb4 still store
+		 * user_email_template as 3-byte utf8. wpdb rejects the WHOLE update when
+		 * the value holds a 4-byte character (emoji), so encode those as HTML
+		 * entities first — the same thing core does for post_content.
+		 */
+		$column_charset = $wpdb->get_col_charset( $wpdb->prefix . 'mlw_quizzes', 'user_email_template' );
+		$encode_emoji   = in_array( $column_charset, array( 'utf8', 'utf8mb3' ), true );
+
 		// Sanitizes data in emails.
 		$total = count( $emails );
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -542,6 +574,12 @@ class QSM_Emails {
 						$emails[ $i ]['content']
 				);
 				$emails[ $i ]['content'] = wp_kses_post( $emails[ $i ]['content'] );
+			}
+			if ( $encode_emoji ) {
+				$emails[ $i ]['subject'] = wp_encode_emoji( $emails[ $i ]['subject'] );
+				if ( isset( $emails[ $i ]['content'] ) ) {
+					$emails[ $i ]['content'] = wp_encode_emoji( $emails[ $i ]['content'] );
+				}
 			}
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
