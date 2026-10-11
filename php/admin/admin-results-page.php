@@ -197,9 +197,16 @@ function qsm_results_overview_tab_content() {
 	$order_by_sql        = 'ORDER BY time_taken_real DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
-		$sanitized_search_phrase = htmlentities( sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) ) );
-		$search_phrase_percents  = '%' . esc_sql( $wpdb->esc_like( $sanitized_search_phrase ) ) . '%';
-		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
+		$raw_search_phrase       = sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) );
+		$sanitized_search_phrase = htmlspecialchars( $raw_search_phrase );
+		// Contact values saved before the move from htmlentities() to htmlspecialchars() keep non-ASCII letters as entities
+		// ("J&ouml;nsson"), so match that form too. For an ASCII phrase both are identical and the query is unchanged.
+		$search_clauses = array();
+		foreach ( array_unique( array( $sanitized_search_phrase, htmlentities( $raw_search_phrase ) ) ) as $search_phrase ) {
+			$search_phrase_percents = '%' . esc_sql( $wpdb->esc_like( $search_phrase ) ) . '%';
+			$search_clauses[]       = $wpdb->prepare( 'quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
+		}
+		$search_phrase_sql = ' AND (' . implode( ' OR ', $search_clauses ) . ')';
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id             = intval( $_GET['quiz_id'] );
