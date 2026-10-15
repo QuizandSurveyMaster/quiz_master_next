@@ -1086,10 +1086,14 @@ class QSM_Fields {
 		global $wpdb, $mlwQuizMasterNext;
 		$show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 
-		$value                   = ! empty( $value ) ? maybe_unserialize( $value ) : array(
-			'category_select_key'     => array(),
-			'question_limit_category' => array(),
-		);
+		// Security (PHP Object Injection): never instantiate objects from the stored value.
+		$value                   = ! empty( $value ) ? qsm_unserialize_no_objects( $value ) : array();
+		if ( ! is_array( $value ) || empty( $value ) ) {
+			$value = array(
+				'category_select_key'     => array(),
+				'question_limit_category' => array(),
+			);
+		}
 		$quiz_id                 = isset( $_GET['quiz_id'] ) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 		$limit_category_checkbox = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'limit_category_checkbox' );
 		?>
