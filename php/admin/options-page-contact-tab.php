@@ -252,6 +252,34 @@ function qsm_options_contact_tab_content() {
 	add_action( 'admin_footer', 'qsm_options_contact_tab_template' );
 }
 
+/**
+ * Quiz options the Contact tab is allowed to save through qsm_save_contact.
+ *
+ * Add-ons that add their own inputs to the Contact tab settings table can
+ * register the extra keys with the `qsm_contact_tab_allowed_settings` filter.
+ *
+ * @since 11.2.9
+ * @return array
+ */
+function qsm_contact_tab_allowed_settings() {
+	$allowed_keys = array(
+		'contact_info_location',
+		'loggedin_user_contact',
+		'contact_disable_autofill',
+		'disable_first_page',
+		'enable_server_side_validation',
+		'contact_field_required_error_text',
+		'email_error_text',
+		'number_error_text',
+		'url_error_text',
+		'minlength_error_text',
+		'maxlength_error_text',
+		// Added to this tab by the QSM Ultimate add-on.
+		'ultimate_shortcode_button_text',
+	);
+	return (array) apply_filters( 'qsm_contact_tab_allowed_settings', $allowed_keys );
+}
+
 add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 /**
  * Saves the contact form from the quiz settings tab
@@ -267,6 +295,12 @@ function qsm_contact_form_admin_ajax() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
 		die( 'Busted!' );
 	}
+	// The nonce only proves the request came from this user's Contact tab, so
+	// also enforce the per-quiz edit/ownership check before writing anything.
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+		echo wp_json_encode( array( 'status' => false ) );
+		die();
+	}
 
 	$results = $data     = array();
 	if ( isset( $_POST['contact_form'] ) ) {
@@ -275,10 +309,18 @@ function qsm_contact_form_admin_ajax() {
 	/**
 	 * Store contact form related quiz options.
 	 */
-	if ( isset( $_POST['settings'] ) ) {
+	if ( isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ) {
 		$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 		$settings        = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$allowed_keys    = qsm_contact_tab_allowed_settings();
 		foreach ( $settings as $key => $val ) {
+			// Security (PHP Object Injection): this tab may only write its own
+			// options, and none of them is ever a serialized value. Without this,
+			// any quiz option (e.g. select_category_question, which is later
+			// unserialized) could be overwritten with an object payload.
+			if ( ! in_array( $key, $allowed_keys, true ) || ! is_scalar( $val ) || is_serialized( $val ) ) {
+				continue;
+			}
 			$quiz_options[ $key ] = $val;
 		}
 		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );

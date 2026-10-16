@@ -1087,8 +1087,9 @@ class QMNQuizManager {
 					}
 					$question_ids = array_unique( $random );
 				}
-			} elseif ( 1 == $quiz_options->limit_category_checkbox && ! empty( maybe_unserialize( $quiz_options->select_category_question ) ) && $is_quiz_page ) {
-				$category_question_limit = maybe_unserialize( $quiz_options->select_category_question );
+			} elseif ( 1 == $quiz_options->limit_category_checkbox && is_array( qsm_unserialize_no_objects( $quiz_options->select_category_question ) ) && ! empty( qsm_unserialize_no_objects( $quiz_options->select_category_question ) ) && $is_quiz_page ) {
+				// Security (PHP Object Injection): never instantiate objects from this quiz option.
+				$category_question_limit = qsm_unserialize_no_objects( $quiz_options->select_category_question );
 				$categories              = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids            = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				if ( ! empty( $category_ids ) ) {

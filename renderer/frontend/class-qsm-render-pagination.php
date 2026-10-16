@@ -153,17 +153,19 @@ class QSM_New_Pagination_Renderer {
 		$this->options          = $options;
 		$this->quiz_data        = $quiz_data;
 		$this->shortcode_args   = $shortcode_args;
-		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
-		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );
+		// Security (PHP Object Injection): quiz settings hold Contributor-editable values,
+		// so unserialize them without allowing objects.
+		$this->quiz_settings    = qsm_unserialize_no_objects( $options->quiz_settings );
+		$this->quiz_options     = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_options'] );
 		// When "apply to manual pages" is on with a "Questions Per Page" value, render the
 		// manual pages and cap each one. This zeroes pagination so setup/render below take
 		// the manual path; the stashed cap is applied in apply_page_question_limit().
 		$this->quiz_options     = qsm_apply_manual_pagination_override( $this->quiz_options );
 		$this->manual_page_cap  = isset( $this->quiz_options->qsm_manual_page_cap ) ? intval( $this->quiz_options->qsm_manual_page_cap ) : 0;
-		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );
-		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? maybe_unserialize( $this->quiz_settings['contact_form'] ) : array();
-		$this->pages            = isset( $this->quiz_settings['pages'] ) ? maybe_unserialize( $this->quiz_settings['pages'] ) : array();
-		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? maybe_unserialize( $this->quiz_settings['qpages'] ) : array();
+		$this->quiz_texts       = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_text'] );
+		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['contact_form'] ) : array();
+		$this->pages            = isset( $this->quiz_settings['pages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['pages'] ) : array();
+		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['qpages'] ) : array();
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
@@ -578,9 +580,11 @@ class QSM_New_Pagination_Renderer {
 			}
 			// Mode 2: Advanced category question limit
 			elseif ( 1 == $this->quiz_options->limit_category_checkbox 
-				&& ! empty( maybe_unserialize( $this->quiz_options->select_category_question ) ) ) {
+				&& is_array( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) )
+				&& ! empty( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) ) ) {
 				
-				$category_question_limit = maybe_unserialize( $this->quiz_options->select_category_question );
+				// Security (PHP Object Injection): never instantiate objects from this quiz option.
+				$category_question_limit = qsm_unserialize_no_objects( $this->quiz_options->select_category_question );
 				$categories_data = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories_data['list'] ) ? array_keys( $categories_data['list'] ) : array() );
 				
@@ -1707,7 +1711,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Get quiz settings
-		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
+		$quiz_settings = qsm_unserialize_no_objects( $this->options->quiz_settings );
 		
 		// Get error messages from quiz texts with language support
 		$default_texts   = QMNPluginHelper::get_default_texts();
