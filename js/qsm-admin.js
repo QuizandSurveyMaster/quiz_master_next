@@ -172,6 +172,12 @@ function qsmShouldSuppressCreationAlerts() {
             jQuery('.catergory_comma_values').val(checked_data);
         });
 
+        function qsmToggleHighlightCorrectAnswer() {
+            jQuery('fieldset#highlight_correct_answer').toggle(jQuery('#enable_quick_result_mc-1').is(':checked'));
+        }
+        qsmToggleHighlightCorrectAnswer();
+        $(document).on('change', '#enable_quick_result_mc-1', qsmToggleHighlightCorrectAnswer);
+
         $(document).on('change', '#limit_category_checkbox-1', function (event) {
             if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
                 jQuery('#question_per_category').hide();

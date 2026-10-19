@@ -1929,7 +1929,9 @@ function qsm_show_inline_result(quizID, question_id, value, $this, answer_type, 
 		$this.append('<div class="quick-question-res-p qsm-correct-answer-info">' + qmn_quiz_data[quizID].quick_result_correct_answer_text + '</div>')
 		$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 	} else if (0 < value.length && data.success == 'incorrect') {
-		$this.find('.qmn_radio_answers input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+		if ( '0' !== String( qmn_quiz_data[quizID].highlight_correct_answer ) ) {
+			$this.find('.qmn_radio_answers input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+		}
 		$this.append('<div class="quick-question-res-p qsm-incorrect-answer-info">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 		$this.append('<div class="qsm-inline-correct-info">' + qsm_check_shortcode(data.message) + '</div>');
 	}

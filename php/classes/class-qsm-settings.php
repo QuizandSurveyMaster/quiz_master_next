@@ -232,6 +232,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['form_disable_autofill']              = $globalQuizsetting['form_disable_autofill'];
 			$setDefaultvalue['show_category_on_front']             = $globalQuizsetting['show_category_on_front'];
 			$setDefaultvalue['enable_quick_result_mc']             = $globalQuizsetting['enable_quick_result_mc'];
+			$setDefaultvalue['highlight_correct_answer']           = isset( $globalQuizsetting['highlight_correct_answer'] ) ? $globalQuizsetting['highlight_correct_answer'] : 1;
 			$setDefaultvalue['end_quiz_if_wrong']                  = $globalQuizsetting['end_quiz_if_wrong'];
 			$setDefaultvalue['enable_quick_correct_answer_info']   = $globalQuizsetting['enable_quick_correct_answer_info'];
 			$setDefaultvalue['enable_retake_quiz_button']          = $globalQuizsetting['enable_retake_quiz_button'];
