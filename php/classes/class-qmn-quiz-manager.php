@@ -3379,8 +3379,17 @@ class QMNQuizManager {
 		}
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-		if ( 0 !== $total_questions ) {
-			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
+		// total_questions only counts graded questions, so only subtract hidden questions that are graded.
+		// A hidden Text/HTML section would otherwise shrink the denominator and push the score above 100%.
+		global $mlwQuizMasterNext;
+		$hidden_graded_count = 0;
+		foreach ( $hidden_questions as $hidden_question_id ) {
+			if ( isset( $questions[ $hidden_question_id ] ) && $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $questions[ $hidden_question_id ]['question_type_new'] ) ) {
+				++$hidden_graded_count;
+			}
+		}
+		if ( 0 < $total_questions - $hidden_graded_count ) {
+			$total_score = round( ( ( $total_correct / ( $total_questions - $hidden_graded_count ) ) * 100 ), 2 );
 		} else {
 			$total_score = 0;
 		}
