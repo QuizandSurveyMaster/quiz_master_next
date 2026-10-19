@@ -1189,7 +1189,7 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	private function render_quiz_pages( $shortcode_args = array() ) {
-		global $qmn_total_questions;
+		global $mlwQuizMasterNext, $qmn_total_questions;
 		$animation_effect = isset( $this->options->quiz_animation ) && '' !== $this->options->quiz_animation ? ' animated ' . $this->options->quiz_animation : '';
 		
 		// Check if we have pages
@@ -1262,11 +1262,16 @@ class QSM_New_Pagination_Renderer {
 						continue;
 					}
 					
-					$qmn_total_questions += 1;
-					$question = $this->questions[ $question_id ];
+					$question  = $this->questions[ $question_id ];
+					// Only graded questions are counted and numbered (matches the legacy renderer),
+					// otherwise a Text/HTML section inflates total_questions and lowers the score.
+					$is_graded = $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question['question_type_new'] );
+					if ( $is_graded ) {
+						$qmn_total_questions += 1;
+					}
 					?>
 					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
-						<?php if ( 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
+						<?php if ( $is_graded && 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php } ?>
 						<?php
@@ -1318,10 +1323,14 @@ class QSM_New_Pagination_Renderer {
 					</div>
 				</div>
 				<?php
-				// Increment question count for lazy loaded pages. Count the renderable IDs
-				// only, so the running total matches what the AJAX handler will actually
-				// render and data-question-start-number stays in step across pages.
-				$qmn_total_questions += count( $page_question_ids );
+				// Increment question count for lazy loaded pages. Count the renderable,
+				// graded IDs only, so the running total matches what the AJAX handler will
+				// actually number and data-question-start-number stays in step across pages.
+				foreach ( $page_question_ids as $page_question_id ) {
+					if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $this->questions[ $page_question_id ]['question_type_new'] ) ) {
+						$qmn_total_questions += 1;
+					}
+				}
 			}
 			// Show page count if enabled
 			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
