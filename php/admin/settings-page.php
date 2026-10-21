@@ -342,6 +342,7 @@ class QMNGlobalSettingsPage {
 			'form_disable_autofill'                  => 0,
 			'show_category_on_front'                 => 0,
 			'enable_quick_result_mc'                 => 0,
+			'highlight_correct_answer'               => 1,
 			'end_quiz_if_wrong'                      => 0,
 			'enable_quick_correct_answer_info'       => 0,
 			'show_question_featured_image_in_result' => 0,
@@ -1344,6 +1345,7 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_progress_bar = ( isset( $globalQuizsetting['progress_bar'] ) && '' !== $globalQuizsetting['progress_bar'] ? $globalQuizsetting['progress_bar'] : 0 );
 		$qsm_enable_quick_result_mc = ( isset( $globalQuizsetting['enable_quick_result_mc'] ) && '' !== $globalQuizsetting['enable_quick_result_mc'] ? $globalQuizsetting['enable_quick_result_mc'] : 0 );
+		$qsm_highlight_correct_answer = ( isset( $globalQuizsetting['highlight_correct_answer'] ) && '' !== $globalQuizsetting['highlight_correct_answer'] ? $globalQuizsetting['highlight_correct_answer'] : 1 );
 		$qsm_enable_quick_correct_answer_info = ( isset( $globalQuizsetting['enable_quick_correct_answer_info'] ) && '' !== $globalQuizsetting['enable_quick_correct_answer_info'] ? $globalQuizsetting['enable_quick_correct_answer_info'] : 0 );
 		?>
 		<fieldset class="buttonset buttonset-hide">
@@ -1356,6 +1358,13 @@ class QMNGlobalSettingsPage {
 			<label class="qsm-option-label" for="enable_quick_result_mc-1">
 				<input type="checkbox" id="enable_quick_result_mc-1" name="qsm-quiz-settings[enable_quick_result_mc]" value="1" <?php checked( $qsm_enable_quick_result_mc, 1 ); ?>>
 				<?php esc_html_e("Show the results of each question's response in real-time", 'quiz-master-next'); ?>
+			</label>
+		</fieldset>
+		<fieldset class="buttonset buttonset-hide" data-hide="1" id="highlight_correct_answer">
+			<input type="hidden" name="qsm-quiz-settings[highlight_correct_answer]" value="0">
+			<label class="qsm-option-label" for="highlight_correct_answer-1">
+				<input type="checkbox" id="highlight_correct_answer-1" name="qsm-quiz-settings[highlight_correct_answer]" value="1" <?php checked( $qsm_highlight_correct_answer, 1 ); ?>>
+				<?php esc_html_e( 'Highlight the correct answer when the response is wrong', 'quiz-master-next' ); ?>
 			</label>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="enable_quick_correct_answer_info">

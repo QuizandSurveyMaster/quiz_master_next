@@ -1998,7 +1998,9 @@ if (typeof window.qsmCheckMR !== 'function') {
                     $this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + quizData.quick_result_correct_answer_text + '</div>');
                     $this.append('<div class="qsm-inline-correct-info">' + this.qsmCheckShortcode(data.message) + '</div>');
                 } else if (value && value.length > 0 && data.success == 'incorrect') {
-                    $this.find('.qmn_radio_answers input[value="' + data.correct_index + '"], .qsm-answer-options input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+                    if (String(quizData.highlight_correct_answer) !== '0') {
+                        $this.find('.qmn_radio_answers input[value="' + data.correct_index + '"], .qsm-answer-options input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+                    }
                     $this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + quizData.quick_result_wrong_answer_text + '</div>');
                     $this.append('<div class="qsm-inline-correct-info">' + this.qsmCheckShortcode(data.message) + '</div>');
                 }

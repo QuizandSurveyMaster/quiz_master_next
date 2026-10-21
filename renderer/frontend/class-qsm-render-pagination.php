@@ -1802,6 +1802,7 @@ class QSM_New_Pagination_Renderer {
 			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
 			'enable_result_after_timer_end'      => $this->quiz_options->enable_result_after_timer_end ?? 0,
 			'enable_quick_result_mc'             => $this->quiz_options->enable_quick_result_mc ?? 0,
+			'highlight_correct_answer'           => $this->quiz_options->highlight_correct_answer ?? 1,
 			'end_quiz_if_wrong'                  => $this->quiz_options->end_quiz_if_wrong ?? 0,
 			'form_disable_autofill'              => $this->quiz_options->form_disable_autofill ?? 0,
 			'disable_mathjax'                    => $this->quiz_options->disable_mathjax ?? 0,
