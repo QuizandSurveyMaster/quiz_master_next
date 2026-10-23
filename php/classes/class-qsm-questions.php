@@ -285,6 +285,13 @@ class QSM_Questions
         );
         $settings = wp_parse_args($settings, $defaults);
 
+        // featureImageSrc is rendered into the admin question editor, so it must be a URL
+        // and nothing else. Enforced here because every writer (REST, block editor, question
+        // bank CSV import, Abilities API) funnels through this method.
+        if ( isset( $settings['featureImageSrc'] ) ) {
+            $settings['featureImageSrc'] = is_scalar( $settings['featureImageSrc'] ) ? esc_url_raw( (string) $settings['featureImageSrc'] ) : '';
+        }
+
         $sanitize_answers = self::sanitize_answers($answers, $settings);
         foreach ( $sanitize_answers as $key => $answer ) {
             $answers_array = array(

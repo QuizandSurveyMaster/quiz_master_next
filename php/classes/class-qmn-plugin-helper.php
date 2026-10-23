@@ -464,6 +464,25 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Checks whether a question type is graded (counts toward the quiz score).
+	 *
+	 * Mirrors the `graded` flag passed to register_question_type(). Types such as
+	 * Text/HTML Section, Opt-in and Captcha are not graded. Unknown types are
+	 * treated as graded so they keep counting as they did before.
+	 *
+	 * @since  11.2.9
+	 * @param  int|string $type_id The question type ID (question_type_new).
+	 * @return bool
+	 */
+	public function is_question_type_graded( $type_id ) {
+		$slug = strtolower( str_replace( ' ', '-', (string) $type_id ) );
+		if ( ! isset( $this->question_types[ $slug ] ) ) {
+			return true;
+		}
+		return ! empty( $this->question_types[ $slug ]['graded'] );
+	}
+
+	/**
 	 * Retrieves List Of Question Types
 	 *
 	 * retrieves a list of the slugs and names of the question types

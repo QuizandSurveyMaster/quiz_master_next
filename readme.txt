@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.2.8
+Stable tag: 11.2.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,13 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+
+= 11.2.9 (October 23, 2026) =
+* Feature: Added an option to disable correct-answer highlighting for wrong responses.
+* Bug: Text/HTML, Opt-in, and Captcha fields no longer affect score totals.
+* Bug: Improved score accuracy when Text/HTML sections are hidden by conditional logic, including the admin Results column.
+* Security: Fixed stored XSS in the question featured image field.
+* Security: Fixed PHP Object Injection in quiz Contact tab settings.
 
 = 11.2.8 (October 5, 2026) =
 * Bug: Fixed issue where the QSM block creates blank question copies when a quiz is embedded twice.

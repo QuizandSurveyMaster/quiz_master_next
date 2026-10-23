@@ -153,17 +153,19 @@ class QSM_New_Pagination_Renderer {
 		$this->options          = $options;
 		$this->quiz_data        = $quiz_data;
 		$this->shortcode_args   = $shortcode_args;
-		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
-		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );
+		// Security (PHP Object Injection): quiz settings hold Contributor-editable values,
+		// so unserialize them without allowing objects.
+		$this->quiz_settings    = qsm_unserialize_no_objects( $options->quiz_settings );
+		$this->quiz_options     = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_options'] );
 		// When "apply to manual pages" is on with a "Questions Per Page" value, render the
 		// manual pages and cap each one. This zeroes pagination so setup/render below take
 		// the manual path; the stashed cap is applied in apply_page_question_limit().
 		$this->quiz_options     = qsm_apply_manual_pagination_override( $this->quiz_options );
 		$this->manual_page_cap  = isset( $this->quiz_options->qsm_manual_page_cap ) ? intval( $this->quiz_options->qsm_manual_page_cap ) : 0;
-		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );
-		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? maybe_unserialize( $this->quiz_settings['contact_form'] ) : array();
-		$this->pages            = isset( $this->quiz_settings['pages'] ) ? maybe_unserialize( $this->quiz_settings['pages'] ) : array();
-		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? maybe_unserialize( $this->quiz_settings['qpages'] ) : array();
+		$this->quiz_texts       = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_text'] );
+		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['contact_form'] ) : array();
+		$this->pages            = isset( $this->quiz_settings['pages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['pages'] ) : array();
+		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['qpages'] ) : array();
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
@@ -578,9 +580,11 @@ class QSM_New_Pagination_Renderer {
 			}
 			// Mode 2: Advanced category question limit
 			elseif ( 1 == $this->quiz_options->limit_category_checkbox 
-				&& ! empty( maybe_unserialize( $this->quiz_options->select_category_question ) ) ) {
+				&& is_array( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) )
+				&& ! empty( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) ) ) {
 				
-				$category_question_limit = maybe_unserialize( $this->quiz_options->select_category_question );
+				// Security (PHP Object Injection): never instantiate objects from this quiz option.
+				$category_question_limit = qsm_unserialize_no_objects( $this->quiz_options->select_category_question );
 				$categories_data = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories_data['list'] ) ? array_keys( $categories_data['list'] ) : array() );
 				
@@ -1185,7 +1189,7 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	private function render_quiz_pages( $shortcode_args = array() ) {
-		global $qmn_total_questions;
+		global $mlwQuizMasterNext, $qmn_total_questions;
 		$animation_effect = isset( $this->options->quiz_animation ) && '' !== $this->options->quiz_animation ? ' animated ' . $this->options->quiz_animation : '';
 		
 		// Check if we have pages
@@ -1258,11 +1262,16 @@ class QSM_New_Pagination_Renderer {
 						continue;
 					}
 					
-					$qmn_total_questions += 1;
-					$question = $this->questions[ $question_id ];
+					$question  = $this->questions[ $question_id ];
+					// Only graded questions are counted and numbered (matches the legacy renderer),
+					// otherwise a Text/HTML section inflates total_questions and lowers the score.
+					$is_graded = $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question['question_type_new'] );
+					if ( $is_graded ) {
+						$qmn_total_questions += 1;
+					}
 					?>
 					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
-						<?php if ( 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
+						<?php if ( $is_graded && 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php } ?>
 						<?php
@@ -1314,10 +1323,14 @@ class QSM_New_Pagination_Renderer {
 					</div>
 				</div>
 				<?php
-				// Increment question count for lazy loaded pages. Count the renderable IDs
-				// only, so the running total matches what the AJAX handler will actually
-				// render and data-question-start-number stays in step across pages.
-				$qmn_total_questions += count( $page_question_ids );
+				// Increment question count for lazy loaded pages. Count the renderable,
+				// graded IDs only, so the running total matches what the AJAX handler will
+				// actually number and data-question-start-number stays in step across pages.
+				foreach ( $page_question_ids as $page_question_id ) {
+					if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $this->questions[ $page_question_id ]['question_type_new'] ) ) {
+						$qmn_total_questions += 1;
+					}
+				}
 			}
 			// Show page count if enabled
 			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
@@ -1706,9 +1719,6 @@ class QSM_New_Pagination_Renderer {
 			wp_enqueue_script( 'qsm_encryption' );
 		}
 		
-		// Get quiz settings
-		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
-		
 		// Get error messages from quiz texts with language support
 		$default_texts   = QMNPluginHelper::get_default_texts();
 		$quiz_texts_obj = is_object( $this->quiz_texts ) ? $this->quiz_texts : (object) array();
@@ -1789,6 +1799,7 @@ class QSM_New_Pagination_Renderer {
 			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
 			'enable_result_after_timer_end'      => $this->quiz_options->enable_result_after_timer_end ?? 0,
 			'enable_quick_result_mc'             => $this->quiz_options->enable_quick_result_mc ?? 0,
+			'highlight_correct_answer'           => $this->quiz_options->highlight_correct_answer ?? 1,
 			'end_quiz_if_wrong'                  => $this->quiz_options->end_quiz_if_wrong ?? 0,
 			'form_disable_autofill'              => $this->quiz_options->form_disable_autofill ?? 0,
 			'disable_mathjax'                    => $this->quiz_options->disable_mathjax ?? 0,
