@@ -464,6 +464,25 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Checks whether a question type is graded (counts toward the quiz score).
+	 *
+	 * Mirrors the `graded` flag passed to register_question_type(). Types such as
+	 * Text/HTML Section, Opt-in and Captcha are not graded. Unknown types are
+	 * treated as graded so they keep counting as they did before.
+	 *
+	 * @since  11.2.9
+	 * @param  int|string $type_id The question type ID (question_type_new).
+	 * @return bool
+	 */
+	public function is_question_type_graded( $type_id ) {
+		$slug = strtolower( str_replace( ' ', '-', (string) $type_id ) );
+		if ( ! isset( $this->question_types[ $slug ] ) ) {
+			return true;
+		}
+		return ! empty( $this->question_types[ $slug ]['graded'] );
+	}
+
+	/**
 	 * Retrieves List Of Question Types
 	 *
 	 * retrieves a list of the slugs and names of the question types
@@ -561,7 +580,7 @@ class QMNPluginHelper {
 						<?php
 					}
 				}
-				if ( $quiz_options->show_category_on_front ) {
+				if ( ! empty( $quiz_options->show_category_on_front ) ) {
 					$categories = QSM_Questions::get_question_categories( $question_id );
 					if ( ! empty( $categories['category_name'] ) ) {
 						$cat_name = implode( ',', $categories['category_name'] );
@@ -839,6 +858,9 @@ class QMNPluginHelper {
 		$results_array = array();
 		global $wpdb;
 		$question = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', intval( $question_id ) ) );
+		if ( ! $question ) {
+			return array( 'null_review' => true );
+		}
 		$answers  = maybe_unserialize( $question->answer_array );
 		if ( empty( $answers ) || ! is_array( $answers ) ) {
 			$mlw_answer_array_correct                                  = array( 0, 0, 0, 0, 0, 0 );
@@ -1335,10 +1357,12 @@ class QMNPluginHelper {
 	 */
 	public function qsm_get_randomization_modes( $randomness_order ) {
 
-		// If stored as serialized (from DB), unserialize it
-		if ( is_serialized( $randomness_order ) ) {
-			$randomness_order = maybe_unserialize( $randomness_order );
-		}
+		// If stored as serialized (from DB), unserialize it without allowing
+		// objects. A contributor-controlled quiz option value is stored verbatim
+		// as this element, so a serialized-object payload here must not be
+		// instantiated (PHP Object Injection). Rejected payloads come back null
+		// and fall through to the "None" default below.
+		$randomness_order = qsm_safe_unserialize( $randomness_order );
 
 		$normalized_modes = array();
 		$valid_modes      = array( 'questions', 'pages', 'answers' );

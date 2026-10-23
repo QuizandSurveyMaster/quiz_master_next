@@ -177,13 +177,18 @@ if (typeof window.qsmCheckMR !== 'function') {
                     localStorage.setItem('mlw_quiz_start_date' + quizId, qmn_ajax_object.start_date);
                 }
 
+                // Replace the rendered nonce and unique key with fresh ones
+                this.refreshSubmissionKeys(quizId, quizObj);
+
                 // Initialize pagination UI
                 this.initPagination(quizId);
 
                 // Show first page
                 this.showPage(quizId, quizObj.currentPage);
 
-                this.manageFocus(quizId);
+                // Prepare the page for keyboard focus, but do not move focus to it
+                // on load — that would scroll the browser down to the quiz.
+                this.manageFocus(quizId, false);
 
                 // Timer
                 let self = this;
@@ -210,6 +215,43 @@ if (typeof window.qsmCheckMR !== 'function') {
 
                 // Fire event
                 $(document).trigger('qsm_quiz_initialized', [quizId, quizObj]);
+            },
+
+            /**
+             * Fetch a fresh nonce and unique key for this page view.
+             *
+             * Both are printed into the quiz HTML, so a full-page cache serves the
+             * same values to every visitor. The unique key must be unique per result
+             * (mlw_results.unique_id is a UNIQUE index), so with a cached page only
+             * the first submission is saved and the rest fail. Mirrors the refresh
+             * the legacy renderer does in js/qsm-quiz.js.
+             */
+            refreshSubmissionKeys: function(quizId, quizObj) {
+                let $uniqueKey = quizObj.quizContainer.find('#qsm_unique_key_' + quizId);
+                if (!$uniqueKey.length || typeof qmn_ajax_object === 'undefined' || !qmn_ajax_object.ajaxurl) {
+                    return;
+                }
+
+                $.ajax({
+                    url: qmn_ajax_object.ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'qsm_create_quiz_nonce',
+                        quiz_id: quizId
+                    },
+                    success: function(response) {
+                        if (!response || !response.success || !response.data) {
+                            return;
+                        }
+                        if (response.data.unique_key) {
+                            $uniqueKey.val(response.data.unique_key);
+                        }
+                        if (response.data.nonce) {
+                            quizObj.quizContainer.find('#qsm_nonce_' + quizId).val(response.data.nonce);
+                            quizObj.nonceValue = response.data.nonce;
+                        }
+                    }
+                });
             },
 
 
@@ -855,7 +897,7 @@ if (typeof window.qsmCheckMR !== 'function') {
                 // Trigger after page change event
                 $(document).trigger('qsm_go_to_page_after', [quizId, pageNumber, quizData]);
             },
-            
+
             /**
              * Show specific page (helper method)
              */
@@ -1658,14 +1700,27 @@ if (typeof window.qsmCheckMR !== 'function') {
 
             /**
              * Manage focus for accessibility
+             *
+             * @param {number}  quizId
+             * @param {boolean} moveFocus Pass false to prepare the page for keyboard
+             *                            focus without actually moving focus to it.
              */
-            manageFocus: function(quizId) {
+            manageFocus: function(quizId, moveFocus) {
                 let quizData = this.quizObjects[quizId];
                 if (!quizData) return;
 
                 let $currentPage = quizData.pages.eq(quizData.currentPage - 1);
-                
-                $currentPage.css('outline', 'none').attr('tabindex', '-1').focus();
+
+                $currentPage.css('outline', 'none').attr('tabindex', '-1');
+
+                // Only move focus for a user-initiated page change. Focusing the
+                // page on initial load makes the browser scroll it into view, so a
+                // page with the quiz below the fold jumps down as soon as it loads.
+                if (false === moveFocus) {
+                    return;
+                }
+
+                $currentPage.focus();
             },
 
             /**
@@ -1861,12 +1916,19 @@ if (typeof window.qsmCheckMR !== 'function') {
             showLoading: function(quizId) {
                 let quizData = this.quizObjects[quizId];
                 if (!quizData) return;
-                
+
+                // Use the admin-configured "Quiz Submit/Processing Message" if set,
+                // falling back to the translatable default from the localized object.
+                let defaultMessage = (typeof qmn_ajax_object !== 'undefined' && qmn_ajax_object?.processing_message) || 'Processing your quiz...';
+                let processingMessage = quizData.data?.quiz_processing_message || defaultMessage;
+
                 let loadingHtml = '<div class="qsm-quiz-processing-box">';
                 loadingHtml += '<div class="qsm-spinner-loader"></div>';
-                loadingHtml += '<div class="qsm-processing-message">Processing your quiz...</div>';
+                if (processingMessage !== '') {
+                    loadingHtml += '<div class="qsm-processing-message">' + processingMessage + '</div>';
+                }
                 loadingHtml += '</div>';
-                
+
                 quizData.quizContainer.html(loadingHtml);
             },
 
@@ -1936,7 +1998,9 @@ if (typeof window.qsmCheckMR !== 'function') {
                     $this.append('<div style="color: green" class="quick-question-res-p qsm-correct-answer-info">' + quizData.quick_result_correct_answer_text + '</div>');
                     $this.append('<div class="qsm-inline-correct-info">' + this.qsmCheckShortcode(data.message) + '</div>');
                 } else if (value && value.length > 0 && data.success == 'incorrect') {
-                    $this.find('.qmn_radio_answers input[value="' + data.correct_index + '"], .qsm-answer-options input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+                    if (String(quizData.highlight_correct_answer) !== '0') {
+                        $this.find('.qmn_radio_answers input[value="' + data.correct_index + '"], .qsm-answer-options input[value="' + data.correct_index + '"]').parent().addClass('data-correct-answer');
+                    }
                     $this.append('<div style="color: red" class="quick-question-res-p qsm-incorrect-answer-info">' + quizData.quick_result_wrong_answer_text + '</div>');
                     $this.append('<div class="qsm-inline-correct-info">' + this.qsmCheckShortcode(data.message) + '</div>');
                 }

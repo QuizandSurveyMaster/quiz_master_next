@@ -441,7 +441,24 @@ function qsm_results_overview_tab_content() {
 				} else {
 					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 				}
-				$hidden_questions        = ! empty( $mlw_qmn_results_array['hidden_questions'] ) && is_array($mlw_qmn_results_array['hidden_questions']) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
+				$hidden_questions        = 0;
+				if ( ! empty( $mlw_qmn_results_array['hidden_questions'] ) && is_array( $mlw_qmn_results_array['hidden_questions'] ) ) {
+					// Only graded hidden questions are part of the total, so skip ungraded ones (e.g. Text/HTML).
+					$answered_types = array();
+					if ( isset( $mlw_qmn_results_array[1] ) && is_array( $mlw_qmn_results_array[1] ) ) {
+						foreach ( $mlw_qmn_results_array[1] as $answer ) {
+							if ( isset( $answer['id'], $answer['question_type'] ) ) {
+								$answered_types[ intval( $answer['id'] ) ] = $answer['question_type'];
+							}
+						}
+					}
+					foreach ( $mlw_qmn_results_array['hidden_questions'] as $hidden_question_id ) {
+						$hidden_question_id = intval( $hidden_question_id );
+						if ( ! isset( $answered_types[ $hidden_question_id ] ) || $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $answered_types[ $hidden_question_id ] ) ) {
+							++$hidden_questions;
+						}
+					}
+				}
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {

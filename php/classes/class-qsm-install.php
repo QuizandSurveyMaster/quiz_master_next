@@ -541,6 +541,16 @@ class QSM_Install {
 					),
 					'default' => 1,
 				),
+				'highlight_correct_answer'         => array(
+					'type'    => 'checkbox',
+					'options' => array(
+						array(
+							'label' => __( 'Highlight the correct answer when the response is wrong', 'quiz-master-next' ),
+							'value' => 1,
+						),
+					),
+					'default' => 1,
+				),
 				'enable_quick_correct_answer_info' => array(
 					'type'        => 'radio',
 					'prefix_text' => '<b>' . __( "Display the correct answer information in real-time", 'quiz-master-next' ) . '</b>',

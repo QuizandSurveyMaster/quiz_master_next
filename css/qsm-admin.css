@@ -5489,6 +5489,9 @@ input.qsm-select-all-deleted-question, .qsm-select-all-deleted-result {
 
 .qsm-dropzone-content {
 	pointer-events: none;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 
 .qsm-dropzone-content .dashicons {

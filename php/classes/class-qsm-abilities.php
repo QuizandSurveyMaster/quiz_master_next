@@ -53,6 +53,10 @@ class QSM_Abilities {
 	 * @return void
 	 */
 	public function register_categories() {
+		// Abilities API is WP 6.9+; bail on older cores (also satisfies the compat check).
+		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+			return;
+		}
 		$categories = array(
 			'qsm-quizzes'   => array(
 				'label'       => __( 'QSM Quizzes', 'quiz-master-next' ),
@@ -87,6 +91,10 @@ class QSM_Abilities {
 	 * @return void
 	 */
 	public function register_abilities() {
+		// Abilities API is WP 6.9+; bail on older cores (also satisfies the compat check).
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
 		/**
 		 * Filter the ability definitions before registration.
 		 *

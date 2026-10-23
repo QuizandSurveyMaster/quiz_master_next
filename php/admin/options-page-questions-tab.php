@@ -30,7 +30,11 @@ add_action( 'init', 'qsm_settings_questions_tab', 5 );
  */
 function qsm_options_questions_tab_content() {
 	global $wpdb, $mlwQuizMasterNext;
-	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name	FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0 ORDER BY quiz_id DESC' );
+	// Scope the import-from-bank quiz picker to the quizzes the current user may
+	// edit, so a Contributor is not shown (and cannot pull from) other authors'
+	// quizzes. Users with edit_others_qsm_quizzes get the unfiltered list.
+	$qb_access           = function_exists( 'qsm_quiz_access_sql' ) ? qsm_quiz_access_sql() : '';
+	$quiz_data           = $wpdb->get_results( 'SELECT quiz_id, quiz_name FROM ' . $wpdb->prefix . 'mlw_quizzes WHERE deleted=0' . $qb_access . ' ORDER BY quiz_id DESC' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $qb_access is built from intval()ed ids in qsm_quiz_access_sql()
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$enabled             = get_option( 'qsm_multiple_category_enabled' );
 
@@ -94,6 +98,14 @@ function qsm_options_questions_tab_content() {
 	// `qsm_question_editor_settings` filter used to make them extensible.
 	$qsm_editor_settings = qsm_get_question_editor_settings();
 
+	// Default settings applied to newly added questions (per-quiz). See the
+	// "Default Question Settings" popup on the Questions tab and QSMQuestion.createQuestion().
+	$multiple_category_enabled = ( $enabled && 'cancelled' !== $enabled ) ? 1 : 0;
+	$default_question_settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'default_question_settings', array() );
+	if ( ! is_array( $default_question_settings ) ) {
+		$default_question_settings = array();
+	}
+
 	$json_data = array(
 		'quizID'                  => $quiz_id,
 		'answerText'              => __( 'Answer', 'quiz-master-next' ),
@@ -116,6 +128,9 @@ function qsm_options_questions_tab_content() {
 		'rest_user_nonce'         => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 		'default_answers'         => $default_answers,
 		'can_manage_categories'   => current_user_can( 'manage_qsm_quiz_categories' ) ? 'true' : 'false',
+		'multiple_category_enabled'      => $multiple_category_enabled,
+		'default_question_settings'      => $default_question_settings,
+		'default_question_settings_nonce' => wp_create_nonce( 'qsm_default_question_settings_' . $quiz_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
@@ -228,8 +243,87 @@ function qsm_options_questions_tab_content() {
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
+			<button type="button" class="button qsm-default-question-settings-button">
+				<span class="dashicons dashicons-admin-generic"></span>
+				<?php esc_html_e( 'Default Question Settings', 'quiz-master-next' ); ?>
+			</button>
 			<?php do_action( 'qsm_question_controls_head' ); ?>
 		</p>
+	</div>
+	<?php
+	/*
+	 * Popup: Default Question Settings.
+	 * Lets the quiz author configure the Question Type, Category and Required status
+	 * that every newly added question will inherit (until the defaults are changed).
+	 * The values are stored per-quiz via the `default_question_settings` quiz setting
+	 * and applied in QSMQuestion.createQuestion(). See task CU-86d3t3jcn.
+	 */
+	?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-default-question-settings" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container qsm-default-question-settings-popup" role="dialog" aria-modal="true" aria-labelledby="modal-default-question-settings-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-default-question-settings-title"><?php esc_html_e( 'Default Question Settings', 'quiz-master-next' ); ?></h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content">
+					<p class="qsm-default-question-settings-desc"><?php esc_html_e( 'These settings will be applied automatically to all newly added questions. You can still change any of it per question.', 'quiz-master-next' ); ?></p>
+					<div class="qsm-default-question-settings-field">
+						<label for="qsm-default-question-type"><?php esc_html_e( 'Question Type', 'quiz-master-next' ); ?></label>
+						<select id="qsm-default-question-type">
+							<?php
+							foreach ( $question_types_categorized as $category_name => $category_items ) {
+								?>
+								<optgroup label="<?php echo esc_attr( $category_name ); ?>">
+									<?php
+									foreach ( $category_items as $type ) {
+										if ( isset( $type['disabled'] ) && true === $type['disabled'] ) {
+											echo '<option disabled value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+										} else {
+											echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+										}
+									}
+									?>
+								</optgroup>
+								<?php
+							}
+							?>
+						</select>
+					</div>
+					<div class="qsm-default-question-settings-field">
+						<label for="qsm-default-question-category"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
+						<select id="qsm-default-question-category">
+							<option value=""><?php esc_html_e( 'None', 'quiz-master-next' ); ?></option>
+							<?php
+							if ( ! empty( $question_categories ) ) {
+								foreach ( $question_categories as $cat ) {
+									if ( empty( $cat['category'] ) ) {
+										continue;
+									}
+									if ( $multiple_category_enabled ) {
+										$cat_value = isset( $cat['cat_id'] ) ? $cat['cat_id'] : '';
+									} else {
+										$cat_value = $cat['category'];
+									}
+									if ( '' === (string) $cat_value ) {
+										continue;
+									}
+									echo '<option value="' . esc_attr( $cat_value ) . '">' . esc_html( $cat['category'] ) . '</option>';
+								}
+							}
+							?>
+						</select>
+					</div>
+					<div class="qsm-default-question-settings-field qsm-default-question-settings-required">
+						<label><input type="checkbox" id="qsm-default-question-required"> <?php esc_html_e( 'Mark new questions as required', 'quiz-master-next' ); ?></label>
+					</div>
+				</main>
+				<footer class="qsm-popup__footer qsm-default-question-settings-footer">
+					<a href="javascript:void(0)" id="qsm-reset-default-question-settings"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a>
+					<button type="button" class="button button-primary" id="qsm-save-default-question-settings"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
+				</footer>
+			</div>
+		</div>
 	</div>
 	<div class="qsm-admin-bulk-actions">
 		<button id="qsm-bulk-edit-question" class="button button-primary"><?php esc_html_e( 'Bulk Edit', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
@@ -1076,21 +1170,15 @@ function qsm_user_can_modify_question_ids( $question_ids ) {
 	$prepared_query = call_user_func_array( array( $wpdb, 'prepare' ), $query_args );
 	$quiz_ids       = $wpdb->get_col( $prepared_query );
 
-	$current_user = get_current_user_id();
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) ) {
+		return false;
+	}
+
 	foreach ( $quiz_ids as $quiz_id ) {
-		$post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", intval( $quiz_id ) ) );
-		// If quiz mapping is missing, only allow elevated users.
-		if ( empty( $post_id ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+		// Ownership is resolved centrally: deriving it here from the 'quiz_id'
+		// post meta would reintroduce the forgeable mapping the helper avoids.
+		if ( ! qsm_current_user_can_edit_quiz( intval( $quiz_id ) ) ) {
 			return false;
-		}
-
-		if ( ! empty( $post_id ) ) {
-			$post_author = intval( get_post_field( 'post_author', $post_id, true ) );
-			$owns_quiz   = ( $post_author === $current_user );
-
-			if ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || ! $owns_quiz ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
-				return false;
-			}
 		}
 	}
 
@@ -1155,12 +1243,9 @@ function qsm_ajax_save_pages() {
 		'status' => 'error',
 	);
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-
-	// Map quiz to its post and enforce edit capabilities.
 	$post_id    = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d LIMIT 1", $quiz_id ) );
-	$post_author = get_post_field( 'post_author', $post_id, true );
-
-	if ( empty( $post_id ) || ( ( ! current_user_can( 'edit_qsm_quiz', $post_id ) || intval( $post_author ) !== get_current_user_id() ) && ! current_user_can( 'edit_others_qsm_quizzes' ) ) ) {
+	// Enforce edit permission through the central ownership helper.
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
 		wp_die( esc_html__( 'You are not allowed to edit this quiz, You need higher permission!', 'quiz-master-next' ) );
 	}
 
@@ -1205,6 +1290,51 @@ function qsm_ajax_save_pages() {
 	}
 	echo wp_json_encode( $json );
 	wp_die();
+}
+
+add_action( 'wp_ajax_qsm_save_default_question_settings', 'qsm_ajax_save_default_question_settings' );
+
+/**
+ * Saves (or resets) the per-quiz Default Question Settings from the Questions tab.
+ *
+ * These defaults are applied to every newly created question. Existing questions
+ * are never modified. See task CU-86d3t3jcn.
+ *
+ * @since 11.2.3
+ */
+function qsm_ajax_save_default_question_settings() {
+	global $mlwQuizMasterNext;
+
+	$json    = array( 'status' => 'error' );
+	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'qsm_default_question_settings_' . $quiz_id ) ) {
+		wp_send_json( $json );
+	}
+
+	// Enforce edit permission through the central ownership helper (mirrors qsm_ajax_save_pages).
+	if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( $quiz_id ) ) {
+		wp_send_json( $json );
+	}
+
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+
+	$reset    = isset( $_POST['reset'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['reset'] ) );
+	$settings = array();
+	if ( ! $reset ) {
+		$settings = array(
+			'type'     => isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '',
+			'category' => isset( $_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '',
+			// 0 = required, 1 = not required (matches QSM's inverted `required` question setting).
+			'required' => ( isset( $_POST['required'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['required'] ) ) ) ? 0 : 1,
+		);
+	}
+
+	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'default_question_settings', $settings );
+
+	$json['status']   = 'success';
+	$json['settings'] = $settings;
+	wp_send_json( $json );
 }
 
 add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
@@ -1393,7 +1523,8 @@ function qsm_delete_question_from_database() {
 
 		global $wpdb, $mlwQuizMasterNext;
 		$update_qpages_after_delete = array();
-		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) );
+		// Links stored before 11.2.8 may point into other authors' quizzes: only follow the ones this user may delete.
+		$connected_question_ids     = qsm_filter_editable_question_ids( qsm_get_unique_linked_question_ids_to_remove( array( $question_id ) ), array( $question_id ) );
 		$question_ids_to_delete     = array_merge( $connected_question_ids, array( $question_id ) );
 		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
 		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );
@@ -1471,7 +1602,8 @@ function qsm_bulk_delete_question_from_database() {
 		}
 
 		$update_qpages_after_delete = array();
-		$connected_question_ids     = qsm_get_unique_linked_question_ids_to_remove( $question_id );
+		// Links stored before 11.2.8 may point into other authors' quizzes: only follow the ones this user may delete.
+		$connected_question_ids     = qsm_filter_editable_question_ids( qsm_get_unique_linked_question_ids_to_remove( $question_id ), $question_id );
 		$question_ids_to_delete     = array_merge( $connected_question_ids, $question_id );
 		$question_ids_to_delete     = array_unique( $question_ids_to_delete );
 		$placeholders               = array_fill( 0, count( $question_ids_to_delete ), '%d' );

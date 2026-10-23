@@ -53,7 +53,7 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * @var array
 	 */
-	private $qpages;
+	private $qpages = array();
 
 	/**
 	 * Per-page question limit, keyed by page position. 0 = show all.
@@ -153,17 +153,19 @@ class QSM_New_Pagination_Renderer {
 		$this->options          = $options;
 		$this->quiz_data        = $quiz_data;
 		$this->shortcode_args   = $shortcode_args;
-		$this->quiz_settings    = maybe_unserialize( $options->quiz_settings );
-		$this->quiz_options     = (object) maybe_unserialize( $this->quiz_settings['quiz_options'] );
+		// Security (PHP Object Injection): quiz settings hold Contributor-editable values,
+		// so unserialize them without allowing objects.
+		$this->quiz_settings    = qsm_unserialize_no_objects( $options->quiz_settings );
+		$this->quiz_options     = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_options'] );
 		// When "apply to manual pages" is on with a "Questions Per Page" value, render the
 		// manual pages and cap each one. This zeroes pagination so setup/render below take
 		// the manual path; the stashed cap is applied in apply_page_question_limit().
 		$this->quiz_options     = qsm_apply_manual_pagination_override( $this->quiz_options );
 		$this->manual_page_cap  = isset( $this->quiz_options->qsm_manual_page_cap ) ? intval( $this->quiz_options->qsm_manual_page_cap ) : 0;
-		$this->quiz_texts       = (object) maybe_unserialize( $this->quiz_settings['quiz_text'] );
-		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? maybe_unserialize( $this->quiz_settings['contact_form'] ) : array();
-		$this->pages            = isset( $this->quiz_settings['pages'] ) ? maybe_unserialize( $this->quiz_settings['pages'] ) : array();
-		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? maybe_unserialize( $this->quiz_settings['qpages'] ) : array();
+		$this->quiz_texts       = (object) qsm_unserialize_no_objects( $this->quiz_settings['quiz_text'] );
+		$this->contact_fields   = isset( $this->quiz_settings['contact_form'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['contact_form'] ) : array();
+		$this->pages            = isset( $this->quiz_settings['pages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['pages'] ) : array();
+		$qpages                 = isset( $this->quiz_settings['qpages'] ) ? qsm_unserialize_no_objects( $this->quiz_settings['qpages'] ) : array();
 		if ( ! empty( $qpages ) ) {
 			foreach ( $qpages as $key => $qpage ) {
 				unset( $qpage['questions'] );
@@ -187,6 +189,41 @@ class QSM_New_Pagination_Renderer {
 		
 		$this->load_questions();
 		$this->setup_pages();
+		$this->normalize_qpages();
+	}
+
+	/**
+	 * Make sure every page that gets rendered has a qpages entry.
+	 *
+	 * `pages` and `qpages` are separate quiz settings and can drift apart — a quiz
+	 * saved before qpages carried ids, or pages added through the qsm_display_pages
+	 * filter. The page markup falls back to the page position for data-pid (see
+	 * render_quiz_pages()), so such a page is rendered with a pid that has no entry
+	 * in the qpages payload handed to the front end, and JS reading its settings
+	 * (the page timer) reads them off undefined. Backfill a timer-less entry for
+	 * those pages so every rendered data-pid resolves.
+	 */
+	private function normalize_qpages() {
+		if ( ! is_array( $this->qpages ) ) {
+			$this->qpages = array();
+		}
+		// Auto pagination identifies its pages by data-apid, not data-pid.
+		if ( ! is_array( $this->pages ) || $this->quiz_options->pagination > 0 ) {
+			return;
+		}
+		foreach ( $this->pages as $index => $page ) {
+			// Same key, lookup and fallback the page markup uses.
+			$position = intval( $index ) + 1;
+			$qpage    = isset( $this->qpages[ $position ] ) ? $this->qpages[ $position ] : array();
+			$qpage_id = isset( $qpage['id'] ) ? $qpage['id'] : $position;
+			if ( ! isset( $this->qpages[ $qpage_id ] ) ) {
+				$this->qpages[ $qpage_id ] = array(
+					'id'               => $qpage_id,
+					'pagetimer'        => 0,
+					'pagetimer_second' => 0,
+				);
+			}
+		}
 	}
 
 	/**
@@ -251,6 +288,10 @@ class QSM_New_Pagination_Renderer {
 			if ( in_array( 'pages', $this->randomness_order, true ) ) {
 				shuffle( $this->pages );
 			}
+			// "Limit Number of Questions" is a quiz-wide cap, not a per-page one, so it has
+			// to be applied here too -- create_auto_pagination() (the pagination > 0 branch)
+			// is the only other place it is honoured.
+			$this->apply_total_question_limit();
 		} else {
 			$this->create_auto_pagination();
 		}
@@ -285,6 +326,109 @@ class QSM_New_Pagination_Renderer {
 			}
 		}
 		unset( $page );
+	}
+
+	/**
+	 * Apply the quiz-wide "Limit Number of Questions" cap to the manual pages.
+	 *
+	 * The pagination > 0 branch caps in create_auto_pagination(); this is the manual-pages
+	 * equivalent, and it deliberately mirrors that branch rather than truncating page by
+	 * page: the candidates are flattened across every page first, so when randomization is
+	 * on the subset is sampled from the whole quiz instead of a prefix of page one.
+	 *
+	 * Unlike apply_page_question_limit(), this runs even when question_per_category is set.
+	 * The manual branch performs no category selection at all, so there is nothing for the
+	 * cap to conflict with -- and the paginated branch likewise applies the cap after its
+	 * category filtering.
+	 *
+	 * Pages keep their array keys so the positional $this->qpages lookup in
+	 * render_question_pages() still resolves.
+	 */
+	private function apply_total_question_limit() {
+		if ( ! is_array( $this->pages ) || empty( $this->pages ) ) {
+			return;
+		}
+
+		$question_amount = isset( $this->shortcode_args['question_amount'] ) ? intval( $this->shortcode_args['question_amount'] ) : 0;
+		$max_questions   = 0;
+		if ( 0 !== $question_amount ) {
+			$max_questions = $question_amount;
+		} elseif ( isset( $this->quiz_options->question_from_total ) ) {
+			$max_questions = intval( $this->quiz_options->question_from_total );
+		}
+		if ( $max_questions <= 0 ) {
+			return;
+		}
+
+		// Only questions that survived load_questions() can render, so a page entry left
+		// behind by a deleted or unpublished question must not consume a slot.
+		$known = ( is_array( $this->questions ) && ! empty( $this->questions ) ) ? array_map( 'intval', array_keys( $this->questions ) ) : array();
+
+		$candidates = array();
+		foreach ( $this->pages as $page ) {
+			if ( ! is_array( $page ) ) {
+				continue;
+			}
+			foreach ( $page as $question_id ) {
+				$question_id = intval( $question_id );
+				if ( empty( $known ) || in_array( $question_id, $known, true ) ) {
+					$candidates[] = $question_id;
+				}
+			}
+		}
+		$candidates = array_values( array_unique( $candidates ) );
+		if ( count( $candidates ) <= $max_questions ) {
+			return;
+		}
+
+		$randomized = in_array( 'questions', $this->randomness_order, true ) || in_array( 'pages', $this->randomness_order, true );
+		$kept       = array();
+
+		if ( $randomized ) {
+			// Reuse the selection this visitor has already been shown, the way
+			// create_auto_pagination() does -- re-rolling on every render would let a second
+			// render (another tab, a reload) replace the question_ids cookie that
+			// check_answers() grades against, so questions the taker answered would be
+			// dropped from the score.
+			if ( isset( $_COOKIE[ 'question_ids_' . intval( $this->quiz_data['quiz_id'] ) ] ) ) {
+				$cookie_raw = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . intval( $this->quiz_data['quiz_id'] ) ] ) );
+				$cookie_raw = preg_replace( '/[^0-9,]/', '', $cookie_raw );
+				$cookie_ids = array_filter( array_map( 'intval', explode( ',', $cookie_raw ) ) );
+				$kept       = array_values( array_intersect( $cookie_ids, $candidates ) );
+			}
+			if ( empty( $kept ) ) {
+				shuffle( $candidates );
+				$kept = $candidates;
+			}
+		} else {
+			$kept = $candidates;
+		}
+		$kept = array_slice( $kept, 0, $max_questions );
+
+		foreach ( $this->pages as $page_index => $page ) {
+			if ( ! is_array( $page ) || empty( $page ) ) {
+				// An intentionally question-less page is an interstitial; leave it alone.
+				continue;
+			}
+			$page = array_values( array_intersect( array_map( 'intval', $page ), $kept ) );
+			if ( empty( $page ) ) {
+				unset( $this->pages[ $page_index ] );
+				continue;
+			}
+			$this->pages[ $page_index ] = $page;
+		}
+
+		// Keep $this->questions in step with the pages, the way create_auto_pagination() does,
+		// so question counts and the per-question JSON payload only cover what is rendered.
+		if ( is_array( $this->questions ) && ! empty( $this->questions ) ) {
+			$this->questions = array_filter(
+				$this->questions,
+				function ( $question_id ) use ( $kept ) {
+					return in_array( intval( $question_id ), $kept, true );
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+		}
 	}
 
 	/**
@@ -436,9 +580,11 @@ class QSM_New_Pagination_Renderer {
 			}
 			// Mode 2: Advanced category question limit
 			elseif ( 1 == $this->quiz_options->limit_category_checkbox 
-				&& ! empty( maybe_unserialize( $this->quiz_options->select_category_question ) ) ) {
+				&& is_array( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) )
+				&& ! empty( qsm_unserialize_no_objects( $this->quiz_options->select_category_question ) ) ) {
 				
-				$category_question_limit = maybe_unserialize( $this->quiz_options->select_category_question );
+				// Security (PHP Object Injection): never instantiate objects from this quiz option.
+				$category_question_limit = qsm_unserialize_no_objects( $this->quiz_options->select_category_question );
 				$categories_data = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = ( isset( $categories_data['list'] ) ? array_keys( $categories_data['list'] ) : array() );
 				
@@ -514,7 +660,8 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Apply overall question limit after all filtering/randomization so category filters remain consistent.
-		if ( $this->quiz_options->pagination > 0 && $max_questions > 0 ) {
+		// (This branch only runs when pagination > 0; the manual-pages branch caps in apply_total_question_limit().)
+		if ( $max_questions > 0 ) {
 			$question_ids = array_slice( $question_ids, 0, $max_questions );
 		}
 		
@@ -537,7 +684,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPOne = new Date();
 				qsmCookieExpiryQRPOne.setTime(qsmCookieExpiryQRPOne.getTime() + (365 * 24 * 60 * 60 * 1000)); // Set cookie for 1 year
 				var qmsExpiresQRPOne = "expires=" + qsmCookieExpiryQRPOne.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $quiz_id ); ?>=" + "<?php echo esc_js( $question_sql ); ?>" + "; " + qmsExpiresQRPOne + "; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}
@@ -635,6 +782,7 @@ class QSM_New_Pagination_Renderer {
 					'multicheckbox_limit_reach' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $this->options->quiz_limit_choice, "quiz_quiz_limit_choice-{$this->options->quiz_id}" ),
 					'out_of_text'               => esc_html__( ' out of ', 'quiz-master-next' ),
 					'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+					'processing_message'        => esc_html__( 'Processing your quiz...', 'quiz-master-next' ),
 					'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 					'start_date'                => current_time( 'h:i:s A m/d/Y' ),
 					'validate_process'          => esc_html__( 'Validating file...', 'quiz-master-next' ),
@@ -1041,7 +1189,7 @@ class QSM_New_Pagination_Renderer {
 	 * @return string
 	 */
 	private function render_quiz_pages( $shortcode_args = array() ) {
-		global $qmn_total_questions;
+		global $mlwQuizMasterNext, $qmn_total_questions;
 		$animation_effect = isset( $this->options->quiz_animation ) && '' !== $this->options->quiz_animation ? ' animated ' . $this->options->quiz_animation : '';
 		
 		// Check if we have pages
@@ -1076,9 +1224,17 @@ class QSM_New_Pagination_Renderer {
 			}
 			
 			// Determine if this page should be lazy loaded
-			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render );
+			$page_question_ids = array();
+			foreach ( $page as $page_question_id ) {
+				if ( isset( $this->questions[ $page_question_id ] ) ) {
+					$page_question_ids[] = $page_question_id;
+				}
+			}
+			$question_ids_csv = implode( ',', $page_question_ids );
+
+			// Determine if this page should be lazy loaded.
+			$should_lazy_load = $enable_lazy_loading && ( $pages_count > $initial_pages_to_render ) && ! empty( $page_question_ids );
 			$lazy_load_class = $should_lazy_load ? 'qsm-lazy-load-page' : 'qsm-loaded-page';
-			$question_ids_csv = implode( ',', $page );
 			?>
 			<section class="qsm-page qsm-question-page <?php echo esc_attr( $lazy_load_class ); ?> qsm-page-<?php echo esc_attr( $pages_count ); ?> <?php echo esc_attr( $animation_effect ); ?>" 
 			<?php echo ( $this->quiz_options->pagination <= 0 ) ? 'data-pid="' . esc_attr( $qpage_id ) . '"' : 'data-apid="' . esc_attr( $pages_count ) . '"'; ?>
@@ -1106,15 +1262,20 @@ class QSM_New_Pagination_Renderer {
 						continue;
 					}
 					
-					$qmn_total_questions += 1;
-					$question = $this->questions[ $question_id ];
+					$question  = $this->questions[ $question_id ];
+					// Only graded questions are counted and numbered (matches the legacy renderer),
+					// otherwise a Text/HTML section inflates total_questions and lowers the score.
+					$is_graded = $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question['question_type_new'] );
+					if ( $is_graded ) {
+						$qmn_total_questions += 1;
+					}
 					?>
 					<div class="quiz_section qsm-question-wrapper qsm-question-wrapper-<?php echo esc_attr( $question_id ); ?> question-section-id-<?php echo esc_attr( $question_id ); ?> question-type-<?php echo esc_attr( $question['question_type_new'] ); ?>" data-qid="<?php echo esc_attr( $question_id ); ?>">
-						<?php if ( 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
+						<?php if ( $is_graded && 1 === intval( $this->quiz_options->question_numbering ) ) { ?>
 						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php } ?>
 						<?php
-						if ( $this->quiz_options->show_category_on_front ) {
+						if ( ! empty( $this->quiz_options->show_category_on_front ) ) {
 							$categories = QSM_Questions::get_question_categories( $question_id );
 							if ( ! empty( $categories['category_name'] ) ) {
 								$cat_name = implode( ',', $categories['category_name'] );
@@ -1162,8 +1323,14 @@ class QSM_New_Pagination_Renderer {
 					</div>
 				</div>
 				<?php
-				// Increment question count for lazy loaded pages
-				$qmn_total_questions += count( $page );
+				// Increment question count for lazy loaded pages. Count the renderable,
+				// graded IDs only, so the running total matches what the AJAX handler will
+				// actually number and data-question-start-number stays in step across pages.
+				foreach ( $page_question_ids as $page_question_id ) {
+					if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $this->questions[ $page_question_id ]['question_type_new'] ) ) {
+						$qmn_total_questions += 1;
+					}
+				}
 			}
 			// Show page count if enabled
 			if ( isset( $this->quiz_options->enable_pagination_quiz ) && 1 == $this->quiz_options->enable_pagination_quiz ) {
@@ -1495,7 +1662,7 @@ class QSM_New_Pagination_Renderer {
 				var qsmCookieExpiryQRPTwo = new Date();
 				qsmCookieExpiryQRPTwo.setTime(qsmCookieExpiryQRPTwo.getTime() + (365*24*60*60*1000));
 				var qmsExpiresQRPTwo = "expires="+ qsmCookieExpiryQRPTwo.toUTCString();
-				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/";
+				document.cookie = "question_ids_<?php echo esc_js( $this->options->quiz_id ); ?> = <?php echo esc_attr( implode( ',', $question_list ) ); ?>; "+qmsExpiresQRPTwo+"; path=/<?php echo is_ssl() ? '; SameSite=None; Secure' : ''; ?>";
 			</script>
 			<?php
 		}
@@ -1553,7 +1720,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		// Get quiz settings
-		$quiz_settings = maybe_unserialize( $this->options->quiz_settings );
+		$quiz_settings = qsm_unserialize_no_objects( $this->options->quiz_settings );
 		
 		// Get error messages from quiz texts with language support
 		$default_texts   = QMNPluginHelper::get_default_texts();
@@ -1635,6 +1802,7 @@ class QSM_New_Pagination_Renderer {
 			'disable_first_page'                 => $this->quiz_options->disable_first_page ?? 0,
 			'enable_result_after_timer_end'      => $this->quiz_options->enable_result_after_timer_end ?? 0,
 			'enable_quick_result_mc'             => $this->quiz_options->enable_quick_result_mc ?? 0,
+			'highlight_correct_answer'           => $this->quiz_options->highlight_correct_answer ?? 1,
 			'end_quiz_if_wrong'                  => $this->quiz_options->end_quiz_if_wrong ?? 0,
 			'form_disable_autofill'              => $this->quiz_options->form_disable_autofill ?? 0,
 			'disable_mathjax'                    => $this->quiz_options->disable_mathjax ?? 0,

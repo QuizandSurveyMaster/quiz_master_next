@@ -32,13 +32,38 @@ import { warningIcon, plusIcon } from "../component/icon";
 import { qsmIsEmpty, qsmStripTags, qsmFormData, qsmValueOrDefault, qsmDecodeHtml, qsmUniqueArray, qsmMatchingValueKeyArray } from '../helper';
 
 
+//get the quiz block (clientId + quizID) a block sits in
+const getParentQuiz = ( blockClientId ) => {
+	const blockEditor = select( 'core/block-editor' );
+	const quizClientId = blockEditor.getBlockParentsByBlockName( blockClientId, 'qsm/quiz' )?.[0];
+	if ( qsmIsEmpty( quizClientId ) ) {
+		return null;
+	}
+	return {
+		clientId: quizClientId,
+		quizID: blockEditor.getBlockAttributes( quizClientId )?.quizID,
+	};
+};
+
 //check for duplicate questionID attr
 const isQuestionIDReserved = ( questionIDCheck, clientIdCheck ) => {
     const blocksClientIds = select( 'core/block-editor' ).getClientIdsWithDescendants();
-    return qsmIsEmpty( blocksClientIds ) ? false : blocksClientIds.some( ( blockClientId ) => {
+	if ( qsmIsEmpty( blocksClientIds ) ) {
+		return false;
+	}
+	const currentQuiz = getParentQuiz( clientIdCheck );
+    return blocksClientIds.some( ( blockClientId ) => {
         const { questionID  } = select( 'core/block-editor' ).getBlockAttributes( blockClientId );
 		//different Client Id but same questionID attribute means duplicate
-        return clientIdCheck !== blockClientId && questionID === questionIDCheck;
+		if ( clientIdCheck === blockClientId || questionID !== questionIDCheck ) {
+			return false;
+		}
+		//same quiz embedded again in another quiz block: both blocks show the same question, not a copy
+		const otherQuiz = getParentQuiz( blockClientId );
+		if ( ! qsmIsEmpty( currentQuiz ) && ! qsmIsEmpty( otherQuiz ) && currentQuiz.clientId !== otherQuiz.clientId && currentQuiz.quizID == otherQuiz.quizID ) {
+			return false;
+		}
+        return true;
     } );
 };
 

@@ -45,6 +45,8 @@ $autofill                    = isset( $question_settings['autofill'] ) ? $questi
 $limit_text                  = isset( $question_settings['limit_text'] ) ? $question_settings['limit_text'] : '';
 $min_fill_text               = isset( $question_settings['min_text_length'] ) ? $question_settings['min_text_length'] : '';
 $autofill_att                = $autofill ? "autocomplete='off' " : '';
+$limit_text                  = absint( $limit_text );
+$min_fill_text               = absint( $min_fill_text );
 $limit_text_att              = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 $min_fill_text_att           = $min_fill_text ? "minlength='" . $min_fill_text . "' " : '';
 
