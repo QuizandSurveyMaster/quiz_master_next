@@ -1056,25 +1056,18 @@ function qsm_options_questions_tab_content() {
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-11-title">
 				<header class="qsm-popup__header">
-					<div class="qsm-bulk-edit-heading">
-						<h2 class="qsm-popup__title" id="modal-11-title"><?php esc_html_e( 'Bulk Edit Questions', 'quiz-master-next' ); ?></h2>
-						<p class="qsm-bulk-edit-subtitle">
-							<?php
-							/* translators: %s: number of selected questions. */
-							echo wp_kses_post( sprintf( esc_html__( '%s selected. Fields left on "No change" keep their current value.', 'quiz-master-next' ), '<strong><span class="qsm-selected-question-count">0</span> ' . esc_html__( 'question(s)', 'quiz-master-next' ) . '</strong>' ) );
-							?>
-						</p>
-					</div>
+					<h2 class="qsm-popup__title" id="modal-11-title"><?php esc_html_e( 'Bulk Edit Questions', 'quiz-master-next' ); ?></h2>
 					<a class="qsm-popup__close" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-11-content">
 					<form action="" method="post" id="qsm-bulk-edit-form" class="qsm-bulk-edit-layout">
 						<div class="qsm-bulk-edit-selected">
-							<div class="qsm-bulk-edit-section-title"><?php esc_html_e( 'Selected questions', 'quiz-master-next' ); ?></div>
+							<div class="qsm-bulk-edit-section-title"><?php esc_html_e( 'Selected questions', 'quiz-master-next' ); ?> <span class="qsm-bulk-edit-count qsm-selected-question-count">0</span></div>
 							<ul class="qsm-bulk-edit-selected-list" aria-live="polite"></ul>
 						</div>
 						<div class="qsm-bulk-edit-fields">
 							<div class="qsm-bulk-edit-section-title"><?php esc_html_e( 'Change', 'quiz-master-next' ); ?></div>
+							<p class="qsm-bulk-edit-hint"><?php esc_html_e( 'Fields left on "No change" keep their current value.', 'quiz-master-next' ); ?></p>
 							<div class="qsm-bulk-edit-field" data-field="required">
 								<label for="qsm-bulk-edit-required"><?php esc_html_e( 'Required', 'quiz-master-next' ); ?></label>
 								<select id="qsm-bulk-edit-required" name="question_required">
