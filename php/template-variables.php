@@ -232,53 +232,83 @@ function qsm_variable_single_answer( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext, $wpdb;
 	$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
-	while ( false !== strpos( $content, '%ANSWER_' ) ) {
-		$question_id = mlw_qmn_get_string_between( $content, '%ANSWER_', '%' );
-		$question_answers_array = isset( $mlw_quiz_array['question_answers_array'] ) ? $mlw_quiz_array['question_answers_array'] : array();
-		$key                    = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
-		$answerstr              = "";
-		if ( isset( $question_answers_array[ $key ] ) ) {
-			$answers = $question_answers_array[ $key ];
-			$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
-		    $question_settings      = qmn_sanitize_input_data( $ser_answer['question_settings'] );
-			if ( isset( $answers['user_answer'] ) && is_array( $answers['user_answer'] ) ) {
-				if ( 13 === intval( $answers['question_type'] ) ) {
-					$answerstr .= $answers['points'];
-				}elseif ( 12 === intval( $answers['question_type'] ) ) {
-					$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
-					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr = ! empty( $answer ) && strtotime( $answer ) ? date_i18n( $preferred_date_format, strtotime( $answer ) ) : $answer;
+	$question_answers_array = isset( $mlw_quiz_array['question_answers_array'] ) && is_array( $mlw_quiz_array['question_answers_array'] ) ? array_values( $mlw_quiz_array['question_answers_array'] ) : array();
+	/*
+	 * Only %ANSWER_<question id>% belongs to this handler. Matching any %ANSWER_...%
+	 * swallowed other variables such as %ANSWER_LABEL_PERCENTAGE_X%: the lookup
+	 * failed, array_search() returned false, and $question_answers_array[ false ]
+	 * is the FIRST answer - so its raw value was printed ("Array, Array, ...").
+	 */
+	$content = preg_replace_callback(
+		'/%ANSWER_(\d+)%/',
+		function ( $matches ) use ( $question_answers_array, $quiz_options, $wpdb ) {
+			$question_id = intval( $matches[1] );
+			$key         = qsm_find_question_answer_key( $question_answers_array, $question_id );
+			$answerstr   = '';
+			if ( false !== $key ) {
+				$answers           = $question_answers_array[ $key ];
+				$ser_answer        = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
+				$question_settings = qmn_sanitize_input_data( $ser_answer['question_settings'] );
+				if ( isset( $answers['user_answer'] ) && is_array( $answers['user_answer'] ) ) {
+					if ( 13 === intval( $answers['question_type'] ) ) {
+						$answerstr .= $answers['points'];
+					}elseif ( 12 === intval( $answers['question_type'] ) ) {
+						$preferred_date_format = isset($quiz_options->preferred_date_format) ? $quiz_options->preferred_date_format : get_option('date_format');
+						foreach ( $answers['user_answer'] as $answer ) {
+							$answerstr = ! empty( $answer ) && strtotime( $answer ) ? date_i18n( $preferred_date_format, strtotime( $answer ) ) : $answer;
+						}
+					}elseif ( 'rich' === $question_settings['answerEditor'] ) {
+						foreach ( $answers['user_answer'] as $answer ) {
+							$answerstr .= wp_kses_post( htmlspecialchars_decode($answer) );
+						}
+					}elseif ( 'image' === $question_settings['answerEditor'] ) {
+						foreach ( $answers['user_answer'] as $answer ) {
+							$answerstr .= '<span class="qmn_image_option" ><img src="' . esc_url( htmlspecialchars_decode($answer, ENT_QUOTES ) ) . '"/></span>';
+						}
+					}else {
+						$answerstr .= implode(", ",$answers['user_answer']);
 					}
-				}elseif ( 'rich' === $question_settings['answerEditor'] ) {
-					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr .= wp_kses_post( htmlspecialchars_decode($answer) );
-					}
-				}elseif ( 'image' === $question_settings['answerEditor'] ) {
-					foreach ( $answers['user_answer'] as $answer ) {
-						$answerstr .= '<span class="qmn_image_option" ><img src="' . esc_url( htmlspecialchars_decode($answer, ENT_QUOTES ) ) . '"/></span>';
-					}
-				}else {
-					$answerstr .= implode(", ",$answers['user_answer']);
 				}
 			}
-		}
-		$content = str_replace( '%ANSWER_' . $question_id . '%',$answerstr , $content );
-	}
-	while ( false !== strpos( $content, '%USER_ANSWER_' ) ) {
-		$question_id = mlw_qmn_get_string_between( $content, '%USER_ANSWER_', '%' );
-		$question_answers_array = $mlw_quiz_array['question_answers_array'] ?? array();
-		$key = array_search( $question_id, array_column( $question_answers_array, 'id' ), true );
-
-		if ( false !== $key && isset( $question_answers_array[ $key ] ) ) {
+			return $answerstr;
+		},
+		$content
+	);
+	// A question that is not in this result keeps its variable, as before.
+	$content = preg_replace_callback(
+		'/%USER_ANSWER_(\d+)%/',
+		function ( $matches ) use ( $question_answers_array ) {
+			$key = qsm_find_question_answer_key( $question_answers_array, intval( $matches[1] ) );
+			if ( false === $key ) {
+				return $matches[0];
+			}
 			$answer = $question_answers_array[ $key ]['user_answer'] ?? '';
-			$user_answer = is_array( $answer ) ? implode( ', ', $answer ) : $answer;
-			$content = str_replace( '%USER_ANSWER_' . $question_id . '%', $user_answer, $content );
-		} else {
-			break;
-		}
-	}
+			return is_array( $answer ) ? implode( ', ', $answer ) : $answer;
+		},
+		$content
+	);
 
 	return $content;
+}
+
+/**
+ * Finds a question's entry in a result's answers.
+ *
+ * Question IDs are strings in legacy results and integers in results loaded from
+ * the structured results table, so they are compared as integers.
+ *
+ * @since 11.2.9
+ * @param array $question_answers_array The result's answers, as a list.
+ * @param int   $question_id            The question to find.
+ * @return int|false The answer's index, or false when the question is not in the result.
+ */
+function qsm_find_question_answer_key( $question_answers_array, $question_id ) {
+	foreach ( $question_answers_array as $key => $answer ) {
+		if ( isset( $answer['id'] ) && intval( $answer['id'] ) === intval( $question_id ) ) {
+			return $key;
+		}
+	}
+	return false;
 }
 /**
  * Replace total_possible_points variable with actual points
