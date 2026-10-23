@@ -681,13 +681,19 @@ class QMNQuizManager {
 					$enc_questions = array_merge( $enc_questions, $item['questions'] );
 				}
 			}
-			$enc_questions      = implode( ',', $enc_questions );
-			$question_array     = $wpdb->get_results(
-				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
-				FROM {$wpdb->prefix}mlw_questions
-				WHERE question_id IN ($enc_questions)",
-				ARRAY_A
-			);
+			// Question IDs are always integers; cast before they are interpolated into the IN() list.
+			$enc_questions  = implode( ',', array_filter( array_map( 'absint', $enc_questions ) ) );
+			$question_array = array();
+			// A quiz with no pages/questions (or whose settings failed to load) yields an empty list,
+			// and an empty IN() is a SQL syntax error, so only query when there are IDs.
+			if ( '' !== $enc_questions ) {
+				$question_array = $wpdb->get_results(
+					"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
+					FROM {$wpdb->prefix}mlw_questions
+					WHERE question_id IN ($enc_questions)",
+					ARRAY_A
+				);
+			}
 			$questions_settings = array();
 			foreach ( $question_array as $key => $question ) {
 
