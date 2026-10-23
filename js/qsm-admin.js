@@ -172,6 +172,12 @@ function qsmShouldSuppressCreationAlerts() {
             jQuery('.catergory_comma_values').val(checked_data);
         });
 
+        function qsmToggleHighlightCorrectAnswer() {
+            jQuery('fieldset#highlight_correct_answer').toggle(jQuery('#enable_quick_result_mc-1').is(':checked'));
+        }
+        qsmToggleHighlightCorrectAnswer();
+        $(document).on('change', '#enable_quick_result_mc-1', qsmToggleHighlightCorrectAnswer);
+
         $(document).on('change', '#limit_category_checkbox-1', function (event) {
             if (jQuery('#limit_category_checkbox-1:checked').length > 0) {
                 jQuery('#question_per_category').hide();
@@ -3988,7 +3994,7 @@ var QSM_Quiz_Broadcast_Channel;
                     //Append feature image
                     if (get_featureImageSrc) {
                         var button = $('.qsm-feature-image-upl');
-                        button.html('<img src="' + get_featureImageSrc + '" style="width:150px">');
+                        button.empty().append($('<img>', { src: get_featureImageSrc, style: 'width:150px' }));
                         button.next('.qsm-feature-image-rmv').show();
                         button.next().next('.qsm-feature-image-id').val(get_featureImageID);
                         button.next().next().next('.qsm-feature-image-src').val(get_featureImageSrc);
@@ -5021,7 +5027,7 @@ var QSM_Quiz_Broadcast_Channel;
                             multiple: false
                         }).on('select', function () { // it also has "open" and "close" events
                             var attachment = custom_uploader.state().get('selection').first().toJSON();
-                            button.html('<img src="' + attachment.url + '" style="width:150px">');
+                            button.empty().append($('<img>', { src: attachment.url, style: 'width:150px' }));
                             button.next('.qsm-feature-image-rmv').show();
                             button.next().next('.qsm-feature-image-id').val(attachment.id);
                             button.next().next().next('.qsm-feature-image-src').val(attachment.url);

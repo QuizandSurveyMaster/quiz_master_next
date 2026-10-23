@@ -643,6 +643,7 @@ class QMNQuizManager {
 				'disable_first_page'                 => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
+				'highlight_correct_answer'           => isset( $qmn_quiz_options->highlight_correct_answer ) ? $qmn_quiz_options->highlight_correct_answer : 1,
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : 0,
 				'form_disable_autofill'              => isset( $qmn_quiz_options->form_disable_autofill ) ? $qmn_quiz_options->form_disable_autofill : '',
 				'disable_mathjax'                    => isset( $qmn_quiz_options->disable_mathjax ) ? $qmn_quiz_options->disable_mathjax : '',
@@ -1087,8 +1088,9 @@ class QMNQuizManager {
 					}
 					$question_ids = array_unique( $random );
 				}
-			} elseif ( 1 == $quiz_options->limit_category_checkbox && ! empty( maybe_unserialize( $quiz_options->select_category_question ) ) && $is_quiz_page ) {
-				$category_question_limit = maybe_unserialize( $quiz_options->select_category_question );
+			} elseif ( 1 == $quiz_options->limit_category_checkbox && is_array( qsm_unserialize_no_objects( $quiz_options->select_category_question ) ) && ! empty( qsm_unserialize_no_objects( $quiz_options->select_category_question ) ) && $is_quiz_page ) {
+				// Security (PHP Object Injection): never instantiate objects from this quiz option.
+				$category_question_limit = qsm_unserialize_no_objects( $quiz_options->select_category_question );
 				$categories              = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids            = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 				if ( ! empty( $category_ids ) ) {
@@ -3378,8 +3380,17 @@ class QMNQuizManager {
 		}
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-		if ( 0 !== $total_questions ) {
-			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
+		// total_questions only counts graded questions, so only subtract hidden questions that are graded.
+		// A hidden Text/HTML section would otherwise shrink the denominator and push the score above 100%.
+		global $mlwQuizMasterNext;
+		$hidden_graded_count = 0;
+		foreach ( $hidden_questions as $hidden_question_id ) {
+			if ( isset( $questions[ $hidden_question_id ] ) && $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $questions[ $hidden_question_id ]['question_type_new'] ) ) {
+				++$hidden_graded_count;
+			}
+		}
+		if ( 0 < $total_questions - $hidden_graded_count ) {
+			$total_score = round( ( ( $total_correct / ( $total_questions - $hidden_graded_count ) ) * 100 ), 2 );
 		} else {
 			$total_score = 0;
 		}
