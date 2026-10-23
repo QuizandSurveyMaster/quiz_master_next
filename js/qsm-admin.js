@@ -4508,65 +4508,175 @@ var QSM_Quiz_Broadcast_Channel;
                     $('#delete-question-button').attr('data-question-iid', 'all-questions');
                 });
 
+                // Bulk edit: returns the ids of the checked questions.
+                function qsmBulkEditSelectedIds() {
+                    return $('.qsm-admin-select-question-input:checked')
+                        .map(function () {
+                            return $(this).val();
+                        })
+                        .get();
+                }
+
+                // Bulk edit: short plain-text title for a question, as shown in the list.
+                function qsmBulkEditQuestionTitle(questionId) {
+                    let model = QSMQuestion.questions.get(questionId);
+                    let title = '';
+                    if (model) {
+                        title = model.get('question_title') || $('<div />').html(QSMQuestion.prepareQuestionText(model.get('name'))).text();
+                    }
+                    title = $.trim(title);
+                    return title || (qsmQuestionSettings.bulk_edit_i18n.untitled + ' #' + questionId);
+                }
+
+                // Bulk edit: counts the fields set away from "No change" and enables Update.
+                function qsmBulkEditRefreshState() {
+                    let $modal = $('#modal-11');
+                    let changed = 0;
+                    $modal.find('.qsm-bulk-edit-field').each(function () {
+                        let isChanged = '' !== $(this).find('select').first().val();
+                        $(this).toggleClass('is-changed', isChanged);
+                        if (isChanged) {
+                            changed++;
+                        }
+                    });
+                    let action = $('#qsm-bulk-edit-category-action').val();
+                    $modal.find('.qsm-bulk-edit-category-picker').prop('hidden', '' === action || 'clear' === action);
+                    let i18n = qsmQuestionSettings.bulk_edit_i18n;
+                    let summary = changed ? (1 === changed ? i18n.changes_one : i18n.changes_many).replace('%d', changed) : i18n.no_changes;
+                    $modal.find('.qsm-bulk-edit-summary').text(summary);
+                    $('#qsm-bulk-edit-apply').prop('disabled', !changed || !qsmBulkEditSelectedIds().length);
+                    $modal.find('.qsm-bulk-edit-info').prop('hidden', true).text('');
+                }
+
+                // Bulk edit: fills the selected-questions list (titles with a remove button).
+                function qsmBulkEditRenderSelected() {
+                    let $list = $('#modal-11 .qsm-bulk-edit-selected-list').empty();
+                    qsmBulkEditSelectedIds().forEach(function (questionId) {
+                        let $item = $('<li />').attr('data-question-id', questionId);
+                        $('<span class="qsm-bulk-edit-selected-title" />').text(qsmBulkEditQuestionTitle(questionId)).appendTo($item);
+                        $('<button type="button" class="qsm-bulk-edit-deselect" />')
+                            .attr('aria-label', qsmQuestionSettings.bulk_edit_i18n.remove)
+                            .attr('title', qsmQuestionSettings.bulk_edit_i18n.remove)
+                            .html('<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>')
+                            .appendTo($item);
+                        $list.append($item);
+                    });
+                }
+
                 // open bulk edit modal for the selected questions
                 $(document).on('click', '#qsm-bulk-edit-question', function (event) {
                     event.preventDefault();
-                    let count = $('.qsm-admin-select-question-input:checked').length;
-                    if (!count) {
+                    if (!qsmBulkEditSelectedIds().length) {
                         return;
                     }
                     // reset fields to "no change" each time the modal opens
-                    $('#qsm-bulk-edit-required, #qsm-bulk-edit-category, #qsm-bulk-edit-status').val('');
-                    $('.qsm-bulk-edit-info').html('');
-                    $('#modal-11 .qsm-selected-question-count').html(count);
+                    let $form = $('#qsm-bulk-edit-form');
+                    $form.find('select').val('');
+                    $form.find('input[type="checkbox"]').prop('checked', false);
+                    qsmBulkEditRenderSelected();
+                    qsmBulkEditRefreshState();
                     MicroModal.show('modal-11');
+                });
+
+                $(document).on('change', '#qsm-bulk-edit-form select', qsmBulkEditRefreshState);
+
+                // drop a question from the selection without leaving the modal
+                $(document).on('click', '.qsm-bulk-edit-deselect', function (event) {
+                    event.preventDefault();
+                    let $item = $(this).closest('li');
+                    let $checkbox = $('.qsm-admin-select-question-input[value="' + $item.data('question-id') + '"]');
+                    if ($checkbox.prop('checked')) {
+                        // a real click keeps the page/bulk-bar counters in sync
+                        $checkbox.trigger('click');
+                    }
+                    $item.remove();
+                    if (!qsmBulkEditSelectedIds().length) {
+                        MicroModal.close('modal-11');
+                        return;
+                    }
+                    qsmBulkEditRefreshState();
                 });
 
                 // apply the bulk edit changes
                 $(document).on('click', '#qsm-bulk-edit-apply', function (event) {
                     event.preventDefault();
                     let $button = $(this);
-                    let checkedValues = $('.qsm-admin-select-question-input:checked')
-                        .map(function () {
-                            return $(this).val();
-                        })
-                        .get();
+                    let $modal = $('#modal-11');
+                    let $info = $modal.find('.qsm-bulk-edit-info');
+                    let i18n = qsmQuestionSettings.bulk_edit_i18n;
+                    let checkedValues = qsmBulkEditSelectedIds();
                     if (!checkedValues.length) {
                         return;
                     }
-                    let question_ids = checkedValues.join(',');
-                    let required = $('#qsm-bulk-edit-required').val();
-                    let category = $('#qsm-bulk-edit-category').val();
-                    let status = $('#qsm-bulk-edit-status').val();
-                    if ('' === required && '' === category && '' === status) {
-                        $('.qsm-bulk-edit-info').html(qsm_admin_messages.bulk_edit_select_field || 'Please choose at least one field to update.');
+                    let categoryAction = $('#qsm-bulk-edit-category-action').val();
+                    let $picker = $modal.find('.qsm-bulk-edit-category-picker');
+                    let category = '1' === String($picker.data('multiple'))
+                        ? $picker.find('input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get()
+                        : $('#qsm-bulk-edit-category').val();
+                    let data = {
+                        'action': 'qsm_bulk_edit_questions',
+                        'question_id': checkedValues.join(','),
+                        'question_required': $('#qsm-bulk-edit-required').val(),
+                        'question_status': $('#qsm-bulk-edit-status').val(),
+                        'question_comments': $('#qsm-bulk-edit-comments').val(),
+                        'question_category_action': categoryAction,
+                        'question_category': category,
+                        'nonce': qsmQuestionSettings.bulk_edit_nonce
+                    };
+                    if ('' !== categoryAction && 'clear' !== categoryAction && (!category || !category.length)) {
+                        $info.text(i18n.choose_category).prop('hidden', false);
                         return;
                     }
-                    $button.prop('disabled', true);
+                    $button.prop('disabled', true).addClass('is-busy');
                     $.ajax({
                         url: ajaxurl,
                         method: 'POST',
-                        data: {
-                            'action': 'qsm_bulk_edit_questions',
-                            'question_id': question_ids,
-                            'question_required': required,
-                            'question_category': category,
-                            'question_status': status,
-                            'nonce': qsmQuestionSettings.bulk_edit_nonce
-                        },
+                        data: data,
                         success: function (response) {
-                            $button.prop('disabled', false);
-                            MicroModal.close('modal-11');
-                            if (response.success) {
-                                QSMAdmin.displayAlert(response.data, 'success');
-                                location.reload();
-                            } else {
-                                QSMAdmin.displayAlert(response.data, 'error');
+                            $button.removeClass('is-busy');
+                            if (!response.success) {
+                                $button.prop('disabled', false);
+                                $info.text(response.data || i18n.error).prop('hidden', false);
+                                return;
                             }
+                            // Update the loaded questions in place, so the editor shows the new
+                            // values and a later save of one question does not revert them.
+                            let template = wp.template('question');
+                            $.each(response.data.questions, function (questionId, values) {
+                                let model = QSMQuestion.questions.get(questionId);
+                                if (!model) {
+                                    return;
+                                }
+                                model.set({
+                                    required: values.required,
+                                    is_published: values.isPublished,
+                                    settings: _.extend({}, model.get('settings') || {}, values.settings),
+                                    comments: values.comments,
+                                    category: values.category,
+                                    multicategories: values.multicategories
+                                });
+                                let $row = $('.question[data-question-id="' + questionId + '"]');
+                                if ($row.length) {
+                                    $row.replaceWith(template({
+                                        id: model.id,
+                                        type: model.get('type'),
+                                        category: values.category.split(',').join(', '),
+                                        // same title rule as QSMQuestion.addQuestionToPage
+                                        question: model.get('question_title') || QSMQuestion.prepareQuestionText(model.get('name')) || qsm_admin_messages.new_question
+                                    }));
+                                }
+                            });
+                            setTimeout(QSMQuestion.removeNew, 250);
+                            $('.qsm-admin-select-question-input, .qsm-admin-select-page-question').prop('checked', false);
+                            $('.qsm-admin-select-page-question-label').hide();
+                            $('.qsm-selected-question-count').html(0);
+                            $('.qsm-admin-bulk-actions').fadeOut();
+                            MicroModal.close('modal-11');
+                            QSMAdmin.displayAlert(response.data.message, 'success');
                         },
                         error: function () {
-                            $button.prop('disabled', false);
-                            QSMAdmin.displayAlert('Something went wrong. Please try again.', 'error');
+                            $button.prop('disabled', false).removeClass('is-busy');
+                            $info.text(i18n.error).prop('hidden', false);
                         }
                     });
                 });

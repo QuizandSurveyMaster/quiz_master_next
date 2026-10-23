@@ -125,6 +125,17 @@ function qsm_options_questions_tab_content() {
 		'question_bank_nonce'     => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce'   => wp_create_nonce( 'delete_question_from_database' ),
 		'bulk_edit_nonce'         => wp_create_nonce( 'qsm_bulk_edit_questions' ),
+		'bulk_edit_i18n'          => array(
+			'remove'          => __( 'Remove from selection', 'quiz-master-next' ),
+			'untitled'        => __( 'Question', 'quiz-master-next' ),
+			/* translators: %d: number of fields that will change. */
+			'changes_one'     => __( '%d change will be applied', 'quiz-master-next' ),
+			/* translators: %d: number of fields that will change. */
+			'changes_many'    => __( '%d changes will be applied', 'quiz-master-next' ),
+			'no_changes'      => __( 'Choose at least one field to change', 'quiz-master-next' ),
+			'choose_category' => __( 'Please choose a category.', 'quiz-master-next' ),
+			'error'           => __( 'Something went wrong. Please try again.', 'quiz-master-next' ),
+		),
 		'rest_user_nonce'         => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 		'default_answers'         => $default_answers,
 		'can_manage_categories'   => current_user_can( 'manage_qsm_quiz_categories' ) ? 'true' : 'false',
@@ -1041,65 +1052,118 @@ function qsm_options_questions_tab_content() {
 	</div>
 
 	<!-- Bulk edit selected questions -->
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-11" aria-hidden="true">
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-bulk-edit-popup" id="modal-11" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-11-title">
 				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-11-title"><?php esc_html_e( 'Bulk Edit Questions', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+					<div class="qsm-bulk-edit-heading">
+						<h2 class="qsm-popup__title" id="modal-11-title"><?php esc_html_e( 'Bulk Edit Questions', 'quiz-master-next' ); ?></h2>
+						<p class="qsm-bulk-edit-subtitle">
+							<?php
+							/* translators: %s: number of selected questions. */
+							echo wp_kses_post( sprintf( esc_html__( '%s selected. Fields left on "No change" keep their current value.', 'quiz-master-next' ), '<strong><span class="qsm-selected-question-count">0</span> ' . esc_html__( 'question(s)', 'quiz-master-next' ) . '</strong>' ) );
+							?>
+						</p>
+					</div>
+					<a class="qsm-popup__close" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-11-content">
-					<p class="description"><?php esc_html_e( 'Apply the selected changes to all checked questions. Leave a field on "— No change —" to keep its current value.', 'quiz-master-next' ); ?></p>
-					<form action='' method='post' id="qsm-bulk-edit-form">
-						<table class="qsm-popup-table modal-11-table">
-							<tr class="qsm-popup-table-row">
-								<td><label for="qsm-bulk-edit-required"><strong><?php esc_html_e( 'Question Required', 'quiz-master-next' ); ?></strong></label></td>
-								<td>
-									<select id="qsm-bulk-edit-required" name="question_required">
-										<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
-										<option value="0"><?php esc_html_e( 'Required', 'quiz-master-next' ); ?></option>
-										<option value="1"><?php esc_html_e( 'Not required', 'quiz-master-next' ); ?></option>
-									</select>
-								</td>
-							</tr>
-							<tr class="qsm-popup-table-row">
-								<td><label for="qsm-bulk-edit-category"><strong><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></strong></label></td>
-								<td>
-									<select id="qsm-bulk-edit-category" name="question_category">
-										<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
-										<?php
-										$qsm_bulk_multi_cat = ( $enabled && 'cancelled' !== $enabled );
-										if ( ! empty( $question_categories ) ) {
-											foreach ( $question_categories as $qsm_bulk_cat ) {
-												$qsm_bulk_cat_name = isset( $qsm_bulk_cat['category'] ) ? $qsm_bulk_cat['category'] : '';
-												if ( '' === $qsm_bulk_cat_name ) {
-													continue;
-												}
-												$qsm_bulk_cat_value = $qsm_bulk_multi_cat && isset( $qsm_bulk_cat['cat_id'] ) ? $qsm_bulk_cat['cat_id'] : $qsm_bulk_cat_name;
-												echo '<option value="' . esc_attr( $qsm_bulk_cat_value ) . '">' . esc_html( $qsm_bulk_cat_name ) . '</option>';
+					<form action="" method="post" id="qsm-bulk-edit-form" class="qsm-bulk-edit-layout">
+						<div class="qsm-bulk-edit-selected">
+							<div class="qsm-bulk-edit-section-title"><?php esc_html_e( 'Selected questions', 'quiz-master-next' ); ?></div>
+							<ul class="qsm-bulk-edit-selected-list" aria-live="polite"></ul>
+						</div>
+						<div class="qsm-bulk-edit-fields">
+							<div class="qsm-bulk-edit-section-title"><?php esc_html_e( 'Change', 'quiz-master-next' ); ?></div>
+							<div class="qsm-bulk-edit-field" data-field="required">
+								<label for="qsm-bulk-edit-required"><?php esc_html_e( 'Required', 'quiz-master-next' ); ?></label>
+								<select id="qsm-bulk-edit-required" name="question_required">
+									<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
+									<option value="0"><?php esc_html_e( 'Required', 'quiz-master-next' ); ?></option>
+									<option value="1"><?php esc_html_e( 'Not required', 'quiz-master-next' ); ?></option>
+								</select>
+							</div>
+							<div class="qsm-bulk-edit-field" data-field="status">
+								<label for="qsm-bulk-edit-status"><?php esc_html_e( 'Status', 'quiz-master-next' ); ?></label>
+								<select id="qsm-bulk-edit-status" name="question_status">
+									<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
+									<option value="1"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></option>
+									<option value="0"><?php esc_html_e( 'Unpublished', 'quiz-master-next' ); ?></option>
+								</select>
+							</div>
+							<div class="qsm-bulk-edit-field" data-field="comments">
+								<label for="qsm-bulk-edit-comments"><?php esc_html_e( 'Comment Box', 'quiz-master-next' ); ?></label>
+								<select id="qsm-bulk-edit-comments" name="question_comments">
+									<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
+									<option value="1"><?php esc_html_e( 'None', 'quiz-master-next' ); ?></option>
+									<option value="0"><?php esc_html_e( 'Small Text Field', 'quiz-master-next' ); ?></option>
+									<option value="2"><?php esc_html_e( 'Large Text Field', 'quiz-master-next' ); ?></option>
+								</select>
+							</div>
+							<?php $qsm_bulk_multi_cat = ( $enabled && 'cancelled' !== $enabled ); ?>
+							<div class="qsm-bulk-edit-field qsm-bulk-edit-field-category" data-field="category">
+								<label for="qsm-bulk-edit-category-action"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
+								<select id="qsm-bulk-edit-category-action" name="question_category_action">
+									<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
+									<?php if ( $qsm_bulk_multi_cat ) { ?>
+										<option value="replace"><?php esc_html_e( 'Replace with…', 'quiz-master-next' ); ?></option>
+										<option value="add"><?php esc_html_e( 'Add…', 'quiz-master-next' ); ?></option>
+										<option value="remove"><?php esc_html_e( 'Remove…', 'quiz-master-next' ); ?></option>
+										<option value="clear"><?php esc_html_e( 'Remove all categories', 'quiz-master-next' ); ?></option>
+									<?php } else { ?>
+										<option value="replace"><?php esc_html_e( 'Set to…', 'quiz-master-next' ); ?></option>
+										<option value="clear"><?php esc_html_e( 'Remove category', 'quiz-master-next' ); ?></option>
+									<?php } ?>
+								</select>
+								<div class="qsm-bulk-edit-category-picker" data-multiple="<?php echo $qsm_bulk_multi_cat ? '1' : '0'; ?>" hidden>
+									<?php
+									$qsm_bulk_has_cat = false;
+									if ( $qsm_bulk_multi_cat ) {
+										echo '<div class="qsm-bulk-edit-category-list">';
+										foreach ( (array) $question_categories as $qsm_bulk_cat ) {
+											if ( empty( $qsm_bulk_cat['cat_id'] ) || '' === $qsm_bulk_cat['category'] ) {
+												continue;
 											}
+											$qsm_bulk_has_cat = true;
+											echo '<label><input type="checkbox" name="question_category[]" value="' . esc_attr( $qsm_bulk_cat['cat_id'] ) . '"> ' . esc_html( $qsm_bulk_cat['category'] ) . '</label>';
 										}
-										?>
-									</select>
-								</td>
-							</tr>
-							<tr class="qsm-popup-table-row">
-								<td><label for="qsm-bulk-edit-status"><strong><?php esc_html_e( 'Question Status', 'quiz-master-next' ); ?></strong></label></td>
-								<td>
-									<select id="qsm-bulk-edit-status" name="question_status">
-										<option value=""><?php esc_html_e( '— No change —', 'quiz-master-next' ); ?></option>
-										<option value="1"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></option>
-										<option value="0"><?php esc_html_e( 'Unpublished', 'quiz-master-next' ); ?></option>
-									</select>
-								</td>
-							</tr>
-						</table>
-						<div class="qsm-bulk-edit-info"></div>
+										echo '</div>';
+									} else {
+										echo '<select id="qsm-bulk-edit-category" name="question_category">';
+										echo '<option value="">' . esc_html__( '— Select a category —', 'quiz-master-next' ) . '</option>';
+										foreach ( (array) $question_categories as $qsm_bulk_cat ) {
+											$qsm_bulk_cat_name = isset( $qsm_bulk_cat['category'] ) ? $qsm_bulk_cat['category'] : '';
+											if ( '' === $qsm_bulk_cat_name ) {
+												continue;
+											}
+											$qsm_bulk_has_cat = true;
+											echo '<option value="' . esc_attr( $qsm_bulk_cat_name ) . '">' . esc_html( $qsm_bulk_cat_name ) . '</option>';
+										}
+										echo '</select>';
+									}
+									if ( ! $qsm_bulk_has_cat ) {
+										echo '<p class="description">' . esc_html__( 'No categories found. Create one from the question editor first.', 'quiz-master-next' ) . '</p>';
+									}
+									?>
+								</div>
+							</div>
+						</div>
 					</form>
+					<p class="qsm-bulk-edit-linked-note">
+						<span class="dashicons dashicons-admin-links" aria-hidden="true"></span>
+						<?php esc_html_e( 'Questions linked to other quizzes are updated in every quiz they appear in.', 'quiz-master-next' ); ?>
+					</p>
+					<div class="qsm-bulk-edit-info" role="alert" hidden></div>
 				</main>
-				<footer class="qsm-popup__footer">
-					<button type="button" id="qsm-bulk-edit-cancel" class="qsm-popup__btn" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-					<button type="button" id="qsm-bulk-edit-apply" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Apply Changes', 'quiz-master-next' ); ?> (<span class="qsm-selected-question-count">0</span>)</button>
+				<footer class="qsm-popup__footer qsm-bulk-edit-footer">
+					<span class="qsm-bulk-edit-summary"></span>
+					<div class="qsm-bulk-edit-actions">
+						<button type="button" id="qsm-bulk-edit-cancel" class="qsm-popup__btn" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+						<button type="button" id="qsm-bulk-edit-apply" class="qsm-popup__btn qsm-popup__btn-primary" disabled>
+							<span class="spinner"></span>
+							<?php esc_html_e( 'Update', 'quiz-master-next' ); ?> <span class="qsm-selected-question-count">0</span> <?php esc_html_e( 'question(s)', 'quiz-master-next' ); ?>
+						</button>
+					</div>
 				</footer>
 			</div>
 		</div>
@@ -1647,9 +1711,13 @@ add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_q
 /**
  * Bulk edit selected questions.
  *
- * Updates the "required" setting, category and published status for a set of
- * selected question IDs. Any field left empty in the request is not touched,
- * so the admin can change one, two or all three at once.
+ * Updates the "required" setting, published status, comment box and category
+ * for a set of selected question IDs. Any field left empty in the request is
+ * not touched, so the admin can change one or several fields at once.
+ *
+ * Like a regular question save (QSM_Questions::save_question), the change is
+ * also written to every linked copy of a question in other quizzes, and the
+ * qsm_question_updated / qsm_saved_question hooks fire for each row written.
  *
  * @since 11.3.0
  */
@@ -1692,56 +1760,139 @@ function qsm_bulk_edit_questions() {
 		wp_send_json_error( __( 'You are not allowed to modify these questions.', 'quiz-master-next' ) );
 	}
 
-	// Determine which fields were submitted for update. Empty string means "no change".
-	$update_required = isset( $_POST['question_required'] ) && '' !== $_POST['question_required'];
-	$update_status   = isset( $_POST['question_status'] ) && '' !== $_POST['question_status'];
-	$update_category = isset( $_POST['question_category'] ) && '' !== $_POST['question_category'];
+	$multi_cat_enabled = get_option( 'qsm_multiple_category_enabled' );
+	$multi_cat_enabled = ( $multi_cat_enabled && 'cancelled' !== $multi_cat_enabled );
 
-	if ( ! $update_required && ! $update_status && ! $update_category ) {
+	// Read the requested changes. An empty string means "no change".
+	$changes = array();
+	$posted  = function ( $key ) {
+		return isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified above.
+	};
+
+	$required = $posted( 'question_required' );
+	if ( in_array( $required, array( '0', '1' ), true ) ) {
+		// Note: in question_settings 0 means required and 1 means optional.
+		$changes['required'] = intval( $required );
+	}
+	$status = $posted( 'question_status' );
+	if ( in_array( $status, array( '0', '1' ), true ) ) {
+		$changes['isPublished'] = intval( $status );
+	}
+	$comments = $posted( 'question_comments' );
+	if ( in_array( $comments, array( '0', '1', '2' ), true ) ) {
+		$changes['comments'] = intval( $comments );
+	}
+
+	$category_action  = $posted( 'question_category_action' );
+	$category_actions = $multi_cat_enabled ? array( 'replace', 'add', 'remove', 'clear' ) : array( 'replace', 'clear' );
+	if ( in_array( $category_action, $category_actions, true ) ) {
+		$category_value = array();
+		if ( 'clear' !== $category_action ) {
+			if ( $multi_cat_enabled ) {
+				$raw_terms = isset( $_POST['question_category'] ) ? (array) wp_unslash( $_POST['question_category'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Missing -- each value is intval()ed below.
+				foreach ( array_unique( array_map( 'intval', $raw_terms ) ) as $term_id ) {
+					$term = 0 < $term_id ? get_term( $term_id, 'qsm_category' ) : null;
+					if ( $term && ! is_wp_error( $term ) ) {
+						$category_value[] = $term_id;
+					}
+				}
+			} else {
+				$category_name  = $posted( 'question_category' );
+				$category_value = '' === $category_name ? array() : array( $category_name );
+			}
+			if ( empty( $category_value ) ) {
+				wp_send_json_error( __( 'Please choose a category.', 'quiz-master-next' ) );
+			}
+		}
+		$changes['category'] = array(
+			'action' => $category_action,
+			'value'  => $category_value,
+		);
+	}
+
+	if ( empty( $changes ) ) {
 		wp_send_json_error( __( 'Please choose at least one field to update.', 'quiz-master-next' ) );
 	}
 
-	$required_value = $update_required ? intval( $_POST['question_required'] ) : 0;
-	$status_value   = $update_status ? intval( $_POST['question_status'] ) : 0;
-	$category_value = $update_category ? sanitize_text_field( wp_unslash( $_POST['question_category'] ) ) : '';
-
-	$multi_cat_enabled    = get_option( 'qsm_multiple_category_enabled' );
-	$multi_cat_enabled    = ( $multi_cat_enabled && 'cancelled' !== $multi_cat_enabled );
+	// Collect the selected rows plus their linked copies in other quizzes.
+	$questions_table      = $wpdb->prefix . 'mlw_questions';
 	$question_terms_table = $wpdb->prefix . 'mlw_question_terms';
+	$placeholders         = implode( ', ', array_fill( 0, count( $question_ids ), '%d' ) );
+	$selected_rows        = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, linked_question FROM {$questions_table} WHERE question_id IN ( {$placeholders} )", $question_ids ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	if ( empty( $selected_rows ) ) {
+		wp_send_json_error( __( 'No questions were updated.', 'quiz-master-next' ) );
+	}
 
-	$updated = 0;
-	foreach ( $question_ids as $question_id ) {
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ) );
+	$linked_ids = array();
+	foreach ( $selected_rows as $selected_row ) {
+		if ( '' !== (string) $selected_row->linked_question ) {
+			$linked_ids = array_merge( $linked_ids, array_map( 'intval', explode( ',', $selected_row->linked_question ) ) );
+		}
+	}
+	$linked_ids = array_diff( array_unique( array_filter( $linked_ids ) ), $question_ids );
+	// Only follow links into quizzes the current user may edit.
+	if ( ! empty( $linked_ids ) && function_exists( 'qsm_filter_editable_question_ids' ) ) {
+		$linked_ids = qsm_filter_editable_question_ids( $linked_ids );
+	}
+	$target_ids = array_values( array_unique( array_merge( wp_list_pluck( $selected_rows, 'question_id' ), $linked_ids ) ) );
+	$target_ids = array_map( 'intval', $target_ids );
+
+	$result = array();
+	$failed = 0;
+	foreach ( $target_ids as $question_id ) {
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_id, question_settings FROM {$questions_table} WHERE question_id = %d", $question_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! $row ) {
 			continue;
 		}
 
-		// Update the serialized question settings (required / published status).
-		if ( $update_required || $update_status ) {
-			$settings = maybe_unserialize( $row->question_settings );
-			if ( ! is_array( $settings ) ) {
-				$settings = array();
+		$columns  = array();
+		$formats  = array();
+		$settings = maybe_unserialize( $row->question_settings );
+		if ( ! is_array( $settings ) ) {
+			$settings = array();
+		}
+		if ( isset( $changes['required'] ) || isset( $changes['isPublished'] ) ) {
+			if ( isset( $changes['required'] ) ) {
+				$settings['required'] = $changes['required'];
 			}
-			if ( $update_required ) {
-				$settings['required'] = $required_value;
+			if ( isset( $changes['isPublished'] ) ) {
+				$settings['isPublished'] = $changes['isPublished'];
 			}
-			if ( $update_status ) {
-				$settings['isPublished'] = $status_value;
-			}
-			$wpdb->update(
-				$wpdb->prefix . 'mlw_questions',
-				array( 'question_settings' => maybe_serialize( $settings ) ),
-				array( 'question_id' => $question_id ),
-				array( '%s' ),
-				array( '%d' )
-			);
+			$columns['question_settings'] = maybe_serialize( $settings );
+			$formats[]                    = '%s';
+		}
+		if ( isset( $changes['comments'] ) ) {
+			$columns['comments'] = $changes['comments'];
+			$formats[]           = '%d';
+		}
+		if ( isset( $changes['category'] ) && ! $multi_cat_enabled ) {
+			$columns['category'] = 'clear' === $changes['category']['action'] ? '' : $changes['category']['value'][0];
+			$formats[]           = '%s';
+		}
+		if ( ! empty( $columns ) && false === $wpdb->update( $questions_table, $columns, array( 'question_id' => $question_id ), $formats, array( '%d' ) ) ) {
+			++$failed;
+			continue;
 		}
 
-		// Update the category.
-		if ( $update_category ) {
-			if ( $multi_cat_enabled ) {
-				$term_id = intval( $category_value );
-				$wpdb->delete(
+		$term_ids = array();
+		if ( $multi_cat_enabled ) {
+			$term_ids = array_map( 'intval', $wpdb->get_col( $wpdb->prepare( "SELECT term_id FROM {$question_terms_table} WHERE question_id = %d AND taxonomy = 'qsm_category'", $question_id ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( isset( $changes['category'] ) ) {
+				$chosen = $changes['category']['value'];
+				switch ( $changes['category']['action'] ) {
+					case 'replace':
+						$term_ids = $chosen;
+						break;
+					case 'add':
+						$term_ids = array_values( array_unique( array_merge( $term_ids, $chosen ) ) );
+						break;
+					case 'remove':
+						$term_ids = array_values( array_diff( $term_ids, $chosen ) );
+						break;
+					default:
+						$term_ids = array();
+				}
+				$written = false !== $wpdb->delete(
 					$question_terms_table,
 					array(
 						'question_id' => $question_id,
@@ -1749,8 +1900,8 @@ function qsm_bulk_edit_questions() {
 					),
 					array( '%d', '%s' )
 				);
-				if ( 0 < $term_id ) {
-					$wpdb->insert(
+				foreach ( $term_ids as $term_id ) {
+					$written = $written && false !== $wpdb->insert(
 						$question_terms_table,
 						array(
 							'question_id' => $question_id,
@@ -1761,43 +1912,75 @@ function qsm_bulk_edit_questions() {
 						array( '%d', '%d', '%d', '%s' )
 					);
 				}
-			} else {
-				$wpdb->update(
-					$wpdb->prefix . 'mlw_questions',
-					array( 'category' => $category_value ),
-					array( 'question_id' => $question_id ),
-					array( '%s' ),
-					array( '%d' )
-				);
+				if ( ! $written ) {
+					++$failed;
+					continue;
+				}
 			}
 		}
 
-		++$updated;
-	}
+		// Same hooks a regular question save fires, so add-ons stay in sync.
+		$values = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$questions_table} WHERE question_id = %d", $question_id ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		do_action( 'qsm_question_updated', $question_id, $values );
+		do_action( 'qsm_saved_question', $question_id, $values );
 
-	if ( $updated > 0 ) {
-		/**
-		 * Fires after a batch of questions has been bulk edited.
-		 *
-		 * @since 11.3.0
-		 * @param array $question_ids The IDs of the questions that were updated.
-		 * @param array $changed      The fields that were changed and their new values.
-		 */
-		do_action(
-			'qsm_bulk_questions_edited',
-			$question_ids,
-			array(
-				'required'    => $update_required ? $required_value : null,
-				'isPublished' => $update_status ? $status_value : null,
-				'category'    => $update_category ? $category_value : null,
-			)
+		// Fresh values for the editor, in the shape the questions REST endpoint uses.
+		if ( $multi_cat_enabled ) {
+			$category_names = array();
+			foreach ( $term_ids as $term_id ) {
+				$term = get_term( $term_id, 'qsm_category' );
+				if ( $term && ! is_wp_error( $term ) ) {
+					$category_names[] = $term->name;
+				}
+			}
+			$category_label = implode( ',', $category_names );
+		} else {
+			$category_label = isset( $values['category'] ) ? $values['category'] : '';
+		}
+		$result[ $question_id ] = array(
+			'required'        => isset( $settings['required'] ) ? $settings['required'] : '',
+			'isPublished'     => isset( $settings['isPublished'] ) ? $settings['isPublished'] : 1,
+			'settings'        => $settings,
+			'comments'        => isset( $values['comments'] ) ? $values['comments'] : '1',
+			'category'        => $category_label,
+			'multicategories' => array_map( 'strval', $term_ids ),
 		);
-
-		/* translators: %d: number of questions updated. */
-		wp_send_json_success( sprintf( _n( '%d question updated successfully.', '%d questions updated successfully.', $updated, 'quiz-master-next' ), $updated ) );
 	}
 
-	wp_send_json_error( __( 'No questions were updated.', 'quiz-master-next' ) );
+	if ( empty( $result ) ) {
+		wp_send_json_error( __( 'No questions were updated.', 'quiz-master-next' ) );
+	}
+
+	/**
+	 * Fires after questions are bulk edited from the Questions tab.
+	 *
+	 * @since 11.3.0
+	 *
+	 * @param array $question_ids Selected question IDs.
+	 * @param array $changes      Applied changes keyed by field (required, isPublished, comments, category).
+	 * @param array $linked_ids   Linked copies in other quizzes that were updated as well.
+	 */
+	do_action( 'qsm_bulk_questions_edited', $question_ids, $changes, array_values( $linked_ids ) );
+
+	$updated       = count( array_intersect( array_keys( $result ), $question_ids ) );
+	$linked_update = count( $result ) - $updated;
+	/* translators: %d: number of questions updated. */
+	$message = sprintf( _n( '%d question updated.', '%d questions updated.', $updated, 'quiz-master-next' ), $updated );
+	if ( $linked_update ) {
+		/* translators: %d: number of linked questions updated in other quizzes. */
+		$message .= ' ' . sprintf( _n( '%d linked copy in other quizzes was updated too.', '%d linked copies in other quizzes were updated too.', $linked_update, 'quiz-master-next' ), $linked_update );
+	}
+	if ( $failed ) {
+		/* translators: %d: number of questions that could not be saved. */
+		$message .= ' ' . sprintf( _n( '%d question could not be saved, please try again.', '%d questions could not be saved, please try again.', $failed, 'quiz-master-next' ), $failed );
+	}
+
+	wp_send_json_success(
+		array(
+			'message'   => $message,
+			'questions' => $result,
+		)
+	);
 }
 add_action( 'wp_ajax_qsm_bulk_edit_questions', 'qsm_bulk_edit_questions' );
 
