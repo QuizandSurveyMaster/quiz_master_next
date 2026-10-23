@@ -1719,9 +1719,6 @@ class QSM_New_Pagination_Renderer {
 			wp_enqueue_script( 'qsm_encryption' );
 		}
 		
-		// Get quiz settings
-		$quiz_settings = qsm_unserialize_no_objects( $this->options->quiz_settings );
-		
 		// Get error messages from quiz texts with language support
 		$default_texts   = QMNPluginHelper::get_default_texts();
 		$quiz_texts_obj = is_object( $this->quiz_texts ) ? $this->quiz_texts : (object) array();
