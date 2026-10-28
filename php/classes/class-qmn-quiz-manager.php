@@ -3160,6 +3160,13 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages            = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions        = QSM_Questions::load_questions_by_pages( $options->quiz_id );
+		// A quiz whose `pages` setting lists no questions at all (question added, Questions
+		// tab not saved yet) is rendered from the quiz's own questions by both renderers,
+		// so grade it against the same set. The raw setting is read here, unfiltered, so
+		// pages that only hold unpublished questions keep their current behaviour.
+		if ( empty( $questions ) && ! qsm_pages_have_questions( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array(), 'raw' ) ) ) {
+			$questions = QSM_Questions::load_questions( intval( $options->quiz_id ) );
+		}
 		$randomness_order = $mlwQuizMasterNext->pluginHelper->qsm_get_randomization_modes( $options->randomness_order );
 		if ( in_array( 'questions', $randomness_order, true ) || in_array( 'pages', $randomness_order, true ) && empty( $options->question_per_category ) && isset( $_COOKIE[ 'question_ids_' . $options->quiz_id ] ) ) {
 			$question_sql   = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_' . $options->quiz_id ] ) );
@@ -4067,6 +4074,28 @@ function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_vari
 		}
 	}
 	return $display;
+}
+
+/**
+ * Whether a quiz `pages` setting lists at least one question.
+ *
+ * `pages` is only written when the Questions tab is saved, so a quiz can have questions
+ * while this setting is still empty. Callers use this to fall back to the quiz's own
+ * questions in that case.
+ *
+ * @param mixed $pages The raw `pages` quiz setting.
+ * @return bool
+ */
+function qsm_pages_have_questions( $pages ) {
+	if ( ! is_array( $pages ) ) {
+		return false;
+	}
+	foreach ( $pages as $page ) {
+		if ( is_array( $page ) && ! empty( $page ) ) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /**

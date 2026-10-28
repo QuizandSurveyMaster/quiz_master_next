@@ -188,6 +188,7 @@ class QSM_New_Pagination_Renderer {
 		}
 		
 		$this->load_questions();
+		$this->fallback_pages_from_questions();
 		$this->setup_pages();
 		$this->normalize_qpages();
 	}
@@ -224,6 +225,23 @@ class QSM_New_Pagination_Renderer {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Use the quiz's questions as a single page when `pages` holds no questions.
+	 *
+	 * `pages` is only written when the Questions tab is saved, so a question added but
+	 * not saved yet (or a quiz from an older import) has questions with an empty `pages`
+	 * setting. The legacy renderer falls back to the quiz's questions in that case
+	 * (QMNQuizManager::load_questions()); do the same so both renderers show the quiz.
+	 * Pages that list at least one question, even an unpublished or deleted one, are
+	 * left untouched.
+	 */
+	private function fallback_pages_from_questions() {
+		if ( qsm_pages_have_questions( $this->pages ) || empty( $this->questions ) || ! is_array( $this->questions ) ) {
+			return;
+		}
+		$this->pages = array( array_map( 'intval', array_keys( $this->questions ) ) );
 	}
 
 	/**
