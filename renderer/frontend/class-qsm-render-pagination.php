@@ -232,13 +232,20 @@ class QSM_New_Pagination_Renderer {
 	 *
 	 * `pages` is only written when the Questions tab is saved, so a question added but
 	 * not saved yet (or a quiz from an older import) has questions with an empty `pages`
-	 * setting. The legacy renderer falls back to the quiz's questions in that case
-	 * (QMNQuizManager::load_questions()); do the same so both renderers show the quiz.
+	 * setting. The legacy renderer and grading (QSM_Questions::load_questions_by_pages())
+	 * already fall back to the quiz's questions in that case; do the same here.
 	 * Pages that list at least one question, even an unpublished or deleted one, are
 	 * left untouched.
 	 */
 	private function fallback_pages_from_questions() {
-		if ( qsm_pages_have_questions( $this->pages ) || empty( $this->questions ) || ! is_array( $this->questions ) ) {
+		if ( is_array( $this->pages ) ) {
+			foreach ( $this->pages as $page ) {
+				if ( is_array( $page ) && ! empty( $page ) ) {
+					return;
+				}
+			}
+		}
+		if ( empty( $this->questions ) || ! is_array( $this->questions ) ) {
 			return;
 		}
 		$this->pages = array( array_map( 'intval', array_keys( $this->questions ) ) );
