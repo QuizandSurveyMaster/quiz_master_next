@@ -38,7 +38,10 @@
             const totalPages = Math.max($pages.length, 1);
             
             // Calculate question pages (exclude first page if present)
-            const hasFirstPage = (Number(data.disable_first_page) !== 1);
+            // Same rule as the navigation: trust the server's first_page flag.
+            const hasFirstPage = (typeof data.first_page !== 'undefined')
+                ? !!data.first_page
+                : (Number(data.disable_first_page) !== 1);
             const questionPages = hasFirstPage ? totalPages - 1 : totalPages;
             
             this.quizObjects[quizId] = {
