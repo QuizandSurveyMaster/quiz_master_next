@@ -678,16 +678,28 @@ class QMNQuizManager {
 			$enc_questions                      = array();
 			if ( ! empty( $qpages_arr ) ) {
 				foreach ( $qpages_arr as $item ) {
-					$enc_questions = array_merge( $enc_questions, $item['questions'] );
+					if ( ! empty( $item['questions'] ) && is_array( $item['questions'] ) ) {
+						$enc_questions = array_merge( $enc_questions, $item['questions'] );
+					}
 				}
 			}
-			$enc_questions      = implode( ',', $enc_questions );
-			$question_array     = $wpdb->get_results(
-				"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
-				FROM {$wpdb->prefix}mlw_questions
-				WHERE question_id IN ($enc_questions)",
-				ARRAY_A
-			);
+			// CVE-2026-116509: qpages is stored quiz data a Contributor can write, and
+			// quizzes saved before the fix may already hold a payload. Cast at the sink.
+			$enc_questions      = array_values( array_unique( array_filter( array_map( 'intval', $enc_questions ), function ( $id ) {
+				return $id > 0;
+			} ) ) );
+			$question_array     = array();
+			if ( ! empty( $enc_questions ) ) {
+				$question_array = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT quiz_id, question_id, answer_array, question_answer_info, question_type_new, question_settings
+						FROM {$wpdb->prefix}mlw_questions
+						WHERE question_id IN (" . implode( ',', array_fill( 0, count( $enc_questions ), '%d' ) ) . ')',
+						$enc_questions
+					),
+					ARRAY_A
+				);
+			}
 			$questions_settings = array();
 			foreach ( $question_array as $key => $question ) {
 
@@ -1224,7 +1236,7 @@ class QMNQuizManager {
 			$question_ids = apply_filters( 'qsm_load_questions_ids', array(), $quiz_id, $quiz_options );
 			$question_sql = '';
 			if ( ! empty( $question_ids ) ) {
-				$qids         = implode( ', ', $question_ids );
+				$qids         = implode( ', ', array_map( 'intval', $question_ids ) );
 				$question_sql = " AND question_id IN ($qids) ";
 			}
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );

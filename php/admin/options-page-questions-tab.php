@@ -1205,6 +1205,20 @@ function qsm_ajax_save_pages() {
 			$qpages[ $page_key ]['questions'] = $page_questions;
 		}
 	}
+	// CVE-2026-116509: the loop above only rewrites qpages entries whose key is
+	// also in $pages, so an extra qpages[<n>] entry kept its raw 'questions' and
+	// reached the front-end IN() query. Cast every entry's question IDs, and drop
+	// entries that are not arrays.
+	foreach ( $qpages as $page_key => $qpage ) {
+		if ( ! is_array( $qpage ) ) {
+			unset( $qpages[ $page_key ] );
+			continue;
+		}
+		$qpage_questions = isset( $qpage['questions'] ) ? (array) $qpage['questions'] : array();
+		$qpages[ $page_key ]['questions'] = array_values( array_filter( array_map( 'intval', $qpage_questions ), function ( $id ) {
+			return $id > 0;
+		} ) );
+	}
 
 	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
@@ -1584,7 +1598,8 @@ add_action( 'wp_ajax_qsm_bulk_delete_question_from_database', 'qsm_bulk_delete_q
  * @since 9.1.3
  */
 function qsm_process_to_update_qpages_after_unlink( $connected_question_ids ) {
-	$comma_seprated_ids = implode( ',', array_unique( $connected_question_ids ) );
+	// Linked IDs come from the stored linked_question column: cast before the raw IN().
+	$comma_seprated_ids = implode( ',', array_unique( array_filter( array_map( 'intval', $connected_question_ids ) ) ) );
 	$qpages_array       = array();
 	if ( ! empty( $comma_seprated_ids ) ) {
 		global $wpdb, $mlwQuizMasterNext;
