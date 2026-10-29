@@ -53,6 +53,8 @@ class QSM_Install {
 			}
 		}
 		$i_tag = '<i class="qsm-font-light">';
+		// Everything registered until set_core_registration( false ) is Core's own setting (admin UI kit opt-in).
+		$mlwQuizMasterNext->quiz_settings->set_core_registration( true );
 		// Registers require_log_in setting
 		$field_array = array(
 			'label'      => __( 'Select Type', 'quiz-master-next' ),
@@ -1464,6 +1466,8 @@ class QSM_Install {
 			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		$mlwQuizMasterNext->quiz_settings->set_core_registration( false );
 	}
 
 	/**

@@ -37,6 +37,28 @@ class QSM_Quiz_Settings {
 	private $registered_fields;
 
 	/**
+	 * True while Core registers its own default settings.
+	 *
+	 * @var bool
+	 * @since 11.3.0
+	 */
+	private $registering_core = false;
+
+	/**
+	 * Marks the start or end of Core's own setting registration.
+	 *
+	 * Settings registered in between are stamped as Core's, so QSM_Fields can
+	 * render them with the admin UI kit. Settings registered by add-ons are not
+	 * stamped and keep today's markup.
+	 *
+	 * @since 11.3.0
+	 * @param bool $active True before Core registers its settings, false after.
+	 */
+	public function set_core_registration( $active ) {
+		$this->registering_core = (bool) $active;
+	}
+
+	/**
 	 * Unserializes a stored setting value without allowing object instantiation.
 	 *
 	 * Quiz settings are stored as serialized arrays, so individual elements are
@@ -75,8 +97,13 @@ class QSM_Quiz_Settings {
 	 * @param array $field_array An array of the components for the settings field
 	 */
 	public function register_setting( $field_array, $section = 'quiz_options' ) {
+		// The stamp is taken before add-ons filter the field, so a field they change is no longer treated as Core's.
+		$core_stamp  = $this->registering_core ? QSM_Fields::ui_signature( $field_array ) : '';
 		// Adds field to registered fields
 		$field_array = apply_filters( 'qsm_register_settings_before', $field_array );
+		if ( '' !== $core_stamp && is_array( $field_array ) ) {
+			$field_array['qsm_ui_core'] = $core_stamp;
+		}
 		$this->registered_fields[ $section ][] = $field_array;
 	}
 

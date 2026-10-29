@@ -12,6 +12,120 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QSM_Fields {
 
 	/**
+	 * Whether the screen being rendered uses the admin UI kit layout.
+	 *
+	 * @var bool
+	 * @since 11.3.0
+	 */
+	private static $ui_layout = false;
+
+	/**
+	 * Field keys that hold data rather than markup. An add-on may change them
+	 * (add an option, a variable, a default) and the field still counts as Core's.
+	 *
+	 * @var array
+	 * @since 11.3.0
+	 */
+	private static $ui_data_keys = array( 'options', 'variables', 'default', 'qsm_ui_core' );
+
+	/**
+	 * Turns the admin UI kit layout on or off for the screen being rendered.
+	 *
+	 * Only Core's own settings, unchanged by add-ons, use it, and only for field
+	 * types that have a kit renderer (see `qsm_fields_ui_renderers`). Every other
+	 * field keeps today's markup, even on the same tab.
+	 *
+	 * @since 11.3.0
+	 * @param bool $enabled True to use the kit layout.
+	 */
+	public static function set_ui_layout( $enabled ) {
+		self::$ui_layout = (bool) $enabled;
+	}
+
+	/**
+	 * Fingerprint of a field's markup-relevant keys.
+	 *
+	 * @since 11.3.0
+	 * @param array $field Field definition.
+	 * @return string
+	 */
+	public static function ui_signature( $field ) {
+		if ( ! is_array( $field ) ) {
+			return '';
+		}
+		$field = array_diff_key( $field, array_flip( self::$ui_data_keys ) );
+		if ( isset( $field['fields'] ) && is_array( $field['fields'] ) ) {
+			foreach ( $field['fields'] as $key => $sub_field ) {
+				$field['fields'][ $key ] = is_array( $sub_field ) ? array_diff_key( $sub_field, array_flip( self::$ui_data_keys ) ) : $sub_field;
+			}
+		}
+		return md5( maybe_serialize( self::ui_signature_normalize( $field ) ) );
+	}
+
+	/**
+	 * Replaces values serialize() can't handle (closures, objects) with their type.
+	 *
+	 * @since 11.3.0
+	 * @param mixed $value Value.
+	 * @return mixed
+	 */
+	private static function ui_signature_normalize( $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => $item ) {
+				$value[ $key ] = self::ui_signature_normalize( $item );
+			}
+			return $value;
+		}
+		return is_object( $value ) ? 'object:' . get_class( $value ) : $value;
+	}
+
+	/**
+	 * Whether a field is one of Core's settings that no add-on has changed.
+	 *
+	 * Core stamps its settings while it registers them (QSM_Install::register_default_settings).
+	 * A field added by an add-on has no stamp. A Core field that an add-on changed
+	 * through `qsm_register_settings_before` or `qsm_load_setting_fields_before`
+	 * (new sub-fields, a different type, extra HTML) no longer matches its stamp.
+	 *
+	 * @since 11.3.0
+	 * @param array $field Field definition.
+	 * @return bool
+	 */
+	public static function is_core_field( $field ) {
+		return is_array( $field ) && ! empty( $field['qsm_ui_core'] ) && self::ui_signature( $field ) === $field['qsm_ui_core'];
+	}
+
+	/**
+	 * Returns the kit renderer for a field, or null when the field keeps today's markup.
+	 *
+	 * @since 11.3.0
+	 * @param array $field   Field definition (defaults applied).
+	 * @param bool  $is_core Result of is_core_field() on the field as registered, before defaults.
+	 * @return callable|null
+	 */
+	private static function ui_renderer( $field, $is_core ) {
+		if ( ! self::$ui_layout || ! $is_core ) {
+			return null;
+		}
+		/**
+		 * Kit renderers for QSM_Fields, keyed by field type.
+		 *
+		 * A renderer receives ( $field, $value ) and returns the field's kit HTML
+		 * (for example a QSM_Admin_UI::field_row()). It must keep the field's
+		 * name, id and saved value format, so saving and add-on JS work as today.
+		 * Types without a renderer keep today's markup.
+		 *
+		 * @since 11.3.0
+		 * @param array $renderers type => callable.
+		 */
+		$renderers = apply_filters( 'qsm_fields_ui_renderers', array() );
+		if ( empty( $renderers[ $field['type'] ] ) || ! is_callable( $renderers[ $field['type'] ] ) ) {
+			return null;
+		}
+		return $renderers[ $field['type'] ];
+	}
+
+	/**
 	 * Cycles through the fields in the array and generates each field
 	 *
 	 * @since 5.0.0
@@ -384,6 +498,7 @@ class QSM_Fields {
 			'options'   => array(),
 			'variables' => array(),
 		);
+		$is_core  = self::$ui_layout && self::is_core_field( $field );
 		$field    = wp_parse_args( $field, $defaults );
 
 		// If id is not valid, return false
@@ -393,6 +508,17 @@ class QSM_Fields {
 		// If type is empty, assume text
 		if ( empty( $field['type'] ) ) {
 			$field['type'] = 'text';
+		}
+
+		// Core's own settings on a kit screen. The row stays a <tr> of the same
+		// form-table, so add-on rows on the same tab and `closest( 'tr' )` lookups keep working.
+		$renderer = self::ui_renderer( $field, $is_core );
+		if ( $renderer ) {
+			$row_id = 'multiple_fields' === $field['type'] ? '' : $field['id'];
+			echo '<tr class="qsm-ui qsm-ui-fields-tr"' . ( $row_id ? ' data-qsm-field="' . esc_attr( $row_id ) . '"' : '' ) . '><td colspan="2">';
+			echo call_user_func( $renderer, $field, $value ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kit renderers return escaped HTML
+			echo '</td></tr>';
+			return true;
 		}
 
 		// Prepare function to call for field type
