@@ -71,7 +71,7 @@ function qsm_generate_ui_kit_page() {
 			<div class="kit-layout">
 				<nav class="kit-nav" aria-label="Components" id="qsmk-nav"></nav>
 				<main class="kit-main">
-					<?php require QSM_PLUGIN_PATH . 'php/admin/ui-kit/components.php'; ?>
+					<?php require_once QSM_PLUGIN_PATH . 'php/admin/ui-kit/components.php'; ?>
 				</main>
 			</div>
 		</div>

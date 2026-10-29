@@ -77,7 +77,7 @@
 		boardSync();
 	} );
 	$page.on( 'click', '[data-kit-move-selected], [data-kit-move-to]', function () {
-		var to = parseInt( $( this ).attr( 'data-kit-move-selected' ) || $( this ).attr( 'data-kit-move-to' ), 10 );
+		var to = Number.parseInt( $( this ).attr( 'data-kit-move-selected' ) || $( this ).attr( 'data-kit-move-to' ), 10 );
 		var $list = $page.find( '[data-kit-pages-board] [data-kit-sortable]' ).eq( to );
 		var $rows = undefined !== $( this ).attr( 'data-kit-move-selected' ) ? $page.find( '[data-kit-q-select]:checked' ).closest( 'li' ) : $( this ).closest( 'li.qsm-ui-sort-item' );
 		$list.append( $rows );
@@ -123,7 +123,7 @@
 		var rows = $table.find( 'tbody tr' ).get().sort( function ( a, b ) {
 			var x = $( a ).children().eq( col ).text().trim();
 			var y = $( b ).children().eq( col ).text().trim();
-			var r = num ? ( parseFloat( x.replace( /[^0-9.\-]/g, '' ) ) || Date.parse( x ) || 0 ) - ( parseFloat( y.replace( /[^0-9.\-]/g, '' ) ) || Date.parse( y ) || 0 ) : x.localeCompare( y );
+			var r = num ? ( Number.parseFloat( x.replace( /[^0-9.\-]/g, '' ) ) || Date.parse( x ) || 0 ) - ( Number.parseFloat( y.replace( /[^0-9.\-]/g, '' ) ) || Date.parse( y ) || 0 ) : x.localeCompare( y );
 			return asc ? r : -r;
 		} );
 		$table.find( 'tbody' ).append( rows );
