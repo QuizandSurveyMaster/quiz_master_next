@@ -683,6 +683,20 @@ class QMNQuizManager {
 					}
 				}
 			}
+			// qpages can be empty or out of step with pages (e.g. a question added but the
+			// Questions tab not saved yet). load_questions() still renders those questions
+			// from pages, or from quiz_id when pages is empty, so build the quick-result data
+			// from the same sources or the front end reads answer_array off undefined.
+			if ( is_array( $pages_arr ) ) {
+				foreach ( $pages_arr as $page ) {
+					if ( is_array( $page ) ) {
+						$enc_questions = array_merge( $enc_questions, $page );
+					}
+				}
+			}
+			if ( empty( $enc_questions ) ) {
+				$enc_questions = $wpdb->get_col( $wpdb->prepare( "SELECT question_id FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0", $qmn_json_data['quiz_id'] ) );
+			}
 			// CVE-2026-116509: qpages is stored quiz data a Contributor can write, and
 			// quizzes saved before the fix may already hold a payload. Cast at the sink.
 			$enc_questions      = array_values( array_unique( array_filter( array_map( 'intval', $enc_questions ), function ( $id ) {
