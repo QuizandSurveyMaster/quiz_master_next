@@ -402,7 +402,7 @@ function qsm_ui_kit_examples() {
 			'render' => null,
 		),
 		'L-05' => array(
-			'code'   => "echo QSM_Admin_UI::card_open( array(\n\t'title'       => 'Timer',\n\t'description' => 'Limit how long users have to finish the quiz.',\n\t'body_id'     => 'qsm-timer-body',\n\t'actions'     => QSM_Admin_UI::toggle( array( 'checked' => true, 'attrs' => array( 'data-qsm-ui-controls' => '#qsm-timer-body' ) ) ),\n) );\n// ... rows ...\necho QSM_Admin_UI::card_close();",
+			'code'   => "echo QSM_Admin_UI::card_open( array(\n\t'title'       => 'Timer',\n\t'description' => 'Limit how long users have to finish the quiz.',\n\t'body_id'     => 'qsm-timer-body',\n\t'actions'     => QSM_Admin_UI::toggle( array( 'checked' => true, 'aria_label' => 'Timer enabled', 'attrs' => array( 'data-qsm-ui-controls' => '#qsm-timer-body' ) ) ),\n) );\n// ... rows ...\necho QSM_Admin_UI::card_close();",
 			'render' => function () use ( $ui ) {
 				return $ui::card(
 					array(
@@ -411,8 +411,9 @@ function qsm_ui_kit_examples() {
 						'body_id'     => 'qsmk-x-card-body',
 						'actions'     => $ui::toggle(
 							array(
-								'checked' => true,
-								'attrs'   => array( 'data-qsm-ui-controls' => '#qsmk-x-card-body' ),
+								'checked'    => true,
+								'aria_label' => 'Timer enabled',
+								'attrs'      => array( 'data-qsm-ui-controls' => '#qsmk-x-card-body' ),
 							)
 						),
 						'body'        => $ui::field_row(

@@ -31,6 +31,21 @@
 	);
 	var ROOT = '.qsm-ui';
 
+	// data-qsm-ui-* references are selectors (usually "#id"); a bad one must not break the handler.
+	function ref( sel ) {
+		if ( ! sel ) {
+			return $();
+		}
+		if ( '#' === sel.charAt( 0 ) && document.getElementById( sel.slice( 1 ) ) ) {
+			return $( document.getElementById( sel.slice( 1 ) ) );
+		}
+		try {
+			return $( sel );
+		} catch ( e ) {
+			return $();
+		}
+	}
+
 	function icon( name ) {
 		return '<svg class="qsm-ui-icon" aria-hidden="true" focusable="false"><use href="#qsm-ui-i-' + name + '"></use></svg>';
 	}
@@ -40,8 +55,11 @@
 		opts = opts || {};
 		var $box = $( '.qsm-ui-toasts' );
 		if ( ! $box.length ) {
-			$box = $( '<div class="qsm-ui-toasts" role="status" aria-live="polite"></div>' ).appendTo( document.body );
+			$box = $( '<div class="qsm-ui-toasts" role="status" aria-live="polite"></div>' );
 		}
+		// A modal <dialog> sits in the top layer, above anything in <body>: show the toast inside it.
+		var $open = $( 'dialog.qsm-ui-modal[open]' ).last();
+		$box.appendTo( $open.length ? $open : document.body );
 		var isError = 'error' === opts.type;
 		var $t = $( '<div class="qsm-ui-toast"></div>' ).toggleClass( 'is-error', isError );
 		$t.append( icon( isError ? 'alert' : 'ok' ) ).append( $( '<span></span>' ).text( message ) );
@@ -69,6 +87,7 @@
 		if ( ! d || 'function' !== typeof d.showModal ) {
 			return;
 		}
+		$( d ).find( '[data-qsm-ui-confirm-text]' ).val( '' ).trigger( 'input' );
 		d.showModal();
 		var focus = d.querySelector( '[data-qsm-ui-initial-focus]' );
 		if ( focus ) {
@@ -94,6 +113,11 @@
 	 * out of the tab order.
 	 */
 	function fieldValue( $ctrls ) {
+		// toggle( unchecked_value ) prints a hidden input with the same name before the checkbox: read the real control.
+		var $real = $ctrls.not( '[type="hidden"]' );
+		if ( $real.length ) {
+			$ctrls = $real;
+		}
 		var c = $ctrls.filter( function () {
 			return 'radio' !== this.type || this.checked;
 		} ).get( 0 );
@@ -141,11 +165,18 @@
 				if ( ! ok ) {
 					if ( undefined === $f.data( 'qsmUiTabindex' ) ) {
 						$f.data( 'qsmUiTabindex', $f.attr( 'tabindex' ) || '' );
+						$f.data( 'qsmUiAriaDisabled', $f.attr( 'aria-disabled' ) || '' );
 					}
 					$f.attr( { 'aria-disabled': 'true', tabindex: '-1' } );
 				} else if ( undefined !== $f.data( 'qsmUiTabindex' ) ) {
 					var t = $f.data( 'qsmUiTabindex' );
-					$f.removeAttr( 'aria-disabled' ).removeData( 'qsmUiTabindex' );
+					var ad = $f.data( 'qsmUiAriaDisabled' );
+					$f.removeData( 'qsmUiTabindex qsmUiAriaDisabled' );
+					if ( ad ) {
+						$f.attr( 'aria-disabled', ad );
+					} else {
+						$f.removeAttr( 'aria-disabled' );
+					}
 					if ( t ) {
 						$f.attr( 'tabindex', t );
 					} else {
@@ -248,10 +279,10 @@
 			updateCounter( this );
 		} );
 		$c.find( ROOT + ' [data-qsm-ui-controls]' ).each( function () {
-			$( $( this ).attr( 'data-qsm-ui-controls' ) ).toggleClass( 'qsm-ui-is-disabled', ! this.checked );
+			ref( $( this ).attr( 'data-qsm-ui-controls' ) ).toggleClass( 'qsm-ui-is-disabled', ! this.checked );
 		} );
 		$c.find( ROOT + ' [data-qsm-ui-reveal-target]' ).each( function () {
-			$( $( this ).attr( 'data-qsm-ui-reveal-target' ) ).prop( 'hidden', ! this.checked );
+			ref( $( this ).attr( 'data-qsm-ui-reveal-target' ) ).prop( 'hidden', ! this.checked );
 		} );
 		$c.find( ROOT + ' [data-qsm-ui-confirm-text]' ).each( function () {
 			$( this ).trigger( 'input' );
@@ -264,9 +295,11 @@
 
 	// Rules: any change inside a kit wrapper re-evaluates the rules in its scope.
 	$doc.on( 'change input', ROOT + ' input, ' + ROOT + ' select, ' + ROOT + ' textarea', function () {
-		var $scope = ruleScope( this );
-		$scope.find( '[data-show-if], [data-enable-if]' ).each( function () {
-			applyRule( this );
+		// Only rows inside a kit wrapper (the scope can be a whole form with add-on markup in it).
+		ruleScope( this ).find( '[data-show-if], [data-enable-if]' ).each( function () {
+			if ( $( this ).closest( ROOT ).length ) {
+				applyRule( this );
+			}
 		} );
 	} );
 
@@ -284,13 +317,14 @@
 		if ( '' !== input.max && v > parseFloat( input.max ) ) {
 			v = parseFloat( input.max );
 		}
-		input.value = v;
+		var decimals = ( String( step ).split( '.' )[ 1 ] || '' ).length;
+		input.value = decimals ? v.toFixed( decimals ) : v;
 		$( input ).trigger( 'input' ).trigger( 'change' );
 	} );
 
 	// Show / hide a secret (F-05).
 	$doc.on( 'click', ROOT + ' [data-qsm-ui-reveal]', function () {
-		var input = $( $( this ).attr( 'data-qsm-ui-reveal' ) ).get( 0 );
+		var input = ref( $( this ).attr( 'data-qsm-ui-reveal' ) ).get( 0 );
 		if ( ! input ) {
 			return;
 		}
@@ -310,7 +344,7 @@
 
 	// Copy (F-08).
 	$doc.on( 'click', ROOT + ' [data-qsm-ui-copy]', function () {
-		var src = $( $( this ).attr( 'data-qsm-ui-copy' ) ).get( 0 );
+		var src = ref( $( this ).attr( 'data-qsm-ui-copy' ) ).get( 0 );
 		if ( ! src ) {
 			return;
 		}
@@ -366,10 +400,10 @@
 
 	// Card header switch greys out the body (L-05); switch reveals a block (L-07).
 	$doc.on( 'change', ROOT + ' [data-qsm-ui-controls]', function () {
-		$( $( this ).attr( 'data-qsm-ui-controls' ) ).toggleClass( 'qsm-ui-is-disabled', ! this.checked );
+		ref( $( this ).attr( 'data-qsm-ui-controls' ) ).toggleClass( 'qsm-ui-is-disabled', ! this.checked );
 	} );
 	$doc.on( 'change', ROOT + ' [data-qsm-ui-reveal-target]', function () {
-		$( $( this ).attr( 'data-qsm-ui-reveal-target' ) ).prop( 'hidden', ! this.checked );
+		ref( $( this ).attr( 'data-qsm-ui-reveal-target' ) ).prop( 'hidden', ! this.checked );
 	} );
 
 	// Toast buttons, mostly for the kit page (N-02).
@@ -438,7 +472,7 @@
 	// Dialogs: open / close buttons, click on the backdrop closes.
 	$doc.on( 'click', ROOT + ' [data-qsm-ui-open]', function ( e ) {
 		e.preventDefault();
-		openDialog( $( this ).attr( 'data-qsm-ui-open' ) );
+		openDialog( ref( $( this ).attr( 'data-qsm-ui-open' ) ) );
 	} );
 	$doc.on( 'click', ROOT + ' [data-qsm-ui-close]', function () {
 		closeDialog( this );
@@ -451,7 +485,7 @@
 
 	// Type-to-confirm (O-02): the button turns on when the text matches.
 	$doc.on( 'input', ROOT + ' [data-qsm-ui-confirm-text]', function () {
-		$( $( this ).attr( 'data-qsm-ui-confirm-target' ) ).prop( 'disabled', $.trim( this.value ) !== $( this ).attr( 'data-qsm-ui-confirm-text' ) );
+		ref( $( this ).attr( 'data-qsm-ui-confirm-target' ) ).prop( 'disabled', $.trim( this.value ) !== $( this ).attr( 'data-qsm-ui-confirm-text' ) );
 	} );
 
 	// Template variable picker (F-24).
@@ -511,6 +545,10 @@
 		var opts = $.extend( { width: '100%' }, options || {} );
 		opts.selectionCssClass = $.trim( ( opts.selectionCssClass || '' ) + ' qsm-ui-select2' );
 		opts.dropdownCssClass = $.trim( ( opts.dropdownCssClass || '' ) + ' qsm-ui-select2' );
+		// Inside a modal <dialog> the dropdown must render in the dialog, or it opens behind the backdrop.
+		if ( ! opts.dropdownParent && $select.closest( 'dialog' ).length ) {
+			opts.dropdownParent = $select.closest( 'dialog' );
+		}
 		return $select.select2( opts );
 	}
 
