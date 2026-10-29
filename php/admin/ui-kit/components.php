@@ -421,22 +421,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<span class="qsm-ui-field-label" id="qsmk-d-tree-l">Category <small class="qsm-ui-caption">(question editor)</small></span>
 					<div class="qsm-ui-tree-picker">
 						<div class="qsm-ui-input-icon"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-search"/></svg><input class="qsm-ui-input qsm-ui-input-sm" type="search" placeholder="Search categories…" aria-label="Search categories"></div>
-						<ul class="qsm-ui-tree" role="tree" aria-labelledby="qsmk-d-tree-l">
-							<li role="treeitem" aria-expanded="true"><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="3"><span>Product</span></label><span class="qsm-ui-tree-count">14</span></div>
-								<ul role="group">
-									<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="7" checked><span>Pricing</span></label><span class="qsm-ui-tree-count">6</span></div></li>
-									<li role="treeitem" aria-expanded="true"><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="8"><span>Features</span></label><span class="qsm-ui-tree-count">8</span></div>
-										<ul role="group">
-											<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="12" checked><span>Reporting</span></label><span class="qsm-ui-tree-count">3</span></div></li>
-											<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="13"><span>Integrations</span></label><span class="qsm-ui-tree-count">5</span></div></li>
+						<ul class="qsm-ui-tree" aria-labelledby="qsmk-d-tree-l">
+							<li><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="3"><span>Product</span></label><span class="qsm-ui-tree-count">14</span></div>
+								<ul>
+									<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="7" checked><span>Pricing</span></label><span class="qsm-ui-tree-count">6</span></div></li>
+									<li><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="8"><span>Features</span></label><span class="qsm-ui-tree-count">8</span></div>
+										<ul>
+											<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="12" checked><span>Reporting</span></label><span class="qsm-ui-tree-count">3</span></div></li>
+											<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="13"><span>Integrations</span></label><span class="qsm-ui-tree-count">5</span></div></li>
 										</ul></li>
 								</ul></li>
-							<li role="treeitem" aria-expanded="true"><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="4"><span>Service</span></label><span class="qsm-ui-tree-count">9</span></div>
-								<ul role="group">
-									<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="9"><span>Support</span></label><span class="qsm-ui-tree-count">5</span></div></li>
-									<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="10"><span>Onboarding</span></label><span class="qsm-ui-tree-count">4</span></div></li>
+							<li><div class="qsm-ui-tree-row"><button class="qsm-ui-tree-toggle" type="button" aria-expanded="true" aria-label="Collapse"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon"><use href="#qsm-ui-i-chev"/></svg></button><label class="qsm-ui-check"><input type="checkbox" value="4"><span>Service</span></label><span class="qsm-ui-tree-count">9</span></div>
+								<ul>
+									<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="9"><span>Support</span></label><span class="qsm-ui-tree-count">5</span></div></li>
+									<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="10"><span>Onboarding</span></label><span class="qsm-ui-tree-count">4</span></div></li>
 								</ul></li>
-							<li role="treeitem"><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="5"><span>Satisfaction</span></label><span class="qsm-ui-tree-count">11</span></div></li>
+							<li><div class="qsm-ui-tree-row"><span class="qsm-ui-tree-spacer"></span><label class="qsm-ui-check"><input type="checkbox" value="5"><span>Satisfaction</span></label><span class="qsm-ui-tree-count">11</span></div></li>
 						</ul>
 						<div class="qsm-ui-tree-foot">
 							<div class="qsm-ui-row" style="gap:6px;flex:1;flex-wrap:wrap" data-kit-tree-chips></div>
@@ -1072,7 +1072,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="qsm-ui-locked">
 					<div class="qsm-ui-locked-content">
 						<div class="qsm-ui-setting-row"><div class="qsm-ui-setting-label">Send certificate</div><div><label class="qsm-ui-switch-line"><input class="qsm-ui-switch" type="checkbox" checked tabindex="-1"><span>On</span></label></div></div>
-						<div class="qsm-ui-setting-row"><div class="qsm-ui-setting-label">Template</div><div><select class="qsm-ui-select qsm-ui-w-md" tabindex="-1"><option>Classic</option></select></div></div>
+						<div class="qsm-ui-setting-row"><div class="qsm-ui-setting-label">Template</div><div><select class="qsm-ui-select qsm-ui-w-md" tabindex="-1" aria-label="Template"><option>Classic</option></select></div></div>
 					</div>
 					<div class="qsm-ui-locked-overlay"><span class="qsm-ui-badge is-pro">PRO</span><strong>Certificates are a Pro feature</strong><p>Give every passing user a branded PDF certificate.</p><button class="qsm-ui-btn qsm-ui-btn-primary qsm-ui-btn-sm" type="button"><svg aria-hidden="true" focusable="false" class="qsm-ui-icon qsm-ui-icon-sm"><use href="#qsm-ui-i-lock"/></svg>Unlock with Pro</button></div>
 				</div>

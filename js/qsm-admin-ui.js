@@ -140,7 +140,7 @@
 			var vals = $.trim( part.slice( i + 1 ) );
 			var neg = '!' === vals.charAt( 0 );
 			var list = ( neg ? vals.slice( 1 ) : vals ).split( ',' );
-			var $ctrls = $scope.find( '[name="' + name.replace( /"/g, '\\"' ) + '"]' );
+			var $ctrls = $scope.find( '[name="' + name.replaceAll( '"', '\\"' ) + '"]' );
 			var hit = list.indexOf( fieldValue( $ctrls ) ) > -1;
 			return neg ? ! hit : hit;
 		} );
@@ -202,7 +202,7 @@
 		if ( ! ta ) {
 			return;
 		}
-		var max = parseInt( $c.attr( 'data-max' ), 10 ) || 0;
+		var max = Number.parseInt( $c.attr( 'data-max' ), 10 ) || 0;
 		var len = ta.value.length;
 		$c.text( max ? len + ' / ' + max : String( len ) ).toggleClass( 'is-over', !! max && len > max );
 	}
@@ -309,13 +309,13 @@
 		if ( ! input || input.disabled || input.readOnly ) {
 			return;
 		}
-		var step = parseFloat( input.step ) || 1;
-		var v = ( parseFloat( input.value ) || 0 ) + step * parseInt( $( this ).attr( 'data-step' ), 10 );
-		if ( '' !== input.min && v < parseFloat( input.min ) ) {
-			v = parseFloat( input.min );
+		var step = Number.parseFloat( input.step ) || 1;
+		var v = ( Number.parseFloat( input.value ) || 0 ) + step * Number.parseInt( $( this ).attr( 'data-step' ), 10 );
+		if ( '' !== input.min && v < Number.parseFloat( input.min ) ) {
+			v = Number.parseFloat( input.min );
 		}
-		if ( '' !== input.max && v > parseFloat( input.max ) ) {
-			v = parseFloat( input.max );
+		if ( '' !== input.max && v > Number.parseFloat( input.max ) ) {
+			v = Number.parseFloat( input.max );
 		}
 		var decimals = ( String( step ).split( '.' )[ 1 ] || '' ).length;
 		input.value = decimals ? v.toFixed( decimals ) : v;
@@ -530,7 +530,7 @@
 	$doc.on( 'click', ROOT + ' .qsm-ui-tree-toggle', function () {
 		var open = 'true' !== $( this ).attr( 'aria-expanded' );
 		$( this ).attr( 'aria-expanded', open ? 'true' : 'false' );
-		$( this ).closest( 'li' ).attr( 'aria-expanded', open ? 'true' : 'false' ).children( 'ul' ).prop( 'hidden', ! open );
+		$( this ).closest( 'li' ).children( 'ul' ).prop( 'hidden', ! open );
 	} );
 	$doc.on( 'input', ROOT + ' .qsm-ui-tree-picker input[type="search"]', function () {
 		filterTree( $( this ).closest( '.qsm-ui-tree-picker' ), this.value );
