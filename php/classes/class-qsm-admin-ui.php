@@ -113,7 +113,8 @@ class QSM_Admin_UI {
 	/**
 	 * Builds an HTML attribute string.
 	 *
-	 * true prints the bare attribute, false / null / '' skip it.
+	 * true prints the bare attribute, false / null / '' skip it. Keys must be
+	 * literal attribute names written by the developer, never user input.
 	 *
 	 * @param array $attrs Attribute => value.
 	 * @return string Leading space included when not empty.
@@ -302,7 +303,7 @@ class QSM_Admin_UI {
 	 *     @type bool   $top       Align the label with the top of the control (lists, radios). Default false.
 	 *     @type bool   $required  Show the required marker.
 	 *     @type string $doc       Documentation URL; shows the help icon next to the label.
-	 *     @type string $show_if   Hide rule, see rule_attrs().
+	 *     @type string $show_if   Hide rule, see rule_attrs(). A hidden row stays in the form, so don't put a `required` field in it (the browser would block submit).
 	 *     @type string $enable_if Grey-out rule, see rule_attrs().
 	 *     @type string $class     Extra classes.
 	 *     @type array  $attrs     Extra attributes.
@@ -388,9 +389,9 @@ class QSM_Admin_UI {
 		}
 		$html = $label . $args['control'];
 		if ( $args['error'] ) {
-			$html .= '<span class="qsm-ui-field-msg is-error" id="' . esc_attr( $args['for'] . '-msg' ) . '">' . self::icon( 'alert', 'qsm-ui-icon-sm' ) . esc_html( $args['error'] ) . '</span>';
+			$html .= '<span class="qsm-ui-field-msg is-error"' . ( $args['for'] ? ' id="' . esc_attr( $args['for'] . '-msg' ) . '"' : '' ) . '>' . self::icon( 'alert', 'qsm-ui-icon-sm' ) . esc_html( $args['error'] ) . '</span>';
 		} elseif ( $args['success'] ) {
-			$html .= '<span class="qsm-ui-field-msg is-success" id="' . esc_attr( $args['for'] . '-msg' ) . '">' . self::icon( 'ok', 'qsm-ui-icon-sm' ) . esc_html( $args['success'] ) . '</span>';
+			$html .= '<span class="qsm-ui-field-msg is-success"' . ( $args['for'] ? ' id="' . esc_attr( $args['for'] . '-msg' ) . '"' : '' ) . '>' . self::icon( 'ok', 'qsm-ui-icon-sm' ) . esc_html( $args['success'] ) . '</span>';
 		}
 		$html .= $args['help'] ? '<span class="qsm-ui-help">' . wp_kses_post( $args['help'] ) . '</span>' : '';
 		$attrs = array_merge( array( 'class' => self::classes( 'qsm-ui-field', $args['error'] ? 'is-invalid' : '', $args['class'] ) ), self::rule_attrs( $args ) );
@@ -557,6 +558,7 @@ class QSM_Admin_UI {
 	 *     @type string $rule_note       Reason shown when the row is greyed out by data-enable-if.
 	 *     @type bool   $small           Small switch (tables).
 	 *     @type bool   $disabled        Disabled.
+	 *     @type string $aria_label      Accessible name when there is no visible label (e.g. a card header switch).
 	 *     @type array  $attrs           Extra attributes for the checkbox.
 	 * }
 	 * @return string
@@ -575,6 +577,7 @@ class QSM_Admin_UI {
 				'rule_note'       => '',
 				'small'           => false,
 				'disabled'        => false,
+				'aria_label'      => '',
 				'attrs'           => array(),
 			)
 		);
@@ -594,7 +597,7 @@ class QSM_Admin_UI {
 					'value'      => (string) $args['value'],
 					'checked'    => (bool) $args['checked'],
 					'disabled'   => (bool) $args['disabled'],
-					'aria-label' => $args['label'] ? '' : __( 'Toggle', 'quiz-master-next' ),
+					'aria-label' => $args['label'] ? '' : $args['aria_label'],
 				),
 				(array) $args['attrs']
 			)
@@ -1005,7 +1008,7 @@ class QSM_Admin_UI {
 	public static function progress( $percent, $label = '' ) {
 		$percent = max( 0, min( 100, (float) $percent ) );
 		$html    = $label ? '<div class="qsm-ui-progress-label"><span>' . esc_html( $label ) . '</span><span>' . esc_html( round( $percent ) . '%' ) . '</span></div>' : '';
-		return $html . '<div class="' . esc_attr( self::classes( 'qsm-ui-progress', 100.0 === $percent ? 'is-success' : '' ) ) . '" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( round( $percent ) ) . '"' . ( $label ? ' aria-label="' . esc_attr( $label ) . '"' : '' ) . '><span style="width:' . esc_attr( $percent ) . '%"></span></div>';
+		return $html . '<div class="' . esc_attr( self::classes( 'qsm-ui-progress', $percent >= 100 ? 'is-success' : '' ) ) . '" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( round( $percent ) ) . '"' . ( $label ? ' aria-label="' . esc_attr( $label ) . '"' : '' ) . '><span style="width:' . esc_attr( $percent ) . '%"></span></div>';
 	}
 
 	/**

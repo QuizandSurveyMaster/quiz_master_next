@@ -604,10 +604,10 @@
 .qsm-popup.qsm-ui-popup .qsm-popup__content { margin: 0; padding: 18px 22px 20px; color: var(--qsm-ink-2); }
 .qsm-popup.qsm-ui-popup .qsm-popup__footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
 
-/* WP colour picker (F-21): only pickers inside Core's .qsm-ui markup. The picker panel stays WordPress's own. */
-.qsm-ui .wp-picker-container .wp-color-result.button { min-height: var(--qsm-control-h); margin: 0; padding-left: 42px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-position: 6px center; box-shadow: none; }
-.qsm-ui .wp-picker-container .wp-color-result .wp-color-result-text { height: calc(var(--qsm-control-h) - 2px); padding: 0 10px; border-left: 1px solid var(--qsm-line); border-radius: 0 var(--qsm-radius) var(--qsm-radius) 0; background: #fff; color: var(--qsm-ink-2); font: 13px/calc(var(--qsm-control-h) - 2px) var(--qsm-mono); }
-.qsm-ui .wp-picker-container .wp-color-result:focus { outline: 3px solid var(--qsm-blue-ring); border-color: #809aff; }
+/* WP colour picker (F-21): only pickers Core wraps in .qsm-ui-color, so an add-on's picker printed inside a wrapper is unchanged. The picker panel stays WordPress's own. */
+.qsm-ui .qsm-ui-color .wp-picker-container .wp-color-result.button { min-height: var(--qsm-control-h); margin: 0; padding-left: 42px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-position: 6px center; box-shadow: none; }
+.qsm-ui .qsm-ui-color .wp-picker-container .wp-color-result .wp-color-result-text { height: calc(var(--qsm-control-h) - 2px); padding: 0 10px; border-left: 1px solid var(--qsm-line); border-radius: 0 var(--qsm-radius) var(--qsm-radius) 0; background: #fff; color: var(--qsm-ink-2); font: 13px/calc(var(--qsm-control-h) - 2px) var(--qsm-mono); }
+.qsm-ui .qsm-ui-color .wp-picker-container .wp-color-result:focus { outline: 3px solid var(--qsm-blue-ring); border-color: #809aff; }
 
 /* wp_editor / TinyMCE frame (F-24): wrap the editor in .qsm-ui-editor; content and saving are untouched. */
 .qsm-ui .qsm-ui-editor .wp-editor-wrap { margin: 0; }

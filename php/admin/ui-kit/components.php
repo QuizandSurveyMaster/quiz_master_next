@@ -504,10 +504,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<article class="kit-item" id="qsmk-F-21" data-id="F-21">
 		<header class="kit-item-head"><span class="kit-id">F-21</span><h3 class="qsm-ui-h3">Colour picker</h3><span class="kit-where">Style tab: primary colour, text, background, buttons</span></header>
 			<div class="kit-demo qsm-ui-row" style="gap:28px;align-items:flex-start">
-				<div><span class="qsm-ui-field-label">Primary colour</span><input type="text" class="qsm-ui-kit-color" value="#315efb" data-alpha-enabled="true" aria-label="Primary colour"></div>
-				<div><span class="qsm-ui-field-label">Background</span><input type="text" class="qsm-ui-kit-color" value="#ffffff" data-alpha-enabled="true" aria-label="Background"></div>
+				<div><span class="qsm-ui-field-label">Primary colour</span><span class="qsm-ui-color"><input type="text" class="qsm-ui-kit-color" value="#315efb" data-alpha-enabled="true" aria-label="Primary colour"></span></div>
+				<div><span class="qsm-ui-field-label">Background</span><span class="qsm-ui-color"><input type="text" class="qsm-ui-kit-color" value="#ffffff" data-alpha-enabled="true" aria-label="Background"></span></div>
 			</div>
-			<div class="kit-spec">The real WordPress colour picker (wp-color-picker-alpha, as today). Only its trigger is restyled, and only inside <code>.qsm-ui</code>; the picker panel stays WordPress's own.</div>
+			<div class="kit-spec">The real WordPress colour picker (wp-color-picker-alpha, as today). Only its trigger is restyled, and only when Core wraps it in <code>&lt;span class="qsm-ui-color"&gt;</code>; the picker panel stays WordPress's own.</div>
 		<?php qsm_ui_kit_php_example( 'F-21' ); ?>
 	</article>
 	<article class="kit-item" id="qsmk-F-23" data-id="F-23">
