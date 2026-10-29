@@ -456,8 +456,8 @@
 .qsm-ui .qsm-ui-handle:hover { background: #eef1f6; color: var(--qsm-ink-2); }
 .qsm-ui .qsm-ui-handle:focus-visible { outline: 2px solid var(--qsm-blue); color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-handle:active { cursor: grabbing; }
-.qsm-ui .is-dragging { opacity: .45; border-style: dashed !important; border-color: var(--qsm-blue) !important; }
-.qsm-ui .is-grabbed { border-color: var(--qsm-blue) !important; box-shadow: 0 0 0 3px var(--qsm-blue-ring), var(--qsm-shadow-pop) !important; }
+.qsm-ui .qsm-ui-sort-item.is-dragging { opacity: .45; border-style: dashed !important; border-color: var(--qsm-blue) !important; }
+.qsm-ui .qsm-ui-sort-item.is-grabbed { border-color: var(--qsm-blue) !important; box-shadow: 0 0 0 3px var(--qsm-blue-ring), var(--qsm-shadow-pop) !important; }
 .qsm-ui .qsm-ui-drop-target { outline: 2px dashed var(--qsm-blue-border); outline-offset: 2px; background: var(--qsm-blue-soft) !important; }
 .qsm-ui .qsm-ui-sort-item .qsm-ui-grow { flex: 1; min-width: 0; }
 .qsm-ui .qsm-ui-sort-item .qsm-ui-grow strong { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -559,10 +559,10 @@
 .qsm-ui .qsm-ui-label-line { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
 .qsm-ui .qsm-ui-label-line .qsm-ui-field-label { margin: 0; }
 /* data-enable-if: the fields stay enabled so their saved values still submit; JS marks them aria-disabled and takes them out of the tab order. */
-.qsm-ui .is-disabled-by-rule { opacity: .55; }
-.qsm-ui .is-disabled-by-rule input, .qsm-ui .is-disabled-by-rule select, .qsm-ui .is-disabled-by-rule textarea, .qsm-ui .is-disabled-by-rule button, .qsm-ui .is-disabled-by-rule label { pointer-events: none; }
+.qsm-ui [data-enable-if].is-disabled-by-rule { opacity: .55; }
+.qsm-ui [data-enable-if].is-disabled-by-rule input, .qsm-ui [data-enable-if].is-disabled-by-rule select, .qsm-ui [data-enable-if].is-disabled-by-rule textarea, .qsm-ui [data-enable-if].is-disabled-by-rule button, .qsm-ui [data-enable-if].is-disabled-by-rule label { pointer-events: none; }
 .qsm-ui .qsm-ui-rule-note, .qsm-ui .qsm-ui-switch-copy .qsm-ui-rule-note { display: none; color: var(--qsm-muted); font-style: italic; }
-.qsm-ui .is-disabled-by-rule .qsm-ui-rule-note, .qsm-ui .is-disabled-by-rule .qsm-ui-switch-copy .qsm-ui-rule-note { display: block; }
+.qsm-ui [data-enable-if].is-disabled-by-rule .qsm-ui-rule-note, .qsm-ui [data-enable-if].is-disabled-by-rule .qsm-ui-switch-copy .qsm-ui-rule-note { display: block; }
 .qsm-ui .qsm-ui-question-card[data-collapsed] .qsm-ui-qe, .qsm-ui .qsm-ui-question-card[data-collapsed] .qsm-ui-qe-foot { display: none; }
 .qsm-ui .qsm-ui-question-card > header .qsm-ui-chev { transition: transform .18s; }
 .qsm-ui .qsm-ui-question-card[data-collapsed] > header .qsm-ui-chev { transform: rotate(-90deg); }

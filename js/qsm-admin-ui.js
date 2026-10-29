@@ -17,6 +17,11 @@
 ( function ( $, window, document ) {
 	'use strict';
 
+	// Loaded twice (an add-on bundling its own copy): bind once, or every toggle would run twice.
+	if ( window.QSMAdminUI ) {
+		return;
+	}
+
 	var settings = window.qsmAdminUI || {};
 	var i18n = $.extend(
 		{
@@ -439,8 +444,8 @@
 	} );
 
 	// Menus.
-	$doc.on( 'click', ROOT + ' [data-qsm-ui-menu]', function ( e ) {
-		e.stopPropagation();
+	// No stopPropagation in this file: Core and add-on "click outside" handlers on document must still fire.
+	$doc.on( 'click', ROOT + ' [data-qsm-ui-menu]', function () {
 		var $menu = $( this ).closest( '.qsm-ui-menu-wrap' ).find( '.qsm-ui-menu' ).first();
 		var open = $menu.prop( 'hidden' );
 		closeMenus( $menu );
@@ -465,8 +470,10 @@
 		var $menu = $( this ).closest( '.qsm-ui-menu' ).prop( 'hidden', true );
 		$menu.closest( '.qsm-ui-menu-wrap' ).find( '[data-qsm-ui-menu]' ).attr( 'aria-expanded', 'false' );
 	} );
-	$doc.on( 'click', function () {
-		closeMenus();
+	$doc.on( 'click', function ( e ) {
+		if ( ! $( e.target ).closest( ROOT + ' .qsm-ui-menu-wrap' ).length ) {
+			closeMenus();
+		}
 	} );
 
 	// Dialogs: open / close buttons, click on the backdrop closes.
@@ -489,8 +496,7 @@
 	} );
 
 	// Template variable picker (F-24).
-	$doc.on( 'click', ROOT + ' [data-qsm-ui-var-toggle]', function ( e ) {
-		e.stopPropagation();
+	$doc.on( 'click', ROOT + ' [data-qsm-ui-var-toggle]', function () {
 		var $panel = $( this ).closest( '.qsm-ui-var-picker' ).find( '.qsm-ui-var-panel' );
 		var open = $panel.prop( 'hidden' );
 		$( ROOT + ' .qsm-ui-var-panel' ).not( $panel ).prop( 'hidden', true );
@@ -499,9 +505,6 @@
 		if ( open ) {
 			$panel.find( 'input[type="search"]' ).trigger( 'focus' );
 		}
-	} );
-	$doc.on( 'click', ROOT + ' .qsm-ui-var-panel', function ( e ) {
-		e.stopPropagation();
 	} );
 	$doc.on( 'input', ROOT + ' .qsm-ui-var-panel input[type="search"]', function () {
 		var q = this.value.toLowerCase();
@@ -521,7 +524,10 @@
 			toast( text + ' ' + i18n.inserted.toLowerCase() );
 		}
 	} );
-	$doc.on( 'click', function () {
+	$doc.on( 'click', function ( e ) {
+		if ( $( e.target ).closest( ROOT + ' .qsm-ui-var-picker' ).length ) {
+			return;
+		}
 		$( ROOT + ' .qsm-ui-var-panel' ).prop( 'hidden', true );
 		$( ROOT + ' [data-qsm-ui-var-toggle]' ).attr( 'aria-expanded', 'false' );
 	} );
