@@ -856,6 +856,135 @@ function qsm_display_question_option_ui( $key, $single_option ) {
 }
 
 /**
+ * Number of questions (not deleted) in each question category.
+ *
+ * Questions are linked to qsm_category terms in mlw_question_terms, not through
+ * term relationships, so WordPress term counts are always 0.
+ *
+ * @since 11.3.0
+ * @return array term_id => count
+ */
+function qsm_question_category_counts() {
+	global $wpdb;
+	$rows   = $wpdb->get_results( "SELECT qt.term_id, COUNT( DISTINCT qt.question_id ) AS total FROM {$wpdb->prefix}mlw_question_terms AS qt INNER JOIN {$wpdb->prefix}mlw_questions AS q ON q.question_id = qt.question_id AND q.deleted = 0 WHERE qt.taxonomy = 'qsm_category' GROUP BY qt.term_id" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$counts = array();
+	foreach ( (array) $rows as $row ) {
+		$counts[ (int) $row->term_id ] = (int) $row->total;
+	}
+	return $counts;
+}
+
+/**
+ * Prints the items of the category tree (F-25) for one parent, then their children.
+ *
+ * Same markup contract as wp_terms_checklist(), which qsm-admin.js and add-ons rely on:
+ * li#qsm_category-{id} > label > input[name="tax_input[qsm_category][]"]#in-qsm_category-{id},
+ * children in ul.children. The kit adds a collapse toggle and the question count beside the label.
+ *
+ * @since 11.3.0
+ * @param array $by_parent Terms grouped by parent id.
+ * @param int   $parent    Parent term id.
+ * @param array $counts    term_id => number of questions.
+ */
+function qsm_question_category_tree_items( $by_parent, $parent, $counts ) {
+	if ( empty( $by_parent[ $parent ] ) ) {
+		return;
+	}
+	foreach ( $by_parent[ $parent ] as $term ) {
+		$has_children = ! empty( $by_parent[ $term->term_id ] );
+		?>
+		<li id="qsm_category-<?php echo esc_attr( $term->term_id ); ?>">
+			<?php if ( $has_children ) : ?>
+				<button type="button" class="qsm-ui-tree-toggle" aria-expanded="true" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: category name */ __( 'Collapse %s', 'quiz-master-next' ), $term->name ) ); ?>"><?php echo QSM_Admin_UI::icon( 'chev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
+			<?php else : ?>
+				<span class="qsm-ui-tree-spacer"></span>
+			<?php endif; ?>
+			<label class="selectit qsm-ui-check"><input value="<?php echo esc_attr( $term->term_id ); ?>" type="checkbox" name="tax_input[qsm_category][]" id="in-qsm_category-<?php echo esc_attr( $term->term_id ); ?>"><span><?php echo esc_html( $term->name ); ?></span></label>
+			<span class="qsm-ui-tree-count"><?php echo esc_html( isset( $counts[ $term->term_id ] ) ? $counts[ $term->term_id ] : 0 ); ?></span>
+			<?php if ( $has_children ) : ?>
+				<ul class="children">
+					<?php qsm_question_category_tree_items( $by_parent, $term->term_id, $counts ); ?>
+				</ul>
+			<?php endif; ?>
+		</li>
+		<?php
+	}
+}
+
+/**
+ * Parent options for the "Add category" form, indented by depth.
+ *
+ * @since 11.3.0
+ * @param array $by_parent Terms grouped by parent id.
+ * @param int   $parent    Parent term id.
+ * @param int   $depth     Depth.
+ */
+function qsm_question_category_parent_options( $by_parent, $parent = 0, $depth = 0 ) {
+	if ( empty( $by_parent[ $parent ] ) ) {
+		return;
+	}
+	foreach ( $by_parent[ $parent ] as $term ) {
+		echo '<option value="' . esc_attr( $term->term_id ) . '">' . esc_html( str_repeat( '— ', $depth ) . $term->name ) . '</option>';
+		qsm_question_category_parent_options( $by_parent, $term->term_id, $depth + 1 );
+	}
+}
+
+/**
+ * The question editor's category picker with the admin UI kit look (F-25), for
+ * multiple categories. Same field names and ids as the multi_category option of
+ * qsm_display_question_option(), so loading, saving and add-ons work as today.
+ *
+ * @since 11.3.0
+ */
+function qsm_display_question_category_tree_ui() {
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'qsm_category',
+			'hide_empty' => false,
+			'orderby'    => 'name',
+		)
+	);
+	$by_parent = array();
+	if ( ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $term ) {
+			$by_parent[ (int) $term->parent ][] = $term;
+		}
+	}
+	$counts = qsm_question_category_counts();
+	?>
+	<div id="multi_category_area" class="qsm-row multi_category_area qsm-ui-qe-field">
+		<div class="qsm-ui-tree-picker qsm-ui-cat-tree">
+			<div class="qsm-ui-input-icon">
+				<?php echo QSM_Admin_UI::icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+				<?php // Today's search box: qsm-admin.js filters the list and keeps the parents of matches visible. ?>
+				<input type="text" class="qsm-category-filter qsm-ui-input qsm-ui-input-sm" placeholder="<?php esc_attr_e( 'Search categories', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Search categories', 'quiz-master-next' ); ?>">
+			</div>
+			<div id="multi_categories_wrapper" class="categorydiv qsm_categories_list qsm-ui-cat-tree-list">
+				<ul id="multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear qsm-ui-tree" aria-label="<?php esc_attr_e( 'Categories', 'quiz-master-next' ); ?>">
+					<?php qsm_question_category_tree_items( $by_parent, 0, $counts ); ?>
+				</ul>
+				<p class="qsm-ui-caption qsm-ui-cat-tree-empty"><?php esc_html_e( 'No categories yet.', 'quiz-master-next' ); ?></p>
+			</div>
+			<?php if ( current_user_can( 'manage_qsm_quiz_categories' ) ) : ?>
+				<div class="qsm-ui-tree-foot">
+					<button type="button" class="qsm-ui-btn qsm-ui-btn-link qsm-ui-cat-add-toggle" aria-expanded="false"><?php echo QSM_Admin_UI::icon( 'plus', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Add category', 'quiz-master-next' ); ?></button>
+					<div class="qsm-ui-tree-add qsm-ui-cat-add" hidden>
+						<input type="text" class="qsm-ui-input qsm-ui-input-sm qsm-ui-cat-add-name" placeholder="<?php esc_attr_e( 'Category name', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'New category name', 'quiz-master-next' ); ?>">
+						<select class="qsm-ui-select qsm-ui-input-sm qsm-ui-cat-add-parent" aria-label="<?php esc_attr_e( 'Parent category', 'quiz-master-next' ); ?>">
+							<option value="-1"><?php esc_html_e( 'No parent', 'quiz-master-next' ); ?></option>
+							<?php qsm_question_category_parent_options( $by_parent ); ?>
+						</select>
+						<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-primary qsm-ui-cat-add-save"><?php esc_html_e( 'Add', 'quiz-master-next' ); ?></button>
+						<p class="qsm-ui-field-msg qsm-ui-cat-add-msg" role="status"></p>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * @since 8.2.3
  * Settings to create Quiz
  */

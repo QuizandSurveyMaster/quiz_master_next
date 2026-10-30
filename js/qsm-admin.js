@@ -3020,17 +3020,8 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     if (pagination.current_page == 1) {
                         if (qsmQuestionSettings.categories.length > 0) {
-                            var category_arr = qsmQuestionSettings.categories;
-                            let $cat_html = '<option value="">' + qsm_admin_messages.all_categories + '</option>';
-                            $.each(category_arr, function (index, value) {
-                                if (value.category !== '') {
-                                    if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
-                                        $cat_html += '<option value="' + value.cat_id + '">' + value.category + '</option>';
-                                    } else {
-                                        $cat_html += '<option value="' + value.category + '">' + value.category + '</option>';
-                                    }
-                                }
-                            });
+                            // Same values as before; sub-categories now sit indented under their parent (F-25).
+                            let $cat_html = QSMQuestion.categoryOptionsHtml(qsm_admin_messages.all_categories);
                             $('#question-bank-cat').html($cat_html);
                             $('#question-bank-cat').val(pagination.category);
                             jQuery(document).trigger('qsm_question_bank_options', $cat_html);
@@ -3480,8 +3471,8 @@ var QSM_Quiz_Broadcast_Channel;
                     multicategories.forEach(function (id) {
                         var term = terms[String(id)];
                         if (!term) {
-                            // Created in this session: not in the localized list yet.
-                            var label = $.trim($('#in-qsm_category-' + id + '-1 > label').first().text());
+                            // Not in the localized list (e.g. created in another tab): use the tree's label.
+                            var label = $.trim($('input#in-qsm_category-' + id).first().closest('label').text());
                             if (label) {
                                 paths.push(label);
                             }
@@ -3572,6 +3563,86 @@ var QSM_Quiz_Broadcast_Channel;
                     MicroModal.show('modal-7');
                     // Focus starts on Cancel (O-02), not on the close icon.
                     $('#modal-7 .qsm-ui-confirm-cancel').trigger('focus');
+                },
+                /**
+                 * Category tree (F-25): adds a new category to every copy of the editor's tree (the inline
+                 * editor and its #modal-1-content template), ticked with its parents like the old
+                 * Add New Category popup, and to the parent pickers and the localized list.
+                 */
+                addCategoryToTree: function (id, name, parent) {
+                    var $label = $('<label class="selectit qsm-ui-check"></label>')
+                        .append($('<input type="checkbox" name="tax_input[qsm_category][]">').attr({ value: id, id: 'in-qsm_category-' + id }))
+                        .append($('<span></span>').text(name));
+                    $('.qsm-ui-cat-tree .qsm_category_checklist').each(function () {
+                        var $list = $(this);
+                        var $li = $('<li></li>').attr('id', 'qsm_category-' + id)
+                            .append('<span class="qsm-ui-tree-spacer"></span>')
+                            .append($label.clone())
+                            .append('<span class="qsm-ui-tree-count">0</span>');
+                        var $parentLi = parent > 0 ? $list.find('li#qsm_category-' + parent) : $();
+                        if ($parentLi.length) {
+                            var $children = $parentLi.children('ul.children');
+                            if (!$children.length) {
+                                $children = $('<ul class="children"></ul>').appendTo($parentLi);
+                                $parentLi.children('.qsm-ui-tree-spacer').replaceWith(
+                                    $('<button type="button" class="qsm-ui-tree-toggle" aria-expanded="true"></button>')
+                                        .attr('aria-label', name)
+                                        .html('<svg class="qsm-ui-icon" aria-hidden="true" focusable="false"><use href="#qsm-ui-i-chev"></use></svg>')
+                                );
+                            }
+                            $children.prop('hidden', false).append($li);
+                            $parentLi.children('.qsm-ui-tree-toggle').attr('aria-expanded', 'true');
+                        } else {
+                            $list.prepend($li);
+                        }
+                        $li.find('input').prop('checked', true);
+                        $li.parents('li').children('label').children('input').prop('checked', true);
+                    });
+                    var depth = 0;
+                    var $parentOption = $('.qsm-ui-cat-add-parent option[value="' + parent + '"]').first();
+                    if ($parentOption.length) {
+                        depth = ($parentOption.text().match(/— /g) || []).length + 1;
+                    }
+                    var $option = $('<option></option>').val(id).text(new Array(depth + 1).join('— ') + name);
+                    $('.qsm-ui-cat-add-parent').each(function () {
+                        var $after = $(this).find('option[value="' + parent + '"]');
+                        if ($after.length) {
+                            $after.after($option.clone());
+                        } else {
+                            $(this).append($option.clone());
+                        }
+                    });
+                    $('#qsm-parent-category').append($('<option class="level-0"></option>').val(id).text(name));
+                    if (Array.isArray(qsmQuestionSettings.categories)) {
+                        qsmQuestionSettings.categories.push({ category: name, cat_id: id, parent: parent > 0 ? parent : 0 });
+                    }
+                },
+                // Category <option>s for the question bank filter, indented under their parents (F-25).
+                categoryOptionsHtml: function (allLabel) {
+                    var byParent = {};
+                    var html = '<option value="">' + allLabel + '</option>';
+                    var esc = function (text) {
+                        return $('<div></div>').text(text).html();
+                    };
+                    _.each(qsmQuestionSettings.categories || [], function (term) {
+                        if ('' === term.category) {
+                            return;
+                        }
+                        var parent = String(term.parent || 0);
+                        (byParent[parent] = byParent[parent] || []).push(term);
+                    });
+                    var walk = function (parent, depth, seen) {
+                        _.each(byParent[parent] || [], function (term) {
+                            var value = (typeof term.cat_id !== 'undefined' && term.cat_id !== '') ? term.cat_id : term.category;
+                            html += '<option value="' + esc(value) + '">' + new Array(depth + 1).join('&nbsp;&nbsp;&nbsp;') + (depth ? '— ' : '') + esc(term.category) + '</option>';
+                            if (typeof term.cat_id !== 'undefined' && !seen[term.cat_id]) {
+                                seen[term.cat_id] = true;
+                                walk(String(term.cat_id), depth + 1, seen);
+                            }
+                        });
+                    };
+                    walk('0', 0, {});
+                    return html;
                 },
                 markDropTarget: function () {
                     $(this).addClass('qsm-ui-drop-target');
@@ -5447,6 +5518,86 @@ var QSM_Quiz_Broadcast_Channel;
                     });
 
                 }
+            });
+
+            // Category tree (F-25): matches inside a collapsed branch must be visible while searching.
+            $(document).on('keyup', '.qsm-ui-cat-tree .qsm-category-filter', function () {
+                if ('' !== $.trim($(this).val())) {
+                    var $tree = $(this).closest('.qsm-ui-cat-tree');
+                    $tree.find('.qsm-ui-tree-toggle').attr('aria-expanded', 'true');
+                    $tree.find('ul.children').prop('hidden', false);
+                }
+            });
+            $(document).on('click', '.qsm-ui-cat-add-toggle', function () {
+                var $form = $(this).siblings('.qsm-ui-cat-add');
+                var open = $form.prop('hidden');
+                $form.prop('hidden', !open);
+                $(this).attr('aria-expanded', open ? 'true' : 'false');
+                if (open) {
+                    // Start from what was typed in the search box, like the old Add New Category popup.
+                    var typed = $.trim($(this).closest('.qsm-ui-cat-tree').find('.qsm-category-filter').val());
+                    $form.find('.qsm-ui-cat-add-name').val(typed).trigger('focus');
+                }
+            });
+            $(document).on('keydown', '.qsm-ui-cat-add-name', function (e) {
+                if ('Enter' === e.key) {
+                    e.preventDefault();
+                    $(this).siblings('.qsm-ui-cat-add-save').trigger('click');
+                }
+            });
+            // Same request as the old popup (save_new_category); the server and its checks are unchanged.
+            $(document).on('click', '.qsm-ui-cat-add-save', function () {
+                var $form = $(this).closest('.qsm-ui-cat-add');
+                var $btn = $(this);
+                var $msg = $form.find('.qsm-ui-cat-add-msg');
+                var name = $.trim($form.find('.qsm-ui-cat-add-name').val());
+                var parent = parseInt($form.find('.qsm-ui-cat-add-parent').val(), 10) || -1;
+                var showError = function (text) {
+                    $msg.text(text).addClass('is-error');
+                };
+                $msg.text('').removeClass('is-error');
+                if ('' === name) {
+                    showError(qsm_admin_messages.category_not_empty);
+                    return;
+                }
+                var exists = _.some(qsmQuestionSettings.categories || [], function (term) {
+                    return String(term.category).toLowerCase() === name.toLowerCase();
+                });
+                if (exists) {
+                    showError(qsm_admin_messages.category + ' ' + name + ' ' + qsm_admin_messages.already_exists_in_database);
+                    return;
+                }
+                var i18n = qsmQuestionSettings.board_i18n || {};
+                $btn.prop('disabled', true);
+                jQuery.ajax(ajaxurl, {
+                    data: {
+                        action: 'save_new_category',
+                        name: name,
+                        nonce: qsmQuestionSettings.saveNonce,
+                        parent: parent
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        $btn.prop('disabled', false);
+                        if (response && response.term_id > 0) {
+                            QSMQuestion.addCategoryToTree(parseInt(response.term_id, 10), name, parent);
+                            $form.find('.qsm-ui-cat-add-name').val('');
+                            $form.closest('.qsm-ui-cat-tree').find('.qsm-category-filter').val('').trigger('keyup');
+                            if (window.QSMAdminUI) {
+                                window.QSMAdminUI.toast(i18n.catAdded || name);
+                            }
+                        } else if (response && false === response.success) {
+                            showError(i18n.catNoAccess);
+                        } else {
+                            showError(i18n.catError);
+                        }
+                    },
+                    error: function () {
+                        $btn.prop('disabled', false);
+                        showError(i18n.catError);
+                    }
+                });
             });
 
             $(document).on('click', '.add-multiple-category', function (e) {

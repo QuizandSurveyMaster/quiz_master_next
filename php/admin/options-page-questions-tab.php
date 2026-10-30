@@ -166,6 +166,10 @@ function qsm_options_questions_tab_content() {
 			/* translators: %d: number of selected questions */
 			'delBank'     => __( 'Delete %d questions from the question bank?', 'quiz-master-next' ),
 			'delBankOne'  => __( 'Delete this question from the question bank?', 'quiz-master-next' ),
+			// Category tree (F-25).
+			'catAdded'    => __( 'Category added', 'quiz-master-next' ),
+			'catError'    => __( 'Could not add the category. Please try again.', 'quiz-master-next' ),
+			'catNoAccess' => __( 'You are not allowed to manage quiz categories.', 'quiz-master-next' ),
 			'delBankText' => __( 'They no longer show in the question bank. Quizzes that use them keep them.', 'quiz-master-next' ),
 			'delBankBtn'  => __( 'Delete from bank', 'quiz-master-next' ),
 		),
@@ -926,11 +930,17 @@ function qsm_options_questions_tab_content() {
 													),
 												);
 											}
-											$category_question_option = apply_filters( 'qsm_question_category_option', $category_question_option );
-											$keys                     = array_column( $category_question_option, 'priority' );
+											$core_category_question_option = $category_question_option;
+											$category_question_option      = apply_filters( 'qsm_question_category_option', $category_question_option );
+											$keys                          = array_column( $category_question_option, 'priority' );
 											array_multisort( $keys, SORT_ASC, $category_question_option );
 											foreach ( $category_question_option as $qo_key => $single_cat_option ) {
-												qsm_display_question_option( $qo_key, $single_cat_option );
+												// Core's multiple-category picker, unchanged by add-ons: the kit category tree (F-25).
+												if ( 'categories' === $qo_key && 'multi_category' === $single_cat_option['type'] && qsm_is_core_question_option( $qo_key, $single_cat_option, $core_category_question_option ) ) {
+													qsm_display_question_category_tree_ui();
+												} else {
+													qsm_display_question_option( $qo_key, $single_cat_option );
+												}
 											}
 											?>
 										</div>

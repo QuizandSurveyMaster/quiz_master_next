@@ -756,3 +756,28 @@
 #modal-7.qsm-ui-popup #delete-question-button.qsm-ui-btn-danger:hover { background-color: #b9233a; }
 .qsm-ui .qsm-ui-confirm-options { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--qsm-ink-2); }
 .qsm-ui .qsm-ui-confirm-options strong { color: var(--qsm-ink); }
+
+/* ---------- Questions tab category tree (F-25) ----------
+ * Same markup contract as wp_terms_checklist (li > label > input, ul.children), which qsm-admin.js
+ * (parent/child ticking, search) and add-ons rely on, so each li is the row: toggle, label, count,
+ * then its ul.children on the next line. qsm-admin-question.css styles .multi_category_area with
+ * !important borders on the search box, hence the !important below.
+ */
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-cat-tree-list { display: block; max-height: 260px; padding: 6px; overflow-y: auto; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree { max-height: none; overflow: visible; padding: 0; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0; padding: 0; border-radius: 6px; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > .qsm-ui-check { flex: 1; min-width: 0; align-items: center; margin: 0; padding: 4px 0; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > .qsm-ui-tree-count { padding-right: 6px; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > ul.children { flex-basis: 100%; margin: 0; padding: 0 0 0 22px; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > ul.children[hidden] { display: none; }
+.qsm-ui .qsm-ui-cat-tree:has(.qsm-ui-tree li) .qsm-ui-cat-tree-empty { display: none; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-cat-tree-empty { margin: 4px 6px; }
+.qsm-ui .qsm-ui-cat-tree input.qsm-category-filter.qsm-ui-input { padding: 0 10px 0 34px; border: 1px solid var(--qsm-input) !important; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree-foot { flex-direction: column; align-items: stretch; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree-foot .qsm-ui-cat-add-toggle { align-self: flex-start; }
+/* The side column is narrow: name, parent and Add stack. */
+.qsm-ui .qsm-ui-qe-side .qsm-ui-cat-tree .qsm-ui-tree-add { grid-template-columns: 1fr; }
+.qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg { grid-column: 1 / -1; margin: 0; }
+.qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg:empty { display: none; }
+.qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg.is-error { color: var(--qsm-red); }
+.qsm-ui .qsm-ui-qe-card #categorydiv .inside { margin: 0; padding: 0; }
