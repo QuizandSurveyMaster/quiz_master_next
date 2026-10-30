@@ -563,7 +563,8 @@
 		if ( ! $.fn.sortable ) {
 			return $list;
 		}
-		var opts = $.extend( { handle: '.qsm-ui-handle', tolerance: 'pointer' }, options || {} );
+		// cancel: kit handles are <button>s, and jQuery UI's default cancel list includes button.
+		var opts = $.extend( { handle: '.qsm-ui-handle', tolerance: 'pointer', cancel: 'input, textarea, select, option' }, options || {} );
 		opts.placeholder = $.trim( ( opts.placeholder || '' ) + ' qsm-ui-sort-placeholder' );
 		return $list.sortable( opts );
 	}
