@@ -729,6 +729,10 @@
 .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content :is(select, textarea, input[type="text"], input[type="number"], input[type="date"], input[type="url"], input[type="email"]) { display: block; box-sizing: border-box; width: 100%; max-width: 420px; min-width: 0; height: var(--qsm-control-h); margin: 0; padding: 0 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-color: #fff; color: var(--qsm-ink); font: 14px/1.4 var(--qsm-font); box-shadow: none; }
 .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content textarea { height: auto; min-height: 96px; padding: 10px 12px; }
 .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content label :is(input[type="text"], input[type="number"], select) { margin-top: 6px; }
+/* Groups of sub-fields an add-on prints in the content (QSM Ultimate's chart and custom label boxes): as wide as
+   the other controls, caption above each control, a gap between groups. Add-ons show/hide them with inline styles. */
+.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-content > div:not([class*="wp-editor"]) { display: grid; justify-self: stretch; gap: 6px; position: static; width: 100%; max-width: 420px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-content > div:not([class*="wp-editor"]) > div { display: grid; gap: 6px; margin-top: 6px; }
 .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content select { padding-right: 36px; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23657188' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 13px center; cursor: pointer; }
 .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content :is(select, textarea, input):focus { border-color: #809aff; outline: 3px solid var(--qsm-blue-ring); }
 /* Two columns in the fold: label on the left, control on the right, so a wide main column isn't half empty.
