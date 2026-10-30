@@ -675,6 +675,10 @@
 .qsm-ui .qsm-ui-board .qsm-ui-q-row.opened { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 .qsm-ui .qsm-ui-board .qsm-ui-q-row.opened + .qsm-ui-qe-card { margin-top: -8px; }
 .qsm-ui .qsm-ui-qe-card #poststuff.qsm-ui-qe-wrap { display: block; width: auto; min-width: 0; padding: 0; }
+/* The old main column (#post-body-content) had position: relative, and add-ons position buttons against it
+   (QSM AI's Generate/Regenerate sits at the top right of the title row). Keep that positioning context. */
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-main { position: relative; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-title-row { position: relative; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field { display: block; width: auto; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field > .qsm-ui-field-label, .qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-field-label { color: var(--qsm-ink-2); font-size: 13px; font-weight: 600; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-field-label { color: var(--qsm-ink-2); }

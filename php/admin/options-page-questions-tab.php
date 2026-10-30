@@ -576,9 +576,12 @@ function qsm_options_questions_tab_content() {
 										<div class="qsm-linked-list-inside"></div>
 									</div>
 								</div>
-								<div class="qsm-row qsm-ui-qe-field">
+								<div class="qsm-ui-qe-field qsm-ui-qe-title">
 									<label class="qsm-ui-field-label" for="question_title"><?php esc_html_e( 'Question title', 'quiz-master-next' ); ?></label>
-									<textarea id="question_title" rows="1" class="question-title qsm-ui-textarea" name="question-title" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>"></textarea>
+									<?php // The textarea stays alone in its .qsm-row, as before: add-ons (QSM AI) position buttons inside that row. ?>
+									<div class="qsm-row qsm-ui-qe-title-row">
+										<textarea id="question_title" rows="1" class="question-title qsm-ui-textarea" name="question-title" placeholder="<?php esc_attr_e( 'Type your question here', 'quiz-master-next' ); ?>"></textarea>
+									</div>
 								</div>
 								<?php // The description row must stay right after this link: qsm-admin.js opens it with next( '.qsm-row' ). ?>
 								<a href="javascript:void(0)" class="qsm-show-question-desc-box qsm-ui-btn qsm-ui-btn-link"><?php echo QSM_Admin_UI::icon( 'plus', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Edit description', 'quiz-master-next' ); ?></a>
