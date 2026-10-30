@@ -3726,7 +3726,15 @@ var QSM_Quiz_Broadcast_Channel;
                     $question.find('.qsm-ui-question-handle').trigger('focus');
                     // One save after a run of key presses, not one request per press.
                     clearTimeout(QSMQuestion.keyboardSaveTimer);
-                    QSMQuestion.keyboardSaveTimer = setTimeout(QSMQuestion.savePages, 600);
+                    QSMQuestion.keyboardSaveTimer = setTimeout(QSMQuestion.flushKeyboardSave, 600);
+                },
+                // Saves a pending keyboard move now (also when the page is left before the delay ran out).
+                flushKeyboardSave: function () {
+                    if (QSMQuestion.keyboardSaveTimer) {
+                        clearTimeout(QSMQuestion.keyboardSaveTimer);
+                        QSMQuestion.keyboardSaveTimer = null;
+                        QSMQuestion.savePages();
+                    }
                 },
                 // Returns the saved per-quiz "Default Question Settings" (type/category/required)
                 // or false when none are configured. See task CU-86d3t3jcn.
@@ -4841,6 +4849,9 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 $(document).on('click', '.qsm-ui-board-clear', function () {
                     QSMQuestion.clearQuestionSelection();
+                });
+                $(window).on('pagehide', function () {
+                    QSMQuestion.flushKeyboardSave();
                 });
                 $(document).on('keydown', '.questions .qsm-ui-question-handle', function (event) {
                     if (!event.altKey || ('ArrowUp' !== event.key && 'ArrowDown' !== event.key)) {
