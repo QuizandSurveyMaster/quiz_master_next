@@ -735,9 +735,7 @@ function qsm_generate_question_option_ui( $key, $single_option ) {
 	?>
 	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-ui-qe-field qsm-ui-qe-field-<?php echo esc_attr( $type ); ?> <?php echo esc_attr( $show_class ); ?>">
 		<?php
-		if ( 'single_checkbox' !== $type ) {
-			echo qsm_question_option_ui_label( in_array( $type, array( 'multi_text', 'multi_checkbox' ), true ) ? '' : $key, $heading, $single_option ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in qsm_question_option_ui_label().
-		}
+		echo qsm_question_option_ui_label( in_array( $type, array( 'multi_text', 'multi_checkbox' ), true ) ? '' : $key, $heading, $single_option ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in qsm_question_option_ui_label().
 		?>
 		<div class="qsm-toggle-box-content qsm-ui-qe-control qsm-editor-wrap">
 			<?php
@@ -792,12 +790,9 @@ function qsm_generate_question_option_ui( $key, $single_option ) {
 					foreach ( (array) $single_option['options'] as $okey => $value ) {
 						?>
 						<label class="qsm-ui-check"><input name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" type="checkbox" value="<?php echo esc_attr( $okey ); ?>" <?php checked( $okey === $default ); // Strict like qsm_generate_question_option(): int keys never match a string default. ?> />
-							<span><?php echo wp_kses_post( $heading ); ?><?php echo '' !== $label ? '<small>' . wp_kses_post( $label ) . '</small>' : ''; ?></span>
+							<span><?php echo wp_kses_post( '' !== $label ? $label : $heading ); // The heading is the field label; the checkbox says what it does. ?></span>
 						</label>
 						<?php
-					}
-					if ( ! empty( $single_option['documentation_link'] ) ) {
-						echo '<a class="qsm-question-doc qsm-ui-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '" aria-label="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'info' ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 					}
 					break;
 			}
