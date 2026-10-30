@@ -299,7 +299,6 @@ class MLWQuizMasterNext {
 			include_once 'php/admin/admin-results-details-page.php';
 			include_once 'php/admin/tools-page.php';
 			include_once 'php/admin/question-bank-page.php';
-			include_once 'php/admin/ui-kit-page.php';
 			include_once 'php/classes/class-qsm-changelog-generator.php';
 			include_once 'php/admin/about-page.php';
 			include_once 'php/admin/dashboard-widgets.php';
@@ -528,10 +527,6 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'jquery-ui-button' );
 			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
 			wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array( 'jquery' ), $this->version, true );
-		}
-		// admin UI kit page
-		if ( 'admin_page_qsm_ui_kit' === $hook ) {
-			qsm_ui_kit_page_enqueue();
 		}
 		// stats page
 		if ( 'qsm_page_qmn_stats' === $hook ) {
@@ -1080,8 +1075,6 @@ class MLWQuizMasterNext {
 				add_submenu_page( 'qsm_dashboard', __( 'Failed DB Queries', 'quiz-master-next' ), __( 'Failed Database Queries', 'quiz-master-next' ), $capabilities[2], 'qsm-database-failed-queries', array( $this, 'qsm_database_failed_queries' ) );
 			}
 			add_submenu_page( 'options.php', __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), $capabilities[5], 'qsm_quiz_result_details', 'qsm_generate_result_details' );
-			// Hidden developer page: every admin UI kit component (wp-admin/admin.php?page=qsm_ui_kit).
-			add_submenu_page( 'options.php', 'QSM UI Kit', 'QSM UI Kit', 'manage_options', 'qsm_ui_kit', 'qsm_generate_ui_kit_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), $capabilities[6], 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), $capabilities[2], 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), $capabilities[2], 'qmn_stats', 'qmn_generate_stats_page' );

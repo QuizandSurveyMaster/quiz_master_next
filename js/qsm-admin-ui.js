@@ -411,7 +411,7 @@
 		ref( $( this ).attr( 'data-qsm-ui-reveal-target' ) ).prop( 'hidden', ! this.checked );
 	} );
 
-	// Toast buttons, mostly for the kit page (N-02).
+	// Toast buttons (N-02).
 	$doc.on( 'click', ROOT + ' [data-qsm-ui-toast]', function () {
 		var $b = $( this );
 		toast( $b.attr( 'data-qsm-ui-toast' ), {
