@@ -3982,7 +3982,8 @@ var QSM_Quiz_Broadcast_Channel;
                         }
                         questionElements = $('#modal-1-content').html();
                         $('#modal-1-content').children().remove();
-                        $question.after("<div style='display: none;' class='questionElements'>" + questionElements + "</div>");
+                        // qsm-ui-qe-card: the kit editor card (P-06); the editor stays a sibling right after its row.
+                        $question.after("<div style='display: none;' class='questionElements qsm-ui-qe-card'>" + questionElements + "</div>");
                         $inlineContainer = $question.next('.questionElements');
                     } else {
                         if (typeof window.MicroModal !== 'undefined') {

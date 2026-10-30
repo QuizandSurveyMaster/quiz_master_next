@@ -167,6 +167,11 @@
 .qsm-ui .qsm-ui-textarea { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical; }
 .qsm-ui .qsm-ui-textarea.is-code { font-family: var(--qsm-mono); font-size: 13px; background: #0f172a; color: #e2e8f0; border-color: #0f172a; min-height: 140px; }
 .qsm-ui .qsm-ui-input-sm { height: var(--qsm-control-h-sm); font-size: 13px; }
+/* Every quiz tab sits in .qsm_tab_content, and qsm-admin.css styles `.qsm_tab_content input[type="text"|"number"|"url"]`
+   (0,2,1: min-width 300px, height auto, #ddd border, 1px radius). Same weight here, loaded later, so kit inputs keep their look. */
+.qsm-ui input.qsm-ui-input { width: 100%; min-width: 0; height: var(--qsm-control-h); border-color: var(--qsm-input); background-color: #fff; color: var(--qsm-ink); }
+.qsm-ui input.qsm-ui-input:not(.qsm-ui-input-group > *) { border-radius: var(--qsm-radius); }
+.qsm-ui input.qsm-ui-input-sm { height: var(--qsm-control-h-sm); }
 .qsm-ui .qsm-ui-w-sm { max-width: 180px; } .qsm-ui .qsm-ui-w-md { max-width: 320px; } .qsm-ui .qsm-ui-w-lg { max-width: 440px; }
 .qsm-ui .qsm-ui-input[disabled], .qsm-ui .qsm-ui-select[disabled], .qsm-ui .qsm-ui-textarea[disabled] { background: #f2f4f8; color: #98a2b3; cursor: not-allowed; }
 .qsm-ui .qsm-ui-input[readonly] { background: var(--qsm-surface-2); }
@@ -657,3 +662,53 @@
 .qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-left: auto; border-color: transparent; background: none; color: #fff; }
 .qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: rgba(255, 255, 255, .12); }
 .qsm-ui .qsm-ui-add-dashed.new-page-button { margin-top: 14px; }
+
+/* ---------- Questions tab editor (P-06) ----------
+ * The inline editor (.questionElements.qsm-ui-qe-card) sits right after its row in the
+ * page. Core's own fields carry kit classes; add-on rows (qsm-toggle-box, side postboxes)
+ * keep today's markup and look. Some rules repeat an id because qsm-admin-question.css and
+ * WP's edit.css style these blocks by id (#poststuff, #minor-publishing, #categorydiv, ...).
+ */
+.qsm-ui .qsm-ui-qe-card { margin: -2px 0 0; padding: 0; border: 1px solid var(--qsm-blue-border); border-radius: 0 0 var(--qsm-radius-lg) var(--qsm-radius-lg); background: #fff; box-shadow: var(--qsm-shadow); }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row.opened { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row.opened + .qsm-ui-qe-card { margin-top: -8px; }
+.qsm-ui .qsm-ui-qe-card #poststuff.qsm-ui-qe-wrap { display: block; width: auto; min-width: 0; padding: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field { display: block; width: auto; margin: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field > .qsm-ui-field-label, .qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-field-label { color: var(--qsm-ink-2); font-size: 13px; font-weight: 600; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-field-label { color: var(--qsm-ink-2); }
+.qsm-ui .qsm-ui-qe-card .question-title.qsm-ui-textarea { min-height: 44px; margin: 0; padding: 9px 12px; font-size: 16px; font-weight: 600; line-height: 1.5; resize: none; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-btn-link.qsm-show-question-desc-box { justify-self: start; margin: -8px 0 0 !important; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-btn-link.qsm-hide-question-desc-box { margin-left: auto; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-editor .wp-editor-wrap { margin-bottom: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-head { margin-bottom: 8px; }
+.qsm-ui .qsm-ui-qe-head .qsm-ui-qe-field { display: flex; align-items: center; gap: 6px; }
+.qsm-ui .qsm-ui-qe-head .qsm-ui-qe-field .qsm-ui-label-line { margin: 0; }
+.qsm-ui .qsm-ui-qe-head .qsm-ui-qe-field .qsm-ui-field-label { font-size: 12px; font-weight: 500; color: var(--qsm-muted); }
+.qsm-ui .qsm-ui-qe-head .qsm-ui-select { width: auto; min-height: var(--qsm-control-h-sm); padding-top: 4px; padding-bottom: 4px; font-size: 13px; }
+.qsm-ui .qsm-ui-qe-adv { display: grid; gap: 16px; }
+/* The question type notes row: no gap in the column while none of its notes is shown (qsm-admin.js hides them all, then shows one). */
+.qsm-ui .qsm-ui-qe-main > .qsm-ui-qe-typedesc:not(:has(> :not([style*="none"]))) { display: none; }
+.qsm-ui .qsm-ui-qe-card #qsm-question-id { color: var(--qsm-muted); font-size: 12px; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-control .qsm-ui-input:not([type="checkbox"]) { max-width: 420px; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-textarea .qsm-ui-qe-control { max-width: none; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-help { display: block; margin-top: 5px; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-single_checkbox .qsm-ui-qe-control { display: flex; align-items: flex-start; gap: 4px; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-single_checkbox .qsm-ui-check { flex: none; }
+/* Side column */
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { float: none; width: auto; min-width: 0; margin: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups { display: grid; }
+.qsm-ui .qsm-ui-qe-card #submitdiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #categorydiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group { margin: 0; border-width: 0; background: none; box-shadow: none; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups > .qsm-ui-qe-group + .qsm-ui-qe-group { border-top: 1px solid var(--qsm-line-soft); }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-group #minor-publishing { display: grid; gap: 14px; padding: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-group .qsm-ui-select { width: 100%; }
+.qsm-ui .qsm-ui-qe-card #categorydiv.qsm-ui-qe-group .qsm-ui-doc.qsm-question-doc { right: auto; }
+.qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group .inside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-btn.qsm-feature-image-upl img { display: block; max-width: 100%; height: auto; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-btn.qsm-feature-image-upl:has(img) { padding: 4px; }
+/* Footer: Cancel left, Save right */
+.qsm-ui .qsm-ui-qe-card #qsm-question-publishing-action.qsm-ui-qe-foot { display: flex; justify-content: space-between; width: auto; margin: 0; }
+.qsm-ui .qsm-ui-qe-card #delete-action .qsm-ui-btn.deletion { text-decoration: none; }
+.qsm-ui .qsm-ui-qe-card #publishing-action.qsm-ui-row { float: none; gap: 8px; line-height: normal; }
+@media (max-width: 960px) {
+	.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { border-left: 0; border-top: 1px solid var(--qsm-line-soft); }
+}

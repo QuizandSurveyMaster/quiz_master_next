@@ -667,6 +667,195 @@ function qsm_generate_question_option( $key, $single_option ) {
 }
 
 /**
+ * Whether a question editor option is Core's own and no add-on changed it.
+ *
+ * Only those options use the admin UI kit markup on the Questions tab (P-06).
+ * An option an add-on added, or changed through `qsm_question_advanced_option`
+ * / `qsm_question_format_option`, keeps today's markup.
+ *
+ * @since 11.3.0
+ * @param string $key           Option key.
+ * @param array  $single_option Option after the filters ran.
+ * @param array  $core_options  Core's options before the filters ran.
+ * @return bool
+ */
+function qsm_is_core_question_option( $key, $single_option, $core_options ) {
+	return isset( $core_options[ $key ] ) && $core_options[ $key ] == $single_option; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- array comparison ignores key order.
+}
+
+/**
+ * Field label line with the documentation link (kit look) for a question option.
+ *
+ * @since 11.3.0
+ * @param string $for           Id of the control the label is for ('' for none).
+ * @param string $text          Label text (HTML allowed).
+ * @param array  $single_option Option definition.
+ * @return string
+ */
+function qsm_question_option_ui_label( $for, $text, $single_option ) {
+	$html  = '<div class="qsm-ui-label-line">';
+	$html .= $for ? '<label class="qsm-ui-field-label" for="' . esc_attr( $for ) . '">' . wp_kses_post( $text ) . '</label>' : '<span class="qsm-ui-field-label">' . wp_kses_post( $text ) . '</span>';
+	if ( ! empty( $single_option['documentation_link'] ) ) {
+		// Same URL and new tab as today (qsm-question-doc); only the icon is the kit's.
+		$html .= '<a class="qsm-question-doc qsm-ui-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '" aria-label="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'info' ) . '</a>';
+	}
+	return $html . '</div>';
+}
+
+/**
+ * Generates a Core advanced question option with the admin UI kit look (P-06).
+ *
+ * Same row id, show/hide classes, field names and ids as qsm_generate_question_option(),
+ * and the row is still a direct `.qsm-row` child of `.advanced-content`, so saving,
+ * the type switch and add-ons that read these rows work as today.
+ *
+ * @since 11.3.0
+ * @param string $key           Option key.
+ * @param array  $single_option Option definition.
+ */
+function qsm_generate_question_option_ui( $key, $single_option ) {
+	$type       = isset( $single_option['type'] ) ? $single_option['type'] : 'text';
+	$show       = isset( $single_option['show'] ) ? explode( ',', $single_option['show'] ) : array();
+	$show_class = '';
+	if ( in_array( $key, array( 'correct_answer_info', 'comments', 'hint' ), true ) ) {
+		$show_class .= 'core-option ';
+	}
+	if ( $show ) {
+		$show_class .= 'qsm_hide_for_other ';
+		foreach ( $show as $show_value ) {
+			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) . ' ';
+		}
+	}
+	$heading = isset( $single_option['heading'] ) ? $single_option['heading'] : '';
+	$label   = isset( $single_option['label'] ) ? $single_option['label'] : '';
+	$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
+	// The old toggle box showed `label` under the heading. Keep it as help text where it says more than the heading
+	// (e.g. "Maximum number of characters allowed"); "Hint Text" and "Field Type" only repeat it.
+	$help    = ( '' !== $label && $label !== $heading && ! in_array( $key, array( 'hint', 'comments' ), true ) ) ? '<span class="qsm-ui-help">' . wp_kses_post( $label ) . '</span>' : '';
+	?>
+	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-ui-qe-field qsm-ui-qe-field-<?php echo esc_attr( $type ); ?> <?php echo esc_attr( $show_class ); ?>">
+		<?php
+		if ( 'single_checkbox' !== $type ) {
+			echo qsm_question_option_ui_label( in_array( $type, array( 'multi_text', 'multi_checkbox' ), true ) ? '' : $key, $heading, $single_option ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in qsm_question_option_ui_label().
+		}
+		?>
+		<div class="qsm-toggle-box-content qsm-ui-qe-control qsm-editor-wrap">
+			<?php
+			switch ( $type ) {
+				case 'text':
+				case 'number':
+					?>
+					<input type="<?php echo esc_attr( $type ); ?>" class="qsm-ui-input" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $default ); ?>" id="<?php echo esc_attr( $key ); ?>" />
+					<?php
+					echo $help; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with wp_kses_post() above.
+					break;
+				case 'multi_text':
+					?>
+					<div class="qsm-ui-row">
+						<?php foreach ( (array) $single_option['options'] as $okey => $value ) : ?>
+							<label class="qsm-ui-small"><?php echo wp_kses_post( $value ); ?>
+								<input class="qsm-ui-input qsm-ui-input-sm" name="<?php echo esc_attr( $key ); ?>[<?php echo esc_attr( $okey ); ?>]" type="text" id="<?php echo esc_attr( $key . '-' . $okey ); ?>" />
+							</label>
+						<?php endforeach; ?>
+					</div>
+					<?php
+					break;
+				case 'select':
+					?>
+					<select class="qsm-ui-select" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>">
+						<?php foreach ( (array) $single_option['options'] as $okey => $value ) : ?>
+							<option value="<?php echo esc_attr( $okey ); ?>" <?php echo ( $okey === $default ) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $value ); ?></option>
+						<?php endforeach; ?>
+					</select>
+					<?php
+					echo $help; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with wp_kses_post() above.
+					break;
+				case 'textarea':
+					// Core's textarea option is Correct Answer Info, a wp.editor (F-24 frame).
+					?>
+					<div class="qsm-ui-editor">
+						<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $default ); ?></textarea>
+					</div>
+					<?php
+					break;
+				case 'multi_checkbox':
+					$defaults = explode( ',', $default );
+					?>
+					<div class="qsm-ui-inline-choices">
+						<?php foreach ( (array) $single_option['options'] as $okey => $value ) : ?>
+							<label class="qsm-ui-check"><input name="<?php echo esc_attr( $key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $okey ); ?>" <?php checked( in_array( (string) $okey, $defaults, true ) ); ?> /><span><?php echo esc_html( $value ); ?></span></label>
+						<?php endforeach; ?>
+					</div>
+					<?php
+					break;
+				case 'single_checkbox':
+					foreach ( (array) $single_option['options'] as $okey => $value ) {
+						?>
+						<label class="qsm-ui-check"><input name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" type="checkbox" value="<?php echo esc_attr( $okey ); ?>" <?php checked( $okey === $default ); // Strict like qsm_generate_question_option(): int keys never match a string default. ?> />
+							<span><?php echo wp_kses_post( $heading ); ?><?php echo '' !== $label ? '<small>' . wp_kses_post( $label ) . '</small>' : ''; ?></span>
+						</label>
+						<?php
+					}
+					if ( ! empty( $single_option['documentation_link'] ) ) {
+						echo '<a class="qsm-question-doc qsm-ui-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '" aria-label="' . esc_attr__( 'View Documentation', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'info' ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					}
+					break;
+			}
+			?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Displays a Core side-panel question option (Answers type, Match answer, Required)
+ * with the admin UI kit look (P-06). Same row id, show/hide classes, names and ids
+ * as qsm_display_question_option().
+ *
+ * @since 11.3.0
+ * @param string $key           Option key.
+ * @param array  $single_option Option definition.
+ */
+function qsm_display_question_option_ui( $key, $single_option ) {
+	$type       = isset( $single_option['type'] ) ? $single_option['type'] : 'text';
+	$show       = isset( $single_option['show'] ) ? explode( ',', $single_option['show'] ) : array();
+	$show_class = '';
+	if ( $show ) {
+		foreach ( $show as $show_value ) {
+			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) . ' ';
+		}
+		$show_class .= ' qsm_hide_for_other';
+	}
+	$label   = isset( $single_option['label'] ) ? $single_option['label'] : '';
+	$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
+	?>
+	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-ui-qe-field qsm-ui-qe-field-<?php echo esc_attr( $type ); ?> <?php echo esc_attr( $show_class ); ?>">
+		<?php
+		if ( 'single_checkbox' === $type ) {
+			foreach ( (array) $single_option['options'] as $okey => $value ) {
+				// Required: the kit switch; checked still saves as today (value 0 = required).
+				?>
+				<label class="qsm-ui-switch-line"><input class="qsm-ui-switch" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>" type="checkbox" value="<?php echo esc_attr( $okey ); ?>" <?php checked( $okey === $default ); // Strict like qsm_generate_question_option(): int keys never match a string default. ?> />
+					<span class="qsm-ui-switch-copy"><strong><?php echo wp_kses_post( rtrim( $label, '?' ) ); ?></strong><?php echo ! empty( $single_option['description'] ) ? '<span>' . wp_kses_post( $single_option['description'] ) . '</span>' : ''; ?></span>
+				</label>
+				<?php
+			}
+		} else {
+			echo qsm_question_option_ui_label( $key, $label, $single_option ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in qsm_question_option_ui_label().
+			?>
+			<select class="qsm-ui-select" name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>">
+				<?php foreach ( (array) $single_option['options'] as $okey => $value ) : ?>
+					<option value="<?php echo esc_attr( $okey ); ?>" <?php echo ( $okey === $default ) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $value ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php
+		}
+		?>
+	</div>
+	<?php
+}
+
+/**
  * @since 8.2.3
  * Settings to create Quiz
  */
