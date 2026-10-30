@@ -3477,6 +3477,32 @@ var QSM_Quiz_Broadcast_Channel;
                     });
                     return paths;
                 },
+                /**
+                 * "Advanced options" fold in the kit editor (P-06). Correct answer info, comment box
+                 * and hint (.core-option) stay open; every other option row, add-on rows included,
+                 * folds under the toggle. The rows stay where they are (direct .qsm-row children of
+                 * .advanced-content), so saving and add-ons read them as before; CSS hides them.
+                 */
+                advancedOpen: false,
+                initAdvancedToggle: function ($container) {
+                    var $adv = $container && $container.length ? $container.find('.qsm-ui-qe-adv') : $();
+                    if (!$adv.length) {
+                        return;
+                    }
+                    $adv.children('.qsm-row:not(.core-option)').addClass('qsm-ui-qe-more');
+                    QSMQuestion.setAdvancedOpen($adv, QSMQuestion.advancedOpen);
+                    QSMQuestion.updateAdvancedCount($adv);
+                },
+                setAdvancedOpen: function ($adv, open) {
+                    $adv.toggleClass('is-open', open).children('.qsm-ui-qe-more-toggle').attr('aria-expanded', open ? 'true' : 'false');
+                },
+                // Number of folded options that apply to the current question type; no toggle when none do.
+                updateAdvancedCount: function ($adv) {
+                    var count = $adv.children('.qsm-ui-qe-more').filter(function () {
+                        return 'none' !== this.style.display;
+                    }).length;
+                    $adv.children('.qsm-ui-qe-more-toggle').toggle(count > 0).find('.qsm-ui-qe-more-count').text(count ? '(' + count + ')' : '');
+                },
                 markDropTarget: function () {
                     $(this).addClass('qsm-ui-drop-target');
                 },
@@ -4215,6 +4241,7 @@ var QSM_Quiz_Broadcast_Channel;
                             .text(qsm_admin_messages.unlink_question);
                             $('.qsm-linked-list-inside').append(unlink);
                     }
+                    QSMQuestion.initAdvancedToggle($inlineContainer);
                     jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
                 },
                 openEditPagePopup: function (pageID) {
@@ -4680,6 +4707,19 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     event.preventDefault();
                     QSMQuestion.keyboardMoveQuestion($(this).closest('.question'), 'ArrowUp' === event.key ? -1 : 1);
+                });
+
+                $(document).on('click', '.qsm-ui-qe-more-toggle', function () {
+                    var $adv = $(this).closest('.qsm-ui-qe-adv');
+                    QSMQuestion.advancedOpen = !$adv.hasClass('is-open');
+                    QSMQuestion.setAdvancedOpen($adv, QSMQuestion.advancedOpen);
+                });
+                // After the type switch has shown/hidden the rows.
+                $(document).on('change', '.questionElements #question_type, .questionElements #change-answer-editor', function () {
+                    var $adv = $(this).closest('.questionElements').find('.qsm-ui-qe-adv');
+                    setTimeout(function () {
+                        QSMQuestion.updateAdvancedCount($adv);
+                    }, 0);
                 });
 
                 $(document).on('click', '.qsm-admin-randomize-page-questions', function () {

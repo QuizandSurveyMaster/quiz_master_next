@@ -587,6 +587,12 @@ function qsm_options_questions_tab_content() {
 									<?php do_action( 'qsm_after_options' ); ?>
 								</div>
 								<div class="qsm-question-misc-options advanced-content qsm-ui-qe-adv">
+									<?php // Not a .qsm-row: the save code and add-ons only read the .qsm-row children. qsm-admin.js marks the rows it folds. ?>
+									<button type="button" class="qsm-ui-qe-more-toggle" aria-expanded="false">
+										<span class="qsm-ui-qe-more-title"><?php esc_html_e( 'Advanced options', 'quiz-master-next' ); ?></span>
+										<span class="qsm-ui-caption qsm-ui-qe-more-count"></span>
+										<?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-chev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+									</button>
 									<?php
 									$show_correct_answer_info     = '';
 									$show_autofill                = '';
