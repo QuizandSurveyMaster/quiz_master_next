@@ -61,9 +61,47 @@ class QSM_Admin_Assets {
 	public static function init( $messages_callback ) {
 		self::$messages_callback = $messages_callback;
 		// After every admin_enqueue_scripts callback (add-ons use priorities up to 9999), before any script prints.
+		// Dependencies first, so the messages check sees them.
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_compat_dependencies' ), PHP_INT_MAX );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'maybe_localize_messages' ), PHP_INT_MAX );
-		// Fallback for scripts enqueued while the page renders.
+		// Fallback for scripts enqueued while the page renders. A header script that depends on qsm_admin_js
+		// and is enqueued after admin_enqueue_scripts (admin_head) would print it without qsm_admin_messages;
+		// no add-on does that.
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'maybe_localize_messages' ), 1 );
+	}
+
+	/**
+	 * Core dependencies that released add-on scripts use without declaring them.
+	 *
+	 * These add-ons load their admin script outside QSM screens and relied on Core's admin
+	 * bundle being on every admin page. Declaring the dependency here makes WordPress load the
+	 * one Core script they need, without the whole bundle.
+	 *
+	 * @return void
+	 */
+	public static function add_compat_dependencies() {
+		/**
+		 * Script handle => Core handles it needs.
+		 *
+		 * @since 11.3.0
+		 * @param array $map Handle => array of Core script handles.
+		 */
+		$map = apply_filters(
+			'qsm_admin_assets_compat_dependencies',
+			array(
+				// Advanced Assessment: js/admin.js calls .multiselect() on ready; it loads on every
+				// edit-tags.php screen and on any ?page= admin page.
+				'qsm_advanced_assessment_admin_script' => array( 'qsm-jquery-multiselect-js' ),
+			)
+		);
+		$scripts = wp_scripts();
+		foreach ( (array) $map as $handle => $deps ) {
+			if ( ! in_array( $handle, (array) $scripts->queue, true ) || ! isset( $scripts->registered[ $handle ] ) ) {
+				continue;
+			}
+			$registered       = $scripts->registered[ $handle ];
+			$registered->deps = array_values( array_unique( array_merge( (array) $registered->deps, (array) $deps ) ) );
+		}
 	}
 
 	/**
@@ -130,16 +168,16 @@ class QSM_Admin_Assets {
 		$key    = '';
 
 		$known = array(
-			'qsm_dashboard'       => 'dashboard',
-			'qmn_global_settings' => 'settings',
-			'mlw_quiz_results'    => 'results',
+			'qsm_dashboard'           => 'dashboard',
+			'qmn_global_settings'     => 'settings',
+			'mlw_quiz_results'        => 'results',
 			'qsm_quiz_result_details' => 'result-details',
-			'qmn_stats'           => 'stats',
-			'qsm_quiz_tools'      => 'tools',
-			'qsm_question_bank'   => 'question-bank',
-			'qmn_addons'          => 'addons',
-			'qsm_quiz_about'      => 'about',
-			'qsm_ui_kit'          => 'ui-kit',
+			'qmn_stats'               => 'stats',
+			'qsm_quiz_tools'          => 'tools',
+			'qsm_question_bank'       => 'question-bank',
+			'qmn_addons'              => 'addons',
+			'qsm_quiz_about'          => 'about',
+			'qsm_ui_kit'              => 'ui-kit',
 		);
 		if ( 'mlw_quiz_options' === $page ) {
 			$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'questions';
