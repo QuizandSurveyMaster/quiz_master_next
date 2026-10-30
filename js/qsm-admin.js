@@ -2953,7 +2953,26 @@ var QSM_Quiz_Broadcast_Channel;
                 openQuestionBank: function (pageID) {
                     QSMQuestion.loadQuestionBank();
                     $('#add-question-bank-page').val(pageID);
+                    var i18n = qsmQuestionSettings.board_i18n || {};
+                    if (i18n.bankTo) {
+                        $('.qsm-ui-qb-subtitle').text(i18n.bankTo.replace('%d', parseInt(pageID, 10) + 1));
+                    }
                     MicroModal.show('modal-2');
+                },
+                // Kit bank popup (O-01): footer buttons work only with a selection, "Select all" follows the list.
+                syncBankFooter: function () {
+                    var $boxes = $('#question-bank .qsm-question-checkbox');
+                    var checked = $boxes.filter(':checked').length;
+                    $('#qsm-import-selected-question, #qsm-delete-selected-question').prop('disabled', 0 === checked);
+                    $('#qsm_select_all_question').prop('checked', $boxes.length > 0 && checked === $boxes.length);
+                    var i18n = qsmQuestionSettings.board_i18n || {};
+                    $('.qsm-ui-qb-shown').text(i18n.shown ? i18n.shown.replace('%d', $('#question-bank .question-bank-question').length) : '');
+                },
+                syncBankFilterCount: function () {
+                    var active = $('#question-bank-cat, #question-bank-quiz, #question-bank-type').filter(function () {
+                        return '' !== $(this).val() && null !== $(this).val();
+                    }).length;
+                    $('.qsm-ui-filter-count').text(active).prop('hidden', 0 === active);
                 },
                 loadQuestionBank: function (action = '') {
                     if (action == 'change') {
@@ -2996,7 +3015,7 @@ var QSM_Quiz_Broadcast_Channel;
                     if (pagination.total_pages > pagination.current_page) {
                         var pagination_html = '<div class="qb-load-more-wrapper" style="text-align: center;margin: 20px 0 10px 0;"><input type="hidden" id="question_back_page_number" value="' + pagination.current_page + '"/>';
                         pagination_html += '<input type="hidden" id="question_back_total_pages" value="' + pagination.total_pages + '"/>';
-                        pagination_html += '<a href="javascript:void(0)" class="qb-load-more-question">' + qsm_admin_messages.load_more_quetions + '</a></div>';
+                        pagination_html += '<a href="javascript:void(0)" class="qb-load-more-question qsm-ui-btn qsm-ui-btn-sm">' + qsm_admin_messages.load_more_quetions + '</a></div>';
                         $('#question-bank').append(pagination_html);
                     }
                     if (pagination.current_page == 1) {
@@ -3040,6 +3059,8 @@ var QSM_Quiz_Broadcast_Channel;
                             });
                         });
                     }
+                    QSMQuestion.syncBankFooter();
+                    QSMQuestion.syncBankFilterCount();
                 },
                 addQuestionToQuestionBank: function (question) {
                     var questionText = QSMQuestion.prepareQuestionText(question.name);
@@ -3050,6 +3071,7 @@ var QSM_Quiz_Broadcast_Channel;
                     $('#question-bank').append(template({
                         id: question.id,
                         type: question.type,
+                        typeName: (qsmQuestionSettings.question_type_names || {})[question.type] || '',
                         question: questionText,
                         category: question.category,
                         quiz_name: question.quiz_name,
@@ -5027,6 +5049,25 @@ var QSM_Quiz_Broadcast_Channel;
                     } else {
                         $('.qsm-question-bank-footer').removeClass('opened');
                     }
+                    QSMQuestion.syncBankFooter();
+                });
+                $(document).on('change', '#question-bank .qsm-question-checkbox', function () {
+                    QSMQuestion.syncBankFooter();
+                });
+                // Kit bank popup (O-01): the filters panel holds the same three selects.
+                $(document).on('click', '.qsm-ui-qb-filters-toggle', function () {
+                    var $panel = $('#qsm-question-bank-search');
+                    var open = $panel.prop('hidden');
+                    $panel.prop('hidden', !open);
+                    $('.qsm-ui-qb-toolbar .qsm-ui-qb-filters-toggle').attr('aria-expanded', open ? 'true' : 'false');
+                });
+                $(document).on('click', '.qsm-ui-qb-clear', function () {
+                    $('#question-bank-cat, #question-bank-quiz, #question-bank-type').val('');
+                    QSMQuestion.syncBankFilterCount();
+                    QSMQuestion.loadQuestionBank('change');
+                });
+                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function () {
+                    QSMQuestion.syncBankFilterCount();
                 });
 
                 $('.save-page-button').on('click', function (event) {

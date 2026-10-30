@@ -599,6 +599,8 @@
 .qsm-ui .ui-sortable-helper.qsm-ui-sort-item, .qsm-ui .ui-sortable-helper.qsm-ui-sort-row { border-color: var(--qsm-blue); background: #fff; box-shadow: 0 0 0 3px var(--qsm-blue-ring), var(--qsm-shadow-pop); }
 
 /* micromodal popups (O-01 / O-02): Core adds 'qsm-ui-popup' next to 'qsm-popup'. */
+/* qsm-admin.css pins every .qsm-popup select/input/textarea to 200px with !important; kit controls in a kit popup size like everywhere else. */
+.qsm-popup.qsm-ui-popup .qsm-ui-input, .qsm-popup.qsm-ui-popup .qsm-ui-select, .qsm-popup.qsm-ui-popup .qsm-ui-textarea { min-width: 0 !important; max-width: none !important; }
 .qsm-popup.qsm-ui-popup .qsm-popup__overlay { background: rgba(15, 23, 42, .45); }
 .qsm-popup.qsm-ui-popup .qsm-popup__container { min-width: 0; width: min(540px, calc(100vw - 32px)); max-width: none; padding: 0; border-radius: var(--qsm-radius-lg); box-shadow: var(--qsm-shadow-pop); color: var(--qsm-ink); font: 14px/1.5 var(--qsm-font); }
 .qsm-popup.qsm-ui-popup.is-lg .qsm-popup__container { width: min(820px, calc(100vw - 32px)); }
@@ -719,3 +721,26 @@
 @media (max-width: 960px) {
 	.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { border-left: 0; border-top: 1px solid var(--qsm-line-soft); }
 }
+
+/* ---------- Question bank popup on the Questions tab (O-01) ----------
+ * Same micromodal #modal-2; qsm-admin-question.css styles it by id, so some rules repeat #modal-2.
+ */
+#modal-2.qsm-ui-popup .qsm-popup__container { min-width: 0; max-height: 90vh; display: flex; flex-direction: column; }
+#modal-2.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-subtitle { margin: 4px 0 0; color: var(--qsm-muted); }
+#modal-2.qsm-ui-popup .qsm-ui-qb-subtitle:empty { display: none; }
+#modal-2.qsm-ui-popup .qsm-popup__content { display: flex; flex-direction: column; min-height: 0; padding: 18px 22px 12px; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-head { display: block; padding: 0; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-toolbar .qsm-ui-input-icon { margin: 0; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-meta .qsm-ui-check { position: static; min-width: 0; margin: 0; align-items: center; }
+#modal-2.qsm-ui-popup #question-bank.qsm-ui-qb-list { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; width: auto; padding: 0; gap: 6px; max-height: none; flex: 1 1 auto; min-height: 120px; overflow-y: auto; }
+#modal-2.qsm-ui-popup .qsm-popup__footer.qsm-question-bank-footer { display: flex; }
+.qsm-ui .qsm-ui-qb-row { display: flex; align-items: center; gap: 12px; margin: 0; padding: 10px 12px; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius); background: #fff; }
+.qsm-ui .qsm-ui-qb-row:hover { border-color: #c4cddb; }
+.qsm-ui .qsm-ui-qb-row:has(.qsm-question-checkbox:checked) { border-color: var(--qsm-blue-border); background: var(--qsm-blue-soft); }
+.qsm-ui .qsm-ui-qb-row > .qsm-ui-grow { flex: 1; width: auto; min-width: 0; }
+.qsm-ui .qsm-ui-qb-row > .qsm-ui-grow strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.qsm-ui .qsm-ui-qb-row > .qsm-ui-grow .qsm-ui-caption { margin: 3px 0 0; }
+.qsm-ui .qsm-ui-qb-row > .qsm-ui-row { flex: none; gap: 6px; }
+.qsm-ui .qsm-ui-btn.disable_import, .qsm-ui .qsm-ui-btn.link-question.disabled { opacity: .5; pointer-events: none; }
+.qsm-ui .qsm-ui-btn.qb-load-more-question { margin: 6px auto 0; }

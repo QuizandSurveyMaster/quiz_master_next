@@ -149,6 +149,10 @@ function qsm_options_questions_tab_content() {
 			'moved'       => __( 'Moved to page %d', 'quiz-master-next' ),
 			/* translators: %d: number of moved questions */
 			'bulkMoved'   => __( '%d questions moved', 'quiz-master-next' ),
+			/* translators: %d: page number */
+			'bankTo'      => __( 'Add questions to page %d.', 'quiz-master-next' ),
+			/* translators: %d: number of questions listed */
+			'shown'       => __( 'Showing %d', 'quiz-master-next' ),
 		),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
@@ -375,54 +379,79 @@ function qsm_options_questions_tab_content() {
 	</div>
 	</div><?php // .qsm-ui-questions-tab ?>
 	<!-- Popup for question bank -->
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-bank" id="modal-2" aria-hidden="true">
+	<?php // Kit look (O-01) on the same micromodal popup: ids, field names and events are unchanged. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-bank qsm-ui-popup is-lg" id="modal-2" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-				<header class="qsm-popup__header qsm-question-bank-header">
-					<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+				<header class="qsm-popup__header qsm-question-bank-header qsm-ui-text">
+					<div>
+						<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
+						<p class="qsm-ui-small qsm-ui-qb-subtitle"></p>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-2-content">
+				<main class="qsm-popup__content qsm-ui-text" id="modal-2-content">
 					<?php do_action( 'qsm-question-categories-setting' ); ?>
 					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
-					<div class="qsm-question-bank-filters">
-						<div class="qsm-question-bank-search">
-							<form action="" method="post" id="question-bank-search-form">
-								<input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>">
+					<div class="qsm-question-bank-filters qsm-ui-qb-head">
+						<div class="qsm-ui-qb-toolbar">
+							<form action="" method="post" id="question-bank-search-form" class="qsm-ui-input-icon">
+								<?php echo QSM_Admin_UI::icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+								<input type="search" class="qsm-ui-input" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_attr_e( 'Search questions', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Search questions', 'quiz-master-next' ); ?>">
 							</form>
-							<select name="question-bank-cat" id="question-bank-cat">
-								<option value=""><?php esc_html_e( 'All Categories', 'quiz-master-next' ); ?></option>
-							</select>
-							<select name="question-bank-quiz" id="question-bank-quiz">
-								<option value=""><?php esc_html_e( 'All Quiz', 'quiz-master-next' ); ?></option>
-								<?php
-								foreach ( $quiz_data as $quiz ) {
-									echo '<option value="' . esc_attr( $quiz->quiz_id ) . '">' . esc_html( $quiz->quiz_name ) . '</option>';
-								}
-								?>
-							</select>
-							<select name="question-bank-type" id="question-bank-type">
-								<option value=""><?php esc_html_e( 'All Question Types', 'quiz-master-next' ); ?></option>
-								<?php
-								if ( ! empty( $question_types ) ) {
-									foreach ( $question_types as $type ) {
-										$slug = isset( $type['slug'] ) ? esc_attr( $type['slug'] ) : '';
-										$name = isset( $type['name'] ) ? esc_html( $type['name'] ) : '';
-										echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $name ) . '</option>';
-									}
-								}
-								?>
-							</select>
+							<button type="button" class="qsm-ui-btn qsm-ui-qb-filters-toggle" aria-expanded="false" aria-controls="qsm-question-bank-search"><?php echo QSM_Admin_UI::icon( 'filter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Filters', 'quiz-master-next' ); ?> <span class="qsm-ui-filter-count" hidden>0</span></button>
 						</div>
-						<div class="qsm-question-bank-select">
-							<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /><?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
+						<?php // Same three selects; each still reloads the list on change. ?>
+						<div class="qsm-question-bank-search qsm-ui-qb-filters" id="qsm-question-bank-search" hidden>
+							<div>
+								<label class="qsm-ui-field-label" for="question-bank-cat"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
+								<select class="qsm-ui-select" name="question-bank-cat" id="question-bank-cat">
+									<option value=""><?php esc_html_e( 'All Categories', 'quiz-master-next' ); ?></option>
+								</select>
+							</div>
+							<div>
+								<label class="qsm-ui-field-label" for="question-bank-quiz"><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></label>
+								<select class="qsm-ui-select" name="question-bank-quiz" id="question-bank-quiz">
+									<option value=""><?php esc_html_e( 'All Quiz', 'quiz-master-next' ); ?></option>
+									<?php
+									foreach ( $quiz_data as $quiz ) {
+										echo '<option value="' . esc_attr( $quiz->quiz_id ) . '">' . esc_html( $quiz->quiz_name ) . '</option>';
+									}
+									?>
+								</select>
+							</div>
+							<div>
+								<label class="qsm-ui-field-label" for="question-bank-type"><?php esc_html_e( 'Question type', 'quiz-master-next' ); ?></label>
+								<select class="qsm-ui-select" name="question-bank-type" id="question-bank-type">
+									<option value=""><?php esc_html_e( 'All Question Types', 'quiz-master-next' ); ?></option>
+									<?php
+									if ( ! empty( $question_types ) ) {
+										foreach ( $question_types as $type ) {
+											$slug = isset( $type['slug'] ) ? esc_attr( $type['slug'] ) : '';
+											$name = isset( $type['name'] ) ? esc_html( $type['name'] ) : '';
+											echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $name ) . '</option>';
+										}
+									}
+									?>
+								</select>
+							</div>
+							<div class="qsm-ui-qb-filters-foot">
+								<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-quiet qsm-ui-qb-clear"><?php esc_html_e( 'Clear filters', 'quiz-master-next' ); ?></button>
+								<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-qb-filters-toggle"><?php esc_html_e( 'Done', 'quiz-master-next' ); ?></button>
+							</div>
+						</div>
+						<div class="qsm-question-bank-select qsm-ui-qb-meta">
+							<label class="qsm-select-all-label qsm-ui-check"><input type="checkbox" id="qsm_select_all_question" /><span><?php esc_html_e( 'Select all shown', 'quiz-master-next' ); ?></span></label>
+							<span class="qsm-ui-qb-shown"></span>
 						</div>
 					</div>
-					<div id="question-bank"></div>
+					<div id="question-bank" class="qsm-ui-qb-list"></div>
 				</main>
 				<footer class="qsm-popup__footer qsm-question-bank-footer">
-					<a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question"><?php esc_html_e( 'Delete from Question Bank', 'quiz-master-next' ); ?></a>
-					<button class="button button-primary" id="qsm-import-selected-question"><?php esc_html_e( 'Add Questions', 'quiz-master-next' ); ?></button>
+					<?php // Disabled until a question is ticked (QSMQuestion.syncBankFooter). ?>
+					<button type="button" class="qsm-action-link-delete qsm-ui-btn qsm-ui-btn-danger-ghost qsm-ui-foot-left" id="qsm-delete-selected-question" disabled><?php esc_html_e( 'Delete from Question Bank', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary" id="qsm-import-selected-question" disabled><?php esc_html_e( 'Add Questions', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -1834,14 +1863,18 @@ function qsm_options_questions_tab_template() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}" data-question-type="{{data.type}}">
+		<div class="question-bank-question qsm-ui-qb-row qsm-ui-text" data-question-id="{{data.id}}" data-category-name="{{data.category}}" data-question-type="{{data.type}}">
 			<div class="question-bank-selection">
-				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
+				<label class="qsm-ui-check"><input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" aria-label="<?php esc_attr_e( 'Select question', 'quiz-master-next' ); ?>" /></label>
 			</div>
-			<div><p>{{data.question}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-			<div>
-				<a href="javascript:void(0)" class="button import-button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add', 'quiz-master-next' ); ?></a>
-				<a href="javascript:void(0)" data-questions="{{data.linked_question}}" class="button link-question" data-question-id="{{data.id}}"><?php esc_html_e( 'Link', 'quiz-master-next' ); ?></a>
+			<div class="qsm-ui-grow">
+				<strong>{{data.question}}</strong>
+				<p class="qsm-ui-caption"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?> {{data.quiz_name}}<# if ( data.category != '' ) { #> · <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}}<# } #></p>
+			</div>
+			<# if ( data.typeName ) { #><span class="qsm-ui-type-tag">{{data.typeName}}</span><# } #>
+			<div class="qsm-ui-row">
+				<a href="javascript:void(0)" class="import-button qsm-ui-btn qsm-ui-btn-sm" data-question-id="{{data.id}}"><?php esc_html_e( 'Add', 'quiz-master-next' ); ?></a>
+				<a href="javascript:void(0)" data-questions="{{data.linked_question}}" class="link-question qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-quiet" data-question-id="{{data.id}}"><?php esc_html_e( 'Link', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>
 	</script>
