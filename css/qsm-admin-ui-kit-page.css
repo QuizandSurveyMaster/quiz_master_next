@@ -1,0 +1,47 @@
+/**
+ * QSM UI Kit admin page only: the reference layout around the components.
+ * Not part of the kit; never enqueue it on another screen.
+ */
+.qsm-ui-kitpage { max-width: 1440px; margin: 0; }
+.qsm-ui-kitpage .kit-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 28px; align-items: start; }
+.qsm-ui-kitpage .kit-nav { position: sticky; top: 46px; max-height: calc(100vh - 60px); overflow: auto; padding: 4px 0 40px; }
+.qsm-ui-kitpage .kit-nav a { display: flex; gap: 8px; padding: 5px 10px; border-radius: 6px; color: #34415a; font-size: 13px; text-decoration: none; }
+.qsm-ui-kitpage .kit-nav a:hover { background: #e6ebf3; }
+.qsm-ui-kitpage .kit-nav a b { min-width: 34px; color: #8590a6; font: 600 11px/1.9 ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-nav-group { margin: 16px 10px 4px; color: #8590a6; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.qsm-ui-kitpage .kit-nav-group:first-child { margin-top: 0; }
+.qsm-ui-kitpage .kit-intro { max-width: 900px; margin: 8px 0 8px; }
+.qsm-ui-kitpage .kit-intro p { color: #4b5770; }
+.qsm-ui-kitpage .kit-section { margin: 40px 0 0; scroll-margin-top: 46px; }
+.qsm-ui-kitpage .kit-section > h2 { display: flex; align-items: baseline; gap: 6px; margin: 0 0 4px; }
+.qsm-ui-kitpage .kit-section > p { margin: 0 0 14px; }
+.qsm-ui-kitpage .kit-item { margin-top: 14px; border: 1px solid #e1e6ee; border-radius: 14px; background: #fff; scroll-margin-top: 46px; }
+.qsm-ui-kitpage .kit-item-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid #edf0f5; }
+.qsm-ui-kitpage .kit-id { padding: 2px 7px; border-radius: 5px; background: #172033; color: #fff; font: 700 11px ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-where { color: #8590a6; font-size: 12px; }
+.qsm-ui-kitpage .kit-demo { padding: 22px; }
+.qsm-ui-kitpage .kit-demo.is-canvas { background: #f4f6fa; }
+.qsm-ui-kitpage .kit-demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+.qsm-ui-kitpage .kit-spec { padding: 10px 18px 14px; border-top: 1px dashed #e1e6ee; color: #657188; font-size: 12px; }
+.qsm-ui-kitpage .kit-spec code, .qsm-ui-kitpage .kit-intro code, .qsm-ui-kitpage .kit-section > p code { padding: 1px 5px; border-radius: 4px; background: #edf1f8; color: #33415b; font: 11.5px ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-label { margin: 0 0 8px; color: #8590a6; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.qsm-ui-kitpage .kit-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.qsm-ui-kitpage .kit-swatch { overflow: hidden; border: 1px solid #e1e6ee; border-radius: 10px; font-size: 12px; }
+.qsm-ui-kitpage .kit-swatch i { display: block; height: 46px; }
+.qsm-ui-kitpage .kit-swatch div { padding: 7px 9px; }
+.qsm-ui-kitpage .kit-swatch b, .qsm-ui-kitpage .kit-swatch span { display: block; font: 11px ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-swatch span { color: #8590a6; }
+.qsm-ui-kitpage .kit-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.qsm-ui-kitpage .kit-table th, .qsm-ui-kitpage .kit-table td { padding: 8px 10px; border-bottom: 1px solid #edf0f5; text-align: left; vertical-align: top; }
+.qsm-ui-kitpage .kit-php { margin: 0; padding: 14px 18px 16px; border-top: 1px solid #edf0f5; background: #fbfcfe; border-radius: 0 0 14px 14px; }
+.qsm-ui-kitpage .kit-php > .kit-demo { padding: 0 0 12px; }
+.qsm-ui-kitpage .kit-php pre code { padding: 0; background: none; color: inherit; font: inherit; }
+.qsm-ui-kitpage .kit-demo code { padding: 1px 5px; border-radius: 4px; background: #edf1f8; color: #33415b; font: 12px ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-php pre { tab-size: 4; margin: 0; padding: 12px 14px; overflow: auto; border-radius: 8px; background: #0f172a; color: #e2e8f0; font: 12px/1.55 ui-monospace, Menlo, monospace; }
+.qsm-ui-kitpage .kit-icons { display: flex; flex-wrap: wrap; gap: 16px; color: #34415a; }
+.qsm-ui-kitpage .kit-icons span { display: grid; justify-items: center; gap: 4px; width: 64px; color: #657188; font-size: 11px; }
+.qsm-ui-kitpage .kit-held { margin: 0; padding-left: 18px; color: #4b5770; }
+@media (max-width: 960px) {
+	.qsm-ui-kitpage .kit-layout { grid-template-columns: 1fr; }
+	.qsm-ui-kitpage .kit-nav { display: none; }
+}
