@@ -280,6 +280,7 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-install.php';
 		include_once 'php/classes/class-qsm-fields.php';
 		include_once 'php/classes/class-qsm-admin-ui.php';
+		include_once 'php/classes/class-qsm-admin-assets.php';
 
 		include_once 'php/classes/class-qmn-log-manager.php';
 		$this->log_manager = new QMN_Log_Manager();
@@ -380,6 +381,7 @@ class MLWQuizMasterNext {
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
+		QSM_Admin_Assets::init( array( $this, 'qsm_admin_messages_data' ) );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
@@ -488,12 +490,18 @@ class MLWQuizMasterNext {
 	 * @since 7.3.5 admin scripts consolidated
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
-		global $mlwQuizMasterNext, $wpdb;
+		// Core's handles exist on every admin page (add-ons depend on them); QSM's admin bundle only loads on QSM screens.
+		QSM_Admin_Assets::register( $this->version );
+		QSM_Admin_Assets::enqueue_global();
+		$screen = QSM_Admin_Assets::screen( $hook );
+		if ( '' === $screen ) {
+			return;
+		}
 
 		// admin styles
-		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
+		wp_enqueue_style( 'qsm_admin_style' );
 		if ( is_rtl() ) {
-			wp_enqueue_style( 'qsm_admin_style_rtl', plugins_url( 'css/qsm-admin-rtl.css', __FILE__ ), array(), $this->version );
+			wp_enqueue_style( 'qsm_admin_style_rtl' );
 		}
 		// dashboard and quiz list pages
 		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_qmn_addons' === $hook || ('edit.php' == $hook && isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
@@ -597,18 +605,32 @@ class MLWQuizMasterNext {
 			}
 		}
 		
-		if ( ! wp_script_is( 'select2-js', 'registered' ) ) {
-            wp_register_script( 'select2-js', QSM_PLUGIN_JS_URL . '/jquery.select2.min.js', array( 'jquery' ), $this->version, true );
-        }
-        if ( ! wp_style_is( 'select2-css', 'registered' ) ) {
-            wp_register_style( 'select2-css', QSM_PLUGIN_CSS_URL . '/jquery.select2.min.css', array(), $this->version );
-        }
-		// load admin JS after all dependencies are loaded
-		/**  Fixed wpApiSettings is not defined js error by using 'wp-api-request' core script to allow the use of localized version of wpApiSettings. **/
-		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable', 'jquery-touch-punch', 'qsm-jquery-multiselect-js', 'wp-api-request', 'select2-js' ), $this->version, true );
-		wp_enqueue_style( 'jquer-multiselect-css', QSM_PLUGIN_CSS_URL . '/jquery.multiselect.min.css', array(), $this->version );
-		wp_enqueue_script( 'qsm-jquery-multiselect-js', QSM_PLUGIN_JS_URL . '/jquery.multiselect.min.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+		// Core admin bundle on every QSM screen (registered in QSM_Admin_Assets::register(), with its dependencies).
+		wp_enqueue_script( 'qsm_admin_js' );
+		wp_enqueue_style( 'jquer-multiselect-css' );
+		wp_enqueue_script( 'qsm-jquery-multiselect-js' );
+		wp_enqueue_script( 'micromodal_script' );
+		/**
+		 * Screen-specific assets for add-ons: fires on QSM screens only, after Core's.
+		 *
+		 * @since 11.3.0
+		 * @param string $screen QSM_Admin_Assets::screen() key, e.g. 'quiz-questions', 'settings', 'addons'.
+		 * @param string $hook   admin_enqueue_scripts hook suffix.
+		 */
+		do_action( 'qsm_admin_enqueue_screen_assets', $screen, $hook );
+		// qsm_admin_messages is attached by QSM_Admin_Assets::maybe_localize_messages() once all scripts are enqueued.
+	}
+
+	/**
+	 * Data for the qsm_admin_messages JS object (attached to qsm_admin_js).
+	 *
+	 * Built only on pages where qsm_admin_js prints (it runs queries).
+	 *
+	 * @since 11.3.0 Moved out of qsm_admin_scripts_style().
+	 * @return array
+	 */
+	public function qsm_admin_messages_data() {
+		global $wpdb;
 		$qsm_variables = function_exists( 'qsm_text_template_variable_list' ) ? qsm_text_template_variable_list() : array();
 		$qsm_variables_name = array();
 		$qsm_quizzes = $wpdb->get_results("SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes");
@@ -801,8 +823,7 @@ class MLWQuizMasterNext {
 				'congrats1_desc2'          => __( 'Now you can customize logic and behavior to unlock its full potential.', 'quiz-master-next'),
 			),
 		);
-		$qsm_admin_messages = apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
-		wp_localize_script( 'qsm_admin_js', 'qsm_admin_messages', $qsm_admin_messages );
+		return apply_filters( 'qsm_admin_messages_after', $qsm_admin_messages );
 	}
 
 	/**
