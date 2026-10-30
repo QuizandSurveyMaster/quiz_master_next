@@ -118,9 +118,6 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 
-= Unreleased =
-* Security: Fixed a Contributor+ second-order SQL injection via stored quiz page data ("qpages") rendered through the QSM block (CVE-2026-116509). Credit: Wordfence PRISM.
-
 = 11.2.9 (October 23, 2026) =
 * Feature: Added an option to disable correct-answer highlighting for wrong responses.
 * Bug: Text/HTML, Opt-in, and Captcha fields no longer affect score totals.
