@@ -678,6 +678,10 @@
 /* The old main column (#post-body-content) had position: relative, and add-ons position buttons against it
    (QSM AI's Generate/Regenerate sits at the top right of the title row). Keep that positioning context. */
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-main { position: relative; }
+/* One column as wide as the main column: without it the grid track grows to the widest content's minimum
+   width (Advance Question's grid answer rows), pushing the fields under the side column. Before, these
+   rows shrank to the column like any block. */
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-main { grid-template-columns: minmax(0, 1fr); }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-title-row { position: relative; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field { display: block; width: auto; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-field > .qsm-ui-field-label, .qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-field-label { color: var(--qsm-ink-2); font-size: 13px; font-weight: 600; }
