@@ -3321,9 +3321,10 @@ var QSM_Quiz_Broadcast_Channel;
                         stop: function (evt, ui) {
                             $('.page').removeClass('qsm-ui-drop-target');
                             let question_id =ui.item.data("question-id");
-                            let parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').data('page-id');
+                            // The page's position on the board, like addQuestionToPage() and savePages() (data-page-id goes stale once pages are reordered).
+                            let parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').index();
                             let model = QSMQuestion.questions.get(question_id);
-                            model.set('page', parent_page-1);
+                            model.set('page', parent_page);
                             setTimeout(
                                 function () {
                                     $('.save-page-button').trigger('click');
@@ -3584,9 +3585,11 @@ var QSM_Quiz_Broadcast_Channel;
                             var $children = $parentLi.children('ul.children');
                             if (!$children.length) {
                                 $children = $('<ul class="children"></ul>').appendTo($parentLi);
+                                var parentName = $.trim($parentLi.children('label').text());
+                                var collapseLabel = (qsmQuestionSettings.board_i18n || {}).catCollapse || 'Collapse %s';
                                 $parentLi.children('.qsm-ui-tree-spacer').replaceWith(
                                     $('<button type="button" class="qsm-ui-tree-toggle" aria-expanded="true"></button>')
-                                        .attr('aria-label', name)
+                                        .attr('aria-label', collapseLabel.replace('%s', parentName))
                                         .html('<svg class="qsm-ui-icon" aria-hidden="true" focusable="false"><use href="#qsm-ui-i-chev"></use></svg>')
                                 );
                             }
@@ -3621,8 +3624,9 @@ var QSM_Quiz_Broadcast_Channel;
                 categoryOptionsHtml: function (allLabel) {
                     var byParent = {};
                     var html = '<option value="">' + allLabel + '</option>';
+                    // _.escape also escapes quotes: values go into value="…" (legacy mode uses the category name).
                     var esc = function (text) {
-                        return $('<div></div>').text(text).html();
+                        return _.escape(String(text));
                     };
                     _.each(qsmQuestionSettings.categories || [], function (term) {
                         if ('' === term.category) {
@@ -3720,7 +3724,9 @@ var QSM_Quiz_Broadcast_Channel;
                         }
                     }
                     $question.find('.qsm-ui-question-handle').trigger('focus');
-                    QSMQuestion.savePages();
+                    // One save after a run of key presses, not one request per press.
+                    clearTimeout(QSMQuestion.keyboardSaveTimer);
+                    QSMQuestion.keyboardSaveTimer = setTimeout(QSMQuestion.savePages, 600);
                 },
                 // Returns the saved per-quiz "Default Question Settings" (type/category/required)
                 // or false when none are configured. See task CU-86d3t3jcn.
@@ -4844,6 +4850,23 @@ var QSM_Quiz_Broadcast_Channel;
                     QSMQuestion.keyboardMoveQuestion($(this).closest('.question'), 'ArrowUp' === event.key ? -1 : 1);
                 });
 
+                // Add-ons that build the inline editor themselves (Advance Question types 15-20, Flashcards type 18
+                // wrap openEditPopup and insert their own .questionElements) fire this event too: give every
+                // inline editor the kit card and the Advanced options fold. Safe to run twice on Core's own path.
+                $(document).on('qsm_open_edit_popup', function (event, questionID, CurrentElement) {
+                    if (is_question_bank_page) {
+                        return;
+                    }
+                    var $question = $(CurrentElement || []).closest('.question');
+                    if (!$question.length) {
+                        $question = $('.questions .question[data-question-id="' + questionID + '"]').first();
+                    }
+                    var $editor = $question.next('.questionElements');
+                    if ($editor.length) {
+                        $editor.addClass('qsm-ui-qe-card');
+                        QSMQuestion.initAdvancedToggle($editor);
+                    }
+                });
                 $(document).on('click', '.qsm-ui-qe-more-toggle', function () {
                     var $adv = $(this).closest('.qsm-ui-qe-adv');
                     QSMQuestion.advancedOpen = !$adv.hasClass('is-open');
@@ -5503,7 +5526,7 @@ var QSM_Quiz_Broadcast_Channel;
                         $(this).show()
                     });
                 } else {
-                    search_term = new RegExp(search_term, 'i');
+                    search_term = new RegExp(search_term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'); // literal match: "(" used to throw
                     $('.qsm_category_checklist li').each(function () {
                         search_string = $(this).children('label').text();
                         result = search_string.search(search_term);

@@ -661,7 +661,7 @@
 .qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-grow strong { color: var(--qsm-ink); font-size: 14px; }
 .qsm-ui .qsm-ui-q-select { position: static; visibility: visible; }
 .qsm-ui .qsm-ui-page-block.ui-sortable-helper { box-shadow: var(--qsm-shadow-pop); }
-.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-left: auto; border-color: transparent; background: none; color: #fff; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-inline-start: auto; border-color: transparent; background: none; color: #fff; }
 .qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: rgba(255, 255, 255, .12); }
 .qsm-ui .qsm-ui-add-dashed.new-page-button { margin-top: 14px; }
 
@@ -684,7 +684,7 @@
 .qsm-ui .qsm-ui-qe-card .qsm-ui-field-label { color: var(--qsm-ink-2); }
 .qsm-ui .qsm-ui-qe-card .question-title.qsm-ui-textarea { min-height: 44px; margin: 0; padding: 9px 12px; font-size: 16px; font-weight: 600; line-height: 1.5; resize: none; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-btn-link.qsm-show-question-desc-box { justify-self: start; margin: -8px 0 0 !important; }
-.qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-btn-link.qsm-hide-question-desc-box { margin-left: auto; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-label-line .qsm-ui-btn-link.qsm-hide-question-desc-box { margin-inline-start: auto; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-editor .wp-editor-wrap { margin-bottom: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-head { margin-bottom: 8px; }
 .qsm-ui .qsm-ui-qe-head .qsm-ui-qe-field { display: flex; align-items: center; gap: 6px; }
@@ -699,9 +699,9 @@
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-textarea .qsm-ui-qe-control { max-width: none; }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-help { display: block; margin-top: 5px; }
 /* Advanced options fold: open options first, then the toggle, then the folded rows (qsm-admin.js marks them qsm-ui-qe-more). */
-.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more-toggle { order: 1; display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--qsm-line-soft); background: none; color: var(--qsm-ink); font: 600 13px var(--qsm-font); text-align: left; cursor: pointer; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more-toggle { order: 1; display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--qsm-line-soft); background: none; color: var(--qsm-ink); font: 600 13px var(--qsm-font); text-align: start; cursor: pointer; }
 .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more-toggle:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more-toggle .qsm-ui-chev { margin-left: auto; color: var(--qsm-muted); transition: transform .18s; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more-toggle .qsm-ui-chev { margin-inline-start: auto; color: var(--qsm-muted); transition: transform .18s; }
 .qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-more-toggle .qsm-ui-chev { transform: rotate(180deg); }
 .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-more { order: 2; }
 .qsm-ui .qsm-ui-qe-adv:not(.is-open) > .qsm-ui-qe-more { display: none !important; }
@@ -771,8 +771,8 @@
 .qsm-ui .qsm-ui-cat-tree .qsm-ui-tree { max-height: none; overflow: visible; padding: 0; }
 .qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0; padding: 0; border-radius: 6px; }
 .qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > .qsm-ui-check { flex: 1; min-width: 0; align-items: center; margin: 0; padding: 4px 0; }
-.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > .qsm-ui-tree-count { padding-right: 6px; }
-.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > ul.children { flex-basis: 100%; margin: 0; padding: 0 0 0 22px; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > .qsm-ui-tree-count { padding-inline-end: 6px; }
+.qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > ul.children { flex-basis: 100%; margin: 0; padding: 0; padding-inline-start: 22px; }
 .qsm-ui .qsm-ui-cat-tree .qsm-ui-tree li > ul.children[hidden] { display: none; }
 .qsm-ui .qsm-ui-cat-tree:has(.qsm-ui-tree li) .qsm-ui-cat-tree-empty { display: none; }
 .qsm-ui .qsm-ui-cat-tree .qsm-ui-cat-tree-empty { margin: 4px 6px; }

@@ -170,6 +170,8 @@ function qsm_options_questions_tab_content() {
 			'catAdded'    => __( 'Category added', 'quiz-master-next' ),
 			'catError'    => __( 'Could not add the category. Please try again.', 'quiz-master-next' ),
 			'catNoAccess' => __( 'You are not allowed to manage quiz categories.', 'quiz-master-next' ),
+			/* translators: %s: category name */
+			'catCollapse' => __( 'Collapse %s', 'quiz-master-next' ),
 			'delBankText' => __( 'They no longer show in the question bank. Quizzes that use them keep them.', 'quiz-master-next' ),
 			'delBankBtn'  => __( 'Delete from bank', 'quiz-master-next' ),
 		),
