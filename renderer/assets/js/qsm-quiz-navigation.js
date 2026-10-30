@@ -124,8 +124,12 @@ if (typeof window.qsmCheckMR !== 'function') {
                 // Find all pages for this quiz
                 let $pages = $quizContainer.find(this.config.selectors.page);
 
-                // Determine if first page is disabled
-                let hasFirstPage = (Number(quizData.disable_first_page) !== 1);
+                // Whether a welcome page was rendered. The server only renders one when
+                // should_show_first_page() is true (welcome text or first-page contact
+                // fields), so use its answer; disable_first_page alone is not enough.
+                let hasFirstPage = (typeof quizData.first_page !== 'undefined')
+                    ? !!quizData.first_page
+                    : (Number(quizData.disable_first_page) !== 1);
 
                 // Question pages count (excluding intro page)
                 let questionPages = hasFirstPage ? $pages.length - 1 : $pages.length;
