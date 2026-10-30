@@ -744,3 +744,15 @@
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-row { flex: none; gap: 6px; }
 .qsm-ui .qsm-ui-btn.disable_import, .qsm-ui .qsm-ui-btn.link-question.disabled { opacity: .5; pointer-events: none; }
 .qsm-ui .qsm-ui-btn.qb-load-more-question { margin: 6px auto 0; }
+
+/* ---------- Questions tab confirms (O-02) ----------
+ * #modal-7 (question: unlink or remove for good) is the same micromodal popup; qsm-admin-question.css
+ * styles it and its two buttons by id, so these rules repeat the ids.
+ */
+#modal-7.qsm-ui-popup .qsm-popup__container { max-width: none; }
+#modal-7.qsm-ui-popup .qsm-popup__header .qsm-ui-confirm-head { align-items: center; }
+#modal-7.qsm-ui-popup .qsm-popup__footer { justify-content: flex-end; }
+#modal-7.qsm-ui-popup #delete-question-button.qsm-ui-btn-danger { background-color: var(--qsm-red); }
+#modal-7.qsm-ui-popup #delete-question-button.qsm-ui-btn-danger:hover { background-color: #b9233a; }
+.qsm-ui .qsm-ui-confirm-options { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--qsm-ink-2); }
+.qsm-ui .qsm-ui-confirm-options strong { color: var(--qsm-ink); }

@@ -153,6 +153,21 @@ function qsm_options_questions_tab_content() {
 			'bankTo'      => __( 'Add questions to page %d.', 'quiz-master-next' ),
 			/* translators: %d: number of questions listed */
 			'shown'       => __( 'Showing %d', 'quiz-master-next' ),
+			// Destructive confirms (O-02).
+			'delOne'      => __( 'Delete this question?', 'quiz-master-next' ),
+			/* translators: %d: number of selected questions */
+			'delSelected' => __( 'Delete %d selected questions?', 'quiz-master-next' ),
+			/* translators: %d: number of questions in the quiz */
+			'delAll'      => __( 'Delete all %d questions in this quiz?', 'quiz-master-next' ),
+			'delPage'     => __( 'Delete this page?', 'quiz-master-next' ),
+			'delPageText' => __( 'The page and the questions on it are removed from this quiz.', 'quiz-master-next' ),
+			'delPageBtn'  => __( 'Delete page', 'quiz-master-next' ),
+			'delSelOne'   => __( 'Delete the selected question?', 'quiz-master-next' ),
+			/* translators: %d: number of selected questions */
+			'delBank'     => __( 'Delete %d questions from the question bank?', 'quiz-master-next' ),
+			'delBankOne'  => __( 'Delete this question from the question bank?', 'quiz-master-next' ),
+			'delBankText' => __( 'They no longer show in the question bank. Quizzes that use them keep them.', 'quiz-master-next' ),
+			'delBankBtn'  => __( 'Delete from bank', 'quiz-master-next' ),
 		),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
@@ -377,6 +392,29 @@ function qsm_options_questions_tab_content() {
 			<span class="spinner" id="save-edit-quiz-pages" style="float: none;"></span>
 		</div>
 	</div>
+	<?php
+	/*
+	 * Small destructive confirm (O-02) for deleting a page and removing questions from the
+	 * question bank: QSMQuestion.confirmDanger() fills it. A native <dialog>, so it opens
+	 * above a micromodal popup (page settings, question bank) without closing it.
+	 */
+	?>
+	<dialog class="qsm-ui-modal" id="qsm-ui-confirm-dialog" aria-labelledby="qsm-ui-confirm-dialog-title" aria-describedby="qsm-ui-confirm-dialog-text">
+		<div class="qsm-ui-modal-head qsm-ui-text">
+			<div class="qsm-ui-confirm-head">
+				<div class="qsm-ui-modal-icon"><?php echo QSM_Admin_UI::icon( 'trash' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
+				<div>
+					<h2 class="qsm-ui-h2" id="qsm-ui-confirm-dialog-title"></h2>
+					<p class="qsm-ui-small" id="qsm-ui-confirm-dialog-text"></p>
+				</div>
+			</div>
+			<button type="button" class="qsm-ui-btn qsm-ui-btn-icon" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-qsm-ui-close><?php echo QSM_Admin_UI::icon( 'x' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
+		</div>
+		<div class="qsm-ui-modal-foot qsm-ui-text">
+			<button type="button" class="qsm-ui-btn" data-qsm-ui-close autofocus><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+			<button type="button" class="qsm-ui-btn qsm-ui-btn-danger qsm-ui-confirm-ok"></button>
+		</div>
+	</dialog>
 	</div><?php // .qsm-ui-questions-tab ?>
 	<!-- Popup for question bank -->
 	<?php // Kit look (O-01) on the same micromodal popup: ids, field names and events are unchanged. ?>
@@ -1002,31 +1040,31 @@ function qsm_options_questions_tab_content() {
 
 	<?php add_action( 'admin_footer', 'qsm_options_questions_tab_template' ); ?>
 
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-7" aria-hidden="false">
+	<?php // Small destructive confirm (O-02) on the same micromodal popup; the two actions keep their ids, classes and handlers. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="modal-7" aria-hidden="false">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">
-				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-7-title"><?php esc_html_e( 'Delete Options', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-7-title" aria-describedby="modal-7-content">
+				<header class="qsm-popup__header qsm-ui-text">
+					<div class="qsm-ui-confirm-head">
+						<div class="qsm-ui-modal-icon"><?php echo QSM_Admin_UI::icon( 'trash' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
+						<?php // qsm-admin.js sets the title for one, the selected or all questions (QSMQuestion.openDeleteOptions). ?>
+						<h2 class="qsm-popup__title" id="modal-7-title"><?php esc_html_e( 'Delete this question?', 'quiz-master-next' ); ?></h2>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-7-content">
+				<main class="qsm-popup__content qsm-ui-text" id="modal-7-content">
 					<form action='' method='post' id="delete-question-form">
-						<table class="modal-7-table qsm-popup-table">
-							<tr class="qsm-popup-table-row">
-								<td>
-									<h3><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></h3>
-									<?php esc_html_e( 'Remove this question from the quiz only.', 'quiz-master-next' ); ?></td>
-								<td><button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-unlink-question-button-btn"><span class="dashicons dashicons-editor-unlink"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button></td>
-							<tr>
-							<tr class="qsm-popup-table-row">
-								<td>
-									<h3><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></h3>
-									<?php esc_html_e( 'Permanently remove this question from all quizzes and the database. This cannot be undone.', 'quiz-master-next' ); ?></td>
-								<td><button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary qsm-delete-question-button-btn"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button></td>
-							<tr>
-						</table>
+						<ul class="qsm-ui-confirm-options">
+							<li><strong><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></strong> <?php esc_html_e( 'Remove the question from this quiz only. It stays in the question bank.', 'quiz-master-next' ); ?></li>
+							<li><strong><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></strong> <?php esc_html_e( 'Permanently remove the question from all quizzes and the database. This cannot be undone.', 'quiz-master-next' ); ?></li>
+						</ul>
 					</form>
 				</main>
+				<footer class="qsm-popup__footer">
+					<button type="button" class="qsm-ui-btn qsm-ui-confirm-cancel" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="unlink-question-button" class="qsm-ui-btn qsm-unlink-question-button-btn"><?php echo QSM_Admin_UI::icon( 'link', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
+					<button type="button" id="delete-question-button" class="qsm-ui-btn qsm-ui-btn-danger qsm-delete-question-button-btn"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
+				</footer>
 			</div>
 		</div>
 	</div>

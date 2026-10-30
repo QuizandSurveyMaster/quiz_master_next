@@ -3525,6 +3525,54 @@ var QSM_Quiz_Broadcast_Channel;
                     }).length;
                     $adv.children('.qsm-ui-qe-more-toggle').toggle(count > 0).find('.qsm-ui-qe-more-count').text(count ? '(' + count + ')' : '');
                 },
+                /**
+                 * Small destructive confirm (O-02) in #qsm-ui-confirm-dialog. A native <dialog>, so it can
+                 * open above a micromodal popup; falls back to window.confirm() where the dialog isn't printed.
+                 */
+                confirmDanger: function (opts, onConfirm) {
+                    var dialog = document.getElementById('qsm-ui-confirm-dialog');
+                    if (!dialog || !window.QSMAdminUI || 'function' !== typeof dialog.showModal) {
+                        if (window.confirm(opts.title + (opts.text ? '\n\n' + opts.text : ''))) {
+                            onConfirm();
+                        }
+                        return;
+                    }
+                    var $dialog = $(dialog);
+                    // MicroModal listens for Esc/Tab on document: keep them in the dialog, or Esc would also close
+                    // the popup underneath and Tab would pull focus back into it.
+                    $dialog.off('keydown.qsmConfirm').on('keydown.qsmConfirm', function (e) {
+                        if ('Escape' === e.key || 'Tab' === e.key) {
+                            e.stopPropagation();
+                        }
+                    });
+                    $dialog.find('#qsm-ui-confirm-dialog-title').text(opts.title);
+                    $dialog.find('#qsm-ui-confirm-dialog-text').text(opts.text || '');
+                    $dialog.find('.qsm-ui-confirm-ok').text(opts.button).off('click.qsmConfirm').on('click.qsmConfirm', function () {
+                        window.QSMAdminUI.closeDialog(dialog);
+                        onConfirm();
+                    });
+                    window.QSMAdminUI.openDialog(dialog);
+                    $dialog.find('[data-qsm-ui-close][autofocus]').trigger('focus');
+                },
+                // Opens the delete options popup (#modal-7) for one question, the selected ones or all of them.
+                openDeleteOptions: function (iid) {
+                    var i18n = qsmQuestionSettings.board_i18n || {};
+                    var title = i18n.delOne;
+                    if ('selected-questions' === iid) {
+                        var selected = $('.qsm-admin-select-question-input:checked').length;
+                        title = 1 === selected ? i18n.delSelOne : (i18n.delSelected ? i18n.delSelected.replace('%d', selected) : '');
+                    } else if ('all-questions' === iid) {
+                        title = i18n.delAll ? i18n.delAll.replace('%d', $('.qsm-admin-select-question-input').length) : '';
+                    }
+                    if (title) {
+                        $('#modal-7-title').text(title);
+                    }
+                    $('#unlink-question-button').attr('data-question-iid', iid);
+                    $('#delete-question-button').attr('data-question-iid', iid);
+                    MicroModal.show('modal-7');
+                    // Focus starts on Cancel (O-02), not on the close icon.
+                    $('#modal-7 .qsm-ui-confirm-cancel').trigger('focus');
+                },
                 markDropTarget: function () {
                     $(this).addClass('qsm-ui-drop-target');
                 },
@@ -4602,9 +4650,7 @@ var QSM_Quiz_Broadcast_Channel;
                     remove = $(this);
                     $(this).parents('.question').next('.questionElements').slideUp('slow');
                     // opens-up question-delete modal
-                    MicroModal.show('modal-7');
-                    $('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));
-                    $('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
+                    QSMQuestion.openDeleteOptions($(this).data('question-iid'));
                 });
                 // removes question from database
                 $(document).on('click', '.qsm-delete-question-button-btn', function (e) {
@@ -4682,16 +4728,12 @@ var QSM_Quiz_Broadcast_Channel;
                 // delete bulk question from database
                 $(document).on('click', '#qsm-bulk-delete-question', function (event) {
                     event.preventDefault();
-                    MicroModal.show('modal-7');
-                    $('#unlink-question-button').attr('data-question-iid', 'selected-questions');
-                    $('#delete-question-button').attr('data-question-iid', 'selected-questions');
+                    QSMQuestion.openDeleteOptions('selected-questions');
                 });
                 // remove bulk question from quiz
                 $(document).on('click', '#qsm-bulk-delete-all-question', function (event) {
                     event.preventDefault();
-                    MicroModal.show('modal-7');
-                    $('#unlink-question-button').attr('data-question-iid', 'all-questions');
-                    $('#delete-question-button').attr('data-question-iid', 'all-questions');
+                    QSMQuestion.openDeleteOptions('all-questions');
                 });
 
                 $(document).on('click', '.qsm-admin-select-page-question', function () {
@@ -4809,14 +4851,19 @@ var QSM_Quiz_Broadcast_Channel;
 
                 $(document).on('click', '.delete-page-button', function (event) {
                     event.preventDefault();
-                    if (confirm(qsm_admin_messages.confirm_message)) {
-                        var pageID = $(this).parent().siblings('main').children('#edit_page_id').val();
+                    var pageID = $(this).parent().siblings('main').children('#edit_page_id').val();
+                    var i18n = qsmQuestionSettings.board_i18n || {};
+                    QSMQuestion.confirmDanger({
+                        title: i18n.delPage || qsm_admin_messages.confirm_message,
+                        text: i18n.delPageText,
+                        button: i18n.delPageBtn
+                    }, function () {
                         $('.page[data-page-id=' + pageID + ']').remove();
                         $('.save-page-button').trigger('click');
                         QSMQuestion.countTotal();
                         MicroModal.close('modal-page-1');
                         location.reload();
-                    }
+                    });
                 });
                 $(document).on('click', '#answers .delete-answer-button', function (event) {
                     event.preventDefault();
@@ -4999,7 +5046,14 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 //Delete question from question bank
                 $('.qsm-popup-bank').on('click', '#qsm-delete-selected-question', function (event) {
-                    if (confirm(qsm_admin_messages.confirm_message)) {
+                    var i18n = qsmQuestionSettings.board_i18n || {};
+                    var selectedCount = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
+                    // Kit confirm (O-02) above the bank popup; same request as before once confirmed.
+                    QSMQuestion.confirmDanger({
+                        title: (1 === selectedCount ? i18n.delBankOne : (i18n.delBank ? i18n.delBank.replace('%d', selectedCount) : '')) || qsm_admin_messages.confirm_message,
+                        text: i18n.delBankText,
+                        button: i18n.delBankBtn
+                    }, function () {
                         var $total_selction = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
                         if ($total_selction === 0) {
                             alert(qsm_admin_messages.no_question_selected);
@@ -5020,7 +5074,10 @@ var QSM_Quiz_Broadcast_Channel;
                                     success: function (response) {
                                         var data = jQuery.parseJSON(response);
                                         if (data.success === true) {
-                                            $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').slideUp('slow');
+                                            $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').slideUp('slow', function () {
+                                                $(this).remove();
+                                                QSMQuestion.syncBankFooter();
+                                            });
                                             alert(data.message);
                                         } else {
                                             alert(data.message);
@@ -5029,7 +5086,7 @@ var QSM_Quiz_Broadcast_Channel;
                                 });
                             }
                         }
-                    }
+                    });
                 });
 
                 //Select all button.
