@@ -3149,7 +3149,7 @@ var QSM_Quiz_Broadcast_Channel;
                     //Create Default pages and one question.
                     if (pages.length == 0 && QSMQuestion.questions.length == 0) {
                         $('.new-page-button').trigger('click');
-                        $('.questions .new-question-button:eq("1")').trigger('click');
+                        $('.questions .page:first .new-question-button:first').trigger('click');
                     }
                     QSMQuestion.countTotal();
                 },
@@ -3297,10 +3297,16 @@ var QSM_Quiz_Broadcast_Channel;
                         items: '.question',
                         opacity: 70,
                         cursor: 'move',
-                        handle: 'span.dashicons-move',
-                        placeholder: "ui-state-highlight",
+                        handle: '.qsm-ui-question-handle',
+                        placeholder: "ui-state-highlight qsm-ui-sort-placeholder",
+                        // The kit handles are <button>s, which jQuery UI's default `cancel` refuses to drag from.
+                        cancel: 'input, textarea, select, option',
+                        forcePlaceholderSize: true,
                         connectWith: '.page',
+                        over: QSMQuestion.markDropTarget,
+                        out: QSMQuestion.unmarkDropTarget,
                         stop: function (evt, ui) {
+                            $('.page').removeClass('qsm-ui-drop-target');
                             let question_id =ui.item.data("question-id");
                             let parent_page = $("div.question[data-question-id='" + question_id + "']").parent('.page').data('page-id');
                             let model = QSMQuestion.questions.get(question_id);
@@ -3388,7 +3394,6 @@ var QSM_Quiz_Broadcast_Channel;
                 },
                 addQuestionToPage: function (model) {
                     var page = model.get('page') + 1;
-                    var template = wp.template('question');
                     var page_exists = $('.page:nth-child(' + page + ')').length;
                     var count = 0;
                     while (!page_exists) {
@@ -3410,13 +3415,145 @@ var QSM_Quiz_Broadcast_Channel;
                     if (questionName == '') {
                         questionName = qsm_admin_messages.new_question;
                     }
-                    $('.page:nth-child(' + page + ')').append(template({
+                    $('.page:nth-child(' + page + ')').append(QSMQuestion.renderQuestionRow(model, questionName, model.get('category')));
+                    setTimeout(QSMQuestion.removeNew, 250);
+                },
+                /**
+                 * Returns the board row HTML for a question.
+                 *
+                 * The Questions tab uses the kit row (tmpl-qsm-ui-question): the question type
+                 * once and every category with its full path. The Question Bank page has no kit
+                 * row template and keeps tmpl-question with the legacy category label.
+                 */
+                renderQuestionRow: function (model, questionName, legacyCategory) {
+                    if (!is_question_bank_page && document.getElementById('tmpl-qsm-ui-question')) {
+                        var typeNames = qsmQuestionSettings.question_type_names || {};
+                        return wp.template('qsm-ui-question')({
+                            id: model.id,
+                            type: model.get('type'),
+                            typeName: typeNames[model.get('type')] || '',
+                            categories: QSMQuestion.getCategoryPaths(model),
+                            question: questionName
+                        });
+                    }
+                    return wp.template('question')({
                         id: model.id,
                         type: model.get('type'),
-                        category: model.get('category'),
+                        category: legacyCategory,
                         question: questionName
-                    }));
-                    setTimeout(QSMQuestion.removeNew, 250);
+                    });
+                },
+                // Category labels for a question, with the parent path for sub-categories ("Service › Support").
+                getCategoryPaths: function (model) {
+                    var multicategories = model.get('multicategories');
+                    if (!Number.parseInt(qsmQuestionSettings.multiple_category_enabled, 10) || !Array.isArray(multicategories)) {
+                        var single = model.get('category');
+                        return single ? [single] : [];
+                    }
+                    var terms = {};
+                    _.each(qsmQuestionSettings.categories || [], function (term) {
+                        terms[String(term.cat_id)] = term;
+                    });
+                    var paths = [];
+                    multicategories.forEach(function (id) {
+                        var term = terms[String(id)];
+                        if (!term) {
+                            // Created in this session: not in the localized list yet.
+                            var label = $.trim($('#in-qsm_category-' + id + '-1 > label').first().text());
+                            if (label) {
+                                paths.push(label);
+                            }
+                            return;
+                        }
+                        var names = [term.category];
+                        var seen = {};
+                        seen[String(id)] = true;
+                        while (term.parent && terms[String(term.parent)] && !seen[String(term.parent)]) {
+                            seen[String(term.parent)] = true;
+                            term = terms[String(term.parent)];
+                            names.unshift(term.category);
+                        }
+                        paths.push(names.join(' \u203A '));
+                    });
+                    return paths;
+                },
+                markDropTarget: function () {
+                    $(this).addClass('qsm-ui-drop-target');
+                },
+                unmarkDropTarget: function () {
+                    $(this).removeClass('qsm-ui-drop-target');
+                },
+                // Moves a question row (and its open inline editor) to another page, before $before or at the end.
+                moveQuestionRow: function ($question, $page, $before) {
+                    var $editor = $question.next('.questionElements');
+                    if ($before && $before.length) {
+                        $before.before($question);
+                    } else {
+                        $page.append($question);
+                    }
+                    if ($editor.length) {
+                        $question.after($editor);
+                    }
+                    var model = QSMQuestion.questions.get($question.data('question-id'));
+                    if (model) {
+                        model.set('page', $page.index());
+                    }
+                },
+                // Fills the bulk bar's "Move to page" menu with the current pages.
+                refreshBulkMoveMenu: function () {
+                    var $menu = $('.qsm-ui-bulk-move-menu').empty();
+                    var label = qsmQuestionSettings.board_i18n ? qsmQuestionSettings.board_i18n.page : 'Page %d';
+                    $('.questions > .page').each(function (index) {
+                        $('<li></li>').append(
+                            $('<button type="button" role="menuitem" class="qsm-ui-bulk-move-to"></button>')
+                                .attr('data-page-index', index)
+                                .text(label.replace('%d', index + 1))
+                        ).appendTo($menu);
+                    });
+                },
+                bulkMoveQuestions: function (pageIndex) {
+                    var $page = $('.questions > .page').eq(pageIndex);
+                    var $checked = $('.questions .qsm-admin-select-question-input:checked');
+                    if (!$page.length || !$checked.length) {
+                        return;
+                    }
+                    $checked.each(function () {
+                        QSMQuestion.moveQuestionRow($(this).closest('.question'), $page);
+                    });
+                    var moved = $checked.length;
+                    QSMQuestion.clearQuestionSelection();
+                    QSMQuestion.savePages();
+                    if (window.QSMAdminUI && qsmQuestionSettings.board_i18n) {
+                        window.QSMAdminUI.toast(qsmQuestionSettings.board_i18n.bulkMoved.replace('%d', moved));
+                    }
+                },
+                clearQuestionSelection: function () {
+                    $('.qsm-admin-select-question-input, .qsm-admin-select-page-question').prop('checked', false);
+                    $('.qsm-selected-question-count').html(0);
+                    $('.qsm-admin-bulk-actions').fadeOut();
+                },
+                // Alt + Up/Down on a row's handle: one step within the page, or onto the next/previous page.
+                keyboardMoveQuestion: function ($question, direction) {
+                    var $page = $question.parent('.page');
+                    var $target = direction < 0 ? $question.prevAll('.question').first() : $question.nextAll('.question').first();
+                    if ($target.length) {
+                        if (direction < 0) {
+                            QSMQuestion.moveQuestionRow($question, $page, $target);
+                        } else {
+                            QSMQuestion.moveQuestionRow($question, $page, $target.nextAll('.question').first());
+                        }
+                    } else {
+                        var $otherPage = direction < 0 ? $page.prev('.page') : $page.next('.page');
+                        if (!$otherPage.length) {
+                            return;
+                        }
+                        QSMQuestion.moveQuestionRow($question, $otherPage, direction > 0 ? $otherPage.children('.question').first() : null);
+                        if (window.QSMAdminUI && qsmQuestionSettings.board_i18n) {
+                            window.QSMAdminUI.toast(qsmQuestionSettings.board_i18n.moved.replace('%d', $otherPage.index() + 1));
+                        }
+                    }
+                    $question.find('.qsm-ui-question-handle').trigger('focus');
+                    QSMQuestion.savePages();
                 },
                 // Returns the saved per-quiz "Default Question Settings" (type/category/required)
                 // or false when none are configured. See task CU-86d3t3jcn.
@@ -3695,7 +3832,6 @@ var QSM_Quiz_Broadcast_Channel;
                     $('.qsm_tab_content .question').removeClass('opened');
                 },
                 saveSuccess: function (model) {
-                    var template = wp.template('question');
                     var page = model.get('page') + 1;
                     var questionName = model.get('name');
                     var new_question_title = model.get('question_title');
@@ -3712,12 +3848,12 @@ var QSM_Quiz_Broadcast_Channel;
                             }
                         });
                     }
-                    $('.question[data-question-id=' + model.id + ']').replaceWith(template({
-                        id: model.id,
-                        type: model.get('type'),
-                        category: category.join(', '),
-                        question: questionName
-                    }));
+                    var $oldRow = $('.question[data-question-id=' + model.id + ']');
+                    var wasOpened = $oldRow.hasClass('opened');
+                    var wasChecked = $oldRow.find('.qsm-admin-select-question-input').prop('checked');
+                    var $newRow = $(QSMQuestion.renderQuestionRow(model, questionName, category.join(', ')));
+                    $oldRow.replaceWith($newRow);
+                    $newRow.toggleClass('opened', wasOpened).find('.qsm-admin-select-question-input').prop('checked', Boolean(wasChecked));
                     setTimeout(function () {
                         $('#save-edit-question-spinner').removeClass('is-active');
                     }, 250);
@@ -4214,7 +4350,7 @@ var QSM_Quiz_Broadcast_Channel;
                     $(this).parents('.question').next('.questionElements').slideUp('slow');
                     MicroModal.show('modal-10');
                     $("#changed_question_page_no, #current_question_page_no").val($(this).parents('.page').data("page-id"));
-                    $("#changed_question_position, #current_question_position").val($(this).closest('.question').index() - 2 );
+                    $("#changed_question_position, #current_question_position").val($(this).closest('.question').prevAll('.question').length + 1);
                     $("#current_question_id, #current_question_id").val($(this).parents('.question').data("question-id"));
                 });
 
@@ -4513,10 +4649,10 @@ var QSM_Quiz_Broadcast_Channel;
                     let checkboxesToToggle = $(this).closest('.page').find('.qsm-admin-select-question-input');
                     checkboxesToToggle.prop('checked', isChecked);
                     if (!isChecked) {
-                        $('.qsm-admin-select-page-question').prop('checked', false);
+                        $(this).prop('checked', false);
                     } else {
                         let allCheckboxesChecked = checkboxesToToggle.length === checkboxesToToggle.filter(':checked').length;
-                        $('.qsm-admin-select-page-question').prop('checked', allCheckboxesChecked);
+                        $(this).prop('checked', allCheckboxesChecked);
                     }
                     let count = jQuery('.qsm-admin-select-question-input:checked').length;
                     jQuery('.qsm-selected-question-count').html(count);
@@ -4525,6 +4661,24 @@ var QSM_Quiz_Broadcast_Channel;
                     } else {
                         jQuery('.qsm-admin-bulk-actions').fadeOut();
                     }
+                });
+
+                // Kit board bar (G-02): fill "Move to page" before the kit opens the menu.
+                $(document).on('mousedown keydown', '.qsm-ui-bulk-move-toggle', function () {
+                    QSMQuestion.refreshBulkMoveMenu();
+                });
+                $(document).on('click', '.qsm-ui-bulk-move-to', function () {
+                    QSMQuestion.bulkMoveQuestions(parseInt($(this).attr('data-page-index'), 10));
+                });
+                $(document).on('click', '.qsm-ui-board-clear', function () {
+                    QSMQuestion.clearQuestionSelection();
+                });
+                $(document).on('keydown', '.questions .qsm-ui-question-handle', function (event) {
+                    if (!event.altKey || ('ArrowUp' !== event.key && 'ArrowDown' !== event.key)) {
+                        return;
+                    }
+                    event.preventDefault();
+                    QSMQuestion.keyboardMoveQuestion($(this).closest('.question'), 'ArrowUp' === event.key ? -1 : 1);
                 });
 
                 $(document).on('click', '.qsm-admin-randomize-page-questions', function () {
@@ -5080,8 +5234,12 @@ var QSM_Quiz_Broadcast_Channel;
                 $('.questions').sortable({
                     opacity: 70,
                     cursor: 'move',
-                    handle: 'span.dashicons-move',
-                    placeholder: "ui-state-highlight",
+                    items: '> .page',
+                    handle: '.qsm-ui-page-handle',
+                    placeholder: "ui-state-highlight qsm-ui-sort-placeholder",
+                    // The kit handles are <button>s, which jQuery UI's default `cancel` refuses to drag from.
+                    cancel: 'input, textarea, select, option',
+                    forcePlaceholderSize: true,
                     stop: function (evt, ui) {
                         $('.questions > .page').each(function () {
                             var page = parseInt($(this).index()) + 1;
@@ -5097,12 +5255,18 @@ var QSM_Quiz_Broadcast_Channel;
                 });
                 $('.page').sortable({
                     items: '.question',
-                    handle: 'span.dashicons-move',
+                    handle: '.qsm-ui-question-handle',
                     opacity: 70,
                     cursor: 'move',
-                    placeholder: "ui-state-highlight",
+                    placeholder: "ui-state-highlight qsm-ui-sort-placeholder",
+                    // The kit handles are <button>s, which jQuery UI's default `cancel` refuses to drag from.
+                    cancel: 'input, textarea, select, option',
+                    forcePlaceholderSize: true,
                     connectWith: '.page',
+                    over: QSMQuestion.markDropTarget,
+                    out: QSMQuestion.unmarkDropTarget,
                     stop: function (evt, ui) {
+                        $('.page').removeClass('qsm-ui-drop-target');
                         setTimeout(
                             function () {
                                 $('.save-page-button').trigger('click');

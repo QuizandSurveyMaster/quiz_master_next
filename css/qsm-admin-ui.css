@@ -633,3 +633,27 @@
 @media (prefers-reduced-motion: reduce) {
 	.qsm-ui [class*="qsm-ui-"], .qsm-ui [class*="qsm-ui-"]::before, .qsm-ui [class*="qsm-ui-"]::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* ---------- Questions tab board (G-02 / G-03) ----------
+ * qsm-admin.js and add-ons select the board flat: each question row (and its open
+ * .questionElements editor) is a direct child of .page, after the page head, the
+ * empty note and the add row. So the page block is a flex column and the add row
+ * moves to the end with `order`, instead of the kit's nested .qsm-ui-page-body.
+ * These rules also undo what qsm-admin-question.css gives .page and the row checkbox.
+ */
+.qsm-ui .qsm-ui-board { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.qsm-ui .qsm-ui-board > .qsm-ui-page-block { display: flex; flex-direction: column; gap: 8px; width: auto; margin: 0; padding: 0 12px 12px; }
+.qsm-ui .qsm-ui-board > .qsm-ui-page-block > .qsm-ui-page-head { margin: 0 -12px 4px; }
+.qsm-ui .qsm-ui-board > .qsm-ui-page-block > .qsm-ui-add-row { order: 1; margin-top: 2px; }
+.qsm-ui .qsm-ui-board .qsm-ui-page-empty { display: none; order: 1; padding: 18px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); color: var(--qsm-muted); text-align: center; font-size: 13px; }
+.qsm-ui .qsm-ui-board > .qsm-ui-page-block:not(:has(> .question)) > .qsm-ui-page-empty { display: block; }
+.qsm-ui .qsm-ui-board > .qsm-ui-page-block:not(:has(> .question)) .qsm-ui-page-select-label { visibility: hidden; }
+.qsm-ui .qsm-ui-board .qsm-ui-page-handle { cursor: grab; }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row { margin: 0; }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row.opened { border-color: var(--qsm-blue); box-shadow: 0 0 0 3px var(--qsm-blue-ring); }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-grow strong { color: var(--qsm-ink); font-size: 14px; }
+.qsm-ui .qsm-ui-q-select { position: static; visibility: visible; }
+.qsm-ui .qsm-ui-page-block.ui-sortable-helper { box-shadow: var(--qsm-shadow-pop); }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-left: auto; border-color: transparent; background: none; color: #fff; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: rgba(255, 255, 255, .12); }
+.qsm-ui .qsm-ui-add-dashed.new-page-button { margin-top: 14px; }

@@ -548,6 +548,7 @@ class MLWQuizMasterNext {
 					if ( is_rtl() ) {
 						wp_enqueue_style( 'qsm_admin_question_css_rtl', plugins_url( 'css/qsm-admin-question-rtl.css', __FILE__ ), array(), $this->version );
 					}
+					QSM_Admin_UI::enqueue();
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
