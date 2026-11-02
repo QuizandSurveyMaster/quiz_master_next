@@ -2031,6 +2031,9 @@ function qsm_question_quick_result_js(question_id, answer, answer_type = '', sho
 		question_id = typeof question_id !== 'undefined' ? parseInt(question_id) : 0;
 		answer = typeof answer !== 'undefined' ? answer : '';
 		answer_type = typeof answer_type !== 'undefined' ? answer_type : '';
+		if (typeof decrypt[question_id] === 'undefined') {
+			return { "correct_index": 0, "success": "", "message": "" };
+		}
 		let answer_array = decrypt[question_id].answer_array;
 		let settings = decrypt[question_id].settings;
 		let correct_info_text = decrypt[question_id].correct_info_text;
