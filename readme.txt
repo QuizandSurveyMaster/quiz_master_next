@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.2.9
+Stable tag: 11.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,8 +118,10 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 
 == Changelog ==
 
-= Unreleased =
-* Security: Fixed a Contributor+ second-order SQL injection via stored quiz page data ("qpages") rendered through the QSM block (CVE-2026-116509). Credit: Wordfence PRISM.
+= 11.3.0 (November 2, 2026) =
+* Bug: Fixed the Start button submitting the quiz in the new render.
+* Bug: Fixed the answer_array error in quick results in the legacy version.
+* Security: Fixed Contributor+ SQL injection via stored quiz page data (qpages).
 
 = 11.2.9 (October 23, 2026) =
 * Feature: Added an option to disable correct-answer highlighting for wrong responses.
