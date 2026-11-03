@@ -1926,7 +1926,7 @@ function qsm_options_questions_tab_template() {
 			<div class="qsm-ui-grow">
 				<strong>{{data.question}}</strong>
 				<div class="qsm-ui-q-meta">
-					<# if ( data.quiz_name ) { #><span class="qsm-ui-qb-quiz"><?php echo QSM_Admin_UI::icon( 'quiz' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><span class="screen-reader-text"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?></span>{{data.quiz_name}}</span><# } #>
+					<# if ( data.quiz_name ) { #><span class="qsm-ui-qb-quiz"><span class="screen-reader-text"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?></span>{{data.quiz_name}}</span><# } #>
 					<# _.each( data.categories, function( category ) { #><span class="qsm-ui-cat-chip">{{category}}</span><# } ); #>
 				</div>
 			</div>
