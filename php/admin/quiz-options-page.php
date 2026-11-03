@@ -94,45 +94,138 @@ function qsm_generate_quiz_options() {
 	}
 
 	$qsm_core_tabs = array( 'questions', 'contact', 'text', 'options', 'emails', 'results-pages', 'style' );
-	$addon_tabs    = 0;
 	?>
 	<div class="wrap" id="mlw_quiz_wrap">
 		<div class='mlw_quiz_options' id="mlw_quiz_options">
-			<div class="qsm-quiz-nav-bar">
-				<div class="qsm-quiz-heading">
-					<span id="qsm_quiz_title" class="qsm_quiz_title"><?php echo wp_kses_post( $quiz_name ); ?></span>
-					<a href="javascript:void(0)" title="Edit Name" class="edit-quiz-name">
-						<span class="dashicons dashicons-edit"></span>
-					</a>
-					<?php if ( ('draft' === $post_status || 'pending' === $post_status) && current_user_can( 'publish_qsm_quizzes' ) ) : ?>
-						<form method="POST" action="">
-							<?php wp_nonce_field( 'qsm_update_quiz_status', 'qsm_update_quiz_status_nonce' ); ?>
-							<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
-							<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Publish Quiz', 'quiz-master-next' ); ?>" />
-						</form>
-					<?php endif; ?>
-				</div>
-				<div class="qsm-quiz-top-nav-links">
-					<a class="qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
-						<span class="dashicons dashicons-external"></span><?php esc_html_e( 'View Quiz', 'quiz-master-next' ); ?>
-					</a>
-					<a class="qsm-btn-quiz-edit" href="<?php echo esc_url( $edit_link ); ?>">
-						<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Settings', 'quiz-master-next' ); ?>
-					</a>
-					<a href="javascript:void(0)" class="qsm-btn-quiz-edit qsm-help-tab-handle" rel="noopener">
-						<span class="dashicons dashicons-editor-help"></span><?php esc_html_e( 'Help', 'quiz-master-next' ); ?>
-					</a>
-					<div class="qsm-help-tab-dropdown-list">
-						<h3><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
-						<a href="javascript:void(0)" class="qsm-help-tab-item" id="qsm-start-admin-tour"><span class="dashicons dashicons-welcome-learn-more"></span> <?php esc_html_e( 'Take a Tour', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_support' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"> <?php esc_html_e( 'Get support', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', 'quiz_editor', 'help_box', 'getting_started' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Getting Started', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_create_quiz' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/question-types', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_que_type' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Question Types', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/advanced-topics', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_adv_topic' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Advanced Topics', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/qsm-themes', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_themes' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'QSM Themes', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_addons' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></a>
-						<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_all_doc' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?></a>
+			<div class="qsm-ui qsm-ui-quiz-frame-header">
+				<nav class="qsm-ui-breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', 'quiz-master-next' ); ?>">
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=qsm_quiz' ) ); ?>"><?php esc_html_e( 'Quizzes', 'quiz-master-next' ); ?></a><span aria-hidden="true">/</span><span><?php echo wp_kses_post( $quiz_name ); ?></span>
+				</nav>
+				<div class="qsm-ui-page-header qsm-ui-text">
+					<div class="qsm-ui-quiz-frame-heading">
+						<div class="qsm-ui-row">
+							<div class="qsm-ui-h1 qsm-ui-quiz-title" role="heading" aria-level="1"><span id="qsm_quiz_title" class="qsm_quiz_title"><?php echo wp_kses_post( $quiz_name ); ?></span></div>
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Edit Name', 'quiz-master-next' ),
+								array(
+									'icon'      => 'edit',
+									'icon_only' => true,
+									'class'     => 'edit-quiz-name',
+									'attrs'     => array( 'title' => __( 'Edit Name', 'quiz-master-next' ) ),
+								)
+							);
+							if ( $post_status ) {
+								$status_object = get_post_status_object( $post_status );
+								echo QSM_Admin_UI::status( $status_object ? $status_object->label : $post_status, 'publish' === $post_status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+							}
+							?>
+						</div>
+						<?php if ( $quiz_id ) : ?>
+							<p class="qsm-ui-subtitle">
+								<?php
+								/* translators: %d: quiz ID */
+								echo esc_html( sprintf( __( 'ID %d', 'quiz-master-next' ), $quiz_id ) );
+								?>
+								<span aria-hidden="true">&middot;</span>
+								<code class="qsm-ui-code" id="qsm-ui-quiz-shortcode">[qsm quiz=<?php echo esc_html( $quiz_id ); ?>]</code>
+								<?php
+								echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+									__( 'Copy shortcode', 'quiz-master-next' ),
+									array(
+										'icon'      => 'copy',
+										'icon_only' => true,
+										'class'     => 'qsm-ui-quiz-shortcode-copy',
+										'attrs'     => array(
+											'title'           => __( 'Copy shortcode', 'quiz-master-next' ),
+											'data-qsm-ui-copy' => '#qsm-ui-quiz-shortcode',
+										),
+									)
+								);
+								?>
+							</p>
+						<?php endif; ?>
+					</div>
+					<div class="qsm-ui-page-actions">
+						<?php
+						if ( $post_permalink ) {
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'View Quiz', 'quiz-master-next' ),
+								array(
+									'icon'  => 'eye',
+									'href'  => $post_permalink,
+									'class' => 'qsm-btn-quiz-edit',
+									'attrs' => array(
+										'target' => '_blank',
+										'rel'    => 'noopener',
+									),
+								)
+							);
+						}
+						if ( $edit_link ) {
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Settings', 'quiz-master-next' ),
+								array(
+									'icon'  => 'settings',
+									'href'  => $edit_link,
+									'class' => 'qsm-btn-quiz-edit',
+								)
+							);
+						}
+						if ( $quiz_id && class_exists( 'QSM_Export_Import' ) ) {
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Import & Export', 'quiz-master-next' ),
+								array(
+									'icon'  => 'download',
+									'href'  => admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import',
+									'class' => 'qsm-import-export-btn',
+									'attrs' => array(
+										'target' => '_blank',
+										'rel'    => 'noopener',
+									),
+								)
+							);
+						}
+						?>
+						<div class="qsm-ui-help-menu">
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Help', 'quiz-master-next' ),
+								array(
+									'icon'  => 'info',
+									'class' => 'qsm-btn-quiz-edit qsm-help-tab-handle qsm-ui-help-toggle',
+									'attrs' => array( 'aria-haspopup' => 'true' ),
+								)
+							);
+							?>
+							<div class="qsm-help-tab-dropdown-list qsm-ui-help-list">
+								<h3 class="qsm-ui-help-title"><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
+										<a href="javascript:void(0)" class="qsm-help-tab-item qsm-ui-help-item" id="qsm-start-admin-tour"><span class="dashicons dashicons-welcome-learn-more"></span> <?php esc_html_e( 'Take a Tour', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'contact-support', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_support' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) ?>"> <?php esc_html_e( 'Get support', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', 'quiz_editor', 'help_box', 'getting_started' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Getting Started', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_create_quiz' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/question-types', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_que_type' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Question Types', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/advanced-topics', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_adv_topic' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Advanced Topics', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/qsm-themes', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_themes' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'QSM Themes', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_addons' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></a>
+										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_all_doc' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?></a>
+							</div>
+						</div>
+						<?php if ( ( 'draft' === $post_status || 'pending' === $post_status ) && current_user_can( 'publish_qsm_quizzes' ) ) : ?>
+							<form method="POST" action="" class="qsm-ui-inline-form">
+								<?php wp_nonce_field( 'qsm_update_quiz_status', 'qsm_update_quiz_status_nonce' ); ?>
+								<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
+								<?php
+								echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+									__( 'Publish Quiz', 'quiz-master-next' ),
+									array(
+										'variant' => 'primary',
+										'type'    => 'submit',
+									)
+								);
+								?>
+							</form>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -161,55 +254,50 @@ function qsm_generate_quiz_options() {
 				</div>
 			<?php  } ?>
 			<?php if ( $quiz_id ) {
-				$active_class_aadon = true;
 				?>
-				<nav class="nav-tab-wrapper">
-					<?php
-					// Cycles through registered tabs to create navigation.
-					foreach ( $tab_array as $tab ) {
-						if ( in_array( $tab['slug'], $qsm_core_tabs, true ) ) {
-							$active_class = '';
-							if ( $active_tab === $tab['slug'] ) {
-								$active_class = 'nav-tab-active';
-								$active_class_aadon = false;
-							}
-							?>
-							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
-							<?php
-						} else {
-							++$addon_tabs;
-						}
-					}
-					if ( 0 < $addon_tabs ) {
-						?>
-						<div class="qsm-option-tab-dropdown">
-							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>">
-								<!--<img class="qsm-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL.'assets/Puzzle.svg' ); ?>">-->
-								<?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
-								<span class="dashicons dashicons-arrow-down"></span>
-							</a>
-							<div class="qsm-option-tab-dropdown-list">
-								<?php
-									foreach ( $tab_array as $tab ) {
-										if ( ! in_array( $tab['slug'], $qsm_core_tabs, true ) ) {
-											$active_class = '';
-											if ( $active_tab === $tab['slug'] ) {
-												$active_class = 'nav-tab-active';
-											}
-											?>
-												<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab qsm-option-tab-dropdown-item <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
-											<?php
-										}
-									}
-								?>
-							</div>
-						</div>
+				<nav class="qsm-ui qsm-ui-quiz-tabs-nav" aria-label="<?php esc_attr_e( 'Quiz sections', 'quiz-master-next' ); ?>">
+					<div class="qsm-ui-tabs qsm-ui-quiz-tabs">
 						<?php
-					}
-					if ( class_exists( 'QSM_Export_Import' ) ) {
-						?><a class="button button-primary qsm-import-export-btn qsm-common-button-styles" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
-					}
-					?>
+						// Core tabs first, then add-on tabs in their registered order, all in one bar that wraps.
+						$tab_icons    = array(
+							'questions'     => 'quiz',
+							'contact'       => 'users',
+							'text'          => 'text',
+							'options'       => 'settings',
+							'emails'        => 'mail',
+							'results-pages' => 'chart',
+							'style'         => 'palette',
+						);
+						$ordered_tabs = array_merge(
+							array_filter(
+								$tab_array,
+								function ( $tab ) use ( $qsm_core_tabs ) {
+									return in_array( $tab['slug'], $qsm_core_tabs, true );
+								}
+							),
+							array_filter(
+								$tab_array,
+								function ( $tab ) use ( $qsm_core_tabs ) {
+									return ! in_array( $tab['slug'], $qsm_core_tabs, true );
+								}
+							)
+						);
+						foreach ( $ordered_tabs as $tab ) {
+							$is_core   = in_array( $tab['slug'], $qsm_core_tabs, true );
+							$is_active = $active_tab === $tab['slug'];
+							?>
+							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="qsm-ui-tab<?php echo $is_core ? '' : ' qsm-ui-addon-tab'; ?>" data-tab="<?php echo esc_attr( $tab['slug'] ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+								<?php
+								if ( isset( $tab_icons[ $tab['slug'] ] ) ) {
+									echo QSM_Admin_UI::icon( $tab_icons[ $tab['slug'] ], 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								}
+								echo wp_kses_post( $tab['title'] );
+								?>
+							</a>
+							<?php
+						}
+						?>
+					</div>
 				</nav>
 				<div class="qsm_tab_content">
 					<?php
