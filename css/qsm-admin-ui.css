@@ -512,7 +512,8 @@
 .qsm-ui .qsm-ui-cat-chip { display: inline-flex; align-items: center; padding: 1px 8px; border: 1px solid var(--qsm-line); border-radius: 999px; background: var(--qsm-surface-2); color: var(--qsm-ink-2); font-size: 11.5px; font-weight: 500; }
 .qsm-ui .qsm-ui-page-head .qsm-ui-check { margin-left: auto; font-size: 13px; font-weight: 500; color: var(--qsm-muted); }
 .qsm-ui .qsm-ui-page-head .qsm-ui-check + .qsm-ui-row { margin-left: 6px; }
-.qsm-ui .qsm-ui-board-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px 8px 14px; border-radius: var(--qsm-radius); background: #172033; color: #fff; font-size: 13px; }
+.qsm-ui .qsm-ui-board-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px 8px 14px; border: 1px solid var(--qsm-blue); border-radius: var(--qsm-radius); background: var(--qsm-blue-soft); box-shadow: 0 0 0 3px var(--qsm-blue-ring); color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-count { color: var(--qsm-blue-dark); font-weight: 600; }
 .qsm-ui .qsm-ui-board-bar .qsm-ui-btn { min-height: 32px; padding: 5px 10px; font-size: 13px; }
 .qsm-ui .qsm-ui-qb-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .qsm-ui .qsm-ui-qb-toolbar .qsm-ui-input-icon { flex: 1 1 260px; }
@@ -608,6 +609,9 @@
 .qsm-popup.qsm-ui-popup .qsm-popup__title { color: var(--qsm-ink); font-size: 19px; font-weight: 700; letter-spacing: -.3px; }
 .qsm-popup.qsm-ui-popup .qsm-popup__close { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--qsm-radius); color: var(--qsm-muted); cursor: pointer; }
 .qsm-popup.qsm-ui-popup .qsm-popup__close:hover { background: #eef1f6; color: var(--qsm-ink); }
+.qsm-popup.qsm-ui-popup .qsm-popup__header .qsm-popup__title { margin: 0; padding: 0; }
+/* qsm-admin.css pads the standard popups' close link (15px, position relative), which pushes the ✕ out of its box. */
+.qsm-popup.qsm-ui-popup .qsm-popup__header .qsm-popup__close { position: static; flex: none; padding: 0; border: 0; font-size: 18px; line-height: 1; }
 .qsm-popup.qsm-ui-popup .qsm-popup__content { margin: 0; padding: 18px 22px 20px; color: var(--qsm-ink-2); }
 .qsm-popup.qsm-ui-popup .qsm-popup__footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
 
@@ -659,10 +663,17 @@
 .qsm-ui .qsm-ui-board .qsm-ui-q-row { margin: 0; }
 .qsm-ui .qsm-ui-board .qsm-ui-q-row.opened { border-color: var(--qsm-blue); box-shadow: 0 0 0 3px var(--qsm-blue-ring); }
 .qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-grow strong { color: var(--qsm-ink); font-size: 14px; }
+/* Row actions show on hover or keyboard focus, as on the old board. They stay on for the open row and on touch screens. */
+.qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-item-actions { opacity: 0; transition: opacity .12s; }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row:is(:hover, :focus-within, .opened) .qsm-ui-item-actions { opacity: 1; }
+@media (hover: none) and (pointer: coarse) {
+	.qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-item-actions { opacity: 1; }
+}
+.qsm-ui .qsm-ui-q-id { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--qsm-radius-sm); background: #eef1f6; color: var(--qsm-ink-2); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .qsm-ui .qsm-ui-q-select { position: static; visibility: visible; }
 .qsm-ui .qsm-ui-page-block.ui-sortable-helper { box-shadow: var(--qsm-shadow-pop); }
-.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-inline-start: auto; border-color: transparent; background: none; color: #fff; }
-.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: rgba(255, 255, 255, .12); }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-inline-start: auto; border-color: transparent; background: none; color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: var(--qsm-blue-ring); }
 .qsm-ui .qsm-ui-add-dashed.new-page-button { margin-top: 14px; }
 
 /* ---------- Questions tab editor (P-06) ----------
@@ -698,8 +709,9 @@
 .qsm-ui .qsm-ui-qe-adv { display: grid; gap: 16px; }
 /* The question type notes row: no gap in the column while none of its notes is shown (qsm-admin.js hides them all, then shows one). */
 .qsm-ui .qsm-ui-qe-main > .qsm-ui-qe-typedesc:not(:has(> :not([style*="none"]))) { display: none; }
-.qsm-ui .qsm-ui-qe-card #qsm-question-id { color: var(--qsm-muted); font-size: 12px; }
-.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-control .qsm-ui-input:not([type="checkbox"]) { max-width: 420px; }
+/* The board row shows the ID now. The span stays for add-ons that fill it (Advance Question, Flashcards). */
+.qsm-ui .qsm-ui-qe-card #qsm-question-id { display: none; }
+.qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-control :is(.qsm-ui-input:not([type="checkbox"]), .qsm-ui-select) { max-width: 420px; }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-textarea .qsm-ui-qe-control { max-width: none; }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-help { display: block; margin-top: 5px; }
 /* Advanced options fold: open options first, then the toggle, then the folded rows (qsm-admin.js marks them qsm-ui-qe-more). */
@@ -741,10 +753,34 @@
 .qsm-ui .qsm-ui-qe-adv { container-type: inline-size; }
 @container (min-width: 560px) {
 	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box { display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); column-gap: 24px; align-items: baseline; }
+	/* jQuery .show() on a row while the fold is closed writes an inline display: block (QSM Ultimate does this for
+	   "Input custom answer" when the editor opens). Keep the grid for it; an inline display: none still hides, and
+	   a folded row only gets it while the fold is open. */
+	.qsm-ui .qsm-ui-qe-adv > :is(.qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-toggle-box):not(.qsm-ui-qe-more)[style*="display: block"],
+	.qsm-ui .qsm-ui-qe-adv.is-open > :is(.qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-toggle-box)[style*="display: block"] { display: grid !important; }
 	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field > .qsm-ui-label-line { margin: 0; }
 	.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-handle { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
 	.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > :not(.qsm-toggle-box-handle) { grid-column: 2; }
 }
+/* Answer row buttons (tmpl-single-answer, also Advance Question's rows): quiet icon buttons instead of the red and blue
+   circles, colored on hover. Same links and classes, so the click handlers and add-ons work as today; the template is
+   shared with the Question Bank page, which keeps the old look. Remove shows the trash glyph. */
+.qsm-ui #answers .answers-single > .remove-answer-icon { width: auto; min-width: 0; padding: 0; gap: 4px; align-self: center; margin-inline-end: 10px; }
+.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button) { display: inline-grid; place-items: center; width: 32px; max-width: none; height: 32px; padding: 0; border-radius: var(--qsm-radius); background: transparent; color: var(--qsm-muted); text-decoration: none; box-shadow: none; transition: background-color .15s, color .15s; }
+.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button) .dashicons { width: 18px; height: 18px; font-size: 18px; line-height: 18px; }
+.qsm-ui #answers .delete-answer-button :is(.dashicons-minus, .dashicons-remove)::before { content: "\f182"; }
+.qsm-ui #answers .delete-answer-button:hover { background: var(--qsm-red-bg); color: var(--qsm-red); }
+.qsm-ui #answers .qsm-add-answer-button:hover { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button):focus { outline: none; box-shadow: none; }
+.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button):focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
+/* "Add Answer!" (#new-answer-button, shown when a question has no answers): a dashed add button like "Add page",
+   lined up with the answer rows. CSS only, because Advance Question adds its own buttons inside .new-answer-button. */
+.qsm-ui .questionElements .new-answer-button { margin-inline: 0; }
+.qsm-ui .new-answer-button a#new-answer-button { display: inline-flex; align-items: center; gap: 6px; height: auto; min-height: 0; padding: 8px 14px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); background: none; box-shadow: none; color: var(--qsm-blue); font: 600 13px/1.4 var(--qsm-font); text-decoration: none; }
+.qsm-ui .new-answer-button a#new-answer-button:hover { border-color: var(--qsm-blue); background: var(--qsm-blue-soft); }
+.qsm-ui .new-answer-button a#new-answer-button:focus { box-shadow: none; outline: none; }
+.qsm-ui .new-answer-button a#new-answer-button:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
+.qsm-ui .new-answer-button a#new-answer-button .dashicons.dashicons-plus { width: 16px; height: 16px; font-size: 16px; line-height: 16px; }
 /* Side column */
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { float: none; width: auto; min-width: 0; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups { display: grid; }
@@ -756,10 +792,13 @@
 .qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group .inside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-btn.qsm-feature-image-upl img { display: block; max-width: 100%; height: auto; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-btn.qsm-feature-image-upl:has(img) { padding: 4px; }
-/* Footer: Cancel left, Save right */
-.qsm-ui .qsm-ui-qe-card #qsm-question-publishing-action.qsm-ui-qe-foot { display: flex; justify-content: space-between; width: auto; margin: 0; }
+/* Save and Cancel: a group in the side column above Category, Save filling the row. */
+.qsm-ui .qsm-ui-qe-card #qsm-question-publishing-action.qsm-ui-qe-actions { display: flex; flex-direction: row-reverse; align-items: center; gap: 8px; width: auto; margin: 0; }
+.qsm-ui .qsm-ui-qe-card #qsm-question-publishing-action #publishing-action.qsm-ui-row { flex: 1; float: none; gap: 8px; line-height: normal; }
+.qsm-ui .qsm-ui-qe-card #publishing-action #save-popup-button { flex: 1; justify-content: center; }
+.qsm-ui .qsm-ui-qe-card #publishing-action .spinner { margin: 0; }
+.qsm-ui .qsm-ui-qe-card #publishing-action .spinner:not(.is-active) { display: none; }
 .qsm-ui .qsm-ui-qe-card #delete-action .qsm-ui-btn.deletion { text-decoration: none; }
-.qsm-ui .qsm-ui-qe-card #publishing-action.qsm-ui-row { float: none; gap: 8px; line-height: normal; }
 @media (max-width: 960px) {
 	.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { border-left: 0; border-top: 1px solid var(--qsm-line-soft); }
 }
@@ -784,8 +823,77 @@
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-grow strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-grow .qsm-ui-caption { margin: 3px 0 0; }
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-row { flex: none; gap: 6px; }
+.qsm-ui .qsm-ui-qb-quiz { color: var(--qsm-muted); font-size: 12px; }
 .qsm-ui .qsm-ui-btn.disable_import, .qsm-ui .qsm-ui-btn.link-question.disabled { opacity: .5; pointer-events: none; }
 .qsm-ui .qsm-ui-btn.qb-load-more-question { margin: 6px auto 0; }
+
+/* ---------- Move question popup (#modal-10) ----------
+ * qsm-admin.css spreads the footer apart and paints Cancel red by id; these rules repeat the id.
+ */
+#modal-10.qsm-ui-popup .qsm-popup__container { width: min(480px, calc(100vw - 32px)); }
+#modal-10.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
+#modal-10.qsm-ui-popup .qsm-popup__footer { justify-content: flex-end; }
+.qsm-ui .qsm-ui-move-subtitle { margin: 4px 0 0; color: var(--qsm-muted); }
+.qsm-ui .qsm-ui-move-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.qsm-ui .qsm-ui-move-fields .qsm-ui-input { width: 100%; }
+.qsm-ui .qsm-ui-move-error { margin: 12px 0 0; padding: 8px 12px; border: 1px solid var(--qsm-red-line); border-radius: var(--qsm-radius); background: var(--qsm-red-bg); color: var(--qsm-red); font-size: 13px; }
+.qsm-ui .qsm-ui-move-error:empty { display: none; }
+@media (max-width: 480px) {
+	.qsm-ui .qsm-ui-move-fields { grid-template-columns: 1fr; }
+}
+
+/* ---------- Questions tab: other popups and the top bar ----------
+ * Default Question Settings, Edit Page (#modal-page-1), Add New Category (#modal-9) and the validation alert (#modal-8).
+ * qsm-admin.css and qsm-admin-question.css style them by id, so these rules repeat the ids.
+ */
+.qsm-ui .qsm-ui-popup-subtitle { margin: 4px 0 0; color: var(--qsm-muted); }
+.qsm-popup.qsm-ui-popup .qsm-ui-popup-fields { display: grid; gap: 16px; }
+.qsm-popup.qsm-ui-popup .qsm-ui-popup-fields .qsm-ui-select, .qsm-popup.qsm-ui-popup .qsm-ui-popup-fields .qsm-ui-input { width: 100%; }
+.qsm-popup.qsm-ui-popup .qsm-popup__header > div { min-width: 0; }
+.qsm-popup.qsm-ui-popup .qsm-popup__footer .qsm-ui-foot-left { margin-inline-end: auto; }
+.qsm-popup.qsm-ui-popup .qsm-ui-modal-icon.is-warning { background: var(--qsm-amber-bg); color: var(--qsm-amber); }
+#modal-default-question-settings.qsm-ui-popup .qsm-popup__container { max-width: none; width: min(460px, calc(100vw - 32px)); }
+#modal-default-question-settings.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
+#modal-default-question-settings.qsm-ui-popup .qsm-default-question-settings-field { margin: 0; }
+#modal-default-question-settings.qsm-ui-popup .qsm-default-question-settings-footer { gap: 10px; padding: 14px 22px !important; }
+#modal-default-question-settings.qsm-ui-popup #qsm-reset-default-question-settings { color: var(--qsm-ink-2); }
+/* Edit Page */
+#modal-page-1.qsm-ui-popup #page-options > div { line-height: normal; }
+#modal-page-1.qsm-ui-popup .qsm-ui-page-field .qsm-ui-page-limit { width: 120px; }
+#modal-page-1.qsm-ui-popup .qsm-popup__footer { justify-content: flex-end; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-container { padding: 14px; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius); background: var(--qsm-surface-2); }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-top { display: grid; gap: 8px; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-top .qsm-page-setting-left span { width: auto; margin: 0; color: var(--qsm-ink); font-size: 13px; font-weight: 600; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-right { display: grid; gap: 8px; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-right .qsm-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; color: var(--qsm-ink-2); font-size: 13px; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-right input[type="number"] { width: 64px; min-width: 64px !important; max-width: 64px !important; height: 34px; padding: 0 8px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius-sm); background: #fff; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-bottom .qsm-popup-upgrade-warning { max-width: none; margin: 12px 0 0; padding: 10px 12px; border-color: var(--qsm-amber-line); border-radius: var(--qsm-radius); background: var(--qsm-amber-bg); color: #6b4206; font: 500 13px/1.5 var(--qsm-font); }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-bottom .qsm-popup-upgrade-warning img { margin: 2px 8px 0 0; }
+#modal-page-1.qsm-ui-popup .qsm-page-setting-bottom .qsm-popup-upgrade-warning a { color: var(--qsm-blue); }
+/* The timer fields are read-only without Advanced Timer; the notice below them stays clickable. */
+#modal-page-1.qsm-ui-popup .qsm-page-setting-container.is-locked .qsm-page-setting-top { opacity: .55; }
+/* Add New Category, validation alert */
+#modal-9.qsm-ui-popup .qsm-popup__footer, #modal-8.qsm-ui-popup .qsm-popup__footer { justify-content: flex-end; border-top: 1px solid var(--qsm-line-soft); }
+#modal-9.qsm-ui-popup #modal-9-content .info { margin: 0; padding: 8px 12px; border-radius: var(--qsm-radius); font-size: 13px; }
+#modal-8.qsm-ui-popup { max-width: none; }
+#modal-8.qsm-ui-popup header { margin: 0; }
+#modal-8.qsm-ui-popup .qsm-popup__container { max-width: none; padding-bottom: 0; }
+#modal-8.qsm-ui-popup .qsm-popup__header .qsm-ui-confirm-head { align-items: center; }
+#modal-8.qsm-ui-popup .modal-8-table { font-size: 14px; }
+#modal-8.qsm-ui-popup #modal-8-title { color: var(--qsm-ink); opacity: 1; }
+#modal-8.qsm-ui-popup footer { margin: 0; }
+/* Top bar: search and Default Question Settings */
+.qsm-ui .question-controls .search-box { display: flex; align-items: center; gap: 10px; }
+.qsm-ui .question-controls .qsm-ui-q-search { width: 260px; }
+.qsm-ui .question-controls .qsm-ui-q-search .qsm-ui-input { width: 100%; min-height: var(--qsm-control-h-sm); height: var(--qsm-control-h-sm); margin: 0; }
+.qsm-ui .question-controls .qsm-default-question-settings-button, .qsm-ui .question-controls .qsm-default-question-settings-button:is(:hover, :focus, :active) { min-height: var(--qsm-control-h-sm); gap: 6px; color: var(--qsm-ink); }
+.qsm-ui .question-controls .qsm-default-question-settings-button:hover { background: var(--qsm-surface-2); }
+@media (max-width: 782px) {
+	.qsm-ui .question-controls .qsm-ui-q-search { width: 100%; }
+}
+/* While a question editor is open the board can't be reordered (qsm-admin.js disables the sortables), so the handles say so. */
+.qsm-ui .page.ui-sortable-disabled .qsm-ui-question-handle, .qsm-ui .questions.ui-sortable-disabled .qsm-ui-page-handle { cursor: not-allowed; opacity: .4; }
+.qsm-ui .page.ui-sortable-disabled .qsm-ui-question-handle:hover, .qsm-ui .questions.ui-sortable-disabled .qsm-ui-page-handle:hover { background: none; }
 
 /* ---------- Questions tab confirms (O-02) ----------
  * #modal-7 (question: unlink or remove for good) is the same micromodal popup; qsm-admin-question.css

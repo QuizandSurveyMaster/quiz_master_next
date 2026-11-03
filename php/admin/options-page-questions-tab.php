@@ -283,9 +283,12 @@ function qsm_options_questions_tab_content() {
 		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
-			<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
-			<button type="button" class="button qsm-default-question-settings-button">
-				<span class="dashicons dashicons-admin-generic"></span>
+			<span class="qsm-ui-input-icon qsm-ui-q-search">
+				<?php echo QSM_Admin_UI::icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+				<input type="search" class="qsm-ui-input" id="question_search" name="question_search" value="" placeholder="<?php esc_attr_e( 'Search Questions', 'quiz-master-next' ); ?>">
+			</span>
+			<button type="button" class="qsm-ui-btn qsm-default-question-settings-button">
+				<?php echo QSM_Admin_UI::icon( 'settings', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
 				<?php esc_html_e( 'Default Question Settings', 'quiz-master-next' ); ?>
 			</button>
 			<?php do_action( 'qsm_question_controls_head' ); ?>
@@ -300,18 +303,21 @@ function qsm_options_questions_tab_content() {
 	 * and applied in QSMQuestion.createQuestion(). See task CU-86d3t3jcn.
 	 */
 	?>
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-default-question-settings" aria-hidden="true">
+	<?php // Kit look on the same micromodal popup: ids and the handlers in qsm-admin.js are unchanged. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="modal-default-question-settings" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container qsm-default-question-settings-popup" role="dialog" aria-modal="true" aria-labelledby="modal-default-question-settings-title">
-				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-default-question-settings-title"><?php esc_html_e( 'Default Question Settings', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+			<div class="qsm-popup__container qsm-default-question-settings-popup qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-default-question-settings-title">
+				<header class="qsm-popup__header qsm-ui-text">
+					<div>
+						<h2 class="qsm-popup__title" id="modal-default-question-settings-title"><?php esc_html_e( 'Default Question Settings', 'quiz-master-next' ); ?></h2>
+						<p class="qsm-ui-small qsm-ui-popup-subtitle qsm-default-question-settings-desc"><?php esc_html_e( 'These settings will be applied automatically to all newly added questions. You can still change any of it per question.', 'quiz-master-next' ); ?></p>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
 				</header>
-				<main class="qsm-popup__content">
-					<p class="qsm-default-question-settings-desc"><?php esc_html_e( 'These settings will be applied automatically to all newly added questions. You can still change any of it per question.', 'quiz-master-next' ); ?></p>
+				<main class="qsm-popup__content qsm-ui-text qsm-ui-popup-fields">
 					<div class="qsm-default-question-settings-field">
-						<label for="qsm-default-question-type"><?php esc_html_e( 'Question Type', 'quiz-master-next' ); ?></label>
-						<select id="qsm-default-question-type">
+						<label class="qsm-ui-field-label" for="qsm-default-question-type"><?php esc_html_e( 'Question Type', 'quiz-master-next' ); ?></label>
+						<select class="qsm-ui-select" id="qsm-default-question-type">
 							<?php
 							foreach ( $question_types_categorized as $category_name => $category_items ) {
 								?>
@@ -332,8 +338,8 @@ function qsm_options_questions_tab_content() {
 						</select>
 					</div>
 					<div class="qsm-default-question-settings-field">
-						<label for="qsm-default-question-category"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
-						<select id="qsm-default-question-category">
+						<label class="qsm-ui-field-label" for="qsm-default-question-category"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
+						<select class="qsm-ui-select" id="qsm-default-question-category">
 							<option value=""><?php esc_html_e( 'None', 'quiz-master-next' ); ?></option>
 							<?php
 							if ( ! empty( $question_categories ) ) {
@@ -356,12 +362,13 @@ function qsm_options_questions_tab_content() {
 						</select>
 					</div>
 					<div class="qsm-default-question-settings-field qsm-default-question-settings-required">
-						<label><input type="checkbox" id="qsm-default-question-required"> <?php esc_html_e( 'Mark new questions as required', 'quiz-master-next' ); ?></label>
+						<label class="qsm-ui-check"><input type="checkbox" id="qsm-default-question-required"><span><?php esc_html_e( 'Mark new questions as required', 'quiz-master-next' ); ?></span></label>
 					</div>
 				</main>
 				<footer class="qsm-popup__footer qsm-default-question-settings-footer">
-					<a href="javascript:void(0)" id="qsm-reset-default-question-settings"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a>
-					<button type="button" class="button button-primary" id="qsm-save-default-question-settings"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
+					<a href="javascript:void(0)" class="qsm-ui-btn qsm-ui-btn-quiet qsm-ui-foot-left" role="button" id="qsm-reset-default-question-settings"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a>
+					<button type="button" class="qsm-ui-btn" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary" id="qsm-save-default-question-settings"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -494,7 +501,6 @@ function qsm_options_questions_tab_content() {
 				<footer class="qsm-popup__footer qsm-question-bank-footer">
 					<?php // Disabled until a question is ticked (QSMQuestion.syncBankFooter). ?>
 					<button type="button" class="qsm-action-link-delete qsm-ui-btn qsm-ui-btn-danger-ghost qsm-ui-foot-left" id="qsm-delete-selected-question" disabled><?php esc_html_e( 'Delete from Question Bank', 'quiz-master-next' ); ?></button>
-					<button type="button" class="qsm-ui-btn" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary" id="qsm-import-selected-question" disabled><?php esc_html_e( 'Add Questions', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
@@ -907,6 +913,16 @@ function qsm_options_questions_tab_content() {
 															</div>
 														</div>
 													</div>
+									<?php // Save and Cancel sit in the side column, above Category. Same ids as before (qsm-admin.js and the guided tour use #save-popup-button and #delete-action .deletion). ?>
+									<div id="qsm-question-publishing-action" class="qsm-ui-qe-group qsm-ui-qe-actions">
+										<div id="publishing-action" class="qsm-ui-row">
+											<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
+											<button id="save-popup-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Save Question', 'quiz-master-next' ); ?></button>
+										</div>
+										<div id="delete-action">
+											<a class="submitdelete deletion qsm-ui-btn" href="javascript:void(0)" data-micromodal-close aria-label="<?php esc_attr_e( 'Close the question editor', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
+										</div>
+									</div>
 													<div id="categorydiv" class="qsm-ui-qe-group">
 														<div class="qsm-ui-label-line">
 															<span class="qsm-ui-field-label"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></span>
@@ -966,16 +982,6 @@ function qsm_options_questions_tab_content() {
 												</div>
 											</div>
 										</div>
-										<?php // Same ids as before (qsm-admin.js and the guided tour use #save-popup-button and #delete-action .deletion). ?>
-										<div id="qsm-question-publishing-action" class="qsm-ui-qe-foot">
-											<div id="delete-action">
-												<a class="submitdelete deletion qsm-ui-btn" href="javascript:void(0)" data-micromodal-close aria-label="<?php esc_attr_e( 'Close the question editor', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
-											</div>
-											<div id="publishing-action" class="qsm-ui-row">
-												<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
-												<button id="save-popup-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Save Question', 'quiz-master-next' ); ?></button>
-											</div>
-										</div>
 									</div>
 									</main>
 			</div>
@@ -983,33 +989,33 @@ function qsm_options_questions_tab_content() {
 	</div>
 
 	<!-- Popup for page settings -->
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-page-1" aria-hidden="true">
+	<?php // Kit look on the same micromodal popup. #page-options keeps every field name: qsm-admin.js reads and writes the page by field.name. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="modal-page-1" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-				<header class="qsm-popup__header">
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<header class="qsm-popup__header qsm-ui-text">
 					<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Edit Page', 'quiz-master-next' ); ?> <span
 							style="display: none;">[ ID: <span id="edit-page-id"></span> ]</span></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-page-1-content">
+				<main class="qsm-popup__content qsm-ui-text" id="modal-page-1-content">
 					<input type="hidden" name="edit_page_id" id="edit_page_id" value="">
-					<div id="page-options">
-						<div class="qsm-row">
-							<label class="qsm-page-setting-label"><?php esc_html_e( 'Page Name', 'quiz-master-next' ); ?></label>
-							<input type="text" id="pagekey" name="pagekey" value="">
+					<div id="page-options" class="qsm-ui-popup-fields">
+						<div class="qsm-ui-page-field">
+							<label class="qsm-ui-field-label" for="pagekey"><?php esc_html_e( 'Page Name', 'quiz-master-next' ); ?></label>
+							<input type="text" class="qsm-ui-input" id="pagekey" name="pagekey" value="">
 						</div>
-						<div class="qsm-row">
-							<label class="qsm-page-setting-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></label>
-							<input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" />
-							<span class="qsm-page-setting-span"><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span>
+						<div class="qsm-ui-page-field">
+							<span class="qsm-ui-field-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></span>
+							<label class="qsm-ui-check"><input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" /><span><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span></label>
 						</div>
-						<div class="qsm-row">
-							<label class="qsm-page-setting-label" for="question_limit"><?php esc_html_e( 'Limit questions', 'quiz-master-next' ); ?></label>
-							<input name="question_limit" id="question_limit" type="number" step="1" min="0" class="small-text" value="0" />
-							<span class="qsm-page-setting-span"><?php esc_html_e( 'Set 0 to show all', 'quiz-master-next' ); ?></span>
+						<div class="qsm-ui-page-field">
+							<label class="qsm-ui-field-label" for="question_limit"><?php esc_html_e( 'Limit questions', 'quiz-master-next' ); ?></label>
+							<input name="question_limit" id="question_limit" type="number" step="1" min="0" class="qsm-ui-input qsm-ui-page-limit" value="0" />
+							<span class="qsm-ui-help"><?php esc_html_e( 'Set 0 to show all', 'quiz-master-next' ); ?></span>
 						</div>
 						<?php if ( 'yes' == $display_advance ) { ?>
-						<div class="qsm-page-setting-container" style="background-color:<?php echo esc_attr( $background ); ?>">
+						<div class="qsm-page-setting-container<?php echo $disable_class ? ' is-locked' : ''; ?>">
 							<div class="qsm-page-setting-top ">
 								<div class="qsm-page-setting-left">
 									<span class="qsm-page-setting-label"><?php esc_html_e( 'Page Timer', 'quiz-master-next' ); ?></span>
@@ -1046,8 +1052,9 @@ function qsm_options_questions_tab_content() {
 					</div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="delete-page-popup-button" class="delete-page-button"><?php esc_html_e( 'Delete Page', 'quiz-master-next' ); ?></button>
-					<button id="save-page-popup-button" class="button button-primary"><?php esc_html_e( 'Save Page', 'quiz-master-next' ); ?></button>
+					<button type="button" id="delete-page-popup-button" class="delete-page-button qsm-ui-btn qsm-ui-btn-danger-ghost qsm-ui-foot-left"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Delete Page', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="save-page-popup-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Save Page', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -1084,45 +1091,43 @@ function qsm_options_questions_tab_content() {
 		</div>
 	</div>
 
-	<div class="qsm-popup qsm-popup-slide" id="modal-8" aria-hidden="false">
+	<?php // Validation alert (Fill In The Blank). qsm-admin.js writes the message into .modal-8-table. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-ui-popup" id="modal-8" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-8-title">
-				<header class="qsm-popup__header">
-					<h3 class="qsm-popup__title" id="modal-8-title"><?php esc_html_e( 'Alert', 'quiz-master-next' ); ?>
-					</h3>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-8-title">
+				<header class="qsm-popup__header qsm-ui-text">
+					<div class="qsm-ui-confirm-head">
+						<div class="qsm-ui-modal-icon is-warning"><?php echo QSM_Admin_UI::icon( 'alert' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
+						<h2 class="qsm-popup__title" id="modal-8-title"><?php esc_html_e( 'Alert', 'quiz-master-next' ); ?></h2>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
-				<hr />
-				<main class="qsm-popup__content" id="modal-8-content">
+				<main class="qsm-popup__content qsm-ui-text" id="modal-8-content">
 					<div class="modal-8-table">
 					</div>
 				</main>
-				<hr />
 				<footer class="qsm-popup__footer">
-					<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
-						aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="cancel-button" class="qsm-ui-btn" data-micromodal-close=""><?php esc_html_e( 'OK', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
 	</div>
 
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-9" aria-hidden="false">
+	<?php // Kit look on the same micromodal popup: ids and the handlers in qsm-admin.js are unchanged. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="modal-9" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-9-title">
-				<header class="qsm-popup__header">
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-9-title">
+				<header class="qsm-popup__header qsm-ui-text">
 					<h2 class="qsm-popup__title" id="modal-9-title"><?php esc_html_e( 'Add New Category', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-9-content">
-					<table class="modal-9-table">
-						<tr>
-							<td><?php esc_html_e( 'Category Name', 'quiz-master-next' ); ?>
-							</td>
-							<td><input type="text" id="new-category-name" /></td>
-						</tr>
-						<tr>
-							<td><?php esc_html_e( 'Parent Category', 'quiz-master-next' ); ?></td>
-							<td>
+				<main class="qsm-popup__content qsm-ui-text qsm-ui-popup-fields" id="modal-9-content">
+						<div>
+							<label class="qsm-ui-field-label" for="new-category-name"><?php esc_html_e( 'Category Name', 'quiz-master-next' ); ?></label>
+							<input type="text" class="qsm-ui-input" id="new-category-name" />
+						</div>
+						<div>
+							<label class="qsm-ui-field-label" for="qsm-parent-category"><?php esc_html_e( 'Parent Category', 'quiz-master-next' ); ?></label>
 								<?php
 								wp_dropdown_categories(
 									array(
@@ -1136,51 +1141,54 @@ function qsm_options_questions_tab_content() {
 										'show_option_none' => 'None',
 										'option_none_value' => -1,
 										'orderby'          => 'name',
+										'class'            => 'qsm-ui-select',
 									)
 								);
 								?>
-							</td>
-						<tr>
-					</table>
-					<div class="info"></div>
+						</div>
+					<div class="info" role="status"></div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="save-multi-category-button" class="qsm-popup__btn qsm-popup__btn-primary"></span><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="save-multi-category-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
 	</div>
 
-	<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-10" aria-hidden="false">
+	<?php // Kit look on the same micromodal popup: ids and the click handlers in qsm-admin.js are unchanged. ?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="modal-10" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-10-title">
-				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-10-title"><?php esc_html_e( 'Move Question To', 'quiz-master-next' ); ?></h2>
-					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-10-title">
+				<header class="qsm-popup__header qsm-ui-text">
+					<div>
+						<h2 class="qsm-popup__title" id="modal-10-title"><?php esc_html_e( 'Move Question To', 'quiz-master-next' ); ?></h2>
+						<p class="qsm-ui-small qsm-ui-move-subtitle"><?php esc_html_e( 'Choose a page and a position on that page.', 'quiz-master-next' ); ?></p>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close=""></a>
 				</header>
-				<main class="qsm-popup__content" id="modal-10-content">
+				<main class="qsm-popup__content qsm-ui-text" id="modal-10-content">
 					<form action='' method='post' id="move-question-form">
 						<input type="hidden" id="current_question_page_no" />
 						<input type="hidden" id="current_question_position" />
 						<input type="hidden" id="current_question_id" />
-						<table class="modal-10-table">
-							<tr>
-								<td class="custom-error-field" colspan="2"><span id="move-question-error"></span></td>
-							</tr>
-							<tr>
-								<td><strong><?php esc_html_e( 'Page No.', 'quiz-master-next' ); ?></strong></td>
-								<td><input type="number" class="page-no-text" id="changed_question_page_no" value="" placeholder="<?php esc_attr_e( 'Enter page no.', 'quiz-master-next' ); ?>"/></td>
-							</tr>
-							<tr>
-								<td><strong><?php esc_html_e( 'Question Position', 'quiz-master-next' ); ?></Strong></td>
-								<td><input type="number" class="question-position-text" id="changed_question_position" value="" placeholder="<?php esc_attr_e( 'Enter question position.', 'quiz-master-next' ); ?>"/></td>
-							</tr>
-						</table>
+						<div class="qsm-ui-move-fields">
+							<div>
+								<label class="qsm-ui-field-label" for="changed_question_page_no"><?php esc_html_e( 'Page', 'quiz-master-next' ); ?></label>
+								<input type="number" min="1" class="qsm-ui-input page-no-text" id="changed_question_page_no" value="" placeholder="<?php esc_attr_e( 'Enter page no.', 'quiz-master-next' ); ?>"/>
+							</div>
+							<div>
+								<label class="qsm-ui-field-label" for="changed_question_position"><?php esc_html_e( 'Position on the page', 'quiz-master-next' ); ?></label>
+								<input type="number" min="1" class="qsm-ui-input question-position-text" id="changed_question_position" value="" placeholder="<?php esc_attr_e( 'Enter question position.', 'quiz-master-next' ); ?>"/>
+							</div>
+						</div>
+						<p class="qsm-ui-help"><?php esc_html_e( 'Position 1 is the top of the page. A position past the last question puts it at the end.', 'quiz-master-next' ); ?></p>
+						<p class="qsm-ui-move-error" id="move-question-error" role="alert"></p>
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button id="cancel-question-button" class="cancel-move-question-button"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-					<button id="move-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+					<button type="button" id="cancel-question-button" class="qsm-ui-btn"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="move-question-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Move question', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
 		</div>
@@ -1898,12 +1906,11 @@ function qsm_options_questions_tab_template() {
 			<button type="button" class="qsm-ui-handle qsm-ui-question-handle" aria-label="<?php esc_attr_e( 'Drag to reorder. Alt + Up or Down arrow moves the question.', 'quiz-master-next' ); ?>"><?php echo $grip; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
 			<div class="qsm-ui-grow">
 				<strong class="question-content-text">{{data.question}}</strong>
-				<# if ( data.typeName || data.categories.length ) { #>
 				<div class="qsm-ui-q-meta">
+					<span class="qsm-ui-q-id"><?php esc_html_e( 'ID:', 'quiz-master-next' ); ?> {{data.id}}</span>
 					<# if ( data.typeName ) { #><span class="qsm-ui-type-tag">{{data.typeName}}</span><# } #>
 					<# _.each( data.categories, function( category ) { #><span class="qsm-ui-cat-chip">{{category}}</span><# } ); #>
 				</div>
-				<# } #>
 			</div>
 			<div class="qsm-ui-item-actions">
 				<button type="button" class="qsm-ui-btn qsm-ui-btn-icon edit-question-button" title="<?php esc_attr_e( 'Edit', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Edit question', 'quiz-master-next' ); ?>"><?php echo QSM_Admin_UI::icon( 'edit' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
@@ -1922,7 +1929,10 @@ function qsm_options_questions_tab_template() {
 			</div>
 			<div class="qsm-ui-grow">
 				<strong>{{data.question}}</strong>
-				<p class="qsm-ui-caption"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?> {{data.quiz_name}}<# if ( data.category != '' ) { #> · <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}}<# } #></p>
+				<div class="qsm-ui-q-meta">
+					<# if ( data.quiz_name ) { #><span class="qsm-ui-qb-quiz"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?> {{data.quiz_name}}</span><# } #>
+					<# _.each( data.categories, function( category ) { #><span class="qsm-ui-cat-chip">{{category}}</span><# } ); #>
+				</div>
 			</div>
 			<# if ( data.typeName ) { #><span class="qsm-ui-type-tag">{{data.typeName}}</span><# } #>
 			<div class="qsm-ui-row">
@@ -1943,8 +1953,8 @@ function qsm_options_questions_tab_template() {
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
 			<div class="remove-answer-icon">
-				<a href="javascript:void(0)" class="delete-answer-button"><span class="dashicons dashicons-minus"></span></a>
-				<a href="javascript:void(0)" class="qsm-add-answer-button"><span class="dashicons dashicons-plus"></span></a>
+				<a href="javascript:void(0)" class="delete-answer-button" role="button" title="<?php esc_attr_e( 'Remove answer', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Remove answer', 'quiz-master-next' ); ?>"><span class="dashicons dashicons-minus" aria-hidden="true"></span></a>
+				<a href="javascript:void(0)" class="qsm-add-answer-button" role="button" title="<?php esc_attr_e( 'Add answer below', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Add answer below', 'quiz-master-next' ); ?>"><span class="dashicons dashicons-plus" aria-hidden="true"></span></a>
 			</div>
 			<?php do_action( 'qsm_admin_single_answer_option_fields_before' ); ?>
 			<div class="answer-text-div qsm-editor-wrap">
