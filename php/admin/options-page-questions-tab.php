@@ -422,7 +422,7 @@ function qsm_options_questions_tab_content() {
 			<button type="button" class="qsm-ui-btn qsm-ui-btn-icon" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-qsm-ui-close><?php echo QSM_Admin_UI::icon( 'x' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
 		</div>
 		<div class="qsm-ui-modal-foot qsm-ui-text">
-			<button type="button" class="qsm-ui-btn" data-qsm-ui-close autofocus><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+			<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-qsm-ui-close autofocus><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 			<button type="button" class="qsm-ui-btn qsm-ui-btn-danger qsm-ui-confirm-ok"></button>
 		</div>
 	</dialog>
@@ -1003,7 +1003,7 @@ function qsm_options_questions_tab_content() {
 						</div>
 						<div class="qsm-ui-page-field">
 							<span class="qsm-ui-field-label"><?php esc_html_e( 'Button Control', 'quiz-master-next' ); ?></span>
-							<label class="qsm-ui-check"><input name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" /><span><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span></label>
+							<label class="qsm-ui-switch-line"><input class="qsm-ui-switch" name="hide_prevbtn" id="hide_prevbtn" type="checkbox" value="" /><span><?php esc_html_e( 'Hide Previous button', 'quiz-master-next' ); ?></span></label>
 						</div>
 						<div class="qsm-ui-page-field">
 							<label class="qsm-ui-field-label" for="question_limit"><?php esc_html_e( 'Limit questions', 'quiz-master-next' ); ?></label>

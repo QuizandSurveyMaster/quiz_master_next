@@ -809,9 +809,13 @@
  * Same micromodal #modal-2; qsm-admin-question.css styles it by id, so some rules repeat #modal-2.
  */
 #modal-2.qsm-ui-popup .qsm-popup__container { width: min(1080px, calc(100vw - 32px)); min-width: 0; max-height: 90vh; display: flex; flex-direction: column; }
-#modal-2.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
-#modal-2.qsm-ui-popup .qsm-popup__content { display: flex; flex-direction: column; min-height: 0; padding: 18px 22px 12px; }
-#modal-2.qsm-ui-popup .qsm-ui-qb-head { display: block; padding: 0; }
+#modal-2.qsm-ui-popup .qsm-popup__header { flex: none; align-items: center; }
+#modal-2.qsm-ui-popup .qsm-popup__header .qsm-popup__title { line-height: 36px; }
+/* On a short window the body scrolls as a whole, so the list never spills over the footer. */
+#modal-2.qsm-ui-popup .qsm-popup__content { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; padding: 18px 22px 12px; overflow-y: auto; }
+#modal-2.qsm-ui-popup .qsm-popup__footer { flex: none; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-head { display: block; flex: none; padding: 0; }
+#modal-2.qsm-ui-popup .qsm-ui-qb-meta { flex: none; }
 #modal-2.qsm-ui-popup .qsm-ui-qb-toolbar .qsm-ui-input-icon { margin: 0; }
 /* qsm-admin-question.css makes .qsm-select-all-label a block, which stacks the box over its text. */
 #modal-2.qsm-ui-popup .qsm-ui-qb-meta .qsm-ui-check { display: inline-flex; position: static; top: auto; min-width: 0; margin: 0; align-items: center; gap: 8px; color: var(--qsm-ink); }
