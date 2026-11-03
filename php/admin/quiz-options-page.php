@@ -149,7 +149,7 @@ function qsm_generate_quiz_options() {
 							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'View Quiz', 'quiz-master-next' ),
 								array(
-									'icon'  => 'eye',
+									'icon'  => 'ext',
 									'href'  => $post_permalink,
 									'class' => 'qsm-btn-quiz-edit',
 									'attrs' => array(
@@ -230,7 +230,7 @@ function qsm_generate_quiz_options() {
 			<!-- Shows warnings, alerts then tab content -->
 			<h1 style="display: none;"><?php echo wp_kses_post( $quiz_name ); ?></h1><!-- Do Not Remove this H1. This is required to display notices. -->
 			<?php $mlwQuizMasterNext->alertManager->showWarnings(); ?>
-			<div class="qsm-alerts">
+			<div class="qsm-alerts qsm-ui-quiz-alerts">
 				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 			</div>
 			<?php $user_id = get_current_user_id();

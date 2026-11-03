@@ -567,7 +567,7 @@
 .qsm-ui .qsm-ui-question-card > header .qsm-ui-chev { transition: transform .18s; }
 .qsm-ui .qsm-ui-question-card[data-collapsed] > header .qsm-ui-chev { transform: rotate(-90deg); }
 /* ---- Quiz edit frame: header (L-01) + tab bar (L-02) around every quiz tab ---- */
-.qsm-ui.qsm-ui-quiz-frame-header { padding: 18px 0 4px; }
+.qsm-ui.qsm-ui-quiz-frame-header { padding: 18px 0 0; }
 .qsm-ui .qsm-ui-quiz-frame-header .qsm-ui-page-header { margin: 0; }
 .qsm-ui .qsm-ui-quiz-frame-heading { min-width: 0; flex: 1 1 320px; }
 .qsm-ui .qsm-ui-quiz-title { color: var(--qsm-ink); overflow-wrap: anywhere; }
@@ -589,7 +589,9 @@
 /* Edit Name popup (micromodal #modal-3) */
 .qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-ui-input { width: 100%; }
 .qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-popup__header { justify-content: space-between; }
-.qsm-ui.qsm-ui-quiz-tabs-nav { margin: 16px 0 20px; }
+.qsm-ui.qsm-ui-quiz-tabs-nav { margin: 4px 0 20px; }
+/* Core's alert box sits between the header and the tab bar; notices inside keep their own margins. */
+.qsm-ui-quiz-alerts.qsm-alerts { margin-top: 0; }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab:visited { color: var(--qsm-muted); }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
