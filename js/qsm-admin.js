@@ -2953,10 +2953,6 @@ var QSM_Quiz_Broadcast_Channel;
                 openQuestionBank: function (pageID) {
                     QSMQuestion.loadQuestionBank();
                     $('#add-question-bank-page').val(pageID);
-                    const i18n = qsmQuestionSettings.board_i18n || {};
-                    if (i18n.bankTo) {
-                        $('.qsm-ui-qb-subtitle').text(i18n.bankTo.replace('%d', parseInt(pageID, 10) + 1));
-                    }
                     MicroModal.show('modal-2');
                 },
                 // Kit bank popup (O-01): footer buttons work only with a selection, "Select all" follows the list.
@@ -4702,15 +4698,11 @@ var QSM_Quiz_Broadcast_Channel;
                     QSMQuestion.loadQuestionBank();
                 });
 
-                //Show category related question
-                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function (event) {
-                    event.preventDefault();
-                    QSMQuestion.loadQuestionBank('change');
-                });
-
                 //Show searched question
+                let qbSearchTimer;
                 $(document).on('submit', '#question-bank-search-form', function (event) {
                     event.preventDefault();
+                    clearTimeout(qbSearchTimer);
                     QSMQuestion.loadQuestionBank('change');
                 });
 
@@ -5239,13 +5231,23 @@ var QSM_Quiz_Broadcast_Channel;
                         });
                     }
                 });
+                // The selects only take effect on Apply filters, which also closes the panel.
+                $(document).on('click', '.qsm-ui-qb-apply', function () {
+                    QSMQuestion.loadQuestionBank('change');
+                    if (!$('#qsm-question-bank-search').prop('hidden')) {
+                        $('.qsm-ui-qb-toolbar .qsm-ui-qb-filters-toggle').trigger('click');
+                    }
+                });
                 $(document).on('click', '.qsm-ui-qb-clear', function () {
                     $('#question-bank-cat, #question-bank-quiz, #question-bank-type').val('');
-                    QSMQuestion.syncBankFilterCount();
                     QSMQuestion.loadQuestionBank('change');
                 });
-                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function () {
-                    QSMQuestion.syncBankFilterCount();
+                // Search as you type (Enter still submits the form); clearing the box brings the full list back.
+                $(document).on('input', '#question-bank-search-input', function () {
+                    clearTimeout(qbSearchTimer);
+                    qbSearchTimer = setTimeout(function () {
+                        QSMQuestion.loadQuestionBank('change');
+                    }, 400);
                 });
 
                 $('.save-page-button').on('click', function (event) {

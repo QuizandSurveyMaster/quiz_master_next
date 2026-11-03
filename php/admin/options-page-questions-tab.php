@@ -149,8 +149,6 @@ function qsm_options_questions_tab_content() {
 			'moved'       => __( 'Moved to page %d', 'quiz-master-next' ),
 			/* translators: %d: number of moved questions */
 			'bulkMoved'   => __( '%d questions moved', 'quiz-master-next' ),
-			/* translators: %d: page number */
-			'bankTo'      => __( 'Add questions to page %d.', 'quiz-master-next' ),
 			/* translators: %d: number of questions listed */
 			'shown'       => __( 'Showing %d', 'quiz-master-next' ),
 			// Destructive confirms (O-02).
@@ -435,10 +433,7 @@ function qsm_options_questions_tab_content() {
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
 				<header class="qsm-popup__header qsm-question-bank-header qsm-ui-text">
-					<div>
-						<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
-						<p class="qsm-ui-small qsm-ui-qb-subtitle"></p>
-					</div>
+					<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
 					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content qsm-ui-text" id="modal-2-content">
@@ -450,9 +445,9 @@ function qsm_options_questions_tab_content() {
 								<?php echo QSM_Admin_UI::icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
 								<input type="search" class="qsm-ui-input" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_attr_e( 'Search questions', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Search questions', 'quiz-master-next' ); ?>">
 							</form>
-							<button type="button" class="qsm-ui-btn qsm-ui-qb-filters-toggle" aria-expanded="false" aria-controls="qsm-question-bank-search"><?php echo QSM_Admin_UI::icon( 'filter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Filters', 'quiz-master-next' ); ?> <span class="qsm-ui-filter-count" hidden>0</span></button>
+							<button type="button" class="qsm-ui-btn qsm-ui-qb-filters-toggle qsm-ui-qb-filter-btn" aria-expanded="false" aria-controls="qsm-question-bank-search" aria-label="<?php esc_attr_e( 'Filters', 'quiz-master-next' ); ?>" title="<?php esc_attr_e( 'Filters', 'quiz-master-next' ); ?>"><?php echo QSM_Admin_UI::icon( 'filter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><span class="qsm-ui-filter-count" hidden>0</span></button>
 						</div>
-						<?php // Same three selects; each still reloads the list on change. ?>
+						<?php // Same three selects; the list reloads when Apply filters is clicked. ?>
 						<div class="qsm-question-bank-search qsm-ui-qb-filters" id="qsm-question-bank-search" hidden>
 							<div>
 								<label class="qsm-ui-field-label" for="question-bank-cat"><?php esc_html_e( 'Category', 'quiz-master-next' ); ?></label>
@@ -488,7 +483,7 @@ function qsm_options_questions_tab_content() {
 							</div>
 							<div class="qsm-ui-qb-filters-foot">
 								<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-quiet qsm-ui-qb-clear"><?php esc_html_e( 'Clear filters', 'quiz-master-next' ); ?></button>
-								<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-qb-filters-toggle"><?php esc_html_e( 'Done', 'quiz-master-next' ); ?></button>
+								<button type="button" class="qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-primary qsm-ui-qb-apply"><?php esc_html_e( 'Apply filters', 'quiz-master-next' ); ?></button>
 							</div>
 						</div>
 						<div class="qsm-question-bank-select qsm-ui-qb-meta">
@@ -1930,7 +1925,7 @@ function qsm_options_questions_tab_template() {
 			<div class="qsm-ui-grow">
 				<strong>{{data.question}}</strong>
 				<div class="qsm-ui-q-meta">
-					<# if ( data.quiz_name ) { #><span class="qsm-ui-qb-quiz"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?> {{data.quiz_name}}</span><# } #>
+					<# if ( data.quiz_name ) { #><span class="qsm-ui-qb-quiz"><?php echo QSM_Admin_UI::icon( 'quiz' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><span class="screen-reader-text"><?php esc_html_e( 'Quiz:', 'quiz-master-next' ); ?></span>{{data.quiz_name}}</span><# } #>
 					<# _.each( data.categories, function( category ) { #><span class="qsm-ui-cat-chip">{{category}}</span><# } ); #>
 				</div>
 			</div>
