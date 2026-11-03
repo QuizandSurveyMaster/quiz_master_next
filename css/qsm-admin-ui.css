@@ -478,7 +478,7 @@
 .qsm-ui .qsm-ui-page-body { padding: 12px; min-height: 64px; }
 .qsm-ui .qsm-ui-page-body .qsm-ui-sortable:empty::before { content: "Drop questions here"; display: block; padding: 18px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); color: var(--qsm-muted); text-align: center; font-size: 13px; }
 .qsm-ui .qsm-ui-q-num { display: grid; place-items: center; min-width: 28px; height: 28px; border-radius: 7px; background: var(--qsm-blue-soft); color: var(--qsm-blue); font-weight: 700; font-size: 12px; }
-.qsm-ui .qsm-ui-add-row { display: flex; gap: 8px; margin-top: 10px; }
+.qsm-ui .qsm-ui-add-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .qsm-ui .qsm-ui-add-dashed { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); background: none; color: var(--qsm-blue); font: 600 13px var(--qsm-font); cursor: pointer; }
 .qsm-ui .qsm-ui-add-dashed:hover { border-color: var(--qsm-blue); background: var(--qsm-blue-soft); }
 
@@ -806,7 +806,7 @@
 /* ---------- Question bank popup on the Questions tab (O-01) ----------
  * Same micromodal #modal-2; qsm-admin-question.css styles it by id, so some rules repeat #modal-2.
  */
-#modal-2.qsm-ui-popup .qsm-popup__container { min-width: 0; max-height: 90vh; display: flex; flex-direction: column; }
+#modal-2.qsm-ui-popup .qsm-popup__container { width: min(1080px, calc(100vw - 32px)); min-width: 0; max-height: 90vh; display: flex; flex-direction: column; }
 #modal-2.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
 #modal-2.qsm-ui-popup .qsm-popup__content { display: flex; flex-direction: column; min-height: 0; padding: 18px 22px 12px; }
 #modal-2.qsm-ui-popup .qsm-ui-qb-head { display: block; padding: 0; }

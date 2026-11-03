@@ -1078,7 +1078,7 @@ function qsm_options_questions_tab_content() {
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button type="button" class="qsm-ui-btn qsm-ui-confirm-cancel" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-confirm-cancel qsm-ui-foot-left" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" id="unlink-question-button" class="qsm-ui-btn qsm-unlink-question-button-btn"><?php echo QSM_Admin_UI::icon( 'link', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
 					<button type="button" id="delete-question-button" class="qsm-ui-btn qsm-ui-btn-danger qsm-delete-question-button-btn"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 				</footer>
