@@ -548,18 +548,18 @@ function qsm_generate_question_option( $key, $single_option ) {
 	}
 	$tooltip = '';
 	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
-		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon qsm-ui-qe-opt-tip">';
 		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
 		$tooltip .= '</span>';
 	}
 	?>
-	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-toggle-box <?php echo esc_attr( $show_class ); ?>">
-		<label class="qsm-toggle-box-handle">
+	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-toggle-box qsm-ui-qe-opt <?php echo esc_attr( $show_class ); ?>">
+		<label class="qsm-toggle-box-handle qsm-ui-qe-opt-head">
 			<?php echo isset( $single_option['heading'] ) ? wp_kses_post( $single_option['heading'] ) : ''; ?>
 			<?php echo wp_kses_post( $tooltip ); ?>
 			<span class="toggle-indicator" aria-hidden="true"></span>
 		</label>
-		<div class="qsm-toggle-box-content qsm-editor-wrap">
+		<div class="qsm-toggle-box-content qsm-editor-wrap qsm-ui-qe-opt-body">
 			<?php
 			switch ( $type ) {
 				case 'text':

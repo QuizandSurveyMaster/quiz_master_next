@@ -665,7 +665,7 @@
 .qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-grow strong { color: var(--qsm-ink); font-size: 14px; }
 /* Row actions show on hover or keyboard focus, as on the old board. They stay on for the open row and on touch screens. */
 .qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-item-actions { opacity: 0; transition: opacity .12s; }
-.qsm-ui .qsm-ui-board .qsm-ui-q-row:is(:hover, :focus-within, .opened) .qsm-ui-item-actions { opacity: 1; }
+.qsm-ui .qsm-ui-board .qsm-ui-q-row:hover .qsm-ui-item-actions, .qsm-ui .qsm-ui-board .qsm-ui-q-row:focus-within .qsm-ui-item-actions, .qsm-ui .qsm-ui-board .qsm-ui-q-row.opened .qsm-ui-item-actions { opacity: 1; }
 @media (hover: none) and (pointer: coarse) {
 	.qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-item-actions { opacity: 1; }
 }
@@ -726,61 +726,63 @@
 /* Add-on options in the Advanced options fold (qsm_generate_question_option(): Grading Mode, Poll Type, ...).
    Their markup stays as it is, since add-ons read it, but they show as plain fields like Core's: the heading is
    the label, always open, instead of an accordion inside the fold. */
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box { display: block; margin: 0; border: 0; background: none; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-handle { display: flex; align-items: center; gap: 4px; margin: 0 0 6px; padding: 0; background: none; color: var(--qsm-ink-2); font: 600 13px/1.4 var(--qsm-font); cursor: default; pointer-events: none; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-handle .qsm-tooltips-icon { pointer-events: auto; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-handle .toggle-indicator { display: none; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-content { display: grid !important; justify-items: start; gap: 8px; padding: 0; border: 0; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-advanced-helper-label { display: block !important; position: static; margin: -2px 0 6px; padding: 0; color: var(--qsm-muted); font-size: 12px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt { display: block; margin: 0; border: 0; background: none; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-head { display: flex; align-items: center; gap: 4px; margin: 0 0 6px; padding: 0; background: none; color: var(--qsm-ink-2); font: 600 13px/1.4 var(--qsm-font); cursor: default; pointer-events: none; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-head .qsm-ui-qe-opt-tip { pointer-events: auto; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-head .toggle-indicator { display: none; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-body { display: grid !important; justify-items: start; gap: 8px; padding: 0; border: 0; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-helper { display: block !important; position: static; margin: -2px 0 6px; padding: 0; color: var(--qsm-muted); font-size: 12px; }
 /* A label without a control in it is a caption ("Select Grading Mode"): on its own line above the control. */
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content label { display: block; min-width: 0; margin: 0; color: var(--qsm-muted); font-size: 12px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label { display: block; min-width: 0; margin: 0; color: var(--qsm-muted); font-size: 12px; }
 /* A label around a checkbox or radio is one choice row. */
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content label:has(input[type="checkbox"], input[type="radio"]) { display: inline-flex; align-items: center; gap: 8px; color: var(--qsm-ink); font-size: 13px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content br { display: none; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content label:has(select, textarea, input[type="text"], input[type="number"]) { width: 100%; max-width: 420px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content :is(select, textarea, input[type="text"], input[type="number"], input[type="date"], input[type="url"], input[type="email"]) { display: block; box-sizing: border-box; width: 100%; max-width: 420px; min-width: 0; height: var(--qsm-control-h); margin: 0; padding: 0 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-color: #fff; color: var(--qsm-ink); font: 14px/1.4 var(--qsm-font); box-shadow: none; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content textarea { height: auto; min-height: 96px; padding: 10px 12px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content label :is(input[type="text"], input[type="number"], select) { margin-top: 6px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(input[type="checkbox"]), .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(input[type="radio"]) { display: inline-flex; align-items: center; gap: 8px; color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body br { display: none; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(select), .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(textarea), .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(input[type="text"]), .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label:has(input[type="number"]) { width: 100%; max-width: 420px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body select, .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body textarea, .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input[type="text"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input[type="number"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input[type="date"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input[type="url"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input[type="email"] { display: block; box-sizing: border-box; width: 100%; max-width: 420px; min-width: 0; height: var(--qsm-control-h); margin: 0; padding: 0 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-color: #fff; color: var(--qsm-ink); font: 14px/1.4 var(--qsm-font); box-shadow: none; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body textarea { height: auto; min-height: 96px; padding: 10px 12px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label input[type="text"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label input[type="number"], .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body label select { margin-top: 6px; }
 /* Groups of sub-fields an add-on prints in the content (QSM Ultimate's chart and custom label boxes): as wide as
    the other controls, caption above each control, a gap between groups. Add-ons show/hide them with inline styles. */
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-content > div:not([class*="wp-editor"]) { display: grid; justify-self: stretch; gap: 6px; position: static; width: 100%; max-width: 420px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-content > div:not([class*="wp-editor"]) > div { display: grid; gap: 6px; margin-top: 6px; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content select { padding-right: 36px; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23657188' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 13px center; cursor: pointer; }
-.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box .qsm-toggle-box-content :is(select, textarea, input):focus { border-color: #809aff; outline: 3px solid var(--qsm-blue-ring); }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-body > div:not([class*="wp-editor"]) { display: grid; justify-self: stretch; gap: 6px; position: static; width: 100%; max-width: 420px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-body > div:not([class*="wp-editor"]) > div { display: grid; gap: 6px; margin-top: 6px; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body select { padding-right: 36px; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23657188' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 13px center; cursor: pointer; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body select:focus, .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body textarea:focus, .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt .qsm-ui-qe-opt-body input:focus { border-color: #809aff; outline: 3px solid var(--qsm-blue-ring); }
 /* Two columns in the fold: label on the left, control on the right, so a wide main column isn't half empty.
    Baseline alignment lines the label up with the first line of its control. Below 560px it stacks again.
    The editor (Correct Answer Info) stays full width. */
 .qsm-ui .qsm-ui-qe-adv { container-type: inline-size; }
 @container (min-width: 560px) {
-	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box { display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); column-gap: 24px; align-items: baseline; }
+	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt { display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); column-gap: 24px; align-items: baseline; }
 	/* jQuery .show() on a row while the fold is closed writes an inline display: block (QSM Ultimate does this for
 	   "Input custom answer" when the editor opens). Keep the grid for it; an inline display: none still hides, and
 	   a folded row only gets it while the fold is open. */
-	.qsm-ui .qsm-ui-qe-adv > :is(.qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-toggle-box):not(.qsm-ui-qe-more)[style*="display: block"],
-	.qsm-ui .qsm-ui-qe-adv.is-open > :is(.qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea), .qsm-toggle-box)[style*="display: block"] { display: grid !important; }
+	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea):not(.qsm-ui-qe-more)[style*="display: block"],
+	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt:not(.qsm-ui-qe-more)[style*="display: block"],
+	.qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-field:not(.qsm-ui-qe-field-textarea)[style*="display: block"],
+	.qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-opt[style*="display: block"] { display: grid !important; }
 	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-field > .qsm-ui-label-line { margin: 0; }
-	.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > .qsm-toggle-box-handle { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
-	.qsm-ui .qsm-ui-qe-adv > .qsm-toggle-box > :not(.qsm-toggle-box-handle) { grid-column: 2; }
+	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > .qsm-ui-qe-opt-head { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
+	.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-opt > :not(.qsm-ui-qe-opt-head) { grid-column: 2; }
 }
 /* Answer row buttons (tmpl-single-answer, also Advance Question's rows): quiet icon buttons instead of the red and blue
    circles, colored on hover. Same links and classes, so the click handlers and add-ons work as today; the template is
    shared with the Question Bank page, which keeps the old look. Remove shows the trash glyph. */
-.qsm-ui #answers .answers-single > .remove-answer-icon { width: auto; min-width: 0; padding: 0; gap: 4px; align-self: center; margin-inline-end: 10px; }
-.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button) { display: inline-grid; place-items: center; width: 32px; max-width: none; height: 32px; padding: 0; border-radius: var(--qsm-radius); background: transparent; color: var(--qsm-muted); text-decoration: none; box-shadow: none; transition: background-color .15s, color .15s; }
-.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button) .dashicons { width: 18px; height: 18px; font-size: 18px; line-height: 18px; }
-.qsm-ui #answers .delete-answer-button :is(.dashicons-minus, .dashicons-remove)::before { content: "\f182"; }
-.qsm-ui #answers .delete-answer-button:hover { background: var(--qsm-red-bg); color: var(--qsm-red); }
-.qsm-ui #answers .qsm-add-answer-button:hover { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
-.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button):focus { outline: none; box-shadow: none; }
-.qsm-ui #answers :is(.delete-answer-button, .qsm-add-answer-button):focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
+.qsm-ui #answers .answers-single > .qsm-ui-answer-actions { width: auto; min-width: 0; padding: 0; gap: 4px; align-self: center; margin-inline-end: 10px; }
+.qsm-ui #answers .qsm-ui-answer-btn { display: inline-grid; place-items: center; width: 32px; max-width: none; height: 32px; padding: 0; border-radius: var(--qsm-radius); background: transparent; color: var(--qsm-muted); text-decoration: none; box-shadow: none; transition: background-color .15s, color .15s; }
+.qsm-ui #answers .qsm-ui-answer-btn .dashicons { width: 18px; height: 18px; font-size: 18px; line-height: 18px; }
+.qsm-ui #answers .qsm-ui-answer-del .dashicons::before { content: "\f182"; }
+.qsm-ui #answers .qsm-ui-answer-del:hover { background: var(--qsm-red-bg); color: var(--qsm-red); }
+.qsm-ui #answers .qsm-ui-answer-add:hover { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui #answers .qsm-ui-answer-btn:focus { outline: none; box-shadow: none; }
+.qsm-ui #answers .qsm-ui-answer-btn:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
 /* "Add Answer!" (#new-answer-button, shown when a question has no answers): a dashed add button like "Add page",
    lined up with the answer rows. CSS only, because Advance Question adds its own buttons inside .new-answer-button. */
-.qsm-ui .questionElements .new-answer-button { margin-inline: 0; }
-.qsm-ui .new-answer-button a#new-answer-button { display: inline-flex; align-items: center; gap: 6px; height: auto; min-height: 0; padding: 8px 14px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); background: none; box-shadow: none; color: var(--qsm-blue); font: 600 13px/1.4 var(--qsm-font); text-decoration: none; }
-.qsm-ui .new-answer-button a#new-answer-button:hover { border-color: var(--qsm-blue); background: var(--qsm-blue-soft); }
-.qsm-ui .new-answer-button a#new-answer-button:focus { box-shadow: none; outline: none; }
-.qsm-ui .new-answer-button a#new-answer-button:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
-.qsm-ui .new-answer-button a#new-answer-button .dashicons.dashicons-plus { width: 16px; height: 16px; font-size: 16px; line-height: 16px; }
+.qsm-ui .questionElements .qsm-ui-new-answer-wrap { margin-inline: 0; }
+.qsm-ui a#new-answer-button.qsm-ui-new-answer { display: inline-flex; align-items: center; gap: 6px; height: auto; min-height: 0; padding: 8px 14px; border: 1.5px dashed var(--qsm-input); border-radius: var(--qsm-radius); background: none; box-shadow: none; color: var(--qsm-blue); font: 600 13px/1.4 var(--qsm-font); text-decoration: none; }
+.qsm-ui a#new-answer-button.qsm-ui-new-answer:hover { border-color: var(--qsm-blue); background: var(--qsm-blue-soft); }
+.qsm-ui a#new-answer-button.qsm-ui-new-answer:focus { box-shadow: none; outline: none; }
+.qsm-ui a#new-answer-button.qsm-ui-new-answer:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 0; }
+.qsm-ui a#new-answer-button.qsm-ui-new-answer .dashicons.dashicons-plus { width: 16px; height: 16px; font-size: 16px; line-height: 16px; }
 /* Side column */
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side { float: none; width: auto; min-width: 0; margin: 0; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups { display: grid; }
@@ -828,8 +830,8 @@
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-grow strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-grow .qsm-ui-caption { margin: 3px 0 0; }
 .qsm-ui .qsm-ui-qb-row > .qsm-ui-row { flex: none; gap: 6px; }
-.qsm-ui .qsm-ui-qb-quiz { display: inline-flex; align-items: center; gap: 5px; max-width: 260px; color: var(--qsm-muted); font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.qsm-ui .qsm-ui-qb-quiz .qsm-ui-icon { flex: none; width: 14px; height: 14px; color: #8a94a6; }
+.qsm-ui .qsm-ui-qb-quiz { display: inline-flex; align-items: center; gap: 4px; max-width: 260px; padding: 1px 8px 1px 6px; border: 1px solid #d4ddff; border-radius: var(--qsm-radius-sm); background: var(--qsm-blue-soft); color: var(--qsm-blue); font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qsm-ui .qsm-ui-qb-quiz .qsm-ui-icon { flex: none; width: 13px; height: 13px; }
 .qsm-ui .qsm-ui-btn.disable_import, .qsm-ui .qsm-ui-btn.link-question.disabled { opacity: .5; pointer-events: none; }
 .qsm-ui .qsm-ui-btn.qb-load-more-question { margin: 6px auto 0; }
 
@@ -889,11 +891,11 @@
 #modal-8.qsm-ui-popup #modal-8-title { color: var(--qsm-ink); opacity: 1; }
 #modal-8.qsm-ui-popup footer { margin: 0; }
 /* Top bar: search and Default Question Settings */
-.qsm-ui .question-controls .search-box { display: flex; align-items: center; gap: 10px; }
+.qsm-ui .qsm-ui-q-controls .search-box { display: flex; align-items: center; gap: 10px; }
 .qsm-ui .question-controls .qsm-ui-q-search { width: 260px; }
 .qsm-ui .question-controls .qsm-ui-q-search .qsm-ui-input { width: 100%; min-height: var(--qsm-control-h-sm); height: var(--qsm-control-h-sm); margin: 0; }
-.qsm-ui .question-controls .qsm-default-question-settings-button, .qsm-ui .question-controls .qsm-default-question-settings-button:is(:hover, :focus, :active) { min-height: var(--qsm-control-h-sm); gap: 6px; color: var(--qsm-ink); }
-.qsm-ui .question-controls .qsm-default-question-settings-button:hover { background: var(--qsm-surface-2); }
+.qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:hover, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:focus, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:active { min-height: var(--qsm-control-h-sm); gap: 6px; color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:hover { background: var(--qsm-surface-2); }
 @media (max-width: 782px) {
 	.qsm-ui .question-controls .qsm-ui-q-search { width: 100%; }
 }

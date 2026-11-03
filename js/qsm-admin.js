@@ -3488,17 +3488,21 @@ var QSM_Quiz_Broadcast_Channel;
                     QSMQuestion.updateAdvancedCount($adv);
                 },
                 // Same speed as the inline editor's slideDown/slideUp; none when the user asked for reduced motion.
-                slideSpeed: function () {
-                    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 'slow';
+                // Duration follows the distance: a fixed 'slow' (600ms) is fine for the tall editor but drags on short panels.
+                slideSpeed: function (px) {
+                    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        return 0;
+                    }
+                    return Math.round(Math.min(400, Math.max(180, 150 + (px || 0) * 0.5)));
                 },
                 setAdvancedOpen: function ($adv, open, animate) {
                     $adv.children('.qsm-ui-qe-more-toggle').attr('aria-expanded', open ? 'true' : 'false');
-                    const speed = animate ? QSMQuestion.slideSpeed() : 0;
                     // The folded rows stay where they are (add-ons read them), so slide the fold's own height from
                     // where it is now (mid-slide after a quick second click) to its height in the new state.
                     const from = $adv.outerHeight();
                     $adv.stop(true).css({ height: '', overflow: '' }).toggleClass('is-open', open);
                     const to = $adv.outerHeight();
+                    const speed = animate ? QSMQuestion.slideSpeed(Math.abs(to - from)) : 0;
                     if (!speed || from === to) {
                         return;
                     }
@@ -5222,11 +5226,13 @@ var QSM_Quiz_Broadcast_Channel;
                     // Slide like the inline editor. The panel has no inline style of its own: drop what jQuery leaves.
                     $panel.stop(true).removeClass('is-closing').removeAttr('style');
                     if (open) {
-                        $panel.prop('hidden', false).hide().slideDown(QSMQuestion.slideSpeed(), function () {
+                        $panel.prop('hidden', false);
+                        const height = $panel.outerHeight();
+                        $panel.hide().slideDown(QSMQuestion.slideSpeed(height), function () {
                             $panel.removeAttr('style');
                         });
                     } else {
-                        $panel.addClass('is-closing').slideUp(QSMQuestion.slideSpeed(), function () {
+                        $panel.addClass('is-closing').slideUp(QSMQuestion.slideSpeed($panel.outerHeight()), function () {
                             $panel.removeClass('is-closing').prop('hidden', true).removeAttr('style');
                         });
                     }
