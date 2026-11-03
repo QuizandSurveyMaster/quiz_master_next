@@ -578,12 +578,17 @@
 /* Help menu: Core's toggle script still adds .opened; the kit only restyles it. */
 .qsm-ui .qsm-ui-help-menu { position: relative; display: inline-flex; }
 .qsm-ui .qsm-ui-help-toggle .qsm-ui-icon { pointer-events: none; }
-.qsm-ui .qsm-ui-help-list.qsm-help-tab-dropdown-list { display: none; top: calc(100% + 6px); right: 0; min-width: 280px; padding: 6px 0; overflow: hidden; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius-md); box-shadow: var(--qsm-shadow-pop); transform: none; transition: none; z-index: 100; }
+.qsm-ui .qsm-ui-help-list.qsm-help-tab-dropdown-list { display: none; top: calc(100% + 6px); right: 0; min-width: 300px; padding: 0 0 6px; overflow: hidden; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius-md); box-shadow: var(--qsm-shadow-pop); transform: none; transition: none; z-index: 100; }
 .qsm-ui .qsm-ui-help-list.qsm-help-tab-dropdown-list.opened { display: block; }
-.qsm-ui .qsm-ui-help-title { margin: 0; padding: 8px 14px 6px; background: none; color: var(--qsm-muted); font: 700 11px/1.4 var(--qsm-font); letter-spacing: .055em; text-transform: uppercase; }
-.qsm-ui .qsm-ui-help-item { display: flex; align-items: center; gap: 8px; padding: 9px 14px; color: var(--qsm-ink-2); font: 500 14px/1.4 var(--qsm-font); text-decoration: none; }
+.qsm-ui .qsm-ui-help-title { margin: 0 0 6px; padding: 14px 16px 12px; border-bottom: 1px solid var(--qsm-line-soft); background: none; color: var(--qsm-muted); font: 700 11px/1.4 var(--qsm-font); letter-spacing: .055em; text-transform: uppercase; }
+.qsm-ui .qsm-ui-help-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--qsm-ink-2); font: 500 14px/1.4 var(--qsm-font); text-decoration: none; }
 .qsm-ui .qsm-ui-help-item:hover, .qsm-ui .qsm-ui-help-item:focus { background: var(--qsm-surface-2); color: var(--qsm-blue); box-shadow: none; }
 .qsm-ui .qsm-ui-help-item .dashicons { color: var(--qsm-muted); }
+.qsm-ui .qsm-ui-help-arrow { margin-left: auto; color: var(--qsm-muted); transform: rotate(-90deg); }
+.qsm-ui .qsm-ui-help-item:hover .qsm-ui-help-arrow, .qsm-ui .qsm-ui-help-item:focus .qsm-ui-help-arrow { color: var(--qsm-blue); }
+/* Edit Name popup (micromodal #modal-3) */
+.qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-ui-input { width: 100%; }
+.qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-popup__header { justify-content: space-between; }
 .qsm-ui.qsm-ui-quiz-tabs-nav { margin: 16px 0 20px; }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab:visited { color: var(--qsm-muted); }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
