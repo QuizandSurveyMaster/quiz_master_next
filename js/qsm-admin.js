@@ -1606,71 +1606,8 @@ function qsm_is_substring_in_array( text, array ) {
     }
 }(jQuery));
 
-//QSM - Admin Notices for enabling multiple categories in QSM 7.3+
-
-(function ($) {
-    $(document).on('click', '.enable-multiple-category', function (e) {
-        e.preventDefault();
-        const nonce = $(this).data('qsm-mc-nonce');
-        if (!nonce) {
-            return;
-        }
-        $('.category-action').html('<span>' + qsm_admin_messages.updating_db + '</span>');
-        $('.category-action').prev().hide();
-        $('.category-action').prev().prev().hide();
-        i = 0;
-        category_interval = setInterval(() => {
-            if (i % 3 == 0) {
-                $('.category-action span').html(' .');
-            } else {
-                $('.category-action span').append(' .');
-            }
-            i++;
-        }, 500);
-        $.ajax({
-            type: "POST",
-            url: ajaxurl,
-            data: {
-                action: 'enable_multiple_categories',
-                value: 'enable',
-                nonce: nonce
-            },
-            success: function (response) {
-                clearInterval(category_interval);
-                if (response.success) {
-                    $('.category-action').parents('.multiple-category-notice').removeClass('notice-info').addClass('notice-success').html('<p>' + qsm_admin_messages.update_db_success + '</p>');
-                } else {
-                    $('.category-action').parents('.multiple-category-notice').removeClass('notice-info').addClass('notice-error').html(qsm_admin_messages.error + '! ' + qsm_admin_messages.try_again);
-                }
-
-            }
-        });
-    });
-
-    $(document).on('click', '.cancel-multiple-category', function (e) {
-        e.preventDefault();
-        const nonce = $(this).data('qsm-mc-nonce');
-        if (!nonce) {
-            return;
-        }
-        $('.category-action').html('');
-        $.ajax({
-            type: "POST",
-            url: ajaxurl,
-            data: {
-                action: 'enable_multiple_categories',
-                value: 'cancel',
-                nonce: nonce
-            },
-            success: function (response) {
-                if (response.success) {
-                    $('.multiple-category-notice').hide();
-                }
-            }
-        });
-    });
-    $('.multiple-category-notice').show();
-}(jQuery));
+// The "Database update required" notice for multiple categories lives in js/qsm-admin-notices.js:
+// it shows on every admin page, and this file loads on QSM screens only (QSM_Admin_Assets).
 
 
 /**
