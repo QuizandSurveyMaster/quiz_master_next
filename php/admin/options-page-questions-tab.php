@@ -560,7 +560,7 @@ function qsm_options_questions_tab_content() {
 						),
 						'required'               => array(
 							'label'      => __( 'Required question', 'quiz-master-next' ),
-							'description' => __( 'Participants must answer before continuing.', 'quiz-master-next' ),
+							'description' => __( 'Requires a response to proceed.', 'quiz-master-next' ),
 							'type'       => 'single_checkbox',
 							'priority'   => '3',
 							'options'    => array(
