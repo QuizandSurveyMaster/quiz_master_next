@@ -3494,22 +3494,27 @@ var QSM_Quiz_Broadcast_Channel;
                     }
                     return Math.round(Math.min(400, Math.max(180, 150 + (px || 0) * 0.5)));
                 },
-                // Hides a group title when none of its rows apply to the current question type (the type switch hides them inline).
+                // Hides a group title when none of its rows apply to the current question type (the type switch hides them inline),
+                // and marks each group's first and last shown row so the CSS can draw one box per group around flat rows.
                 updateAdvancedCount: function ($adv) {
                     $adv.each(function () {
                         let $title = $();
-                        let shown = 0;
+                        let $shown = $();
                         const flush = function () {
-                            $title.toggle(shown > 0);
+                            $title.toggle($shown.length > 0);
+                            // An add-on group's name is its box header; Core's group (under the section title) closes its own top.
+                            $shown.first().toggleClass('qsm-ui-qe-adv-top', !$title.is('h4'));
+                            $shown.last().addClass('qsm-ui-qe-adv-last');
                         };
+                        $(this).children('.qsm-row').addClass('qsm-ui-qe-adv-row').removeClass('qsm-ui-qe-adv-top qsm-ui-qe-adv-last');
                         $(this).children().each(function () {
                             const $child = $(this);
                             if ($child.hasClass('qsm-ui-qe-adv-group')) {
                                 flush();
                                 $title = $child;
-                                shown = 0;
-                            } else if ($child.hasClass('qsm-row') && 'none' !== this.style.display) {
-                                shown++;
+                                $shown = $();
+                            } else if (($child.hasClass('qsm-row') || $child.hasClass('qsm-ui-qe-adv-more')) && 'none' !== this.style.display) {
+                                $shown = $shown.add($child);
                             }
                         });
                         flush();

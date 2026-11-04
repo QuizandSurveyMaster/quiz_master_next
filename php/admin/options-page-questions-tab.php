@@ -667,7 +667,7 @@ function qsm_options_questions_tab_content() {
 									<?php do_action( 'qsm_after_options' ); ?>
 								</div>
 								<div class="qsm-question-misc-options advanced-content qsm-ui-qe-adv">
-									<?php // Group titles are not .qsm-row: the save code and add-ons only read the .qsm-row children. qsm-admin.js hides a title when none of its rows apply to the question type. ?>
+									<?php // Group titles are not .qsm-row: the save code and add-ons (Advance Question, Flashcards) read `.advanced-content > .qsm-row`, so the rows stay flat. qsm-admin.js marks each group's rows so CSS draws the boxes, and hides a group when none of its rows apply to the question type. ?>
 									<h3 class="qsm-ui-qe-adv-title qsm-ui-qe-adv-group"><?php esc_html_e( 'Advanced options', 'quiz-master-next' ); ?></h3>
 									<?php
 									$show_correct_answer_info     = '';
@@ -862,7 +862,7 @@ function qsm_options_questions_tab_content() {
 									$extra_question_fields = ob_get_clean();
 									if ( '' !== trim( $extra_question_fields ) ) {
 										echo '<h4 class="qsm-ui-qe-adv-group">' . esc_html__( 'More options', 'quiz-master-next' ) . '</h4>';
-										echo $extra_question_fields; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- printed by add-ons, unchanged.
+										echo '<div class="qsm-ui-qe-adv-more">' . $extra_question_fields . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- printed by add-ons, unchanged.
 									}
 									?>
 								</div>
@@ -871,7 +871,6 @@ function qsm_options_questions_tab_content() {
 							<div class="qsm-ui-qe-side postbox-container">
 								<div class="qsm-ui-qe-groups">
 									<div class="qsm-ui-qe-group qsm-ui-qe-config">
-										<h3 class="qsm-ui-qe-side-title"><?php esc_html_e( 'Question configuration', 'quiz-master-next' ); ?></h3>
 										<div class="submitbox" id="submitpost">
 											<div id="minor-publishing">
 												<div class="qsm-row qsm-ui-qe-field">
@@ -921,7 +920,6 @@ function qsm_options_questions_tab_content() {
 														</div>
 													</div>
 									<div id="submitdiv" class="qsm-ui-qe-group qsm-ui-qe-settings">
-										<h3 class="qsm-ui-qe-side-title"><?php esc_html_e( 'Question settings', 'quiz-master-next' ); ?></h3>
 										<?php // The title stays the same; qsm-admin.js used to swap it between Published and Draft. ?>
 										<label class="qsm-ui-switch-line ui-sortable-handle">
 											<input class="qsm-ui-switch" type="checkbox" name="question_status" id="qsm-question-status" value="1">

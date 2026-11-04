@@ -738,8 +738,16 @@
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-textarea .qsm-ui-qe-control { max-width: none; }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-help { display: block; margin-top: 5px; }
 /* Advanced options: always shown, Core's options first, then one titled group per add-on (h3/h4 between the .qsm-row rows). */
-.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-adv-group { margin: 6px 0 0; padding: 14px 0 0; border-top: 1px solid var(--qsm-line-soft); color: var(--qsm-ink); font: 600 13px/1.4 var(--qsm-font); }
-.qsm-ui .qsm-ui-qe-adv > h4.qsm-ui-qe-adv-group { color: var(--qsm-muted); font-size: 12px; letter-spacing: .3px; text-transform: uppercase; }
+/* One box per group. The rows stay flat children (add-ons read `.advanced-content > .qsm-row`), so the box is drawn
+   on the rows: qsm-admin.js marks each group's first and last shown row. Core's group sits under the section title;
+   each add-on group has its name as the box header. */
+.qsm-ui .qsm-ui-qe-adv.is-open { gap: 0; }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-adv-title { margin: 0 0 12px; padding: 0; color: var(--qsm-ink); font: 600 14px/1.4 var(--qsm-font); }
+.qsm-ui .qsm-ui-qe-adv > h4.qsm-ui-qe-adv-group { margin: 16px 0 0; padding: 10px 16px; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius-md) var(--qsm-radius-md) 0 0; background: var(--qsm-surface-2); color: var(--qsm-ink-2); font: 600 13px/1.4 var(--qsm-font); }
+.qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-adv-row { margin: 0; padding: 14px 16px 0; border: solid var(--qsm-line); border-width: 0 1px; background: var(--qsm-surface); }
+.qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-adv-row.qsm-ui-qe-adv-top { padding-top: 16px; border-top-width: 1px; border-top-left-radius: var(--qsm-radius-md); border-top-right-radius: var(--qsm-radius-md); }
+.qsm-ui .qsm-ui-qe-adv.is-open > .qsm-ui-qe-adv-row.qsm-ui-qe-adv-last { padding-bottom: 16px; border-bottom-width: 1px; border-bottom-left-radius: var(--qsm-radius-md); border-bottom-right-radius: var(--qsm-radius-md); }
+.qsm-ui .qsm-ui-qe-adv > .qsm-ui-qe-adv-more { padding: 14px 16px 16px; border: 1px solid var(--qsm-line); border-top: 0; border-radius: 0 0 var(--qsm-radius-md) var(--qsm-radius-md); background: var(--qsm-surface); }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-single_checkbox .qsm-ui-qe-control { display: flex; align-items: flex-start; gap: 4px; }
 .qsm-ui .qsm-ui-qe-adv .qsm-ui-qe-field-single_checkbox .qsm-ui-check { flex: none; }
 /* Add-on options in the Advanced options fold (qsm_generate_question_option(): Grading Mode, Poll Type, ...).
@@ -808,7 +816,6 @@
 .qsm-ui .qsm-ui-qe-card #submitdiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #categorydiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group { margin: 0; border-width: 0; background: none; box-shadow: none; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups > .qsm-ui-qe-group + .qsm-ui-qe-group { border-top: 1px solid var(--qsm-line-soft); }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-group #minor-publishing { display: grid; gap: 14px; padding: 0; }
-.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side-title { margin: 0 0 4px; padding: 0; color: var(--qsm-ink); font: 700 14px/1.4 var(--qsm-font); }
 /* Question settings: Publish and Required, switch on the right, a line between them. */
 .qsm-ui .qsm-ui-qe-card #submitdiv.qsm-ui-qe-settings { gap: 12px; border-top-width: 1px; }
 .qsm-ui .qsm-ui-qe-settings .qsm-ui-switch-line { flex-direction: row-reverse; justify-content: space-between; gap: 16px; }
