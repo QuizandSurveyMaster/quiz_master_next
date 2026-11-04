@@ -118,16 +118,7 @@ function qsm_generate_quiz_options() {
 							}
 							?>
 						</div>
-						<?php if ( $quiz_id ) : ?>
-							<p class="qsm-ui-subtitle">
-								<?php
-								/* translators: %d: quiz ID */
-								echo esc_html( sprintf( __( 'ID %d', 'quiz-master-next' ), $quiz_id ) );
-								?>
-							</p>
-						<?php endif; ?>
 					</div>
-					<div class="qsm-ui-quiz-frame-side">
 					<div class="qsm-ui-page-actions">
 						<?php
 						if ( $post_permalink ) {
@@ -209,26 +200,6 @@ function qsm_generate_quiz_options() {
 							</form>
 						<?php endif; ?>
 					</div>
-					<?php if ( $quiz_id ) : ?>
-						<p class="qsm-ui-quiz-frame-shortcode">
-							<code class="qsm-ui-code" id="qsm-ui-quiz-shortcode">[qsm quiz=<?php echo esc_html( $quiz_id ); ?>]</code>
-							<?php
-							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-								__( 'Copy shortcode', 'quiz-master-next' ),
-								array(
-									'icon'      => 'copy',
-									'icon_only' => true,
-									'class'     => 'qsm-ui-quiz-shortcode-copy',
-									'attrs'     => array(
-										'title'           => __( 'Copy shortcode', 'quiz-master-next' ),
-										'data-qsm-ui-copy' => '#qsm-ui-quiz-shortcode',
-									),
-								)
-							);
-							?>
-						</p>
-					<?php endif; ?>
-					</div>
 				</div>
 			</div>
 			<div class="qsm-alerts-placeholder"></div>
@@ -299,6 +270,24 @@ function qsm_generate_quiz_options() {
 							<?php
 						}
 						?>
+						<?php // The quiz shortcode sits at the end of the tab bar. ?>
+						<div class="qsm-ui-quiz-frame-shortcode">
+							<code class="qsm-ui-code" id="qsm-ui-quiz-shortcode">[qsm quiz=<?php echo esc_html( $quiz_id ); ?>]</code>
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Copy shortcode', 'quiz-master-next' ),
+								array(
+									'icon'      => 'copy',
+									'icon_only' => true,
+									'class'     => 'qsm-ui-quiz-shortcode-copy',
+									'attrs'     => array(
+										'title'           => __( 'Copy shortcode', 'quiz-master-next' ),
+										'data-qsm-ui-copy' => '#qsm-ui-quiz-shortcode',
+									),
+								)
+							);
+							?>
+						</div>
 					</div>
 				</nav>
 				<div class="qsm_tab_content">
