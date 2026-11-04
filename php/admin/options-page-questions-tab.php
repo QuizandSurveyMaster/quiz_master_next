@@ -497,6 +497,7 @@ function qsm_options_questions_tab_content() {
 				<footer class="qsm-popup__footer qsm-question-bank-footer">
 					<?php // Disabled until a question is ticked (QSMQuestion.syncBankFooter). ?>
 					<button type="button" class="qsm-action-link-delete qsm-ui-btn qsm-ui-btn-danger-ghost qsm-ui-foot-left" id="qsm-delete-selected-question" disabled><?php esc_html_e( 'Delete from Question Bank', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn" id="qsm-link-selected-question" disabled><?php echo QSM_Admin_UI::icon( 'link', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Link Questions', 'quiz-master-next' ); ?></button>
 					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary" id="qsm-import-selected-question" disabled><?php esc_html_e( 'Add Questions', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
@@ -557,6 +558,7 @@ function qsm_options_questions_tab_content() {
 						),
 						'required'               => array(
 							'label'      => __( 'Required?', 'quiz-master-next' ),
+							'description' => __( 'Participants must answer before moving on.', 'quiz-master-next' ),
 							'type'       => 'single_checkbox',
 							'priority'   => '3',
 							'options'    => array(
@@ -574,10 +576,15 @@ function qsm_options_questions_tab_content() {
 					<div id="poststuff" class="qsm-ui-qe-wrap">
 						<div class="qsm-ui-qe">
 							<div class="qsm-ui-qe-main">
-								<div class="qsm-linked-list-div-block">
-									<p><?php esc_attr_e( 'This question is linked with other quizzes ', 'quiz-master-next' ); ?> <span class="qsm-linked-list-view-button"><?php esc_attr_e( 'View', 'quiz-master-next' ); ?></span></p>
-									<div class="qsm-linked-list-container">
-										<div class="qsm-linked-list-inside"></div>
+								<?php // Same classes as before (qsm-admin.js shows it, fills .qsm-linked-list-inside and toggles it with the View button). ?>
+								<div class="qsm-linked-list-div-block qsm-ui-linked">
+									<div class="qsm-ui-linked-row">
+										<?php echo QSM_Admin_UI::icon( 'link', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+										<p class="qsm-ui-linked-text"><?php esc_html_e( 'This question is linked with other quizzes ', 'quiz-master-next' ); ?></p>
+										<button type="button" class="qsm-linked-list-view-button qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-quiet" aria-expanded="false"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></button>
+									</div>
+									<div class="qsm-linked-list-container qsm-ui-linked-panel">
+										<div class="qsm-linked-list-inside qsm-ui-linked-list"></div>
 									</div>
 								</div>
 								<div class="qsm-ui-qe-field qsm-ui-qe-title">
@@ -644,13 +651,6 @@ function qsm_options_questions_tab_content() {
 								<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( apply_filters( 'qsm_polar_class', $polar_class . $show_answer_option ) ); ?>">
 									<div class="qsm-ui-qe-head">
 										<span class="qsm-ui-field-label"><?php esc_html_e( 'Answers', 'quiz-master-next' ); ?></span>
-										<?php
-										// Same change-answer-editor field as today, shown in the Answers head (P-06).
-										if ( isset( $simple_question_option['change-answer-editor'] ) && qsm_is_core_question_option( 'change-answer-editor', $simple_question_option['change-answer-editor'], $core_simple_question_option ) ) {
-											qsm_display_question_option_ui( 'change-answer-editor', $simple_question_option['change-answer-editor'] );
-											unset( $simple_question_option['change-answer-editor'] );
-										}
-										?>
 									</div>
 									<div class="correct-header"><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></div>
 									<div class="answers" id="answers">
@@ -665,12 +665,8 @@ function qsm_options_questions_tab_content() {
 									<?php do_action( 'qsm_after_options' ); ?>
 								</div>
 								<div class="qsm-question-misc-options advanced-content qsm-ui-qe-adv">
-									<?php // Not a .qsm-row: the save code and add-ons only read the .qsm-row children. qsm-admin.js marks the rows it folds. ?>
-									<button type="button" class="qsm-ui-qe-more-toggle" aria-expanded="false">
-										<span class="qsm-ui-qe-more-title"><?php esc_html_e( 'Advanced options', 'quiz-master-next' ); ?></span>
-										<span class="qsm-ui-caption qsm-ui-qe-more-count"></span>
-										<?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-chev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
-									</button>
+									<?php // Group titles are not .qsm-row: the save code and add-ons only read the .qsm-row children. qsm-admin.js hides a title when none of its rows apply to the question type. ?>
+									<h3 class="qsm-ui-qe-adv-title qsm-ui-qe-adv-group"><?php esc_html_e( 'Advanced options', 'quiz-master-next' ); ?></h3>
 									<?php
 									$show_correct_answer_info     = '';
 									$show_autofill                = '';
@@ -843,16 +839,29 @@ function qsm_options_questions_tab_content() {
 									$advanced_question_option      = apply_filters( 'qsm_question_advanced_option', $advanced_question_option );
 									$keys                          = array_column( $advanced_question_option, 'priority' );
 									array_multisort( $keys, SORT_ASC, $advanced_question_option );
-									foreach ( $advanced_question_option as $qo_key => $single_option ) {
-										// Rows stay direct .qsm-row children of .advanced-content: saving and add-ons read them that way.
-										if ( qsm_is_core_question_option( $qo_key, $single_option, $core_advanced_question_option ) ) {
-											qsm_generate_question_option_ui( $qo_key, $single_option );
-										} else {
-											qsm_generate_question_option( $qo_key, $single_option );
+									// Core's options first (Correct Answer Info on top, as before), then one group per add-on that added options.
+									$advanced_option_groups = qsm_group_question_options( 'qsm_question_advanced_option', $advanced_question_option, $core_advanced_question_option );
+									foreach ( $advanced_option_groups as $group_name => $group_options ) {
+										if ( '' !== $group_name ) {
+											echo '<h4 class="qsm-ui-qe-adv-group">' . esc_html( $group_name ) . '</h4>';
+										}
+										foreach ( $group_options as $qo_key => $single_option ) {
+											// Rows stay direct .qsm-row children of .advanced-content: saving and add-ons read them that way.
+											if ( qsm_is_core_question_option( $qo_key, $single_option, $core_advanced_question_option ) ) {
+												qsm_generate_question_option_ui( $qo_key, $single_option );
+											} else {
+												qsm_generate_question_option( $qo_key, $single_option );
+											}
 										}
 									}
 
+									ob_start();
 									do_action( 'qsm_question_form_fields', $quiz_id );
+									$extra_question_fields = ob_get_clean();
+									if ( '' !== trim( $extra_question_fields ) ) {
+										echo '<h4 class="qsm-ui-qe-adv-group">' . esc_html__( 'More options', 'quiz-master-next' ) . '</h4>';
+										echo $extra_question_fields; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- printed by add-ons, unchanged.
+									}
 									?>
 								</div>
 							</div>

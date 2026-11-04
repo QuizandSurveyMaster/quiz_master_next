@@ -684,6 +684,112 @@ function qsm_is_core_question_option( $key, $single_option, $core_options ) {
 }
 
 /**
+ * Splits the question editor options into Core's group and one group per add-on (P-06).
+ *
+ * Core's options come first (Correct Answer Info on top), in the priority order the caller sorted them in.
+ * An option Core doesn't define is grouped under the name of the plugin whose filter callback added it.
+ * To find that plugin, the filter's callbacks run once more, one at a time, on a copy of Core's options;
+ * the options themselves still come from the caller's apply_filters() run. Options it can't attribute go
+ * under "Add-ons".
+ *
+ * @since 11.3.0
+ * @param string $hook         Filter that added the options, e.g. `qsm_question_advanced_option`.
+ * @param array  $options      Options after the filter ran, sorted.
+ * @param array  $core_options Core's options before the filter ran.
+ * @return array Group name ('' for Core) => options.
+ */
+function qsm_group_question_options( $hook, $options, $core_options ) {
+	$groups = array( '' => array() );
+	if ( isset( $options['correct_answer_info'], $core_options['correct_answer_info'] ) ) {
+		$groups[''] = array( 'correct_answer_info' => $options['correct_answer_info'] );
+	}
+	$sources = qsm_question_option_sources( $hook, $core_options );
+	foreach ( $options as $key => $single_option ) {
+		if ( isset( $core_options[ $key ] ) ) {
+			$groups[''][ $key ] = $single_option;
+			continue;
+		}
+		$group                    = isset( $sources[ $key ] ) ? $sources[ $key ] : __( 'Add-ons', 'quiz-master-next' );
+		$groups[ $group ][ $key ] = $single_option;
+	}
+	return $groups;
+}
+
+/**
+ * Name of the plugin that added each non-Core option through a filter.
+ *
+ * @since 11.3.0
+ * @param string $hook         Filter name.
+ * @param array  $core_options Core's options before the filter ran.
+ * @return array Option key => plugin name.
+ */
+function qsm_question_option_sources( $hook, $core_options ) {
+	global $wp_filter;
+	$sources = array();
+	if ( empty( $wp_filter[ $hook ] ) || ! $wp_filter[ $hook ] instanceof WP_Hook ) {
+		return $sources;
+	}
+	$options = $core_options;
+	ob_start();
+	try {
+		foreach ( $wp_filter[ $hook ]->callbacks as $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				$before  = array_keys( (array) $options );
+				$options = call_user_func( $callback['function'], $options );
+				$name    = qsm_callback_plugin_name( $callback['function'] );
+				if ( $name ) {
+					foreach ( array_diff( array_keys( (array) $options ), $before ) as $key ) {
+						$sources[ $key ] = $name;
+					}
+				}
+			}
+		}
+	} catch ( \Throwable $e ) {
+		// Attribution is cosmetic: the options still render, under "Add-ons".
+		unset( $e );
+	}
+	ob_end_clean();
+	return $sources;
+}
+
+/**
+ * Name of the plugin a callback is defined in, or '' for Core and anything outside a plugin.
+ *
+ * @since 11.3.0
+ * @param callable $callback Hook callback.
+ * @return string
+ */
+function qsm_callback_plugin_name( $callback ) {
+	static $plugins = null;
+	try {
+		if ( is_string( $callback ) && false !== strpos( $callback, '::' ) ) {
+			$callback = explode( '::', $callback, 2 );
+		}
+		$reflection = is_array( $callback ) ? new ReflectionMethod( $callback[0], $callback[1] ) : new ReflectionFunction( $callback );
+		$file       = wp_normalize_path( (string) $reflection->getFileName() );
+	} catch ( \Throwable $e ) {
+		return '';
+	}
+	$plugin_dir = wp_normalize_path( WP_PLUGIN_DIR ) . '/';
+	if ( 0 !== strpos( $file, $plugin_dir ) || 0 === strpos( $file, wp_normalize_path( QSM_PLUGIN_PATH ) ) ) {
+		return '';
+	}
+	$folder = strtok( substr( $file, strlen( $plugin_dir ) ), '/' );
+	if ( null === $plugins ) {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$plugins = get_plugins();
+	}
+	foreach ( $plugins as $basename => $data ) {
+		if ( 0 === strpos( $basename, $folder . '/' ) && ! empty( $data['Name'] ) ) {
+			return $data['Name'];
+		}
+	}
+	return '';
+}
+
+/**
  * Field label line with the documentation link (kit look) for a question option.
  *
  * @since 11.3.0
