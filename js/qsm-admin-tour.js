@@ -75,7 +75,7 @@
 				return;
 			}
 			const helperText = window.qsm_admin_messages?.guided_wizard?.[ areaId ] || QSM_ADVANCED_HELPER_TEXTS[ areaId ];
-			const $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text"></span>' ).text( helperText );
+			const $helperLabel = $( '<span class="qsm-advanced-helper-label helper-text qsm-ui-qe-opt-helper"></span>' ).text( helperText );
 			const $helper = $( '<p class="qsm-advanced-helper-text"></p>' ).text( helperText );
 			$content.before( $helperLabel );
 			const updateVisibility = function(){

@@ -2890,10 +2890,6 @@ var QSM_Quiz_Broadcast_Channel;
                 openQuestionBank: function (pageID) {
                     QSMQuestion.loadQuestionBank();
                     $('#add-question-bank-page').val(pageID);
-                    const i18n = qsmQuestionSettings.board_i18n || {};
-                    if (i18n.bankTo) {
-                        $('.qsm-ui-qb-subtitle').text(i18n.bankTo.replace('%d', parseInt(pageID, 10) + 1));
-                    }
                     MicroModal.show('modal-2');
                 },
                 // Kit bank popup (O-01): footer buttons work only with a selection, "Select all" follows the list.
@@ -2901,6 +2897,8 @@ var QSM_Quiz_Broadcast_Channel;
                     const $boxes = $('#question-bank .qsm-question-checkbox');
                     const checked = $boxes.filter(':checked').length;
                     $('#qsm-import-selected-question, #qsm-delete-selected-question').prop('disabled', 0 === checked);
+                    // Link needs at least one checked question that isn't in this quiz already (its Link button is disabled then).
+                    $('#qsm-link-selected-question').prop('disabled', 0 === $boxes.filter(':checked').closest('.question-bank-question').find('.link-question:not(.disabled)').length);
                     $('#qsm_select_all_question').prop('checked', $boxes.length > 0 && checked === $boxes.length);
                     const i18n = qsmQuestionSettings.board_i18n || {};
                     $('.qsm-ui-qb-shown').text(i18n.shown ? i18n.shown.replace('%d', $('#question-bank .question-bank-question').length) : '');
@@ -3413,46 +3411,58 @@ var QSM_Quiz_Broadcast_Channel;
                     return paths;
                 },
                 /**
-                 * "Advanced options" fold in the kit editor (P-06). Correct answer info stays open; every
-                 * other option row, comment box, hint and add-on rows included, folds under the toggle.
-                 * Comment box and hint keep .core-option, which the save code uses to skip them. The rows stay where they are (direct .qsm-row children of
-                 * .advanced-content), so saving and add-ons read them as before; CSS hides them.
+                 * "Advanced options" in the kit editor (P-06): always shown, Core's options first, then one titled
+                 * group per add-on. The rows stay direct .qsm-row children of .advanced-content, so saving and add-ons
+                 * read them as before; the group titles sit between them.
                  */
-                advancedOpen: false,
                 initAdvancedToggle: function ($container) {
                     const $adv = $container && $container.length ? $container.find('.qsm-ui-qe-adv') : $();
                     if (!$adv.length) {
                         return;
                     }
-                    $adv.children('.qsm-row:not(#correct_answer_info_area)').addClass('qsm-ui-qe-more');
-                    QSMQuestion.setAdvancedOpen($adv, QSMQuestion.advancedOpen);
+                    $adv.addClass('is-open');
                     QSMQuestion.updateAdvancedCount($adv);
                 },
                 // Same speed as the inline editor's slideDown/slideUp; none when the user asked for reduced motion.
-                slideSpeed: function () {
-                    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 'slow';
-                },
-                setAdvancedOpen: function ($adv, open, animate) {
-                    $adv.children('.qsm-ui-qe-more-toggle').attr('aria-expanded', open ? 'true' : 'false');
-                    const speed = animate ? QSMQuestion.slideSpeed() : 0;
-                    // The folded rows stay where they are (add-ons read them), so slide the fold's own height from
-                    // where it is now (mid-slide after a quick second click) to its height in the new state.
-                    const from = $adv.outerHeight();
-                    $adv.stop(true).css({ height: '', overflow: '' }).toggleClass('is-open', open);
-                    const to = $adv.outerHeight();
-                    if (!speed || from === to) {
-                        return;
+                // Duration follows the distance: a fixed 'slow' (600ms) is fine for the tall editor but drags on short panels.
+                slideSpeed: function (px) {
+                    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        return 0;
                     }
-                    $adv.toggleClass('is-open', true).css({ height: from, overflow: 'hidden' }).animate({ height: to }, speed, function () {
-                        $adv.toggleClass('is-open', open).css({ height: '', overflow: '' });
-                    });
+                    return Math.round(Math.min(400, Math.max(180, 150 + (px || 0) * 0.5)));
                 },
-                // Number of folded options that apply to the current question type; no toggle when none do.
+                // Hides a group title when none of its rows apply to the current question type (the type switch hides them inline),
+                // and marks each group's first and last shown row so the CSS can draw one box per group around flat rows.
                 updateAdvancedCount: function ($adv) {
-                    const count = $adv.children('.qsm-ui-qe-more').filter(function () {
-                        return 'none' !== this.style.display;
-                    }).length;
-                    $adv.children('.qsm-ui-qe-more-toggle').toggle(count > 0).find('.qsm-ui-qe-more-count').text(count ? '(' + count + ')' : '');
+                    $adv.each(function () {
+                        let $title = $();
+                        let $shown = $();
+                        const flush = function () {
+                            $title.toggle($shown.length > 0);
+                            // An add-on group's name is its box header; Core's group (under the section title) closes its own top.
+                            $shown.first().toggleClass('qsm-ui-qe-adv-top', !$title.is('h4'));
+                            $shown.last().addClass('qsm-ui-qe-adv-last');
+                        };
+                        $(this).children('.qsm-row').addClass('qsm-ui-qe-adv-row').removeClass('qsm-ui-qe-adv-top qsm-ui-qe-adv-last');
+                        $(this).children().each(function () {
+                            const $child = $(this);
+                            if ($child.hasClass('qsm-ui-qe-adv-group')) {
+                                flush();
+                                $title = $child;
+                                $shown = $();
+                            } else if (($child.hasClass('qsm-row') || $child.hasClass('qsm-ui-qe-adv-more')) && 'none' !== this.style.display) {
+                                $shown = $shown.add($child);
+                            }
+                        });
+                        flush();
+                        // The section title also covers every add-on group below it.
+                        const $section = $(this).children('.qsm-ui-qe-adv-title');
+                        if ($section.length && 'none' === $section[0].style.display) {
+                            $section.toggle($(this).children('.qsm-ui-qe-adv-group').not($section).filter(function () {
+                                return 'none' !== this.style.display;
+                            }).length > 0);
+                        }
+                    });
                 },
                 /**
                  * Small destructive confirm (O-02) in #qsm-ui-confirm-dialog. A native <dialog>, so it can
@@ -4317,7 +4327,7 @@ var QSM_Quiz_Broadcast_Channel;
                             // Ensure each quizName is a valid non-empty string
                             if (quizName && typeof quizName == 'string' && quizName.trim().length > 0) {
                                 let link = $('<span></span>')
-                                    .attr('class', 'qsm-linked-list-item')
+                                    .attr('class', 'qsm-linked-list-item qsm-ui-linked-item')
                                     .attr('title', quizName)
                                     .text(quizName.length > 25 ? quizName.substring(0, 25) + '...' : quizName);
 
@@ -4327,8 +4337,8 @@ var QSM_Quiz_Broadcast_Channel;
                         });
 
                         // Add an "Unlink" link at the end
-                        let unlink = $('<span></span>')
-                            .attr('class', 'qsm-unlink-the-question button button-danger')
+                        let unlink = $('<button type="button"></button>')
+                            .attr('class', 'qsm-unlink-the-question qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-danger-ghost')
                             .attr('data-question-id', questionID)
                             .text(qsm_admin_messages.unlink_question);
                             $('.qsm-linked-list-inside').append(unlink);
@@ -4639,15 +4649,11 @@ var QSM_Quiz_Broadcast_Channel;
                     QSMQuestion.loadQuestionBank();
                 });
 
-                //Show category related question
-                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function (event) {
-                    event.preventDefault();
-                    QSMQuestion.loadQuestionBank('change');
-                });
-
                 //Show searched question
+                let qbSearchTimer;
                 $(document).on('submit', '#question-bank-search-form', function (event) {
                     event.preventDefault();
+                    clearTimeout(qbSearchTimer);
                     QSMQuestion.loadQuestionBank('change');
                 });
 
@@ -4813,19 +4819,46 @@ var QSM_Quiz_Broadcast_Channel;
                     if ($editor.length) {
                         $editor.addClass('qsm-ui-qe-card');
                         QSMQuestion.initAdvancedToggle($editor);
+                        // Again once add-ons' own qsm_open_edit_popup handlers have shown/hidden their rows.
+                        setTimeout(function () {
+                            QSMQuestion.updateAdvancedCount($editor.find('.qsm-ui-qe-adv'));
+                        }, 0);
                     }
                 });
-                $(document).on('click', '.qsm-ui-qe-more-toggle', function () {
-                    const $adv = $(this).closest('.qsm-ui-qe-adv');
-                    QSMQuestion.advancedOpen = 'true' !== $(this).attr('aria-expanded'); // The class lags while a close slides.
-                    QSMQuestion.setAdvancedOpen($adv, QSMQuestion.advancedOpen, true);
-                });
-                // After the type switch has shown/hidden the rows.
-                $(document).on('change', '.questionElements #question_type, .questionElements #change-answer-editor', function () {
+                // After the type switch, or an add-on's own control (QSM Ultimate's User Response Mode), has shown/hidden the rows.
+                $(document).on('change', '.questionElements :input', function () {
                     const $adv = $(this).closest('.questionElements').find('.qsm-ui-qe-adv');
                     setTimeout(function () {
                         QSMQuestion.updateAdvancedCount($adv);
                     }, 0);
+                });
+                // Copy a question's ID from its row.
+                $(document).on('click', '.qsm-ui-q-id-copy', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const $button = $(this);
+                    const id = String($button.data('copy'));
+                    const i18n = qsmQuestionSettings.board_i18n || {};
+                    const done = function () {
+                        clearTimeout($button.data('copyTimer'));
+                        $button.addClass('is-copied').attr('title', i18n.copied || 'Copied');
+                        wp.a11y && wp.a11y.speak && wp.a11y.speak(i18n.copied || 'Copied');
+                        $button.data('copyTimer', setTimeout(function () {
+                            $button.removeClass('is-copied').attr('title', i18n.copyId || '');
+                        }, 1500));
+                    };
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(id).then(done);
+                        return;
+                    }
+                    const $temp = $('<textarea readonly></textarea>').val(id).css({ position: 'fixed', top: 0, opacity: 0 }).appendTo('body');
+                    $temp[0].select();
+                    try {
+                        if (document.execCommand('copy')) {
+                            done();
+                        }
+                    } catch (e) {}
+                    $temp.remove();
                 });
 
                 $(document).on('click', '.qsm-admin-randomize-page-questions', function () {
@@ -5053,6 +5086,7 @@ var QSM_Quiz_Broadcast_Channel;
                     let $inside = $this.parents('.qsm-linked-list-div-block').find('.qsm-linked-list-inside');
                     $inside.toggle();
                     $inside.is(':visible') ? $this.text(qsmQuestionSettings.linked_close) : $this.text(qsmQuestionSettings.linked_view);
+                    $this.attr('aria-expanded', $inside.is(':visible') ? 'true' : 'false');
                 });
 
                 jQuery(document).on('click', '.qsm-linked-list-div-block .qsm-unlink-the-question', function () {
@@ -5091,6 +5125,23 @@ var QSM_Quiz_Broadcast_Channel;
                         $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked', false);
                         MicroModal.close('modal-2');
                     }
+                });
+                // Link the checked questions, like each row's Link button. Questions already in this quiz are skipped.
+                $('.qsm-popup-bank').on('click', '#qsm-link-selected-question', function () {
+                    const $links = $($('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').closest('.question-bank-question').get().reverse()).find('.link-question:not(.disabled)');
+                    if (!$links.length) {
+                        alert(qsm_admin_messages.no_question_selected);
+                        return;
+                    }
+                    import_button = '';
+                    qsm_link_button = $links;
+                    $links.text(qsm_admin_messages.linking_question);
+                    $('.link-question').addClass('disable_import');
+                    $links.each(function () {
+                        QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'), 1);
+                    });
+                    $('#question-bank').find('[name="qsm-question-checkbox[]"]').prop('checked', false);
+                    MicroModal.close('modal-2');
                 });
                 //Delete question from question bank
                 $('.qsm-popup-bank').on('click', '#qsm-delete-selected-question', function (event) {
@@ -5167,22 +5218,34 @@ var QSM_Quiz_Broadcast_Channel;
                     // Slide like the inline editor. The panel has no inline style of its own: drop what jQuery leaves.
                     $panel.stop(true).removeClass('is-closing').removeAttr('style');
                     if (open) {
-                        $panel.prop('hidden', false).hide().slideDown(QSMQuestion.slideSpeed(), function () {
+                        $panel.prop('hidden', false);
+                        const height = $panel.outerHeight();
+                        $panel.hide().slideDown(QSMQuestion.slideSpeed(height), function () {
                             $panel.removeAttr('style');
                         });
                     } else {
-                        $panel.addClass('is-closing').slideUp(QSMQuestion.slideSpeed(), function () {
+                        $panel.addClass('is-closing').slideUp(QSMQuestion.slideSpeed($panel.outerHeight()), function () {
                             $panel.removeClass('is-closing').prop('hidden', true).removeAttr('style');
                         });
                     }
                 });
+                // The selects only take effect on Apply filters, which also closes the panel.
+                $(document).on('click', '.qsm-ui-qb-apply', function () {
+                    QSMQuestion.loadQuestionBank('change');
+                    if (!$('#qsm-question-bank-search').prop('hidden')) {
+                        $('.qsm-ui-qb-toolbar .qsm-ui-qb-filters-toggle').trigger('click');
+                    }
+                });
                 $(document).on('click', '.qsm-ui-qb-clear', function () {
                     $('#question-bank-cat, #question-bank-quiz, #question-bank-type').val('');
-                    QSMQuestion.syncBankFilterCount();
                     QSMQuestion.loadQuestionBank('change');
                 });
-                $(document).on('change', '#question-bank-cat, #question-bank-quiz, #question-bank-type', function () {
-                    QSMQuestion.syncBankFilterCount();
+                // Search as you type (Enter still submits the form); clearing the box brings the full list back.
+                $(document).on('input', '#question-bank-search-input', function () {
+                    clearTimeout(qbSearchTimer);
+                    qbSearchTimer = setTimeout(function () {
+                        QSMQuestion.loadQuestionBank('change');
+                    }, 400);
                 });
 
                 $('.save-page-button').on('click', function (event) {
