@@ -544,6 +544,10 @@ class MLWQuizMasterNext {
 		if ( 'admin_page_mlw_quiz_options' === $hook || 'qsm_page_qmn_global_settings' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
+			// The quiz edit frame (header + tab bar) uses the admin UI kit on every tab.
+			if ( 'admin_page_mlw_quiz_options' === $hook ) {
+				QSM_Admin_UI::enqueue();
+			}
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
 				case 'questions':
