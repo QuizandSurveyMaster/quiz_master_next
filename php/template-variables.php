@@ -11,6 +11,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'qsm_neutralize_shortcode_brackets' ) ) {
+	/**
+	 * Neutralise square brackets in submitter-supplied values.
+	 *
+	 * Quiz answers, contact fields and comments are stored from unauthenticated
+	 * input and later interpolated into the results-page output buffer, which is
+	 * run through do_shortcode(). strip_shortcodes() alone is not enough: WordPress
+	 * core treats the escaped form [[tag]] as an escaped shortcode and returns the
+	 * literal [tag], so a double-bracketed shortcode survives sanitisation and then
+	 * executes on the results page. Encoding the brackets to their HTML entities
+	 * keeps the value readable (browsers render &#91;/&#93; as [ / ]) while ensuring
+	 * do_shortcode() can never match it. htmlspecialchars_decode(), used on several
+	 * render paths, does not decode numeric entities, so the encoding survives to the
+	 * shortcode pass.
+	 *
+	 * @param string $value Raw submitter-supplied value.
+	 * @return string Value with [ and ] encoded as &#91; and &#93;.
+	 */
+	function qsm_neutralize_shortcode_brackets( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $value );
+	}
+}
+
 // Template variable files
 require 'template-variables/qsm-tempvar-question-answers.php';
 // Template variable files for backward compatibility ( @since QSM 7.3.8 )
