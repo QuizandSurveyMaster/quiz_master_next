@@ -2904,10 +2904,21 @@ class QMNQuizManager {
 		 *     keeps the legacy behaviour, so scoring does not regress before the add-on
 		 *     ships its server-side verifier.
 		 */
-		$verified_hidden_questions = apply_filters( 'qsm_verified_hidden_questions', null, $client_hidden_questions, $qmn_array_for_variables, $options );
+		$verified_hidden_questions = apply_filters( 'qsm_verified_hidden_questions', null, $client_hidden_questions, $qmn_array_for_variables, $qmn_quiz_options );
 		if ( null === $verified_hidden_questions ) {
-			$logic_rules               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules', '' );
-			$quiz_uses_logic           = ! empty( $logic_rules ) && 'a:0:{}' !== $logic_rules && '[]' !== $logic_rules && 'N;' !== $logic_rules;
+			// Does conditional logic apply to this quiz? If the qsm-logic add-on is not
+			// active, nothing can legitimately be hidden, so the client list is dropped.
+			// If it is active, detect logic for this quiz across BOTH storage eras:
+			// pre-2.0 kept rules in the 'logic_rules' quiz setting; 2.0+ moved them to the
+			// mlw_logic table and BLANKS that setting (flagging migration with the
+			// logic_rules_quiz_<id> option, see blocks/block.php). Checking only the
+			// setting would treat every migrated logic quiz as no-logic and wrongly drop
+			// its legitimately hidden questions, lowering honest scores.
+			$logic_rules     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules', '' );
+			$has_legacy_logic = ! empty( $logic_rules ) && 'a:0:{}' !== $logic_rules && '[]' !== $logic_rules && 'N;' !== $logic_rules;
+			$quiz_id          = isset( $qmn_quiz_options->quiz_id ) ? intval( $qmn_quiz_options->quiz_id ) : 0;
+			$has_migrated_logic = $quiz_id && get_option( 'logic_rules_quiz_' . $quiz_id );
+			$quiz_uses_logic  = class_exists( 'QSM_Logic' ) && ( $has_legacy_logic || $has_migrated_logic );
 			$verified_hidden_questions = $quiz_uses_logic ? $client_hidden_questions : array();
 		}
 		$hidden_questions                           = array_values( array_filter( (array) $verified_hidden_questions, 'qsm_is_valid_hidden_question_id' ) );
