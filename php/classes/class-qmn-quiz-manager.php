@@ -2878,14 +2878,39 @@ class QMNQuizManager {
 		$qmn_array_for_variables['time_taken']      = current_time( 'h:i:s A m/d/Y' );
 		$qmn_array_for_variables['contact']         = $contact_responses;
 		$qmn_array_for_variables['quiz_start_date'] = $mlw_quiz_start_date;
-		$hidden_questions                           = array();
+		$client_hidden_questions                    = array();
 		if ( isset( $_POST['qsm_hidden_questions'] ) ) {
-			$hidden_questions = sanitize_text_field( wp_unslash( $_POST['qsm_hidden_questions'] ) );
-			$hidden_questions = json_decode( $hidden_questions, true );
+			$client_hidden_questions = sanitize_text_field( wp_unslash( $_POST['qsm_hidden_questions'] ) );
+			$client_hidden_questions = json_decode( $client_hidden_questions, true );
 			// Only question ids ("12") and category ids ("c3") are valid here. json_decode()
 			// turns \u003c escapes back into markup that sanitize_text_field() never saw.
-			$hidden_questions = is_array( $hidden_questions ) ? array_values( array_filter( $hidden_questions, 'qsm_is_valid_hidden_question_id' ) ) : array();
+			$client_hidden_questions = is_array( $client_hidden_questions ) ? array_values( array_filter( $client_hidden_questions, 'qsm_is_valid_hidden_question_id' ) ) : array();
 		}
+		/*
+		 * SECURITY: qsm_hidden_questions excludes questions from scoring (both the
+		 * earned points and the percentage denominator). It is POSTed by the client,
+		 * so trusting it as-is lets an unauthenticated quiz taker mark any question
+		 * hidden and inflate the stored score to an arbitrary value (CWE-20/CWE-840).
+		 * The feature that legitimately hides questions is conditional logic, which
+		 * lives in the qsm-logic add-on, so the authoritative hidden set has to be
+		 * recomputed server-side from the saved rules and the submitted answers --
+		 * which only the add-on can do. Core therefore never trusts the raw client
+		 * list on its own:
+		 *   - the add-on supplies the verified set via qsm_verified_hidden_questions;
+		 *   - with no conditional logic configured on the quiz, nothing can be hidden,
+		 *     so the client list is dropped (closes the hole on every install that does
+		 *     not use conditional logic, which is the default);
+		 *   - a logic-configured quiz whose add-on has not yet implemented the filter
+		 *     keeps the legacy behaviour, so scoring does not regress before the add-on
+		 *     ships its server-side verifier.
+		 */
+		$verified_hidden_questions = apply_filters( 'qsm_verified_hidden_questions', null, $client_hidden_questions, $qmn_array_for_variables, $options );
+		if ( null === $verified_hidden_questions ) {
+			$logic_rules               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules', '' );
+			$quiz_uses_logic           = ! empty( $logic_rules ) && 'a:0:{}' !== $logic_rules && '[]' !== $logic_rules && 'N;' !== $logic_rules;
+			$verified_hidden_questions = $quiz_uses_logic ? $client_hidden_questions : array();
+		}
+		$hidden_questions                           = array_values( array_filter( (array) $verified_hidden_questions, 'qsm_is_valid_hidden_question_id' ) );
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 		$error_details                               = '';
