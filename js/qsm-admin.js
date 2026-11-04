@@ -4877,14 +4877,46 @@ var QSM_Quiz_Broadcast_Channel;
                     if ($editor.length) {
                         $editor.addClass('qsm-ui-qe-card');
                         QSMQuestion.initAdvancedToggle($editor);
+                        // Again once add-ons' own qsm_open_edit_popup handlers have shown/hidden their rows.
+                        setTimeout(function () {
+                            QSMQuestion.updateAdvancedCount($editor.find('.qsm-ui-qe-adv'));
+                        }, 0);
                     }
                 });
-                // After the type switch has shown/hidden the rows.
-                $(document).on('change', '.questionElements #question_type, .questionElements #change-answer-editor', function () {
+                // After the type switch, or an add-on's own control (QSM Ultimate's User Response Mode), has shown/hidden the rows.
+                $(document).on('change', '.questionElements :input', function () {
                     const $adv = $(this).closest('.questionElements').find('.qsm-ui-qe-adv');
                     setTimeout(function () {
                         QSMQuestion.updateAdvancedCount($adv);
                     }, 0);
+                });
+                // Copy a question's ID from its row.
+                $(document).on('click', '.qsm-ui-q-id-copy', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const $button = $(this);
+                    const id = String($button.data('copy'));
+                    const i18n = qsmQuestionSettings.board_i18n || {};
+                    const done = function () {
+                        clearTimeout($button.data('copyTimer'));
+                        $button.addClass('is-copied').attr('title', i18n.copied || 'Copied');
+                        wp.a11y && wp.a11y.speak && wp.a11y.speak(i18n.copied || 'Copied');
+                        $button.data('copyTimer', setTimeout(function () {
+                            $button.removeClass('is-copied').attr('title', i18n.copyId || '');
+                        }, 1500));
+                    };
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(id).then(done);
+                        return;
+                    }
+                    const $temp = $('<textarea readonly></textarea>').val(id).css({ position: 'fixed', top: 0, opacity: 0 }).appendTo('body');
+                    $temp[0].select();
+                    try {
+                        if (document.execCommand('copy')) {
+                            done();
+                        }
+                    } catch (e) {}
+                    $temp.remove();
                 });
 
                 $(document).on('click', '.qsm-admin-randomize-page-questions', function () {

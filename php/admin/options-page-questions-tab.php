@@ -141,6 +141,8 @@ function qsm_options_questions_tab_content() {
 		'default_question_settings_nonce' => wp_create_nonce( 'qsm_default_question_settings_' . $quiz_id ),
 		'question_type_names'     => $question_type_names,
 		'board_i18n'              => array(
+			'copyId'      => __( 'Copy question ID', 'quiz-master-next' ),
+			'copied'      => __( 'Copied', 'quiz-master-next' ),
 			/* translators: %d: page number */
 			'page'        => __( 'Page %d', 'quiz-master-next' ),
 			/* translators: %d: number of selected questions */
@@ -532,7 +534,7 @@ function qsm_options_questions_tab_content() {
 					}
 					$simple_question_option = array(
 						'change-answer-editor'   => array(
-							'label'              => __( 'Answers Type', 'quiz-master-next' ),
+							'label'              => __( 'Answer Format', 'quiz-master-next' ),
 							'type'               => 'select',
 							'priority'           => '1',
 							'options'            => array(
@@ -557,8 +559,8 @@ function qsm_options_questions_tab_content() {
 							'show'       => '14' . $show_match_answer,
 						),
 						'required'               => array(
-							'label'      => __( 'Required?', 'quiz-master-next' ),
-							'description' => __( 'Participants must answer before moving on.', 'quiz-master-next' ),
+							'label'      => __( 'Required question', 'quiz-master-next' ),
+							'description' => __( 'Participants must answer before continuing.', 'quiz-master-next' ),
 							'type'       => 'single_checkbox',
 							'priority'   => '3',
 							'options'    => array(
@@ -868,14 +870,8 @@ function qsm_options_questions_tab_content() {
 							<?php // Side groups keep their ids: the guided tour (qsm-admin-tour.js) points at #submitdiv, #categorydiv and #featureImagediv. ?>
 							<div class="qsm-ui-qe-side postbox-container">
 								<div class="qsm-ui-qe-groups">
-									<div id="submitdiv" class="qsm-ui-qe-group">
-										<label class="qsm-ui-switch-line ui-sortable-handle">
-											<input class="qsm-ui-switch" type="checkbox" name="question_status" id="qsm-question-status" value="1">
-											<span class="qsm-ui-switch-copy"><strong id="qsm-question-status-text"><?php esc_html_e( 'Published', 'quiz-master-next' ); ?></strong><span><?php esc_html_e( 'Unpublished questions are skipped.', 'quiz-master-next' ); ?></span></span>
-										</label>
-										<span id="qsm-question-id"></span>
-									</div>
-									<div class="qsm-ui-qe-group">
+									<div class="qsm-ui-qe-group qsm-ui-qe-config">
+										<h3 class="qsm-ui-qe-side-title"><?php esc_html_e( 'Question configuration', 'quiz-master-next' ); ?></h3>
 										<div class="submitbox" id="submitpost">
 											<div id="minor-publishing">
 												<div class="qsm-row qsm-ui-qe-field">
@@ -907,8 +903,14 @@ function qsm_options_questions_tab_content() {
 														<p class="hidden" id="question_type_info"></p>
 													</div>
 													<?php
+													$required_option = null;
 													foreach ( $simple_question_option as $qo_key => $single_option ) {
 														if ( qsm_is_core_question_option( $qo_key, $single_option, $core_simple_question_option ) ) {
+															// Core's Required switch goes under Question settings, next to Publish.
+															if ( 'required' === $qo_key ) {
+																$required_option = $single_option;
+																continue;
+															}
 															qsm_display_question_option_ui( $qo_key, $single_option );
 														} else {
 															qsm_display_question_option( $qo_key, $single_option );
@@ -918,6 +920,20 @@ function qsm_options_questions_tab_content() {
 															</div>
 														</div>
 													</div>
+									<div id="submitdiv" class="qsm-ui-qe-group qsm-ui-qe-settings">
+										<h3 class="qsm-ui-qe-side-title"><?php esc_html_e( 'Question settings', 'quiz-master-next' ); ?></h3>
+										<?php // The title stays the same; qsm-admin.js used to swap it between Published and Draft. ?>
+										<label class="qsm-ui-switch-line ui-sortable-handle">
+											<input class="qsm-ui-switch" type="checkbox" name="question_status" id="qsm-question-status" value="1">
+											<span class="qsm-ui-switch-copy"><strong><?php esc_html_e( 'Publish question', 'quiz-master-next' ); ?></strong><span><?php esc_html_e( 'Unpublished questions are skipped.', 'quiz-master-next' ); ?></span></span>
+										</label>
+										<span id="qsm-question-id"></span>
+										<?php
+										if ( $required_option ) {
+											qsm_display_question_option_ui( 'required', $required_option );
+										}
+										?>
+									</div>
 									<?php // Save and Cancel sit in the side column, above Category. Same ids as before (qsm-admin.js and the guided tour use #save-popup-button and #delete-action .deletion). ?>
 									<div id="qsm-question-publishing-action" class="qsm-ui-qe-group qsm-ui-qe-actions">
 										<div id="publishing-action" class="qsm-ui-row">
@@ -1912,7 +1928,8 @@ function qsm_options_questions_tab_template() {
 			<div class="qsm-ui-grow">
 				<strong class="question-content-text">{{data.question}}</strong>
 				<div class="qsm-ui-q-meta">
-					<span class="qsm-ui-q-id"><?php esc_html_e( 'ID:', 'quiz-master-next' ); ?> {{data.id}}</span>
+					<?php // Click copies the ID; the copy icon shows on hover and focus. ?>
+					<button type="button" class="qsm-ui-q-id qsm-ui-q-id-copy" data-copy="{{data.id}}" title="<?php esc_attr_e( 'Copy question ID', 'quiz-master-next' ); ?>"><span class="qsm-ui-q-id-text"><?php esc_html_e( 'ID:', 'quiz-master-next' ); ?> {{data.id}}</span><?php echo QSM_Admin_UI::icon( 'copy', 'qsm-ui-q-id-icon' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo QSM_Admin_UI::icon( 'check', 'qsm-ui-q-id-done' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
 					<# if ( data.typeName ) { #><span class="qsm-ui-type-tag">{{data.typeName}}</span><# } #>
 					<# _.each( data.categories, function( category ) { #><span class="qsm-ui-cat-chip">{{category}}</span><# } ); #>
 				</div>

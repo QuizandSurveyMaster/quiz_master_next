@@ -683,6 +683,16 @@
 	.qsm-ui .qsm-ui-board .qsm-ui-q-row .qsm-ui-item-actions { opacity: 1; }
 }
 .qsm-ui .qsm-ui-q-id { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--qsm-radius-sm); background: #eef1f6; color: var(--qsm-ink-2); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+/* The row ID is a copy button: the copy icon shows on hover and focus, a check once copied. */
+.qsm-ui button.qsm-ui-q-id-copy { gap: 4px; min-height: 0; margin: 0; border: 0; line-height: 1.5; cursor: copy; transition: background .15s, color .15s; }
+.qsm-ui button.qsm-ui-q-id-copy:hover { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui button.qsm-ui-q-id-copy:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 1px; }
+.qsm-ui .qsm-ui-q-id-copy .qsm-ui-icon { display: none; width: 13px; height: 13px; }
+.qsm-ui .qsm-ui-q-id-copy:hover .qsm-ui-q-id-icon { display: block; }
+.qsm-ui .qsm-ui-q-id-copy:focus-visible .qsm-ui-q-id-icon { display: block; }
+.qsm-ui .qsm-ui-q-id-copy.is-copied { background: var(--qsm-green-bg); color: var(--qsm-green); }
+.qsm-ui .qsm-ui-q-id-copy.is-copied .qsm-ui-q-id-icon { display: none; }
+.qsm-ui .qsm-ui-q-id-copy.is-copied .qsm-ui-q-id-done { display: block; }
 .qsm-ui .qsm-ui-q-select { position: static; visibility: visible; }
 .qsm-ui .qsm-ui-page-block.ui-sortable-helper { box-shadow: var(--qsm-shadow-pop); }
 .qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-inline-start: auto; border-color: transparent; background: none; color: var(--qsm-blue); }
@@ -798,6 +808,12 @@
 .qsm-ui .qsm-ui-qe-card #submitdiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #categorydiv.qsm-ui-qe-group, .qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group { margin: 0; border-width: 0; background: none; box-shadow: none; }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-groups > .qsm-ui-qe-group + .qsm-ui-qe-group { border-top: 1px solid var(--qsm-line-soft); }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-group #minor-publishing { display: grid; gap: 14px; padding: 0; }
+.qsm-ui .qsm-ui-qe-card .qsm-ui-qe-side-title { margin: 0 0 4px; padding: 0; color: var(--qsm-ink); font: 700 14px/1.4 var(--qsm-font); }
+/* Question settings: Publish and Required, switch on the right, a line between them. */
+.qsm-ui .qsm-ui-qe-card #submitdiv.qsm-ui-qe-settings { gap: 12px; border-top-width: 1px; }
+.qsm-ui .qsm-ui-qe-settings .qsm-ui-switch-line { flex-direction: row-reverse; justify-content: space-between; gap: 16px; }
+.qsm-ui .qsm-ui-qe-settings .qsm-ui-switch-copy { flex: 1; min-width: 0; }
+.qsm-ui .qsm-ui-qe-settings > .qsm-ui-qe-field { margin: 0; padding-top: 12px; border-top: 1px solid var(--qsm-line-soft); }
 .qsm-ui .qsm-ui-qe-card .qsm-ui-qe-group .qsm-ui-select { width: 100%; }
 .qsm-ui .qsm-ui-qe-card #categorydiv.qsm-ui-qe-group .qsm-ui-doc.qsm-question-doc { right: auto; }
 .qsm-ui .qsm-ui-qe-card #featureImagediv.qsm-ui-qe-group .inside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
