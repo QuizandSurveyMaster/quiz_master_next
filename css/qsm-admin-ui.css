@@ -927,6 +927,9 @@
 #modal-8.qsm-ui-popup #modal-8-title { color: var(--qsm-ink); opacity: 1; }
 #modal-8.qsm-ui-popup footer { margin: 0; }
 /* Top bar: search and Default Question Settings */
+.qsm-ui .qsm-ui-q-total { display: inline-flex; align-items: center; gap: 8px; min-height: var(--qsm-control-h-sm); padding: 0 6px 0 4px; border: 1px solid var(--qsm-line); border-radius: 999px; background: var(--qsm-surface); color: var(--qsm-ink-2); font: 500 13px/1.2 var(--qsm-font); }
+.qsm-ui .qsm-ui-q-total-icon { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-q-total-count { min-width: 24px; padding: 2px 8px; border-radius: 999px; background: var(--qsm-blue); color: #fff; font-weight: 700; font-size: 12px; text-align: center; }
 .qsm-ui .qsm-ui-q-controls .search-box { display: flex; align-items: center; gap: 10px; }
 .qsm-ui .question-controls .qsm-ui-q-search { width: 260px; }
 .qsm-ui .question-controls .qsm-ui-q-search .qsm-ui-input { width: 100%; min-height: var(--qsm-control-h-sm); height: var(--qsm-control-h-sm); margin: 0; }
