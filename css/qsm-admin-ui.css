@@ -568,9 +568,20 @@
 .qsm-ui .qsm-ui-question-card[data-collapsed] > header .qsm-ui-chev { transform: rotate(-90deg); }
 /* ---- Quiz edit frame: header (L-01) + tab bar (L-02) around every quiz tab ---- */
 /* Full width white bar, edge to edge across the admin content area like the header it replaced (.qsm-quiz-nav-bar). */
-.qsm-ui.qsm-ui-quiz-frame-header { margin: -10px -20px 0 -21px; padding: 18px 20px 16px; border-bottom: 1px solid var(--qsm-line); background: var(--qsm-surface); }
-.qsm-ui .qsm-ui-quiz-frame-shortcode { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; padding: 4px 0; }
-.qsm-ui .qsm-ui-quiz-frame-shortcode .qsm-ui-btn-icon { width: 30px; min-height: 30px; }
+.qsm-ui.qsm-ui-quiz-frame-header { margin: -10px -20px 0 -21px; padding: 14px 20px 0; border-bottom: 1px solid var(--qsm-line); background: var(--qsm-surface); }
+/* Header actions look like the old header links: no box, icon above a small label, underline on hover. Publish Quiz stays a button. */
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions { gap: 2px; }
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary) { flex-direction: column; gap: 4px; min-height: 0; padding: 6px 10px 5px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--qsm-muted); font: 500 12px/1.2 var(--qsm-font); }
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary) .qsm-ui-icon { width: 18px; height: 18px; color: var(--qsm-blue); }
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary):hover, .qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary):focus-visible { border-bottom-color: var(--qsm-blue); background: none; color: var(--qsm-blue); }
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn-primary { align-self: center; margin-inline-start: 8px; }
+/* Thin info bar under the title (status, shortcode), full width like the Reports page header. */
+.qsm-ui .qsm-ui-quiz-frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; margin: 12px -20px 0; padding: 7px 20px; border-top: 1px solid var(--qsm-line-soft); color: var(--qsm-muted); font-size: 12px; }
+.qsm-ui .qsm-ui-quiz-frame-meta { display: inline-flex; align-items: center; gap: 6px; }
+.qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-code { font-size: 12px; }
+.qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-status { gap: 6px; padding: 2px 9px; font-size: 11px; }
+.qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-status::before { width: 6px; height: 6px; box-shadow: none; }
+.qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-btn-icon { width: 26px; min-height: 26px; }
 .qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-header { margin: 0; }
 .qsm-ui .qsm-ui-quiz-frame-heading { min-width: 0; flex: 1 1 320px; }
 .qsm-ui .qsm-ui-quiz-title { color: var(--qsm-ink); overflow-wrap: anywhere; }
@@ -591,7 +602,7 @@
 /* Edit Name popup (micromodal #modal-3) */
 .qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-ui-input { width: 100%; }
 .qsm-popup.qsm-ui-popup .qsm-ui-edit-name-popup .qsm-popup__header { justify-content: space-between; }
-.qsm-ui.qsm-ui-quiz-tabs-nav { margin: 12px 0 20px; }
+.qsm-ui.qsm-ui-quiz-tabs-nav { margin: 8px 0 20px; }
 /* Core's alert box sits between the header and the tab bar; notices inside keep their own margins. */
 .qsm-ui-quiz-alerts.qsm-alerts { margin-top: 0; }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab:visited { color: var(--qsm-muted); }
@@ -599,6 +610,7 @@
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
 @media screen and (max-width: 782px) {
 	.qsm-ui.qsm-ui-quiz-frame-header { margin: -10px -12px 0 -10px; padding-inline: 10px; }
+	.qsm-ui .qsm-ui-quiz-frame-bar { margin-inline: -10px; padding-inline: 10px; }
 	.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions { width: 100%; }
 	.qsm-ui .qsm-ui-help-list.qsm-help-tab-dropdown-list { right: auto; left: 0; }
 }
