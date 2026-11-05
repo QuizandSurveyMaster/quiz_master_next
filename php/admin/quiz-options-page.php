@@ -121,23 +121,31 @@ function qsm_generate_quiz_options() {
 							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'View Quiz', 'quiz-master-next' ),
 								array(
-									'icon'  => 'ext',
-									'href'  => $post_permalink,
-									'class' => 'qsm-btn-quiz-edit',
-									'attrs' => array(
+									'variant' => 'primary',
+									'size'    => 'sm',
+									'icon'    => 'ext',
+									'href'    => $post_permalink,
+									'class'   => 'qsm-btn-quiz-edit',
+									'attrs'   => array(
 										'target' => '_blank',
 										'rel'    => 'noopener',
 									),
 								)
 							);
 						}
+						?>
+						<?php // Settings, Import & Export and Help as one group of icon buttons. ?>
+						<div class="qsm-ui-quiz-frame-tools">
+						<?php
 						if ( $edit_link ) {
 							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'Settings', 'quiz-master-next' ),
 								array(
-									'icon'  => 'settings',
-									'href'  => $edit_link,
-									'class' => 'qsm-btn-quiz-edit',
+									'icon'      => 'settings',
+									'icon_only' => true,
+									'href'      => $edit_link,
+									'class'     => 'qsm-btn-quiz-edit',
+									'attrs'     => array( 'title' => __( 'Settings', 'quiz-master-next' ) ),
 								)
 							);
 						}
@@ -145,10 +153,12 @@ function qsm_generate_quiz_options() {
 							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'Import & Export', 'quiz-master-next' ),
 								array(
-									'icon'  => 'download',
-									'href'  => admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import',
-									'class' => 'qsm-import-export-btn',
-									'attrs' => array(
+									'icon'      => 'download',
+									'icon_only' => true,
+									'href'      => admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import',
+									'class'     => 'qsm-import-export-btn',
+									'attrs'     => array(
+										'title'  => __( 'Import & Export', 'quiz-master-next' ),
 										'target' => '_blank',
 										'rel'    => 'noopener',
 									),
@@ -161,9 +171,13 @@ function qsm_generate_quiz_options() {
 							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'Help', 'quiz-master-next' ),
 								array(
-									'icon'  => 'info',
-									'class' => 'qsm-btn-quiz-edit qsm-help-tab-handle qsm-ui-help-toggle',
-									'attrs' => array( 'aria-haspopup' => 'true' ),
+									'icon'      => 'info',
+									'icon_only' => true,
+									'class'     => 'qsm-btn-quiz-edit qsm-help-tab-handle qsm-ui-help-toggle',
+									'attrs'     => array(
+										'title'         => __( 'Help', 'quiz-master-next' ),
+										'aria-haspopup' => 'true',
+									),
 								)
 							);
 							?>
@@ -179,6 +193,7 @@ function qsm_generate_quiz_options() {
 										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs/add-ons', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_addons' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
 										<a href="<?php echo esc_url( qsm_get_plugin_link( 'docs', 'quiz_editor', 'help_box', 'quizsurvey-helpbox_all_doc' ) ); ?>" rel="noopener" target="_black" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
 							</div>
+						</div>
 						</div>
 						<?php if ( ( 'draft' === $post_status || 'pending' === $post_status ) && current_user_can( 'publish_qsm_quizzes' ) ) : ?>
 							<form method="POST" action="" class="qsm-ui-inline-form">
@@ -208,6 +223,7 @@ function qsm_generate_quiz_options() {
 								echo QSM_Admin_UI::status( $status_object ? $status_object->label : $post_status, 'publish' === $post_status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								?>
 							</span>
+							<span class="qsm-ui-quiz-frame-sep" aria-hidden="true">|</span>
 						<?php endif; ?>
 						<span class="qsm-ui-quiz-frame-meta qsm-ui-quiz-frame-shortcode">
 							<?php esc_html_e( 'Shortcode:', 'quiz-master-next' ); ?>
