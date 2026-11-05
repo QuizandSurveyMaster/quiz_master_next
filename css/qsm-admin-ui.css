@@ -588,15 +588,21 @@
 /* ---- Quiz edit frame: header (L-01) + tab bar (L-02) around every quiz tab ---- */
 /* Full width white bar, edge to edge across the admin content area like the header it replaced (.qsm-quiz-nav-bar). */
 .qsm-ui.qsm-ui-quiz-frame-header { margin: -10px -20px 0 -21px; padding: 14px 20px 0; border-bottom: 1px solid var(--qsm-line); background: var(--qsm-surface); }
-/* Header actions look like the old header links: no box, icon above a small label, underline on hover. Publish Quiz stays a button. */
-.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions { gap: 2px; }
-.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary) { flex-direction: column; gap: 4px; min-height: 0; padding: 6px 10px 5px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--qsm-muted); font: 500 12px/1.2 var(--qsm-font); }
-.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary) .qsm-ui-icon { width: 18px; height: 18px; color: var(--qsm-blue); }
-.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary):hover, .qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn:not(.qsm-ui-btn-primary):focus-visible { border-bottom-color: var(--qsm-blue); background: none; color: var(--qsm-blue); }
-.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn-primary { align-self: center; margin-inline-start: 8px; }
+/* Header actions: small kit buttons. View Quiz is the blue one; Settings, Import & Export and Help are one bordered
+   group of icon buttons with a line between them. Publish Quiz (drafts) stays a primary button. */
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions { gap: 8px; }
+.qsm-ui.qsm-ui-quiz-frame-header .qsm-ui-page-actions .qsm-ui-btn-primary:visited { color: #fff; }
+.qsm-ui .qsm-ui-quiz-frame-tools { display: inline-flex; align-items: stretch; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: var(--qsm-surface); }
+.qsm-ui .qsm-ui-quiz-frame-tools > .qsm-ui-btn, .qsm-ui .qsm-ui-quiz-frame-tools > .qsm-ui-help-menu > .qsm-ui-btn { width: 36px; min-height: calc(var(--qsm-control-h-sm) - 2px); border: 0; border-radius: 0; color: var(--qsm-ink-2); }
+.qsm-ui .qsm-ui-quiz-frame-tools > :is(.qsm-ui-btn, .qsm-ui-help-menu) + :is(.qsm-ui-btn, .qsm-ui-help-menu) { border-left: 1px solid var(--qsm-line); }
+.qsm-ui .qsm-ui-quiz-frame-tools > .qsm-ui-btn:first-child, .qsm-ui .qsm-ui-quiz-frame-tools > .qsm-ui-help-menu:first-child > .qsm-ui-btn { border-radius: var(--qsm-radius) 0 0 var(--qsm-radius); }
+.qsm-ui .qsm-ui-quiz-frame-tools > .qsm-ui-help-menu:last-child > .qsm-ui-btn { border-radius: 0 var(--qsm-radius) var(--qsm-radius) 0; }
+.qsm-ui .qsm-ui-quiz-frame-tools .qsm-ui-help-toggle { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-quiz-frame-tools .qsm-ui-btn:hover { background: var(--qsm-surface-2); color: var(--qsm-blue); }
 /* Thin info bar under the title (status, shortcode), full width like the Reports page header. */
-.qsm-ui .qsm-ui-quiz-frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; margin: 12px -20px 0; padding: 7px 20px; border-top: 1px solid var(--qsm-line-soft); color: var(--qsm-muted); font-size: 12px; }
+.qsm-ui .qsm-ui-quiz-frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 12px -20px 0; padding: 7px 20px; border-top: 1px solid var(--qsm-line-soft); color: var(--qsm-muted); font-size: 12px; }
 .qsm-ui .qsm-ui-quiz-frame-meta { display: inline-flex; align-items: center; gap: 6px; }
+.qsm-ui .qsm-ui-quiz-frame-sep { color: var(--qsm-line); }
 .qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-code { font-size: 12px; }
 .qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-status { gap: 6px; padding: 2px 9px; font-size: 11px; }
 .qsm-ui .qsm-ui-quiz-frame-meta .qsm-ui-status::before { width: 6px; height: 6px; box-shadow: none; }
