@@ -112,10 +112,6 @@ function qsm_generate_quiz_options() {
 									'attrs'     => array( 'title' => __( 'Edit Name', 'quiz-master-next' ) ),
 								)
 							);
-							if ( $post_status ) {
-								$status_object = get_post_status_object( $post_status );
-								echo QSM_Admin_UI::status( $status_object ? $status_object->label : $post_status, 'publish' === $post_status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-							}
 							?>
 						</div>
 					</div>
@@ -201,6 +197,38 @@ function qsm_generate_quiz_options() {
 						<?php endif; ?>
 					</div>
 				</div>
+				<?php if ( $quiz_id ) : ?>
+					<?php // Thin info bar under the title, like the Reports pages: quiz status and the shortcode. ?>
+					<div class="qsm-ui-quiz-frame-bar qsm-ui-text">
+						<?php if ( $post_status ) : ?>
+							<span class="qsm-ui-quiz-frame-meta">
+								<?php
+								esc_html_e( 'Status:', 'quiz-master-next' );
+								$status_object = get_post_status_object( $post_status );
+								echo QSM_Admin_UI::status( $status_object ? $status_object->label : $post_status, 'publish' === $post_status ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								?>
+							</span>
+						<?php endif; ?>
+						<span class="qsm-ui-quiz-frame-meta qsm-ui-quiz-frame-shortcode">
+							<?php esc_html_e( 'Shortcode:', 'quiz-master-next' ); ?>
+							<code class="qsm-ui-code" id="qsm-ui-quiz-shortcode">[qsm quiz=<?php echo esc_html( $quiz_id ); ?>]</code>
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Copy shortcode', 'quiz-master-next' ),
+								array(
+									'icon'      => 'copy',
+									'icon_only' => true,
+									'class'     => 'qsm-ui-quiz-shortcode-copy',
+									'attrs'     => array(
+										'title'           => __( 'Copy shortcode', 'quiz-master-next' ),
+										'data-qsm-ui-copy' => '#qsm-ui-quiz-shortcode',
+									),
+								)
+							);
+							?>
+						</span>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="qsm-alerts-placeholder"></div>
 			<!-- Shows warnings, alerts then tab content -->
@@ -270,24 +298,6 @@ function qsm_generate_quiz_options() {
 							<?php
 						}
 						?>
-						<?php // The quiz shortcode sits at the end of the tab bar. ?>
-						<div class="qsm-ui-quiz-frame-shortcode">
-							<code class="qsm-ui-code" id="qsm-ui-quiz-shortcode">[qsm quiz=<?php echo esc_html( $quiz_id ); ?>]</code>
-							<?php
-							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-								__( 'Copy shortcode', 'quiz-master-next' ),
-								array(
-									'icon'      => 'copy',
-									'icon_only' => true,
-									'class'     => 'qsm-ui-quiz-shortcode-copy',
-									'attrs'     => array(
-										'title'           => __( 'Copy shortcode', 'quiz-master-next' ),
-										'data-qsm-ui-copy' => '#qsm-ui-quiz-shortcode',
-									),
-								)
-							);
-							?>
-						</div>
 					</div>
 				</nav>
 				<div class="qsm_tab_content">
