@@ -11,6 +11,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'qsm_neutralize_shortcode_brackets' ) ) {
+	/**
+	 * Neutralise square brackets in submitter-supplied values.
+	 *
+	 * Quiz answers, contact fields and comments are stored from unauthenticated
+	 * input and later interpolated into the results-page output buffer, which is
+	 * run through do_shortcode(). strip_shortcodes() alone is not enough: WordPress
+	 * core treats the escaped form [[tag]] as an escaped shortcode and returns the
+	 * literal [tag], so a double-bracketed shortcode survives sanitisation and then
+	 * executes on the results page. Encoding the brackets to their HTML entities
+	 * keeps the value readable (browsers render &#91;/&#93; as [ / ]) while ensuring
+	 * do_shortcode() can never match it. htmlspecialchars_decode(), used on several
+	 * render paths, does not decode numeric entities, so the encoding survives to the
+	 * shortcode pass.
+	 *
+	 * @param string $value Raw submitter-supplied value.
+	 * @return string Value with [ and ] encoded as &#91; and &#93;.
+	 */
+	function qsm_neutralize_shortcode_brackets( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $value );
+	}
+}
+
+if ( ! function_exists( 'qsm_strip_and_neutralize_shortcodes' ) ) {
+	/**
+	 * Strip shortcodes from a submitter value and neutralise any surviving brackets.
+	 *
+	 * The two steps always go together on an unauthenticated-input storage sink, so
+	 * they are kept in one place: strip_shortcodes() removes known shortcodes and
+	 * qsm_neutralize_shortcode_brackets() then encodes the brackets that the [[tag]]
+	 * escape form leaves behind. See qsm_neutralize_shortcode_brackets() for why.
+	 *
+	 * @param string $value Already-sanitised submitter value.
+	 * @return string Value safe to store and later pass through do_shortcode().
+	 */
+	function qsm_strip_and_neutralize_shortcodes( $value ) {
+		return qsm_neutralize_shortcode_brackets( strip_shortcodes( $value ) );
+	}
+}
+
+if ( ! function_exists( 'qsm_sanitize_submitted_comment' ) ) {
+	/**
+	 * Sanitise an unauthenticated quiz/question comment for storage.
+	 *
+	 * Mirrors the historical comment handling (textarea sanitise + htmlspecialchars)
+	 * and adds bracket neutralisation on the outside so the encoded entities are not
+	 * themselves re-encoded by htmlspecialchars().
+	 *
+	 * @param string $value Raw (unslashed) comment value.
+	 * @return string Value safe to store.
+	 */
+	function qsm_sanitize_submitted_comment( $value ) {
+		return qsm_neutralize_shortcode_brackets( htmlspecialchars( strip_shortcodes( sanitize_textarea_field( $value ) ), ENT_QUOTES ) );
+	}
+}
+
 // Template variable files
 require 'template-variables/qsm-tempvar-question-answers.php';
 // Template variable files for backward compatibility ( @since QSM 7.3.8 )
