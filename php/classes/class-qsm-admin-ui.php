@@ -13,9 +13,6 @@
  * Nothing is styled until markup sits inside a `.qsm-ui` wrapper, so screens
  * opt in one block at a time and add-on output keeps its current look.
  *
- * The full reference, with every component, is the hidden "QSM UI Kit" admin
- * page: wp-admin/admin.php?page=qsm_ui_kit
- *
  * @package QSM
  */
 
