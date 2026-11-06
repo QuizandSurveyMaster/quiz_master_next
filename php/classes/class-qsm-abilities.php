@@ -252,7 +252,7 @@ class QSM_Abilities {
 				'shortcode'   => array( 'type' => 'string', 'description' => __( 'Shortcode that renders the quiz, e.g. [qsm quiz=12].', 'quiz-master-next' ) ),
 				'block'       => array( 'type' => 'string', 'description' => __( 'Serialized qsm/quiz block for the block editor.', 'quiz-master-next' ) ),
 				'post_id'     => array( 'type' => 'integer', 'description' => __( 'ID of the quiz\'s own qsm_quiz post (0 if none).', 'quiz-master-next' ) ),
-				'post_status' => array( 'type' => 'string', 'description' => __( 'Status of the quiz\'s own post. The shortcode and block work whatever this is.', 'quiz-master-next' ) ),
+				'post_status' => array( 'type' => 'string', 'description' => __( 'Status of the quiz\'s own post. A draft quiz still renders through the shortcode or block but does NOT record responses; it must be "publish" to collect results.', 'quiz-master-next' ) ),
 				'permalink'   => array( 'type' => 'string', 'description' => __( 'Public URL of the quiz\'s own post, empty until it is published.', 'quiz-master-next' ) ),
 				'edit_url'    => array( 'type' => 'string', 'description' => __( 'wp-admin URL of the quiz editor.', 'quiz-master-next' ) ),
 			),
@@ -346,14 +346,14 @@ class QSM_Abilities {
 			),
 			'create-quiz'          => array(
 				'label'         => __( 'Create Quiz', 'quiz-master-next' ),
-				'description'   => __( 'Creates a new quiz or survey with QSM\'s default settings and returns its ID with the shortcode and block to place it on a page. Add questions next with create-question.', 'quiz-master-next' ),
+				'description'   => __( 'Creates a new quiz or survey with QSM\'s default settings, published so it records responses, and returns its ID with the shortcode and block to place it on a page. Add questions next with create-question.', 'quiz-master-next' ),
 				'category'      => 'qsm-quizzes',
 				'input_schema'  => $this->make_input_schema(
 					array_merge(
 						array(
 							'quiz_name'           => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'Name of the quiz or survey.', 'quiz-master-next' ) ),
 							'collect_contact'     => array( 'type' => 'boolean', 'default' => false, 'description' => __( 'Ask takers for their name and email.', 'quiz-master-next' ) ),
-							'publish'             => array( 'type' => 'boolean', 'default' => false, 'description' => __( 'Publish the quiz\'s own post so it has a public URL. Not needed to use the shortcode or block.', 'quiz-master-next' ) ),
+							'publish'             => array( 'type' => 'boolean', 'default' => true, 'description' => __( 'Publish the quiz (default true). QSM does not record responses for a draft quiz, even when it is placed on a page. Pass false to keep it a draft while you build it.', 'quiz-master-next' ) ),
 						),
 						$quiz_settings_properties
 					),
@@ -364,6 +364,7 @@ class QSM_Abilities {
 					'properties' => array(
 						'quiz_id'   => array( 'type' => 'integer', 'description' => __( 'ID of the new quiz.', 'quiz-master-next' ) ),
 						'placement' => $placement_output,
+						'warnings'  => array( 'type' => 'array', 'items' => array( 'type' => 'string' ), 'description' => __( 'Problems that did not stop the quiz being created, e.g. it could not be published.', 'quiz-master-next' ) ),
 					),
 					'required'   => array( 'quiz_id' ),
 				),
@@ -380,6 +381,7 @@ class QSM_Abilities {
 						array(
 							'quiz_id'         => $quiz_id_input,
 							'quiz_name'       => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'New name of the quiz.', 'quiz-master-next' ) ),
+							'publish'         => array( 'type' => 'boolean', 'description' => __( 'true publishes the quiz so it records responses; false returns it to draft.', 'quiz-master-next' ) ),
 							'results_message' => array( 'type' => 'string', 'description' => __( 'HTML shown on the default results page (the one with no conditions). Supports QSM template variables such as %CORRECT_SCORE% and %QUESTIONS_ANSWERS%.', 'quiz-master-next' ) ),
 						),
 						$quiz_settings_properties
@@ -397,7 +399,7 @@ class QSM_Abilities {
 				),
 				'execute'       => 'execute_update_quiz_settings',
 				'permission'    => 'permission_edit_quiz',
-				'annotations'   => $this->write_annotations( true, true ),
+				'annotations'   => $this->write_annotations( false, true ),
 			),
 
 			// ----- Questions -----
@@ -459,7 +461,7 @@ class QSM_Abilities {
 				'output_schema' => $question_output,
 				'execute'       => 'execute_update_question',
 				'permission'    => 'permission_edit_question',
-				'annotations'   => $this->write_annotations( true, true ),
+				'annotations'   => $this->write_annotations( false, true ),
 			),
 			'delete-question'      => array(
 				'label'         => __( 'Delete Question', 'quiz-master-next' ),
@@ -512,8 +514,8 @@ class QSM_Abilities {
 									'correct'       => array( 'type' => array( 'integer', 'null' ) ),
 									'total'         => array( 'type' => array( 'integer', 'null' ) ),
 									'passed'        => array( 'type' => array( 'boolean', 'null' ), 'description' => __( 'Null unless pass_score was given.', 'quiz-master-next' ) ),
-									'name'          => array( 'type' => 'string' ),
-									'email'         => array( 'type' => 'string' ),
+									'name'          => array( 'type' => 'string', 'description' => __( 'Empty when the quiz did not collect it.', 'quiz-master-next' ) ),
+									'email'         => array( 'type' => 'string', 'description' => __( 'Empty when the quiz did not collect it.', 'quiz-master-next' ) ),
 									'user_id'       => array( 'type' => 'integer', 'description' => __( '0 for guests.', 'quiz-master-next' ) ),
 									'submitted_at'  => array( 'type' => 'string', 'description' => __( 'Submission date/time (site time).', 'quiz-master-next' ) ),
 									'details_url'   => array( 'type' => 'string', 'description' => __( 'wp-admin URL of the full result.', 'quiz-master-next' ) ),
@@ -712,21 +714,51 @@ class QSM_Abilities {
 			return new WP_Error( 'qsm_create_quiz_failed', __( 'The quiz could not be created.', 'quiz-master-next' ), array( 'status' => 500 ) );
 		}
 
-		if ( ! empty( $input['publish'] ) ) {
-			$post_id  = intval( $creator->get_quiz_post_id() );
-			$post_obj = get_post_type_object( 'qsm_quiz' );
-			if ( $post_id && $post_obj && current_user_can( $post_obj->cap->publish_posts ) ) {
-				wp_update_post( array(
-					'ID'          => $post_id,
-					'post_status' => 'publish',
-				) );
+		// Published by default: QSM renders a draft quiz but does not record its
+		// responses, so a quiz an agent places on a page would collect nothing.
+		$warnings = array();
+		if ( ! isset( $input['publish'] ) || ! empty( $input['publish'] ) ) {
+			$published = $this->set_quiz_published( $quiz_id, true );
+			if ( is_wp_error( $published ) ) {
+				$warnings[] = $published->get_error_message();
 			}
 		}
 
 		return array(
 			'quiz_id'   => $quiz_id,
 			'placement' => $this->get_placement( $quiz_id ),
+			'warnings'  => $warnings,
 		);
+	}
+
+	/**
+	 * Publishes or unpublishes a quiz's own post.
+	 *
+	 * The post status decides whether QSM records submissions: a draft quiz still
+	 * renders through the shortcode or block, but its responses are discarded.
+	 *
+	 * @since  11.3.1
+	 * @param  int  $quiz_id The quiz ID.
+	 * @param  bool $publish True to publish, false to return it to draft.
+	 * @return true|WP_Error
+	 */
+	private function set_quiz_published( $quiz_id, $publish ) {
+		$post_id  = function_exists( 'qsm_get_post_id_for_quiz' ) ? intval( qsm_get_post_id_for_quiz( $quiz_id ) ) : 0;
+		$post_obj = get_post_type_object( 'qsm_quiz' );
+		if ( ! $post_id || ! $post_obj ) {
+			return new WP_Error( 'qsm_quiz_post_missing', __( 'The quiz has no post to publish.', 'quiz-master-next' ), array( 'status' => 500 ) );
+		}
+		if ( ! current_user_can( $post_obj->cap->publish_posts ) ) {
+			return new WP_Error( 'qsm_cannot_publish', __( 'You cannot publish quizzes, so the quiz stays a draft and will not record responses until an editor publishes it.', 'quiz-master-next' ), array( 'status' => 403 ) );
+		}
+		$result = wp_update_post(
+			array(
+				'ID'          => $post_id,
+				'post_status' => $publish ? 'publish' : 'draft',
+			),
+			true
+		);
+		return is_wp_error( $result ) ? $result : true;
 	}
 
 	/**
@@ -783,10 +815,22 @@ class QSM_Abilities {
 			$updated[] = 'results_message';
 		}
 
+		if ( isset( $input['publish'] ) ) {
+			$published = $this->set_quiz_published( $quiz_id, ! empty( $input['publish'] ) );
+			if ( is_wp_error( $published ) ) {
+				return $published;
+			}
+			$updated[] = 'publish';
+		}
+
+		$settings              = $this->get_typed_quiz_settings( $quiz_options );
+		$placement             = $this->get_placement( $quiz_id );
+		$settings['published'] = 'publish' === $placement['post_status'];
+
 		return array(
 			'quiz_id'  => $quiz_id,
 			'updated'  => array_values( array_unique( $updated ) ),
-			'settings' => $this->get_typed_quiz_settings( $quiz_options ),
+			'settings' => $settings,
 		);
 	}
 
@@ -1016,8 +1060,8 @@ class QSM_Abilities {
 				'correct'       => $graded ? intval( $row->correct ) : null,
 				'total'         => $graded ? intval( $row->total ) : null,
 				'passed'        => $graded && null !== $pass_score ? intval( $row->correct_score ) >= $pass_score : null,
-				'name'          => (string) $row->name,
-				'email'         => (string) $row->email,
+				'name'          => $this->contact_value( $row->name ),
+				'email'         => $this->contact_value( $row->email ),
 				'user_id'       => intval( $row->user ),
 				'submitted_at'  => (string) $row->time_taken_real,
 				'details_url'   => admin_url( 'admin.php?page=qsm_quiz_result_details&result_id=' . intval( $row->result_id ) ),
@@ -1143,7 +1187,10 @@ class QSM_Abilities {
 	 * Annotations for abilities that write.
 	 *
 	 * @since  11.3.1
-	 * @param  bool $destructive Whether the ability overwrites or removes existing data.
+	 * Core's REST run controller maps destructive + idempotent to the DELETE method,
+	 * so only abilities that remove data are marked destructive; updates use POST.
+	 *
+	 * @param  bool $destructive Whether the ability removes data.
 	 * @param  bool $idempotent  Whether repeating the call has no further effect.
 	 * @return array
 	 */
@@ -1171,6 +1218,11 @@ class QSM_Abilities {
 
 		if ( ! empty( $required ) ) {
 			$schema['required'] = $required;
+		} else {
+			// Core rejects a missing input as "not of type object" unless the schema
+			// has a top-level default, so abilities whose fields are all optional
+			// (list-quizzes) can be called with no input at all.
+			$schema['default'] = array();
 		}
 
 		return $schema;
@@ -1453,6 +1505,19 @@ class QSM_Abilities {
 			$sql .= $wpdb->prepare( " AND time_taken_real {$operator} %s", $date->format( 'Y-m-d H:i:s' ) );
 		}
 		return $sql;
+	}
+
+	/**
+	 * A contact column from mlw_results. QSM writes the literal "None" when the
+	 * quiz did not collect that field, which reads as a real name to an agent.
+	 *
+	 * @since  11.3.1
+	 * @param  string $value Stored value.
+	 * @return string
+	 */
+	private function contact_value( $value ) {
+		$value = (string) $value;
+		return 'None' === $value ? '' : $value;
 	}
 
 	/**
