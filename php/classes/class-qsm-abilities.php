@@ -420,9 +420,10 @@ class QSM_Abilities {
 						'quiz_id'       => $quiz_id_input,
 						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text.', 'quiz-master-next' ) ),
 						'question_type' => $this->get_question_type_schema( true ),
+						'question_title' => array( 'type' => 'string', 'description' => __( 'Optional heading shown above the question on the quiz and in results. The question text goes in question_name.', 'quiz-master-next' ) ),
 						'answers'       => $answers_input,
 						'settings'      => $question_settings_input,
-						'page'          => array( 'type' => 'integer', 'minimum' => 0, 'description' => __( 'Zero-based page to add the question to. Defaults to the last page.', 'quiz-master-next' ) ),
+						'page'          => array( 'type' => 'integer', 'minimum' => 0, 'description' => __( 'Zero-based page to add the question to. Defaults to the last page. Ignored while the quiz has no page layout yet (a new quiz): its questions then show as one page in creation order.', 'quiz-master-next' ) ),
 					),
 					array( 'quiz_id', 'question_name' )
 				),
@@ -447,6 +448,7 @@ class QSM_Abilities {
 						'question_id'   => $question_id_input,
 						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text.', 'quiz-master-next' ) ),
 						'question_type' => $this->get_question_type_schema( false ),
+						'question_title' => array( 'type' => 'string', 'description' => __( 'Optional heading shown above the question on the quiz and in results. The question text goes in question_name.', 'quiz-master-next' ) ),
 						'answers'       => $answers_input,
 						'answer_info'   => array( 'type' => 'string', 'description' => __( 'Correct answer explanation shown after answering.', 'quiz-master-next' ) ),
 						'hint'          => array( 'type' => 'string', 'description' => __( 'Hint shown with the question.', 'quiz-master-next' ) ),
@@ -671,6 +673,8 @@ class QSM_Abilities {
 			$this->map_quiz_settings_input( $input )
 		);
 		$quiz_options = array_replace( $defaults, is_array( $global_settings ) ? $global_settings : array(), $explicit );
+		// Same filter the wp-admin wizard applies, so add-ons see quizzes created here too.
+		$quiz_options = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 
 		$contact_form = array();
 		if ( $collect_contact && class_exists( 'QSM_Contact_Manager' ) ) {
@@ -830,10 +834,16 @@ class QSM_Abilities {
 			'quiz_id' => $quiz_id,
 			'name'    => sanitize_text_field( $input['question_name'] ),
 			'type'    => $type,
+			// A quiz with no page layout yet renders by question_order, so keep creation order.
+			'order'   => $this->next_question_order( $quiz_id ),
 		);
 
 		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $this->normalize_answers( $input['answers'] ) : array();
+		$answers  = $this->answers_for_type( $type, $data['name'], $answers );
 		$settings = isset( $input['settings'] ) && is_array( $input['settings'] ) ? $this->sanitize_question_settings( $input['settings'] ) : array();
+		if ( isset( $input['question_title'] ) ) {
+			$settings['question_title'] = sanitize_text_field( $input['question_title'] );
+		}
 
 		try {
 			$question_id = QSM_Questions::create_question( $data, $answers, $settings );
@@ -899,9 +909,14 @@ class QSM_Abilities {
 			}
 		}
 
+		$answers = $this->answers_for_type( $type, $data['name'], $answers );
+
 		$settings = (array) $question['settings'];
 		if ( isset( $input['settings'] ) && is_array( $input['settings'] ) ) {
 			$settings = array_merge( $settings, $this->sanitize_question_settings( $input['settings'] ) );
+		}
+		if ( isset( $input['question_title'] ) ) {
+			$settings['question_title'] = sanitize_text_field( $input['question_title'] );
 		}
 
 		try {
@@ -919,8 +934,11 @@ class QSM_Abilities {
 	/**
 	 * Deletes a question and removes it from its quiz's pages.
 	 *
-	 * The row is soft-deleted (deleted = 1), the same as the question bank does,
-	 * so recorded results that reference it still render.
+	 * The row is soft-deleted (deleted = 1) through QSM_Questions::delete_question(),
+	 * so it can be restored and recorded results still render. Unlike the
+	 * "delete from database" action in wp-admin, linked copies in other quizzes
+	 * are left alone; the link to this question is removed from them instead, so
+	 * saving a linked copy later cannot write this row back to deleted = 0.
 	 *
 	 * @since  11.3.1
 	 * @param  array $input Validated input data.
@@ -940,6 +958,7 @@ class QSM_Abilities {
 		}
 
 		$this->remove_question_from_layout( intval( $question['quiz_id'] ), $question_id );
+		$this->unlink_question( $question_id, (string) $question['linked_question'] );
 
 		return array(
 			'question_id' => $question_id,
@@ -1375,9 +1394,13 @@ class QSM_Abilities {
 		$pages = QSM_Results_Pages::load_pages( $quiz_id );
 		$pages = is_array( $pages ) ? array_values( $pages ) : array();
 
+		// Mirrors QSM_Results_Pages::generate_pages(): the fallback shown when no
+		// conditional page matches is the LAST page that either has no conditions
+		// or carries the default mark.
 		$target = null;
 		foreach ( $pages as $index => $page ) {
-			if ( empty( $page['conditions'] ) ) {
+			$is_marked = isset( $page['default_mark'] ) && intval( $page['default_mark'] ) === $index + 1;
+			if ( empty( $page['conditions'] ) || $is_marked ) {
 				$target = $index;
 			}
 		}
@@ -1387,7 +1410,9 @@ class QSM_Abilities {
 		}
 		$pages[ $target ]['page'] = wp_kses_post( $message );
 
-		// save_pages() reads these keys on every page without checking them.
+		// All pages go back through save_pages(), the same call the Results Pages tab
+		// makes on every save, so the other pages get exactly the sanitising they
+		// get there. save_pages() reads these keys on every page without checking them.
 		foreach ( $pages as $index => $page ) {
 			$pages[ $index ] = wp_parse_args( $page, array(
 				'conditions'   => array(),
@@ -1416,7 +1441,8 @@ class QSM_Abilities {
 				continue;
 			}
 			$date = DateTime::createFromFormat( '!Y-m-d', (string) $input[ $key ] );
-			if ( ! $date ) {
+			// Round-trip check: createFromFormat() silently rolls 2026-02-31 over to March.
+			if ( ! $date || $date->format( 'Y-m-d' ) !== (string) $input[ $key ] ) {
 				/* translators: %s: input field name. */
 				return new WP_Error( 'qsm_invalid_date', sprintf( __( '%s must be a date in YYYY-MM-DD format.', 'quiz-master-next' ), $key ), array( 'status' => 400 ) );
 			}
@@ -1506,13 +1532,39 @@ class QSM_Abilities {
 	/**
 	 * Unserialises a value without allowing objects.
 	 *
+	 * allowed_classes:false stops instantiation but still yields
+	 * __PHP_Incomplete_Class placeholders, so any object is dropped.
+	 *
 	 * @since  11.3.1
 	 * @param  mixed $value Possibly serialised value.
 	 * @return mixed
 	 */
 	private function safe_unserialize( $value ) {
 		if ( is_string( $value ) && is_serialized( $value ) ) {
-			return @unserialize( trim( $value ), array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged -- allowed_classes:false blocks object injection
+			$value = @unserialize( trim( $value ), array( 'allowed_classes' => false ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged -- allowed_classes:false blocks object injection
+		}
+		return $this->drop_objects( $value );
+	}
+
+	/**
+	 * Removes objects from a value, at any depth.
+	 *
+	 * @since  11.3.1
+	 * @param  mixed $value Value to clean.
+	 * @return mixed Null for an object.
+	 */
+	private function drop_objects( $value ) {
+		if ( is_object( $value ) ) {
+			return null;
+		}
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => $item ) {
+				if ( is_object( $item ) ) {
+					unset( $value[ $key ] );
+				} else {
+					$value[ $key ] = $this->drop_objects( $item );
+				}
+			}
 		}
 		return $value;
 	}
@@ -1621,6 +1673,66 @@ class QSM_Abilities {
 			}
 			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 		}
+	}
+
+	/**
+	 * Returns the question_order for a new question: after the quiz's last one.
+	 *
+	 * @since  11.3.1
+	 * @param  int $quiz_id The quiz ID.
+	 * @return int
+	 */
+	private function next_question_order( $quiz_id ) {
+		global $wpdb;
+		$max = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(question_order) FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0", $quiz_id ) );
+		return intval( $max ) + 1;
+	}
+
+	/**
+	 * Applies the answer rules the question editor enforces for some types.
+	 *
+	 * Opt-in (8) stores its own text as the single answer, as qsm_rest_save_question() does.
+	 *
+	 * @since  11.3.1
+	 * @param  string $type    Question type code.
+	 * @param  string $name    Question text.
+	 * @param  array  $answers Answers in QSM array format.
+	 * @return array
+	 */
+	private function answers_for_type( $type, $name, $answers ) {
+		if ( '8' === (string) $type ) {
+			return array( array( $name, 0, 1 ) );
+		}
+		return $answers;
+	}
+
+	/**
+	 * Removes a deleted question from the linked_question list of its linked copies.
+	 *
+	 * create_save_question() writes every row named in linked_question with
+	 * deleted = 0, so a link left in place would undelete this question the next
+	 * time a copy is saved. Only copies in quizzes the user may edit are changed.
+	 *
+	 * @since  11.3.1
+	 * @param  int    $question_id     The deleted question.
+	 * @param  string $linked_question Its linked_question column.
+	 * @return void
+	 */
+	private function unlink_question( $question_id, $linked_question ) {
+		global $wpdb;
+		$table    = $wpdb->prefix . 'mlw_questions';
+		$siblings = array_diff( array_filter( array_map( 'intval', explode( ',', $linked_question ) ) ), array( $question_id ) );
+		if ( function_exists( 'qsm_filter_editable_question_ids' ) ) {
+			$siblings = qsm_filter_editable_question_ids( $siblings );
+		} elseif ( ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+			$siblings = array();
+		}
+		foreach ( $siblings as $sibling_id ) {
+			$links = (string) $wpdb->get_var( $wpdb->prepare( "SELECT linked_question FROM {$table} WHERE question_id = %d", $sibling_id ) );
+			$links = array_diff( array_filter( array_map( 'intval', explode( ',', $links ) ) ), array( $question_id ) );
+			$wpdb->update( $table, array( 'linked_question' => implode( ',', $links ) ), array( 'question_id' => intval( $sibling_id ) ), array( '%s' ), array( '%d' ) );
+		}
+		$wpdb->update( $table, array( 'linked_question' => '' ), array( 'question_id' => intval( $question_id ) ), array( '%s' ), array( '%d' ) );
 	}
 
 	/**
