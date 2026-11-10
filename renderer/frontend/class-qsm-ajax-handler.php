@@ -142,9 +142,14 @@ class QSM_Ajax_Handler {
 		// Get questions from database
 		$questions = array();
 		foreach ( $question_ids as $question_id ) {
+			// Security: the nonce only proves the visitor could see $quiz_id, so only that
+			// quiz's questions may be rendered. The full renderer's load_questions() applies
+			// the same quiz_id bound; without it a public quiz's nonce could render questions
+			// from any other (private, draft or password-protected) quiz by ID.
 			$question = $wpdb->get_row( $wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d AND deleted = 0",
-				$question_id
+				"SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d AND quiz_id = %d AND deleted = 0",
+				$question_id,
+				$quiz_id
 			), ARRAY_A );
 
 			if ( ! $question ) {
