@@ -358,7 +358,8 @@ class QSM_Abilities {
 			array(),
 			'',
 			isset( $input['limit'] ) ? intval( $input['limit'] ) : '',
-			isset( $input['offset'] ) ? intval( $input['offset'] ) : '',
+			// A limit with no offset would otherwise build "LIMIT , n".
+			isset( $input['offset'] ) ? intval( $input['offset'] ) : ( isset( $input['limit'] ) ? 0 : '' ),
 			$where
 		);
 
