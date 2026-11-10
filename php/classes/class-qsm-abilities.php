@@ -174,10 +174,12 @@ class QSM_Abilities {
 
 						return $result;
 					},
-					'permission_callback' => function() use ( $instance, $ability_name, $permission_method ) {
-						// Check the permission directly
+					'permission_callback' => function( $input = null ) use ( $instance, $ability_name, $permission_method ) {
+						$input = is_array( $input ) ? $input : array();
+
+						// The input is passed so per-quiz ownership can be checked, not only the flat capability.
 						if ( method_exists( $instance, $permission_method ) ) {
-							$has_permission = call_user_func( array( $instance, $permission_method ) );
+							$has_permission = call_user_func( array( $instance, $permission_method ), $input );
 						} else {
 							$has_permission = false;
 						}
@@ -186,11 +188,13 @@ class QSM_Abilities {
 						 * Filter the permission check result.
 						 *
 						 * @since 9.1.0
+						 * @since 11.3.1 Added the $input parameter.
 						 * @param bool   $has_permission Whether the user has permission.
 						 * @param string $ability_name   The ability name.
+						 * @param array  $input          The input data.
 						 */
-						$has_permission = apply_filters( 'qsm_ability_permission', $has_permission, $ability_name );
-						$has_permission = apply_filters( "qsm_ability_permission_{$ability_name}", $has_permission );
+						$has_permission = apply_filters( 'qsm_ability_permission', $has_permission, $ability_name, $input );
+						$has_permission = apply_filters( "qsm_ability_permission_{$ability_name}", $has_permission, $input );
 
 						return $has_permission;
 					},
@@ -258,7 +262,7 @@ class QSM_Abilities {
 			// ----- Quizzes -----
 			'list-quizzes' => array(
 				'label'        => __( 'List Quizzes', 'quiz-master-next' ),
-				'description'  => __( 'Returns a list of all quizzes and surveys. Use this to discover available quizzes before fetching details or results. Supports optional ordering and pagination.', 'quiz-master-next' ),
+				'description'  => __( 'Returns a list of the quizzes and surveys the current user can edit. Use this to discover available quizzes before fetching details or results. Supports optional ordering and pagination.', 'quiz-master-next' ),
 				'category'     => 'qsm-quizzes',
 				'input_schema' => $this->make_input_schema( array(
 					'order_by' => array( 'type' => 'string', 'enum' => array( 'quiz_id', 'title', 'last_activity', 'quiz_views', 'quiz_taken' ), 'default' => 'quiz_id', 'description' => __( 'Column to sort results by.', 'quiz-master-next' ) ),
@@ -283,7 +287,7 @@ class QSM_Abilities {
 					'quiz_settings' => array( 'type' => 'object', 'description' => __( 'Serialised quiz settings array.', 'quiz-master-next' ) ),
 				) ) ) ),
 				'execute'      => 'execute_get_quiz',
-				'permission'   => 'permission_edit_quizzes',
+				'permission'   => 'permission_edit_quiz',
 				'annotations'  => array( 'idempotent' => true ),
 			),
 
@@ -298,7 +302,7 @@ class QSM_Abilities {
 				),
 				'output_schema' => array( 'type' => 'array', 'items' => $question_output ),
 				'execute'      => 'execute_list_questions',
-				'permission'   => 'permission_edit_quizzes',
+				'permission'   => 'permission_edit_quiz',
 				'annotations'  => array( 'idempotent' => true ),
 			),
 			'create-question' => array(
@@ -317,7 +321,7 @@ class QSM_Abilities {
 				),
 				'output_schema' => $this->make_id_output_schema( 'question_id', __( 'ID of the newly created question.', 'quiz-master-next' ) ),
 				'execute'      => 'execute_create_question',
-				'permission'   => 'permission_edit_quizzes',
+				'permission'   => 'permission_edit_quiz',
 				'annotations'  => array( 'idempotent' => false ),
 			),
 		);
@@ -337,6 +341,16 @@ class QSM_Abilities {
 	public function execute_list_quizzes( $input ) {
 		global $mlwQuizMasterNext;
 
+		// Same scoping as the admin listings: users who cannot edit others' quizzes only see their own.
+		$where = '';
+		if ( ! current_user_can( 'edit_others_qsm_quizzes' ) ) {
+			$quiz_ids = function_exists( 'qsm_get_editable_quiz_ids' ) ? qsm_get_editable_quiz_ids() : array();
+			if ( empty( $quiz_ids ) ) {
+				return array();
+			}
+			$where = 'quiz_id IN (' . implode( ',', array_map( 'intval', $quiz_ids ) ) . ')';
+		}
+
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(
 			false,
 			isset( $input['order_by'] ) ? sanitize_key( $input['order_by'] ) : 'quiz_id',
@@ -344,7 +358,8 @@ class QSM_Abilities {
 			array(),
 			'',
 			isset( $input['limit'] ) ? intval( $input['limit'] ) : '',
-			isset( $input['offset'] ) ? intval( $input['offset'] ) : ''
+			isset( $input['offset'] ) ? intval( $input['offset'] ) : '',
+			$where
 		);
 
 		$result = array();
@@ -370,6 +385,10 @@ class QSM_Abilities {
 	 */
 	public function execute_get_quiz( $input ) {
 		global $wpdb;
+
+		if ( ! $this->can_edit_quiz( $input['quiz_id'] ) ) {
+			return $this->forbidden_error();
+		}
 
 		$quiz = $wpdb->get_row(
 			$wpdb->prepare(
@@ -404,6 +423,10 @@ class QSM_Abilities {
 	 * @return array
 	 */
 	public function execute_list_questions( $input ) {
+		if ( ! $this->can_edit_quiz( $input['quiz_id'] ) ) {
+			return $this->forbidden_error();
+		}
+
 		return array_values( (array) QSM_Questions::load_questions( intval( $input['quiz_id'] ) ) );
 	}
 
@@ -415,6 +438,11 @@ class QSM_Abilities {
 	 * @return array|WP_Error
 	 */
 	public function execute_create_question( $input ) {
+		// Checked again here because the qsm_ability_input filter runs after the permission callback.
+		if ( ! $this->can_edit_quiz( $input['quiz_id'] ) ) {
+			return $this->forbidden_error();
+		}
+
 		$data = array(
 			'quiz_id' => intval( $input['quiz_id'] ),
 			'name'    => sanitize_text_field( $input['question_name'] ),
@@ -522,14 +550,57 @@ class QSM_Abilities {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Checks if the current user can edit quizzes.
+	 * Whether the current user may edit a given quiz.
 	 *
-	 * Used by all quiz and question abilities.
+	 * @since  11.3.1
+	 * @param  int $quiz_id The quiz ID.
+	 * @return bool
+	 */
+	private function can_edit_quiz( $quiz_id ) {
+		$quiz_id = intval( $quiz_id );
+		if ( $quiz_id <= 0 || ! current_user_can( 'edit_qsm_quizzes' ) ) {
+			return false;
+		}
+		if ( function_exists( 'qsm_current_user_can_edit_quiz' ) ) {
+			return qsm_current_user_can_edit_quiz( $quiz_id );
+		}
+		// Ownership helper unavailable: only users who may edit every quiz get through.
+		return current_user_can( 'edit_others_qsm_quizzes' );
+	}
+
+	/**
+	 * Error returned when the current user may not edit the requested quiz.
+	 *
+	 * @since  11.3.1
+	 * @return WP_Error
+	 */
+	private function forbidden_error() {
+		return new WP_Error( 'qsm_ability_forbidden', __( 'Sorry, you are not allowed to access this quiz.', 'quiz-master-next' ), array( 'status' => 403 ) );
+	}
+
+	/**
+	 * Checks if the current user can edit quizzes at all.
+	 *
+	 * Used by list-quizzes, which scopes its own output to the user's quizzes.
 	 *
 	 * @since  9.1.0
 	 * @return bool
 	 */
 	public function permission_edit_quizzes() {
 		return current_user_can( 'edit_qsm_quizzes' );
+	}
+
+	/**
+	 * Checks if the current user can edit the quiz named in the input.
+	 *
+	 * Abilities used to check only the flat edit_qsm_quizzes capability, which
+	 * let any Contributor read or add questions to other authors' quizzes.
+	 *
+	 * @since  11.3.1
+	 * @param  array $input Ability input.
+	 * @return bool
+	 */
+	public function permission_edit_quiz( $input = array() ) {
+		return isset( $input['quiz_id'] ) && $this->can_edit_quiz( $input['quiz_id'] );
 	}
 }
