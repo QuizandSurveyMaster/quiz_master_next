@@ -1007,3 +1007,216 @@ button#qsm-save-default-question-settings {
     line-height: 2.30769231;
     padding: 0 12px;
 }
+/* Bulk edit questions popup */
+#qsm-bulk-edit-question {
+	margin-inline-end: 6px;
+}
+.qsm-bulk-edit-popup .qsm-popup__container {
+	width: 960px;
+	max-width: calc(100vw - 32px);
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+.qsm-bulk-edit-popup .qsm-popup__header {
+	min-height: 56px;
+	padding: 0 12px 0 24px;
+	border-bottom: 1px solid #dcdcde;
+	box-sizing: border-box;
+}
+.qsm-bulk-edit-popup .qsm-popup__header .qsm-popup__title {
+	padding: 0;
+	font-size: 18px;
+	line-height: 1.3;
+}
+.qsm-bulk-edit-popup .qsm-popup__header .qsm-popup__close {
+	padding: 8px;
+	font-size: 18px;
+	line-height: 1;
+}
+.qsm-bulk-edit-popup .qsm-popup__content {
+	margin: 0;
+	padding: 20px 24px;
+	overflow-y: auto;
+}
+.qsm-bulk-edit-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+	gap: 32px;
+}
+.qsm-bulk-edit-section-title {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 20px;
+	margin-bottom: 8px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: #50575e;
+}
+.qsm-bulk-edit-count {
+	min-width: 20px;
+	padding: 0 6px;
+	border-radius: 10px;
+	background: #2271b1;
+	color: #fff;
+	font-size: 11px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0;
+}
+.qsm-bulk-edit-hint {
+	margin: -4px 0 10px;
+	color: #646970;
+	font-size: 12px;
+}
+.qsm-bulk-edit-selected-list {
+	margin: 0;
+	max-height: 260px;
+	overflow-y: auto;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+.qsm-bulk-edit-selected-list li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	padding: 6px 6px 6px 10px;
+	border-bottom: 1px solid #e5e5e5;
+	background: #fff;
+}
+.qsm-bulk-edit-selected-list li:last-child {
+	border-bottom: 0;
+}
+.qsm-bulk-edit-selected-title {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.qsm-bulk-edit-deselect {
+	flex: none;
+	display: inline-flex;
+	padding: 2px;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: #787c82;
+	cursor: pointer;
+}
+.qsm-bulk-edit-deselect:hover,
+.qsm-bulk-edit-deselect:focus {
+	color: #d63638;
+	background: #fcf0f1;
+}
+.qsm-bulk-edit-field {
+	display: grid;
+	grid-template-columns: 140px minmax(0, 1fr);
+	align-items: center;
+	gap: 6px 12px;
+	margin-bottom: 8px;
+	padding: 8px 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+.qsm-bulk-edit-field label {
+	font-weight: 600;
+}
+.qsm-bulk-edit-field select {
+	width: 100%;
+	max-width: none;
+}
+.qsm-bulk-edit-field.is-changed {
+	border-color: #c5d9ed;
+	background: #f0f6fc;
+}
+.qsm-bulk-edit-category-picker {
+	grid-column: 2;
+}
+.qsm-bulk-edit-category-picker[hidden] {
+	display: none;
+}
+.qsm-bulk-edit-category-list {
+	max-height: 150px;
+	overflow-y: auto;
+	padding: 6px 8px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+.qsm-bulk-edit-category-list label {
+	display: block;
+	padding: 2px 0;
+	font-weight: 400;
+}
+.qsm-bulk-edit-linked-note {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 16px 0 0;
+	color: #50575e;
+	font-size: 12px;
+}
+.qsm-bulk-edit-info {
+	margin-top: 12px;
+	padding: 8px 12px;
+	border-inline-start: 4px solid #d63638;
+	background: #fcf0f1;
+}
+.qsm-bulk-edit-info[hidden] {
+	display: none;
+}
+.qsm-bulk-edit-popup .qsm-bulk-edit-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 24px;
+	border-top: 1px solid #dcdcde;
+	background: #f6f7f7;
+}
+.qsm-bulk-edit-summary {
+	color: #50575e;
+	font-size: 13px;
+}
+.qsm-bulk-edit-actions {
+	display: flex;
+	gap: 8px;
+}
+#qsm-bulk-edit-apply {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+#qsm-bulk-edit-apply:disabled {
+	opacity: .5;
+	cursor: not-allowed;
+}
+#qsm-bulk-edit-apply .spinner {
+	display: none;
+	float: none;
+	margin: 0;
+}
+#qsm-bulk-edit-apply.is-busy .spinner {
+	display: inline-block;
+	visibility: visible;
+}
+@media (max-width: 782px) {
+	.qsm-bulk-edit-popup .qsm-popup__container {
+		min-width: 0;
+	}
+	.qsm-bulk-edit-layout {
+		grid-template-columns: 1fr;
+	}
+	.qsm-bulk-edit-field {
+		grid-template-columns: 1fr;
+	}
+	.qsm-bulk-edit-category-picker {
+		grid-column: 1;
+	}
+}
