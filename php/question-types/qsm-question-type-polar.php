@@ -132,12 +132,16 @@ function qmn_polar_review( $id, $question, $answers ) {
 	} else {
 		$mlw_user_answer = ' ';
 	}
-	$return_array['user_text'] = $mlw_user_answer;
-	$return_array['points']    = $mlw_user_answer;
+	// Encode square brackets so the stored answer can never become a live shortcode
+	// when the results page runs do_shortcode() (see qsm_neutralize_shortcode_brackets()).
+	$return_array['user_text'] = qsm_neutralize_shortcode_brackets( $mlw_user_answer );
+	// The slider value is the score: only accept a number inside the question's answer range,
+	// so a crafted POST cannot inflate points.
+	$return_array['points']    = qmn_polar_clamp_points( $mlw_user_answer, $answers );
 	foreach ( $answers as $answer ) {
 		$decode_correct_text          = $answer[1];
 		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( trim( $decode_correct_text ) == $return_array['user_text'] && isset( $answer[2] ) && 1 == $answer[2] ) {
+		if ( qsm_neutralize_shortcode_brackets( trim( $decode_correct_text ) ) == $return_array['user_text'] && isset( $answer[2] ) && 1 == $answer[2] ) {
 			$return_array['correct'] = 'correct';
 			break;
 		}
@@ -146,4 +150,23 @@ function qmn_polar_review( $id, $question, $answers ) {
 	 * Hook to filter answers array
 	*/
 	return apply_filters( 'qmn_polar_review', $return_array, $answers );
+}
+
+/**
+ * Clamp a submitted polar slider value to the slider's range.
+ *
+ * The range is read the same way qmn_polar_display() builds the slider: the points of
+ * the first and second answer, with a missing value treated as 0.
+ *
+ * @param mixed $value   Submitted slider value.
+ * @param array $answers Question answers; index 1 of each answer holds its points.
+ * @return float Clamped points, or 0 for a non-numeric value.
+ */
+function qmn_polar_clamp_points( $value, $answers ) {
+	if ( ! is_numeric( $value ) ) {
+		return 0;
+	}
+	$first_point  = isset( $answers[0][1] ) ? floatval( $answers[0][1] ) : 0;
+	$second_point = isset( $answers[1][1] ) ? floatval( $answers[1][1] ) : 0;
+	return max( min( $first_point, $second_point ), min( max( $first_point, $second_point ), floatval( $value ) ) );
 }
