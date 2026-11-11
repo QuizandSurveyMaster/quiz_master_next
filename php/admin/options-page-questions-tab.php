@@ -1186,6 +1186,40 @@ function qsm_ajax_save_pages() {
 	$pages         = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages        = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$all_questions = array();
+
+	// IDOR fix (CU-14ypaj0tqwm): the ownership check above only authorises the
+	// parent $quiz_id. The question IDs carried in $pages are attacker-controlled,
+	// so a Contributor could link another author's (e.g. an administrator's)
+	// questions into their own quiz and then read the answer key back through the
+	// REST endpoint. Build the set of question IDs the current user is actually
+	// allowed to place: every submitted ID whose owning quiz they may edit. IDs
+	// that do not resolve to a known question are rejected (fail closed).
+	$submitted_ids = array();
+	foreach ( $pages as $page_questions_raw ) {
+		foreach ( (array) $page_questions_raw as $id ) {
+			$id = intval( $id );
+			if ( $id > 0 ) {
+				$submitted_ids[ $id ] = true;
+			}
+		}
+	}
+	$allowed_ids = array();
+	if ( ! empty( $submitted_ids ) ) {
+		$ids_list       = array_keys( $submitted_ids );
+		$placeholders   = implode( ', ', array_fill( 0, count( $ids_list ), '%d' ) );
+		$owning_rows    = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ( $placeholders )", $ids_list ) );
+		$quiz_editable  = array();
+		foreach ( $owning_rows as $owning_row ) {
+			$owner_quiz = intval( $owning_row->quiz_id );
+			if ( ! isset( $quiz_editable[ $owner_quiz ] ) ) {
+				$quiz_editable[ $owner_quiz ] = ( function_exists( 'qsm_current_user_can_edit_quiz' ) && qsm_current_user_can_edit_quiz( $owner_quiz ) );
+			}
+			if ( $quiz_editable[ $owner_quiz ] ) {
+				$allowed_ids[ intval( $owning_row->question_id ) ] = true;
+			}
+		}
+	}
+
 	// Validate & merge duplicate questions.
 	// CVE-2026-13767: Cast every question ID to a positive integer before
 	// storing so attacker-controlled strings can never be persisted and
@@ -1195,7 +1229,7 @@ function qsm_ajax_save_pages() {
 		$questions      = array_unique( $questions );
 		foreach ( $questions as $id ) {
 			$id = intval( $id );
-			if ( $id > 0 && ! in_array( $id, $all_questions, true ) ) {
+			if ( $id > 0 && isset( $allowed_ids[ $id ] ) && ! in_array( $id, $all_questions, true ) ) {
 				$page_questions[] = $id;
 			}
 		}
@@ -1215,8 +1249,10 @@ function qsm_ajax_save_pages() {
 			continue;
 		}
 		$qpage_questions = isset( $qpage['questions'] ) ? (array) $qpage['questions'] : array();
-		$qpages[ $page_key ]['questions'] = array_values( array_filter( array_map( 'intval', $qpage_questions ), function ( $id ) {
-			return $id > 0;
+		// IDOR fix (CU-14ypaj0tqwm): qpages is a second route to the same stored
+		// IDs, so apply the same ownership allowlist built above.
+		$qpages[ $page_key ]['questions'] = array_values( array_filter( array_map( 'intval', $qpage_questions ), function ( $id ) use ( $allowed_ids ) {
+			return $id > 0 && isset( $allowed_ids[ $id ] );
 		} ) );
 	}
 

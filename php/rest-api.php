@@ -676,7 +676,12 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 		if ( 0 !== $current_user ) {
 			$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
 			if ( 0 !== $quiz_id ) {
-				$questions = QSM_Questions::load_questions_by_pages( $quiz_id, 'admin' );
+				// Security (IDOR, CU-14ypaj0tqwm): a quiz's stored pages can contain
+				// question IDs that belong to another author's quiz (e.g. linked in
+				// before this was fixed, or by an unpatched sibling path). Filter the
+				// loaded questions down to the ones the current user may actually edit
+				// so the endpoint can never return a foreign quiz's answer key.
+				$questions = qsm_filter_questions_by_quiz_access( QSM_Questions::load_questions_by_pages( $quiz_id, 'admin' ) );
 			} else {
 				// Security (IDOR): without a quizID this loads every question on the
 				// site, across all authors. Restrict it to the quizzes the current

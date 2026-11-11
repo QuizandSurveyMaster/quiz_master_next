@@ -46,18 +46,27 @@ function qsm_generate_quiz_options() {
 	// Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_edit_name_quiz_nonce'] ) ), 'qsm_edit_name_quiz' ) ) {
 		$quiz_name = isset( $_POST['edit_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['edit_quiz_name'] ) ) : '';
-		$post_id   = isset( $_POST['edit_quiz_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['edit_quiz_post_id'] ) ) : '';
-		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
+		// IDOR fix (CU-14ypaj0tqwm): the POSTed 'edit_quiz_post_id' was passed
+		// straight to wp_update_post(), letting a Contributor rename (deface) any
+		// post on the site. Derive the post ID from the already-authorised
+		// $quiz_id instead of trusting attacker input.
+		$post_id   = function_exists( 'qsm_get_post_id_for_quiz' ) ? intval( qsm_get_post_id_for_quiz( $quiz_id ) ) : 0;
+		if ( $post_id > 0 ) {
+			$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
+		}
 	}
 	// Update post status
 	if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_update_quiz_status_nonce'] ) ), 'qsm_update_quiz_status' ) ) {
-		$quiz_post_id  = isset( $_POST['quiz_post_id'] ) ? intval( $_POST['quiz_post_id'] ) : 0;
+		// IDOR fix (CU-14ypaj0tqwm): ignore the POSTed 'quiz_post_id' and publish
+		// the post behind the already-authorised $quiz_id, so a Contributor cannot
+		// publish an arbitrary post they do not own.
+		$quiz_post_id  = function_exists( 'qsm_get_post_id_for_quiz' ) ? intval( qsm_get_post_id_for_quiz( $quiz_id ) ) : 0;
 		$arg_post_arr  = array(
 			'ID'          => $quiz_post_id,
 			'post_status' => 'publish',
 		);
-		$update_status = wp_update_post( $arg_post_arr );
-		if ( false !== $update_status ) {
+		$update_status = $quiz_post_id > 0 ? wp_update_post( $arg_post_arr ) : false;
+		if ( false !== $update_status && 0 !== $update_status ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Quiz status has been updated successfully to publish.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( 'Quiz/Survey Status Has Been Updated', $quiz_id, '' );
 		} else {
