@@ -784,7 +784,10 @@ function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_current_user( $content, $mlw_quiz_array ) {
 	$current_user = wp_get_current_user();
-	$content      = str_replace( '%USER_NAME%', $current_user->display_name, $content );
+	// display_name is user-editable profile data and WordPress keeps square brackets on save.
+	// The quiz page runs do_shortcode() after this, so neutralise brackets to stop a user
+	// from embedding e.g. [qsm_result id=1] in their own display name.
+	$content      = str_replace( '%USER_NAME%', qsm_neutralize_shortcode_brackets( $current_user->display_name ), $content );
 	return $content;
 }
 /**
@@ -815,7 +818,10 @@ function mlw_qmn_variable_user_full_name( $content, $mlw_quiz_array ) {
 			}
 		}
 
-		$content = str_replace( '%FULL_NAME%', ( isset( $full_name ) ? $full_name : '' ), $content );
+		// first_name/last_name/display_name are user-editable profile data and WordPress keeps
+		// square brackets on save. The results page runs do_shortcode() after this, so neutralise
+		// brackets to stop a user from embedding e.g. [qsm_result id=1] in their own name.
+		$content = str_replace( '%FULL_NAME%', qsm_neutralize_shortcode_brackets( $full_name ), $content );
 	}
 	return $content;
 }
