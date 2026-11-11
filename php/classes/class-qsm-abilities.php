@@ -484,7 +484,7 @@ class QSM_Abilities {
 			// ----- Results -----
 			'list-results'         => array(
 				'label'         => __( 'List Results', 'quiz-master-next' ),
-				'description'   => __( 'Returns the submissions for a quiz, newest first: score, pass/fail (when pass_score is given), date, and the taker\'s name and email when the quiz collected them. For totals and averages use get-results-summary instead.', 'quiz-master-next' ),
+				'description'   => __( 'Returns the submissions for a quiz, newest first: score, pass/fail (when pass_score is given), date, and the taker\'s name and email when the quiz collected them. Filter by score with min_score/max_score, or by outcome with status plus pass_score. For totals and averages use get-results-summary instead.', 'quiz-master-next' ),
 				'category'      => 'qsm-results',
 				'input_schema'  => $this->make_input_schema(
 					array_merge(
@@ -492,6 +492,9 @@ class QSM_Abilities {
 						$date_inputs,
 						array(
 							'pass_score' => $pass_score_input,
+							'min_score'  => array( 'type' => 'number', 'minimum' => 0, 'maximum' => 100, 'description' => __( 'Only graded submissions scoring at least this percentage of correct answers.', 'quiz-master-next' ) ),
+							'max_score'  => array( 'type' => 'number', 'minimum' => 0, 'maximum' => 100, 'description' => __( 'Only graded submissions scoring at most this percentage of correct answers.', 'quiz-master-next' ) ),
+							'status'     => array( 'type' => 'string', 'enum' => array( 'all', 'passed', 'failed' ), 'default' => 'all', 'description' => __( 'passed = only submissions at or above pass_score, failed = only those below it. Requires pass_score.', 'quiz-master-next' ) ),
 							'limit'      => array( 'type' => 'integer', 'minimum' => 1, 'maximum' => self::MAX_LIMIT, 'default' => self::DEFAULT_LIMIT, 'description' => __( 'Maximum number of results to return.', 'quiz-master-next' ) ),
 							'offset'     => array( 'type' => 'integer', 'minimum' => 0, 'default' => 0, 'description' => __( 'Number of results to skip for pagination.', 'quiz-master-next' ) ),
 						)
@@ -1033,6 +1036,11 @@ class QSM_Abilities {
 		if ( is_wp_error( $filter ) ) {
 			return $filter;
 		}
+		$score_filter = $this->score_filter_sql( $input );
+		if ( is_wp_error( $score_filter ) ) {
+			return $score_filter;
+		}
+		$filter    .= $score_filter;
 		$limit      = isset( $input['limit'] ) ? max( 1, min( self::MAX_LIMIT, intval( $input['limit'] ) ) ) : self::DEFAULT_LIMIT;
 		$offset     = isset( $input['offset'] ) ? max( 0, intval( $input['offset'] ) ) : 0;
 		$pass_score = isset( $input['pass_score'] ) ? floatval( $input['pass_score'] ) : null;
@@ -1505,6 +1513,43 @@ class QSM_Abilities {
 			$sql .= $wpdb->prepare( " AND time_taken_real {$operator} %s", $date->format( 'Y-m-d H:i:s' ) );
 		}
 		return $sql;
+	}
+
+	/**
+	 * Builds the score conditions for list-results: min_score, max_score and
+	 * status (passed/failed against pass_score). Any of them limits the list
+	 * to graded submissions, since surveys and simple forms have no score.
+	 *
+	 * @since  11.3.1
+	 * @param  array $input Validated input data.
+	 * @return string|WP_Error SQL to append to the WHERE clause ('' when unfiltered).
+	 */
+	private function score_filter_sql( $input ) {
+		global $wpdb;
+		$min    = isset( $input['min_score'] ) ? floatval( $input['min_score'] ) : null;
+		$max    = isset( $input['max_score'] ) ? floatval( $input['max_score'] ) : null;
+		$status = isset( $input['status'] ) ? (string) $input['status'] : 'all';
+
+		if ( null !== $min && null !== $max && $min > $max ) {
+			return new WP_Error( 'qsm_invalid_score_range', __( 'min_score cannot be greater than max_score.', 'quiz-master-next' ), array( 'status' => 400 ) );
+		}
+		if ( 'all' !== $status && ! isset( $input['pass_score'] ) ) {
+			return new WP_Error( 'qsm_missing_pass_score', __( 'status passed or failed needs pass_score, because QSM has no built-in pass mark.', 'quiz-master-next' ), array( 'status' => 400 ) );
+		}
+
+		$sql = '';
+		if ( null !== $min ) {
+			$sql .= $wpdb->prepare( ' AND correct_score >= %f', $min );
+		}
+		if ( null !== $max ) {
+			$sql .= $wpdb->prepare( ' AND correct_score <= %f', $max );
+		}
+		if ( 'passed' === $status ) {
+			$sql .= $wpdb->prepare( ' AND correct_score >= %f', floatval( $input['pass_score'] ) );
+		} elseif ( 'failed' === $status ) {
+			$sql .= $wpdb->prepare( ' AND correct_score < %f', floatval( $input['pass_score'] ) );
+		}
+		return '' === $sql ? '' : ' AND form_type = 0' . $sql;
 	}
 
 	/**
