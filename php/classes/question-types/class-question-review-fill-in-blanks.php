@@ -156,6 +156,8 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 			return false;
 		}
 		foreach ( $possible_answers as $possible_answer ) {
+			// The user answer has its brackets encoded (sanitize_answer_from_post()); match that.
+			$possible_answer = qsm_neutralize_shortcode_brackets( $possible_answer );
 			if ( 1 === intval( $case_sensitive ) ) {
 				if ( $user_answer === $possible_answer ) {
 					return true;

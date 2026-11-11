@@ -25,6 +25,9 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
         if ( 12 === intval( $this->question_type ) ) {
             $correct_answers = array_map( array( $this, 'formatDateAnswer' ), $correct_answers );
         }
+		// The stored user answer has its brackets encoded (sanitize_answer_from_post()), so
+		// encode the correct answers the same way to compare like with like.
+		$correct_answers = array_map( 'qsm_neutralize_shortcode_brackets', $correct_answers );
 		if ( 1 === intval($case_sensitive ) ) {
 			$answer_key = array_search( $user_answer_value, $correct_answers, true );
 		}else {

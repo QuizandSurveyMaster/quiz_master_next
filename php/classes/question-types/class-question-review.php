@@ -39,7 +39,10 @@ abstract class QSM_Question_Review {
 		} else {
 			$sanitized = sanitize_text_field( wp_unslash( $data ) );
 		}
-		return strip_shortcodes( $sanitized );
+		// Encode square brackets so stored answers can never become a live shortcode
+		// when the results page runs do_shortcode(). strip_shortcodes() misses the
+		// [[tag]] escape form, which WordPress decodes to a working [tag].
+		return qsm_neutralize_shortcode_brackets( $sanitized );
 	}
 
 	public function sanitize_answer_from_db( $data ) {
