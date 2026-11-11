@@ -11,6 +11,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'qsm_neutralize_shortcode_brackets' ) ) {
+	/**
+	 * Neutralise square brackets in submitter-supplied values.
+	 *
+	 * Quiz answers, contact fields and comments are stored from unauthenticated
+	 * input and later interpolated into the results-page output buffer, which is
+	 * run through do_shortcode(). strip_shortcodes() alone is not enough: WordPress
+	 * core treats the escaped form [[tag]] as an escaped shortcode and returns the
+	 * literal [tag], so a double-bracketed shortcode survives sanitisation and then
+	 * executes on the results page. Encoding the brackets to their HTML entities
+	 * keeps the value readable (browsers render &#91;/&#93; as [ / ]) while ensuring
+	 * do_shortcode() can never match it. htmlspecialchars_decode(), used on several
+	 * render paths, does not decode numeric entities, so the encoding survives to the
+	 * shortcode pass.
+	 *
+	 * @param string $value Raw submitter-supplied value.
+	 * @return string Value with [ and ] encoded as &#91; and &#93;.
+	 */
+	function qsm_neutralize_shortcode_brackets( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $value );
+	}
+}
+
+if ( ! function_exists( 'qsm_strip_and_neutralize_shortcodes' ) ) {
+	/**
+	 * Strip shortcodes from a submitter value and neutralise any surviving brackets.
+	 *
+	 * The two steps always go together on an unauthenticated-input storage sink, so
+	 * they are kept in one place: strip_shortcodes() removes known shortcodes and
+	 * qsm_neutralize_shortcode_brackets() then encodes the brackets that the [[tag]]
+	 * escape form leaves behind. See qsm_neutralize_shortcode_brackets() for why.
+	 *
+	 * @param string $value Already-sanitised submitter value.
+	 * @return string Value safe to store and later pass through do_shortcode().
+	 */
+	function qsm_strip_and_neutralize_shortcodes( $value ) {
+		return qsm_neutralize_shortcode_brackets( strip_shortcodes( $value ) );
+	}
+}
+
+if ( ! function_exists( 'qsm_sanitize_submitted_comment' ) ) {
+	/**
+	 * Sanitise an unauthenticated quiz/question comment for storage.
+	 *
+	 * Mirrors the historical comment handling (textarea sanitise + htmlspecialchars)
+	 * and adds bracket neutralisation on the outside so the encoded entities are not
+	 * themselves re-encoded by htmlspecialchars().
+	 *
+	 * @param string $value Raw (unslashed) comment value.
+	 * @return string Value safe to store.
+	 */
+	function qsm_sanitize_submitted_comment( $value ) {
+		return qsm_neutralize_shortcode_brackets( htmlspecialchars( strip_shortcodes( sanitize_textarea_field( $value ) ), ENT_QUOTES ) );
+	}
+}
+
 // Template variable files
 require 'template-variables/qsm-tempvar-question-answers.php';
 // Template variable files for backward compatibility ( @since QSM 7.3.8 )
@@ -714,8 +773,10 @@ function qsm_variable_last_result( $content, $mlw_quiz_array ) {
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
 	$user_name = '';
 	if ( isset( $mlw_quiz_array['user_name'] ) ) {
-		// Decode HTML entities then escape to prevent XSS via entity injection
-		$user_name = esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) );
+		// Decode HTML entities then escape to prevent XSS via entity injection. The decode also
+		// turns stored &#91;/&#93; back into brackets, so re-neutralise them before the results
+		// page runs do_shortcode().
+		$user_name = qsm_neutralize_shortcode_brackets( esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) ) );
 	}
 	$content = str_replace( '%USER_NAME%', $user_name, $content );
 	return $content;
@@ -723,7 +784,10 @@ function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
 
 function mlw_qmn_variable_current_user( $content, $mlw_quiz_array ) {
 	$current_user = wp_get_current_user();
-	$content      = str_replace( '%USER_NAME%', $current_user->display_name, $content );
+	// display_name is user-editable profile data and WordPress keeps square brackets on save.
+	// The quiz page runs do_shortcode() after this, so neutralise brackets to stop a user
+	// from embedding e.g. [qsm_result id=1] in their own display name.
+	$content      = str_replace( '%USER_NAME%', qsm_neutralize_shortcode_brackets( $current_user->display_name ), $content );
 	return $content;
 }
 /**
@@ -754,7 +818,10 @@ function mlw_qmn_variable_user_full_name( $content, $mlw_quiz_array ) {
 			}
 		}
 
-		$content = str_replace( '%FULL_NAME%', ( isset( $full_name ) ? $full_name : '' ), $content );
+		// first_name/last_name/display_name are user-editable profile data and WordPress keeps
+		// square brackets on save. The results page runs do_shortcode() after this, so neutralise
+		// brackets to stop a user from embedding e.g. [qsm_result id=1] in their own name.
+		$content = str_replace( '%FULL_NAME%', qsm_neutralize_shortcode_brackets( $full_name ), $content );
 	}
 	return $content;
 }
@@ -1495,7 +1562,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
 					$case_sensitive = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
 					$qsm_norm       = function( $v ) use ( $case_sensitive ) {
-						$v = htmlspecialchars_decode( (string) $v, ENT_QUOTES );
+						// Stored user answers have [ ] encoded; encode both sides so they compare equal.
+						$v = qsm_neutralize_shortcode_brackets( htmlspecialchars_decode( (string) $v, ENT_QUOTES ) );
 						return 1 === $case_sensitive ? $v : mb_strtoupper( $v );
 					};
 					$qsm_split      = function( $v ) use ( $qsm_norm ) {
@@ -1823,7 +1891,12 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$slider_date_atts .= ' data-answer1="' . $answar1 . '" ';
 	$slider_date_atts .= ' data-answer2="' . $answar2 . '" ';
 	$slider_date_atts .= ' data-is_reverse="' . intval( $is_reverse ) . '" ';
-	$slider_date_atts .= ' data-answer_value="' . $user_answer . '" ';
+	// The slider value is always a number. Results stored before 11.3.1 may hold a raw
+	// shortcode (do_shortcode() expands shortcodes inside quoted attributes), and the
+	// htmlspecialchars_decode() below undoes esc_attr() quoting, so only a numeric value
+	// is written into the attribute.
+	$answer_value      = is_numeric( $user_answer ) ? $user_answer : '';
+	$slider_date_atts .= ' data-answer_value="' . qsm_neutralize_shortcode_brackets( esc_attr( $answer_value ) ) . '" ';
 	$mlw_require_class = '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
