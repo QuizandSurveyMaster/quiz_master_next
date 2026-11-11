@@ -773,8 +773,10 @@ function qsm_variable_last_result( $content, $mlw_quiz_array ) {
 function mlw_qmn_variable_user_name( $content, $mlw_quiz_array ) {
 	$user_name = '';
 	if ( isset( $mlw_quiz_array['user_name'] ) ) {
-		// Decode HTML entities then escape to prevent XSS via entity injection
-		$user_name = esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) );
+		// Decode HTML entities then escape to prevent XSS via entity injection. The decode also
+		// turns stored &#91;/&#93; back into brackets, so re-neutralise them before the results
+		// page runs do_shortcode().
+		$user_name = qsm_neutralize_shortcode_brackets( esc_html( html_entity_decode( $mlw_quiz_array['user_name'], ENT_QUOTES, 'UTF-8' ) ) );
 	}
 	$content = str_replace( '%USER_NAME%', $user_name, $content );
 	return $content;
@@ -1554,7 +1556,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
 					$case_sensitive = isset( $answer['case_sensitive'] ) ? intval( $answer['case_sensitive'] ) : 0;
 					$qsm_norm       = function( $v ) use ( $case_sensitive ) {
-						$v = htmlspecialchars_decode( (string) $v, ENT_QUOTES );
+						// Stored user answers have [ ] encoded; encode both sides so they compare equal.
+						$v = qsm_neutralize_shortcode_brackets( htmlspecialchars_decode( (string) $v, ENT_QUOTES ) );
 						return 1 === $case_sensitive ? $v : mb_strtoupper( $v );
 					};
 					$qsm_split      = function( $v ) use ( $qsm_norm ) {
@@ -1882,7 +1885,12 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$slider_date_atts .= ' data-answer1="' . $answar1 . '" ';
 	$slider_date_atts .= ' data-answer2="' . $answar2 . '" ';
 	$slider_date_atts .= ' data-is_reverse="' . intval( $is_reverse ) . '" ';
-	$slider_date_atts .= ' data-answer_value="' . $user_answer . '" ';
+	// The slider value is always a number. Results stored before 11.3.1 may hold a raw
+	// shortcode (do_shortcode() expands shortcodes inside quoted attributes), and the
+	// htmlspecialchars_decode() below undoes esc_attr() quoting, so only a numeric value
+	// is written into the attribute.
+	$answer_value      = is_numeric( $user_answer ) ? $user_answer : '';
+	$slider_date_atts .= ' data-answer_value="' . qsm_neutralize_shortcode_brackets( esc_attr( $answer_value ) ) . '" ';
 	$mlw_require_class = '';
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredText';
