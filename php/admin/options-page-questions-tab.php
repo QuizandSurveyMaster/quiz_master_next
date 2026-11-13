@@ -280,7 +280,12 @@ function qsm_options_questions_tab_content() {
 	?>
 	<div class="qsm-ui qsm-ui-questions-tab">
 	<div class="question-controls qsm-ui-q-controls">
-		<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
+		<?php // #total-questions is filled by QSMQuestion.countTotal(). ?>
+		<span class="qsm-ui-q-total">
+			<span class="qsm-ui-q-total-icon"><?php echo QSM_Admin_UI::icon( 'quiz', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+			<span class="qsm-ui-q-total-label"><?php esc_html_e( 'Total questions', 'quiz-master-next' ); ?></span>
+			<span class="qsm-ui-q-total-count" id="total-questions">0</span>
+		</span>
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search"><?php esc_html_e( 'Search Questions:', 'quiz-master-next' ); ?></label>
 			<span class="qsm-ui-input-icon qsm-ui-q-search">
