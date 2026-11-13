@@ -8,7 +8,8 @@
  *
  * It fails (exit 1) when a change would let the kit restyle or rebind add-on UI:
  *
- * 1. CSS scope: every selector in css/qsm-admin-ui.css styles a kit element.
+ * 1. CSS scope: every selector in css/qsm-admin-ui.css (and its page files
+ *    qsm-admin-ui-quiz-frame.css, qsm-admin-ui-questions.css) styles a kit element.
  *    The selector must name a `qsm-ui-*` class, or its subject must carry
  *    `.qsm-ui` (the token wrapper). `.qsm-ui table` or `.qsm-ui .qsm-row` would
  *    reach add-on markup printed inside a kit wrapper, so they fail. A plain
@@ -168,42 +169,44 @@ function qsm_compat_is_shared( $class ) {
 	return ! qsm_compat_is_kit( $class ) && (bool) preg_match( '/^(qsm|qmn|mlw|select2|button|form-table|wp-|ui-|micromodal|sortable|quiz_)/', $class );
 }
 
-// 1. CSS scope.
-$kit_css = 'css/qsm-admin-ui.css';
-foreach ( qsm_compat_selectors( qsm_compat_read( $root, $kit_css ) ) as $item ) {
-	list( $selector, $line ) = $item;
-	if ( '' === $selector ) {
-		continue;
-	}
-	$compounds = qsm_compat_compounds( $selector );
-	$subject   = qsm_compat_classes( end( $compounds ) );
-	$prefixed  = false; // A qsm-ui-* class anywhere.
-	$opted_in  = false; // A library opt-in class (qsm-ui-select2, qsm-ui-popup, ...) on an ancestor compound.
-	foreach ( $compounds as $index => $compound ) {
-		foreach ( qsm_compat_classes( $compound ) as $class ) {
-			if ( 0 === strpos( $class, 'qsm-ui-' ) ) {
-				$prefixed = true;
-				if ( $index < count( $compounds ) - 1 && preg_match( '/^qsm-ui-(select2|popup|sort-|color|editor|toasts)/', $class ) ) {
-					$opted_in = true;
+// 1. CSS scope: the kit and its page files (quiz edit frame, Questions tab).
+$kit_css_files = array( 'css/qsm-admin-ui.css', 'css/qsm-admin-ui-quiz-frame.css', 'css/qsm-admin-ui-questions.css' );
+foreach ( $kit_css_files as $kit_css ) {
+	foreach ( qsm_compat_selectors( qsm_compat_read( $root, $kit_css ) ) as $item ) {
+		list( $selector, $line ) = $item;
+		if ( '' === $selector ) {
+			continue;
+		}
+		$compounds = qsm_compat_compounds( $selector );
+		$subject   = qsm_compat_classes( end( $compounds ) );
+		$prefixed  = false; // A qsm-ui-* class anywhere.
+		$opted_in  = false; // A library opt-in class (qsm-ui-select2, qsm-ui-popup, ...) on an ancestor compound.
+		foreach ( $compounds as $index => $compound ) {
+			foreach ( qsm_compat_classes( $compound ) as $class ) {
+				if ( 0 === strpos( $class, 'qsm-ui-' ) ) {
+					$prefixed = true;
+					if ( $index < count( $compounds ) - 1 && preg_match( '/^qsm-ui-(select2|popup|sort-|color|editor|toasts)/', $class ) ) {
+						$opted_in = true;
+					}
 				}
 			}
 		}
-	}
-	$subject_kit    = (bool) array_filter( $subject, 'qsm_compat_is_kit' );
-	$subject_shared = array_filter( $subject, 'qsm_compat_is_shared' );
-	if ( ! $prefixed && ! $subject_kit ) {
-		$failures[] = "$kit_css:$line `$selector` is not scoped to a kit element (needs a qsm-ui-* class, or .qsm-ui on the subject).";
-	} elseif ( ! $prefixed && 1 < count( $compounds ) ) {
-		$failures[] = "$kit_css:$line `$selector` styles everything of that kind inside a .qsm-ui wrapper, add-on markup included. Target a qsm-ui-* class.";
-	} elseif ( $subject_shared && ! $subject_kit && ! $opted_in ) {
-		$failures[] = "$kit_css:$line `$selector` styles a class Core/add-ons already use (" . implode( ', ', $subject_shared ) . '). Add a qsm-ui-* class to that compound (add-on markup can sit inside kit cards and rows).';
+		$subject_kit    = (bool) array_filter( $subject, 'qsm_compat_is_kit' );
+		$subject_shared = array_filter( $subject, 'qsm_compat_is_shared' );
+		if ( ! $prefixed && ! $subject_kit ) {
+			$failures[] = "$kit_css:$line `$selector` is not scoped to a kit element (needs a qsm-ui-* class, or .qsm-ui on the subject).";
+		} elseif ( ! $prefixed && 1 < count( $compounds ) ) {
+			$failures[] = "$kit_css:$line `$selector` styles everything of that kind inside a .qsm-ui wrapper, add-on markup included. Target a qsm-ui-* class.";
+		} elseif ( $subject_shared && ! $subject_kit && ! $opted_in ) {
+			$failures[] = "$kit_css:$line `$selector` styles a class Core/add-ons already use (" . implode( ', ', $subject_shared ) . '). Add a qsm-ui-* class to that compound (add-on markup can sit inside kit cards and rows).';
+		}
 	}
 }
 
 // 2. Existing Core CSS untouched by the kit.
 foreach ( array( 'css/qsm-admin.css', 'css/common.css', 'css/admin-dashboard.css', 'css/qsm-admin-question.css' ) as $legacy_css ) {
 	if ( preg_match( '/\.qsm-ui(?![\w-])|\.qsm-ui-/', qsm_compat_read( $root, $legacy_css ), $m, PREG_OFFSET_CAPTURE ) ) {
-		$failures[] = "$legacy_css: contains `{$m[0][0]}`. Kit styles live only in $kit_css, so existing Core CSS keeps loading unchanged.";
+		$failures[] = "$legacy_css: contains `{$m[0][0]}`. Kit styles live only in the qsm-admin-ui*.css files, so existing Core CSS keeps loading unchanged.";
 	}
 }
 
