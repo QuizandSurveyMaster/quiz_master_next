@@ -90,8 +90,12 @@ class QSM_Addon_Compatibility {
 		$known    = self::known_new_ui_versions();
 		$addons   = array();
 
-		foreach ( self::active_addon_plugins() as $slug => $plugin ) {
+		foreach ( self::active_addon_plugins() as $slug => $file ) {
 			$info = isset( $declared[ $slug ] ) ? $declared[ $slug ] : array();
+			// Plugin headers are read only when the result needs them: an undeclared add-on with a
+			// known New UI release, or a declaration without name/version. Most QSM pages read none.
+			$needs_header = $info ? ( empty( $info['name'] ) || empty( $info['version'] ) ) : isset( $known[ $slug ] );
+			$plugin       = $needs_header ? self::plugin_header( $file ) : array();
 			$addons[ $slug ] = self::resolve( $slug, $plugin, $info, $core, $known );
 		}
 		// A declaration from an add-on not found in the plugin list (e.g. a mu-plugin) still counts.
@@ -227,26 +231,38 @@ class QSM_Addon_Compatibility {
 	/**
 	 * Active QSM add-on plugins (folder starts with "qsm-"), site and network.
 	 *
-	 * @return array Plugin folder => header data.
+	 * @return array Plugin folder => plugin file (relative to the plugins directory).
 	 */
 	private static function active_addon_plugins() {
 		$active = (array) get_option( 'active_plugins', array() );
 		if ( is_multisite() ) {
 			$active = array_merge( $active, array_keys( (array) get_site_option( 'active_sitewide_plugins', array() ) ) );
 		}
-		if ( ! function_exists( 'get_plugins' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-		$installed = get_plugins();
-		$addons    = array();
+		$addons = array();
 		foreach ( $active as $file ) {
 			$slug = dirname( (string) $file );
-			if ( '.' === $slug || 0 !== strpos( $slug, 'qsm-' ) ) {
-				continue;
+			if ( '.' !== $slug && 0 === strpos( $slug, 'qsm-' ) ) {
+				$addons[ $slug ] = (string) $file;
 			}
-			$addons[ $slug ] = isset( $installed[ $file ] ) ? $installed[ $file ] : array();
 		}
 		return $addons;
+	}
+
+	/**
+	 * Name and Version headers of one plugin file.
+	 *
+	 * @param string $file Plugin file relative to the plugins directory.
+	 * @return array
+	 */
+	private static function plugin_header( $file ) {
+		$path = WP_PLUGIN_DIR . '/' . $file;
+		if ( ! is_readable( $path ) ) {
+			return array();
+		}
+		if ( ! function_exists( 'get_plugin_data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return get_plugin_data( $path, false, false );
 	}
 
 	/**
