@@ -568,6 +568,9 @@
 .qsm-popup.qsm-ui-popup .qsm-popup__title { color: var(--qsm-ink); font-size: 19px; font-weight: 700; letter-spacing: -.3px; }
 .qsm-popup.qsm-ui-popup .qsm-popup__close { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--qsm-radius); color: var(--qsm-muted); cursor: pointer; }
 .qsm-popup.qsm-ui-popup .qsm-popup__close:hover { background: #eef1f6; color: var(--qsm-ink); }
+/* WP admin's a:focus draws a #2271b1 ring, and micromodal focuses the close link when a popup opens. The kit ring shows for keyboard focus only. */
+.qsm-popup.qsm-ui-popup .qsm-popup__close:focus { box-shadow: none; outline: none; }
+.qsm-popup.qsm-ui-popup .qsm-popup__close:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 1px; color: var(--qsm-ink); }
 .qsm-popup.qsm-ui-popup .qsm-popup__header .qsm-popup__title { margin: 0; padding: 0; }
 /* qsm-admin.css pads the standard popups' close link (15px, position relative), which pushes the ✕ out of its box. */
 .qsm-popup.qsm-ui-popup .qsm-popup__header .qsm-popup__close { position: static; flex: none; padding: 0; border: 0; font-size: 18px; line-height: 1; }
