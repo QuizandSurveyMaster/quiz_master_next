@@ -151,13 +151,10 @@ class QSM_Admin_Assets {
 		if ( ! wp_style_is( 'qsm_admin_ui_quiz_frame_css', 'registered' ) ) {
 			wp_register_style( 'qsm_admin_ui_quiz_frame_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-quiz-frame.css', array( 'qsm_admin_ui_css' ), $version );
 		}
-		// Legacy Questions tab CSS (also the Question Bank page). The new Questions tab still builds on it: the question
-		// editor fields, answers and add-on fields use its markup, and the kit file overrides it, so it loads first.
-		if ( ! wp_style_is( 'qsm_admin_question_css', 'registered' ) ) {
-			wp_register_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $version );
-		}
+		// The quiz Questions tab still loads the legacy qsm-admin-question.css after this file (question editor fields,
+		// answers and add-on fields use its markup); see the 'questions' case in qsm_admin_scripts_style().
 		if ( ! wp_style_is( 'qsm_admin_ui_questions_css', 'registered' ) ) {
-			wp_register_style( 'qsm_admin_ui_questions_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-questions.css', array( 'qsm_admin_ui_css', 'qsm_admin_question_css' ), $version );
+			wp_register_style( 'qsm_admin_ui_questions_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-questions.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), $version );
 		}
 		// QSMQuestion: the Questions tab and the Question Bank page. Printed right after qsm_admin_js, see keep_questions_script_order().
 		if ( ! wp_script_is( 'qsm_admin_questions_js', 'registered' ) ) {

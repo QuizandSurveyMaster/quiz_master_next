@@ -555,15 +555,17 @@ class MLWQuizMasterNext {
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
 				case 'questions':
-					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
-					if ( is_rtl() ) {
-						wp_enqueue_style( 'qsm_admin_question_css_rtl', plugins_url( 'css/qsm-admin-question-rtl.css', __FILE__ ), array(), $this->version );
-					}
 					// Global Settings shares this block with tab 'questions' by default; the kit is only for the quiz Questions tab.
+					// The kit's Questions tab CSS goes before qsm-admin-question.css, as when it was part of qsm-admin-ui.css:
+					// where a legacy rule and a kit rule tie, the legacy one still wins.
 					if ( 'admin_page_mlw_quiz_options' === $hook ) {
 						QSM_Admin_UI::enqueue();
 						wp_enqueue_style( 'qsm_admin_ui_questions_css' );
 						wp_enqueue_script( 'qsm_admin_questions_js' );
+					}
+					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
+					if ( is_rtl() ) {
+						wp_enqueue_style( 'qsm_admin_question_css_rtl', plugins_url( 'css/qsm-admin-question-rtl.css', __FILE__ ), array(), $this->version );
 					}
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
