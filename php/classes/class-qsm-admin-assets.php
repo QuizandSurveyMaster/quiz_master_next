@@ -139,6 +139,113 @@ class QSM_Admin_Assets {
 		if ( ! wp_script_is( 'qsm_admin_notices_js', 'registered' ) ) {
 			wp_register_script( 'qsm_admin_notices_js', QSM_PLUGIN_JS_URL . '/qsm-admin-notices.js', array( 'jquery' ), $version, true );
 		}
+		// New UI kit. Separate handles from the Legacy bundle; QSM_Admin_UI::enqueue() loads them.
+		if ( ! wp_style_is( 'qsm_admin_ui_css', 'registered' ) ) {
+			wp_register_style( 'qsm_admin_ui_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui.css', array(), $version );
+		}
+		if ( ! wp_script_is( 'qsm_admin_ui_js', 'registered' ) ) {
+			wp_register_script( 'qsm_admin_ui_js', QSM_PLUGIN_JS_URL . '/qsm-admin-ui.js', array( 'jquery' ), $version, true );
+		}
+	}
+
+	/**
+	 * Enqueues the assets add-ons registered for this screen, New UI or Legacy per add-on.
+	 *
+	 * Add-ons register through the `qsm_admin_addon_assets` filter (a no-op on older Core,
+	 * where the add-on keeps enqueuing its Legacy files itself):
+	 *
+	 *     add_filter( 'qsm_admin_addon_assets', function ( $assets ) {
+	 *         $assets['qsm-flashcards'] = array(
+	 *             'version' => '3.0.0',
+	 *             'new_ui'  => array(
+	 *                 'styles'  => array( array( 'handle' => 'qsm-fc-ui', 'src' => $url, 'path' => $file, 'screens' => array( 'quiz-questions' ) ) ),
+	 *                 'scripts' => array( ... ),
+	 *             ),
+	 *             'legacy'  => array( 'styles' => array( ... ), 'scripts' => array( ... ) ),
+	 *         );
+	 *         return $assets;
+	 *     } );
+	 *
+	 * Each file: handle, src, optional path (absolute; a missing file is skipped), deps,
+	 * version, screens (screen keys, or '*' for every QSM screen; default '*'), in_footer.
+	 * New UI files get the kit as a dependency. A handle is enqueued once.
+	 *
+	 * @param string $screen QSM screen key.
+	 * @return void
+	 */
+	public static function enqueue_addon_assets( $screen ) {
+		/**
+		 * Add-on admin assets, keyed by plugin folder.
+		 *
+		 * @since 11.3.0
+		 * @param array $assets Plugin folder => array( version, new_ui => sets, legacy => sets ).
+		 * @param string $screen Current QSM screen key.
+		 */
+		$all = apply_filters( 'qsm_admin_addon_assets', array(), $screen );
+		foreach ( (array) $all as $slug => $addon ) {
+			if ( ! is_array( $addon ) ) {
+				continue;
+			}
+			$new_ui  = QSM_Addon_Compatibility::uses_new_ui( (string) $slug ) && ! empty( $addon['new_ui'] );
+			$set     = $new_ui ? $addon['new_ui'] : ( isset( $addon['legacy'] ) ? $addon['legacy'] : array() );
+			$version = isset( $addon['version'] ) ? (string) $addon['version'] : false;
+			$kit     = $new_ui ? array( 'css' => 'qsm_admin_ui_css', 'js' => 'qsm_admin_ui_js' ) : array();
+			$queued  = false;
+			foreach ( array( 'styles', 'scripts' ) as $type ) {
+				if ( empty( $set[ $type ] ) || ! is_array( $set[ $type ] ) ) {
+					continue;
+				}
+				foreach ( $set[ $type ] as $file ) {
+					$queued = self::enqueue_file( $type, $file, $screen, $version, $kit ) || $queued;
+				}
+			}
+			if ( $new_ui && $queued ) {
+				QSM_Admin_UI::enqueue();
+			}
+		}
+	}
+
+	/**
+	 * Enqueues one add-on file if it applies to the screen and exists.
+	 *
+	 * @param string       $type    'styles' or 'scripts'.
+	 * @param array        $file    File spec.
+	 * @param string       $screen  Screen key.
+	 * @param string|false $version Add-on version (fallback cache buster).
+	 * @param array        $kit     Kit handles to depend on (New UI), or empty.
+	 * @return bool Whether it was enqueued.
+	 */
+	private static function enqueue_file( $type, $file, $screen, $version, $kit ) {
+		if ( ! is_array( $file ) || empty( $file['handle'] ) || empty( $file['src'] ) ) {
+			return false;
+		}
+		$screens = isset( $file['screens'] ) ? $file['screens'] : '*';
+		if ( '*' !== $screens && ! in_array( $screen, (array) $screens, true ) ) {
+			return false;
+		}
+		$handle   = (string) $file['handle'];
+		$is_style = 'styles' === $type;
+		if ( $is_style ? wp_style_is( $handle, 'enqueued' ) : wp_script_is( $handle, 'enqueued' ) ) {
+			return true;
+		}
+		if ( ! empty( $file['path'] ) && ! file_exists( $file['path'] ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( sprintf( 'QSM: add-on asset "%s" is missing: %s', $handle, $file['path'] ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+			return false;
+		}
+		$deps = isset( $file['deps'] ) ? (array) $file['deps'] : array();
+		if ( $kit ) {
+			$deps[] = $is_style ? $kit['css'] : $kit['js'];
+		}
+		$deps = array_values( array_unique( $deps ) );
+		$ver  = isset( $file['version'] ) ? $file['version'] : $version;
+		if ( $is_style ) {
+			wp_enqueue_style( $handle, $file['src'], $deps, $ver );
+		} else {
+			wp_enqueue_script( $handle, $file['src'], $deps, $ver, isset( $file['in_footer'] ) ? (bool) $file['in_footer'] : true );
+		}
+		return true;
 	}
 
 	/**

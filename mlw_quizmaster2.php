@@ -281,6 +281,8 @@ class MLWQuizMasterNext {
 		include_once 'php/classes/class-qsm-fields.php';
 		include_once 'php/classes/class-qsm-admin-ui.php';
 		include_once 'php/classes/class-qsm-admin-assets.php';
+		include_once 'php/classes/class-qsm-addon-compatibility.php';
+		include_once 'php/classes/class-qsm-admin-compat-notices.php';
 
 		include_once 'php/classes/class-qmn-log-manager.php';
 		$this->log_manager = new QMN_Log_Manager();
@@ -381,6 +383,7 @@ class MLWQuizMasterNext {
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
 		QSM_Admin_Assets::init( array( $this, 'qsm_admin_messages_data' ) );
+		QSM_Admin_Compat_Notices::init();
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
@@ -620,6 +623,7 @@ class MLWQuizMasterNext {
 		 * @param string $screen QSM_Admin_Assets::screen() key, e.g. 'quiz-questions', 'settings', 'addons'.
 		 * @param string $hook   admin_enqueue_scripts hook suffix.
 		 */
+		QSM_Admin_Assets::enqueue_addon_assets( $screen );
 		do_action( 'qsm_admin_enqueue_screen_assets', $screen, $hook );
 		// qsm_admin_messages is attached by QSM_Admin_Assets::maybe_localize_messages() once all scripts are enqueued.
 	}
