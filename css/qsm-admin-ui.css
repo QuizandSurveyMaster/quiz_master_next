@@ -633,6 +633,18 @@
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab:visited { color: var(--qsm-muted); }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-tab[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
+/* Add-on tabs: one "Add-ons" dropdown after the core tabs, open on click (kit menu). */
+.qsm-ui .qsm-ui-quiz-tabs .qsm-ui-addon-tabs { display: inline-flex; }
+.qsm-ui .qsm-ui-quiz-tabs .qsm-ui-addon-tabs-toggle.is-current, .qsm-ui .qsm-ui-quiz-tabs .qsm-ui-addon-tabs-toggle[aria-expanded="true"] { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-quiz-tabs .qsm-ui-addon-tabs-toggle.is-current::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
+.qsm-ui .qsm-ui-addon-tabs-chev { transition: transform .15s; }
+.qsm-ui .qsm-ui-addon-tabs-toggle[aria-expanded="true"] .qsm-ui-addon-tabs-chev { transform: rotate(180deg); }
+.qsm-ui .qsm-ui-addon-tabs-menu { left: auto; right: auto; inset-inline-start: 0; min-width: 220px; max-height: 360px; overflow-y: auto; z-index: 100; }
+.qsm-ui .qsm-ui-addon-tabs-menu a:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-addon-tabs-menu a:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: -2px; }
+.qsm-ui .qsm-ui-addon-tabs-menu a[aria-current="page"] { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-addon-tab-check { margin-left: auto; }
+@media (prefers-reduced-motion: reduce) { .qsm-ui .qsm-ui-addon-tabs-chev { transition: none; } }
 @media screen and (max-width: 782px) {
 	.qsm-ui.qsm-ui-quiz-frame-header { margin: -10px -12px 0 -10px; padding-inline: 10px; }
 	.qsm-ui .qsm-ui-quiz-frame-bar { margin-inline: -10px; padding-inline: 10px; }
@@ -991,7 +1003,11 @@
 .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:hover, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:focus, .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:active { min-height: var(--qsm-control-h-sm); gap: 6px; color: var(--qsm-ink); }
 .qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn:hover { background: var(--qsm-surface-2); }
 @media (max-width: 782px) {
-	.qsm-ui .question-controls .qsm-ui-q-search { width: 100%; }
+	/* Narrow screens: the count pill on its own line, then search and the settings button full width. */
+	.qsm-ui .question-controls.qsm-ui-q-controls { flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+	.qsm-ui .qsm-ui-q-controls .search-box { flex: 1 1 100%; min-width: 0; width: 100%; margin: 0; }
+	.qsm-ui .question-controls .qsm-ui-q-search { flex: 1 1 100%; width: 100%; }
+	.qsm-ui .qsm-ui-q-controls .qsm-ui-q-settings-btn { flex: 1 1 auto; justify-content: center; }
 }
 /* While a question editor is open the board can't be reordered (qsm-admin.js disables the sortables), so the handles say so. */
 .qsm-ui .page.ui-sortable-disabled .qsm-ui-question-handle, .qsm-ui .questions.ui-sortable-disabled .qsm-ui-page-handle { cursor: not-allowed; opacity: .4; }
