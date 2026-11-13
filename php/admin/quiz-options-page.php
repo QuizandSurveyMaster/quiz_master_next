@@ -275,8 +275,8 @@ function qsm_generate_quiz_options() {
 				<nav class="qsm-ui qsm-ui-quiz-tabs-nav" aria-label="<?php esc_attr_e( 'Quiz sections', 'quiz-master-next' ); ?>">
 					<div class="qsm-ui-tabs qsm-ui-quiz-tabs">
 						<?php
-						// Core tabs first, then add-on tabs in their registered order, all in one bar that wraps.
-						$tab_icons    = array(
+						// Core tabs in the bar; add-on tabs in an "Add-ons" dropdown, as before the kit.
+						$tab_icons   = array(
 							'questions'     => 'quiz',
 							'contact'       => 'users',
 							'text'          => 'text',
@@ -285,25 +285,17 @@ function qsm_generate_quiz_options() {
 							'results-pages' => 'chart',
 							'style'         => 'palette',
 						);
-						$ordered_tabs = array_merge(
-							array_filter(
-								$tab_array,
-								function ( $tab ) use ( $qsm_core_tabs ) {
-									return in_array( $tab['slug'], $qsm_core_tabs, true );
-								}
-							),
-							array_filter(
-								$tab_array,
-								function ( $tab ) use ( $qsm_core_tabs ) {
-									return ! in_array( $tab['slug'], $qsm_core_tabs, true );
-								}
-							)
-						);
-						foreach ( $ordered_tabs as $tab ) {
-							$is_core   = in_array( $tab['slug'], $qsm_core_tabs, true );
+						$addon_tabs  = array();
+						$addon_found = false;
+						foreach ( $tab_array as $tab ) {
 							$is_active = $active_tab === $tab['slug'];
+							if ( ! in_array( $tab['slug'], $qsm_core_tabs, true ) ) {
+								$addon_tabs[] = $tab;
+								$addon_found  = $addon_found || $is_active;
+								continue;
+							}
 							?>
-							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="qsm-ui-tab<?php echo $is_core ? '' : ' qsm-ui-addon-tab'; ?>" data-tab="<?php echo esc_attr( $tab['slug'] ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
+							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="qsm-ui-tab" data-tab="<?php echo esc_attr( $tab['slug'] ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>>
 								<?php
 								if ( isset( $tab_icons[ $tab['slug'] ] ) ) {
 									echo QSM_Admin_UI::icon( $tab_icons[ $tab['slug'] ], 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -311,6 +303,27 @@ function qsm_generate_quiz_options() {
 								echo wp_kses_post( $tab['title'] );
 								?>
 							</a>
+							<?php
+						}
+						if ( ! empty( $addon_tabs ) ) {
+							?>
+							<div class="qsm-ui-menu-wrap qsm-ui-addon-tabs">
+								<button type="button" class="qsm-ui-tab qsm-ui-addon-tabs-toggle<?php echo $addon_found ? ' is-current' : ''; ?>" data-qsm-ui-menu aria-haspopup="true" aria-expanded="false" aria-controls="qsm-ui-addon-tabs-menu">
+									<?php echo QSM_Admin_UI::icon( 'bolt', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+									<?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
+									<?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-addon-tabs-chev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+								</button>
+								<div class="qsm-ui-menu qsm-ui-addon-tabs-menu" id="qsm-ui-addon-tabs-menu" hidden>
+									<?php
+									foreach ( $addon_tabs as $tab ) {
+										$is_active = $active_tab === $tab['slug'];
+										?>
+										<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="qsm-ui-addon-tab" data-tab="<?php echo esc_attr( $tab['slug'] ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?>><?php echo wp_kses_post( $tab['title'] ); ?><?php echo $is_active ? QSM_Admin_UI::icon( 'check', 'qsm-ui-icon-sm qsm-ui-addon-tab-check' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
+										<?php
+									}
+									?>
+								</div>
+							</div>
 							<?php
 						}
 						?>
