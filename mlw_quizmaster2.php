@@ -550,6 +550,7 @@ class MLWQuizMasterNext {
 			// The quiz edit frame (header + tab bar) uses the admin UI kit on every tab.
 			if ( 'admin_page_mlw_quiz_options' === $hook ) {
 				QSM_Admin_UI::enqueue();
+				wp_enqueue_style( 'qsm_admin_ui_quiz_frame_css' );
 			}
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
@@ -561,6 +562,8 @@ class MLWQuizMasterNext {
 					// Global Settings shares this block with tab 'questions' by default; the kit is only for the quiz Questions tab.
 					if ( 'admin_page_mlw_quiz_options' === $hook ) {
 						QSM_Admin_UI::enqueue();
+						wp_enqueue_style( 'qsm_admin_ui_questions_css' );
+						wp_enqueue_script( 'qsm_admin_questions_js' );
 					}
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );

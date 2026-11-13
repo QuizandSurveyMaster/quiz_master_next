@@ -208,10 +208,14 @@ function qsm_question_bank_admin_assets( $hook ) {
 
 	wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $mlwQuizMasterNext->version );
 
+	// QSMQuestion (qsm-admin-questions.js) is shared with the quiz Questions tab.
+	if ( ! wp_script_is( 'qsm_admin_questions_js', 'registered' ) ) {
+		wp_register_script( 'qsm_admin_questions_js', QSM_PLUGIN_JS_URL . '/qsm-admin-questions.js', array( 'qsm_admin_js' ), $mlwQuizMasterNext->version, true );
+	}
 	wp_enqueue_script(
 		'qsm_question_bank_admin_js',
 		QSM_PLUGIN_JS_URL . '/qsm-question-bank.js',
-		array( 'jquery', 'wp-util', 'qsm_admin_js' ),
+		array( 'jquery', 'wp-util', 'qsm_admin_js', 'qsm_admin_questions_js' ),
 		$mlwQuizMasterNext->version,
 		true
 	);

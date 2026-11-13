@@ -68,6 +68,7 @@ class QSM_Admin_Assets {
 		// and is enqueued after admin_enqueue_scripts (admin_head) would print it without qsm_admin_messages;
 		// no add-on does that.
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'maybe_localize_messages' ), 1 );
+		add_filter( 'print_scripts_array', array( __CLASS__, 'keep_questions_script_order' ) );
 	}
 
 	/**
@@ -146,6 +147,50 @@ class QSM_Admin_Assets {
 		if ( ! wp_script_is( 'qsm_admin_ui_js', 'registered' ) ) {
 			wp_register_script( 'qsm_admin_ui_js', QSM_PLUGIN_JS_URL . '/qsm-admin-ui.js', array( 'jquery' ), $version, true );
 		}
+		// New UI page assets on top of the kit: the quiz edit frame (every quiz tab) and the Questions tab.
+		if ( ! wp_style_is( 'qsm_admin_ui_quiz_frame_css', 'registered' ) ) {
+			wp_register_style( 'qsm_admin_ui_quiz_frame_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-quiz-frame.css', array( 'qsm_admin_ui_css' ), $version );
+		}
+		// Legacy Questions tab CSS (also the Question Bank page). The new Questions tab still builds on it: the question
+		// editor fields, answers and add-on fields use its markup, and the kit file overrides it, so it loads first.
+		if ( ! wp_style_is( 'qsm_admin_question_css', 'registered' ) ) {
+			wp_register_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $version );
+		}
+		if ( ! wp_style_is( 'qsm_admin_ui_questions_css', 'registered' ) ) {
+			wp_register_style( 'qsm_admin_ui_questions_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-questions.css', array( 'qsm_admin_ui_css', 'qsm_admin_question_css' ), $version );
+		}
+		// QSMQuestion: the Questions tab and the Question Bank page. Printed right after qsm_admin_js, see keep_questions_script_order().
+		if ( ! wp_script_is( 'qsm_admin_questions_js', 'registered' ) ) {
+			wp_register_script( 'qsm_admin_questions_js', QSM_PLUGIN_JS_URL . '/qsm-admin-questions.js', array( 'qsm_admin_js' ), $version, true );
+		}
+	}
+
+	/**
+	 * Prints qsm_admin_questions_js right after qsm_admin_js.
+	 *
+	 * The Questions tab code used to be part of qsm-admin.js. Add-on scripts that read or extend QSMQuestion
+	 * when they load (Advanced Assessment, Advanced Timer, ...) depend on qsm_admin_js or only on jquery, so
+	 * they must not run between the two files.
+	 *
+	 * @param array $to_do Script handles in print order.
+	 * @return array
+	 */
+	public static function keep_questions_script_order( $to_do ) {
+		$to_do = (array) $to_do;
+		$admin = array_search( 'qsm_admin_js', $to_do, true );
+		$own   = array_search( 'qsm_admin_questions_js', $to_do, true );
+		if ( false === $admin || false === $own || $own === $admin + 1 ) {
+			return $to_do;
+		}
+		$scripts = wp_scripts();
+		// qsm_admin_js moves to the header when a header script needs it; this one goes with it.
+		if ( isset( $scripts->groups['qsm_admin_js'], $scripts->groups['qsm_admin_questions_js'] ) && $scripts->groups['qsm_admin_js'] < $scripts->groups['qsm_admin_questions_js'] ) {
+			$scripts->groups['qsm_admin_questions_js'] = $scripts->groups['qsm_admin_js'];
+		}
+		unset( $to_do[ $own ] );
+		$to_do = array_values( $to_do );
+		array_splice( $to_do, array_search( 'qsm_admin_js', $to_do, true ) + 1, 0, 'qsm_admin_questions_js' );
+		return $to_do;
 	}
 
 	/**
