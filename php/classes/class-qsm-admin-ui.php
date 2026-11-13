@@ -33,6 +33,13 @@ class QSM_Admin_UI {
 	private static $sprite_queued = false;
 
 	/**
+	 * Whether the kit has been enqueued on this page.
+	 *
+	 * @var bool
+	 */
+	private static $enqueued = false;
+
+	/**
 	 * Enqueues the kit stylesheet and script, and queues the icon sprite.
 	 *
 	 * Screens call this from their enqueue branch.
@@ -41,10 +48,15 @@ class QSM_Admin_UI {
 	 */
 	public static function enqueue() {
 		global $mlwQuizMasterNext;
+		if ( self::$enqueued ) {
+			return;
+		}
+		self::$enqueued = true;
 		// QSM_ADMIN_UI_VERSION tracks the kit's API (add-ons can check it); the plugin version busts the cache on every release.
 		$version = isset( $mlwQuizMasterNext->version ) ? $mlwQuizMasterNext->version : QSM_ADMIN_UI_VERSION;
-		wp_enqueue_style( 'qsm_admin_ui_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui.css', array(), $version );
-		wp_enqueue_script( 'qsm_admin_ui_js', QSM_PLUGIN_JS_URL . '/qsm-admin-ui.js', array( 'jquery' ), $version, true );
+		QSM_Admin_Assets::register( $version );
+		wp_enqueue_style( 'qsm_admin_ui_css' );
+		wp_enqueue_script( 'qsm_admin_ui_js' );
 		wp_localize_script(
 			'qsm_admin_ui_js',
 			'qsmAdminUI',
