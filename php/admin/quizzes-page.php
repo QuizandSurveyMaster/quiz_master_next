@@ -237,6 +237,13 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				global $globalQuizsetting, $mlwQuizMasterNext;
 				foreach ( $post_ids as $post_id ) {
 					$quiz_id     = get_post_meta( $post_id, 'quiz_id', true );
+					// IDOR fix (CU-14ypaj0tqwm): this bulk action overwrote each quiz's
+					// settings with the global defaults without any ownership check, so a
+					// Contributor could reset another author's quiz. Skip any quiz the
+					// current user is not allowed to edit.
+					if ( ! function_exists( 'qsm_current_user_can_edit_quiz' ) || ! qsm_current_user_can_edit_quiz( intval( $quiz_id ) ) ) {
+						continue;
+					}
 					$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 					$quiz_options = $mlwQuizMasterNext->quiz_settings->get_setting( 'quiz_options');
 					$settings = wp_parse_args($globalQuizsetting,$quiz_options);
