@@ -576,6 +576,7 @@
 .qsm-popup.qsm-ui-popup .qsm-popup__header .qsm-popup__close { position: static; flex: none; padding: 0; border: 0; font-size: 18px; line-height: 1; }
 .qsm-popup.qsm-ui-popup .qsm-popup__content { margin: 0; padding: 18px 22px 20px; color: var(--qsm-ink-2); }
 .qsm-popup.qsm-ui-popup .qsm-popup__footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
+.qsm-popup.qsm-ui-popup .qsm-popup__footer .qsm-ui-foot-left { margin-inline-end: auto; }
 
 /* WP colour picker (F-21): only pickers Core wraps in .qsm-ui-color, so an add-on's picker printed inside a wrapper is unchanged. The picker panel stays WordPress's own. */
 .qsm-ui .qsm-ui-color .wp-picker-container .wp-color-result.button { min-height: var(--qsm-control-h); margin: 0; padding-left: 42px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-position: 6px center; box-shadow: none; }

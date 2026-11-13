@@ -297,7 +297,6 @@
 .qsm-popup.qsm-ui-popup .qsm-ui-popup-fields { display: grid; gap: 16px; }
 .qsm-popup.qsm-ui-popup .qsm-ui-popup-fields .qsm-ui-select, .qsm-popup.qsm-ui-popup .qsm-ui-popup-fields .qsm-ui-input { width: 100%; }
 .qsm-popup.qsm-ui-popup .qsm-popup__header > div { min-width: 0; }
-.qsm-popup.qsm-ui-popup .qsm-popup__footer .qsm-ui-foot-left { margin-inline-end: auto; }
 .qsm-popup.qsm-ui-popup .qsm-ui-modal-icon.is-warning { background: var(--qsm-amber-bg); color: var(--qsm-amber); }
 #modal-default-question-settings.qsm-ui-popup .qsm-popup__container { max-width: none; width: min(460px, calc(100vw - 32px)); }
 #modal-default-question-settings.qsm-ui-popup .qsm-popup__header { align-items: flex-start; }
