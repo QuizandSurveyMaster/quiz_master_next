@@ -453,12 +453,11 @@ if (typeof window.qsmCheckMR !== 'function') {
                     return;
                 }
 
-                // grecaptcha callbacks run with their own `this`, so keep a reference to the navigation object.
-                let self = this;
-                window.grecaptcha.ready(function () {
-                    window.grecaptcha.execute(siteKey, { action: submitAction }).then(function (token) {
+                // Arrow functions keep `this` bound to the navigation object inside the grecaptcha callbacks.
+                window.grecaptcha.ready(() => {
+                    window.grecaptcha.execute(siteKey, { action: submitAction }).then((token) => {
                         $form.find('#qsm_grecaptcha_v3_response').val(token);
-                        self.submitForm(quizId);
+                        this.submitForm(quizId);
                     });
                 });
             },
