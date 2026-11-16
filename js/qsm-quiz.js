@@ -379,7 +379,8 @@ var qsmTimerInterval = [];
 				seconds = parseInt(timerRemaning);
 			}
 			$timer.text(QSM.secondsToTimer(seconds));
-			jQuery(document).trigger('qsm_init_pagination_after', [quizID]);
+			// Same arguments as the other qsm_init_pagination_after trigger; themes (e.g. Pixel) read qmn_quiz_data[quizID].
+			jQuery(document).trigger('qsm_init_pagination_after', [quizID, qmn_quiz_data]);
 		},
 		/**
 		 * Navigates quiz to specific page
