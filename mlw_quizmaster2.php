@@ -520,6 +520,10 @@ class MLWQuizMasterNext {
 				wp_enqueue_script( 'jquery-touch-punch' );
 			}
 		}
+		// Create Quiz page: start screen, custom form and template browser use the admin UI kit.
+		if ( 'qsm_page_qsm_create_quiz_page' === $hook ) {
+			QSM_Admin_UI::enqueue();
+		}
 		// result details page
 		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
 			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL . '/common.css', array(), $this->version );
