@@ -1938,11 +1938,11 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		}
 		$left_image = $answers[0][0];
 		$caption_text = trim( htmlspecialchars_decode( $answers[0][3], ENT_QUOTES ) );
-		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-0', 'QSM Answers' );
 		$input_text .= '<img src="'.esc_url( trim( htmlspecialchars_decode( $left_image, ENT_QUOTES ) ) ).'"  style="'.esc_attr( $size_style ).'"  />';
 		$input_text .= '<span class="qsm_image_caption">'.esc_html( $caption_text ).'</span>';
 	} else {
-		$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" );
+		$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $id . "-0", "QSM Answers" );
 		$input_text       .= wp_kses_post( do_shortcode( $left_title ) );
 	}
 
@@ -1960,11 +1960,11 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		}
 		$right_image = $answers[1][0];
 		$caption_text = trim( htmlspecialchars_decode( $answers[1][3], ENT_QUOTES ) );
-		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+		$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-1', 'QSM Answers' );
 		$input_text .= '<img src="'.esc_url( trim( htmlspecialchars_decode( $right_image, ENT_QUOTES ) ) ).'"  style="'.esc_attr( $size_style ).'"  />';
 		$input_text .= '<span class="qsm_image_caption">'.esc_html( $caption_text ).'</span>';
 	} else {
-		$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[0][0], "QSM Answers" );
+		$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $id . "-1", "QSM Answers" );
 		$input_text       .= wp_kses_post( do_shortcode( $right_title ) );
 	}
 	$input_text       .= "</div>";
