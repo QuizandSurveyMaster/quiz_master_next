@@ -461,12 +461,21 @@ function qsm_generate_dashboard_page() {
 <div class="wrap">
 	<div class="qsm-dashboard-wrapper">
 		<div class="qsm-dashboard-container">
-			<div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style">
+			<div class="qsm-dashboard-create-quiz-section qsm-dashboard-page-common-style qsm-ui">
 				<div class="qsm-dashboard-page-header">
-					<h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz / Survey', 'quiz-master-next' ); ?></h3>
-					<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Design quizzes and surveys tailored to your needs.', 'quiz-master-next' ); ?></p>
+					<h3 class="qsm-dashboard-card-title"><?php esc_html_e( 'Create a Quiz / Survey', 'quiz-master-next' ); ?> <?php echo QSM_Admin_UI::badge( __( 'New: Templates', 'quiz-master-next' ), 'info', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></h3>
+					<p class="qsm-dashboard-card-description"><?php esc_html_e( 'Start from scratch, or import a ready-made quiz or survey in one click.', 'quiz-master-next' ); ?></p>
 				</div>
-				<div class="">
+				<div class="qsm-ui-row qsm-dashboard-create-quiz-actions">
+					<?php
+					echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+						__( 'Use a template', 'quiz-master-next' ),
+						array(
+							'icon' => 'download',
+							'href' => admin_url( 'admin.php?page=qsm_create_quiz_page&view=template' ),
+						)
+					);
+					?>
 					<a class="button button-primary qsm-dashboard-section-create-quiz"  href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" ><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?><img class="qsm-dashboard-help-image" src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/right-arrow.png' ); ?>" alt="right-arrow.png"/></a>
 				</div>
 			</div>

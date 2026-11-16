@@ -976,3 +976,15 @@ h2.hndle.ui-sortable-handle {
 		width: 50%;
 	}
 }
+/* Create Quiz card: "New: Templates" badge and the Use a template button (admin UI kit). */
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-card-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-card-title .qsm-ui-badge { font-size: 12px; letter-spacing: 0; }
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-create-quiz-actions { flex-wrap: nowrap; }
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-create-quiz-actions .qsm-ui-btn { min-height: 46px; padding: 10px 18px; }
+@media (max-width: 782px) {
+	.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-create-quiz-actions { flex-wrap: wrap; }
+}
+.qsm-dashboard-create-quiz-section.qsm-ui { grid-template-columns: 1fr auto; }
+@media (max-width: 782px) {
+	.qsm-dashboard-create-quiz-section.qsm-ui { grid-template-columns: 1fr; }
+}
