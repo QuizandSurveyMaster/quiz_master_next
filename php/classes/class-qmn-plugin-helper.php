@@ -1330,21 +1330,60 @@ class QMNPluginHelper {
 		);
 	}
 
+	/**
+	 * Limit the answers shown for a question to $limit options.
+	 *
+	 * All correct answers are kept and the remaining slots are filled with a
+	 * random pick of incorrect answers. The returned answers keep their
+	 * original keys, because the templates submit the key as the answer value
+	 * and grading looks it up in the question's stored answer array. They also
+	 * keep the incoming order, so they are only shuffled when "Randomize
+	 * answers" is enabled (which shuffles $options before this is called).
+	 *
+	 * @param array $options Answer array, keyed by original answer index.
+	 * @param int   $limit   Maximum number of answers to show.
+	 * @return array {
+	 *     @type array  $final             Answers to display, original keys preserved.
+	 *     @type string $answer_limit_keys Comma separated original keys of the displayed answers,
+	 *                                     or '' when the limit removes nothing.
+	 * }
+	 */
 	public function qsm_get_limited_options( $options, $limit ) {
-		$correct   = array_filter( $options, fn( $o, $k ) => 1 == $o[2], ARRAY_FILTER_USE_BOTH );
-		$incorrect = array_filter( $options, fn( $o, $k ) => 0 == $o[2], ARRAY_FILTER_USE_BOTH );
-		shuffle( $incorrect );
-		$final = array_merge( $correct, array_slice( $incorrect, 0, $limit - count( $correct ) ) );
-		shuffle( $final );
-		$final_keys = array_map( fn( $k ) => array_search( $k, array_values( $options ), true ), $final );
+		$limit = intval( $limit );
+		if ( ! is_array( $options ) || $limit <= 0 || $limit >= count( $options ) ) {
+			return array(
+				'final'             => $options,
+				'answer_limit_keys' => '',
+			);
+		}
+		$correct        = array_filter( $options, fn( $o ) => 1 == $o[2] );
+		$incorrect      = array_filter( $options, fn( $o ) => 0 == $o[2] );
+		$incorrect_keys = array_keys( $incorrect );
+		shuffle( $incorrect_keys );
+		$keep_keys = array_merge( array_keys( $correct ), array_slice( $incorrect_keys, 0, max( 0, $limit - count( $correct ) ) ) );
+		$final     = array_intersect_key( $options, array_flip( $keep_keys ) );
 		return array(
 			'final'             => $final,
-			'answer_limit_keys' => implode( ',', $final_keys ),
+			'answer_limit_keys' => implode( ',', array_keys( $final ) ),
 		);
 	}
 
+	/**
+	 * Rebuild the limited answer set from the stored answer_limit_keys.
+	 *
+	 * @param array  $options Answer array, keyed by original answer index.
+	 * @param string $keys    Comma separated original answer keys.
+	 * @return array Answers for those keys, original keys preserved.
+	 */
 	public function qsm_get_limited_options_by_keys( $options, $keys ) {
-		return array_map( fn( $k ) => $options[ $k ], explode( ',', $keys ) );
+		$limited = array();
+		foreach ( explode( ',', $keys ) as $key ) {
+			$key = intval( $key );
+			if ( isset( $options[ $key ] ) ) {
+				$limited[ $key ] = $options[ $key ];
+			}
+		}
+		return $limited;
 	}
 
 	/**
