@@ -463,6 +463,7 @@ function qsm_create_quiz_render_start_view() {
 				__( 'Choose a theme', 'quiz-master-next' ),
 			),
 			'cta'   => __( 'Start from scratch', 'quiz-master-next' ),
+			'badge' => __( 'Blank quiz', 'quiz-master-next' ),
 		),
 		'template' => array(
 			'icon'  => 'download',
@@ -474,22 +475,33 @@ function qsm_create_quiz_render_start_view() {
 				__( 'Add-ons the demo needs are installed for you', 'quiz-master-next' ),
 			),
 			'cta'   => __( 'Browse templates', 'quiz-master-next' ),
+			'badge' => __( 'One-click import', 'quiz-master-next' ),
 		),
 	);
 	?>
 	<div class="qsm-cq-view" data-qsm-cq-view="start">
 		<div class="qsm-cq-choices">
 			<?php foreach ( $choices as $view => $choice ) { ?>
+				<?php // Same card as the template grid: framed media on top, badge row, title, text, action under a divider. ?>
 				<button type="button" class="qsm-cq-choice" data-qsm-cq-go="<?php echo esc_attr( $view ); ?>">
-					<span class="qsm-cq-choice-icon"><?php echo QSM_Admin_UI::icon( $choice['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-					<span class="qsm-ui-h2"><?php echo esc_html( $choice['title'] ); ?></span>
-					<span class="qsm-cq-choice-text"><?php echo esc_html( $choice['text'] ); ?></span>
-					<span class="qsm-cq-choice-list">
-						<?php foreach ( $choice['items'] as $item ) { ?>
-							<span><?php echo QSM_Admin_UI::icon( 'check', 'qsm-ui-icon-sm' ) . esc_html( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-						<?php } ?>
+					<span class="qsm-cq-choice-frame">
+						<span class="qsm-cq-choice-media">
+							<span class="qsm-cq-choice-icon"><?php echo QSM_Admin_UI::icon( $choice['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+						</span>
 					</span>
-					<span class="qsm-cq-choice-cta"><?php echo esc_html( $choice['cta'] ); ?> &rarr;</span>
+					<span class="qsm-cq-choice-body">
+						<span class="qsm-cq-choice-top"><?php echo QSM_Admin_UI::badge( $choice['badge'], 'template' === $view ? 'info' : '', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+						<span class="qsm-ui-h2 qsm-cq-choice-title"><?php echo esc_html( $choice['title'] ); ?></span>
+						<span class="qsm-cq-choice-text"><?php echo esc_html( $choice['text'] ); ?></span>
+						<span class="qsm-cq-choice-list">
+							<?php foreach ( $choice['items'] as $item ) { ?>
+								<span><?php echo QSM_Admin_UI::icon( 'check', 'qsm-ui-icon-sm' ) . esc_html( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+							<?php } ?>
+						</span>
+						<span class="qsm-cq-choice-actions">
+							<span class="qsm-ui-btn <?php echo 'template' === $view ? 'qsm-ui-btn-primary' : ''; ?> qsm-cq-choice-cta"><?php echo esc_html( $choice['cta'] ); ?> &rarr;</span>
+						</span>
+					</span>
 				</button>
 			<?php } ?>
 		</div>
