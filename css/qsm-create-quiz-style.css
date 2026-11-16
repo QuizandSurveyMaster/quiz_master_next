@@ -79,3 +79,7 @@
 	.qsm-cq .qsm-cq-choice { padding: 22px; }
 	.qsm-cq .qsm-cq-actionbar { padding: 12px 16px; }
 }
+
+/* WordPress footer: in the normal flow below the content, so it never overlaps the sticky bars. */
+.qsm_page_qsm_create_quiz_page #wpfooter { position: relative; clear: both; }
+.qsm_page_qsm_create_quiz_page #wpbody-content { padding-bottom: 24px; }
