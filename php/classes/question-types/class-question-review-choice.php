@@ -17,21 +17,13 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 				foreach ( $user_response as $user_response_single ) {
 					$user_answer_key                       = intval( $this->sanitize_answer_from_post( $user_response_single ) );
 					$user_answer_value                     = $this->sanitize_answer_from_db( $this->answer_array[ $user_answer_key ][0] );
-					$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, "answer-{$this->question_id}-{$user_answer_key}", 'QSM Answers' );
+					$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, 'answer-' . $user_answer_value, 'QSM Answers' );
 				}
 			} elseif ( '' !== $user_response ) {
 				$user_answer_key                       = intval( $this->sanitize_answer_from_post( $user_response ) );
 				$user_answer_value                     = $this->sanitize_answer_from_db( $this->answer_array[ $user_answer_key ][0] );
-				$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, "answer-{$this->question_id}-{$user_answer_key}", 'QSM Answers' );
+				$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, 'answer-' . $user_answer_value, 'QSM Answers' );
 			}
-		}
-	}
-
-	public function set_correct_answer() {
-		global $mlwQuizMasterNext;
-		parent::set_correct_answer();
-		foreach ( $this->correct_answer as $answer_key => $answer_value ) {
-			$this->correct_answer[ $answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_value, "answer-{$this->question_id}-{$answer_key}", 'QSM Answers' );
 		}
 	}
 
