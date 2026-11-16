@@ -702,25 +702,39 @@ function qsm_create_quiz_render_template_view() {
 			 */
 			do_action( 'qsm_create_quiz_templates' );
 		} else {
-			echo QSM_Admin_UI::card( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				array(
-					'body' => QSM_Admin_UI::empty_state(
-						array(
-							'icon'    => 'download',
-							'title'   => __( 'Templates need the QSM Installer add-on', 'quiz-master-next' ),
-							'text'    => __( 'Install and activate the QSM Installer add-on (version 2.2.0 or newer) to browse and import ready-made quizzes and surveys.', 'quiz-master-next' ),
-							'actions' => QSM_Admin_UI::button(
+			// Same card as the start screen and the template grid.
+			?>
+			<div class="qsm-cq-choices qsm-cq-fallback">
+				<div class="qsm-cq-choice" data-qsm-cq-fallback>
+					<span class="qsm-cq-choice-frame">
+						<span class="qsm-cq-choice-media">
+							<span class="qsm-cq-choice-icon"><?php echo QSM_Admin_UI::icon( 'download' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+						</span>
+					</span>
+					<span class="qsm-cq-choice-body">
+						<span class="qsm-cq-choice-top"><?php echo QSM_Admin_UI::badge( __( 'Add-on required', 'quiz-master-next' ), 'warning', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+						<span class="qsm-ui-h2 qsm-cq-choice-title"><?php esc_html_e( 'Templates need the QSM Installer add-on', 'quiz-master-next' ); ?></span>
+						<span class="qsm-cq-choice-text"><?php esc_html_e( 'Install and activate the QSM Installer add-on (version 2.2.0 or newer) to browse and import ready-made quizzes and surveys.', 'quiz-master-next' ); ?></span>
+						<span class="qsm-cq-choice-actions">
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Start from scratch', 'quiz-master-next' ),
+								array( 'attrs' => array( 'data-qsm-cq-go' => 'custom' ) )
+							);
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 								__( 'Get QSM Installer', 'quiz-master-next' ),
 								array(
 									'variant' => 'primary',
 									'href'    => qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'templates', 'installer-required' ),
 									'attrs'   => array( 'target' => '_blank' ),
 								)
-							),
-						)
-					),
-				)
-			);
+							);
+							?>
+						</span>
+					</span>
+				</div>
+			</div>
+			<?php
 		}
 		?>
 	</div>

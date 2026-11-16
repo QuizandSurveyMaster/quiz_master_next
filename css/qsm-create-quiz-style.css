@@ -39,7 +39,7 @@
 .qsm-cq .qsm-cq-choice-list { display: grid; gap: 8px; margin: 14px 0 18px; color: var(--qsm-ink-2); font-size: 13px; }
 .qsm-cq .qsm-cq-choice-list > span { display: inline-flex; align-items: center; gap: 8px; }
 .qsm-cq .qsm-cq-choice-list .qsm-ui-icon { color: var(--qsm-green); }
-.qsm-cq .qsm-cq-choice-actions { display: flex; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--qsm-line-soft); }
+.qsm-cq .qsm-cq-choice-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--qsm-line-soft); }
 .qsm-cq .qsm-cq-choice-actions .qsm-ui-btn { flex: 1; pointer-events: none; }
 
 /* ---- Custom ---- */
@@ -57,30 +57,41 @@
 .qsm-cq .qsm-cq-setting .qsm-ui-help { display: block; margin-top: 6px; color: var(--qsm-muted); font-size: 12px; }
 .qsm-cq .qsm-ui-card-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 
-/* Theme list. The markup comes from qsm_dashboard_display_theme_section() and the QSM Installer's
-   qsm_create_quiz_theme_option_buttons hook, so its class names stay. */
+/* Theme list, in the template card style. The markup comes from qsm_dashboard_display_theme_section() and the
+   QSM Installer's qsm_create_quiz_theme_option_buttons hook, so class names and structure stay; layout is CSS only.
+   Card order: framed thumbnail, Recommended badge, title + version, buttons under a divider. */
 .qsm-cq .qsm-cq-theme-card .qsm-dashboard-page-header { display: none; }
-.qsm-cq .qsm-quiz-theme-steps-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-.qsm-cq .qsm-quiz-steps-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius-md); background: #fff; transition: border-color .15s, box-shadow .15s; }
-.qsm-cq .qsm-quiz-steps-card:hover { border-color: #b4bfcf; }
-.qsm-cq .qsm-quiz-steps-card.qsm-quiz-steps-default-theme-active { border-color: var(--qsm-blue); box-shadow: inset 0 0 0 1px var(--qsm-blue), 0 0 0 3px var(--qsm-blue-ring); }
-.qsm-cq .qsm-quiz-steps-image { aspect-ratio: 16 / 10; overflow: hidden; background: var(--qsm-surface-2); border-bottom: 1px solid var(--qsm-line-soft); }
+.qsm-cq .qsm-quiz-theme-steps-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px 20px; padding: 18px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-bg); }
+.qsm-cq .qsm-quiz-steps-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.qsm-cq .qsm-quiz-steps-card:hover { border-color: var(--qsm-blue-border); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 16px 36px rgba(49, 94, 251, .14); transform: translateY(-2px); }
+.qsm-cq .qsm-quiz-steps-card.qsm-quiz-steps-default-theme-active { border-color: var(--qsm-blue); box-shadow: 0 0 0 3px var(--qsm-blue-ring), 0 6px 18px rgba(28, 43, 75, .06); }
+/* Selected: a check in the corner of the thumbnail. */
+.qsm-cq .qsm-quiz-steps-card.qsm-quiz-steps-default-theme-active::after { content: ""; position: absolute; top: 16px; right: 16px; width: 26px; height: 26px; border: 2px solid #fff; border-radius: 50%; background: var(--qsm-blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") no-repeat center; box-shadow: 0 2px 6px rgba(49, 94, 251, .35); }
+.qsm-cq .qsm-quiz-steps-image { order: 0; padding: 10px 10px 0; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
 .qsm-cq .qsm-quiz-theme-activated .qsm-quiz-steps-image { cursor: pointer; }
-.qsm-cq .qsm-quiz-steps-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.qsm-cq .qsm-quiz-steps-content { display: flex; flex: 1; flex-direction: column; gap: 10px; padding: 12px 14px 14px; }
-.qsm-cq .qsm-quiz-steps-title { margin: 0; color: var(--qsm-ink); font-size: 14px; font-weight: 700; }
-.qsm-cq .qsm-dashboard-addon-status { min-height: 16px; margin: 2px 0 0; color: var(--qsm-muted); font-size: 12px; }
-.qsm-cq .qsm-quiz-steps-action-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.qsm-cq .qsm-quiz-steps-image img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top center; border: 1px solid var(--qsm-line-soft); border-bottom: 0; border-radius: var(--qsm-radius-md) var(--qsm-radius-md) 0 0; background: #fff; transition: transform .25s; }
+.qsm-cq .qsm-quiz-steps-card:hover .qsm-quiz-steps-image img { transform: scale(1.02); }
+/* Recommended moves from over the image to a badge row at the top of the body (jQuery show()/hide() still toggles it). */
+.qsm-cq .qsm-dashboard-theme-recommended { order: 1; display: none; align-self: flex-start; margin: 14px 16px 0; padding: 2px 9px; border: 1px solid var(--qsm-green-line); border-radius: 999px; background: var(--qsm-green-bg); color: var(--qsm-green); font-size: 12px; font-weight: 600; line-height: 1.6; }
+.qsm-cq .qsm-quiz-steps-content { order: 2; display: flex; flex: 1; flex-direction: column; padding: 10px 16px 16px; }
+.qsm-cq .qsm-quiz-steps-title { margin: 0; color: var(--qsm-ink); font-size: 15px; font-weight: 700; line-height: 1.4; }
+.qsm-cq .qsm-dashboard-addon-status { min-height: 18px; margin: 4px 0 14px; color: var(--qsm-muted); font-size: 12.5px; }
+.qsm-cq .qsm-quiz-steps-action-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--qsm-line-soft); }
+.qsm-cq .qsm-quiz-steps-card input[name="quiz_theme_id"] { order: 3; }
 .qsm-cq .qsm-quiz-steps-card .button { display: inline-flex; flex: 1; justify-content: center; align-items: center; gap: 6px; min-height: 34px; margin: 0; padding: 6px 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-ink-2); font: 600 13px/1.2 var(--qsm-font); text-decoration: none; box-shadow: none; }
 .qsm-cq .qsm-quiz-steps-card .button:hover { background: #f7f9fc; }
 .qsm-cq .qsm-quiz-steps-card .button-primary { border-color: var(--qsm-blue); background: var(--qsm-blue); color: #fff; }
 .qsm-cq .qsm-quiz-steps-card .button-primary:hover { border-color: var(--qsm-blue-dark); background: var(--qsm-blue-dark); color: #fff; }
 .qsm-cq .qsm-quiz-steps-card .button[disabled] { border-color: var(--qsm-blue-border); background: var(--qsm-blue-soft); color: var(--qsm-blue); opacity: 1; cursor: default; }
-.qsm-cq .qsm-dashboard-theme-recommended { position: absolute; top: 10px; left: 10px; display: none; padding: 2px 9px; border-radius: 999px; background: var(--qsm-green); color: #fff; font-size: 11px; font-weight: 700; }
 .qsm-cq .qsm-dashboard-see-more-types-wrap { display: flex; justify-content: center; margin-top: 18px; }
 .qsm-cq .qsm-dashboard-see-more-themes.button { min-height: 36px; padding: 6px 16px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-ink-2); font-weight: 600; }
 
 /* ---- Template ---- */
+/* Fallback when the QSM Installer is missing: one choice-style card, centred on the tinted panel. */
+.qsm-cq .qsm-cq-choices.qsm-cq-fallback { grid-template-columns: minmax(0, 520px); justify-content: center; }
+.qsm-cq .qsm-cq-fallback .qsm-cq-choice { cursor: default; }
+.qsm-cq .qsm-cq-fallback .qsm-cq-choice:hover { transform: none; }
+.qsm-cq .qsm-cq-fallback .qsm-cq-choice-actions .qsm-ui-btn { pointer-events: auto; }
 .qsm-cq[data-qsm-cq-current="template"] { max-width: none; }
 
 @media (max-width: 782px) {
