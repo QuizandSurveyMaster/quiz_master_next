@@ -1334,11 +1334,12 @@ class QMNPluginHelper {
 	 * Limit the answers shown for a question to $limit options.
 	 *
 	 * All correct answers are kept and the remaining slots are filled with a
-	 * random pick of incorrect answers. The returned answers keep their
-	 * original keys, because the templates submit the key as the answer value
-	 * and grading looks it up in the question's stored answer array. They also
-	 * keep the incoming order, so they are only shuffled when "Randomize
-	 * answers" is enabled (which shuffles $options before this is called).
+	 * random pick of incorrect answers, shown in random order. The returned
+	 * answers keep their original keys, because the templates submit the key
+	 * as the answer value and grading looks it up in the question's stored
+	 * answer array. When the limit removes nothing, the answers are returned
+	 * untouched, so they are only shuffled when "Randomize answers" is enabled
+	 * (which shuffles $options before this is called).
 	 *
 	 * @param array $options Answer array, keyed by original answer index.
 	 * @param int   $limit   Maximum number of answers to show.
@@ -1361,7 +1362,7 @@ class QMNPluginHelper {
 		$incorrect_keys = array_keys( $incorrect );
 		shuffle( $incorrect_keys );
 		$keep_keys = array_merge( array_keys( $correct ), array_slice( $incorrect_keys, 0, max( 0, $limit - count( $correct ) ) ) );
-		$final     = array_intersect_key( $options, array_flip( $keep_keys ) );
+		$final     = self::qsm_shuffle_assoc( array_intersect_key( $options, array_flip( $keep_keys ) ) );
 		return array(
 			'final'             => $final,
 			'answer_limit_keys' => implode( ',', array_keys( $final ) ),
@@ -1378,6 +1379,11 @@ class QMNPluginHelper {
 	public function qsm_get_limited_options_by_keys( $options, $keys ) {
 		$limited = array();
 		foreach ( explode( ',', $keys ) as $key ) {
+			// Results stored before this fix can hold empty entries; skip them
+			// rather than letting intval() turn them into answer 0.
+			if ( ! is_numeric( trim( $key ) ) ) {
+				continue;
+			}
 			$key = intval( $key );
 			if ( isset( $options[ $key ] ) ) {
 				$limited[ $key ] = $options[ $key ];

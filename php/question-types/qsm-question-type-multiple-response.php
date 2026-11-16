@@ -44,8 +44,8 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 			foreach ( $answers as $answer_index => $answer ) {
 				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
 				$mrq_checkbox_class = '';
-				$add_label_value = isset($add_label[ $answer_index ]) ? $add_label[ $answer_index ] : '';
-				if ( empty( $add_label[ $answer_index ] ) ) {
+				$add_label_value = isset($add_label[ $mlw_answer_total ]) ? $add_label[ $mlw_answer_total ] : '';
+				if ( empty( $add_label[ $mlw_answer_total ] ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
 				++$mlw_answer_total;
