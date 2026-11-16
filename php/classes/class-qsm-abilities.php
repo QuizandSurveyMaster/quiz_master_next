@@ -1741,25 +1741,33 @@ class QSM_Abilities {
 			if ( ! in_array( intval( $question_id ), $ids, true ) ) {
 				$ids[] = intval( $question_id );
 			}
-			// Keep the first page's attributes if an empty page already exists.
-			$first = isset( $qpages[0] ) && is_array( $qpages[0] ) ? $qpages[0] : array();
-			$qpage = array_merge(
-				array(
-					'id'             => 1,
-					'quizID'         => intval( $quiz_id ),
-					'pagekey'        => uniqid(),
-					'hide_prevbtn'   => 0,
-					'question_limit' => 0,
-				),
-				$first
-			);
-			$qpage['id']        = 1;
-			$qpage['quizID']    = intval( $quiz_id );
-			$qpage['pagekey']   = ! empty( $qpage['pagekey'] ) ? $qpage['pagekey'] : uniqid();
-			$qpage['questions'] = $ids;
-			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', array( $qpage ) );
-			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', array( $ids ) );
-			return 0;
+			// Keep any existing (empty) pages and their attributes; put the questions on the
+			// requested page, or the last one, as the normal path does.
+			if ( empty( $pages ) ) {
+				$pages = array( array() );
+			}
+			$last   = count( $pages ) - 1;
+			$target = null === $page ? $last : min( max( 0, intval( $page ) ), $last );
+			$pages[ $target ] = $ids;
+			foreach ( $pages as $k => $page_questions ) {
+				$qpage = isset( $qpages[ $k ] ) && is_array( $qpages[ $k ] ) ? $qpages[ $k ] : array();
+				$qpage = array_merge(
+					array(
+						'hide_prevbtn'   => 0,
+						'question_limit' => 0,
+					),
+					$qpage
+				);
+				$qpage['id']        = $k + 1;
+				$qpage['quizID']    = intval( $quiz_id );
+				$qpage['pagekey']   = ! empty( $qpage['pagekey'] ) ? $qpage['pagekey'] : uniqid();
+				$qpage['questions'] = array_map( 'intval', (array) $page_questions );
+				$qpages[ $k ]       = $qpage;
+			}
+			$qpages = array_slice( $qpages, 0, count( $pages ) );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+			return $target;
 		}
 
 		$last   = count( $pages ) - 1;
