@@ -1732,7 +1732,42 @@ class QSM_Abilities {
 			}
 		}
 		if ( ! $has_questions ) {
-			return 0;
+			// No page layout yet (every quiz create-quiz makes). Start one the way the Questions tab does,
+			// holding the quiz's existing questions in order, so the quiz renders with the page system
+			// (pagination + Submit button). Without it the block falls back to the legacy renderer,
+			// which prints no Submit button for such a quiz.
+			global $wpdb;
+			$ids = array_map( 'intval', $wpdb->get_col( $wpdb->prepare( "SELECT question_id FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0 ORDER BY question_order, question_id", $quiz_id ) ) );
+			if ( ! in_array( intval( $question_id ), $ids, true ) ) {
+				$ids[] = intval( $question_id );
+			}
+			// Keep any existing (empty) pages and their attributes; put the questions on the
+			// requested page, or the last one, as the normal path does.
+			if ( empty( $pages ) ) {
+				$pages = array( array() );
+			}
+			$last   = count( $pages ) - 1;
+			$target = null === $page ? $last : min( max( 0, intval( $page ) ), $last );
+			$pages[ $target ] = $ids;
+			foreach ( $pages as $k => $page_questions ) {
+				$qpage = isset( $qpages[ $k ] ) && is_array( $qpages[ $k ] ) ? $qpages[ $k ] : array();
+				$qpage = array_merge(
+					array(
+						'hide_prevbtn'   => 0,
+						'question_limit' => 0,
+					),
+					$qpage
+				);
+				$qpage['id']        = $k + 1;
+				$qpage['quizID']    = intval( $quiz_id );
+				$qpage['pagekey']   = ! empty( $qpage['pagekey'] ) ? $qpage['pagekey'] : uniqid();
+				$qpage['questions'] = array_map( 'intval', (array) $page_questions );
+				$qpages[ $k ]       = $qpage;
+			}
+			$qpages = array_slice( $qpages, 0, count( $pages ) );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+			return $target;
 		}
 
 		$last   = count( $pages ) - 1;

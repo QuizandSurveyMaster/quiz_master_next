@@ -925,7 +925,13 @@ class MLWQuizMasterNext {
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
 
-	public function qsm_add_user_capabilities() {
+	/**
+	 * Returns QSM's default capabilities for a role (role list + contributor base).
+	 *
+	 * @param  string $rolename Role slug.
+	 * @return array
+	 */
+	public static function qsm_role_capabilities( $rolename ) {
 		$administrator_capabilities = array(
 			'duplicate_qsm_quiz',
 			'delete_qsm_quiz',
@@ -969,6 +975,19 @@ class MLWQuizMasterNext {
 			'create_qsm_quizzes',
 		);
 
+		$role_capabilities = array(
+			'administrator' => $administrator_capabilities,
+			'editor'        => $editor_capabilities,
+			'author'        => $author_capabilities,
+			'contributor'   => $contributor_capabilities,
+		);
+		if ( ! isset( $role_capabilities[ $rolename ] ) ) {
+			return array();
+		}
+		return array_values( array_unique( array_merge( $role_capabilities[ $rolename ], $contributor_capabilities ) ) );
+	}
+
+	public function qsm_add_user_capabilities() {
 		$user     = wp_get_current_user();
 		if ( empty( $user->roles ) || ! is_array( $user->roles ) ) {
 			return;
@@ -983,10 +1002,9 @@ class MLWQuizMasterNext {
 			return;
 		}
 		// Dynamically determine the capabilities to add based on the current user role.
-		$capabilities_to_add = isset(${$rolename . '_capabilities'}) ? ${$rolename . '_capabilities'} : array();
 		$capabilities_to_add = apply_filters(
 			'qsm_default_user_capabilities',
-			isset(${$rolename . '_capabilities'}) ? array_unique( array_merge( $capabilities_to_add, $contributor_capabilities ) ) : array(),
+			self::qsm_role_capabilities( $rolename ),
 			$user
 		);
 
