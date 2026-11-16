@@ -2,12 +2,20 @@
  * Create Quiz page (admin UI kit). Loaded after qsm-admin-ui.css; uses its tokens.
  * Everything is scoped to .qsm-cq so nothing leaks to other screens.
  */
-.qsm-cq { max-width: 1120px; margin: 24px auto 40px; padding: 0 20px; }
-.qsm-cq .qsm-cq-head { margin-bottom: 22px; }
-.qsm-cq .qsm-cq-back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 12px; color: var(--qsm-muted); font-size: 13px; font-weight: 600; text-decoration: none; }
-.qsm-cq .qsm-cq-back:hover, .qsm-cq .qsm-cq-back:focus { color: var(--qsm-blue); box-shadow: none; }
-.qsm-cq .qsm-cq-back-icon { transform: rotate(90deg); }
-.qsm-cq .qsm-cq-title .qsm-ui-small { margin-top: 4px; font-size: 14px; }
+.qsm-cq { max-width: 1120px; margin: 24px auto 40px; }
+
+/* ---- Header: same frame as the quiz edit page (qsm-ui-quiz-frame-header) ---- */
+.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-heading > .qsm-ui-row { flex-wrap: nowrap; align-items: flex-start; gap: 12px; }
+.qsm-ui.qsm-cq-header .qsm-cq-back { flex: none; width: 34px; min-height: 34px; margin-top: 1px; }
+.qsm-ui.qsm-cq-header .qsm-cq-back .qsm-ui-icon { transform: rotate(90deg); }
+.qsm-ui.qsm-cq-header .qsm-cq-title .qsm-ui-small { margin-top: 2px; }
+.qsm-ui.qsm-cq-header .qsm-ui-page-actions { display: flex; align-items: center; gap: 8px; }
+.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a { color: var(--qsm-muted); text-decoration: none; }
+.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a:hover { color: var(--qsm-blue); }
+.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a:focus { box-shadow: none; }
+.qsm-ui.qsm-cq-header .qsm-cq-crumb { color: var(--qsm-ink-2); font-weight: 600; }
+/* The Help dropdown script binds on QSM screens; keep it above the page content. */
+.qsm-ui.qsm-cq-header { position: relative; z-index: 20; }
 
 /* ---- Start: two choices ---- */
 .qsm-cq .qsm-cq-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -31,7 +39,7 @@
 .qsm-cq .qsm-cq-name-error { margin: -16px 0 18px; color: var(--qsm-red); }
 .qsm-cq .qsm-ui-field-label { display: block; margin-bottom: 8px; font-weight: 600; }
 .qsm-cq .qsm-cq-types .qsm-ui-radio-card { min-width: 180px; }
-.qsm-cq .qsm-cq-actionbar { position: sticky; bottom: 0; z-index: 5; display: flex; justify-content: space-between; gap: 12px; margin: 0 -20px; padding: 14px 20px; border-top: 1px solid var(--qsm-line); background: rgba(244, 246, 250, .94); backdrop-filter: blur(4px); }
+.qsm-cq .qsm-cq-actionbar { position: sticky; bottom: 0; z-index: 5; display: flex; justify-content: space-between; gap: 12px; padding: 14px 24px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 -8px 24px rgba(28, 43, 75, .06); }
 .qsm-cq .qsm-cq-more-card:not(.is-open) .qsm-ui-card-body { display: none; }
 .qsm-cq .qsm-cq-more-card:not(.is-open) .qsm-ui-card-head { border-bottom: 0; }
 .qsm-cq .qsm-cq-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 28px; }
@@ -65,8 +73,9 @@
 .qsm-cq[data-qsm-cq-current="template"] { max-width: none; }
 
 @media (max-width: 782px) {
-	.qsm-cq { padding: 0 12px; }
+	.qsm-cq { margin-top: 16px; }
+	.qsm-ui.qsm-cq-header .qsm-ui-page-actions .qsm-cq-switch { display: none; }
 	.qsm-cq .qsm-cq-choices, .qsm-cq .qsm-cq-settings-grid { grid-template-columns: 1fr; }
 	.qsm-cq .qsm-cq-choice { padding: 22px; }
-	.qsm-cq .qsm-cq-actionbar { margin: 0 -12px; padding: 12px; }
+	.qsm-cq .qsm-cq-actionbar { padding: 12px 16px; }
 }

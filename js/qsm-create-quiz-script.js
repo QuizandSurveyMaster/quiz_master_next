@@ -30,6 +30,9 @@ jQuery(function ($) {
             QSMAdminDashboard.view = view;
             jQuery('[data-qsm-cq-view]').prop('hidden', true).filter('[data-qsm-cq-view="' + view + '"]').prop('hidden', false);
             jQuery('[data-qsm-cq-title]').prop('hidden', true).filter('[data-qsm-cq-title="' + view + '"]').prop('hidden', false);
+            jQuery('[data-qsm-cq-only]').each(function () {
+                jQuery(this).prop('hidden', jQuery(this).attr('data-qsm-cq-only') !== view);
+            });
             jQuery('.qsm-cq').attr('data-qsm-cq-current', view);
             if (push && window.history && window.history.pushState) {
                 let url = new URL(window.location.href);
