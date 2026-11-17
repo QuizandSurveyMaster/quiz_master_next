@@ -282,7 +282,8 @@ class QMNQuizCreator {
 		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
 		$quizzes_table                = $wpdb->prefix . 'mlw_quizzes';
 
-		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+		// Hardening (CU-14ypaj0tqwm): use a prepared statement for $quiz_id.
+		$quiz_post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = %d", intval( $quiz_id ) ) );
 		if ( ( empty( $quiz_post_id ) || ! current_user_can( 'delete_qsm_quiz', $quiz_post_id ) ) && ! current_user_can( 'administrator' ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
 			return;

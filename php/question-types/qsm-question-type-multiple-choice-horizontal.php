@@ -46,8 +46,8 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 			foreach ( $answers as $answer_index => $answer ) {
 				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
 				$mrq_checkbox_class = '';
-				$add_label_value = isset($add_label[ $answer_index ]) ? $add_label[ $answer_index ] : '';
-				if ( empty( $add_label[ $answer_index ] ) ) {
+				$add_label_value = isset($add_label[ $mlw_answer_total ]) ? $add_label[ $mlw_answer_total ] : '';
+				if ( empty( $add_label[ $mlw_answer_total ] ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
 				}
 				++$mlw_answer_total;
@@ -80,8 +80,9 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 								</span>
 								<?php
 							} else {
-								$answer_text = trim( htmlspecialchars_decode($add_label_value." ". $answer[0], ENT_QUOTES ) );
+								$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
+								$answer_text = trim( $add_label_value . ' ' . $answer_text );
 								echo wp_kses_post( do_shortcode( $answer_text ) );
 							}
 							?>

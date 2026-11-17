@@ -4,7 +4,7 @@ Tags: quiz, survey, quiz maker, survey maker, exam
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 5.4
-Stable tag: 11.3.1
+Stable tag: 11.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,6 +117,14 @@ Please report security bugs found in the source code of the Quiz And Survey Mast
 18. Database and submission records
 
 == Changelog ==
+
+= 11.3.2 (November 17, 2026) =
+* Feature: Abilities API create-question and update-question now support an optional description below the question title.
+* Bug: Fixed "Limit answers" issues with randomization, grading, and correct answer display.
+* Bug: Fixed answer label ordering and WPML translation issues affecting answers and image captions.
+* Bug: Fixed reCAPTCHA v3 preventing quiz submission in the new rendering system.
+* Bug: Fixed Abilities API issues with programmatic installations, missing Submit buttons, and incorrect question title and description saving.
+* Security: Fixed Contributor+ vulnerabilities allowing unauthorized access to other authors' questions, answer keys, posts, and quiz settings.
 
 = 11.3.1 (November 11, 2026) =
 * Feature: Abilities API now lets AI agents create quizzes, update quiz settings, edit and delete questions, and read quiz results and summaries.

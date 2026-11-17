@@ -1474,6 +1474,15 @@ class QSM_Install {
 	public static function install() {
 
 		global $wpdb;
+
+		// Grant QSM capabilities to administrators now, not only when one first opens wp-admin
+		// (admin_menu), so abilities/REST/WP-CLI work on a plugin installed by code.
+		$admin_role = get_role( 'administrator' );
+		if ( $admin_role && class_exists( 'MLWQuizMasterNext' ) ) {
+			foreach ( MLWQuizMasterNext::qsm_role_capabilities( 'administrator' ) as $cap ) {
+				$admin_role->add_cap( $cap );
+			}
+		}
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$quiz_table_name                 = $wpdb->prefix . 'mlw_quizzes';
@@ -1590,6 +1599,7 @@ class QSM_Install {
 				question_type_new TEXT NOT NULL,
 				question_settings TEXT NOT NULL,
 				category TEXT NOT NULL,
+				linked_question TEXT NULL,
 				deleted INT NOT NULL,
 				deleted_question_bank INT NOT NULL,
 				PRIMARY KEY  (question_id)
@@ -2316,6 +2326,9 @@ class QSM_Install {
 			&& ! is_network_admin()
 			&& current_user_can( 'manage_options' )
 			&& ! headers_sent()
+			&& ! ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+			&& ! ( defined( 'WP_CLI' ) && WP_CLI )
+			&& ! wp_is_json_request()
 		) {
 			wp_safe_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
 			exit;

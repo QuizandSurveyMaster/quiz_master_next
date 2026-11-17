@@ -608,7 +608,12 @@ if ( ! class_exists( 'QSMBlock' ) ) {
 			//quiz data
 			$_POST['quizData'] = ! empty( $_POST['quizData'] ) ? json_decode( wp_unslash( $_POST['quizData']  ), true ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$quiz_id = ! empty( $_POST['quizData']['quiz_id'] ) ? intval( sanitize_key( wp_unslash( $_POST['quizData']['quiz_id'] ) ) ) : 0;
-			$post_id = ! empty( $_POST['quizData']['post_id'] ) ? intval( sanitize_key( wp_unslash( $_POST['quizData']['post_id'] ) ) ) : 0;
+			// IDOR fix (CU-14ypaj0tqwm): do NOT trust the post_id in the request body.
+			// The ownership check below only authorises $quiz_id, so a user who owns
+			// $quiz_id could otherwise pass another author's post_id and have it
+			// renamed (edit_quiz_name) or published (wp_update_post) further down.
+			// Derive the post id from the quiz so only the quiz's own post is touched.
+			$post_id = $quiz_id ? intval( $this->get_post_id_from_quiz_id( $quiz_id ) ) : 0;
 			if ( empty( $quiz_id ) || empty( $post_id ) ) {
 				return array(
 					'status' => 'error',
