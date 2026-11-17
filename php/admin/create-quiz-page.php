@@ -446,16 +446,17 @@ function qsm_create_quiz_render_setting_field( $setting ) {
 }
 
 /**
- * Start screen: two ways to create a quiz.
+ * The two ways to create a quiz, as clickable cards. Shown on the QSM dashboard;
+ * each card opens the Create Quiz page on that view.
  *
  * @since 11.4.0
  * @return void
  */
-function qsm_create_quiz_render_start_view() {
-	$choices = array(
+function qsm_create_quiz_render_choice_cards() {
+	$page_url = admin_url( 'admin.php?page=qsm_create_quiz_page' );
+	$choices  = array(
 		'custom'   => array(
-			'icon'  => 'edit',
-			'title' => __( 'Custom template', 'quiz-master-next' ),
+			'label' => __( 'Custom template', 'quiz-master-next' ),
 			'text'  => __( 'Start from a blank quiz and set it up yourself.', 'quiz-master-next' ),
 			'items' => array(
 				__( 'Name your quiz', 'quiz-master-next' ),
@@ -466,8 +467,7 @@ function qsm_create_quiz_render_start_view() {
 			'badge' => __( 'Blank quiz', 'quiz-master-next' ),
 		),
 		'template' => array(
-			'icon'  => 'download',
-			'title' => __( 'Use a template', 'quiz-master-next' ),
+			'label' => __( 'Use a template', 'quiz-master-next' ),
 			'text'  => __( 'Start from a ready-made quiz or survey and import it in one click.', 'quiz-master-next' ),
 			'items' => array(
 				__( 'Browse demos by category', 'quiz-master-next' ),
@@ -479,32 +479,23 @@ function qsm_create_quiz_render_start_view() {
 		),
 	);
 	?>
-	<div class="qsm-cq-view" data-qsm-cq-view="start">
-		<div class="qsm-cq-choices">
-			<?php foreach ( $choices as $view => $choice ) { ?>
-				<?php // Same card as the template grid: framed media on top, badge row, title, text, action under a divider. ?>
-				<button type="button" class="qsm-cq-choice" data-qsm-cq-go="<?php echo esc_attr( $view ); ?>">
-					<span class="qsm-cq-choice-frame">
-						<span class="qsm-cq-choice-media">
-							<span class="qsm-cq-choice-icon"><?php echo QSM_Admin_UI::icon( $choice['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-						</span>
+	<div class="qsm-cq-choices">
+		<?php foreach ( $choices as $view => $choice ) { ?>
+			<a class="qsm-cq-choice" data-qsm-cq-choice="<?php echo esc_attr( $view ); ?>" href="<?php echo esc_url( add_query_arg( 'view', $view, $page_url ) ); ?>" aria-label="<?php echo esc_attr( $choice['label'] ); ?>">
+				<span class="qsm-cq-choice-body">
+					<span class="qsm-cq-choice-top"><?php echo QSM_Admin_UI::badge( $choice['badge'], 'template' === $view ? 'info' : '', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+					<span class="qsm-cq-choice-text"><?php echo esc_html( $choice['text'] ); ?></span>
+					<span class="qsm-cq-choice-list">
+						<?php foreach ( $choice['items'] as $item ) { ?>
+							<span><?php echo QSM_Admin_UI::icon( 'check', 'qsm-ui-icon-sm' ) . esc_html( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+						<?php } ?>
 					</span>
-					<span class="qsm-cq-choice-body">
-						<span class="qsm-cq-choice-top"><?php echo QSM_Admin_UI::badge( $choice['badge'], 'template' === $view ? 'info' : '', false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-						<span class="qsm-ui-h2 qsm-cq-choice-title"><?php echo esc_html( $choice['title'] ); ?></span>
-						<span class="qsm-cq-choice-text"><?php echo esc_html( $choice['text'] ); ?></span>
-						<span class="qsm-cq-choice-list">
-							<?php foreach ( $choice['items'] as $item ) { ?>
-								<span><?php echo QSM_Admin_UI::icon( 'check', 'qsm-ui-icon-sm' ) . esc_html( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-							<?php } ?>
-						</span>
-						<span class="qsm-cq-choice-actions">
-							<span class="qsm-ui-btn <?php echo 'template' === $view ? 'qsm-ui-btn-primary' : ''; ?> qsm-cq-choice-cta"><?php echo esc_html( $choice['cta'] ); ?> &rarr;</span>
-						</span>
+					<span class="qsm-cq-choice-actions">
+						<span class="qsm-ui-btn <?php echo 'template' === $view ? 'qsm-ui-btn-primary' : ''; ?> qsm-cq-choice-cta"><?php echo esc_html( $choice['cta'] ); ?> &rarr;</span>
 					</span>
-				</button>
-			<?php } ?>
-		</div>
+				</span>
+			</a>
+		<?php } ?>
 	</div>
 	<?php
 }
@@ -514,10 +505,12 @@ function qsm_create_quiz_render_start_view() {
  *
  * @since 11.4.0
  * @param array $quizoptions_boxes Quiz types from data/dashboard.json.
- * @param array $theme_args        Arguments for qsm_dashboard_display_theme_section(), or empty when the theme list is unavailable.
+ * @param array  $theme_args        Arguments for qsm_dashboard_display_theme_section(), or empty when the theme list is unavailable.
+ * @param string $view              Current view, so the other one starts hidden.
+ * @param string $back_url          Where Cancel goes.
  * @return void
  */
-function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ) {
+function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view = 'custom', $back_url = '' ) {
 	// Type and grading are asked up front, so leave them out of the additional settings.
 	$settings = qsm_settings_to_create_quiz( true );
 	$grading  = array();
@@ -539,7 +532,7 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ) {
 		);
 	}
 	?>
-	<div class="qsm-cq-view" data-qsm-cq-view="custom" hidden>
+	<div class="qsm-cq-view" data-qsm-cq-view="custom"<?php echo 'template' === $view ? ' hidden' : ''; ?>>
 		<?php
 		wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' );
 		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -616,28 +609,18 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ) {
 		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 
 		if ( ! empty( $theme_args ) ) {
+			// The bundle offer sits in the card header so it is seen before the theme list.
+			$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'bundles', 'new-quiz-steps' );
 			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 				array(
 					'title'       => __( 'Theme', 'quiz-master-next' ),
 					'description' => __( 'Pick a free or premium theme. Themes that suit the quiz type are marked Recommended.', 'quiz-master-next' ),
 					'class'       => 'qsm-cq-theme-card',
+					'actions'     => '<a class="qsm-cq-bundle-link" href="' . esc_url( $bundle_link ) . '" target="_blank" rel="noopener" title="' . esc_attr__( 'The bundle includes every theme and add-on.', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'star', 'qsm-ui-icon-sm' ) . esc_html__( 'Grab the Bundle & Save 90%', 'quiz-master-next' ) . '</a>',
 				)
 			);
 			call_user_func_array( 'qsm_dashboard_display_theme_section', $theme_args );
-			$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'bundles', 'new-quiz-steps' );
-			echo QSM_Admin_UI::card_close( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				'<span class="qsm-ui-caption">' . esc_html__( 'The bundle includes every theme and add-on.', 'quiz-master-next' ) . '</span>' .
-				QSM_Admin_UI::button(
-					__( 'Grab the Bundle & Save 90%', 'quiz-master-next' ),
-					array(
-						'variant' => 'quiet',
-						'size'    => 'sm',
-						'icon'    => 'star',
-						'href'    => $bundle_link,
-						'attrs'   => array( 'target' => '_blank' ),
-					)
-				)
-			);
+			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		}
 
 		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -665,8 +648,8 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ) {
 		<div class="qsm-cq-actionbar">
 			<?php
 			echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				__( 'Back', 'quiz-master-next' ),
-				array( 'attrs' => array( 'data-qsm-cq-go' => 'start' ) )
+				__( 'Cancel', 'quiz-master-next' ),
+				array( 'href' => $back_url ? $back_url : admin_url( 'admin.php?page=qsm_dashboard' ) )
 			);
 			// id and class are what qsm-admin.js binds the submit to.
 			echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -688,11 +671,12 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ) {
  * qsm_create_quiz_templates action; without it the view says how to get it.
  *
  * @since 11.4.0
+ * @param string $view Current view, so this one starts hidden on the custom view.
  * @return void
  */
-function qsm_create_quiz_render_template_view() {
+function qsm_create_quiz_render_template_view( $view = 'custom' ) {
 	?>
-	<div class="qsm-cq-view" data-qsm-cq-view="template" hidden>
+	<div class="qsm-cq-view" data-qsm-cq-view="template"<?php echo 'template' === $view ? '' : ' hidden'; ?>>
 		<?php
 		if ( has_action( 'qsm_create_quiz_templates' ) ) {
 			/**
@@ -757,52 +741,30 @@ function qsm_create_quiz_asset_version( $file ) {
 }
 
 /**
- * Page header, styled like the quiz edit frame header: back button, title and
- * subtitle for the current view, a "switch" action and the Help menu.
+ * Page header, styled like the quiz edit frame header: the title of the current view,
+ * a "switch" action and the Help menu (same links and icons as the quiz edit page).
  *
  * @since 11.4.0
- * @param string $view     Current view: start, custom or template.
- * @param array  $titles   view => array( title, subtitle ).
- * @param string $back_url Where Back goes from the start screen.
+ * @param string $view   Current view: custom or template.
+ * @param array  $titles view => title.
  * @return void
  */
-function qsm_create_quiz_render_header( $view, $titles, $back_url ) {
+function qsm_create_quiz_render_header( $view, $titles ) {
+	$doc_icon   = '<span class="dashicons dashicons-media-document"></span>';
 	$help_links = array(
-		array( __( 'Get support', 'quiz-master-next' ), qsm_get_plugin_link( 'contact-support', 'create_quiz', 'help_box', 'create_quiz_support' ) ),
-		array( __( 'Getting Started', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', 'create_quiz', 'help_box', 'getting_started' ) ),
-		array( __( 'Creating Quizzes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'create_quiz', 'help_box', 'create_quiz_docs' ) ),
-		array( __( 'QSM Themes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/qsm-themes', 'create_quiz', 'help_box', 'create_quiz_themes' ) ),
-		array( __( 'All Docs', 'quiz-master-next' ), qsm_get_plugin_link( 'docs', 'create_quiz', 'help_box', 'create_quiz_all_doc' ) ),
+		array( __( 'Get support', 'quiz-master-next' ), qsm_get_plugin_link( 'contact-support', 'create_quiz', 'help_box', 'create_quiz_support' ), '<img class="qsm-help-tab-icon" alt="" src="' . esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) . '">' ),
+		array( __( 'Getting Started', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', 'create_quiz', 'help_box', 'getting_started' ), $doc_icon ),
+		array( __( 'Creating Quizzes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'create_quiz', 'help_box', 'create_quiz_docs' ), $doc_icon ),
+		array( __( 'QSM Themes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/qsm-themes', 'create_quiz', 'help_box', 'create_quiz_themes' ), $doc_icon ),
+		array( __( 'All Docs', 'quiz-master-next' ), qsm_get_plugin_link( 'docs', 'create_quiz', 'help_box', 'create_quiz_all_doc' ), $doc_icon ),
 	);
 	?>
 	<div class="qsm-ui qsm-ui-quiz-frame-header qsm-cq-header">
 		<div class="qsm-ui-page-header qsm-ui-text">
 			<div class="qsm-ui-quiz-frame-heading">
-				<div class="qsm-ui-row">
-					<?php
-					echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-						__( 'Back', 'quiz-master-next' ),
-						array(
-							'icon'      => 'chev',
-							'icon_only' => true,
-							'href'      => $back_url,
-							'class'     => 'qsm-cq-back',
-							'attrs'     => array(
-								'data-qsm-cq-back' => true,
-								'title'            => __( 'Back', 'quiz-master-next' ),
-							),
-						)
-					);
-					foreach ( $titles as $key => $title ) {
-						?>
-						<div class="qsm-cq-title" data-qsm-cq-title="<?php echo esc_attr( $key ); ?>"<?php echo $key === $view ? '' : ' hidden'; ?>>
-							<div class="qsm-ui-h1 qsm-ui-quiz-title" role="heading" aria-level="1"><?php echo esc_html( $title[0] ); ?></div>
-							<p class="qsm-ui-small"><?php echo esc_html( $title[1] ); ?></p>
-						</div>
-						<?php
-					}
-					?>
-				</div>
+				<?php foreach ( $titles as $key => $title ) { ?>
+					<div class="qsm-ui-h1 qsm-ui-quiz-title qsm-cq-title" role="heading" aria-level="1" data-qsm-cq-title="<?php echo esc_attr( $key ); ?>"<?php echo $key === $view ? '' : ' hidden'; ?>><?php echo esc_html( $title ); ?></div>
+				<?php } ?>
 			</div>
 			<div class="qsm-ui-page-actions">
 				<?php
@@ -852,22 +814,12 @@ function qsm_create_quiz_render_header( $view, $titles, $back_url ) {
 						<div class="qsm-help-tab-dropdown-list qsm-ui-help-list">
 							<h3 class="qsm-ui-help-title"><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
 							<?php foreach ( $help_links as $link ) { ?>
-								<a href="<?php echo esc_url( $link[1] ); ?>" rel="noopener" target="_blank" class="qsm-help-tab-item qsm-ui-help-item"><span class="dashicons dashicons-media-document"></span> <?php echo esc_html( $link[0] ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
+								<a href="<?php echo esc_url( $link[1] ); ?>" rel="noopener" target="_blank" class="qsm-help-tab-item qsm-ui-help-item"><?php echo $link[2]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup, URL escaped above. ?> <?php echo esc_html( $link[0] ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
 							<?php } ?>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="qsm-ui-quiz-frame-bar">
-			<span class="qsm-ui-quiz-frame-meta">
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_dashboard' ) ); ?>"><?php esc_html_e( 'Dashboard', 'quiz-master-next' ); ?></a>
-				<span class="qsm-ui-quiz-frame-sep">/</span>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_create_quiz_page' ) ); ?>" data-qsm-cq-go="start"><?php esc_html_e( 'Create Quiz', 'quiz-master-next' ); ?></a>
-				<?php foreach ( array( 'custom', 'template' ) as $key ) { ?>
-					<span class="qsm-cq-crumb" data-qsm-cq-title="<?php echo esc_attr( $key ); ?>"<?php echo $key === $view ? '' : ' hidden'; ?>><span class="qsm-ui-quiz-frame-sep">/</span> <?php echo esc_html( $titles[ $key ][0] ); ?></span>
-				<?php } ?>
-			</span>
 		</div>
 	</div>
 	<?php
@@ -902,9 +854,9 @@ function qsm_create_quiz_page_callback() {
 			}
 		}
 	}
-	$views = array( 'start', 'custom', 'template' );
-	$view  = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'start'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view switch.
-	$view  = in_array( $view, $views, true ) ? $view : 'start';
+	// The choice between the two views is made on the dashboard; the page opens on the custom form by default.
+	$view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'custom'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view switch.
+	$view = 'template' === $view ? 'template' : 'custom';
 	wp_localize_script( 'qsm-create-quiz-script', 'qsm_admin_new_quiz', array(
 		'quizoptions'         => $quizoptions_boxes,
 		'installed'           => $installed_plugins,
@@ -925,9 +877,8 @@ function qsm_create_quiz_page_callback() {
 	) );
 
 	$titles = array(
-		'start'    => array( __( 'Create a Quiz / Survey', 'quiz-master-next' ), __( 'How do you want to start?', 'quiz-master-next' ) ),
-		'custom'   => array( __( 'Custom template', 'quiz-master-next' ), __( 'Name your quiz, pick its type and grading, and choose a theme.', 'quiz-master-next' ) ),
-		'template' => array( __( 'Use a template', 'quiz-master-next' ), __( 'Preview a ready-made quiz or survey and import it in one click.', 'quiz-master-next' ) ),
+		'custom'   => __( 'Custom template', 'quiz-master-next' ),
+		'template' => __( 'Use a template', 'quiz-master-next' ),
 	);
 	$theme_args = array();
 	if ( $qsm_admin_dd ) {
@@ -940,16 +891,13 @@ function qsm_create_quiz_page_callback() {
 
 	?>
 	<div class="wrap qsm-cq-wrap">
-		<?php qsm_create_quiz_render_header( $view, $titles, $last_visited_page ); ?>
+		<?php qsm_create_quiz_render_header( $view, $titles ); ?>
 	<div class="qsm-ui qsm-ui-text qsm-cq" data-qsm-cq-current="<?php echo esc_attr( $view ); ?>">
-		<?php
-		qsm_create_quiz_render_start_view();
-		?>
 		<form action="" method="post" id="new-quiz-form">
-			<?php qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args ); ?>
+			<?php qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view, $last_visited_page ); ?>
 		</form>
 		<?php
-		qsm_create_quiz_render_template_view();
+		qsm_create_quiz_render_template_view( $view );
 		if ( ! $qsm_admin_dd ) {
 			qsm_display_fullscreen_error();
 		}

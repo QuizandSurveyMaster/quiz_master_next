@@ -1,9 +1,9 @@
 /**
  * Create Quiz page.
  *
- * Three views on one page: "start" (choose how to begin), "custom" (name, type,
- * grading, theme, additional settings) and "template" (the QSM Installer's demo
- * browser). The view is kept in the URL (?view=) so Back / reload land on it.
+ * Two views on one page: "custom" (name, type, grading, theme, additional
+ * settings) and "template" (the QSM Installer's demo browser). The dashboard
+ * links to each; the view is kept in the URL (?view=) so Back / reload land on it.
  *
  * QSMAdminDashboard keeps the methods the QSM Installer calls
  * (processToSelectTheme, afterInstall, ajaxRequest).
@@ -12,10 +12,11 @@ var QSMAdminDashboard;
 jQuery(function ($) {
 
     QSMAdminDashboard = {
-        view: 'start',
+        view: 'custom',
+        themesExpanded: false,
 
         init: function () {
-            let initial = (qsm_admin_new_quiz && qsm_admin_new_quiz.view) ? qsm_admin_new_quiz.view : 'start';
+            let initial = (qsm_admin_new_quiz && qsm_admin_new_quiz.view) ? qsm_admin_new_quiz.view : 'custom';
             QSMAdminDashboard.showView(initial, false);
             QSMAdminDashboard.applyQuizType();
             if (jQuery('.qsm-quiz-steps-default-theme-active').length === 0) {
@@ -25,7 +26,7 @@ jQuery(function ($) {
 
         showView: function (view, push) {
             if (!jQuery('[data-qsm-cq-view="' + view + '"]').length) {
-                view = 'start';
+                view = 'custom';
             }
             QSMAdminDashboard.view = view;
             jQuery('[data-qsm-cq-view]').prop('hidden', true).filter('[data-qsm-cq-view="' + view + '"]').prop('hidden', false);
@@ -36,11 +37,7 @@ jQuery(function ($) {
             jQuery('.qsm-cq').attr('data-qsm-cq-current', view);
             if (push && window.history && window.history.pushState) {
                 let url = new URL(window.location.href);
-                if ('start' === view) {
-                    url.searchParams.delete('view');
-                } else {
-                    url.searchParams.set('view', view);
-                }
+                url.searchParams.set('view', view);
                 window.history.pushState({ qsmCqView: view }, '', url.toString());
             }
             if ('custom' === view) {
@@ -101,9 +98,15 @@ jQuery(function ($) {
             $parent.prepend($parent.children('.qsm-quiz-steps-default-theme'));
 
             // Until "See more themes" is clicked show the first four, plus every activated theme.
-            if (jQuery('.qsm-dashboard-see-more-themes').is(':visible')) {
+            // Track this with a flag: the view can be hidden on load, so :visible is not reliable.
+            if (!QSMAdminDashboard.themesExpanded) {
                 $parent.children(':gt(3)').not('.qsm-quiz-theme-activated').hide();
             }
+            // Offer "See more" only while some themes are still hidden.
+            let hasHidden = $parent.children('.qsm-quiz-steps-card').filter(function () {
+                return 'none' === this.style.display;
+            }).length > 0;
+            jQuery('.qsm-dashboard-see-more-types-wrap').toggle(!QSMAdminDashboard.themesExpanded && hasHidden);
         },
 
         processPluginRequest: function ($element) {
@@ -208,16 +211,8 @@ jQuery(function ($) {
         QSMAdminDashboard.showView($(this).attr('data-qsm-cq-go'), true);
     });
 
-    // Header Back: inside a view it returns to the start screen; on the start screen it leaves the page.
-    $(document).on('click', '[data-qsm-cq-back]', function (e) {
-        if ('start' !== QSMAdminDashboard.view) {
-            e.preventDefault();
-            QSMAdminDashboard.showView('start', true);
-        }
-    });
-
     window.addEventListener('popstate', function () {
-        let view = new URL(window.location.href).searchParams.get('view') || 'start';
+        let view = new URL(window.location.href).searchParams.get('view') || 'custom';
         QSMAdminDashboard.showView(view, false);
     });
 
@@ -263,7 +258,8 @@ jQuery(function ($) {
     });
 
     $(document).on('click', '.qsm-dashboard-see-more-themes', function () {
+        QSMAdminDashboard.themesExpanded = true;
         $('.qsm-quiz-theme-steps-container').children('.qsm-quiz-steps-card').show();
-        $(this).hide();
+        $('.qsm-dashboard-see-more-types-wrap').hide();
     });
 });

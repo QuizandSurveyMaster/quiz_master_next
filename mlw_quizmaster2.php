@@ -515,14 +515,15 @@ class MLWQuizMasterNext {
 		}
 		// dashboard
 		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
-			// The Create Quiz card uses kit buttons and the "New" badge.
+			// The Create a Quiz / Survey box shows the Create Quiz choice cards (admin UI kit).
 			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
 			wp_enqueue_script( 'dashboard' );
 			if ( wp_is_mobile() ) {
 				wp_enqueue_script( 'jquery-touch-punch' );
 			}
 		}
-		// Create Quiz page: start screen, custom form and template browser use the admin UI kit.
+		// Create Quiz page: custom form and template browser use the admin UI kit.
 		if ( 'qsm_page_qsm_create_quiz_page' === $hook ) {
 			QSM_Admin_UI::enqueue();
 			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );

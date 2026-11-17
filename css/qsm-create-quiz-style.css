@@ -5,42 +5,40 @@
 .qsm-cq { max-width: 1120px; margin: 24px auto 40px; }
 
 /* ---- Header: same frame as the quiz edit page (qsm-ui-quiz-frame-header) ---- */
-.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-heading > .qsm-ui-row { flex-wrap: nowrap; align-items: flex-start; gap: 12px; }
-.qsm-ui.qsm-cq-header .qsm-cq-back { flex: none; width: 34px; min-height: 34px; margin-top: 1px; }
-.qsm-ui.qsm-cq-header .qsm-cq-back .qsm-ui-icon { transform: rotate(90deg); }
-.qsm-ui.qsm-cq-header .qsm-cq-title .qsm-ui-small { margin-top: 2px; }
+.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-heading { display: flex; align-items: center; min-height: 36px; }
 .qsm-ui.qsm-cq-header .qsm-ui-page-actions { display: flex; align-items: center; gap: 8px; }
-.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a { color: var(--qsm-muted); text-decoration: none; }
-.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a:hover { color: var(--qsm-blue); }
-.qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-bar a:focus { box-shadow: none; }
-.qsm-ui.qsm-cq-header .qsm-cq-crumb { color: var(--qsm-ink-2); font-weight: 600; }
+/* Help menu icons: same as the quiz edit page (Support.svg + document dashicons). */
+.qsm-ui.qsm-cq-header .qsm-ui-help-item .qsm-help-tab-icon { flex: none; width: 20px; height: 20px; }
+.qsm-ui.qsm-cq-header .qsm-ui-help-item .dashicons { flex: none; width: 20px; height: 20px; font-size: 20px; }
 /* The Help dropdown script binds on QSM screens; keep it above the page content. */
 .qsm-ui.qsm-cq-header { position: relative; z-index: 20; }
 
-/* ---- Start: two choices ---- */
+/* ---- Choice cards (dashboard "Create a Quiz / Survey" and the installer-missing fallback) ---- */
 /* Same card language as the template browser: tinted panel, white cards with a firm border and soft shadow. */
-.qsm-cq .qsm-cq-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 20px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-bg); }
-.qsm-cq .qsm-cq-choice { display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); color: var(--qsm-ink); font: inherit; text-align: left; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s; }
-.qsm-cq .qsm-cq-choice:hover { border-color: var(--qsm-blue-border); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 16px 36px rgba(49, 94, 251, .14); transform: translateY(-2px); }
-.qsm-cq .qsm-cq-choice:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 2px; border-color: var(--qsm-blue-border); }
+.qsm-ui .qsm-cq-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 20px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-bg); }
+.qsm-ui .qsm-cq-choice { display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); color: var(--qsm-ink); font: inherit; text-align: left; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.qsm-ui a.qsm-cq-choice, .qsm-ui a.qsm-cq-choice:hover, .qsm-ui a.qsm-cq-choice:focus { color: var(--qsm-ink); text-decoration: none; }
+.qsm-ui .qsm-cq-choice:hover { border-color: var(--qsm-blue-border); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 16px 36px rgba(49, 94, 251, .14); transform: translateY(-2px); }
+.qsm-ui a.qsm-cq-choice:focus { box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); }
+.qsm-ui .qsm-cq-choice:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 2px; border-color: var(--qsm-blue-border); }
 /* Framed media, like a template thumbnail. */
-.qsm-cq .qsm-cq-choice-frame { display: block; padding: 10px 10px 0; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
-.qsm-cq .qsm-cq-choice-media { display: grid; place-items: center; aspect-ratio: 16 / 6; border: 1px solid var(--qsm-line-soft); border-bottom: 0; border-radius: var(--qsm-radius-md) var(--qsm-radius-md) 0 0; background: linear-gradient(135deg, #fff 0%, var(--qsm-blue-soft) 100%); }
-.qsm-cq .qsm-cq-choice[data-qsm-cq-go="template"] .qsm-cq-choice-media { background: linear-gradient(135deg, #fff 0%, var(--qsm-purple-bg) 100%); }
-.qsm-cq .qsm-cq-choice-icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; background: #fff; color: var(--qsm-blue); box-shadow: 0 6px 18px rgba(28, 43, 75, .1); transition: transform .2s; }
-.qsm-cq .qsm-cq-choice:hover .qsm-cq-choice-icon { transform: scale(1.06); }
-.qsm-cq .qsm-cq-choice-icon .qsm-ui-icon { width: 28px; height: 28px; }
-.qsm-cq .qsm-cq-choice[data-qsm-cq-go="template"] .qsm-cq-choice-icon { color: var(--qsm-purple); }
+.qsm-ui .qsm-cq-choice-frame { display: block; padding: 10px 10px 0; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
+.qsm-ui .qsm-cq-choice-media { display: grid; place-items: center; aspect-ratio: 16 / 6; border: 1px solid var(--qsm-line-soft); border-bottom: 0; border-radius: var(--qsm-radius-md) var(--qsm-radius-md) 0 0; background: linear-gradient(135deg, #fff 0%, var(--qsm-blue-soft) 100%); }
+.qsm-ui .qsm-cq-choice[data-qsm-cq-choice="template"] .qsm-cq-choice-media { background: linear-gradient(135deg, #fff 0%, var(--qsm-purple-bg) 100%); }
+.qsm-ui .qsm-cq-choice-icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; background: #fff; color: var(--qsm-blue); box-shadow: 0 6px 18px rgba(28, 43, 75, .1); transition: transform .2s; }
+.qsm-ui .qsm-cq-choice:hover .qsm-cq-choice-icon { transform: scale(1.06); }
+.qsm-ui .qsm-cq-choice-icon .qsm-ui-icon { width: 28px; height: 28px; }
+.qsm-ui .qsm-cq-choice[data-qsm-cq-choice="template"] .qsm-cq-choice-icon { color: var(--qsm-purple); }
 /* Body: badge row, title, text, checklist, action under a divider. */
-.qsm-cq .qsm-cq-choice-body { display: flex; flex: 1; flex-direction: column; padding: 16px 20px 20px; }
-.qsm-cq .qsm-cq-choice-top { display: flex; align-items: center; gap: 8px; }
-.qsm-cq .qsm-cq-choice-title { display: block; margin-top: 10px; }
-.qsm-cq .qsm-cq-choice-text { display: block; margin-top: 6px; color: var(--qsm-muted); font-size: 14px; }
-.qsm-cq .qsm-cq-choice-list { display: grid; gap: 8px; margin: 14px 0 18px; color: var(--qsm-ink-2); font-size: 13px; }
-.qsm-cq .qsm-cq-choice-list > span { display: inline-flex; align-items: center; gap: 8px; }
-.qsm-cq .qsm-cq-choice-list .qsm-ui-icon { color: var(--qsm-green); }
-.qsm-cq .qsm-cq-choice-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--qsm-line-soft); }
-.qsm-cq .qsm-cq-choice-actions .qsm-ui-btn { flex: 1; pointer-events: none; }
+.qsm-ui .qsm-cq-choice-body { display: flex; flex: 1; flex-direction: column; padding: 16px 20px 20px; }
+.qsm-ui .qsm-cq-choice-top { display: flex; align-items: center; gap: 8px; }
+.qsm-ui .qsm-cq-choice-title { display: block; margin-top: 10px; }
+.qsm-ui .qsm-cq-choice-text { display: block; margin-top: 6px; color: var(--qsm-muted); font-size: 14px; }
+.qsm-ui .qsm-cq-choice-list { display: grid; gap: 8px; margin: 14px 0 18px; color: var(--qsm-ink-2); font-size: 13px; }
+.qsm-ui .qsm-cq-choice-list > span { display: inline-flex; align-items: center; gap: 8px; }
+.qsm-ui .qsm-cq-choice-list .qsm-ui-icon { color: var(--qsm-green); }
+.qsm-ui .qsm-cq-choice-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--qsm-line-soft); }
+.qsm-ui .qsm-cq-choice-actions .qsm-ui-btn { flex: 1; pointer-events: none; }
 
 /* ---- Custom ---- */
 .qsm-cq .qsm-ui-card-body > .qsm-ui-field-label, .qsm-cq .qsm-ui-card-body > div + div { margin-top: 0; }
@@ -61,6 +59,10 @@
    QSM Installer's qsm_create_quiz_theme_option_buttons hook, so class names and structure stay; layout is CSS only.
    Card order: framed thumbnail, Recommended badge, title + version, buttons under a divider. */
 .qsm-cq .qsm-cq-theme-card .qsm-dashboard-page-header { display: none; }
+/* Bundle offer in the theme card header, highlighted. */
+.qsm-cq .qsm-cq-bundle-link { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1px solid #f3d38a; border-radius: 999px; background: linear-gradient(135deg, #fff8e6 0%, #ffefc7 100%); color: #8a5a00; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(138, 90, 0, .08); transition: box-shadow .15s, transform .15s; }
+.qsm-cq .qsm-cq-bundle-link .qsm-ui-icon { color: #e0a100; fill: #f5b301; }
+.qsm-cq .qsm-cq-bundle-link:hover, .qsm-cq .qsm-cq-bundle-link:focus { color: #6b4500; box-shadow: 0 4px 12px rgba(224, 161, 0, .25); transform: translateY(-1px); }
 .qsm-cq .qsm-quiz-theme-steps-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px 20px; padding: 18px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-bg); }
 .qsm-cq .qsm-quiz-steps-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); transition: border-color .15s, box-shadow .15s, transform .15s; }
 .qsm-cq .qsm-quiz-steps-card:hover { border-color: var(--qsm-blue-border); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 16px 36px rgba(49, 94, 251, .14); transform: translateY(-2px); }
@@ -88,7 +90,7 @@
 
 /* ---- Template ---- */
 /* Fallback when the QSM Installer is missing: one choice-style card, centred on the tinted panel. */
-.qsm-cq .qsm-cq-choices.qsm-cq-fallback { grid-template-columns: minmax(0, 520px); justify-content: center; }
+.qsm-ui .qsm-cq-choices.qsm-cq-fallback { grid-template-columns: minmax(0, 520px); justify-content: center; }
 .qsm-cq .qsm-cq-fallback .qsm-cq-choice { cursor: default; }
 .qsm-cq .qsm-cq-fallback .qsm-cq-choice:hover { transform: none; }
 .qsm-cq .qsm-cq-fallback .qsm-cq-choice-actions .qsm-ui-btn { pointer-events: auto; }
@@ -97,11 +99,16 @@
 @media (max-width: 782px) {
 	.qsm-cq { margin-top: 16px; }
 	.qsm-ui.qsm-cq-header .qsm-ui-page-actions .qsm-cq-switch { display: none; }
-	.qsm-cq .qsm-cq-choices, .qsm-cq .qsm-cq-settings-grid { grid-template-columns: 1fr; }
-	.qsm-cq .qsm-cq-choices { padding: 14px; gap: 16px; }
+	.qsm-ui .qsm-cq-choices, .qsm-cq .qsm-cq-settings-grid { grid-template-columns: 1fr; }
+	.qsm-ui .qsm-cq-choices { padding: 14px; gap: 16px; }
 	.qsm-cq .qsm-cq-actionbar { padding: 12px 16px; }
 }
 
 /* WordPress footer: in the normal flow below the content, so it never overlaps the sticky bars. */
 .qsm_page_qsm_create_quiz_page #wpfooter { position: relative; clear: both; }
 .qsm_page_qsm_create_quiz_page #wpbody-content { padding-bottom: 24px; }
+
+/* Dashboard: the choice cards fill the Create a Quiz / Survey box. */
+.qsm-dashboard-create-quiz-section.qsm-ui { display: block; }
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choices { margin-top: 16px; }
+.qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
