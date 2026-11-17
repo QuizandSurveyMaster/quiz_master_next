@@ -263,7 +263,7 @@ class QSM_Abilities {
 			'properties' => array(
 				'question_id'       => array( 'type' => 'integer', 'description' => __( 'Unique question ID.', 'quiz-master-next' ) ),
 				'quiz_id'           => array( 'type' => 'integer', 'description' => __( 'ID of the quiz this question belongs to.', 'quiz-master-next' ) ),
-				'question_name'     => array( 'type' => 'string',  'description' => __( 'Question text.', 'quiz-master-next' ) ),
+				'question_name'     => array( 'type' => 'string',  'description' => __( 'Question description, shown under the title (for Text/HTML Section and Fill In The Blank, the question content). The question title is settings.question_title.', 'quiz-master-next' ) ),
 				'question_type_new' => array( 'type' => 'string',  'description' => __( 'Question type code. See create-question for the list of codes.', 'quiz-master-next' ) ),
 				'answers'           => array( 'type' => 'array',   'description' => __( 'Answer options, each [text, points, correct (1/0), feedback].', 'quiz-master-next' ) ),
 				'settings'          => array( 'type' => 'object',  'description' => __( 'Question settings (required, category, points, etc.).', 'quiz-master-next' ) ),
@@ -420,9 +420,10 @@ class QSM_Abilities {
 				'input_schema'  => $this->make_input_schema(
 					array(
 						'quiz_id'       => $quiz_id_input,
-						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text.', 'quiz-master-next' ) ),
+						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text. Saved as the question title, as the "Type your question here" field in the editor does. For Text/HTML Section and Fill In The Blank (use %BLANK% for each blank) it is the question content instead.', 'quiz-master-next' ) ),
+						'description'   => array( 'type' => 'string', 'description' => __( 'Optional description shown under the question title.', 'quiz-master-next' ) ),
 						'question_type' => $this->get_question_type_schema( true ),
-						'question_title' => array( 'type' => 'string', 'description' => __( 'Optional heading shown above the question on the quiz and in results. The question text goes in question_name.', 'quiz-master-next' ) ),
+						'question_title' => array( 'type' => 'string', 'description' => __( 'Deprecated: send the text in question_name. When given, it is saved as the title and question_name as the description (11.3.1 behaviour).', 'quiz-master-next' ) ),
 						'answers'       => $answers_input,
 						'settings'      => $question_settings_input,
 						'page'          => array( 'type' => 'integer', 'minimum' => 0, 'description' => __( 'Zero-based page to add the question to. Defaults to the last page. Ignored while the quiz has no page layout yet (a new quiz): its questions then show as one page in creation order.', 'quiz-master-next' ) ),
@@ -448,9 +449,10 @@ class QSM_Abilities {
 				'input_schema'  => $this->make_input_schema(
 					array(
 						'question_id'   => $question_id_input,
-						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text.', 'quiz-master-next' ) ),
+						'question_name' => array( 'type' => 'string', 'minLength' => 1, 'description' => __( 'The question text. Saved as the question title, as the "Type your question here" field in the editor does. For Text/HTML Section and Fill In The Blank (use %BLANK% for each blank) it is the question content instead.', 'quiz-master-next' ) ),
+						'description'   => array( 'type' => 'string', 'description' => __( 'Optional description shown under the question title.', 'quiz-master-next' ) ),
 						'question_type' => $this->get_question_type_schema( false ),
-						'question_title' => array( 'type' => 'string', 'description' => __( 'Optional heading shown above the question on the quiz and in results. The question text goes in question_name.', 'quiz-master-next' ) ),
+						'question_title' => array( 'type' => 'string', 'description' => __( 'Deprecated: send the text in question_name. When given, it is saved as the title and question_name as the description (11.3.1 behaviour).', 'quiz-master-next' ) ),
 						'answers'       => $answers_input,
 						'answer_info'   => array( 'type' => 'string', 'description' => __( 'Correct answer explanation shown after answering.', 'quiz-master-next' ) ),
 						'hint'          => array( 'type' => 'string', 'description' => __( 'Hint shown with the question.', 'quiz-master-next' ) ),
@@ -877,19 +879,22 @@ class QSM_Abilities {
 			return $this->invalid_question_type( $type );
 		}
 
+		$text   = sanitize_text_field( $input['question_name'] );
+		$fields = $this->map_question_text( $type, $input, $text, '' );
+
 		$data = array(
 			'quiz_id' => $quiz_id,
-			'name'    => sanitize_text_field( $input['question_name'] ),
+			'name'    => $fields['name'],
 			'type'    => $type,
 			// A quiz with no page layout yet renders by question_order, so keep creation order.
 			'order'   => $this->next_question_order( $quiz_id ),
 		);
 
 		$answers  = isset( $input['answers'] ) && is_array( $input['answers'] ) ? $this->normalize_answers( $input['answers'] ) : array();
-		$answers  = $this->answers_for_type( $type, $data['name'], $answers );
+		$answers  = $this->answers_for_type( $type, $text, $answers );
 		$settings = isset( $input['settings'] ) && is_array( $input['settings'] ) ? $this->sanitize_question_settings( $input['settings'] ) : array();
-		if ( isset( $input['question_title'] ) ) {
-			$settings['question_title'] = sanitize_text_field( $input['question_title'] );
+		if ( null !== $fields['title'] ) {
+			$settings['question_title'] = $fields['title'];
 		}
 
 		try {
@@ -930,7 +935,7 @@ class QSM_Abilities {
 		$data = array(
 			'quiz_id'                     => intval( $question['quiz_id'] ),
 			'type'                        => $type,
-			'name'                        => isset( $input['question_name'] ) ? sanitize_text_field( $input['question_name'] ) : htmlspecialchars_decode( $question['question_name'], ENT_QUOTES ),
+			'name'                        => htmlspecialchars_decode( $question['question_name'], ENT_QUOTES ),
 			'answer_info'                 => isset( $input['answer_info'] ) ? wp_kses_post( $input['answer_info'] ) : $question['question_answer_info'],
 			'comments'                    => $question['comments'],
 			'hint'                        => isset( $input['hint'] ) ? sanitize_text_field( $input['hint'] ) : $question['hints'],
@@ -956,15 +961,22 @@ class QSM_Abilities {
 			}
 		}
 
-		$answers = $this->answers_for_type( $type, $data['name'], $answers );
-
 		$settings = (array) $question['settings'];
 		if ( isset( $input['settings'] ) && is_array( $input['settings'] ) ) {
 			$settings = array_merge( $settings, $this->sanitize_question_settings( $input['settings'] ) );
 		}
-		if ( isset( $input['question_title'] ) ) {
-			$settings['question_title'] = sanitize_text_field( $input['question_title'] );
+
+		$stored_title = isset( $settings['question_title'] ) ? (string) $settings['question_title'] : '';
+		$text         = isset( $input['question_name'] ) ? sanitize_text_field( $input['question_name'] ) : null;
+		$fields       = $this->map_question_text( $type, $input, $text, $stored_title );
+		if ( null !== $fields['name'] ) {
+			$data['name'] = $fields['name'];
 		}
+		if ( null !== $fields['title'] ) {
+			$settings['question_title'] = $fields['title'];
+		}
+
+		$answers = $this->answers_for_type( $type, null !== $text ? $text : ( '' !== $stored_title ? $stored_title : $data['name'] ), $answers );
 
 		try {
 			QSM_Questions::save_question( $question_id, $data, $answers, $settings );
@@ -1732,7 +1744,42 @@ class QSM_Abilities {
 			}
 		}
 		if ( ! $has_questions ) {
-			return 0;
+			// No page layout yet (every quiz create-quiz makes). Start one the way the Questions tab does,
+			// holding the quiz's existing questions in order, so the quiz renders with the page system
+			// (pagination + Submit button). Without it the block falls back to the legacy renderer,
+			// which prints no Submit button for such a quiz.
+			global $wpdb;
+			$ids = array_map( 'intval', $wpdb->get_col( $wpdb->prepare( "SELECT question_id FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0 ORDER BY question_order, question_id", $quiz_id ) ) );
+			if ( ! in_array( intval( $question_id ), $ids, true ) ) {
+				$ids[] = intval( $question_id );
+			}
+			// Keep any existing (empty) pages and their attributes; put the questions on the
+			// requested page, or the last one, as the normal path does.
+			if ( empty( $pages ) ) {
+				$pages = array( array() );
+			}
+			$last   = count( $pages ) - 1;
+			$target = null === $page ? $last : min( max( 0, intval( $page ) ), $last );
+			$pages[ $target ] = $ids;
+			foreach ( $pages as $k => $page_questions ) {
+				$qpage = isset( $qpages[ $k ] ) && is_array( $qpages[ $k ] ) ? $qpages[ $k ] : array();
+				$qpage = array_merge(
+					array(
+						'hide_prevbtn'   => 0,
+						'question_limit' => 0,
+					),
+					$qpage
+				);
+				$qpage['id']        = $k + 1;
+				$qpage['quizID']    = intval( $quiz_id );
+				$qpage['pagekey']   = ! empty( $qpage['pagekey'] ) ? $qpage['pagekey'] : uniqid();
+				$qpage['questions'] = array_map( 'intval', (array) $page_questions );
+				$qpages[ $k ]       = $qpage;
+			}
+			$qpages = array_slice( $qpages, 0, count( $pages ) );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
+			$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+			return $target;
 		}
 
 		$last   = count( $pages ) - 1;
@@ -1796,6 +1843,53 @@ class QSM_Abilities {
 		global $wpdb;
 		$max = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(question_order) FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d AND deleted = 0", $quiz_id ) );
 		return intval( $max ) + 1;
+	}
+
+	/**
+	 * Maps ability input onto QSM's question fields, matching the question editor.
+	 *
+	 * The editor keeps the question text in question_settings['question_title'] and the
+	 * description in the question_name column. Text/HTML Section (6) and Fill In The
+	 * Blank (14) render their content from question_name, so for them the text stays there.
+	 * A caller that sends question_title gets the 11.3.1 mapping (title + question_name
+	 * as description), so existing integrations keep working.
+	 *
+	 * @since  11.3.2
+	 * @param  string      $type         Question type code.
+	 * @param  array       $input        Ability input.
+	 * @param  string|null $text         Sanitised question_name input, or null when not given (update).
+	 * @param  string      $stored_title The question's current title ('' for a new question).
+	 * @return array{name: string|null, title: string|null} Null means "leave unchanged".
+	 */
+	private function map_question_text( $type, $input, $text, $stored_title ) {
+		$description = isset( $input['description'] ) ? sanitize_text_field( $input['description'] ) : null;
+
+		// 11.3.1 mapping, kept for callers that send question_title.
+		if ( isset( $input['question_title'] ) ) {
+			return array(
+				'name'  => null !== $description ? $description : $text,
+				'title' => sanitize_text_field( $input['question_title'] ),
+			);
+		}
+
+		// Content types: the text is the question content; there is no separate description.
+		if ( in_array( (string) $type, array( '6', '14' ), true ) ) {
+			return array(
+				'name'  => $text,
+				'title' => null,
+			);
+		}
+
+		$name = $description;
+		if ( null !== $text && null === $description && '' === $stored_title ) {
+			// No title yet: for a new question the description starts empty; for an older
+			// question its text lived in question_name, so replacing the text clears it there.
+			$name = '';
+		}
+		return array(
+			'name'  => $name,
+			'title' => $text,
+		);
 	}
 
 	/**

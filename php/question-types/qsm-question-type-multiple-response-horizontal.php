@@ -42,7 +42,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 			$mlw_answer_total = 0;
 			foreach ( $answers as $answer_index => $answer ) {
 				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
-				$add_label_value = isset($add_label[ $answer_index ]) ? $add_label[ $answer_index ] : '';
+				$add_label_value = isset($add_label[ $mlw_answer_total ]) ? $add_label[ $mlw_answer_total ] : '';
 				$mrq_checkbox_class = '';
 				if ( empty( $add_label_value ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
@@ -69,14 +69,15 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 							<span class="qsm_image_caption">
 								<?php
 								$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
-								$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+								$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $id . '-' . $answer_index, 'QSM Answers' );
 								echo wp_kses_post( $add_label_value )." ".esc_html( $caption_text );
 								?>
 							</span>
 							<?php
 						} else {
-							$answer_text = trim( htmlspecialchars_decode( $add_label_value." ".$answer[0], ENT_QUOTES ) );
-							$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+							$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+							$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
+							$answer_text = trim( $add_label_value . ' ' . $answer_text );
 							echo wp_kses_post( do_shortcode( $answer_text ) );
 						}
 						?>

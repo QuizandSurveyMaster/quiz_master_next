@@ -46,7 +46,7 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 			$mlw_answer_total = 0;
 			foreach ( $answers as $answer_index => $answer ) {
 				$add_label  = apply_filters( 'qsm_question_addlabel',$answer_index,$answer,count($answers));
-				$add_label_value = isset($add_label[ $answer_index ]) ? $add_label[ $answer_index ] : '';
+				$add_label_value = isset($add_label[ $mlw_answer_total ]) ? $add_label[ $mlw_answer_total ] : '';
 				$mrq_checkbox_class = '';
 				if ( empty( $add_label_value ) ) {
 					$mrq_checkbox_class = "mrq_checkbox_class";
@@ -92,8 +92,9 @@ $class_object->display_question_title( $question_text, 'horizontal_multiple_choi
 						</span>
 						<?php
 					} else {
-						$answer_text = trim( htmlspecialchars_decode($add_label_value." ".$answer[0], ENT_QUOTES ) );
+						$answer_text = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $id . '-' . $answer_index, 'QSM Answers' );
+						$answer_text = trim( $add_label_value . ' ' . $answer_text );
 						echo wp_kses_post( do_shortcode($answer_text ) );
 					}
 					?>
