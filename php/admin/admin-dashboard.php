@@ -52,13 +52,24 @@ function qsm_check_close_hidden_box( $widget_id ) {
 	}
 }
 
+/**
+ * Compatibility card: QSM, QSM Installer, WordPress and PHP versions, with the installer
+ * update notice when one is due. Shown next to the Create card on the dashboard.
+ *
+ * @since 7.0
+ * @since 11.4.0 Admin UI kit card, always shown (status rows), notice inside the card.
+ * @return void
+ */
 function qsm_check_plugins_compatibility() {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $wp_version;
 
+	$account_url     = qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' );
+	$installer_state = 'missing';
+	$installer_ver   = '';
+	$published       = '';
 	if ( class_exists( 'QSM_Installer' ) ) {
-		$plugin_path = WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php';
-		$plugin_data = get_plugin_data( $plugin_path );
-
+		$plugin_data   = get_plugin_data( WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php' );
+		$installer_ver = ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '';
 		/*
 		 * The version is required to be non-empty: get_plugin_data() returns a
 		 * blank one when the file is missing (the path above is hardcoded, so a
@@ -70,66 +81,86 @@ function qsm_check_plugins_compatibility() {
 		 *    shows on the first dashboard load with no page visit needed;
 		 *  - behind what the store publishes - which needs the installer's own
 		 *    cached answer, filled in once the Extensions page has been opened.
-		 * Without the first, an installer that reports an old version but
-		 * already carries the update check stayed silent until that visit.
 		 */
-		if ( ! empty( $plugin_data['Version'] )
-			&& ( qsm_installer_is_below_floor( $plugin_data['Version'] ) || qsm_installer_update_is_due( $plugin_data['Version'] ) ) ) {
-			$account_url = esc_url( qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' ) );
-			?>
-			<div class="qsm-dashboard-help-center qsm-dashboard-warning-container">
-				<div class="qsm-dashboard-error-content">
-					<h3><?php esc_html_e( 'Update Available', 'quiz-master-next' ); ?></h3>
-					<p>
-						<?php esc_html_e( 'We recommend downloading the latest version of the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next' ); ?>
-						<?php
-						/*
-						 * Name the version they are on. Without it the notice is
-						 * unactionable for support: "update the installer" does not
-						 * say whether the customer already did.
-						 */
-						$published = qsm_installer_published_version();
-
-						// Only name the store's version when it is actually newer.
-						// The below-floor case forces this notice on by itself, so
-						// the store's answer can be the very version they run (a
-						// store not yet updated) - and "2.0.2 is available" to
-						// somebody on 2.0.2 is wrong.
-						$newer = '' !== $published && version_compare(
-							qsm_normalize_version( $plugin_data['Version'] ),
-							qsm_normalize_version( $published ),
-							'<'
-						);
-						if ( $newer ) {
-							printf(
-								/* translators: 1: installed QSM Installer version, 2: newest version published by the store. */
-								esc_html__( 'You are currently running version %1$s; version %2$s is available.', 'quiz-master-next' ),
-								'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>',
-								'<strong>' . esc_html( $published ) . '</strong>'
-							);
-						} else {
-							// The store's number is not known yet: the installer is
-							// too old to report it, or has not been asked - the
-							// below-floor case gets here before any page visit.
-							// Name what we do know.
-							printf(
-								/* translators: %s: QSM Installer version currently installed on this site. */
-								esc_html__( 'You are currently running version %s.', 'quiz-master-next' ),
-								'<strong>' . esc_html( $plugin_data['Version'] ) . '</strong>'
-							);
-						}
-						?>
-					</p>
-					<a href="<?php echo esc_url( $account_url ); ?>" class="qsm-dashboard-error-btn" target="_blank">
-						<?php esc_html_e( 'Get Latest QSM Installer', 'quiz-master-next' ); ?>
-					</a>
-				</div>
-			</div>
-			<?php
+		$installer_state = 'ok';
+		if ( '' !== $installer_ver && ( qsm_installer_is_below_floor( $installer_ver ) || qsm_installer_update_is_due( $installer_ver ) ) ) {
+			$installer_state = 'due';
+			$published       = qsm_installer_published_version();
 		}
 	}
 
+	$rows = array(
+		array( __( 'Quiz And Survey Master', 'quiz-master-next' ), $mlwQuizMasterNext->version, QSM_Admin_UI::status( __( 'Active', 'quiz-master-next' ) ) ),
+		array(
+			__( 'QSM Installer', 'quiz-master-next' ),
+			$installer_ver,
+			'ok' === $installer_state ? QSM_Admin_UI::status( __( 'Up to date', 'quiz-master-next' ) ) : ( 'due' === $installer_state ? QSM_Admin_UI::badge( __( 'Update available', 'quiz-master-next' ), 'warning', false ) : QSM_Admin_UI::status( __( 'Not installed', 'quiz-master-next' ), false ) ),
+		),
+		array( __( 'WordPress', 'quiz-master-next' ), $wp_version, '' ),
+		array( __( 'PHP', 'quiz-master-next' ), PHP_VERSION, '' ),
+	);
+
+	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		array(
+			'title' => __( 'Compatibility', 'quiz-master-next' ),
+			'class' => 'qsm-db-card qsm-db-compat' . ( 'due' === $installer_state ? ' is-due' : '' ),
+		)
+	);
+	?>
+	<ul class="qsm-db-compat-list">
+		<?php foreach ( $rows as $row ) { ?>
+			<li>
+				<span class="qsm-db-compat-name"><?php echo esc_html( $row[0] ); ?><?php if ( '' !== $row[1] ) { ?><small><?php echo esc_html( $row[1] ); ?></small><?php } ?></span>
+				<?php echo $row[2]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+			</li>
+		<?php } ?>
+	</ul>
+	<?php if ( 'due' === $installer_state ) { ?>
+		<div class="qsm-db-compat-notice">
+			<p>
+				<?php esc_html_e( 'Update the QSM Installer for a seamless quiz and survey creation experience.', 'quiz-master-next' ); ?>
+				<?php
+				// Only name the store's version when it is actually newer: the below-floor case forces this
+				// notice on by itself, so the store's answer can be the very version they run.
+				if ( '' !== $published && version_compare( qsm_normalize_version( $installer_ver ), qsm_normalize_version( $published ), '<' ) ) {
+					printf(
+						/* translators: %s: newest version published by the store. */
+						esc_html__( 'Version %s is available.', 'quiz-master-next' ),
+						'<strong>' . esc_html( $published ) . '</strong>'
+					);
+				}
+				?>
+			</p>
+			<?php
+			echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				__( 'Get latest QSM Installer', 'quiz-master-next' ),
+				array(
+					'size'    => 'sm',
+					'variant' => 'primary',
+					'href'    => $account_url,
+					'attrs'   => array( 'target' => '_blank', 'rel' => 'noopener' ),
+				)
+			);
+			?>
+		</div>
+	<?php } elseif ( 'missing' === $installer_state ) { ?>
+		<div class="qsm-db-compat-notice is-info">
+			<p><?php esc_html_e( 'Install the QSM Installer to add themes, add-ons and one-click templates.', 'quiz-master-next' ); ?></p>
+			<?php
+			echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				__( 'Get QSM Installer', 'quiz-master-next' ),
+				array(
+					'size'  => 'sm',
+					'href'  => $account_url,
+					'attrs' => array( 'target' => '_blank', 'rel' => 'noopener' ),
+				)
+			);
+			?>
+		</div>
+	<?php } ?>
+	<?php
 	do_action( 'qsm_admin_dashboard_compatibility_after' );
+	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
 }
 
 /**
@@ -299,7 +330,7 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons, $all_addo
 	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		array(
 			'title'       => __( 'Explore add-ons', 'quiz-master-next' ),
-			'description' => __( 'Popular add-ons that extend your quizzes and surveys.', 'quiz-master-next' ),
+			'description' => __( 'Popular add-ons that do more with your quizzes and surveys.', 'quiz-master-next' ),
 			'actions'     => QSM_Admin_UI::button(
 				__( 'All add-ons', 'quiz-master-next' ),
 				array(
@@ -317,15 +348,11 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons, $all_addo
 		foreach ( array_slice( $sorted_addons, 0, 4 ) as $addon ) {
 			$addon_link = qsm_get_utm_link( $addon['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $addon['name'] ) );
 			$addon_image = qsm_dashboard_banner_image( $addon, $all_addons );
-			$addon_desc  = mb_strlen( $addon['description'] ) > 90 ? mb_substr( $addon['description'], 0, 90 ) . '…' : $addon['description'];
 			?>
 			<a class="qsm-db-tile qsm-db-addon" target="_blank" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>">
 				<span class="qsm-db-tile-image"><img src="<?php echo esc_url( $addon_image ? $addon_image : QSM_PLUGIN_URL . 'assets/placeholder.png' ); ?>" alt="<?php echo esc_attr( $addon['name'] ); ?>" loading="lazy"></span>
 				<span class="qsm-db-tile-meta">
-					<span class="qsm-db-tile-text">
-						<strong><?php echo esc_html( $addon['name'] ); ?></strong>
-						<span><?php echo esc_html( $addon_desc ); ?></span>
-					</span>
+					<strong><?php echo esc_html( $addon['name'] ); ?></strong>
 					<span class="qsm-db-tile-cta"><?php esc_html_e( 'Learn more', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'ext', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
 				</span>
 			</a>
@@ -384,7 +411,7 @@ function qsm_dashboard_display_popular_theme_section( $themes, $all_addons = arr
 }
 
 /**
- * Recent activity card: the two latest results. Hidden when there are no results yet.
+ * Recent activity card: the five latest results as table rows. Hidden when there are no results yet.
  *
  * @since 10.2.7
  * @since 11.4.0 Admin UI kit card.
@@ -396,11 +423,13 @@ function qsm_dashboard_recent_taken_quiz() {
 	if ( 0 === $total_results ) {
 		return;
 	}
-	$can_view = current_user_can( 'view_qsm_quiz_result' ) || current_user_can( 'administrator' );
+	$can_view   = current_user_can( 'view_qsm_quiz_result' ) || current_user_can( 'administrator' );
+	$can_delete = current_user_can( 'administrator' );
 	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		array(
-			'title'   => __( 'Recent activity', 'quiz-master-next' ),
-			'actions' => QSM_Admin_UI::button(
+			'title'       => __( 'Recent activity', 'quiz-master-next' ),
+			'description' => __( 'The latest quiz and survey submissions.', 'quiz-master-next' ),
+			'actions'     => QSM_Admin_UI::button(
 				/* translators: %s: total number of results. */
 				sprintf( __( 'See all results (%s)', 'quiz-master-next' ), number_format_i18n( $total_results ) ),
 				array(
@@ -409,37 +438,65 @@ function qsm_dashboard_recent_taken_quiz() {
 					'href'    => admin_url( 'admin.php?page=mlw_quiz_results' ),
 				)
 			),
-			'class'   => 'qsm-db-card qsm-db-activity',
+			'class'       => 'qsm-db-card qsm-db-activity',
 		)
 	);
-	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 ORDER BY result_id DESC LIMIT 3", ARRAY_A );
+	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 ORDER BY result_id DESC LIMIT 5", ARRAY_A );
 	?>
+	<div class="qsm-db-activity-head" aria-hidden="true">
+		<span><?php esc_html_e( 'Participant', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Quiz / survey', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Score', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Time spent', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Submitted', 'quiz-master-next' ); ?></span>
+		<span></span>
+	</div>
 	<ul class="qsm-db-activity-list">
 		<?php
 		foreach ( $results as $single_result_arr ) {
 			$user_id = isset( $single_result_arr['user'] ) ? intval( $single_result_arr['user'] ) : 0;
-			$avatar  = $user_id ? get_avatar_url( $user_id ) : QSM_PLUGIN_URL . 'assets/default_image.png';
+			$avatar  = $user_id ? get_avatar_url( $user_id, array( 'size' => 64 ) ) : QSM_PLUGIN_URL . 'assets/default_image.png';
 
-			// Score.
-			$score     = '';
-			$form_type = isset( $single_result_arr['form_type'] ) ? intval( $single_result_arr['form_type'] ) : 0;
-			if ( 1 === $form_type || 2 === $form_type ) {
-				$score = __( 'Not graded', 'quiz-master-next' );
-			} else {
+			// Participant.
+			$user_name = isset( $single_result_arr['name'] ) && 'None' !== $single_result_arr['name'] ? $single_result_arr['name'] : '';
+			$user_link = '';
+			if ( $user_id ) {
+				$actual_user = get_userdata( $user_id );
+				if ( '' === $user_name && $actual_user ) {
+					$user_name = $actual_user->display_name;
+				}
+				$user_link = get_edit_profile_url( $user_id );
+			}
+			if ( '' === trim( $user_name ) ) {
+				$user_name = __( 'Guest', 'quiz-master-next' );
+			}
+			$user_email = isset( $single_result_arr['email'] ) && 'None' !== $single_result_arr['email'] ? $single_result_arr['email'] : '';
+
+			// Score: a coloured percentage for graded quizzes, points, or "Not graded".
+			$score_badge = QSM_Admin_UI::badge( __( 'Not graded', 'quiz-master-next' ), '', false );
+			$score_sub   = '';
+			$form_type   = isset( $single_result_arr['form_type'] ) ? intval( $single_result_arr['form_type'] ) : 0;
+			if ( 1 !== $form_type && 2 !== $form_type ) {
 				$system = intval( $single_result_arr['quiz_system'] );
 				if ( 0 === $system || 3 === $system ) {
-					/* translators: 1: correct answers, 2: total questions, 3: percentage. */
-					$score = sprintf( __( '%1$s of %2$s correct (%3$s%%)', 'quiz-master-next' ), $single_result_arr['correct'], $single_result_arr['total'], $single_result_arr['correct_score'] );
+					$percent     = floatval( $single_result_arr['correct_score'] );
+					$score_badge = QSM_Admin_UI::badge( $single_result_arr['correct_score'] . '%', $percent >= 70 ? 'success' : ( $percent >= 40 ? 'warning' : 'danger' ), false );
+					/* translators: 1: correct answers, 2: total questions. */
+					$score_sub = sprintf( __( '%1$s of %2$s correct', 'quiz-master-next' ), $single_result_arr['correct'], $single_result_arr['total'] );
 				}
 				if ( 1 === $system || 3 === $system ) {
 					/* translators: %s: points scored. */
 					$points = sprintf( __( '%s points', 'quiz-master-next' ), $single_result_arr['point_score'] );
-					$score  = $score ? $score . ' · ' . $points : $points;
+					if ( 1 === $system ) {
+						$score_badge = QSM_Admin_UI::badge( $points, 'info', false );
+					} else {
+						$score_sub = $score_sub . ' · ' . $points;
+					}
 				}
 			}
 
-			// Time taken.
-			$complete_time = '';
+			// Time spent.
+			$complete_time = '—';
 			if ( $mlwQuizMasterNext->pluginHelper->is_new_format_result( $single_result_arr ) ) {
 				$results_array = $mlwQuizMasterNext->pluginHelper->get_formated_result_data( $single_result_arr['result_id'] );
 			} else {
@@ -462,39 +519,44 @@ function qsm_dashboard_recent_taken_quiz() {
 				$parts[]       = sprintf( __( '%ds', 'quiz-master-next' ), $seconds % 60 );
 				$complete_time = implode( ' ', $parts );
 			}
+			$taken_ts = strtotime( $single_result_arr['time_taken'] );
 			?>
 			<li class="qsm-db-activity-item">
-				<img src="<?php echo esc_url( $avatar ); ?>" class="qsm-db-avatar" alt="">
-				<div class="qsm-db-activity-main">
-					<div class="qsm-db-activity-title">
-						<?php
-						if ( $user_id ) {
-							$actual_user = get_userdata( $user_id );
-							$user_name   = ( 'None' === $single_result_arr['name'] && $actual_user ) ? $actual_user->display_name : $single_result_arr['name'];
-							echo '<a href="' . esc_url( get_edit_profile_url( $user_id ) ) . '">' . esc_html( $user_name ) . '</a>';
-						} else {
-							echo '<strong>' . esc_html__( 'Guest', 'quiz-master-next' ) . '</strong>';
-						}
-						echo ' ' . esc_html__( 'took', 'quiz-master-next' ) . ' ';
-						echo '<a href="' . esc_url( admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . intval( $single_result_arr['quiz_id'] ) ) ) . '">' . esc_html( $single_result_arr['quiz_name'] ) . '</a>';
-						?>
-					</div>
-					<div class="qsm-db-activity-meta">
-						<?php if ( $score ) { ?>
-							<span><?php echo esc_html( $score ); ?></span>
+				<span class="qsm-db-activity-user">
+					<img src="<?php echo esc_url( $avatar ); ?>" class="qsm-db-avatar" alt="">
+					<span class="qsm-db-activity-stack">
+						<?php if ( $user_link ) { ?>
+							<a href="<?php echo esc_url( $user_link ); ?>"><?php echo esc_html( $user_name ); ?></a>
+						<?php } else { ?>
+							<strong><?php echo esc_html( $user_name ); ?></strong>
 						<?php } ?>
-						<span><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ) ); ?></span>
-						<?php if ( $complete_time ) { ?>
-							<?php /* translators: %s: time spent on the quiz, e.g. 2m 10s. */ ?>
-							<span><?php echo esc_html( sprintf( __( 'Took %s', 'quiz-master-next' ), $complete_time ) ); ?></span>
+						<?php if ( $user_email ) { ?>
+							<small><?php echo esc_html( $user_email ); ?></small>
 						<?php } ?>
-					</div>
-				</div>
+					</span>
+				</span>
+				<span class="qsm-db-activity-quiz">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . intval( $single_result_arr['quiz_id'] ) ) ); ?>"><?php echo esc_html( $single_result_arr['quiz_name'] ); ?></a>
+				</span>
+				<span class="qsm-db-activity-stack qsm-db-activity-score">
+					<?php echo $score_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+					<?php if ( $score_sub ) { ?>
+						<small><?php echo esc_html( $score_sub ); ?></small>
+					<?php } ?>
+				</span>
+				<span class="qsm-db-activity-time"><?php echo esc_html( $complete_time ); ?></span>
+				<span class="qsm-db-activity-stack qsm-db-activity-date">
+					<?php
+					/* translators: %s: human readable time difference, e.g. 2 hours. */
+					echo esc_html( $taken_ts ? sprintf( __( '%s ago', 'quiz-master-next' ), human_time_diff( $taken_ts, current_time( 'timestamp' ) ) ) : '' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested -- time_taken is stored in site time.
+					?>
+					<small><?php echo esc_html( $taken_ts ? date_i18n( get_option( 'date_format' ), $taken_ts ) : '' ); ?></small>
+				</span>
 				<?php if ( $can_view ) { ?>
 					<p class="row-actions-c qsm-db-activity-actions">
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_result_details&result_id=' . intval( $single_result_arr['result_id'] ) ) ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a>
-						<?php if ( current_user_can( 'administrator' ) ) { ?>
-							<a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>" class="trash rtq-delete-result"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a>
+						<a class="qsm-ui-btn qsm-ui-btn-sm" href="<?php echo esc_url( admin_url( 'admin.php?page=qsm_quiz_result_details&result_id=' . intval( $single_result_arr['result_id'] ) ) ); ?>"><?php echo QSM_Admin_UI::icon( 'eye', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a>
+						<?php if ( $can_delete ) { ?>
+							<a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>" class="trash rtq-delete-result qsm-ui-btn qsm-ui-btn-sm qsm-ui-btn-icon" title="<?php esc_attr_e( 'Delete', 'quiz-master-next' ); ?>" aria-label="<?php esc_attr_e( 'Delete', 'quiz-master-next' ); ?>"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
 						<?php } ?>
 					</p>
 				<?php } ?>
@@ -561,14 +623,12 @@ function qsm_generate_dashboard_page() {
 	<?php qsm_dashboard_render_header(); ?>
 	<div class="qsm-ui qsm-ui-text qsm-db">
 		<?php
-		if ( $qsm_admin_dd ) {
-			qsm_check_plugins_compatibility();
-		} else {
+		if ( ! $qsm_admin_dd ) {
 			qsm_display_fullscreen_error();
 		}
 		qsm_display_migration_tools_redirect_button();
 		?>
-		<div class="qsm-db-grid">
+		<div class="qsm-db-top">
 			<?php
 			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 				array(
@@ -580,7 +640,11 @@ function qsm_generate_dashboard_page() {
 			);
 			qsm_create_quiz_render_choice_cards();
 			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
-
+			qsm_check_plugins_compatibility();
+			?>
+		</div>
+		<div class="qsm-db-grid">
+			<?php
 			if ( $qsm_admin_dd ) {
 				$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
 				qsm_dashboard_display_popular_theme_section( isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array(), $all_addons );

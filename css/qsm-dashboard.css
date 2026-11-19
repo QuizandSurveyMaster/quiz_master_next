@@ -13,6 +13,8 @@
 .qsm-ui.qsm-db-header .qsm-ui-page-actions { display: flex; align-items: center; gap: 8px; }
 .qsm-ui.qsm-db-header .qsm-ui-help-item .qsm-help-tab-icon { flex: none; width: 20px; height: 20px; }
 .qsm-ui.qsm-db-header .qsm-ui-help-item .dashicons { flex: none; width: 20px; height: 20px; font-size: 20px; }
+/* Useful Resources dropdown (here and on Create Quiz): a light line between the links. */
+.qsm-ui.qsm-db-header .qsm-ui-help-item + .qsm-ui-help-item { border-top: 1px solid var(--qsm-line-soft); }
 /* Links add-ons print through qsm_welcome_panel_links (list items). */
 .qsm-ui.qsm-db-header .qsm-db-header-links { display: flex; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; }
 .qsm-ui.qsm-db-header .qsm-db-header-links:empty { display: none; }
@@ -22,10 +24,11 @@
 
 /* ---- Page: fluid width (no fixed 610px column), cards in a two-column grid ---- */
 .qsm-db { max-width: 1440px; margin: 24px auto 40px; }
-/* Create, Recent activity and the community links span both columns; the other cards pair up
-   (Themes | Add-ons, Need help | What's new) and stretch to the same height. */
+/* Top row 3:1 (Create | Compatibility). Below, cards pair up (Themes | Add-ons, Need help | What's new);
+   Recent activity and the community links span both columns. */
+.qsm-db-top { display: grid; grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr); gap: 20px; align-items: stretch; margin-bottom: 20px; }
 .qsm-db-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
-.qsm-db-grid > .qsm-db-create, .qsm-db-grid > .qsm-db-activity, .qsm-db-grid > .qsm-db-community { grid-column: 1 / -1; }
+.qsm-db-grid > .qsm-db-activity, .qsm-db-grid > .qsm-db-community { grid-column: 1 / -1; }
 .qsm-ui .qsm-db-card { margin: 0; min-width: 0; }
 .qsm-ui .qsm-db-card .qsm-ui-card-head { align-items: center; }
 
@@ -40,44 +43,70 @@
 .qsm-ui .qsm-db-create { border-color: #dfe5ff; background: linear-gradient(135deg, #f3f6ff 0%, #f7f2ff 100%); }
 .qsm-ui .qsm-db-create .qsm-ui-card-head { border-bottom-color: #e3e8fb; }
 .qsm-ui .qsm-db-create .qsm-ui-card-body { padding: 20px; }
-.qsm-ui .qsm-db-create .qsm-cq-choices { padding: 0; border: 0; background: none; }
-.qsm-ui .qsm-db-create .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
+.qsm-ui .qsm-db-create .qsm-cq-choices { gap: 20px; padding: 0; border: 0; background: none; }
+/* Each choice: one short line + the button; its label sits in the top corner as a tag. */
+.qsm-ui .qsm-db-create .qsm-cq-choice { position: relative; }
+.qsm-ui .qsm-db-create .qsm-cq-choice-body { padding: 44px 20px 18px; }
+.qsm-ui .qsm-db-create .qsm-cq-choice-text { margin: 0; color: var(--qsm-ink-2); font-size: 14px; line-height: 1.55; }
+.qsm-ui .qsm-db-create .qsm-cq-choice-actions { margin-top: auto; padding-top: 16px; border-top: 0; }
+.qsm-ui .qsm-cq-choice-tag { position: absolute; top: 0; inset-inline-start: 20px; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 6px; border-radius: 0 0 10px 10px; background: var(--qsm-ink-2); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .06em; line-height: 1.3; text-transform: uppercase; }
+.qsm-ui .qsm-cq-choice[data-qsm-cq-choice="template"] .qsm-cq-choice-tag { background: linear-gradient(135deg, var(--qsm-blue) 0%, var(--qsm-purple) 100%); }
+.qsm-ui .qsm-cq-choice-tag .qsm-ui-icon { width: 13px; height: 13px; }
 
-/* ---- Recent activity ---- */
-.qsm-ui .qsm-db-activity .qsm-ui-card-body { padding: 6px 24px; }
+/* ---- Compatibility ---- */
+.qsm-ui .qsm-db-compat { display: flex; flex-direction: column; }
+.qsm-ui .qsm-db-compat .qsm-ui-card-body { flex: 1; padding: 6px 20px 16px; }
+.qsm-ui .qsm-db-compat-list { margin: 0; padding: 0; list-style: none; }
+.qsm-ui .qsm-db-compat-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; padding: 11px 0; border-bottom: 1px solid var(--qsm-line-soft); }
+.qsm-ui .qsm-db-compat-list li:last-child { border-bottom: 0; }
+.qsm-ui .qsm-db-compat-name { display: grid; gap: 1px; min-width: 0; color: var(--qsm-ink); font-size: 13px; font-weight: 600; }
+.qsm-ui .qsm-db-compat-name small { color: var(--qsm-muted); font-size: 12px; font-weight: 400; }
+.qsm-ui .qsm-db-compat .qsm-ui-status { gap: 6px; padding: 3px 9px; font-size: 11px; }
+.qsm-ui .qsm-db-compat .qsm-ui-status::before { width: 6px; height: 6px; box-shadow: none; }
+.qsm-ui .qsm-db-compat-notice { display: grid; gap: 10px; margin-top: 8px; padding: 12px; border: 1px solid var(--qsm-amber-line); border-radius: var(--qsm-radius-md); background: var(--qsm-amber-bg); }
+.qsm-ui .qsm-db-compat-notice.is-info { border-color: var(--qsm-blue-ring); background: var(--qsm-blue-soft); }
+.qsm-ui .qsm-db-compat-notice p { margin: 0; color: var(--qsm-ink-2); font-size: 13px; }
+.qsm-ui .qsm-db-compat-notice .qsm-ui-btn { justify-self: start; }
+
+/* ---- Recent activity: table-like rows ---- */
+.qsm-ui .qsm-db-activity .qsm-ui-card-body { padding: 0; }
+.qsm-ui .qsm-db-activity-head, .qsm-ui .qsm-db-activity-item { display: grid; grid-template-columns: minmax(180px, 1.4fr) minmax(160px, 1.4fr) minmax(120px, 1fr) minmax(80px, .7fr) minmax(110px, .9fr) 120px; align-items: center; gap: 16px; padding: 0 24px; }
+.qsm-ui .qsm-db-activity-head { padding-block: 10px; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); color: var(--qsm-muted); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
 .qsm-ui .qsm-db-activity-list { margin: 0; padding: 0; list-style: none; }
-.qsm-ui .qsm-db-activity-item { display: flex; align-items: center; gap: 14px; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--qsm-line-soft); }
+.qsm-ui .qsm-db-activity-item { margin: 0; padding-block: 12px; border-bottom: 1px solid var(--qsm-line-soft); transition: background .15s; }
 .qsm-ui .qsm-db-activity-item:last-child { border-bottom: 0; }
-.qsm-ui .qsm-db-avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--qsm-surface-2); }
-.qsm-ui .qsm-db-activity-main { flex: 1; min-width: 0; }
-.qsm-ui .qsm-db-activity-title { color: var(--qsm-ink-2); overflow-wrap: anywhere; }
-.qsm-ui .qsm-db-activity-title a { color: var(--qsm-ink); font-weight: 600; text-decoration: none; }
-.qsm-ui .qsm-db-activity-title a:hover { color: var(--qsm-blue); }
-.qsm-ui .qsm-db-activity-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 3px; color: var(--qsm-muted); font-size: 12px; }
-.qsm-ui .qsm-db-activity-actions { display: flex; flex: none; gap: 12px; margin: 0; font-size: 13px; }
-.qsm-ui .qsm-db-activity-actions a { color: var(--qsm-blue); font-weight: 600; text-decoration: none; }
-.qsm-ui .qsm-db-activity-actions a.trash { color: var(--qsm-red); }
+.qsm-ui .qsm-db-activity-item:hover { background: var(--qsm-surface-2); }
+.qsm-ui .qsm-db-activity-user { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.qsm-ui .qsm-db-avatar { flex: none; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: var(--qsm-surface-2); }
+.qsm-ui .qsm-db-activity-stack { display: grid; gap: 2px; min-width: 0; justify-items: start; font-size: 13px; color: var(--qsm-ink-2); }
+.qsm-ui .qsm-db-activity-stack small { overflow: hidden; max-width: 100%; color: var(--qsm-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.qsm-ui .qsm-db-activity-item a:not(.qsm-ui-btn) { color: var(--qsm-ink); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.qsm-ui .qsm-db-activity-item a:not(.qsm-ui-btn):hover { color: var(--qsm-blue); }
+.qsm-ui .qsm-db-activity-quiz { min-width: 0; font-size: 13px; }
+.qsm-ui .qsm-db-activity-time { color: var(--qsm-ink-2); font-size: 13px; font-variant-numeric: tabular-nums; }
+.qsm-ui .qsm-db-activity-actions { display: flex; justify-content: flex-end; gap: 6px; margin: 0; }
+.qsm-ui .qsm-db-activity-actions .qsm-ui-btn { min-height: 30px; padding: 5px 10px; font-size: 12px; }
+.qsm-ui .qsm-db-activity-actions .qsm-ui-btn-icon { width: 30px; padding: 0; color: var(--qsm-muted); }
+.qsm-ui .qsm-db-activity-actions .rtq-delete-result:hover { border-color: var(--qsm-red-line); background: var(--qsm-red-bg); color: var(--qsm-red); }
 
-/* ---- Themes and add-ons: marketing tiles with the full 16:9 banner (no install/activate here) ---- */
-.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.qsm-ui .qsm-db-tile { display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+/* ---- Themes and add-ons: identical marketing tiles, full 16:9 banner (no install/activate here) ---- */
+.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.qsm-ui .qsm-db-themes .qsm-ui-card-body, .qsm-ui .qsm-db-addons .qsm-ui-card-body { padding: 16px 20px 20px; }
+.qsm-ui .qsm-db-tile { display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-md); background: var(--qsm-surface); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s, box-shadow .15s; }
 .qsm-ui .qsm-db-tile:hover, .qsm-ui .qsm-db-tile:focus { border-color: var(--qsm-blue-border); color: var(--qsm-ink); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 12px 28px rgba(49, 94, 251, .12); }
 /* The whole image, never cropped: banners are 16:9; anything else is letterboxed on the tint. */
 .qsm-ui .qsm-db-tile-image { display: block; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
 .qsm-ui .qsm-db-tile-image img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .25s; }
 .qsm-ui .qsm-db-tile:hover .qsm-db-tile-image img { transform: scale(1.02); }
-.qsm-ui .qsm-db-tile-meta { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; }
-.qsm-ui .qsm-db-tile-meta strong { font-size: 14px; overflow-wrap: anywhere; }
-.qsm-ui .qsm-db-tile-cta { display: inline-flex; flex: none; align-items: center; gap: 4px; color: var(--qsm-blue); font-size: 13px; font-weight: 600; }
-.qsm-ui .qsm-db-addon .qsm-db-tile-meta { flex-direction: column; align-items: stretch; justify-content: flex-start; }
-.qsm-ui .qsm-db-tile-text { display: grid; gap: 3px; }
-.qsm-ui .qsm-db-tile-text span { color: var(--qsm-muted); font-size: 13px; line-height: 1.45; }
-.qsm-ui .qsm-db-addon .qsm-db-tile-cta { margin-top: auto; padding-top: 6px; }
+.qsm-ui .qsm-db-tile-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; }
+.qsm-ui .qsm-db-tile-meta strong { overflow: hidden; min-width: 0; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.qsm-ui .qsm-db-tile-cta { display: inline-flex; flex: none; align-items: center; gap: 4px; color: var(--qsm-blue); font-size: 12px; font-weight: 600; }
 
 /* ---- Help links ---- */
-.qsm-ui .qsm-db-help .qsm-ui-card-body { padding: 8px; }
+.qsm-ui .qsm-db-help .qsm-ui-card-body { padding: 4px 12px; }
 .qsm-ui .qsm-db-links { display: grid; }
-.qsm-ui .qsm-db-link { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--qsm-radius-md); color: var(--qsm-ink); text-decoration: none; transition: background .15s; }
+.qsm-ui .qsm-db-link { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--qsm-line-soft); color: var(--qsm-ink); text-decoration: none; transition: background .15s; }
+.qsm-ui .qsm-db-link:last-child { border-bottom: 0; }
 .qsm-ui .qsm-db-link:hover, .qsm-ui .qsm-db-link:focus { background: var(--qsm-surface-2); color: var(--qsm-ink); box-shadow: none; }
 .qsm-ui .qsm-db-link-icon { display: grid; flex: none; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--qsm-blue-soft); color: var(--qsm-blue); }
 .qsm-ui .qsm-db-link-text { display: grid; flex: 1; gap: 1px; min-width: 0; }
@@ -87,8 +116,10 @@
 .qsm-ui .qsm-db-link:hover .qsm-db-link-ext { color: var(--qsm-blue); }
 
 /* ---- Changelog ---- */
-.qsm-ui .qsm-db-changelog-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.qsm-ui .qsm-db-changelog-list li { display: flex; align-items: flex-start; gap: 10px; margin: 0; color: var(--qsm-ink-2); font-size: 13px; line-height: 1.5; }
+.qsm-ui .qsm-db-changelog .qsm-ui-card-body { padding: 4px 24px; }
+.qsm-ui .qsm-db-changelog-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.qsm-ui .qsm-db-changelog-list li { display: flex; align-items: flex-start; gap: 10px; margin: 0; padding: 12px 0; border-bottom: 1px solid var(--qsm-line-soft); color: var(--qsm-ink-2); font-size: 13px; line-height: 1.5; }
+.qsm-ui .qsm-db-changelog-list li:last-child { border-bottom: 0; }
 .qsm-ui .qsm-db-changelog-list .qsm-ui-badge { flex: none; min-width: 84px; justify-content: center; font-size: 11px; }
 
 /* ---- Community links ---- */
@@ -98,16 +129,21 @@
 .qsm-ui .qsm-db-community a:hover { color: var(--qsm-blue); }
 
 /* ---- Responsive ---- */
+@media (max-width: 1280px) {
+	.qsm-ui .qsm-db-activity-head, .qsm-ui .qsm-db-activity-item { grid-template-columns: minmax(150px, 1.3fr) minmax(130px, 1.3fr) minmax(110px, 1fr) minmax(100px, .9fr) auto; }
+	.qsm-ui .qsm-db-activity-head > :nth-child(4), .qsm-ui .qsm-db-activity-time { display: none; }
+}
 @media (max-width: 1100px) {
-	.qsm-db-grid { grid-template-columns: minmax(0, 1fr); }
+	.qsm-db-top, .qsm-db-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 782px) {
 	.qsm-db { margin-top: 16px; }
 	.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { grid-template-columns: 1fr; }
 	.qsm-ui.qsm-db-header .qsm-db-header-links { display: none; }
 	.qsm-ui.qsm-db-header .qsm-db-heading-sep, .qsm-ui.qsm-db-header .qsm-db-title { display: none; }
-	.qsm-ui .qsm-db-activity-item { flex-wrap: wrap; }
-	.qsm-ui .qsm-db-activity-actions { width: 100%; padding-inline-start: 50px; }
+	.qsm-ui .qsm-db-activity-head { display: none; }
+	.qsm-ui .qsm-db-activity-item { grid-template-columns: minmax(0, 1fr) auto auto; padding-inline: 16px; }
+	.qsm-ui .qsm-db-activity-quiz, .qsm-ui .qsm-db-activity-date { display: none; }
 }
 
 /* WordPress footer: in the normal flow below the content. */
