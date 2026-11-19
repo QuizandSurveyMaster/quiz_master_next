@@ -472,7 +472,7 @@ function qsm_create_quiz_render_choice_cards() {
 			'items' => array(
 				__( 'Browse demos by category', 'quiz-master-next' ),
 				__( 'Preview a demo before you import it', 'quiz-master-next' ),
-				__( 'Add-ons the demo needs are installed for you', 'quiz-master-next' ),
+				__( 'See which add-ons a template uses and turn them on before you import', 'quiz-master-next' ),
 			),
 			'cta'   => __( 'Browse templates', 'quiz-master-next' ),
 			'badge' => __( 'One-click import', 'quiz-master-next' ),
@@ -508,9 +508,10 @@ function qsm_create_quiz_render_choice_cards() {
  * @param array  $theme_args        Arguments for qsm_dashboard_display_theme_section(), or empty when the theme list is unavailable.
  * @param string $view              Current view, so the other one starts hidden.
  * @param string $back_url          Where Cancel goes.
+ * @param array  $addon_args        Arguments for qsm_dashboard_display_addons_section(), or empty when the add-on list is unavailable.
  * @return void
  */
-function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view = 'custom', $back_url = '' ) {
+function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view = 'custom', $back_url = '', $addon_args = array() ) {
 	// Type and grading are asked up front, so leave them out of the additional settings.
 	$settings = qsm_settings_to_create_quiz( true );
 	$grading  = array();
@@ -538,7 +539,7 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $v
 		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 			array(
 				'title'       => __( 'Quiz details', 'quiz-master-next' ),
-				'description' => __( 'You can change all of these later in the quiz settings.', 'quiz-master-next' ),
+				'description' => __( 'Give your quiz a name. You can change it later.', 'quiz-master-next' ),
 			)
 		);
 		echo QSM_Admin_UI::field( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -559,6 +560,52 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $v
 			)
 		);
 		echo '<p class="qsm-ui-caption qsm-cq-name-error" id="qsm-cq-quiz-name-msg" hidden>' . esc_html__( 'Enter a name for your quiz.', 'quiz-master-next' ) . '</p>';
+		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+
+		if ( ! empty( $addon_args ) ) {
+			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'title'       => __( 'Add-ons', 'quiz-master-next' ),
+					'description' => __( 'Optional. Turn on add-ons to add features to your quiz. Add-ons that suit the quiz type are marked Recommended.', 'quiz-master-next' ),
+					'class'       => 'qsm-cq-addon-card',
+				)
+			);
+			call_user_func_array( 'qsm_dashboard_display_addons_section', $addon_args );
+			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		}
+
+		if ( ! empty( $theme_args ) ) {
+			// The bundle offer sits in the card header so it is seen before the theme list.
+			$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'bundles', 'new-quiz-steps' );
+			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'title'       => __( 'Theme', 'quiz-master-next' ),
+					'description' => __( 'Pick a free or premium theme. Themes that suit the quiz type are marked Recommended.', 'quiz-master-next' ),
+					'class'       => 'qsm-cq-theme-card',
+					'actions'     => '<a class="qsm-cq-bundle-link" href="' . esc_url( $bundle_link ) . '" target="_blank" rel="noopener" title="' . esc_attr__( 'The bundle includes every theme and add-on.', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'star', 'qsm-ui-icon-sm' ) . esc_html__( 'Grab the Bundle & Save 90%', 'quiz-master-next' ) . '</a>',
+				)
+			);
+			call_user_func_array( 'qsm_dashboard_display_theme_section', $theme_args );
+			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		}
+
+		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			array(
+				'title'       => __( 'Additional settings', 'quiz-master-next' ),
+				'description' => __( 'Optional. Quiz type, grading system, timer, pagination, login and contact form.', 'quiz-master-next' ),
+				'actions'     => QSM_Admin_UI::toggle(
+					array(
+						'id'         => 'qsm-cq-more-toggle',
+						'aria_label' => __( 'Show additional settings', 'quiz-master-next' ),
+						'attrs'      => array( 'aria-controls' => 'qsm-cq-more' ),
+					)
+				),
+				'body_id'     => 'qsm-cq-more',
+				'class'       => 'qsm-cq-more-card',
+			)
+		);
+		// Quiz type and grading come first; they default to a graded quiz with Correct / Incorrect scoring.
+		echo '<div class="qsm-cq-type-grading">';
 		if ( ! empty( $type_options ) ) {
 			reset( $type_options );
 			echo QSM_Admin_UI::field( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
@@ -606,38 +653,7 @@ function qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $v
 				'class'   => 'qsm-cq-grading',
 			)
 		);
-		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-
-		if ( ! empty( $theme_args ) ) {
-			// The bundle offer sits in the card header so it is seen before the theme list.
-			$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'create_quiz', 'bundles', 'new-quiz-steps' );
-			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				array(
-					'title'       => __( 'Theme', 'quiz-master-next' ),
-					'description' => __( 'Pick a free or premium theme. Themes that suit the quiz type are marked Recommended.', 'quiz-master-next' ),
-					'class'       => 'qsm-cq-theme-card',
-					'actions'     => '<a class="qsm-cq-bundle-link" href="' . esc_url( $bundle_link ) . '" target="_blank" rel="noopener" title="' . esc_attr__( 'The bundle includes every theme and add-on.', 'quiz-master-next' ) . '">' . QSM_Admin_UI::icon( 'star', 'qsm-ui-icon-sm' ) . esc_html__( 'Grab the Bundle & Save 90%', 'quiz-master-next' ) . '</a>',
-				)
-			);
-			call_user_func_array( 'qsm_dashboard_display_theme_section', $theme_args );
-			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-		}
-
-		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-			array(
-				'title'       => __( 'Additional settings', 'quiz-master-next' ),
-				'description' => __( 'Optional. Timer, pagination, login and contact form.', 'quiz-master-next' ),
-				'actions'     => QSM_Admin_UI::toggle(
-					array(
-						'id'         => 'qsm-cq-more-toggle',
-						'aria_label' => __( 'Show additional settings', 'quiz-master-next' ),
-						'attrs'      => array( 'aria-controls' => 'qsm-cq-more' ),
-					)
-				),
-				'body_id'     => 'qsm-cq-more',
-				'class'       => 'qsm-cq-more-card',
-			)
-		);
+		echo '</div>';
 		echo '<div class="qsm-cq-settings-grid">';
 		foreach ( $settings as $setting ) {
 			qsm_create_quiz_render_setting_field( $setting );
@@ -881,8 +897,10 @@ function qsm_create_quiz_page_callback() {
 		'template' => __( 'Use a template', 'quiz-master-next' ),
 	);
 	$theme_args = array();
+	$addon_args = array();
 	if ( $qsm_admin_dd ) {
 		$theme_args = array( $qsm_admin_dd['themes'], $installer_option, $invalid_and_expired, $qsm_admin_dd['all_addons'], $installer_activated, $installer_script );
+		$addon_args = array( $qsm_admin_dd['all_addons'], $installer_option, $invalid_and_expired, $installer_activated, $installer_script );
 	}
 	$last_visited_page = ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 	if ( '' === $last_visited_page || false !== strpos( $last_visited_page, 'page=qsm_create_quiz_page' ) ) {
@@ -894,7 +912,7 @@ function qsm_create_quiz_page_callback() {
 		<?php qsm_create_quiz_render_header( $view, $titles ); ?>
 	<div class="qsm-ui qsm-ui-text qsm-cq" data-qsm-cq-current="<?php echo esc_attr( $view ); ?>">
 		<form action="" method="post" id="new-quiz-form">
-			<?php qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view, $last_visited_page ); ?>
+			<?php qsm_create_quiz_render_custom_view( $quizoptions_boxes, $theme_args, $view, $last_visited_page, $addon_args ); ?>
 		</form>
 		<?php
 		qsm_create_quiz_render_template_view( $view );

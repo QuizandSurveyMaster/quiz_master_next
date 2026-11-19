@@ -14,6 +14,7 @@ jQuery(function ($) {
     QSMAdminDashboard = {
         view: 'custom',
         themesExpanded: false,
+        addonsExpanded: false,
 
         init: function () {
             let initial = (qsm_admin_new_quiz && qsm_admin_new_quiz.view) ? qsm_admin_new_quiz.view : 'custom';
@@ -59,8 +60,9 @@ jQuery(function ($) {
             }
             jQuery('#new-quiz-form input[name="form_type"]').val(formType);
             jQuery('.qsm-cq-grading').prop('hidden', 0 !== formType);
-            jQuery('.qsm-dashboard-theme-recommended').hide();
+            jQuery('.qsm-dashboard-theme-recommended, .qsm-dashboard-addon-recommended').hide();
             QSMAdminDashboard.showDependentAddons(box);
+            QSMAdminDashboard.showRecommendedAddons(box);
         },
 
         getQuizOption: function (id) {
@@ -106,7 +108,68 @@ jQuery(function ($) {
             let hasHidden = $parent.children('.qsm-quiz-steps-card').filter(function () {
                 return 'none' === this.style.display;
             }).length > 0;
-            jQuery('.qsm-dashboard-see-more-types-wrap').toggle(!QSMAdminDashboard.themesExpanded && hasHidden);
+            jQuery('.qsm-dashboard-see-more-themes').closest('.qsm-dashboard-see-more-types-wrap').toggle(!QSMAdminDashboard.themesExpanded && hasHidden);
+        },
+
+        // Add-on list: recommended first, then active ones, then the rest. Same "See more" rule as the themes.
+        showRecommendedAddons: function (box) {
+            let recommended = (box && Array.isArray(box.addons)) ? box.addons : [];
+            let $parent = $('.qsm-quiz-addon-steps-grid');
+            let $items = $parent.children('.qsm-quiz-addon-steps-card');
+            if (!$items.length) {
+                return;
+            }
+            let suggested = [], activated = [], rest = [];
+            $items.show();
+            $items.each(function () {
+                if (recommended.some(id => id == $(this).data('id'))) {
+                    suggested.push(this);
+                    $(this).find('.qsm-dashboard-addon-recommended').show();
+                } else if ($(this).hasClass('qsm-quiz-addon-activated')) {
+                    activated.push(this);
+                } else {
+                    rest.push(this);
+                }
+            });
+            $parent.append(suggested).append(activated).append(rest);
+            if (!QSMAdminDashboard.addonsExpanded) {
+                $parent.children(':gt(3)').hide();
+            }
+            let hasHidden = $parent.children('.qsm-quiz-addon-steps-card').filter(function () {
+                return 'none' === this.style.display;
+            }).length > 0;
+            jQuery('.qsm-dashboard-see-more-addons').closest('.qsm-dashboard-see-more-types-wrap').toggle(!QSMAdminDashboard.addonsExpanded && hasHidden);
+        },
+
+        // Add-on switch: activate (or install, through the QSM Installer) right away.
+        processAddonToggle: function ($element) {
+            let $parent = $element.closest('.qsm-quiz-addon-steps-card');
+            let pluginPath = $parent.attr('data-path');
+            let pluginSlug = $parent.data('slug');
+            let installerActivated = qsm_admin_new_quiz.installer_activated;
+            let activatedPlugins = Array.isArray(qsm_admin_new_quiz.activated) ? qsm_admin_new_quiz.activated : Object.values(qsm_admin_new_quiz.activated || {});
+            let installedPlugins = Array.isArray(qsm_admin_new_quiz.installed) ? qsm_admin_new_quiz.installed : Object.values(qsm_admin_new_quiz.installed || {});
+            if (activatedPlugins.includes(pluginPath)) {
+                $element.prop('checked', true);
+                $parent.addClass('qsm-quiz-addon-activated');
+                return;
+            }
+            if (!$element.is(':checked')) {
+                return;
+            }
+            $element.prop('disabled', true);
+            if (installedPlugins.includes(pluginPath)) {
+                $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.activating);
+                jQuery(document).trigger('qsm_activate_plugin_button_click_after', [pluginSlug, pluginPath, $parent, $element, installerActivated, true, false]);
+                if (0 == installerActivated) {
+                    QSMAdminDashboard.activatePlugin(pluginSlug, pluginPath, $parent, $element, installerActivated, true, false);
+                }
+            } else if (1 == installerActivated) {
+                $parent.find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.installing);
+                jQuery(document).trigger('qsm_install_plugin_button_click_after', [pluginSlug, pluginPath, $parent, $element, installerActivated, true, false]);
+            } else {
+                $element.prop('disabled', false).prop('checked', false);
+            }
         },
 
         processPluginRequest: function ($element) {
@@ -154,12 +217,21 @@ jQuery(function ($) {
                     qsm_admin_new_quiz.activated = Object.values(qsm_admin_new_quiz.activated || {});
                 }
                 qsm_admin_new_quiz.activated.push(path);
+                if (isToggle) {
+                    $parent.addClass('qsm-quiz-addon-activated').find('.qsm-dashboard-addon-status').text(qsm_admin_new_quiz.activated_text);
+                    $element.prop('checked', true);
+                    return;
+                }
                 $parent.addClass('qsm-quiz-theme-activated');
                 QSMAdminDashboard.afterInstall(slug, path, $parent, $element, installerActivated, isToggle, isButton);
                 QSMAdminDashboard.processToSelectTheme($parent);
             } else {
                 $parent.find('.qsm-dashboard-addon-status').text(response.data && response.data.message ? response.data.message : '');
-                $element.prop('disabled', false).text(qsm_admin_new_quiz.retry);
+                if (isToggle) {
+                    $element.prop('disabled', false).prop('checked', false);
+                } else {
+                    $element.prop('disabled', false).text(qsm_admin_new_quiz.retry);
+                }
             }
         },
 
@@ -260,6 +332,16 @@ jQuery(function ($) {
     $(document).on('click', '.qsm-dashboard-see-more-themes', function () {
         QSMAdminDashboard.themesExpanded = true;
         $('.qsm-quiz-theme-steps-container').children('.qsm-quiz-steps-card').show();
-        $('.qsm-dashboard-see-more-types-wrap').hide();
+        $(this).closest('.qsm-dashboard-see-more-types-wrap').hide();
+    });
+
+    $(document).on('change', '.qsm-dashboard-addon-toggle', function () {
+        QSMAdminDashboard.processAddonToggle($(this));
+    });
+
+    $(document).on('click', '.qsm-dashboard-see-more-addons', function () {
+        QSMAdminDashboard.addonsExpanded = true;
+        $('.qsm-quiz-addon-steps-grid').children('.qsm-quiz-addon-steps-card').show();
+        $(this).closest('.qsm-dashboard-see-more-types-wrap').hide();
     });
 });

@@ -5,6 +5,8 @@
 .qsm-cq { max-width: 1120px; margin: 24px auto 40px; }
 
 /* ---- Header: same frame as the quiz edit page (qsm-ui-quiz-frame-header) ---- */
+.qsm-ui.qsm-cq-header { padding-bottom: 14px; }
+.qsm-ui.qsm-cq-header .qsm-ui-page-header { align-items: center; }
 .qsm-ui.qsm-cq-header .qsm-ui-quiz-frame-heading { display: flex; align-items: center; min-height: 36px; }
 .qsm-ui.qsm-cq-header .qsm-ui-page-actions { display: flex; align-items: center; gap: 8px; }
 /* Help menu icons: same as the quiz edit page (Support.svg + document dashicons). */
@@ -44,6 +46,8 @@
 .qsm-cq .qsm-ui-card-body > .qsm-ui-field-label, .qsm-cq .qsm-ui-card-body > div + div { margin-top: 0; }
 .qsm-cq .qsm-cq-name-field, .qsm-cq .qsm-cq-types, .qsm-cq .qsm-cq-grading { margin-bottom: 22px; }
 .qsm-cq .qsm-cq-grading { margin-bottom: 0; }
+/* Quiz type and grading sit at the top of Additional settings, above the other settings. */
+.qsm-cq .qsm-cq-type-grading { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--qsm-line-soft); }
 .qsm-cq .qsm-cq-name-field .qsm-ui-input { width: 100%; max-width: 560px; }
 .qsm-cq .qsm-cq-name-error { margin: -16px 0 18px; color: var(--qsm-red); }
 .qsm-cq .qsm-ui-field-label { display: block; margin-bottom: 8px; font-weight: 600; }
@@ -112,3 +116,34 @@
 .qsm-dashboard-create-quiz-section.qsm-ui { display: block; }
 .qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choices { margin-top: 16px; }
 .qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
+
+/* Add-ons, in the same card style as the themes. Markup from qsm_dashboard_display_addons_section() and the
+   QSM Installer's qsm_create_quiz_addon_option_buttons hook. */
+.qsm-cq .qsm-cq-addon-card .qsm-dashboard-page-header { display: none; }
+.qsm-cq .qsm-quiz-addon-steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 18px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-bg); }
+.qsm-cq .qsm-quiz-addon-steps-card { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); grid-template-areas: "icon info" "btn btn"; gap: 12px 14px; padding: 16px; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 6px 18px rgba(28, 43, 75, .06); transition: border-color .15s, box-shadow .15s; }
+.qsm-cq .qsm-quiz-addon-steps-card:hover { border-color: var(--qsm-blue-border); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 12px 28px rgba(49, 94, 251, .12); }
+.qsm-cq .qsm-quiz-addon-steps-card.qsm-quiz-addon-activated { border-color: var(--qsm-green-line); }
+.qsm-cq .qsm-quiz-addon-steps-images { grid-area: icon; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--qsm-line-soft); border-radius: 12px; background: var(--qsm-surface-2); }
+.qsm-cq .qsm-quiz-addon-steps-icon { width: 26px; height: 26px; object-fit: contain; }
+.qsm-cq .qsm-quiz-addon-steps-info { grid-area: info; min-width: 0; }
+.qsm-cq .qsm-quiz-addon-steps-title { margin: 0 0 4px; padding-right: 90px; color: var(--qsm-ink); font-size: 14px; font-weight: 700; line-height: 1.4; }
+.qsm-cq .qsm-quiz-addon-steps-info .qsm-quiz-addon-steps-status { display: -webkit-box; overflow: hidden; margin: 0; color: var(--qsm-muted); font-size: 12.5px; line-height: 1.5; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.qsm-cq .qsm-quiz-addon-steps-button { grid-area: btn; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--qsm-line-soft); }
+.qsm-cq .qsm-quiz-addon-steps-button .qsm-dashboard-addon-status { margin: 0; color: var(--qsm-muted); font-size: 12.5px; }
+.qsm-cq .qsm-quiz-addon-steps-upgrade-btn.button { display: inline-flex; align-items: center; min-height: 30px; margin: 0; padding: 4px 12px; border: 1px solid var(--qsm-blue-border); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-blue); font: 600 12.5px/1.2 var(--qsm-font); box-shadow: none; }
+.qsm-cq .qsm-quiz-addon-steps-upgrade-btn.button:hover { border-color: var(--qsm-blue); background: var(--qsm-blue); color: #fff; }
+.qsm-cq .qsm-dashboard-addon-recommended { position: absolute; top: 14px; right: 14px; display: none; padding: 1px 8px; border: 1px solid var(--qsm-green-line); border-radius: 999px; background: var(--qsm-green-bg); color: var(--qsm-green); font-size: 11.5px; font-weight: 600; line-height: 1.6; }
+/* Add-on switch (kit toggle look). */
+.qsm-cq .qsm-dashboard-addon-switch { position: relative; display: inline-flex; flex: none; width: 38px; height: 22px; cursor: pointer; }
+.qsm-cq .qsm-dashboard-addon-switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.qsm-cq .qsm-dashboard-addon-slider { position: absolute; inset: 0; border-radius: 999px; background: #cfd6e2; transition: background .15s; pointer-events: none; }
+.qsm-cq .qsm-dashboard-addon-slider::before { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(16, 24, 40, .2); transition: transform .15s; }
+.qsm-cq .qsm-dashboard-addon-checkmark { display: none; }
+.qsm-cq input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider { background: var(--qsm-green); }
+.qsm-cq input.qsm-dashboard-addon-toggle:checked + .qsm-dashboard-addon-slider::before { transform: translateX(16px); }
+.qsm-cq input.qsm-dashboard-addon-toggle:focus-visible + .qsm-dashboard-addon-slider { box-shadow: 0 0 0 3px var(--qsm-blue-ring); }
+.qsm-cq input.qsm-dashboard-addon-toggle:disabled { cursor: default; }
+.qsm-cq .qsm-dashboard-addon-switch .qsm-create-quiz-tooltip { position: absolute; right: 0; bottom: calc(100% + 8px); z-index: 3; display: none; width: 200px; padding: 6px 10px; border-radius: var(--qsm-radius); background: var(--qsm-ink); color: #fff; font-size: 12px; }
+.qsm-cq .qsm-dashboard-addon-switch:hover .qsm-create-quiz-tooltip { display: block; }
+.qsm-cq .qsm-dashboard-see-more-addons.button { min-height: 36px; padding: 6px 16px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-ink-2); font-weight: 600; }
