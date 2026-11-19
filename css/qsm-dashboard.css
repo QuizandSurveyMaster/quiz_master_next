@@ -55,7 +55,6 @@
 .qsm-ui .qsm-db-compat-thumb { display: grid; flex: none; place-items: center; width: 72px; aspect-ratio: 16 / 11; border: 1px solid var(--qsm-line-soft); border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); color: var(--qsm-blue); }
 .qsm-ui .qsm-db-compat-thumb .qsm-ui-icon { width: 24px; height: 24px; }
 .qsm-ui .qsm-db-compat-item.is-warning .qsm-db-compat-thumb { background: var(--qsm-amber-bg); color: var(--qsm-amber); }
-.qsm-ui .qsm-db-compat-item.is-danger .qsm-db-compat-thumb { background: var(--qsm-red-bg); color: var(--qsm-red); }
 .qsm-ui .qsm-db-compat-main { display: grid; flex: 1; gap: 4px; min-width: 0; }
 .qsm-ui .qsm-db-compat-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .qsm-ui .qsm-db-compat-top .qsm-ui-badge { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
@@ -63,6 +62,7 @@
 .qsm-ui .qsm-db-compat-title { overflow: hidden; color: var(--qsm-ink); font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
 .qsm-ui .qsm-db-compat-meta { display: inline-flex; align-items: center; gap: 6px; color: var(--qsm-muted); font-size: 12px; line-height: 1.4; }
 .qsm-ui .qsm-db-compat-meta .qsm-ui-icon { flex: none; color: var(--qsm-purple); }
+.qsm-ui .qsm-db-compat-item.is-warning .qsm-db-compat-meta .qsm-ui-icon { color: var(--qsm-amber); }
 .qsm-ui .qsm-db-compat-item .qsm-ui-btn { flex: none; }
 @media (max-width: 600px) {
 	.qsm-ui .qsm-db-compat-item { flex-wrap: wrap; }

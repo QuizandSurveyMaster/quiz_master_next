@@ -153,7 +153,8 @@ function qsm_check_plugins_compatibility() {
 		$items[] = array(
 			'icon'  => 'settings',
 			'tag'   => __( 'Required', 'quiz-master-next' ),
-			'tone'  => 'danger',
+			'tone'  => 'warning',
+			'main'  => true,
 			'group' => __( 'Database', 'quiz-master-next' ),
 			'title' => __( 'Run the QSM 11 migration', 'quiz-master-next' ),
 			'meta'  => __( 'One-time step. Older QSM versions can’t read results saved after it', 'quiz-master-next' ),
@@ -190,14 +191,14 @@ function qsm_check_plugins_compatibility() {
 							<span class="qsm-db-compat-group"><?php echo esc_html( $item['group'] ); ?></span>
 						</span>
 						<strong class="qsm-db-compat-title"><?php echo esc_html( $item['title'] ); ?></strong>
-						<span class="qsm-db-compat-meta"><?php echo QSM_Admin_UI::icon( 'warning' === $item['tone'] || 'danger' === $item['tone'] ? 'alert' : 'bolt', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo esc_html( $item['meta'] ); ?></span>
+						<span class="qsm-db-compat-meta"><?php echo QSM_Admin_UI::icon( 'warning' === $item['tone'] ? 'alert' : 'bolt', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo esc_html( $item['meta'] ); ?></span>
 					</span>
 					<?php
 					echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 						$item['cta'],
 						array(
 							'size'    => 'sm',
-							'variant' => 'danger' === $item['tone'] ? 'primary' : '',
+							'variant' => ! empty( $item['main'] ) ? 'primary' : '',
 							'href'    => $item['url'],
 							'attrs'   => $item['blank'] ? array( 'target' => '_blank', 'rel' => 'noopener' ) : array(),
 						)
