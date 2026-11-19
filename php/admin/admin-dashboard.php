@@ -53,21 +53,45 @@ function qsm_check_close_hidden_box( $widget_id ) {
 }
 
 /**
- * Compatibility card, next to the Create card on the dashboard: short items for what needs
- * attention - a QSM Installer update (or a missing installer) and the QSM 11 database
- * migration - plus anything add-ons print on qsm_admin_dashboard_compatibility_after.
- * Prints nothing when there is nothing to show.
+ * Whether the QSM 11 results migration still has to run.
+ *
+ * @since 11.4.0
+ * @return bool
+ */
+function qsm_dashboard_migration_pending() {
+	/**
+	 * Filters whether the dashboard asks for the QSM 11 database migration.
+	 *
+	 * @since 11.4.0
+	 * @param bool $pending True until the migration has been processed.
+	 */
+	return (bool) apply_filters( 'qsm_dashboard_migration_pending', 1 != get_option( 'qsm_migration_results_processed' ) ); // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- stored as '1' or 1.
+}
+
+/**
+ * "Needs your attention" card, next to the Create card on the dashboard: one tile per item -
+ * a QSM Installer update / inactive / missing installer and the QSM 11 database migration -
+ * in the same tile format as the template import summary, plus anything add-ons print on
+ * qsm_admin_dashboard_compatibility_after. Prints nothing when there is nothing to show.
  *
  * @since 7.0
- * @since 11.4.0 Admin UI kit card with brief items; returns whether it printed.
+ * @since 11.4.0 Admin UI kit card with brief tiles; returns whether it printed.
  * @return bool True when the card was printed.
  */
 function qsm_check_plugins_compatibility() {
 	$account_url = qsm_get_utm_link( 'https://quizandsurveymaster.com/account', 'dashboard', 'useful_links', 'qsm_installer_update' );
+	$plugin      = 'qsm-installer/qsm-installer.php';
 	$items       = array();
+	$installer   = array(
+		'icon'  => 'download',
+		'group' => __( 'QSM Installer', 'quiz-master-next' ),
+		'meta'  => __( 'Needed for themes, add-ons and one-click templates', 'quiz-master-next' ),
+		'blank' => true,
+		'url'   => $account_url,
+	);
 
 	if ( class_exists( 'QSM_Installer' ) ) {
-		$plugin_data   = get_plugin_data( WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php' );
+		$plugin_data   = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
 		$installer_ver = ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '';
 		/*
 		 * The version is required to be non-empty: get_plugin_data() returns a
@@ -85,46 +109,54 @@ function qsm_check_plugins_compatibility() {
 			$published = qsm_installer_published_version();
 			// Only name the store's version when it is actually newer: the below-floor case forces this
 			// item on by itself, so the store's answer can be the very version they run.
-			$newer = '' !== $published && version_compare( qsm_normalize_version( $installer_ver ), qsm_normalize_version( $published ), '<' );
-			$items[] = array(
-				'type'  => 'warning',
-				'title' => __( 'QSM Installer update', 'quiz-master-next' ),
-				'text'  => $newer
-					/* translators: 1: installed version, 2: newest published version. */
-					? sprintf( __( 'You have %1$s; %2$s is available.', 'quiz-master-next' ), $installer_ver, $published )
-					/* translators: %s: installed version. */
-					: sprintf( __( 'You have %s. Update for the best quiz creation experience.', 'quiz-master-next' ), $installer_ver ),
-				'cta'   => __( 'Get latest', 'quiz-master-next' ),
-				'url'   => $account_url,
-				'blank' => true,
+			$newer   = '' !== $published && version_compare( qsm_normalize_version( $installer_ver ), qsm_normalize_version( $published ), '<' );
+			$items[] = array_merge(
+				$installer,
+				array(
+					'tag'   => __( 'Update', 'quiz-master-next' ),
+					'tone'  => 'warning',
+					'title' => __( 'A new version is available', 'quiz-master-next' ),
+					'meta'  => $newer
+						/* translators: 1: installed version, 2: newest published version. */
+						? sprintf( __( 'You have %1$s, %2$s is available', 'quiz-master-next' ), $installer_ver, $published )
+						/* translators: %s: installed version. */
+						: sprintf( __( 'You have %s', 'quiz-master-next' ), $installer_ver ),
+					'cta'   => __( 'Get latest', 'quiz-master-next' ),
+				)
 			);
 		}
-	} elseif ( file_exists( WP_PLUGIN_DIR . '/qsm-installer/qsm-installer.php' ) ) {
-		$plugin  = 'qsm-installer/qsm-installer.php';
-		$items[] = array(
-			'type'  => 'info',
-			'title' => __( 'QSM Installer is inactive', 'quiz-master-next' ),
-			'text'  => __( 'Activate it to add themes, add-ons and one-click templates.', 'quiz-master-next' ),
-			'cta'   => __( 'Activate', 'quiz-master-next' ),
-			'url'   => current_user_can( 'activate_plugins' ) ? wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $plugin ) ), 'activate-plugin_' . $plugin ) : admin_url( 'plugins.php' ),
-			'blank' => false,
+	} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $plugin ) ) {
+		$items[] = array_merge(
+			$installer,
+			array(
+				'tag'   => __( 'Inactive', 'quiz-master-next' ),
+				'tone'  => 'info',
+				'title' => __( 'Turn on the QSM Installer', 'quiz-master-next' ),
+				'cta'   => __( 'Activate', 'quiz-master-next' ),
+				'url'   => current_user_can( 'activate_plugins' ) ? wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $plugin ) ), 'activate-plugin_' . $plugin ) : admin_url( 'plugins.php' ),
+				'blank' => false,
+			)
 		);
 	} else {
-		$items[] = array(
-			'type'  => 'info',
-			'title' => __( 'QSM Installer', 'quiz-master-next' ),
-			'text'  => __( 'Install it to add themes, add-ons and one-click templates.', 'quiz-master-next' ),
-			'cta'   => __( 'Get it', 'quiz-master-next' ),
-			'url'   => $account_url,
-			'blank' => true,
+		$items[] = array_merge(
+			$installer,
+			array(
+				'tag'   => __( 'Missing', 'quiz-master-next' ),
+				'tone'  => 'info',
+				'title' => __( 'Get the QSM Installer', 'quiz-master-next' ),
+				'cta'   => __( 'Get it', 'quiz-master-next' ),
+			)
 		);
 	}
 
-	if ( 1 != get_option( 'qsm_migration_results_processed' ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- stored as '1' or 1.
+	if ( qsm_dashboard_migration_pending() ) {
 		$items[] = array(
-			'type'  => 'warning',
-			'title' => __( 'Database migration', 'quiz-master-next' ),
-			'text'  => __( 'One-time step for QSM 11. Results saved after it can’t be read by older QSM versions.', 'quiz-master-next' ),
+			'icon'  => 'settings',
+			'tag'   => __( 'Required', 'quiz-master-next' ),
+			'tone'  => 'danger',
+			'group' => __( 'Database', 'quiz-master-next' ),
+			'title' => __( 'Run the QSM 11 migration', 'quiz-master-next' ),
+			'meta'  => __( 'One-time step. Older QSM versions can’t read results saved after it', 'quiz-master-next' ),
 			'cta'   => __( 'Go to migration', 'quiz-master-next' ),
 			'url'   => admin_url( 'admin.php?page=qsm_quiz_tools&tab=qsm_tools_page_migration' ),
 			'blank' => false,
@@ -141,27 +173,33 @@ function qsm_check_plugins_compatibility() {
 
 	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		array(
-			'title' => __( 'Compatibility', 'quiz-master-next' ),
-			'class' => 'qsm-db-card qsm-db-compat',
+			'title'   => __( 'Needs your attention', 'quiz-master-next' ),
+			'actions' => $items ? QSM_Admin_UI::badge( (string) count( $items ), 'warning', false ) : '',
+			'class'   => 'qsm-db-card qsm-db-compat',
 		)
 	);
 	if ( $items ) {
 		?>
 		<ul class="qsm-db-compat-list">
 			<?php foreach ( $items as $item ) { ?>
-				<li class="qsm-db-compat-item is-<?php echo esc_attr( $item['type'] ); ?>">
-					<span class="qsm-db-compat-icon"><?php echo QSM_Admin_UI::icon( 'warning' === $item['type'] ? 'alert' : 'info', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
-					<span class="qsm-db-compat-text">
-						<strong><?php echo esc_html( $item['title'] ); ?></strong>
-						<span><?php echo esc_html( $item['text'] ); ?></span>
+				<li class="qsm-db-compat-item is-<?php echo esc_attr( $item['tone'] ); ?>">
+					<span class="qsm-db-compat-thumb"><?php echo QSM_Admin_UI::icon( $item['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+					<span class="qsm-db-compat-main">
+						<span class="qsm-db-compat-top">
+							<?php echo QSM_Admin_UI::badge( $item['tag'], $item['tone'], false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+							<span class="qsm-db-compat-group"><?php echo esc_html( $item['group'] ); ?></span>
+						</span>
+						<strong class="qsm-db-compat-title"><?php echo esc_html( $item['title'] ); ?></strong>
+						<span class="qsm-db-compat-meta"><?php echo QSM_Admin_UI::icon( 'warning' === $item['tone'] || 'danger' === $item['tone'] ? 'alert' : 'bolt', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo esc_html( $item['meta'] ); ?></span>
 					</span>
 					<?php
 					echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 						$item['cta'],
 						array(
-							'size'  => 'sm',
-							'href'  => $item['url'],
-							'attrs' => $item['blank'] ? array( 'target' => '_blank', 'rel' => 'noopener' ) : array(),
+							'size'    => 'sm',
+							'variant' => 'danger' === $item['tone'] ? 'primary' : '',
+							'href'    => $item['url'],
+							'attrs'   => $item['blank'] ? array( 'target' => '_blank', 'rel' => 'noopener' ) : array(),
 						)
 					);
 					?>
@@ -824,7 +862,7 @@ add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
  */
 function qsm_display_migration_tools_redirect_button() {
 	// Only show this section if the migration has not been completed.
-	if ( 1 == get_option( 'qsm_migration_results_processed' ) ) {
+	if ( ! qsm_dashboard_migration_pending() ) {
 		return;
 	}
 	?>
