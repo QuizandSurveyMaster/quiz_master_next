@@ -1103,6 +1103,3 @@ h2.hndle.ui-sortable-handle {
 		width: 50%;
 	}
 }
-/* Create a Quiz / Survey box: "New: Templates" badge next to the title; the choice cards are styled in qsm-create-quiz-style.css. */
-.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-card-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.qsm-dashboard-create-quiz-section.qsm-ui .qsm-dashboard-card-title .qsm-ui-badge { font-size: 12px; letter-spacing: 0; }

@@ -112,11 +112,6 @@
 .qsm_page_qsm_create_quiz_page #wpfooter { position: relative; clear: both; }
 .qsm_page_qsm_create_quiz_page #wpbody-content { padding-bottom: 24px; }
 
-/* Dashboard: the choice cards fill the Create a Quiz / Survey box. */
-.qsm-dashboard-create-quiz-section.qsm-ui { display: block; }
-.qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choices { margin-top: 16px; }
-.qsm-dashboard-create-quiz-section.qsm-ui .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
-
 /* Add-ons, in the same card style as the themes. Markup from qsm_dashboard_display_addons_section() and the
    QSM Installer's qsm_create_quiz_addon_option_buttons hook. */
 .qsm-cq .qsm-cq-addon-card .qsm-dashboard-page-header { display: none; }

@@ -456,7 +456,7 @@ function qsm_create_quiz_render_choice_cards() {
 	$page_url = admin_url( 'admin.php?page=qsm_create_quiz_page' );
 	$choices  = array(
 		'custom'   => array(
-			'label' => __( 'Custom template', 'quiz-master-next' ),
+			'label' => __( 'Start from scratch', 'quiz-master-next' ),
 			'text'  => __( 'Start from a blank quiz and set it up yourself.', 'quiz-master-next' ),
 			'items' => array(
 				__( 'Name your quiz', 'quiz-master-next' ),
@@ -501,7 +501,7 @@ function qsm_create_quiz_render_choice_cards() {
 }
 
 /**
- * Custom template view: quiz name, quiz type, grading system, theme, then the optional settings.
+ * Start-from-scratch view: quiz name, quiz type, grading system, theme, then the optional settings.
  *
  * @since 11.4.0
  * @param array $quizoptions_boxes Quiz types from data/dashboard.json.
@@ -757,6 +757,49 @@ function qsm_create_quiz_asset_version( $file ) {
 }
 
 /**
+ * Help menu for the page headers (Create Quiz, Dashboard): the "i" button and the
+ * Useful Resources list, same links and icons as the quiz edit page.
+ *
+ * @since 11.4.0
+ * @param string $campaign UTM source for the links, e.g. create_quiz or dashboard.
+ * @return void
+ */
+function qsm_admin_render_help_menu( $campaign = 'create_quiz' ) {
+	$doc_icon   = '<span class="dashicons dashicons-media-document"></span>';
+	$help_links = array(
+		array( __( 'Get support', 'quiz-master-next' ), qsm_get_plugin_link( 'contact-support', $campaign, 'help_box', $campaign . '_support' ), '<img class="qsm-help-tab-icon" alt="" src="' . esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) . '">' ),
+		array( __( 'Getting Started', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', $campaign, 'help_box', 'getting_started' ), $doc_icon ),
+		array( __( 'Creating Quizzes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', $campaign, 'help_box', $campaign . '_docs' ), $doc_icon ),
+		array( __( 'QSM Themes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/qsm-themes', $campaign, 'help_box', $campaign . '_themes' ), $doc_icon ),
+		array( __( 'All Docs', 'quiz-master-next' ), qsm_get_plugin_link( 'docs', $campaign, 'help_box', $campaign . '_all_doc' ), $doc_icon ),
+	);
+	?>
+	<div class="qsm-ui-help-menu">
+		<?php
+		echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			__( 'Help', 'quiz-master-next' ),
+			array(
+				'icon'      => 'info',
+				'icon_only' => true,
+				'class'     => 'qsm-help-tab-handle qsm-ui-help-toggle',
+				'attrs'     => array(
+					'title'         => __( 'Help', 'quiz-master-next' ),
+					'aria-haspopup' => 'true',
+				),
+			)
+		);
+		?>
+		<div class="qsm-help-tab-dropdown-list qsm-ui-help-list">
+			<h3 class="qsm-ui-help-title"><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
+			<?php foreach ( $help_links as $link ) { ?>
+				<a href="<?php echo esc_url( $link[1] ); ?>" rel="noopener" target="_blank" class="qsm-help-tab-item qsm-ui-help-item"><?php echo $link[2]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup, URL escaped above. ?> <?php echo esc_html( $link[0] ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
+			<?php } ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Page header, styled like the quiz edit frame header: the title of the current view,
  * a "switch" action and the Help menu (same links and icons as the quiz edit page).
  *
@@ -766,14 +809,6 @@ function qsm_create_quiz_asset_version( $file ) {
  * @return void
  */
 function qsm_create_quiz_render_header( $view, $titles ) {
-	$doc_icon   = '<span class="dashicons dashicons-media-document"></span>';
-	$help_links = array(
-		array( __( 'Get support', 'quiz-master-next' ), qsm_get_plugin_link( 'contact-support', 'create_quiz', 'help_box', 'create_quiz_support' ), '<img class="qsm-help-tab-icon" alt="" src="' . esc_url( QSM_PLUGIN_URL . 'assets/Support.svg' ) . '">' ),
-		array( __( 'Getting Started', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/about-quiz-survey-master/quick-start', 'create_quiz', 'help_box', 'getting_started' ), $doc_icon ),
-		array( __( 'Creating Quizzes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/creating-quizzes-and-surveys', 'create_quiz', 'help_box', 'create_quiz_docs' ), $doc_icon ),
-		array( __( 'QSM Themes', 'quiz-master-next' ), qsm_get_plugin_link( 'docs/qsm-themes', 'create_quiz', 'help_box', 'create_quiz_themes' ), $doc_icon ),
-		array( __( 'All Docs', 'quiz-master-next' ), qsm_get_plugin_link( 'docs', 'create_quiz', 'help_box', 'create_quiz_all_doc' ), $doc_icon ),
-	);
 	?>
 	<div class="qsm-ui qsm-ui-quiz-frame-header qsm-cq-header">
 		<div class="qsm-ui-page-header qsm-ui-text">
@@ -812,28 +847,7 @@ function qsm_create_quiz_render_header( $view, $titles ) {
 				);
 				?>
 				<div class="qsm-ui-quiz-frame-tools">
-					<div class="qsm-ui-help-menu">
-						<?php
-						echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-							__( 'Help', 'quiz-master-next' ),
-							array(
-								'icon'      => 'info',
-								'icon_only' => true,
-								'class'     => 'qsm-help-tab-handle qsm-ui-help-toggle',
-								'attrs'     => array(
-									'title'         => __( 'Help', 'quiz-master-next' ),
-									'aria-haspopup' => 'true',
-								),
-							)
-						);
-						?>
-						<div class="qsm-help-tab-dropdown-list qsm-ui-help-list">
-							<h3 class="qsm-ui-help-title"><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
-							<?php foreach ( $help_links as $link ) { ?>
-								<a href="<?php echo esc_url( $link[1] ); ?>" rel="noopener" target="_blank" class="qsm-help-tab-item qsm-ui-help-item"><?php echo $link[2]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup, URL escaped above. ?> <?php echo esc_html( $link[0] ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm qsm-ui-help-arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></a>
-							<?php } ?>
-						</div>
-					</div>
+						<?php qsm_admin_render_help_menu( 'create_quiz' ); ?>
 				</div>
 			</div>
 		</div>
@@ -893,7 +907,7 @@ function qsm_create_quiz_page_callback() {
 	) );
 
 	$titles = array(
-		'custom'   => __( 'Custom template', 'quiz-master-next' ),
+		'custom'   => __( 'Create from scratch', 'quiz-master-next' ),
 		'template' => __( 'Use a template', 'quiz-master-next' ),
 	);
 	$theme_args = array();
