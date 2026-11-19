@@ -36,6 +36,9 @@
 .qsm-db > .qsm-dashboard-migration-section.qsm-dashboard-page-common-style { border-color: #e6eaf1; box-shadow: var(--qsm-shadow); }
 
 /* ---- Create card: the choice cards from the Create Quiz page ---- */
+/* Soft blue-to-violet tint so the main action stands out; the choice cards stay white on top. */
+.qsm-ui .qsm-db-create { border-color: #dfe5ff; background: linear-gradient(135deg, #f3f6ff 0%, #f7f2ff 100%); }
+.qsm-ui .qsm-db-create .qsm-ui-card-head { border-bottom-color: #e3e8fb; }
 .qsm-ui .qsm-db-create .qsm-ui-card-body { padding: 20px; }
 .qsm-ui .qsm-db-create .qsm-cq-choices { padding: 0; border: 0; background: none; }
 .qsm-ui .qsm-db-create .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
@@ -55,26 +58,21 @@
 .qsm-ui .qsm-db-activity-actions a { color: var(--qsm-blue); font-weight: 600; text-decoration: none; }
 .qsm-ui .qsm-db-activity-actions a.trash { color: var(--qsm-red); }
 
-/* ---- Themes ---- */
-.qsm-ui .qsm-db-theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
-.qsm-ui .qsm-db-theme { display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s, box-shadow .15s; }
-.qsm-ui .qsm-db-theme:hover, .qsm-ui .qsm-db-theme:focus { border-color: var(--qsm-blue-border); color: var(--qsm-ink); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 12px 28px rgba(49, 94, 251, .12); }
-.qsm-ui .qsm-db-theme-image { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
-.qsm-ui .qsm-db-theme-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
-.qsm-ui .qsm-db-theme:hover .qsm-db-theme-image img { transform: scale(1.03); }
-.qsm-ui .qsm-db-theme-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; }
-.qsm-ui .qsm-db-theme-meta strong { font-size: 14px; overflow-wrap: anywhere; }
-.qsm-ui .qsm-db-theme-demo { display: inline-flex; flex: none; align-items: center; gap: 4px; color: var(--qsm-blue); font-size: 13px; font-weight: 600; }
-
-/* ---- Add-ons ---- */
-.qsm-ui .qsm-db-addon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-.qsm-ui .qsm-db-addon { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s, background .15s; }
-.qsm-ui .qsm-db-addon:hover, .qsm-ui .qsm-db-addon:focus { border-color: var(--qsm-blue-border); background: var(--qsm-surface-2); color: var(--qsm-ink); box-shadow: none; }
-.qsm-ui .qsm-db-addon-icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border: 1px solid var(--qsm-line-soft); border-radius: 11px; background: var(--qsm-surface-2); }
-.qsm-ui .qsm-db-addon-icon img { width: 24px; height: 24px; object-fit: contain; }
-.qsm-ui .qsm-db-addon-text { display: grid; gap: 3px; min-width: 0; }
-.qsm-ui .qsm-db-addon-text strong { font-size: 14px; }
-.qsm-ui .qsm-db-addon-text span { color: var(--qsm-muted); font-size: 13px; line-height: 1.45; }
+/* ---- Themes and add-ons: marketing tiles with the full 16:9 banner (no install/activate here) ---- */
+.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.qsm-ui .qsm-db-tile { display: flex; flex-direction: column; overflow: hidden; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+.qsm-ui .qsm-db-tile:hover, .qsm-ui .qsm-db-tile:focus { border-color: var(--qsm-blue-border); color: var(--qsm-ink); box-shadow: 0 2px 4px rgba(16, 24, 40, .06), 0 12px 28px rgba(49, 94, 251, .12); }
+/* The whole image, never cropped: banners are 16:9; anything else is letterboxed on the tint. */
+.qsm-ui .qsm-db-tile-image { display: block; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--qsm-line-soft); background: var(--qsm-surface-2); }
+.qsm-ui .qsm-db-tile-image img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .25s; }
+.qsm-ui .qsm-db-tile:hover .qsm-db-tile-image img { transform: scale(1.02); }
+.qsm-ui .qsm-db-tile-meta { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; }
+.qsm-ui .qsm-db-tile-meta strong { font-size: 14px; overflow-wrap: anywhere; }
+.qsm-ui .qsm-db-tile-cta { display: inline-flex; flex: none; align-items: center; gap: 4px; color: var(--qsm-blue); font-size: 13px; font-weight: 600; }
+.qsm-ui .qsm-db-addon .qsm-db-tile-meta { flex-direction: column; align-items: stretch; justify-content: flex-start; }
+.qsm-ui .qsm-db-tile-text { display: grid; gap: 3px; }
+.qsm-ui .qsm-db-tile-text span { color: var(--qsm-muted); font-size: 13px; line-height: 1.45; }
+.qsm-ui .qsm-db-addon .qsm-db-tile-cta { margin-top: auto; padding-top: 6px; }
 
 /* ---- Help links ---- */
 .qsm-ui .qsm-db-help .qsm-ui-card-body { padding: 8px; }
@@ -105,6 +103,7 @@
 }
 @media (max-width: 782px) {
 	.qsm-db { margin-top: 16px; }
+	.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { grid-template-columns: 1fr; }
 	.qsm-ui.qsm-db-header .qsm-db-header-links { display: none; }
 	.qsm-ui.qsm-db-header .qsm-db-heading-sep, .qsm-ui.qsm-db-header .qsm-db-title { display: none; }
 	.qsm-ui .qsm-db-activity-item { flex-wrap: wrap; }

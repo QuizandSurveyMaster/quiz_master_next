@@ -257,14 +257,33 @@ function qsm_dashboard_display_need_help_section() {
 }
 
 /**
+ * Banner image for a theme or add-on: the same 16:9 image the QSM Installer's Extensions page
+ * shows (all_addons[].img), falling back to the item's own image.
+ *
+ * @since 11.4.0
+ * @param array $item       Theme or add-on from the parsing script data.
+ * @param array $all_addons all_addons from the parsing script data.
+ * @return string Image URL, or '' when there is none.
+ */
+function qsm_dashboard_banner_image( $item, $all_addons ) {
+	foreach ( (array) $all_addons as $addon ) {
+		if ( isset( $addon['id'] ) && intval( $addon['id'] ) === intval( $item['id'] ) && ! empty( $addon['img'] ) ) {
+			return $addon['img'];
+		}
+	}
+	return ! empty( $item['img'] ) ? $item['img'] : '';
+}
+
+/**
  * Popular add-ons card.
  *
  * @since 7.0
  * @since 11.4.0 Admin UI kit card.
  * @param array $popular_addons Add-ons from the parsing script data.
+ * @param array $all_addons     all_addons from the parsing script data, for the banner images.
  * @return void
  */
-function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
+function qsm_dashboard_display_popular_addon_section( $popular_addons, $all_addons = array() ) {
 	$desired_order = array( 572582, 591230, 567900, 3437 );
 	$sorted_addons = array();
 	foreach ( $desired_order as $id ) {
@@ -297,14 +316,17 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
 		<?php
 		foreach ( array_slice( $sorted_addons, 0, 4 ) as $addon ) {
 			$addon_link = qsm_get_utm_link( $addon['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $addon['name'] ) );
-			$addon_icon = ! empty( $addon['icon'] ) ? $addon['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
-			$addon_desc = mb_strlen( $addon['description'] ) > 90 ? mb_substr( $addon['description'], 0, 90 ) . '…' : $addon['description'];
+			$addon_image = qsm_dashboard_banner_image( $addon, $all_addons );
+			$addon_desc  = mb_strlen( $addon['description'] ) > 90 ? mb_substr( $addon['description'], 0, 90 ) . '…' : $addon['description'];
 			?>
-			<a class="qsm-db-addon" target="_blank" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>">
-				<span class="qsm-db-addon-icon"><img src="<?php echo esc_url( $addon_icon ); ?>" alt=""></span>
-				<span class="qsm-db-addon-text">
-					<strong><?php echo esc_html( $addon['name'] ); ?></strong>
-					<span><?php echo esc_html( $addon_desc ); ?></span>
+			<a class="qsm-db-tile qsm-db-addon" target="_blank" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>">
+				<span class="qsm-db-tile-image"><img src="<?php echo esc_url( $addon_image ? $addon_image : QSM_PLUGIN_URL . 'assets/placeholder.png' ); ?>" alt="<?php echo esc_attr( $addon['name'] ); ?>" loading="lazy"></span>
+				<span class="qsm-db-tile-meta">
+					<span class="qsm-db-tile-text">
+						<strong><?php echo esc_html( $addon['name'] ); ?></strong>
+						<span><?php echo esc_html( $addon_desc ); ?></span>
+					</span>
+					<span class="qsm-db-tile-cta"><?php esc_html_e( 'Learn more', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'ext', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
 				</span>
 			</a>
 		<?php } ?>
@@ -318,10 +340,11 @@ function qsm_dashboard_display_popular_addon_section( $popular_addons ) {
  *
  * @since 7.0
  * @since 11.4.0 Admin UI kit card.
- * @param array $themes Themes from the parsing script data.
+ * @param array $themes     Themes from the parsing script data.
+ * @param array $all_addons all_addons from the parsing script data, for the banner images.
  * @return void
  */
-function qsm_dashboard_display_popular_theme_section( $themes ) {
+function qsm_dashboard_display_popular_theme_section( $themes, $all_addons = array() ) {
 	$desired_order = array( 547794, 557086, 551027, 302299 );
 	$sorted_themes = array();
 	foreach ( $desired_order as $id ) {
@@ -347,11 +370,11 @@ function qsm_dashboard_display_popular_theme_section( $themes ) {
 		foreach ( $sorted_themes as $single_theme ) {
 			$theme_demo = qsm_get_utm_link( $single_theme['demo'], 'new_quiz', 'themes', 'quizsurvey_preview_' . sanitize_title( $single_theme['name'] ) );
 			?>
-			<a class="qsm-db-theme" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_demo ); ?>">
-				<span class="qsm-db-theme-image"><img src="<?php echo esc_url( $single_theme['img'] ); ?>" alt="<?php echo esc_attr( $single_theme['name'] ); ?>" loading="lazy"></span>
-				<span class="qsm-db-theme-meta">
+			<a class="qsm-db-tile qsm-db-theme" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_demo ); ?>">
+				<span class="qsm-db-tile-image"><img src="<?php echo esc_url( qsm_dashboard_banner_image( $single_theme, $all_addons ) ); ?>" alt="<?php echo esc_attr( $single_theme['name'] ); ?>" loading="lazy"></span>
+				<span class="qsm-db-tile-meta">
 					<strong><?php echo esc_html( $single_theme['name'] ); ?></strong>
-					<span class="qsm-db-theme-demo"><?php esc_html_e( 'Demo', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'ext', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
+					<span class="qsm-db-tile-cta"><?php esc_html_e( 'Demo', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'ext', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></span>
 				</span>
 			</a>
 		<?php } ?>
@@ -558,11 +581,12 @@ function qsm_generate_dashboard_page() {
 			qsm_create_quiz_render_choice_cards();
 			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
 
-			qsm_dashboard_recent_taken_quiz();
 			if ( $qsm_admin_dd ) {
-				qsm_dashboard_display_popular_theme_section( isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array() );
-				qsm_dashboard_display_popular_addon_section( isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array() );
+				$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
+				qsm_dashboard_display_popular_theme_section( isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array(), $all_addons );
+				qsm_dashboard_display_popular_addon_section( isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array(), $all_addons );
 			}
+			qsm_dashboard_recent_taken_quiz();
 			qsm_dashboard_display_need_help_section();
 			qsm_dashboard_display_change_log_section();
 			?>
