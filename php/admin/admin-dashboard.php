@@ -677,7 +677,8 @@ function qsm_generate_dashboard_page() {
 		if ( ! $qsm_admin_dd ) {
 			qsm_display_fullscreen_error();
 		}
-		// Top row, 2:2: one panel with Create + Needs your attention, one with Themes + Add-ons.
+		// Top row, 2:2: one panel with Create + Needs your attention + (Need help | What's new),
+		// one with Themes + Add-ons.
 		// Each side is buffered so an empty side drops out and the other takes the full width.
 		ob_start();
 		qsm_check_plugins_compatibility();
@@ -705,6 +706,12 @@ function qsm_generate_dashboard_page() {
 			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
 			echo $compat; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped when built above.
 			?>
+				<div class="qsm-db-panel-row">
+					<?php
+					qsm_dashboard_display_need_help_section();
+					qsm_dashboard_display_change_log_section();
+					?>
+				</div>
 			</div>
 			<?php if ( '' !== $explore ) { ?>
 				<div class="qsm-db-panel qsm-db-panel-explore">
@@ -715,8 +722,6 @@ function qsm_generate_dashboard_page() {
 		<div class="qsm-db-grid">
 			<?php
 			qsm_dashboard_recent_taken_quiz();
-			qsm_dashboard_display_need_help_section();
-			qsm_dashboard_display_change_log_section();
 			?>
 			<ul class="qsm-db-community">
 				<li><a target="_blank" rel="noopener" href="https://github.com/QuizandSurveyMaster/quiz_master_next"><?php esc_html_e( 'GitHub', 'quiz-master-next' ); ?></a></li>
