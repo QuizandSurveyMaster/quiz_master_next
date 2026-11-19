@@ -24,24 +24,19 @@
 
 /* ---- Page: fluid width (no fixed 610px column), cards in a two-column grid ---- */
 .qsm-db { max-width: 1440px; margin: 24px auto 40px; }
-/* Top row 3:1 (Create | Compatibility). Below, cards pair up (Themes | Add-ons, Need help | What's new);
+/* Top row: Create alone, or Create | Compatibility side by side (2:2) when there is something to show. Below, cards pair up (Themes | Add-ons, Need help | What's new);
    Recent activity and the community links span both columns. */
-.qsm-db-top { display: grid; grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr); gap: 20px; align-items: stretch; margin-bottom: 20px; }
+.qsm-db-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: stretch; margin-bottom: 20px; }
+.qsm-db-top.has-compat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .qsm-db-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .qsm-db-grid > .qsm-db-activity, .qsm-db-grid > .qsm-db-community { grid-column: 1 / -1; }
 .qsm-ui .qsm-db-card { margin: 0; min-width: 0; }
 .qsm-ui .qsm-db-card .qsm-ui-card-head { align-items: center; }
 
-/* Notices printed above the grid (installer update, data error, migration). */
-.qsm-db > .qsm-dashboard-warning-container,
-.qsm-db > #qsm-dashboard-error-container,
-.qsm-db > .qsm-dashboard-migration-section { margin: 0 0 20px; border-radius: var(--qsm-radius-lg); }
-.qsm-db > .qsm-dashboard-migration-section.qsm-dashboard-page-common-style { border-color: #e6eaf1; box-shadow: var(--qsm-shadow); }
+/* Data-load error printed above the grid. */
+.qsm-db > #qsm-dashboard-error-container { margin: 0 0 20px; border-radius: var(--qsm-radius-lg); }
 
 /* ---- Create card: the choice cards from the Create Quiz page ---- */
-/* Soft blue-to-violet tint so the main action stands out; the choice cards stay white on top. */
-.qsm-ui .qsm-db-create { border-color: #dfe5ff; background: linear-gradient(135deg, #f3f6ff 0%, #f7f2ff 100%); }
-.qsm-ui .qsm-db-create .qsm-ui-card-head { border-bottom-color: #e3e8fb; }
 .qsm-ui .qsm-db-create .qsm-ui-card-body { padding: 20px; }
 .qsm-ui .qsm-db-create .qsm-cq-choices { gap: 20px; padding: 0; border: 0; background: none; }
 /* Each choice: one short line + the button; its label sits in the top corner as a tag. */
@@ -53,20 +48,17 @@
 .qsm-ui .qsm-cq-choice[data-qsm-cq-choice="template"] .qsm-cq-choice-tag { background: linear-gradient(135deg, var(--qsm-blue) 0%, var(--qsm-purple) 100%); }
 .qsm-ui .qsm-cq-choice-tag .qsm-ui-icon { width: 13px; height: 13px; }
 
-/* ---- Compatibility ---- */
-.qsm-ui .qsm-db-compat { display: flex; flex-direction: column; }
-.qsm-ui .qsm-db-compat .qsm-ui-card-body { flex: 1; padding: 6px 20px 16px; }
+/* ---- Compatibility: brief items (installer, migration), each with one action ---- */
+.qsm-ui .qsm-db-compat .qsm-ui-card-body { padding: 4px 24px; }
 .qsm-ui .qsm-db-compat-list { margin: 0; padding: 0; list-style: none; }
-.qsm-ui .qsm-db-compat-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; padding: 11px 0; border-bottom: 1px solid var(--qsm-line-soft); }
-.qsm-ui .qsm-db-compat-list li:last-child { border-bottom: 0; }
-.qsm-ui .qsm-db-compat-name { display: grid; gap: 1px; min-width: 0; color: var(--qsm-ink); font-size: 13px; font-weight: 600; }
-.qsm-ui .qsm-db-compat-name small { color: var(--qsm-muted); font-size: 12px; font-weight: 400; }
-.qsm-ui .qsm-db-compat .qsm-ui-status { gap: 6px; padding: 3px 9px; font-size: 11px; }
-.qsm-ui .qsm-db-compat .qsm-ui-status::before { width: 6px; height: 6px; box-shadow: none; }
-.qsm-ui .qsm-db-compat-notice { display: grid; gap: 10px; margin-top: 8px; padding: 12px; border: 1px solid var(--qsm-amber-line); border-radius: var(--qsm-radius-md); background: var(--qsm-amber-bg); }
-.qsm-ui .qsm-db-compat-notice.is-info { border-color: var(--qsm-blue-ring); background: var(--qsm-blue-soft); }
-.qsm-ui .qsm-db-compat-notice p { margin: 0; color: var(--qsm-ink-2); font-size: 13px; }
-.qsm-ui .qsm-db-compat-notice .qsm-ui-btn { justify-self: start; }
+.qsm-ui .qsm-db-compat-item { display: flex; align-items: center; gap: 12px; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--qsm-line-soft); }
+.qsm-ui .qsm-db-compat-item:last-child { border-bottom: 0; }
+.qsm-ui .qsm-db-compat-icon { display: grid; flex: none; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--qsm-amber-bg); color: var(--qsm-amber); }
+.qsm-ui .qsm-db-compat-item.is-info .qsm-db-compat-icon { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-db-compat-text { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.qsm-ui .qsm-db-compat-text strong { color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-db-compat-text span { color: var(--qsm-muted); font-size: 12px; line-height: 1.45; }
+.qsm-ui .qsm-db-compat-item .qsm-ui-btn { flex: none; }
 
 /* ---- Recent activity: table-like rows ---- */
 .qsm-ui .qsm-db-activity .qsm-ui-card-body { padding: 0; }
@@ -134,7 +126,7 @@
 	.qsm-ui .qsm-db-activity-head > :nth-child(4), .qsm-ui .qsm-db-activity-time { display: none; }
 }
 @media (max-width: 1100px) {
-	.qsm-db-top, .qsm-db-grid { grid-template-columns: minmax(0, 1fr); }
+	.qsm-db-top.has-compat, .qsm-db-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 782px) {
 	.qsm-db { margin-top: 16px; }
