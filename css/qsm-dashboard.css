@@ -24,7 +24,7 @@
 
 /* ---- Page: fluid width (no fixed 610px column), cards in a two-column grid ---- */
 .qsm-db { max-width: 1440px; margin: 24px auto 40px; }
-/* Top row, 2:2: a panel with Create + Needs your attention + (Need help | What's new) next to a panel with Themes + Add-ons. Each panel
+/* Top row, 2:2: a panel with Create + Needs your attention + Need help + What's new next to a panel with Themes + Add-ons. Each panel
    looks like one card; the cards inside lose their own frame and are split by a line. Below: Recent activity
    (full width), then the community links. */
 .qsm-db-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: stretch; margin-bottom: 20px; }
@@ -33,10 +33,11 @@
 .qsm-ui .qsm-db-panel > .qsm-ui-card { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
 .qsm-ui .qsm-db-panel > .qsm-ui-card + .qsm-ui-card { border-top: 1px solid var(--qsm-line); }
 .qsm-ui .qsm-db-panel > .qsm-ui-card:last-child { flex: 1; }
-/* Need help | What's new: side by side at the bottom of the Create panel, split by a line. */
-.qsm-ui .qsm-db-panel-row { display: grid; flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--qsm-line); }
+/* Need help, then What's new: stacked rows at the bottom of the Create panel, like Themes / Add-ons. */
+.qsm-ui .qsm-db-panel-row { display: flex; flex: 1; flex-direction: column; border-top: 1px solid var(--qsm-line); }
 .qsm-ui .qsm-db-panel-row > .qsm-ui-card { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
-.qsm-ui .qsm-db-panel-row > .qsm-ui-card + .qsm-ui-card { border-inline-start: 1px solid var(--qsm-line); }
+.qsm-ui .qsm-db-panel-row > .qsm-ui-card + .qsm-ui-card { border-top: 1px solid var(--qsm-line); }
+.qsm-ui .qsm-db-panel-row > .qsm-ui-card:last-child { flex: 1; }
 .qsm-ui .qsm-db-panel > .qsm-db-create { flex: none; }
 .qsm-db-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .qsm-db-grid > .qsm-db-activity, .qsm-db-grid > .qsm-db-community { grid-column: 1 / -1; }
@@ -153,8 +154,6 @@
 }
 @media (max-width: 782px) {
 	.qsm-db { margin-top: 16px; }
-	.qsm-ui .qsm-db-panel-row { grid-template-columns: minmax(0, 1fr); }
-	.qsm-ui .qsm-db-panel-row > .qsm-ui-card + .qsm-ui-card { border-inline-start: 0; border-top: 1px solid var(--qsm-line); }
 	.qsm-ui .qsm-db-theme-grid, .qsm-ui .qsm-db-addon-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	.qsm-ui.qsm-db-header .qsm-db-header-links { display: none; }
 	.qsm-ui.qsm-db-header .qsm-db-heading-sep, .qsm-ui.qsm-db-header .qsm-db-title { display: none; }

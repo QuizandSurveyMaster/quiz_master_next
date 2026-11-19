@@ -677,7 +677,7 @@ function qsm_generate_dashboard_page() {
 		if ( ! $qsm_admin_dd ) {
 			qsm_display_fullscreen_error();
 		}
-		// Top row, 2:2: one panel with Create + Needs your attention + (Need help | What's new),
+		// Top row, 2:2: one panel with Create, Needs your attention, Need help and What's new as rows,
 		// one with Themes + Add-ons.
 		// Each side is buffered so an empty side drops out and the other takes the full width.
 		ob_start();
