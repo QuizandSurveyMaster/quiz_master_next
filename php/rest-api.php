@@ -802,7 +802,17 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					$answers = $intial_answers;
 				}
 				if ( ! empty( $request['question_id'] ) ) {
-					$settings = $wpdb->get_var( $wpdb->prepare( 'SELECT question_settings FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $request['question_id'] ) );
+					// The source question keeps its own quiz: authorise against it, not
+					// only the destination quizID, or its settings are copied out of a
+					// quiz the user cannot read.
+					$source_question_id = intval( $request['question_id'] );
+					if ( in_array( $source_question_id, qsm_get_uneditable_question_ids( array( $source_question_id ) ), true ) ) {
+						return array(
+							'status' => 'error',
+							'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+						);
+					}
+					$settings = $wpdb->get_var( $wpdb->prepare( 'SELECT question_settings FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', $source_question_id ) );
 					$settings = maybe_unserialize( $settings );
 				}
 				$question_id = QSM_Questions::create_question( $data, $answers, $settings );
