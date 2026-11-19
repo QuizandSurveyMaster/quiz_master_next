@@ -677,13 +677,21 @@ function qsm_generate_dashboard_page() {
 		if ( ! $qsm_admin_dd ) {
 			qsm_display_fullscreen_error();
 		}
-		// Installer and migration items render in the Compatibility card; buffered so the row
-		// can go full width for the Create card when there is nothing to show.
+		// Top row, 2:2: one panel with Create + Needs your attention, one with Themes + Add-ons.
+		// Each side is buffered so an empty side drops out and the other takes the full width.
 		ob_start();
-		$has_compat = qsm_check_plugins_compatibility();
-		$compat     = ob_get_clean();
+		qsm_check_plugins_compatibility();
+		$compat = ob_get_clean();
+		ob_start();
+		if ( $qsm_admin_dd ) {
+			$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
+			qsm_dashboard_display_popular_theme_section( isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array(), $all_addons );
+			qsm_dashboard_display_popular_addon_section( isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array(), $all_addons );
+		}
+		$explore = trim( ob_get_clean() );
 		?>
-		<div class="qsm-db-top<?php echo $has_compat ? ' has-compat' : ''; ?>">
+		<div class="qsm-db-top<?php echo '' !== $explore ? ' has-explore' : ''; ?>">
+			<div class="qsm-db-panel qsm-db-panel-start">
 			<?php
 			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 				array(
@@ -697,14 +705,15 @@ function qsm_generate_dashboard_page() {
 			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup.
 			echo $compat; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped when built above.
 			?>
+			</div>
+			<?php if ( '' !== $explore ) { ?>
+				<div class="qsm-db-panel qsm-db-panel-explore">
+					<?php echo $explore; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped when built above. ?>
+				</div>
+			<?php } ?>
 		</div>
 		<div class="qsm-db-grid">
 			<?php
-			if ( $qsm_admin_dd ) {
-				$all_addons = isset( $qsm_admin_dd['all_addons'] ) ? $qsm_admin_dd['all_addons'] : array();
-				qsm_dashboard_display_popular_theme_section( isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array(), $all_addons );
-				qsm_dashboard_display_popular_addon_section( isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array(), $all_addons );
-			}
 			qsm_dashboard_recent_taken_quiz();
 			qsm_dashboard_display_need_help_section();
 			qsm_dashboard_display_change_log_section();
