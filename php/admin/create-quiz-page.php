@@ -286,6 +286,8 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					$addon_path = isset($addon_value['path']) ? $addon_value['path'] : '';
 					$addon_slug = isset($addon_value['slug']) ? $addon_value['slug'] : '';
 					$addon_icon = isset($addon_value['icon']) && "" != $addon_value['icon'] ? $addon_value['icon'] : QSM_PLUGIN_URL . 'assets/chat-smile.png';
+					// The 16:9 banner the QSM Installer's Extensions page shows; the small icon only when there is none.
+					$addon_banner = ! empty( $addon_value['img'] ) ? $addon_value['img'] : '';
 					$is_installed = array_key_exists($addon_path, $installed_plugins);
 					$is_activated = in_array($addon_path, $activated_plugins, true);
 					$addon_card_class = $is_activated ? "qsm-quiz-addon-activated" : "";
@@ -297,8 +299,8 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					}
 					?>
 					<div class="qsm-quiz-addon-steps-card <?php echo esc_attr($addon_card_class); ?>" data-path="<?php echo esc_attr($addon_path); ?>" data-id="<?php echo esc_attr($addon_id); ?>" data-slug="<?php echo esc_attr($addon_slug); ?>">
-						<div class="qsm-quiz-addon-steps-images">
-							<img class="qsm-quiz-addon-steps-icon" alt="Addon" src="<?php echo esc_url($addon_icon); ?>">
+						<div class="qsm-quiz-addon-steps-images<?php echo $addon_banner ? ' has-banner' : ''; ?>">
+							<img class="qsm-quiz-addon-steps-icon" alt="<?php echo esc_attr( $addon_name ); ?>" loading="lazy" src="<?php echo esc_url( $addon_banner ? $addon_banner : $addon_icon ); ?>">
 						</div>
 						<div class="qsm-quiz-addon-steps-info">
 							<h3 class="qsm-quiz-addon-steps-title"><?php echo esc_html($addon_name); ?></h3>
@@ -340,7 +342,7 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 		</div>
 	</div><!-- qsm-dashboard-choose-addon-wrap  -->
 	<div class="qsm-dashboard-see-more-types-wrap">
-		<a href="javascript:void(0)" class="button qsm-dashboard-see-more-addons"><?php echo esc_html__('See more Addons', 'quiz-master-next'); ?></a>
+		<button type="button" class="button qsm-dashboard-see-more-addons"><?php esc_html_e( 'View more add-ons', 'quiz-master-next' ); ?><?php echo QSM_Admin_UI::icon( 'chev', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></button>
 	</div>
     <?php
 }
