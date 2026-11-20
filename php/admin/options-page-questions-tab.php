@@ -1339,8 +1339,10 @@ function qsm_load_all_quiz_questions_ajax() {
 		wp_send_json_error( __( 'You do not have permission to view questions.', 'quiz-master-next' ) );
 	}
 
-	// Loads questions.
-	$questions = $wpdb->get_results( "SELECT question_id, question_name FROM {$wpdb->prefix}mlw_questions WHERE deleted = '0' ORDER BY question_id DESC" );
+	// Loads questions. Security: edit_qsm_quizzes is a flat capability every
+	// Contributor holds, so scope the site-wide list to the quizzes the caller
+	// may edit -- the same ownership filter the REST question listings use.
+	$questions = $wpdb->get_results( "SELECT question_id, question_name FROM {$wpdb->prefix}mlw_questions WHERE deleted = '0'" . qsm_quiz_access_sql( 'quiz_id' ) . " ORDER BY question_id DESC" );
 
 	// Creates question array.
 	$question_json = array();
