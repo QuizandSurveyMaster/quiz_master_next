@@ -38,6 +38,29 @@
 .qsm-ui .qsm-db-create .qsm-cq-choices { padding: 0; border: 0; background: none; }
 .qsm-ui .qsm-db-create .qsm-cq-choice-text { margin-top: 10px; color: var(--qsm-ink-2); }
 
+/* Needs your attention: installer and migration tiles at the bottom of the Create card. */
+.qsm-ui .qsm-db-attention { margin: 20px -20px -20px; padding: 16px 20px 20px; border-top: 1px solid var(--qsm-line-soft); border-radius: 0 0 var(--qsm-radius-lg) var(--qsm-radius-lg); background: var(--qsm-bg); }
+.qsm-ui .qsm-db-attention-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.qsm-ui .qsm-db-attention-head h3 { margin: 0; color: var(--qsm-ink); font-size: 15px; font-weight: 600; }
+.qsm-ui .qsm-db-compat-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.qsm-ui .qsm-db-compat-item { display: flex; align-items: center; gap: 14px; margin: 0; padding: 12px 14px 12px 12px; border: 1px solid #d5dce7; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: 0 1px 2px rgba(16, 24, 40, .05); }
+.qsm-ui .qsm-db-compat-thumb { display: grid; flex: none; place-items: center; width: 72px; aspect-ratio: 16 / 11; border: 1px solid var(--qsm-line-soft); border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-db-compat-thumb .qsm-ui-icon { width: 24px; height: 24px; }
+.qsm-ui .qsm-db-compat-item.is-warning .qsm-db-compat-thumb { background: var(--qsm-amber-bg); color: var(--qsm-amber); }
+.qsm-ui .qsm-db-compat-main { display: grid; flex: 1; gap: 4px; min-width: 0; }
+.qsm-ui .qsm-db-compat-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.qsm-ui .qsm-db-compat-top .qsm-ui-badge { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.qsm-ui .qsm-db-compat-group { color: var(--qsm-muted); font-size: 13px; }
+.qsm-ui .qsm-db-compat-title { overflow: hidden; color: var(--qsm-ink); font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.qsm-ui .qsm-db-compat-meta { display: inline-flex; align-items: center; gap: 6px; color: var(--qsm-muted); font-size: 12px; line-height: 1.4; }
+.qsm-ui .qsm-db-compat-meta .qsm-ui-icon { flex: none; color: var(--qsm-purple); }
+.qsm-ui .qsm-db-compat-item.is-warning .qsm-db-compat-meta .qsm-ui-icon { color: var(--qsm-amber); }
+.qsm-ui .qsm-db-compat-item .qsm-ui-btn { flex: none; }
+@media (max-width: 600px) {
+	.qsm-ui .qsm-db-compat-item { flex-wrap: wrap; }
+	.qsm-ui .qsm-db-compat-thumb { width: 56px; }
+}
+
 /* ---- At a glance ---- */
 .qsm-ui .qsm-db-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .qsm-ui .qsm-db-stat { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid #e6eaf1; border-radius: var(--qsm-radius-lg); background: var(--qsm-surface); box-shadow: var(--qsm-shadow); color: var(--qsm-ink); text-decoration: none; transition: border-color .15s; }
