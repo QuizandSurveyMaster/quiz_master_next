@@ -12,7 +12,6 @@
 /* Help menu icons: same as the quiz edit page (Support.svg + document dashicons). */
 .qsm-ui.qsm-cq-header .qsm-ui-help-item .qsm-help-tab-icon { flex: none; width: 20px; height: 20px; }
 .qsm-ui.qsm-cq-header .qsm-ui-help-item .dashicons { flex: none; width: 20px; height: 20px; font-size: 20px; }
-.qsm-ui.qsm-cq-header .qsm-ui-help-item + .qsm-ui-help-item { border-top: 1px solid var(--qsm-line-soft); }
 /* The Help dropdown script binds on QSM screens; keep it above the page content. */
 .qsm-ui.qsm-cq-header { position: relative; z-index: 20; }
 
