@@ -266,6 +266,28 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 		$addon_lookup = array_column($installer_script, null, 'slug');
 		$selected_bundle = isset($installer_option['bundle']) && "" != $installer_option['bundle'] ? $installer_option['bundle'] : "";
 	}
+	/*
+	 * Add-ons the licensed bundle includes (QSM Installer active, valid license) come first,
+	 * so a Basic, Plus or Pro license holder sees what they already own before the rest.
+	 * The bundle names per add-on come from the installer's script, as in its Upgrade Plan check.
+	 */
+	$in_bundle = static function ( $addon ) use ( $addon_lookup, $selected_bundle, $installer_activated, $invalid_and_expired ) {
+		$slug = isset( $addon['slug'] ) ? $addon['slug'] : '';
+		if ( 1 != $installer_activated || 0 != $invalid_and_expired || '' === $selected_bundle || '' === $slug || empty( $addon_lookup[ $slug ]['bundle'] ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- stored as int or string.
+			return false;
+		}
+		return in_array( $selected_bundle, explode( ',', str_replace( ' ', '', $addon_lookup[ $slug ]['bundle'] ) ), true );
+	};
+	$bundle_addons = array();
+	$other_addons  = array();
+	foreach ( (array) $all_addons_parameter as $addon_value ) {
+		if ( $in_bundle( $addon_value ) ) {
+			$bundle_addons[] = $addon_value;
+		} else {
+			$other_addons[] = $addon_value;
+		}
+	}
+	$all_addons_parameter = array_merge( $bundle_addons, $other_addons );
 	?>
 	<div class="qsm-dashboard-choose-addon-wrap">
 		<div class="qsm-dashboard-choose-addon" >
@@ -291,6 +313,9 @@ function qsm_dashboard_display_addons_section( $all_addons_parameter, $installer
 					$is_installed = array_key_exists($addon_path, $installed_plugins);
 					$is_activated = in_array($addon_path, $activated_plugins, true);
 					$addon_card_class = $is_activated ? "qsm-quiz-addon-activated" : "";
+					if ( $in_bundle( $addon_value ) ) {
+						$addon_card_class .= ' qsm-quiz-addon-in-bundle';
+					}
 					$addon_status = '';
 					if ( true == $is_activated || true == $is_installed ) {
 						$addon_status = esc_html__( 'Version: ', 'quiz-master-next' ). $all_plugins[ $addon_path ]['Version'];

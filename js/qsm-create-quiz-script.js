@@ -119,19 +119,22 @@ jQuery(function ($) {
             if (!$items.length) {
                 return;
             }
-            let suggested = [], activated = [], rest = [];
+            // Recommended first, then the add-ons the licensed bundle includes, then active ones, then the rest.
+            let suggested = [], bundle = [], activated = [], rest = [];
             $items.show();
             $items.each(function () {
                 if (recommended.some(id => id == $(this).data('id'))) {
                     suggested.push(this);
                     $(this).find('.qsm-dashboard-addon-recommended').show();
+                } else if ($(this).hasClass('qsm-quiz-addon-in-bundle')) {
+                    bundle.push(this);
                 } else if ($(this).hasClass('qsm-quiz-addon-activated')) {
                     activated.push(this);
                 } else {
                     rest.push(this);
                 }
             });
-            $parent.append(suggested).append(activated).append(rest);
+            $parent.append(suggested).append(bundle).append(activated).append(rest);
             if (!QSMAdminDashboard.addonsExpanded) {
                 $parent.children(':gt(3)').hide();
             }
