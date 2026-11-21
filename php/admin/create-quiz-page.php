@@ -57,6 +57,11 @@ add_action('wp_ajax_qsm_get_activated_themes', 'qsm_get_activated_themes_ajax');
 function qsm_get_activated_themes_ajax() {
 
     check_ajax_referer('qsm_installer_nonce', 'nonce');
+    // Nonce-only was the whole gate here; require the capability the screen that
+    // uses this endpoint already requires.
+    if ( ! current_user_can( 'edit_qsm_quizzes' ) ) {
+        wp_send_json_error( array( 'message' => __( 'You are not allowed to perform this action.', 'quiz-master-next' ) ), 403 );
+    }
     $theme_slug = isset($_POST['slug']) ? sanitize_text_field(wp_unslash( $_POST['slug'] ) ) : "";
 	$theme_slug = 'qsm-theme-'.$theme_slug;
 	global $wpdb;
