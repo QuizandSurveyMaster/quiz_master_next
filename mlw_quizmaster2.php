@@ -543,6 +543,10 @@ class MLWQuizMasterNext {
 		if ( 'qsm_page_qmn_stats' === $hook ) {
 			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
+		// Global Settings, Tools and Stats use the admin UI kit for their frame; add-on tabs on them keep their own markup.
+		if ( in_array( $screen, array( 'settings', 'tools', 'stats' ), true ) ) {
+			QSM_Admin_UI::enqueue();
+		}
 		// quiz option pages
 		if ( 'admin_page_mlw_quiz_options' === $hook || 'qsm_page_qmn_global_settings' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );

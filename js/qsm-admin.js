@@ -464,14 +464,18 @@ function qsmShouldSuppressCreationAlerts() {
         });
         //New template design hide show
         var new_template_result_detail = $('.new_template_result_detail:checked').val();
+        // Global Settings rows are kit setting rows (.qsm-ui-setting-row); the old layout used table rows.
+        var qsmTemplateDetailRow = function ($input) {
+            return $input.closest('tr, .qsm-ui-setting-row').next('tr, .qsm-ui-setting-row');
+        };
         if (new_template_result_detail == 1) {
-            $('.new_template_result_detail:checked').parents('tr').next('tr').hide();
+            qsmTemplateDetailRow($('.new_template_result_detail:checked')).hide();
         }
         $(document).on('change', '.new_template_result_detail', function () {
             if ($(this).val() == 1) {
-                $(this).parents('tr').next('tr').hide();
+                qsmTemplateDetailRow($(this)).hide();
             } else {
-                $(this).parents('tr').next('tr').show();
+                qsmTemplateDetailRow($(this)).show();
             }
         });
         $(document).on('click', '#show-all-variable .qsm-text-template-span:not(.qsm-upgrade-popup-variable)', function (e) {
@@ -633,10 +637,11 @@ function qsmShouldSuppressCreationAlerts() {
 
         $(document).on('change', '.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]', function () {
             if ( 0 == $(this).val() ) {
-                $('.global_setting_system').parents('tr').show();
+                // The field row is a <tr> on the legacy layout and a kit setting row on the new one.
+                $('.global_setting_system').closest('tr, .qsm-ui-setting-row').show();
                 $("#qsm-correct-answer-logic").show();
             } else {
-                $('.global_setting_system').parents('tr').hide();
+                $('.global_setting_system').closest('tr, .qsm-ui-setting-row').hide();
                 $("#qsm-correct-answer-logic").hide();
             }
         });
@@ -678,6 +683,23 @@ function qsmShouldSuppressCreationAlerts() {
         jQuery(document).on('click', '.qsm-delete-results-tools-page-btn', function () {
             let deleteForm = $("#qsm-tools-delete-results-form");
             deleteForm.submit();
+        });
+
+        // Tools > Deleted Quiz: confirm before the permanent delete. form.submit() drops the clicked
+        // button, so its name goes in as a hidden field (the handler checks qsm_delete_permanent_quiz).
+        jQuery(document).on('click', '.qsm-tools-delete-permanent-quiz', function (e) {
+            if ('undefined' === typeof MicroModal || !$('#qsm-delete-quiz-tools-page-popup').length) {
+                return;
+            }
+            e.preventDefault();
+            MicroModal.show('qsm-delete-quiz-tools-page-popup');
+        });
+
+        jQuery(document).on('click', '.qsm-delete-quiz-tools-page-btn', function () {
+            let restoreForm = $('#qsm-tools-restore-quiz-form');
+            restoreForm.find('input[name="qsm_delete_permanent_quiz"]').remove();
+            restoreForm.append($('<input>', { type: 'hidden', name: 'qsm_delete_permanent_quiz', value: '1' }));
+            restoreForm.submit();
         });
 
     });
@@ -1935,10 +1957,24 @@ function qsmConvertContentToShortcode( contentToConvert ){
 // QSM - Admin Stats Page
 (function ($) {
     if (jQuery('body').hasClass('qsm_page_qmn_stats')) {
+        var graph_canvas = document.getElementById("graph_canvas");
+        // Add-on stats tabs have no Core chart.
+        if (!graph_canvas || 'undefined' === typeof Chart || 'undefined' === typeof qsm_admin_stats) {
+            return;
+        }
         if (window.stats_graph instanceof Chart) {
             window.stats_graph.destroy();
         }
-        var graph_ctx = document.getElementById("graph_canvas").getContext("2d");
+        // Colours come from the admin UI kit tokens on the page wrapper; the fallbacks are the kit's values.
+        var kit = window.getComputedStyle(graph_canvas.closest('.qsm-ui') || document.documentElement);
+        var token = function (name, fallback) {
+            var value = kit.getPropertyValue(name).trim();
+            return value || fallback;
+        };
+        var line_color = token('--qsm-blue', '#315efb');
+        var grid_color = token('--qsm-line-soft', '#edf0f5');
+        var text_color = token('--qsm-muted', '#657188');
+        var graph_ctx = graph_canvas.getContext("2d");
         window.stats_graph = new Chart(graph_ctx, {
             type: 'line',
             data: {
@@ -1947,14 +1983,23 @@ function qsmConvertContentToShortcode( contentToConvert ){
                     label: qsm_admin_messages.quiz_submissions, // Name the series
                     data: qsm_admin_stats.value, // Specify the data values array
                     fill: false,
-                    borderColor: '#2196f3', // Add custom color border (Line)
-                    backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-                    borderWidth: 1 // Specify bar border width
+                    borderColor: line_color, // Add custom color border (Line)
+                    backgroundColor: line_color, // Add custom color background (Points and Fill)
+                    borderWidth: 2, // Specify bar border width
+                    pointRadius: 3,
+                    tension: 0.25
                 }]
             },
             options: {
                 responsive: true, // Instruct chart js to respond nicely.
                 maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+                plugins: {
+                    legend: { labels: { color: text_color } }
+                },
+                scales: {
+                    x: { grid: { color: grid_color }, ticks: { color: text_color } },
+                    y: { beginAtZero: true, grid: { color: grid_color }, ticks: { color: text_color, precision: 0 } }
+                }
             }
         });
     }

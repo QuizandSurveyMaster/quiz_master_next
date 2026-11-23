@@ -1033,3 +1033,128 @@
 .qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg:empty { display: none; }
 .qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg.is-error { color: var(--qsm-red); }
 .qsm-ui .qsm-ui-qe-card #categorydiv .inside { margin: 0; padding: 0; }
+
+/* ---------- Admin pages: Global Settings, Tools, Stats ----------
+ * Page header (L-01 style), link tab bar, cards and tables from the kit. Add-on tabs and
+ * their content on these pages keep their own markup: only the frame around them changes.
+ */
+.qsm-ui.wrap .qsm-ui-page-header { margin: 8px 0 20px; }
+.qsm-ui.wrap .qsm-ui-page-header .qsm-ui-h1 { padding: 0; color: var(--qsm-ink); }
+/* Tab bar of links (Tools, Stats): the current page is aria-current, like the quiz edit frame. */
+.qsm-ui .qsm-ui-page-tabs-nav { margin: 0 0 20px; }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:visited { color: var(--qsm-muted); }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
+.qsm-ui .qsm-ui-card-head .qsm-ui-badge { flex: none; }
+
+/* Tools */
+.qsm-ui .qsm-ui-tools-panel > .qsm-ui-notice { margin-bottom: 16px; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-card-head { align-items: center; flex-wrap: wrap; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-card-head p strong { color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-tools-card .audit_buttons { justify-content: flex-end; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table-toolbar.qsm-deleted-question-options-wrap { margin-top: 0; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-select.qsm-ui-input-sm { width: auto; min-width: 200px; }
+.qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { width: auto; min-width: 280px; max-width: 100%; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-check { display: inline-flex; vertical-align: middle; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-empty { padding: 28px 16px; }
+.qsm-ui-popup .qsm-ui-audit-data p { max-height: 60vh; margin: 0; padding: 14px 16px; overflow: auto; border-radius: var(--qsm-radius); background: #0f172a; color: #e2e8f0; font: 12px/1.6 var(--qsm-mono); white-space: pre-wrap; word-break: break-word; }
+.qsm-popup.qsm-ui-tools-confirm .qsm-popup__header .qsm-ui-confirm-head { align-items: center; }
+.qsm-popup.qsm-ui-tools-confirm .qsm-popup__content p { display: block; margin: 0; font-size: 14px; }
+.qsm-popup.qsm-ui-tools-confirm .qsm-popup__content p + p { margin-top: 6px; }
+/* qsm-admin.css styles these two confirms by id (space-between footer, its own red button). */
+#qsm-delete-questions-tools-page-popup.qsm-ui-popup .qsm-popup__footer, #qsm-delete-results-tools-page-popup.qsm-ui-popup .qsm-popup__footer { justify-content: flex-end; border-top-color: var(--qsm-line-soft); }
+#qsm-delete-questions-tools-page-popup.qsm-ui-popup .qsm-ui-btn-danger, #qsm-delete-results-tools-page-popup.qsm-ui-popup .qsm-ui-btn-danger { margin: 0; background-color: var(--qsm-red); }
+
+/* Stats */
+.qsm-ui .qsm-ui-stats-card .qsm-ui-card-head { align-items: center; flex-wrap: wrap; }
+.qsm-ui .qsm-ui-stats-filter .qsm-ui-select { width: auto; min-width: 140px; }
+.qsm-ui .qsm-ui-stats-chart { position: relative; height: 340px; }
+
+/* Global Settings: side navigation (L-04), one card per group, setting rows (L-06). */
+.qsm-ui.qsm-ui-gs-page { padding-bottom: 72px; }
+.qsm-ui .qsm-ui-gs-nav a:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-gs-nav a:visited { color: var(--qsm-ink-2); }
+.qsm-ui .qsm-ui-gs-nav a[aria-current="page"]:visited { color: var(--qsm-blue); }
+/* Quiz Default Options panels: qsm-admin.js moves .current between these links. */
+.qsm-ui .qsm-ui-gs-subnav { display: grid; gap: 2px; margin: 2px 0 6px 20px; padding-left: 10px; border-left: 1px solid var(--qsm-line); }
+.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-subnav a { padding: 6px 10px; color: var(--qsm-muted); font-size: 13px; }
+.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-subnav a.current { background: var(--qsm-blue-soft); color: var(--qsm-blue); font-weight: 600; }
+/* Add-on tabs print WordPress nav-tab links; they sit in the side navigation as plain items. */
+.qsm-ui .qsm-ui-gs-addon-tabs { display: grid; gap: 2px; }
+.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab { float: none; margin: 0; padding: 9px 12px; border: 0; border-radius: var(--qsm-radius); background: none; color: var(--qsm-ink-2); font-size: 14px; font-weight: 500; line-height: 1.4; }
+.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab:hover { background: #eef1f6; }
+.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active { background: var(--qsm-blue-soft); color: var(--qsm-blue); font-weight: 600; }
+.qsm-ui .qsm-ui-gs-main { min-width: 0; }
+.qsm-ui .qsm-ui-gs-notices { margin-bottom: 16px; }
+.qsm-ui .qsm-ui-gs-notices .notice { margin: 0; }
+.qsm-ui .qsm-ui-gs-card .qsm-ui-setting-label { color: var(--qsm-ink); line-height: 1.4; }
+.qsm-ui .qsm-ui-gs-card .qsm-ui-setting-row.is-stacked { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.qsm-ui .qsm-ui-gs-card .qsm-ui-setting-row.is-stacked .qsm-ui-setting-label { padding-top: 0; }
+.qsm-ui .qsm-ui-gs-control { min-width: 0; }
+/* Save bar: qsm-admin.css keeps it fixed to the bottom of the screen; the kit restyles it. */
+.qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { justify-content: flex-end; padding: 10px 24px; border-top-color: var(--qsm-line); background: rgba(255, 255, 255, .96); box-shadow: 0 -6px 18px rgba(28, 43, 75, .06); }
+.qsm-ui .qsm-ui-gs-savebar input.qsm-ui-btn { height: auto; }
+.qsm-popup.qsm-ui-popup .qsm-ui-gs-quiz-select { height: auto !important; min-height: 160px; padding: 6px; background-image: none; }
+
+/*
+ * Core's own Global Settings controls (rows marked .is-core) in the kit look. The markup,
+ * names and saved values are unchanged; add-on fields on the page don't get these rules.
+ */
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control { color: var(--qsm-ink-2); }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > p { margin: 0 0 10px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > p:last-child { margin-bottom: 0; }
+.qsm-ui .qsm-ui-gs-row.is-core fieldset { margin: 0; padding: 0; }
+.qsm-ui .qsm-ui-gs-row.is-core fieldset + fieldset { margin-top: 14px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-caption { margin-bottom: 8px; font-weight: 600; color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-caption small, .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-help, .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-note, .qsm-ui .qsm-ui-gs-row.is-core .global-sub-text { color: var(--qsm-muted); font-size: 13px; font-weight: 400; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-help { display: block; margin-top: 6px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-note { padding: 0; font-style: normal; }
+/* Choice labels (radio / checkbox inside a label): one per line. */
+.qsm-ui .qsm-ui-gs-row.is-core fieldset > label, .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > label:not(.qsm-ui-gs-switch) { display: block; width: auto; margin: 0 0 9px !important; line-height: 1.5; cursor: pointer; }
+.qsm-ui .qsm-ui-gs-row.is-core fieldset > label:last-child, .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > label:not(.qsm-ui-gs-switch):last-child { margin-bottom: 0 !important; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > br, .qsm-ui .qsm-ui-gs-row.is-core fieldset > br { display: none; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"], .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] {
+	appearance: none; -webkit-appearance: none; display: inline-grid; place-content: center; width: 18px; height: 18px; min-width: 18px; margin: 0 8px 0 0;
+	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; vertical-align: -4px; cursor: pointer; transition: all .12s;
+}
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"] { border-radius: 5px; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] { border-radius: 50%; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"]::before, .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"]::before { content: none; display: none; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"]::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"]::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:checked { border-color: var(--qsm-blue); background: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:checked::after { opacity: 1; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 1px; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:disabled { background: #f2f4f8; border-color: #d5dbe6; cursor: not-allowed; }
+/* Switches (.qsm-checkbox-switch + .qsm-switch-slider) in the kit switch size and colours. */
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch { width: 42px; height: 24px; margin: 0; vertical-align: middle; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch .qsm-ui-gs-slider { border-radius: 999px; background-color: #cbd3e0; transition: background-color .18s; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch .qsm-ui-gs-slider::before { left: 3px; bottom: 3px; width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 1px 3px rgba(0, 0, 0, .13); transition: transform .18s; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:checked + .qsm-ui-gs-slider { background-color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:checked + .qsm-ui-gs-slider::before { transform: translateX(18px); }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus + .qsm-ui-gs-slider { box-shadow: none; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 3px solid var(--qsm-blue-ring); outline-offset: 2px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch + .global-sub-text { margin-left: 12px; vertical-align: middle; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > .qsm-ui-gs-switch:first-child { margin-top: 9px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > p > .qsm-ui-gs-switch { margin-top: 0; }
+/* Text, number, email, url, date inputs and selects. */
+.qsm-ui .qsm-ui-gs-row.is-core input[type="text"], .qsm-ui .qsm-ui-gs-row.is-core input[type="email"], .qsm-ui .qsm-ui-gs-row.is-core input[type="url"], .qsm-ui .qsm-ui-gs-row.is-core input[type="number"], .qsm-ui .qsm-ui-gs-row.is-core select {
+	width: min(100%, 420px); min-width: 0; height: var(--qsm-control-h); margin: 0; padding: 0 12px;
+	border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background-color: #fff; box-shadow: none;
+	color: var(--qsm-ink); font: 14px/1.4 var(--qsm-font); vertical-align: middle;
+}
+.qsm-ui .qsm-ui-gs-row.is-core input[type="number"], .qsm-ui .qsm-ui-gs-row.is-core input.small-text { width: 110px; }
+.qsm-ui .qsm-ui-gs-row.is-core select { width: auto; max-width: 100%; padding-right: 32px; }
+.qsm-ui .qsm-ui-gs-row.is-core label > input[type="number"], .qsm-ui .qsm-ui-gs-row.is-core label > input[type="text"], .qsm-ui .qsm-ui-gs-row.is-core label > select { margin: 0 6px; }
+.qsm-ui .qsm-ui-gs-row.is-core input[type="text"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="email"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="url"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="number"]:focus, .qsm-ui .qsm-ui-gs-row.is-core select:focus { border-color: #809aff; outline: 3px solid var(--qsm-blue-ring); box-shadow: none; }
+.qsm-ui .qsm-ui-gs-row.is-core input[readonly] { background-color: var(--qsm-surface-2); color: var(--qsm-ink-2); font-family: var(--qsm-mono); font-size: 13px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-api-key-input + .qsm-ui-btn { margin-left: 8px; vertical-align: middle; }
+
+@media (max-width: 782px) {
+	.qsm-ui .qsm-ui-sidenav.qsm-ui-gs-nav { grid-auto-flow: row; overflow: visible; }
+	.qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { padding: 10px 16px; }
+	.qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { min-width: 0; width: 100%; }
+}
+.qsm-ui .qsm-ui-gs-row.is-core input.qsm-ui-gs-date { width: 200px; margin: 0 8px 8px 0; }
