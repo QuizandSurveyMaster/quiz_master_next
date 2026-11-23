@@ -229,11 +229,24 @@ jQuery(function ($) {
     };
 
     // Bind form submission to the object API
+    // Ask in the kit confirm popup; the browser confirm() only when the popup isn't on the page.
     QSM_Migration_Process.migrationForm.on('submit', function (e) {
         e.preventDefault();
 
+        if ('undefined' !== typeof MicroModal && $('#qsm-migration-confirm-popup').length) {
+            MicroModal.show('qsm-migration-confirm-popup');
+            return;
+        }
         if (!confirm(qsmMigrationData.confirmMessage)) return;
 
+        QSM_Migration_Process.start();
+    });
+
+    $(document).on('click', '.qsm-migration-confirm-start', function (e) {
+        e.preventDefault();
+        if ('undefined' !== typeof MicroModal) {
+            MicroModal.close('qsm-migration-confirm-popup');
+        }
         QSM_Migration_Process.start();
     });
 

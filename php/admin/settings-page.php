@@ -869,43 +869,39 @@ class QMNGlobalSettingsPage {
 				</div>
 			</div>
 			<hr class="wp-header-end">
-			<div class="qsm-ui-sidenav-layout">
-				<nav class="qsm-ui-sidenav qsm-ui-text qsm-ui-gs-nav" aria-label="<?php esc_attr_e( 'Settings sections', 'quiz-master-next' ); ?>">
+			<nav class="qsm-ui-page-tabs-nav qsm-ui-gs-nav" aria-label="<?php esc_attr_e( 'Settings sections', 'quiz-master-next' ); ?>">
+				<div class="qsm-ui-tabs qsm-ui-page-tabs qsm-ui-gs-tabs">
 					<?php foreach ( $core_tabs as $slug => $core_tab ) { ?>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_global_settings&tab=' . $slug ) ); ?>"<?php echo $slug === $tab ? ' aria-current="page"' : ''; ?>>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_global_settings&tab=' . $slug ) ); ?>" class="qsm-ui-tab"<?php echo $slug === $tab ? ' aria-current="page"' : ''; ?>>
 							<?php echo QSM_Admin_UI::icon( $core_tab['icon'], 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
 							<?php echo esc_html( $core_tab['label'] ); ?>
 						</a>
-						<?php if ( 'quiz-default-options' === $slug && 'quiz-default-options' === $tab ) { ?>
-							<div class="qsm-ui-gs-subnav">
-								<?php
-								$first = true;
-								foreach ( $default_option_sections as $section_id => $section ) {
-									// qsm-admin.js switches the panels on .quiz_style_tab (data-id = panel id, .current = selected).
-									?>
-									<a href="javascript:void(0)" data-id="<?php echo esc_attr( $section_id ); ?>" class="quiz_style_tab<?php echo $first ? ' current' : ''; ?>"><?php echo esc_html( $section['label'] ); ?></a>
-									<?php
-									$first = false;
-								}
-								?>
-							</div>
-						<?php } ?>
 					<?php } ?>
 					<?php
-					// Add-on tabs (e.g. QSM Ultimate's User Permissions) print their own nav-tab links.
+					// Add-on tabs (e.g. QSM Ultimate's User Permissions) print their own nav-tab links; they sit in the same bar.
 					ob_start();
 					do_action( 'qsm_global_settings_page_add_tab_after' );
 					$addon_tabs = trim( ob_get_clean() );
 					if ( '' !== $addon_tabs ) {
-						?>
-						<p class="qsm-ui-overline"><?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></p>
-						<div class="qsm-ui-gs-addon-tabs">
-							<?php echo $addon_tabs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- add-on markup, printed as before. ?>
-						</div>
-						<?php
+						echo '<span class="qsm-ui-gs-addon-tabs">' . $addon_tabs . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- add-on markup, printed as before.
 					}
 					?>
-				</nav>
+				</div>
+			</nav>
+			<?php if ( 'quiz-default-options' === $tab ) { ?>
+				<div class="qsm-ui-tabs qsm-ui-tabs-pill qsm-ui-gs-subtabs" role="tablist" aria-label="<?php esc_attr_e( 'Quiz Default Options', 'quiz-master-next' ); ?>">
+					<?php
+					$first = true;
+					foreach ( $default_option_sections as $section_id => $section ) {
+						// qsm-admin.js switches the panels on .quiz_style_tab (data-id = panel id, .current = selected).
+						?>
+						<a href="javascript:void(0)" role="tab" data-id="<?php echo esc_attr( $section_id ); ?>" class="qsm-ui-tab quiz_style_tab<?php echo $first ? ' current' : ''; ?>" aria-selected="<?php echo $first ? 'true' : 'false'; ?>"><?php echo esc_html( $section['label'] ); ?></a>
+						<?php
+						$first = false;
+					}
+					?>
+				</div>
+			<?php } ?>
 				<div class="qsm-ui-gs-main">
 					<?php if ( $applied_count ) { ?>
 						<div class="qsm-ui-gs-notices">
@@ -1020,7 +1016,6 @@ class QMNGlobalSettingsPage {
 						</form>
 					<?php } ?>
 				</div>
-			</div>
 		</div>
 		<!-- set global setting popup start -->
 		<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-global-apply-default-popup" aria-hidden="true">

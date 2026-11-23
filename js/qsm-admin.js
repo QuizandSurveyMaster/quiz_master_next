@@ -878,6 +878,9 @@ function deleteResults(id, quizName) {
 jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
     let current_id = jQuery(this).attr('data-id');
+    // Global Settings sub-tabs are role="tab": keep aria-selected in step with .current.
+    jQuery('.qsm-ui-gs-subtabs .quiz_style_tab').attr('aria-selected', 'false');
+    jQuery(this).filter('[role="tab"]').attr('aria-selected', 'true');
     jQuery('.quiz_style_tab').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
@@ -6539,9 +6542,9 @@ function qsm_check_email_sent_option() {
 
                     // add success icon
                     if ( response.success ) {
-                        action_link_wrap.html( '<span class="dashicons dashicons-yes-alt"></span>' );
+                        action_link_wrap.html( '<span class="qsm-ui-badge is-success">' + qsm_admin_messages.qsm_fs_processed + '</span>' );
                     } else {
-                        action_link_wrap.html( 'Failed' );
+                        action_link_wrap.html( '<span class="qsm-ui-badge is-danger">' + qsm_admin_messages.qsm_fs_failed + '</span>' );
                     }
 
                     // Remove row if trashed
@@ -6568,9 +6571,24 @@ function qsm_check_email_sent_option() {
 
     }
 
-    // Submit Form.
+    // Submit Form. Delete asks in the kit confirm popup first.
+    let qsmFailedSubmissionDeleteConfirmed = false;
+    $( document ).on( 'click', '.qsm-failed-submission-delete-confirm', function( e ) {
+        e.preventDefault();
+        qsmFailedSubmissionDeleteConfirmed = true;
+        if ( 'undefined' !== typeof MicroModal ) {
+            MicroModal.close( 'qsm-failed-submission-delete-popup' );
+        }
+        $( '#failed-submission-action-form' ).trigger( 'submit' );
+    });
     $( document ).on( 'submit', '#failed-submission-action-form', function( e ) {
         e.preventDefault();
+        let bulkAction = $( '#failed-submission-action-form #bulk-action-selector-top' ).val();
+        if ( 'trash' === bulkAction && ! qsmFailedSubmissionDeleteConfirmed && 'undefined' !== typeof MicroModal && $( '#qsm-failed-submission-delete-popup' ).length && $( '#failed-submission-action-form input[name="post_id[]"]:checked' ).length ) {
+            MicroModal.show( 'qsm-failed-submission-delete-popup' );
+            return;
+        }
+        qsmFailedSubmissionDeleteConfirmed = false;
         let formData = {
             qmnnonce: $('#failed-submission-action-form input[name="qmnnonce"]').val(),
             post_ids: [],

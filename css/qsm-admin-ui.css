@@ -1071,20 +1071,21 @@
 .qsm-ui .qsm-ui-stats-filter .qsm-ui-select { width: auto; min-width: 140px; }
 .qsm-ui .qsm-ui-stats-chart { position: relative; height: 340px; }
 
-/* Global Settings: side navigation (L-04), one card per group, setting rows (L-06). */
+/* Global Settings: tab bar (sections), pill sub-tabs (Quiz Default Options panels), one card per group, setting rows (L-06). */
 .qsm-ui.qsm-ui-gs-page { padding-bottom: 72px; }
-.qsm-ui .qsm-ui-gs-nav a:focus { box-shadow: none; }
-.qsm-ui .qsm-ui-gs-nav a:visited { color: var(--qsm-ink-2); }
-.qsm-ui .qsm-ui-gs-nav a[aria-current="page"]:visited { color: var(--qsm-blue); }
+/* Add-on tabs print WordPress nav-tab links into the same bar; they look like the Core tabs. */
+.qsm-ui .qsm-ui-gs-addon-tabs { display: contents; }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab { position: relative; float: none; display: inline-flex; align-items: center; margin: 0; padding: 11px 14px; border: 0; background: none; color: var(--qsm-muted); font: 600 14px var(--qsm-font); line-height: normal; white-space: nowrap; }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab:hover, .qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab:focus { background: none; color: var(--qsm-ink); box-shadow: none; }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
 /* Quiz Default Options panels: qsm-admin.js moves .current between these links. */
-.qsm-ui .qsm-ui-gs-subnav { display: grid; gap: 2px; margin: 2px 0 6px 20px; padding-left: 10px; border-left: 1px solid var(--qsm-line); }
-.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-subnav a { padding: 6px 10px; color: var(--qsm-muted); font-size: 13px; }
-.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-subnav a.current { background: var(--qsm-blue-soft); color: var(--qsm-blue); font-weight: 600; }
-/* Add-on tabs print WordPress nav-tab links; they sit in the side navigation as plain items. */
-.qsm-ui .qsm-ui-gs-addon-tabs { display: grid; gap: 2px; }
-.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab { float: none; margin: 0; padding: 9px 12px; border: 0; border-radius: var(--qsm-radius); background: none; color: var(--qsm-ink-2); font-size: 14px; font-weight: 500; line-height: 1.4; }
-.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab:hover { background: #eef1f6; }
-.qsm-ui .qsm-ui-sidenav .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active { background: var(--qsm-blue-soft); color: var(--qsm-blue); font-weight: 600; }
+.qsm-ui .qsm-ui-gs-subtabs { display: flex; margin: -6px 0 18px; }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab { color: var(--qsm-muted); text-decoration: none; }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:hover { background: #eef1f6; color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab.current { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 1px; }
 .qsm-ui .qsm-ui-gs-main { min-width: 0; }
 .qsm-ui .qsm-ui-gs-notices { margin-bottom: 16px; }
 .qsm-ui .qsm-ui-gs-notices .notice { margin: 0; }
@@ -1153,7 +1154,6 @@
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-api-key-input + .qsm-ui-btn { margin-left: 8px; vertical-align: middle; }
 
 @media (max-width: 782px) {
-	.qsm-ui .qsm-ui-sidenav.qsm-ui-gs-nav { grid-auto-flow: row; overflow: visible; }
 	.qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { padding: 10px 16px; }
 	.qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { min-width: 0; width: 100%; }
 }
@@ -1162,3 +1162,37 @@
 .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check, .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-id { width: 1%; padding-right: 24px; white-space: nowrap; }
 .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check { padding-right: 8px; }
 .qsm-ui .qsm-ui-tools-card .qsm-ui-table td.qsm-ui-col-id { font-variant-numeric: tabular-nums; }
+
+/* Tools > Migration (Database Migration screen): progress bar (N-04) and status notices. qsm-database-migration-script.js
+ * sets the bar width, the status classes (progress / success / error) and the details. */
+.qsm-ui .qsm-ui-migration-card .qsm-ui-progress { height: 10px; }
+.qsm-ui .qsm-ui-migration-card .qsm-ui-progress > .qsm-ui-migration-bar { transition: width .3s; }
+.qsm-ui .qsm-ui-migration-card .qsm-ui-migration-bar.qsm-migration-completed { background: #20a46b; }
+.qsm-ui .qsm-ui-migration-status:empty, .qsm-ui .qsm-ui-migration-details:empty { display: none; }
+.qsm-ui .qsm-ui-migration-status { padding: 12px 16px; border: 1px solid #cdd8ff; border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); color: #23336b; font-size: 13px; font-weight: 600; }
+.qsm-ui .qsm-ui-migration-status.success { border-color: var(--qsm-green-line); background: var(--qsm-green-bg); color: #0d4f35; }
+.qsm-ui .qsm-ui-migration-status.error { border-color: var(--qsm-red-line); background: var(--qsm-red-bg); color: #8a1527; }
+.qsm-ui .qsm-ui-migration-details { display: grid; gap: 4px; padding: 12px 16px; border: 1px solid var(--qsm-line-soft); border-radius: var(--qsm-radius-md); background: var(--qsm-surface-2); color: var(--qsm-ink-2); font-size: 13px; }
+.qsm-ui .qsm-ui-migration-card .qsm-ui-table { min-width: 0; }
+
+/* Failed Submissions: WP_List_Table in a kit card (D-01). The table keeps WordPress's list-table markup and
+ * behaviour (bulk actions, pagination); the kit classes come from QmnFailedSubmissions::get_table_classes(). */
+.qsm-ui .qsm-ui-fs-card .qsm-ui-card-body { padding-top: 14px; }
+.qsm-ui table.qsm-ui-fs-table { border: 1px solid #e4e9f1; border-radius: var(--qsm-radius-md); border-collapse: separate; border-spacing: 0; box-shadow: none; overflow: hidden; }
+.qsm-ui table.qsm-ui-fs-table thead th, .qsm-ui table.qsm-ui-fs-table thead td, .qsm-ui table.qsm-ui-fs-table tfoot th, .qsm-ui table.qsm-ui-fs-table tfoot td { padding: 11px 14px; border-bottom: 1px solid #e4e9f1; background: var(--qsm-surface-2); color: #5c6880; font-size: 11px; font-weight: 700; letter-spacing: .055em; text-transform: uppercase; }
+.qsm-ui table.qsm-ui-fs-table tfoot th, .qsm-ui table.qsm-ui-fs-table tfoot td { border-top: 1px solid #e4e9f1; border-bottom: 0; }
+.qsm-ui table.qsm-ui-fs-table tbody td, .qsm-ui table.qsm-ui-fs-table tbody th { padding: 11px 14px; color: var(--qsm-ink); font-size: 14px; vertical-align: middle; }
+.qsm-ui table.qsm-ui-fs-table td.column-cb, .qsm-ui table.qsm-ui-fs-table th.column-cb, .qsm-ui table.qsm-ui-fs-table td.check-column, .qsm-ui table.qsm-ui-fs-table th.check-column { width: 44px; padding: 11px 0 11px 14px; vertical-align: middle; }
+.qsm-ui table.qsm-ui-fs-table input[type="checkbox"] { width: 18px; height: 18px; margin: 0; border: 1.5px solid #aeb8c8; border-radius: 5px; box-shadow: none; }
+.qsm-ui table.qsm-ui-fs-table input[type="checkbox"]:checked { border-color: var(--qsm-blue); background: var(--qsm-blue); }
+.qsm-ui table.qsm-ui-fs-table input[type="checkbox"]:checked::before { filter: brightness(0) invert(1); margin: -1px 0 0 -2px; }
+.qsm-ui table.qsm-ui-fs-table td.colspanchange { padding: 28px 16px; color: var(--qsm-muted); text-align: center; }
+.qsm-ui table.qsm-ui-fs-table .qsm-ui-btn-sm { min-height: 30px; }
+/* Bulk actions and pagination above / below the table. */
+.qsm-ui .qsm-ui-fs-form select { height: var(--qsm-control-h-sm); min-height: 0; padding: 0 30px 0 10px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-ui-fs-form input[type="submit"] { height: var(--qsm-control-h-sm); min-height: 0; padding: 0 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-ink-2); font-weight: 600; }
+.qsm-ui .qsm-ui-fs-form input[type="submit"]:hover { background: #f7f9fc; }
+/* Result of a resubmit / delete (qsm-admin.js toggles notice-success / notice-error). */
+.qsm-ui .qsm-ui-fs-notice { margin: 0 0 16px; border: 1px solid #cdd8ff; border-left-width: 1px; border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); box-shadow: none; }
+.qsm-ui .qsm-ui-fs-notice.notice-success { border-color: var(--qsm-green-line); background: var(--qsm-green-bg); color: #0d4f35; }
+.qsm-ui .qsm-ui-fs-notice.notice-error { border-color: var(--qsm-red-line); background: var(--qsm-red-bg); color: #8a1527; }

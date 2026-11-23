@@ -273,9 +273,9 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				case 'submission_action':
 					$column_value = '<span id="action-link-' . esc_attr( $submission['post_id'] ) . '">';
 					if ( 'processed' === $this->current_tab ) {
-						$column_value .= '<span class="dashicons dashicons-yes-alt"></span>';
+						$column_value .= QSM_Admin_UI::badge( __( 'Processed', 'quiz-master-next' ), 'success' );
 					} else {
-						$column_value .= '<a href="#"  post-id="' . esc_attr( $submission['post_id'] ) . '" class="qmn-retrieve-failed-submission-link" >' . __( 'Resubmit', 'quiz-master-next' ) . '</a>';
+						$column_value .= '<a href="#"  post-id="' . esc_attr( $submission['post_id'] ) . '" class="qmn-retrieve-failed-submission-link qsm-ui-btn qsm-ui-btn-sm" >' . esc_html__( 'Resubmit', 'quiz-master-next' ) . '</a>';
 					}
 					$column_value .= '</span>';
 					break;
@@ -284,6 +284,32 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 			}
 
 			return $column_value;
+		}
+
+		/**
+		 * Table classes: the admin UI kit data table (D-01) on top of WP_List_Table's own.
+		 *
+		 * @since 11.3.0
+		 *
+		 * @return array
+		 */
+		protected function get_table_classes() {
+			return array( 'widefat', 'qsm-ui-table', 'qsm-ui-fs-table', $this->_args['plural'] );
+		}
+
+		/**
+		 * Message when the current view has no submissions.
+		 *
+		 * @since 11.3.0
+		 *
+		 * @return void
+		 */
+		public function no_items() {
+			if ( 'processed' === $this->current_tab ) {
+				esc_html_e( 'No processed submissions yet.', 'quiz-master-next' );
+			} else {
+				esc_html_e( 'No failed submissions. Every quiz submission was saved.', 'quiz-master-next' );
+			}
 		}
 
 		/**
@@ -311,28 +337,64 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 
 			$this->prepare_items();
 			?>
-			<!-- header. -->
-			<div class="qmn-failed-submission wrap" id="qmn-failed-submission-conatiner" >
-				<!-- heading. -->
-				<h2 id="result_details" > <?php esc_html_e( 'Failed Submissions', 'quiz-master-next' ); ?> </h2>
-				<!-- body -->
-				<div class="qmn-body">
-				<!-- Action response notice -->
-				<div id="qmn-failed-submission-table-message" class="notice display-none-notice" >
-				<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
-				<p class="notice-message" ></p>
+			<div class="qmn-failed-submission wrap qsm-ui qsm-ui-fs-page" id="qmn-failed-submission-conatiner" >
+				<div class="qsm-ui-page-header qsm-ui-text">
+					<div>
+						<h1 class="qsm-ui-h1" id="result_details"><?php esc_html_e( 'Failed Submissions', 'quiz-master-next' ); ?></h1>
+						<p class="qsm-ui-subtitle"><?php esc_html_e( 'Quiz submissions that could not be saved. Resubmit them to save them to the results.', 'quiz-master-next' ); ?></p>
+					</div>
 				</div>
-				<form method='post' id='failed-submission-action-form' action=''>
-					<div class="submission-filter-wrapper" >
+				<hr class="wp-header-end">
+				<nav class="qsm-ui-page-tabs-nav" aria-label="<?php esc_attr_e( 'Failed submissions', 'quiz-master-next' ); ?>">
+					<div class="qsm-ui-tabs qsm-ui-page-tabs">
 						<?php
-							$this->views(); // render bulk action and pagination
+						$views = array(
+							'retrieve'  => __( 'Resubmit', 'quiz-master-next' ),
+							'processed' => __( 'Processed', 'quiz-master-next' ),
+						);
+						foreach ( $views as $view_id => $label ) {
+							echo '<a href="' . esc_url( admin_url( 'admin.php?page=qsm-quiz-failed-submission&tab=' . $view_id ) ) . '" class="qsm-ui-tab"' . ( $view_id === $this->current_tab ? ' aria-current="page"' : '' ) . '>' . esc_html( $label ) . '</a>';
+						}
 						?>
 					</div>
-					<input type="hidden" name="qmnnonce" value="<?php echo esc_attr( wp_create_nonce( 'qmn_failed_submission' ) ); ?>" />
-					<?php
-						$this->display(); // render table
-					?>
-				</form>
+				</nav>
+				<div class="qmn-body">
+					<?php // qsm-admin.js writes the result of an action here and switches notice-success / notice-error. ?>
+					<div id="qmn-failed-submission-table-message" class="notice inline display-none-notice qsm-ui-fs-notice" >
+						<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
+						<p class="notice-message" ></p>
+					</div>
+					<div class="qsm-ui-card qsm-ui-fs-card">
+						<div class="qsm-ui-card-body">
+							<form method='post' id='failed-submission-action-form' class="qsm-ui-fs-form" action=''>
+								<input type="hidden" name="qmnnonce" value="<?php echo esc_attr( wp_create_nonce( 'qmn_failed_submission' ) ); ?>" />
+								<?php
+									$this->display(); // render table
+								?>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-failed-submission-delete-popup" aria-hidden="true">
+					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+						<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="qsm-failed-submission-delete-title">
+							<header class="qsm-popup__header qsm-ui-text">
+								<div class="qsm-ui-confirm-head">
+									<div class="qsm-ui-modal-icon"><?php echo QSM_Admin_UI::icon( 'trash' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
+									<h2 class="qsm-popup__title" id="qsm-failed-submission-delete-title"><?php esc_html_e( 'Delete the selected submissions?', 'quiz-master-next' ); ?></h2>
+								</div>
+								<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
+							</header>
+							<main class="qsm-popup__content qsm-ui-text">
+								<p><?php esc_html_e( 'The failed submissions will be removed and can no longer be resubmitted.', 'quiz-master-next' ); ?></p>
+								<p class="qsm-ui-small"><?php esc_html_e( 'This cannot be undone.', 'quiz-master-next' ); ?></p>
+							</main>
+							<footer class="qsm-popup__footer">
+								<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+								<button type="button" class="qsm-ui-btn qsm-ui-btn-danger qsm-failed-submission-delete-confirm"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
+							</footer>
+						</div>
+					</div>
 				</div>
 			</div>
 			<?php

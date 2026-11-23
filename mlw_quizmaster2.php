@@ -543,8 +543,8 @@ class MLWQuizMasterNext {
 		if ( 'qsm_page_qmn_stats' === $hook ) {
 			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
-		// Global Settings, Tools and Stats use the admin UI kit for their frame; add-on tabs on them keep their own markup.
-		if ( in_array( $screen, array( 'settings', 'tools', 'stats' ), true ) ) {
+		// Global Settings, Tools, Stats and Failed Submissions use the admin UI kit for their frame; add-on tabs on them keep their own markup.
+		if ( in_array( $screen, array( 'settings', 'tools', 'stats', 'qsm-quiz-failed-submission' ), true ) ) {
 			QSM_Admin_UI::enqueue();
 		}
 		// quiz option pages
@@ -688,6 +688,8 @@ class MLWQuizMasterNext {
 			'updating_db'                => __('Updating database', 'quiz-master-next'),
 			'update_db_success'          => __('Database updated successfully.', 'quiz-master-next'),
 			'quiz_submissions'           => __('Quiz Submissions', 'quiz-master-next'),
+			'qsm_fs_processed'           => __( 'Processed', 'quiz-master-next' ),
+			'qsm_fs_failed'              => __( 'Failed', 'quiz-master-next' ),
 			'saving_contact_fields'      => __('Saving contact fields...', 'quiz-master-next'),
 			'contact_fields_saved'       => __('Your contact fields have been saved!', 'quiz-master-next'),
 			'contact_fields_save_error'  => __('There was an error encountered when saving your contact fields.', 'quiz-master-next'),

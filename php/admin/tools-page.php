@@ -149,13 +149,7 @@ function qsm_migration_evaluate_addon_requirements( $required_addons = null ) {
 function qsm_migration_database_callback() {
 	global $mlwQuizMasterNext;
 
-	wp_enqueue_style(
-		'qsm-database-migration',
-		QSM_PLUGIN_CSS_URL . '/qsm-database-migration.css',
-		array(),
-		$mlwQuizMasterNext->version
-	);
-
+	// The screen uses the admin UI kit; css/qsm-database-migration.css (the old look) is no longer loaded here.
 	wp_enqueue_script(
 		'qsm-database-migration',
 		QSM_PLUGIN_JS_URL . '/qsm-database-migration-script.js',
@@ -184,95 +178,124 @@ function qsm_migration_database_callback() {
 	) );
 	?>
 
-	<div class="qsm-dashboard-help-center">
-		<h3 class="qsm-dashboard-help-center-title"><?php echo esc_html__( 'Database Migration', 'quiz-master-next' ); ?></h3>
-		<div class="qsm-database-migration-wrapper qsm-dashboard-page-common-style">
+	<?php
+	$compatibility_addons = array();
+	if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
+		foreach ( $compatibility['addons'] as $addon ) {
+			if ( empty( $addon['is_installed'] ) ) {
+				continue;
+			}
+			$compatibility_addons[] = $addon;
+		}
+	}
+	$has_block = empty( $compatibility['allowed'] );
+	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		array(
+			'title'       => __( 'Database Migration', 'quiz-master-next' ),
+			'description' => __( 'Move quiz results to the new results tables.', 'quiz-master-next' ),
+			'class'       => 'qsm-ui-tools-card qsm-ui-migration-card',
+		)
+	);
+	?>
+	<form id="qsm-database-migration-form" class="qsm-database-migration-form qsm-ui-text qsm-ui-stack">
+		<?php
+		echo QSM_Admin_UI::notice( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			esc_html__( 'Your data will remain safe during migration. However, we strongly recommend taking a full database backup as a precaution to prevent any potential data loss.', 'quiz-master-next' ),
+			array(
+				'type'  => 'warning',
+				'title' => __( 'Before You Continue', 'quiz-master-next' ),
+			)
+		);
 
-			<form id="qsm-database-migration-form" class="qsm-database-migration-form">
-				<div class="qsm-migration-warning">
-					<p class="qsm-migration-warning-heading">
-						<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#2C77BE"/>
-						</svg>
-						<strong><?php echo esc_html__( 'Before You Continue', 'quiz-master-next' ); ?></strong>
-					</p>
-					<p><?php echo esc_html__( 'Your data will remain safe during migration. However, we strongly recommend taking a full database backup as a precaution to prevent any potential data loss.', 'quiz-master-next' ); ?></p>
-				</div>
+		if ( ! empty( $compatibility_addons ) ) {
+			?>
+			<div class="qsm-migration-addon-compatibility qsm-ui-stack">
 				<?php
-				$compatibility_addons = array();
-				if ( ! empty( $compatibility['addons'] ) && is_array( $compatibility['addons'] ) ) {
-					foreach ( $compatibility['addons'] as $addon ) {
-						if ( empty( $addon['is_installed'] ) ) {
-							continue;
-						}
-						$compatibility_addons[] = $addon;
-					}
-				}
-
-				if ( ! empty( $compatibility_addons ) ) {
-					$has_block = empty( $compatibility['allowed'] );
-					?>
-					<div class="qsm-migration-addon-compatibility">
-
-						<?php if ( $has_block && ! empty( $compatibility['message'] ) ) { ?>
-							<div class="qsm-migration-addon-compatibility-message">
-								<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'assets/warning-message.png' ); ?>" alt="warning-message.png"/>
-								<?php echo wp_kses_post( $compatibility['message'] ); ?>
-							</div>
-						<?php } ?>
-
-						<table class="qsm-migration-addon-compatibility-table widefat striped">
-							<thead>
-								<tr>
-									<th><?php esc_html_e( 'Addon Name', 'quiz-master-next' ); ?></th>
-									<th><?php esc_html_e( 'Required Version', 'quiz-master-next' ); ?></th>
-									<th><?php esc_html_e( 'Installed Version', 'quiz-master-next' ); ?></th>
-									<th><?php esc_html_e( 'Status', 'quiz-master-next' ); ?></th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach ( $compatibility_addons as $addon ) :
-
-									$name              = isset( $addon['name'] ) ? $addon['name'] : '';
-									$required_version  = isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '';
-									$installed_version = isset( $addon['installed_version'] ) && $addon['installed_version']
-										? $addon['installed_version']
-										: esc_html__( 'Not Installed', 'quiz-master-next' );
-									$is_compatible     = ! empty( $addon['is_compatible'] );
-									?>
-									<tr class="<?php echo $is_compatible ? 'qsm-addon-compatible' : 'qsm-addon-not-compatible'; ?>">
-										<td><?php echo esc_html( $name ); ?></td>
-										<td><?php echo esc_html( $required_version ); ?></td>
-										<td><?php echo esc_html( $installed_version ); ?></td>
-										<td>
-											<span class="qsm-migration-addon-compatibility-status">
-												<?php
-												echo $is_compatible
-													? esc_html__( 'Compatible', 'quiz-master-next' )
-													: esc_html__( 'Update Required', 'quiz-master-next' );
-												?>
-											</span>
-										</td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
-
-					</div>
-					<?php
+				if ( $has_block && ! empty( $compatibility['message'] ) ) {
+					echo QSM_Admin_UI::notice( wp_kses_post( $compatibility['message'] ), array( 'type' => 'danger' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 				}
 				?>
-				<div class="qsm-database-migration-progress-bar">
-					<div class="qsm-database-migration-progress" style="width: 0%;"></div>
-					<div class="qsm-database-migration-progress-percent">0%</div>
+				<div class="qsm-ui-table-wrap">
+					<table class="qsm-ui-table qsm-migration-addon-compatibility-table">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'Addon Name', 'quiz-master-next' ); ?></th>
+								<th><?php esc_html_e( 'Required Version', 'quiz-master-next' ); ?></th>
+								<th><?php esc_html_e( 'Installed Version', 'quiz-master-next' ); ?></th>
+								<th><?php esc_html_e( 'Status', 'quiz-master-next' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							foreach ( $compatibility_addons as $addon ) :
+								$name              = isset( $addon['name'] ) ? $addon['name'] : '';
+								$required_version  = isset( $addon['required_addon_version'] ) ? $addon['required_addon_version'] : '';
+								$installed_version = isset( $addon['installed_version'] ) && $addon['installed_version']
+									? $addon['installed_version']
+									: esc_html__( 'Not Installed', 'quiz-master-next' );
+								$is_compatible     = ! empty( $addon['is_compatible'] );
+								?>
+								<tr class="<?php echo $is_compatible ? 'qsm-addon-compatible' : 'qsm-addon-not-compatible'; ?>">
+									<td class="qsm-ui-cell-title"><?php echo esc_html( $name ); ?></td>
+									<td><?php echo esc_html( $required_version ); ?></td>
+									<td><?php echo esc_html( $installed_version ); ?></td>
+									<td>
+										<?php
+										echo $is_compatible // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+											? QSM_Admin_UI::badge( __( 'Compatible', 'quiz-master-next' ), 'success' )
+											: QSM_Admin_UI::badge( __( 'Update Required', 'quiz-master-next' ), 'danger' );
+										?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
 				</div>
+			</div>
+			<?php
+		}
+		?>
+		<div class="qsm-ui-migration-progress-wrap">
+			<div class="qsm-ui-progress-label">
+				<span><?php esc_html_e( 'Progress', 'quiz-master-next' ); ?></span>
+				<span class="qsm-database-migration-progress-percent">0%</span>
+			</div>
+			<?php // qsm-database-migration-script.js sets the width and adds .qsm-migration-completed when done. ?>
+			<div class="qsm-ui-progress qsm-database-migration-progress-bar" role="presentation">
+				<span class="qsm-database-migration-progress qsm-ui-migration-bar" style="width: 0%;"></span>
+			</div>
+		</div>
 
-				<div class="qsm-database-migration-status"></div>
-				<div class="qsm-database-migration-details"></div>
-				<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button button button-primary" <?php echo empty( $compatibility['allowed'] ) ? 'disabled="disabled" aria-disabled="true"' : ''; ?> >
-					<?php echo esc_html__( 'Start Migration', 'quiz-master-next' ); ?>
-				</button>
-			</form>
+		<div class="qsm-database-migration-status qsm-ui-migration-status" role="status" aria-live="polite"></div>
+		<div class="qsm-database-migration-details qsm-ui-migration-details"></div>
+		<div class="qsm-ui-row">
+			<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button qsm-ui-btn qsm-ui-btn-primary" <?php echo $has_block ? 'disabled="disabled" aria-disabled="true"' : ''; ?>>
+				<?php echo QSM_Admin_UI::icon( 'download', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
+				<?php echo esc_html__( 'Start Migration', 'quiz-master-next' ); ?>
+			</button>
+		</div>
+	</form>
+	<?php
+	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+	?>
+	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-migration-confirm-popup" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="qsm-migration-confirm-popup-title">
+				<header class="qsm-popup__header qsm-ui-text">
+					<div class="qsm-ui-confirm-head">
+						<div class="qsm-ui-modal-icon is-warning"><?php echo QSM_Admin_UI::icon( 'alert' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
+						<h2 class="qsm-popup__title" id="qsm-migration-confirm-popup-title"><?php esc_html_e( 'Start the migration?', 'quiz-master-next' ); ?></h2>
+					</div>
+					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content qsm-ui-text">
+					<p><?php echo esc_html__( 'Are you sure? After migration, any quiz results submitted on QSM 11 won’t be accessible if you downgrade to an earlier version. Your existing data will remain safe, but it’s recommended to take a database backup before proceeding.', 'quiz-master-next' ); ?></p>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary qsm-migration-confirm-start"><?php esc_html_e( 'Start Migration', 'quiz-master-next' ); ?></button>
+				</footer>
+			</div>
 		</div>
 	</div>
 	<?php
