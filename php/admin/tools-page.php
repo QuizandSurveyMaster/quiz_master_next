@@ -461,7 +461,7 @@ function qsm_tools_confirm_popup( $args ) {
 					<?php } ?>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button type="button" class="qsm-ui-btn" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" class="qsm-ui-btn qsm-ui-btn-danger <?php echo esc_attr( $args['confirm_class'] ); ?>"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo esc_html( $args['confirm'] ); ?></button>
 				</footer>
 			</div>
@@ -723,6 +723,18 @@ function qsm_audit_box() {
 		</div>
 	</div>
 	<?php
+	qsm_tools_confirm_popup(
+		array(
+			'id'            => 'qsm-clear-audit-tools-page-popup',
+			'title'         => __( 'Clear the audit trail?', 'quiz-master-next' ),
+			/* translators: %s: number of actions */
+			'message'       => sprintf( __( 'All %s recorded actions will be deleted.', 'quiz-master-next' ), number_format_i18n( $audit_total ) ),
+			'message_class' => 'qsm-tools-page-clear-audit-message',
+			'note'          => __( 'You will not be able to recover this data. Export it first if you need a copy.', 'quiz-master-next' ),
+			'confirm'       => __( 'Clear Audit', 'quiz-master-next' ),
+			'confirm_class' => 'qsm-clear-audit-tools-page-btn',
+		)
+	);
 }
 
 function qsm_get_deleted_questions_records() {

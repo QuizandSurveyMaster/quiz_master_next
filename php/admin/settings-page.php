@@ -1067,7 +1067,7 @@ class QMNGlobalSettingsPage {
 							</div>
 						</main>
 						<footer class="qsm-popup__footer">
-							<button type="button" class="qsm-ui-btn" data-micromodal-close="" aria-label="<?php esc_attr_e( 'Close this dialog window', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+							<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close="" aria-label="<?php esc_attr_e( 'Close this dialog window', 'quiz-master-next' ); ?>"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 							<button class="qsm-ui-btn qsm-ui-btn-primary" type="submit" id="qsm-apply-global-default-btn"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
 						</footer>
 					</form>

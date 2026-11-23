@@ -752,31 +752,51 @@ function qsmShouldSuppressCreationAlerts() {
                 document.body.removeChild(downloadLink);
             },
             error: function (errorThrown) {
-                alert(errorThrown);
+                if (window.QSMAdminUI && QSMAdminUI.toast) {
+                    QSMAdminUI.toast(errorThrown.statusText || qsm_admin_messages.error, { type: 'error' });
+                } else {
+                    alert(errorThrown);
+                }
             }
         });
     });
 
-    jQuery(document).on('click', '#btn_clear_logs', function (e) {
-        e.preventDefault();
-        var delete_logs = confirm(qsm_tools_page.qsm_delete_audit_logs);
-        if (delete_logs) {
-            // your deletion code
-            jQuery.ajax({
-                type: 'POST',
-                url: ajaxurl,
-                data: {
-                    action: "qsm_clear_audit_data",
-                    nonce: qsm_tools_page.nonce,
-                },
-                success: function (response) {
-                    location.reload();
-                },
-                error: function (errorThrown) {
+    // Tools > Audit Trail: clear all logs after the kit confirm (the browser confirm() when the popup isn't on the page).
+    var qsmClearAuditLogs = function ($button) {
+        $button.addClass('is-loading').prop('disabled', true);
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: "qsm_clear_audit_data",
+                nonce: qsm_tools_page.nonce,
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (errorThrown) {
+                $button.removeClass('is-loading').prop('disabled', false);
+                if (window.QSMAdminUI && QSMAdminUI.toast) {
+                    QSMAdminUI.toast(errorThrown.statusText || qsm_admin_messages.error, { type: 'error' });
+                } else {
                     alert(errorThrown);
                 }
-            });
+            }
+        });
+    };
+    jQuery(document).on('click', '#btn_clear_logs', function (e) {
+        e.preventDefault();
+        if ('undefined' !== typeof MicroModal && jQuery('#qsm-clear-audit-tools-page-popup').length) {
+            MicroModal.show('qsm-clear-audit-tools-page-popup');
+            return;
         }
+        if (confirm(qsm_tools_page.qsm_delete_audit_logs)) {
+            qsmClearAuditLogs(jQuery(this));
+        }
+    });
+    jQuery(document).on('click', '.qsm-clear-audit-tools-page-btn', function (e) {
+        e.preventDefault();
+        qsmClearAuditLogs(jQuery(this));
     });
 
     jQuery('.qsm_audit_data').click(function (e) {
