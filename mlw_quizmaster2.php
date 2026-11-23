@@ -509,16 +509,26 @@ class MLWQuizMasterNext {
 		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_qmn_addons' === $hook || ('edit.php' == $hook && isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			wp_enqueue_media();
-			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL . '/admin-dashboard.css', array(), $this->version );
+			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL . '/admin-dashboard.css', array(), qsm_create_quiz_asset_version( 'css/admin-dashboard.css' ) );
 			wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
 			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL . '/jquery-ui.min.css', array(), '1.13.0' );
 		}
 		// dashboard
 		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
+			// Dashboard is built with the admin UI kit; the Create card reuses the Create Quiz choice cards.
+			// The page header uses the quiz edit frame header and help menu, so qsm-create-quiz-style depends on qsm_admin_ui_quiz_frame_css.
+			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
+			wp_enqueue_style( 'qsm-dashboard-style', QSM_PLUGIN_CSS_URL . '/qsm-dashboard.css', array( 'qsm-create-quiz-style' ), qsm_create_quiz_asset_version( 'css/qsm-dashboard.css' ) );
 			wp_enqueue_script( 'dashboard' );
 			if ( wp_is_mobile() ) {
 				wp_enqueue_script( 'jquery-touch-punch' );
 			}
+		}
+		// Create Quiz page: custom form and template browser use the admin UI kit.
+		if ( 'qsm_page_qsm_create_quiz_page' === $hook ) {
+			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
 		}
 		// result details page
 		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
