@@ -1158,3 +1158,7 @@
 	.qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { min-width: 0; width: 100%; }
 }
 .qsm-ui .qsm-ui-gs-row.is-core input.qsm-ui-gs-date { width: 200px; margin: 0 8px 8px 0; }
+/* Tools tables: the checkbox and ID columns take only the width they need, so the text columns get the rest. */
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check, .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-id { width: 1%; padding-right: 24px; white-space: nowrap; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check { padding-right: 8px; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table td.qsm-ui-col-id { font-variant-numeric: tabular-nums; }

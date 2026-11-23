@@ -662,7 +662,7 @@ function qsm_audit_box() {
 			<table class="qsm-ui-table qsm-ui-text">
 				<thead>
 					<tr>
-						<th class="qsm-ui-num"><?php esc_html_e( 'ID', 'quiz-master-next' ); ?></th>
+						<th class="qsm-ui-col-id"><?php esc_html_e( 'ID', 'quiz-master-next' ); ?></th>
 						<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 						<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
 						<th id="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
@@ -672,7 +672,7 @@ function qsm_audit_box() {
 				<tbody id="the-list">
 					<?php foreach ( $audit_trails as $audit ) { ?>
 						<tr>
-							<td class="qsm-ui-num"><?php echo esc_html( $audit->trail_id ); ?></td>
+							<td class="qsm-ui-col-id"><?php echo esc_html( $audit->trail_id ); ?></td>
 							<td><?php echo esc_html( $audit->action_user ); ?></td>
 							<td>
 								<?php if ( ! empty( $audit->form_data ) ) { ?>
@@ -831,8 +831,8 @@ function qsm_get_deleted_questions_records() {
                     <thead>
                         <tr>
                             <th class="qsm-ui-col-check"><label class="qsm-ui-check"><input type="checkbox" class="qsm-select-all-deleted-question" id="qsm-select-all-deleted-question" /><span class="qsm-ui-sr"><?php esc_html_e( 'Select all', 'quiz-master-next' ); ?></span></label></th>
-                            <th class="qsm-ui-num"><?php esc_html_e( 'Question ID', 'quiz-master-next' ); ?></th>
-                            <th class="qsm-ui-num"><?php esc_html_e( 'Quiz ID', 'quiz-master-next' ); ?></th>
+                            <th class="qsm-ui-col-id"><?php esc_html_e( 'Question ID', 'quiz-master-next' ); ?></th>
+                            <th class="qsm-ui-col-id"><?php esc_html_e( 'Quiz ID', 'quiz-master-next' ); ?></th>
                             <th><?php esc_html_e( 'Question Name', 'quiz-master-next' ); ?></th>
                         </tr>
                     </thead>
@@ -846,8 +846,8 @@ function qsm_get_deleted_questions_records() {
                             <td class="qsm-ui-col-check">
                                 <label class="qsm-ui-check"><input type="checkbox" class="qsm-deleted-question-checkbox" name="delete_questions[]" value="<?php echo esc_attr( $row->question_id ); ?>" /><span class="qsm-ui-sr"><?php echo esc_html( sprintf( /* translators: %s: question ID */ __( 'Select question %s', 'quiz-master-next' ), $row->question_id ) ); ?></span></label>
                             </td>
-                            <td class="qsm-ui-num"><?php echo esc_html( $row->question_id ); ?></td>
-                            <td class="qsm-ui-num"><?php echo esc_html( $row->quiz_id ); ?></td>
+                            <td class="qsm-ui-col-id"><?php echo esc_html( $row->question_id ); ?></td>
+                            <td class="qsm-ui-col-id"><?php echo esc_html( $row->quiz_id ); ?></td>
                             <td><?php echo esc_html( $question_title ); ?></td>
                         </tr>
                     <?php } ?>
@@ -972,7 +972,7 @@ function qsm_get_deleted_results_records() {
                     <thead>
                         <tr>
                             <th class="qsm-ui-col-check"><label class="qsm-ui-check"><input type="checkbox" class="qsm-select-all-deleted-result" id="qsm-select-all-deleted-result" /><span class="qsm-ui-sr"><?php esc_html_e( 'Select all', 'quiz-master-next' ); ?></span></label></th>
-                            <th class="qsm-ui-num"><?php esc_html_e( 'Result ID', 'quiz-master-next' ); ?></th>
+                            <th class="qsm-ui-col-id"><?php esc_html_e( 'Result ID', 'quiz-master-next' ); ?></th>
                             <th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
                             <th><?php esc_html_e( 'Email', 'quiz-master-next' ); ?></th>
                             <th><?php esc_html_e( 'IP Address', 'quiz-master-next' ); ?></th>
@@ -984,7 +984,7 @@ function qsm_get_deleted_results_records() {
                             <td class="qsm-ui-col-check">
                                 <label class="qsm-ui-check"><input type="checkbox" class="qsm-deleted-result-checkbox" name="quiz_results[]" value="<?php echo esc_attr( $row->result_id ); ?>" /><span class="qsm-ui-sr"><?php echo esc_html( sprintf( /* translators: %s: result ID */ __( 'Select result %s', 'quiz-master-next' ), $row->result_id ) ); ?></span></label>
                             </td>
-                            <td class="qsm-ui-num"><?php echo esc_html( $row->result_id ); ?></td>
+                            <td class="qsm-ui-col-id"><?php echo esc_html( $row->result_id ); ?></td>
                             <td><?php echo esc_html( $row->quiz_name ); ?></td>
                             <td><?php echo esc_html( $row->email ); ?></td>
                             <td><?php echo esc_html( $row->user_ip ); ?></td>
