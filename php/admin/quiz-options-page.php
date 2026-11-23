@@ -373,7 +373,7 @@ function qsm_generate_quiz_options() {
 					</main>
 					<footer class="qsm-popup__footer">
 						<?php
-						echo QSM_Admin_UI::button( __( 'Cancel', 'quiz-master-next' ), array( 'attrs' => array( 'data-micromodal-close' => true ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+						echo QSM_Admin_UI::button( __( 'Cancel', 'quiz-master-next' ), array( 'class' => 'qsm-ui-foot-left', 'attrs' => array( 'data-micromodal-close' => true ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 						echo QSM_Admin_UI::button( __( 'Save', 'quiz-master-next' ), array( 'variant' => 'primary', 'attrs' => array( 'id' => 'edit-name-button' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 						?>
 					</footer>
