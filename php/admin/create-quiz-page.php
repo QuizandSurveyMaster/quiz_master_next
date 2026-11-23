@@ -886,7 +886,7 @@ function qsm_create_quiz_page_callback() {
 	global $mlwQuizMasterNext;
 
 	wp_enqueue_script( 'qsm-create-quiz-script', QSM_PLUGIN_JS_URL . '/qsm-create-quiz-script.js', array( 'jquery', 'qsm_admin_ui_js' ), qsm_create_quiz_asset_version( 'js/qsm-create-quiz-script.js' ), true );
-	wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
+	wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
 	do_action( 'qsm_create_quiz_script_style' );
 	$qsm_admin_dd = qsm_get_parsing_script_data();
 	$qsm_admin_dashboard = qsm_get_parsing_script_data('dashboard.json');

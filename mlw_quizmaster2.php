@@ -516,8 +516,9 @@ class MLWQuizMasterNext {
 		// dashboard
 		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
 			// Dashboard is built with the admin UI kit; the Create card reuses the Create Quiz choice cards.
+			// The page header uses the quiz edit frame header and help menu, so qsm-create-quiz-style depends on qsm_admin_ui_quiz_frame_css.
 			QSM_Admin_UI::enqueue();
-			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
+			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
 			wp_enqueue_style( 'qsm-dashboard-style', QSM_PLUGIN_CSS_URL . '/qsm-dashboard.css', array( 'qsm-create-quiz-style' ), qsm_create_quiz_asset_version( 'css/qsm-dashboard.css' ) );
 			wp_enqueue_script( 'dashboard' );
 			if ( wp_is_mobile() ) {
@@ -527,7 +528,7 @@ class MLWQuizMasterNext {
 		// Create Quiz page: custom form and template browser use the admin UI kit.
 		if ( 'qsm_page_qsm_create_quiz_page' === $hook ) {
 			QSM_Admin_UI::enqueue();
-			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
+			wp_enqueue_style( 'qsm-create-quiz-style', QSM_PLUGIN_CSS_URL . '/qsm-create-quiz-style.css', array( 'qsm_admin_ui_css', 'qsm_admin_ui_quiz_frame_css' ), qsm_create_quiz_asset_version( 'css/qsm-create-quiz-style.css' ) );
 		}
 		// result details page
 		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
