@@ -1117,7 +1117,9 @@
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > br, .qsm-ui .qsm-ui-gs-row.is-core fieldset > br { display: none; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"], .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] {
 	appearance: none; -webkit-appearance: none; display: inline-grid; place-content: center; width: 18px; height: 18px; min-width: 18px; margin: 0 8px 0 0;
-	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; vertical-align: -4px; cursor: pointer; transition: all .12s;
+	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; cursor: pointer; transition: all .12s;
+	/* Centre the box on the first text line whatever the font metrics: top of the line box plus half the leftover line height. */
+	font-size: inherit; vertical-align: top; margin-top: calc((1.5em - 18px) / 2);
 }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"] { border-radius: 5px; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] { border-radius: 50%; }
