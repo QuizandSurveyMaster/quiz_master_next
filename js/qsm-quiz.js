@@ -1108,8 +1108,11 @@ function qmnInit() {
 					let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
 					if (disabledAnswer[key]) {
 						disabledAnswer[key].forEach(element => {
-							let element1 = element[1].replaceAll(' ', '-');
-							jQuery('#' + element[0] + '-' + element1 + ' input').prop('checked', true).trigger('change');
+							// Match the saved answer by input name and value. The wrapper ids use the answer's
+							// position, not its value, so the old '#question<id>-<value>' lookup never matched.
+							jQuery('#quizForm' + key + ' .qmn_quiz_radio').filter(function () {
+								return this.name === element[0] && this.value === String(element[1]);
+							}).prop('checked', true).trigger('change');
 						});
 					}
 				}

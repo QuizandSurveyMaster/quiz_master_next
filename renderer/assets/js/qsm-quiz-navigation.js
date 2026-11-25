@@ -536,6 +536,21 @@ if (typeof window.qsmCheckMR !== 'function') {
                     }
                 });
 
+                // "Prevent users from changing their response" (disable_answer), matching legacy qmnInit():
+                // lock a multiple-choice question once answered, and keep it locked after a reload
+                // until the quiz is submitted. The submit handler re-enables inputs, so the answer is still sent.
+                if (Number(self.getQuizData(quizId).disable_answer) === 1) {
+                    self.restoreLockedAnswers(quizId, $container);
+                }
+                $container.on('change.qsmAnswerEvents', '.qmn_quiz_radio', function() {
+                    if (Number(self.getQuizData(quizId).disable_answer) !== 1) {
+                        return;
+                    }
+                    let group = $(this).attr('name');
+                    self.lockAnswerGroup($container, group);
+                    self.storeLockedAnswer(quizId, group, $(this).val());
+                });
+
                 // Multiple response checkboxes (matching legacy: .qsm-multiple-response-input)
                 $container.on('change.qsmAnswerEvents', '.qsm-multiple-response-input', function(e) {
                     let $i_this = $(this);
@@ -1903,6 +1918,8 @@ if (typeof window.qsmCheckMR !== 'function') {
                 if (!quizData) return;
                 
                 let $quizContainer = quizData.quizContainer;
+                // The quiz is submitted, so answers locked by disable_answer no longer apply.
+                this.clearLockedAnswers(quizId);
                 jQuery(document).trigger('qsm_before_display_result', [response, 'quizForm' + quizId, $quizContainer]);
                 if (response.redirect && response.redirect != '') {
                     window.location.replace(response.redirect);
@@ -2049,7 +2066,72 @@ if (typeof window.qsmCheckMR !== 'function') {
                     $i_this.next('.qsm-input-label').after('<div class="qsm-spinner-loader" style="font-size: 2.5px;"></div>');
                 }
             },
-            
+
+            /**
+             * Disable every radio of one question (disable_answer).
+             */
+            lockAnswerGroup: function($container, group) {
+                $container.find('input[type=radio]').filter(function() {
+                    return this.name === group;
+                }).prop('disabled', true);
+            },
+
+            /**
+             * Read the locked answers, stored like the legacy renderer: { quizId: [[group, value], ...] }.
+             */
+            getLockedAnswers: function() {
+                try {
+                    let stored = JSON.parse(localStorage.getItem('disable_answer'));
+                    return stored && typeof stored === 'object' ? stored : {};
+                } catch (e) {
+                    return {};
+                }
+            },
+
+            storeLockedAnswer: function(quizId, group, value) {
+                let locked = this.getLockedAnswers();
+                if (!Array.isArray(locked[quizId])) {
+                    locked[quizId] = [];
+                }
+                if (!locked[quizId].some(function(item) { return item[0] === group; })) {
+                    locked[quizId].push([group, value]);
+                }
+                try {
+                    localStorage.setItem('disable_answer', JSON.stringify(locked));
+                } catch (e) {}
+            },
+
+            /**
+             * Re-select and lock answers saved before a reload. Questions on pages that are not
+             * loaded yet are picked up when bindAnswerEvents() runs for that page.
+             */
+            restoreLockedAnswers: function(quizId, $container) {
+                let self = this;
+                let locked = this.getLockedAnswers()[quizId];
+                if (!Array.isArray(locked)) {
+                    return;
+                }
+                locked.forEach(function(item) {
+                    let $input = $container.find('.qmn_quiz_radio').filter(function() {
+                        return this.name === item[0] && this.value === String(item[1]);
+                    });
+                    if ($input.length && !$input.prop('disabled')) {
+                        $input.prop('checked', true).trigger('change');
+                        self.lockAnswerGroup($container, item[0]);
+                    }
+                });
+            },
+
+            clearLockedAnswers: function(quizId) {
+                let locked = this.getLockedAnswers();
+                if (locked[quizId]) {
+                    delete locked[quizId];
+                    try {
+                        localStorage.setItem('disable_answer', JSON.stringify(locked));
+                    } catch (e) {}
+                }
+            },
+
             /**
              * Check answer correctness using encrypted data (matching legacy qsm_question_quick_result_js)
              */
