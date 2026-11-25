@@ -18,17 +18,45 @@ function qmn_addons_page() {
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 
+	$addon_title = '';
+	if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+		$key         = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column( $tab_array, 'slug' ), true );
+		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : '';
+	}
 	?>
-<div class="wrap qsm-addon-setting-wrap">
-	<h2>
-		<?php
-		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
-			$key = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column($tab_array, 'slug'), true );
-    		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
-			echo esc_html__( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title ) . esc_html__( ' Addon', 'quiz-master-next' );
-		}
-		?>
-	</h2>
+<div class="wrap qsm-addon-setting-wrap qsm-ui qsm-ui-addons-page">
+	<div class="qsm-ui-page-header qsm-ui-text">
+		<div>
+			<?php if ( '' !== $addon_title ) { ?>
+				<a class="qsm-ui-addons-back" href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_addons' ) ); ?>"><?php esc_html_e( 'All extensions', 'quiz-master-next' ); ?></a>
+				<h1 class="qsm-ui-h1">
+					<?php
+					/* translators: %s: add-on name */
+					echo esc_html( sprintf( __( 'Manage %s Addon', 'quiz-master-next' ), $addon_title ) );
+					?>
+				</h1>
+				<p class="qsm-ui-subtitle"><?php esc_html_e( 'Settings and license for this add-on.', 'quiz-master-next' ); ?></p>
+			<?php } else { ?>
+				<h1 class="qsm-ui-h1"><?php esc_html_e( 'Extensions', 'quiz-master-next' ); ?></h1>
+				<p class="qsm-ui-subtitle"><?php esc_html_e( 'Add features to QSM, and open the settings of the add-ons you have installed.', 'quiz-master-next' ); ?></p>
+			<?php } ?>
+		</div>
+		<?php if ( '' === $addon_title ) { ?>
+			<div class="qsm-ui-page-actions">
+				<?php
+				echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					__( 'Get a free add-on', 'quiz-master-next' ),
+					array(
+						'size' => 'sm',
+						'icon' => 'star',
+						'href' => admin_url( 'admin.php?page=qsm-free-addon' ),
+					)
+				);
+				?>
+			</div>
+		<?php } ?>
+	</div>
+	<hr class="wp-header-end">
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
 		foreach ( $tab_array as $tab ) {
@@ -40,7 +68,8 @@ function qmn_addons_page() {
         }
 		?>
 	</h2>
-	<div>
+	<?php // An add-on's own settings and license screens render here and keep their own UI. ?>
+	<div class="qsm-ui-addons-content">
 		<?php
 		foreach ( $tab_array as $tab ) {
 			if ( $active_tab === $tab['slug'] ) {
@@ -70,48 +99,77 @@ function qsm_generate_featured_addons() {
 	$all_addons = qsm_get_widget_data( 'all_addons' );
 
 	?>
-	<div class="wrap custom-addon-upper">
-		<ul class="subsubsub">
-			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons) - 6; ?>)</span></a> |</li>
-			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ) - 1; ?>)</span></a></li>
-		</ul>
-	</div>
-	<div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor"  style="display: none;">
-		<h2 class="installed_title"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></h2>
-		<?php
-		if ( $tab_array && count( $tab_array ) > 1 ) {
-			?>
-			<div class="installed_addons_wrapper">
-				<?php
-				foreach ( $tab_array as $tab ) {
-					if ( 'Featured Addons' === trim( $tab['title'] ) ) {
-						continue;
-					}
-					?>
-				<div class="installed_addon">
-					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
-					<span class="installed_addon_link">
-						<a target="_blank" rel="noopener" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
-								class="dashicons dashicons-admin-generic"></span>
-							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
-					</span>
-				</div>
-				<?php } ?>
-			</div>
-		<?php } else { ?>
-			<div class="no_addons_installed">
-				<div>
-					<?php esc_html_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );?>
-				</div>
-				<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize custom-explore-addon" href="javadcript:void(0)">
-					<?php esc_html_e('Explore Addons', 'quiz-master-next');?>
-				</a>
-			</div>
-		<?php
+	<?php
+	$installed = array();
+	foreach ( (array) $tab_array as $tab ) {
+		if ( 'Featured Addons' !== trim( $tab['title'] ) ) {
+			$installed[] = $tab;
 		}
+	}
+	// qsm-admin.js switches the two panels on [data-section] inside .custom-addon-upper.
+	?>
+	<div class="custom-addon-upper qsm-ui-addons-switch">
+		<div class="qsm-ui-tabs qsm-ui-tabs-pill" role="tablist" aria-label="<?php esc_attr_e( 'Add-ons', 'quiz-master-next' ); ?>">
+			<a href="javascript:void(0)" role="tab" class="qsm-ui-tab current" aria-selected="true" aria-controls="qsm_add_addons" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="qsm-ui-count count"><?php echo esc_html( max( 0, count( (array) $all_addons ) - 6 ) ); ?></span></a>
+			<a href="javascript:void(0)" role="tab" class="qsm-ui-tab" aria-selected="false" aria-controls="qsm_installed_addons" data-section="install"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="qsm-ui-count count"><?php echo esc_html( count( $installed ) ); ?></span></a>
+		</div>
+	</div>
+	<div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor" role="tabpanel" style="display: none;">
+		<?php
+		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			array(
+				'title'       => __( 'Installed Addons', 'quiz-master-next' ),
+				'description' => __( 'Open an add-on to change its settings or license.', 'quiz-master-next' ),
+				'class'       => 'qsm-ui-addons-installed',
+			)
+		);
+		if ( $installed ) {
+			?>
+			<ul class="installed_addons_wrapper qsm-ui-addons-list">
+				<?php foreach ( $installed as $tab ) { ?>
+					<li class="installed_addon">
+						<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
+						<span class="installed_addon_link">
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Settings', 'quiz-master-next' ),
+								array(
+									'size'  => 'sm',
+									'icon'  => 'settings',
+									'href'  => admin_url( 'admin.php?page=qmn_addons&tab=' . $tab['slug'] ),
+									'attrs' => array(
+										'target' => '_blank',
+										'rel'    => 'noopener',
+									),
+								)
+							);
+							?>
+						</span>
+					</li>
+				<?php } ?>
+			</ul>
+			<?php
+		} else {
+			echo QSM_Admin_UI::empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'icon'    => 'bolt',
+					'title'   => __( 'No add-ons installed yet', 'quiz-master-next' ),
+					'text'    => __( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' ),
+					'actions' => QSM_Admin_UI::button(
+						__( 'Explore Addons', 'quiz-master-next' ),
+						array(
+							'variant' => 'primary',
+							'size'    => 'sm',
+							'class'   => 'custom-explore-addon',
+						)
+					),
+				)
+			);
+		}
+		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		?>
 	</div>
-	<div id="qsm_add_addons" class="qsm-primary-acnhor" >
+	<div id="qsm_add_addons" class="qsm-primary-acnhor" role="tabpanel">
 		<div class="qsm-quiz-page-addon qsm-addon-page-list">
 			<div class="qsm_popular_addons" id="qsm_popular_addons">
 				<div class="popuar-addon-ul">
@@ -209,10 +267,16 @@ add_action( 'init', 'qsm_featured_addons_tab' );
 function qsm_display_optin_page() {
 	global $mlwQuizMasterNext;
 	?>
-<div class="wrap qsm-free-addon-wrap">
-	<h1 class="wp-heading-inline"><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1><hr class="wp-header-end">
+<div class="wrap qsm-free-addon-wrap qsm-ui qsm-ui-free-addon-page">
+	<div class="qsm-ui-page-header qsm-ui-text">
+		<div>
+			<h1 class="qsm-ui-h1"><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1>
+			<p class="qsm-ui-subtitle"><?php esc_html_e( 'Subscribe to the QSM newsletter and get one add-on free.', 'quiz-master-next' ); ?></p>
+		</div>
+	</div>
+	<hr class="wp-header-end">
 
-	<div class="qsm-free-addon-text">
+	<div class="qsm-free-addon-text qsm-ui-card qsm-ui-free-addon-intro"><div class="qsm-ui-card-body qsm-ui-text">
 		<p><?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?></p>
 		<p>
 		<?php
@@ -234,7 +298,7 @@ function qsm_display_optin_page() {
 			<?php esc_html_e( 'View our privacy policy', 'quiz-master-next' ); ?>
 		</a>
 	</p>
-	</div>
+	</div></div>
 
 	<div class="changelog">
 

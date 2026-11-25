@@ -1251,6 +1251,28 @@
 .qsm-ui .qsm-ui-fdq-table td { vertical-align: top; }
 .qsm-ui .qsm-ui-fdq-card .qsm-ui-empty { padding: 28px 16px; }
 
+/* Extensions and Free Add-ons: page header and the All / Installed switch. The add-on and bundle cards and
+ * each add-on's own settings screen keep their existing markup and styles. */
+.qsm-ui .qsm-ui-page-header .qsm-ui-addons-back { display: inline-flex; align-items: center; gap: 4px; margin: 0 0 6px; color: #2b55e6; font-size: 13px; font-weight: 600; text-decoration: none; }
+.qsm-ui .qsm-ui-page-header .qsm-ui-addons-back::before { content: "\2190"; }
+[dir="rtl"] .qsm-ui .qsm-ui-page-header .qsm-ui-addons-back::before { content: "\2192"; }
+.qsm-ui .qsm-ui-page-header .qsm-ui-addons-back:hover { text-decoration: underline; }
+.qsm-ui .qsm-ui-addons-switch { margin: 0 0 16px; }
+.qsm-ui .qsm-ui-addons-switch .qsm-ui-tab { text-decoration: none; color: #5c6880; }
+.qsm-ui .qsm-ui-addons-switch .qsm-ui-tab:focus { box-shadow: none; }
+.qsm-ui .qsm-ui-addons-switch .qsm-ui-tab:hover { color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-addons-switch .qsm-ui-tab.current { background: var(--qsm-blue-soft); color: #2b55e6; }
+.qsm-ui .qsm-ui-addons-switch .qsm-ui-tab:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 1px; }
+.qsm-ui .qsm-ui-addons-installed { margin: 0 0 16px; }
+.qsm-ui .qsm-ui-addons-installed .qsm-ui-addons-list { margin: 0; padding: 0; border: 0; list-style: none; }
+.qsm-ui .qsm-ui-addons-installed .qsm-ui-addons-list > li { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 12px 0; border: 0; border-bottom: 1px solid var(--qsm-line-soft); background: none; }
+.qsm-ui .qsm-ui-addons-installed .qsm-ui-addons-list > li:first-child { padding-top: 0; }
+.qsm-ui .qsm-ui-addons-installed .qsm-ui-addons-list > li:last-child { padding-bottom: 0; border-bottom: 0; }
+.qsm-ui .qsm-ui-addons-installed .qsm-ui-addons-list .installed_addon_name { color: var(--qsm-ink); font-size: 14px; font-weight: 600; }
+.qsm-ui .qsm-ui-free-addon-intro { margin: 0 0 24px; }
+.qsm-ui .qsm-ui-free-addon-intro p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; }
+.qsm-ui .qsm-ui-free-addon-intro p:last-child { margin-bottom: 0; }
+
 /* Popups on these pages use a <dialog open> element as the container (micromodal still shows and hides the popup).
  * Drop the browser's dialog box styles so it looks like the <div> container it replaced. */
 .qsm-popup.qsm-ui-popup dialog.qsm-popup__container { position: relative; inset: auto; height: auto; max-height: none; margin: 0; border: 0; color: var(--qsm-ink); }

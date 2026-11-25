@@ -824,23 +824,22 @@ function qsmShouldSuppressCreationAlerts() {
         }
     });
 
-    jQuery(document).on('click', '.custom-addon-upper li a', function (e) {
-        jQuery(".custom-addon-upper li a").removeClass('current');
-        jQuery(this).addClass('current');
-        if(jQuery(this).data('section') == "all"){
-            jQuery("#qsm_installed_addons").hide();
-            jQuery("#qsm_add_addons").show();
-        }else{
-            jQuery("#qsm_add_addons").hide();
-            jQuery("#qsm_installed_addons").show();
-        }
+    // Extensions page: All Addons / Installed switch (kit pill tabs; the old list markup used li > a).
+    const qsmShowAddonSection = function ( section ) {
+        const $links = jQuery('.custom-addon-upper [data-section]');
+        $links.removeClass('current').attr('aria-selected', 'false');
+        $links.filter('[data-section="' + section + '"]').addClass('current').attr('aria-selected', 'true');
+        jQuery('#qsm_installed_addons').toggle('all' !== section);
+        jQuery('#qsm_add_addons').toggle('all' === section);
+    };
+    jQuery(document).on('click', '.custom-addon-upper [data-section]', function (e) {
+        e.preventDefault();
+        qsmShowAddonSection( 'all' === jQuery(this).data('section') ? 'all' : 'install' );
     });
 
     jQuery(document).on('click', '.custom-explore-addon', function (e) {
-        jQuery(".custom-addon-upper li a").removeClass('current');
-        jQuery(".custom-addon-upper li a:first").addClass('current');
-        jQuery("#qsm_installed_addons").hide();
-        jQuery("#qsm_add_addons").show();
+        e.preventDefault();
+        qsmShowAddonSection( 'all' );
     });
 
     jQuery(document).on('click', '.qsm-help-tab-handle', function (e) {
@@ -891,8 +890,8 @@ jQuery('.quiz_style_tab').click(function (e) {
 function qsmTemplateDetailRow($input) {
     return $input.closest('tr, .qsm-ui-setting-row').next('tr, .qsm-ui-setting-row');
 }
-// Global Settings sub-tabs: arrow keys (mirrored in RTL), Home and End move between tabs and open them.
-jQuery(document).on('keydown', '.qsm-ui-gs-subtabs [role="tab"]', function (e) {
+// Global Settings sub-tabs and the Extensions switch: arrow keys (mirrored in RTL), Home and End move between tabs and open them.
+jQuery(document).on('keydown', '.qsm-ui-gs-subtabs [role="tab"], .qsm-ui-addons-switch [role="tab"]', function (e) {
     const $tabs = jQuery(this).closest('[role="tablist"]').find('[role="tab"]');
     const index = $tabs.index(this);
     const rtl = 'rtl' === jQuery('html').attr('dir');
