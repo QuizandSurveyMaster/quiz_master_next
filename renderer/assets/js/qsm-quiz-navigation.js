@@ -518,6 +518,24 @@ if (typeof window.qsmCheckMR !== 'function') {
                     }
                 });
                 
+                // "Add class for correct/incorrect answers" (ajax_show_correct), matching legacy qmnInit():
+                // mark the changed option's wrapper with qmn_correct_answer / qmn_incorrect_answer.
+                $container.on('change.qsmAnswerEvents', '.qmn-multiple-choice-input, .qsm_dropdown, .qsm-multiple-response-input', function() {
+                    if (Number(self.getQuizData(quizId).ajax_show_correct) !== 1) {
+                        return;
+                    }
+                    let $i_this = $(this);
+                    let question_id = $i_this.attr('name').split('question')[1];
+                    let data = self.qsmQuestionQuickResultJs(question_id, $i_this.val(), '', '', quizId);
+                    // A dropdown's wrapper is reused for every choice, so clear the previous mark first.
+                    let $wrap = $i_this.parent().removeClass('qmn_correct_answer qmn_incorrect_answer');
+                    if (data.success === 'correct') {
+                        $wrap.addClass('qmn_correct_answer');
+                    } else if (data.success === 'incorrect') {
+                        $wrap.addClass('qmn_incorrect_answer');
+                    }
+                });
+
                 // Multiple response checkboxes (matching legacy: .qsm-multiple-response-input)
                 $container.on('change.qsmAnswerEvents', '.qsm-multiple-response-input', function(e) {
                     let $i_this = $(this);
