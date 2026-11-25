@@ -1273,6 +1273,45 @@
 .qsm-ui .qsm-ui-free-addon-intro p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; }
 .qsm-ui .qsm-ui-free-addon-intro p:last-child { margin-bottom: 0; }
 
+/* Extensions: add-on cards (image, description, View Details) and the bundles column. */
+.qsm-ui .qsm-ui-addons-browse { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+.qsm-ui .qsm-ui-addons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.qsm-ui .qsm-ui-addon-card { display: flex; flex-direction: column; margin: 0; overflow: hidden; }
+.qsm-ui .qsm-ui-addon-card-image { display: block; aspect-ratio: 16 / 9; background: var(--qsm-line-soft); }
+.qsm-ui .qsm-ui-addon-card-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.qsm-ui .qsm-ui-addon-card .qsm-ui-card-body { flex: 1; padding-top: 16px; padding-bottom: 8px; }
+.qsm-ui .qsm-ui-addon-card .qsm-ui-card-body p { display: -webkit-box; margin: 0; overflow: hidden; color: var(--qsm-ink-2); font-size: 13px; line-height: 1.6; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+.qsm-ui .qsm-ui-addon-card .qsm-ui-card-foot, .qsm-ui .qsm-ui-bundle-card .qsm-ui-card-foot { justify-content: stretch; border-top: 0; background: none; padding-top: 4px; }
+.qsm-ui .qsm-ui-addon-card .qsm-ui-card-foot .qsm-ui-btn, .qsm-ui .qsm-ui-bundle-card .qsm-ui-card-foot .qsm-ui-btn { width: 100%; justify-content: center; }
+.qsm-ui .qsm-ui-bundles { display: grid; gap: 12px; }
+.qsm-ui .qsm-ui-bundles-title { display: flex; align-items: center; gap: 8px; margin: 0 0 2px; color: var(--qsm-ink); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.qsm-ui .qsm-ui-bundles-title .qsm-ui-icon { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-bundle-card { margin: 0; }
+.qsm-ui .qsm-ui-bundle-card .qsm-ui-card-body p { margin: 10px 0 0; color: var(--qsm-ink-2); font-size: 13px; line-height: 1.6; }
+.qsm-ui .qsm-ui-bundle-head { display: flex; align-items: center; gap: 12px; }
+.qsm-ui .qsm-ui-bundle-head .qsm-ui-h3 { margin: 0; }
+.qsm-ui .qsm-ui-bundle-icon { display: inline-grid; flex: none; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--qsm-blue); }
+.qsm-ui .qsm-ui-bundle-icon img { width: 26px; height: 26px; object-fit: contain; }
+.qsm-ui .qsm-ui-bundle-icon.qsm-bundles-dynamic-0 { background: #3b9a7a; }
+.qsm-ui .qsm-ui-bundle-icon.qsm-bundles-dynamic-1 { background: #01b592; }
+.qsm-ui .qsm-ui-bundle-icon.qsm-bundles-dynamic-2 { background: #ec706f; }
+.qsm-ui .qsm-ui-bundle-icon.qsm-bundles-dynamic-3 { background: #2270b1; }
+@media screen and (max-width: 1100px) { .qsm-ui .qsm-ui-addons-browse { grid-template-columns: 1fr; } }
+
+/* Free Add-ons: Sendinblue's form keeps its markup, fields and script; these kit classes only restyle it
+ * (its inline styles need !important). */
+.qsm-ui .qsm-ui-sib.sib-form { padding: 0; background: none; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-box { max-width: 540px !important; margin: 0 auto; border: 1px solid var(--qsm-line) !important; border-radius: var(--qsm-radius-lg) !important; background: #fff !important; box-shadow: var(--qsm-shadow, 0 1px 2px rgba(16, 24, 40, .05)); }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-label { color: var(--qsm-ink) !important; font: 600 15px/1.4 var(--qsm-font) !important; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-input { height: var(--qsm-control-h) !important; padding: 0 12px !important; border: 1px solid var(--qsm-input) !important; border-radius: var(--qsm-radius) !important; color: var(--qsm-ink) !important; font: 14px var(--qsm-font) !important; box-shadow: none !important; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-input:focus { border-color: #809aff !important; outline: 2px solid var(--qsm-blue); outline-offset: 0; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-help { color: #5c6880 !important; font: 13px/1.5 var(--qsm-font) !important; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-button { display: inline-flex !important; align-items: center; gap: 8px; height: var(--qsm-control-h); padding: 0 18px !important; border: 0 !important; border-radius: var(--qsm-radius) !important; background: var(--qsm-blue) !important; color: #fff !important; font: 600 14px var(--qsm-font) !important; letter-spacing: 0; text-transform: none; cursor: pointer; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-button:hover { background: #2b55e6 !important; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-button:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-link { color: #2b55e6; font: 13px var(--qsm-font); }
+.qsm-ui .qsm-ui-sib .qsm-ui-sib-msg { margin: 0 auto 12px; border-radius: var(--qsm-radius-md) !important; font: 14px var(--qsm-font) !important; }
+
 /* Popups on these pages use a <dialog open> element as the container (micromodal still shows and hides the popup).
  * Drop the browser's dialog box styles so it looks like the <div> container it replaced. */
 .qsm-popup.qsm-ui-popup dialog.qsm-popup__container { position: relative; inset: auto; height: auto; max-height: none; margin: 0; border: 0; color: var(--qsm-ink); }
