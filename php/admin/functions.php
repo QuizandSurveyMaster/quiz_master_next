@@ -903,17 +903,17 @@ function qsm_check_create_tables() {
 	$install = false;
 
 	$quiz_table_name = $wpdb->prefix . 'mlw_quizzes';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) !== $quiz_table_name ) {
+	if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( "$quiz_table_name" ) ) ) !== $quiz_table_name ) {
 		$install = true;
 	}
 
 	$quiz_theme_table_name = $wpdb->prefix . 'mlw_themes';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) !== $quiz_theme_table_name ) {
+	if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( "$quiz_theme_table_name" ) ) ) !== $quiz_theme_table_name ) {
 		$install = true;
 	}
 
 	$question_terms_table_name = $wpdb->prefix . 'mlw_question_terms';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_terms_table_name'" ) !== $question_terms_table_name ) {
+	if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( "$question_terms_table_name" ) ) ) !== $question_terms_table_name ) {
 		$install = true;
 	}
 
