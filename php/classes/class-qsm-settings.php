@@ -314,6 +314,13 @@ class QSM_Quiz_Settings {
 		// unserializes array
 		$settings_array = $this->safe_unserialize( $settings );
 
+		// A stored value that does not unserialize is corrupt (typically a string
+		// length broken by a search/replace that is not serialization-aware), not
+		// missing. The legacy rebuild below must not be saved over it: that would
+		// replace pages, contact_form and every other section on a plain front-end
+		// view. Only an empty value is migrated; a corrupt one is rebuilt in memory.
+		$is_corrupt = ! is_array( $settings_array ) && is_string( $settings ) && '' !== trim( $settings );
+
 		// If the value is not an array, create an empty array
 		if ( ! is_array( $settings_array ) ) {
 			$settings_array = array();
@@ -430,7 +437,7 @@ class QSM_Quiz_Settings {
 				$settings_array['quiz_leaderboards'] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
 			}
 			// Update new settings system
-			$results = ! $quiz_options ? false : $wpdb->update(
+			$results = ( ! $quiz_options || $is_corrupt ) ? false : $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_settings' => maybe_serialize( $settings_array ) ),
 				array( 'quiz_id' => $this->quiz_id ),
