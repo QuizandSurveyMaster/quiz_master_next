@@ -213,49 +213,52 @@ function qsm_generate_featured_addons() {
 		$bundles = qsm_get_widget_data( 'bundles' );
 		if ( $bundles ) {
 			?>
-			<aside class="qsm-ui-bundles" aria-labelledby="qsm-ui-bundles-title">
-				<h2 class="qsm-ui-h3 qsm-ui-bundles-title" id="qsm-ui-bundles-title"><?php echo QSM_Admin_UI::icon( 'star', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Save with our bundles', 'quiz-master-next' ); ?></h2>
+			<aside class="qsm-ui-bundles" aria-label="<?php esc_attr_e( 'Bundles', 'quiz-master-next' ); ?>">
 				<?php
-				// $count keeps each bundle's icon colour (qsm-bundles-dynamic-N).
+				// One card: heading, then each bundle as a tile. $count keeps each bundle's icon colour (qsm-bundles-dynamic-N).
+				echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					array(
+						'title'       => __( 'Save with our bundles', 'quiz-master-next' ),
+						'description' => __( 'Get many add-ons in one package.', 'quiz-master-next' ),
+						'class'       => 'qsm-ui-bundles-card',
+					)
+				);
 				$count = 0;
 				foreach ( $bundles as $bundles_arr ) {
 					$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
 					?>
-					<div class="qsm-ui-card qsm-ui-bundle-card">
-						<div class="qsm-ui-card-body qsm-ui-text">
-							<div class="qsm-ui-bundle-head">
-								<span class="qsm-ui-bundle-icon qsm-bundles-icon qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>">
-									<?php if ( ! empty( $bundles_arr['icon'] ) ) { ?>
-										<img alt="" src="<?php echo esc_url( $bundles_arr['icon'] ); ?>">
-									<?php } ?>
-								</span>
-								<h3 class="qsm-ui-h3"><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
-							</div>
-							<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
+					<div class="qsm-ui-bundle-item">
+						<div class="qsm-ui-bundle-head">
+							<span class="qsm-ui-bundle-icon qsm-bundles-icon qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>">
+								<?php if ( ! empty( $bundles_arr['icon'] ) ) { ?>
+									<img alt="" src="<?php echo esc_url( $bundles_arr['icon'] ); ?>">
+								<?php } ?>
+							</span>
+							<h3 class="qsm-ui-h3"><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
 						</div>
-						<div class="qsm-ui-card-foot">
-							<?php
-							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-								__( 'Get now', 'quiz-master-next' ),
-								array(
-									'variant' => 'primary',
-									'size'    => 'sm',
-									'href'    => $bundle_link,
-									'class'   => 'custom-addon-getnow',
-									'attrs'   => array(
-										'target'     => '_blank',
-										'rel'        => 'noopener',
-										/* translators: %s: bundle name */
-										'aria-label' => sprintf( __( 'Get now: %s', 'quiz-master-next' ), wp_strip_all_tags( $bundles_arr['name'] ) ),
-									),
-								)
-							);
-							?>
-						</div>
+						<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
+						<?php
+						echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+							__( 'Get now', 'quiz-master-next' ),
+							array(
+								'variant' => 'primary',
+								'size'    => 'sm',
+								'href'    => $bundle_link,
+								'class'   => 'custom-addon-getnow',
+								'attrs'   => array(
+									'target'     => '_blank',
+									'rel'        => 'noopener',
+									/* translators: %s: bundle name */
+									'aria-label' => sprintf( __( 'Get now: %s', 'quiz-master-next' ), wp_strip_all_tags( $bundles_arr['name'] ) ),
+								),
+							)
+						);
+						?>
 					</div>
 					<?php
 					++$count;
 				}
+				echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 				?>
 			</aside>
 		<?php } ?>
@@ -367,7 +370,7 @@ function qsm_display_optin_page() {
 												<?php esc_html_e( 'Enter your email address to subscribe', 'quiz-master-next' ); ?>
 											</label>
 
-											<div class="entry__field">
+											<div class="entry__field qsm-ui-sib-field">
 												<input class="input qsm-ui-sib-input" type="text" id="EMAIL" name="EMAIL"
 													autocomplete="off" placeholder="EMAIL" data-required="true"
 													required />
