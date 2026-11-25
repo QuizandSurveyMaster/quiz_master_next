@@ -215,7 +215,7 @@ function qsm_documentation_meta_box_content() {
 }
 
 /**
- * System Info tab: one card per section, with a button that copies the report as plain text.
+ * System Info tab: one card with every section, and a button that copies the report as plain text.
  *
  * @since 11.3.0
  * @return void
@@ -243,32 +243,34 @@ function qsm_about_system_info_tab() {
 			'attrs' => array( 'data-qsm-ui-copy' => '#qsm-system-info-text' ),
 		)
 	);
+	echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		array(
+			'title'       => __( 'System Info', 'quiz-master-next' ),
+			'description' => __( 'Share this report with support when you open a ticket.', 'quiz-master-next' ),
+			'actions'     => $copy,
+			'class'       => 'qsm-ui-sysinfo-card',
+		)
+	);
 	?>
-	<div class="qsm-ui-sysinfo-bar qsm-ui-text">
-		<p><?php esc_html_e( 'Share this report with support when you open a ticket.', 'quiz-master-next' ); ?></p>
-		<?php echo $copy; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
-		<label class="qsm-ui-sr" for="qsm-system-info-text"><?php esc_html_e( 'System info', 'quiz-master-next' ); ?></label>
-		<textarea id="qsm-system-info-text" class="qsm-ui-sr" readonly tabindex="-1"><?php echo esc_textarea( implode( "\n", $plain ) ); ?></textarea>
-	</div>
-	<div class="qsm-ui-grid-2 qsm-ui-sysinfo">
-		<?php
-		foreach ( $sections as $section ) {
-			echo QSM_Admin_UI::card_open( array( 'title' => $section['title'], 'class' => 'qsm-ui-sysinfo-card' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-			foreach ( $section['groups'] as $group ) {
-				if ( '' !== $group['title'] ) {
-					echo '<p class="qsm-ui-overline">' . esc_html( $group['title'] ) . '</p>';
-				}
-				echo '<table class="qsm-ui-kv"><tbody>';
-				foreach ( $group['rows'] as $row ) {
-					echo '<tr>' . ( '' !== $row[0] ? '<th scope="row">' . esc_html( $row[0] ) . '</th><td>' : '<td colspan="2">' ) . esc_html( $row[1] ) . '</td></tr>';
-				}
-				echo '</tbody></table>';
-			}
-			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-		}
-		?>
-	</div>
+	<label class="qsm-ui-sr" for="qsm-system-info-text"><?php esc_html_e( 'System info', 'quiz-master-next' ); ?></label>
+	<textarea id="qsm-system-info-text" class="qsm-ui-sr" readonly tabindex="-1"><?php echo esc_textarea( implode( "\n", $plain ) ); ?></textarea>
 	<?php
+	foreach ( $sections as $section ) {
+		echo '<section class="qsm-ui-sysinfo-section">';
+		echo '<h4 class="qsm-ui-sysinfo-title">' . esc_html( $section['title'] ) . '</h4>';
+		foreach ( $section['groups'] as $group ) {
+			if ( '' !== $group['title'] ) {
+				echo '<p class="qsm-ui-overline">' . esc_html( $group['title'] ) . '</p>';
+			}
+			echo '<table class="qsm-ui-kv"><tbody>';
+			foreach ( $group['rows'] as $row ) {
+				echo '<tr>' . ( '' !== $row[0] ? '<th scope="row">' . esc_html( $row[0] ) . '</th><td>' : '<td colspan="2">' ) . esc_html( $row[1] ) . '</td></tr>';
+			}
+			echo '</tbody></table>';
+		}
+		echo '</section>';
+	}
+	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 }
 
 /**
