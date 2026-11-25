@@ -2025,7 +2025,7 @@ function qsm_format_date_answer(v) {
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='', ans_index=null) {
 	// The answer data is only printed when an instant-feedback feature needs it.
-	if (typeof encryptedData === 'undefined' || typeof encryptionKey === 'undefined') {
+	if (typeof encryptedData === 'undefined' || typeof encryptionKey === 'undefined' || typeof encryptedData[quiz_id] === 'undefined') {
 		return { "correct_index": 0, "success": "", "message": "" };
 	}
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
