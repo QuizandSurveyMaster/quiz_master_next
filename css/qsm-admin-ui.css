@@ -1043,8 +1043,6 @@
 /* Tab bar of links (Tools, Stats): the current page is aria-current, like the quiz edit frame. */
 .qsm-ui .qsm-ui-page-tabs-nav { margin: 0 0 20px; }
 .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:focus { box-shadow: none; }
-.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:visited { color: var(--qsm-muted); }
-.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
 /* These headers and tab bars sit on the grey admin background (#f0f0f1), where the kit's muted grey and blue
  * fall just under 4.5:1. One step darker passes WCAG AA there. */
 .qsm-ui.wrap .qsm-ui-page-header .qsm-ui-subtitle, .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab, .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:visited { color: #5c6880; }
@@ -1063,7 +1061,7 @@
 .qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { width: auto; min-width: 280px; max-width: 100%; }
 .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-check { display: inline-flex; vertical-align: middle; }
 .qsm-ui .qsm-ui-tools-card .qsm-ui-empty { padding: 28px 16px; }
-.qsm-ui-popup .qsm-ui-audit-data p { max-height: 60vh; margin: 0; padding: 14px 16px; overflow: auto; border-radius: var(--qsm-radius); background: #0f172a; color: #e2e8f0; font: 12px/1.6 var(--qsm-mono); white-space: pre-wrap; word-break: break-word; }
+.qsm-ui-popup .qsm-ui-audit-data p { max-height: 60vh; margin: 0; padding: 14px 16px; overflow: auto; border-radius: var(--qsm-radius); background: #0f172a; color: #e2e8f0; font: 12px/1.6 var(--qsm-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .qsm-popup.qsm-ui-tools-confirm .qsm-popup__header .qsm-ui-confirm-head { align-items: center; }
 .qsm-popup.qsm-ui-tools-confirm .qsm-popup__content p { display: block; margin: 0; font-size: 14px; }
 .qsm-popup.qsm-ui-tools-confirm .qsm-popup__content p + p { margin-top: 6px; }
@@ -1080,9 +1078,10 @@
 .qsm-ui.qsm-ui-gs-page { padding-bottom: 72px; }
 /* Add-on tabs print WordPress nav-tab links into the same bar; they look like the Core tabs. */
 .qsm-ui .qsm-ui-gs-addon-tabs { display: contents; }
-.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab { position: relative; float: none; display: inline-flex; align-items: center; margin: 0; padding: 11px 14px; border: 0; background: none; color: var(--qsm-muted); font: 600 14px var(--qsm-font); line-height: normal; white-space: nowrap; }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab { position: relative; float: none; display: inline-flex; align-items: center; margin: 0; padding: 11px 14px; border: 0; background: none; color: #5c6880; font: 600 14px var(--qsm-font); line-height: normal; white-space: nowrap; }
 .qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab:hover, .qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab:focus { background: none; color: var(--qsm-ink); box-shadow: none; }
-.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active { color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active { color: #2b55e6; }
+.qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: -2px; border-radius: 6px; }
 .qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
 /* Quiz Default Options panels: qsm-admin.js moves .current between these links. */
 .qsm-ui .qsm-ui-gs-subtabs { display: flex; margin: -6px 0 18px; }
@@ -1122,7 +1121,7 @@
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > br, .qsm-ui .qsm-ui-gs-row.is-core fieldset > br { display: none; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"], .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] {
 	appearance: none; -webkit-appearance: none; display: inline-grid; place-content: center; width: 18px; height: 18px; min-width: 18px; margin: 0; margin-inline-end: 8px;
-	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; cursor: pointer; transition: all .12s;
+	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; cursor: pointer; transition: background-color .12s, border-color .12s;
 	/* Centre the box on the first text line whatever the font metrics: top of the line box plus half the leftover line height. */
 	font-size: inherit; vertical-align: top; margin-top: calc((1.5em - 18px) / 2);
 }
@@ -1143,7 +1142,7 @@
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:checked + .qsm-ui-gs-slider { background-color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:checked + .qsm-ui-gs-slider::before { transform: translateX(18px); }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus + .qsm-ui-gs-slider { box-shadow: none; }
-.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 3px solid var(--qsm-blue-ring); outline-offset: 2px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch + .global-sub-text { margin-inline-start: 12px; vertical-align: middle; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > .qsm-ui-gs-switch:first-child { margin-top: 9px; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > p > .qsm-ui-gs-switch { margin-top: 0; }
@@ -1239,13 +1238,16 @@
 .qsm-ui .qsm-ui-sysinfo-title { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: var(--qsm-ink); }
 .qsm-ui .qsm-ui-sysinfo-card .qsm-ui-overline { margin-top: 12px; }
 .qsm-ui .qsm-ui-sysinfo-card .qsm-ui-kv th { width: 280px; }
-.qsm-ui .qsm-ui-sysinfo-card .qsm-ui-kv td { word-break: break-word; }
+.qsm-ui .qsm-ui-sysinfo-card .qsm-ui-kv td { overflow-wrap: anywhere; }
 
 /* Focus: the kit's pale ring (--qsm-blue-ring) is hard to see on white. These pages use a solid blue ring
  * (3:1 or better against white and the grey admin background) for buttons, checkboxes, switches and text fields. */
 .qsm-ui.wrap .qsm-ui-btn:focus-visible, .qsm-ui-popup .qsm-ui-btn:focus-visible, .qsm-ui.wrap .qsm-ui-check input:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
-.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
 .qsm-ui.wrap .qsm-ui-input:focus-visible, .qsm-ui.wrap .qsm-ui-select:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 0; }
+
+/* Popups on these pages use a <dialog open> element as the container (micromodal still shows and hides the popup).
+ * Drop the browser's dialog box styles so it looks like the <div> container it replaced. */
+.qsm-popup.qsm-ui-popup dialog.qsm-popup__container { position: relative; inset: auto; height: auto; max-height: none; margin: 0; border: 0; color: var(--qsm-ink); }
 
 /* ---------- RTL (body.rtl) for these admin pages ----------
  * Rules above use logical properties. These flip the kit base rules and the legacy QSM rules these pages rely on

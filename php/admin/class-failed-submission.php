@@ -366,7 +366,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				</nav>
 				<div class="qmn-body">
 					<?php // qsm-admin.js writes the result of an action here and switches notice-success / notice-error. ?>
-					<div class="qsm-ui-fs-live" role="status" aria-live="polite">
+					<div class="qsm-ui-fs-live" aria-live="polite">
 						<div id="qmn-failed-submission-table-message" class="notice inline display-none-notice qsm-ui-fs-notice" >
 							<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
 							<p class="notice-message" ></p>
@@ -385,7 +385,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				</div>
 				<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-failed-submission-delete-popup" aria-hidden="true">
 					<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-						<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="qsm-failed-submission-delete-title">
+						<dialog open class="qsm-popup__container qsm-ui" aria-modal="true" aria-labelledby="qsm-failed-submission-delete-title">
 							<header class="qsm-popup__header qsm-ui-text">
 								<div class="qsm-ui-confirm-head">
 									<div class="qsm-ui-modal-icon"><?php echo QSM_Admin_UI::icon( 'trash' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
@@ -401,7 +401,7 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 								<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 								<button type="button" class="qsm-ui-btn qsm-ui-btn-danger qsm-failed-submission-delete-confirm"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 							</footer>
-						</div>
+						</dialog>
 					</div>
 				</div>
 			</div>

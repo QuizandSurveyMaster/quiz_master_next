@@ -266,7 +266,7 @@ function qsm_migration_database_callback() {
 			</div>
 		</div>
 
-		<div class="qsm-database-migration-status qsm-ui-migration-status" role="status" aria-live="polite"></div>
+		<div class="qsm-database-migration-status qsm-ui-migration-status" aria-live="polite"></div>
 		<div class="qsm-database-migration-details qsm-ui-migration-details"></div>
 		<div class="qsm-ui-row">
 			<button type="submit" id="qsm-database-start-migration" class="qsm-database-migration-button qsm-ui-btn qsm-ui-btn-primary" <?php echo $has_block ? 'disabled="disabled" aria-disabled="true"' : ''; ?>>
@@ -280,7 +280,7 @@ function qsm_migration_database_callback() {
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-migration-confirm-popup" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="qsm-migration-confirm-popup-title">
+			<dialog open class="qsm-popup__container qsm-ui" aria-modal="true" aria-labelledby="qsm-migration-confirm-popup-title">
 				<header class="qsm-popup__header qsm-ui-text">
 					<div class="qsm-ui-confirm-head">
 						<div class="qsm-ui-modal-icon is-warning"><?php echo QSM_Admin_UI::icon( 'alert' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
@@ -295,7 +295,7 @@ function qsm_migration_database_callback() {
 					<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" class="qsm-ui-btn qsm-ui-btn-primary qsm-migration-confirm-start"><?php esc_html_e( 'Start Migration', 'quiz-master-next' ); ?></button>
 				</footer>
-			</div>
+			</dialog>
 		</div>
 	</div>
 	<?php
@@ -469,7 +469,7 @@ function qsm_tools_confirm_popup( $args ) {
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup qsm-ui-tools-confirm" id="<?php echo esc_attr( $args['id'] ); ?>" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="<?php echo esc_attr( $args['id'] ); ?>-title">
+			<dialog open class="qsm-popup__container qsm-ui" aria-modal="true" aria-labelledby="<?php echo esc_attr( $args['id'] ); ?>-title">
 				<header class="qsm-popup__header qsm-ui-text">
 					<div class="qsm-ui-confirm-head">
 						<div class="qsm-ui-modal-icon"><?php echo QSM_Admin_UI::icon( 'trash' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?></div>
@@ -487,7 +487,7 @@ function qsm_tools_confirm_popup( $args ) {
 					<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" class="qsm-ui-btn qsm-ui-btn-danger <?php echo esc_attr( $args['confirm_class'] ); ?>"><?php echo QSM_Admin_UI::icon( 'trash', 'qsm-ui-icon-sm' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?><?php echo esc_html( $args['confirm'] ); ?></button>
 				</footer>
-			</div>
+			</dialog>
 		</div>
 	</div>
 	<?php
@@ -732,7 +732,7 @@ function qsm_audit_box() {
 	?>
 	<div class="qsm-popup qsm-popup-slide qsm-ui-popup is-lg" id="qsm_fetch_audit_data" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-			<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="qsm-audit-data-title">
+			<dialog open class="qsm-popup__container qsm-ui" aria-modal="true" aria-labelledby="qsm-audit-data-title">
 				<header class="qsm-popup__header qsm-ui-text">
 					<h3 class="qsm-popup__title" id="qsm-audit-data-title"><?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></h3>
 					<a class="qsm-popup__close" href="javascript:void(0)" aria-label="<?php esc_attr_e( 'Close', 'quiz-master-next' ); ?>" data-micromodal-close></a>
@@ -742,7 +742,7 @@ function qsm_audit_box() {
 						<p></p>
 					</div>
 				</main>
-			</div>
+			</dialog>
 		</div>
 	</div>
 	<?php

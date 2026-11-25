@@ -468,10 +468,6 @@ function qsmShouldSuppressCreationAlerts() {
         });
         //New template design hide show
         var new_template_result_detail = $('.new_template_result_detail:checked').val();
-        // Global Settings rows are kit setting rows (.qsm-ui-setting-row); the old layout used table rows.
-        var qsmTemplateDetailRow = function ($input) {
-            return $input.closest('tr, .qsm-ui-setting-row').next('tr, .qsm-ui-setting-row');
-        };
         if (new_template_result_detail == 1) {
             qsmTemplateDetailRow($('.new_template_result_detail:checked')).hide();
         }
@@ -766,7 +762,7 @@ function qsmShouldSuppressCreationAlerts() {
     });
 
     // Tools > Audit Trail: clear all logs after the kit confirm (the browser confirm() when the popup isn't on the page).
-    var qsmClearAuditLogs = function ($button) {
+    const qsmClearAuditLogs = function ($button) {
         $button.addClass('is-loading').prop('disabled', true);
         jQuery.ajax({
             type: 'POST',
@@ -891,13 +887,17 @@ jQuery('.quiz_style_tab').click(function (e) {
     jQuery('.quiz_style_tab_content').hide();
     jQuery('#' + current_id).show();
 });
+// Global Settings rows are kit setting rows (.qsm-ui-setting-row); the old layout used table rows.
+function qsmTemplateDetailRow($input) {
+    return $input.closest('tr, .qsm-ui-setting-row').next('tr, .qsm-ui-setting-row');
+}
 // Global Settings sub-tabs: arrow keys (mirrored in RTL), Home and End move between tabs and open them.
 jQuery(document).on('keydown', '.qsm-ui-gs-subtabs [role="tab"]', function (e) {
-    var $tabs = jQuery(this).closest('[role="tablist"]').find('[role="tab"]');
-    var index = $tabs.index(this);
-    var rtl = 'rtl' === jQuery('html').attr('dir');
-    var next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[e.key];
-    var target = null;
+    const $tabs = jQuery(this).closest('[role="tablist"]').find('[role="tab"]');
+    const index = $tabs.index(this);
+    const rtl = 'rtl' === jQuery('html').attr('dir');
+    const next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[e.key];
+    let target = null;
     if (next) {
         target = (index + next + $tabs.length) % $tabs.length;
     } else if ('Home' === e.key) {
@@ -2006,7 +2006,7 @@ function qsmConvertContentToShortcode( contentToConvert ){
 // QSM - Admin Stats Page
 (function ($) {
     if (jQuery('body').hasClass('qsm_page_qmn_stats')) {
-        var graph_canvas = document.getElementById("graph_canvas");
+        const graph_canvas = document.getElementById("graph_canvas");
         // Add-on stats tabs have no Core chart.
         if (!graph_canvas || 'undefined' === typeof Chart || 'undefined' === typeof qsm_admin_stats) {
             return;
@@ -2015,15 +2015,15 @@ function qsmConvertContentToShortcode( contentToConvert ){
             window.stats_graph.destroy();
         }
         // Colours come from the admin UI kit tokens on the page wrapper; the fallbacks are the kit's values.
-        var kit = window.getComputedStyle(graph_canvas.closest('.qsm-ui') || document.documentElement);
-        var token = function (name, fallback) {
-            var value = kit.getPropertyValue(name).trim();
+        const kit = window.getComputedStyle(graph_canvas.closest('.qsm-ui') || document.documentElement);
+        const token = function (name, fallback) {
+            const value = kit.getPropertyValue(name).trim();
             return value || fallback;
         };
-        var line_color = token('--qsm-blue', '#315efb');
-        var grid_color = token('--qsm-line-soft', '#edf0f5');
-        var text_color = token('--qsm-muted', '#657188');
-        var graph_ctx = graph_canvas.getContext("2d");
+        const line_color = token('--qsm-blue', '#315efb');
+        const grid_color = token('--qsm-line-soft', '#edf0f5');
+        const text_color = token('--qsm-muted', '#657188');
+        const graph_ctx = graph_canvas.getContext("2d");
         window.stats_graph = new Chart(graph_ctx, {
             type: 'line',
             data: {

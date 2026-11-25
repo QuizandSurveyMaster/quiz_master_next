@@ -1020,7 +1020,7 @@ class QMNGlobalSettingsPage {
 		<!-- set global setting popup start -->
 		<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-ui-popup" id="qsm-global-apply-default-popup" aria-hidden="true">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-				<div class="qsm-popup__container qsm-ui" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<dialog open class="qsm-popup__container qsm-ui" aria-modal="true" aria-labelledby="modal-1-title">
 					<form action="" method="POST" id="qsm-apply-global-settings-form">
 						<header class="qsm-popup__header qsm-ui-text">
 							<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Apply default settings to form', 'quiz-master-next' ); ?></h2>
@@ -1066,7 +1066,7 @@ class QMNGlobalSettingsPage {
 							<button class="qsm-ui-btn qsm-ui-btn-primary" type="submit" id="qsm-apply-global-default-btn"><?php esc_html_e( 'Apply', 'quiz-master-next' ); ?></button>
 						</footer>
 					</form>
-				</div>
+				</dialog>
 			</div>
 		</div>
 		<!-- set global setting popup end -->
@@ -1087,113 +1087,168 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	private static function render_kit_cards( $page, $groups, $section_callbacks = true ) {
-		global $wp_settings_sections, $wp_settings_fields;
+		global $wp_settings_sections;
 		if ( empty( $wp_settings_sections[ $page ] ) ) {
 			return;
 		}
+		list( $fields, $addon_sections ) = self::collect_kit_fields( $page, $section_callbacks );
+		foreach ( self::group_kit_fields( $groups, $fields ) as $card ) {
+			self::render_kit_card( $card[0], $card[1] );
+		}
+		foreach ( $addon_sections as $addon_section ) {
+			self::render_addon_section_card( $addon_section[0], $addon_section[1] );
+		}
+	}
+
+	/**
+	 * Whether a settings section or field callback belongs to this page (Core) rather than an add-on.
+	 *
+	 * @since 11.3.0
+	 * @param mixed $callback Section or field callback.
+	 * @return bool
+	 */
+	private static function is_core_callback( $callback ) {
+		return is_array( $callback ) && isset( $callback[0] ) && ( $callback[0] instanceof self || __CLASS__ === $callback[0] );
+	}
+
+	/**
+	 * Fields of Core's sections, and add-on sections with their own fields.
+	 *
+	 * Core section callbacks (the database update notice) print above the cards. A section an
+	 * add-on registers keeps its heading and intro, like do_settings_sections() prints them.
+	 *
+	 * @since 11.3.0
+	 * @param string $page              Settings page slug.
+	 * @param bool   $section_callbacks Print Core's section callbacks.
+	 * @return array array( fields, addon sections as array( section, fields ) ).
+	 */
+	private static function collect_kit_fields( $page, $section_callbacks ) {
+		global $wp_settings_sections, $wp_settings_fields;
 		$fields         = array();
 		$addon_sections = array();
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
-			// A section an add-on registers keeps its own heading and intro, like do_settings_sections() prints them: it gets a card of its own.
-			$callback = isset( $section['callback'] ) ? $section['callback'] : null;
-			if ( ! ( is_array( $callback ) && isset( $callback[0] ) && ( $callback[0] instanceof self || __CLASS__ === $callback[0] ) ) ) {
-				$addon_sections[] = array(
-					$section,
-					empty( $wp_settings_fields[ $page ][ $section['id'] ] ) ? array() : array_values( (array) $wp_settings_fields[ $page ][ $section['id'] ] ),
-				);
+			$section_fields = empty( $wp_settings_fields[ $page ][ $section['id'] ] ) ? array() : array_values( (array) $wp_settings_fields[ $page ][ $section['id'] ] );
+			if ( ! self::is_core_callback( isset( $section['callback'] ) ? $section['callback'] : null ) ) {
+				$addon_sections[] = array( $section, $section_fields );
 				continue;
 			}
-			if ( $section_callbacks && ! empty( $section['callback'] ) ) {
-				ob_start();
-				call_user_func( $section['callback'], $section );
-				$section_html = trim( ob_get_clean() );
+			if ( $section_callbacks ) {
+				$section_html = self::section_intro( $section );
 				if ( '' !== $section_html ) {
 					echo '<div class="qsm-ui-gs-notices">' . $section_html . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the section callback escapes its own output.
 				}
 			}
-			if ( ! empty( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
-				$fields = array_merge( $fields, array_values( (array) $wp_settings_fields[ $page ][ $section['id'] ] ) );
-			}
+			$fields = array_merge( $fields, $section_fields );
 		}
-		$placed = array();
-		$cards  = array();
+		return array( $fields, $addon_sections );
+	}
+
+	/**
+	 * Output of a section's callback.
+	 *
+	 * @since 11.3.0
+	 * @param array $section Settings section.
+	 * @return string
+	 */
+	private static function section_intro( $section ) {
+		if ( empty( $section['callback'] ) || ! is_callable( $section['callback'] ) ) {
+			return '';
+		}
+		ob_start();
+		call_user_func( $section['callback'], $section );
+		return trim( ob_get_clean() );
+	}
+
+	/**
+	 * Sorts fields into the listed cards. Fields no card lists go to the '*' card, or to "More settings".
+	 *
+	 * @since 11.3.0
+	 * @param array $groups Cards: title, description, fields, stacked.
+	 * @param array $fields Settings fields.
+	 * @return array array( group, rows ) per card.
+	 */
+	private static function group_kit_fields( $groups, $fields ) {
+		$placed    = array();
+		$cards     = array();
+		$catch_all = array(
+			'title'       => __( 'More settings', 'quiz-master-next' ),
+			'description' => __( 'Settings added by your add-ons.', 'quiz-master-next' ),
+		);
 		foreach ( $groups as $group ) {
 			if ( '*' === $group['fields'] ) {
+				$catch_all = $group;
 				continue;
 			}
 			$rows = array();
 			foreach ( $fields as $field ) {
 				if ( in_array( $field['id'], (array) $group['fields'], true ) ) {
-					$rows[]                  = $field;
+					$rows[]                 = $field;
 					$placed[ $field['id'] ] = true;
 				}
 			}
 			$cards[] = array( $group, $rows );
 		}
-		// The catch-all card: a '*' group, or "More settings" for fields no group lists (add-on fields).
 		$rest = array();
 		foreach ( $fields as $field ) {
 			if ( ! isset( $placed[ $field['id'] ] ) ) {
 				$rest[] = $field;
 			}
 		}
-		$catch_all = null;
-		foreach ( $groups as $group ) {
-			if ( '*' === $group['fields'] ) {
-				$catch_all = $group;
-			}
+		$cards[] = array( $catch_all, $rest );
+		return $cards;
+	}
+
+	/**
+	 * Prints one card of setting rows. Cards without rows are skipped.
+	 *
+	 * @since 11.3.0
+	 * @param array $group Card: title, description, stacked.
+	 * @param array $rows  Settings fields.
+	 * @return void
+	 */
+	private static function render_kit_card( $group, $rows ) {
+		if ( empty( $rows ) ) {
+			return;
 		}
-		if ( $rest ) {
-			$cards[] = array(
-				$catch_all ? $catch_all : array(
-					'title'       => __( 'More settings', 'quiz-master-next' ),
-					'description' => __( 'Settings added by your add-ons.', 'quiz-master-next' ),
-				),
-				$rest,
-			);
+		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			array(
+				'title'       => isset( $group['title'] ) ? $group['title'] : '',
+				'description' => isset( $group['description'] ) ? $group['description'] : '',
+				'class'       => 'qsm-ui-gs-card qsm-ui-text',
+			)
+		);
+		foreach ( $rows as $field ) {
+			self::render_kit_row( $field, ! empty( $group['stacked'] ) );
 		}
-		foreach ( $cards as $card ) {
-			list( $group, $rows ) = $card;
-			if ( empty( $rows ) ) {
-				continue;
-			}
-			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				array(
-					'title'       => isset( $group['title'] ) ? $group['title'] : '',
-					'description' => isset( $group['description'] ) ? $group['description'] : '',
-					'class'       => 'qsm-ui-gs-card qsm-ui-text',
-				)
-			);
-			foreach ( $rows as $field ) {
-				self::render_kit_row( $field, ! empty( $group['stacked'] ) );
-			}
-			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+	}
+
+	/**
+	 * Prints an add-on's settings section as its own card: its title, its intro, then its fields.
+	 *
+	 * @since 11.3.0
+	 * @param array $section Settings section.
+	 * @param array $rows    The section's fields.
+	 * @return void
+	 */
+	private static function render_addon_section_card( $section, $rows ) {
+		$intro = self::section_intro( $section );
+		if ( empty( $rows ) && '' === $intro ) {
+			return;
 		}
-		foreach ( $addon_sections as $addon_section ) {
-			list( $section, $rows ) = $addon_section;
-			$intro                  = '';
-			if ( ! empty( $section['callback'] ) && is_callable( $section['callback'] ) ) {
-				ob_start();
-				call_user_func( $section['callback'], $section );
-				$intro = trim( ob_get_clean() );
-			}
-			if ( empty( $rows ) && '' === $intro ) {
-				continue;
-			}
-			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
-				array(
-					'title' => '' !== (string) $section['title'] ? wp_strip_all_tags( $section['title'] ) : __( 'More settings', 'quiz-master-next' ),
-					'class' => 'qsm-ui-gs-card qsm-ui-text',
-				)
-			);
-			if ( '' !== $intro ) {
-				echo '<div class="qsm-ui-gs-section-intro">' . $intro . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the section callback escapes its own output.
-			}
-			foreach ( $rows as $field ) {
-				self::render_kit_row( $field );
-			}
-			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			array(
+				'title' => '' !== (string) $section['title'] ? wp_strip_all_tags( $section['title'] ) : __( 'More settings', 'quiz-master-next' ),
+				'class' => 'qsm-ui-gs-card qsm-ui-text',
+			)
+		);
+		if ( '' !== $intro ) {
+			echo '<div class="qsm-ui-gs-section-intro">' . $intro . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the section callback escapes its own output.
 		}
+		foreach ( $rows as $field ) {
+			self::render_kit_row( $field );
+		}
+		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 	}
 
 	/**
@@ -1261,28 +1316,54 @@ class QMNGlobalSettingsPage {
 		for ( $i = count( $matches[0] ) - 1; $i >= 0; $i-- ) {
 			$tag    = $matches[0][ $i ][0];
 			$offset = $matches[0][ $i ][1];
-			if ( preg_match( '/\baria-label(ledby)?\s*=/i', $tag ) ) {
+			if ( self::control_has_label( $tag, strtolower( $matches[1][ $i ][0] ), $html, $offset ) ) {
 				continue;
-			}
-			if ( 'input' === strtolower( $matches[1][ $i ][0] ) && preg_match( '/\btype\s*=\s*["\']?(hidden|submit|button|reset|image)\b/i', $tag ) ) {
-				continue;
-			}
-			if ( preg_match( '/\bid\s*=\s*["\']([^"\']+)["\']/i', $tag, $id ) && false !== strpos( $html, 'for="' . $id[1] . '"' ) ) {
-				continue;
-			}
-			$before = substr( $html, 0, $offset );
-			$open   = strripos( $before, '<label' );
-			if ( false !== $open && $open > (int) strripos( $before, '</label>' ) ) {
-				$close = stripos( $html, '</label>', $offset );
-				$text  = false === $close ? '' : trim( wp_strip_all_tags( substr( $html, $open, $close - $open ) ) );
-				if ( '' !== $text ) {
-					continue;
-				}
 			}
 			$labelled = preg_replace( '/\s*\/?>$/', ' aria-labelledby="' . esc_attr( $title_id ) . '"$0', $tag, 1 );
 			$html     = substr_replace( $html, $labelled, $offset, strlen( $tag ) );
 		}
 		return $html;
+	}
+
+	/**
+	 * Whether a control in a field's output already has a label (or needs none).
+	 *
+	 * @since 11.3.0
+	 * @param string $tag     The control's opening tag.
+	 * @param string $element input, select or textarea.
+	 * @param string $html    The field's whole output.
+	 * @param int    $offset  Where the tag starts in $html.
+	 * @return bool
+	 */
+	private static function control_has_label( $tag, $element, $html, $offset ) {
+		if ( preg_match( '/\baria-label(ledby)?\s*=/i', $tag ) ) {
+			return true;
+		}
+		if ( 'input' === $element && preg_match( '/\btype\s*=\s*["\']?(hidden|submit|button|reset|image)\b/i', $tag ) ) {
+			return true;
+		}
+		if ( preg_match( '/\bid\s*=\s*["\']([^"\']+)["\']/i', $tag, $id ) && false !== strpos( $html, 'for="' . $id[1] . '"' ) ) {
+			return true;
+		}
+		return self::inside_text_label( $html, $offset );
+	}
+
+	/**
+	 * Whether the position sits inside a <label> that has text. A switch (empty label) does not count.
+	 *
+	 * @since 11.3.0
+	 * @param string $html   Field output.
+	 * @param int    $offset Position of the control.
+	 * @return bool
+	 */
+	private static function inside_text_label( $html, $offset ) {
+		$before = substr( $html, 0, $offset );
+		$open   = strripos( $before, '<label' );
+		if ( false === $open || $open < (int) strripos( $before, '</label>' ) ) {
+			return false;
+		}
+		$close = stripos( $html, '</label>', $offset );
+		return false !== $close && '' !== trim( wp_strip_all_tags( substr( $html, $open, $close - $open ) ) );
 	}
 
 	/**
@@ -1457,8 +1538,8 @@ class QMNGlobalSettingsPage {
 		$qsm_not_allow_after_expired_time = ( isset( $globalQuizsetting['not_allow_after_expired_time'] ) && '' !== $globalQuizsetting['not_allow_after_expired_time'] ? $globalQuizsetting['not_allow_after_expired_time'] : '' );
 		?>
 		<fieldset class="buttonset buttonset-hide qsm_tab_content" data-hide="1" id="qsm-scheduled-time" style="padding-left:0">
-			<input autocomplete="off" class="qsm-date-picker qsm-ui-gs-date" type="text" placeholder="<?php esc_attr_e( 'Start Date', 'quiz-master-next'); ?> " id="qsm-scheduled-time-start-input" name="qsm-quiz-settings[scheduled_time_start]" value="<?php echo esc_attr($qsm_scheduled_time_start); ?>">
-			<input autocomplete="off" class="qsm-date-picker qsm-ui-gs-date" type="text" placeholder="<?php esc_attr_e( 'End Date', 'quiz-master-next'); ?>" id="scheduled_time_end-input" name="qsm-quiz-settings[scheduled_time_end]" value="<?php echo esc_attr($qsm_scheduled_time_end); ?>">
+			<input autocomplete="off" class="qsm-date-picker qsm-ui-gs-date" type="text" placeholder="<?php esc_attr_e( 'Start Date', 'quiz-master-next'); ?> " aria-label="<?php esc_attr_e( 'Start Date', 'quiz-master-next' ); ?>" id="qsm-scheduled-time-start-input" name="qsm-quiz-settings[scheduled_time_start]" value="<?php echo esc_attr($qsm_scheduled_time_start); ?>">
+			<input autocomplete="off" class="qsm-date-picker qsm-ui-gs-date" type="text" placeholder="<?php esc_attr_e( 'End Date', 'quiz-master-next'); ?>" aria-label="<?php esc_attr_e( 'End Date', 'quiz-master-next' ); ?>" id="scheduled_time_end-input" name="qsm-quiz-settings[scheduled_time_end]" value="<?php echo esc_attr($qsm_scheduled_time_end); ?>">
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="not_allow_after_expired_time">
 			<label class="qsm-option-label" for="not_allow_after_expired_time-1">
@@ -1564,7 +1645,7 @@ class QMNGlobalSettingsPage {
 		<fieldset class="buttonset buttonset-hide">
 			<input class="small-text" type="number" placeholder="" step="1" min="0" name="qsm-quiz-settings[timer_limit]" value="<?php echo esc_attr( $qsm_timer_limit ); ?>">
 			<?php esc_html_e( 'Minutes', 'quiz-master-next' ); ?>
-			<label class="qsm-opt-desc qsm-ui-gs-help"><?php esc_html_e( 'Set it to 0 or blank to remove the time restriction.', 'quiz-master-next' ); ?></label>
+			<span class="qsm-opt-desc qsm-ui-gs-help"><?php esc_html_e( 'Set it to 0 or blank to remove the time restriction.', 'quiz-master-next' ); ?></span>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide">
 			<label class="qsm-option-label" for="qsm-enable-result-after-timer-end">
@@ -1594,9 +1675,9 @@ class QMNGlobalSettingsPage {
 		<fieldset class="buttonset buttonset-hide">
 			<input class="small-text" type="number" placeholder="Set Limit" step="1" min="0" name="qsm-quiz-settings[end_quiz_if_wrong]" value="<?php echo esc_attr( $qsm_end_quiz_if_wrong ); ?>">
 			<?php esc_html_e( 'Incorrect answers will end the quiz', 'quiz-master-next'); ?>
-			<label class="qsm-opt-desc qsm-ui-gs-help">
+			<span class="qsm-opt-desc qsm-ui-gs-help">
 				<?php esc_html_e( 'Set it to 0 or blank to remove the Incorrect answers limit', 'quiz-master-next'); ?>
-			</label>
+			</span>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide">
 			<label class="qsm-option-label" for="qsm-disable-answer-onselect">
@@ -1731,7 +1812,7 @@ class QMNGlobalSettingsPage {
 			<?php esc_html_e('Show ', 'quiz-master-next'); ?>
 			<input class="small-text" type="number" placeholder="<?php esc_html_e('Set Limit', 'quiz-master-next'); ?>" step="1" min="0" name="qsm-quiz-settings[pagination]" value="<?php echo esc_attr( $qsm_pagination ); ?>">
 			<?php esc_html_e('Questions Per Page', 'quiz-master-next'); ?>
-			<label class="qsm-opt-desc qsm-ui-gs-help"><i><?php esc_html_e('Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.', 'quiz-master-next'); ?></i></label>
+			<span class="qsm-opt-desc qsm-ui-gs-help"><i><?php esc_html_e('Setting a limit overrides the quiz questions default pagination. Set it to 0 or blank for default pagination.', 'quiz-master-next'); ?></i></span>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-question-numbering">
@@ -1851,7 +1932,7 @@ class QMNGlobalSettingsPage {
 				<input type="text" class="qsm-image-input" name="qsm-quiz-settings[result_page_fb_image]" value="<?php echo esc_url( $qsm_result_page_fb_image ); ?>">
 				<a class="qsm-image-btn qsm-ui-btn"><span class="dashicons dashicons-format-image"></span><?php esc_html_e('Select Logo', 'quiz-master-next'); ?></a>
 			</div>
-			<label class="qsm-font-light qsm-ui-gs-note"><i><?php esc_html_e('This logo will be used for Facebook sharing. If left blank, QSM\'s logo will appear.', 'quiz-master-next'); ?></i></label>
+			<span class="qsm-font-light qsm-ui-gs-note"><i><?php esc_html_e('This logo will be used for Facebook sharing. If left blank, QSM\'s logo will appear.', 'quiz-master-next'); ?></i></span>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1">
 			<label class="qsm-option-label" for="qsm-ajax-show-correct">

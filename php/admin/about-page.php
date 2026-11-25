@@ -95,18 +95,7 @@ function qsm_about_us_tab() {
 	<?php
 	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 
-	$contributors = get_transient( 'qmn_contributors' );
-	if ( false === $contributors ) {
-		$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
-		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$contributors = array();
-		} else {
-			$contributors = json_decode( wp_remote_retrieve_body( $response ) );
-		}
-		if ( is_array( $contributors ) && ! empty( $contributors ) ) {
-			set_transient( 'qmn_contributors', $contributors, 3600 );
-		}
-	}
+	$contributors = qsm_about_get_contributors();
 	$repo_button = QSM_Admin_UI::button(
 		__( 'View GitHub Repo', 'quiz-master-next' ),
 		array(
@@ -151,6 +140,29 @@ function qsm_about_us_tab() {
 		echo QSM_Admin_UI::empty_state( array( 'icon' => 'users', 'title' => __( 'Contributors could not be loaded', 'quiz-master-next' ), 'text' => __( 'GitHub did not respond. See the full list on the GitHub repo.', 'quiz-master-next' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 	}
 	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+}
+
+/**
+ * GitHub contributors, cached for an hour.
+ *
+ * @since 11.3.0
+ * @return array Contributor objects from the GitHub API; empty when GitHub does not answer.
+ */
+function qsm_about_get_contributors() {
+	$contributors = get_transient( 'qmn_contributors' );
+	if ( false !== $contributors ) {
+		return is_array( $contributors ) ? $contributors : array();
+	}
+	$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
+	if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		return array();
+	}
+	$contributors = json_decode( wp_remote_retrieve_body( $response ) );
+	if ( ! is_array( $contributors ) || empty( $contributors ) ) {
+		return array();
+	}
+	set_transient( 'qmn_contributors', $contributors, 3600 );
+	return $contributors;
 }
 
 /**
@@ -222,19 +234,6 @@ function qsm_documentation_meta_box_content() {
  */
 function qsm_about_system_info_tab() {
 	$sections = qsm_get_system_info_sections();
-	$plain    = array();
-	foreach ( $sections as $section ) {
-		$plain[] = '### ' . $section['title'] . ' ###';
-		foreach ( $section['groups'] as $group ) {
-			if ( '' !== $group['title'] ) {
-				$plain[] = '-- ' . $group['title'];
-			}
-			foreach ( $group['rows'] as $row ) {
-				$plain[] = ( '' !== $row[0] ? $row[0] . ': ' : '' ) . $row[1];
-			}
-		}
-		$plain[] = '';
-	}
 	$copy = QSM_Admin_UI::button(
 		__( 'Copy system info', 'quiz-master-next' ),
 		array(
@@ -253,24 +252,58 @@ function qsm_about_system_info_tab() {
 	);
 	?>
 	<label class="qsm-ui-sr" for="qsm-system-info-text"><?php esc_html_e( 'System info', 'quiz-master-next' ); ?></label>
-	<textarea id="qsm-system-info-text" class="qsm-ui-sr" readonly tabindex="-1"><?php echo esc_textarea( implode( "\n", $plain ) ); ?></textarea>
+	<textarea id="qsm-system-info-text" class="qsm-ui-sr" readonly tabindex="-1"><?php echo esc_textarea( qsm_system_info_plain_text( $sections ) ); ?></textarea>
 	<?php
+	array_map( 'qsm_system_info_render_section', $sections );
+	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+}
+
+/**
+ * The system info report as plain text, for the copy button.
+ *
+ * @since 11.3.0
+ * @param array[] $sections From qsm_get_system_info_sections().
+ * @return string
+ */
+function qsm_system_info_plain_text( $sections ) {
+	$lines = array();
 	foreach ( $sections as $section ) {
-		echo '<section class="qsm-ui-sysinfo-section">';
-		echo '<h4 class="qsm-ui-sysinfo-title">' . esc_html( $section['title'] ) . '</h4>';
+		$lines[] = '### ' . $section['title'] . ' ###';
 		foreach ( $section['groups'] as $group ) {
 			if ( '' !== $group['title'] ) {
-				echo '<p class="qsm-ui-overline">' . esc_html( $group['title'] ) . '</p>';
+				$lines[] = '-- ' . $group['title'];
 			}
-			echo '<table class="qsm-ui-kv"><tbody>';
 			foreach ( $group['rows'] as $row ) {
-				echo '<tr>' . ( '' !== $row[0] ? '<th scope="row">' . esc_html( $row[0] ) . '</th><td>' : '<td colspan="2">' ) . esc_html( $row[1] ) . '</td></tr>';
+				$lines[] = ( '' !== $row[0] ? $row[0] . ': ' : '' ) . $row[1];
 			}
-			echo '</tbody></table>';
 		}
-		echo '</section>';
+		$lines[] = '';
 	}
-	echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+	return implode( "\n", $lines );
+}
+
+/**
+ * Prints one system info section: a heading, then a label/value table per group.
+ *
+ * @since 11.3.0
+ * @param array $section One entry of qsm_get_system_info_sections().
+ * @return void
+ */
+function qsm_system_info_render_section( $section ) {
+	echo '<section class="qsm-ui-sysinfo-section">';
+	echo '<h4 class="qsm-ui-sysinfo-title">' . esc_html( $section['title'] ) . '</h4>';
+	foreach ( $section['groups'] as $group ) {
+		if ( '' !== $group['title'] ) {
+			echo '<p class="qsm-ui-overline">' . esc_html( $group['title'] ) . '</p>';
+		}
+		echo '<table class="qsm-ui-kv"><tbody>';
+		foreach ( $group['rows'] as $row ) {
+			$label = '' !== $row[0] ? '<th scope="row">' . esc_html( $row[0] ) . '</th><td>' : '<td colspan="2">';
+			echo '<tr>' . $label . esc_html( $row[1] ) . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $label is built from escaped parts.
+		}
+		echo '</tbody></table>';
+	}
+	echo '</section>';
 }
 
 /**
@@ -295,11 +328,7 @@ function qsm_get_system_info_sections() {
 
 	$theme_data   = wp_get_theme();
 	$theme        = $theme_data->Name . ' ' . $theme_data->Version;
-	$parent_theme = $theme_data->Template;
-	if ( ! empty( $parent_theme ) ) {
-		$parent_theme_data = wp_get_theme( $parent_theme );
-		$parent_theme      = $parent_theme_data->Name . ' ' . $parent_theme_data->Version;
-	}
+	$parent_theme = qsm_system_info_parent_theme( $theme_data );
 	$yes_no = function ( $on ) {
 		return $on ? __( 'Yes', 'quiz-master-next' ) : __( 'No', 'quiz-master-next' );
 	};
@@ -329,7 +358,7 @@ function qsm_get_system_info_sections() {
 					array( __( 'Permalink Structure', 'quiz-master-next' ), get_option( 'permalink_structure' ) ? get_option( 'permalink_structure' ) : __( 'Default', 'quiz-master-next' ) ),
 					array( __( 'Active Theme', 'quiz-master-next' ), $theme ),
 					array( __( 'Parent Theme', 'quiz-master-next' ), $parent_theme ? $parent_theme : '—' ),
-					array( __( 'Debug Mode', 'quiz-master-next' ), defined( 'WP_DEBUG' ) ? ( WP_DEBUG ? __( 'Enabled', 'quiz-master-next' ) : __( 'Disabled', 'quiz-master-next' ) ) : __( 'Not set', 'quiz-master-next' ) ),
+					array( __( 'Debug Mode', 'quiz-master-next' ), qsm_system_info_debug_mode() ),
 					array( __( 'Memory Limit', 'quiz-master-next' ), WP_MEMORY_LIMIT ),
 				),
 			),
@@ -370,51 +399,13 @@ function qsm_get_system_info_sections() {
 		),
 	);
 
-	$plugin_groups = array();
-	$plugin_mu     = get_mu_plugins();
-	if ( count( $plugin_mu ) > 0 ) {
-		$rows = array();
-		foreach ( $plugin_mu as $plugin_data ) {
-			$rows[] = array( $plugin_data['Name'], $plugin_data['Version'] );
-		}
-		$plugin_groups[] = array(
-			'title' => __( 'Must Use', 'quiz-master-next' ),
-			'rows'  => $rows,
-		);
-	}
-	$plugins        = get_plugins();
-	$active_plugins = get_option( 'active_plugins', array() );
-	$active_rows    = array();
-	$inactive_rows  = array();
-	foreach ( $plugins as $plugin_path => $plugin ) {
-		if ( in_array( $plugin_path, $active_plugins, true ) ) {
-			$active_rows[] = array( $plugin['Name'], $plugin['Version'] );
-		} else {
-			$inactive_rows[] = array( $plugin['Name'], $plugin['Version'] );
-		}
-	}
-	$plugin_groups[] = array(
-		'title' => __( 'Active', 'quiz-master-next' ),
-		'rows'  => $active_rows ? $active_rows : array( array( '', __( 'None', 'quiz-master-next' ) ) ),
-	);
-	$plugin_groups[] = array(
-		'title' => __( 'Inactive', 'quiz-master-next' ),
-		'rows'  => $inactive_rows ? $inactive_rows : array( array( '', __( 'None', 'quiz-master-next' ) ) ),
-	);
+	$plugin_groups = qsm_system_info_plugin_groups();
 	$sections[] = array(
 		'title'  => __( 'Plugins Information', 'quiz-master-next' ),
 		'groups' => $plugin_groups,
 	);
 
-	$log_rows      = array();
-	$recent_errors = $mlwQuizMasterNext->log_manager->get_logs();
-	if ( $recent_errors ) {
-		foreach ( $recent_errors as $error ) {
-			$log_rows[] = array( $error->post_date, $error->post_title . ' - ' . $error->post_content );
-		}
-	} else {
-		$log_rows[] = array( '', __( 'No recent logs', 'quiz-master-next' ) );
-	}
+	$log_rows = qsm_system_info_log_rows();
 	$sections[] = array(
 		'title'  => __( 'QSM Recent Logs', 'quiz-master-next' ),
 		'groups' => array(
@@ -426,6 +417,93 @@ function qsm_get_system_info_sections() {
 	);
 
 	return $sections;
+}
+
+/**
+ * WP_DEBUG as Enabled / Disabled / Not set.
+ *
+ * @since 11.3.0
+ * @return string
+ */
+function qsm_system_info_debug_mode() {
+	if ( ! defined( 'WP_DEBUG' ) ) {
+		return __( 'Not set', 'quiz-master-next' );
+	}
+	return WP_DEBUG ? __( 'Enabled', 'quiz-master-next' ) : __( 'Disabled', 'quiz-master-next' );
+}
+
+/**
+ * Name and version of the parent theme, or the template slug when there is none.
+ *
+ * @since 11.3.0
+ * @param WP_Theme $theme_data Active theme.
+ * @return string
+ */
+function qsm_system_info_parent_theme( $theme_data ) {
+	$parent_theme = $theme_data->Template;
+	if ( empty( $parent_theme ) ) {
+		return $parent_theme;
+	}
+	$parent_theme_data = wp_get_theme( $parent_theme );
+	return $parent_theme_data->Name . ' ' . $parent_theme_data->Version;
+}
+
+/**
+ * Must-use, active and inactive plugins as system info groups.
+ *
+ * @since 11.3.0
+ * @return array[]
+ */
+function qsm_system_info_plugin_groups() {
+	$none          = array( array( '', __( 'None', 'quiz-master-next' ) ) );
+	$plugin_groups = array();
+	$mu_rows       = array();
+	foreach ( get_mu_plugins() as $plugin_data ) {
+		$mu_rows[] = array( $plugin_data['Name'], $plugin_data['Version'] );
+	}
+	if ( $mu_rows ) {
+		$plugin_groups[] = array(
+			'title' => __( 'Must Use', 'quiz-master-next' ),
+			'rows'  => $mu_rows,
+		);
+	}
+	$active_plugins = get_option( 'active_plugins', array() );
+	$rows           = array(
+		'active'   => array(),
+		'inactive' => array(),
+	);
+	foreach ( get_plugins() as $plugin_path => $plugin ) {
+		$state            = in_array( $plugin_path, $active_plugins, true ) ? 'active' : 'inactive';
+		$rows[ $state ][] = array( $plugin['Name'], $plugin['Version'] );
+	}
+	$plugin_groups[] = array(
+		'title' => __( 'Active', 'quiz-master-next' ),
+		'rows'  => $rows['active'] ? $rows['active'] : $none,
+	);
+	$plugin_groups[] = array(
+		'title' => __( 'Inactive', 'quiz-master-next' ),
+		'rows'  => $rows['inactive'] ? $rows['inactive'] : $none,
+	);
+	return $plugin_groups;
+}
+
+/**
+ * Recent QSM log entries as system info rows.
+ *
+ * @since 11.3.0
+ * @return array[]
+ */
+function qsm_system_info_log_rows() {
+	global $mlwQuizMasterNext;
+	$recent_errors = $mlwQuizMasterNext->log_manager->get_logs();
+	if ( ! $recent_errors ) {
+		return array( array( '', __( 'No recent logs', 'quiz-master-next' ) ) );
+	}
+	$log_rows = array();
+	foreach ( $recent_errors as $error ) {
+		$log_rows[] = array( $error->post_date, $error->post_title . ' - ' . $error->post_content );
+	}
+	return $log_rows;
 }
 
 /**
