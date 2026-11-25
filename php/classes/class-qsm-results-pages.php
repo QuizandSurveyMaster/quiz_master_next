@@ -503,6 +503,15 @@ class QSM_Results_Pages {
 
 		$is_not_allow_html = apply_filters( 'qsm_admin_results_page_disallow_html', true );
 
+		/*
+		 * Sites whose QSM tables were never converted to utf8mb4 still store
+		 * message_after as 3-byte utf8. wpdb rejects the WHOLE update when the
+		 * value holds a 4-byte character (emoji), so encode those as HTML
+		 * entities first — the same thing core does for post_content.
+		 */
+		$column_charset = $wpdb->get_col_charset( $wpdb->prefix . 'mlw_quizzes', 'message_after' );
+		$encode_emoji   = in_array( $column_charset, array( 'utf8', 'utf8mb3' ), true );
+
 		// Sanitizes data in pages.
 		$total = count( $pages );
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -561,6 +570,9 @@ class QSM_Results_Pages {
 				$pages[ $i ]['page']  = wp_kses_post( $pages[ $i ]['page'] );
 			}
 			$pages[ $i ]['default_mark'] = sanitize_text_field( $pages[ $i ]['default_mark'] );
+			if ( $encode_emoji && isset( $pages[ $i ]['page'] ) ) {
+				$pages[ $i ]['page'] = wp_encode_emoji( $pages[ $i ]['page'] );
+			}
 
 			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 			if ( ! empty( $pages[ $i ]['redirect'] ) ) {
