@@ -1045,6 +1045,11 @@
 .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:focus { box-shadow: none; }
 .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:visited { color: var(--qsm-muted); }
 .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"] { color: var(--qsm-blue); }
+/* These headers and tab bars sit on the grey admin background (#f0f0f1), where the kit's muted grey and blue
+ * fall just under 4.5:1. One step darker passes WCAG AA there. */
+.qsm-ui.wrap .qsm-ui-page-header .qsm-ui-subtitle, .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab, .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:visited { color: #5c6880; }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab:hover { color: var(--qsm-ink); }
+.qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"] { color: #2b55e6; }
 .qsm-ui .qsm-ui-page-tabs a.qsm-ui-tab[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
 .qsm-ui .qsm-ui-card-head .qsm-ui-badge { flex: none; }
 
@@ -1081,10 +1086,10 @@
 .qsm-ui .qsm-ui-gs-addon-tabs a.nav-tab.nav-tab-active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--qsm-blue); }
 /* Quiz Default Options panels: qsm-admin.js moves .current between these links. */
 .qsm-ui .qsm-ui-gs-subtabs { display: flex; margin: -6px 0 18px; }
-.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab { color: var(--qsm-muted); text-decoration: none; }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab { color: #5c6880; text-decoration: none; }
 .qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:focus { box-shadow: none; }
 .qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:hover { background: #eef1f6; color: var(--qsm-ink); }
-.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab.current { background: var(--qsm-blue-soft); color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab.current { background: var(--qsm-blue-soft); color: #2b55e6; }
 .qsm-ui .qsm-ui-gs-subtabs a.qsm-ui-tab:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 1px; }
 .qsm-ui .qsm-ui-gs-main { min-width: 0; }
 .qsm-ui .qsm-ui-gs-notices { margin-bottom: 16px; }
@@ -1116,7 +1121,7 @@
 .qsm-ui .qsm-ui-gs-row.is-core fieldset > label:last-child, .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > label:not(.qsm-ui-gs-switch):last-child { margin-bottom: 0 !important; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > br, .qsm-ui .qsm-ui-gs-row.is-core fieldset > br { display: none; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="checkbox"], .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input[type="radio"] {
-	appearance: none; -webkit-appearance: none; display: inline-grid; place-content: center; width: 18px; height: 18px; min-width: 18px; margin: 0 8px 0 0;
+	appearance: none; -webkit-appearance: none; display: inline-grid; place-content: center; width: 18px; height: 18px; min-width: 18px; margin: 0; margin-inline-end: 8px;
 	border: 1.5px solid #aeb8c8; background: #fff; box-shadow: none; cursor: pointer; transition: all .12s;
 	/* Centre the box on the first text line whatever the font metrics: top of the line box plus half the leftover line height. */
 	font-size: inherit; vertical-align: top; margin-top: calc((1.5em - 18px) / 2);
@@ -1129,7 +1134,7 @@
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:checked { border-color: var(--qsm-blue); background: var(--qsm-blue); }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:checked::after { opacity: 1; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:focus { box-shadow: none; }
-.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:focus-visible { outline: 3px solid var(--qsm-blue-ring); outline-offset: 1px; }
+.qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
 .qsm-ui .qsm-ui-gs-row.is-core label:not(.qsm-ui-gs-switch) > input:disabled { background: #f2f4f8; border-color: #d5dbe6; cursor: not-allowed; }
 /* Switches (.qsm-checkbox-switch + .qsm-switch-slider) in the kit switch size and colours. */
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch { width: 42px; height: 24px; margin: 0; vertical-align: middle; }
@@ -1139,7 +1144,7 @@
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:checked + .qsm-ui-gs-slider::before { transform: translateX(18px); }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus + .qsm-ui-gs-slider { box-shadow: none; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 3px solid var(--qsm-blue-ring); outline-offset: 2px; }
-.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch + .global-sub-text { margin-left: 12px; vertical-align: middle; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch + .global-sub-text { margin-inline-start: 12px; vertical-align: middle; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > .qsm-ui-gs-switch:first-child { margin-top: 9px; }
 .qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-control > p > .qsm-ui-gs-switch { margin-top: 0; }
 /* Text, number, email, url, date inputs and selects. */
@@ -1149,20 +1154,20 @@
 	color: var(--qsm-ink); font: 14px/1.4 var(--qsm-font); vertical-align: middle;
 }
 .qsm-ui .qsm-ui-gs-row.is-core input[type="number"], .qsm-ui .qsm-ui-gs-row.is-core input.small-text { width: 110px; }
-.qsm-ui .qsm-ui-gs-row.is-core select { width: auto; max-width: 100%; padding-right: 32px; }
+.qsm-ui .qsm-ui-gs-row.is-core select { width: auto; max-width: 100%; padding-inline-end: 32px; }
 .qsm-ui .qsm-ui-gs-row.is-core label > input[type="number"], .qsm-ui .qsm-ui-gs-row.is-core label > input[type="text"], .qsm-ui .qsm-ui-gs-row.is-core label > select { margin: 0 6px; }
 .qsm-ui .qsm-ui-gs-row.is-core input[type="text"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="email"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="url"]:focus, .qsm-ui .qsm-ui-gs-row.is-core input[type="number"]:focus, .qsm-ui .qsm-ui-gs-row.is-core select:focus { border-color: #809aff; outline: 3px solid var(--qsm-blue-ring); box-shadow: none; }
 .qsm-ui .qsm-ui-gs-row.is-core input[readonly] { background-color: var(--qsm-surface-2); color: var(--qsm-ink-2); font-family: var(--qsm-mono); font-size: 13px; }
-.qsm-ui .qsm-ui-gs-row.is-core .qsm-api-key-input + .qsm-ui-btn { margin-left: 8px; vertical-align: middle; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-api-key-input + .qsm-ui-btn { margin-inline-start: 8px; vertical-align: middle; }
 
 @media (max-width: 782px) {
 	.qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { padding: 10px 16px; }
 	.qsm-ui .qsm-ui-tools-restore-row .qsm-ui-select { min-width: 0; width: 100%; }
 }
-.qsm-ui .qsm-ui-gs-row.is-core input.qsm-ui-gs-date { width: 200px; margin: 0 8px 8px 0; }
+.qsm-ui .qsm-ui-gs-row.is-core input.qsm-ui-gs-date { width: 200px; margin: 0 0 8px; margin-inline-end: 8px; }
 /* Tools tables: the checkbox and ID columns take only the width they need, so the text columns get the rest. */
-.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check, .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-id { width: 1%; padding-right: 24px; white-space: nowrap; }
-.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check { padding-right: 8px; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check, .qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-id { width: 1%; padding-inline-end: 24px; white-space: nowrap; }
+.qsm-ui .qsm-ui-tools-card .qsm-ui-table .qsm-ui-col-check { padding-inline-end: 8px; }
 .qsm-ui .qsm-ui-tools-card .qsm-ui-table td.qsm-ui-col-id { font-variant-numeric: tabular-nums; }
 
 /* Tools > Migration (Database Migration screen): progress bar (N-04) and status notices. qsm-database-migration-script.js
@@ -1190,12 +1195,23 @@
 .qsm-ui table.qsm-ui-fs-table input[type="checkbox"]:checked::before { filter: brightness(0) invert(1); margin: -1px 0 0 -2px; }
 .qsm-ui table.qsm-ui-fs-table td.colspanchange { padding: 28px 16px; color: var(--qsm-muted); text-align: center; }
 .qsm-ui table.qsm-ui-fs-table .qsm-ui-btn-sm { min-height: 30px; }
+/* At 782px core turns list tables into stacked rows keyed on a primary column this table does not have, so
+ * the column labels landed on top of the values. Keep it a normal table that scrolls sideways instead. */
+@media screen and (max-width: 782px) {
+	.qsm-ui .qsm-ui-fs-form { overflow-x: auto; }
+	.qsm-ui table.qsm-ui-fs-table { min-width: 680px; table-layout: auto; }
+	.qsm-ui table.qsm-ui-fs-table tr { display: table-row !important; }
+	.qsm-ui table.qsm-ui-fs-table tr th:not(.hidden), .qsm-ui table.qsm-ui-fs-table tr td:not(.hidden) { display: table-cell !important; position: static !important; width: auto !important; padding: 11px 14px !important; }
+	.qsm-ui table.qsm-ui-fs-table tr th.check-column, .qsm-ui table.qsm-ui-fs-table tr td.check-column, .qsm-ui table.qsm-ui-fs-table tr th.column-cb, .qsm-ui table.qsm-ui-fs-table tr td.column-cb { width: 44px !important; padding-inline-end: 0 !important; }
+	.qsm-ui table.qsm-ui-fs-table tr td::before { content: none !important; display: none !important; }
+	.qsm-ui table.qsm-ui-fs-table .toggle-row { display: none; }
+}
 /* Bulk actions and pagination above / below the table. */
-.qsm-ui .qsm-ui-fs-form select { height: var(--qsm-control-h-sm); min-height: 0; padding: 0 30px 0 10px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-ui-fs-form select { height: var(--qsm-control-h-sm); min-height: 0; padding-block: 0; padding-inline: 10px 30px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); color: var(--qsm-ink); font-size: 13px; }
 .qsm-ui .qsm-ui-fs-form input[type="submit"] { height: var(--qsm-control-h-sm); min-height: 0; padding: 0 12px; border: 1px solid var(--qsm-input); border-radius: var(--qsm-radius); background: #fff; color: var(--qsm-ink-2); font-weight: 600; }
 .qsm-ui .qsm-ui-fs-form input[type="submit"]:hover { background: #f7f9fc; }
 /* Result of a resubmit / delete (qsm-admin.js toggles notice-success / notice-error). */
-.qsm-ui .qsm-ui-fs-notice { margin: 0 0 16px; border: 1px solid #cdd8ff; border-left-width: 1px; border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); box-shadow: none; }
+.qsm-ui .qsm-ui-fs-notice { margin: 0 0 16px; border: 1px solid #cdd8ff; border-radius: var(--qsm-radius-md); background: var(--qsm-blue-soft); box-shadow: none; }
 .qsm-ui .qsm-ui-fs-notice.notice-success { border-color: var(--qsm-green-line); background: var(--qsm-green-bg); color: #0d4f35; }
 .qsm-ui .qsm-ui-fs-notice.notice-error { border-color: var(--qsm-red-line); background: var(--qsm-red-bg); color: #8a1527; }
 
@@ -1224,3 +1240,27 @@
 .qsm-ui .qsm-ui-sysinfo-card .qsm-ui-overline { margin-top: 12px; }
 .qsm-ui .qsm-ui-sysinfo-card .qsm-ui-kv th { width: 280px; }
 .qsm-ui .qsm-ui-sysinfo-card .qsm-ui-kv td { word-break: break-word; }
+
+/* Focus: the kit's pale ring (--qsm-blue-ring) is hard to see on white. These pages use a solid blue ring
+ * (3:1 or better against white and the grey admin background) for buttons, checkboxes, switches and text fields. */
+.qsm-ui.wrap .qsm-ui-btn:focus-visible, .qsm-ui-popup .qsm-ui-btn:focus-visible, .qsm-ui.wrap .qsm-ui-check input:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
+.qsm-ui .qsm-ui-gs-row.is-core .qsm-ui-gs-switch input:focus-visible + .qsm-ui-gs-slider { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
+.qsm-ui.wrap .qsm-ui-input:focus-visible, .qsm-ui.wrap .qsm-ui-select:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 0; }
+
+/* ---------- RTL (body.rtl) for these admin pages ----------
+ * Rules above use logical properties. These flip the kit base rules and the legacy QSM rules these pages rely on
+ * that are still written with left / right.
+ */
+.rtl .qsm-ui .qsm-ui-table th, .rtl .qsm-ui .qsm-ui-kv th { text-align: right; }
+.rtl .qsm-ui .qsm-ui-table .qsm-ui-num, .rtl .qsm-ui .qsm-ui-table .qsm-ui-col-actions { text-align: left; }
+.rtl .qsm-ui .qsm-ui-table .qsm-ui-col-check { padding-right: 14px; padding-left: 0; }
+.rtl .qsm-ui .qsm-ui-select { padding-right: 12px; padding-left: 36px; background-position: left 13px center; }
+.rtl .qsm-ui-toasts { right: auto; left: 20px; }
+.rtl .qsm-ui-toasts .qsm-ui-toast-action { margin-left: 0; margin-right: auto; }
+.rtl .qsm-ui .qsm-ui-modal-foot .qsm-ui-foot-left { margin-right: 0; margin-left: auto; }
+.rtl .qsm-ui .qsm-ui-gs-row.is-core input.qsm-ui-gs-date { padding-right: 10px; padding-left: 30px; background-position: left 10px center; }
+/* Save bar: core puts the admin menu on the right in RTL, so the fixed bar starts from the left edge instead. */
+.rtl .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { left: 0 !important; right: 160px; }
+.rtl.folded .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 36px; }
+@media screen and (max-width: 960px) { .rtl.auto-fold .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 36px; } }
+@media screen and (max-width: 782px) { .rtl .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 0; } }

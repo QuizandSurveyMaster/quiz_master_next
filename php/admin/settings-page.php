@@ -895,7 +895,7 @@ class QMNGlobalSettingsPage {
 					foreach ( $default_option_sections as $section_id => $section ) {
 						// qsm-admin.js switches the panels on .quiz_style_tab (data-id = panel id, .current = selected).
 						?>
-						<a href="javascript:void(0)" role="tab" data-id="<?php echo esc_attr( $section_id ); ?>" class="qsm-ui-tab quiz_style_tab<?php echo $first ? ' current' : ''; ?>" aria-selected="<?php echo $first ? 'true' : 'false'; ?>"><?php echo esc_html( $section['label'] ); ?></a>
+						<a href="javascript:void(0)" role="tab" id="<?php echo esc_attr( 'qsm-gs-tab-' . $section_id ); ?>" aria-controls="<?php echo esc_attr( $section_id ); ?>" data-id="<?php echo esc_attr( $section_id ); ?>" class="qsm-ui-tab quiz_style_tab<?php echo $first ? ' current' : ''; ?>" aria-selected="<?php echo $first ? 'true' : 'false'; ?>" tabindex="<?php echo $first ? '0' : '-1'; ?>"><?php echo esc_html( $section['label'] ); ?></a>
 						<?php
 						$first = false;
 					}
@@ -966,7 +966,7 @@ class QMNGlobalSettingsPage {
 								$first = true;
 								foreach ( $default_option_sections as $section_id => $section ) {
 									?>
-									<div id="<?php echo esc_attr( $section_id ); ?>" class="quiz_style_tab_content"<?php echo $first ? '' : ' style="display:none"'; ?>>
+									<div id="<?php echo esc_attr( $section_id ); ?>" class="quiz_style_tab_content" role="tabpanel" aria-labelledby="<?php echo esc_attr( 'qsm-gs-tab-' . $section_id ); ?>"<?php echo $first ? '' : ' style="display:none"'; ?>>
 										<?php
 										self::render_kit_cards(
 											$section['page'],
@@ -1186,24 +1186,71 @@ class QMNGlobalSettingsPage {
 		if ( ! empty( $args['class'] ) ) {
 			$classes[] = $args['class'];
 		}
+		$title_id = 'qsm-gs-title-' . sanitize_html_class( $field['id'] );
 		?>
 		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-qsm-setting="<?php echo esc_attr( $field['id'] ); ?>">
 			<div class="qsm-ui-setting-label">
 				<?php if ( ! empty( $args['label_for'] ) ) { ?>
 					<label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php echo wp_kses_post( $field['title'] ); ?></label>
 				<?php } else { ?>
-					<?php echo wp_kses_post( $field['title'] ); ?>
+					<span id="<?php echo esc_attr( $title_id ); ?>"><?php echo wp_kses_post( $field['title'] ); ?></span>
 				<?php } ?>
 			</div>
 			<div class="qsm-ui-gs-control">
 				<?php
 				if ( is_callable( $callback ) ) {
+					ob_start();
 					call_user_func( $callback, $args );
+					$control = ob_get_clean();
+					echo empty( $args['label_for'] ) ? self::label_controls( $control, $title_id ) : $control; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the field callback escapes its own output.
 				}
 				?>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Points controls that have no label of their own at the row title, so screen readers announce them.
+	 *
+	 * A control counts as labelled when it sits inside a <label> with text, has aria-label(ledby),
+	 * or another label in the row names its id. Switches (an empty label around the checkbox) are not.
+	 *
+	 * @since 11.3.0
+	 * @param string $html     Field callback output.
+	 * @param string $title_id Id of the row title.
+	 * @return string
+	 */
+	private static function label_controls( $html, $title_id ) {
+		if ( ! preg_match_all( '/<(input|select|textarea)\b[^>]*>/i', $html, $matches, PREG_OFFSET_CAPTURE ) ) {
+			return $html;
+		}
+		// Walk backwards so earlier offsets stay valid while tags grow.
+		for ( $i = count( $matches[0] ) - 1; $i >= 0; $i-- ) {
+			$tag    = $matches[0][ $i ][0];
+			$offset = $matches[0][ $i ][1];
+			if ( preg_match( '/\baria-label(ledby)?\s*=/i', $tag ) ) {
+				continue;
+			}
+			if ( 'input' === strtolower( $matches[1][ $i ][0] ) && preg_match( '/\btype\s*=\s*["\']?(hidden|submit|button|reset|image)\b/i', $tag ) ) {
+				continue;
+			}
+			if ( preg_match( '/\bid\s*=\s*["\']([^"\']+)["\']/i', $tag, $id ) && false !== strpos( $html, 'for="' . $id[1] . '"' ) ) {
+				continue;
+			}
+			$before = substr( $html, 0, $offset );
+			$open   = strripos( $before, '<label' );
+			if ( false !== $open && $open > (int) strripos( $before, '</label>' ) ) {
+				$close = stripos( $html, '</label>', $offset );
+				$text  = false === $close ? '' : trim( wp_strip_all_tags( substr( $html, $open, $close - $open ) ) );
+				if ( '' !== $text ) {
+					continue;
+				}
+			}
+			$labelled = preg_replace( '/\s*\/?>$/', ' aria-labelledby="' . esc_attr( $title_id ) . '"$0', $tag, 1 );
+			$html     = substr_replace( $html, $labelled, $offset, strlen( $tag ) );
+		}
+		return $html;
 	}
 
 	/**
@@ -1383,9 +1430,11 @@ class QMNGlobalSettingsPage {
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="not_allow_after_expired_time">
 			<label class="qsm-option-label" for="not_allow_after_expired_time-1">
-				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" <?php checked( $qsm_not_allow_after_expired_time, 1 ); ?> >
+				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" aria-describedby="not_allow_after_expired_time-hint" <?php checked( $qsm_not_allow_after_expired_time, 1 ); ?> >
 				<?php esc_html_e( 'Do not allow quiz submission after the end date/time', 'quiz-master-next'); ?>
 			</label>
+			<?php // qsm-admin.js shows this while the checkbox is disabled (no end date yet). ?>
+			<span id="not_allow_after_expired_time-hint" class="qsm-ui-gs-help"><?php esc_html_e( 'Set an end date to turn this on.', 'quiz-master-next' ); ?></span>
 		</fieldset>
 		<?php
 	}
@@ -1401,13 +1450,13 @@ class QMNGlobalSettingsPage {
 		$qsm_question_per_category = ( isset( $globalQuizsetting['question_per_category'] ) && '' !== $globalQuizsetting['question_per_category'] ? $globalQuizsetting['question_per_category'] : '0' );
 		?>
 		<fieldset class="buttonset buttonset-hide qsm-p-b-10" data-hide="1" id="qsm-question-from-total">
-			<input class="small-text" type="number" step="1" min="0" id="qsm-question-from-total-input" name="qsm-quiz-settings[question_from_total]" value="<?php echo esc_attr( $qsm_question_from_total ); ?>">
-			<?php esc_html_e( 'Maximum question limit', 'quiz-master-next'); ?>
+			<input class="small-text" type="number" step="1" min="0" id="qsm-question-from-total-input" name="qsm-quiz-settings[question_from_total]" value="<?php echo esc_attr( $qsm_question_from_total ); ?>" aria-labelledby="qsm-question-from-total-label">
+			<span id="qsm-question-from-total-label"><?php esc_html_e( 'Maximum question limit', 'quiz-master-next'); ?></span>
 		</fieldset>
 		<fieldset class="buttonset buttonset-hide" data-hide="1" id="qsm-question-per-category">
-			<input class="small-text" type="number" step="1" min="0" id="qsm-question-per-category-input" name="qsm-quiz-settings[question_per_category]" value="<?php echo esc_attr( $qsm_question_per_category ); ?>">
+			<input class="small-text" type="number" step="1" min="0" id="qsm-question-per-category-input" name="qsm-quiz-settings[question_per_category]" value="<?php echo esc_attr( $qsm_question_per_category ); ?>" aria-labelledby="qsm-question-per-category-label">
 				<span class="qsm-opt-tr">
-					<?php esc_html_e( 'Limit number of questions per category', 'quiz-master-next'); ?>
+					<span id="qsm-question-per-category-label"><?php esc_html_e( 'Limit number of questions per category', 'quiz-master-next'); ?></span>
 					<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 						<span class="qsm-tooltips">
 							<?php esc_html_e( 'Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.', 'quiz-master-next'); ?>

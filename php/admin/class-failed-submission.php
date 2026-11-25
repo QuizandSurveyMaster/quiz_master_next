@@ -236,9 +236,15 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 		 * @return html input checkbox
 		 */
 		public function column_cb( $submission ) {
-			return sprintf(
-				'<input type="checkbox" name="post_id[]" value="%d" /> ',
+			$label = sprintf(
+				/* translators: %d: failed submission ID */
+				__( 'Select submission %d', 'quiz-master-next' ),
 				$submission['post_id']
+			);
+			return sprintf(
+				'<label class="screen-reader-text" for="qsm-fs-cb-%1$d">%2$s</label><input type="checkbox" id="qsm-fs-cb-%1$d" name="post_id[]" value="%1$d" /> ',
+				absint( $submission['post_id'] ),
+				esc_html( $label )
 			);
 		}
 
@@ -360,9 +366,11 @@ if ( ! class_exists( 'QmnFailedSubmissions' ) && class_exists( 'WP_List_Table' )
 				</nav>
 				<div class="qmn-body">
 					<?php // qsm-admin.js writes the result of an action here and switches notice-success / notice-error. ?>
-					<div id="qmn-failed-submission-table-message" class="notice inline display-none-notice qsm-ui-fs-notice" >
-						<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
-						<p class="notice-message" ></p>
+					<div class="qsm-ui-fs-live" role="status" aria-live="polite">
+						<div id="qmn-failed-submission-table-message" class="notice inline display-none-notice qsm-ui-fs-notice" >
+							<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php esc_html_e( 'Dismiss this notice.', 'quiz-master-next' ); ?> </span></button>
+							<p class="notice-message" ></p>
+						</div>
 					</div>
 					<div class="qsm-ui-card qsm-ui-fs-card">
 						<div class="qsm-ui-card-body">

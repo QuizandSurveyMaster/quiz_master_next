@@ -389,17 +389,21 @@ function qsmShouldSuppressCreationAlerts() {
         if ( "" != jQuery('#scheduled_time_end-input').val() ) {
             jQuery('#not_allow_after_expired_time label').css('opacity', '1');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+            jQuery('#not_allow_after_expired_time-hint').hide();
         } else {
             jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+            jQuery('#not_allow_after_expired_time-hint').show();
         }
         jQuery(document).on('change', '#scheduled_time_end-input', function () {
             if ( "" != jQuery(this).val() ) {
                 jQuery('#not_allow_after_expired_time label').css('opacity', '1');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+                jQuery('#not_allow_after_expired_time-hint').hide();
             } else {
                 jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+                jQuery('#not_allow_after_expired_time-hint').show();
             }
         });
         jQuery(document).on('change', '#question_from_total-input', function () {
@@ -879,13 +883,35 @@ jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
     let current_id = jQuery(this).attr('data-id');
     // Global Settings sub-tabs are role="tab": keep aria-selected in step with .current.
-    jQuery('.qsm-ui-gs-subtabs .quiz_style_tab').attr('aria-selected', 'false');
-    jQuery(this).filter('[role="tab"]').attr('aria-selected', 'true');
+    jQuery('.qsm-ui-gs-subtabs .quiz_style_tab').attr({ 'aria-selected': 'false', tabindex: '-1' });
+    jQuery(this).filter('[role="tab"]').attr({ 'aria-selected': 'true', tabindex: '0' });
     jQuery('.quiz_style_tab').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
     jQuery('.quiz_style_tab_content').hide();
     jQuery('#' + current_id).show();
+});
+// Global Settings sub-tabs: arrow keys (mirrored in RTL), Home and End move between tabs and open them.
+jQuery(document).on('keydown', '.qsm-ui-gs-subtabs [role="tab"]', function (e) {
+    var $tabs = jQuery(this).closest('[role="tablist"]').find('[role="tab"]');
+    var index = $tabs.index(this);
+    var rtl = 'rtl' === jQuery('html').attr('dir');
+    var next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[e.key];
+    var target = null;
+    if (next) {
+        target = (index + next + $tabs.length) % $tabs.length;
+    } else if ('Home' === e.key) {
+        target = 0;
+    } else if ('End' === e.key) {
+        target = $tabs.length - 1;
+    } else if ('Enter' === e.key || ' ' === e.key) {
+        target = index;
+    }
+    if (null === target) {
+        return;
+    }
+    e.preventDefault();
+    $tabs.eq(target).trigger('click').trigger('focus');
 });
 //quiz options text tab custom label
 jQuery('.quiz_text_tab_custom').click(function (e) {
