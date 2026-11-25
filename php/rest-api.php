@@ -474,6 +474,12 @@ function qsm_rest_get_emails( WP_REST_Request $request ) {
 			if ( false === $emails || ! is_array( $emails ) ) {
 				$emails = array();
 			}
+			// The subject field shows its value as plain text, so show emoji stored as entities as emoji.
+			foreach ( $emails as $index => $email ) {
+				if ( isset( $email['subject'] ) ) {
+					$emails[ $index ]['subject'] = QSM_Emails::decode_emoji_entities( $email['subject'] );
+				}
+			}
 			return $emails;
 		}
 	}
