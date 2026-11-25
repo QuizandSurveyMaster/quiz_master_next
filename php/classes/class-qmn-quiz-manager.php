@@ -568,7 +568,7 @@ class QMNQuizManager {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				}
 				if ( ! empty( $qmn_quiz_options->quiz_stye ) ) {
-					echo "<style type='text/css' id='qmn_quiz_template-css'>" . wp_strip_all_tags( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
+					echo "<style type='text/css' id='qmn_quiz_template-css'>" . wp_strip_all_tags( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye, ENT_QUOTES ) ) . '</style>';
 				}
 			}
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );

@@ -39,8 +39,8 @@ function qsm_options_styling_tab_content() {
 
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
 		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
-		// Custom CSS is CSS, not HTML: strip any tags so markup can never be stored (even entity-encoded) and later decoded into a style sink.
-		$quiz_style    = isset( $_POST['quiz_css'] ) ? wp_strip_all_tags( sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ) : '';
+		// Custom CSS is CSS, not HTML: decode entities first, then strip tags, so no markup (raw or entity-encoded) survives to be decoded into a <style> sink later.
+		$quiz_style    = isset( $_POST['quiz_css'] ) ? wp_strip_all_tags( htmlspecialchars_decode( sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ), ENT_QUOTES ) ) : '';
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $quiz_id ) );
