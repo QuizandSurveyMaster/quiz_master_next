@@ -1245,6 +1245,12 @@
 .qsm-ui.wrap .qsm-ui-btn:focus-visible, .qsm-ui-popup .qsm-ui-btn:focus-visible, .qsm-ui.wrap .qsm-ui-check input:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 2px; }
 .qsm-ui.wrap .qsm-ui-input:focus-visible, .qsm-ui.wrap .qsm-ui-select:focus-visible { outline: 2px solid var(--qsm-blue); outline-offset: 0; }
 
+/* Failed Database Queries */
+.qsm-ui .qsm-ui-fdq-table .qsm-ui-fdq-query { display: block; padding: 6px 8px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.qsm-ui .qsm-ui-fdq-table .qsm-ui-fdq-action { width: 1%; white-space: nowrap; text-align: end; }
+.qsm-ui .qsm-ui-fdq-table td { vertical-align: top; }
+.qsm-ui .qsm-ui-fdq-card .qsm-ui-empty { padding: 28px 16px; }
+
 /* Popups on these pages use a <dialog open> element as the container (micromodal still shows and hides the popup).
  * Drop the browser's dialog box styles so it looks like the <div> container it replaced. */
 .qsm-popup.qsm-ui-popup dialog.qsm-popup__container { position: relative; inset: auto; height: auto; max-height: none; margin: 0; border: 0; color: var(--qsm-ink); }

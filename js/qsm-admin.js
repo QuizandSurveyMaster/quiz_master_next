@@ -6657,7 +6657,7 @@ function qsm_check_email_sent_option() {
             qmnnonce: $( this ).data( 'nonce' ),
             query: $( this ).data( 'query' ),
         };
-        dbFixBtn.attr( 'disabled', true );
+        dbFixBtn.attr( 'disabled', true ).addClass( 'is-loading' );
         $.ajax({
             type: 'POST',
             url: ajaxurl,
@@ -6665,15 +6665,25 @@ function qsm_check_email_sent_option() {
             success: function (response) {
                 if ( response.success ) {
                     QSMAdmin.displayAlert(response.data.message, 'success');
+                    let $table = dbFixBtn.closest('table');
                     dbFixBtn.parents('tr').remove();
+                    // Failed Database Queries page: keep the count badge in step, and show the empty state once the last query has run.
+                    if ( $table.hasClass('qsm-ui-fdq-table') ) {
+                        const left = $table.find('tbody tr').length;
+                        $('.qsm-ui-fdq-count .qsm-ui-badge').text(left).toggleClass('is-warning', left > 0).toggleClass('is-success', 0 === left);
+                        if ( ! left ) {
+                            $table.closest('.qsm-ui-table-wrap').remove();
+                            $('.qsm-ui-fdq-empty').prop('hidden', false);
+                        }
+                    }
                 } else {
                     QSMAdmin.displayAlert(response.data.message, 'error');
                 }
-                dbFixBtn.attr( 'disabled', false );
+                dbFixBtn.attr( 'disabled', false ).removeClass( 'is-loading' );
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR) {
                 QSMAdmin.displayAlert(jqXHR.responseText, 'error');
-                dbFixBtn.attr( 'disabled', false );
+                dbFixBtn.attr( 'disabled', false ).removeClass( 'is-loading' );
             }
         });
     } );
