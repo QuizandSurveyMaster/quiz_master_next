@@ -1264,3 +1264,5 @@
 .rtl.folded .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 36px; }
 @media screen and (max-width: 960px) { .rtl.auto-fold .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 36px; } }
 @media screen and (max-width: 782px) { .rtl .qsm-ui .option-page-option-tab-footer.qsm-ui-gs-savebar { right: 0; } }
+.qsm-ui .qsm-ui-gs-section-intro { margin: 0 0 8px; color: var(--qsm-muted); }
+.qsm-ui .qsm-ui-gs-section-intro > :last-child { margin-bottom: 0; }

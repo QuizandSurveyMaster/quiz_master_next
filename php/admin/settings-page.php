@@ -1091,8 +1091,18 @@ class QMNGlobalSettingsPage {
 		if ( empty( $wp_settings_sections[ $page ] ) ) {
 			return;
 		}
-		$fields = array();
+		$fields         = array();
+		$addon_sections = array();
 		foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
+			// A section an add-on registers keeps its own heading and intro, like do_settings_sections() prints them: it gets a card of its own.
+			$callback = isset( $section['callback'] ) ? $section['callback'] : null;
+			if ( ! ( is_array( $callback ) && isset( $callback[0] ) && ( $callback[0] instanceof self || __CLASS__ === $callback[0] ) ) ) {
+				$addon_sections[] = array(
+					$section,
+					empty( $wp_settings_fields[ $page ][ $section['id'] ] ) ? array() : array_values( (array) $wp_settings_fields[ $page ][ $section['id'] ] ),
+				);
+				continue;
+			}
 			if ( $section_callbacks && ! empty( $section['callback'] ) ) {
 				ob_start();
 				call_user_func( $section['callback'], $section );
@@ -1104,9 +1114,6 @@ class QMNGlobalSettingsPage {
 			if ( ! empty( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
 				$fields = array_merge( $fields, array_values( (array) $wp_settings_fields[ $page ][ $section['id'] ] ) );
 			}
-		}
-		if ( empty( $fields ) ) {
-			return;
 		}
 		$placed = array();
 		$cards  = array();
@@ -1159,6 +1166,31 @@ class QMNGlobalSettingsPage {
 			);
 			foreach ( $rows as $field ) {
 				self::render_kit_row( $field, ! empty( $group['stacked'] ) );
+			}
+			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+		}
+		foreach ( $addon_sections as $addon_section ) {
+			list( $section, $rows ) = $addon_section;
+			$intro                  = '';
+			if ( ! empty( $section['callback'] ) && is_callable( $section['callback'] ) ) {
+				ob_start();
+				call_user_func( $section['callback'], $section );
+				$intro = trim( ob_get_clean() );
+			}
+			if ( empty( $rows ) && '' === $intro ) {
+				continue;
+			}
+			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'title' => '' !== (string) $section['title'] ? wp_strip_all_tags( $section['title'] ) : __( 'More settings', 'quiz-master-next' ),
+					'class' => 'qsm-ui-gs-card qsm-ui-text',
+				)
+			);
+			if ( '' !== $intro ) {
+				echo '<div class="qsm-ui-gs-section-intro">' . $intro . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the section callback escapes its own output.
+			}
+			foreach ( $rows as $field ) {
+				self::render_kit_row( $field );
 			}
 			echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		}
