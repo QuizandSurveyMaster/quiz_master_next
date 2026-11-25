@@ -1336,16 +1336,10 @@ class QMNGlobalSettingsPage {
 	 * @return bool
 	 */
 	private static function control_has_label( $tag, $element, $html, $offset ) {
-		if ( preg_match( '/\baria-label(ledby)?\s*=/i', $tag ) ) {
-			return true;
-		}
-		if ( 'input' === $element && preg_match( '/\btype\s*=\s*["\']?(hidden|submit|button|reset|image)\b/i', $tag ) ) {
-			return true;
-		}
-		if ( preg_match( '/\bid\s*=\s*["\']([^"\']+)["\']/i', $tag, $id ) && false !== strpos( $html, 'for="' . $id[1] . '"' ) ) {
-			return true;
-		}
-		return self::inside_text_label( $html, $offset );
+		$has_aria    = (bool) preg_match( '/\baria-label(ledby)?\s*=/i', $tag );
+		$not_a_field = 'input' === $element && preg_match( '/\btype\s*=\s*["\']?(hidden|submit|button|reset|image)\b/i', $tag );
+		$has_for     = preg_match( '/\bid\s*=\s*["\']([^"\']+)["\']/i', $tag, $id ) && false !== strpos( $html, 'for="' . $id[1] . '"' );
+		return $has_aria || $not_a_field || $has_for || self::inside_text_label( $html, $offset );
 	}
 
 	/**

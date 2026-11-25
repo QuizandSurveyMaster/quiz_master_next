@@ -150,19 +150,16 @@ function qsm_about_us_tab() {
  */
 function qsm_about_get_contributors() {
 	$contributors = get_transient( 'qmn_contributors' );
-	if ( false !== $contributors ) {
-		return is_array( $contributors ) ? $contributors : array();
+	if ( false === $contributors ) {
+		$contributors = array();
+		$response     = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
+		$decoded      = ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) ? null : json_decode( wp_remote_retrieve_body( $response ) );
+		if ( is_array( $decoded ) && ! empty( $decoded ) ) {
+			$contributors = $decoded;
+			set_transient( 'qmn_contributors', $contributors, 3600 );
+		}
 	}
-	$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
-	if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-		return array();
-	}
-	$contributors = json_decode( wp_remote_retrieve_body( $response ) );
-	if ( ! is_array( $contributors ) || empty( $contributors ) ) {
-		return array();
-	}
-	set_transient( 'qmn_contributors', $contributors, 3600 );
-	return $contributors;
+	return is_array( $contributors ) ? $contributors : array();
 }
 
 /**
