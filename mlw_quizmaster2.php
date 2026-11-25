@@ -544,7 +544,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
 		// Global Settings, Tools, Stats and Failed Submissions use the admin UI kit for their frame; add-on tabs on them keep their own markup.
-		if ( in_array( $screen, array( 'settings', 'tools', 'stats', 'qsm-quiz-failed-submission' ), true ) ) {
+		if ( in_array( $screen, array( 'settings', 'tools', 'stats', 'qsm-quiz-failed-submission', 'about' ), true ) ) {
 			QSM_Admin_UI::enqueue();
 		}
 		// quiz option pages
