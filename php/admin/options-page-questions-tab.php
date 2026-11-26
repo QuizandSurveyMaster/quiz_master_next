@@ -1173,7 +1173,7 @@ function qsm_options_questions_tab_content() {
 					<div class="info" role="status"></div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button type="button" class="qsm-ui-btn" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" class="qsm-ui-btn qsm-ui-foot-left" data-micromodal-close=""><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" id="save-multi-category-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>
@@ -1211,7 +1211,7 @@ function qsm_options_questions_tab_content() {
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button type="button" id="cancel-question-button" class="qsm-ui-btn"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+					<button type="button" id="cancel-question-button" class="qsm-ui-btn qsm-ui-foot-left"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					<button type="button" id="move-question-button" class="qsm-ui-btn qsm-ui-btn-primary"><?php esc_html_e( 'Move question', 'quiz-master-next' ); ?></button>
 				</footer>
 			</div>

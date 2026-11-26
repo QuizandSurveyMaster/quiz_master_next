@@ -23,21 +23,34 @@ function qmn_generate_stats_page() {
 	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
-	<div class="wrap">
-		<h2><?php esc_html_e('Quiz/Survey Statistics', 'quiz-master-next'); ?></h2>
+	<div class="wrap qsm-ui qsm-ui-stats-page">
+		<div class="qsm-ui-page-header qsm-ui-text">
+			<div>
+				<h1 class="qsm-ui-h1"><?php esc_html_e( 'Quiz/Survey Statistics', 'quiz-master-next' ); ?></h1>
+				<p class="qsm-ui-subtitle"><?php esc_html_e( 'How many quizzes and surveys were submitted over time.', 'quiz-master-next' ); ?></p>
+			</div>
+		</div>
+		<hr class="wp-header-end">
 		<?php qsm_show_adverts(); ?>
-		<h2 class="nav-tab-wrapper">
-			<?php
-			foreach ( $tab_array as $tab ) {
-				$active_class = '';
-				if ( $active_tab === $tab['slug'] ) {
-					$active_class = ' nav-tab-active';
-				}
-				echo '<a href="?page=qmn_stats&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-			}
-			?>
-		</h2>
-		<div>
+		<?php if ( count( $tab_array ) > 1 ) { ?>
+			<nav class="qsm-ui-page-tabs-nav" aria-label="<?php esc_attr_e( 'Statistics', 'quiz-master-next' ); ?>">
+				<div class="qsm-ui-tabs qsm-ui-page-tabs">
+					<?php
+					foreach ( $tab_array as $tab ) {
+						$url = add_query_arg(
+							array(
+								'page' => 'qmn_stats',
+								'tab'  => $tab['slug'],
+							),
+							admin_url( 'admin.php' )
+						);
+						echo '<a href="' . esc_url( $url ) . '" class="qsm-ui-tab"' . ( $active_tab === $tab['slug'] ? ' aria-current="page"' : '' ) . '>' . esc_html( $tab['title'] ) . '</a>';
+					}
+					?>
+				</div>
+			</nav>
+		<?php } ?>
+		<div class="qsm-ui-stats-content">
 		<?php
 			foreach ( $tab_array as $tab ) {
 				if ( $active_tab === $tab['slug'] ) {
@@ -86,33 +99,31 @@ function qmn_stats_overview_content() {
 		'value'  => $value,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsm_admin_stats', $qsm_admin_stats);
+	$ranges = array(
+		'daily'   => __( 'Daily', 'quiz-master-next' ),
+		'weekly'  => __( 'Weekly', 'quiz-master-next' ),
+		'monthly' => __( 'Monthly', 'quiz-master-next' ),
+	);
 	?>
-	<style>
-		.postbox:after {
-			display:table;
-			content:" ";
-			clear:both;
-		}
-		.postbox {
-			padding: 10px 1%;
-		}
-		.postbox h3 {
-			padding: 0;
-			margin: 0 0 20px;
-		}
-	</style>
-	<div class="metabox-holder">
-		<div class="postbox">
-			<form action="" method="post">
-				<select name="range">
-					<option value="daily" <?php if ( "daily" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Daily', 'quiz-master-next'); ?></option>
-					<option value="weekly" <?php if ( "weekly" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Weekly', 'quiz-master-next'); ?></option>
-					<option value="monthly" <?php if ( "monthly" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Monthly', 'quiz-master-next'); ?></option>
+	<div class="qsm-ui-card qsm-ui-stats-card">
+		<div class="qsm-ui-card-head qsm-ui-text">
+			<div>
+				<h3 class="qsm-ui-h3"><?php esc_html_e( 'Quiz And Survey Submissions', 'quiz-master-next' ); ?></h3>
+				<p><?php esc_html_e( 'Submissions for the last 7 periods.', 'quiz-master-next' ); ?></p>
+			</div>
+			<form action="" method="post" class="qsm-ui-row qsm-ui-stats-filter">
+				<label class="qsm-ui-sr" for="qsm-stats-range"><?php esc_html_e( 'Range', 'quiz-master-next' ); ?></label>
+				<select name="range" id="qsm-stats-range" class="qsm-ui-select qsm-ui-input-sm">
+					<?php foreach ( $ranges as $value => $label ) { ?>
+						<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $range, $value ); ?>><?php echo esc_html( $label ); ?></option>
+					<?php } ?>
 					<?php do_action('qmn_quiz_taken_stats_options'); ?>
 				</select>
-				<button type="submit" class="button"><?php esc_html_e('Filter', 'quiz-master-next'); ?></button>
+				<button type="submit" class="qsm-ui-btn qsm-ui-btn-sm"><?php esc_html_e('Filter', 'quiz-master-next'); ?></button>
 			</form>
-			<div>
+		</div>
+		<div class="qsm-ui-card-body">
+			<div class="qsm-ui-stats-chart">
 				<canvas id="graph_canvas"></canvas>
 			</div>
 		</div>

@@ -18,17 +18,45 @@ function qmn_addons_page() {
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 
+	$addon_title = '';
+	if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+		$key         = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column( $tab_array, 'slug' ), true );
+		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : '';
+	}
 	?>
-<div class="wrap qsm-addon-setting-wrap">
-	<h2>
-		<?php
-		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
-			$key = array_search( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), array_column($tab_array, 'slug'), true );
-    		$addon_title = false !== $key ? $tab_array[ $key ]['title'] : null;
-			echo esc_html__( 'Manage ', 'quiz-master-next' ) . esc_html( $addon_title ) . esc_html__( ' Addon', 'quiz-master-next' );
-		}
-		?>
-	</h2>
+<div class="wrap qsm-addon-setting-wrap qsm-ui qsm-ui-addons-page">
+	<div class="qsm-ui-page-header qsm-ui-text">
+		<div>
+			<?php if ( '' !== $addon_title ) { ?>
+				<a class="qsm-ui-addons-back" href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_addons' ) ); ?>"><?php esc_html_e( 'All extensions', 'quiz-master-next' ); ?></a>
+				<h1 class="qsm-ui-h1">
+					<?php
+					/* translators: %s: add-on name */
+					echo esc_html( sprintf( __( 'Manage %s Addon', 'quiz-master-next' ), $addon_title ) );
+					?>
+				</h1>
+				<p class="qsm-ui-subtitle"><?php esc_html_e( 'Settings and license for this add-on.', 'quiz-master-next' ); ?></p>
+			<?php } else { ?>
+				<h1 class="qsm-ui-h1"><?php esc_html_e( 'Extensions', 'quiz-master-next' ); ?></h1>
+				<p class="qsm-ui-subtitle"><?php esc_html_e( 'Add features to QSM, and open the settings of the add-ons you have installed.', 'quiz-master-next' ); ?></p>
+			<?php } ?>
+		</div>
+		<?php if ( '' === $addon_title ) { ?>
+			<div class="qsm-ui-page-actions">
+				<?php
+				echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					__( 'Get a free add-on', 'quiz-master-next' ),
+					array(
+						'size' => 'sm',
+						'icon' => 'star',
+						'href' => admin_url( 'admin.php?page=qsm-free-addon' ),
+					)
+				);
+				?>
+			</div>
+		<?php } ?>
+	</div>
+	<hr class="wp-header-end">
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
 		foreach ( $tab_array as $tab ) {
@@ -40,7 +68,8 @@ function qmn_addons_page() {
         }
 		?>
 	</h2>
-	<div>
+	<?php // An add-on's own settings and license screens render here and keep their own UI. ?>
+	<div class="qsm-ui-addons-content">
 		<?php
 		foreach ( $tab_array as $tab ) {
 			if ( $active_tab === $tab['slug'] ) {
@@ -63,128 +92,176 @@ function qsm_generate_featured_addons() {
 	global $mlwQuizMasterNext;
 	wp_localize_script( 'qsm_admin_js', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
-	$price = __( 'Price: ', 'quiz-master-next' );
-	$get_addon = __( 'Get This Addon', 'quiz-master-next' );
-	$show_more = __( 'Show more', 'quiz-master-next' );
 	$view_details = __( 'View Details', 'quiz-master-next' );
 	$all_addons = qsm_get_widget_data( 'all_addons' );
 
 	?>
-	<div class="wrap custom-addon-upper">
-		<ul class="subsubsub">
-			<li class="all"><a href="javascript:void(0)" class="current" aria-current="page" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="count">(<?php echo count($all_addons) - 6; ?>)</span></a> |</li>
-			<li class="publish"><a data-section="install" href="javascript:void(0)"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="count">(<?php echo count( $tab_array ) - 1; ?>)</span></a></li>
-		</ul>
-	</div>
-	<div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor"  style="display: none;">
-		<h2 class="installed_title"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></h2>
-		<?php
-		if ( $tab_array && count( $tab_array ) > 1 ) {
-			?>
-			<div class="installed_addons_wrapper">
-				<?php
-				foreach ( $tab_array as $tab ) {
-					if ( 'Featured Addons' === trim( $tab['title'] ) ) {
-						continue;
-					}
-					?>
-				<div class="installed_addon">
-					<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
-					<span class="installed_addon_link">
-						<a target="_blank" rel="noopener" class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
-								class="dashicons dashicons-admin-generic"></span>
-							<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
-					</span>
-				</div>
-				<?php } ?>
-			</div>
-		<?php } else { ?>
-			<div class="no_addons_installed">
-				<div>
-					<?php esc_html_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );?>
-				</div>
-				<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize custom-explore-addon" href="javadcript:void(0)">
-					<?php esc_html_e('Explore Addons', 'quiz-master-next');?>
-				</a>
-			</div>
-		<?php
+	<?php
+	$installed = array();
+	foreach ( (array) $tab_array as $tab ) {
+		if ( 'Featured Addons' !== trim( $tab['title'] ) ) {
+			$installed[] = $tab;
 		}
+	}
+	// qsm-admin.js switches the two panels on [data-section] inside .custom-addon-upper.
+	?>
+	<div class="custom-addon-upper qsm-ui-addons-switch">
+		<div class="qsm-ui-tabs qsm-ui-tabs-pill" role="tablist" aria-label="<?php esc_attr_e( 'Add-ons', 'quiz-master-next' ); ?>">
+			<a href="javascript:void(0)" role="tab" class="qsm-ui-tab current" aria-selected="true" aria-controls="qsm_add_addons" data-section="all"><?php esc_html_e( 'All Addons', 'quiz-master-next' ); ?> <span id="qsm_total_count_text" class="qsm-ui-count count"><?php echo esc_html( max( 0, count( (array) $all_addons ) - 6 ) ); ?></span></a>
+			<a href="javascript:void(0)" role="tab" class="qsm-ui-tab" aria-selected="false" aria-controls="qsm_installed_addons" data-section="install"><?php esc_html_e( 'Installed', 'quiz-master-next' ); ?> <span class="qsm-ui-count count"><?php echo esc_html( count( $installed ) ); ?></span></a>
+		</div>
+	</div>
+	<div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor" role="tabpanel" style="display: none;">
+		<?php
+		echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+			array(
+				'title'       => __( 'Installed Addons', 'quiz-master-next' ),
+				'description' => __( 'Open an add-on to change its settings or license.', 'quiz-master-next' ),
+				'class'       => 'qsm-ui-addons-installed',
+			)
+		);
+		if ( $installed ) {
+			?>
+			<ul class="installed_addons_wrapper qsm-ui-addons-list">
+				<?php foreach ( $installed as $tab ) { ?>
+					<li class="installed_addon">
+						<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
+						<span class="installed_addon_link">
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								__( 'Settings', 'quiz-master-next' ),
+								array(
+									'size'  => 'sm',
+									'icon'  => 'settings',
+									'href'  => admin_url( 'admin.php?page=qmn_addons&tab=' . $tab['slug'] ),
+									'attrs' => array(
+										'target' => '_blank',
+										'rel'    => 'noopener',
+									),
+								)
+							);
+							?>
+						</span>
+					</li>
+				<?php } ?>
+			</ul>
+			<?php
+		} else {
+			echo QSM_Admin_UI::empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'icon'    => 'bolt',
+					'title'   => __( 'No add-ons installed yet', 'quiz-master-next' ),
+					'text'    => __( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' ),
+					'actions' => QSM_Admin_UI::button(
+						__( 'Explore Addons', 'quiz-master-next' ),
+						array(
+							'variant' => 'primary',
+							'size'    => 'sm',
+							'class'   => 'custom-explore-addon',
+						)
+					),
+				)
+			);
+		}
+		echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
 		?>
 	</div>
-	<div id="qsm_add_addons" class="qsm-primary-acnhor" >
-		<div class="qsm-quiz-page-addon qsm-addon-page-list">
-			<div class="qsm_popular_addons" id="qsm_popular_addons">
-				<div class="popuar-addon-ul">
-					<?php
-					if ( $all_addons ) {
-						foreach ( $all_addons as $key => $single_arr ) {
-							if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) || in_array( $single_arr['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
-								continue;
-							}
-							$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
-							?>
-							<div class="custom-addon-sub-div">
-								<div class="custom-addon-image">
-									<img alt="Addon Image" src="<?php echo esc_url( $single_arr['img'] ); ?>">
-								</div>
-								<div class="custom-addon-details">
-									<p>
-										<a class="addon-title" href="<?php echo esc_url( $addon_link ); ?>" target="_blank" rel="noopener">
-											<?php echo esc_html( $single_arr['description'] ); ?>
-										</a>
-									</p>
-									<div class="custom-addon-button">
-										<a class="custom-addon-link" rel="noopener" href="<?php echo esc_url( $addon_link ); ?>" target="_blank"><?php echo esc_html( $view_details ); ?></a>
-									</div>
-								</div>
-							</div>
-							<?php
-						}
+	<div id="qsm_add_addons" class="qsm-primary-acnhor qsm-ui-addons-browse" role="tabpanel">
+		<div class="qsm-ui-addons-grid" id="qsm_popular_addons">
+			<?php
+			if ( $all_addons ) {
+				foreach ( $all_addons as $single_arr ) {
+					if ( ! empty( $single_arr['tags'] ) && in_array( 831, array_column( $single_arr['tags'], 'term_id' ), true ) || in_array( $single_arr['id'], array( 557086, 551029, 551027, 547794, 302299, 302297, 300658, 300513 ), true ) ) {
+						continue;
 					}
+					$addon_link = qsm_get_utm_link( $single_arr['link'], 'addon_setting', 'popular_addon', 'addon-settings_' . sanitize_title( $single_arr['name'] ) );
 					?>
-				</div>
-			</div>
-		</div>
-		<div class="qsm-addon-news-ads custom-addpn-news-ads">
-			<?php $bundles = qsm_get_widget_data( 'bundles' );
-			if ( $bundles ) { ?>
-				<div class="qsm-bundles-title qsm-bundles-title-upper">
-					<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/Vector.png'; ?>">
-					<h3><?php esc_html_e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
-				</div>
-				<div class="custom-news-ads-list">
-				<?php
-				// $count For dynamic class
-				$count = 0;
-					foreach ( $bundles as $key => $bundles_arr ) {
-						$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
-						?>
-						<div class="qsm-bundles-widget">
-							<div class="qsm-bundles-top">
-								<div class="qsm-bundles-icon qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>">
-									<?php
-									if ( ! empty( $bundles_arr['icon'] ) ) {
-										echo '<img alt="Addon Image" src="' . esc_url( $bundles_arr['icon'] ) . '" />';
-									}
-									?>
-								</div>
-								<div class="qsm-bundles-title">
-									<h3 class="qsm-bundles-title-text"><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
-								</div>
-							</div>
-							<div class="qsm-bundles-bottom">
-								<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
-								<a href="<?php echo esc_url( $bundle_link ); ?>" target="_blank" class="custom-addon-getnow button button-primary addon-bundle-btn qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>" rel="noopener">
-									<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>
-									<span class="dashicons dashicons-arrow-right-alt2"></span>
-								</a>
-							</div>
+					<div class="qsm-ui-card qsm-ui-addon-card">
+						<a class="qsm-ui-addon-card-image" href="<?php echo esc_url( $addon_link ); ?>" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+							<img alt="" src="<?php echo esc_url( $single_arr['img'] ); ?>" loading="lazy">
+						</a>
+						<div class="qsm-ui-card-body qsm-ui-text">
+							<h3 class="qsm-ui-sr"><?php echo esc_html( $single_arr['name'] ); ?></h3>
+							<p><?php echo esc_html( $single_arr['description'] ); ?></p>
 						</div>
-					<?php ++$count;
-					} ?>
-				</div>
-			<?php } ?>
+						<div class="qsm-ui-card-foot">
+							<?php
+							echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+								$view_details,
+								array(
+									'size'  => 'sm',
+									'icon'  => 'ext',
+									'href'  => $addon_link,
+									'class' => 'custom-addon-link',
+									'attrs' => array(
+										'target'     => '_blank',
+										'rel'        => 'noopener',
+										/* translators: %s: add-on name */
+										'aria-label' => sprintf( __( 'View details: %s', 'quiz-master-next' ), $single_arr['name'] ),
+									),
+								)
+							);
+							?>
+						</div>
+					</div>
+					<?php
+				}
+			}
+			?>
 		</div>
+		<?php
+		$bundles = qsm_get_widget_data( 'bundles' );
+		if ( $bundles ) {
+			?>
+			<aside class="qsm-ui-bundles" aria-label="<?php esc_attr_e( 'Bundles', 'quiz-master-next' ); ?>">
+				<?php
+				// One card: heading, then each bundle as a tile. $count keeps each bundle's icon colour (qsm-bundles-dynamic-N).
+				echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					array(
+						'title'       => __( 'Save with our bundles', 'quiz-master-next' ),
+						'description' => __( 'Get many add-ons in one package.', 'quiz-master-next' ),
+						'class'       => 'qsm-ui-bundles-card',
+					)
+				);
+				$count = 0;
+				foreach ( $bundles as $bundles_arr ) {
+					$bundle_link = qsm_get_utm_link( 'https://quizandsurveymaster.com/pricing/', 'addon_setting', 'bundles', 'addon-settings_' . sanitize_title( $bundles_arr['name'] ) );
+					?>
+					<div class="qsm-ui-bundle-item">
+						<div class="qsm-ui-bundle-head">
+							<span class="qsm-ui-bundle-icon qsm-bundles-icon qsm-bundles-dynamic-<?php echo esc_attr( $count ); ?>">
+								<?php if ( ! empty( $bundles_arr['icon'] ) ) { ?>
+									<img alt="" src="<?php echo esc_url( $bundles_arr['icon'] ); ?>">
+								<?php } ?>
+							</span>
+							<h3 class="qsm-ui-h3"><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
+						</div>
+						<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
+						<?php
+						echo QSM_Admin_UI::button( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+							__( 'Get now', 'quiz-master-next' ),
+							array(
+								'variant' => 'primary',
+								'size'    => 'sm',
+								'href'    => $bundle_link,
+								'class'   => 'custom-addon-getnow',
+								'attrs'   => array(
+									'target'     => '_blank',
+									'rel'        => 'noopener',
+									/* translators: %s: bundle name */
+									'aria-label' => sprintf( __( 'Get now: %s', 'quiz-master-next' ), wp_strip_all_tags( $bundles_arr['name'] ) ),
+								),
+							)
+						);
+						?>
+					</div>
+					<?php
+					++$count;
+				}
+				echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				?>
+			</aside>
+		<?php } ?>
 	</div>
 <?php
 }
@@ -209,10 +286,16 @@ add_action( 'init', 'qsm_featured_addons_tab' );
 function qsm_display_optin_page() {
 	global $mlwQuizMasterNext;
 	?>
-<div class="wrap qsm-free-addon-wrap">
-	<h1 class="wp-heading-inline"><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1><hr class="wp-header-end">
+<div class="wrap qsm-free-addon-wrap qsm-ui qsm-ui-free-addon-page">
+	<div class="qsm-ui-page-header qsm-ui-text">
+		<div>
+			<h1 class="qsm-ui-h1"><?php esc_html_e( 'Get Your Free Extension!', 'quiz-master-next' ); ?></h1>
+			<p class="qsm-ui-subtitle"><?php esc_html_e( 'Subscribe to the QSM newsletter and get one add-on free.', 'quiz-master-next' ); ?></p>
+		</div>
+	</div>
+	<hr class="wp-header-end">
 
-	<div class="qsm-free-addon-text">
+	<div class="qsm-free-addon-text qsm-ui-card qsm-ui-free-addon-intro"><div class="qsm-ui-card-body qsm-ui-text">
 		<p><?php esc_html_e( 'Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next' ); ?></p>
 		<p>
 		<?php
@@ -234,7 +317,7 @@ function qsm_display_optin_page() {
 			<?php esc_html_e( 'View our privacy policy', 'quiz-master-next' ); ?>
 		</a>
 	</p>
-	</div>
+	</div></div>
 
 	<div class="changelog">
 
@@ -244,9 +327,9 @@ function qsm_display_optin_page() {
 			<!-- Begin Sendinblue Form -->
 
 			<!-- START - We recommend to place the below code where you want the form in your website html  -->
-			<div class="sib-form" style="text-align: center;">
+			<div class="sib-form qsm-ui-sib" style="text-align: center;">
 				<div id="sib-form-container" class="sib-form-container">
-					<div id="error-message" class="sib-form-message-panel"
+					<div id="error-message" class="sib-form-message-panel qsm-ui-sib-msg is-error"
 						style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;max-width:540px;">
 						<div class="sib-form-message-panel__text sib-form-message-panel__text--center">
 							<svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
@@ -259,7 +342,7 @@ function qsm_display_optin_page() {
 						</div>
 					</div>
 					<div></div>
-					<div id="success-message" class="sib-form-message-panel"
+					<div id="success-message" class="sib-form-message-panel qsm-ui-sib-msg is-success"
 						style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#085229; background-color:#e7faf0; border-radius:3px; border-width:px; border-color:#13ce66;max-width:540px;">
 						<div class="sib-form-message-panel__text sib-form-message-panel__text--center">
 							<svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
@@ -272,7 +355,7 @@ function qsm_display_optin_page() {
 						</div>
 					</div>
 					<div></div>
-					<div id="sib-container" class="sib-container--large sib-container--vertical"
+					<div id="sib-container" class="sib-container--large sib-container--vertical qsm-ui-sib-box"
 						style="text-align:center; background-color:rgba(255,255,255,1); max-width:540px; border-radius:3px; border-width:1px; border-color:#C0CCD9; border-style:solid;">
 						<form id="sib-form" method="POST"
 							action="https://cddf18fd.sibforms.com/serve/MUIEAO9t8eOB2GOqY73EWqFatPi328RiosfYMKieZ_8IxVL2jyEazmQ9LlkDj6pYrTlvB7JBsx3su8WdK5A4l445X0P-0r0Qf82LWXLSFa3yK0YZuypiIxy8hZfBXClZMANBeEVpBkswLw0RxDt2uWrN7B7zHTFXWY0W4mftpWo3Nqen7SQW1L9DYnXrex6lyw5EfHvZ3ZwsU6Xp"
@@ -281,14 +364,14 @@ function qsm_display_optin_page() {
 								<div class="sib-input sib-form-block">
 									<div class="form__entry entry_block">
 										<div class="form__label-row ">
-											<label class="entry__label"
+											<label class="entry__label qsm-ui-sib-label"
 												style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;"
 												for="EMAIL" data-required="*">
 												<?php esc_html_e( 'Enter your email address to subscribe', 'quiz-master-next' ); ?>
 											</label>
 
-											<div class="entry__field">
-												<input class="input" type="text" id="EMAIL" name="EMAIL"
+											<div class="entry__field qsm-ui-sib-field">
+												<input class="input qsm-ui-sib-input" type="text" id="EMAIL" name="EMAIL"
 													autocomplete="off" placeholder="EMAIL" data-required="true"
 													required />
 											</div>
@@ -297,7 +380,7 @@ function qsm_display_optin_page() {
 										<label class="entry__error entry__error--primary"
 											style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;">
 										</label>
-										<label class="entry__specification"
+										<label class="entry__specification qsm-ui-sib-help"
 											style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; border-width:px;">
 											<?php esc_html_e( 'Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next' ); ?>
 										</label>
@@ -306,7 +389,7 @@ function qsm_display_optin_page() {
 							</div>
 							<div style="padding: 16px 0;">
 								<div class="sib-form-block" style="text-align: left">
-									<button class="sib-form-block__button sib-form-block__button-with-loader"
+									<button class="sib-form-block__button sib-form-block__button-with-loader qsm-ui-sib-button"
 										style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#FFFFFF; background-color:#3E4857; border-radius:3px; border-width:0px;"
 										form="sib-form" type="submit">
 										<svg class="icon clickable__icon progress-indicator__icon sib-hide-loader-icon"
@@ -323,7 +406,7 @@ function qsm_display_optin_page() {
 									style="font-size:14px; text-align:center; font-family:Helvetica, sans-serif; color:#333; background-color:transparent; border-width:px;">
 									<div class="sib-text-form-block">
 										<p>
-											<a href="https://quizandsurveymaster.com/add-ons-terms-and-conditions/" rel="noopener" target="_blank"><?php esc_html_e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
+											<a class="qsm-ui-sib-link" href="https://quizandsurveymaster.com/add-ons-terms-and-conditions/" rel="noopener" target="_blank"><?php esc_html_e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
 										</p>
 									</div>
 								</div>
