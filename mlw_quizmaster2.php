@@ -556,6 +556,7 @@ class MLWQuizMasterNext {
 		// Global Settings, Tools, Stats and Failed Submissions use the admin UI kit for their frame; add-on tabs on them keep their own markup.
 		if ( in_array( $screen, array( 'settings', 'tools', 'stats', 'qsm-quiz-failed-submission', 'qsm-database-failed-queries', 'about', 'addons', 'qsm-free-addon' ), true ) ) {
 			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm_admin_ui_admin_pages_css' );
 		}
 		// quiz option pages
 		if ( 'admin_page_mlw_quiz_options' === $hook || 'qsm_page_qmn_global_settings' === $hook ) {

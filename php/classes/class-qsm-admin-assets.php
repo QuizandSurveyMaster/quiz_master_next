@@ -151,6 +151,10 @@ class QSM_Admin_Assets {
 		if ( ! wp_style_is( 'qsm_admin_ui_quiz_frame_css', 'registered' ) ) {
 			wp_register_style( 'qsm_admin_ui_quiz_frame_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-quiz-frame.css', array( 'qsm_admin_ui_css' ), $version );
 		}
+		// Plugin admin pages (Global Settings, Tools, Stats, Failed Submissions, Failed DB Queries, About, Extensions, Free Add-ons).
+		if ( ! wp_style_is( 'qsm_admin_ui_admin_pages_css', 'registered' ) ) {
+			wp_register_style( 'qsm_admin_ui_admin_pages_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-ui-admin-pages.css', array( 'qsm_admin_ui_css' ), $version );
+		}
 		// The quiz Questions tab still loads the legacy qsm-admin-question.css after this file (question editor fields,
 		// answers and add-on fields use its markup); see the 'questions' case in qsm_admin_scripts_style().
 		if ( ! wp_style_is( 'qsm_admin_ui_questions_css', 'registered' ) ) {

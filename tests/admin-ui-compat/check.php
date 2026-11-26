@@ -9,7 +9,8 @@
  * It fails (exit 1) when a change would let the kit restyle or rebind add-on UI:
  *
  * 1. CSS scope: every selector in css/qsm-admin-ui.css (and its page files
- *    qsm-admin-ui-quiz-frame.css, qsm-admin-ui-questions.css) styles a kit element.
+ *    qsm-admin-ui-quiz-frame.css, qsm-admin-ui-questions.css, qsm-admin-ui-admin-pages.css)
+ *    styles a kit element.
  *    The selector must name a `qsm-ui-*` class, or its subject must carry
  *    `.qsm-ui` (the token wrapper). `.qsm-ui table` or `.qsm-ui .qsm-row` would
  *    reach add-on markup printed inside a kit wrapper, so they fail. A plain
@@ -170,7 +171,7 @@ function qsm_compat_is_shared( $class ) {
 }
 
 // 1. CSS scope: the kit and its page files (quiz edit frame, Questions tab).
-$kit_css_files = array( 'css/qsm-admin-ui.css', 'css/qsm-admin-ui-quiz-frame.css', 'css/qsm-admin-ui-questions.css' );
+$kit_css_files = array( 'css/qsm-admin-ui.css', 'css/qsm-admin-ui-quiz-frame.css', 'css/qsm-admin-ui-questions.css', 'css/qsm-admin-ui-admin-pages.css' );
 foreach ( $kit_css_files as $kit_css ) {
 	foreach ( qsm_compat_selectors( qsm_compat_read( $root, $kit_css ) ) as $item ) {
 		list( $selector, $line ) = $item;
