@@ -1,0 +1,31 @@
+/**
+ * QSM Admin UI kit: the Quiz Results list (QSM > Results).
+ *
+ * Loads on the results screen only, after qsm-admin-ui.css and qsm-admin-ui-quiz-frame.css (handle
+ * qsm_admin_ui_results_css). The tab bar comes from the quiz frame file. Same rules as the kit: every
+ * selector targets a qsm-ui-* class or a kit opt-in.
+ */
+/* ---- Selection bar and filter count badge (same look as the Questions tab) ---- */
+.qsm-ui .qsm-ui-board-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px 8px 14px; border: 1px solid var(--qsm-blue); border-radius: var(--qsm-radius); background: var(--qsm-blue-soft); box-shadow: 0 0 0 3px var(--qsm-blue-ring); color: var(--qsm-ink); font-size: 13px; }
+.qsm-ui .qsm-ui-board-bar[hidden] { display: none; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-count { color: var(--qsm-blue-dark); font-weight: 600; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-btn { min-height: 32px; padding: 5px 10px; font-size: 13px; }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear { margin-inline-start: auto; border-color: transparent; background: none; color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-board-bar .qsm-ui-board-clear:hover { background: var(--qsm-blue-ring); }
+.qsm-ui .qsm-ui-filter-count { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--qsm-blue); color: #fff; font-size: 11px; }
+
+/* ---- Results list (CU-14ypaj0p5kk) ---- */
+.qsm-ui.qsm-ui-results { margin-top: 16px; }
+.qsm-ui .qsm-ui-results-filters { flex-wrap: wrap; }
+.qsm-ui .qsm-ui-results-search { width: 300px; max-width: 100%; }
+.qsm-ui .qsm-ui-results-quiz { width: 210px; max-width: 100%; }
+.qsm-ui .qsm-ui-results-order { width: 160px; }
+.qsm-ui .qsm-ui-results-pager { gap: 10px; }
+.qsm-ui .qsm-ui-pagination .qsm-ui-pages-jump { display: flex; }
+.qsm-ui .qsm-ui-pages-jump .qsm-ui-pages-goto { width: 72px; }
+/* Core's mobile rule (.result-page-wrapper form { overflow: scroll }) would put scrollbars on these forms. */
+.qsm-ui .qsm-ui-results-filters, .qsm-ui .qsm-ui-results-bulk-form, .qsm-ui .qsm-ui-pages, .qsm-ui .qsm-ui-pages-jump { overflow: visible; }
+.qsm-ui .qsm-ui-results-table td > span { overflow-wrap: break-word; }
+.qsm-ui .qsm-ui-results-table th:nth-child(2), .qsm-ui .qsm-ui-results-table td:nth-child(2) { min-width: 220px; }
+.qsm-ui .qsm-ui-results-table .qsm-ui-row-actions { flex-wrap: wrap; row-gap: 2px; }
+.qsm-ui .qsm-ui-results-table .qsm-ui-row-actions a { white-space: nowrap; }

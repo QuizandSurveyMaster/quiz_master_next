@@ -540,14 +540,38 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $this->version, true );
 			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
 		}
-		// results page
-		if ( 'qsm_page_mlw_quiz_results' === $hook ) {
+		// results page (screen key, not the hook: the hook suffix changes with a translated menu title)
+		if ( 'results' === $screen ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
 			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
 			wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array( 'jquery' ), $this->version, true );
+			// Results list (New UI): the kit, plus the list's selection, bulk actions and delete confirms.
+			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm_admin_ui_results_css' );
+			wp_enqueue_script( 'qsm_admin_results_js', QSM_PLUGIN_JS_URL . '/qsm-admin-results.js', array( 'jquery', 'qsm_admin_ui_js' ), $this->version, true );
+			wp_localize_script(
+				'qsm_admin_results_js',
+				'qsmResultsList',
+				array(
+					/* translators: %s: number of results */
+					'selectedOne'    => __( '%s result selected', 'quiz-master-next' ),
+					/* translators: %s: number of results */
+					'selectedMany'   => __( '%s results selected', 'quiz-master-next' ),
+					'bulkOne'        => __( 'Delete 1 result?', 'quiz-master-next' ),
+					'bulkTextOne'    => __( 'It is removed from the results list, and any files uploaded with it are deleted.', 'quiz-master-next' ),
+					'bulkTextMany'   => __( 'They are removed from the results list, and any files uploaded with them are deleted.', 'quiz-master-next' ),
+					/* translators: %s: number of results */
+					'bulkMany'       => __( 'Delete %s results?', 'quiz-master-next' ),
+					'permanentOne'   => __( 'Permanently delete 1 result?', 'quiz-master-next' ),
+					/* translators: %s: number of results */
+					'permanentMany'  => __( 'Permanently delete %s results?', 'quiz-master-next' ),
+					/* translators: %s: quiz name */
+					'deleteFor'      => __( 'Result for %s.', 'quiz-master-next' ),
+				)
+			);
 		}
 		// stats page
 		if ( 'qsm_page_qmn_stats' === $hook ) {
