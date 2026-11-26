@@ -389,17 +389,21 @@ function qsmShouldSuppressCreationAlerts() {
         if ( "" != jQuery('#scheduled_time_end-input').val() ) {
             jQuery('#not_allow_after_expired_time label').css('opacity', '1');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+            jQuery('#not_allow_after_expired_time-hint').hide();
         } else {
             jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
             jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+            jQuery('#not_allow_after_expired_time-hint').show();
         }
         jQuery(document).on('change', '#scheduled_time_end-input', function () {
             if ( "" != jQuery(this).val() ) {
                 jQuery('#not_allow_after_expired_time label').css('opacity', '1');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', false);
+                jQuery('#not_allow_after_expired_time-hint').hide();
             } else {
                 jQuery('#not_allow_after_expired_time label').css('opacity', '0.7');
                 jQuery('#not_allow_after_expired_time-1').attr('disabled', true);
+                jQuery('#not_allow_after_expired_time-hint').show();
             }
         });
         jQuery(document).on('change', '#question_from_total-input', function () {
@@ -465,13 +469,13 @@ function qsmShouldSuppressCreationAlerts() {
         //New template design hide show
         var new_template_result_detail = $('.new_template_result_detail:checked').val();
         if (new_template_result_detail == 1) {
-            $('.new_template_result_detail:checked').parents('tr').next('tr').hide();
+            qsmTemplateDetailRow($('.new_template_result_detail:checked')).hide();
         }
         $(document).on('change', '.new_template_result_detail', function () {
             if ($(this).val() == 1) {
-                $(this).parents('tr').next('tr').hide();
+                qsmTemplateDetailRow($(this)).hide();
             } else {
-                $(this).parents('tr').next('tr').show();
+                qsmTemplateDetailRow($(this)).show();
             }
         });
         $(document).on('click', '#show-all-variable .qsm-text-template-span:not(.qsm-upgrade-popup-variable)', function (e) {
@@ -633,10 +637,11 @@ function qsmShouldSuppressCreationAlerts() {
 
         $(document).on('change', '.qsm_page_qmn_global_settings  input[name="qsm-quiz-settings[form_type]"]', function () {
             if ( 0 == $(this).val() ) {
-                $('.global_setting_system').parents('tr').show();
+                // The field row is a <tr> on the legacy layout and a kit setting row on the new one.
+                $('.global_setting_system').closest('tr, .qsm-ui-setting-row').show();
                 $("#qsm-correct-answer-logic").show();
             } else {
-                $('.global_setting_system').parents('tr').hide();
+                $('.global_setting_system').closest('tr, .qsm-ui-setting-row').hide();
                 $("#qsm-correct-answer-logic").hide();
             }
         });
@@ -678,6 +683,23 @@ function qsmShouldSuppressCreationAlerts() {
         jQuery(document).on('click', '.qsm-delete-results-tools-page-btn', function () {
             let deleteForm = $("#qsm-tools-delete-results-form");
             deleteForm.submit();
+        });
+
+        // Tools > Deleted Quiz: confirm before the permanent delete. form.submit() drops the clicked
+        // button, so its name goes in as a hidden field (the handler checks qsm_delete_permanent_quiz).
+        jQuery(document).on('click', '.qsm-tools-delete-permanent-quiz', function (e) {
+            if ('undefined' === typeof MicroModal || !$('#qsm-delete-quiz-tools-page-popup').length) {
+                return;
+            }
+            e.preventDefault();
+            MicroModal.show('qsm-delete-quiz-tools-page-popup');
+        });
+
+        jQuery(document).on('click', '.qsm-delete-quiz-tools-page-btn', function () {
+            let restoreForm = $('#qsm-tools-restore-quiz-form');
+            restoreForm.find('input[name="qsm_delete_permanent_quiz"]').remove();
+            restoreForm.append($('<input>', { type: 'hidden', name: 'qsm_delete_permanent_quiz', value: '1' }));
+            restoreForm.submit();
         });
 
     });
@@ -730,31 +752,51 @@ function qsmShouldSuppressCreationAlerts() {
                 document.body.removeChild(downloadLink);
             },
             error: function (errorThrown) {
-                alert(errorThrown);
+                if (window.QSMAdminUI && QSMAdminUI.toast) {
+                    QSMAdminUI.toast(errorThrown.statusText || qsm_admin_messages.error, { type: 'error' });
+                } else {
+                    alert(errorThrown);
+                }
             }
         });
     });
 
-    jQuery(document).on('click', '#btn_clear_logs', function (e) {
-        e.preventDefault();
-        var delete_logs = confirm(qsm_tools_page.qsm_delete_audit_logs);
-        if (delete_logs) {
-            // your deletion code
-            jQuery.ajax({
-                type: 'POST',
-                url: ajaxurl,
-                data: {
-                    action: "qsm_clear_audit_data",
-                    nonce: qsm_tools_page.nonce,
-                },
-                success: function (response) {
-                    location.reload();
-                },
-                error: function (errorThrown) {
+    // Tools > Audit Trail: clear all logs after the kit confirm (the browser confirm() when the popup isn't on the page).
+    const qsmClearAuditLogs = function ($button) {
+        $button.addClass('is-loading').prop('disabled', true);
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: "qsm_clear_audit_data",
+                nonce: qsm_tools_page.nonce,
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (errorThrown) {
+                $button.removeClass('is-loading').prop('disabled', false);
+                if (window.QSMAdminUI && QSMAdminUI.toast) {
+                    QSMAdminUI.toast(errorThrown.statusText || qsm_admin_messages.error, { type: 'error' });
+                } else {
                     alert(errorThrown);
                 }
-            });
+            }
+        });
+    };
+    jQuery(document).on('click', '#btn_clear_logs', function (e) {
+        e.preventDefault();
+        if ('undefined' !== typeof MicroModal && jQuery('#qsm-clear-audit-tools-page-popup').length) {
+            MicroModal.show('qsm-clear-audit-tools-page-popup');
+            return;
         }
+        if (confirm(qsm_tools_page.qsm_delete_audit_logs)) {
+            qsmClearAuditLogs(jQuery(this));
+        }
+    });
+    jQuery(document).on('click', '.qsm-clear-audit-tools-page-btn', function (e) {
+        e.preventDefault();
+        qsmClearAuditLogs(jQuery(this));
     });
 
     jQuery('.qsm_audit_data').click(function (e) {
@@ -782,23 +824,22 @@ function qsmShouldSuppressCreationAlerts() {
         }
     });
 
-    jQuery(document).on('click', '.custom-addon-upper li a', function (e) {
-        jQuery(".custom-addon-upper li a").removeClass('current');
-        jQuery(this).addClass('current');
-        if(jQuery(this).data('section') == "all"){
-            jQuery("#qsm_installed_addons").hide();
-            jQuery("#qsm_add_addons").show();
-        }else{
-            jQuery("#qsm_add_addons").hide();
-            jQuery("#qsm_installed_addons").show();
-        }
+    // Extensions page: All Addons / Installed switch (kit pill tabs; the old list markup used li > a).
+    const qsmShowAddonSection = function ( section ) {
+        const $links = jQuery('.custom-addon-upper [data-section]');
+        $links.removeClass('current').attr('aria-selected', 'false');
+        $links.filter('[data-section="' + section + '"]').addClass('current').attr('aria-selected', 'true');
+        jQuery('#qsm_installed_addons').toggle('all' !== section);
+        jQuery('#qsm_add_addons').toggle('all' === section);
+    };
+    jQuery(document).on('click', '.custom-addon-upper [data-section]', function (e) {
+        e.preventDefault();
+        qsmShowAddonSection( 'all' === jQuery(this).data('section') ? 'all' : 'install' );
     });
 
     jQuery(document).on('click', '.custom-explore-addon', function (e) {
-        jQuery(".custom-addon-upper li a").removeClass('current');
-        jQuery(".custom-addon-upper li a:first").addClass('current');
-        jQuery("#qsm_installed_addons").hide();
-        jQuery("#qsm_add_addons").show();
+        e.preventDefault();
+        qsmShowAddonSection( 'all' );
     });
 
     jQuery(document).on('click', '.qsm-help-tab-handle', function (e) {
@@ -836,11 +877,40 @@ function deleteResults(id, quizName) {
 jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
     let current_id = jQuery(this).attr('data-id');
+    // Global Settings sub-tabs are role="tab": keep aria-selected in step with .current.
+    jQuery('.qsm-ui-gs-subtabs .quiz_style_tab').attr({ 'aria-selected': 'false', tabindex: '-1' });
+    jQuery(this).filter('[role="tab"]').attr({ 'aria-selected': 'true', tabindex: '0' });
     jQuery('.quiz_style_tab').removeClass('current');
     jQuery('.qsm-custom-label-left-menu').removeClass('currentli');
     jQuery(this).addClass('current');
     jQuery('.quiz_style_tab_content').hide();
     jQuery('#' + current_id).show();
+});
+// Global Settings rows are kit setting rows (.qsm-ui-setting-row); the old layout used table rows.
+function qsmTemplateDetailRow($input) {
+    return $input.closest('tr, .qsm-ui-setting-row').next('tr, .qsm-ui-setting-row');
+}
+// Global Settings sub-tabs and the Extensions switch: arrow keys (mirrored in RTL), Home and End move between tabs and open them.
+jQuery(document).on('keydown', '.qsm-ui-gs-subtabs [role="tab"], .qsm-ui-addons-switch [role="tab"]', function (e) {
+    const $tabs = jQuery(this).closest('[role="tablist"]').find('[role="tab"]');
+    const index = $tabs.index(this);
+    const rtl = 'rtl' === jQuery('html').attr('dir');
+    const next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[e.key];
+    let target = null;
+    if (next) {
+        target = (index + next + $tabs.length) % $tabs.length;
+    } else if ('Home' === e.key) {
+        target = 0;
+    } else if ('End' === e.key) {
+        target = $tabs.length - 1;
+    } else if ('Enter' === e.key || ' ' === e.key) {
+        target = index;
+    }
+    if (null === target) {
+        return;
+    }
+    e.preventDefault();
+    $tabs.eq(target).trigger('click').trigger('focus');
 });
 //quiz options text tab custom label
 jQuery('.quiz_text_tab_custom').click(function (e) {
@@ -1935,10 +2005,24 @@ function qsmConvertContentToShortcode( contentToConvert ){
 // QSM - Admin Stats Page
 (function ($) {
     if (jQuery('body').hasClass('qsm_page_qmn_stats')) {
+        const graph_canvas = document.getElementById("graph_canvas");
+        // Add-on stats tabs have no Core chart.
+        if (!graph_canvas || 'undefined' === typeof Chart || 'undefined' === typeof qsm_admin_stats) {
+            return;
+        }
         if (window.stats_graph instanceof Chart) {
             window.stats_graph.destroy();
         }
-        var graph_ctx = document.getElementById("graph_canvas").getContext("2d");
+        // Colours come from the admin UI kit tokens on the page wrapper; the fallbacks are the kit's values.
+        const kit = window.getComputedStyle(graph_canvas.closest('.qsm-ui') || document.documentElement);
+        const token = function (name, fallback) {
+            const value = kit.getPropertyValue(name).trim();
+            return value || fallback;
+        };
+        const line_color = token('--qsm-blue', '#315efb');
+        const grid_color = token('--qsm-line-soft', '#edf0f5');
+        const text_color = token('--qsm-muted', '#657188');
+        const graph_ctx = graph_canvas.getContext("2d");
         window.stats_graph = new Chart(graph_ctx, {
             type: 'line',
             data: {
@@ -1947,14 +2031,23 @@ function qsmConvertContentToShortcode( contentToConvert ){
                     label: qsm_admin_messages.quiz_submissions, // Name the series
                     data: qsm_admin_stats.value, // Specify the data values array
                     fill: false,
-                    borderColor: '#2196f3', // Add custom color border (Line)
-                    backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-                    borderWidth: 1 // Specify bar border width
+                    borderColor: line_color, // Add custom color border (Line)
+                    backgroundColor: line_color, // Add custom color background (Points and Fill)
+                    borderWidth: 2, // Specify bar border width
+                    pointRadius: 3,
+                    tension: 0.25
                 }]
             },
             options: {
                 responsive: true, // Instruct chart js to respond nicely.
                 maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+                plugins: {
+                    legend: { labels: { color: text_color } }
+                },
+                scales: {
+                    x: { grid: { color: grid_color }, ticks: { color: text_color } },
+                    y: { beginAtZero: true, grid: { color: grid_color }, ticks: { color: text_color, precision: 0 } }
+                }
             }
         });
     }
@@ -3373,9 +3466,9 @@ function qsm_check_email_sent_option() {
 
                     // add success icon
                     if ( response.success ) {
-                        action_link_wrap.html( '<span class="dashicons dashicons-yes-alt"></span>' );
+                        action_link_wrap.html( '<span class="qsm-ui-badge is-success">' + qsm_admin_messages.qsm_fs_processed + '</span>' );
                     } else {
-                        action_link_wrap.html( 'Failed' );
+                        action_link_wrap.html( '<span class="qsm-ui-badge is-danger">' + qsm_admin_messages.qsm_fs_failed + '</span>' );
                     }
 
                     // Remove row if trashed
@@ -3402,9 +3495,24 @@ function qsm_check_email_sent_option() {
 
     }
 
-    // Submit Form.
+    // Submit Form. Delete asks in the kit confirm popup first.
+    let qsmFailedSubmissionDeleteConfirmed = false;
+    $( document ).on( 'click', '.qsm-failed-submission-delete-confirm', function( e ) {
+        e.preventDefault();
+        qsmFailedSubmissionDeleteConfirmed = true;
+        if ( 'undefined' !== typeof MicroModal ) {
+            MicroModal.close( 'qsm-failed-submission-delete-popup' );
+        }
+        $( '#failed-submission-action-form' ).trigger( 'submit' );
+    });
     $( document ).on( 'submit', '#failed-submission-action-form', function( e ) {
         e.preventDefault();
+        let bulkAction = $( '#failed-submission-action-form #bulk-action-selector-top' ).val();
+        if ( 'trash' === bulkAction && ! qsmFailedSubmissionDeleteConfirmed && 'undefined' !== typeof MicroModal && $( '#qsm-failed-submission-delete-popup' ).length && $( '#failed-submission-action-form input[name="post_id[]"]:checked' ).length ) {
+            MicroModal.show( 'qsm-failed-submission-delete-popup' );
+            return;
+        }
+        qsmFailedSubmissionDeleteConfirmed = false;
         let formData = {
             qmnnonce: $('#failed-submission-action-form input[name="qmnnonce"]').val(),
             post_ids: [],
@@ -3447,7 +3555,7 @@ function qsm_check_email_sent_option() {
             qmnnonce: $( this ).data( 'nonce' ),
             query: $( this ).data( 'query' ),
         };
-        dbFixBtn.attr( 'disabled', true );
+        dbFixBtn.attr( 'disabled', true ).addClass( 'is-loading' );
         $.ajax({
             type: 'POST',
             url: ajaxurl,
@@ -3455,15 +3563,25 @@ function qsm_check_email_sent_option() {
             success: function (response) {
                 if ( response.success ) {
                     QSMAdmin.displayAlert(response.data.message, 'success');
+                    let $table = dbFixBtn.closest('table');
                     dbFixBtn.parents('tr').remove();
+                    // Failed Database Queries page: keep the count badge in step, and show the empty state once the last query has run.
+                    if ( $table.hasClass('qsm-ui-fdq-table') ) {
+                        const left = $table.find('tbody tr').length;
+                        $('.qsm-ui-fdq-count .qsm-ui-badge').text(left).toggleClass('is-warning', left > 0).toggleClass('is-success', 0 === left);
+                        if ( ! left ) {
+                            $table.closest('.qsm-ui-table-wrap').remove();
+                            $('.qsm-ui-fdq-empty').prop('hidden', false);
+                        }
+                    }
                 } else {
                     QSMAdmin.displayAlert(response.data.message, 'error');
                 }
-                dbFixBtn.attr( 'disabled', false );
+                dbFixBtn.attr( 'disabled', false ).removeClass( 'is-loading' );
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR) {
                 QSMAdmin.displayAlert(jqXHR.responseText, 'error');
-                dbFixBtn.attr( 'disabled', false );
+                dbFixBtn.attr( 'disabled', false ).removeClass( 'is-loading' );
             }
         });
     } );

@@ -553,6 +553,11 @@ class MLWQuizMasterNext {
 		if ( 'qsm_page_qmn_stats' === $hook ) {
 			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
+		// Global Settings, Tools, Stats and Failed Submissions use the admin UI kit for their frame; add-on tabs on them keep their own markup.
+		if ( in_array( $screen, array( 'settings', 'tools', 'stats', 'qsm-quiz-failed-submission', 'qsm-database-failed-queries', 'about', 'addons', 'qsm-free-addon' ), true ) ) {
+			QSM_Admin_UI::enqueue();
+			wp_enqueue_style( 'qsm_admin_ui_admin_pages_css' );
+		}
 		// quiz option pages
 		if ( 'admin_page_mlw_quiz_options' === $hook || 'qsm_page_qmn_global_settings' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
@@ -699,6 +704,8 @@ class MLWQuizMasterNext {
 			'updating_db'                => __('Updating database', 'quiz-master-next'),
 			'update_db_success'          => __('Database updated successfully.', 'quiz-master-next'),
 			'quiz_submissions'           => __('Quiz Submissions', 'quiz-master-next'),
+			'qsm_fs_processed'           => __( 'Processed', 'quiz-master-next' ),
+			'qsm_fs_failed'              => __( 'Failed', 'quiz-master-next' ),
 			'saving_contact_fields'      => __('Saving contact fields...', 'quiz-master-next'),
 			'contact_fields_saved'       => __('Your contact fields have been saved!', 'quiz-master-next'),
 			'contact_fields_save_error'  => __('There was an error encountered when saving your contact fields.', 'quiz-master-next'),
@@ -1380,41 +1387,66 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	public function qsm_database_failed_queries() {
+		$failed_queries = $this->get_failed_alter_table_queries();
+		$count          = count( $failed_queries );
 		?>
-		<div class="wrap">
-			<div>
-				<h2>
-					<?php esc_html_e( 'Failed DB Queries', 'quiz-master-next' );?>
-				</h2>
+		<div class="wrap qsm-ui qsm-ui-fdq-page">
+			<div class="qsm-ui-page-header qsm-ui-text">
+				<div>
+					<h1 class="qsm-ui-h1"><?php esc_html_e( 'Failed Database Queries', 'quiz-master-next' ); ?></h1>
+					<p class="qsm-ui-subtitle"><?php esc_html_e( 'Database changes that did not run during an update. Once the cause is fixed, check each one to run it again.', 'quiz-master-next' ); ?></p>
+				</div>
 			</div>
+			<hr class="wp-header-end">
+			<?php // QSMAdmin.displayAlert() writes the result of a check here. ?>
 			<div class="qsm-alerts">
 				<?php $this->alertManager->showAlerts(); ?>
 			</div>
 			<?php qsm_show_adverts(); ?>
-			<table class="widefat" aria-label="<?php esc_attr_e( 'Failed DB Query Table', 'quiz-master-next' );?>">
-				<thead>
-					<tr>
-						<th><?php esc_html_e( 'Query', 'quiz-master-next' );?></th>
-						<th><?php esc_html_e( 'Action', 'quiz-master-next' );?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-					$failed_queries = $this->get_failed_alter_table_queries();
-					if ( ! empty( $failed_queries ) && is_array( $failed_queries ) ) {
-						foreach ( $failed_queries as $key => $query ) { ?>
+			<?php
+			echo QSM_Admin_UI::card_open( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+				array(
+					'title'       => __( 'Failed queries', 'quiz-master-next' ),
+					'description' => __( 'Each query stays here until it runs without an error.', 'quiz-master-next' ),
+					'actions'     => '<span class="qsm-ui-fdq-count" aria-label="' . esc_attr__( 'Failed queries', 'quiz-master-next' ) . '">' . QSM_Admin_UI::badge( number_format_i18n( $count ), $count ? 'warning' : 'success', false ) . '</span>',
+					'class'       => 'qsm-ui-fdq-card',
+				)
+			);
+			?>
+			<div class="qsm-ui-fdq-empty"<?php echo $count ? ' hidden' : ''; ?>>
+				<?php
+				echo QSM_Admin_UI::empty_state( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI.
+					array(
+						'icon'  => 'ok',
+						'title' => __( 'No failed queries', 'quiz-master-next' ),
+						'text'  => __( 'Every database change from QSM updates has run.', 'quiz-master-next' ),
+					)
+				);
+				?>
+			</div>
+			<?php if ( $count ) { ?>
+				<div class="qsm-ui-table-wrap">
+					<table class="qsm-ui-table qsm-ui-fdq-table" aria-label="<?php esc_attr_e( 'Failed DB Query Table', 'quiz-master-next' ); ?>">
+						<thead>
 							<tr>
-								<td>
-									<?php echo esc_attr( $query ); ?>
-								</td>
-								<td>
-									<button data-query="<?php echo esc_attr( $key ); ?>" type="button"  data-nonce="<?php echo esc_attr( wp_create_nonce( 'qmn_check_db' ) ); ?>" class="button button-primary qsm-check-db-fix-btn"><?php esc_html_e( 'Check If Already Fixed', 'quiz-master-next' );?></button>
-								</td>
+								<th scope="col"><?php esc_html_e( 'Query', 'quiz-master-next' ); ?></th>
+								<th scope="col" class="qsm-ui-fdq-action"><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
 							</tr>
-						<?php }
-					} ?>
-				</tbody>
-			</table>
+						</thead>
+						<tbody>
+							<?php foreach ( $failed_queries as $key => $query ) { ?>
+								<tr>
+									<td><code class="qsm-ui-code qsm-ui-fdq-query"><?php echo esc_html( $query ); ?></code></td>
+									<td class="qsm-ui-fdq-action">
+										<button data-query="<?php echo esc_attr( $key ); ?>" type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'qmn_check_db' ) ); ?>" class="qsm-ui-btn qsm-ui-btn-sm qsm-check-db-fix-btn"><?php esc_html_e( 'Check If Already Fixed', 'quiz-master-next' ); ?></button>
+									</td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</div>
+			<?php } ?>
+			<?php echo QSM_Admin_UI::card_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by QSM_Admin_UI. ?>
 		</div>
 		<?php
 		add_action('admin_footer', 'qsm_quiz_options_notice_template');
