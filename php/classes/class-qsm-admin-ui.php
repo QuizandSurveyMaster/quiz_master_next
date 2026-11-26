@@ -1115,7 +1115,8 @@ class QSM_Admin_UI {
 			)
 		) . '>';
 		$html .= '<div class="qsm-ui-modal-head">' . $head . $close . '</div>';
-		$html .= '<div class="qsm-ui-modal-body">' . $args['body'] . '</div>';
+		// A small confirm (O-02) has no body: an empty one would print a blank bordered strip.
+		$html .= '' !== $args['body'] ? '<div class="qsm-ui-modal-body">' . $args['body'] . '</div>' : '';
 		$html .= $args['footer'] ? '<div class="qsm-ui-modal-foot">' . $args['footer'] . '</div>' : '';
 		return $html . '</dialog>';
 	}

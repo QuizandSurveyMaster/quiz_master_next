@@ -417,10 +417,11 @@
 .qsm-ui .qsm-ui-table .qsm-ui-col-actions { width: 60px; text-align: right; }
 .qsm-ui .qsm-ui-table .qsm-ui-col-handle { width: 36px; padding-right: 0; }
 .qsm-ui .qsm-ui-table .qsm-ui-num { text-align: right; font-variant-numeric: tabular-nums; }
-.qsm-ui .qsm-ui-table th button.qsm-ui-sort { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
-.qsm-ui .qsm-ui-table th button.qsm-ui-sort::after { content: "↕"; opacity: .4; font-size: 12px; }
-.qsm-ui .qsm-ui-table th[aria-sort="ascending"] button.qsm-ui-sort::after { content: "↑"; opacity: 1; color: var(--qsm-blue); }
-.qsm-ui .qsm-ui-table th[aria-sort="descending"] button.qsm-ui-sort::after { content: "↓"; opacity: 1; color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-table th .qsm-ui-sort { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-decoration: none; text-transform: inherit; cursor: pointer; }
+.qsm-ui .qsm-ui-table th a.qsm-ui-sort:hover, .qsm-ui .qsm-ui-table th a.qsm-ui-sort:focus { color: var(--qsm-blue); box-shadow: none; }
+.qsm-ui .qsm-ui-table th .qsm-ui-sort::after { content: "↕"; opacity: .4; font-size: 12px; }
+.qsm-ui .qsm-ui-table th[aria-sort="ascending"] .qsm-ui-sort::after { content: "↑"; opacity: 1; color: var(--qsm-blue); }
+.qsm-ui .qsm-ui-table th[aria-sort="descending"] .qsm-ui-sort::after { content: "↓"; opacity: 1; color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-cell-title { font-weight: 600; color: var(--qsm-ink); text-decoration: none; }
 .qsm-ui .qsm-ui-cell-title:hover { color: var(--qsm-blue); }
 .qsm-ui .qsm-ui-cell-sub { display: block; font-size: 12px; color: var(--qsm-muted); }
@@ -438,6 +439,7 @@
 .qsm-ui .qsm-ui-pages button { min-width: 34px; height: 34px; padding: 0 8px; border: 1px solid var(--qsm-line); border-radius: var(--qsm-radius-sm); background: #fff; color: var(--qsm-ink-2); font: 600 13px var(--qsm-font); cursor: pointer; }
 .qsm-ui .qsm-ui-pages button:hover { background: #f7f9fc; }
 .qsm-ui .qsm-ui-pages button[aria-current="page"] { border-color: var(--qsm-blue); background: var(--qsm-blue); color: #fff; }
+.qsm-ui .qsm-ui-pages .qsm-ui-pages-gap { align-self: center; padding: 0 2px; }
 .qsm-ui .qsm-ui-pages button:disabled { opacity: .45; cursor: not-allowed; }
 .qsm-ui .qsm-ui-kv { width: 100%; border-collapse: collapse; }
 .qsm-ui .qsm-ui-kv th { width: 200px; padding: 10px 0; color: var(--qsm-muted); font-size: 13px; font-weight: 500; text-align: left; vertical-align: top; }
@@ -1033,3 +1035,20 @@
 .qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg:empty { display: none; }
 .qsm-ui .qsm-ui-cat-add .qsm-ui-cat-add-msg.is-error { color: var(--qsm-red); }
 .qsm-ui .qsm-ui-qe-card #categorydiv .inside { margin: 0; padding: 0; }
+
+/* ---- Results list (CU-14ypaj0p5kk) ---- */
+.qsm-ui.qsm-ui-results { margin-top: 16px; }
+.qsm-ui .qsm-ui-results-filters { flex-wrap: wrap; }
+.qsm-ui .qsm-ui-results-search { width: 300px; max-width: 100%; }
+.qsm-ui .qsm-ui-results-quiz { width: 210px; max-width: 100%; }
+.qsm-ui .qsm-ui-results-order { width: 160px; }
+.qsm-ui .qsm-ui-results-pager { gap: 10px; }
+.qsm-ui .qsm-ui-pagination .qsm-ui-pages-jump { display: flex; }
+.qsm-ui .qsm-ui-pages-jump .qsm-ui-pages-goto { width: 72px; }
+.qsm-ui .qsm-ui-board-bar[hidden] { display: none; }
+/* Core's mobile rule (.result-page-wrapper form { overflow: scroll }) would put scrollbars on these forms. */
+.qsm-ui .qsm-ui-results-filters, .qsm-ui .qsm-ui-results-bulk-form, .qsm-ui .qsm-ui-pages, .qsm-ui .qsm-ui-pages-jump { overflow: visible; }
+.qsm-ui .qsm-ui-results-table td > span { overflow-wrap: break-word; }
+.qsm-ui .qsm-ui-results-table th:nth-child(2), .qsm-ui .qsm-ui-results-table td:nth-child(2) { min-width: 220px; }
+.qsm-ui .qsm-ui-results-table .qsm-ui-row-actions { flex-wrap: wrap; row-gap: 2px; }
+.qsm-ui .qsm-ui-results-table .qsm-ui-row-actions a { white-space: nowrap; }

@@ -682,13 +682,6 @@ function qsmShouldSuppressCreationAlerts() {
 
     });
 
-    $(document).on('click', '#the-list .delete_table_quiz_results_item', function (e) {
-        e.preventDefault();
-        var qid = $(this).data('quiz-id');
-        var qname = $(this).data('quiz-name');
-        deleteResults(qid, qname);
-    });
-
     $(document).on('click', '#the-list .qsm-quiz-proctor-addon', function (e) {
         e.preventDefault();
         MicroModal.show('modal-proctor-quiz');
@@ -815,23 +808,6 @@ function qsmShouldSuppressCreationAlerts() {
     });
 }(jQuery));
 
-// result page
-jQuery('#results-screen-option-button').on('click', function (event) {
-    event.preventDefault();
-    MicroModal.show('modal-results-screen-option');
-});
-jQuery('#save-results-screen-option-button').on('click', function (event) {
-    event.preventDefault();
-    MicroModal.close('modal-results-screen-option');
-    jQuery('#results-screen-option-form').submit();
-});
-function deleteResults(id, quizName) {
-    MicroModal.show('qsm-delete-result-page-popup');
-    var idHidden = document.getElementById("result_id");
-    var idHiddenName = document.getElementById("delete_quiz_name");
-    idHidden.value = id;
-    idHiddenName.value = quizName;
-}
 //quiz options style tab
 jQuery('.quiz_style_tab').click(function (e) {
     e.preventDefault();
@@ -6599,29 +6575,5 @@ jQuery(document).ready(function() {
     jQuery(document).on('input', '.question-title', function() {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
-    });
-
-    const bulkActionSelect = jQuery('#qsm_bulk_action_select');
-    const applyBulkActionButton = jQuery('#qsm_apply_bulk_action');
-
-    applyBulkActionButton.on('click', function() {
-        const action = bulkActionSelect.val();
-
-        // Handle bulk delete action
-        if (action === 'bulk_delete') {
-            if (confirm(qsm_admin_messages.delete_confirm)) {
-                jQuery('form[name="bulk_delete_form"]').submit();
-            }
-        }
-        // Handle permanent delete action
-        else if (action === 'bulk_permanent_delete') {
-            if (confirm(qsm_admin_messages.delete_confirm)) {
-                jQuery('#bulk_permanent_delete').val('1');
-                jQuery('form[name="bulk_delete_form"]').submit();
-            }
-        }
-        else {
-            alert(qsm_admin_messages.delete_alert);
-        }
     });
 });
