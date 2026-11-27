@@ -1874,6 +1874,8 @@ if (typeof window.qsmCheckMR !== 'function') {
                                 'id': response.result_status['id']
                             };
                             if (response.quizExpired) {
+                                // The quiz can no longer be taken, so drop its locked answers too.
+                                self.clearLockedAnswers(quizId);
                                 if (typeof MicroModal !== 'undefined') {
                                     MicroModal.show('modal-4');
                                 }

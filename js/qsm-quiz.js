@@ -987,6 +987,14 @@ function qmnFormSubmit(quiz_form_id, $this) {
 			};
 
 			if (response.quizExpired) {
+				// The quiz can no longer be taken, so drop answers locked by "Prevent users from changing their response".
+				try {
+					let lockedAnswers = JSON.parse(localStorage.getItem('disable_answer'));
+					if (lockedAnswers && lockedAnswers[quiz_id]) {
+						delete lockedAnswers[quiz_id];
+						localStorage.setItem('disable_answer', JSON.stringify(lockedAnswers));
+					}
+				} catch (e) {}
 				MicroModal.show('modal-4');
 				return false;
 			} else {
@@ -1104,8 +1112,14 @@ function qmnInit() {
 					localStorage.setItem("disable_answer", JSON.stringify(disableAnswer));
 				});
 
-				if (localStorage.getItem("disable_answer")) {
-					let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				// Restore after the remaining init code and add-on listeners are bound (QSM.init(), Ultimate's
+				// qsm_after_select_answer, ...), so the restored answer counts for real-time results and
+				// "Prevent quiz progression" exactly like an answer the user just picked.
+				setTimeout(function () {
+					let disabledAnswer = {};
+					try {
+						disabledAnswer = JSON.parse(localStorage.getItem("disable_answer")) || {};
+					} catch (e) {}
 					if (disabledAnswer[key]) {
 						disabledAnswer[key].forEach(element => {
 							// Match the saved answer by input name and value. The wrapper ids use the answer's
@@ -1115,7 +1129,7 @@ function qmnInit() {
 							}).prop('checked', true).trigger('change');
 						});
 					}
-				}
+				}, 0);
 				jQuery(document).on('qsm_after_quiz_submit', function (event, quiz_form_id) {
 					event.preventDefault();
 					if (localStorage.getItem("disable_answer")) {
