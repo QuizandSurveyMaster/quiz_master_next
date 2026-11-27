@@ -1613,4 +1613,56 @@ class QMNPluginHelper {
 
 		return false;
 	}
+
+	/**
+	 * Whether a rendered quiz needs its answer key (the correct-answer flags in
+	 * answer_array) in the browser.
+	 *
+	 * The front end checks answers in the browser only for instant-feedback
+	 * features. When none is on, the browser has no use for the answer key, and
+	 * printing it gives every visitor the correct answers before they submit.
+	 * Submitted quizzes are always graded on the server.
+	 *
+	 * @since 11.3.3
+	 *
+	 * @param array $quiz_json       Quiz data sent to the front end, after the qmn_json_data filter.
+	 * @param int   $quiz_id         Quiz ID.
+	 * @param bool  $ultimate_compat Also count QSM Ultimate's browser-side checks. The
+	 *                               pagination renderer passes true because it always
+	 *                               sent the answer data before 11.3.3 and Ultimate
+	 *                               relies on that there; the legacy renderer never
+	 *                               sent it for those features, so it passes false.
+	 * @return bool
+	 */
+	public function quiz_needs_client_answer_data( $quiz_json, $quiz_id, $ultimate_compat = false ) {
+		$quiz_json = is_array( $quiz_json ) ? $quiz_json : array();
+		$needs     = ( isset( $quiz_json['end_quiz_if_wrong'] ) && 0 < intval( $quiz_json['end_quiz_if_wrong'] ) )
+			|| ( ! empty( $quiz_json['enable_quick_result_mc'] ) && 1 == $quiz_json['enable_quick_result_mc'] )
+			|| ! empty( $quiz_json['enable_quick_correct_answer_info'] )
+			|| ( ! empty( $quiz_json['ajax_show_correct'] ) && 1 == $quiz_json['ajax_show_correct'] );
+
+		// QSM Ultimate checks answers in the browser for "Prevent progression" and for
+		// the correct/wrong answer sounds (on unless turned off), independently of the
+		// core settings above. Keep those working for Ultimate versions that predate
+		// the qsm_quiz_needs_client_answer_data filter.
+		if ( ! $needs && $ultimate_compat && isset( $quiz_json['ultimate_options'] ) && is_array( $quiz_json['ultimate_options'] ) ) {
+			$ultimate = $quiz_json['ultimate_options'];
+			$needs    = ! empty( $ultimate['prevent_progression'] )
+				|| ! isset( $ultimate['sound_effects_correct_enabled'] ) || ! empty( $ultimate['sound_effects_correct_enabled'] )
+				|| ! isset( $ultimate['sound_effects_wrong_enabled'] ) || ! empty( $ultimate['sound_effects_wrong_enabled'] );
+		}
+
+		/**
+		 * Filters whether the quiz's answer key is sent to the browser.
+		 *
+		 * Return true from an add-on that checks answers in the browser.
+		 *
+		 * @since 11.3.3
+		 *
+		 * @param bool  $needs     Whether the answer data is needed.
+		 * @param array $quiz_json Quiz data sent to the front end.
+		 * @param int   $quiz_id   Quiz ID.
+		 */
+		return (bool) apply_filters( 'qsm_quiz_needs_client_answer_data', $needs, $quiz_json, $quiz_id );
+	}
 }

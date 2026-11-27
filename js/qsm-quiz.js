@@ -987,6 +987,14 @@ function qmnFormSubmit(quiz_form_id, $this) {
 			};
 
 			if (response.quizExpired) {
+				// The quiz can no longer be taken, so drop answers locked by "Prevent users from changing their response".
+				try {
+					let lockedAnswers = JSON.parse(localStorage.getItem('disable_answer'));
+					if (lockedAnswers && lockedAnswers[quiz_id]) {
+						delete lockedAnswers[quiz_id];
+						localStorage.setItem('disable_answer', JSON.stringify(lockedAnswers));
+					}
+				} catch (e) {}
 				MicroModal.show('modal-4');
 				return false;
 			} else {
@@ -1104,15 +1112,24 @@ function qmnInit() {
 					localStorage.setItem("disable_answer", JSON.stringify(disableAnswer));
 				});
 
-				if (localStorage.getItem("disable_answer")) {
-					let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				// Restore after the remaining init code and add-on listeners are bound (QSM.init(), Ultimate's
+				// qsm_after_select_answer, ...), so the restored answer counts for real-time results and
+				// "Prevent quiz progression" exactly like an answer the user just picked.
+				setTimeout(function () {
+					let disabledAnswer = {};
+					try {
+						disabledAnswer = JSON.parse(localStorage.getItem("disable_answer")) || {};
+					} catch (e) {}
 					if (disabledAnswer[key]) {
 						disabledAnswer[key].forEach(element => {
-							let element1 = element[1].replaceAll(' ', '-');
-							jQuery('#' + element[0] + '-' + element1 + ' input').prop('checked', true).trigger('change');
+							// Match the saved answer by input name and value. The wrapper ids use the answer's
+							// position, not its value, so the old '#question<id>-<value>' lookup never matched.
+							jQuery('#quizForm' + key + ' .qmn_quiz_radio').filter(function () {
+								return this.name === element[0] && this.value === String(element[1]);
+							}).prop('checked', true).trigger('change');
 						});
 					}
-				}
+				}, 0);
 				jQuery(document).on('qsm_after_quiz_submit', function (event, quiz_form_id) {
 					event.preventDefault();
 					if (localStorage.getItem("disable_answer")) {
@@ -2024,6 +2041,10 @@ function qsm_format_date_answer(v) {
 }
 
 function qsm_question_quick_result_js(question_id, answer, answer_type = '', show_correct_info = '',quiz_id='', ans_index=null) {
+	// The answer data is only printed when an instant-feedback feature needs it.
+	if (typeof encryptedData === 'undefined' || typeof encryptionKey === 'undefined' || typeof encryptedData[quiz_id] === 'undefined') {
+		return { "correct_index": 0, "success": "", "message": "" };
+	}
 	if (typeof encryptedData[quiz_id] !== 'undefined') {
 		let decryptedBytes = CryptoJS.AES.decrypt(encryptedData[quiz_id], encryptionKey[quiz_id]);
 		let decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);

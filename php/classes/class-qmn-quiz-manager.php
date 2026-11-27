@@ -675,6 +675,10 @@ class QMNQuizManager {
 			$quiz_options                       = maybe_unserialize( $qmn_settings_array['quiz_options'] );
 			$correct_answer_logic               = ! empty( $quiz_options['correct_answer_logic'] ) ? $quiz_options['correct_answer_logic'] : '';
 			$encryption['correct_answer_logic'] = $correct_answer_logic;
+			// The answer key goes to the browser only when an instant-feedback feature
+			// checks answers there; otherwise any visitor could read it from the page.
+			$send_answer_data = $mlwQuizMasterNext->pluginHelper->quiz_needs_client_answer_data( $qmn_filtered_json, $qmn_json_data['quiz_id'] );
+			$send_answer_info = $send_answer_data && ! empty( $qmn_filtered_json['enable_quick_correct_answer_info'] );
 			$enc_questions                      = array();
 			if ( ! empty( $qpages_arr ) ) {
 				foreach ( $qpages_arr as $item ) {
@@ -726,11 +730,14 @@ class QMNQuizManager {
 				$encryption[ $question['question_id'] ]['question_type_new'] = $question_type_new;
 				$encryption[ $question['question_id'] ]['answer_array']      = maybe_unserialize( $question['answer_array'] );
 				$encryption[ $question['question_id'] ]['settings']          = $unserialized_settings;
-				$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
-				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
+				// The Correct Answer Info text is shown only by "Show correct answer info", so leave it out otherwise.
+				$encryption[ $question['question_id'] ]['correct_info_text'] = '';
+				if ( $send_answer_info && isset( $question['question_answer_info'] ) ) {
+					$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( html_entity_decode( $question['question_answer_info'] ), "correctanswerinfo-{$question['question_id']}" );
+				}
 			}
 			$qmn_filtered_json['questions_settings'] = $questions_settings;
-			if ( ( isset( $qmn_json_data['end_quiz_if_wrong'] ) && 0 < $qmn_json_data['end_quiz_if_wrong'] ) || ( ! empty( $qmn_json_data['enable_quick_result_mc'] ) && 1 == $qmn_json_data['enable_quick_result_mc'] ) || ( ! empty( $qmn_json_data['enable_quick_correct_answer_info'] ) && 0 != $qmn_json_data['enable_quick_correct_answer_info'] ) || ( ! empty( $qmn_json_data['ajax_show_correct'] ) && 1 == $qmn_json_data['ajax_show_correct'] ) ) {
+			if ( $send_answer_data ) {
 				$quiz_id               = $qmn_json_data['quiz_id'];
 				$qsm_inline_encrypt_js = '
 				if (encryptionKey === undefined) {
