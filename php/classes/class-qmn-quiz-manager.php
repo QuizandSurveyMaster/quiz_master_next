@@ -3224,6 +3224,7 @@ class QMNQuizManager {
 		$question_data           = array();
 		$hidden_questions        = array();
 		$verified_hidden_ids     = array();
+		$hidden_graded_count     = 0;
 		if ( ! empty( $quiz_data['hidden_questions'] ) && is_array( $quiz_data['hidden_questions'] ) ) {
 			// Ids arrive as strings ("12") from the verifier and older clients; the checks
 			// below compare with in_array( intval( $id ), ..., true ), so normalise to int.
@@ -3277,6 +3278,11 @@ class QMNQuizManager {
 							$hidden_questions = $verified_hidden_ids;
 							if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question_type_new ) ) {
 								++$total_questions;
+								// Only a hidden question that was counted can come off the denominator;
+								// a hidden id that was never served would push the score above 100%.
+								if ( in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									++$hidden_graded_count;
+								}
 							}
 
 							// Reset question-specific variables.
@@ -3456,15 +3462,8 @@ class QMNQuizManager {
 		}
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-		// total_questions only counts graded questions, so only subtract hidden questions that are graded.
-		// A hidden Text/HTML section would otherwise shrink the denominator and push the score above 100%.
-		global $mlwQuizMasterNext;
-		$hidden_graded_count = 0;
-		foreach ( $hidden_questions as $hidden_question_id ) {
-			if ( isset( $questions[ $hidden_question_id ] ) && $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $questions[ $hidden_question_id ]['question_type_new'] ) ) {
-				++$hidden_graded_count;
-			}
-		}
+		// $hidden_graded_count only holds hidden questions that were counted in $total_questions
+		// (graded and actually scored), so the denominator can't drop below what was counted.
 		if ( 0 < $total_questions - $hidden_graded_count ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - $hidden_graded_count ) ) * 100 ), 2 );
 		} else {
