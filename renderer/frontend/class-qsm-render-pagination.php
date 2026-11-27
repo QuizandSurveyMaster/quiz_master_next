@@ -1884,8 +1884,14 @@ class QSM_New_Pagination_Renderer {
 		
 		// Apply filters to allow customization (matching legacy filter)
 		$quiz_data = apply_filters( 'qmn_json_data', $quiz_data, $this->options, $this->quiz_data, $this->shortcode_args );
-		$correct_answer_logic = ! empty( $this->quiz_options->correct_answer_logic ) ? $this->quiz_options->correct_answer_logic : '';
-		$encryption['correct_answer_logic'] = $correct_answer_logic;
+		// The answer key goes to the browser only when an instant-feedback feature
+		// checks answers there; otherwise any visitor could read it from the page.
+		$send_answer_data = $mlwQuizMasterNext->pluginHelper->quiz_needs_client_answer_data( $quiz_data, $this->options->quiz_id, true );
+		$send_answer_info = $send_answer_data && ! empty( $quiz_data['enable_quick_correct_answer_info'] );
+		$encryption       = array();
+		if ( $send_answer_data ) {
+			$encryption['correct_answer_logic'] = ! empty( $this->quiz_options->correct_answer_logic ) ? $this->quiz_options->correct_answer_logic : '';
+		}
 		$question_ids = array();
 		if ( ! empty( $this->pages ) ) {
 			foreach ( $this->pages as $item ) {
@@ -1903,11 +1909,17 @@ class QSM_New_Pagination_Renderer {
 				$questions_settings[ $question['question_id'] ]['file_upload_type'] = $unserialized_settings['file_upload_type'];
 				$questions_settings[ $question['question_id'] ]['file_upload_limit'] = $unserialized_settings['file_upload_limit'];
 			}
+			if ( ! $send_answer_data ) {
+				continue;
+			}
 			$encryption[ $question['question_id'] ]['question_type_new'] = $question_type_new;
 			$encryption[ $question['question_id'] ]['answer_array'] = maybe_unserialize( $question['answer_array'] );
 			$encryption[ $question['question_id'] ]['settings'] = $unserialized_settings;
-			$encryption[ $question['question_id'] ]['correct_info_text'] = isset( $question['question_answer_info'] ) ? html_entity_decode( $question['question_answer_info'] ) : '';
-			$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $encryption[ $question['question_id'] ]['correct_info_text'], "correctanswerinfo-{$question['question_id']}" );
+			// The Correct Answer Info text is shown only by "Show correct answer info", so leave it out otherwise.
+			$encryption[ $question['question_id'] ]['correct_info_text'] = '';
+			if ( $send_answer_info && isset( $question['question_answer_info'] ) ) {
+				$encryption[ $question['question_id'] ]['correct_info_text'] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( html_entity_decode( $question['question_answer_info'] ), "correctanswerinfo-{$question['question_id']}" );
+			}
 		}
 		
 		$quiz_data['questions_settings'] = $questions_settings;
