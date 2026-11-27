@@ -215,7 +215,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'hide-file-uploads', __( 'Hide quiz file uploads from REST API & Media Library?', 'quiz-master-next' ), array( $this, 'hide_file_uploads_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'hide-file-uploads', __( 'Protect quiz file uploads', 'quiz-master-next' ), array( $this, 'hide_file_uploads_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'enable-preloader', __( 'Enable preloader', 'quiz-master-next' ), array( $this, 'qsm_enable_preloader' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'duplicate-quiz-with-theme', __( 'Duplicate Quiz Controls', 'quiz-master-next' ), array( $this, 'qsm_duplicate_quiz_with_theme' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -256,7 +256,7 @@ class QMNGlobalSettingsPage {
 			<input type="checkbox" name="qmn-settings[hide_file_uploads]" value="1" <?php checked( $hide_file_uploads, '1' ); ?>>
 			<span class="qsm-switch-slider round"></span>
 		</label>
-		<span class="global-sub-text"><?php esc_html_e( 'Recommended. Prevents anonymous visitors from listing or downloading files other quiz takers uploaded. Turn off only if you intentionally expose these files publicly.', 'quiz-master-next' ); ?></span>
+		<span class="global-sub-text"><?php esc_html_e( 'Recommended. Prevents unauthorized visitors from viewing or downloading files uploaded by other quiz takers.', 'quiz-master-next' ); ?></span>
 		<?php
 	}
 
