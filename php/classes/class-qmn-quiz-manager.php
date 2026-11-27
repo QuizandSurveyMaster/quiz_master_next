@@ -2904,29 +2904,14 @@ class QMNQuizManager {
 		 * which only the add-on can do. Core therefore never trusts the raw client
 		 * list on its own:
 		 *   - the add-on supplies the verified set via qsm_verified_hidden_questions;
-		 *   - with no conditional logic configured on the quiz, nothing can be hidden,
-		 *     so the client list is dropped (closes the hole on every install that does
-		 *     not use conditional logic, which is the default);
-		 *   - a logic-configured quiz whose add-on has not yet implemented the filter
-		 *     keeps the legacy behaviour, so scoring does not regress before the add-on
-		 *     ships its server-side verifier.
+		 *   - when no verifier answers (null), nothing is excluded: the client list is
+		 *     never used as a fallback. qsm-logic 2.3.3+ registers the verifier; a quiz
+		 *     on an older qsm-logic scores hidden questions as unanswered until the
+		 *     add-on is updated, which can only lower a score, never inflate it.
 		 */
 		$verified_hidden_questions = apply_filters( 'qsm_verified_hidden_questions', null, $client_hidden_questions, $qmn_array_for_variables, $qmn_quiz_options );
-		if ( null === $verified_hidden_questions ) {
-			// Does conditional logic apply to this quiz? If the qsm-logic add-on is not
-			// active, nothing can legitimately be hidden, so the client list is dropped.
-			// If it is active, detect logic for this quiz across BOTH storage eras:
-			// pre-2.0 kept rules in the 'logic_rules' quiz setting; 2.0+ moved them to the
-			// mlw_logic table and BLANKS that setting (flagging migration with the
-			// logic_rules_quiz_<id> option, see blocks/block.php). Checking only the
-			// setting would treat every migrated logic quiz as no-logic and wrongly drop
-			// its legitimately hidden questions, lowering honest scores.
-			$logic_rules     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules', '' );
-			$has_legacy_logic = ! empty( $logic_rules ) && 'a:0:{}' !== $logic_rules && '[]' !== $logic_rules && 'N;' !== $logic_rules;
-			$quiz_id          = isset( $qmn_quiz_options->quiz_id ) ? intval( $qmn_quiz_options->quiz_id ) : 0;
-			$has_migrated_logic = $quiz_id && get_option( 'logic_rules_quiz_' . $quiz_id );
-			$quiz_uses_logic  = class_exists( 'QSM_Logic' ) && ( $has_legacy_logic || $has_migrated_logic );
-			$verified_hidden_questions = $quiz_uses_logic ? $client_hidden_questions : array();
+		if ( ! is_array( $verified_hidden_questions ) ) {
+			$verified_hidden_questions = array();
 		}
 		$hidden_questions                           = array_values( array_filter( (array) $verified_hidden_questions, 'qsm_is_valid_hidden_question_id' ) );
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
@@ -3215,12 +3200,17 @@ class QMNQuizManager {
 			$questions = $new_questions;
 			$pages     = array( $question_array );
 		}
-		// Retrieve data from submission
-		$total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
+		// Retrieve data from submission.
+		// SECURITY: total_questions is the denominator of the percentage score, so it is
+		// counted here from the graded questions actually scored below. The posted
+		// total_questions field is not trusted: an unauthenticated submitter could post
+		// total_questions=1 and store 100% (or more) with a single correct answer.
+		$total_questions = 0;
 		$question_list   = array();
 		if ( isset( $_POST['qmn_question_list'] ) ) {
 			$qmn_question_list = sanitize_text_field( wp_unslash( $_POST['qmn_question_list'] ) );
-			$question_list     = explode( 'Q', $qmn_question_list );
+			// A repeated id would otherwise be scored, and counted, more than once.
+			$question_list     = array_values( array_unique( explode( 'Q', $qmn_question_list ) ) );
 		}
 
 		// Prepare variables
@@ -3233,6 +3223,18 @@ class QMNQuizManager {
 		$answer_points           = 0;
 		$question_data           = array();
 		$hidden_questions        = array();
+		$verified_hidden_ids     = array();
+		$hidden_graded_count     = 0;
+		if ( ! empty( $quiz_data['hidden_questions'] ) && is_array( $quiz_data['hidden_questions'] ) ) {
+			// Ids arrive as strings ("12") from the verifier and older clients; the checks
+			// below compare with in_array( intval( $id ), ..., true ), so normalise to int.
+			// Category entries ("c3") are not question ids and are dropped here.
+			foreach ( $quiz_data['hidden_questions'] as $hidden_question_id ) {
+				if ( is_numeric( $hidden_question_id ) ) {
+					$verified_hidden_ids[] = intval( $hidden_question_id );
+				}
+			}
+		}
 		$total_possible_points   = 0;
 		$attempted_question      = 0;
 		$minimum_possible_points = 0;
@@ -3273,7 +3275,15 @@ class QMNQuizManager {
 							$question          = $questions[ $page_question_id ];
 							$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result.
-							$hidden_questions = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
+							$hidden_questions = $verified_hidden_ids;
+							if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question_type_new ) ) {
+								++$total_questions;
+								// Only a hidden question that was counted can come off the denominator;
+								// a hidden id that was never served would push the score above 100%.
+								if ( in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									++$hidden_graded_count;
+								}
+							}
 
 							// Reset question-specific variables.
 							$user_answer    = '';
@@ -3367,6 +3377,9 @@ class QMNQuizManager {
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
 						global $mlwQuizMasterNext;
+						if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question['question_type_new'] ) ) {
+							++$total_questions;
+						}
 						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 						// Reset question-specific variables.
 						$user_answer    = '';
@@ -3449,15 +3462,8 @@ class QMNQuizManager {
 		}
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-		// total_questions only counts graded questions, so only subtract hidden questions that are graded.
-		// A hidden Text/HTML section would otherwise shrink the denominator and push the score above 100%.
-		global $mlwQuizMasterNext;
-		$hidden_graded_count = 0;
-		foreach ( $hidden_questions as $hidden_question_id ) {
-			if ( isset( $questions[ $hidden_question_id ] ) && $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $questions[ $hidden_question_id ]['question_type_new'] ) ) {
-				++$hidden_graded_count;
-			}
-		}
+		// $hidden_graded_count only holds hidden questions that were counted in $total_questions
+		// (graded and actually scored), so the denominator can't drop below what was counted.
 		if ( 0 < $total_questions - $hidden_graded_count ) {
 			$total_score = round( ( ( $total_correct / ( $total_questions - $hidden_graded_count ) ) * 100 ), 2 );
 		} else {
