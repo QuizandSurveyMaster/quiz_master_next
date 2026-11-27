@@ -3200,12 +3200,17 @@ class QMNQuizManager {
 			$questions = $new_questions;
 			$pages     = array( $question_array );
 		}
-		// Retrieve data from submission
-		$total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
+		// Retrieve data from submission.
+		// SECURITY: total_questions is the denominator of the percentage score, so it is
+		// counted here from the graded questions actually scored below. The posted
+		// total_questions field is not trusted: an unauthenticated submitter could post
+		// total_questions=1 and store 100% (or more) with a single correct answer.
+		$total_questions = 0;
 		$question_list   = array();
 		if ( isset( $_POST['qmn_question_list'] ) ) {
 			$qmn_question_list = sanitize_text_field( wp_unslash( $_POST['qmn_question_list'] ) );
-			$question_list     = explode( 'Q', $qmn_question_list );
+			// A repeated id would otherwise be scored, and counted, more than once.
+			$question_list     = array_values( array_unique( explode( 'Q', $qmn_question_list ) ) );
 		}
 
 		// Prepare variables
@@ -3218,6 +3223,17 @@ class QMNQuizManager {
 		$answer_points           = 0;
 		$question_data           = array();
 		$hidden_questions        = array();
+		$verified_hidden_ids     = array();
+		if ( ! empty( $quiz_data['hidden_questions'] ) && is_array( $quiz_data['hidden_questions'] ) ) {
+			// Ids arrive as strings ("12") from the verifier and older clients; the checks
+			// below compare with in_array( intval( $id ), ..., true ), so normalise to int.
+			// Category entries ("c3") are not question ids and are dropped here.
+			foreach ( $quiz_data['hidden_questions'] as $hidden_question_id ) {
+				if ( is_numeric( $hidden_question_id ) ) {
+					$verified_hidden_ids[] = intval( $hidden_question_id );
+				}
+			}
+		}
 		$total_possible_points   = 0;
 		$attempted_question      = 0;
 		$minimum_possible_points = 0;
@@ -3258,7 +3274,10 @@ class QMNQuizManager {
 							$question          = $questions[ $page_question_id ];
 							$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result.
-							$hidden_questions = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
+							$hidden_questions = $verified_hidden_ids;
+							if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question_type_new ) ) {
+								++$total_questions;
+							}
 
 							// Reset question-specific variables.
 							$user_answer    = '';
@@ -3352,6 +3371,9 @@ class QMNQuizManager {
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
 						global $mlwQuizMasterNext;
+						if ( $mlwQuizMasterNext->pluginHelper->is_question_type_graded( $question['question_type_new'] ) ) {
+							++$total_questions;
+						}
 						$case_sensitive = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'case_sensitive' );
 						// Reset question-specific variables.
 						$user_answer    = '';
