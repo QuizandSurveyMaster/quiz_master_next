@@ -58,11 +58,7 @@ class QSM_Question_Review_File_Upload extends QSM_Question_Review {
 					$do_error_message = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
 				}
 	
-				// Give new uploads an unguessable name so the file cannot be reached by guessing the URL.
-				// Keep the "qsmfileupload_" prefix (used to identify quiz uploads) and drop the original
-				// file name. Existing uploads are not renamed; answers store the attachment id, not the path.
-				$file_ext              = pathinfo( $file_name, PATHINFO_EXTENSION );
-				$uploaded_file['name'] = 'qsmfileupload_' . wp_generate_password( 32, false ) . ( $file_ext ? '.' . strtolower( $file_ext ) : '' );
+				$uploaded_file['name'] = 'qsmfileupload_' . uniqid() . '_' . str_replace( '-', '_', $file_name );
 				$upload_overrides      = array(
 					'test_form' => false,
 				);
