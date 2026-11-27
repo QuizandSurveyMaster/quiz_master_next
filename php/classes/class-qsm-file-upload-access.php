@@ -38,6 +38,21 @@ function qsm_can_view_quiz_uploads() {
 }
 
 /**
+ * Whether quiz file uploads should be hidden from the REST API / Media Library.
+ *
+ * Controlled by the global setting qmn-settings['hide_file_uploads']. Defaults to
+ * enabled (protected) when the setting has never been saved, so the fix is on out
+ * of the box; an administrator can turn it off on the QSM global settings page.
+ *
+ * @return bool
+ */
+function qsm_hide_quiz_uploads_enabled() {
+	$settings = (array) get_option( 'qmn-settings' );
+	$value    = isset( $settings['hide_file_uploads'] ) ? $settings['hide_file_uploads'] : '1';
+	return '1' === (string) $value;
+}
+
+/**
  * Whether an attachment is a QSM File Upload submission.
  *
  * @param WP_Post|int $post Attachment post or id.
@@ -57,7 +72,7 @@ function qsm_is_quiz_upload( $post ) {
  * @return array
  */
 function qsm_rest_attachment_query( $args, $request ) {
-	if ( ! qsm_can_view_quiz_uploads() ) {
+	if ( qsm_hide_quiz_uploads_enabled() && ! qsm_can_view_quiz_uploads() ) {
 		add_filter( 'posts_where', 'qsm_exclude_quiz_uploads_where', 10, 2 );
 	}
 	return $args;
@@ -72,7 +87,7 @@ add_filter( 'rest_attachment_query', 'qsm_rest_attachment_query', 10, 2 );
  * @return array
  */
 function qsm_ajax_attachment_args( $args ) {
-	if ( ! qsm_can_view_quiz_uploads() ) {
+	if ( qsm_hide_quiz_uploads_enabled() && ! qsm_can_view_quiz_uploads() ) {
 		add_filter( 'posts_where', 'qsm_exclude_quiz_uploads_where', 10, 2 );
 	}
 	return $args;
@@ -107,7 +122,7 @@ function qsm_exclude_quiz_uploads_where( $where, $query ) {
  * @return WP_REST_Response
  */
 function qsm_rest_prepare_attachment( $response, $post, $request ) {
-	if ( qsm_is_quiz_upload( $post ) && ! qsm_can_view_quiz_uploads() ) {
+	if ( qsm_hide_quiz_uploads_enabled() && qsm_is_quiz_upload( $post ) && ! qsm_can_view_quiz_uploads() ) {
 		$data = $response->get_data();
 		unset( $data['guid'], $data['source_url'], $data['media_details'] );
 		if ( isset( $data['description']['rendered'] ) ) {
