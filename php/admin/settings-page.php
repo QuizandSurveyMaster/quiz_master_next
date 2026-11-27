@@ -215,6 +215,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'enable-qsm-log', __( 'Enable QSM log', 'quiz-master-next' ), array( $this, 'enable_qsm_log' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'hide-file-uploads', __( 'Protect quiz file uploads', 'quiz-master-next' ), array( $this, 'hide_file_uploads_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'enable-preloader', __( 'Enable preloader', 'quiz-master-next' ), array( $this, 'qsm_enable_preloader' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Quiz Archive Settings', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'duplicate-quiz-with-theme', __( 'Duplicate Quiz Controls', 'quiz-master-next' ), array( $this, 'qsm_duplicate_quiz_with_theme' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -232,6 +233,31 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'api-key-options', __( 'Enable APIs', 'quiz-master-next' ), array( $this, 'api_key_options' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'api-key', __( 'API Key', 'quiz-master-next' ), array( $this, 'api_key_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		do_action('qsm_global_setting_field_after');
+	}
+
+	/**
+	 * Generates Setting Field to hide quiz file uploads from the REST API / Media Library.
+	 *
+	 * Files uploaded through a File Upload question are stored as public media
+	 * attachments; when this is enabled they are hidden from the core media REST
+	 * route and the Media Library for visitors who cannot view quiz results, which
+	 * closes an unauthenticated broken-access-control disclosure. Enabled by default.
+	 *
+	 * @return void
+	 */
+	public function hide_file_uploads_field() {
+		$settings          = (array) get_option( 'qmn-settings' );
+		// Default enabled (protected) when the setting has never been saved.
+		$hide_file_uploads = isset( $settings['hide_file_uploads'] ) ? $settings['hide_file_uploads'] : '1';
+		?>
+		<label class="qsm-checkbox-switch">
+			<?php // Hidden field so an unchecked box still posts an explicit "off" and can be saved. ?>
+			<input type="hidden" name="qmn-settings[hide_file_uploads]" value="0">
+			<input type="checkbox" name="qmn-settings[hide_file_uploads]" value="1" <?php checked( $hide_file_uploads, '1' ); ?>>
+			<span class="qsm-switch-slider round"></span>
+		</label>
+		<span class="global-sub-text"><?php esc_html_e( 'Recommended. Hides quiz uploads from the REST API (/wp/v2/media) and Media Library, so unauthorized visitors cannot view or download files uploaded by other quiz takers.', 'quiz-master-next' ); ?></span>
+		<?php
 	}
 
 	/**

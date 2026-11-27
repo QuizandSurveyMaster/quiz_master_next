@@ -25,6 +25,7 @@ include_once 'classes/question-types/class-question-review-text.php';
 include_once 'classes/question-types/class-question-review-fill-in-blanks.php';
 include_once 'classes/question-types/class-question-review-file-upload.php';
 include_once 'classes/question-types/class-question-review-choice.php';
+include_once 'classes/class-qsm-file-upload-access.php';
 
 add_action( 'init', 'qmn_question_type_multiple_choice' );
 add_action( 'init', 'qmn_question_type_multiple_response' );
