@@ -2108,18 +2108,17 @@ if (typeof window.qsmCheckMR !== 'function') {
              * loaded yet are picked up when bindAnswerEvents() runs for that page.
              */
             restoreLockedAnswers: function(quizId, $container) {
-                let self = this;
                 let locked = this.getLockedAnswers()[quizId];
                 if (!Array.isArray(locked)) {
                     return;
                 }
-                locked.forEach(function(item) {
+                locked.forEach((item) => {
                     let $input = $container.find('.qmn_quiz_radio').filter(function() {
                         return this.name === item[0] && this.value === String(item[1]);
                     });
                     if ($input.length && !$input.prop('disabled')) {
                         $input.prop('checked', true).trigger('change');
-                        self.lockAnswerGroup($container, item[0]);
+                        this.lockAnswerGroup($container, item[0]);
                     }
                 });
             },
