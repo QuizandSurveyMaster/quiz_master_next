@@ -256,7 +256,7 @@ class QMNGlobalSettingsPage {
 			<input type="checkbox" name="qmn-settings[hide_file_uploads]" value="1" <?php checked( $hide_file_uploads, '1' ); ?>>
 			<span class="qsm-switch-slider round"></span>
 		</label>
-		<span class="global-sub-text"><?php esc_html_e( 'Recommended. Hides quiz uploads from the REST API (/wp/v2/media) and Media Library, so unauthorized visitors cannot view or download files uploaded by other quiz takers.', 'quiz-master-next' ); ?></span>
+		<span class="global-sub-text"><?php esc_html_e( 'Recommended. Prevents unauthorized access to quiz uploads through the REST API and Media Library.', 'quiz-master-next' ); ?></span>
 		<?php
 	}
 
